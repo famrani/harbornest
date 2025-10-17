@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Home - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anton">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/styles.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container"><a class="navbar-brand fw-bold" href="home.html">Harbornest</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navbarResponsive"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ps-3">
+                    <li class="nav-item"><a class="nav-link" href="places.html">Find a Space</a></li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Sign in</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav><!-- Start: place list -->
+    <section class="top-section">
+        <!-- Start: Projects Grid -->
+        <div class="container">
+            <div>
+                <form class="py-4 w-750">
+                    <div class="input-group mb-2"><span class="input-group-text"><i class="icon ion-ios-location fs-4"></i></span><input class="form-control" type="text" placeholder="Sophia Antipolis"></div>
+                    <div class="row">
+                        <div class="col-6 col-sm-4">
+                            <div class="input-group resp"><span class="input-group-text">DATE</span><input type="date"></div>
+                        </div>
+                        <div class="col-6 col-sm-5 col-md-6 col-lg-6 d-flex">
+                            <div class="input-group resp"><span class="input-group-text">FROM</span><input type="time"></div>
+                            <div class="input-group resp"><span class="input-group-text">TO</span><input type="time"></div>
+                        </div>
+                        <div class="col-12 col-sm-3 col-md-auto col-lg-2 d-flex px-0"><button class="btn btn-primary m-auto my-1" type="button"><i class="icon ion-android-search pe-2"></i>SEARCH</button></div>
+                    </div>
+                </form>
+            </div><!-- Start: if spaces found -->
+            <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+                <div class="col">
+                    <div class="p-2">
+                        <div class="grid-item"><img class="img-fluid d-block w-100 fit-cover" style="height: 200px;" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
+                            <div class="space-info">
+                                <h5 class="mb-1">Title</h5>
+                                <div class="fw-bold d-flex"><i class="icon ion-ios-location me-2 fw-bold"></i>
+                                    <p>Area</p>
+                                </div>
+                                <div class="d-flex">
+                                    <p class="fw-bold"><span class="fw-bold me-2">€</span>## p/hour</p>
+                                    <p class="fw-bold ps-3"><span class="fw-bold me-2">€</span>## p/day</p>
+                                </div>
+                                <p>Brief description max 30 characters</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="p-2">
+                        <div class="grid-item"><img class="img-fluid d-block w-100 fit-cover" style="height: 200px;" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
+                            <div class="space-info">
+                                <h5 class="mb-1">Title</h5>
+                                <div class="fw-bold d-flex"><i class="icon ion-ios-location me-2 fw-bold"></i>
+                                    <p>Area</p>
+                                </div>
+                                <p class="fw-bold"><span class="fw-bold me-2">€</span>## p/h</p>
+                                <p>Brief description max 30 characters</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="p-2">
+                        <div class="grid-item"><img class="img-fluid d-block w-100 fit-cover" style="height: 200px;" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
+                            <div class="space-info">
+                                <h5 class="mb-1">Title</h5>
+                                <div class="fw-bold d-flex"><i class="icon ion-ios-location me-2 fw-bold"></i>
+                                    <p>Area</p>
+                                </div>
+                                <p class="fw-bold"><span class="fw-bold me-2">€</span>## p/h</p>
+                                <p>Brief description max 30 characters</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End: if spaces found -->
+            <!-- Start: if no spaces -->
+            <div class="row py-4">
+                <div class="col">
+                    <p class="text-center">Sorry - there are no spaces available in this area. Try a different search.</p>
+                </div>
+            </div><!-- End: if no spaces -->
+        </div><!-- End: Projects Grid -->
+    </section><!-- End: place list -->
+    <footer class="footer">
+        <div class="container">
+            <div class="d-flex">
+                <p class="version">v1.0</p>
+                <p class="copyright">Copyright&nbsp;© All Digital Network 2024</p>
+            </div>
+        </div>
+    </footer>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

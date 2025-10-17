@@ -1,0 +1,263 @@
+{
+  "project_info": {
+    "project_number": "649569603202",
+    "firebase_url": "https://backend-test-f66b8.firebaseio.com",
+    "project_id": "backend-test-f66b8",
+    "storage_bucket": "backend-test-f66b8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649569603202:android:d4119fbbc697be1e302e9b",
+        "android_client_info": {
+          "package_name": "net.kamli.admin2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649569603202-1q1s69rs14t0iuapkgb6ca7noi9gn135.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4QVe-uiyNBUPhy3TwAbGU3Uo1F8LFHOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649569603202-1q1s69rs14t0iuapkgb6ca7noi9gn135.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "649569603202-970k53h94nm5etfpv2bgbrgeii948cid.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.kamli.ads"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649569603202:android:3594f6eb1e541a14302e9b",
+        "android_client_info": {
+          "package_name": "net.kamli.ads"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649569603202-1q1s69rs14t0iuapkgb6ca7noi9gn135.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4QVe-uiyNBUPhy3TwAbGU3Uo1F8LFHOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649569603202-1q1s69rs14t0iuapkgb6ca7noi9gn135.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "649569603202-970k53h94nm5etfpv2bgbrgeii948cid.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.kamli.ads"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649569603202:android:31dc661c040dc40f302e9b",
+        "android_client_info": {
+          "package_name": "net.kamli.barber"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649569603202-1q1s69rs14t0iuapkgb6ca7noi9gn135.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4QVe-uiyNBUPhy3TwAbGU3Uo1F8LFHOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649569603202-1q1s69rs14t0iuapkgb6ca7noi9gn135.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "649569603202-970k53h94nm5etfpv2bgbrgeii948cid.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.kamli.ads"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649569603202:android:11653bde1d5def76302e9b",
+        "android_client_info": {
+          "package_name": "net.kamli.goadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649569603202-1q1s69rs14t0iuapkgb6ca7noi9gn135.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4QVe-uiyNBUPhy3TwAbGU3Uo1F8LFHOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649569603202-1q1s69rs14t0iuapkgb6ca7noi9gn135.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "649569603202-970k53h94nm5etfpv2bgbrgeii948cid.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.kamli.ads"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649569603202:android:2aa7ce57805139a3302e9b",
+        "android_client_info": {
+          "package_name": "net.kamli.qccareapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649569603202-1q1s69rs14t0iuapkgb6ca7noi9gn135.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4QVe-uiyNBUPhy3TwAbGU3Uo1F8LFHOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649569603202-1q1s69rs14t0iuapkgb6ca7noi9gn135.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "649569603202-970k53h94nm5etfpv2bgbrgeii948cid.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.kamli.ads"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649569603202:android:d9f909360b5e33d9302e9b",
+        "android_client_info": {
+          "package_name": "net.kamli.qcdashboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649569603202-1q1s69rs14t0iuapkgb6ca7noi9gn135.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4QVe-uiyNBUPhy3TwAbGU3Uo1F8LFHOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649569603202-1q1s69rs14t0iuapkgb6ca7noi9gn135.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "649569603202-970k53h94nm5etfpv2bgbrgeii948cid.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.kamli.ads"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649569603202:android:6236bd6a51ec38fe302e9b",
+        "android_client_info": {
+          "package_name": "net.kamli.store"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649569603202-1q1s69rs14t0iuapkgb6ca7noi9gn135.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4QVe-uiyNBUPhy3TwAbGU3Uo1F8LFHOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649569603202-1q1s69rs14t0iuapkgb6ca7noi9gn135.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "649569603202-970k53h94nm5etfpv2bgbrgeii948cid.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.kamli.ads"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

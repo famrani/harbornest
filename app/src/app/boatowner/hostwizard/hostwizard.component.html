@@ -1,0 +1,320 @@
+<div class="container py-4">
+
+  <!-- Progress -->
+  <div class="mb-4">
+    <div class="d-flex align-items-center gap-2">
+      <div class="flex-grow-1">
+        <div class="progress" style="height:8px;">
+          <div class="progress-bar" role="progressbar" [style.width.%]="(step-1) * (100/6)"></div>
+        </div>
+      </div>
+      <span class="small text-muted">Step {{step}} / 7</span>
+    </div>
+  </div>
+
+  <!-- Step Pills -->
+  <ul class="nav nav-pills mb-4 gap-2 small">
+    <li class="nav-item">
+      <button class="btn btn-outline-secondary" [class.active]="step===1" (click)="goto(1)">1. Owner</button>
+    </li>
+    <li class="nav-item">
+      <button class="btn btn-outline-secondary" [class.active]="step===2" (click)="goto(2)">2. Boat</button>
+    </li>
+    <li class="nav-item">
+      <button class="btn btn-outline-secondary" [class.active]="step===3" (click)="goto(3)">3. Marina</button>
+    </li>
+    <li class="nav-item">
+      <button class="btn btn-outline-secondary" [class.active]="step===4" (click)="goto(4)">4. Services</button>
+    </li>
+    <li class="nav-item">
+      <button class="btn btn-outline-secondary" [class.active]="step===5" (click)="goto(5)">5. Pricing</button>
+    </li>
+    <li class="nav-item">
+      <button class="btn btn-outline-secondary" [class.active]="step===6" (click)="goto(6)">6. Payouts</button>
+    </li>
+    <li class="nav-item">
+      <button class="btn btn-outline-secondary" [class.active]="step===7" (click)="goto(7)">7. Review</button>
+    </li>
+  </ul>
+
+  <!-- Step 1: Owner -->
+  <form *ngIf="step===1" [formGroup]="ownerForm" (ngSubmit)="saveOwner()" class="mt-3">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <label class="form-label">First name</label>
+        <input class="form-control" formControlName="firstName" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Last name</label>
+        <input class="form-control" formControlName="lastName" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Date of birth</label>
+        <input type="date" class="form-control" formControlName="dob" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Phone</label>
+        <input class="form-control" formControlName="phone" placeholder="+33 6 ..." />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" formControlName="email" />
+      </div>
+    </div>
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <button class="btn btn-dark rounded-pill">Save & Continue</button>
+    </div>
+  </form>
+
+  <!-- Step 2: Boat -->
+  <form *ngIf="step===2" [formGroup]="boatForm" (ngSubmit)="saveBoat()">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Boat Name</label>
+        <input class="form-control" formControlName="name" placeholder="e.g., Azure Breeze" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Type</label>
+        <select class="form-select" formControlName="type">
+          <option value="">Select…</option>
+          <option>Sail</option>
+          <option>Motor</option>
+          <option>Catamaran</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Make / Model</label>
+        <input class="form-control" formControlName="make" placeholder="Lagoon 42" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Year</label>
+        <input type="number" class="form-control" formControlName="year" placeholder="2019" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Length (m)</label>
+        <input type="number" class="form-control" formControlName="length" placeholder="12" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Max Guests</label>
+        <input type="number" class="form-control" formControlName="capacity" placeholder="10" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Cabins</label>
+        <input type="number" class="form-control" formControlName="cabins" placeholder="3" />
+      </div>
+      <div class="col-12">
+        <label class="form-label">Description</label>
+        <textarea rows="4" class="form-control" formControlName="description" placeholder="Tell guests what makes your boat special…"></textarea>
+      </div>
+
+      <!-- Boat photo upload -->
+      <div class="col-12">
+        <label class="form-label">Boat photos (upload to Firebase)</label>
+        <input type="file" class="form-control" (change)="uploadBoatPhotos($event.target.files)" multiple />
+        <div class="form-text">JPG/PNG. You can add more later.</div>
+      </div>
+
+      <div class="col-12 mt-2" *ngIf="state.boat.photos?.length">
+        <div class="d-flex flex-wrap gap-2">
+          <img *ngFor="let p of state.boat.photos" [src]="p" class="rounded" style="width:120px;height:90px;object-fit:cover;" />
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between gap-2 mt-4">
+      <button type="button" class="btn btn-outline-secondary rounded-pill" (click)="back()">Back</button>
+      <button class="btn btn-dark rounded-pill">Save & Continue</button>
+    </div>
+  </form>
+
+  <!-- Step 3: Marina -->
+  <form *ngIf="step===3" [formGroup]="marinaForm" (ngSubmit)="saveMarina()">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Port / Marina</label>
+        <input list="marinaList" class="form-control" formControlName="port" placeholder="Start typing…" />
+        <datalist id="marinaList">
+          <option *ngFor="let m of marinas" [value]="m.port"></option>
+        </datalist>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Slip / Berth (optional)</label>
+        <input class="form-control" formControlName="slip" placeholder="B-12" />
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">City</label>
+        <input class="form-control" formControlName="city" placeholder="Antibes" />
+      </div>
+      <div class="col-md-1">
+        <label class="form-label">Country</label>
+        <input class="form-control" formControlName="country" placeholder="FR" />
+      </div>
+    </div>
+    <div class="d-flex justify-content-between gap-2 mt-4">
+      <button type="button" class="btn btn-outline-secondary rounded-pill" (click)="back()">Back</button>
+      <button class="btn btn-dark rounded-pill">Save & Continue</button>
+    </div>
+  </form>
+
+  <!-- Step 4: Services -->
+  <form *ngIf="step===4" [formGroup]="servicesForm" (ngSubmit)="saveServices()">
+    <div class="row g-3">
+      <div class="col-6 col-md-4" *ngFor="let s of [
+        {key:'sunsetChampagne',label:'Sunset Cruise & Champagne'},
+        {key:'lerinsDayEscape',label:'Day Escape Lérins Islands'},
+        {key:'evjfEvg',label:'EVJF / EVG en mer'},
+        {key:'afterwork',label:'Afterwork en mer'},
+        {key:'teamBuilding',label:'Team Building Challenge'},
+        {key:'nightOnBoard',label:'Night on Board'},
+        {key:'businessMeetings',label:'Business Meetings'}
+      ]">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [formControlName]="s.key" [id]="s.key" />
+          <label class="form-check-label" [for]="s.key">{{ s.label }}</label>
+        </div>
+
+        <!-- Per-service photos -->
+        <div class="mt-2" *ngIf="servicesForm.value[s.key]">
+          <input type="file" class="form-control" (change)="uploadServicePhotos($event.target.files, s.key)" multiple />
+          <div class="d-flex flex-wrap gap-2 mt-2">
+            <img *ngFor="let p of (state.servicePhotos?.[s.key] || [])" [src]="p" class="rounded" style="width:120px;height:90px;object-fit:cover;" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between gap-2 mt-4">
+      <button type="button" class="btn btn-outline-secondary rounded-pill" (click)="back()">Back</button>
+      <button class="btn btn-dark rounded-pill">Save & Continue</button>
+    </div>
+  </form>
+
+  <!-- Step 5: Pricing -->
+  <form *ngIf="step===5" [formGroup]="pricingForm" (ngSubmit)="savePricing()">
+    <div class="row g-3">
+      <ng-container *ngFor="let row of [
+        {key:'sunsetChampagne',label:'Sunset Cruise & Champagne'},
+        {key:'lerinsDayEscape',label:'Day Escape Lérins Islands'},
+        {key:'evjfEvg',label:'EVJF / EVG en mer'},
+        {key:'afterwork',label:'Afterwork en mer'},
+        {key:'teamBuilding',label:'Team Building Challenge'},
+        {key:'nightOnBoard',label:'Night on Board'},
+        {key:'businessMeetings',label:'Business Meetings'}
+      ]">
+        <div class="col-md-6">
+          <label class="form-label">{{ row.label }} — Price</label>
+          <div class="input-group">
+            <span class="input-group-text">€</span>
+            <input type="number" min="0" class="form-control" [formControlName]="row.key + '_price'" placeholder="e.g., 300" />
+            <select class="form-select" [formControlName]="row.key + '_unit'">
+              <option value="trip">/trip</option>
+              <option value="hour">/hour</option>
+              <option value="night">/night</option>
+            </select>
+          </div>
+          <div class="form-text">Leave empty if you don’t offer this service.</div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="d-flex justify-content-between gap-2 mt-4">
+      <button type="button" class="btn btn-outline-secondary rounded-pill" (click)="back()">Back</button>
+      <button class="btn btn-dark rounded-pill">Save & Continue</button>
+    </div>
+  </form>
+
+  <!-- Step 6: Payouts (Stripe) -->
+  <div *ngIf="step===6" class="card border-0 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Payouts</h5>
+      <p class="text-muted">We use Stripe to securely send earnings to your bank account.</p>
+
+      <div *ngIf="!state.payouts.stripeConnected" class="d-flex align-items-center gap-3">
+        <button class="btn btn-primary rounded-pill" (click)="connectStripe()">
+          <i class="bi bi-credit-card me-1"></i> Connect with Stripe
+        </button>
+        <div class="small text-muted">
+          You’ll be redirected to Stripe to create or connect a Standard account.
+        </div>
+      </div>
+
+      <div *ngIf="state.payouts.stripeConnected" class="alert alert-success d-flex align-items-center gap-2 mt-2">
+        <i class="bi bi-check-circle-fill"></i>
+        <div>Stripe connected (Account: {{ state.payouts.stripeAccountId }})</div>
+      </div>
+
+      <div class="text-danger mt-2" *ngIf="error">{{ error }}</div>
+    </div>
+    <div class="card-footer bg-white border-0 d-flex justify-content-between">
+      <button class="btn btn-outline-secondary rounded-pill" (click)="back()">Back</button>
+      <button class="btn btn-dark rounded-pill" (click)="next()">Continue</button>
+    </div>
+  </div>
+
+  <!-- Step 7: Review & Publish -->
+  <div *ngIf="step===7" class="card border-0 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Review your listing</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <h6>Owner</h6>
+          <ul class="small text-muted">
+            <li><strong>{{ state.owner.firstName }} {{ state.owner.lastName }}</strong></li>
+            <li>DOB: {{ state.owner.dob }} • Phone: {{ state.owner.phone }}</li>
+            <li>Email: {{ state.owner.email }}</li>
+          </ul>
+
+          <h6>Boat</h6>
+          <ul class="small text-muted">
+            <li><strong>{{ state.boat.name }}</strong> — {{ state.boat.type }} ({{ state.boat.make }})</li>
+            <li>Year: {{ state.boat.year }} • Length: {{ state.boat.length }} m</li>
+            <li>Capacity: {{ state.boat.capacity }} • Cabins: {{ state.boat.cabins }}</li>
+            <li>{{ state.boat.description }}</li>
+          </ul>
+        </div>
+
+        <div class="col-md-6">
+          <h6>Marina</h6>
+          <ul class="small text-muted">
+            <li><strong>{{ state.marina.port }}</strong></li>
+            <li>{{ state.marina.city }}, {{ state.marina.country }}</li>
+            <li *ngIf="state.marina.slip">Slip/Berth: {{ state.marina.slip }}</li>
+          </ul>
+
+          <h6>Services & Pricing</h6>
+          <ul class="small text-muted">
+            <li *ngFor="let kv of (state.services | keyvalue)" [hidden]="!kv.value">
+              {{ labelForService(kv.key) }} — €{{ state.pricing[kv.key]?.price }} / {{ state.pricing[kv.key]?.unit }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <h6>Boat Photos</h6>
+      <div class="d-flex flex-wrap gap-2 mb-3" *ngIf="state.boat.photos?.length">
+        <img *ngFor="let p of state.boat.photos" [src]="p" class="rounded" style="width:90px;height:70px;object-fit:cover;" />
+      </div>
+
+      <h6>Service Photos</h6>
+      <div class="mb-3" *ngFor="let kv of (state.servicePhotos | keyvalue)">
+        <div class="small fw-semibold">{{ labelForService(kv.key) }}</div>
+        <div class="d-flex flex-wrap gap-2">
+          <img *ngFor="let url of kv.value" [src]="url" class="rounded" style="width:90px;height:70px;object-fit:cover;" />
+        </div>
+      </div>
+
+      <div class="form-check mt-3">
+        <input class="form-check-input" type="checkbox" id="review"
+               [checked]="state.reviewAccepted"
+               (change)="boatownerSvc.setDeep('reviewAccepted', $any($event.target).checked)" />
+        <label class="form-check-label" for="review">I confirm the information is correct.</label>
+      </div>
+
+      <div class="text-danger mt-2" *ngIf="error">{{ error }}</div>
+    </div>
+    <div class="card-footer bg-white border-0 d-flex justify-content-between">
+      <button class="btn btn-outline-secondary rounded-pill" (click)="back()">Back</button>
+      <button class="btn btn-dark rounded-pill" [disabled]="!state.reviewAccepted || saving" (click)="publish()">
+        {{ saving ? 'Publishing…' : 'Publish listing' }}
+      </button>
+    </div>
+  </div>
+
+</div>

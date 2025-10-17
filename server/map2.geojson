@@ -1,0 +1,3313 @@
+{
+"type": "FeatureCollection",
+"features": [
+{
+  "type": "Feature",
+  "id": "relation/3132544",
+  "properties": {
+    "timestamp": "2022-11-08T07:40:15Z",
+    "version": "8",
+    "changeset": "128626179",
+    "user": "uMatt-5",
+    "uid": "15175787",
+    "name": "Le Rucher",
+    "network": "lwn",
+    "osmc:symbol": "yellow:white:yellow_bar:hiker",
+    "ref": "PR",
+    "route": "hiking",
+    "symbol": "Trait jaune",
+    "type": "route",
+    "id": "relation/3132544"
+  },
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [
+        7.0343504,
+        43.6846163
+      ],
+      [
+        7.0347921,
+        43.6848834
+      ],
+      [
+        7.0349869,
+        43.6849907
+      ],
+      [
+        7.0355492,
+        43.6854242
+      ],
+      [
+        7.0357323,
+        43.6855786
+      ],
+      [
+        7.0358092,
+        43.6856434
+      ],
+      [
+        7.0361124,
+        43.6859461
+      ],
+      [
+        7.0363013,
+        43.6862167
+      ],
+      [
+        7.0366056,
+        43.686474
+      ],
+      [
+        7.0366259,
+        43.686489
+      ],
+      [
+        7.0368611,
+        43.6866624
+      ],
+      [
+        7.0369015,
+        43.6866802
+      ],
+      [
+        7.0372127,
+        43.6868173
+      ],
+      [
+        7.0381299,
+        43.6872672
+      ],
+      [
+        7.0381887,
+        43.6872929
+      ],
+      [
+        7.0385803,
+        43.6874642
+      ],
+      [
+        7.0386999,
+        43.6875165
+      ],
+      [
+        7.0392509,
+        43.687822
+      ],
+      [
+        7.0398545,
+        43.6881566
+      ],
+      [
+        7.0401253,
+        43.6883068
+      ],
+      [
+        7.0405679,
+        43.6886421
+      ],
+      [
+        7.0410721,
+        43.6889713
+      ],
+      [
+        7.0411108,
+        43.6890494
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485173",
+  "properties": {
+    "timestamp": "2015-03-24T12:33:46Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485173"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037424,
+          43.685729
+        ],
+        [
+          7.037512,
+          43.685797
+        ],
+        [
+          7.037424,
+          43.685858
+        ],
+        [
+          7.037336,
+          43.685791
+        ],
+        [
+          7.037313,
+          43.685806
+        ],
+        [
+          7.037253,
+          43.685761
+        ],
+        [
+          7.03732,
+          43.685714
+        ],
+        [
+          7.037326,
+          43.685711
+        ],
+        [
+          7.037385,
+          43.685757
+        ],
+        [
+          7.037407,
+          43.685741
+        ],
+        [
+          7.037424,
+          43.685729
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485199",
+  "properties": {
+    "timestamp": "2015-03-24T12:33:48Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485199"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.036292,
+          43.685889
+        ],
+        [
+          7.036431,
+          43.685865
+        ],
+        [
+          7.036435,
+          43.685864
+        ],
+        [
+          7.036445,
+          43.685891
+        ],
+        [
+          7.036498,
+          43.685881
+        ],
+        [
+          7.036506,
+          43.685905
+        ],
+        [
+          7.036501,
+          43.685906
+        ],
+        [
+          7.036523,
+          43.685972
+        ],
+        [
+          7.036454,
+          43.685985
+        ],
+        [
+          7.036438,
+          43.685941
+        ],
+        [
+          7.036317,
+          43.685963
+        ],
+        [
+          7.036292,
+          43.685889
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485216",
+  "properties": {
+    "timestamp": "2015-03-24T12:33:50Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485216"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037549,
+          43.686399
+        ],
+        [
+          7.037623,
+          43.686409
+        ],
+        [
+          7.037618,
+          43.68643
+        ],
+        [
+          7.037699,
+          43.686441
+        ],
+        [
+          7.037698,
+          43.686443
+        ],
+        [
+          7.037723,
+          43.686447
+        ],
+        [
+          7.037713,
+          43.686487
+        ],
+        [
+          7.037689,
+          43.686483
+        ],
+        [
+          7.037682,
+          43.686506
+        ],
+        [
+          7.037603,
+          43.686496
+        ],
+        [
+          7.037568,
+          43.686491
+        ],
+        [
+          7.037528,
+          43.686486
+        ],
+        [
+          7.037549,
+          43.686399
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485238",
+  "properties": {
+    "timestamp": "2015-03-24T12:33:52Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485238"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.036609,
+          43.686127
+        ],
+        [
+          7.036688,
+          43.686203
+        ],
+        [
+          7.036703,
+          43.686203
+        ],
+        [
+          7.036779,
+          43.686202
+        ],
+        [
+          7.036842,
+          43.686164
+        ],
+        [
+          7.036911,
+          43.686219
+        ],
+        [
+          7.036821,
+          43.686278
+        ],
+        [
+          7.036679,
+          43.686279
+        ],
+        [
+          7.036635,
+          43.686235
+        ],
+        [
+          7.036601,
+          43.686201
+        ],
+        [
+          7.036585,
+          43.686208
+        ],
+        [
+          7.036557,
+          43.686221
+        ],
+        [
+          7.036513,
+          43.686177
+        ],
+        [
+          7.036609,
+          43.686127
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485243",
+  "properties": {
+    "timestamp": "2015-03-24T12:33:52Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485243"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037145,
+          43.685565
+        ],
+        [
+          7.037146,
+          43.685608
+        ],
+        [
+          7.037059,
+          43.685609
+        ],
+        [
+          7.03706,
+          43.685657
+        ],
+        [
+          7.036963,
+          43.685658
+        ],
+        [
+          7.036963,
+          43.685646
+        ],
+        [
+          7.036934,
+          43.685646
+        ],
+        [
+          7.036933,
+          43.685641
+        ],
+        [
+          7.036882,
+          43.685641
+        ],
+        [
+          7.036883,
+          43.685677
+        ],
+        [
+          7.036789,
+          43.685678
+        ],
+        [
+          7.036788,
+          43.685604
+        ],
+        [
+          7.036842,
+          43.685603
+        ],
+        [
+          7.036841,
+          43.685568
+        ],
+        [
+          7.037145,
+          43.685565
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485255",
+  "properties": {
+    "timestamp": "2015-03-24T12:33:54Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485255"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.036119,
+          43.686577
+        ],
+        [
+          7.036114,
+          43.686524
+        ],
+        [
+          7.036071,
+          43.686526
+        ],
+        [
+          7.036065,
+          43.686476
+        ],
+        [
+          7.036107,
+          43.686473
+        ],
+        [
+          7.036106,
+          43.68646
+        ],
+        [
+          7.036154,
+          43.686458
+        ],
+        [
+          7.036153,
+          43.686445
+        ],
+        [
+          7.036193,
+          43.686443
+        ],
+        [
+          7.036243,
+          43.686422
+        ],
+        [
+          7.036235,
+          43.686412
+        ],
+        [
+          7.036285,
+          43.686389
+        ],
+        [
+          7.036342,
+          43.686456
+        ],
+        [
+          7.036203,
+          43.686519
+        ],
+        [
+          7.036208,
+          43.686572
+        ],
+        [
+          7.036119,
+          43.686577
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485260",
+  "properties": {
+    "timestamp": "2015-03-24T12:33:54Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485260"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.036241,
+          43.686706
+        ],
+        [
+          7.036314,
+          43.686743
+        ],
+        [
+          7.036323,
+          43.686734
+        ],
+        [
+          7.036377,
+          43.686761
+        ],
+        [
+          7.036407,
+          43.686776
+        ],
+        [
+          7.03647,
+          43.686808
+        ],
+        [
+          7.036542,
+          43.686756
+        ],
+        [
+          7.036589,
+          43.686792
+        ],
+        [
+          7.036427,
+          43.686905
+        ],
+        [
+          7.036348,
+          43.686865
+        ],
+        [
+          7.036353,
+          43.68685
+        ],
+        [
+          7.036364,
+          43.686821
+        ],
+        [
+          7.036279,
+          43.686778
+        ],
+        [
+          7.036237,
+          43.686809
+        ],
+        [
+          7.036173,
+          43.686777
+        ],
+        [
+          7.036241,
+          43.686706
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485274",
+  "properties": {
+    "timestamp": "2015-03-24T12:33:55Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485274"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037087,
+          43.686458
+        ],
+        [
+          7.037061,
+          43.686463
+        ],
+        [
+          7.036956,
+          43.686485
+        ],
+        [
+          7.036935,
+          43.686429
+        ],
+        [
+          7.037072,
+          43.686401
+        ],
+        [
+          7.037067,
+          43.686388
+        ],
+        [
+          7.037141,
+          43.686374
+        ],
+        [
+          7.037251,
+          43.686416
+        ],
+        [
+          7.037289,
+          43.68643
+        ],
+        [
+          7.037265,
+          43.686463
+        ],
+        [
+          7.037232,
+          43.68645
+        ],
+        [
+          7.03721,
+          43.68648
+        ],
+        [
+          7.037169,
+          43.686463
+        ],
+        [
+          7.037155,
+          43.686483
+        ],
+        [
+          7.037127,
+          43.686472
+        ],
+        [
+          7.037095,
+          43.686479
+        ],
+        [
+          7.037087,
+          43.686458
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485305",
+  "properties": {
+    "timestamp": "2015-03-24T12:33:59Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485305"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037853,
+          43.686733
+        ],
+        [
+          7.037942,
+          43.686793
+        ],
+        [
+          7.03793,
+          43.686802
+        ],
+        [
+          7.037965,
+          43.686826
+        ],
+        [
+          7.037956,
+          43.686833
+        ],
+        [
+          7.037984,
+          43.686852
+        ],
+        [
+          7.038081,
+          43.68684
+        ],
+        [
+          7.03808,
+          43.686836
+        ],
+        [
+          7.038162,
+          43.686825
+        ],
+        [
+          7.038177,
+          43.686884
+        ],
+        [
+          7.038013,
+          43.686903
+        ],
+        [
+          7.037912,
+          43.686982
+        ],
+        [
+          7.037852,
+          43.686941
+        ],
+        [
+          7.037898,
+          43.686906
+        ],
+        [
+          7.037929,
+          43.686927
+        ],
+        [
+          7.037954,
+          43.686908
+        ],
+        [
+          7.037923,
+          43.686887
+        ],
+        [
+          7.03783,
+          43.686824
+        ],
+        [
+          7.037838,
+          43.686818
+        ],
+        [
+          7.037788,
+          43.686783
+        ],
+        [
+          7.037853,
+          43.686733
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485314",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:00Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485314"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.036971,
+          43.687075
+        ],
+        [
+          7.0369,
+          43.687047
+        ],
+        [
+          7.036911,
+          43.687033
+        ],
+        [
+          7.036918,
+          43.687023
+        ],
+        [
+          7.036861,
+          43.687
+        ],
+        [
+          7.036854,
+          43.68701
+        ],
+        [
+          7.036845,
+          43.687021
+        ],
+        [
+          7.036775,
+          43.686994
+        ],
+        [
+          7.036781,
+          43.686985
+        ],
+        [
+          7.036754,
+          43.686974
+        ],
+        [
+          7.036815,
+          43.686892
+        ],
+        [
+          7.03689,
+          43.686922
+        ],
+        [
+          7.036893,
+          43.686926
+        ],
+        [
+          7.036895,
+          43.686929
+        ],
+        [
+          7.036894,
+          43.686934
+        ],
+        [
+          7.03689,
+          43.68694
+        ],
+        [
+          7.036879,
+          43.686955
+        ],
+        [
+          7.036904,
+          43.686964
+        ],
+        [
+          7.036915,
+          43.686949
+        ],
+        [
+          7.03698,
+          43.686975
+        ],
+        [
+          7.036982,
+          43.686971
+        ],
+        [
+          7.037034,
+          43.686992
+        ],
+        [
+          7.036971,
+          43.687075
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485321",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:01Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485321"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.03632,
+          43.685533
+        ],
+        [
+          7.036394,
+          43.685593
+        ],
+        [
+          7.0363,
+          43.685655
+        ],
+        [
+          7.036269,
+          43.68563
+        ],
+        [
+          7.036256,
+          43.685639
+        ],
+        [
+          7.036229,
+          43.685652
+        ],
+        [
+          7.036209,
+          43.685658
+        ],
+        [
+          7.036193,
+          43.685661
+        ],
+        [
+          7.036171,
+          43.685665
+        ],
+        [
+          7.036152,
+          43.685666
+        ],
+        [
+          7.036129,
+          43.685663
+        ],
+        [
+          7.0361,
+          43.685657
+        ],
+        [
+          7.036079,
+          43.685649
+        ],
+        [
+          7.036083,
+          43.685646
+        ],
+        [
+          7.036055,
+          43.685624
+        ],
+        [
+          7.036048,
+          43.685618
+        ],
+        [
+          7.036002,
+          43.685581
+        ],
+        [
+          7.035991,
+          43.685579
+        ],
+        [
+          7.035969,
+          43.685577
+        ],
+        [
+          7.03596,
+          43.68558
+        ],
+        [
+          7.035955,
+          43.685582
+        ],
+        [
+          7.035948,
+          43.685581
+        ],
+        [
+          7.035942,
+          43.685578
+        ],
+        [
+          7.035941,
+          43.685574
+        ],
+        [
+          7.035942,
+          43.685569
+        ],
+        [
+          7.03595,
+          43.685563
+        ],
+        [
+          7.036047,
+          43.685499
+        ],
+        [
+          7.036138,
+          43.685571
+        ],
+        [
+          7.036237,
+          43.685588
+        ],
+        [
+          7.03632,
+          43.685533
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485327",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:02Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485327"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.035596,
+          43.686088
+        ],
+        [
+          7.035677,
+          43.686113
+        ],
+        [
+          7.035773,
+          43.686142
+        ],
+        [
+          7.035776,
+          43.686139
+        ],
+        [
+          7.03578,
+          43.686134
+        ],
+        [
+          7.035786,
+          43.68613
+        ],
+        [
+          7.035791,
+          43.686128
+        ],
+        [
+          7.035797,
+          43.686126
+        ],
+        [
+          7.035805,
+          43.686126
+        ],
+        [
+          7.035815,
+          43.686127
+        ],
+        [
+          7.03582,
+          43.686128
+        ],
+        [
+          7.035827,
+          43.68613
+        ],
+        [
+          7.035832,
+          43.686134
+        ],
+        [
+          7.035839,
+          43.686141
+        ],
+        [
+          7.035842,
+          43.686148
+        ],
+        [
+          7.035844,
+          43.686157
+        ],
+        [
+          7.035839,
+          43.686167
+        ],
+        [
+          7.035832,
+          43.686172
+        ],
+        [
+          7.035827,
+          43.686175
+        ],
+        [
+          7.035813,
+          43.686179
+        ],
+        [
+          7.035782,
+          43.686233
+        ],
+        [
+          7.035772,
+          43.68623
+        ],
+        [
+          7.035754,
+          43.686261
+        ],
+        [
+          7.035679,
+          43.686238
+        ],
+        [
+          7.03571,
+          43.686185
+        ],
+        [
+          7.035643,
+          43.686165
+        ],
+        [
+          7.035623,
+          43.686198
+        ],
+        [
+          7.035528,
+          43.686169
+        ],
+        [
+          7.035552,
+          43.686129
+        ],
+        [
+          7.03557,
+          43.686134
+        ],
+        [
+          7.03558,
+          43.686115
+        ],
+        [
+          7.035596,
+          43.686088
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485339",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:03Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485339"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037112,
+          43.685887
+        ],
+        [
+          7.037165,
+          43.685852
+        ],
+        [
+          7.037198,
+          43.68588
+        ],
+        [
+          7.037146,
+          43.685914
+        ],
+        [
+          7.037112,
+          43.685887
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485398",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:09Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485398"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037232,
+          43.68645
+        ],
+        [
+          7.037265,
+          43.686463
+        ],
+        [
+          7.037243,
+          43.686493
+        ],
+        [
+          7.03721,
+          43.68648
+        ],
+        [
+          7.037232,
+          43.68645
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485429",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:12Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485429"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037898,
+          43.686906
+        ],
+        [
+          7.037923,
+          43.686887
+        ],
+        [
+          7.037954,
+          43.686908
+        ],
+        [
+          7.037929,
+          43.686927
+        ],
+        [
+          7.037898,
+          43.686906
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485490",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:17Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485490"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037424,
+          43.685729
+        ],
+        [
+          7.037407,
+          43.685741
+        ],
+        [
+          7.037347,
+          43.685695
+        ],
+        [
+          7.037364,
+          43.685683
+        ],
+        [
+          7.037424,
+          43.685729
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485493",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:18Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485493"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.036105,
+          43.685722
+        ],
+        [
+          7.036155,
+          43.685764
+        ],
+        [
+          7.036095,
+          43.685802
+        ],
+        [
+          7.036045,
+          43.685759
+        ],
+        [
+          7.036105,
+          43.685722
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485536",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:22Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485536"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.036385,
+          43.686753
+        ],
+        [
+          7.036415,
+          43.686768
+        ],
+        [
+          7.036407,
+          43.686776
+        ],
+        [
+          7.036377,
+          43.686761
+        ],
+        [
+          7.036385,
+          43.686753
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485589",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:27Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485589"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037934,
+          43.686331
+        ],
+        [
+          7.038001,
+          43.686298
+        ],
+        [
+          7.038025,
+          43.686323
+        ],
+        [
+          7.037958,
+          43.686357
+        ],
+        [
+          7.037934,
+          43.686331
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485590",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:28Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485590"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.036635,
+          43.686235
+        ],
+        [
+          7.036621,
+          43.686244
+        ],
+        [
+          7.036585,
+          43.686208
+        ],
+        [
+          7.036601,
+          43.686201
+        ],
+        [
+          7.036635,
+          43.686235
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485591",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:28Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485591"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.036609,
+          43.686127
+        ],
+        [
+          7.036619,
+          43.686121
+        ],
+        [
+          7.036703,
+          43.686203
+        ],
+        [
+          7.036688,
+          43.686203
+        ],
+        [
+          7.036609,
+          43.686127
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485620",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:31Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485620"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037644,
+          43.686217
+        ],
+        [
+          7.037688,
+          43.686187
+        ],
+        [
+          7.03772,
+          43.686211
+        ],
+        [
+          7.037676,
+          43.686241
+        ],
+        [
+          7.037644,
+          43.686217
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485622",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:32Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485622"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037603,
+          43.686496
+        ],
+        [
+          7.0376,
+          43.686509
+        ],
+        [
+          7.037564,
+          43.686505
+        ],
+        [
+          7.037568,
+          43.686491
+        ],
+        [
+          7.037603,
+          43.686496
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485649",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:34Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485649"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037061,
+          43.686463
+        ],
+        [
+          7.037087,
+          43.686458
+        ],
+        [
+          7.037095,
+          43.686479
+        ],
+        [
+          7.037069,
+          43.686484
+        ],
+        [
+          7.037061,
+          43.686463
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485719",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:38Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485719"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037023,
+          43.686568
+        ],
+        [
+          7.037003,
+          43.686522
+        ],
+        [
+          7.037112,
+          43.686497
+        ],
+        [
+          7.037133,
+          43.686546
+        ],
+        [
+          7.037023,
+          43.686568
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485726",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:38Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485726"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037198,
+          43.68588
+        ],
+        [
+          7.037221,
+          43.685898
+        ],
+        [
+          7.037168,
+          43.685932
+        ],
+        [
+          7.037146,
+          43.685914
+        ],
+        [
+          7.037198,
+          43.68588
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485786",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:44Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485786"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.035869,
+          43.68631
+        ],
+        [
+          7.035852,
+          43.686348
+        ],
+        [
+          7.035779,
+          43.68633
+        ],
+        [
+          7.035797,
+          43.686293
+        ],
+        [
+          7.03586,
+          43.686308
+        ],
+        [
+          7.035869,
+          43.68631
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485805",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:45Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485805"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.03586,
+          43.686308
+        ],
+        [
+          7.035886,
+          43.686239
+        ],
+        [
+          7.035913,
+          43.686246
+        ],
+        [
+          7.035899,
+          43.686317
+        ],
+        [
+          7.035869,
+          43.68631
+        ],
+        [
+          7.03586,
+          43.686308
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485833",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:47Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485833"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.036153,
+          43.686445
+        ],
+        [
+          7.036154,
+          43.686458
+        ],
+        [
+          7.036106,
+          43.68646
+        ],
+        [
+          7.036104,
+          43.686443
+        ],
+        [
+          7.036152,
+          43.68644
+        ],
+        [
+          7.036153,
+          43.686445
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485848",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:49Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485848"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.036348,
+          43.686865
+        ],
+        [
+          7.036237,
+          43.686809
+        ],
+        [
+          7.036279,
+          43.686778
+        ],
+        [
+          7.036364,
+          43.686821
+        ],
+        [
+          7.036353,
+          43.68685
+        ],
+        [
+          7.036348,
+          43.686865
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485851",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:49Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485851"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.036065,
+          43.686476
+        ],
+        [
+          7.036062,
+          43.686445
+        ],
+        [
+          7.036104,
+          43.686443
+        ],
+        [
+          7.036106,
+          43.68646
+        ],
+        [
+          7.036107,
+          43.686473
+        ],
+        [
+          7.036065,
+          43.686476
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485859",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:50Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485859"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.035869,
+          43.68631
+        ],
+        [
+          7.035899,
+          43.686317
+        ],
+        [
+          7.035901,
+          43.686317
+        ],
+        [
+          7.035884,
+          43.686355
+        ],
+        [
+          7.035852,
+          43.686348
+        ],
+        [
+          7.035869,
+          43.68631
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485873",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:51Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485873"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.036498,
+          43.685881
+        ],
+        [
+          7.036445,
+          43.685891
+        ],
+        [
+          7.036435,
+          43.685864
+        ],
+        [
+          7.036431,
+          43.685865
+        ],
+        [
+          7.036423,
+          43.685842
+        ],
+        [
+          7.036481,
+          43.685831
+        ],
+        [
+          7.036498,
+          43.685881
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485888",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:52Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "id": "way/334485888"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.035936,
+          43.686338
+        ],
+        [
+          7.035938,
+          43.686291
+        ],
+        [
+          7.035967,
+          43.686291
+        ],
+        [
+          7.035968,
+          43.686304
+        ],
+        [
+          7.035995,
+          43.686304
+        ],
+        [
+          7.035995,
+          43.686337
+        ],
+        [
+          7.035936,
+          43.686338
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/334485902",
+  "properties": {
+    "timestamp": "2015-03-24T12:34:53Z",
+    "version": "1",
+    "changeset": "29702266",
+    "user": "jcr83",
+    "uid": "234940",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+    "wall": "no",
+    "id": "way/334485902"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037326,
+          43.685711
+        ],
+        [
+          7.03732,
+          43.685714
+        ],
+        [
+          7.037284,
+          43.685688
+        ],
+        [
+          7.037328,
+          43.685656
+        ],
+        [
+          7.037364,
+          43.685683
+        ],
+        [
+          7.037347,
+          43.685695
+        ],
+        [
+          7.037326,
+          43.685711
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/849925261",
+  "properties": {
+    "timestamp": "2020-09-21T20:33:12Z",
+    "version": "1",
+    "changeset": "91248851",
+    "user": "Super-Map",
+    "uid": "709289",
+    "access": "private",
+    "leisure": "swimming_pool",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2020",
+    "id": "way/849925261"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.0361559,
+          43.6869758
+        ],
+        [
+          7.0362329,
+          43.6869079
+        ],
+        [
+          7.03628,
+          43.6869362
+        ],
+        [
+          7.0362028,
+          43.6870039
+        ],
+        [
+          7.0361559,
+          43.6869758
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/849925262",
+  "properties": {
+    "timestamp": "2020-09-21T20:33:12Z",
+    "version": "1",
+    "changeset": "91248851",
+    "user": "Super-Map",
+    "uid": "709289",
+    "access": "private",
+    "leisure": "swimming_pool",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2020",
+    "id": "way/849925262"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.0361093,
+          43.6863615
+        ],
+        [
+          7.0361035,
+          43.6863121
+        ],
+        [
+          7.0361272,
+          43.6862994
+        ],
+        [
+          7.0361474,
+          43.6862935
+        ],
+        [
+          7.0361731,
+          43.6862915
+        ],
+        [
+          7.0361915,
+          43.6862923
+        ],
+        [
+          7.0362003,
+          43.6863004
+        ],
+        [
+          7.0362203,
+          43.6863047
+        ],
+        [
+          7.0362241,
+          43.6863216
+        ],
+        [
+          7.0362237,
+          43.68633
+        ],
+        [
+          7.0362135,
+          43.6863389
+        ],
+        [
+          7.0361673,
+          43.6863404
+        ],
+        [
+          7.0361474,
+          43.6863485
+        ],
+        [
+          7.0361403,
+          43.6863712
+        ],
+        [
+          7.0361225,
+          43.6863682
+        ],
+        [
+          7.0361093,
+          43.6863615
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/849925266",
+  "properties": {
+    "timestamp": "2020-09-21T20:33:12Z",
+    "version": "1",
+    "changeset": "91248851",
+    "user": "Super-Map",
+    "uid": "709289",
+    "access": "private",
+    "leisure": "swimming_pool",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2020",
+    "id": "way/849925266"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.0368988,
+          43.6868555
+        ],
+        [
+          7.0369231,
+          43.6868247
+        ],
+        [
+          7.0370513,
+          43.6868791
+        ],
+        [
+          7.0370219,
+          43.686916
+        ],
+        [
+          7.037003,
+          43.6869233
+        ],
+        [
+          7.0369926,
+          43.686916
+        ],
+        [
+          7.0369981,
+          43.6868974
+        ],
+        [
+          7.0368988,
+          43.6868555
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/853998522",
+  "properties": {
+    "timestamp": "2020-10-01T18:28:41Z",
+    "version": "1",
+    "changeset": "91841436",
+    "user": "Super-Map",
+    "uid": "709289",
+    "access": "private",
+    "leisure": "swimming_pool",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2020",
+    "id": "way/853998522"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.0378053,
+          43.685878
+        ],
+        [
+          7.0378103,
+          43.6858619
+        ],
+        [
+          7.0378256,
+          43.6858562
+        ],
+        [
+          7.0378549,
+          43.6858535
+        ],
+        [
+          7.037886,
+          43.6858549
+        ],
+        [
+          7.0379113,
+          43.6858616
+        ],
+        [
+          7.0379217,
+          43.685879
+        ],
+        [
+          7.0379146,
+          43.6858932
+        ],
+        [
+          7.0378935,
+          43.6859009
+        ],
+        [
+          7.0378542,
+          43.6858887
+        ],
+        [
+          7.0378121,
+          43.6858857
+        ],
+        [
+          7.0378053,
+          43.685878
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/853998523",
+  "properties": {
+    "timestamp": "2020-10-01T18:28:41Z",
+    "version": "1",
+    "changeset": "91841436",
+    "user": "Super-Map",
+    "uid": "709289",
+    "access": "private",
+    "leisure": "swimming_pool",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2020",
+    "id": "way/853998523"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.0377975,
+          43.6863627
+        ],
+        [
+          7.0378548,
+          43.6863212
+        ],
+        [
+          7.0378634,
+          43.6863209
+        ],
+        [
+          7.0378912,
+          43.6863396
+        ],
+        [
+          7.0378889,
+          43.6863491
+        ],
+        [
+          7.0378347,
+          43.6863882
+        ],
+        [
+          7.0378205,
+          43.6863863
+        ],
+        [
+          7.037808,
+          43.6863894
+        ],
+        [
+          7.0377956,
+          43.6863845
+        ],
+        [
+          7.0377925,
+          43.6863798
+        ],
+        [
+          7.0377975,
+          43.6863627
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/853998524",
+  "properties": {
+    "timestamp": "2020-10-01T18:28:41Z",
+    "version": "1",
+    "changeset": "91841436",
+    "user": "Super-Map",
+    "uid": "709289",
+    "access": "private",
+    "leisure": "swimming_pool",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2020",
+    "id": "way/853998524"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.0367141,
+          43.6860945
+        ],
+        [
+          7.0367152,
+          43.6860841
+        ],
+        [
+          7.0367222,
+          43.6860779
+        ],
+        [
+          7.0367365,
+          43.6860724
+        ],
+        [
+          7.0367576,
+          43.6860567
+        ],
+        [
+          7.0367671,
+          43.6860262
+        ],
+        [
+          7.0367785,
+          43.686024
+        ],
+        [
+          7.0368026,
+          43.6860283
+        ],
+        [
+          7.0367988,
+          43.6860581
+        ],
+        [
+          7.0368053,
+          43.6860672
+        ],
+        [
+          7.0368135,
+          43.6860744
+        ],
+        [
+          7.036855,
+          43.6860838
+        ],
+        [
+          7.0368632,
+          43.6861022
+        ],
+        [
+          7.0368607,
+          43.6861105
+        ],
+        [
+          7.0368412,
+          43.6861225
+        ],
+        [
+          7.0368034,
+          43.6861229
+        ],
+        [
+          7.0367829,
+          43.6861274
+        ],
+        [
+          7.0367549,
+          43.68614
+        ],
+        [
+          7.0367365,
+          43.6861284
+        ],
+        [
+          7.0367141,
+          43.6860945
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/853998525",
+  "properties": {
+    "timestamp": "2020-10-01T18:28:41Z",
+    "version": "1",
+    "changeset": "91841436",
+    "user": "Super-Map",
+    "uid": "709289",
+    "access": "private",
+    "leisure": "swimming_pool",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2020",
+    "id": "way/853998525"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.0371941,
+          43.6862303
+        ],
+        [
+          7.0372827,
+          43.6861677
+        ],
+        [
+          7.0373272,
+          43.6861999
+        ],
+        [
+          7.037238,
+          43.6862627
+        ],
+        [
+          7.0372299,
+          43.6862578
+        ],
+        [
+          7.0372186,
+          43.6862603
+        ],
+        [
+          7.0372028,
+          43.6862557
+        ],
+        [
+          7.0371976,
+          43.6862449
+        ],
+        [
+          7.0372014,
+          43.6862357
+        ],
+        [
+          7.0371941,
+          43.6862303
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/853998544",
+  "properties": {
+    "timestamp": "2020-10-01T18:28:41Z",
+    "version": "1",
+    "changeset": "91841436",
+    "user": "Super-Map",
+    "uid": "709289",
+    "access": "private",
+    "leisure": "swimming_pool",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2020",
+    "id": "way/853998544"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.0363921,
+          43.6857328
+        ],
+        [
+          7.0364405,
+          43.6857239
+        ],
+        [
+          7.0364708,
+          43.6858117
+        ],
+        [
+          7.0364224,
+          43.6858205
+        ],
+        [
+          7.0363921,
+          43.6857328
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/853998550",
+  "properties": {
+    "timestamp": "2020-10-01T18:28:41Z",
+    "version": "1",
+    "changeset": "91841436",
+    "user": "Super-Map",
+    "uid": "709289",
+    "access": "private",
+    "leisure": "swimming_pool",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2020",
+    "id": "way/853998550"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037473,
+          43.6856683
+        ],
+        [
+          7.0375031,
+          43.6856327
+        ],
+        [
+          7.0376127,
+          43.6856819
+        ],
+        [
+          7.0375822,
+          43.6857178
+        ],
+        [
+          7.037473,
+          43.6856683
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/853998554",
+  "properties": {
+    "timestamp": "2020-10-01T18:28:41Z",
+    "version": "1",
+    "changeset": "91841436",
+    "user": "Super-Map",
+    "uid": "709289",
+    "access": "private",
+    "leisure": "swimming_pool",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2020",
+    "id": "way/853998554"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.037389,
+          43.6856702
+        ],
+        [
+          7.0374205,
+          43.6856467
+        ],
+        [
+          7.0374382,
+          43.6856595
+        ],
+        [
+          7.0374062,
+          43.6856824
+        ],
+        [
+          7.037389,
+          43.6856702
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/1110559084",
+  "properties": {
+    "timestamp": "2022-11-05T16:26:15Z",
+    "version": "1",
+    "changeset": "128527990",
+    "user": "uMatt-5",
+    "uid": "15175787",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2022",
+    "id": "way/1110559084"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.0378288,
+          43.6860742
+        ],
+        [
+          7.0377082,
+          43.6860681
+        ],
+        [
+          7.0377229,
+          43.6859183
+        ],
+        [
+          7.0378432,
+          43.6859245
+        ],
+        [
+          7.0378408,
+          43.6859486
+        ],
+        [
+          7.0379357,
+          43.6859534
+        ],
+        [
+          7.0379295,
+          43.686018
+        ],
+        [
+          7.0378349,
+          43.6860131
+        ],
+        [
+          7.0378288,
+          43.6860742
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/1110559180",
+  "properties": {
+    "timestamp": "2022-11-05T16:27:05Z",
+    "version": "1",
+    "changeset": "128528026",
+    "user": "uMatt-5",
+    "uid": "15175787",
+    "building": "yes",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2022",
+    "id": "way/1110559180"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          7.035585,
+          43.6865879
+        ],
+        [
+          7.0354789,
+          43.6864921
+        ],
+        [
+          7.0355279,
+          43.6864641
+        ],
+        [
+          7.0355671,
+          43.6865014
+        ],
+        [
+          7.035666,
+          43.6864425
+        ],
+        [
+          7.0356375,
+          43.6864173
+        ],
+        [
+          7.0356947,
+          43.6863871
+        ],
+        [
+          7.0358373,
+          43.6865212
+        ],
+        [
+          7.0357852,
+          43.6865505
+        ],
+        [
+          7.0357346,
+          43.6865037
+        ],
+        [
+          7.035585,
+          43.6865879
+        ]
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/159706684",
+  "properties": {
+    "timestamp": "2022-11-14T14:22:48Z",
+    "version": "3",
+    "changeset": "128894255",
+    "user": "uMatt-5",
+    "uid": "15175787",
+    "fixme": "continue",
+    "highway": "residential",
+    "name": "Allée de Pinarello",
+    "id": "way/159706684"
+  },
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [
+        7.0363013,
+        43.6862167
+      ],
+      [
+        7.0374017,
+        43.6855395
+      ],
+      [
+        7.0375454,
+        43.6854418
+      ],
+      [
+        7.0389614,
+        43.684583
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/233088691",
+  "properties": {
+    "timestamp": "2021-01-24T21:03:21Z",
+    "version": "5",
+    "changeset": "98074818",
+    "user": "jcr83",
+    "uid": "234940",
+    "highway": "residential",
+    "name": "Chemin du Puits",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2013",
+    "id": "way/233088691"
+  },
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [
+        7.0343504,
+        43.6846163
+      ],
+      [
+        7.0347921,
+        43.6848834
+      ],
+      [
+        7.0349869,
+        43.6849907
+      ],
+      [
+        7.0355492,
+        43.6854242
+      ],
+      [
+        7.0357323,
+        43.6855786
+      ],
+      [
+        7.0358092,
+        43.6856434
+      ],
+      [
+        7.0361124,
+        43.6859461
+      ],
+      [
+        7.0363013,
+        43.6862167
+      ],
+      [
+        7.0366056,
+        43.686474
+      ],
+      [
+        7.0366259,
+        43.686489
+      ],
+      [
+        7.0368611,
+        43.6866624
+      ],
+      [
+        7.0369015,
+        43.6866802
+      ],
+      [
+        7.0372127,
+        43.6868173
+      ],
+      [
+        7.0381299,
+        43.6872672
+      ],
+      [
+        7.0381887,
+        43.6872929
+      ],
+      [
+        7.0385803,
+        43.6874642
+      ],
+      [
+        7.0386999,
+        43.6875165
+      ],
+      [
+        7.0392509,
+        43.687822
+      ],
+      [
+        7.0398545,
+        43.6881566
+      ],
+      [
+        7.0401253,
+        43.6883068
+      ],
+      [
+        7.0405679,
+        43.6886421
+      ],
+      [
+        7.0410721,
+        43.6889713
+      ],
+      [
+        7.0411108,
+        43.6890494
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/503844004",
+  "properties": {
+    "timestamp": "2017-06-28T18:36:21Z",
+    "version": "1",
+    "changeset": "49899109",
+    "user": "zerpou",
+    "uid": "1238664",
+    "highway": "service",
+    "name": "Impasse des Quatre Maisons",
+    "id": "way/503844004"
+  },
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [
+        7.0378684,
+        43.6856847
+      ],
+      [
+        7.0366259,
+        43.686489
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/503844007",
+  "properties": {
+    "timestamp": "2021-10-01T10:21:43Z",
+    "version": "3",
+    "changeset": "111956441",
+    "user": "jcr83",
+    "uid": "234940",
+    "highway": "residential",
+    "name": "Chemin du Collet",
+    "id": "way/503844007"
+  },
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [
+        7.0369015,
+        43.6866802
+      ],
+      [
+        7.0368022,
+        43.6867399
+      ],
+      [
+        7.0357213,
+        43.6874982
+      ],
+      [
+        7.0355182,
+        43.6877386
+      ],
+      [
+        7.0354853,
+        43.6877775
+      ],
+      [
+        7.0353431,
+        43.6879269
+      ],
+      [
+        7.0351554,
+        43.6881693
+      ],
+      [
+        7.0349997,
+        43.6882372
+      ],
+      [
+        7.0346672,
+        43.6883497
+      ],
+      [
+        7.0344606,
+        43.6884564
+      ],
+      [
+        7.0343131,
+        43.6884864
+      ],
+      [
+        7.0340046,
+        43.6885989
+      ],
+      [
+        7.0337914,
+        43.6887114
+      ],
+      [
+        7.0336197,
+        43.6888579
+      ],
+      [
+        7.0334227,
+        43.6889354
+      ],
+      [
+        7.0332859,
+        43.6889335
+      ],
+      [
+        7.0332134,
+        43.6889083
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "way/1013904812",
+  "properties": {
+    "timestamp": "2022-11-05T17:45:08Z",
+    "version": "2",
+    "changeset": "128530649",
+    "user": "jcr83",
+    "uid": "234940",
+    "highway": "residential",
+    "name": "Chemin des Cades",
+    "id": "way/1013904812"
+  },
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [
+        7.0383204,
+        43.6858399
+      ],
+      [
+        7.0382345,
+        43.685836
+      ],
+      [
+        7.0380454,
+        43.6856896
+      ],
+      [
+        7.0379784,
+        43.6856779
+      ],
+      [
+        7.0378684,
+        43.6856847
+      ]
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "id": "node/1718148958",
+  "properties": {
+    "timestamp": "2015-03-06T20:50:57Z",
+    "version": "4",
+    "changeset": "29297770",
+    "user": "jcr83",
+    "uid": "234940",
+    "addr:housenumber": "1877",
+    "addr:street": "Chemin du Puits",
+    "id": "node/1718148958"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      7.0405679,
+      43.6886421
+    ]
+  }
+}
+]
+}

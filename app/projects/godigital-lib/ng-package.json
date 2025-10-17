@@ -1,0 +1,23 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../distlib/godigital-lib",
+  "lib": {
+    "entryFile": "src/public_api.ts"
+  },
+  "allowedNonPeerDependencies": [
+    "tslib",
+    "@angular/fire",
+    "@agm/core",
+    "googlemaps",
+    "ngx-cookie",
+    "@types/google-maps",
+    "ngx-online-status",
+    "ng2-haversine",
+    "file-saver",
+    "ngx-spinner",
+    "ngx-logger",
+    "@angular/google-maps",
+    "rxjs",
+    "zone.js"
+  ]
+}

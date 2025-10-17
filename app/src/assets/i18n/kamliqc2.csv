@@ -1,0 +1,525 @@
+account.component
+Account
+User name
+User id
+Email
+Phone
+Password
+Mode
+Manage subscription
+Subscription name
+locations
+mode.component
+Mode
+Change the app mode
+Customer mode (standard)
+Engineer mode
+Customer Service Representative
+Please enter your code to confirm you have engineer mode access
+Confirm
+Please enter your code to confirm you have customer service representative mode access
+password.component
+Change password
+Old password
+New password
+Confirm new password
+Your password has been successfully updated
+Continue
+createaccount.component
+Request connection
+Create your Quick Connect account
+First name
+surname
+email
+phone
+id type
+passport
+other
+id number
+create an account password
+Continue
+forgotpassword.component
+Enter your email here. Click NEXT and you will receive an email with a link to change your password.
+NEXT
+qrscancode.component
+Scan QR code
+Find code to scan
+rforgotpassword.component
+We don't recognise the email you entered. Please try again.
+NEXT
+app.component
+extenders.component
+Install extenders
+To install your extenders you need to connect to the partner website. Choose your extender brand
+modemadd.component
+Install modem
+Choose how you would like to connect your modem
+Scan the QR code
+Use qconnect Wifi (doesn't use your data)
+Manual entry of the modem MAC Address
+See help videos
+modemmanualentry.component
+Install modem
+Enter the MAC address of your modem. You will find it on the sticker at the bottom of your modem.
+further details ???? what next???
+Security key
+Continue
+modemname.component
+Install modem
+Congratulations
+You have installed a new modem/ONT.
+Give your new modem a nickname
+Eg: Home-wifi
+And create a wifi password
+Confirm
+modemqcwifi.component
+Install modem
+Home name
+You can use the temporary quick connect wifi to install your modem.
+further details ???? what next???
+note: diagram of ????
+more details ....
+modemqcwifi2.component
+Install modem
+Your new modem is now attached to your account for this home. You need to finish the Quick Connect process by giving your modem a nickname.
+Enter the modem nickname
+Finish
+modemscaninfo.component
+Install modem
+Scan the QR code that is on the bottom of the modem
+note: diagram of where to find the QR code
+(Go to camera mode on your smartphone and flash the QR code. You need to allow the application 'Quick Connect' to have access to your camera.)
+newCPE.component
+Install equipment
+Welcome to the Quick Connect process to set up your equipment. Follow the links below. Note, they are in a specific order
+step 1
+Install modem
+Install
+Done
+note: diagram of the modem packaging and contents
+step 2
+Install wifi extenders
+note: diagram of the wifi extenders packaging and contents
+step 3
+Install video / set top box
+note: diagram of the set top box packaging and contents
+stbadd.component
+Install set-top box
+Choose how you would like to connect your set-top box
+Scan the QR code
+Manual entry of the STB serial number
+See help videos
+stbmanualentry.component
+Install STB
+Enter the serial number of your set-top box. You will find it on the sticker at the bottom.
+further details ???? what next???
+Security key
+Continue
+stbscaninfo.component
+Install STB
+Scan the QR code that is on the bottom of the set-top box
+note: diagram of where to find the QR code
+(Go to camera mode on your smartphone and flash the QR code. You need to allow the application 'Quick Connect' to have access to your camera.)
+firstreminder.component
+Equipment return
+Internet nickname
+Oh dear - we need you to return your old equipment
+You have recently swapped your modem/ONT
+You are getting this message because you haven't returned your old equipment.If you don't return it before dd/mm/yyyy
+Your wifi bandwith will be reduced to 1Mbps
+You will be reminded to return your modem on a daily basis
+How do I return my old equiment?
+returninfo.component
+Equipment return
+Internet nickname
+Oh dear - we need you to return your old equipment
+How to return your old modem
+Put your old modem back into the pre-paid packaging you were provided. You can take it to be posted or directly back to your closest store.
+I don't have the packaging
+Continue to Internet
+walledgarden.component
+Equipment return
+Internet nickname
+Oh dear - we need you to return your old equipment
+Your internet service has been reduced to 1Mbps
+Because you have not yet returned your old equipment we have now reduced your band width to 1Mbps.&nbsp; Your services will be restored to normal once you have returned it.
+How do I return my old equiment?
+Continue to Internet
+devicesoverview.component
+address
+modems
+Add modem
+Modem name
+working
+Reboot
+Test
+Details
+wifi extenders
+Add extender
+Extender name
+set top boxes
+Add set top box
+STB name
+extenderdetails.component
+Extender
+extender name
+Model
+model name
+Software version
+version number
+Name
+modem name
+Internet access
+Connexion ID
+Access type
+Address
+Prefix
+Diagnostics
+modemdetails.component
+Modem
+modem nickname
+Model
+Software version
+Nickname
+Internet access
+Connexion ID
+Access type
+Address
+Prefix
+Diagnostics
+Swap modem
+Remove modem
+stbdetails.component
+Set top box
+STB name
+Model
+Name
+connection information
+Connection type
+First connection
+Last connection
+Diagnostics
+voicedetails.component
+fixed phone name
+Model
+Name
+connexion information
+Number
+First connection
+Last connection
+about.component
+About
+Quick Connect Care Application
+Software version
+language.component
+Language
+Choose your language
+serviceability.component
+Serviceability
+Choose your language
+Not Addressable
+Addressabke Not Serviceable
+Addressabke and Serviceable
+Premise with a drop/demarcation box
+servicemenu.component
+Service
+Network
+Devices
+Subscriptions
+Check eligibility
+supportmenu.component
+Support
+About Quick Connect
+FAQs
+Help
+Legal
+findmydrop.component
+Find connection point
+Your premises has got a service connection point
+It is a small white plate on the wall that has a place to connect a cable.&nbsp; This is where you attach a modem.
+You may already know where it is.&nbsp; If not, then examine the plan of your premise below to see where we suggest you look.&nbsp; Please confirm the connection point does exist and is undamaged before ordering your services.
+If you are unsure, please ring our help line #######.
+Order services
+getaddress.component
+Test eligibilty
+Find out if you are in an area that is eligible for Liberty internet service.
+If you are, you can pre-order your service with no charge!
+Either
+Accept to share your geo-location? (You will get a second request from Google).
+Yes
+No
+Enter your address.
+continue
+resultnegative.component
+Test eligilbilty
+Sorry, but it is not yet possible to make Fiber (or cable) available at this location. Register your interest and we'll be in touch when we can connect you.
+position
+address
+Test another address
+Register interest
+Let me know when I can get Liberty services!
+Let us know how you'd like to be contacted.
+your phone number
+or/and your email address
+Close
+Confirm
+resultpositiveexisting.component
+test eligilbilty
+Congratulations! Fiber (or cable) is already available at the location
+position
+address
+Test another address
+Find my connection point
+resultpositivenew.component
+test eligilibilty
+Congratulations! Fiber (or cable) can be made available at the location
+position
+Test another address
+Request connection
+what3words.component
+Test eligibilty
+Position the pin to find your 'what3words' location
+test service eligibility at this location
+footer.component
+CANCEL
+CONFIRM
+header.component
+Account
+Service
+Support
+Language
+About
+Serviceability
+layout.component
+login.component
+Login to your account
+Account name
+Password
+Remember me
+Forgot password
+Login
+or
+Create an account
+welcome.component
+Welcome to Quick Connect
+Choose your Opco
+Choose your Market
+Login to your account
+Create an account
+or
+Check service eligibility
+Learn more
+logins.component
+Swap modem
+Log into your Liberty account.
+Connect
+forgot password?
+modemreboot.component
+Swap modem
+Your location is:
+Your old settings are now set up on your new modem.
+The final step is to reboot your modem and you can profit from a quicker Wifi connection.
+Reboot now
+restoreenterWifi.component
+Swap modem
+Your location is:
+home address
+To restore your settings you need to enter the wifi password of your old modem.
+old modem
+Enter the old wifi password
+Restore settings
+forgot wifi password?
+restoreenterWifiCM1.component
+Swap modem
+Your location is
+home address
+You have more than one modem. To restore your settings you need to choose which one you are replacing and enter the&nbsp; old wifi password.
+Which modem are you replacing?
+Enter the old wifi password
+Restore settings
+don't remember?
+restorelogin.component
+Swap modem
+Welcome back to the Quick Connect process.
+To continue, sign back into your Liberty account
+Connect
+forgot password?
+restoresettings.component
+Swap modem
+Welcome back to the Quick Connect process.
+Your location is:
+home address
+Your new modem is now swapped with your old modem. You need to finish the Quick Connect process to set up your new modem with your previous settings and restore all your services.
+First, RESTORE SETTINGS to update your new modem with your previous settings.
+Enter the modem nickname
+Restore settings
+restoresettingsretry.component
+Swap modem
+Your location is:
+The nickname you entered does not exist. Please try again.
+Enter the modem nickname
+Restore settings
+savesettings.component
+Swap modem
+Your location is
+home address
+Make sure your old modem is plugged in and on. Give your modem a nickname - it will be needed when you restore your settings on the new modem. SAVE SETTINGS. This should take ?? minutes.
+Give your modem a nickname
+Save settings
+start.component
+Swap modem
+Welcome to the Quick Connect process to replace your old modem with your new improved modem.
+In the box with your new modem you will find:
+modem
+power adaptor
+instructions
+box for the return of your old modem
+Don't disconnect your old modem yet.
+The process should take you 15 to 20 minutes.
+To simplify the installation of your new modem we will save your present settings. First we need to identify you.
+Either
+Share your location
+(You will get a second request from Google).
+Or
+startSwap.component
+Swap modem
+Your location is
+Your settings are now saved. You can now swap over the old and new modems. Follow the instructions that came with the new modem. These instruction can also be downloaded here:
+How to swap modems
+When you unplug the old modem you will lose your internet connection and services. When the new modem has started reconnect to the wifi 
+ and return to the web page
+Don't forget to put the old modem and power adaptor in the return box and send it back.
+equipdetails.component
+Equipment details
+Status
+Authorise
+Model
+connection details
+Connexion type
+Signal
+IP address
+First connection
+Last connection
+Details
+networkdetails.component
+Network
+Wifi nickname
+Nickname
+Password
+Guest
+Status
+access speed OK
+last measured
+networkequip.component
+Equipment
+equipment connected
+Online
+Offline
+last seen xx min ago
+networkoverview.component
+Network
+address
+Network nickname
+working
+Wifi password
+Details
+Equipment
+account
+account approved
+account not approved
+location has connection point
+Find
+location servicable
+need to confirm serviceability
+Check eligibility
+Location not yet serviceable
+Register interest
+Order confirmed
+Order in process
+Order needs to be confirmed
+More
+Looks like you have all you need to connect to our services
+Install your equipment now
+connectiondetails.component
+Connection
+You are waiting for a technician to connect you
+You have a technician booked for the dd/mm/yyyy
+connectionmore.component
+You need a technician to connect you to the network
+You need to book a technician. Either ring ###### or
+go to external link
+deliverydetails.component
+You have requested delivery of your equipment
+delivery type
+delivery in one hour
+delivery date
+order id
+order date
+equipment
+deliverymore.component
+Delivery
+You can now organise delivery of the equipment you have ordered
+Choose the type of delivery you prefer
+Collect at store
+Choose your store
+Confirm
+Delivery in 24 hours
+need to go to external site?
+Delivery in one hour
+orderdetails.component
+Order
+order id
+order date
+equipment
+Cancel order
+Change order
+page404.component
+addressdetailsknown.component
+Request connection
+Your 'what3words' position is
+Before we arrange your connection can you confirm that we have the correct information.
+address
+buiding type
+floor number
+house number
+drop
+technology
+confirm information
+addressdetailsnotknown.component
+Request connection
+Your
+position is
+Help us connect you as fast as possible by completing the information we have for your location.
+address
+buiding type
+floor number
+house number
+technology
+confirm information
+skip
+confirmrequest.component
+Request confirmed
+Congratulations
+Your request has been submitted. We have sent you a confirmation email which explains the next steps to getting your Quick Connect internet.
+summary of next steps here .....
+loginornew.component
+Request connection
+New to our services?
+Create an account
+else
+Login
+Account name
+Password
+Remember me
+Forgot password
+serviceselect.component
+Services
+To request a connection, choose the services you would like. You will be contacted by email with details of our offers. You may also request to be called by our help desk.
+Services selection
+Internet
+Video
+Wifi extenders
+I wish to be contact by
+Telephone
+SMS
+Confirm

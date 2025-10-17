@@ -1,0 +1,43 @@
+<section class="h-screen top-section">
+  <div class="container">
+    <h4 class="text-center p-4">Change your password</h4>
+    <form class="form-box-2" id="changePasswordForm" [formGroup]="forgotpwdForm">
+      <div class="row">
+        <div class="col-12 col-md-6 offset-md-3">
+          <div class="f-group mb-3">
+            <label class="form-label"><strong>Current Password</strong></label>
+            <input class="form-control" type="password" id="currentPassword" required />
+          </div>
+          <div class="f-group mb-3">
+            <label class="form-label"><strong>New Password</strong></label>
+            <input class="form-control" type="password" id="newPassword" required />
+          </div>
+          <div class="f-group mb-4">
+            <label class="form-label"><strong>Confirm New Password</strong></label>
+            <input class="form-control" type="password" id="confirmPassword" required />
+          </div>
+          <button class="btn btn-primary w-100" type="submit">Change Password</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Password Changed Modal -->
+<div class="modal fade" id="passwordChangedModal" tabindex="-1" aria-labelledby="passwordChangedLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border border-success shadow">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title fw-bold" id="passwordChangedLabel">Mot de passe mis à jour</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body text-center p-4">
+        <p class="mb-3">Votre mot de passe a été changé avec succès.</p>
+        <p>Utilisez désormais votre nouveau mot de passe pour vous connecter.</p>
+      </div>
+      <div class="modal-footer justify-content-center border-0 pb-4">
+        <button type="button" class="btn btn-success px-4" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

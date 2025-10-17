@@ -1,0 +1,79 @@
+{
+  "application": {
+    "name": "Harbornest front-end",
+    "platform": "test",
+    "stripeplatform": "test",
+    "stripepublickey": "pk_test_ksDl8VQ7yCT2HDpDGN0hBUXe",
+    "3words": "G49UQZCC",
+    "release": "0.3"
+  },
+  "dev": {
+    "firebaseMasterConfig": {
+      "apiKey": "AIzaSyCbv9jnuUTPFUaNDh_hXcRUzHBRKSE3dpE",
+      "authDomain": "adn-dev-4d05d.firebaseapp.com",
+      "databaseURL": "https://adn-dev-4d05d.firebaseio.com",
+      "projectId": "adn-dev-4d05d",
+      "storageBucket": "adn-dev-4d05d.appspot.com",
+      "messagingSenderId": "627524094448",
+      "appId": "1:627524094448:web:0be403126c5497c8173535"
+    },
+    "firebaseStorageConfig": {
+      "apiKey": "AIzaSyCbv9jnuUTPFUaNDh_hXcRUzHBRKSE3dpE",
+      "authDomain": "adn-dev-4d05d.firebaseapp.com",
+      "databaseURL": "https://adn-dev-4d05d.firebaseio.com",
+      "projectId": "adn-dev-4d05d",
+      "storageBucket": "adn-dev-4d05d.appspot.com",
+      "messagingSenderId": "627524094448",
+      "appId": "1:627524094448:web:0be403126c5497c8173535"
+    },
+    "backendURL": "https://6874-2a02-842b-4b7-d801-92e-2d78-e0fa-6a5c.ngrok-free.app",
+    "refreshUrl": "/stripe-account-failed",
+    "returnUrl": "/stripe-account-confirm"
+  },
+  "test": {
+    "firebaseMasterConfig": {
+      "apiKey": "AIzaSyCbv9jnuUTPFUaNDh_hXcRUzHBRKSE3dpE",
+      "authDomain": "adn-dev-4d05d.firebaseapp.com",
+      "databaseURL": "https://adn-dev-4d05d.firebaseio.com",
+      "projectId": "adn-dev-4d05d",
+      "storageBucket": "adn-dev-4d05d.appspot.com",
+      "messagingSenderId": "627524094448",
+      "appId": "1:627524094448:web:0be403126c5497c8173535"
+    },
+    "firebaseStorageConfig": {
+      "apiKey": "AIzaSyDu1uePnrDqNCgDtaSqoGldbeG117-UVBk",
+      "authDomain": "adn-test-6fb62.firebaseapp.com",
+      "databaseURL": "https://adn-test-6fb62.firebaseio.com",
+      "projectId": "adn-test-6fb62",
+      "storageBucket": "adn-test-6fb62.appspot.com",
+      "messagingSenderId": "804337583879",
+      "appId": "1:804337583879:web:f1494f38760981a7"
+    },
+    "backendURL": "https://6874-2a02-842b-4b7-d801-92e-2d78-e0fa-6a5c.ngrok-free.app",
+    "refreshUrl": "/stripe-account-failed",
+    "returnUrl": "/stripe-account-confirm"
+  },
+  "prod": {
+    "firebaseMasterConfig": {
+      "apiKey": "AIzaSyCbv9jnuUTPFUaNDh_hXcRUzHBRKSE3dpE",
+      "authDomain": "adn-dev-4d05d.firebaseapp.com",
+      "databaseURL": "https://adn-dev-4d05d.firebaseio.com",
+      "projectId": "adn-dev-4d05d",
+      "storageBucket": "adn-dev-4d05d.appspot.com",
+      "messagingSenderId": "627524094448",
+      "appId": "1:627524094448:web:0be403126c5497c8173535"
+    },
+    "firebaseStorageConfig": {
+      "apiKey": "AIzaSyBERTBNIIacNDFK2OEt1wVBdIFimM05j-o",
+      "authDomain": "adn-prod.firebaseapp.com",
+      "databaseURL": "https://adn-prod.firebaseio.com",
+      "projectId": "adn-prod",
+      "storageBucket": "adn-prod.appspot.com",
+      "messagingSenderId": "13561609265",
+      "appId": "1:13561609265:web:dfb331e7d5f5a0040e2910"
+    },
+    "backendURL": "https://6874-2a02-842b-4b7-d801-92e-2d78-e0fa-6a5c.ngrok-free.app",
+    "refreshUrl": "/stripe-account-failed",
+    "returnUrl": "/stripe-account-confirm"
+  }
+}

@@ -1,0 +1,39 @@
+
+  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+  <div class="container py-2">
+    <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/home">
+      <i class="bi bi-ship"></i><strong>HarborNest</strong>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" routerLink="/experiences">Experiences</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/boats">Boats</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/partners">Partners</a></li>
+      </ul>
+
+      <div class="d-flex gap-2">
+        <a class="btn btn-outline-secondary rounded-pill-btn" routerLink="/hostwizard">List your boat</a>
+
+        <!-- If not logged in -->
+        <a *ngIf="!layoutSvc.wnGuest?.firstname" class="btn btn-dark rounded-pill-btn" routerLink="/login">Sign in</a>
+
+        <!-- If logged in -->
+        <div *ngIf="layoutSvc.wnGuest?.firstname" class="dropdown">
+          <button class="btn btn-dark rounded-pill-btn dropdown-toggle" data-bs-toggle="dropdown">
+            {{ layoutSvc.wnGuest?.firstname }}
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
+            <li><a class="dropdown-item" routerLink="/my-bookings">My Bookings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

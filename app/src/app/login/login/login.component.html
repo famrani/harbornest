@@ -1,0 +1,67 @@
+<section class="full-screen">
+  <div>
+    <form class="form-box" [formGroup]="loginForm">
+      <h4 class="text-center mb-4">Login to&nbsp;<strong>Harbornest</strong></h4>
+      <div class="f-group"><label class="form-label"><strong>Email</strong></label>
+        <input [class]="loginForm.controls['email'].invalid ?'form-control error':'form-control'"
+          type="text" required="" placeholder="email" formControlName="email"></div>
+      <div class="f-group"><label class="form-label"><strong>Password</strong></label>
+        <input [class]="loginForm.controls['password'].invalid ?'form-control error':'form-control'"
+          type="password" required="" placeholder="password" formControlName="password"></div>
+      <div class="row mx-0">
+        <div class="col-6">
+          <div class="form-check d-inline-block"><input class="form-check-input" type="checkbox" formControlName="rememberme"><label
+              class="form-check-label small">Remember me</label></div>
+        </div>
+        <div class="col-6" style="text-align: right;"><a class="small" [routerLink]="['/forgotpwd']">Forgot password</a></div>
+      </div><button class="btn btn-primary w-100 my-4" type="submit" [disabled]="loginForm.invalid"
+      (click)="login()">Login&nbsp;</button>
+      <div class="seperator">
+        <hr class="w-100">
+        <p>or</p>
+        <hr class="w-100">
+      </div>
+      <button class="btn btn-outline-primary w-100 my-4" type="button" [routerLink]="['/signup']">Create an account</button>
+      <!-- Google Sign-In -->
+      <button id="googleLoginBtn" class="btn btn-outline-danger w-100 my-2" type="button">Sign in with Google</button>
+    </form>
+  </div>
+  <div class="bottom-dark"></div>
+</section>
+
+<!-- Login Error Modal -->
+<div class="modal fade" id="loginErrorModal" tabindex="-1" aria-labelledby="loginErrorLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-3 shadow-sm">
+      <div class="modal-header bg-danger text-white rounded-top">
+        <h5 class="modal-title fw-bold" id="loginErrorLabel">Login Failed</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center p-4">
+        <p class="mb-0">The email or password you entered is incorrect.<br>Please check your credentials and try again.</p>
+      </div>
+      <div class="modal-footer justify-content-center border-0 pb-4">
+        <button type="button" class="btn btn-outline-danger px-4" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Email Not Verified Modal -->
+<div class="modal fade" id="emailNotVerifiedModal" tabindex="-1" aria-labelledby="emailNotVerifiedLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-3 shadow-sm">
+      <div class="modal-header bg-warning text-dark rounded-top">
+        <h5 class="modal-title fw-bold" id="emailNotVerifiedLabel">Email Not Verified</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center p-4">
+        <p class="mb-2">Your account was created, but your email address is not yet verified.</p>
+        <p>Please check your <strong>inbox</strong> (or <strong>spam folder</strong>) and click the confirmation link to activate your account.</p>
+      </div>
+      <div class="modal-footer justify-content-center border-0 pb-4">
+        <button type="button" class="btn btn-outline-warning px-4" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
