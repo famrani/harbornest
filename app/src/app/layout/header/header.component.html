@@ -1,38 +1,105 @@
-
-  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
   <div class="container py-2">
-    <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/home">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/home">
       <i class="bi bi-ship"></i><strong>HarborNest</strong>
     </a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navMain">
+      <!-- Left: primary nav -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" routerLink="/experiences">Experiences</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/boats">Boats</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/partners">Partners</a></li>
+
+        <!-- Explore -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="/experiences" data-bs-toggle="dropdown" role="button">
+            Explore
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/experiences"><i class="bi bi-compass me-2"></i>Tours & Experiences</a></li>
+            <li><a class="dropdown-item" href="/boats-directory"><i class="bi bi-sailboat me-2"></i>Partner Boats</a></li>
+            <li><a class="dropdown-item" href="/destinations"><i class="bi bi-geo-alt me-2"></i>Destinations</a></li>
+          </ul>
+        </li>
+
+        <!-- Host -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="/host" data-bs-toggle="dropdown" role="button">
+            Host
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/boats"><i class="bi bi-plus-circle me-2"></i>List your boat</a></li>
+            <li><a class="dropdown-item" href="/host"><i class="bi bi-speedometer2 me-2"></i>Host Dashboard</a></li>
+            <li><a class="dropdown-item" href="/host/pricing"><i class="bi bi-tags me-2"></i>Pricing</a></li>
+          </ul>
+        </li>
+
+        <!-- Services -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="/concierge" data-bs-toggle="dropdown" role="button">
+            Services
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/conciergery"><i class="bi bi-stars me-2"></i>Concierge for Owners</a></li>
+            <li><a class="dropdown-item" href="/partners"><i class="bi bi-people me-2"></i>Providers Directory</a></li>
+            <li><a class="dropdown-item" href="/providers/join"><i class="bi bi-briefcase me-2"></i>Become a Provider</a></li>
+          </ul>
+        </li>
+
+        <!-- About -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="/about" data-bs-toggle="dropdown" role="button">
+            About
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/about"><i class="bi bi-info-circle me-2"></i>How it works</a></li>
+            <li><a class="dropdown-item" href="/safety"><i class="bi bi-shield-check me-2"></i>Safety & Insurance</a></li>
+            <li><a class="dropdown-item" href="/faq"><i class="bi bi-question-circle me-2"></i>FAQ</a></li>
+            <li><a class="dropdown-item" href="/contact"><i class="bi bi-envelope me-2"></i>Contact</a></li>
+          </ul>
+        </li>
       </ul>
 
-      <div class="d-flex gap-2">
-        <a class="btn btn-outline-secondary rounded-pill-btn" routerLink="/hostwizard">List your boat</a>
+      <!-- Right: CTAs + user -->
+      <div class="d-none d-lg-flex align-items-center gap-2">
+        <a class="btn btn-outline-secondary rounded-pill" href="/host/list">List your boat</a>
+        <a class="btn btn-dark rounded-pill" href="/experiences">Book a tour</a>
 
-        <!-- If not logged in -->
-        <a *ngIf="!layoutSvc.wnGuest?.firstname" class="btn btn-dark rounded-pill-btn" routerLink="/login">Sign in</a>
-
-        <!-- If logged in -->
-        <div *ngIf="layoutSvc.wnGuest?.firstname" class="dropdown">
-          <button class="btn btn-dark rounded-pill-btn dropdown-toggle" data-bs-toggle="dropdown">
-            {{ layoutSvc.wnGuest?.firstname }}
-          </button>
+        <!-- Guest state -->
+        <div class="dropdown">
+          <a class="btn btn-link text-decoration-none" data-bs-toggle="dropdown" role="button">
+            <i class="bi bi-person-circle fs-5"></i>
+          </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
-            <li><a class="dropdown-item" routerLink="/my-bookings">My Bookings</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+            <li><a class="dropdown-item" href="/signin">Sign in</a></li>
+            <li><a class="dropdown-item" href="/signup">Create account</a></li>
           </ul>
         </div>
+
+        <!-- Example: Owner state (toggle via Angular) -->
+        <!--
+        <div class="dropdown">
+          <a class="btn btn-link text-decoration-none d-flex align-items-center gap-2" data-bs-toggle="dropdown">
+            <img src="/assets/avatar.png" class="rounded-circle" width="28" height="28" alt="">
+            <span>Faycal</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="/host">Dashboard</a></li>
+            <li><a class="dropdown-item" href="/host/boats">My Boats</a></li>
+            <li><a class="dropdown-item" href="/host/bookings">Bookings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="/signout">Sign out</a></li>
+          </ul>
+        </div>
+        -->
+      </div>
+
+      <!-- Mobile CTA row -->
+      <div class="d-lg-none mt-3">
+        <a class="btn btn-dark w-100 mb-2 rounded-pill" href="/experiences">Book a tour</a>
+        <a class="btn btn-outline-secondary w-100 rounded-pill" href="/host/list">List your boat</a>
       </div>
     </div>
   </div>

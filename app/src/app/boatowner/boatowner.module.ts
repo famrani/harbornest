@@ -6,13 +6,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CookieModule } from 'ngx-cookie';
 
 import { HostWizardComponent } from './hostwizard/hostwizard.component';
+import { BoatsdirectoryComponent } from './boats-directory/boats-directory.component';
 
 import { GodigitalbModule } from 'godigital-lib';
 
 import { BoatownerRoutingModule } from './boatowner.router.module';
 
 @NgModule({
-  declarations: [HostWizardComponent],
+  declarations: [HostWizardComponent, BoatsdirectoryComponent],
   imports: [
     HostWizardComponent,
     CommonModule,

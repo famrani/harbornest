@@ -1,0 +1,250 @@
+<header class="hero text-white py-5">
+  <div class="container py-4">
+    <h1 class="display-5 fw-bold">Conciergerie pour propriétaires</h1>
+    <p class="lead mb-0">Nettoyage, skipper, avitaillement, media & maintenance — nous coordonnons, vous profitez.</p>
+  </div>
+</header>
+
+<!-- Toolbar de filtre courte -->
+<div class="bg-white border-bottom">
+  <div class="container py-3">
+    <form [formGroup]="filtersForm" class="row g-2 align-items-center">
+      <div class="col-12 col-md-5">
+        <div class="input-group rounded-pill border overflow-hidden">
+          <span class="input-group-text bg-white border-0"><i class="bi bi-geo-alt"></i></span>
+          <input type="text" class="form-control border-0" placeholder="Marina / Ville (ex: Antibes)" formControlName="city">
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="input-group rounded-pill border overflow-hidden">
+          <span class="input-group-text bg-white border-0"><i class="bi bi-calendar3"></i></span>
+          <input type="date" class="form-control border-0" formControlName="date">
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <select class="form-select rounded-pill" formControlName="service">
+          <option value="">Tous services</option>
+          <option *ngFor="let s of catalog" [value]="s.key">{{ s.name }}</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-2">
+        <button type="button" class="btn btn-dark w-100 rounded-pill-btn" (click)="openRequest()">
+          <i class="bi bi-plus-lg me-1"></i> Demander
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<main class="py-5">
+  <div class="container">
+
+    <!-- Catalogue Services -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="h4 mb-0">Services disponibles</h2>
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary rounded-pill-btn dropdown-toggle" data-bs-toggle="dropdown">
+          <i class="bi bi-sliders me-1"></i> Trier
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" (click)="setSort('name')" href="#">Nom</a></li>
+          <li><a class="dropdown-item" (click)="setSort('price')" href="#">Prix (base)</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div class="col" *ngFor="let s of filteredCatalog$ | async">
+        <div class="card h-100 border-0 shadow-sm card-hover">
+          <div class="ratio ratio-16x9">
+            <img [src]="s.cover" class="w-100 h-100 object-fit-cover rounded-top" [alt]="s.name">
+          </div>
+          <div class="card-body">
+            <h3 class="h5">{{ s.name }}</h3>
+            <p class="text-muted mb-2">{{ s.description }}</p>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="badge text-bg-light border badge-rounded" *ngFor="let t of s.tags">{{ t }}</span>
+            </div>
+          </div>
+          <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center">
+            <div class="text-muted small">À partir de</div>
+            <div class="fw-semibold">€{{ s.basePrice }} <span class="text-muted fw-normal">/{{ s.unit }}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comment ça marche -->
+    <section class="mt-5">
+      <h2 class="h4 mb-3">Comment ça marche</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="p-3 rounded-3 border h-100">
+            <div class="h3 mb-2">1</div>
+            <h3 class="h6">Envoyez votre demande</h3>
+            <p class="text-muted mb-0">Indiquez votre bateau, la marina, la date et les services souhaités.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-3 rounded-3 border h-100">
+            <div class="h3 mb-2">2</div>
+            <h3 class="h6">Recevez des devis</h3>
+            <p class="text-muted mb-0">Des prestataires vérifiés vous répondent rapidement avec un prix clair.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-3 rounded-3 border h-100">
+            <div class="h3 mb-2">3</div>
+            <h3 class="h6">Planifiez & payez</h3>
+            <p class="text-muted mb-0">Validez un devis, nous planifions l’intervention et vous recevez une preuve photo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Plans tarifaires -->
+    <section class="mt-5">
+      <h2 class="h4 mb-3">Plans pour propriétaires</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+              <div class="h5">Free</div>
+              <div class="display-6 fw-bold">0€<span class="fs-6 text-muted">/mois</span></div>
+              <ul class="mt-3 text-muted small">
+                <li>Accès conciergerie</li>
+                <li>Devis illimités</li>
+                <li>Commission standard</li>
+              </ul>
+              <button class="btn btn-outline-secondary rounded-pill-btn w-100">Choisir</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 border-0 shadow-sm border-primary">
+            <div class="card-body">
+              <div class="h5">Premium</div>
+              <div class="display-6 fw-bold">39€<span class="fs-6 text-muted">/mois</span></div>
+              <ul class="mt-3 text-muted small">
+                <li>Support prioritaire</li>
+                <li>Commission réduite</li>
+                <li>Visibilité accrue</li>
+              </ul>
+              <button class="btn btn-dark rounded-pill-btn w-100">Passer en Premium</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+              <div class="h5">Elite</div>
+              <div class="display-6 fw-bold">79€<span class="fs-6 text-muted">/mois</span></div>
+              <ul class="mt-3 text-muted small">
+                <li>Conciergerie prioritaire</li>
+                <li>Pack photos pro</li>
+                <li>Gestion complète</li>
+              </ul>
+              <button class="btn btn-outline-secondary rounded-pill-btn w-100">Nous contacter</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ courte -->
+    <section class="mt-5">
+      <h2 class="h4 mb-3">FAQ</h2>
+      <div class="accordion" id="faq">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#q1">
+              Comment sont sélectionnés les prestataires ?
+            </button>
+          </h2>
+          <div id="q1" class="accordion-collapse collapse show" data-bs-parent="#faq">
+            <div class="accordion-body text-muted">Parrainage + vérifications. Avis communautaires et suivi qualité.</div>
+          </div>
+        </div>
+        <div class="accordion-item mt-2">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q2">
+              Quand est effectué le paiement ?
+            </button>
+          </h2>
+          <div id="q2" class="accordion-collapse collapse" data-bs-parent="#faq">
+            <div class="accordion-body text-muted">À l’acceptation du devis (ou capture à la fin), via Stripe.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- Modal Demande -->
+<div class="modal fade" id="requestModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <form [formGroup]="requestForm" (ngSubmit)="submitRequest()">
+        <div class="modal-header">
+          <h5 class="modal-title">Demander un service</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Bateau</label>
+              <select class="form-select" formControlName="boatId">
+                <option *ngFor="let b of ownerBoats" [value]="b.id">{{ b.name }} — {{ b.marina.city }}</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Service</label>
+              <select class="form-select" formControlName="serviceKey">
+                <option *ngFor="let s of catalog" [value]="s.key">{{ s.name }}</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-control" formControlName="date">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Heure</label>
+              <input type="time" class="form-control" formControlName="time">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Port / Marina</label>
+              <input class="form-control" formControlName="port" placeholder="Port Vauban">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Ville</label>
+              <input class="form-control" formControlName="city" placeholder="Antibes">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Pays</label>
+              <input class="form-control" formControlName="country" placeholder="FR">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Notes</label>
+              <textarea rows="3" class="form-control" formControlName="notes" placeholder="Contraintes d’accès, préférences, etc."></textarea>
+            </div>
+
+            <!-- Uploads (brancher plus tard à StoreDbService si souhaité) -->
+            <div class="col-12">
+              <label class="form-label">Photos (optionnel)</label>
+              <input type="file" class="form-control" (change)="handleFiles($event.target.files)" multiple>
+              <div class="d-flex flex-wrap gap-2 mt-2" *ngIf="tempPhotos.length">
+                <img *ngFor="let p of tempPhotos" [src]="p" class="rounded" style="width:100px;height:80px;object-fit:cover;">
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-secondary rounded-pill-btn" type="button" data-bs-dismiss="modal">Fermer</button>
+          <button class="btn btn-dark rounded-pill-btn" [disabled]="requestForm.invalid || saving">Envoyer la demande</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

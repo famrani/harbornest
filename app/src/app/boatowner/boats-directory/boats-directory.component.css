@@ -1,0 +1,6 @@
+.rounded-pill-btn { border-radius: 50rem; }
+.card-hover:hover { box-shadow:0 1rem 2rem rgba(0,0,0,.08); transform: translateY(-2px); }
+.object-fit-cover { object-fit: cover; }
+.badge-rounded { border-radius: 50rem; }
+.sticky-toolbar { position: sticky; top: 4.25rem; z-index: 1019; } /* under sticky navbar */
+.service-chip { border:1px solid #e2e8f0; border-radius:50rem; padding:.25rem .6rem; font-size:.825rem; }

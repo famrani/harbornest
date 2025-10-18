@@ -9,13 +9,14 @@ import { HomeComponent } from './home/home.component';
 import { ExperiencesComponent } from './experiences/experiences.component';
 import { BoatsComponent } from './boats/boats.component';
 import { PartnersComponent } from './partners/partners.component';
+import { ConciergeryComponent } from './conciergery/conciergery.component';
 
 import { GodigitalbModule } from 'godigital-lib';
 
 import { MockupRoutingModule } from './mockup.router.module';
 
 @NgModule({
-  declarations: [HomeComponent, ExperiencesComponent, BoatsComponent, PartnersComponent],
+  declarations: [HomeComponent, ExperiencesComponent, BoatsComponent, PartnersComponent, ConciergeryComponent],
   imports: [
     CommonModule,
     IonicModule,

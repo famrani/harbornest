@@ -1,0 +1,10 @@
+.rounded-pill-btn { border-radius: 50rem; }
+.card-hover:hover { box-shadow:0 1rem 2rem rgba(0,0,0,.08); transform: translateY(-2px); }
+.object-fit-cover { object-fit: cover; }
+.badge-rounded { border-radius: 50rem; }
+
+.hero {
+  background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.35)),
+              url('https://images.unsplash.com/photo-1519638399535-1b036603ac77?q=80&w=1920&auto=format&fit=crop')
+              center/cover no-repeat;
+}

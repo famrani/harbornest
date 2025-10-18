@@ -1,0 +1,137 @@
+<header class="bg-light border-bottom">
+  <div class="container py-5">
+    <h1 class="display-6 fw-bold mb-2">Partner Boats</h1>
+    <p class="text-muted mb-0">Browse boats from our trusted friends & partners. Book their services directly.</p>
+  </div>
+</header>
+
+<!-- Filter Toolbar -->
+<div class="bg-white border-bottom sticky-toolbar">
+  <div class="container py-3">
+    <form [formGroup]="filtersForm" class="row g-2 align-items-center">
+      <div class="col-12 col-md-4">
+        <div class="input-group rounded-pill border overflow-hidden">
+          <span class="input-group-text bg-white border-0"><i class="bi bi-search"></i></span>
+          <input type="text" class="form-control border-0" formControlName="q" placeholder="Search by name, marina, keyword">
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="input-group rounded-pill border overflow-hidden">
+          <span class="input-group-text bg-white border-0"><i class="bi bi-geo-alt"></i></span>
+          <input type="text" class="form-control border-0" formControlName="where" placeholder="Antibes, Cannes…">
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="input-group rounded-pill border overflow-hidden">
+          <span class="input-group-text bg-white border-0"><i class="bi bi-people"></i></span>
+          <select class="form-select border-0" formControlName="guests">
+            <option value="">Guests</option>
+            <option value="2">2+</option>
+            <option value="4">4+</option>
+            <option value="6">6+</option>
+            <option value="8">8+</option>
+            <option value="10">10+</option>
+            <option value="12">12+</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="input-group rounded-pill border overflow-hidden">
+          <span class="input-group-text bg-white border-0"><i class="bi bi-sailboat"></i></span>
+          <select class="form-select border-0" formControlName="type">
+            <option value="">Boat type</option>
+            <option value="Sail">Sail</option>
+            <option value="Motor">Motor</option>
+            <option value="Catamaran">Catamaran</option>
+            <option value="RIB">RIB</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <button class="btn btn-dark w-100 rounded-pill-btn" type="button" data-bs-toggle="collapse" data-bs-target="#moreFilters">
+          <i class="bi bi-funnel me-1"></i>More filters
+        </button>
+      </div>
+    </form>
+
+    <!-- Collapsible service filters -->
+    <div class="collapse mt-2" id="moreFilters">
+      <div class="d-flex flex-wrap gap-2">
+        <label class="service-chip">
+          <input class="form-check-input me-1" type="checkbox" (change)="toggleService('sunset', $any($event.target).checked)"> Sunset Cruise & Champagne
+        </label>
+        <label class="service-chip">
+          <input class="form-check-input me-1" type="checkbox" (change)="toggleService('lerins', $any($event.target).checked)"> Day Escape Lérins Islands
+        </label>
+        <label class="service-chip">
+          <input class="form-check-input me-1" type="checkbox" (change)="toggleService('evjf', $any($event.target).checked)"> EVJF/EVG
+        </label>
+        <label class="service-chip">
+          <input class="form-check-input me-1" type="checkbox" (change)="toggleService('afterwork', $any($event.target).checked)"> Afterwork
+        </label>
+        <label class="service-chip">
+          <input class="form-check-input me-1" type="checkbox" (change)="toggleService('teambuild', $any($event.target).checked)"> Team Building
+        </label>
+        <label class="service-chip">
+          <input class="form-check-input me-1" type="checkbox" (change)="toggleService('overnight', $any($event.target).checked)"> Night on Board
+        </label>
+        <label class="service-chip">
+          <input class="form-check-input me-1" type="checkbox" (change)="toggleService('meeting', $any($event.target).checked)"> Business Meetings
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="py-4">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="text-muted small" [textContent]="resultsText$ | async"></div>
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary rounded-pill-btn dropdown-toggle" data-bs-toggle="dropdown">
+          <i class="bi bi-sliders me-1"></i> Sort
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" (click)="setSort('ratingDesc')" href="#">Top rated</a></li>
+          <li><a class="dropdown-item" (click)="setSort('priceAsc')" href="#">Price: Low to High</a></li>
+          <li><a class="dropdown-item" (click)="setSort('priceDesc')" href="#">Price: High to Low</a></li>
+          <li><a class="dropdown-item" (click)="setSort('nameAsc')" href="#">Name A→Z</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+      <div class="col" *ngFor="let b of (filteredBoats$ | async)">
+        <div class="card h-100 border-0 shadow-sm card-hover">
+          <div class="ratio ratio-4x3">
+            <img [src]="b.coverUrl" [alt]="b.name" class="w-100 h-100 object-fit-cover rounded-top">
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start gap-2">
+              <div>
+                <h3 class="h6 mb-1">{{ b.name }}</h3>
+                <div class="text-muted small"><i class="bi bi-geo-alt me-1"></i>{{ b.city }}, {{ b.country }}</div>
+              </div>
+              <div class="text-nowrap small"><i class="bi bi-star-fill"></i> {{ b.rating }}</div>
+            </div>
+            <div class="mt-2 d-flex flex-wrap gap-1">
+              <span class="badge text-bg-light border badge-rounded" *ngFor="let tag of b.badges">{{ tag }}</span>
+            </div>
+          </div>
+          <div class="card-footer bg-white border-0 d-flex justify-content-between">
+            <div class="text-muted small">{{ b.skipperInfo }}</div>
+            <div class="fw-semibold">€{{ b.price }} <span class="text-muted fw-normal">{{ b.priceUnit }}</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Optional empty state -->
+      <div class="col-12" *ngIf="(filteredBoats$ | async)?.length === 0">
+        <div class="alert alert-light border d-flex align-items-center" role="alert">
+          <i class="bi bi-info-circle me-2"></i>
+          No boats match your filters. Try clearing some filters.
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
