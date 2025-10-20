@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { Injectable } from '@angular/core';
+import { Injectable, Input } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Users } from 'godigital-lib';
 import { LocalUtilsService, chatElement } from '../services/services.service';
 import { ServicesService,  } from 'godigital-lib';
+
+export type AppMode = 'guest' | 'customer' | 'owner' | 'provider' | 'admin';
 
 
 @Injectable({
@@ -13,6 +15,20 @@ export class LayoutService {
   public activeTab = 0;
   public mactiveTab = 0;
   public businessVerticals;
+
+    /** Current mode, default = guest */
+  @Input() mode: AppMode = 'guest';
+
+  /** If logged in, show user dropdown; otherwise show Sign in/Sign up */
+  @Input() isLoggedIn = false;
+
+  /** Optional name shown in the user menu */
+  @Input() userName: string | null = null;
+
+  /** Optional small avatar url (28x28) */
+  @Input() avatarUrl: string | null = null;
+
+
 
   constructor(
     public mainSvc: ServicesService,
@@ -46,13 +62,6 @@ export class LayoutService {
   }
   set version(value) {
     this.mainSvc.version = value;
-  }
-
-  get mode() {
-    return this.localUtilsSvc.mode;
-  }
-  set mode(value) {
-    this.localUtilsSvc.mode = value;
   }
 
   get language() {

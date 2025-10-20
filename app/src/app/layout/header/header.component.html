@@ -1,105 +1,79 @@
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
   <div class="container py-2">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="/home">
+    <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/home">
       <i class="bi bi-ship"></i><strong>HarborNest</strong>
     </a>
+
+    <!-- Mode pill (always visible) -->
+    <span class="ms-2 d-none d-md-inline-flex align-items-center">
+      <span [class]="modeClass + ' badge-rounded px-3'">{{ modeLabel }}</span>
+    </span>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navMain">
-      <!-- Left: primary nav -->
+
+      <!-- LEFT: compact main nav (per mode) -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-        <!-- Explore -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="/experiences" data-bs-toggle="dropdown" role="button">
-            Explore
+        <li class="nav-item" *ngFor="let item of nav">
+          <a class="nav-link" [routerLink]="item.link">
+            <i *ngIf="item.icon" class="bi me-1" [ngClass]="item.icon"></i>{{ item.label }}
           </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/experiences"><i class="bi bi-compass me-2"></i>Tours & Experiences</a></li>
-            <li><a class="dropdown-item" href="/boats-directory"><i class="bi bi-sailboat me-2"></i>Partner Boats</a></li>
-            <li><a class="dropdown-item" href="/destinations"><i class="bi bi-geo-alt me-2"></i>Destinations</a></li>
-          </ul>
-        </li>
-
-        <!-- Host -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="/host" data-bs-toggle="dropdown" role="button">
-            Host
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/boats"><i class="bi bi-plus-circle me-2"></i>List your boat</a></li>
-            <li><a class="dropdown-item" href="/host"><i class="bi bi-speedometer2 me-2"></i>Host Dashboard</a></li>
-            <li><a class="dropdown-item" href="/host/pricing"><i class="bi bi-tags me-2"></i>Pricing</a></li>
-          </ul>
-        </li>
-
-        <!-- Services -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="/concierge" data-bs-toggle="dropdown" role="button">
-            Services
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/conciergery"><i class="bi bi-stars me-2"></i>Concierge for Owners</a></li>
-            <li><a class="dropdown-item" href="/partners"><i class="bi bi-people me-2"></i>Providers Directory</a></li>
-            <li><a class="dropdown-item" href="/providers/join"><i class="bi bi-briefcase me-2"></i>Become a Provider</a></li>
-          </ul>
-        </li>
-
-        <!-- About -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="/about" data-bs-toggle="dropdown" role="button">
-            About
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/about"><i class="bi bi-info-circle me-2"></i>How it works</a></li>
-            <li><a class="dropdown-item" href="/safety"><i class="bi bi-shield-check me-2"></i>Safety & Insurance</a></li>
-            <li><a class="dropdown-item" href="/faq"><i class="bi bi-question-circle me-2"></i>FAQ</a></li>
-            <li><a class="dropdown-item" href="/contact"><i class="bi bi-envelope me-2"></i>Contact</a></li>
-          </ul>
         </li>
       </ul>
 
-      <!-- Right: CTAs + user -->
+      <!-- RIGHT: CTAs + User -->
       <div class="d-none d-lg-flex align-items-center gap-2">
-        <a class="btn btn-outline-secondary rounded-pill" href="/host/list">List your boat</a>
-        <a class="btn btn-dark rounded-pill" href="/experiences">Book a tour</a>
 
-        <!-- Guest state -->
-        <div class="dropdown">
-          <a class="btn btn-link text-decoration-none" data-bs-toggle="dropdown" role="button">
-            <i class="bi bi-person-circle fs-5"></i>
+        <a *ngIf="secondaryCta" class="btn btn-outline-secondary rounded-pill" [routerLink]="secondaryCta.link">
+          <i *ngIf="secondaryCta.icon" class="bi me-1" [ngClass]="secondaryCta.icon"></i>{{ secondaryCta.label }}
+        </a>
+
+        <a *ngIf="primaryCta" class="btn btn-dark rounded-pill" [routerLink]="primaryCta.link">
+          <i *ngIf="primaryCta.icon" class="bi me-1" [ngClass]="primaryCta.icon"></i>{{ primaryCta.label }}
+        </a>
+
+        <!-- User dropdown -->
+        <div class="dropdown ms-2" *ngIf="layoutSvc.isLoggedIn; else guestMenu">
+          <a class="btn btn-link text-decoration-none d-flex align-items-center gap-2" data-bs-toggle="dropdown" role="button">
+            <img *ngIf="layoutSvc.avatarUrl; else defaultAvatar" [src]="layoutSvc.avatarUrl" class="rounded-circle" width="28" height="28" alt="">
+            <ng-template #defaultAvatar><i class="bi bi-person-circle fs-5"></i></ng-template>
+            <span class="d-none d-xl-inline">{{ layoutSvc.userName || 'Account' }}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="/signin">Sign in</a></li>
-            <li><a class="dropdown-item" href="/signup">Create account</a></li>
-          </ul>
-        </div>
-
-        <!-- Example: Owner state (toggle via Angular) -->
-        <!--
-        <div class="dropdown">
-          <a class="btn btn-link text-decoration-none d-flex align-items-center gap-2" data-bs-toggle="dropdown">
-            <img src="/assets/avatar.png" class="rounded-circle" width="28" height="28" alt="">
-            <span>Faycal</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="/host">Dashboard</a></li>
-            <li><a class="dropdown-item" href="/host/boats">My Boats</a></li>
-            <li><a class="dropdown-item" href="/host/bookings">Bookings</a></li>
+            <li *ngIf="layoutSvc.mode==='customer'"><a class="dropdown-item" routerLink="/account">My Account</a></li>
+            <li *ngIf="layoutSvc.mode==='owner'"><a class="dropdown-item" routerLink="/host">Host Dashboard</a></li>
+            <li *ngIf="layoutSvc.mode==='provider'"><a class="dropdown-item" routerLink="/provider">Provider Dashboard</a></li>
+            <li *ngIf="layoutSvc.mode==='admin'"><a class="dropdown-item" routerLink="/admin">Admin Panel</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item text-danger" href="/signout">Sign out</a></li>
+            <li><a class="dropdown-item text-danger" routerLink="/signout">Sign out</a></li>
           </ul>
         </div>
-        -->
+
+        <!-- Guest -->
+        <ng-template #guestMenu>
+          <div class="dropdown">
+            <a class="btn btn-link text-decoration-none" data-bs-toggle="dropdown" role="button">
+              <i class="bi bi-person-circle fs-5"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" routerLink="/signin">Sign in</a></li>
+              <li><a class="dropdown-item" routerLink="/signup">Create account</a></li>
+            </ul>
+          </div>
+        </ng-template>
       </div>
 
-      <!-- Mobile CTA row -->
+      <!-- MOBILE CTAs -->
       <div class="d-lg-none mt-3">
-        <a class="btn btn-dark w-100 mb-2 rounded-pill" href="/experiences">Book a tour</a>
-        <a class="btn btn-outline-secondary w-100 rounded-pill" href="/host/list">List your boat</a>
+        <a *ngIf="primaryCta" class="btn btn-dark w-100 mb-2 rounded-pill" [routerLink]="primaryCta.link">
+          <i *ngIf="primaryCta.icon" class="bi me-1" [ngClass]="primaryCta.icon"></i>{{ primaryCta.label }}
+        </a>
+        <a *ngIf="secondaryCta" class="btn btn-outline-secondary w-100 rounded-pill" [routerLink]="secondaryCta.link">
+          <i *ngIf="secondaryCta.icon" class="bi me-1" [ngClass]="secondaryCta.icon"></i>{{ secondaryCta.label }}
+        </a>
       </div>
     </div>
   </div>
