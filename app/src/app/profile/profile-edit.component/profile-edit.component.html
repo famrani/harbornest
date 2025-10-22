@@ -1,0 +1,76 @@
+<div class="container py-5" style="max-width:820px">
+  <h1 class="h4 mb-3">Your profile</h1>
+
+  <div *ngIf="loading" class="alert alert-light border">Loading…</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+  <div *ngIf="success" class="alert alert-success">Profile saved.</div>
+
+  <form *ngIf="!loading" [formGroup]="form" (ngSubmit)="save()">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label">First name</label>
+        <input class="form-control" formControlName="firstname" />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Last name</label>
+        <input class="form-control" formControlName="lastname" />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Display name</label>
+        <input class="form-control" formControlName="displayName" />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Phone</label>
+        <input class="form-control" formControlName="phone" placeholder="+33 6 ..." />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Country</label>
+        <input class="form-control" formControlName="country" placeholder="FR" />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Role</label>
+        <input class="form-control" formControlName="role" disabled />
+        <div class="form-text">Admin is granted by the platform only.</div>
+      </div>
+
+      <!-- Social links -->
+      <div class="col-12">
+        <label class="form-label d-flex justify-content-between align-items-center">
+          Social links
+          <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" (click)="addSocial()">Add link</button>
+        </label>
+
+        <div *ngFor="let s of socials.controls; let i = index" class="row g-2 align-items-center mb-2">
+          <div class="col-md-3">
+            <input class="form-control" [formControl]="s.get('label')" placeholder="Instagram" />
+          </div>
+          <div class="col-md-8">
+            <input class="form-control" [formControl]="s.get('url')" placeholder="https://instagram.com/yourname" />
+          </div>
+          <div class="col-md-1 text-end">
+            <button type="button" class="btn btn-link text-danger" (click)="removeSocial(i)">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Photos -->
+      <div class="col-12">
+        <label class="form-label">Photos</label>
+        <input type="file" class="form-control" (change)="onPhotosSelected(($event.target).files)" multiple />
+        <div class="d-flex flex-wrap gap-2 mt-2">
+          <img *ngFor="let url of photoUrls" [src]="url" class="rounded" style="width:110px;height:84px;object-fit:cover;">
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <button class="btn btn-dark rounded-pill" [disabled]="saving">
+        {{ saving ? 'Saving…' : 'Save changes' }}
+      </button>
+    </div>
+  </form>
+</div>

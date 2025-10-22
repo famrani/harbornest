@@ -1,0 +1,12 @@
+/* Root-absolute path so Angular resolves correctly */
+.nob-hero {
+  background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.35)),
+              url('/assets/img/events/night-on-board/night-on-board1.jpg') center/cover no-repeat;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 1rem 2rem rgba(0,0,0,.08);
+}
+
+.object-fit-cover { object-fit: cover; }

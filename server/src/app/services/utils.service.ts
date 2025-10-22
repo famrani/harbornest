@@ -35,7 +35,7 @@ export class UtilsService {
 
   public session;
 
-  public firebaseAdmin = require('firebase-admin');
+//  public firebaseAdmin = require('firebase-admin');
   public serviceAccountFile = "";
   public databaseURL = "";
   public mdb;

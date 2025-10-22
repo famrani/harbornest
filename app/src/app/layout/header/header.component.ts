@@ -59,7 +59,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   logout() {
     this.layoutSvc.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
   }
 
   changeMode() {

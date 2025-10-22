@@ -1,0 +1,25 @@
+.badge-rounded { border-radius: 50rem; }
+.object-fit-cover { object-fit: cover; }
+.object-fit-contain { object-fit: contain; }
+
+.gallery-grid {
+  columns: 1;
+  column-gap: 1rem;
+}
+@media (min-width: 576px) { .gallery-grid { columns: 2; } }
+@media (min-width: 992px) { .gallery-grid { columns: 3; } }
+@media (min-width: 1400px){ .gallery-grid { columns: 4; } }
+
+.gallery-item {
+  break-inside: avoid;
+  margin: 0 0 1rem 0;
+  cursor: zoom-in;
+}
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.gallery-item figcaption {
+  padding-top: .25rem;
+}

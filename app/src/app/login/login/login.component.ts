@@ -52,7 +52,6 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewChecked {
   login() {
     this.loginSvc.localUtilsSvc.processLogin(this.loginForm.value.email, this.loginForm.value.password, undefined).then(
       data => {
-        console.log('data=', data);
         const value2 = this.utilsSvc.getUid();
         this.router.navigate(['/home']);
       },

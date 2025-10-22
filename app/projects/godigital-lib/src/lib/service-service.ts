@@ -63,6 +63,11 @@ export interface Users {
     socialnetwork: string;
     emailverified: boolean;
     state: string;
+    displayName: string;
+    createdTS: number;
+    modifiedTS: number;
+    photoURL: string;
+    provider: string;
 }
 
 export interface Bookings {
@@ -303,6 +308,14 @@ export class ServicesService {
                         const authString = 'auth';
                         this.utilSvc.mdb = this.storeDbSvc.backendFbRef[databaseString];
                         this.utilSvc.mauth = this.storeDbSvc.backendFbRef[authString];
+
+                        this.utilSvc.mauth.onAuthStateChanged((user) => {
+                            this.usersSvc.currentUser = user || null;
+                            this.usersSvc.authState$.next(user || null);
+                        });
+
+
+
                         this.backendFbObjects.forEach(fo => {
                             this.storeDbSvc.subscribeObject(this.utilSvc.backendFBstoreId, this.utilSvc.mdb, fo);
                         });
@@ -498,16 +511,8 @@ export class ServicesService {
             try {
                 const userf = await this.storeDbSvc.getObject(this.utilSvc.backendFBstoreId, this.utilSvc.mdb, OBJECTNAME.bnUsers, firebaseUid) as Users;
                 if (userf) {
-                    try {
-                        const userCredential = await auth.signInWithEmailAndPassword(userf.email, userf.password);
-                        const user = userCredential.user;
-                        this.setLoggedUser(userf);
-                        return ([AUTHSTATUS.SUCCESS, userf]);
-                    } catch (error) {
-                        console.error('❌ Login failed:', error);
-                        this.setLoggedUser(undefined);
-                        throw ([AUTHSTATUS.UNKNOWNERROR, error]);
-                    }
+                    this.setLoggedUser(userf);
+                    return ([AUTHSTATUS.SUCCESS, userf]);
                 } else {
                     console.error('❌ User not found in Realtime Database.');
                     this.setLoggedUser(undefined);

@@ -6,65 +6,70 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.WebServerComponent = void 0;
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
-const body_parser_1 = __importDefault(require("body-parser")); // (optional) express has built-ins now
+const fs_1 = __importDefault(require("fs"));
+const body_parser_1 = __importDefault(require("body-parser"));
 const http_1 = __importDefault(require("http"));
-const cors_1 = __importDefault(require("cors"));
-const FRONTEND_ORIGIN = 'http://localhost:8100';
-const corsOptions = {
-    origin: FRONTEND_ORIGIN,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-user-id'],
-    credentials: true,
-    optionsSuccessStatus: 204, // helps some legacy browsers with 204 vs 200
-};
+const https_1 = __importDefault(require("https"));
 class WebServerComponent {
     constructor(utilsSvc, stripeSvc) {
         this.utilsSvc = utilsSvc;
         this.stripeSvc = stripeSvc;
         this.app = (0, express_1.default)();
+        this.appHttp = (0, express_1.default)();
         this.router = express_1.default.Router();
     }
     async initWebServer() {
-        // ✅ resolve port with fallback and number coercion
-        const rawPort = this.utilsSvc.serverPort ?? process.env.PORT ?? 3000;
-        this.port = Number(rawPort);
-        if (Number.isNaN(this.port))
-            this.port = 3000;
-        // Middlewares
+        this.port = Number(this.utilsSvc.serverPort);
+        this.portHttp = this.port + 1;
+        // Apply middlewares
         this.setupMiddlewares();
-        // Routes
+        // Setup routes
+        this.router = express_1.default.Router();
         this.setRoutes();
         this.app.use('/', this.router);
-        // Static
-        const cwd = process.cwd();
-        this.app.use(express_1.default.static(path_1.default.join(cwd, './dist')));
-        this.app.use(express_1.default.static(path_1.default.join(cwd, './dist2')));
-        // SPA catch-all (after static)
-        this.app.get('/*', (_req, res) => {
-            res.sendFile(path_1.default.join(cwd, './dist/index.html'));
+        // Serve static files
+        const temp = process.cwd();
+        this.app.use(express_1.default.static(path_1.default.join(temp, './dist')));
+        this.app.use(express_1.default.static(path_1.default.join(temp, './dist2')));
+        // Catch-all for SPA routing (must be after static!)
+        this.app.get('/*', (req, res) => {
+            res.sendFile(path_1.default.join(temp, './dist/index.html'));
         });
-        // Start server
-        http_1.default.createServer(this.app).listen(this.port, () => {
-            console.log(`✅ HTTP server running on port ${this.port}`);
+        // HTTP -> HTTPS redirect
+        this.appHttp.use((req, res) => {
+            const host = req.headers.host?.replace(/:\d+$/, `:${this.port}`) || '';
+            res.redirect(301, `https://${host}${req.url}`);
+        });
+        // SSL options
+        const sslOptions = {
+            key: fs_1.default.readFileSync('./sslKeys/kamli.net/_.kamli.net.key'),
+            cert: fs_1.default.readFileSync('./sslKeys/kamli.net/_.kamli.net.crt'),
+            ca: [fs_1.default.readFileSync('./sslKeys/kamli.net/GandiCert.pem')],
+        };
+        // Start HTTPS server
+        https_1.default.createServer(sslOptions, this.app).listen(this.port, () => {
+            console.log(`✅ HTTPS server running on port ${this.port}`);
+        });
+        // Start HTTP server (redirects)
+        http_1.default.createServer(this.appHttp).listen(this.portHttp, () => {
+            console.log(`✅ HTTP redirect server running on port ${this.portHttp}`);
         });
     }
     setupMiddlewares() {
-        // ❌ remove the manual header block to avoid conflicts
-        // this.app.use((req, res, next) => { ... });
-        // ✅ proper CORS
-        this.app.use((0, cors_1.default)(corsOptions));
-        // ✅ explicit preflight handling (optional but useful)
-        this.app.options('*', (0, cors_1.default)(corsOptions));
-        // Body parsers (you can use express.json() / express.urlencoded() instead)
+        // CORS setup
+        this.app.use((req, res, next) => {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+            res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
+            res.setHeader('Access-Control-Allow-Credentials', 'true');
+            next();
+        });
+        // Body parsers
         this.app.use(body_parser_1.default.json());
         this.app.use(body_parser_1.default.urlencoded({ extended: true }));
-        // Or:
-        // this.app.use(express.json());
-        // this.app.use(express.urlencoded({ extended: true }));
     }
     setRoutes() {
         this.utilsSvc.setRoutes(this.router);
-        this.stripeSvc.setRoutes(this.router);
     }
 }
 exports.WebServerComponent = WebServerComponent;

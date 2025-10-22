@@ -9,8 +9,10 @@ import { RestaurantsComponent } from './restaurants/restaurants.component';
 import { TransportComponent } from './transport/transport.component';
 import { WellnessComponent } from './wellness/wellness.component';
 import { YogaComponent } from './yoga/yoga.component';
+import { PartnerhomeComponent } from './partnerhome/partnerhome.component';
 
 const routes: Routes = [
+  { path: 'partnerhome', component: PartnerhomeComponent },
   { path: 'djs', component: DjsComponent },
   { path: 'photographers', component: PhotographersComponent },
   { path: 'restaurants', component: RestaurantsComponent },

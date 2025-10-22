@@ -7,6 +7,7 @@ import { UsersService, Users, ServicesService, UtilsService, Locations, Boats, F
 import { Router } from '@angular/router';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
+import emailjs from '@emailjs/browser';
 
 //declare let what3words: any;
 declare let $: any;
@@ -117,47 +118,6 @@ export class LocalUtilsService {
 
   }
 
-  public geoLocalise(platform) {
-    if (platform && platform.is('cordova')) {
-      return new Promise((resolve, reject) => {
-        this.geolocation.getCurrentPosition().then((resp) => {
-          this.currentPosition.lat = resp.coords.latitude;
-          this.currentPosition.lng = resp.coords.longitude;
-
-          resolve(1);
-        }).catch((error) => {
-          console.log('error=', error);
-          reject(error);
-        });
-      });
-    } else {
-      return new Promise((resolve, reject) => {
-        if (!navigator.geolocation) {
-          reject('Geolocation is not supported by this browser.');
-        } else {
-          navigator.geolocation.getCurrentPosition(
-            position => resolve(position),
-            error => {
-              switch (error.code) {
-                case error.PERMISSION_DENIED:
-                  reject(new Error('User denied the request for Geolocation.'));
-                  break;
-                case error.POSITION_UNAVAILABLE:
-                  reject(new Error('Location information is unavailable.'));
-                  break;
-                case error.TIMEOUT:
-                  reject(new Error('The request to get user location timed out.'));
-                  break;
-                default:
-                  reject(new Error('An unknown error occurred.'));
-                  break;
-              }
-            });
-        }
-      });
-    }
-  }
-
   showModalNoButton(title: string, description: string) {
     this.errorMessage.title = title;
     this.errorMessage.description = description;
@@ -192,27 +152,9 @@ export class LocalUtilsService {
     this.showModaltwoButtonsO.next(null);
   }
 
-  loadStyle(styleName: string) {
-    const head = this.document.getElementsByTagName('head')[0];
-
-    const themeLink = this.document.getElementById(
-      'client-theme'
-    ) as HTMLLinkElement;
-    if (themeLink) {
-      themeLink.href = styleName;
-    } else {
-      const style = this.document.createElement('link');
-      style.id = 'client-theme';
-      style.rel = 'stylesheet';
-      style.href = `${styleName}`;
-
-      head.appendChild(style);
-    }
-  }
-
   processLogin(email: string | undefined, password: string | undefined, adnUserId: string | undefined) {
     return new Promise((resolve, reject) => {
-      this.mainSvc.loginOrValidateUser(email, password, adnUserId, false).then(
+      this.mainSvc.loginOrValidateUser(email, password, adnUserId, true).then(
         data => {
           resolve(data);
         },
@@ -230,54 +172,6 @@ export class LocalUtilsService {
     this.usersSvc.logout();
   }
 
-  getCityFromCoords(lat: number, lng: number): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${this.apiKey}`;
-      this.http.get<any>(url).subscribe(
-        data => resolve(data),
-        error => reject(error)
-      )
-    });
-  }
-
-  public getCurrentPosition(): Observable<any> {
-    return this.currentAddressO.asObservable();
-  }
-  public async setCurrentPosition(value: any) {
-    if (value && value.geometry && value.geometry.location) {
-      this.currentPosition = {
-        lat: value.geometry.location.lat,
-        lng: value.geometry.location.lng,
-        nearestCity: value.formatted_address
-      };
-      this.currentAddressO.next(this.currentPosition);
-    } else {
-      this.currentPosition = {
-        lat: 0,
-        lng: 0,
-        nearestCity: ''
-      };
-      this.currentAddressO.next(this.currentPosition);
-    }
-  }
-
-  async geoLocalise2() {
-    let loc = await this.geoLocalise(this.platform) as any;
-    if (loc && loc.coords && loc.coords.latitude) {
-      let city = await this.getCityFromCoords(loc.coords.latitude, loc.coords.longitude);
-      if (city && city.results && city.results[0] && city.results[0].formatted_address) {
-        this.setCurrentPosition(city.results[0]);
-      } else {
-        this.setCurrentPosition(undefined);
-      }
-    }
-    else {
-      this.setCurrentPosition(undefined);
-    }
-
-  }
-
-
   createExpressAccount(email: string, country = 'FR') {
     return this.http.post<any>(`${this.utilsSvc.backendURL}/stripe/expressaccount`, { email, country }, { withCredentials: true });
   }
@@ -285,4 +179,30 @@ export class LocalUtilsService {
   createExpressAccountLink(accountId: string, refreshUrl: string, returnUrl: string) {
     return this.http.post<any>(`${this.utilsSvc.backendURL}/stripe/expressaccount-link`, { accountId, refreshUrl, returnUrl }, { withCredentials: true });
   }
+
+  async sendEmail(
+    message_title: string,
+    message_content: string,
+    user_guest: string,
+    email_guest: string,
+    phone_guest: string
+  ) {
+    try {
+      const response = await emailjs.send("service_7vistjr", "template_bsdvkhk", {
+        message_title,
+        message_content,
+        user_guest,
+        email_guest,
+        phone_guest
+      }, {
+        publicKey: "fmG0xI5QYxEjMTsRk"
+      });
+
+      console.log("✅ Email sent successfully:", response.status, response.text);
+    } catch (error) {
+      console.error("❌ Failed to send email:", error);
+    }
+
+  }
+
 }

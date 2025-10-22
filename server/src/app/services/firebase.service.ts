@@ -16,21 +16,20 @@ export enum OBJECTNAME {
 
 
 export interface Users {
-  userId: string;
-  password: string;
-  fullname: string;
-  socialnetworklink: string;
-  stripeAccountId: string;
-  stripeAccountStatus: string;
-  mobileNo: string;
-  email: string;
-  address: string;
-  lat: string;
-  lng: string;
-  companyname: string;
-  country: string;
-  emailverified: boolean;
-  state: string;
+    userId: string;
+    password: string;
+    firstname: string;
+    lastname: string;
+    country: string;
+    stripeAccountId: string;
+    stripeAccountStatus: boolean;
+    email: string;
+    phone: string;
+    role: string;
+    photos: string;
+    socialnetwork: string;
+    emailverified: boolean;
+    state: string;
 }
 
 export interface Bookings {
@@ -100,8 +99,6 @@ export interface BookingData {
   listing_title: string;
   price: number;
 }
-
-
 
 @Injectable()
 export class StoreDbService {

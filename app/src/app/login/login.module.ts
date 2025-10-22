@@ -6,15 +6,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CookieModule } from 'ngx-cookie';
 
 import { LoginComponent } from './login/login.component';
-import { ForgotComponent } from './forgotpwd/forgotpwd.component';
 import { SignupComponent } from './signup/signup.component';
+import { ForgotPasswordComponent } from './forgotpwd/forgotpwd.component';
 
 import { GodigitalbModule } from 'godigital-lib';
 
 import { LoginRoutingModule } from './login.router.module';
 
 @NgModule({
-  declarations: [LoginComponent, SignupComponent, ForgotComponent],
+  declarations: [LoginComponent, SignupComponent, ForgotPasswordComponent],
   imports: [
     CommonModule,
     IonicModule,

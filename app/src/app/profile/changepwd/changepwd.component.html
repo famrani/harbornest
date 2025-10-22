@@ -1,0 +1,36 @@
+<div class="container py-5" style="max-width:560px">
+  <h1 class="h4 mb-3">Change your password</h1>
+
+  <div *ngIf="success" class="alert alert-success">Password updated successfully.</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="mb-3">
+      <label class="form-label">Current password</label>
+      <input type="password" class="form-control" formControlName="oldPassword"
+             [class.is-invalid]="f.oldPassword.touched && f.oldPassword.invalid" />
+      <div class="invalid-feedback" *ngIf="f.oldPassword.touched && f.oldPassword.hasError('required')">Required.</div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">New password</label>
+      <input type="password" class="form-control" formControlName="newPassword"
+             [class.is-invalid]="f.newPassword.touched && f.newPassword.invalid" />
+      <div class="invalid-feedback" *ngIf="f.newPassword.touched && f.newPassword.hasError('required')">Required.</div>
+      <div class="invalid-feedback" *ngIf="f.newPassword.touched && f.newPassword.hasError('minlength')">Min 6 chars.</div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Confirm new password</label>
+      <input type="password" class="form-control" formControlName="confirm"
+             [class.is-invalid]="f.confirm.touched && f.confirm.invalid" />
+      <div class="invalid-feedback" *ngIf="f.confirm.touched && f.confirm.hasError('required')">Required.</div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-dark rounded-pill" [disabled]="form.invalid || sending">
+        {{ sending ? 'Updating…' : 'Update password' }}
+      </button>
+    </div>
+  </form>
+</div>

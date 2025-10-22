@@ -1,0 +1,41 @@
+{
+  "name": "kamliads",
+  "version": "1.0.0",
+  "description": "kamliads server",
+  "main": "gulpfile.js",
+  "target": "ES2020",
+  "module": "nodenext",
+  "dependencies": {
+    "@emailjs/nodejs": "^5.0.2",
+    "@nestjs/common": "^11.1.0",
+    "@sendgrid/mail": "^8.1.6",
+    "@types/node": "^22.15.3",
+    "@vonage/server-sdk": "^3.21.0",
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "email-templates": "^12.0.2",
+    "express": "^4.18.2",
+    "express-rate-limit": "^8.1.0",
+    "firebase": "^11.6.1",
+    "firebase-admin": "^13.3.0",
+    "getmac": "^6.6.0",
+    "gulp": "^5.0.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-typescript": "^5.0.1",
+    "json-rules-engine": "^7.3.1",
+    "node-fetch": "^2.7.0",
+    "rxjs": "^7.8.2",
+    "rxjs-compat": "^6.6.7",
+    "stripe": "^18.0.0",
+    "tls": "^0.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "uuid": "^11.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "faycal amrani",
+  "license": "ISC"
+}

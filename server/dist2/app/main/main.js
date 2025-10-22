@@ -44,9 +44,7 @@ class MainComponent {
         const listAllUsers = (nextPageToken) => {
             let wnUser;
             // List batch of users, 1000 at a time.
-            this.utilSvc.firebaseAdmin
-                .auth()
-                .listUsers(1000, nextPageToken)
+            this.storeDbSvc.auth.listUsers(1000, nextPageToken)
                 .then(async (listUsersResult) => {
                 console.log('listUsersResult=', listUsersResult);
             })

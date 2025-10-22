@@ -8,7 +8,7 @@
         <input [class]="forgotpwdForm.controls['email'].invalid ?'form-control error':'form-control'"
         type="text" required="" placeholder="email" formControlName="email" />
       </div>
-      <button class="btn btn-primary w-100 my-4" type="submit" [disabled]="loginForm.invalid"
+      <button class="btn btn-primary w-100 my-4" type="submit" [disabled]="forgotpwdForm.invalid"
       (click)="forgotpwd()">Send Reset Link</button>
       <div class="text-center small">
         <a [routerLink]="['/login']">Back to Login</a>
@@ -29,7 +29,7 @@
         We've sent you an email with instructions to reset your password.
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" routerLink="/home">OK</button>
       </div>
     </div>
   </div>

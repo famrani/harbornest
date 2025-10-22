@@ -1,0 +1,288 @@
+<!-- HERO -->
+<section class="sc-hero text-white">
+  <div class="container py-5">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <span class="badge bg-light text-dark rounded-pill mb-3">Cap d’Antibes • Golden Hour</span>
+        <h1 class="display-5 fw-bold">Sunset Cruise & Champagne</h1>
+        <p class="lead mb-3">
+          Le plus beau moment de la journée, bercés par une lumière dorée.
+          Embarquez sur notre Lagoon 40 pour un apéritif chic au coucher du soleil — service attentionné,
+          musique & bulles bien fraîches.
+        </p>
+        <ul class="list-unstyled d-flex flex-wrap gap-3 mb-4 small">
+          <li><i class="bi bi-wifi me-1"></i> Wi-Fi à bord</li>
+          <li><i class="bi bi-music-note-beamed me-1"></i> Musique Bluetooth</li>
+          <li><i class="bi bi-cup-straw me-1"></i> Softs & eau inclus</li>
+          <li><i class="bi bi-camera me-1"></i> Photos souvenir</li>
+          <li><i class="bi bi-shield-check me-1"></i> Équipage & sécurité</li>
+        </ul>
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-primary btn-lg rounded-pill" [routerLink]="['/book/sunset']">
+            <i class="bi bi-calendar2-check me-1"></i>Réserver
+          </a>
+          <a class="btn btn-outline-light rounded-pill" href="#gallery">Voir les photos</a>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="ratio ratio-4x3 rounded-4 overflow-hidden shadow-lg border border-light-subtle">
+          <img [src]="heroImage" class="w-100 h-100 object-fit-cover" alt="Sunset Cruise & Champagne">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POURQUOI -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <h2 class="h3 fw-bold mb-3">Pourquoi notre Sunset Cruise ?</h2>
+        <p class="text-muted">
+          Cap sur le meilleur spot selon la météo : Baie des Milliardaires, Juan-les-Pins, ou face au vieil Antibes.
+          Ambiance cosy, hospitalité à la française, et un cadre photo unique pour marquer l’instant.
+        </p>
+        <div class="row row-cols-1 row-cols-md-2 g-3 mt-3">
+          <div class="col d-flex gap-3">
+            <i class="bi bi-sunset fs-3 text-primary"></i>
+            <div>
+              <div class="fw-semibold">Golden hour</div>
+              <div class="small text-muted">Couchers de soleil spectaculaires sur la Côte.</div>
+            </div>
+          </div>
+          <div class="col d-flex gap-3">
+            <i class="bi bi-champagne fs-3 text-primary"></i>
+            <div>
+              <div class="fw-semibold">Champagne & softs</div>
+              <div class="small text-muted">Bulles en option, softs inclus. Verre au bon frais.</div>
+            </div>
+          </div>
+          <div class="col d-flex gap-3">
+            <i class="bi bi-music-note-list fs-3 text-primary"></i>
+            <div>
+              <div class="fw-semibold">Ambiance musicale</div>
+              <div class="small text-muted">Bluetooth, playlists chill ou romantique.</div>
+            </div>
+          </div>
+          <div class="col d-flex gap-3">
+            <i class="bi bi-camera2 fs-3 text-primary"></i>
+            <div>
+              <div class="fw-semibold">Souvenirs garantis</div>
+              <div class="small text-muted">Photos/vidéos légères incluses (options pro).</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="col-lg-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <h3 class="h6 fw-bold mb-3">Infos clés</h3>
+            <ul class="list-unstyled small text-muted mb-0">
+              <li class="mb-2"><i class="bi bi-people me-1"></i> 2 à 10 pers. (selon config)</li>
+              <li class="mb-2"><i class="bi bi-clock me-1"></i> 2h • 2h30 • 3h</li>
+              <li class="mb-2"><i class="bi bi-geo-alt me-1"></i> Antibes • Juan-les-Pins</li>
+              <li class="mb-2"><i class="bi bi-umbrella me-1"></i> Plaids & éclairage doux</li>
+              <li class="mb-2"><i class="bi bi-water me-1"></i> Mouillage calme, navigation courte</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- FORMATS -->
+<section class="py-5 bg-light border-top border-bottom">
+  <div class="container">
+    <h2 class="h3 fw-bold mb-4">Formats de sortie</h2>
+    <div class="row g-4">
+      <div class="col-md-4" *ngFor="let c of cards">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="ratio ratio-16x9">
+            <img [src]="c.img" class="w-100 h-100 object-fit-cover rounded-top" [alt]="c.title">
+          </div>
+          <div class="card-body">
+            <h3 class="h6 fw-bold">{{ c.title }}</h3>
+            <p class="small text-muted mb-0">{{ c.desc }}</p>
+          </div>
+          <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center">
+            <span class="badge text-bg-dark rounded-pill">{{ c.duration }}</span>
+            <a class="btn btn-outline-secondary btn-sm rounded-pill" [routerLink]="['/book/sunset']">Réserver</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INCLUS / OPTIONS -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="h3 fw-bold mb-4">Inclus & options</h2>
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <div class="row row-cols-2 row-cols-md-3 g-3">
+          <div class="col" *ngFor="let inc of inclusions">
+            <div class="border rounded-3 p-3 h-100 text-center">
+              <i [class]="inc.icon + ' fs-4 d-block mb-2 text-primary'"></i>
+              <div class="fw-semibold small">{{ inc.title }}</div>
+              <div class="text-muted small">{{ inc.note }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="col-lg-5">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <h3 class="h6 fw-bold mb-3">Options sur demande</h3>
+            <ul class="list-group list-group-flush small">
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Champagne/Rosé premium</span><span class="fw-semibold">sur devis</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Plateau apéritif</span><span class="fw-semibold">sur devis</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Photographe/vidéo</span><span class="fw-semibold">sur devis</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Décor romantique</span><span class="fw-semibold">sur devis</span>
+              </li>
+            </ul>
+            <div class="text-center mt-3">
+              <a class="btn btn-dark btn-sm rounded-pill" [routerLink]="['/book/sunset']">Demander un devis</a>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- TARIFS INDICATIFS -->
+<section class="py-5 bg-light border-top border-bottom">
+  <div class="container">
+    <h2 class="h3 fw-bold mb-4">Tarifs indicatifs (privatisation Lagoon 40)</h2>
+    <div class="row g-4">
+      <div class="col-md-4" *ngFor="let p of pricing">
+        <div class="card h-100 border-0 shadow-sm text-center">
+          <div class="card-body">
+            <div class="small text-muted">{{ p.label }}</div>
+            <div class="display-6 fw-bold my-2">€{{ p.price }}</div>
+            <div class="text-muted small">{{ p.includes }}</div>
+          </div>
+          <div class="card-footer bg-white border-0">
+            <a class="btn btn-outline-secondary rounded-pill" [routerLink]="['/book/sunset']">Obtenir un devis</a>
+          </div>
+        </div>
+      </div>
+      <p class="small text-muted mt-2">
+        * Prix variables selon date, durée, saison et options. Devis sous 24h.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- AVIS -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="h3 fw-bold mb-4">Ils ont adoré</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div class="col" *ngFor="let t of testimonials">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="text-warning mb-2">
+              <i class="bi bi-star-fill" *ngFor="let s of [1,2,3,4,5]"></i>
+            </div>
+            <div class="fw-semibold mb-1">{{ t.title }}</div>
+            <div class="small text-muted">{{ t.text }}</div>
+          </div>
+          <div class="card-footer bg-white border-0 small text-muted">— {{ t.author }} • {{ t.group }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIE -->
+<section id="gallery" class="py-5 bg-light border-top">
+  <div class="container">
+    <h2 class="h3 fw-bold mb-4">Galerie Sunset</h2>
+    <div class="row g-3">
+      <div class="col-6 col-md-4 col-lg-3" *ngFor="let g of gallery">
+        <div class="ratio ratio-4x3 rounded-3 overflow-hidden card-hover">
+          <img [src]="g" class="w-100 h-100 object-fit-cover" alt="Sunset Cruise">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA + FORM -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-6">
+        <h2 class="h3 fw-bold mb-3">Votre croisière au coucher du soleil</h2>
+        <p class="text-muted">
+          Dites-nous la date, le nombre de participants et vos envies (champagne, plateau apéritif,
+          playlist…). Nous revenons vers vous avec une proposition sur-mesure.
+        </p>
+        <ul class="small text-muted">
+          <li>Réponse sous 24h</li>
+          <li>Acompte possible</li>
+          <li>Flexibilité météo</li>
+        </ul>
+      </div>
+      <div class="col-lg-6">
+        <form class="card border-0 shadow-sm" (ngSubmit)="requestQuote()">
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label small">Nom / Groupe</label>
+                <input class="form-control" [(ngModel)]="form.name" name="name" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Email</label>
+                <input type="email" class="form-control" [(ngModel)]="form.email" name="email" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Téléphone</label>
+                <input class="form-control" [(ngModel)]="form.phone" name="phone">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Date souhaitée</label>
+                <input type="date" class="form-control" [(ngModel)]="form.date" name="date">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Participants</label>
+                <input type="number" min="2" class="form-control" [(ngModel)]="form.guests" name="guests">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Durée</label>
+                <select class="form-select" [(ngModel)]="form.duration" name="duration">
+                  <option>2h</option>
+                  <option>2h30</option>
+                  <option>3h</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label small">Envies/options</label>
+                <textarea rows="3" class="form-control" [(ngModel)]="form.message" name="message"
+                  placeholder="Champagne, plateau apéritif, playlist…"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer bg-white border-0 d-flex justify-content-end">
+            <button class="btn btn-dark rounded-pill" [disabled]="sending">
+              {{ sending ? 'Envoi…' : 'Demander un devis' }}
+            </button>
+          </div>
+        </form>
+        <div *ngIf="ok" class="alert alert-success mt-3">Merci ! Nous revenons vers vous très vite.</div>
+        <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+      </div>
+    </div>
+  </div>
+</section>

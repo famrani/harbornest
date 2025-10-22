@@ -49,7 +49,7 @@
       "messagingSenderId": "804337583879",
       "appId": "1:804337583879:web:f1494f38760981a7"
     },
-    "backendURL": "https://6874-2a02-842b-4b7-d801-92e-2d78-e0fa-6a5c.ngrok-free.app",
+    "backendURL": "http://localhost:2000",
     "refreshUrl": "/stripe-account-failed",
     "returnUrl": "/stripe-account-confirm"
   },

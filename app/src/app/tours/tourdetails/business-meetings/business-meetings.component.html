@@ -1,0 +1,288 @@
+<!-- HERO -->
+<section class="bm-hero text-white">
+  <div class="container py-5">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <span class="badge bg-light text-dark rounded-pill mb-3">Réunions & Rendez-vous – Côte d’Azur</span>
+        <h1 class="display-5 fw-bold">Business Meetings… avec vue sur mer</h1>
+        <p class="lead mb-3">
+          Offrez à vos clients ou équipes un cadre inspirant et confidentiel. Notre Lagoon 40 devient votre salon
+          professionnel : Wi-Fi haut débit, écran, café d’accueil, boissons fraîches, musique douce et un équipage discret.
+        </p>
+        <ul class="list-unstyled d-flex flex-wrap gap-3 mb-4 small">
+          <li><i class="bi bi-wifi me-1"></i> Wi-Fi haut débit</li>
+          <li><i class="bi bi-display me-1"></i> Écran & HDMI</li>
+          <li><i class="bi bi-cup-hot me-1"></i> Café & softs</li>
+          <li><i class="bi bi-shield-lock me-1"></i> Discrétion & sécurité</li>
+          <li><i class="bi bi-music-note-beamed me-1"></i> Ambiance feutrée</li>
+        </ul>
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-primary btn-lg rounded-pill" [routerLink]="['/book/meetings']">
+            <i class="bi bi-calendar2-check me-1"></i>Demander un créneau
+          </a>
+          <a class="btn btn-outline-light rounded-pill" href="#gallery">Voir les photos</a>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="ratio ratio-4x3 rounded-4 overflow-hidden shadow-lg border border-light-subtle">
+          <img [src]="heroImage" class="w-100 h-100 object-fit-cover" alt="Réunion d’affaires à bord">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POURQUOI -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <h2 class="h3 fw-bold mb-3">Pourquoi organiser votre réunion sur HarborNest ?</h2>
+        <p class="text-muted">
+          En marina, au mouillage abrité ou petite navigation panoramique — vous choisissez l’ambiance. Nous préparons
+          l’espace, la connectivité et les rafraîchissements. Un cadre premium qui favorise la concentration et crée
+          un souvenir marquant chez vos invités.
+        </p>
+        <div class="row row-cols-1 row-cols-md-2 g-3 mt-3">
+          <div class="col d-flex gap-3">
+            <i class="bi bi-router fs-3 text-primary"></i>
+            <div>
+              <div class="fw-semibold">Connecté & prêt</div>
+              <div class="small text-muted">Fibre/4G+, Wi-Fi, prises 220V, USB, écran 32–40” selon config.</div>
+            </div>
+          </div>
+          <div class="col d-flex gap-3">
+            <i class="bi bi-person-workspace fs-3 text-primary"></i>
+            <div>
+              <div class="fw-semibold">Confort & ergonomie</div>
+              <div class="small text-muted">Carré lumineux, cockpit ombragé, tables modulables.</div>
+            </div>
+          </div>
+          <div class="col d-flex gap-3">
+            <i class="bi bi-shield-check fs-3 text-primary"></i>
+            <div>
+              <div class="fw-semibold">Confidentiel</div>
+              <div class="small text-muted">Équipage discret, brief sécurité, cadre privatisé.</div>
+            </div>
+          </div>
+          <div class="col d-flex gap-3">
+            <i class="bi bi-cup-straw fs-3 text-primary"></i>
+            <div>
+              <div class="fw-semibold">Hospitalité</div>
+              <div class="small text-muted">Café d’accueil, eaux, softs, options traiteur.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="col-lg-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <h3 class="h6 fw-bold mb-3">Infos clés</h3>
+            <ul class="list-unstyled small text-muted mb-0">
+              <li class="mb-2"><i class="bi bi-people me-1"></i> 2 à 10 participants (jusqu’à 12 debout)</li>
+              <li class="mb-2"><i class="bi bi-clock me-1"></i> 1h30 • 3h • 1/2 journée</li>
+              <li class="mb-2"><i class="bi bi-geo-alt me-1"></i> Antibes, Cap d’Antibes, Lérins</li>
+              <li class="mb-2"><i class="bi bi-display me-1"></i> Écran/HDMI, AirPlay/Bluetooth audio</li>
+              <li class="mb-2"><i class="bi bi-cup-hot me-1"></i> Café & softs inclus</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- CRÉNEAUX / FORMATS -->
+<section class="py-5 bg-light border-top border-bottom">
+  <div class="container">
+    <h2 class="h3 fw-bold mb-4">Formats & créneaux</h2>
+    <div class="row g-4">
+      <div class="col-md-4" *ngFor="let c of cards">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="ratio ratio-16x9">
+            <img [src]="c.img" class="w-100 h-100 object-fit-cover rounded-top" [alt]="c.title">
+          </div>
+          <div class="card-body">
+            <h3 class="h6 fw-bold">{{ c.title }}</h3>
+            <p class="small text-muted mb-0">{{ c.desc }}</p>
+          </div>
+          <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center">
+            <span class="badge text-bg-dark rounded-pill">{{ c.duration }}</span>
+            <a class="btn btn-outline-secondary btn-sm rounded-pill" [routerLink]="['/book/meetings']">Réserver</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INCLUS / OPTIONS -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="h3 fw-bold mb-4">Inclus & options</h2>
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <div class="row row-cols-2 row-cols-md-3 g-3">
+          <div class="col" *ngFor="let inc of inclusions">
+            <div class="border rounded-3 p-3 h-100 text-center">
+              <i [class]="inc.icon + ' fs-4 d-block mb-2 text-primary'"></i>
+              <div class="fw-semibold small">{{ inc.title }}</div>
+              <div class="text-muted small">{{ inc.note }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="col-lg-5">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <h3 class="h6 fw-bold mb-3">Options sur demande</h3>
+            <ul class="list-group list-group-flush small">
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Petit-déjeuner/pauses (traiteur)</span><span class="fw-semibold">sur devis</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Conf call kit (mic/speaker pro)</span><span class="fw-semibold">+ €25</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Décor branding (roll-up, logo)</span><span class="fw-semibold">sur devis</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Photographe/vidéo</span><span class="fw-semibold">sur devis</span>
+              </li>
+            </ul>
+            <div class="text-center mt-3">
+              <a class="btn btn-dark btn-sm rounded-pill" [routerLink]="['/book/meetings']">Demander un devis</a>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- TARIFS INDICATIFS -->
+<section class="py-5 bg-light border-top border-bottom">
+  <div class="container">
+    <h2 class="h3 fw-bold mb-4">Tarifs indicatifs (privatisation Lagoon 40)</h2>
+    <div class="row g-4">
+      <div class="col-md-4" *ngFor="let p of pricing">
+        <div class="card h-100 border-0 shadow-sm text-center">
+          <div class="card-body">
+            <div class="small text-muted">{{ p.label }}</div>
+            <div class="display-6 fw-bold my-2">€{{ p.price }}</div>
+            <div class="text-muted small">{{ p.includes }}</div>
+          </div>
+          <div class="card-footer bg-white border-0">
+            <a class="btn btn-outline-secondary rounded-pill" [routerLink]="['/book/meetings']">Obtenir un devis</a>
+          </div>
+        </div>
+      </div>
+      <p class="small text-muted mt-2">
+        * Prix variables selon date, durée, configuration et options. Devis sous 24h.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- AVIS -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="h3 fw-bold mb-4">Ce que disent nos clients</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div class="col" *ngFor="let t of testimonials">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="text-warning mb-2">
+              <i class="bi bi-star-fill" *ngFor="let s of [1,2,3,4,5]"></i>
+            </div>
+            <div class="fw-semibold mb-1">{{ t.title }}</div>
+            <div class="small text-muted">{{ t.text }}</div>
+          </div>
+          <div class="card-footer bg-white border-0 small text-muted">— {{ t.author }} • {{ t.company }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIE -->
+<section id="gallery" class="py-5 bg-light border-top">
+  <div class="container">
+    <h2 class="h3 fw-bold mb-4">Galerie Business</h2>
+    <div class="row g-3">
+      <div class="col-6 col-md-4 col-lg-3" *ngFor="let g of gallery">
+        <div class="ratio ratio-4x3 rounded-3 overflow-hidden card-hover">
+          <img [src]="g" class="w-100 h-100 object-fit-cover" alt="Meeting à bord">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA + FORM -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-6">
+        <h2 class="h3 fw-bold mb-3">Planifions votre prochaine réunion</h2>
+        <p class="text-muted">
+          Partagez la date, le nombre de participants et vos besoins (présentation, call, catering…). Nous préparons
+          une proposition sur-mesure.
+        </p>
+        <ul class="small text-muted">
+          <li>Réponse sous 24h</li>
+          <li>Facturation & acompte possibles</li>
+          <li>Flexibilité météo</li>
+        </ul>
+      </div>
+      <div class="col-lg-6">
+        <form class="card border-0 shadow-sm" (ngSubmit)="requestQuote()">
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label small">Nom / Société</label>
+                <input class="form-control" [(ngModel)]="form.name" name="name" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Email</label>
+                <input type="email" class="form-control" [(ngModel)]="form.email" name="email" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Téléphone</label>
+                <input class="form-control" [(ngModel)]="form.phone" name="phone">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Date souhaitée</label>
+                <input type="date" class="form-control" [(ngModel)]="form.date" name="date">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Participants</label>
+                <input type="number" min="2" class="form-control" [(ngModel)]="form.guests" name="guests">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Format</label>
+                <select class="form-select" [(ngModel)]="form.duration" name="duration">
+                  <option>1h30</option>
+                  <option>3h</option>
+                  <option>Demi-journée</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label small">Besoins techniques</label>
+                <textarea rows="3" class="form-control" [(ngModel)]="form.message" name="message"
+                  placeholder="Écran, HDMI, AirPlay, visio, traiteur, branding…"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer bg-white border-0 d-flex justify-content-end">
+            <button class="btn btn-dark rounded-pill" [disabled]="sending">
+              {{ sending ? 'Envoi…' : 'Demander un devis' }}
+            </button>
+          </div>
+        </form>
+        <div *ngIf="ok" class="alert alert-success mt-3">Merci ! Nous revenons vers vous très vite.</div>
+        <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+      </div>
+    </div>
+  </div>
+</section>

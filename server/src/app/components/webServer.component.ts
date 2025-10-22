@@ -1,77 +1,86 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
-import bodyParser from 'body-parser'; // (optional) express has built-ins now
+import fs from 'fs';
+import bodyParser from 'body-parser';
 import http from 'http';
-import cors from 'cors';
+import https from 'https';
 import { UtilsService } from '../services/utils.service';
 import { StripeService } from '../services/stripeAdn';
 
-const FRONTEND_ORIGIN = 'http://localhost:8100';
-
-const corsOptions: cors.CorsOptions = {
-  origin: FRONTEND_ORIGIN,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-user-id'],
-  credentials: true,
-  optionsSuccessStatus: 204, // helps some legacy browsers with 204 vs 200
-};
-
 export class WebServerComponent {
-  private app = express();
-  private router = express.Router();
-  private port!: number; // ✅ definite assignment (or initialize in constructor)
+    private app = express();
+    private appHttp = express();
+    private port: number;
+    private portHttp: number;
+    private router = express.Router();
 
-  constructor(private utilsSvc: UtilsService, private stripeSvc: StripeService) {}
+  constructor(
+    private utilsSvc: UtilsService, 
+    private stripeSvc: StripeService,
+  ) {}
 
-  async initWebServer(): Promise<void> {
-    // ✅ resolve port with fallback and number coercion
-    const rawPort = this.utilsSvc.serverPort ?? process.env.PORT ?? 3000;
-    this.port = Number(rawPort);
-    if (Number.isNaN(this.port)) this.port = 3000;
+    async initWebServer(): Promise<void> {
+        this.port = Number(this.utilsSvc.serverPort);
+        this.portHttp = this.port + 1;
 
-    // Middlewares
-    this.setupMiddlewares();
+        // Apply middlewares
+        this.setupMiddlewares();
 
-    // Routes
-    this.setRoutes();
-    this.app.use('/', this.router);
+        // Setup routes
+        this.router = express.Router();
+        this.setRoutes();
+        this.app.use('/', this.router);
 
-    // Static
-    const cwd = process.cwd();
-    this.app.use(express.static(path.join(cwd, './dist')));
-    this.app.use(express.static(path.join(cwd, './dist2')));
+        // Serve static files
+        const temp = process.cwd();
+        this.app.use(express.static(path.join(temp, './dist')));
+        this.app.use(express.static(path.join(temp, './dist2')));
 
-    // SPA catch-all (after static)
-    this.app.get('/*', (_req: Request, res: Response) => {
-      res.sendFile(path.join(cwd, './dist/index.html'));
-    });
+        // Catch-all for SPA routing (must be after static!)
+        this.app.get('/*', (req: Request, res: Response) => {
+            res.sendFile(path.join(temp, './dist/index.html'));
+        });
 
-    // Start server
-    http.createServer(this.app).listen(this.port, () => {
-      console.log(`✅ HTTP server running on port ${this.port}`);
-    });
-  }
+        // HTTP -> HTTPS redirect
+        this.appHttp.use((req: Request, res: Response) => {
+            const host = req.headers.host?.replace(/:\d+$/, `:${this.port}`) || '';
+            res.redirect(301, `https://${host}${req.url}`);
+        });
 
-  private setupMiddlewares(): void {
-    // ❌ remove the manual header block to avoid conflicts
-    // this.app.use((req, res, next) => { ... });
+        // SSL options
+        const sslOptions = {
+            key: fs.readFileSync('./sslKeys/kamli.net/_.kamli.net.key'),
+            cert: fs.readFileSync('./sslKeys/kamli.net/_.kamli.net.crt'),
+            ca: [fs.readFileSync('./sslKeys/kamli.net/GandiCert.pem')],
+        };
 
-    // ✅ proper CORS
-    this.app.use(cors(corsOptions));
+        // Start HTTPS server
+        https.createServer(sslOptions, this.app).listen(this.port, () => {
+            console.log(`✅ HTTPS server running on port ${this.port}`);
+        });
 
-    // ✅ explicit preflight handling (optional but useful)
-    this.app.options('*', cors(corsOptions));
+        // Start HTTP server (redirects)
+        http.createServer(this.appHttp).listen(this.portHttp, () => {
+            console.log(`✅ HTTP redirect server running on port ${this.portHttp}`);
+        });
+    }
 
-    // Body parsers (you can use express.json() / express.urlencoded() instead)
-    this.app.use(bodyParser.json());
-    this.app.use(bodyParser.urlencoded({ extended: true }));
-    // Or:
-    // this.app.use(express.json());
-    // this.app.use(express.urlencoded({ extended: true }));
-  }
+    private setupMiddlewares(): void {
+        // CORS setup
+        this.app.use((req: Request, res: Response, next: NextFunction) => {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+            res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
+            res.setHeader('Access-Control-Allow-Credentials', 'true');
+            next();
+        });
 
-  private setRoutes(): void {
-    this.utilsSvc.setRoutes(this.router);
-    this.stripeSvc.setRoutes(this.router);
-  }
+        // Body parsers
+        this.app.use(bodyParser.json());
+        this.app.use(bodyParser.urlencoded({ extended: true }));
+    }
+
+    private setRoutes(): void {
+        this.utilsSvc.setRoutes(this.router);
+    }
 }

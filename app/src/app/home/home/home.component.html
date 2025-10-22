@@ -1,0 +1,212 @@
+<!-- Notice bar -->
+<div class="border-bottom bg-body-tertiary">
+  <div class="container py-2 d-flex justify-content-between align-items-center gap-3 small">
+    <div class="d-flex align-items-center gap-2">
+      <i class="bi bi-megaphone"></i>
+      <span>Welcome aboard HarborNest — premium charter with hospitality at heart.</span>
+    </div>
+    <a class="text-decoration-none" routerLink="/book/sunset">
+      Book your date <i class="bi bi-arrow-right-short"></i>
+    </a>
+  </div>
+</div>
+
+<!-- Hero: concept-first -->
+<header class="border-bottom">
+  <div class="container py-5">
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-6">
+        <h1 class="display-6 fw-bold">A different kind of boat trip</h1>
+        <p class="lead text-muted mb-3">
+          Not just a ride—Hospitality, stories, and sea breeze. Enjoy great music, coffee & drinks,
+          light breakfast or apéro, onboard photos, and a guided discovery of Nice, Antibes and the Lérins area.
+        </p>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="badge text-bg-dark badge-rounded">Premium Charter</span>
+          <span class="badge text-bg-light border badge-rounded"><i class="bi bi-wifi me-1"></i>High-speed Wi-Fi</span>
+          <span class="badge text-bg-light border badge-rounded"><i class="bi bi-music-note-beamed me-1"></i>Curated Music</span>
+          <span class="badge text-bg-light border badge-rounded"><i class="bi bi-camera me-1"></i>Photos Included</span>
+          <span class="badge text-bg-light border badge-rounded"><i class="bi bi-cup-hot me-1"></i>Coffee & Breakfast</span>
+          <span class="badge text-bg-light border badge-rounded"><i class="bi bi-emoji-sunglasses me-1"></i>Friendly Crew</span>
+        </div>
+        <div class="d-flex gap-2">
+          <a class="btn btn-dark rounded-pill" routerLink="/book/sunset">
+            <i class="bi bi-calendar2-check me-1"></i>Book a date
+          </a>
+          <a class="btn btn-outline-secondary rounded-pill" routerLink="/tours">See our tours</a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="ratio ratio-16x9 rounded-4 overflow-hidden shadow-sm">
+          <img src="assets/img/home/hero.jpg" class="w-100 h-100 object-fit-cover" alt="HarborNest hospitality at sea">
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="py-5">
+  <div class="container">
+
+    <!-- Onboard hospitality -->
+    <section class="mb-5">
+      <h2 class="h5 mb-3">Onboard Experience</h2>
+      <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3">
+        <div class="col">
+          <div class="border rounded-3 p-3 h-100 text-center card-hover">
+            <i class="bi bi-shield-check fs-4 d-block mb-2"></i>
+            <div class="fw-semibold">Clean & Safe</div>
+            <div class="small text-muted">Well-kept catamaran, safety brief.</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="border rounded-3 p-3 h-100 text-center card-hover">
+            <i class="bi bi-wifi fs-4 d-block mb-2"></i>
+            <div class="fw-semibold">Fast Wi-Fi</div>
+            <div class="small text-muted">Stream, share, work if needed.</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="border rounded-3 p-3 h-100 text-center card-hover">
+            <i class="bi bi-cup-hot fs-4 d-block mb-2"></i>
+            <div class="fw-semibold">Coffee & Breakfast</div>
+            <div class="small text-muted">Or apéritif at sunset.</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="border rounded-3 p-3 h-100 text-center card-hover">
+            <i class="bi bi-music-note-beamed fs-4 d-block mb-2"></i>
+            <div class="fw-semibold">Curated Music</div>
+            <div class="small text-muted">Chill playlist or your own.</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="border rounded-3 p-3 h-100 text-center card-hover">
+            <i class="bi bi-camera fs-4 d-block mb-2"></i>
+            <div class="fw-semibold">Photos Included</div>
+            <div class="small text-muted">We capture your moments.</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="border rounded-3 p-3 h-100 text-center card-hover">
+            <i class="bi bi-map fs-4 d-block mb-2"></i>
+            <div class="fw-semibold">Local Stories</div>
+            <div class="small text-muted">History & tips about the coast.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Signature tours / concept CTA -->
+    <section class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h5 mb-0">Signature Trips</h2>
+        <a class="small text-decoration-none" routerLink="/tours">Explore all</a>
+      </div>
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+          <div class="card border-0 shadow-sm h-100 card-hover" routerLink="/tours/sunset-cruise">
+            <div class="ratio ratio-4x3">
+              <img src="assets/img/events/sunset/sunset1.jpg" class="w-100 h-100 object-fit-cover rounded-top" alt="Sunset Sail">
+            </div>
+            <div class="card-body">
+              <h3 class="h6 mb-1">Sunset Sail & Apéritif</h3>
+              <div class="small text-muted">Antibes • 2.5h • Photos & music</div>
+            </div>
+            <div class="card-footer bg-white border-0 d-flex justify-content-between">
+              <div class="text-muted small">With skipper</div>
+              <a class="btn btn-outline-secondary btn-sm rounded-pill" routerLink="/book">Book</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card border-0 shadow-sm h-100 card-hover" routerLink="/tours/lerins-day-escape">
+            <div class="ratio ratio-4x3">
+              <img src="assets/img/events/leyrins/leyrins1.jpg" class="w-100 h-100 object-fit-cover rounded-top" alt="Day Escape Lérins">
+            </div>
+            <div class="card-body">
+              <h3 class="h6 mb-1">Day Escape — Lérins Islands</h3>
+              <div class="small text-muted">Cannes • 4–8h • Snorkel & lunch</div>
+            </div>
+            <div class="card-footer bg-white border-0 d-flex justify-content-between">
+              <div class="text-muted small">With/without skipper</div>
+              <a class="btn btn-outline-secondary btn-sm rounded-pill" routerLink="/book">Book</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card border-0 shadow-sm h-100 card-hover">
+            <div class="ratio ratio-4x3">
+              <img src="assets/img/events/cap-antibes/cap-antibes1.jpg" class="w-100 h-100 object-fit-cover rounded-top" alt="Cap d’Antibes">
+            </div>
+            <div class="card-body">
+              <h3 class="h6 mb-1">Cap d’Antibes Discovery</h3>
+              <div class="small text-muted">Antibes • 3h • Coastline stories</div>
+            </div>
+            <div class="card-footer bg-white border-0 d-flex justify-content-between">
+              <div class="text-muted small">Guided commentary</div>
+              <a class="btn btn-outline-secondary btn-sm rounded-pill" routerLink="/book">Book</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About the boat -->
+    <section class="mb-5">
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-6">
+          <div class="ratio ratio-16x9 rounded-4 overflow-hidden shadow-sm" routerLink="/boat-lagoon40">
+            <img src="assets/img/boat/lagoon40/lagoon40-00.jpg" class="w-100 h-100 object-fit-cover" alt="Lagoon 40">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <h2 class="h5 mb-2">Your Boat — Lagoon 40</h2>
+          <p class="text-muted">
+            Spacious catamaran with plenty of outdoor seating, comfortable cabins and a stable ride.
+            Equipped with Wi-Fi, sound system, sunpads and water toys on request.
+          </p>
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <span class="badge text-bg-light border badge-rounded">Sunpads</span>
+            <span class="badge text-bg-light border badge-rounded">Freshwater shower</span>
+            <span class="badge text-bg-light border badge-rounded">USB & 220V</span>
+            <span class="badge text-bg-light border badge-rounded">Cooler & galley</span>
+          </div>
+          <a class="btn btn-outline-secondary rounded-pill" routerLink="/boat-lagoon40">See full specs</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- What guests say -->
+    <section class="mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h5 mb-0">What guests are saying</h2>
+        <a class="small text-decoration-none" routerLink="/gallery">Photo gallery</a>
+      </div>
+
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" *ngFor="let t of testimonials">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+              </div>
+              <div class="fw-semibold mb-1">{{ t.title }}</div>
+              <p class="text-muted small mb-0">{{ t.text }}</p>
+            </div>
+            <div class="card-footer bg-white border-0 small text-muted">
+              — {{ t.author }} • {{ t.origin }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>

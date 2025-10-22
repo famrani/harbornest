@@ -8,19 +8,20 @@ import { externalUrlProvider } from './services/services.service';
 const routes: Routes = [
   {
     path: '',
-    component: LayoutnoneComponent,
+    component: LayoutComponent,
     children: [
-      { path: '', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
+      { path: '', loadChildren: () => import('./home/home.module').then(m => m.HomeModule) },
+      { path: '', loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule) },
+      { path: '', loadChildren: () => import('./tours/tourhome.module').then(m => m.TourhomeModule) },
+      { path: '', loadChildren: () => import('./partners/partners.module').then(m => m.PartnersModule) },
+      { path: '', loadChildren: () => import('./booking/booking.module').then(m => m.BookingModule) },
     ]
   },
   {
     path: '',
-    component: LayoutComponent,
+    component: LayoutnoneComponent,
     children: [
-      { path: '', loadChildren: () => import('./mockup/mockup.module').then(m => m.MockupModule) },
-      { path: '', loadChildren: () => import('./partners/partners.module').then(m => m.PartnersModule) },
-      { path: '', loadChildren: () => import('./experiences/experiences.module').then(m => m.ExperiencesModule) },
-      { path: '', loadChildren: () => import('./boatowner/boatowner.module').then(m => m.BoatownerModule) },
+      { path: '', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
     ]
   },
   { path: 'externalRedirect', resolve: { url: externalUrlProvider, }, component: LayoutComponent, },

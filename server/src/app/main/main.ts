@@ -19,7 +19,7 @@ export class MainComponent {
     private storeDbSvc = new StoreDbService(this.utilSvc);
     private stripeSvc = new StripeService();
 
-    private webServerComponent = new WebServerComponent(this.utilSvc, this.stripeSvc);
+    private webServerComponent = new WebServerComponent(this.utilSvc, this.stripeSvc, );
 
     public version: string;
 
@@ -54,9 +54,7 @@ export class MainComponent {
         const listAllUsers = (nextPageToken) => {
             let wnUser: Users;
             // List batch of users, 1000 at a time.
-            this.utilSvc.firebaseAdmin
-                .auth()
-                .listUsers(1000, nextPageToken)
+            this.storeDbSvc.auth.listUsers(1000, nextPageToken)
                 .then(async (listUsersResult) => {
                     console.log('listUsersResult=', listUsersResult);
                 })
