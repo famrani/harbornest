@@ -22,6 +22,52 @@ module.exports = "<div class=\"container py-5\">\n  <div class=\"row g-4\">\n   
 
 /***/ }),
 
+/***/ 11462:
+/*!*********************************************************************************!*\
+  !*** ./src/app/home/owner-stripe-connected/owner-stripe-connected.component.ts ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   OwnerStripeConnectedComponent: () => (/* binding */ OwnerStripeConnectedComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _owner_stripe_connected_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./owner-stripe-connected.component.html?ngResource */ 65282);
+/* harmony import */ var _owner_stripe_connected_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./owner-stripe-connected.component.css?ngResource */ 29697);
+/* harmony import */ var _owner_stripe_connected_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_owner_stripe_connected_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ 50085);
+
+
+
+
+
+let OwnerStripeConnectedComponent = class OwnerStripeConnectedComponent {
+  route;
+  ownerId;
+  constructor(route) {
+    this.route = route;
+    // If you pass ownerId in the URL (e.g. /owner/stripe/connected?ownerId=123)
+    this.ownerId = this.route.snapshot.queryParamMap.get('ownerId') || undefined;
+  }
+  get hasOwnerId() {
+    return !!this.ownerId;
+  }
+  static ctorParameters = () => [{
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_2__.ActivatedRoute
+  }];
+};
+OwnerStripeConnectedComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
+  selector: 'app-owner-stripe-connected',
+  template: _owner_stripe_connected_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_owner_stripe_connected_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], OwnerStripeConnectedComponent);
+
+
+/***/ }),
+
 /***/ 18974:
 /*!***********************************************!*\
   !*** ./src/app/home/about/about.component.ts ***!
@@ -130,6 +176,54 @@ ContactusComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angu
 
 /***/ }),
 
+/***/ 29697:
+/*!*********************************************************************************************!*\
+  !*** ./src/app/home/owner-stripe-connected/owner-stripe-connected.component.css?ngResource ***!
+  \*********************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.badge-rounded {
+  border-radius: 50rem;
+}
+
+.card-hover {
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.card-hover:hover {
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.object-fit-cover {
+  object-fit: cover;
+}
+
+/* Circular success icon */
+.icon-circle-success {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: #d1e7dd; /* Bootstrap success-subtle */
+  color: #0f5132;
+}
+
+/* Optional: tweak small text spacing */
+.small {
+  line-height: 1.5;
+}
+`, "",{"version":3,"sources":["webpack://./src/app/home/owner-stripe-connected/owner-stripe-connected.component.css"],"names":[],"mappings":"AAAA;EACE,oBAAoB;AACtB;;AAEA;EACE,uDAAuD;AACzD;;AAEA;EACE,2CAA2C;EAC3C,2BAA2B;AAC7B;;AAEA;EACE,iBAAiB;AACnB;;AAEA,0BAA0B;AAC1B;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,yBAAyB,EAAE,6BAA6B;EACxD,cAAc;AAChB;;AAEA,uCAAuC;AACvC;EACE,gBAAgB;AAClB","sourcesContent":[".badge-rounded {\n  border-radius: 50rem;\n}\n\n.card-hover {\n  transition: box-shadow 0.15s ease, transform 0.15s ease;\n}\n\n.card-hover:hover {\n  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.08);\n  transform: translateY(-2px);\n}\n\n.object-fit-cover {\n  object-fit: cover;\n}\n\n/* Circular success icon */\n.icon-circle-success {\n  width: 3rem;\n  height: 3rem;\n  border-radius: 50%;\n  background-color: #d1e7dd; /* Bootstrap success-subtle */\n  color: #0f5132;\n}\n\n/* Optional: tweak small text spacing */\n.small {\n  line-height: 1.5;\n}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
 /***/ 37162:
 /*!************************************************************!*\
   !*** ./src/app/home/about/about.component.html?ngResource ***!
@@ -138,6 +232,17 @@ ContactusComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angu
 
 "use strict";
 module.exports = "<div class=\"container py-5\">\n  <div class=\"row g-4\">\n    <div class=\"col-lg-7\">\n      <h1 class=\"h3 mb-3\">About HarborNest</h1>\n      <p class=\"text-muted\">\n        HarborNest is a premium, single-boat charter based on the Côte d’Azur. We focus on clean and safe\n        trips with high-speed internet, great coffee and breakfast, music, and professional photos—so your time\n        on the water feels effortless and memorable.\n      </p>\n\n      <h2 class=\"h5 mt-4\">What we believe</h2>\n      <ul class=\"text-muted\">\n        <li>Hospitality first — thoughtful details from booking to disembarkation</li>\n        <li>Reliability — well-maintained boat, professional crew, and safety briefings</li>\n        <li>Flexibility — from business mornings to sunset cruises and day escapes</li>\n      </ul>\n\n      <h2 class=\"h5 mt-4\">The boat</h2>\n      <p class=\"text-muted\">\n        We operate a Lagoon 40 catamaran with generous outdoor lounge spaces, a bright salon, foredeck trampolines,\n        and comfortable cabins. Amenities include Wi-Fi, Bluetooth audio, coffee & breakfast (morning), and water toys.\n      </p>\n      <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/boat-lagoon40\">See boat details</a>\n\n      <h2 class=\"h5 mt-4\">Experiences</h2>\n      <p class=\"text-muted\">\n        We host Sunset Cruise & Champagne, Day Escape to Lérins Islands, Business Meetings at Marina, Afterwork en mer,\n        Night on Board, and Yoga & Brunch sessions.\n      </p>\n      <a class=\"btn btn-dark rounded-pill\" routerLink=\"/tours\">Explore tours</a>\n\n      <h2 class=\"h5 mt-4\">Safety & insurance</h2>\n      <p class=\"text-muted\">\n        Your safety is our priority: full safety gear, children lifejackets on request, first-aid kit, and clear briefings.\n        We maintain appropriate insurance coverage for the charter activity.\n      </p>\n    </div>\n\n    <div class=\"col-lg-5\">\n      <div class=\"ratio ratio-4x3 rounded-4 overflow-hidden shadow-sm mb-3\">\n        <img src=\"../../../../assets/img/crew.jpeg\" class=\"w-100 h-100 object-fit-cover\" alt=\"Crew\">\n      </div>\n\n      <div class=\"card border-0 shadow-sm\">\n        <div class=\"card-body\">\n          <h3 class=\"h6\">Quick facts</h3>\n          <ul class=\"small text-muted mb-0\">\n            <li>Base: Antibes, France</li>\n            <li>Boat: Lagoon 40 catamaran</li>\n            <li>Capacity: up to 10 day guests</li>\n            <li>Wi-Fi, music, coffee & breakfast</li>\n            <li>Photos included (plus optional packs)</li>\n          </ul>\n        </div>\n      </div>\n\n      <div class=\"mt-3 small\">\n        Have questions? <a routerLink=\"/contactus\">Contact us</a>.\n      </div>\n    </div>\n  </div>\n</div>\n";
+
+/***/ }),
+
+/***/ 37410:
+/*!****************************************************************************************!*\
+  !*** ./src/app/home/ownerStripeSettings/ownerStripeSettings.component.html?ngResource ***!
+  \****************************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<div class=\"stripe-settings-card\">\n  <h5 class=\"mb-1\">Stripe payout setup</h5>\n  <p class=\"text-muted mb-3\">\n    Connect your Stripe account to receive payments for your bookings.\n  </p>\n\n  <div *ngIf=\"loading\" class=\"alert alert-light small\">\n    Loading Stripe status…\n  </div>\n\n  <div *ngIf=\"!loading && error\" class=\"alert alert-danger small\">\n    {{ error }}\n  </div>\n\n  <ng-container *ngIf=\"!loading && !error\">\n    <!-- Connected state -->\n    <div *ngIf=\"connected; else notConnected\">\n      <div class=\"status-row\">\n        <div class=\"status-dot connected\"></div>\n        <div>\n          <div class=\"fw-semibold\">Connected to Stripe</div>\n          <div class=\"text-muted small\" *ngIf=\"stripeUserId\">\n            Account: <code>{{ stripeUserId }}</code>\n            <span *ngIf=\"livemode !== undefined\">\n              · Mode: {{ livemode ? 'Live' : 'Test' }}\n            </span>\n          </div>\n          <div class=\"text-muted small\" *ngIf=\"connectedAt\">\n            Linked on {{ connectedAt | date: 'mediumDate' }}\n          </div>\n        </div>\n      </div>\n\n      <div class=\"mt-3 d-flex flex-wrap gap-2\">\n        <button\n          class=\"btn btn-outline-dark btn-sm rounded-pill\"\n          type=\"button\"\n          (click)=\"connectStripe()\"\n          [disabled]=\"saving\"\n        >\n          Reconnect / change Stripe account\n        </button>\n\n        <button\n          class=\"btn btn-outline-danger btn-sm rounded-pill\"\n          type=\"button\"\n          (click)=\"disconnectStripe()\"\n          [disabled]=\"saving\"\n        >\n          Disconnect Stripe\n        </button>\n      </div>\n    </div>\n\n    <!-- Not connected -->\n    <ng-template #notConnected>\n      <div class=\"status-row\">\n        <div class=\"status-dot not-connected\"></div>\n        <div>\n          <div class=\"fw-semibold\">Stripe not connected</div>\n          <div class=\"text-muted small\">\n            You must connect a Stripe account before you can accept bookings and\n            receive payouts.\n          </div>\n        </div>\n      </div>\n\n      <div class=\"mt-3\">\n        <button\n          class=\"btn btn-dark btn-sm rounded-pill\"\n          type=\"button\"\n          (click)=\"connectStripe()\"\n          [disabled]=\"saving\"\n        >\n          Connect with Stripe\n        </button>\n      </div>\n    </ng-template>\n  </ng-container>\n\n  <div class=\"text-muted extra-help mt-3 small\">\n    By connecting, you agree to Stripe's Terms of Service and acknowledge that\n    payouts are handled directly by Stripe.\n  </div>\n</div>\n";
 
 /***/ }),
 
@@ -152,19 +257,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeModule: () => (/* binding */ HomeModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @ionic/angular */ 21507);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var ngx_cookie__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ngx-cookie */ 99787);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @ionic/angular */ 21507);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var ngx_cookie__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ngx-cookie */ 99787);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./gallery/gallery.component */ 92614);
 /* harmony import */ var _about_about_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./about/about.component */ 18974);
 /* harmony import */ var _contactus_contactus_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./contactus/contactus.component */ 22818);
 /* harmony import */ var _boat_lagoon40_boat_lagoon40_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./boat-lagoon40/boat-lagoon40.component */ 47518);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! godigital-lib */ 83);
-/* harmony import */ var _home_router_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./home.router.module */ 61506);
+/* harmony import */ var _owner_stripe_connected_owner_stripe_connected_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./owner-stripe-connected/owner-stripe-connected.component */ 11462);
+/* harmony import */ var _ownerStripeSettings_ownerStripeSettings_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ownerStripeSettings/ownerStripeSettings.component */ 73918);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _home_router_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./home.router.module */ 61506);
 
 /* eslint-disable max-len */
 
@@ -179,10 +286,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 let HomeModule = class HomeModule {};
-HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.NgModule)({
-  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_0__.HomeComponent, _boat_lagoon40_boat_lagoon40_component__WEBPACK_IMPORTED_MODULE_4__.BoatLagoon40Component, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_1__.GalleryComponent, _about_about_component__WEBPACK_IMPORTED_MODULE_2__.AboutComponent, _contactus_contactus_component__WEBPACK_IMPORTED_MODULE_3__.ContactusComponent],
-  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_8__.CommonModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_9__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_5__.HomeComponentRoutingModule, _angular_forms__WEBPACK_IMPORTED_MODULE_10__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_10__.ReactiveFormsModule, ngx_cookie__WEBPACK_IMPORTED_MODULE_11__.CookieModule.forRoot(), godigital_lib__WEBPACK_IMPORTED_MODULE_12__.GodigitalbModule],
+HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.NgModule)({
+  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_0__.HomeComponent, _boat_lagoon40_boat_lagoon40_component__WEBPACK_IMPORTED_MODULE_4__.BoatLagoon40Component, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_1__.GalleryComponent, _about_about_component__WEBPACK_IMPORTED_MODULE_2__.AboutComponent, _contactus_contactus_component__WEBPACK_IMPORTED_MODULE_3__.ContactusComponent, _owner_stripe_connected_owner_stripe_connected_component__WEBPACK_IMPORTED_MODULE_5__.OwnerStripeConnectedComponent, _ownerStripeSettings_ownerStripeSettings_component__WEBPACK_IMPORTED_MODULE_6__.OwnerStripeSettingsComponent],
+  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_10__.CommonModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_7__.HomeComponentRoutingModule, _angular_forms__WEBPACK_IMPORTED_MODULE_12__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_12__.ReactiveFormsModule, ngx_cookie__WEBPACK_IMPORTED_MODULE_13__.CookieModule.forRoot(), godigital_lib__WEBPACK_IMPORTED_MODULE_14__.GodigitalbModule],
   providers: []
 })], HomeModule);
 
@@ -355,7 +464,7 @@ BoatLagoon40Component = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([(0,_a
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<!-- Notice bar -->\n<div class=\"border-bottom bg-body-tertiary\">\n  <div class=\"container py-2 d-flex justify-content-between align-items-center gap-3 small\">\n    <div class=\"d-flex align-items-center gap-2\">\n      <i class=\"bi bi-megaphone\"></i>\n      <span>Welcome aboard HarborNest — premium charter with hospitality at heart.</span>\n    </div>\n    <a class=\"text-decoration-none\" routerLink=\"/book/sunset\">\n      Book your date <i class=\"bi bi-arrow-right-short\"></i>\n    </a>\n  </div>\n</div>\n\n<!-- Hero: concept-first -->\n<header class=\"border-bottom\">\n  <div class=\"container py-5\">\n    <div class=\"row g-4 align-items-center\">\n      <div class=\"col-lg-6\">\n        <h1 class=\"display-6 fw-bold\">A different kind of boat trip</h1>\n        <p class=\"lead text-muted mb-3\">\n          Not just a ride—Hospitality, stories, and sea breeze. Enjoy great music, coffee & drinks,\n          light breakfast or apéro, onboard photos, and a guided discovery of Nice, Antibes and the Lérins area.\n        </p>\n        <div class=\"d-flex flex-wrap gap-2 mb-3\">\n          <span class=\"badge text-bg-dark badge-rounded\">Premium Charter</span>\n          <span class=\"badge text-bg-light border badge-rounded\"><i class=\"bi bi-wifi me-1\"></i>High-speed Wi-Fi</span>\n          <span class=\"badge text-bg-light border badge-rounded\"><i class=\"bi bi-music-note-beamed me-1\"></i>Curated Music</span>\n          <span class=\"badge text-bg-light border badge-rounded\"><i class=\"bi bi-camera me-1\"></i>Photos Included</span>\n          <span class=\"badge text-bg-light border badge-rounded\"><i class=\"bi bi-cup-hot me-1\"></i>Coffee & Breakfast</span>\n          <span class=\"badge text-bg-light border badge-rounded\"><i class=\"bi bi-emoji-sunglasses me-1\"></i>Friendly Crew</span>\n        </div>\n        <div class=\"d-flex gap-2\">\n          <a class=\"btn btn-dark rounded-pill\" routerLink=\"/book/sunset\">\n            <i class=\"bi bi-calendar2-check me-1\"></i>Book a date\n          </a>\n          <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/tours\">See our tours</a>\n        </div>\n      </div>\n      <div class=\"col-lg-6\">\n        <div class=\"ratio ratio-16x9 rounded-4 overflow-hidden shadow-sm\">\n          <img src=\"assets/img/home/hero.jpg\" class=\"w-100 h-100 object-fit-cover\" alt=\"HarborNest hospitality at sea\">\n        </div>\n      </div>\n    </div>\n  </div>\n</header>\n\n<main class=\"py-5\">\n  <div class=\"container\">\n\n    <!-- Onboard hospitality -->\n    <section class=\"mb-5\">\n      <h2 class=\"h5 mb-3\">Onboard Experience</h2>\n      <div class=\"row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3\">\n        <div class=\"col\">\n          <div class=\"border rounded-3 p-3 h-100 text-center card-hover\">\n            <i class=\"bi bi-shield-check fs-4 d-block mb-2\"></i>\n            <div class=\"fw-semibold\">Clean & Safe</div>\n            <div class=\"small text-muted\">Well-kept catamaran, safety brief.</div>\n          </div>\n        </div>\n        <div class=\"col\">\n          <div class=\"border rounded-3 p-3 h-100 text-center card-hover\">\n            <i class=\"bi bi-wifi fs-4 d-block mb-2\"></i>\n            <div class=\"fw-semibold\">Fast Wi-Fi</div>\n            <div class=\"small text-muted\">Stream, share, work if needed.</div>\n          </div>\n        </div>\n        <div class=\"col\">\n          <div class=\"border rounded-3 p-3 h-100 text-center card-hover\">\n            <i class=\"bi bi-cup-hot fs-4 d-block mb-2\"></i>\n            <div class=\"fw-semibold\">Coffee & Breakfast</div>\n            <div class=\"small text-muted\">Or apéritif at sunset.</div>\n          </div>\n        </div>\n        <div class=\"col\">\n          <div class=\"border rounded-3 p-3 h-100 text-center card-hover\">\n            <i class=\"bi bi-music-note-beamed fs-4 d-block mb-2\"></i>\n            <div class=\"fw-semibold\">Curated Music</div>\n            <div class=\"small text-muted\">Chill playlist or your own.</div>\n          </div>\n        </div>\n        <div class=\"col\">\n          <div class=\"border rounded-3 p-3 h-100 text-center card-hover\">\n            <i class=\"bi bi-camera fs-4 d-block mb-2\"></i>\n            <div class=\"fw-semibold\">Photos Included</div>\n            <div class=\"small text-muted\">We capture your moments.</div>\n          </div>\n        </div>\n        <div class=\"col\">\n          <div class=\"border rounded-3 p-3 h-100 text-center card-hover\">\n            <i class=\"bi bi-map fs-4 d-block mb-2\"></i>\n            <div class=\"fw-semibold\">Local Stories</div>\n            <div class=\"small text-muted\">History & tips about the coast.</div>\n          </div>\n        </div>\n      </div>\n    </section>\n\n    <!-- Signature tours / concept CTA -->\n    <section class=\"mb-5\">\n      <div class=\"d-flex justify-content-between align-items-center mb-3\">\n        <h2 class=\"h5 mb-0\">Signature Trips</h2>\n        <a class=\"small text-decoration-none\" routerLink=\"/tours\">Explore all</a>\n      </div>\n      <div class=\"row row-cols-1 row-cols-md-3 g-4\">\n        <div class=\"col\">\n          <div class=\"card border-0 shadow-sm h-100 card-hover\" routerLink=\"/tours/sunset-cruise\">\n            <div class=\"ratio ratio-4x3\">\n              <img src=\"assets/img/events/sunset/sunset1.jpg\" class=\"w-100 h-100 object-fit-cover rounded-top\" alt=\"Sunset Sail\">\n            </div>\n            <div class=\"card-body\">\n              <h3 class=\"h6 mb-1\">Sunset Sail & Apéritif</h3>\n              <div class=\"small text-muted\">Antibes • 2.5h • Photos & music</div>\n            </div>\n            <div class=\"card-footer bg-white border-0 d-flex justify-content-between\">\n              <div class=\"text-muted small\">With skipper</div>\n              <a class=\"btn btn-outline-secondary btn-sm rounded-pill\" routerLink=\"/book\">Book</a>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"col\">\n          <div class=\"card border-0 shadow-sm h-100 card-hover\" routerLink=\"/tours/lerins-day-escape\">\n            <div class=\"ratio ratio-4x3\">\n              <img src=\"assets/img/events/leyrins/leyrins1.jpg\" class=\"w-100 h-100 object-fit-cover rounded-top\" alt=\"Day Escape Lérins\">\n            </div>\n            <div class=\"card-body\">\n              <h3 class=\"h6 mb-1\">Day Escape — Lérins Islands</h3>\n              <div class=\"small text-muted\">Cannes • 4–8h • Snorkel & lunch</div>\n            </div>\n            <div class=\"card-footer bg-white border-0 d-flex justify-content-between\">\n              <div class=\"text-muted small\">With/without skipper</div>\n              <a class=\"btn btn-outline-secondary btn-sm rounded-pill\" routerLink=\"/book\">Book</a>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"col\">\n          <div class=\"card border-0 shadow-sm h-100 card-hover\">\n            <div class=\"ratio ratio-4x3\">\n              <img src=\"assets/img/events/cap-antibes/cap-antibes1.jpg\" class=\"w-100 h-100 object-fit-cover rounded-top\" alt=\"Cap d’Antibes\">\n            </div>\n            <div class=\"card-body\">\n              <h3 class=\"h6 mb-1\">Cap d’Antibes Discovery</h3>\n              <div class=\"small text-muted\">Antibes • 3h • Coastline stories</div>\n            </div>\n            <div class=\"card-footer bg-white border-0 d-flex justify-content-between\">\n              <div class=\"text-muted small\">Guided commentary</div>\n              <a class=\"btn btn-outline-secondary btn-sm rounded-pill\" routerLink=\"/book\">Book</a>\n            </div>\n          </div>\n        </div>\n      </div>\n    </section>\n\n    <!-- About the boat -->\n    <section class=\"mb-5\">\n      <div class=\"row g-4 align-items-center\">\n        <div class=\"col-lg-6\">\n          <div class=\"ratio ratio-16x9 rounded-4 overflow-hidden shadow-sm\" routerLink=\"/boat-lagoon40\">\n            <img src=\"assets/img/boat/lagoon40/lagoon40-00.jpg\" class=\"w-100 h-100 object-fit-cover\" alt=\"Lagoon 40\">\n          </div>\n        </div>\n        <div class=\"col-lg-6\">\n          <h2 class=\"h5 mb-2\">Your Boat — Lagoon 40</h2>\n          <p class=\"text-muted\">\n            Spacious catamaran with plenty of outdoor seating, comfortable cabins and a stable ride.\n            Equipped with Wi-Fi, sound system, sunpads and water toys on request.\n          </p>\n          <div class=\"d-flex flex-wrap gap-2 mb-3\">\n            <span class=\"badge text-bg-light border badge-rounded\">Sunpads</span>\n            <span class=\"badge text-bg-light border badge-rounded\">Freshwater shower</span>\n            <span class=\"badge text-bg-light border badge-rounded\">USB & 220V</span>\n            <span class=\"badge text-bg-light border badge-rounded\">Cooler & galley</span>\n          </div>\n          <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/boat-lagoon40\">See full specs</a>\n        </div>\n      </div>\n    </section>\n\n    <!-- What guests say -->\n    <section class=\"mb-4\">\n      <div class=\"d-flex justify-content-between align-items-center mb-3\">\n        <h2 class=\"h5 mb-0\">What guests are saying</h2>\n        <a class=\"small text-decoration-none\" routerLink=\"/gallery\">Photo gallery</a>\n      </div>\n\n      <div class=\"row row-cols-1 row-cols-md-3 g-4\">\n        <div class=\"col\" *ngFor=\"let t of testimonials\">\n          <div class=\"card border-0 shadow-sm h-100\">\n            <div class=\"card-body\">\n              <div class=\"d-flex align-items-center gap-2 mb-2\">\n                <i class=\"bi bi-star-fill text-warning\"></i>\n                <i class=\"bi bi-star-fill text-warning\"></i>\n                <i class=\"bi bi-star-fill text-warning\"></i>\n                <i class=\"bi bi-star-fill text-warning\"></i>\n                <i class=\"bi bi-star-fill text-warning\"></i>\n              </div>\n              <div class=\"fw-semibold mb-1\">{{ t.title }}</div>\n              <p class=\"text-muted small mb-0\">{{ t.text }}</p>\n            </div>\n            <div class=\"card-footer bg-white border-0 small text-muted\">\n              — {{ t.author }} • {{ t.origin }}\n            </div>\n          </div>\n        </div>\n      </div>\n    </section>\n\n  </div>\n</main>\n";
+module.exports = "<!-- Notice bar -->\n<div class=\"border-bottom bg-body-tertiary\">\n  <div class=\"container py-2 d-flex justify-content-between align-items-center gap-3 small\">\n    <div class=\"d-flex align-items-center gap-2\">\n      <i class=\"bi bi-megaphone\"></i>\n      <span>Welcome aboard HarborNest — premium charter with hospitality at heart.</span>\n    </div>\n    <a class=\"text-decoration-none\" routerLink=\"/book\">\n      Book your date <i class=\"bi bi-arrow-right-short\"></i>\n    </a>\n  </div>\n</div>\n\n<!-- Hero: concept-first -->\n<header class=\"border-bottom\">\n  <div class=\"container py-5\">\n    <div class=\"row g-4 align-items-center\">\n      <div class=\"col-lg-6\">\n        <h1 class=\"display-6 fw-bold\">A different kind of boat trip</h1>\n        <p class=\"lead text-muted mb-3\">\n          Not just a ride—Hospitality, stories, and sea breeze. Enjoy great music, coffee & drinks,\n          light breakfast or apéro, onboard photos, and a guided discovery of Nice, Antibes and the Lérins area.\n        </p>\n        <div class=\"d-flex flex-wrap gap-2 mb-3\">\n          <span class=\"badge text-bg-dark badge-rounded\">Premium Charter</span>\n          <span class=\"badge text-bg-light border badge-rounded\"><i class=\"bi bi-wifi me-1\"></i>High-speed Wi-Fi</span>\n          <span class=\"badge text-bg-light border badge-rounded\"><i class=\"bi bi-music-note-beamed me-1\"></i>Curated Music</span>\n          <span class=\"badge text-bg-light border badge-rounded\"><i class=\"bi bi-camera me-1\"></i>Photos Included</span>\n          <span class=\"badge text-bg-light border badge-rounded\"><i class=\"bi bi-cup-hot me-1\"></i>Coffee & Breakfast</span>\n          <span class=\"badge text-bg-light border badge-rounded\"><i class=\"bi bi-emoji-sunglasses me-1\"></i>Friendly Crew</span>\n        </div>\n        <div class=\"d-flex gap-2\">\n          <a class=\"btn btn-dark rounded-pill\" routerLink=\"/book/sunset\">\n            <i class=\"bi bi-calendar2-check me-1\"></i>Book a date\n          </a>\n          <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/tours\">See our tours</a>\n        </div>\n      </div>\n      <div class=\"col-lg-6\">\n        <div class=\"ratio ratio-16x9 rounded-4 overflow-hidden shadow-sm\">\n          <img src=\"assets/img/home/hero.jpg\" class=\"w-100 h-100 object-fit-cover\" alt=\"HarborNest hospitality at sea\">\n        </div>\n      </div>\n    </div>\n  </div>\n</header>\n\n<main class=\"py-5\">\n  <div class=\"container\">\n\n    <!-- Onboard hospitality -->\n    <section class=\"mb-5\">\n      <h2 class=\"h5 mb-3\">Onboard Experience</h2>\n      <div class=\"row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3\">\n        <div class=\"col\">\n          <div class=\"border rounded-3 p-3 h-100 text-center card-hover\">\n            <i class=\"bi bi-shield-check fs-4 d-block mb-2\"></i>\n            <div class=\"fw-semibold\">Clean & Safe</div>\n            <div class=\"small text-muted\">Well-kept catamaran, safety brief.</div>\n          </div>\n        </div>\n        <div class=\"col\">\n          <div class=\"border rounded-3 p-3 h-100 text-center card-hover\">\n            <i class=\"bi bi-wifi fs-4 d-block mb-2\"></i>\n            <div class=\"fw-semibold\">Fast Wi-Fi</div>\n            <div class=\"small text-muted\">Stream, share, work if needed.</div>\n          </div>\n        </div>\n        <div class=\"col\">\n          <div class=\"border rounded-3 p-3 h-100 text-center card-hover\">\n            <i class=\"bi bi-cup-hot fs-4 d-block mb-2\"></i>\n            <div class=\"fw-semibold\">Coffee & Breakfast</div>\n            <div class=\"small text-muted\">Or apéritif at sunset.</div>\n          </div>\n        </div>\n        <div class=\"col\">\n          <div class=\"border rounded-3 p-3 h-100 text-center card-hover\">\n            <i class=\"bi bi-music-note-beamed fs-4 d-block mb-2\"></i>\n            <div class=\"fw-semibold\">Curated Music</div>\n            <div class=\"small text-muted\">Chill playlist or your own.</div>\n          </div>\n        </div>\n        <div class=\"col\">\n          <div class=\"border rounded-3 p-3 h-100 text-center card-hover\">\n            <i class=\"bi bi-camera fs-4 d-block mb-2\"></i>\n            <div class=\"fw-semibold\">Photos Included</div>\n            <div class=\"small text-muted\">We capture your moments.</div>\n          </div>\n        </div>\n        <div class=\"col\">\n          <div class=\"border rounded-3 p-3 h-100 text-center card-hover\">\n            <i class=\"bi bi-map fs-4 d-block mb-2\"></i>\n            <div class=\"fw-semibold\">Local Stories</div>\n            <div class=\"small text-muted\">History & tips about the coast.</div>\n          </div>\n        </div>\n      </div>\n    </section>\n\n    <!-- Signature tours / concept CTA -->\n    <section class=\"mb-5\">\n      <div class=\"d-flex justify-content-between align-items-center mb-3\">\n        <h2 class=\"h5 mb-0\">Signature Trips</h2>\n        <a class=\"small text-decoration-none\" routerLink=\"/tours\">Explore all</a>\n      </div>\n      <div class=\"row row-cols-1 row-cols-md-3 g-4\">\n        <div class=\"col\">\n          <div class=\"card border-0 shadow-sm h-100 card-hover\" routerLink=\"/tours/sunset-cruise\">\n            <div class=\"ratio ratio-4x3\">\n              <img src=\"assets/img/events/sunset/sunset1.jpg\" class=\"w-100 h-100 object-fit-cover rounded-top\" alt=\"Sunset Sail\">\n            </div>\n            <div class=\"card-body\">\n              <h3 class=\"h6 mb-1\">Sunset Sail & Apéritif</h3>\n              <div class=\"small text-muted\">Antibes • 2.5h • Photos & music</div>\n            </div>\n            <div class=\"card-footer bg-white border-0 d-flex justify-content-between\">\n              <div class=\"text-muted small\">With skipper</div>\n              <a class=\"btn btn-outline-secondary btn-sm rounded-pill\" routerLink=\"/book\">Book</a>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"col\">\n          <div class=\"card border-0 shadow-sm h-100 card-hover\" routerLink=\"/tours/lerins-day-escape\">\n            <div class=\"ratio ratio-4x3\">\n              <img src=\"assets/img/events/leyrins/leyrins1.jpg\" class=\"w-100 h-100 object-fit-cover rounded-top\" alt=\"Day Escape Lérins\">\n            </div>\n            <div class=\"card-body\">\n              <h3 class=\"h6 mb-1\">Day Escape — Lérins Islands</h3>\n              <div class=\"small text-muted\">Cannes • 4–8h • Snorkel & lunch</div>\n            </div>\n            <div class=\"card-footer bg-white border-0 d-flex justify-content-between\">\n              <div class=\"text-muted small\">With/without skipper</div>\n              <a class=\"btn btn-outline-secondary btn-sm rounded-pill\" routerLink=\"/book\">Book</a>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"col\">\n          <div class=\"card border-0 shadow-sm h-100 card-hover\">\n            <div class=\"ratio ratio-4x3\">\n              <img src=\"assets/img/events/cap-antibes/cap-antibes1.jpg\" class=\"w-100 h-100 object-fit-cover rounded-top\" alt=\"Cap d’Antibes\">\n            </div>\n            <div class=\"card-body\">\n              <h3 class=\"h6 mb-1\">Cap d’Antibes Discovery</h3>\n              <div class=\"small text-muted\">Antibes • 3h • Coastline stories</div>\n            </div>\n            <div class=\"card-footer bg-white border-0 d-flex justify-content-between\">\n              <div class=\"text-muted small\">Guided commentary</div>\n              <a class=\"btn btn-outline-secondary btn-sm rounded-pill\" routerLink=\"/book\">Book</a>\n            </div>\n          </div>\n        </div>\n      </div>\n    </section>\n\n    <!-- About the boat -->\n    <section class=\"mb-5\">\n      <div class=\"row g-4 align-items-center\">\n        <div class=\"col-lg-6\">\n          <div class=\"ratio ratio-16x9 rounded-4 overflow-hidden shadow-sm\" routerLink=\"/boat-lagoon40\">\n            <img src=\"assets/img/boat/lagoon40/lagoon40-00.jpg\" class=\"w-100 h-100 object-fit-cover\" alt=\"Lagoon 40\">\n          </div>\n        </div>\n        <div class=\"col-lg-6\">\n          <h2 class=\"h5 mb-2\">Your Boat — Lagoon 40</h2>\n          <p class=\"text-muted\">\n            Spacious catamaran with plenty of outdoor seating, comfortable cabins and a stable ride.\n            Equipped with Wi-Fi, sound system, sunpads and water toys on request.\n          </p>\n          <div class=\"d-flex flex-wrap gap-2 mb-3\">\n            <span class=\"badge text-bg-light border badge-rounded\">Sunpads</span>\n            <span class=\"badge text-bg-light border badge-rounded\">Freshwater shower</span>\n            <span class=\"badge text-bg-light border badge-rounded\">USB & 220V</span>\n            <span class=\"badge text-bg-light border badge-rounded\">Cooler & galley</span>\n          </div>\n          <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/boat-lagoon40\">See full specs</a>\n        </div>\n      </div>\n    </section>\n\n    <!-- What guests say -->\n    <section class=\"mb-4\">\n      <div class=\"d-flex justify-content-between align-items-center mb-3\">\n        <h2 class=\"h5 mb-0\">What guests are saying</h2>\n        <a class=\"small text-decoration-none\" routerLink=\"/gallery\">Photo gallery</a>\n      </div>\n\n      <div class=\"row row-cols-1 row-cols-md-3 g-4\">\n        <div class=\"col\" *ngFor=\"let t of testimonials\">\n          <div class=\"card border-0 shadow-sm h-100\">\n            <div class=\"card-body\">\n              <div class=\"d-flex align-items-center gap-2 mb-2\">\n                <i class=\"bi bi-star-fill text-warning\"></i>\n                <i class=\"bi bi-star-fill text-warning\"></i>\n                <i class=\"bi bi-star-fill text-warning\"></i>\n                <i class=\"bi bi-star-fill text-warning\"></i>\n                <i class=\"bi bi-star-fill text-warning\"></i>\n              </div>\n              <div class=\"fw-semibold mb-1\">{{ t.title }}</div>\n              <p class=\"text-muted small mb-0\">{{ t.text }}</p>\n            </div>\n            <div class=\"card-footer bg-white border-0 small text-muted\">\n              — {{ t.author }} • {{ t.origin }}\n            </div>\n          </div>\n        </div>\n      </div>\n    </section>\n\n  </div>\n</main>\n";
 
 /***/ }),
 
@@ -528,14 +637,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeComponentRoutingModule: () => (/* binding */ HomeComponentRoutingModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/router */ 99585);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./gallery/gallery.component */ 92614);
 /* harmony import */ var _about_about_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./about/about.component */ 18974);
 /* harmony import */ var _contactus_contactus_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./contactus/contactus.component */ 22818);
 /* harmony import */ var _boat_lagoon40_boat_lagoon40_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./boat-lagoon40/boat-lagoon40.component */ 47518);
+/* harmony import */ var _owner_stripe_connected_owner_stripe_connected_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./owner-stripe-connected/owner-stripe-connected.component */ 11462);
+/* harmony import */ var _ownerStripeSettings_ownerStripeSettings_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ownerStripeSettings/ownerStripeSettings.component */ 73918);
+
+
 
 
 
@@ -562,12 +675,80 @@ const routes = [{
 }, {
   path: 'contactus',
   component: _contactus_contactus_component__WEBPACK_IMPORTED_MODULE_3__.ContactusComponent
+}, {
+  path: 'ownerStripeSettings',
+  component: _ownerStripeSettings_ownerStripeSettings_component__WEBPACK_IMPORTED_MODULE_6__.OwnerStripeSettingsComponent
+}, {
+  path: 'owner-stripe-connected',
+  component: _owner_stripe_connected_owner_stripe_connected_component__WEBPACK_IMPORTED_MODULE_5__.OwnerStripeConnectedComponent
 }];
 let HomeComponentRoutingModule = class HomeComponentRoutingModule {};
-HomeComponentRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.NgModule)({
-  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_7__.RouterModule.forChild(routes)],
-  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_7__.RouterModule]
+HomeComponentRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.NgModule)({
+  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_9__.RouterModule.forChild(routes)],
+  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_9__.RouterModule]
 })], HomeComponentRoutingModule);
+
+
+/***/ }),
+
+/***/ 65282:
+/*!**********************************************************************************************!*\
+  !*** ./src/app/home/owner-stripe-connected/owner-stripe-connected.component.html?ngResource ***!
+  \**********************************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<!-- Notice bar -->\n<div class=\"border-bottom bg-body-tertiary\">\n  <div class=\"container py-2 d-flex justify-content-between align-items-center gap-3 small\">\n    <div class=\"d-flex align-items-center gap-2\">\n      <i class=\"bi bi-megaphone\"></i>\n      <span>Your Stripe account is now connected to Boatify.</span>\n    </div>\n    <a class=\"text-decoration-none\" routerLink=\"/book\">\n      Start taking bookings <i class=\"bi bi-arrow-right-short\"></i>\n    </a>\n  </div>\n</div>\n\n<!-- Hero / confirmation -->\n<header class=\"border-bottom\">\n  <div class=\"container py-5\">\n    <div class=\"row g-4 align-items-center\">\n      <div class=\"col-lg-6\">\n        <div class=\"d-flex align-items-center gap-3 mb-3\">\n          <div class=\"icon-circle-success d-flex align-items-center justify-content-center\">\n            <i class=\"bi bi-check-lg fs-3\"></i>\n          </div>\n          <div>\n            <h1 class=\"h3 fw-bold mb-0\">Stripe connection successful</h1>\n            <p class=\"text-muted mb-0 small\">\n              Your payouts and card payments are now handled securely via Stripe.\n            </p>\n          </div>\n        </div>\n\n        <p class=\"lead text-muted mb-3\">\n          You’re all set to accept card payments for your Boatify bookings. Stripe will route\n          funds to your bank account according to your payout schedule.\n        </p>\n\n        <div class=\"d-flex flex-wrap gap-2 mb-3\">\n          <span class=\"badge text-bg-dark badge-rounded\">\n            <i class=\"bi bi-shield-lock me-1\"></i>Secure payments\n          </span>\n          <span class=\"badge text-bg-light border badge-rounded\">\n            <i class=\"bi bi-credit-card-2-front me-1\"></i>Cards & wallets\n          </span>\n          <span class=\"badge text-bg-light border badge-rounded\">\n            <i class=\"bi bi-cash-stack me-1\"></i>Payouts to your bank\n          </span>\n          <span class=\"badge text-bg-light border badge-rounded\">\n            <i class=\"bi bi-graph-up-arrow me-1\"></i>Detailed reporting\n          </span>\n        </div>\n\n        <div class=\"d-flex flex-wrap gap-2\">\n          <a class=\"btn btn-dark rounded-pill\" routerLink=\"/owner/bookings\">\n            <i class=\"bi bi-calendar2-check me-1\"></i>View upcoming bookings\n          </a>\n          <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/owner/settings/payments\">\n            Payment settings\n          </a>\n        </div>\n\n        <div *ngIf=\"hasOwnerId\" class=\"mt-3 small text-muted\">\n          Connected owner ID: <code>{{ ownerId }}</code>\n        </div>\n      </div>\n\n      <div class=\"col-lg-6\">\n        <div class=\"ratio ratio-16x9 rounded-4 overflow-hidden shadow-sm\">\n          <!-- Replace with any relevant illustration / screenshot -->\n          <img\n            src=\"assets/img/home/connected-hero.jpg\"\n            class=\"w-100 h-100 object-fit-cover\"\n            alt=\"Stripe connected to Boatify\"\n          />\n        </div>\n      </div>\n    </div>\n  </div>\n</header>\n\n<!-- Main content: next steps / help -->\n<main class=\"py-5\">\n  <div class=\"container\">\n    <!-- Next steps -->\n    <section class=\"mb-5\">\n      <h2 class=\"h5 mb-3\">Next steps</h2>\n      <div class=\"row row-cols-1 row-cols-md-3 g-3\">\n        <div class=\"col\">\n          <div class=\"border rounded-3 p-3 h-100 card-hover\">\n            <div class=\"d-flex align-items-center gap-2 mb-2\">\n              <i class=\"bi bi-gear fs-4\"></i>\n              <div class=\"fw-semibold\">Review payout details</div>\n            </div>\n            <p class=\"small text-muted mb-0\">\n              Check your bank account, payout schedule, and country settings in your Stripe dashboard.\n            </p>\n          </div>\n        </div>\n\n        <div class=\"col\">\n          <div class=\"border rounded-3 p-3 h-100 card-hover\">\n            <div class=\"d-flex align-items-center gap-2 mb-2\">\n              <i class=\"bi bi-bag-check fs-4\"></i>\n              <div class=\"fw-semibold\">Test your first payment</div>\n            </div>\n            <p class=\"small text-muted mb-0\">\n              Create a test booking and run a card payment to make sure everything works end-to-end.\n            </p>\n          </div>\n        </div>\n\n        <div class=\"col\">\n          <div class=\"border rounded-3 p-3 h-100 card-hover\">\n            <div class=\"d-flex align-items-center gap-2 mb-2\">\n              <i class=\"bi bi-life-preserver fs-4\"></i>\n              <div class=\"fw-semibold\">Support & help</div>\n            </div>\n            <p class=\"small text-muted mb-0\">\n              If something looks off, you can always adjust your Stripe configuration or contact our support.\n            </p>\n          </div>\n        </div>\n      </div>\n    </section>\n\n    <!-- Stripe & Boatify info -->\n    <section class=\"mb-4\">\n      <div class=\"row g-4 align-items-start\">\n        <div class=\"col-lg-7\">\n          <h2 class=\"h5 mb-2\">How payouts work</h2>\n          <p class=\"text-muted small mb-2\">\n            When a guest pays for a trip, Stripe processes the card payment and holds the funds until\n            your payout is initiated. Depending on your region and risk profile, payouts can be daily,\n            weekly, or monthly.\n          </p>\n          <ul class=\"small text-muted mb-0\">\n            <li>Payments are secured with 3D Secure where required.</li>\n            <li>You’ll see each charge and payout in your Stripe dashboard.</li>\n            <li>Refunds and disputes can also be handled directly from Stripe or Boatify (when supported).</li>\n          </ul>\n        </div>\n\n        <div class=\"col-lg-5\">\n          <div class=\"border rounded-3 p-3 bg-body-tertiary h-100\">\n            <h3 class=\"h6 mb-2\">Manage your Stripe account</h3>\n            <p class=\"small text-muted mb-3\">\n              You can access your Stripe dashboard at any time to update documents, change bank details,\n              or view reports.\n            </p>\n            <div class=\"d-flex flex-wrap gap-2\">\n              <a\n                class=\"btn btn-outline-secondary btn-sm rounded-pill\"\n                href=\"https://dashboard.stripe.com/\"\n                target=\"_blank\"\n                rel=\"noopener noreferrer\"\n              >\n                Open Stripe dashboard\n              </a>\n              <a\n                class=\"btn btn-outline-danger btn-sm rounded-pill\"\n                routerLink=\"/owner/settings/payments\"\n              >\n                Disconnect Stripe\n              </a>\n            </div>\n            <p class=\"small text-muted mt-3 mb-0\">\n              Disconnecting will stop new payouts and card payments until you reconnect Stripe.\n            </p>\n          </div>\n        </div>\n      </div>\n    </section>\n  </div>\n</main>\n";
+
+/***/ }),
+
+/***/ 65721:
+/*!***************************************************************************************!*\
+  !*** ./src/app/home/ownerStripeSettings/ownerStripeSettings.component.css?ngResource ***!
+  \***************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.stripe-settings-card {
+  max-width: 540px;
+  padding: 1.25rem 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background-color: #ffffff;
+}
+
+.status-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  margin-top: 4px;
+}
+
+.status-dot.connected {
+  background-color: #22c55e; /* green-ish */
+}
+
+.status-dot.not-connected {
+  background-color: #e5e7eb; /* light gray */
+}
+
+.extra-help {
+  border-top: 1px dashed rgba(0, 0, 0, 0.06);
+  padding-top: 0.75rem;
+}
+`, "",{"version":3,"sources":["webpack://./src/app/home/ownerStripeSettings/ownerStripeSettings.component.css"],"names":[],"mappings":"AAAA;EACE,gBAAgB;EAChB,uBAAuB;EACvB,sBAAsB;EACtB,qCAAqC;EACrC,yBAAyB;AAC3B;;AAEA;EACE,aAAa;EACb,uBAAuB;EACvB,YAAY;AACd;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,oBAAoB;EACpB,eAAe;AACjB;;AAEA;EACE,yBAAyB,EAAE,cAAc;AAC3C;;AAEA;EACE,yBAAyB,EAAE,eAAe;AAC5C;;AAEA;EACE,0CAA0C;EAC1C,oBAAoB;AACtB","sourcesContent":[".stripe-settings-card {\n  max-width: 540px;\n  padding: 1.25rem 1.5rem;\n  border-radius: 0.75rem;\n  border: 1px solid rgba(0, 0, 0, 0.06);\n  background-color: #ffffff;\n}\n\n.status-row {\n  display: flex;\n  align-items: flex-start;\n  gap: 0.75rem;\n}\n\n.status-dot {\n  width: 10px;\n  height: 10px;\n  border-radius: 999px;\n  margin-top: 4px;\n}\n\n.status-dot.connected {\n  background-color: #22c55e; /* green-ish */\n}\n\n.status-dot.not-connected {\n  background-color: #e5e7eb; /* light gray */\n}\n\n.extra-help {\n  border-top: 1px dashed rgba(0, 0, 0, 0.06);\n  padding-top: 0.75rem;\n}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 
 /***/ }),
@@ -591,6 +772,169 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.badge-rounded { border-radius: 50rem;
 `, "",{"version":3,"sources":["webpack://./src/app/home/boat-lagoon40/boat-lagoon40.component.css"],"names":[],"mappings":"AAAA,iBAAiB,oBAAoB,EAAE;AACvC,oBAAoB,iBAAiB,EAAE;AACvC,sBAAsB,mBAAmB,EAAE,gBAAgB,EAAE;AAC7D,cAAc,qDAAqD,EAAE;AACrE,oBAAoB,2BAA2B,EAAE,4CAA4C,EAAE","sourcesContent":[".badge-rounded { border-radius: 50rem; }\n.object-fit-cover { object-fit: cover; }\n.object-fit-contain { object-fit: contain; background: #000; }\n.card-hover { transition: transform .12s ease, box-shadow .12s ease; }\n.card-hover:hover { transform: translateY(-2px); box-shadow: 0 .75rem 1.25rem rgba(0,0,0,.08); }\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
+/***/ 73918:
+/*!***************************************************************************!*\
+  !*** ./src/app/home/ownerStripeSettings/ownerStripeSettings.component.ts ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   OwnerStripeSettingsComponent: () => (/* binding */ OwnerStripeSettingsComponent)
+/* harmony export */ });
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _ownerStripeSettings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ownerStripeSettings.component.html?ngResource */ 37410);
+/* harmony import */ var _ownerStripeSettings_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ownerStripeSettings.component.css?ngResource */ 65721);
+/* harmony import */ var _ownerStripeSettings_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_ownerStripeSettings_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _home_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../home.service */ 86888);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 2510);
+
+
+
+
+
+
+
+
+
+let OwnerStripeSettingsComponent = class OwnerStripeSettingsComponent {
+  http;
+  utilsSvc;
+  homeSvc;
+  uid;
+  loading = true;
+  saving = false;
+  error;
+  connected = false;
+  stripeUserId;
+  livemode;
+  connectedAt;
+  // If you also use this for service providers, you can change this via @Input()
+  accountType = 'owner';
+  subscriptions = new rxjs__WEBPACK_IMPORTED_MODULE_4__.Subscription();
+  constructor(http, utilsSvc, homeSvc) {
+    this.http = http;
+    this.utilsSvc = utilsSvc;
+    this.homeSvc = homeSvc;
+  }
+  ngOnInit() {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this.error = undefined;
+      _this.loading = true;
+      _this.subscriptions.add(_this.homeSvc.mainSvc.getLoggedUser().subscribe(/*#__PURE__*/function () {
+        var _ref = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (user) {
+          _this.homeSvc.wnGuest = user;
+          if (user && user.userId) {
+            try {
+              const user = yield _this.homeSvc.wnGuest;
+              if (!user) {
+                _this.error = 'You must be signed in.';
+                return;
+              }
+              _this.uid = user.userId;
+              yield _this.loadStripeStatus();
+            } catch (e) {
+              _this.error = e?.message || 'Unable to load Stripe status.';
+            } finally {
+              _this.loading = false;
+            }
+          }
+        });
+        return function (_x) {
+          return _ref.apply(this, arguments);
+        };
+      }()));
+    })();
+  }
+  loadStripeStatus() {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this2.uid) return;
+      const base = _this2.utilsSvc.backendURL;
+      try {
+        const res = yield _this2.http.get(`${base}/owner/stripe/status`, {
+          params: {
+            ownerId: _this2.uid
+          }
+        }).toPromise();
+        if (!res) return;
+        _this2.connected = !!res.connected;
+        _this2.stripeUserId = res.stripe_user_id;
+        _this2.livemode = res.livemode;
+        _this2.connectedAt = res.connectedAt ? new Date(res.connectedAt) : undefined;
+      } catch (e) {
+        // non-fatal: just show as not connected
+        console.error('Stripe status error', e);
+        _this2.error = e?.error?.error || e?.message || 'Failed to load Stripe status.';
+      }
+    })();
+  }
+  /** Redirect owner to Stripe Connect OAuth */
+  connectStripe() {
+    this.error = undefined;
+    if (!this.uid) {
+      this.error = 'Missing user id.';
+      return;
+    }
+    const base = this.utilsSvc.backendURL;
+    const url = `${base}/stripe/connect/authorize?ownerId=${encodeURIComponent(this.uid)}&accountType=${this.accountType}`;
+    // Full page redirect to Stripe
+    window.location.href = url;
+  }
+  /** Disconnect (deauthorize) the Standard account */
+  disconnectStripe() {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this3.error = undefined;
+      if (!_this3.uid) {
+        _this3.error = 'Missing user id.';
+        return;
+      }
+      const base = _this3.utilsSvc.backendURL;
+      if (!confirm('Are you sure you want to disconnect your Stripe account?')) {
+        return;
+      }
+      _this3.saving = true;
+      try {
+        yield _this3.http.post(`${base}/stripe/connect/deauthorize`, {
+          ownerId: _this3.uid
+        }).toPromise();
+        // Reset local status
+        _this3.connected = false;
+        _this3.stripeUserId = undefined;
+        _this3.livemode = undefined;
+        _this3.connectedAt = undefined;
+      } catch (e) {
+        console.error(e);
+        _this3.error = e?.error?.error || e?.message || 'Failed to disconnect Stripe.';
+      } finally {
+        _this3.saving = false;
+      }
+    })();
+  }
+  static ctorParameters = () => [{
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_5__.HttpClient
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_6__.UtilsService
+  }, {
+    type: _home_service__WEBPACK_IMPORTED_MODULE_3__.HomeService
+  }];
+};
+OwnerStripeSettingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
+  selector: 'app-ownerStripeSettings',
+  template: _ownerStripeSettings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
+  styles: [(_ownerStripeSettings_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
+})], OwnerStripeSettingsComponent);
 
 
 /***/ }),

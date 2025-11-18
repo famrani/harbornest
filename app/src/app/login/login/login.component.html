@@ -1,5 +1,7 @@
-<section class="full-screen">
-  <div>
+<div class="container py-5" style="max-width:560px">
+  <h1 class="h4 mb-1">Welcome back</h1>
+  <p class="text-muted small mb-4">Sign in to continue.</p>
+
     <form class="form-box" [formGroup]="loginForm">
       <h4 class="text-center mb-4">Login to&nbsp;<strong>Harbornest</strong></h4>
       <div class="f-group"><label class="form-label"><strong>Email</strong></label>
@@ -15,7 +17,7 @@
         </div>
         <div class="col-6" style="text-align: right;"><a class="small" [routerLink]="['/forgotpwd']">Forgot password</a></div>
       </div><button class="btn btn-primary w-100 my-4" type="submit" [disabled]="loginForm.invalid"
-      (click)="login()">Login&nbsp;</button>
+      (click)="loginWithEmail()">Login&nbsp;</button>
       <div class="seperator">
         <hr class="w-100">
         <p>or</p>
@@ -23,11 +25,9 @@
       </div>
       <button class="btn btn-outline-primary w-100 my-4" type="button" [routerLink]="['/signup']">Create an account</button>
       <!-- Google Sign-In -->
-      <button id="googleLoginBtn" class="btn btn-outline-danger w-100 my-2" type="button">Sign in with Google</button>
+      <button id="googleLoginBtn" class="btn btn-outline-danger w-100 my-2" type="button" (click)="loginWithGoogle()">Sign in with Google</button>
     </form>
-  </div>
-  <div class="bottom-dark"></div>
-</section>
+</div>
 
 <!-- Login Error Modal -->
 <div class="modal fade" id="loginErrorModal" tabindex="-1" aria-labelledby="loginErrorLabel" aria-hidden="true">

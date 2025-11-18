@@ -10,13 +10,16 @@ import { GalleryComponent } from './gallery/gallery.component';
 import { AboutComponent } from './about/about.component';
 import { ContactusComponent } from './contactus/contactus.component';
 import { BoatLagoon40Component } from './boat-lagoon40/boat-lagoon40.component';
+import { OwnerStripeConnectedComponent } from './owner-stripe-connected/owner-stripe-connected.component';
+import { OwnerStripeSettingsComponent } from './ownerStripeSettings/ownerStripeSettings.component';
 
 import { GodigitalbModule } from 'godigital-lib';
 
 import { HomeComponentRoutingModule } from './home.router.module';
 
 @NgModule({
-  declarations: [HomeComponent, BoatLagoon40Component, GalleryComponent, AboutComponent, ContactusComponent],
+  declarations: [HomeComponent, BoatLagoon40Component, GalleryComponent, AboutComponent, ContactusComponent, 
+    OwnerStripeConnectedComponent, OwnerStripeSettingsComponent],
   imports: [
     CommonModule,
     IonicModule,

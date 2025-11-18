@@ -40,6 +40,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   StoreDbService: () => (/* binding */ StoreDbService),
 /* harmony export */   StripeScriptService: () => (/* binding */ StripeScriptService),
 /* harmony export */   TranslateAuto: () => (/* binding */ TranslateAuto),
+/* harmony export */   USERROLE: () => (/* binding */ USERROLE),
 /* harmony export */   UsersService: () => (/* binding */ UsersService),
 /* harmony export */   UtilsService: () => (/* binding */ UtilsService),
 /* harmony export */   createTranslateLoader: () => (/* binding */ createTranslateLoader),
@@ -75,12 +76,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_fire_compat_storage__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/fire/compat/storage */ 64914);
 /* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @ngx-translate/core */ 48503);
 /* harmony import */ var _ngx_translate_http_loader__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @ngx-translate/http-loader */ 12279);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ngx-spinner */ 61249);
-/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ngx-logger */ 66383);
-/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! uuid */ 52257);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ngx-spinner */ 61249);
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ngx-logger */ 66383);
 /* harmony import */ var file_saver__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! file-saver */ 85841);
-
 
 
 
@@ -1386,7 +1385,9 @@ class StoreDbService {
   adb;
   bdb;
   baf;
-  storage = null;
+  currentUser = null;
+  // ✅ reactive auth state
+  authState$ = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
   envPlatform;
   firebaseBSS = {};
   firebaseBSSdata = {};
@@ -1479,16 +1480,20 @@ class StoreDbService {
     if (!this.firebaseApp[appname]) {
       this.firebaseApp[appname] = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].initializeApp(config, appname);
     }
+    // ✅ get the *instance* bound to the named app
     const auth = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth(this.firebaseApp[appname]);
-    this.firebaseauth = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth;
-    /*    this.firebaseauth = new firebase.auth.RecaptchaVerifier('sign-in-button', {
-          size: 'visible',
-          callback: (response) => {
-               },
-          'expired-callback': () => {
-          }
-        });*/
-    return auth;
+    // ✅ keep the instance on the service
+    this.firebaseauth = auth;
+    // Persist sessions locally
+    auth.setPersistence(firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth.Auth.Persistence.LOCAL).catch(() => {});
+    // Pick up Google redirect results
+    auth.getRedirectResult().catch(() => {});
+    // Track auth state
+    auth.onAuthStateChanged(user => {
+      this.currentUser = user;
+      this.authState$.next(user);
+    });
+    return auth; // ✅
   }
   // CRUD methods for a given object
   subscribeObject(storeId, fbDbRef, fbObject, refId) {
@@ -2557,14 +2562,10 @@ class UsersService {
   storeDbSvc;
   utilSvc;
   userInfo;
-  currentUser;
   allUsers = null;
   allUsersO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
   confirmationResult;
-  firebaseauth;
   recaptchaVerifier;
-  // ✅ type from compat import
-  authState$ = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
   constructor(http, storeDbSvc, utilSvc) {
     this.http = http;
     this.storeDbSvc = storeDbSvc;
@@ -2574,10 +2575,10 @@ class UsersService {
   // EMAIL/PASSWORD SIGN-IN
   // -----------------------
   authUser(email, password1, emailNotVerified) {
-    const maf = this.utilSvc.mauth; // compat auth instance
+    const maf = this.storeDbSvc.firebaseauth;
     return new Promise((resolve, reject) => {
-      maf.signInWithEmailAndPassword(email.toLowerCase(), password1).then(success => {
-        const user = success.user;
+      maf.signInWithEmailAndPassword(email.toLowerCase(), password1).then(cred => {
+        const user = cred.user;
         if (user?.emailVerified || emailNotVerified) {
           resolve([AUTHSTATUS.SUCCESS, user]);
         } else {
@@ -2591,7 +2592,7 @@ class UsersService {
   // -----------------------
   registerWithEmail(email, password, displayName) {
     var _this10 = this;
-    const maf = this.utilSvc.mauth;
+    const maf = this.storeDbSvc.firebaseauth;
     return new Promise(/*#__PURE__*/function () {
       var _ref18 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
         try {
@@ -2606,6 +2607,7 @@ class UsersService {
             url: _this10.utilSvc.backendURL ? `${_this10.utilSvc.backendURL}/home` : window.location.origin + '/home',
             handleCodeInApp: true
           });
+          // Persist a sanitized profile in your RTDB/Firestore (no password)
           yield _this10.saveUserProfile({
             userId: user.uid,
             email: user.email,
@@ -2629,7 +2631,7 @@ class UsersService {
   }
   resendVerificationEmail() {
     var _this11 = this;
-    const user = this.utilSvc.mauth.currentUser;
+    const user = this.storeDbSvc.firebaseauth.currentUser;
     return new Promise(/*#__PURE__*/function () {
       var _ref19 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
         if (!user) return reject(new Error('Not signed in'));
@@ -2648,76 +2650,138 @@ class UsersService {
       };
     }());
   }
-  // ---------------
-  // GOOGLE SIGN-IN
-  // ---------------
-  signInWithGoogle() {
+  getUserProfile(uid) {
     var _this12 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const maf = _this12.utilSvc.mauth;
-      const provider = new firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth.GoogleAuthProvider(); // ✅ namespace
+      const storeId = _this12.utilSvc.backendFBstoreId;
+      const data = yield _this12.storeDbSvc.getObject(storeId, _this12.utilSvc.mdb, OBJECTNAME.bnUsers, uid);
+      return data || null;
+    })();
+  }
+  /**
+   * Sign in with Google, upsert RTDB profile, then return RTDB user.
+   */
+  signInWithGoogleAndLoadProfile() {
+    var _this13 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const maf = _this13.utilSvc.mauth;
+      const provider = new firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth.GoogleAuthProvider();
+      // Popup (you can also support redirect similarly)
       const result = yield maf.signInWithPopup(provider);
       const user = result.user;
-      yield _this12.saveUserProfile({
+      const info = result.additionalUserInfo;
+      // 1) Extract names from Google profile (best source)
+      let first = '';
+      let last = '';
+      const prof = info?.profile || {};
+      first = prof.given_name || prof.first_name || '';
+      last = prof.family_name || prof.last_name || '';
+      // 2) Fallback: split Firebase displayName
+      if ((!first || !last) && user.displayName) {
+        const parts = user.displayName.trim().split(/\s+/);
+        if (parts.length === 1) {
+          first = first || parts[0];
+        } else if (parts.length >= 2) {
+          first = first || parts[0];
+          last = last || parts.slice(1).join(' ');
+        }
+      }
+      // 3) Upsert profile in RTDB (keeps your schema consistent)
+      yield _this13.saveUserProfile({
         userId: user.uid,
         email: user.email || '',
-        displayName: user.displayName || '',
+        displayName: user.displayName || `${first} ${last}`.trim(),
+        firstname: first,
+        lastname: last,
         phone: user.phoneNumber || '',
         photoURL: user.photoURL || '',
         provider: 'google',
         state: 'active',
+        emailverified: !!user.emailVerified,
         modifiedTS: Date.now(),
         createdTS: Date.now()
-      }, true);
-      return user;
+      }, /* merge */true);
+      // 4) Return the RTDB profile
+      const profile = yield _this13.getUserProfile(user.uid);
+      if (profile) return profile;
+      // very rare fallback
+      return {
+        userId: user.uid,
+        firstname: first,
+        lastname: last,
+        country: '',
+        stripeAccountId: '',
+        stripeAccountStatus: false,
+        email: user.email || '',
+        phone: user.phoneNumber || '',
+        role: 'customer',
+        photos: '',
+        socialnetwork: '',
+        emailverified: !!user.emailVerified,
+        state: 'active',
+        displayName: user.displayName || `${first} ${last}`.trim(),
+        createdTS: Date.now(),
+        modifiedTS: Date.now(),
+        photoURL: user.photoURL || '',
+        provider: 'google'
+      };
     })();
   }
   // ----------
   // SIGN-OUT
   // ----------
   logout() {
-    const maf = this.utilSvc.mauth;
-    return new Promise((resolve, reject) => {
-      maf.signOut().then(resolve).catch(reject);
-    });
+    return this.storeDbSvc.firebaseauth.signOut();
   }
   // ---------------------
   // PASSWORD RESET (auth)
   // ---------------------
   resetPwdUser(email) {
-    const maf = this.utilSvc.mauth;
-    return new Promise((resolve, reject) => {
-      maf.sendPasswordResetEmail(email).then(() => resolve(1)).catch(reject);
-    });
+    return this.storeDbSvc.firebaseauth.sendPasswordResetEmail(email);
   }
   // ------------------------
   // CLIENT-SIDE PASSWORD CHANGE
   // ------------------------
   changePasswordWithOldPassword(oldPassword, newPassword) {
-    var _this13 = this;
+    var _this14 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const auth = _this13.utilSvc.mauth;
+      const auth = _this14.storeDbSvc.firebaseauth;
       const user = auth.currentUser;
       if (!user || !user.email) {
         throw new Error('Not signed in or user has no email.');
       }
-      // ✅ use static provider from compat namespace
       const cred = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth.EmailAuthProvider.credential(user.email, oldPassword);
       yield user.reauthenticateWithCredential(cred);
       yield user.updatePassword(newPassword);
     })();
   }
   changePasswordReauthWithGoogle(newPassword) {
-    var _this14 = this;
+    var _this15 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const auth = _this14.utilSvc.mauth;
+      const auth = _this15.storeDbSvc.firebaseauth;
       const user = auth.currentUser;
       if (!user) throw new Error('Not signed in.');
       const provider = new firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth.GoogleAuthProvider();
-      yield user.reauthenticateWithPopup(provider);
+      yield user.reauthenticateWithPopup?.(provider) // compat has this on User
+      .catch(/*#__PURE__*/function () {
+        var _ref20 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (e) {
+          if (e?.code === 'auth/popup-blocked') {
+            yield auth.signInWithRedirect(provider);
+            yield auth.getRedirectResult();
+          } else {
+            throw e;
+          }
+        });
+        return function (_x29) {
+          return _ref20.apply(this, arguments);
+        };
+      }());
       yield user.updatePassword(newPassword);
     })();
   }
+  // ------------------------
+  // Update user profile in your DB
+  // ------------------------
   updateUser(wnUser) {
     return new Promise((resolve, reject) => {
       if (wnUser && wnUser.userId) {
@@ -2727,17 +2791,20 @@ class UsersService {
       }
     });
   }
+  // ------------------------------------
+  // INTERNAL: save/upsert user profile
+  // ------------------------------------
   saveUserProfile(user, merge = false) {
-    var _this15 = this;
+    var _this16 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const storeId = _this15.utilSvc.backendFBstoreId;
-      const existing = merge ? yield _this15.storeDbSvc.getObject(storeId, _this15.utilSvc.mdb, OBJECTNAME.bnUsers, user.userId) : null;
+      const storeId = _this16.utilSvc.backendFBstoreId;
+      const existing = merge ? yield _this16.storeDbSvc.getObject(storeId, _this16.utilSvc.mdb, OBJECTNAME.bnUsers, user.userId) : null;
       const payload = merge && existing ? {
         ...existing,
         ...user,
         modifiedTS: Date.now()
       } : user;
-      yield _this15.storeDbSvc.updateObject(storeId, _this15.utilSvc.mdb, OBJECTNAME.bnUsers, payload, user.userId);
+      yield _this16.storeDbSvc.updateObject(storeId, _this16.utilSvc.mdb, OBJECTNAME.bnUsers, payload, user.userId);
     })();
   }
   static ɵfac = function UsersService_Factory(__ngFactoryType__) {
@@ -2894,6 +2961,13 @@ var BOOKINGSTATUS;
   BOOKINGSTATUS["PENDINGCANCEL"] = "pendind cancel";
   BOOKINGSTATUS["CANCELLED"] = "cancelled";
 })(BOOKINGSTATUS || (BOOKINGSTATUS = {}));
+var USERROLE;
+(function (USERROLE) {
+  USERROLE["OWNER"] = "owner";
+  USERROLE["CUSTOMER"] = "customer";
+  USERROLE["ADMIN"] = "admin";
+  USERROLE["PROVIDER"] = "provider";
+})(USERROLE || (USERROLE = {}));
 const regexUrl = /https?:\/\//;
 const regexUrlImage = /(https?:\/\/.*\.(?:png|jpg|jpeg))/;
 const regexUrlVideo = /(https?:\/\/.*\.(?:mp4|avi))/;
@@ -3004,31 +3078,31 @@ class ServicesService {
     });
   }
   initBEService(env) {
-    var _this16 = this;
+    var _this17 = this;
     return new Promise((resolve, reject) => {
       const backendFbConfig = this.config[env.platform].firebaseMasterConfig;
       this.storeDbSvc.initFB(this.utilSvc.backendFBstoreId, backendFbConfig, 'goDigitalBE', true, true, this.backendFbObjects, this.storeDbSvc.backendFbRef).then(/*#__PURE__*/(0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
         const databaseString = 'database';
         const authString = 'auth';
-        _this16.utilSvc.mdb = _this16.storeDbSvc.backendFbRef[databaseString];
-        _this16.utilSvc.mauth = _this16.storeDbSvc.backendFbRef[authString];
-        _this16.utilSvc.mauth.onAuthStateChanged(user => {
-          _this16.usersSvc.currentUser = user || null;
-          _this16.usersSvc.authState$.next(user || null);
+        _this17.utilSvc.mdb = _this17.storeDbSvc.backendFbRef[databaseString];
+        _this17.utilSvc.mauth = _this17.storeDbSvc.backendFbRef[authString];
+        _this17.utilSvc.mauth.onAuthStateChanged(user => {
+          _this17.storeDbSvc.currentUser = user || null;
+          _this17.storeDbSvc.authState$.next(user || null);
         });
-        _this16.backendFbObjects.forEach(fo => {
-          _this16.storeDbSvc.subscribeObject(_this16.utilSvc.backendFBstoreId, _this16.utilSvc.mdb, fo);
+        _this17.backendFbObjects.forEach(fo => {
+          _this17.storeDbSvc.subscribeObject(_this17.utilSvc.backendFBstoreId, _this17.utilSvc.mdb, fo);
         });
-        _this16.subscribeUsers();
-        _this16.subscribeLocations();
-        _this16.subscribeFeedbacks();
-        _this16.subscribeBookings();
-        _this16.subscribeAvailability();
-        _this16.subscribeBoatServices();
-        _this16.subscribeBoats();
-        _this16.subscribeEvents();
-        _this16.subscribeOwners();
-        _this16.subscribePartners();
+        _this17.subscribeUsers();
+        _this17.subscribeLocations();
+        _this17.subscribeFeedbacks();
+        _this17.subscribeBookings();
+        _this17.subscribeAvailability();
+        _this17.subscribeBoatServices();
+        _this17.subscribeBoats();
+        _this17.subscribeEvents();
+        _this17.subscribeOwners();
+        _this17.subscribePartners();
         resolve(1);
       }), error => {
         reject(error);
@@ -3084,24 +3158,6 @@ class ServicesService {
     this.storeDbSvc.storageFbRef = [];
     this.setUser(null);
   }
-  getHosts(wnHost) {
-    return new Promise((resolve, reject) => {
-      let params1 = new _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpParams();
-      if (wnHost && wnHost.stripeAccountId) {
-        params1 = params1.set('connectedAccountId', wnHost.stripeAccountId);
-        this.http.get(this.utilSvc.backendURL + 'stripe/customer/list', {
-          params: params1,
-          responseType: 'json'
-        }).subscribe(data => {
-          resolve(data);
-        }, error => {
-          reject(error);
-        });
-      } else {
-        resolve({});
-      }
-    });
-  }
   exportObjects(objects, objectName) {
     const json = JSON.stringify(objects);
     const blob = new Blob([json], {
@@ -3144,10 +3200,10 @@ class ServicesService {
     this.usersSvc.allUsersO.next(value);
   }
   loginOrValidateUser(email, password, firebaseUid, verifyEmail) {
-    var _this17 = this;
+    var _this18 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const auth = _this17.utilSvc.mauth;
-      const db = _this17.utilSvc.mdb;
+      const auth = _this18.utilSvc.mauth;
+      const db = _this18.utilSvc.mdb;
       if (verifyEmail === undefined) {
         verifyEmail = true;
       }
@@ -3158,18 +3214,18 @@ class ServicesService {
           const user = userCredential.user;
           if (user && user.emailVerified && verifyEmail || !verifyEmail) {
             try {
-              const userf = yield _this17.storeDbSvc.getObject(_this17.utilSvc.backendFBstoreId, _this17.utilSvc.mdb, OBJECTNAME.bnUsers, user.uid);
+              const userf = yield _this18.storeDbSvc.getObject(_this18.utilSvc.backendFBstoreId, _this18.utilSvc.mdb, OBJECTNAME.bnUsers, user.uid);
               if (userf) {
-                _this17.setLoggedUser(userf);
+                _this18.setLoggedUser(userf);
                 return [AUTHSTATUS.SUCCESS, userf];
               } else {
                 console.error('❌ User not found in Realtime Database.');
-                _this17.setLoggedUser(undefined);
+                _this18.setLoggedUser(undefined);
                 throw [AUTHSTATUS.UNKNOWNERROR, new Error('User not found in Realtime Database.')];
               }
             } catch (error) {
               console.error('❌ Error checking user existence:', error);
-              _this17.setLoggedUser(undefined);
+              _this18.setLoggedUser(undefined);
               throw [AUTHSTATUS.UNKNOWNERROR, error];
             }
           } else {
@@ -3178,28 +3234,28 @@ class ServicesService {
           }
         } catch (error) {
           console.error('❌ Login failed:', error);
-          _this17.setLoggedUser(undefined);
-          throw error;
+          _this18.setLoggedUser(undefined);
+          throw [AUTHSTATUS.UNKNOWNERROR, error];
         }
       } else if (firebaseUid) {
         // 🔥 Validate that user exists in Realtime Database
         try {
-          const userf = yield _this17.storeDbSvc.getObject(_this17.utilSvc.backendFBstoreId, _this17.utilSvc.mdb, OBJECTNAME.bnUsers, firebaseUid);
+          const userf = yield _this18.storeDbSvc.getObject(_this18.utilSvc.backendFBstoreId, _this18.utilSvc.mdb, OBJECTNAME.bnUsers, firebaseUid);
           if (userf) {
-            _this17.setLoggedUser(userf);
+            _this18.setLoggedUser(userf);
             return [AUTHSTATUS.SUCCESS, userf];
           } else {
             console.error('❌ User not found in Realtime Database.');
-            _this17.setLoggedUser(undefined);
+            _this18.setLoggedUser(undefined);
             throw [AUTHSTATUS.UNKNOWNERROR, new Error('User not found in Realtime Database.')];
           }
         } catch (error) {
           console.error('❌ Error checking user existence:', error);
-          _this17.setLoggedUser(undefined);
+          _this18.setLoggedUser(undefined);
           throw [AUTHSTATUS.UNKNOWNERROR, error];
         }
       } else {
-        _this17.setLoggedUser(undefined);
+        _this18.setLoggedUser(undefined);
         throw [AUTHSTATUS.UNKNOWNERROR, new Error('You must provide either email/password or firebaseUid.')];
       }
     })();
@@ -3231,16 +3287,16 @@ class ServicesService {
     return this.bnUserO.asObservable();
   }
   setLoggedUser(value) {
-    var _this18 = this;
+    var _this19 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (value) {
-        _this18.utilSvc.setUid(value.userId);
-        _this18.bnUser = value;
-        _this18.bnUserO.next(value);
+        _this19.utilSvc.setUid(value.userId);
+        _this19.bnUser = value;
+        _this19.bnUserO.next(value);
       } else {
-        _this18.utilSvc.clearUid();
-        _this18.bnUser = null;
-        _this18.bnUserO.next(null);
+        _this19.utilSvc.clearUid();
+        _this19.bnUser = null;
+        _this19.bnUserO.next(null);
       }
     })();
   }
@@ -3271,15 +3327,15 @@ class ServicesService {
     this.scriptLoadingSvc.registerScript(url, name, loaded);
   }
   uploadThumb(event1, source, url, directory) {
-    var _this19 = this;
+    var _this20 = this;
     return new Promise(/*#__PURE__*/function () {
-      var _ref21 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
-        _this19.spinner.show();
+      var _ref22 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
+        _this20.spinner.show();
         if (source === 'url') {
           if (url && url.length > 0) {
             const params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpParams().set('url', url).set('dir', 'assets/' + directory);
             // tslint:disable-next-line: deprecation
-            _this19.http.get(_this19.utilSvc.backendURL + 'store/downloadUrl', {
+            _this20.http.get(_this20.utilSvc.backendURL + 'store/downloadUrl', {
               params,
               reportProgress: true,
               observe: 'events'
@@ -3291,30 +3347,30 @@ class ServicesService {
                   break;
                 case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.DownloadProgress:
                   if (data && data.total) {
-                    _this19.progress = Math.round(data.loaded / data.total * 100);
+                    _this20.progress = Math.round(data.loaded / data.total * 100);
                   }
                   break;
                 case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.Response:
                   setTimeout(() => {
-                    _this19.progress = 0;
+                    _this20.progress = 0;
                   }, 1500);
-                  _this19.spinner.hide();
+                  _this20.spinner.hide();
                   resolve(data.body);
                   break;
               }
             }, error => {
-              _this19.spinner.hide();
+              _this20.spinner.hide();
               console.log(error);
               reject(error);
             });
           }
         } else {
           if (event1) {
-            _this19.storeDbSvc.uploadMedia(undefined, event1, directory).then(temp1 => {
+            _this20.storeDbSvc.uploadMedia(undefined, event1, directory).then(temp1 => {
               const thumb = temp1;
               const params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpParams().set('url', thumb).set('dir', 'assets/' + directory);
               // tslint:disable-next-line: deprecation
-              _this19.http.get(_this19.utilSvc.backendURL + 'store/downloadUrl', {
+              _this20.http.get(_this20.utilSvc.backendURL + 'store/downloadUrl', {
                 params,
                 reportProgress: true,
                 observe: 'events'
@@ -3326,19 +3382,19 @@ class ServicesService {
                     break;
                   case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.DownloadProgress:
                     if (data && data.total) {
-                      _this19.progress = Math.round(data.loaded / data.total * 100);
+                      _this20.progress = Math.round(data.loaded / data.total * 100);
                     }
                     break;
                   case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.Response:
                     setTimeout(() => {
-                      _this19.progress = 0;
+                      _this20.progress = 0;
                     }, 1500);
-                    _this19.spinner.hide();
+                    _this20.spinner.hide();
                     resolve(data.body);
                     break;
                 }
               }, error => {
-                _this19.spinner.hide();
+                _this20.spinner.hide();
                 console.log(error);
                 reject(error);
               });
@@ -3346,14 +3402,14 @@ class ServicesService {
             //
             //
             error => {
-              _this19.spinner.hide();
+              _this20.spinner.hide();
               reject(error);
             });
           }
         }
       });
-      return function (_x29, _x30) {
-        return _ref21.apply(this, arguments);
+      return function (_x30, _x31) {
+        return _ref22.apply(this, arguments);
       };
     }());
   }
@@ -3528,35 +3584,8 @@ class ServicesService {
     this.bnBoatServices = value;
     this.bnBoatServicesO.next(value);
   }
-  createStripeExpressAccount(wnUser) {
-    var _this20 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      try {
-        // Step 1: create the Express account
-        const email = wnUser.email;
-        const accountResponse = yield _this20.http.post(_this20.utilSvc.backendURL + '/stripe/expressaccount', {
-          email
-        }).toPromise();
-        const accountId = accountResponse.id;
-        const state = (0,uuid__WEBPACK_IMPORTED_MODULE_19__["default"])();
-        wnUser.stripeAccountId = accountId;
-        wnUser.state = state;
-        yield _this20.storeDbSvc.updateObject(_this20.utilSvc.backendFBstoreId, _this20.utilSvc.mdb, OBJECTNAME.bnUsers, wnUser, wnUser.userId);
-        // Step 2: create the Express onboarding link
-        const accountLinkResponse = yield _this20.http.post(_this20.utilSvc.backendURL + '/stripe/expressaccount-link', {
-          accountId,
-          refreshUrl: _this20.utilSvc.backendURL + '/stripe-account-failed' + '?state=' + state,
-          returnUrl: _this20.utilSvc.backendURL + '/stripe-account-confirm' + '?state=' + state
-        }).toPromise();
-        return accountLinkResponse.url; // return the onboarding URL
-      } catch (error) {
-        console.error('Error creating Stripe Express account:', error);
-        throw error;
-      }
-    })();
-  }
   static ɵfac = function ServicesService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || ServicesService)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_20__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](StoreDbService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](UtilsService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](UsersService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ngx_spinner__WEBPACK_IMPORTED_MODULE_21__.NgxSpinnerService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ScriptLoadingService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ngx_logger__WEBPACK_IMPORTED_MODULE_22__.NGXLogger));
+    return new (__ngFactoryType__ || ServicesService)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_19__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](StoreDbService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](UtilsService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](UsersService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ngx_spinner__WEBPACK_IMPORTED_MODULE_20__.NgxSpinnerService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ScriptLoadingService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ngx_logger__WEBPACK_IMPORTED_MODULE_21__.NGXLogger));
   };
   static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjectable"]({
     token: ServicesService,
@@ -3573,7 +3602,7 @@ class ServicesService {
   }], () => [{
     type: _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient
   }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_20__.Router
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_19__.Router
   }, {
     type: StoreDbService
   }, {
@@ -3581,11 +3610,11 @@ class ServicesService {
   }, {
     type: UsersService
   }, {
-    type: ngx_spinner__WEBPACK_IMPORTED_MODULE_21__.NgxSpinnerService
+    type: ngx_spinner__WEBPACK_IMPORTED_MODULE_20__.NgxSpinnerService
   }, {
     type: ScriptLoadingService
   }, {
-    type: ngx_logger__WEBPACK_IMPORTED_MODULE_22__.NGXLogger
+    type: ngx_logger__WEBPACK_IMPORTED_MODULE_21__.NGXLogger
   }], null);
 })();
 
@@ -4360,92 +4389,106 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HeaderComponent: () => (/* binding */ HeaderComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _header_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./header.component.html?ngResource */ 87653);
 /* harmony import */ var _header_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./header.component.scss?ngResource */ 63141);
 /* harmony import */ var _header_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_header_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ngx-translate/core */ 48503);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ 93262);
 /* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../layout.service */ 11266);
-/* harmony import */ var _services_services_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/services.service */ 92030);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! godigital-lib */ 83);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 2510);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! godigital-lib */ 83);
 
 
 
 
 
-
-
-
-
+ // whatever your real path is
 
 let HeaderComponent = class HeaderComponent {
-  router;
   layoutSvc;
-  utilsSvc;
-  localUtilsSvc;
-  translateSvc;
-  subscriptions = new rxjs__WEBPACK_IMPORTED_MODULE_4__.Subscription();
-  componentName = 'header.component';
-  constructor(router, layoutSvc, utilsSvc, localUtilsSvc, translateSvc) {
-    this.router = router;
+  http;
+  avatarUrl;
+  // Role / Stripe display state
+  userRoleLabel = 'Guest';
+  stripeStatus;
+  stripeLoading = false;
+  stripeError;
+  isOwner = false;
+  constructor(layoutSvc, http) {
     this.layoutSvc = layoutSvc;
-    this.utilsSvc = utilsSvc;
-    this.localUtilsSvc = localUtilsSvc;
-    this.translateSvc = translateSvc;
-  }
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    this.http = http;
   }
   ngOnInit() {
-    this.subscriptions.add(this.layoutSvc.mainSvc.getLanguage().subscribe(language => {
-      this.translateSvc.use(language);
-    }));
-    this.subscriptions.add(this.layoutSvc.mainSvc.getLoggedUser().subscribe(user => {
-      this.layoutSvc.wnGuest = user;
-    }));
-  }
-  setLanguage(lang) {
-    this.layoutSvc.language = lang;
-    this.layoutSvc.mainSvc.setLanguage(this.localUtilsSvc.language);
-  }
-  goToLink(routeL) {
-    this.layoutSvc.currentUrl = this.router.url;
-    this.router.navigate([routeL]);
-    $('#navcol-1').collapse('hide');
-  }
-  goHome() {
-    this.layoutSvc.goHome();
-  }
-  logout() {
-    this.layoutSvc.logout();
-    this.router.navigate(['/home']);
-  }
-  changeMode() {
-    this.localUtilsSvc.mode = this.layoutSvc.mode === 'Guest' ? 'Host' : 'Guest';
-  }
-  becomeaHost() {
-    if (!this.layoutSvc.wnGuest || !this.layoutSvc.wnGuest.firstname) {
-      $('#loginFirstModal').modal('show');
-    } else {
-      //      this.router.navigate(['/become-a-host']);
+    const user = this.layoutSvc.wnGuest;
+    if (user) {
+      this.avatarUrl = user.photoURL || undefined;
+      this.userRoleLabel = this.resolveRoleLabel(user);
+      this.isOwner = user.role !== godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.CUSTOMER;
+      if (this.isOwner) {
+        this.loadStripeStatusIfOwner(user);
+      }
     }
   }
+  /** Map user object to a human-readable role label */
+  resolveRoleLabel(user) {
+    // Adjust to your actual role logic
+    if (user.role === 'owner' || user.isOwner) return 'Owner';
+    if (user.role === 'crew') return 'Crew';
+    return 'Guest';
+  }
+  /** Only owners have a Stripe account in your current flow */
+  loadStripeStatusIfOwner(user) {
+    const isOwner = user.role === 'owner' || user.isOwner;
+    if (!isOwner) return;
+    const ownerId = user.ownerId || user.uid; // adapt this line!
+    if (!ownerId) return;
+    this.stripeLoading = true;
+    const params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_4__.HttpParams().set('ownerId', ownerId);
+    this.http.get('/api/owner/stripe/status', {
+      params
+    }).subscribe({
+      next: res => {
+        this.stripeStatus = res;
+        this.stripeLoading = false;
+      },
+      error: err => {
+        console.error('Stripe status error', err);
+        this.stripeError = 'Stripe status unavailable';
+        this.stripeLoading = false;
+      }
+    });
+  }
+  get stripeStatusLabel() {
+    if (this.stripeLoading) return 'Stripe: loading…';
+    if (this.stripeError) return 'Stripe: error';
+    if (!this.stripeStatus) return 'Stripe: not connected';
+    if (!this.stripeStatus.connected) return 'Stripe: not connected';
+    if (this.stripeStatus.connected && !this.stripeStatus.livemode) {
+      return 'Stripe: connected (test)';
+    }
+    return 'Stripe: connected';
+  }
+  get stripeBadgeClass() {
+    if (this.stripeLoading) return 'badge text-bg-secondary';
+    if (this.stripeError) return 'badge text-bg-danger';
+    if (!this.stripeStatus || !this.stripeStatus.connected) {
+      return 'badge text-bg-warning';
+    }
+    if (this.stripeStatus.connected && !this.stripeStatus.livemode) {
+      return 'badge text-bg-info';
+    }
+    return 'badge text-bg-success';
+  }
+  logout() {
+    this.layoutSvc.logout(); // or your actual logout logic
+  }
   static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_5__.Router
-  }, {
     type: _layout_service__WEBPACK_IMPORTED_MODULE_2__.LayoutService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_6__.UtilsService
-  }, {
-    type: _services_services_service__WEBPACK_IMPORTED_MODULE_3__.LocalUtilsService
-  }, {
-    type: _ngx_translate_core__WEBPACK_IMPORTED_MODULE_7__.TranslateService
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_4__.HttpClient
   }];
 };
-HeaderComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.Component)({
+HeaderComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
   selector: 'app-header',
   template: _header_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
   styles: [(_header_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
@@ -4476,7 +4519,14 @@ var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, `.badge-rounded {
+  border-radius: 50rem;
+}
+
+/* Keep the status compact and aligned */
+.small-header-status {
+  line-height: 1.2;
+}`, "",{"version":3,"sources":["webpack://./src/app/layout/header/header.component.scss"],"names":[],"mappings":"AAAA;EACE,oBAAA;AACF;;AAEA,wCAAA;AACA;EACE,gBAAA;AACF","sourcesContent":[".badge-rounded {\n  border-radius: 50rem;\n}\n\n/* Keep the status compact and aligned */\n.small-header-status {\n  line-height: 1.2;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -4607,7 +4657,7 @@ if (_environments_environment__WEBPACK_IMPORTED_MODULE_2__.environment.productio
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<!-- src/app/shared/site-header/site-header.component.html -->\n<nav class=\"navbar navbar-expand-lg bg-white border-bottom sticky-top\">\n  <div class=\"container py-2\">\n    <a class=\"navbar-brand d-flex align-items-center gap-2\" routerLink=\"/home\">\n      <i class=\"bi bi-ship\"></i><strong>HarborNest</strong>\n      <span class=\"ms-2 badge text-bg-dark\">Premium Charter</span>\n    </a>\n\n    <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navMain\">\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n\n    <div class=\"collapse navbar-collapse\" id=\"navMain\">\n      <ul class=\"navbar-nav me-auto mb-2 mb-lg-0\">\n        <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/tours\">Tours</a></li>\n        <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/boat-lagoon40\">Boat</a></li>\n        <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/gallery\">Gallery</a></li>\n      </ul>\n\n      <div class=\"d-flex align-items-center gap-2\">\n        <a class=\"btn btn-dark rounded-pill\" routerLink=\"/book\"><i class=\"bi bi-calendar2-check me-1\"></i>Book now</a>\n\n        <div class=\"dropdown\" *ngIf=\"layoutSvc.wnGuest; else guest\">\n          <a class=\"btn btn-link text-decoration-none d-flex align-items-center gap-2\" data-bs-toggle=\"dropdown\">\n            <img *ngIf=\"avatarUrl; else icon\" [src]=\"avatarUrl\" class=\"rounded-circle\" width=\"28\" height=\"28\">\n            <ng-template #icon><i class=\"bi bi-person-circle fs-5\"></i></ng-template>\n            <span class=\"d-none d-md-inline\">{{ layoutSvc.wnGuest?.firstname || 'Account' }}</span>\n          </a>\n          <ul class=\"dropdown-menu dropdown-menu-end\">\n            <li><a class=\"dropdown-item\" routerLink=\"/profile-edit\">My profile</a></li>\n            <li><a class=\"dropdown-item\" routerLink=\"/changepwd\">Reset password</a></li>\n            <li><a class=\"dropdown-item\" routerLink=\"/account\">My bookings</a></li>\n            <li><a class=\"dropdown-item\" routerLink=\"/account/payments\">Payments</a></li>\n            <li><a class=\"dropdown-item\" routerLink=\"/account/reviews\">Reviews</a></li>\n            <li><hr class=\"dropdown-divider\"></li>\n            <li><a class=\"dropdown-item text-danger\" (click)=\"logout()\">Sign out</a></li>\n          </ul>\n        </div>\n\n        <ng-template #guest>\n          <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/login\">Sign in</a>\n          <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/signup\">Create account</a>\n        </ng-template>\n      </div>\n    </div>\n  </div>\n</nav>\n";
+module.exports = "<nav class=\"navbar navbar-expand-lg bg-white border-bottom sticky-top\">\n  <div class=\"container py-2\">\n    <a class=\"navbar-brand d-flex align-items-center gap-2\" routerLink=\"/home\">\n      <i class=\"bi bi-ship\"></i><strong>HarborNest</strong>\n      <span class=\"ms-2 badge text-bg-dark\">Premium Charter</span>\n    </a>\n\n    <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navMain\">\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n\n    <div class=\"collapse navbar-collapse\" id=\"navMain\">\n      <ul class=\"navbar-nav me-auto mb-2 mb-lg-0\">\n        <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/tours\">Tours</a></li>\n        <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/boat-lagoon40\">Boat</a></li>\n        <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/gallery\">Gallery</a></li>\n      </ul>\n\n      <div class=\"d-flex align-items-center gap-2\">\n        <!-- Role + Stripe badges (only when logged in) -->\n        <!-- Authenticated user -->\n        <ng-container *ngIf=\"layoutSvc.wnGuest as user\">\n\n          <div class=\"d-none d-lg-flex flex-column align-items-end me-2 small-header-status\">\n\n            <div class=\"d-flex gap-1\">\n\n              <!-- ROLE BADGE (always for authenticated users) -->\n              <span class=\"badge text-bg-light border badge-rounded\">\n                <i class=\"bi bi-person-badge me-1\"></i>{{ userRoleLabel }}\n              </span>\n\n              <!-- STRIPE BADGE (ONLY IF OWNER) -->\n              <ng-container *ngIf=\"isOwner\">\n                <span [ngClass]=\"stripeBadgeClass\" class=\"badge badge-rounded\">\n                  <i class=\"bi bi-stripe me-1\"></i>{{ stripeStatusLabel }}\n                </span>\n              </ng-container>\n\n            </div>\n          </div>\n\n        </ng-container>\n\n        <!-- Primary CTA -->\n        <a class=\"btn btn-dark rounded-pill\" routerLink=\"/book\">\n          <i class=\"bi bi-calendar2-check me-1\"></i>Book now\n        </a>\n\n        <!-- User dropdown -->\n        <div class=\"dropdown\" *ngIf=\"layoutSvc.wnGuest; else guest\">\n          <a class=\"btn btn-link text-decoration-none d-flex align-items-center gap-2\" data-bs-toggle=\"dropdown\">\n            <img *ngIf=\"avatarUrl; else icon\" [src]=\"avatarUrl\" class=\"rounded-circle\" width=\"28\" height=\"28\">\n            <ng-template #icon><i class=\"bi bi-person-circle fs-5\"></i></ng-template>\n            <span class=\"d-none d-md-inline\">{{ layoutSvc.wnGuest?.displayName || 'Account' }}</span>\n          </a>\n          <ul class=\"dropdown-menu dropdown-menu-end\">\n            <li><a class=\"dropdown-item\" routerLink=\"/profile-edit\">My profile</a></li>\n            <li><a class=\"dropdown-item\" routerLink=\"/changepwd\">Reset password</a></li>\n            <li><a class=\"dropdown-item\" routerLink=\"/account\">My bookings</a></li>\n            <li><a class=\"dropdown-item\" routerLink=\"/account/payments\">Payments</a></li>\n            <li><a class=\"dropdown-item\" routerLink=\"/account/reviews\">Reviews</a></li>\n            <li>\n              <hr class=\"dropdown-divider\">\n            </li>\n            <li><a class=\"dropdown-item text-danger\" (click)=\"logout()\">Sign out</a></li>\n          </ul>\n        </div>\n\n        <ng-template #guest>\n          <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/login\">Log in</a>\n          <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/signup\">Create account</a>\n        </ng-template>\n      </div>\n    </div>\n  </div>\n</nav>";
 
 /***/ }),
 
@@ -5159,6 +5209,12 @@ const routes = [{
   }, {
     path: '',
     loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_booking_booking_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./booking/booking.module */ 49911)).then(m => m.BookingModule)
+  }, {
+    path: '',
+    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_external_external_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./external/external.module */ 6531)).then(m => m.externalModule)
+  }, {
+    path: '',
+    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_boatowner_boatowner_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./boatowner/boatowner.module */ 81767)).then(m => m.BoatownerModule)
   }]
 }, {
   path: '',

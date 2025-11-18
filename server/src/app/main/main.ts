@@ -5,23 +5,29 @@ import { UtilsService } from '../services/utils.service';
 import { WebServerComponent } from '../components/webServer.component';
 import { StripeService } from '../services/stripeAdn';
 import { getAuth } from 'firebase-admin/auth';
+import { BookingsService } from '../services/booking.service';
+import { UsersService } from '../services/users.service';
+import { MailerService } from '../services/mailer.service';
 
 config(); // Load .env file
 
 export class MainComponent {
     private backendFbObjects = [
-        OBJECTNAME.wnUsers,
-        OBJECTNAME.wnLocations,
-        OBJECTNAME.wnBookings,
+        OBJECTNAME.bnUsers,
+        OBJECTNAME.bnLocations,
+        OBJECTNAME.bnBookings,
     ];
 
     private utilSvc = new UtilsService();
     private storeDbSvc = new StoreDbService(this.utilSvc);
-    private stripeSvc = new StripeService();
+    private stripeSvc = new StripeService(this.storeDbSvc);
+    private mailerSvc = new MailerService();
+    private usersSvc = new UsersService(this.storeDbSvc);
+    private bookingsSvc = new BookingsService(this.mailerSvc, this.storeDbSvc, this.stripeSvc);
 
-    private webServerComponent = new WebServerComponent(this.utilSvc, this.stripeSvc, );
+    private webServerComponent = new WebServerComponent(this.utilSvc, this.stripeSvc, this.bookingsSvc, this.usersSvc);
 
-    public version: string;
+    public version: string | undefined;
 
     constructor() {
         this.utilSvc.getParams();
@@ -51,14 +57,14 @@ export class MainComponent {
 
 
     async cleanUpUsers() {
-        const listAllUsers = (nextPageToken) => {
+        const listAllUsers = (nextPageToken: any) => {
             let wnUser: Users;
             // List batch of users, 1000 at a time.
             this.storeDbSvc.auth.listUsers(1000, nextPageToken)
-                .then(async (listUsersResult) => {
+                .then(async (listUsersResult: any) => {
                     console.log('listUsersResult=', listUsersResult);
                 })
-                .catch((error) => {
+                .catch((error: any) => {
                     console.log('Error listing users:', error);
                 });
         };
@@ -84,7 +90,7 @@ export class MainComponent {
     }
 
     async createUsers() {
-        const temp = await this.storeDbSvc.getObject(OBJECTNAME.wnUsers);
+        const temp = await this.storeDbSvc.getObject(OBJECTNAME.bnUsers);
         const temptemp = this.utilSvc.objectToArray(temp) as Users[];
 
 
@@ -95,8 +101,8 @@ export class MainComponent {
                 const userid = await this.storeDbSvc.getUserIdByEmail(u.email) as any;
                 u.userId = userid;
                 console.log('a new userid=', u.userId, ', for email=', u.email);
-                await this.storeDbSvc.setObject(OBJECTNAME.wnUsers + '/' + u.userId, u);
-                await this.storeDbSvc.removeObject(OBJECTNAME.wnUsers + '/' + preuid);
+                await this.storeDbSvc.setObject(OBJECTNAME.bnUsers + '/' + u.userId, u);
+                await this.storeDbSvc.removeObject(OBJECTNAME.bnUsers + '/' + preuid);
             } catch (e) {
                 console.log('error e=', e)
             }
@@ -104,10 +110,10 @@ export class MainComponent {
     }
 
     async attachListingToUsers() {
-        const loc = await this.storeDbSvc.getObject(OBJECTNAME.wnLocations);
+        const loc = await this.storeDbSvc.getObject(OBJECTNAME.bnLocations);
         const locloc = this.utilSvc.objectToArray(loc) as Locations[];
 
-        const user = await this.storeDbSvc.getObject(OBJECTNAME.wnUsers);
+        const user = await this.storeDbSvc.getObject(OBJECTNAME.bnUsers);
         const useruser = this.utilSvc.objectToArray(user) as Users[];
 
 
@@ -115,7 +121,7 @@ export class MainComponent {
         for (let l of locloc) {
             try {
                 l.owner = useruser[i].userId;
-                await this.storeDbSvc.setObject(OBJECTNAME.wnLocations + '/' + l.locationId, l);
+                await this.storeDbSvc.setObject(OBJECTNAME.bnLocations + '/' + l.locationId, l);
             } catch (e) {
 
             }

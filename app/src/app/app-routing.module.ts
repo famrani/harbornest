@@ -15,6 +15,8 @@ const routes: Routes = [
       { path: '', loadChildren: () => import('./tours/tourhome.module').then(m => m.TourhomeModule) },
       { path: '', loadChildren: () => import('./partners/partners.module').then(m => m.PartnersModule) },
       { path: '', loadChildren: () => import('./booking/booking.module').then(m => m.BookingModule) },
+      { path: '', loadChildren: () => import('./external/external.module').then(m => m.externalModule) },
+      { path: '', loadChildren: () => import('./boatowner/boatowner.module').then(m => m.BoatownerModule) },
     ]
   },
   {

@@ -50,7 +50,10 @@ export class StoreDbService {
   public bdb!: AngularFireDatabase;
   public baf!: AngularFireAuth;
 
-  private storage: Storage | null = null;
+  public currentUser: firebase.User | null = null;
+  // ✅ reactive auth state
+  public authState$ = new BehaviorSubject<firebase.User | null>(null);
+
 
   public envPlatform: any;
 
@@ -182,20 +185,27 @@ export class StoreDbService {
     if (!this.firebaseApp[appname]) {
       this.firebaseApp[appname] = firebase.initializeApp(config, appname);
     }
+
+    // ✅ get the *instance* bound to the named app
     const auth = firebase.auth(this.firebaseApp[appname]);
-    this.firebaseauth = firebase.auth;
-    /*    this.firebaseauth = new firebase.auth.RecaptchaVerifier('sign-in-button', {
-          size: 'visible',
-          callback: (response) => {
 
-          },
-          'expired-callback': () => {
-          }
-        });*/
+    // ✅ keep the instance on the service
+    this.firebaseauth = auth;
 
-    return auth;
+    // Persist sessions locally
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => { });
+
+    // Pick up Google redirect results
+    auth.getRedirectResult().catch(() => { });
+
+    // Track auth state
+    auth.onAuthStateChanged(user => {
+      this.currentUser = user;
+      this.authState$.next(user);
+    });
+
+    return auth; // ✅
   }
-
   // CRUD methods for a given object
   subscribeObject(storeId: string, fbDbRef, fbObject, refId?) {
     let tempObject = fbObject;

@@ -76,7 +76,8 @@ __webpack_require__.r(__webpack_exports__);
 
 let ChangepwdComponent = class ChangepwdComponent {
   fb;
-  users;
+  storeDbSvc;
+  usersSvc;
   sending = false;
   success = false;
   error;
@@ -84,11 +85,12 @@ let ChangepwdComponent = class ChangepwdComponent {
   sub;
   uid;
   email;
-  constructor(fb, users) {
+  constructor(fb, storeDbSvc, usersSvc) {
     this.fb = fb;
-    this.users = users;
+    this.storeDbSvc = storeDbSvc;
+    this.usersSvc = usersSvc;
     // Track current user
-    this.sub = this.users.authState$.subscribe(u => {
+    this.sub = this.storeDbSvc.authState$.subscribe(u => {
       this.uid = u?.uid || undefined;
       this.email = u?.email || undefined;
     });
@@ -127,7 +129,7 @@ let ChangepwdComponent = class ChangepwdComponent {
       };
       _this.sending = true;
       try {
-        yield _this.users.changePasswordWithOldPassword(oldPassword, newPassword);
+        yield _this.usersSvc.changePasswordWithOldPassword(oldPassword, newPassword);
         _this.success = true;
         _this.form.reset();
       } catch (e) {
@@ -142,6 +144,8 @@ let ChangepwdComponent = class ChangepwdComponent {
   }
   static ctorParameters = () => [{
     type: _angular_forms__WEBPACK_IMPORTED_MODULE_2__.FormBuilder
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_3__.StoreDbService
   }, {
     type: godigital_lib__WEBPACK_IMPORTED_MODULE_3__.UsersService
   }];
@@ -196,7 +200,7 @@ ProfileRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([(0,_an
   \***************************************************************************************/
 /***/ ((module) => {
 
-module.exports = "<div class=\"container py-5\" style=\"max-width:820px\">\n  <h1 class=\"h4 mb-3\">Your profile</h1>\n\n  <div *ngIf=\"loading\" class=\"alert alert-light border\">Loading…</div>\n  <div *ngIf=\"error\" class=\"alert alert-danger\">{{ error }}</div>\n  <div *ngIf=\"success\" class=\"alert alert-success\">Profile saved.</div>\n\n  <form *ngIf=\"!loading\" [formGroup]=\"form\" (ngSubmit)=\"save()\">\n    <div class=\"row g-3\">\n      <div class=\"col-md-4\">\n        <label class=\"form-label\">First name</label>\n        <input class=\"form-control\" formControlName=\"firstname\" />\n      </div>\n      <div class=\"col-md-4\">\n        <label class=\"form-label\">Last name</label>\n        <input class=\"form-control\" formControlName=\"lastname\" />\n      </div>\n      <div class=\"col-md-4\">\n        <label class=\"form-label\">Display name</label>\n        <input class=\"form-control\" formControlName=\"displayName\" />\n      </div>\n\n      <div class=\"col-md-4\">\n        <label class=\"form-label\">Phone</label>\n        <input class=\"form-control\" formControlName=\"phone\" placeholder=\"+33 6 ...\" />\n      </div>\n      <div class=\"col-md-4\">\n        <label class=\"form-label\">Country</label>\n        <input class=\"form-control\" formControlName=\"country\" placeholder=\"FR\" />\n      </div>\n\n      <div class=\"col-md-4\">\n        <label class=\"form-label\">Role</label>\n        <input class=\"form-control\" formControlName=\"role\" disabled />\n        <div class=\"form-text\">Admin is granted by the platform only.</div>\n      </div>\n\n      <!-- Social links -->\n      <div class=\"col-12\">\n        <label class=\"form-label d-flex justify-content-between align-items-center\">\n          Social links\n          <button type=\"button\" class=\"btn btn-sm btn-outline-secondary rounded-pill\" (click)=\"addSocial()\">Add link</button>\n        </label>\n\n        <div *ngFor=\"let s of socials.controls; let i = index\" class=\"row g-2 align-items-center mb-2\">\n          <div class=\"col-md-3\">\n            <input class=\"form-control\" [formControl]=\"s.get('label')\" placeholder=\"Instagram\" />\n          </div>\n          <div class=\"col-md-8\">\n            <input class=\"form-control\" [formControl]=\"s.get('url')\" placeholder=\"https://instagram.com/yourname\" />\n          </div>\n          <div class=\"col-md-1 text-end\">\n            <button type=\"button\" class=\"btn btn-link text-danger\" (click)=\"removeSocial(i)\">\n              <i class=\"bi bi-x-lg\"></i>\n            </button>\n          </div>\n        </div>\n      </div>\n\n      <!-- Photos -->\n      <div class=\"col-12\">\n        <label class=\"form-label\">Photos</label>\n        <input type=\"file\" class=\"form-control\" (change)=\"onPhotosSelected(($event.target).files)\" multiple />\n        <div class=\"d-flex flex-wrap gap-2 mt-2\">\n          <img *ngFor=\"let url of photoUrls\" [src]=\"url\" class=\"rounded\" style=\"width:110px;height:84px;object-fit:cover;\">\n        </div>\n      </div>\n    </div>\n\n    <div class=\"d-flex justify-content-end gap-2 mt-4\">\n      <button class=\"btn btn-dark rounded-pill\" [disabled]=\"saving\">\n        {{ saving ? 'Saving…' : 'Save changes' }}\n      </button>\n    </div>\n  </form>\n</div>\n";
+module.exports = "<div class=\"container py-5\" style=\"max-width:820px\">\n  <h1 class=\"h4 mb-3\">Your profile</h1>\n\n  <div *ngIf=\"loading\" class=\"alert alert-light border\">Loading…</div>\n  <div *ngIf=\"error\" class=\"alert alert-danger\">{{ error }}</div>\n  <div *ngIf=\"success\" class=\"alert alert-success\">Profile saved.</div>\n\n  <form *ngIf=\"!loading\" [formGroup]=\"form\" (ngSubmit)=\"save()\">\n    <div class=\"row g-3\">\n      <div class=\"col-md-4\">\n        <label class=\"form-label\">First name</label>\n        <input class=\"form-control\" formControlName=\"firstname\" />\n      </div>\n      <div class=\"col-md-4\">\n        <label class=\"form-label\">Last name</label>\n        <input class=\"form-control\" formControlName=\"lastname\" />\n      </div>\n      <div class=\"col-md-4\">\n        <label class=\"form-label\">Display name</label>\n        <input class=\"form-control\" formControlName=\"displayName\" />\n      </div>\n\n      <div class=\"col-md-4\">\n        <label class=\"form-label\">Phone</label>\n        <input class=\"form-control\" formControlName=\"phone\" placeholder=\"+33 6 ...\" />\n      </div>\n      <div class=\"col-md-4\">\n        <label class=\"form-label\">Country</label>\n        <input class=\"form-control\" formControlName=\"country\" placeholder=\"FR\" />\n      </div>\n\n      <div class=\"col-md-4\">\n        <label class=\"form-label\">Role</label>\n        <select class=\"form-select\" formControlName=\"role\">\n          <option value=\"customer\">Guest</option>\n          <option value=\"owner\">Boat owner</option>\n          <option value=\"provider\">Provider</option>\n        </select>\n        <div class=\"form-text\">\n          Start as a guest, and switch to Boat owner or Provider when you’re ready.\n          Admin rights (if any) are granted by the platform only.\n        </div>\n      </div>\n\n      <!-- Stripe connection section (only relevant for owner / provider) -->\n      <div class=\"col-12\" *ngIf=\"isOwnerOrProvider\">\n        <div class=\"border rounded-3 p-3 bg-body-tertiary\">\n          <div class=\"d-flex flex-wrap justify-content-between align-items-center gap-2\">\n            <div>\n              <div class=\"fw-semibold mb-1\">\n                Stripe payments\n              </div>\n              <div class=\"small text-muted\">\n                Status:\n                <span class=\"badge badge-rounded\" [ngClass]=\"{\n              'text-bg-success': stripeConnected,\n              'text-bg-warning': !stripeConnected\n            }\">\n                  {{ stripeStatusLabel }}\n                </span>\n              </div>\n              <div class=\"small text-muted mt-1\" *ngIf=\"!stripeConnected\">\n                Connect your Stripe account to receive payouts for your bookings.\n              </div>\n              <div class=\"small text-muted mt-1\" *ngIf=\"stripeConnected\">\n                Your Stripe account is linked to this profile. You can disconnect it at any time.\n              </div>\n            </div>\n\n            <div class=\"d-flex flex-wrap gap-2\">\n              <button type=\"button\" class=\"btn btn-outline-secondary btn-sm rounded-pill\" *ngIf=\"!stripeConnected\"\n                (click)=\"connectStripe()\" [disabled]=\"stripeActionRunning\">\n                <i class=\"bi bi-link-45deg me-1\"></i>\n                {{ stripeActionRunning ? 'Redirecting…' : 'Connect Stripe' }}\n              </button>\n\n              <button type=\"button\" class=\"btn btn-outline-danger btn-sm rounded-pill\" *ngIf=\"stripeConnected\"\n                (click)=\"disconnectStripe()\" [disabled]=\"stripeActionRunning\">\n                <i class=\"bi bi-x-circle me-1\"></i>\n                {{ stripeActionRunning ? 'Disconnecting…' : 'Disconnect Stripe' }}\n              </button>\n            </div>\n          </div>\n        </div>\n      </div>\n\n\n      <!-- Social links -->\n      <div class=\"col-12\">\n        <label class=\"form-label d-flex justify-content-between align-items-center\">\n          Social links\n          <button type=\"button\" class=\"btn btn-sm btn-outline-secondary rounded-pill\" (click)=\"addSocial()\">Add\n            link</button>\n        </label>\n\n        <div *ngFor=\"let s of socials.controls; let i = index\" class=\"row g-2 align-items-center mb-2\">\n          <div class=\"col-md-3\">\n            <input class=\"form-control\" [formControl]=\"s.get('label')\" placeholder=\"Instagram\" />\n          </div>\n          <div class=\"col-md-8\">\n            <input class=\"form-control\" [formControl]=\"s.get('url')\" placeholder=\"https://instagram.com/yourname\" />\n          </div>\n          <div class=\"col-md-1 text-end\">\n            <button type=\"button\" class=\"btn btn-link text-danger\" (click)=\"removeSocial(i)\">\n              <i class=\"bi bi-x-lg\"></i>\n            </button>\n          </div>\n        </div>\n      </div>\n\n      <!-- Photos -->\n      <div class=\"col-12\">\n        <label class=\"form-label\">Photos</label>\n        <input type=\"file\" class=\"form-control\" (change)=\"onPhotosSelected(($event.target).files)\" multiple />\n        <div class=\"d-flex flex-wrap gap-2 mt-2\">\n          <img *ngFor=\"let url of photoUrls\" [src]=\"url\" class=\"rounded\"\n            style=\"width:110px;height:84px;object-fit:cover;\">\n        </div>\n      </div>\n    </div>\n\n    <div class=\"d-flex justify-content-end gap-2 mt-4\">\n      <button class=\"btn btn-dark rounded-pill\" [disabled]=\"saving\">\n        {{ saving ? 'Saving…' : 'Save changes' }}\n      </button>\n    </div>\n  </form>\n</div>";
 
 /***/ }),
 
@@ -223,10 +227,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 let ProfileEditComponent = class ProfileEditComponent {
   fb;
-  users;
   storeDb;
   utilSvc;
   loading = true;
@@ -238,13 +240,14 @@ let ProfileEditComponent = class ProfileEditComponent {
   profile;
   sub;
   photoUrls = [];
-  constructor(fb, users, storeDb, utilSvc) {
+  // 🔹 extra flags for Stripe buttons
+  stripeActionRunning = false;
+  constructor(fb, storeDb, utilSvc) {
     var _this = this;
     this.fb = fb;
-    this.users = users;
     this.storeDb = storeDb;
     this.utilSvc = utilSvc;
-    this.sub = this.users.authState$.subscribe(/*#__PURE__*/function () {
+    this.sub = this.storeDb.authState$.subscribe(/*#__PURE__*/function () {
       var _ref = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (u) {
         _this.uid = u?.uid || undefined;
         if (!_this.uid) {
@@ -257,19 +260,16 @@ let ProfileEditComponent = class ProfileEditComponent {
         return _ref.apply(this, arguments);
       };
     }());
+    // 🔹 2) role control is now editable (default: customer)
     this.form = this.fb.group({
       firstname: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__.Validators.required],
       lastname: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__.Validators.required],
       displayName: [''],
       phone: [''],
       country: [''],
-      // role is shown but locked to customer here for security
-      role: [{
-        value: 'customer',
-        disabled: true
-      }],
+      role: ['customer'],
+      // was disabled before
       state: ['active'],
-      // optional to show; backend should enforce final state
       socialnetwork: this.fb.array([])
     });
   }
@@ -285,6 +285,22 @@ let ProfileEditComponent = class ProfileEditComponent {
       url: [url]
     });
   }
+  // 🔹 3) convenience getters for role / stripe in template
+  get currentRole() {
+    return this.form.get('role')?.value || 'customer';
+  }
+  get isOwnerOrProvider() {
+    return this.currentRole === 'owner' || this.currentRole === 'provider';
+  }
+  get stripeConnected() {
+    return !!this.profile?.stripeStandard?.stripe_user_id;
+  }
+  get stripeStatusLabel() {
+    if (!this.isOwnerOrProvider) return 'Not applicable for this role';
+    if (!this.stripeConnected) return 'Not connected';
+    if (this.profile?.stripeStandard?.stripe_user_id) return this.profile.stripeStandard?.stripe_user_id;
+    return 'Connected';
+  }
   loadProfile() {
     var _this2 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
@@ -293,13 +309,15 @@ let ProfileEditComponent = class ProfileEditComponent {
       try {
         const doc = yield _this2.storeDb.getObject(_this2.utilSvc.backendFBstoreId, _this2.utilSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_3__.OBJECTNAME.bnUsers, _this2.uid);
         _this2.profile = doc || undefined;
+        // 🔹 4) keep existing role if present, otherwise default to customer
+        const role = doc?.role || 'customer';
         _this2.form.reset({
           firstname: doc?.firstname || '',
           lastname: doc?.lastname || '',
           displayName: doc?.displayName || '',
           phone: doc?.phone || '',
           country: doc?.country || '',
-          role: 'customer',
+          role,
           state: doc?.state || 'active'
         });
         // socials
@@ -313,12 +331,6 @@ let ProfileEditComponent = class ProfileEditComponent {
         _this2.loading = false;
       }
     })();
-  }
-  addSocial() {
-    this.socials.push(this.newSocial());
-  }
-  removeSocial(i) {
-    this.socials.removeAt(i);
   }
   onPhotosSelected(files) {
     var _this3 = this;
@@ -339,62 +351,114 @@ let ProfileEditComponent = class ProfileEditComponent {
       }
     })();
   }
-  save() {
+  // 🔹 5) Stripe connect: redirect to backend OAuth authorize endpoint
+  connectStripe() {
+    if (!this.uid) return;
+    if (!this.isOwnerOrProvider) {
+      this.error = 'Choose "Boat owner" or "Provider" role before connecting Stripe.';
+      return;
+    }
+    this.stripeActionRunning = true;
+    const accountType = this.currentRole === 'provider' ? 'provider' : 'owner';
+    const params = new URLSearchParams({
+      ownerId: this.uid,
+      accountType
+    });
+    // Frontend is presumably proxied to backend under /api
+    window.location.href = this.utilSvc.backendURL + `/stripe/connect/authorize?${params.toString()}`;
+  }
+  // 🔹 6) Stripe disconnect: call /stripe/connect/deauthorize
+  disconnectStripe() {
     var _this4 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this4.error = undefined;
-      _this4.success = false;
       if (!_this4.uid) return;
-      _this4.saving = true;
+      _this4.stripeActionRunning = true;
+      _this4.error = undefined;
       try {
-        const v = _this4.form.value;
+        const res = yield fetch(_this4.utilSvc.backendURL + '/stripe/connect/deauthorize', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            ownerId: _this4.uid
+          })
+        });
+        if (!res.ok) {
+          const text = yield res.text();
+          throw new Error(text || 'Failed to disconnect Stripe');
+        }
+        // Locally clear Stripe fields in the profile snapshot
+        if (_this4.profile) {
+          _this4.profile = {
+            ..._this4.profile,
+            stripeStandard: undefined
+          };
+        }
+      } catch (e) {
+        _this4.error = e?.message || 'Failed to disconnect Stripe';
+      } finally {
+        _this4.stripeActionRunning = false;
+      }
+    })();
+  }
+  save() {
+    var _this5 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this5.error = undefined;
+      _this5.success = false;
+      if (!_this5.uid) return;
+      _this5.saving = true;
+      try {
+        const v = _this5.form.value;
         const now = Date.now();
         // Preserve immutable/sensitive fields from existing doc
-        const base = _this4.profile || {
-          userId: _this4.uid,
+        const base = _this5.profile || {
+          userId: _this5.uid,
           email: ''
         };
+        // 🔹 7) compute role safely: admin can only be preserved, not set by client
+        let nextRole = godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.CUSTOMER;
+        if (base.role === godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.ADMIN) {
+          nextRole = godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.ADMIN;
+        } else if (v.role === godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.OWNER || v.role === godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.PROVIDER || v.role === godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.CUSTOMER) {
+          nextRole = v.role;
+        }
         const payload = {
-          userId: _this4.uid,
+          userId: _this5.uid,
           email: base.email || '',
           firstname: v.firstname || '',
           lastname: v.lastname || '',
           displayName: v.displayName || '',
           phone: v.phone || '',
           country: v.country || '',
-          // keep customer role client-side; admin must be server-side only
-          role: 'customer',
-          photos: _this4.photoUrls,
-          photoURL: _this4.photoUrls[0] || base.photoURL || '',
+          role: nextRole,
+          photos: _this5.photoUrls,
+          photoURL: _this5.photoUrls[0] || base.photoURL || '',
           socialnetwork: (v.socialnetwork || []).map(s => ({
             label: s.label || '',
             url: s.url || ''
           })),
-          // leave verification and provider as previously stored
           emailverified: base.emailverified ?? false,
           provider: base.provider || 'firebase',
-          // allow user to set a visible "state" if you want, but enforce on server with rules
           state: v.state || base.state || 'active',
-          // stripe fields preserved
-          stripeAccountId: base.stripeAccountId || '',
-          stripeAccountStatus: base.stripeAccountStatus || '',
+          // stripe fields preserved (or cleared locally via disconnectStripe)
+          stripeStandard: base.stripeStandard || undefined,
           createdTS: base.createdTS || now,
           modifiedTS: now
         };
-        yield _this4.storeDb.updateObject(_this4.utilSvc.backendFBstoreId, _this4.utilSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_3__.OBJECTNAME.bnUsers, payload, _this4.uid);
-        _this4.profile = payload;
-        _this4.success = true;
+        yield _this5.storeDb.updateObject(_this5.utilSvc.backendFBstoreId, _this5.utilSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_3__.OBJECTNAME.bnUsers, payload, _this5.uid);
+        _this5.profile = payload;
+        _this5.success = true;
       } catch (e) {
-        _this4.error = e?.message || 'Failed to save profile';
+        _this5.error = e?.message || 'Failed to save profile';
       } finally {
-        _this4.saving = false;
+        _this5.saving = false;
       }
     })();
   }
   static ctorParameters = () => [{
     type: _angular_forms__WEBPACK_IMPORTED_MODULE_2__.FormBuilder
-  }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_3__.UsersService
   }, {
     type: godigital_lib__WEBPACK_IMPORTED_MODULE_3__.StoreDbService
   }, {

@@ -6,7 +6,7 @@ import { StoreDbService, OBJECTNAME, AUTHSTATUS } from './firebase-service';
 import { UtilsService } from './utils.service';
 import { Users } from './service-service';
 
-// ✅ compat imports for namespace + types
+// ✅ Firebase compat namespace
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
@@ -23,31 +23,29 @@ export const firebaseConfig = {
 @Injectable({ providedIn: 'root' })
 export class UsersService {
   public userInfo!: Users;
-  public currentUser: any;
+
   public allUsers: Users[] | null = null;
   public allUsersO = new BehaviorSubject<Users[] | null>(null);
-  public confirmationResult: any;
-  public firebaseauth: any;
-  public recaptchaVerifier: any;
 
-  // ✅ type from compat import
-  public authState$ = new BehaviorSubject<firebase.User | null>(null);
+  public confirmationResult: any;
+  public recaptchaVerifier: any;
 
   constructor(
     public http: HttpClient,
     public storeDbSvc: StoreDbService,
     public utilSvc: UtilsService,
-  ) {}
+  ) {
+  }
 
   // -----------------------
   // EMAIL/PASSWORD SIGN-IN
   // -----------------------
   authUser(email: string, password1: string, emailNotVerified?: boolean) {
-    const maf = this.utilSvc.mauth; // compat auth instance
+    const maf = this.storeDbSvc.firebaseauth!;
     return new Promise((resolve, reject) => {
       maf.signInWithEmailAndPassword(email.toLowerCase(), password1)
-        .then((success: firebase.auth.UserCredential) => {
-          const user = success.user;
+        .then((cred: firebase.auth.UserCredential) => {
+          const user = cred.user;
           if (user?.emailVerified || emailNotVerified) {
             resolve([AUTHSTATUS.SUCCESS, user]);
           } else {
@@ -62,7 +60,7 @@ export class UsersService {
   // EMAIL/PASSWORD SIGN-UP
   // -----------------------
   registerWithEmail(email: string, password: string, displayName?: string): Promise<{ uid: string }> {
-    const maf = this.utilSvc.mauth;
+    const maf = this.storeDbSvc.firebaseauth!;
     return new Promise(async (resolve, reject) => {
       try {
         const cred = await maf.createUserWithEmailAndPassword(email.toLowerCase(), password);
@@ -75,6 +73,7 @@ export class UsersService {
           handleCodeInApp: true
         });
 
+        // Persist a sanitized profile in your RTDB/Firestore (no password)
         await this.saveUserProfile({
           userId: user.uid,
           email: user.email!,
@@ -93,7 +92,7 @@ export class UsersService {
   }
 
   resendVerificationEmail(): Promise<void> {
-    const user = this.utilSvc.mauth.currentUser;
+    const user = this.storeDbSvc.firebaseauth!.currentUser;
     return new Promise(async (resolve, reject) => {
       if (!user) return reject(new Error('Not signed in'));
       try {
@@ -108,77 +107,134 @@ export class UsersService {
     });
   }
 
-  // ---------------
-  // GOOGLE SIGN-IN
-  // ---------------
-  async signInWithGoogle(): Promise<firebase.User> {
-    const maf = this.utilSvc.mauth;
-    const provider = new firebase.auth.GoogleAuthProvider(); // ✅ namespace
-    const result = await maf.signInWithPopup(provider);
-    const user = result.user!;
-
-    await this.saveUserProfile({
-      userId: user.uid,
-      email: user.email || '',
-      displayName: user.displayName || '',
-      phone: user.phoneNumber || '',
-      photoURL: user.photoURL || '',
-      provider: 'google',
-      state: 'active',
-      modifiedTS: Date.now(),
-      createdTS: Date.now()
-    }, true);
-
-    return user;
+  private async getUserProfile(uid: string): Promise<Users | null> {
+    const storeId = this.utilSvc.backendFBstoreId;
+    const data = await this.storeDbSvc.getObject(storeId, this.utilSvc.mdb, OBJECTNAME.bnUsers, uid);
+    return (data as Users) || null;
   }
 
+  /**
+   * Sign in with Google, upsert RTDB profile, then return RTDB user.
+   */
+async signInWithGoogleAndLoadProfile(): Promise<Users> {
+  const maf = this.utilSvc.mauth;
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  // Popup (you can also support redirect similarly)
+  const result = await maf.signInWithPopup(provider);
+  const user = result.user!;
+  const info = result.additionalUserInfo;
+
+  // 1) Extract names from Google profile (best source)
+  let first = '';
+  let last = '';
+
+  const prof: any = info?.profile || {};
+  first = prof.given_name || prof.first_name || '';
+  last  = prof.family_name || prof.last_name || '';
+
+  // 2) Fallback: split Firebase displayName
+  if ((!first || !last) && user.displayName) {
+    const parts = user.displayName.trim().split(/\s+/);
+    if (parts.length === 1) {
+      first = first || parts[0];
+    } else if (parts.length >= 2) {
+      first = first || parts[0];
+      last  = last  || parts.slice(1).join(' ');
+    }
+  }
+
+  // 3) Upsert profile in RTDB (keeps your schema consistent)
+  await this.saveUserProfile({
+    userId: user.uid,
+    email: user.email || '',
+    displayName: user.displayName || `${first} ${last}`.trim(),
+    firstname: first,
+    lastname: last,
+    phone: user.phoneNumber || '',
+    photoURL: user.photoURL || '',
+    provider: 'google',
+    state: 'active',
+    emailverified: !!user.emailVerified,
+    modifiedTS: Date.now(),
+    createdTS: Date.now()
+  }, /* merge */ true);
+
+  // 4) Return the RTDB profile
+  const profile = await this.getUserProfile(user.uid);
+  if (profile) return profile;
+
+  // very rare fallback
+  return {
+    userId: user.uid,
+    firstname: first,
+    lastname: last,
+    country: '',
+    stripeAccountId: '',
+    stripeAccountStatus: false as any,
+    email: user.email || '',
+    phone: user.phoneNumber || '',
+    role: 'customer',
+    photos: '',
+    socialnetwork: '',
+    emailverified: !!user.emailVerified,
+    state: 'active',
+    displayName: user.displayName || `${first} ${last}`.trim(),
+    createdTS: Date.now(),
+    modifiedTS: Date.now(),
+    photoURL: user.photoURL || '',
+    provider: 'google'
+  } as unknown as Users;
+}
   // ----------
   // SIGN-OUT
   // ----------
   logout() {
-    const maf = this.utilSvc.mauth;
-    return new Promise((resolve, reject) => {
-      maf.signOut().then(resolve).catch(reject);
-    });
+    return this.storeDbSvc.firebaseauth!.signOut();
   }
 
   // ---------------------
   // PASSWORD RESET (auth)
   // ---------------------
   resetPwdUser(email: string) {
-    const maf = this.utilSvc.mauth;
-    return new Promise((resolve, reject) => {
-      maf.sendPasswordResetEmail(email).then(() => resolve(1)).catch(reject);
-    });
+    return this.storeDbSvc.firebaseauth!.sendPasswordResetEmail(email);
   }
 
   // ------------------------
   // CLIENT-SIDE PASSWORD CHANGE
   // ------------------------
   async changePasswordWithOldPassword(oldPassword: string, newPassword: string): Promise<void> {
-    const auth = this.utilSvc.mauth;
+    const auth = this.storeDbSvc.firebaseauth!;
     const user = auth.currentUser;
     if (!user || !user.email) {
       throw new Error('Not signed in or user has no email.');
     }
 
-    // ✅ use static provider from compat namespace
     const cred = firebase.auth.EmailAuthProvider.credential(user.email, oldPassword);
-
     await user.reauthenticateWithCredential(cred);
     await user.updatePassword(newPassword);
   }
 
   async changePasswordReauthWithGoogle(newPassword: string): Promise<void> {
-    const auth = this.utilSvc.mauth;
+    const auth = this.storeDbSvc.firebaseauth!;
     const user = auth.currentUser;
     if (!user) throw new Error('Not signed in.');
-
     const provider = new firebase.auth.GoogleAuthProvider();
-    await user.reauthenticateWithPopup(provider);
+    await (user as any).reauthenticateWithPopup?.(provider)  // compat has this on User
+      .catch(async (e: any) => {
+        if (e?.code === 'auth/popup-blocked') {
+          await auth.signInWithRedirect(provider);
+          await auth.getRedirectResult();
+        } else {
+          throw e;
+        }
+      });
     await user.updatePassword(newPassword);
   }
 
+  // ------------------------
+  // Update user profile in your DB
+  // ------------------------
   updateUser(wnUser: Users) {
     return new Promise((resolve, reject) => {
       if (wnUser && wnUser.userId) {
@@ -191,6 +247,9 @@ export class UsersService {
     });
   }
 
+  // ------------------------------------
+  // INTERNAL: save/upsert user profile
+  // ------------------------------------
   private async saveUserProfile(user: Partial<Users> & { userId: string }, merge = false): Promise<void> {
     const storeId = this.utilSvc.backendFBstoreId;
     const existing = merge

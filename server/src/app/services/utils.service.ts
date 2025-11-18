@@ -1,50 +1,22 @@
-export const TOKEN_URI = 'https://connect.stripe.com/oauth/token';
-export const AUTHORIZE_URI = 'https://connect.stripe.com/oauth/authorize';
-
 export const timer = ms => new Promise(res => setTimeout(res, ms));
 
-interface Result {
-  answer: string;
-}
-
-const { Vonage } = require('@vonage/server-sdk')
-
-const vonage = new Vonage({
-  apiKey: "cc59b4d3",
-  apiSecret: "yF2pFHuyZoJrHQGh"
-})
-
-
 export class UtilsService {
-  public backendConfig;
+  private backendConfig;
 
-  public adnStoreId = 0;
-
-  public backendUrl: string;
-  public serverUrl: string;
-  public serverUrlShort: string;
+  private backendUrl: string;
   public serverPort: number;
 
-  public stripeClientId: string;
-  public stripeSecretKey: string;
-  public stripePublicKey: string;
+  private stripeClientId: string;
+  private stripeSecretKey: string;
+  private stripePublicKey: string;
 
-  public params;
+  private params;
 
-  public platformEnv = "dev";
+  public platformEnv = "test";
 
-  public session;
-
-//  public firebaseAdmin = require('firebase-admin');
-  public serviceAccountFile = "";
+  private serviceAccountFile = "";
   public databaseURL = "";
-  public mdb;
   public config;
-  public stripeWebhookSecretKey;
-  public qs = require('querystring');
-  public backendFBstoreId = '1000';
-  public backendFBstoreId2 = '2001';
-
 
   constructor() {
   }
@@ -113,22 +85,11 @@ export class UtilsService {
   }
 
   setRoutes(router) {
-    router.get('/utils/getenv', (req, res) => {
-      let status = 200;
-      let sessionData = req.session.kamli;
-      if (sessionData === undefined) {
-        sessionData = {};
-      }
-      res.json(sessionData).status(status)
-    });
+    // user.service.ts (example)
+    // POST /api/users/upsert
+    // body: { uid, email, displayName, role: 'guest'|'boatOwner'|'serviceProvider'|'admin' }
   }
 
-  async sendSMS(to, from, text) {
-      await vonage.sms.send({to, from, text})
-          .then(resp => { console.log('Message sent successfully'); console.log(resp); })
-          .catch(err => { console.log('There was an error sending the messages.'); console.error(err); });
-  }
-    
   objectToArray(objectInput) {
     let keyI;
     let ArrayOutput = [];

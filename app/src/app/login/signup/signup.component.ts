@@ -1,26 +1,33 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UsersService } from 'godigital-lib';          // adjust path
-import { StoreDbService, OBJECTNAME } from 'godigital-lib'; // adjust path
+
+import { UsersService } from 'godigital-lib';               // adjust path if needed
+import { StoreDbService, OBJECTNAME } from 'godigital-lib'; // adjust path if needed
 import { UtilsService } from 'godigital-lib';
 
 type SocialLink = { label: string; url: string };
 
 @Component({
   selector: 'app-signup',
-  templateUrl: './signup.component.html'
+  templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
   sending = false;
-  success = false;
-  error?: string;
-  form: FormGroup
+  success = false;                // shown only for email/password flow
+  error?: string;                 // non-modal errors (rare)
+  // --- modal state ---
+  showErrorModal = false;
+  errorModalTitle = 'Authentication failed';
+  errorModalMessage = 'Something went wrong. Please try again.';
 
-  // Keep uploaded photo URLs here
+  form: FormGroup;
   photoUrls: string[] = [];
 
-  // Reactive form for metadata
+  /** If true & role is owner/provider, redirect to Stripe Connect after signup */
+  connectStripeNow = false;
+
   constructor(
     private fb: FormBuilder,
     private users: UsersService,
@@ -29,25 +36,24 @@ export class SignupComponent {
     private router: Router
   ) {
     this.form = this.fb.group({
-      // auth
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      // profile
+
       firstname: ['', [Validators.required]],
       lastname: ['', [Validators.required]],
       displayName: [''],
       phone: [''],
       country: [''],
-      role: ['customer', [Validators.required]],   // client can only pick "customer"
+
+      role: ['guest', [Validators.required]],
+
       socialnetwork: this.fb.array<ReturnType<typeof this.newSocial>>([]),
-      // optional photo upload handled separately
+
       acceptTerms: [false, Validators.requiredTrue],
     });
-
-
   }
 
-  // Helpers
+  // ---------- helpers
   get f() { return this.form.controls; }
   get socials() { return this.form.get('socialnetwork') as FormArray; }
   newSocial() { return this.fb.group({ label: [''], url: [''] }); }
@@ -55,14 +61,34 @@ export class SignupComponent {
   addSocial() { this.socials.push(this.newSocial()); }
   removeSocial(i: number) { this.socials.removeAt(i); }
 
-  /**
-   * Upload photos to Firebase Storage using your StoreDbService.
-   * Saves resulting download URLs to `photoUrls`.
-   */
+  private isOwnerOrProvider(role: string | null | undefined) {
+    return role === 'boatOwner' || role === 'serviceProvider';
+  }
+
+  private buildStripeAuthorizeUrl(ownerId: string, role: string) {
+    const base = '/stripe/connect/authorize';
+    const url = new URL(base, window.location.origin);
+    url.searchParams.set('ownerId', ownerId);
+    url.searchParams.set('accountType', role);
+    return url.toString();
+  }
+
+  // ---------- modal controls
+  openErrorModal(message: string, title = 'Authentication failed') {
+    this.errorModalTitle = title;
+    this.errorModalMessage = message || 'Something went wrong. Please try again.';
+    this.showErrorModal = true;
+  }
+  closeErrorModal() {
+    this.showErrorModal = false;
+  }
+
+  // ---------- uploads
   async onPhotosSelected(files: FileList | null) {
     if (!files?.length) return;
-    const storeId = this.utilSvc.backendFBstoreId;                 // your default storage bucket
-    const dir = `users/${Date.now()}`;                             // or users/{uid} (if uid is known)
+    const storeId = this.utilSvc.backendFBstoreId;
+    const dir = `users/${Date.now()}`;
+
     this.sending = true;
     try {
       for (const file of Array.from(files)) {
@@ -70,18 +96,13 @@ export class SignupComponent {
         this.photoUrls.push(url);
       }
     } catch (e: any) {
-      this.error = e?.message || 'Photo upload failed';
+      this.openErrorModal(e?.message || 'Photo upload failed', 'Upload failed');
     } finally {
       this.sending = false;
     }
   }
 
-  /**
-   * Email/password sign-up:
-   * 1) create Firebase user + send verification
-   * 2) build metadata profile
-   * 3) store in RTDB at backendusers/{uid}
-   */
+  // ---------- email/password signup
   async signupWithEmail() {
     this.error = undefined;
     this.success = false;
@@ -91,37 +112,40 @@ export class SignupComponent {
     try {
       const v = this.form.value;
 
-      // Derive displayName if empty
-      const displayName = v.displayName?.trim()
-        || `${(v.firstname || '').toString().trim()} ${(v.lastname || '').toString().trim()}`.trim();
+      const displayName =
+        (v.displayName || '').trim() ||
+        `${(v.firstname || '').toString().trim()} ${(v.lastname || '').toString().trim()}`.trim();
 
-      // Create Firebase Auth user (sends verification email)
+      // 1) create auth user
       const { uid } = await this.users.registerWithEmail(v.email!, v.password!, displayName);
 
-      // Build the profile document (no password)
+      // 2) profile
       const now = Date.now();
       const profile = {
         userId: uid,
         firstname: v.firstname,
         lastname: v.lastname,
         country: v.country || '',
-        stripeAccountId: '',             // later
-        stripeAccountStatus: '',         // later
+        stripeAccountId: '',
+        stripeAccountStatus: '',
         email: v.email,
         phone: v.phone || '',
-        role: 'customer',                // force safe role; let backend elevate to admin if needed
+        role: v.role || 'guest',
         photos: this.photoUrls,
-        socialnetwork: (v.socialnetwork || []).map((s: any) => ({ label: s.label || '', url: s.url || '' })) as SocialLink[],
-        emailverified: false,            // reflects Firebase user; will become true after verification
-        state: 'active',                 // or 'pending_review' if you want moderation
+        socialnetwork: (v.socialnetwork || []).map((s: any) => ({
+          label: s.label || '',
+          url: s.url || '',
+        })) as SocialLink[],
+        emailverified: false,
+        state: 'active',
         displayName: displayName,
         createdTS: now,
         modifiedTS: now,
-        photoURL: this.photoUrls[0] || '',   // optional primary
-        provider: 'firebase'                 // or 'google' in Google flow
+        photoURL: this.photoUrls[0] || '',
+        provider: 'firebase',
       };
 
-      // Save to Realtime Database: /backendusers/{uid}
+      // 3) save to RTDB
       await this.storeDb.updateObject(
         this.utilSvc.backendFBstoreId,
         this.utilSvc.mdb,
@@ -130,35 +154,37 @@ export class SignupComponent {
         uid
       );
 
-      this.success = true;  // show “check your inbox”
-      this.form.reset({ role: 'customer', acceptTerms: false });
-      // Optionally redirect:
-      // this.router.navigateByUrl('/check-inbox');
+      // 4) Either redirect to Stripe immediately, or show the success banner (as before)
+      if (this.connectStripeNow && this.isOwnerOrProvider(profile.role)) {
+        window.location.href = this.buildStripeAuthorizeUrl(uid, profile.role);
+        return;
+      }
+
+      this.success = true;                    // keep banner for email flow
+      this.form.reset({ role: 'guest', acceptTerms: false });
+      this.photoUrls = [];
     } catch (e: any) {
-      this.error = e?.message || 'Sign-up failed.';
+      this.openErrorModal(e?.message || 'Sign-up failed.');
     } finally {
       this.sending = false;
     }
   }
 
-  /**
-   * Google sign-in (popup) and profile upsert.
-   * After Google, ask the user to complete missing metadata if needed.
-   */
+  // ---------- Google signup (IMMEDIATE REDIRECT TO HOME)
   async signupWithGoogle() {
     this.error = undefined;
     this.sending = true;
+
     try {
-      const user = await this.users.signInWithGoogle();
-      const uid = user.uid;
+      const user = await this.users.signInWithGoogleAndLoadProfile();
+      const uid = user.userId;
       const now = Date.now();
 
-      // Try to populate from form (user may have filled it first),
-      // otherwise fallback to Google profile.
       const v = this.form.value;
-      const displayName = v.displayName?.trim() || user.displayName || '';
+      const displayName = (v.displayName || user.displayName || '').trim();
       const firstname = v.firstname || (displayName.split(' ')[0] || '');
       const lastname = v.lastname || (displayName.split(' ').slice(1).join(' ') || '');
+      const role = v.role || 'guest';
 
       const profile = {
         userId: uid,
@@ -168,17 +194,20 @@ export class SignupComponent {
         stripeAccountId: '',
         stripeAccountStatus: '',
         email: user.email || v.email || '',
-        phone: v.phone || user.phoneNumber || '',
-        role: 'customer',
+        phone: v.phone || user.phone || '',
+        role,
         photos: this.photoUrls.length ? this.photoUrls : (user.photoURL ? [user.photoURL] : []),
-        socialnetwork: (v.socialnetwork || []).map((s: any) => ({ label: s.label || '', url: s.url || '' })) as SocialLink[],
-        emailverified: !!user.emailVerified,
+        socialnetwork: (v.socialnetwork || []).map((s: any) => ({
+          label: s.label || '',
+          url: s.url || '',
+        })) as SocialLink[],
+        emailverified: !!user.emailverified,
         state: 'active',
         displayName,
         createdTS: now,
         modifiedTS: now,
         photoURL: (this.photoUrls[0] || user.photoURL || ''),
-        provider: 'google'
+        provider: 'google',
       };
 
       await this.storeDb.updateObject(
@@ -189,10 +218,15 @@ export class SignupComponent {
         uid
       );
 
-      // Decide where to go (e.g., profile-completion page if critical fields missing)
-      // this.router.navigateByUrl('/account');
+      // IMMEDIATE redirect to home (no “user created” banner)
+      // If you want to auto-open Stripe right after Google for owners/providers, uncomment below:
+      // if (this.isOwnerOrProvider(role) && this.connectStripeNow) {
+      //   window.location.href = this.buildStripeAuthorizeUrl(uid, role);
+      //   return;
+      // }
+      this.router.navigateByUrl('/');
     } catch (e: any) {
-      this.error = e?.message || 'Google sign-in failed.';
+      this.openErrorModal(e?.message || 'Google sign-in failed.');
     } finally {
       this.sending = false;
     }

@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { UsersService } from 'godigital-lib';
+import { StoreDbService, UsersService } from 'godigital-lib';
 
 @Component({
   selector: 'app-changepwd',
@@ -17,9 +17,9 @@ export class ChangepwdComponent implements OnDestroy {
   private uid?: string;
   private email?: string;
 
-  constructor(private fb: FormBuilder, private users: UsersService) {
+  constructor(private fb: FormBuilder, private storeDbSvc: StoreDbService, private usersSvc: UsersService) {
     // Track current user
-    this.sub = this.users.authState$.subscribe(u => {
+    this.sub = this.storeDbSvc.authState$.subscribe(u => {
       this.uid = u?.uid || undefined;
       this.email = u?.email || undefined;
     });
@@ -54,7 +54,7 @@ export class ChangepwdComponent implements OnDestroy {
 
     this.sending = true;
     try {
-      await this.users.changePasswordWithOldPassword(oldPassword!, newPassword!);
+      await this.usersSvc.changePasswordWithOldPassword(oldPassword!, newPassword!);
       this.success = true;
       this.form.reset();
     } catch (e: any) {

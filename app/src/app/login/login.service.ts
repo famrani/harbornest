@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 import { Injectable } from '@angular/core';
-import { UsersService, Users, regexEmail, regexMobileNo } from 'godigital-lib';
+import { UsersService, Users,  } from 'godigital-lib';
 import { Router, } from '@angular/router';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { UtilsService, EDITSLIDE } from 'godigital-lib';

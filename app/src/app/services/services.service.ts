@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
-import { UsersService, Users, ServicesService, UtilsService, Locations, Boats, Feedbacks, Bookings, BoatServices } from 'godigital-lib';
+import { UsersService, Users, ServicesService, UtilsService, Locations, Boats, Feedbacks, Bookings,  } from 'godigital-lib';
 import { Router } from '@angular/router';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -62,8 +62,8 @@ export class LocalUtilsService {
   public locationCity: Locations[] | null;
   public filteredLocations: Locations[] | null;
   public myLocations: Locations[] | null;
-  public boatServices: BoatServices[] | null;
-  public boatServicesearch: BoatServices[] | null;
+//  public boatServices: BoatServices[] | null;
+//  public boatServicesearch: BoatServices[] | null;
   public feedbacks: Feedbacks[] | null;
   public users: Users[] | null;
   public bookings: Bookings[] | null;
@@ -77,7 +77,7 @@ export class LocalUtilsService {
   public nearestCity = '';
 
   public currentListing: Locations | null;
-  public currentboatServices: BoatServices[] | null;
+//  public currentboatServices: BoatServices[] | null;
   public currentOwner: Users | null;
   public currentBooking: Bookings | null;
   public subscriptions = new Subscription();

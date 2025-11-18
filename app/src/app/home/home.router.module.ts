@@ -8,6 +8,8 @@ import { GalleryComponent } from './gallery/gallery.component';
 import { AboutComponent } from './about/about.component';
 import { ContactusComponent } from './contactus/contactus.component';
 import { BoatLagoon40Component } from './boat-lagoon40/boat-lagoon40.component';
+import { OwnerStripeConnectedComponent } from './owner-stripe-connected/owner-stripe-connected.component';
+import { OwnerStripeSettingsComponent } from './ownerStripeSettings/ownerStripeSettings.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,6 +18,8 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'boat-lagoon40', component: BoatLagoon40Component },
   { path: 'contactus', component: ContactusComponent },
+  { path: 'ownerStripeSettings', component: OwnerStripeSettingsComponent },
+  { path: 'owner-stripe-connected', component: OwnerStripeConnectedComponent },
 ];
 
 @NgModule({

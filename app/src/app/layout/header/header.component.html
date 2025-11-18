@@ -1,4 +1,3 @@
-<!-- src/app/shared/site-header/site-header.component.html -->
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
   <div class="container py-2">
     <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/home">
@@ -18,13 +17,42 @@
       </ul>
 
       <div class="d-flex align-items-center gap-2">
-        <a class="btn btn-dark rounded-pill" routerLink="/book"><i class="bi bi-calendar2-check me-1"></i>Book now</a>
+        <!-- Role + Stripe badges (only when logged in) -->
+        <!-- Authenticated user -->
+        <ng-container *ngIf="layoutSvc.wnGuest as user">
 
+          <div class="d-none d-lg-flex flex-column align-items-end me-2 small-header-status">
+
+            <div class="d-flex gap-1">
+
+              <!-- ROLE BADGE (always for authenticated users) -->
+              <span class="badge text-bg-light border badge-rounded">
+                <i class="bi bi-person-badge me-1"></i>{{ userRoleLabel }}
+              </span>
+
+              <!-- STRIPE BADGE (ONLY IF OWNER) -->
+              <ng-container *ngIf="isOwner">
+                <span [ngClass]="stripeBadgeClass" class="badge badge-rounded">
+                  <i class="bi bi-stripe me-1"></i>{{ stripeStatusLabel }}
+                </span>
+              </ng-container>
+
+            </div>
+          </div>
+
+        </ng-container>
+
+        <!-- Primary CTA -->
+        <a class="btn btn-dark rounded-pill" routerLink="/book">
+          <i class="bi bi-calendar2-check me-1"></i>Book now
+        </a>
+
+        <!-- User dropdown -->
         <div class="dropdown" *ngIf="layoutSvc.wnGuest; else guest">
           <a class="btn btn-link text-decoration-none d-flex align-items-center gap-2" data-bs-toggle="dropdown">
             <img *ngIf="avatarUrl; else icon" [src]="avatarUrl" class="rounded-circle" width="28" height="28">
             <ng-template #icon><i class="bi bi-person-circle fs-5"></i></ng-template>
-            <span class="d-none d-md-inline">{{ layoutSvc.wnGuest?.firstname || 'Account' }}</span>
+            <span class="d-none d-md-inline">{{ layoutSvc.wnGuest?.displayName || 'Account' }}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" routerLink="/profile-edit">My profile</a></li>
@@ -32,13 +60,15 @@
             <li><a class="dropdown-item" routerLink="/account">My bookings</a></li>
             <li><a class="dropdown-item" routerLink="/account/payments">Payments</a></li>
             <li><a class="dropdown-item" routerLink="/account/reviews">Reviews</a></li>
-            <li><hr class="dropdown-divider"></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
             <li><a class="dropdown-item text-danger" (click)="logout()">Sign out</a></li>
           </ul>
         </div>
 
         <ng-template #guest>
-          <a class="btn btn-outline-secondary rounded-pill" routerLink="/login">Sign in</a>
+          <a class="btn btn-outline-secondary rounded-pill" routerLink="/login">Log in</a>
           <a class="btn btn-outline-secondary rounded-pill" routerLink="/signup">Create account</a>
         </ng-template>
       </div>

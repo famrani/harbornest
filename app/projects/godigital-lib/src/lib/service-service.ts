@@ -33,41 +33,58 @@ export enum EDITSLIDE {
 export enum BOOKINGSTATUS {
     CREATION = 'creation',
     REQUESTED = 'requested',
-    PENDINGREQUEST = 'pendind request',
+    PENDINGREQUEST = 'pending request',
     APPROVED = 'approved',
-    PENDINGCANCEL = 'pendind cancel',
+    PENDINGCANCEL = 'pending cancel',
     CANCELLED = 'cancelled',
 }
 
-export const regexUrl = /https?:\/\//;
+export enum USERROLE {
+    OWNER = 'owner',
+    CUSTOMER = 'customer',
+    ADMIN = 'admin',
+    PROVIDER = 'provider',
+}
+
+/*export const regexUrl = /https?:\/\//;
 export const regexUrlImage = /(https?:\/\/.*\.(?:png|jpg|jpeg))/;
 export const regexUrlVideo = /(https?:\/\/.*\.(?:mp4|avi))/;
 export const regexUrlMedia = /(^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$)|((https?:\/\/.*\.(?:mp4|avi|png|jpg|jpeg)))/;
 export const regexMobileNo = /(^(0033|\+33|0)(6|7)(\d{8})$)|(^\+44\d{10}$)|(^\+31\d{8,10}$)|(^\+34(\d{8,10})$)|(^\+41(\d{8,10})$)|(^\+39(\d{8,10})$)/;
 export const regexFixedNo = /(^(0033|\+33|0)(1|2|3|4|5|8|9)(\d{8})$)|(^\+44\d{10}$)|(^\+31\d{8,10}$)|(^\+34(\d{8,10})$)|(^\+41(\d{8,10})$)|(^\+39(\d{8,10})$)/;
-export const regexEmail = /^[^@]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
-
+export const regexEmail = /^[^@]+@[a-z0-9.-]+\.[a-z]{2,3}$/;*/
 
 export interface Users {
     userId: string;
-    password: string;
-    firstname: string;
-    lastname: string;
-    country: string;
-    stripeAccountId: string;
-    stripeAccountStatus: boolean;
+    firstname?: string;
+    lastname?: string;
+    country?: string;
     email: string;
-    phone: string;
-    role: string;
-    photos: string;
-    socialnetwork: string;
-    emailverified: boolean;
-    state: string;
-    displayName: string;
-    createdTS: number;
-    modifiedTS: number;
-    photoURL: string;
-    provider: string;
+    phone?: string;
+    role: USERROLE.CUSTOMER | USERROLE.OWNER | USERROLE.PROVIDER | USERROLE.ADMIN;
+    photos?: string[];
+    socialnetwork?: { label: string; url: string }[];
+    emailverified?: boolean;
+    state?: 'active' | 'disabled' | 'banned' | 'pending_review';
+    displayName?: string;
+    createdTS?: number;
+    modifiedTS?: number;
+    photoURL?: string;
+    provider?: string;
+
+    // --- Stripe Webhook secret for this owner’s account ---
+    webhookSecret?: string;            // created by Owner in Stripe Dashboard → Webhooks
+}
+
+export interface Payment {
+    mode: 'setup_then_charge',                 // strategy
+    stripe_user_id: string,                    // owner’s account id (from OAuth)
+    customerId?: string,                       // on owner’s account
+    setupIntentId?: string,
+    paymentMethodId?: string,
+    paymentIntentId?: string,
+    status: 'init' | 'pm_saved' | 'requires_action' | 'charge_succeeded' | 'charge_failed' | 'canceled',
+    lastError?: string | null
 }
 
 export interface Bookings {
@@ -82,7 +99,9 @@ export interface Bookings {
     price: number;
     status: string;
     services: string[];
+    payment: Payment;
 }
+
 export interface Locations {
     locId: string;
     locTitle: string;
@@ -99,6 +118,18 @@ export interface Boats {
     boatServices: string[];
     boatdOwner: string;
 }
+
+export interface StripeStandard {
+    stripe_user_id: string;          // e.g. acct_1Pxabc...
+    access_token: string;            // secret ! do NOT expose to frontend
+    refresh_token: string;
+    livemode: boolean;
+    scope: string;                   // "read_write"
+    token_type: string;
+    connectedAt: number;             // timestamp
+}
+
+
 export interface Owners {
     ownId: string;
     ownerName: string;
@@ -106,7 +137,10 @@ export interface Owners {
     ownerPhotos: string[];
     ownerInsta: number;
     ownerFacebook: string[];
+    stripeStandard: StripeStandard;
 }
+
+
 export interface Partners {
     partId: string;
     partnerTitle: string;
@@ -142,11 +176,56 @@ export interface Availability {
     daysoff: boolean;
 }
 
-export interface BoatServices {
+/* export interface BoatServices {
     servicesId: string;
     title: string;
     description: string;
     indicativePricing: number;
+} */
+
+// src/app/owner-tours/models/owner-tour.model.ts
+export interface OwnerTourCard {
+    title: string;
+    desc: string;
+    duration?: string;
+    img?: string;
+}
+
+export interface OwnerTourInclusion {
+    icon: string;       // e.g. 'bi bi-wifi'
+    title: string;      // e.g. 'Wi-Fi + Data'
+    note?: string;      // e.g. 'Partage d’écran en visio ok'
+}
+
+export interface OwnerTourAddon {
+    title: string;
+    desc: string;
+    priceLabel?: string; // e.g. '40€ / pers'
+}
+
+export interface OwnerTour {
+    id?: string;         // Firebase key
+    ownerId: string;     // userId of the boat owner
+    slug: string;        // 'sunset-cruise'
+    title: string;       // 'Sunset Cruise & Champagne'
+    subtitle?: string;   // optional subtitle
+    shortDescription: string;   // used on list cards
+    location?: string;   // 'Antibes', 'Cannes', etc.
+    durationLabel?: string;     // '2–3h'
+    capacity?: number;          // 8
+    priceFrom?: number;         // 320
+    currency?: string;          // 'EUR'
+    coverImage: string;         // list card cover
+    heroImage: string;          // detail hero image
+
+    tags?: string[];            // ['sunset', 'aperitif']
+    cards?: OwnerTourCard[];    // the “Sunset à quai / Golden hour / Premium” cards
+    inclusions?: OwnerTourInclusion[];
+    addons?: OwnerTourAddon[];
+
+    published: boolean;
+    createdAt: number;
+    updatedAt: number;
 }
 
 @Injectable({
@@ -197,8 +276,8 @@ export class ServicesService {
     public bnAvailability: Availability[] | null;
     public bnAvailabilityO: BehaviorSubject<Availability[] | null> = new BehaviorSubject<Availability[] | null>(null);
 
-    public bnBoatServices: BoatServices[] | null;
-    public bnBoatServicesO: BehaviorSubject<BoatServices[] | null> = new BehaviorSubject<BoatServices[] | null>(null);
+/*    public bnBoatServices: BoatServices[] | null;
+    public bnBoatServicesO: BehaviorSubject<BoatServices[] | null> = new BehaviorSubject<BoatServices[] | null>(null);*/
 
     public version;
     public firebaseBSSdata = {};
@@ -310,8 +389,8 @@ export class ServicesService {
                         this.utilSvc.mauth = this.storeDbSvc.backendFbRef[authString];
 
                         this.utilSvc.mauth.onAuthStateChanged((user) => {
-                            this.usersSvc.currentUser = user || null;
-                            this.usersSvc.authState$.next(user || null);
+                            this.storeDbSvc.currentUser = user || null;
+                            this.storeDbSvc.authState$.next(user || null);
                         });
 
 
@@ -324,7 +403,7 @@ export class ServicesService {
                         this.subscribeFeedbacks();
                         this.subscribeBookings();
                         this.subscribeAvailability();
-                        this.subscribeBoatServices();
+//                        this.subscribeBoatServices();
                         this.subscribeBoats();
                         this.subscribeEvents();
                         this.subscribeOwners();
@@ -345,7 +424,7 @@ export class ServicesService {
             this.unsubscribeFeedbacks();
             this.unsubscribeBookings();
             this.unsubscribeAvailability();
-            this.unsubscribeBoatServices();
+//            this.unsubscribeBoatServices();
             this.unsubscribeBoats();
             this.unsubscribeEvents();
             this.unsubscribeOwners();
@@ -403,25 +482,6 @@ export class ServicesService {
     public resetVariables() {
         this.storeDbSvc.storageFbRef = [];
         this.setUser(null);
-    }
-
-    public getHosts(wnHost: Users) {
-        return new Promise((resolve, reject) => {
-            let params1 = new HttpParams();
-            if (wnHost && wnHost.stripeAccountId) {
-                params1 = params1.set('connectedAccountId', wnHost.stripeAccountId);
-                this.http.get(this.utilSvc.backendURL + 'stripe/customer/list', { params: params1, responseType: 'json' }).subscribe(
-                    data => {
-                        resolve(data);
-                    },
-                    error => {
-                        reject(error);
-                    }
-                );
-            } else {
-                resolve({});
-            }
-        });
     }
 
     public exportObjects(objects, objectName) {
@@ -504,7 +564,8 @@ export class ServicesService {
             } catch (error) {
                 console.error('❌ Login failed:', error);
                 this.setLoggedUser(undefined);
-                throw (error);
+                throw ([AUTHSTATUS.UNKNOWNERROR, error]);
+
             }
         } else if (firebaseUid) {
             // 🔥 Validate that user exists in Realtime Database
@@ -929,7 +990,7 @@ export class ServicesService {
         this.bnAvailabilityO.next(value);
     }
 
-    subscribeBoatServices() {
+/*    subscribeBoatServices() {
         const beStoreId = this.utilSvc.backendFBstoreId;
         this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnBoatServices].subscribe(
             data => {
@@ -954,36 +1015,6 @@ export class ServicesService {
     public setBoatServices(value: BoatServices[] | null) {
         this.bnBoatServices = value;
         this.bnBoatServicesO.next(value);
-    }
-
-    async createStripeExpressAccount(wnUser: Users) {
-        try {
-            // Step 1: create the Express account
-            const email = wnUser.email;
-            const accountResponse = await this.http.post<any>(this.utilSvc.backendURL + '/stripe/expressaccount', {
-                email,
-            }).toPromise();
-
-            const accountId = accountResponse.id;
-            const state = uuidv4();
-
-            wnUser.stripeAccountId = accountId;
-            wnUser.state = state;
-            await this.storeDbSvc.updateObject(this.utilSvc.backendFBstoreId, this.utilSvc.mdb, OBJECTNAME.bnUsers, wnUser, wnUser.userId);
-
-            // Step 2: create the Express onboarding link
-            const accountLinkResponse = await this.http.post<any>(this.utilSvc.backendURL + '/stripe/expressaccount-link', {
-                accountId,
-                refreshUrl: this.utilSvc.backendURL + '/stripe-account-failed' + '?state=' + state,
-                returnUrl: this.utilSvc.backendURL + '/stripe-account-confirm' + '?state=' + state,
-            }).toPromise();
-
-            return accountLinkResponse.url; // return the onboarding URL
-
-        } catch (error) {
-            console.error('Error creating Stripe Express account:', error);
-            throw error;
-        }
-    }
+    }*/
 
 }

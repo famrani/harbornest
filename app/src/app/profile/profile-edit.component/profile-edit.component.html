@@ -31,15 +31,66 @@
 
       <div class="col-md-4">
         <label class="form-label">Role</label>
-        <input class="form-control" formControlName="role" disabled />
-        <div class="form-text">Admin is granted by the platform only.</div>
+        <select class="form-select" formControlName="role">
+          <option value="customer">Guest</option>
+          <option value="owner">Boat owner</option>
+          <option value="provider">Provider</option>
+        </select>
+        <div class="form-text">
+          Start as a guest, and switch to Boat owner or Provider when you’re ready.
+          Admin rights (if any) are granted by the platform only.
+        </div>
       </div>
+
+      <!-- Stripe connection section (only relevant for owner / provider) -->
+      <div class="col-12" *ngIf="isOwnerOrProvider">
+        <div class="border rounded-3 p-3 bg-body-tertiary">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <div>
+              <div class="fw-semibold mb-1">
+                Stripe payments
+              </div>
+              <div class="small text-muted">
+                Status:
+                <span class="badge badge-rounded" [ngClass]="{
+              'text-bg-success': stripeConnected,
+              'text-bg-warning': !stripeConnected
+            }">
+                  {{ stripeStatusLabel }}
+                </span>
+              </div>
+              <div class="small text-muted mt-1" *ngIf="!stripeConnected">
+                Connect your Stripe account to receive payouts for your bookings.
+              </div>
+              <div class="small text-muted mt-1" *ngIf="stripeConnected">
+                Your Stripe account is linked to this profile. You can disconnect it at any time.
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+              <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill" *ngIf="!stripeConnected"
+                (click)="connectStripe()" [disabled]="stripeActionRunning">
+                <i class="bi bi-link-45deg me-1"></i>
+                {{ stripeActionRunning ? 'Redirecting…' : 'Connect Stripe' }}
+              </button>
+
+              <button type="button" class="btn btn-outline-danger btn-sm rounded-pill" *ngIf="stripeConnected"
+                (click)="disconnectStripe()" [disabled]="stripeActionRunning">
+                <i class="bi bi-x-circle me-1"></i>
+                {{ stripeActionRunning ? 'Disconnecting…' : 'Disconnect Stripe' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
       <!-- Social links -->
       <div class="col-12">
         <label class="form-label d-flex justify-content-between align-items-center">
           Social links
-          <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" (click)="addSocial()">Add link</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" (click)="addSocial()">Add
+            link</button>
         </label>
 
         <div *ngFor="let s of socials.controls; let i = index" class="row g-2 align-items-center mb-2">
@@ -62,7 +113,8 @@
         <label class="form-label">Photos</label>
         <input type="file" class="form-control" (change)="onPhotosSelected(($event.target).files)" multiple />
         <div class="d-flex flex-wrap gap-2 mt-2">
-          <img *ngFor="let url of photoUrls" [src]="url" class="rounded" style="width:110px;height:84px;object-fit:cover;">
+          <img *ngFor="let url of photoUrls" [src]="url" class="rounded"
+            style="width:110px;height:84px;object-fit:cover;">
         </div>
       </div>
     </div>
