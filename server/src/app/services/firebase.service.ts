@@ -5,32 +5,67 @@ import * as fs from 'fs';
 import { UtilsService } from './utils.service';
 
 export enum OBJECTNAME {
-  wnLocations = 'backendlocations',
-  wnLocationtypes = 'backendlocationtypes',
-  wnUsers = 'backendusers',
-  wnMessages = 'backendmessages',
-  wnEquipments = 'backendequipments',
-  wnBookings = 'backendbookings',
-  wnFeedbacks = 'backendfeedbacks',
+  bnLocations = 'backendlocations',
+  bnBoats = 'backendboats',
+  bnUsers = 'backendusers',
+  bnMessages = 'backendmessages',
+  bnBookings = 'backendbookings',
+  bnFeedbacks = 'backendfeedbacks',
+  bnPartners = 'backendpartners',
+  bnEvents = 'backendevents',
+  bnAvailability = 'backendavailability',
+  bnBoatServices = 'backendservices',
+  bnOwners = 'backendowners',
+  backendcalendar = 'backendcalendar',
 }
 
+export enum USERROLE {
+    OWNER = 'owner',
+    CUSTOMER = 'customer',
+    ADMIN = 'admin',
+    PROVIDER = 'provider',
+}
 
 export interface Users {
-  userId: string;
-  password: string;
-  fullname: string;
-  socialnetworklink: string;
-  stripeAccountId: string;
-  stripeAccountStatus: string;
-  mobileNo: string;
-  email: string;
-  address: string;
-  lat: string;
-  lng: string;
-  companyname: string;
-  country: string;
-  emailverified: boolean;
-  state: string;
+    userId: string;                     // UID from Firebase Auth
+    email: string;
+    firstname: string;
+    lastname: string;
+    displayName: string;
+    phone?: string;
+    country?: string;
+
+    role: USERROLE.CUSTOMER | USERROLE.OWNER | USERROLE.PROVIDER | USERROLE.ADMIN;                 // Fixed role
+
+    // --- Stripe Standard OAuth connection ---
+    stripeStandard?: {
+        stripe_user_id: string;          // e.g. acct_1Pxabc...
+        access_token: string;            // secret ! do NOT expose to frontend
+        refresh_token: string;
+        livemode: boolean;
+        scope: string;                   // "read_write"
+        token_type: string;
+        connectedAt: number;             // timestamp
+    };
+
+    // --- Stripe Webhook secret for this owner’s account ---
+    webhookSecret?: string;            // created by Owner in Stripe Dashboard → Webhooks
+
+    // --- App profile ---
+    photos: string[];                  // optional uploaded photos
+    photoURL?: string;                 // primary profile picture
+    socialnetwork?: { label: string; url: string }[];
+
+    // --- Provider info ---
+    emailverified: boolean;
+    provider: 'firebase' | 'google';
+
+    // --- Timestamps ---
+    createdTS: number;
+    modifiedTS: number;
+
+    // --- App state ---
+    state: 'active' | 'suspended' | 'pending_review';
 }
 
 export interface Bookings {
@@ -88,24 +123,9 @@ export interface Equipments {
   description: string;
 }
 
-export interface BookingData {
-  user_guest: string;
-  email_guest: string;
-  user_host: string;
-  email_host: string;
-  start_date: string;
-  end_date: string;
-  start_time: string;
-  end_time: string;
-  listing_title: string;
-  price: number;
-}
-
-
-
 @Injectable()
 export class StoreDbService {
-  private db;
+  public db;
   private bucket;
   public auth;
 
@@ -118,7 +138,7 @@ export class StoreDbService {
   initFirebase() {
     let currentDir = process.cwd();
     const serviceAccount = JSON.parse(
-      fs.readFileSync(currentDir + '/dist2/config/adn-dev-4d05d-firebase-adminsdk-gzmds-f64bd43091.json', 'utf8')
+      fs.readFileSync(currentDir + '/dist2/config/adn-dev-4d05d-firebase-adminsdk-gzmds-9dcd6d5f4d.json', 'utf8')
     );
 
     admin.initializeApp({
@@ -175,15 +195,15 @@ export class StoreDbService {
 
   createUser(email: string, password: string) {
     return new Promise(async (resolve, reject) => {
-    try {
-      const userRecord = await admin.auth().createUser({
-        email,
-        password,
-      });
-      resolve(userRecord);
-    } catch (e) {
-      reject(e);
-    }
+      try {
+        const userRecord = await admin.auth().createUser({
+          email,
+          password,
+        });
+        resolve(userRecord);
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
@@ -196,11 +216,25 @@ export class StoreDbService {
           const userid = success.uid;
           resolve(userid);
         },
-      error=> {
-        reject(error);
-      });
+        error => {
+          reject(error);
+        });
     });
   }
 
+  // --- Add inside StoreDbService ---
+
+  /** Create a push key under a path and set value */
+  async pushObject(path: string, data: any): Promise<{ key: string }> {
+    const ref = this.db.ref(path).push();
+    const key = ref.key as string;
+    await ref.set(data);
+    return { key };
+  }
+
+  /** Shallow update (merge) */
+  async updateObject(path: string, data: Partial<any>): Promise<void> {
+    await this.db.ref(path).update(data);
+  }
 
 }

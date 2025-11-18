@@ -14,7 +14,7 @@ class UtilsService {
     constructor() {
         this.adnStoreId = 0;
         this.platformEnv = "dev";
-        this.firebaseAdmin = require('firebase-admin');
+        //  public firebaseAdmin = require('firebase-admin');
         this.serviceAccountFile = "";
         this.databaseURL = "";
         this.qs = require('querystring');

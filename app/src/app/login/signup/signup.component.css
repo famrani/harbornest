@@ -1,0 +1,39 @@
+/* Keep Bootstrap look; just nudge sizes down a bit */
+.container {
+  font-size: 0.95rem;
+}
+
+h1.h4 {
+  font-weight: 600;
+}
+
+.form-label,
+.form-text {
+  color: #4b5563;
+}
+
+.invalid-feedback,
+.text-danger {
+  font-size: 0.85rem;
+}
+
+/* Small controls consistent */
+.form-control-sm,
+.form-select-sm,
+.btn-sm {
+  font-size: 0.92rem;
+  padding-top: .35rem;
+  padding-bottom: .35rem;
+}
+
+.btn.rounded-pill {
+  border-radius: 50rem;
+}
+
+/* Modal helpers (Bootstrap-like when using *ngIf) */
+.modal-backdrop.show {
+  opacity: .4;
+}
+.modal.d-block .modal-dialog {
+  max-width: 460px;
+}

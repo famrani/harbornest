@@ -6,6 +6,7 @@ import http from 'http';
 import https from 'https';
 import { UtilsService } from '../services/utils.service';
 import { StripeService } from '../services/stripeAdn';
+import { BookingsService } from '../services/booking.service'
 
 export class WebServerComponent {
     private app = express();
@@ -14,7 +15,11 @@ export class WebServerComponent {
     private portHttp: number;
     private router = express.Router();
 
-    constructor(private utilsSvc: UtilsService, private stripeSvc: StripeService) {}
+  constructor(
+    private utilsSvc: UtilsService, 
+    private stripeSvc: StripeService,
+    private bookingsSvc: BookingsService,
+  ) {}
 
     async initWebServer(): Promise<void> {
         this.port = Number(this.utilsSvc.serverPort);
@@ -78,6 +83,8 @@ export class WebServerComponent {
     }
 
     private setRoutes(): void {
-        this.utilsSvc.setRoutes(this.router);
+    this.utilsSvc.setRoutes(this.router);
+    this.stripeSvc.setRoutes(this.router);
+    this.bookingsSvc.setRoutes(this.router);
     }
 }

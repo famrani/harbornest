@@ -9,13 +9,3 @@ bootstrap2
 server/node_modules
 server/dist
 server/.env
-server/*.json
-# secrets
-.env
-*.env
-server/src/config/*.json
-server/dist2/config/*.json
-
-# build artifacts that leaked keys
-app/www/main.js
-app/www/*.map

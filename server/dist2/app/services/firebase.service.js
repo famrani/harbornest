@@ -78,13 +78,18 @@ const admin = __importStar(require("firebase-admin")); // ✅ Correct way
 const fs = __importStar(require("fs"));
 var OBJECTNAME;
 (function (OBJECTNAME) {
-    OBJECTNAME["wnLocations"] = "backendlocations";
-    OBJECTNAME["wnLocationtypes"] = "backendlocationtypes";
-    OBJECTNAME["wnUsers"] = "backendusers";
-    OBJECTNAME["wnMessages"] = "backendmessages";
-    OBJECTNAME["wnEquipments"] = "backendequipments";
-    OBJECTNAME["wnBookings"] = "backendbookings";
-    OBJECTNAME["wnFeedbacks"] = "backendfeedbacks";
+    OBJECTNAME["bnLocations"] = "backendlocations";
+    OBJECTNAME["bnBoats"] = "backendboats";
+    OBJECTNAME["bnUsers"] = "backendusers";
+    OBJECTNAME["bnMessages"] = "backendmessages";
+    OBJECTNAME["bnBookings"] = "backendbookings";
+    OBJECTNAME["bnFeedbacks"] = "backendfeedbacks";
+    OBJECTNAME["bnPartners"] = "backendpartners";
+    OBJECTNAME["bnEvents"] = "backendevents";
+    OBJECTNAME["bnAvailability"] = "backendavailability";
+    OBJECTNAME["bnBoatServices"] = "backendservices";
+    OBJECTNAME["bnOwners"] = "backendowners";
+    OBJECTNAME["backendCalendar"] = "backendcalendar";
 })(OBJECTNAME || (exports.OBJECTNAME = OBJECTNAME = {}));
 let StoreDbService = (() => {
     let _classDecorators = [(0, common_1.Injectable)()];
@@ -99,7 +104,7 @@ let StoreDbService = (() => {
         }
         initFirebase() {
             let currentDir = process.cwd();
-            const serviceAccount = JSON.parse(fs.readFileSync(currentDir + '/dist2/config/adn-dev-4d05d-firebase-adminsdk-gzmds-f64bd43091.json', 'utf8'));
+            const serviceAccount = JSON.parse(fs.readFileSync(currentDir + '/dist2/config/adn-dev-4d05d-firebase-adminsdk-gzmds-9dcd6d5f4d.json', 'utf8'));
             admin.initializeApp({
                 credential: admin.credential.cert(serviceAccount),
                 databaseURL: this.utilSvc.databaseURL,
@@ -166,6 +171,18 @@ let StoreDbService = (() => {
                     reject(error);
                 });
             });
+        }
+        // --- Add inside StoreDbService ---
+        /** Create a push key under a path and set value */
+        async pushObject(path, data) {
+            const ref = this.db.ref(path).push();
+            const key = ref.key;
+            await ref.set(data);
+            return { key };
+        }
+        /** Shallow update (merge) */
+        async updateObject(path, data) {
+            await this.db.ref(path).update(data);
         }
     };
     __setFunctionName(_classThis, "StoreDbService");

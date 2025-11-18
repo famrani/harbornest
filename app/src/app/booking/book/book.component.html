@@ -1,0 +1,55 @@
+<section class="book-hero text-white">
+  <div class="container py-5">
+    <h1 class="display-6 fw-bold mb-1">Book your experience</h1>
+    <p class="mb-0 text-white-50">Tell us what you have in mind — we’ll tailor it to your group.</p>
+  </div>
+</section>
+
+<main class="py-5">
+  <div class="container">
+    <!-- src/app/components/booking/booking.component.html -->
+    <form (ngSubmit)="createBooking()" #f="ngForm" class="stack">
+      <h2>Boat booking</h2>
+
+      <label>Owner ID
+        <input name="ownerId" [(ngModel)]="ownerId" required />
+      </label>
+
+      <label>Event type
+        <select name="eventType" [(ngModel)]="eventType">
+          <option value="sunset">Sunset</option>
+          <option value="lerins">Lérins</option>
+          <option value="afterwork">Afterwork</option>
+          <option value="other">Other</option>
+        </select>
+      </label>
+
+      <label>Date
+        <input name="date" [(ngModel)]="date" type="date" required />
+      </label>
+
+      <label>Time
+        <input name="time" [(ngModel)]="time" type="time" />
+      </label>
+
+      <label>People
+        <input name="people" [(ngModel)]="people" type="number" min="1" required />
+      </label>
+
+      <h3>Guest</h3>
+      <label>First name <input name="firstName" [(ngModel)]="firstName" required /></label>
+      <label>Last name <input name="lastName" [(ngModel)]="lastName" required /></label>
+      <label>Email <input name="email" [(ngModel)]="email" type="email" required /></label>
+      <label>Phone <input name="phone" [(ngModel)]="phone" /></label>
+
+      <button type="submit" [disabled]="busy">Create booking</button>
+    </form>
+
+    <div *ngIf="bookingId">
+      <p>Booking created: <b>{{ bookingId }}</b></p>
+      <button (click)="saveCard()" [disabled]="busy">Save card (Stripe Checkout)</button>
+    </div>
+
+    <p *ngIf="error" style="color:#c00">{{ error }}</p>
+  </div>
+</main>

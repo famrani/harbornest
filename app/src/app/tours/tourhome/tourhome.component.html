@@ -1,0 +1,20 @@
+<!-- src/app/tours/tours.component.html -->
+<div class="container py-5">
+  <h1 class="h3 mb-3">Our Tours</h1>
+  <p class="text-muted">Choose your perfect on-water moment.</p>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col" *ngFor="let t of tours">
+      <div class="card border-0 shadow-sm h-100" [routerLink]="['/tours', t.slug]">
+        <div class="ratio ratio-4x3"><img [src]="t.cover" class="w-100 h-100 object-fit-cover"></div>
+        <div class="card-body">
+          <h3 class="h6 mb-1">{{ t.title }}</h3>
+          <div class="small text-muted">{{ t.duration }} • up to {{ t.capacity }} guests</div>
+        </div>
+        <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center">
+          <div class="fw-semibold">€{{ t.price }}<span class="text-muted fw-normal">/trip</span></div>
+          <a class="btn btn-dark rounded-pill" routerLink="/book">Book</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

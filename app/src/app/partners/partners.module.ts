@@ -11,13 +11,14 @@ import { RestaurantsComponent } from './restaurants/restaurants.component';
 import { TransportComponent } from './transport/transport.component';
 import { WellnessComponent } from './wellness/wellness.component';
 import { YogaComponent } from './yoga/yoga.component';
+import { PartnerhomeComponent } from './partnerhome/partnerhome.component';
 
 import { GodigitalbModule } from 'godigital-lib';
 
 import { PartnersRoutingModule } from './partners.router.module';
 
 @NgModule({
-  declarations: [DjsComponent, PhotographersComponent, RestaurantsComponent, TransportComponent, WellnessComponent, YogaComponent],
+  declarations: [DjsComponent, PhotographersComponent, RestaurantsComponent, TransportComponent, WellnessComponent, YogaComponent, PartnerhomeComponent],
   imports: [
     CommonModule,
     IonicModule,

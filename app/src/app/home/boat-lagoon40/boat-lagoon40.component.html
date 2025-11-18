@@ -1,0 +1,118 @@
+<div class="container py-5">
+  <!-- Hero -->
+  <div class="row g-4 align-items-center mb-4">
+    <div class="col-lg-6">
+      <h1 class="display-6 fw-bold">{{ title }}</h1>
+      <p class="lead text-muted">{{ subtitle }}</p>
+      <div class="d-flex flex-wrap gap-2">
+        <span class="badge text-bg-dark badge-rounded">Premium Charter</span>
+        <span class="badge text-bg-light border badge-rounded">Clean & Safe</span>
+        <span class="badge text-bg-light border badge-rounded">Wi-Fi</span>
+        <span class="badge text-bg-light border badge-rounded">Music</span>
+        <span class="badge text-bg-light border badge-rounded">Photos</span>
+        <span class="badge text-bg-light border badge-rounded">Water Toys</span>
+      </div>
+      <div class="mt-3">
+        <a class="btn btn-dark rounded-pill me-2" routerLink="/tours">See tours</a>
+        <a class="btn btn-outline-secondary rounded-pill" routerLink="/book/sunset">Book now</a>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="ratio ratio-16x9 rounded-4 overflow-hidden shadow-sm">
+        <img src="../../../../assets/img/boat/lagoon40/lagoon40-00.jpg" class="w-100 h-100 object-fit-cover" alt="Lagoon 40 hero">
+      </div>
+    </div>
+  </div>
+
+  <!-- Specs -->
+  <div class="row g-4 mb-5">
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h5 mb-3">Specifications</h2>
+          <div class="row row-cols-1 row-cols-sm-2 g-2">
+            <div class="col" *ngFor="let s of specs">
+              <div class="d-flex justify-content-between border rounded-3 p-2 small bg-light">
+                <span class="text-muted">{{ s.label }}</span>
+                <span class="fw-semibold">{{ s.value }}</span>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <h2 class="h6">Comfort & Layout</h2>
+          <ul class="text-muted small mb-0">
+            <li>Spacious salon with panoramic windows</li>
+            <li>Large cockpit dining table and lounge</li>
+            <li>Foredeck trampolines with sunbeds</li>
+            <li>Swim platform & deck shower</li>
+            <li>Efficient ventilation & shade (bimini)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Amenities -->
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h5 mb-3">Premium Amenities</h2>
+          <div class="row row-cols-1 row-cols-sm-2 g-3">
+            <div class="col" *ngFor="let a of amenities">
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi" [ngClass]="a.icon"></i>
+                <div>
+                  <div class="fw-semibold small">{{ a.label }}</div>
+                  <div class="text-muted small" *ngIf="a.desc">{{ a.desc }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <h2 class="h6">Safety</h2>
+          <ul class="text-muted small mb-0">
+            <li>Full safety equipment (adults & kids), first-aid kit</li>
+            <li>VHF, GPS, AIS; emergency procedures brief</li>
+            <li>Professional maintenance & regular checks</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery -->
+  <div class="mb-3 d-flex justify-content-between align-items-center">
+    <h2 class="h5 mb-0">Gallery</h2>
+    <div class="small text-muted">Tap an image to enlarge</div>
+  </div>
+  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+    <div class="col" *ngFor="let p of photos; let i = index">
+      <div class="ratio ratio-4x3 rounded-3 overflow-hidden shadow-sm card-hover" (click)="open(i)" role="button">
+        <img [src]="p.src" [alt]="p.alt" class="w-100 h-100 object-fit-cover">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal viewer -->
+  <div class="modal fade" id="photoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content border-0">
+        <div class="modal-body p-0 position-relative">
+          <button type="button" class="btn-close position-absolute end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="ratio ratio-16x9 bg-black">
+            <img [src]="photos[activeIndex]?.src" [alt]="photos[activeIndex]?.alt" class="w-100 h-100 object-fit-contain">
+          </div>
+          <div class="d-flex justify-content-between p-2 bg-dark text-white">
+            <button class="btn btn-sm btn-light rounded-pill" (click)="prev()"><i class="bi bi-chevron-left"></i> Prev</button>
+            <div class="small">{{ activeIndex + 1 }} / {{ photos.length }}</div>
+            <button class="btn btn-sm btn-light rounded-pill" (click)="next()">Next <i class="bi bi-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

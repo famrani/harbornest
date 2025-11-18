@@ -60,12 +60,6 @@ export class AppComponent implements OnInit {
     this.env = { platform, storeId: 0 };
     this.platform.ready().then(async () => {
       const autoHide = true;
-      try {
-        await this.localUtilsSvc.geoLocalise2() as any;
-      } catch (e) {
-        console.log('error geolocalisation=', e);
-      }
-
       if (this.platform.is('cordova')) {
         this.statusBar.hide();
       }
@@ -84,8 +78,10 @@ export class AppComponent implements OnInit {
                   try {
                     this.localUtilsSvc.processLogin(undefined, undefined, value2)
                       .then(async e => {
+//                        this.router.navigate(['/home']);
                       })
                       .catch(e => {
+//                        this.router.navigate(['/home']);
                       }
                       );
                   } catch (e) { }

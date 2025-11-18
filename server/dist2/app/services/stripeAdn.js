@@ -37,100 +37,288 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StripeService = void 0;
+// stripe.service.ts
 const stripe_1 = __importDefault(require("stripe"));
 const dotenv = __importStar(require("dotenv"));
-const uuid_1 = require("uuid");
-const admin = __importStar(require("firebase-admin"));
-const firebase_service_1 = require("./firebase.service");
+const crypto_1 = __importDefault(require("crypto"));
+const body_parser_1 = __importDefault(require("body-parser"));
 dotenv.config();
-class StripeService {
-    constructor() {
-        let secretKey = process.env.STRIPE_SECRET_KEY;
-        this.stripe = new stripe_1.default(secretKey, {
-            apiVersion: '2025-08-27.basil',
-        });
+// Use a stable, real API version
+const STRIPE_API_VERSION = '2025-08-27.basil';
+// Platform client (used only for OAuth exchange and optional platform webhooks/admin)
+const PLATFORM = new stripe_1.default(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: STRIPE_API_VERSION,
+});
+/**
+ * Resolve a Stripe client AUTHED AS THE OWNER (Standard account)
+ * using the OAuth access_token you stored in RTDB at:
+ *   /backendowners/{ownerId}/stripeStandard/access_token
+ */
+async function getOwnerStripe(db, ownerId) {
+    const snap = await db.ref(`/backendowners/${ownerId}/stripeStandard`).once('value');
+    const data = snap.val();
+    if (!data?.access_token) {
+        throw new Error('Owner not connected to Stripe via Standard OAuth');
     }
-    // Customers
+    return new stripe_1.default(data.access_token, { apiVersion: STRIPE_API_VERSION });
+}
+/** Get owner’s webhook signing secret (owner Dashboard → Webhooks) */
+async function getOwnerWebhookSecret(db, ownerId) {
+    const snap = await db.ref(`/backendowners/${ownerId}/webhookSecret`).once('value');
+    const secret = snap.val();
+    if (!secret)
+        throw new Error('Owner webhook secret not found.');
+    return secret;
+}
+class StripeService {
+    constructor(stbDbSvc) {
+        this.stbDbSvc = stbDbSvc;
+    }
+    // ---------------------------------------------------------------------------
+    // 1) OAUTH (Standard accounts)
+    // ---------------------------------------------------------------------------
+    /** Step 1: Redirect owner to Stripe to connect their Standard account */
+    async connectAuthorize(req, res) {
+        try {
+            const { ownerId } = req.query;
+            if (!ownerId)
+                return res.status(400).send('ownerId required');
+            // keep ownerId inside state to match on the callback
+            const state = `${crypto_1.default.randomBytes(16).toString('hex')}:${ownerId}`;
+            const params = new URLSearchParams({
+                response_type: 'code',
+                scope: 'read_write',
+                client_id: process.env.STRIPE_CLIENT_ID,
+                redirect_uri: process.env.STRIPE_CONNECT_REDIRECT_URI, // e.g. https://api.example.com/api/stripe/connect/callback
+                state,
+            });
+            res.redirect(`https://connect.stripe.com/oauth/authorize?${params.toString()}`);
+        }
+        catch (e) {
+            res.status(400).send(e.message || 'Authorize failed');
+        }
+    }
+    /** Step 2: Stripe redirects here — exchange code for access_token and save it */
+    async connectCallback(req, res) {
+        try {
+            const { code, state } = req.query;
+            if (!code || !state)
+                return res.status(400).send('Missing code/state');
+            const [, ownerId] = state.split(':');
+            if (!ownerId)
+                return res.status(400).send('Bad state');
+            const token = await PLATFORM.oauth.token({
+                grant_type: 'authorization_code',
+                code,
+            });
+            const { stripe_user_id, access_token, refresh_token, token_type, scope, livemode, } = token;
+            await this.stbDbSvc.db.ref(`/backendowners/${ownerId}/stripeStandard`).set({
+                stripe_user_id,
+                access_token,
+                refresh_token,
+                token_type,
+                scope,
+                livemode,
+                connectedAt: Date.now(),
+            });
+            res.redirect(process.env.CONNECT_DONE_REDIRECT || '/owner/stripe/connected');
+        }
+        catch (err) {
+            console.error('[Stripe OAuth callback] error:', err);
+            res.status(400).send(err.message || 'OAuth failed');
+        }
+    }
+    /** Disconnect (deauthorize) an owner’s Standard connection */
+    async connectDeauthorize(req, res) {
+        try {
+            const { ownerId } = req.body;
+            if (!ownerId)
+                return res.status(400).json({ error: 'ownerId required' });
+            const snap = await this.stbDbSvc.db.ref(`/backendowners/${ownerId}/stripeStandard`).once('value');
+            const data = snap.val();
+            if (!data?.stripe_user_id)
+                return res.json({ ok: true }); // already gone
+            await PLATFORM.oauth.deauthorize({
+                client_id: process.env.STRIPE_CLIENT_ID,
+                stripe_user_id: data.stripe_user_id,
+            });
+            await this.stbDbSvc.db.ref(`/backendowners/${ownerId}/stripeStandard`).remove();
+            res.json({ ok: true });
+        }
+        catch (e) {
+            res.status(400).json({ error: e.message });
+        }
+    }
+    // ---------------------------------------------------------------------------
+    // 2) Owner-scoped Money APIs (Standard: act on owner’s account)
+    // ---------------------------------------------------------------------------
+    /** Create a Customer in the OWNER’s account */
     async createCustomer(req, res) {
         try {
-            const { email, name, phone, metadata, accountId } = req.body;
-            const params = {
-                email,
-                name,
-                phone,
-                metadata,
-            };
-            const customer = accountId
-                ? await this.stripe.customers.create(params, { stripeAccount: accountId })
-                : await this.stripe.customers.create(params);
+            const { ownerId, email, name, phone, metadata } = req.body;
+            if (!ownerId)
+                return res.status(400).json({ error: 'ownerId required' });
+            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const customer = await stripe.customers.create({ email, name, phone, metadata });
             res.json(customer);
         }
         catch (error) {
             res.status(400).json({ error: error.message });
         }
     }
+    /** Retrieve a Customer (owner scope) */
     async retrieveCustomer(req, res) {
         try {
-            const { customerId, accountId } = req.query;
-            const customer = accountId
-                ? await this.stripe.customers.retrieve(customerId, { stripeAccount: accountId })
-                : await this.stripe.customers.retrieve(customerId);
+            const { ownerId, customerId } = req.query;
+            if (!ownerId || !customerId)
+                return res.status(400).json({ error: 'ownerId & customerId required' });
+            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const customer = await stripe.customers.retrieve(customerId);
             res.json(customer);
         }
         catch (error) {
             res.status(400).json({ error: error.message });
         }
     }
+    /** Update a Customer (owner scope) */
     async updateCustomer(req, res) {
         try {
-            const { customerId, updateFields, accountId } = req.body;
-            const customer = accountId
-                ? await this.stripe.customers.update(customerId, updateFields, { stripeAccount: accountId })
-                : await this.stripe.customers.update(customerId, updateFields);
+            const { ownerId, customerId, updateFields } = req.body;
+            if (!ownerId || !customerId)
+                return res.status(400).json({ error: 'ownerId & customerId required' });
+            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const customer = await stripe.customers.update(customerId, updateFields || {});
             res.json(customer);
         }
         catch (error) {
             res.status(400).json({ error: error.message });
         }
     }
+    /** Delete a Customer (owner scope) */
     async deleteCustomer(req, res) {
         try {
-            const { customerId, accountId } = req.body;
-            const deleted = accountId
-                ? await this.stripe.customers.del(customerId, { stripeAccount: accountId })
-                : await this.stripe.customers.del(customerId);
+            const { ownerId, customerId } = req.body;
+            if (!ownerId || !customerId)
+                return res.status(400).json({ error: 'ownerId & customerId required' });
+            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const deleted = await stripe.customers.del(customerId);
             res.json(deleted);
         }
         catch (error) {
             res.status(400).json({ error: error.message });
         }
     }
-    // Payment Intents
-    async createPaymentIntent(req, res) {
-        let bookingdata = {};
+    /**
+     * Checkout (mode: 'setup') — collect card for later charge
+     * body: { ownerId, bookingId, customerEmail, successUrl, cancelUrl }
+     */
+    async checkoutSetup(req, res) {
         try {
-            const { amount, currency, customerId, applicationFee, accountId, user_guest, email_guest, user_host, email_host, start_date, end_date, start_time, end_time, listing_title, } = req.body;
-            bookingdata.user_guest = user_guest;
-            bookingdata.email_guest = email_guest;
-            bookingdata.user_host = user_host;
-            bookingdata.email_host = email_host;
-            bookingdata.start_date = start_date;
-            bookingdata.end_date = end_date;
-            bookingdata.start_time = start_time;
-            bookingdata.end_time = end_time;
-            bookingdata.listing_title = listing_title;
-            bookingdata.price = amount / 100;
+            const { ownerId, bookingId, customerEmail, successUrl, cancelUrl } = req.body;
+            if (!ownerId || !bookingId)
+                return res.status(400).json({ error: 'ownerId & bookingId required' });
+            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            // Optional: create a Customer on owner account to anchor the PM
+            const customer = customerEmail
+                ? await stripe.customers.create({ email: customerEmail }).catch(() => null)
+                : null;
+            const session = await stripe.checkout.sessions.create({
+                mode: 'setup',
+                payment_method_types: ['card'],
+                customer: customer?.id,
+                success_url: `${successUrl}?session_id={CHECKOUT_SESSION_ID}&bookingId=${bookingId}`,
+                cancel_url: `${cancelUrl}?bookingId=${bookingId}`,
+                // keep bookingId handy for webhook mapping
+                metadata: { bookingId },
+            });
+            await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payment`).update({
+                status: 'init',
+                checkoutSessionId: session.id,
+                updatedAt: Date.now(),
+            });
+            res.json({ url: session.url, id: session.id });
+        }
+        catch (e) {
+            res.status(400).json({ error: e.message });
+        }
+    }
+    /**
+     * Owner accepts booking → create an off-session charge using saved PM.
+     * body: { ownerId, bookingId, amount, currency }
+     */
+    async acceptAndCharge(req, res) {
+        try {
+            const { ownerId, bookingId, amount, currency = 'eur' } = req.body;
+            if (!ownerId || !bookingId || !amount) {
+                return res.status(400).json({ error: 'ownerId, bookingId, amount required' });
+            }
+            const bookingSnap = await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}`).once('value');
+            if (!bookingSnap.exists())
+                return res.status(404).json({ error: 'Booking not found' });
+            const booking = bookingSnap.val();
+            const pmId = booking?.payment?.paymentMethodId;
+            const customerId = booking?.payment?.customerId;
+            if (!pmId || !customerId) {
+                return res.status(400).json({ error: 'No saved payment method/customer — complete checkout setup first' });
+            }
+            // Mark booking confirmed first (business choice). Payment success/failure will further annotate.
+            await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}`).update({
+                status: 'confirmed',
+                updatedAt: Date.now(),
+            });
+            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const pi = await stripe.paymentIntents.create({
+                amount,
+                currency,
+                customer: customerId,
+                payment_method: pmId,
+                off_session: true,
+                confirm: true, // charge immediately
+                description: `Booking #${bookingId}`,
+                metadata: { bookingId },
+            });
+            await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payment`).update({
+                status: 'charge_processing',
+                paymentIntentId: pi.id,
+                updatedAt: Date.now(),
+            });
+            res.json({ ok: true, paymentIntent: pi });
+        }
+        catch (e) {
+            // If off-session confirmation failed (e.g., authentication_required), store error and revert if needed
+            console.error('[acceptAndCharge] error:', e?.message || e);
+            const { ownerId, bookingId } = req.body || {};
+            if (bookingId) {
+                await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payment`).update({
+                    status: 'charge_failed',
+                    lastError: e?.message || 'Charge failed',
+                    updatedAt: Date.now(),
+                });
+                // Optionally flip booking back to pending
+                await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}`).update({
+                    status: 'pending',
+                    updatedAt: Date.now(),
+                });
+            }
+            res.status(400).json({ error: e?.message || 'Charge failed' });
+        }
+    }
+    /** Standard owner-scoped PaymentIntent helpers (if you still want them) */
+    async createPaymentIntent(req, res) {
+        try {
+            const { ownerId, amount, currency, customerId, description, metadata } = req.body;
+            if (!ownerId)
+                return res.status(400).json({ error: 'ownerId required' });
+            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
             const params = {
                 amount,
                 currency,
                 customer: customerId,
                 payment_method_types: ['card'],
+                description,
+                metadata,
             };
-            if (accountId && applicationFee) {
-                params.transfer_data = { destination: accountId };
-                params.application_fee_amount = applicationFee;
-            }
-            const paymentIntent = await this.stripe.paymentIntents.create(params);
+            const paymentIntent = await stripe.paymentIntents.create(params);
             res.json(paymentIntent);
         }
         catch (error) {
@@ -139,8 +327,11 @@ class StripeService {
     }
     async confirmPaymentIntent(req, res) {
         try {
-            const { paymentIntentId } = req.body;
-            const paymentIntent = await this.stripe.paymentIntents.confirm(paymentIntentId);
+            const { ownerId, paymentIntentId } = req.body;
+            if (!ownerId || !paymentIntentId)
+                return res.status(400).json({ error: 'ownerId & paymentIntentId required' });
+            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId);
             res.json(paymentIntent);
         }
         catch (error) {
@@ -149,302 +340,204 @@ class StripeService {
     }
     async cancelPaymentIntent(req, res) {
         try {
-            const { paymentIntentId } = req.body;
-            const paymentIntent = await this.stripe.paymentIntents.cancel(paymentIntentId);
+            const { ownerId, paymentIntentId } = req.body;
+            if (!ownerId || !paymentIntentId)
+                return res.status(400).json({ error: 'ownerId & paymentIntentId required' });
+            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId);
             res.json(paymentIntent);
         }
         catch (error) {
             res.status(400).json({ error: error.message });
         }
     }
-    // Refunds
+    /** Refund in the owner’s account */
     async createRefund(req, res) {
         try {
-            const { paymentIntentId, amount, accountId } = req.body;
-            const params = {
-                payment_intent: paymentIntentId,
-                amount,
-            };
-            const refund = accountId
-                ? await this.stripe.refunds.create(params, { stripeAccount: accountId })
-                : await this.stripe.refunds.create(params);
+            const { ownerId, paymentIntentId, amount } = req.body;
+            if (!ownerId || !paymentIntentId)
+                return res.status(400).json({ error: 'ownerId & paymentIntentId required' });
+            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const refund = await stripe.refunds.create({ payment_intent: paymentIntentId, amount });
             res.json(refund);
         }
         catch (error) {
             res.status(400).json({ error: error.message });
         }
     }
-    async createSetupIntent(req, res) {
+    // ---------------------------------------------------------------------------
+    // 3) Webhooks
+    // ---------------------------------------------------------------------------
+    /**
+     * Owner-scoped webhook (raw body required in server bootstrap)
+     * URL: POST /api/stripe/owner/:ownerId/webhook
+     * Events to subscribe (owner’s Dashboard):
+     *  - checkout.session.completed
+     *  - payment_intent.succeeded
+     *  - payment_intent.payment_failed
+     */
+    async handleOwnerWebhook(req, res) {
+        const ownerId = req.params.ownerId;
+        if (!ownerId)
+            return res.status(400).send('ownerId missing in URL');
+        let event;
         try {
-            const { customerId } = req.body;
-            const setupIntent = await this.stripe.setupIntents.create({
-                customer: customerId,
-                payment_method_types: ['card'],
-            });
-            res.json(setupIntent);
+            const secret = await getOwnerWebhookSecret(this.stbDbSvc.db, ownerId);
+            const signature = req.headers['stripe-signature'];
+            // req.body must be a Buffer (bodyParser.raw)
+            event = PLATFORM.webhooks.constructEvent(req.body, signature, secret);
         }
-        catch (error) {
-            res.status(400).json({ error: error.message });
+        catch (err) {
+            console.error('[Owner Webhook] signature verification failed:', err.message);
+            return res.status(400).send(`Webhook signature verification failed: ${err.message}`);
+        }
+        try {
+            switch (event.type) {
+                case 'checkout.session.completed': {
+                    const session = event.data.object;
+                    if (session.mode !== 'setup' || !session.setup_intent)
+                        break;
+                    const bookingId = (session.metadata && session.metadata['bookingId']) ||
+                        null;
+                    if (!bookingId) {
+                        console.warn('[Owner Webhook] session completed but no bookingId metadata');
+                        break;
+                    }
+                    const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+                    const si = await stripe.setupIntents.retrieve(session.setup_intent);
+                    const paymentMethodId = si.payment_method || null;
+                    const customerId = si.customer || null;
+                    await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payment`).update({
+                        status: 'pm_saved',
+                        setupIntentId: si.id,
+                        paymentMethodId,
+                        customerId,
+                        updatedAt: Date.now(),
+                    });
+                    break;
+                }
+                case 'payment_intent.succeeded': {
+                    const pi = event.data.object;
+                    const bookingId = (pi.metadata && pi.metadata['bookingId']) || null;
+                    if (bookingId) {
+                        await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}`).update({
+                            status: 'confirmed', // ensure confirmed in case it wasn’t
+                            updatedAt: Date.now(),
+                            'payment.status': 'charge_succeeded',
+                            'payment.paymentIntentId': pi.id,
+                        });
+                    }
+                    break;
+                }
+                case 'payment_intent.payment_failed': {
+                    const pi = event.data.object;
+                    const bookingId = (pi.metadata && pi.metadata['bookingId']) || null;
+                    const message = (pi.last_payment_error && pi.last_payment_error.message) || 'Payment failed';
+                    if (bookingId) {
+                        await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payment`).update({
+                            status: 'charge_failed',
+                            lastError: message,
+                            paymentIntentId: pi.id,
+                            updatedAt: Date.now(),
+                        });
+                        // Optionally revert booking to pending so owner can retry
+                        await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}`).update({
+                            status: 'pending',
+                            updatedAt: Date.now(),
+                        });
+                    }
+                    break;
+                }
+                default:
+                    // ignore other events or add more as needed
+                    break;
+            }
+            res.json({ received: true });
+        }
+        catch (err) {
+            console.error('[Owner Webhook] handler error:', err);
+            res.status(500).send(`Webhook handler error: ${err.message || err}`);
         }
     }
-    async confirmSetupIntent(req, res) {
-        try {
-            const { setupIntentId } = req.body;
-            const setupIntent = await this.stripe.setupIntents.confirm(setupIntentId);
-            res.json(setupIntent);
-        }
-        catch (error) {
-            res.status(400).json({ error: error.message });
-        }
-    }
-    // Webhook
-    async handleWebhook(req, res, endpointSecret) {
+    /** Optional: platform-scoped webhook if you need it */
+    async handlePlatformWebhook(req, res, endpointSecret) {
         try {
             const sig = req.headers['stripe-signature'];
-            const event = this.stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-            console.log('Webhook event received:', event.type);
+            const event = PLATFORM.webhooks.constructEvent(req.body, sig, endpointSecret);
+            console.log('[Platform Webhook] event:', event.type);
             res.status(200).send({ received: true });
         }
         catch (err) {
-            console.error('Webhook Error:', err.message);
+            console.error('[Platform Webhook] Error:', err.message);
             res.status(400).send(`Webhook Error: ${err.message}`);
         }
     }
-    // --- Add to your StripeService class ---
-    // Create a Connected Standard Account
-    async createStandardAccount(req, res) {
-        try {
-            const { email, country = 'FR' } = req.body;
-            const account = await this.stripe.accounts.create({
-                type: 'standard',
-                country,
-                email,
-                business_type: 'individual', // or 'company'
-            });
-            res.json(account);
-        }
-        catch (error) {
-            res.status(400).json({ error: error.message });
-        }
-    }
-    // Generate an Account Link for Onboarding
-    async createStandardAccountLink(req, res) {
-        try {
-            const { accountId, refreshUrl, returnUrl } = req.body;
-            const accountLink = await this.stripe.accountLinks.create({
-                account: accountId,
-                refresh_url: refreshUrl,
-                return_url: returnUrl,
-                type: 'account_onboarding',
-            });
-            res.json(accountLink);
-        }
-        catch (error) {
-            res.status(400).json({ error: error.message });
-        }
-    }
-    // Retrieve a Connected Account
+    // ---------------------------------------------------------------------------
+    // 4) Admin / misc
+    // ---------------------------------------------------------------------------
     async retrieveAccount(req, res) {
         try {
             const { accountId } = req.query;
-            const account = await this.stripe.accounts.retrieve(accountId);
+            const account = await PLATFORM.accounts.retrieve(accountId);
             res.json(account);
         }
         catch (error) {
             res.status(400).json({ error: error.message });
         }
     }
-    // ✅ Create a Connected Express Account
-    async createExpressAccount(req, res) {
-        try {
-            const { email, country = 'FR' } = req.body;
-            const account = await this.stripe.accounts.create({
-                type: 'express', // ✅ EXPRESS account
-                country,
-                email,
-                capabilities: {
-                    card_payments: { requested: true },
-                    transfers: { requested: true },
-                },
-                business_type: 'individual', // or 'company' if you need
-            });
-            const state = (0, uuid_1.v4)();
-            res.json(account);
-        }
-        catch (error) {
-            res.status(400).json({ error: error.message });
-        }
-    }
-    // Generate an Account Link for Express Onboarding
-    async createExpressAccountLink(req, res) {
-        try {
-            const { accountId, refreshUrl, returnUrl } = req.body;
-            const accountLink = await this.stripe.accountLinks.create({
-                account: accountId,
-                refresh_url: refreshUrl,
-                return_url: returnUrl,
-                type: 'account_onboarding',
-            });
-            res.json(accountLink);
-        }
-        catch (error) {
-            res.status(400).json({ error: error.message });
-        }
-    }
-    // OPTIONAL - Manual Transfer to Connected Account
-    async createTransfer(req, res) {
-        try {
-            const { amount, currency, destinationAccountId } = req.body;
-            const transfer = await this.stripe.transfers.create({
-                amount,
-                currency,
-                destination: destinationAccountId,
-            });
-            res.json(transfer);
-        }
-        catch (error) {
-            res.status(400).json({ error: error.message });
-        }
-    }
-    // OPTIONAL - List PaymentIntents
     async listPaymentIntents(req, res) {
         try {
             const { limit = 10 } = req.query;
-            const paymentIntents = await this.stripe.paymentIntents.list({
-                limit: Number(limit),
-            });
+            const paymentIntents = await PLATFORM.paymentIntents.list({ limit: Number(limit) });
             res.json(paymentIntents);
         }
         catch (error) {
             res.status(400).json({ error: error.message });
         }
     }
-    // OPTIONAL - List Charges
     async listCharges(req, res) {
-        console.log('listCharges');
         try {
             const { limit = 10 } = req.query;
-            const charges = await this.stripe.charges.list({
-                limit: Number(limit),
-            });
+            const charges = await PLATFORM.charges.list({ limit: Number(limit) });
             res.json(charges);
         }
         catch (error) {
             res.status(400).json({ error: error.message });
         }
     }
-    async listCustomAccounts(req, res) {
-        try {
-            const { limit = 100 } = req.query;
-            const accounts = await this.stripe.accounts.list({
-                limit: Number(limit),
-            });
-            const customAccounts = accounts.data.filter(acc => acc.type === 'custom' || acc.type === 'express');
-            res.json(customAccounts);
-        }
-        catch (error) {
-            res.status(400).json({ error: error.message });
-        }
-    }
-    async deleteStripeAccount(req, res) {
-        try {
-            const { stripeAccountId } = req.query;
-            const deleted = await this.stripe.accounts.del(String(stripeAccountId));
-            console.log(`Deleted account ${stripeAccountId}:`, deleted);
-            res.json(deleted);
-        }
-        catch (err) {
-            res.status(400).json({ error: err.message });
-        }
-    }
-    async getAccountStatus(req, res) {
-        try {
-            const { accountId } = req.query;
-            const snap = await admin.database().ref(`/${firebase_service_1.OBJECTNAME.wnUsers}/${accountId}/stripeAccountId`).once('value');
-            const stripeAccountId = snap.val();
-            if (!stripeAccountId)
-                return res.json({ connected: false });
-            const account = await this.stripe.accounts.retrieve(stripeAccountId);
-            res.json({
-                connected: true,
-                stripeAccountId: stripeAccountId,
-                status: account.details_submitted ? 'Complete' : 'Incomplete',
-            });
-        }
-        catch (err) {
-            res.status(500).json({ error: err.message });
-        }
-    }
-    async disconnectStripeAccount(req, res) {
-        try {
-            const { accountId } = req.query;
-            const snap = await admin.database().ref(`/${firebase_service_1.OBJECTNAME.wnUsers}/${accountId}/stripeAccountId`).once('value');
-            await admin.database().ref(`/${firebase_service_1.OBJECTNAME.wnUsers}/${accountId}/stripeAccountId`).remove();
-            res.json({ success: true });
-        }
-        catch (err) {
-            res.status(500).json({ error: err.message });
-        }
-    }
-    async createDashboardLink(req, res) {
-        try {
-            const { stripeAccountId } = req.body;
-            const link = await this.stripe.accounts.createLoginLink(stripeAccountId);
-            res.json({ url: link.url });
-        }
-        catch (err) {
-            res.status(500).json({ error: err.message });
-        }
-    }
-    async createRemediationLink(req, res) {
-        console.log('createRemediationLink');
-        try {
-            const { stripeAccountId, refresh_url, return_url } = req.body;
-            const accountLink = await this.stripe.accountLinks.create({
-                account: stripeAccountId,
-                refresh_url: `${refresh_url}`,
-                return_url: `${return_url}`,
-                type: 'account_onboarding',
-            });
-            res.json({ url: accountLink.url });
-        }
-        catch (err) {
-            res.status(500).json({ error: err.message });
-        }
-    }
+    // ---------------------------------------------------------------------------
+    // 5) Route wiring (use in your router)
+    // NOTE: In your Express bootstrap, set RAW BODY for the webhook routes.
+    // ---------------------------------------------------------------------------
     setRoutes(stripeRouter) {
-        // --- Customers ---
+        // OAuth (Standard)
+        stripeRouter.get('/stripe/connect/authorize', (req, res) => this.connectAuthorize(req, res));
+        stripeRouter.get('/stripe/connect/callback', (req, res) => this.connectCallback(req, res));
+        stripeRouter.post('/stripe/connect/deauthorize', (req, res) => this.connectDeauthorize(req, res));
+        // Customers
         stripeRouter.post('/stripe/customer', (req, res) => this.createCustomer(req, res));
-        stripeRouter.get('/stripe/customer/:customerId', (req, res) => this.retrieveCustomer(req, res));
-        stripeRouter.put('/stripe/customer/:customerId', (req, res) => this.updateCustomer(req, res));
-        stripeRouter.delete('/stripe/customer/:customerId', (req, res) => this.deleteCustomer(req, res));
-        // --- Payment Intents ---
+        stripeRouter.get('/stripe/customer', (req, res) => this.retrieveCustomer(req, res));
+        stripeRouter.put('/stripe/customer', (req, res) => this.updateCustomer(req, res));
+        stripeRouter.delete('/stripe/customer', (req, res) => this.deleteCustomer(req, res));
+        // Checkout setup + accept & charge
+        stripeRouter.post('/pay/checkout-setup', (req, res) => this.checkoutSetup(req, res));
+        stripeRouter.post('/pay/accept-and-charge', (req, res) => this.acceptAndCharge(req, res));
+        // PaymentIntent helpers (optional)
         stripeRouter.post('/stripe/payment-intent', (req, res) => this.createPaymentIntent(req, res));
-        stripeRouter.post('/stripe/payment-intent/:paymentIntentId/confirm', (req, res) => this.confirmPaymentIntent(req, res));
-        stripeRouter.post('/stripe/payment-intent/:paymentIntentId/cancel', (req, res) => this.cancelPaymentIntent(req, res));
-        // --- Setup Intents ---
-        stripeRouter.post('/stripe/setup-intent', (req, res) => this.createSetupIntent(req, res));
-        stripeRouter.post('/stripe/setup-intent/:setupIntentId/confirm', (req, res) => this.confirmSetupIntent(req, res));
-        // --- Refunds ---
+        stripeRouter.post('/stripe/payment-intent/confirm', (req, res) => this.confirmPaymentIntent(req, res));
+        stripeRouter.post('/stripe/payment-intent/cancel', (req, res) => this.cancelPaymentIntent(req, res));
+        // Refunds
         stripeRouter.post('/stripe/refund', (req, res) => this.createRefund(req, res));
-        // --- Webhooks ---
-        stripeRouter.post('/stripe/webhook', (req, res, endpointSecret) => this.handleWebhook(req, res, endpointSecret));
-        stripeRouter.post('/stripe/standardaccount', (req, res) => this.createStandardAccount(req, res)); // Create Stripe Standard Account
-        stripeRouter.post('/stripe/expressaccount', (req, res) => this.createExpressAccount(req, res)); // Create Stripe Express Account
-        stripeRouter.post('/stripe/standardaccount-link', (req, res) => this.createStandardAccountLink(req, res)); // Create Stripe Express Account
-        stripeRouter.post('/stripe/expressaccount-link', (req, res) => this.createExpressAccountLink(req, res)); // Create Account Onboarding Link
-        stripeRouter.get('/stripe/account', (req, res) => this.retrieveAccount(req, res)); // Get Account Details
-        // Optional: Manual Transfers
-        stripeRouter.post('/stripe/transfer', (req, res) => this.createTransfer(req, res));
-        // Optional: Admin listing
+        // Optional: platform webhook (also needs raw body in bootstrap)
+        stripeRouter.post('/webhook', (req, res) => this.handlePlatformWebhook(req, res, process.env.STRIPE_WEBHOOK_SECRET || ''));
+        // Admin/debug
+        stripeRouter.get('/stripe/account', (req, res) => this.retrieveAccount(req, res));
         stripeRouter.get('/stripe/payment-intents', (req, res) => this.listPaymentIntents(req, res));
         stripeRouter.get('/stripe/charges', (req, res) => this.listCharges(req, res));
-        stripeRouter.get('/stripe/listaccount', (req, res) => this.listCustomAccounts(req, res));
-        stripeRouter.get('/stripe/deleteaccount', (req, res) => this.deleteStripeAccount(req, res));
-        stripeRouter.get('/stripe/account-status', (req, res) => this.getAccountStatus(req, res));
-        stripeRouter.post('/stripe/disconnect-account', (req, res) => this.disconnectStripeAccount(req, res));
-        stripeRouter.post('/stripe/dashboard-link', (req, res) => this.createDashboardLink(req, res));
-        stripeRouter.post('/stripe/remediation-link', (req, res) => this.createRemediationLink(req, res));
+        // Webhooks
+        // Webhooks must use raw
+        stripeRouter.post('/api/stripe/owner/:ownerId/webhook', body_parser_1.default.raw({ type: 'application/json' }), (req, res) => this.handleOwnerWebhook(req, res));
+        stripeRouter.post('/api/stripe/webhook', body_parser_1.default.raw({ type: 'application/json' }), (req, res) => this.handlePlatformWebhook(req, res, process.env.STRIPE_WEBHOOK_SECRET || ''));
     }
 }
 exports.StripeService = StripeService;

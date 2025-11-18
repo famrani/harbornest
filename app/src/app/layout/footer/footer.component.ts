@@ -15,6 +15,7 @@ import { Subscription, } from 'rxjs';
 export class FooterComponent implements OnInit, OnDestroy {
   public subscriptions = new Subscription();
   public componentName = 'footer.component';
+  public year = new Date().getFullYear();
 
   constructor(
     public router: Router,

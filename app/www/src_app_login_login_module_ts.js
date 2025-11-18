@@ -1,114 +1,5 @@
 (self["webpackChunkapp"] = self["webpackChunkapp"] || []).push([["src_app_login_login_module_ts"],{
 
-/***/ 5868:
-/*!***********************************************************!*\
-  !*** ./node_modules/@firebase/auth/dist/esm2017/index.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ActionCodeOperation: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.A),
-/* harmony export */   ActionCodeURL: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.aj),
-/* harmony export */   AuthCredential: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.M),
-/* harmony export */   AuthErrorCodes: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.J),
-/* harmony export */   EmailAuthCredential: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.N),
-/* harmony export */   EmailAuthProvider: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.W),
-/* harmony export */   FacebookAuthProvider: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.X),
-/* harmony export */   FactorId: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.F),
-/* harmony export */   GithubAuthProvider: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.Z),
-/* harmony export */   GoogleAuthProvider: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.Y),
-/* harmony export */   OAuthCredential: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.Q),
-/* harmony export */   OAuthProvider: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__._),
-/* harmony export */   OperationType: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.O),
-/* harmony export */   PhoneAuthCredential: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.U),
-/* harmony export */   PhoneAuthProvider: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.P),
-/* harmony export */   PhoneMultiFactorGenerator: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.n),
-/* harmony export */   ProviderId: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.q),
-/* harmony export */   RecaptchaVerifier: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.R),
-/* harmony export */   SAMLAuthProvider: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.$),
-/* harmony export */   SignInMethod: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.S),
-/* harmony export */   TotpMultiFactorGenerator: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.T),
-/* harmony export */   TotpSecret: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.o),
-/* harmony export */   TwitterAuthProvider: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.a0),
-/* harmony export */   applyActionCode: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.a8),
-/* harmony export */   beforeAuthStateChanged: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.y),
-/* harmony export */   browserCookiePersistence: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.a),
-/* harmony export */   browserLocalPersistence: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.b),
-/* harmony export */   browserPopupRedirectResolver: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.m),
-/* harmony export */   browserSessionPersistence: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.c),
-/* harmony export */   checkActionCode: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.a9),
-/* harmony export */   confirmPasswordReset: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.a7),
-/* harmony export */   connectAuthEmulator: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.L),
-/* harmony export */   createUserWithEmailAndPassword: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.ab),
-/* harmony export */   debugErrorMap: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.H),
-/* harmony export */   deleteUser: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.G),
-/* harmony export */   fetchSignInMethodsForEmail: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.ag),
-/* harmony export */   getAdditionalUserInfo: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.ar),
-/* harmony export */   getAuth: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.p),
-/* harmony export */   getIdToken: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.ao),
-/* harmony export */   getIdTokenResult: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.ap),
-/* harmony export */   getMultiFactorResolver: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.at),
-/* harmony export */   getRedirectResult: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.k),
-/* harmony export */   inMemoryPersistence: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.V),
-/* harmony export */   indexedDBLocalPersistence: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.i),
-/* harmony export */   initializeAuth: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.K),
-/* harmony export */   initializeRecaptchaConfig: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.v),
-/* harmony export */   isSignInWithEmailLink: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.ae),
-/* harmony export */   linkWithCredential: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.a3),
-/* harmony export */   linkWithPhoneNumber: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.l),
-/* harmony export */   linkWithPopup: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.e),
-/* harmony export */   linkWithRedirect: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.h),
-/* harmony export */   multiFactor: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.au),
-/* harmony export */   onAuthStateChanged: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.z),
-/* harmony export */   onIdTokenChanged: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.x),
-/* harmony export */   parseActionCodeURL: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.ak),
-/* harmony export */   prodErrorMap: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.I),
-/* harmony export */   reauthenticateWithCredential: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.a4),
-/* harmony export */   reauthenticateWithPhoneNumber: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.r),
-/* harmony export */   reauthenticateWithPopup: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.f),
-/* harmony export */   reauthenticateWithRedirect: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.j),
-/* harmony export */   reload: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.as),
-/* harmony export */   revokeAccessToken: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.E),
-/* harmony export */   sendEmailVerification: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.ah),
-/* harmony export */   sendPasswordResetEmail: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.a6),
-/* harmony export */   sendSignInLinkToEmail: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.ad),
-/* harmony export */   setPersistence: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.t),
-/* harmony export */   signInAnonymously: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.a1),
-/* harmony export */   signInWithCredential: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.a2),
-/* harmony export */   signInWithCustomToken: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.a5),
-/* harmony export */   signInWithEmailAndPassword: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.ac),
-/* harmony export */   signInWithEmailLink: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.af),
-/* harmony export */   signInWithPhoneNumber: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.s),
-/* harmony export */   signInWithPopup: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.d),
-/* harmony export */   signInWithRedirect: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.g),
-/* harmony export */   signOut: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.D),
-/* harmony export */   unlink: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.aq),
-/* harmony export */   updateCurrentUser: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.C),
-/* harmony export */   updateEmail: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.am),
-/* harmony export */   updatePassword: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.an),
-/* harmony export */   updatePhoneNumber: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.u),
-/* harmony export */   updateProfile: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.al),
-/* harmony export */   useDeviceLanguage: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.B),
-/* harmony export */   validatePassword: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.w),
-/* harmony export */   verifyBeforeUpdateEmail: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.ai),
-/* harmony export */   verifyPasswordResetCode: () => (/* reexport safe */ _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__.aa)
-/* harmony export */ });
-/* harmony import */ var _index_9ae71ce3_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index-9ae71ce3.js */ 75903);
-/* harmony import */ var _firebase_app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @firebase/app */ 2615);
-/* harmony import */ var _firebase_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @firebase/util */ 5219);
-/* harmony import */ var _firebase_logger__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @firebase/logger */ 86110);
-/* harmony import */ var _firebase_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @firebase/component */ 78131);
-
-
-
-
-
-
-
-/***/ }),
-
 /***/ 15318:
 /*!************************************************!*\
   !*** ./src/app/login/login/login.component.ts ***!
@@ -120,15 +11,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   LoginComponent: () => (/* binding */ LoginComponent)
 /* harmony export */ });
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _login_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./login.component.html?ngResource */ 32582);
-/* harmony import */ var _login_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./login.component.css?ngResource */ 26603);
-/* harmony import */ var _login_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_login_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _login_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./login.component.html?ngResource */ 32582);
+/* harmony import */ var _login_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./login.component.css?ngResource */ 26603);
+/* harmony import */ var _login_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_login_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! godigital-lib */ 83);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var _login_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../login.service */ 89652);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _login_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../login.service */ 89652);
 
 
 
@@ -136,86 +28,170 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
+ // adjust path if needed
+ // adjust path if needed
 
 
 let LoginComponent = class LoginComponent {
-  loginSvc;
   fb;
-  mainSvc;
-  utilsSvc;
+  users;
   router;
-  textInputInput;
-  chatWindowRef;
-  componentName = 'login.component';
+  route;
+  utilSvc;
+  storeDb;
+  loginSvc;
   loginForm;
-  isCollapsed = true;
-  constructor(loginSvc, fb, mainSvc, utilsSvc, router) {
-    this.loginSvc = loginSvc;
+  sending = false;
+  // modal
+  showErrorModal = false;
+  errorModalTitle = 'Authentication failed';
+  errorModalMessage = 'Please try again.';
+  // forgot password mini-UI
+  showReset = false;
+  resetEmail = '';
+  resetSending = false;
+  resetSent = false;
+  // redirection
+  redirectTo = null;
+  constructor(fb, users, router, route, utilSvc, storeDb, loginSvc) {
     this.fb = fb;
-    this.mainSvc = mainSvc;
-    this.utilsSvc = utilsSvc;
+    this.users = users;
     this.router = router;
-  }
-  ngOnInit() {
-    this.createForm();
-  }
-  ngOnDestroy() {}
-  ngAfterViewChecked() {}
-  goHome() {
-    this.router.navigate(['/home']);
-  }
-  login() {
-    this.loginSvc.localUtilsSvc.processLogin(this.loginForm.value.email, this.loginForm.value.password, undefined).then(data => {
-      console.log('data=', data);
-      const value2 = this.utilsSvc.getUid();
-      this.router.navigate(['/home']);
-    }, error => {
-      console.log('login error=', error);
-      if (error && error[0] === godigital_lib__WEBPACK_IMPORTED_MODULE_3__.AUTHSTATUS.UNKNOWNERROR) {
-        $('#loginErrorModal').modal('show');
-      }
-      if (error && error[0] === godigital_lib__WEBPACK_IMPORTED_MODULE_3__.AUTHSTATUS.EMAILNOTVERIFIED) {
-        $('#emailNotVerifiedModal').modal('show');
-      }
-    });
-  }
-  createForm() {
+    this.route = route;
+    this.utilSvc = utilSvc;
+    this.storeDb = storeDb;
+    this.loginSvc = loginSvc;
     this.loginForm = this.fb.group({
-      email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_4__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.Validators.email]],
-      password: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_4__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.Validators.minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_4__.Validators.maxLength(15)]],
-      rememberme: false
+      email: [localStorage.getItem('rememberEmail') || '', [_angular_forms__WEBPACK_IMPORTED_MODULE_4__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.Validators.email]],
+      password: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_4__.Validators.required]],
+      rememberme: [!!localStorage.getItem('rememberEmail')]
     });
+    this.redirectTo = this.route.snapshot.queryParamMap.get('redirect');
+  }
+  get f() {
+    return this.loginForm.controls;
+  }
+  openError(message, title = 'Authentication failed') {
+    this.errorModalTitle = title;
+    this.errorModalMessage = message || 'Please try again.';
+    this.showErrorModal = true;
+  }
+  closeError() {
+    this.showErrorModal = false;
+  }
+  postLoginRedirect() {
+    const target = this.redirectTo && this.redirectTo.startsWith('/') ? this.redirectTo : '/';
+    this.router.navigateByUrl(target);
+  }
+  loginWithEmail() {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      let status, user;
+      if (_this.loginForm.invalid) return;
+      _this.sending = true;
+      try {
+        const v = _this.loginForm.value;
+        // remember me
+        if (v.remember) {
+          localStorage.setItem('rememberEmail', v.email);
+        } else {
+          localStorage.removeItem('rememberEmail');
+        }
+        [status, user] = yield _this.loginSvc.localUtilsSvc.processLogin(v.email, v.password, undefined);
+        _this.loginSvc.wnGuest = user;
+        _this.loginSvc.mainSvc.setLoggedUser(user);
+        // OPTION: you can fetch the user profile here if you need local state
+        // const profile = await this.users.loadProfile(); // depends on your lib
+        _this.postLoginRedirect();
+      } catch (e) {
+        status = e ? e[0] : godigital_lib__WEBPACK_IMPORTED_MODULE_5__.AUTHSTATUS.UNKNOWNERROR;
+        if (status === godigital_lib__WEBPACK_IMPORTED_MODULE_5__.AUTHSTATUS.EMAILNOTVERIFIED) {
+          $('#emailNotVerifiedModal').modal('show');
+        } else if (status === godigital_lib__WEBPACK_IMPORTED_MODULE_5__.AUTHSTATUS.UNKNOWNERROR) {
+          $('#loginErrorModal').modal('show');
+        }
+      } finally {
+        _this.sending = false;
+      }
+    })();
+  }
+  loginWithGoogle() {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this2.sending = true;
+      try {
+        const user = yield _this2.users.signInWithGoogleAndLoadProfile();
+        // (Optional) ensure we have an RTDB profile doc (in case first-time Google login)
+        // If your UsersService already upserts, you can remove this block:
+        try {
+          const uid = user.userId;
+          if (uid) {
+            const now = Date.now();
+            const profile = {
+              userId: uid,
+              email: user.email || '',
+              displayName: user.displayName || '',
+              photoURL: user.photoURL || '',
+              emailverified: !!user.emailverified,
+              modifiedTS: now
+              // keep whatever other fields you use in your schema; use non-destructive update:
+            };
+            const toto = yield _this2.storeDb.updateObject(_this2.utilSvc.backendFBstoreId, _this2.utilSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_5__.OBJECTNAME.bnUsers, profile, uid);
+            _this2.loginSvc.wnGuest = toto;
+            _this2.loginSvc.mainSvc.setLoggedUser(toto);
+          }
+        } catch {/* best effort upsert */}
+        _this2.postLoginRedirect();
+      } catch (e) {
+        _this2.openError(e?.message || 'Google sign-in failed.');
+      } finally {
+        _this2.sending = false;
+      }
+    })();
+  }
+  toggleReset() {
+    this.showReset = !this.showReset;
+    this.resetSent = false;
+    if (!this.resetEmail) this.resetEmail = this.f.email.value || '';
+  }
+  sendReset() {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this3.resetEmail || !/.+@.+\..+/.test(_this3.resetEmail)) {
+        _this3.openError('Enter a valid email to receive a reset link.', 'Password reset');
+        return;
+      }
+      _this3.resetSending = true;
+      try {
+        yield _this3.users.resetPwdUser(_this3.resetEmail);
+        _this3.resetSent = true;
+      } catch (e) {
+        _this3.openError(e?.message || 'Failed to send reset email.', 'Password reset');
+      } finally {
+        _this3.resetSending = false;
+      }
+    })();
   }
   static ctorParameters = () => [{
-    type: _login_service__WEBPACK_IMPORTED_MODULE_2__.LoginService
-  }, {
     type: _angular_forms__WEBPACK_IMPORTED_MODULE_4__.FormBuilder
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_3__.ServicesService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.UsersService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_3__.UtilsService
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_6__.Router
   }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_5__.Router
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_6__.ActivatedRoute
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.UtilsService
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.StoreDbService
+  }, {
+    type: _login_service__WEBPACK_IMPORTED_MODULE_3__.LoginService
   }];
-  static propDecorators = {
-    textInputInput: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_6__.ViewChild,
-      args: ['textInput']
-    }],
-    chatWindowRef: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_6__.ViewChild,
-      args: ['chatWindow', {
-        static: false
-      }]
-    }]
-  };
 };
-LoginComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+LoginComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
   selector: 'app-login',
-  template: _login_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  imports: [_angular_forms__WEBPACK_IMPORTED_MODULE_4__.FormsModule],
-  styles: [(_login_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+  template: _login_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
+  styles: [(_login_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
 })], LoginComponent);
 
 
@@ -232,7 +208,44 @@ var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, `.container {
+  font-size: 0.95rem;
+}
+
+h1.h4 {
+  font-weight: 600;
+}
+
+.form-label,
+.form-text {
+  color: #4b5563;
+}
+
+.invalid-feedback {
+  font-size: 0.85rem;
+}
+
+.form-control-sm,
+.btn-sm {
+  font-size: 0.92rem;
+  padding-top: .35rem;
+  padding-bottom: .35rem;
+}
+
+.btn.rounded-pill {
+  border-radius: 50rem;
+}
+
+/* Forgot-password inline card */
+.reset-card {
+  max-width: 560px;
+  margin: 16px auto 0;
+}
+
+/* Modal helpers */
+.modal-backdrop.show { opacity: .4; }
+.modal.d-block .modal-dialog { max-width: 420px; }
+`, "",{"version":3,"sources":["webpack://./src/app/login/login/login.component.css"],"names":[],"mappings":"AAAA;EACE,kBAAkB;AACpB;;AAEA;EACE,gBAAgB;AAClB;;AAEA;;EAEE,cAAc;AAChB;;AAEA;EACE,kBAAkB;AACpB;;AAEA;;EAEE,kBAAkB;EAClB,mBAAmB;EACnB,sBAAsB;AACxB;;AAEA;EACE,oBAAoB;AACtB;;AAEA,gCAAgC;AAChC;EACE,gBAAgB;EAChB,mBAAmB;AACrB;;AAEA,kBAAkB;AAClB,uBAAuB,WAAW,EAAE;AACpC,+BAA+B,gBAAgB,EAAE","sourcesContent":[".container {\n  font-size: 0.95rem;\n}\n\nh1.h4 {\n  font-weight: 600;\n}\n\n.form-label,\n.form-text {\n  color: #4b5563;\n}\n\n.invalid-feedback {\n  font-size: 0.85rem;\n}\n\n.form-control-sm,\n.btn-sm {\n  font-size: 0.92rem;\n  padding-top: .35rem;\n  padding-bottom: .35rem;\n}\n\n.btn.rounded-pill {\n  border-radius: 50rem;\n}\n\n/* Forgot-password inline card */\n.reset-card {\n  max-width: 560px;\n  margin: 16px auto 0;\n}\n\n/* Modal helpers */\n.modal-backdrop.show { opacity: .4; }\n.modal.d-block .modal-dialog { max-width: 420px; }\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -248,94 +261,68 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ForgotComponent: () => (/* binding */ ForgotComponent)
+/* harmony export */   ForgotPasswordComponent: () => (/* binding */ ForgotPasswordComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _forgotpwd_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./forgotpwd.component.html?ngResource */ 39386);
-/* harmony import */ var _forgotpwd_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./forgotpwd.component.css?ngResource */ 52455);
-/* harmony import */ var _forgotpwd_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_forgotpwd_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! godigital-lib */ 83);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var _login_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../login.service */ 89652);
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _forgotpwd_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./forgotpwd.component.html?ngResource */ 39386);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! godigital-lib */ 83);
 
 
 
 
 
 
-
-
-
-
-let ForgotComponent = class ForgotComponent {
-  loginSvc;
+let ForgotPasswordComponent = class ForgotPasswordComponent {
   fb;
-  mainSvc;
-  utilsSvc;
-  router;
-  textInputInput;
-  chatWindowRef;
-  componentName = 'forgotpwd.component';
+  users;
+  sending = false;
+  success = false;
+  error;
   forgotpwdForm;
-  isCollapsed = true;
-  constructor(loginSvc, fb, mainSvc, utilsSvc, router) {
-    this.loginSvc = loginSvc;
+  constructor(fb, users) {
     this.fb = fb;
-    this.mainSvc = mainSvc;
-    this.utilsSvc = utilsSvc;
-    this.router = router;
-  }
-  ngOnInit() {
-    this.createForm();
-  }
-  ngOnDestroy() {}
-  ngAfterViewChecked() {}
-  goHome() {
-    this.router.navigate(['/home']);
-  }
-  forgotpwd() {
-    if (this.forgotpwdForm && this.forgotpwdForm.value && this.forgotpwdForm.value.email) {
-      this.utilsSvc.mauth.sendPasswordResetEmail(this.forgotpwdForm.value.email);
-      $('#resetModal').modal('show');
-    }
-  }
-  createForm() {
+    this.users = users;
     this.forgotpwdForm = this.fb.group({
-      email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.maxLength(15)]]
+      email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__.Validators.email]]
     });
   }
+  forgotpwd() {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (_this.forgotpwdForm.invalid) return;
+      _this.sending = true;
+      try {
+        const email = _this.forgotpwdForm.value.email;
+        yield _this.users.resetPwdUser(email);
+        // Show confirmation modal
+        const modalEl = document.getElementById('resetModal');
+        if (modalEl) {
+          $('#resetModal').modal('show');
+        }
+        _this.forgotpwdForm.reset();
+      } catch (e) {
+        alert('Error sending reset email: ' + (e.message || e));
+      } finally {
+        _this.sending = false;
+      }
+    })();
+  }
+  get f() {
+    return this.forgotpwdForm.controls;
+  }
   static ctorParameters = () => [{
-    type: _login_service__WEBPACK_IMPORTED_MODULE_2__.LoginService
+    type: _angular_forms__WEBPACK_IMPORTED_MODULE_2__.FormBuilder
   }, {
-    type: _angular_forms__WEBPACK_IMPORTED_MODULE_3__.FormBuilder
-  }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.ServicesService
-  }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.UtilsService
-  }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_5__.Router
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_3__.UsersService
   }];
-  static propDecorators = {
-    textInputInput: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_6__.ViewChild,
-      args: ['textInput']
-    }],
-    chatWindowRef: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_6__.ViewChild,
-      args: ['chatWindow', {
-        static: false
-      }]
-    }]
-  };
 };
-ForgotComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+ForgotPasswordComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
   selector: 'app-forgotpwd',
-  template: _forgotpwd_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  imports: [_angular_forms__WEBPACK_IMPORTED_MODULE_3__.FormsModule],
-  styles: [(_forgotpwd_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
-})], ForgotComponent);
+  template: _forgotpwd_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__
+})], ForgotPasswordComponent);
 
 
 /***/ }),
@@ -347,7 +334,7 @@ ForgotComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"full-screen\">\n  <div>\n    <form class=\"form-box\" [formGroup]=\"loginForm\">\n      <h4 class=\"text-center mb-4\">Login to&nbsp;<strong>Harbornest</strong></h4>\n      <div class=\"f-group\"><label class=\"form-label\"><strong>Email</strong></label>\n        <input [class]=\"loginForm.controls['email'].invalid ?'form-control error':'form-control'\"\n          type=\"text\" required=\"\" placeholder=\"email\" formControlName=\"email\"></div>\n      <div class=\"f-group\"><label class=\"form-label\"><strong>Password</strong></label>\n        <input [class]=\"loginForm.controls['password'].invalid ?'form-control error':'form-control'\"\n          type=\"password\" required=\"\" placeholder=\"password\" formControlName=\"password\"></div>\n      <div class=\"row mx-0\">\n        <div class=\"col-6\">\n          <div class=\"form-check d-inline-block\"><input class=\"form-check-input\" type=\"checkbox\" formControlName=\"rememberme\"><label\n              class=\"form-check-label small\">Remember me</label></div>\n        </div>\n        <div class=\"col-6\" style=\"text-align: right;\"><a class=\"small\" [routerLink]=\"['/forgotpwd']\">Forgot password</a></div>\n      </div><button class=\"btn btn-primary w-100 my-4\" type=\"submit\" [disabled]=\"loginForm.invalid\"\n      (click)=\"login()\">Login&nbsp;</button>\n      <div class=\"seperator\">\n        <hr class=\"w-100\">\n        <p>or</p>\n        <hr class=\"w-100\">\n      </div>\n      <button class=\"btn btn-outline-primary w-100 my-4\" type=\"button\" [routerLink]=\"['/signup']\">Create an account</button>\n      <!-- Google Sign-In -->\n      <button id=\"googleLoginBtn\" class=\"btn btn-outline-danger w-100 my-2\" type=\"button\">Sign in with Google</button>\n    </form>\n  </div>\n  <div class=\"bottom-dark\"></div>\n</section>\n\n<!-- Login Error Modal -->\n<div class=\"modal fade\" id=\"loginErrorModal\" tabindex=\"-1\" aria-labelledby=\"loginErrorLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-dialog-centered\">\n    <div class=\"modal-content border-0 rounded-3 shadow-sm\">\n      <div class=\"modal-header bg-danger text-white rounded-top\">\n        <h5 class=\"modal-title fw-bold\" id=\"loginErrorLabel\">Login Failed</h5>\n        <button type=\"button\" class=\"btn-close btn-close-white\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n      </div>\n      <div class=\"modal-body text-center p-4\">\n        <p class=\"mb-0\">The email or password you entered is incorrect.<br>Please check your credentials and try again.</p>\n      </div>\n      <div class=\"modal-footer justify-content-center border-0 pb-4\">\n        <button type=\"button\" class=\"btn btn-outline-danger px-4\" data-bs-dismiss=\"modal\">OK</button>\n      </div>\n    </div>\n  </div>\n</div>\n\n<!-- Email Not Verified Modal -->\n<div class=\"modal fade\" id=\"emailNotVerifiedModal\" tabindex=\"-1\" aria-labelledby=\"emailNotVerifiedLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-dialog-centered\">\n    <div class=\"modal-content border-0 rounded-3 shadow-sm\">\n      <div class=\"modal-header bg-warning text-dark rounded-top\">\n        <h5 class=\"modal-title fw-bold\" id=\"emailNotVerifiedLabel\">Email Not Verified</h5>\n        <button type=\"button\" class=\"btn-close text-reset\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n      </div>\n      <div class=\"modal-body text-center p-4\">\n        <p class=\"mb-2\">Your account was created, but your email address is not yet verified.</p>\n        <p>Please check your <strong>inbox</strong> (or <strong>spam folder</strong>) and click the confirmation link to activate your account.</p>\n      </div>\n      <div class=\"modal-footer justify-content-center border-0 pb-4\">\n        <button type=\"button\" class=\"btn btn-outline-warning px-4\" data-bs-dismiss=\"modal\">OK</button>\n      </div>\n    </div>\n  </div>\n</div>\n";
+module.exports = "<div class=\"container py-5\" style=\"max-width:560px\">\n  <h1 class=\"h4 mb-1\">Welcome back</h1>\n  <p class=\"text-muted small mb-4\">Sign in to continue.</p>\n\n    <form class=\"form-box\" [formGroup]=\"loginForm\">\n      <h4 class=\"text-center mb-4\">Login to&nbsp;<strong>Harbornest</strong></h4>\n      <div class=\"f-group\"><label class=\"form-label\"><strong>Email</strong></label>\n        <input [class]=\"loginForm.controls['email'].invalid ?'form-control error':'form-control'\"\n          type=\"text\" required=\"\" placeholder=\"email\" formControlName=\"email\"></div>\n      <div class=\"f-group\"><label class=\"form-label\"><strong>Password</strong></label>\n        <input [class]=\"loginForm.controls['password'].invalid ?'form-control error':'form-control'\"\n          type=\"password\" required=\"\" placeholder=\"password\" formControlName=\"password\"></div>\n      <div class=\"row mx-0\">\n        <div class=\"col-6\">\n          <div class=\"form-check d-inline-block\"><input class=\"form-check-input\" type=\"checkbox\" formControlName=\"rememberme\"><label\n              class=\"form-check-label small\">Remember me</label></div>\n        </div>\n        <div class=\"col-6\" style=\"text-align: right;\"><a class=\"small\" [routerLink]=\"['/forgotpwd']\">Forgot password</a></div>\n      </div><button class=\"btn btn-primary w-100 my-4\" type=\"submit\" [disabled]=\"loginForm.invalid\"\n      (click)=\"loginWithEmail()\">Login&nbsp;</button>\n      <div class=\"seperator\">\n        <hr class=\"w-100\">\n        <p>or</p>\n        <hr class=\"w-100\">\n      </div>\n      <button class=\"btn btn-outline-primary w-100 my-4\" type=\"button\" [routerLink]=\"['/signup']\">Create an account</button>\n      <!-- Google Sign-In -->\n      <button id=\"googleLoginBtn\" class=\"btn btn-outline-danger w-100 my-2\" type=\"button\" (click)=\"loginWithGoogle()\">Sign in with Google</button>\n    </form>\n</div>\n\n<!-- Login Error Modal -->\n<div class=\"modal fade\" id=\"loginErrorModal\" tabindex=\"-1\" aria-labelledby=\"loginErrorLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-dialog-centered\">\n    <div class=\"modal-content border-0 rounded-3 shadow-sm\">\n      <div class=\"modal-header bg-danger text-white rounded-top\">\n        <h5 class=\"modal-title fw-bold\" id=\"loginErrorLabel\">Login Failed</h5>\n        <button type=\"button\" class=\"btn-close btn-close-white\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n      </div>\n      <div class=\"modal-body text-center p-4\">\n        <p class=\"mb-0\">The email or password you entered is incorrect.<br>Please check your credentials and try again.</p>\n      </div>\n      <div class=\"modal-footer justify-content-center border-0 pb-4\">\n        <button type=\"button\" class=\"btn btn-outline-danger px-4\" data-bs-dismiss=\"modal\">OK</button>\n      </div>\n    </div>\n  </div>\n</div>\n\n<!-- Email Not Verified Modal -->\n<div class=\"modal fade\" id=\"emailNotVerifiedModal\" tabindex=\"-1\" aria-labelledby=\"emailNotVerifiedLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-dialog-centered\">\n    <div class=\"modal-content border-0 rounded-3 shadow-sm\">\n      <div class=\"modal-header bg-warning text-dark rounded-top\">\n        <h5 class=\"modal-title fw-bold\" id=\"emailNotVerifiedLabel\">Email Not Verified</h5>\n        <button type=\"button\" class=\"btn-close text-reset\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n      </div>\n      <div class=\"modal-body text-center p-4\">\n        <p class=\"mb-2\">Your account was created, but your email address is not yet verified.</p>\n        <p>Please check your <strong>inbox</strong> (or <strong>spam folder</strong>) and click the confirmation link to activate your account.</p>\n      </div>\n      <div class=\"modal-footer justify-content-center border-0 pb-4\">\n        <button type=\"button\" class=\"btn btn-outline-warning px-4\" data-bs-dismiss=\"modal\">OK</button>\n      </div>\n    </div>\n  </div>\n</div>\n";
 
 /***/ }),
 
@@ -358,7 +345,7 @@ module.exports = "<section class=\"full-screen\">\n  <div>\n    <form class=\"fo
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"full-screen\">\n  <div>\n    <form class=\"form-box\" [formGroup]=\"forgotpwdForm\">\n      <h4 class=\"text-center mb-4\">Reset Your&nbsp;<strong>Harbornest</strong> Password</h4>\n      <p class=\"text-center small mb-3\">Enter your account email to receive a password reset link.</p>\n      <div class=\"f-group\">\n        <label class=\"form-label\"><strong>Email Address</strong></label>\n        <input [class]=\"forgotpwdForm.controls['email'].invalid ?'form-control error':'form-control'\"\n        type=\"text\" required=\"\" placeholder=\"email\" formControlName=\"email\" />\n      </div>\n      <button class=\"btn btn-primary w-100 my-4\" type=\"submit\" [disabled]=\"loginForm.invalid\"\n      (click)=\"forgotpwd()\">Send Reset Link</button>\n      <div class=\"text-center small\">\n        <a [routerLink]=\"['/login']\">Back to Login</a>\n      </div>\n    </form>\n  </div>\n  <div class=\"bottom-dark\"></div>\n</section>\n\n<div class=\"modal fade\" id=\"resetModal\" tabindex=\"-1\" aria-labelledby=\"resetModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-dialog-centered\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\" id=\"resetModalLabel\">Email Sent</h5>\n        <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n      </div>\n      <div class=\"modal-body\">\n        We've sent you an email with instructions to reset your password.\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-primary\" data-bs-dismiss=\"modal\">OK</button>\n      </div>\n    </div>\n  </div>\n</div>";
+module.exports = "<section class=\"full-screen\">\n  <div>\n    <form class=\"form-box\" [formGroup]=\"forgotpwdForm\">\n      <h4 class=\"text-center mb-4\">Reset Your&nbsp;<strong>Harbornest</strong> Password</h4>\n      <p class=\"text-center small mb-3\">Enter your account email to receive a password reset link.</p>\n      <div class=\"f-group\">\n        <label class=\"form-label\"><strong>Email Address</strong></label>\n        <input [class]=\"forgotpwdForm.controls['email'].invalid ?'form-control error':'form-control'\"\n        type=\"text\" required=\"\" placeholder=\"email\" formControlName=\"email\" />\n      </div>\n      <button class=\"btn btn-primary w-100 my-4\" type=\"submit\" [disabled]=\"forgotpwdForm.invalid\"\n      (click)=\"forgotpwd()\">Send Reset Link</button>\n      <div class=\"text-center small\">\n        <a [routerLink]=\"['/login']\">Back to Login</a>\n      </div>\n    </form>\n  </div>\n  <div class=\"bottom-dark\"></div>\n</section>\n\n<div class=\"modal fade\" id=\"resetModal\" tabindex=\"-1\" aria-labelledby=\"resetModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-dialog-centered\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\" id=\"resetModalLabel\">Email Sent</h5>\n        <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n      </div>\n      <div class=\"modal-body\">\n        We've sent you an email with instructions to reset your password.\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-primary\" data-bs-dismiss=\"modal\" routerLink=\"/home\">OK</button>\n      </div>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
 
@@ -373,7 +360,46 @@ var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, `/* Keep Bootstrap look; just nudge sizes down a bit */
+.container {
+  font-size: 0.95rem;
+}
+
+h1.h4 {
+  font-weight: 600;
+}
+
+.form-label,
+.form-text {
+  color: #4b5563;
+}
+
+.invalid-feedback,
+.text-danger {
+  font-size: 0.85rem;
+}
+
+/* Small controls consistent */
+.form-control-sm,
+.form-select-sm,
+.btn-sm {
+  font-size: 0.92rem;
+  padding-top: .35rem;
+  padding-bottom: .35rem;
+}
+
+.btn.rounded-pill {
+  border-radius: 50rem;
+}
+
+/* Modal helpers (Bootstrap-like when using *ngIf) */
+.modal-backdrop.show {
+  opacity: .4;
+}
+.modal.d-block .modal-dialog {
+  max-width: 460px;
+}
+`, "",{"version":3,"sources":["webpack://./src/app/login/signup/signup.component.css"],"names":[],"mappings":"AAAA,qDAAqD;AACrD;EACE,kBAAkB;AACpB;;AAEA;EACE,gBAAgB;AAClB;;AAEA;;EAEE,cAAc;AAChB;;AAEA;;EAEE,kBAAkB;AACpB;;AAEA,8BAA8B;AAC9B;;;EAGE,kBAAkB;EAClB,mBAAmB;EACnB,sBAAsB;AACxB;;AAEA;EACE,oBAAoB;AACtB;;AAEA,oDAAoD;AACpD;EACE,WAAW;AACb;AACA;EACE,gBAAgB;AAClB","sourcesContent":["/* Keep Bootstrap look; just nudge sizes down a bit */\n.container {\n  font-size: 0.95rem;\n}\n\nh1.h4 {\n  font-weight: 600;\n}\n\n.form-label,\n.form-text {\n  color: #4b5563;\n}\n\n.invalid-feedback,\n.text-danger {\n  font-size: 0.85rem;\n}\n\n/* Small controls consistent */\n.form-control-sm,\n.form-select-sm,\n.btn-sm {\n  font-size: 0.92rem;\n  padding-top: .35rem;\n  padding-bottom: .35rem;\n}\n\n.btn.rounded-pill {\n  border-radius: 50rem;\n}\n\n/* Modal helpers (Bootstrap-like when using *ngIf) */\n.modal-backdrop.show {\n  opacity: .4;\n}\n.modal.d-block .modal-dialog {\n  max-width: 460px;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -411,31 +437,13 @@ const routes = [{
   component: _login_login_component__WEBPACK_IMPORTED_MODULE_1__.LoginComponent
 }, {
   path: 'forgotpwd',
-  component: _forgotpwd_forgotpwd_component__WEBPACK_IMPORTED_MODULE_2__.ForgotComponent
+  component: _forgotpwd_forgotpwd_component__WEBPACK_IMPORTED_MODULE_2__.ForgotPasswordComponent
 }];
 let LoginRoutingModule = class LoginRoutingModule {};
 LoginRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.NgModule)({
   imports: [_angular_router__WEBPACK_IMPORTED_MODULE_5__.RouterModule.forChild(routes)],
   exports: [_angular_router__WEBPACK_IMPORTED_MODULE_5__.RouterModule]
 })], LoginRoutingModule);
-
-
-/***/ }),
-
-/***/ 52455:
-/*!********************************************************************!*\
-  !*** ./src/app/login/forgotpwd/forgotpwd.component.css?ngResource ***!
-  \********************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-// Imports
-var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
-var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
-// Exports
-module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 
 /***/ }),
@@ -451,18 +459,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   SignupComponent: () => (/* binding */ SignupComponent)
 /* harmony export */ });
-/* harmony import */ var _Users_faycalamrani_data_ADN_boatnest_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _signup_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./signup.component.html?ngResource */ 97356);
 /* harmony import */ var _signup_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./signup.component.css?ngResource */ 41093);
 /* harmony import */ var _signup_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_signup_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! godigital-lib */ 83);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var _login_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../login.service */ 89652);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ 2510);
-/* harmony import */ var firebase_auth__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! firebase/auth */ 92630);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! godigital-lib */ 83);
 
 
 
@@ -470,135 +475,231 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+ // adjust path if needed
+ // adjust path if needed
 
-
-
-
-
-
-const actionCodeSettings = {
-  url: 'http://localhost:8100'
-};
 let SignupComponent = class SignupComponent {
-  loginSvc;
   fb;
-  mainSvc;
-  utilsSvc;
-  router;
+  users;
+  storeDb;
   utilSvc;
-  businessaddress;
-  componentName = 'signup.component';
-  accountForm;
-  subscriptions = new rxjs__WEBPACK_IMPORTED_MODULE_5__.Subscription();
-  address;
-  isCollapsed = true;
-  constructor(loginSvc, fb, mainSvc, utilsSvc, router, utilSvc) {
-    this.loginSvc = loginSvc;
+  router;
+  sending = false;
+  success = false; // shown only for email/password flow
+  error; // non-modal errors (rare)
+  // --- modal state ---
+  showErrorModal = false;
+  errorModalTitle = 'Authentication failed';
+  errorModalMessage = 'Something went wrong. Please try again.';
+  form;
+  photoUrls = [];
+  /** If true & role is owner/provider, redirect to Stripe Connect after signup */
+  connectStripeNow = false;
+  constructor(fb, users, storeDb, utilSvc, router) {
     this.fb = fb;
-    this.mainSvc = mainSvc;
-    this.utilsSvc = utilsSvc;
-    this.router = router;
+    this.users = users;
+    this.storeDb = storeDb;
     this.utilSvc = utilSvc;
+    this.router = router;
+    this.form = this.fb.group({
+      email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.email]],
+      password: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.minLength(6)]],
+      firstname: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.required]],
+      lastname: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.required]],
+      displayName: [''],
+      phone: [''],
+      country: [''],
+      role: ['guest', [_angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.required]],
+      socialnetwork: this.fb.array([]),
+      acceptTerms: [false, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.requiredTrue]
+    });
   }
-  ngOnInit() {
-    this.createForm();
+  // ---------- helpers
+  get f() {
+    return this.form.controls;
   }
-  ngAfterViewInit() {
+  get socials() {
+    return this.form.get('socialnetwork');
+  }
+  newSocial() {
+    return this.fb.group({
+      label: [''],
+      url: ['']
+    });
+  }
+  addSocial() {
+    this.socials.push(this.newSocial());
+  }
+  removeSocial(i) {
+    this.socials.removeAt(i);
+  }
+  isOwnerOrProvider(role) {
+    return role === 'boatOwner' || role === 'serviceProvider';
+  }
+  buildStripeAuthorizeUrl(ownerId, role) {
+    const base = '/stripe/connect/authorize';
+    const url = new URL(base, window.location.origin);
+    url.searchParams.set('ownerId', ownerId);
+    url.searchParams.set('accountType', role);
+    return url.toString();
+  }
+  // ---------- modal controls
+  openErrorModal(message, title = 'Authentication failed') {
+    this.errorModalTitle = title;
+    this.errorModalMessage = message || 'Something went wrong. Please try again.';
+    this.showErrorModal = true;
+  }
+  closeErrorModal() {
+    this.showErrorModal = false;
+  }
+  // ---------- uploads
+  onPhotosSelected(files) {
     var _this = this;
-    this.subscriptions.add(this.utilSvc.autoCompleteAddress1(this.businessaddress).subscribe(/*#__PURE__*/function () {
-      var _ref = (0,_Users_faycalamrani_data_ADN_boatnest_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (data) {
-        if (data) {
-          _this.address = data;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!files?.length) return;
+      const storeId = _this.utilSvc.backendFBstoreId;
+      const dir = `users/${Date.now()}`;
+      _this.sending = true;
+      try {
+        for (const file of Array.from(files)) {
+          const url = yield _this.storeDb.uploadObjects1(storeId, file, dir);
+          _this.photoUrls.push(url);
         }
-      });
-      return function (_x) {
-        return _ref.apply(this, arguments);
-      };
-    }()));
+      } catch (e) {
+        _this.openErrorModal(e?.message || 'Photo upload failed', 'Upload failed');
+      } finally {
+        _this.sending = false;
+      }
+    })();
   }
-  ngOnDestroy() {}
-  ngAfterViewChecked() {}
-  createForm() {
-    this.accountForm = this.fb.group({
-      email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.email]],
-      password1: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.maxLength(15)]],
-      password2: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.maxLength(15)]],
-      companyname: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.maxLength(15)]],
-      socialnetworklink: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required, this.utilSvc.socialLinkValidator]],
-      fullname: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.maxLength(50)]],
-      country: ['France', [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.maxLength(50)]],
-      address: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.maxLength(500)]],
-      lat: 0,
-      lng: 0,
-      telephone: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.pattern(godigital_lib__WEBPACK_IMPORTED_MODULE_7__.regexMobileNo)]]
-    });
-  }
-  goHome() {
-    this.router.navigate(['/home']);
-  }
-  createAccount() {
+  // ---------- email/password signup
+  signupWithEmail() {
     var _this2 = this;
-    const maf = this.utilSvc.mauth;
-    let user = {};
-    user.password = this.accountForm.value.password1;
-    user.email = this.accountForm.value.email;
-    user.firstname = this.accountForm.value.fullname;
-    user.phone = this.accountForm.value.telephone;
-    user.socialnetwork = this.accountForm.value.socialnetworklink;
-    user.country = this.accountForm.value.country;
-    user.emailverified = false;
-    user.stripeAccountStatus = false;
-    this.utilSvc.mauth.createUserWithEmailAndPassword(user.email, user.password).then(/*#__PURE__*/function () {
-      var _ref2 = (0,_Users_faycalamrani_data_ADN_boatnest_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (userCredential) {
-        if (userCredential && userCredential.user) {
-          yield (0,firebase_auth__WEBPACK_IMPORTED_MODULE_4__.sendEmailVerification)(userCredential.user, actionCodeSettings);
-          console.log('Verification email sent');
-          user.userId = userCredential.user.uid;
-          _this2.loginSvc.mainSvc.storeDbSvc.updateObject(_this2.utilSvc.backendFBstoreId, _this2.utilSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_7__.OBJECTNAME.bnUsers, user, user.userId).then(data => {
-            $('#accountCreatedModal').modal('show');
-            $('#accountCreatedModal').on('shown.bs.modal', function () {
-              $('#accountCreatedModal button.btn-primary').trigger('focus'); // or .focus()
-            });
-          }, error => console.log(error));
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this2.error = undefined;
+      _this2.success = false;
+      if (_this2.form.invalid) return;
+      _this2.sending = true;
+      try {
+        const v = _this2.form.value;
+        const displayName = (v.displayName || '').trim() || `${(v.firstname || '').toString().trim()} ${(v.lastname || '').toString().trim()}`.trim();
+        // 1) create auth user
+        const {
+          uid
+        } = yield _this2.users.registerWithEmail(v.email, v.password, displayName);
+        // 2) profile
+        const now = Date.now();
+        const profile = {
+          userId: uid,
+          firstname: v.firstname,
+          lastname: v.lastname,
+          country: v.country || '',
+          stripeAccountId: '',
+          stripeAccountStatus: '',
+          email: v.email,
+          phone: v.phone || '',
+          role: v.role || 'guest',
+          photos: _this2.photoUrls,
+          socialnetwork: (v.socialnetwork || []).map(s => ({
+            label: s.label || '',
+            url: s.url || ''
+          })),
+          emailverified: false,
+          state: 'active',
+          displayName: displayName,
+          createdTS: now,
+          modifiedTS: now,
+          photoURL: _this2.photoUrls[0] || '',
+          provider: 'firebase'
+        };
+        // 3) save to RTDB
+        yield _this2.storeDb.updateObject(_this2.utilSvc.backendFBstoreId, _this2.utilSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_4__.OBJECTNAME.bnUsers, profile, uid);
+        // 4) Either redirect to Stripe immediately, or show the success banner (as before)
+        if (_this2.connectStripeNow && _this2.isOwnerOrProvider(profile.role)) {
+          window.location.href = _this2.buildStripeAuthorizeUrl(uid, profile.role);
+          return;
         }
-      });
-      return function (_x2) {
-        return _ref2.apply(this, arguments);
-      };
-    }()).catch(error => {
-      console.error('Signup error:', error);
-    });
+        _this2.success = true; // keep banner for email flow
+        _this2.form.reset({
+          role: 'guest',
+          acceptTerms: false
+        });
+        _this2.photoUrls = [];
+      } catch (e) {
+        _this2.openErrorModal(e?.message || 'Sign-up failed.');
+      } finally {
+        _this2.sending = false;
+      }
+    })();
   }
-  goToLogin() {
-    $('#accountCreatedModal').modal('hide');
-    this.router.navigate(['/login']);
+  // ---------- Google signup (IMMEDIATE REDIRECT TO HOME)
+  signupWithGoogle() {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this3.error = undefined;
+      _this3.sending = true;
+      try {
+        const user = yield _this3.users.signInWithGoogleAndLoadProfile();
+        const uid = user.userId;
+        const now = Date.now();
+        const v = _this3.form.value;
+        const displayName = (v.displayName || user.displayName || '').trim();
+        const firstname = v.firstname || displayName.split(' ')[0] || '';
+        const lastname = v.lastname || displayName.split(' ').slice(1).join(' ') || '';
+        const role = v.role || 'guest';
+        const profile = {
+          userId: uid,
+          firstname,
+          lastname,
+          country: v.country || '',
+          stripeAccountId: '',
+          stripeAccountStatus: '',
+          email: user.email || v.email || '',
+          phone: v.phone || user.phone || '',
+          role,
+          photos: _this3.photoUrls.length ? _this3.photoUrls : user.photoURL ? [user.photoURL] : [],
+          socialnetwork: (v.socialnetwork || []).map(s => ({
+            label: s.label || '',
+            url: s.url || ''
+          })),
+          emailverified: !!user.emailverified,
+          state: 'active',
+          displayName,
+          createdTS: now,
+          modifiedTS: now,
+          photoURL: _this3.photoUrls[0] || user.photoURL || '',
+          provider: 'google'
+        };
+        yield _this3.storeDb.updateObject(_this3.utilSvc.backendFBstoreId, _this3.utilSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_4__.OBJECTNAME.bnUsers, profile, uid);
+        // IMMEDIATE redirect to home (no “user created” banner)
+        // If you want to auto-open Stripe right after Google for owners/providers, uncomment below:
+        // if (this.isOwnerOrProvider(role) && this.connectStripeNow) {
+        //   window.location.href = this.buildStripeAuthorizeUrl(uid, role);
+        //   return;
+        // }
+        _this3.router.navigateByUrl('/');
+      } catch (e) {
+        _this3.openErrorModal(e?.message || 'Google sign-in failed.');
+      } finally {
+        _this3.sending = false;
+      }
+    })();
   }
   static ctorParameters = () => [{
-    type: _login_service__WEBPACK_IMPORTED_MODULE_3__.LoginService
+    type: _angular_forms__WEBPACK_IMPORTED_MODULE_3__.FormBuilder
   }, {
-    type: _angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormBuilder
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.UsersService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.ServicesService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.StoreDbService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.UtilsService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.UtilsService
   }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_8__.Router
-  }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.UtilsService
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_5__.Router
   }];
-  static propDecorators = {
-    businessaddress: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_9__.ViewChild,
-      args: ['businessaddress', {
-        static: false
-      }]
-    }]
-  };
 };
-SignupComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_10__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.Component)({
+SignupComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
   selector: 'app-signup',
   template: _signup_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
-  imports: [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormsModule],
   styles: [(_signup_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
 })], SignupComponent);
 
@@ -748,8 +849,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/forms */ 34456);
 /* harmony import */ var ngx_cookie__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ngx-cookie */ 99787);
 /* harmony import */ var _login_login_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./login/login.component */ 15318);
-/* harmony import */ var _forgotpwd_forgotpwd_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./forgotpwd/forgotpwd.component */ 30650);
-/* harmony import */ var _signup_signup_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./signup/signup.component */ 70116);
+/* harmony import */ var _signup_signup_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./signup/signup.component */ 70116);
+/* harmony import */ var _forgotpwd_forgotpwd_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./forgotpwd/forgotpwd.component */ 30650);
 /* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _login_router_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./login.router.module */ 42814);
 
@@ -766,110 +867,10 @@ __webpack_require__.r(__webpack_exports__);
 
 let LoginModule = class LoginModule {};
 LoginModule = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.NgModule)({
-  declarations: [_login_login_component__WEBPACK_IMPORTED_MODULE_0__.LoginComponent, _signup_signup_component__WEBPACK_IMPORTED_MODULE_2__.SignupComponent, _forgotpwd_forgotpwd_component__WEBPACK_IMPORTED_MODULE_1__.ForgotComponent],
+  declarations: [_login_login_component__WEBPACK_IMPORTED_MODULE_0__.LoginComponent, _signup_signup_component__WEBPACK_IMPORTED_MODULE_1__.SignupComponent, _forgotpwd_forgotpwd_component__WEBPACK_IMPORTED_MODULE_2__.ForgotPasswordComponent],
   imports: [_angular_common__WEBPACK_IMPORTED_MODULE_6__.CommonModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_7__.IonicModule, _login_router_module__WEBPACK_IMPORTED_MODULE_3__.LoginRoutingModule, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.ReactiveFormsModule, ngx_cookie__WEBPACK_IMPORTED_MODULE_9__.CookieModule.forRoot(), godigital_lib__WEBPACK_IMPORTED_MODULE_10__.GodigitalbModule],
   providers: []
 })], LoginModule);
-
-
-/***/ }),
-
-/***/ 92630:
-/*!**********************************************************!*\
-  !*** ./node_modules/firebase/auth/dist/esm/index.esm.js ***!
-  \**********************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ActionCodeOperation: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.ActionCodeOperation),
-/* harmony export */   ActionCodeURL: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.ActionCodeURL),
-/* harmony export */   AuthCredential: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.AuthCredential),
-/* harmony export */   AuthErrorCodes: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.AuthErrorCodes),
-/* harmony export */   EmailAuthCredential: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.EmailAuthCredential),
-/* harmony export */   EmailAuthProvider: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.EmailAuthProvider),
-/* harmony export */   FacebookAuthProvider: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.FacebookAuthProvider),
-/* harmony export */   FactorId: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.FactorId),
-/* harmony export */   GithubAuthProvider: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.GithubAuthProvider),
-/* harmony export */   GoogleAuthProvider: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.GoogleAuthProvider),
-/* harmony export */   OAuthCredential: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.OAuthCredential),
-/* harmony export */   OAuthProvider: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.OAuthProvider),
-/* harmony export */   OperationType: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.OperationType),
-/* harmony export */   PhoneAuthCredential: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.PhoneAuthCredential),
-/* harmony export */   PhoneAuthProvider: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.PhoneAuthProvider),
-/* harmony export */   PhoneMultiFactorGenerator: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.PhoneMultiFactorGenerator),
-/* harmony export */   ProviderId: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.ProviderId),
-/* harmony export */   RecaptchaVerifier: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.RecaptchaVerifier),
-/* harmony export */   SAMLAuthProvider: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.SAMLAuthProvider),
-/* harmony export */   SignInMethod: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.SignInMethod),
-/* harmony export */   TotpMultiFactorGenerator: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.TotpMultiFactorGenerator),
-/* harmony export */   TotpSecret: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.TotpSecret),
-/* harmony export */   TwitterAuthProvider: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.TwitterAuthProvider),
-/* harmony export */   applyActionCode: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.applyActionCode),
-/* harmony export */   beforeAuthStateChanged: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.beforeAuthStateChanged),
-/* harmony export */   browserCookiePersistence: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.browserCookiePersistence),
-/* harmony export */   browserLocalPersistence: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.browserLocalPersistence),
-/* harmony export */   browserPopupRedirectResolver: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.browserPopupRedirectResolver),
-/* harmony export */   browserSessionPersistence: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.browserSessionPersistence),
-/* harmony export */   checkActionCode: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.checkActionCode),
-/* harmony export */   confirmPasswordReset: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.confirmPasswordReset),
-/* harmony export */   connectAuthEmulator: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.connectAuthEmulator),
-/* harmony export */   createUserWithEmailAndPassword: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.createUserWithEmailAndPassword),
-/* harmony export */   debugErrorMap: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.debugErrorMap),
-/* harmony export */   deleteUser: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.deleteUser),
-/* harmony export */   fetchSignInMethodsForEmail: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.fetchSignInMethodsForEmail),
-/* harmony export */   getAdditionalUserInfo: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.getAdditionalUserInfo),
-/* harmony export */   getAuth: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.getAuth),
-/* harmony export */   getIdToken: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.getIdToken),
-/* harmony export */   getIdTokenResult: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.getIdTokenResult),
-/* harmony export */   getMultiFactorResolver: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.getMultiFactorResolver),
-/* harmony export */   getRedirectResult: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.getRedirectResult),
-/* harmony export */   inMemoryPersistence: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.inMemoryPersistence),
-/* harmony export */   indexedDBLocalPersistence: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.indexedDBLocalPersistence),
-/* harmony export */   initializeAuth: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.initializeAuth),
-/* harmony export */   initializeRecaptchaConfig: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.initializeRecaptchaConfig),
-/* harmony export */   isSignInWithEmailLink: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.isSignInWithEmailLink),
-/* harmony export */   linkWithCredential: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.linkWithCredential),
-/* harmony export */   linkWithPhoneNumber: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.linkWithPhoneNumber),
-/* harmony export */   linkWithPopup: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.linkWithPopup),
-/* harmony export */   linkWithRedirect: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.linkWithRedirect),
-/* harmony export */   multiFactor: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.multiFactor),
-/* harmony export */   onAuthStateChanged: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.onAuthStateChanged),
-/* harmony export */   onIdTokenChanged: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.onIdTokenChanged),
-/* harmony export */   parseActionCodeURL: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.parseActionCodeURL),
-/* harmony export */   prodErrorMap: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.prodErrorMap),
-/* harmony export */   reauthenticateWithCredential: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.reauthenticateWithCredential),
-/* harmony export */   reauthenticateWithPhoneNumber: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.reauthenticateWithPhoneNumber),
-/* harmony export */   reauthenticateWithPopup: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.reauthenticateWithPopup),
-/* harmony export */   reauthenticateWithRedirect: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.reauthenticateWithRedirect),
-/* harmony export */   reload: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.reload),
-/* harmony export */   revokeAccessToken: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.revokeAccessToken),
-/* harmony export */   sendEmailVerification: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.sendEmailVerification),
-/* harmony export */   sendPasswordResetEmail: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.sendPasswordResetEmail),
-/* harmony export */   sendSignInLinkToEmail: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.sendSignInLinkToEmail),
-/* harmony export */   setPersistence: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.setPersistence),
-/* harmony export */   signInAnonymously: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.signInAnonymously),
-/* harmony export */   signInWithCredential: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.signInWithCredential),
-/* harmony export */   signInWithCustomToken: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.signInWithCustomToken),
-/* harmony export */   signInWithEmailAndPassword: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.signInWithEmailAndPassword),
-/* harmony export */   signInWithEmailLink: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.signInWithEmailLink),
-/* harmony export */   signInWithPhoneNumber: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.signInWithPhoneNumber),
-/* harmony export */   signInWithPopup: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.signInWithPopup),
-/* harmony export */   signInWithRedirect: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.signInWithRedirect),
-/* harmony export */   signOut: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.signOut),
-/* harmony export */   unlink: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.unlink),
-/* harmony export */   updateCurrentUser: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.updateCurrentUser),
-/* harmony export */   updateEmail: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.updateEmail),
-/* harmony export */   updatePassword: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.updatePassword),
-/* harmony export */   updatePhoneNumber: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.updatePhoneNumber),
-/* harmony export */   updateProfile: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.updateProfile),
-/* harmony export */   useDeviceLanguage: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.useDeviceLanguage),
-/* harmony export */   validatePassword: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.validatePassword),
-/* harmony export */   verifyBeforeUpdateEmail: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.verifyBeforeUpdateEmail),
-/* harmony export */   verifyPasswordResetCode: () => (/* reexport safe */ _firebase_auth__WEBPACK_IMPORTED_MODULE_0__.verifyPasswordResetCode)
-/* harmony export */ });
-/* harmony import */ var _firebase_auth__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @firebase/auth */ 5868);
 
 
 /***/ }),
@@ -881,7 +882,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"h-screen top-section\">\n  <div class=\"container\">\n    <h4 class=\"text-center p-4\">Signup to&nbsp;<strong>Harbornest</strong></h4>\n    <form class=\"form-box-2\" [formGroup]=\"accountForm\">\n      <div class=\"row\" *ngIf=\"accountForm\">\n        <div class=\"col-12 col-md-6\">\n          <div class=\"f-group\"><label class=\"form-label\"><strong>Email</strong></label><input\n              [class]=\"accountForm.controls['email'].invalid ?'form-control error':'form-control'\" type=\"email\"\n              required=\"\" formControlName=\"email\"></div>\n          <div class=\"f-group\"><label class=\"form-label\"><strong>Telephone</strong></label><input\n              [class]=\"accountForm.controls['telephone'].invalid ?'form-control error':'form-control'\" type=\"tel\"\n              required=\"\" formControlName=\"telephone\"></div>\n          <div class=\"f-group\"><label class=\"form-label\"><strong>Company name</strong></label><input\n              [class]=\"accountForm.controls['companyname'].invalid ?'form-control error':'form-control'\" type=\"text\"\n              required=\"\" formControlName=\"companyname\"></div>\n          <div class=\"f-group\"><label class=\"form-label\"><strong>Social Link</strong></label><input\n              [class]=\"accountForm.controls['socialnetworklink'].invalid ?'form-control error':'form-control'\" type=\"text\"\n              required=\"\" formControlName=\"socialnetworklink\"></div>\n        </div>\n        <div class=\"col-12 col-md-6\">\n          <div class=\"f-group\"><label class=\"form-label\"><strong>Full name</strong></label><input\n              [class]=\"accountForm.controls['fullname'].invalid ?'form-control error':'form-control'\" type=\"text\"\n              required=\"\" formControlName=\"fullname\"></div>\n          <div class=\"f-group\"><label class=\"form-label\"><strong>Country</strong></label>\n            <select class=\"form-control\" required formControlName=\"country\">\n              <option value=\"\" disabled selected>Select your country</option>\n              <option value=\"France\">France</option>\n              <option value=\"Germany\">Germany</option>\n              <option value=\"Italy\">Italy</option>\n              <option value=\"Spain\">Spain</option>\n              <option value=\"United Kingdom\">United Kingdom</option>\n              <option value=\"United States\">United States</option>\n              <option value=\"Canada\">Canada</option>\n              <option value=\"Australia\">Australia</option>\n              <option value=\"India\">India</option>\n              <option value=\"Brazil\">Brazil</option>\n              <option value=\"Japan\">Japan</option>\n              <option value=\"China\">China</option>\n              <option value=\"South Africa\">South Africa</option>\n              <option value=\"Other\">Other</option>\n            </select>\n          </div>\n          <div class=\"f-group\"><label class=\"form-label\"><strong>Address</strong></label><input\n              [class]=\"accountForm.controls['address'].invalid ?'form-control error':'form-control'\" type=\"text\"\n              required=\"\" formControlName=\"address\" #businessaddress></div>\n          <div class=\"f-group\"><label class=\"form-label\"><strong>Choose password</strong></label><input\n              [class]=\"accountForm.controls['password1'].invalid || accountForm.value['password1'] !== accountForm.value['password2']?'form-control error':'form-control'\" type=\"password\"\n              required=\"\" formControlName=\"password1\"></div>\n          <div class=\"f-group\"><label class=\"form-label\"><strong>Confirm password</strong></label><input\n              [class]=\"accountForm.controls['password2'].invalid || accountForm.value['password1'] !== accountForm.value['password2'] ?'form-control error':'form-control'\" type=\"password\"\n              required=\"\" formControlName=\"password2\"></div>\n        </div>\n      </div>\n<!-- New Fields -->\n<div class=\"row mt-4\">\n  <div class=\"col-md-6\">\n    <label class=\"form-label\"><strong>Account Type</strong></label>\n    <div class=\"form-check\">\n      <input class=\"form-check-input\" type=\"radio\" name=\"accountType\" id=\"privateRadio\" value=\"private\" required>\n      <label class=\"form-check-label\" for=\"privateRadio\">Private</label>\n    </div>\n    <div class=\"form-check\">\n      <input class=\"form-check-input\" type=\"radio\" name=\"accountType\" id=\"professionalRadio\" value=\"professional\">\n      <label class=\"form-check-label\" for=\"professionalRadio\">Professional</label>\n    </div>\n  </div>\n  <div class=\"col-md-6\">\n    <label class=\"form-label\"><strong>Register as</strong></label>\n    <div class=\"form-check\">\n      <input class=\"form-check-input\" type=\"checkbox\" id=\"guestCheck\" name=\"roles\" value=\"guest\">\n      <label class=\"form-check-label\" for=\"guestCheck\">Guest</label>\n    </div>\n    <div class=\"form-check\">\n      <input class=\"form-check-input\" type=\"checkbox\" id=\"hostCheck\" name=\"roles\" value=\"host\">\n      <label class=\"form-check-label\" for=\"hostCheck\">Host</label>\n    </div>\n  </div>\n</div>\n      <button class=\"btn btn-primary btn-form\" type=\"submit\" [disabled]=\"accountForm.invalid\"\n        (click)=\"createAccount()\">Create account</button>\n    </form>\n  </div>\n</section>\n\n<!-- Account Created Modal -->\n<div class=\"modal fade\" id=\"accountCreatedModal\" tabindex=\"-1\" aria-labelledby=\"accountCreatedLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-dialog-centered\">\n    <div class=\"modal-content border border-primary shadow\">\n      <div class=\"modal-header bg-primary text-white\">\n        <h5 class=\"modal-title fw-bold\" id=\"accountCreatedLabel\">Compte créé avec succès</h5>\n        <button type=\"button\" class=\"btn-close btn-close-white\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n      </div>\n      <div class=\"modal-body text-center p-4\">\n        <p class=\"mb-3\">Votre compte a bien été créé.</p>\n        <p>Merci de vérifier votre boîte mail <strong>ainsi que le dossier spam</strong> pour confirmer votre adresse email.</p>\n      </div>\n      <div class=\"modal-footer justify-content-center border-0 pb-4\">\n        <button type=\"button\" class=\"btn btn-primary px-4\" (click)=\"goToLogin()\">OK</button>\n      </div>\n    </div>\n  </div>\n</div>\n";
+module.exports = "<div class=\"container py-5\" style=\"max-width:680px\">\n  <h1 class=\"h4 mb-1\">Create your account</h1>\n  <p class=\"text-muted small mb-4\">We’ll send a verification link to your email.</p>\n\n  <div *ngIf=\"success\" class=\"alert alert-success py-2\">\n    Account created. Please check your inbox and confirm your email.\n  </div>\n\n  <form [formGroup]=\"form\" (ngSubmit)=\"signupWithEmail()\" novalidate>\n    <div class=\"row g-3\">\n      <div class=\"col-md-6\">\n        <label class=\"form-label small mb-1\">First name</label>\n        <input class=\"form-control form-control-sm\" formControlName=\"firstname\" />\n      </div>\n      <div class=\"col-md-6\">\n        <label class=\"form-label small mb-1\">Last name</label>\n        <input class=\"form-control form-control-sm\" formControlName=\"lastname\" />\n      </div>\n\n      <div class=\"col-md-6\">\n        <label class=\"form-label small mb-1\">Display name (optional)</label>\n        <input class=\"form-control form-control-sm\" formControlName=\"displayName\" placeholder=\"Public name\" />\n      </div>\n      <div class=\"col-md-6\">\n        <label class=\"form-label small mb-1\">Country</label>\n        <input class=\"form-control form-control-sm\" formControlName=\"country\" placeholder=\"FR\" />\n      </div>\n\n      <div class=\"col-md-6\">\n        <label class=\"form-label small mb-1\">Email</label>\n        <input type=\"email\" class=\"form-control form-control-sm\" formControlName=\"email\"\n          [class.is-invalid]=\"f.email.touched && f.email.invalid\" />\n        <div class=\"invalid-feedback\" *ngIf=\"f.email.touched && f.email.hasError('required')\">Email is required.</div>\n        <div class=\"invalid-feedback\" *ngIf=\"f.email.touched && f.email.hasError('email')\">Enter a valid email.</div>\n      </div>\n\n      <div class=\"col-md-6\">\n        <label class=\"form-label small mb-1\">Phone (optional)</label>\n        <input class=\"form-control form-control-sm\" formControlName=\"phone\" placeholder=\"+33 6 ...\" />\n      </div>\n\n      <div class=\"col-md-6\">\n        <label class=\"form-label small mb-1\">Password</label>\n        <input type=\"password\" class=\"form-control form-control-sm\" formControlName=\"password\"\n          [class.is-invalid]=\"f.password.touched && f.password.invalid\" />\n        <div class=\"invalid-feedback\" *ngIf=\"f.password.touched && f.password.hasError('required')\">Password is\n          required.</div>\n        <div class=\"invalid-feedback\" *ngIf=\"f.password.touched && f.password.hasError('minlength')\">Minimum 6\n          characters.</div>\n      </div>\n\n      <div class=\"col-md-6\">\n        <label class=\"form-label small mb-1\">Account type</label>\n        <select class=\"form-select form-select-sm\" formControlName=\"role\">\n          <option value=\"customer\">Customer</option>\n          <option value=\"owner\">Boat owner</option>\n          <option value=\"provider\">Service provider</option>\n          <option value=\"admin\">Platform admin</option>\n        </select>\n        <div class=\"form-text small\">Admin role must be granted by the platform.</div>\n      </div>\n\n      <!-- Stripe Connect opt-in (only shows for owner/provider) -->\n      <div class=\"col-12\" *ngIf=\"form.value.role === 'boatOwner' || form.value.role === 'serviceProvider'\">\n        <div class=\"form-check\">\n          <input class=\"form-check-input\" type=\"checkbox\" id=\"connectStripe\" [(ngModel)]=\"connectStripeNow\"\n            [ngModelOptions]=\"{standalone: true}\">\n          <label class=\"form-check-label small\" for=\"connectStripe\">\n            Connect my Stripe account right after signup\n          </label>\n        </div>\n        <div class=\"form-text small\">You can also do this later from your dashboard.</div>\n      </div>\n\n      <!-- Social links -->\n      <div class=\"col-12\">\n        <label class=\"form-label d-flex justify-content-between align-items-center small\">\n          Social links\n          <button type=\"button\" class=\"btn btn-sm btn-outline-secondary rounded-pill\" (click)=\"addSocial()\">\n            Add link\n          </button>\n        </label>\n\n        <div *ngFor=\"let s of socials.controls; let i = index\" class=\"row g-2 align-items-center mb-2\">\n          <div class=\"col-md-3\">\n            <input class=\"form-control form-control-sm\" [formControl]=\"s.get('label')\" placeholder=\"Instagram\" />\n          </div>\n          <div class=\"col-md-8\">\n            <input class=\"form-control form-control-sm\" [formControl]=\"s.get('url')\"\n              placeholder=\"https://instagram.com/yourname\" />\n          </div>\n          <div class=\"col-md-1 text-end\">\n            <button type=\"button\" class=\"btn btn-link text-danger p-0\" (click)=\"removeSocial(i)\" title=\"Remove\">\n              <i class=\"bi bi-x-lg\"></i>\n            </button>\n          </div>\n        </div>\n      </div>\n\n      <!-- Photos upload -->\n      <div class=\"col-12\">\n        <label class=\"form-label small mb-1\">Photos (optional)</label>\n        <input type=\"file\" class=\"form-control form-control-sm\" (change)=\"onPhotosSelected(($event.target).files)\"\n          multiple />\n        <div class=\"form-text small\">JPG/PNG. You can add more later.</div>\n\n        <div class=\"d-flex flex-wrap gap-2 mt-2\" *ngIf=\"photoUrls.length\">\n          <img *ngFor=\"let url of photoUrls\" [src]=\"url\" class=\"rounded border\"\n            style=\"width:108px;height:80px;object-fit:cover;\">\n        </div>\n      </div>\n\n      <!-- Terms -->\n      <div class=\"col-12\">\n        <div class=\"form-check\">\n          <input class=\"form-check-input\" type=\"checkbox\" id=\"acceptTerms\" formControlName=\"acceptTerms\" />\n          <label class=\"form-check-label small\" for=\"acceptTerms\">\n            I agree to the <a routerLink=\"/terms\">Terms</a> &amp; <a routerLink=\"/privacy\">Privacy</a>.\n          </label>\n        </div>\n        <div class=\"text-danger small mt-1\" *ngIf=\"f.acceptTerms.touched && f.acceptTerms.invalid\">\n          You must accept the terms to create an account.\n        </div>\n      </div>\n    </div>\n\n    <div class=\"d-flex justify-content-end gap-2 mt-4\">\n      <button class=\"btn btn-dark btn-sm rounded-pill px-3\" [disabled]=\"form.invalid || sending\">\n        {{ sending ? 'Creating…' : 'Create account' }}\n      </button>\n    </div>\n  </form>\n\n  <div class=\"text-center text-muted my-3 small\">or</div>\n\n  <div class=\"d-grid\">\n    <button class=\"btn btn-outline-dark btn-sm rounded-pill\" (click)=\"signupWithGoogle()\" [disabled]=\"sending\">\n      <span class=\"d-inline-flex align-items-center gap-2\">\n        <img src=\"https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg\" width=\"16\" height=\"16\" alt=\"\">\n        Continue with Google\n      </span>\n    </button>\n  </div>\n\n  <hr class=\"my-4\">\n\n  <div class=\"text-center\">\n    <span class=\"text-muted me-1 small\">Already have an account?</span>\n    <a routerLink=\"/signin\" class=\"text-decoration-none small\">Sign in</a>\n  </div>\n</div>\n\n<!-- Error Modal (pure Angular + Bootstrap styles) -->\n<div class=\"modal-backdrop fade show\" *ngIf=\"showErrorModal\"></div>\n<div class=\"modal d-block\" tabindex=\"-1\" role=\"dialog\" *ngIf=\"showErrorModal\" (click)=\"closeErrorModal()\">\n  <div class=\"modal-dialog modal-dialog-centered\" role=\"document\" (click)=\"$event.stopPropagation()\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header py-2\">\n        <h5 class=\"modal-title\">{{ errorModalTitle }}</h5>\n        <button type=\"button\" class=\"btn-close\" aria-label=\"Close\" (click)=\"closeErrorModal()\"></button>\n      </div>\n      <div class=\"modal-body\">\n        <p class=\"mb-0\">{{ errorModalMessage }}</p>\n      </div>\n      <div class=\"modal-footer py-2\">\n        <button type=\"button\" class=\"btn btn-sm btn-secondary\" (click)=\"closeErrorModal()\">Close</button>\n      </div>\n    </div>\n  </div>\n</div>";
 
 /***/ })
 

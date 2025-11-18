@@ -18,9 +18,10 @@ const corsOptions = {
     optionsSuccessStatus: 204, // helps some legacy browsers with 204 vs 200
 };
 class WebServerComponent {
-    constructor(utilsSvc, stripeSvc) {
+    constructor(utilsSvc, stripeSvc, bookingsSvc) {
         this.utilsSvc = utilsSvc;
         this.stripeSvc = stripeSvc;
+        this.bookingsSvc = bookingsSvc;
         this.app = (0, express_1.default)();
         this.router = express_1.default.Router();
     }
@@ -65,6 +66,7 @@ class WebServerComponent {
     setRoutes() {
         this.utilsSvc.setRoutes(this.router);
         this.stripeSvc.setRoutes(this.router);
+        this.bookingsSvc.setRoutes(this.router);
     }
 }
 exports.WebServerComponent = WebServerComponent;

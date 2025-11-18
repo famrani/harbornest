@@ -1,115 +1,133 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import {LayoutService} from '../layout.service'
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { LayoutService } from '../layout.service'; // whatever your real path is
+import { USERROLE, Users, UtilsService } from 'godigital-lib';
+import { Subscription, } from 'rxjs';
 
-interface NavItem {
-  label: string;
-  icon?: string;        // bootstrap-icons name, e.g. "bi-compass"
-  link: string;         // router link
-  external?: boolean;
+interface StripeStatusResponse {
+  connected: boolean;
+  stripe_user_id: string | null;
+  livemode: boolean;
+  connectedAt: number | null;
 }
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent {
-    constructor(
+export class HeaderComponent implements OnInit {
+  avatarUrl?: string;
+
+  // Role / Stripe display state
+  userRoleLabel = 'Guest';
+  stripeStatus?: StripeStatusResponse;
+  stripeLoading = false;
+  stripeError?: string;
+  isOwner = false;
+  subscriptions = new Subscription();
+
+  constructor(
     public layoutSvc: LayoutService,
+    private http: HttpClient,
+    private utilsSvc: UtilsService,
   ) { }
 
-  /** Top-level nav per mode (kept short & clear) */
-  get nav(): NavItem[] {
-    switch (this.layoutSvc.mode) {
-      case 'guest':
-        return [
-          { label: 'Experiences', icon: 'bi-compass', link: '/experiences' },
-          { label: 'Boats',       icon: 'bi-sailboat', link: '/boats' },
-          { label: 'Services',    icon: 'bi-stars',    link: '/conciergery' },
-        ];
-      case 'customer':
-        return [
-          { label: 'My Trips',  icon: 'bi-ticket-perforated', link: '/account/trips' },
-          { label: 'Payments',  icon: 'bi-credit-card',       link: '/account/payments' },
-          { label: 'Messages',  icon: 'bi-chat-dots',         link: '/account/messages' },
-        ];
-      case 'owner':
-        return [
-          { label: 'Dashboard',  icon: 'bi-speedometer2', link: '/host' },
-          { label: 'Bookings',   icon: 'bi-calendar-check', link: '/host/bookings' },
-          { label: 'My Boats',   icon: 'bi-sailboat', link: '/host/boats' },
-          { label: 'Concierge',  icon: 'bi-stars', link: '/conciergery' },
-        ];
-      case 'provider':
-        return [
-          { label: 'My Service', icon: 'bi-briefcase', link: '/provider/service' },
-          { label: 'Leads',      icon: 'bi-inbox',     link: '/provider/leads' },
-          { label: 'Calendar',   icon: 'bi-calendar-event', link: '/provider/calendar' },
-        ];
-      case 'admin':
-        return [
-          { label: 'Moderation', icon: 'bi-shield-check', link: '/admin/moderation' },
-          { label: 'Requests',   icon: 'bi-ui-checks-grid', link: '/admin/requests' },
-          { label: 'Bookings',   icon: 'bi-journal-text', link: '/admin/bookings' },
-          { label: 'Users',      icon: 'bi-people', link: '/admin/users' },
-        ];
-      default:
-        return [];
-    }
+  ngOnInit(): void {
+    this.ngOnProceed();
   }
 
-  /** Primary CTA per mode (one bold action) */
-  get primaryCta(): NavItem | null {
-    switch (this.layoutSvc.mode) {
-      case 'guest':     return { label: 'Book a tour', icon: 'bi-play-circle', link: '/experiences' };
-      case 'customer':  return { label: 'Browse tours', icon: 'bi-compass', link: '/experiences' };
-      case 'owner':     return { label: 'List a boat', icon: 'bi-plus-circle', link: '/host/list' };
-      case 'provider':  return { label: 'Edit service', icon: 'bi-pencil-square', link: '/provider/service' };
-      case 'admin':     return { label: 'Admin Panel', icon: 'bi-tools', link: '/admin' };
-      default:          return null;
-    }
+  private ngOnProceed() {
+    this.subscriptions.add(
+      this.layoutSvc.mainSvc.getLoggedUser().subscribe(user => {
+        this.layoutSvc.wnGuest = user as Users;
+        if (user && user.userId) {
+          try {
+            user = this.layoutSvc.wnGuest;
+            if (user) {
+              this.avatarUrl = user.photoURL || 'assets/img/home/avatar-default.png';
+              this.userRoleLabel = this.resolveRoleLabel(user);
+
+              this.isOwner = user.role !== USERROLE.CUSTOMER;
+
+              if (this.isOwner) {
+                this.loadStripeStatusIfOwner(user);
+              }
+            }
+          } catch (e: any) {
+          } finally {
+          }
+
+        }
+      })
+    );
+    this.subscriptions.add(
+      this.layoutSvc.mainSvc.getLanguage().subscribe(language => {
+        const toto = language;
+      })
+    );
+
   }
 
-  /** Secondary CTA per mode (light outline) */
-  get secondaryCta(): NavItem | null {
-    switch (this.layoutSvc.mode) {
-      case 'guest':
-        return { label: 'List your boat', icon: 'bi-plus-circle', link: '/host/list' };
-      case 'customer':
-        return { label: 'My account', icon: 'bi-person', link: '/account' };
-      case 'owner':
-        return { label: 'Concierge', icon: 'bi-stars', link: '/owner/concierge' };
-      case 'provider':
-        return { label: 'Provider guide', icon: 'bi-journal-check', link: '/providers/guide' };
-      case 'admin':
-        return { label: 'Queues', icon: 'bi-diagram-3', link: '/admin/requests' };
-      default:
-        return null;
-    }
+  /** Map user object to a human-readable role label */
+  private resolveRoleLabel(user: any): string {
+    // Adjust to your actual role logic
+    if (user.role === USERROLE.OWNER || user.isOwner) return 'Owner';
+    if (user.role === USERROLE.PROVIDER) return 'Provider';
+    return 'Customer';
   }
 
-  /** Visible “mode pill” text */
-  get modeLabel(): string {
-    switch (this.layoutSvc.mode) {
-      case 'guest':    return 'GUEST';
-      case 'customer': return 'CUSTOMER';
-      case 'owner':    return 'OWNER';
-      case 'provider': return 'PROVIDER';
-      case 'admin':    return 'ADMIN';
-      default:         return '';
-    }
+  /** Only owners have a Stripe account in your current flow */
+  private loadStripeStatusIfOwner(user: Users): void {
+    const isOwner = user.role === USERROLE.OWNER;
+    if (!isOwner) return;
+
+    const ownerId = user.userId; // adapt this line!
+    if (!ownerId) return;
+
+    this.stripeLoading = true;
+
+    const params = new HttpParams().set('ownerId', ownerId);
+    this.http
+      .get<StripeStatusResponse>(this.utilsSvc.backendURL + '/owner/stripe/status', { params })
+      .subscribe({
+        next: (res) => {
+          this.stripeStatus = res;
+          this.stripeLoading = false;
+        },
+        error: (err) => {
+          console.error('Stripe status error', err);
+          this.stripeError = 'Stripe status unavailable';
+          this.stripeLoading = false;
+        },
+      });
   }
 
-  /** Mode badge style */
-  get modeClass(): string {
-    switch (this.layoutSvc.mode) {
-      case 'guest':    return 'badge text-bg-light border';
-      case 'customer': return 'badge text-bg-primary';
-      case 'owner':    return 'badge text-bg-dark';
-      case 'provider': return 'badge text-bg-info';
-      case 'admin':    return 'badge text-bg-danger';
-      default:         return 'badge text-bg-secondary';
+  get stripeStatusLabel(): string {
+    if (this.stripeLoading) return 'Stripe: loading…';
+    if (this.stripeError) return 'Stripe: error';
+    if (!this.stripeStatus) return 'Stripe: not connected';
+
+    if (!this.stripeStatus.connected) return 'Stripe: not connected';
+    if (this.stripeStatus.connected && !this.stripeStatus.livemode) {
+      return 'Stripe: connected (test)';
     }
+    return 'Stripe: connected';
+  }
+
+  get stripeBadgeClass(): string {
+    if (this.stripeLoading) return 'badge text-bg-secondary';
+    if (this.stripeError) return 'badge text-bg-danger';
+    if (!this.stripeStatus || !this.stripeStatus.connected) {
+      return 'badge text-bg-warning';
+    }
+    if (this.stripeStatus.connected && !this.stripeStatus.livemode) {
+      return 'badge text-bg-info';
+    }
+    return 'badge text-bg-success';
+  }
+
+  logout(): void {
+    this.layoutSvc.logout(); // or your actual logout logic
   }
 }

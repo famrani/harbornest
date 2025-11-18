@@ -8,18 +8,22 @@ const utils_service_1 = require("../services/utils.service");
 const webServer_component_1 = require("../components/webServer.component");
 const stripeAdn_1 = require("../services/stripeAdn");
 const auth_1 = require("firebase-admin/auth");
+const booking_service_1 = require("../services/booking.service");
+const mailer_service_1 = require("../services/mailer.service");
 (0, dotenv_1.config)(); // Load .env file
 class MainComponent {
     constructor() {
         this.backendFbObjects = [
-            firebase_service_1.OBJECTNAME.wnUsers,
-            firebase_service_1.OBJECTNAME.wnLocations,
-            firebase_service_1.OBJECTNAME.wnBookings,
+            firebase_service_1.OBJECTNAME.bnUsers,
+            firebase_service_1.OBJECTNAME.bnLocations,
+            firebase_service_1.OBJECTNAME.bnBookings,
         ];
         this.utilSvc = new utils_service_1.UtilsService();
         this.storeDbSvc = new firebase_service_2.StoreDbService(this.utilSvc);
-        this.stripeSvc = new stripeAdn_1.StripeService();
-        this.webServerComponent = new webServer_component_1.WebServerComponent(this.utilSvc, this.stripeSvc);
+        this.stripeSvc = new stripeAdn_1.StripeService(this.storeDbSvc);
+        this.mailerSvc = new mailer_service_1.MailerService();
+        this.bookingsSvc = new booking_service_1.BookingsService(this.mailerSvc, this.storeDbSvc, this.stripeSvc);
+        this.webServerComponent = new webServer_component_1.WebServerComponent(this.utilSvc, this.stripeSvc, this.bookingsSvc);
         this.utilSvc.getParams();
         this.initBackend();
     }
@@ -44,9 +48,7 @@ class MainComponent {
         const listAllUsers = (nextPageToken) => {
             let wnUser;
             // List batch of users, 1000 at a time.
-            this.utilSvc.firebaseAdmin
-                .auth()
-                .listUsers(1000, nextPageToken)
+            this.storeDbSvc.auth.listUsers(1000, nextPageToken)
                 .then(async (listUsersResult) => {
                 console.log('listUsersResult=', listUsersResult);
             })
@@ -72,7 +74,7 @@ class MainComponent {
         }
     }
     async createUsers() {
-        const temp = await this.storeDbSvc.getObject(firebase_service_1.OBJECTNAME.wnUsers);
+        const temp = await this.storeDbSvc.getObject(firebase_service_1.OBJECTNAME.bnUsers);
         const temptemp = this.utilSvc.objectToArray(temp);
         for (let u of temptemp) {
             try {
@@ -81,8 +83,8 @@ class MainComponent {
                 const userid = await this.storeDbSvc.getUserIdByEmail(u.email);
                 u.userId = userid;
                 console.log('a new userid=', u.userId, ', for email=', u.email);
-                await this.storeDbSvc.setObject(firebase_service_1.OBJECTNAME.wnUsers + '/' + u.userId, u);
-                await this.storeDbSvc.removeObject(firebase_service_1.OBJECTNAME.wnUsers + '/' + preuid);
+                await this.storeDbSvc.setObject(firebase_service_1.OBJECTNAME.bnUsers + '/' + u.userId, u);
+                await this.storeDbSvc.removeObject(firebase_service_1.OBJECTNAME.bnUsers + '/' + preuid);
             }
             catch (e) {
                 console.log('error e=', e);
@@ -90,15 +92,15 @@ class MainComponent {
         }
     }
     async attachListingToUsers() {
-        const loc = await this.storeDbSvc.getObject(firebase_service_1.OBJECTNAME.wnLocations);
+        const loc = await this.storeDbSvc.getObject(firebase_service_1.OBJECTNAME.bnLocations);
         const locloc = this.utilSvc.objectToArray(loc);
-        const user = await this.storeDbSvc.getObject(firebase_service_1.OBJECTNAME.wnUsers);
+        const user = await this.storeDbSvc.getObject(firebase_service_1.OBJECTNAME.bnUsers);
         const useruser = this.utilSvc.objectToArray(user);
         let i = 0;
         for (let l of locloc) {
             try {
                 l.owner = useruser[i].userId;
-                await this.storeDbSvc.setObject(firebase_service_1.OBJECTNAME.wnLocations + '/' + l.locationId, l);
+                await this.storeDbSvc.setObject(firebase_service_1.OBJECTNAME.bnLocations + '/' + l.locationId, l);
             }
             catch (e) {
             }

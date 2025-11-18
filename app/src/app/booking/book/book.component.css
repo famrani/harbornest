@@ -1,0 +1,6 @@
+.book-hero {
+  background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.35)),
+              url('/assets/img/home/hero.jpg') center/cover no-repeat;
+}
+
+.card .form-text { color: #6b7280; }

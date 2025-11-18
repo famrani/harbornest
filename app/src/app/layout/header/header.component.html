@@ -2,78 +2,75 @@
   <div class="container py-2">
     <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/home">
       <i class="bi bi-ship"></i><strong>HarborNest</strong>
+      <span class="ms-2 badge text-bg-dark">Premium Charter</span>
     </a>
-
-    <!-- Mode pill (always visible) -->
-    <span class="ms-2 d-none d-md-inline-flex align-items-center">
-      <span [class]="modeClass + ' badge-rounded px-3'">{{ modeLabel }}</span>
-    </span>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navMain">
-
-      <!-- LEFT: compact main nav (per mode) -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item" *ngFor="let item of nav">
-          <a class="nav-link" [routerLink]="item.link">
-            <i *ngIf="item.icon" class="bi me-1" [ngClass]="item.icon"></i>{{ item.label }}
-          </a>
-        </li>
+        <li class="nav-item"><a class="nav-link" routerLink="/tours">Tours</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/boat-lagoon40">Boat</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/gallery">Gallery</a></li>
       </ul>
 
-      <!-- RIGHT: CTAs + User -->
-      <div class="d-none d-lg-flex align-items-center gap-2">
+      <div class="d-flex align-items-center gap-2">
+        <!-- Role + Stripe badges (only when logged in) -->
+        <!-- Authenticated user -->
+        <ng-container *ngIf="layoutSvc.wnGuest as user">
 
-        <a *ngIf="secondaryCta" class="btn btn-outline-secondary rounded-pill" [routerLink]="secondaryCta.link">
-          <i *ngIf="secondaryCta.icon" class="bi me-1" [ngClass]="secondaryCta.icon"></i>{{ secondaryCta.label }}
-        </a>
+          <div class="d-none d-lg-flex flex-column align-items-end me-2 small-header-status">
 
-        <a *ngIf="primaryCta" class="btn btn-dark rounded-pill" [routerLink]="primaryCta.link">
-          <i *ngIf="primaryCta.icon" class="bi me-1" [ngClass]="primaryCta.icon"></i>{{ primaryCta.label }}
+            <div class="d-flex gap-1">
+
+              <!-- ROLE BADGE (always for authenticated users) -->
+              <span class="badge text-bg-light border badge-rounded">
+                <i class="bi bi-person-badge me-1"></i>{{ userRoleLabel }}
+              </span>
+
+              <!-- STRIPE BADGE (ONLY IF OWNER) -->
+              <ng-container *ngIf="isOwner">
+                <span [ngClass]="stripeBadgeClass" class="badge badge-rounded">
+                  <i class="bi bi-stripe me-1"></i>{{ stripeStatusLabel }}
+                </span>
+              </ng-container>
+
+            </div>
+          </div>
+
+        </ng-container>
+
+        <!-- Primary CTA -->
+        <a class="btn btn-dark rounded-pill" routerLink="/book">
+          <i class="bi bi-calendar2-check me-1"></i>Book now
         </a>
 
         <!-- User dropdown -->
-        <div class="dropdown ms-2" *ngIf="layoutSvc.isLoggedIn; else guestMenu">
-          <a class="btn btn-link text-decoration-none d-flex align-items-center gap-2" data-bs-toggle="dropdown" role="button">
-            <img *ngIf="layoutSvc.avatarUrl; else defaultAvatar" [src]="layoutSvc.avatarUrl" class="rounded-circle" width="28" height="28" alt="">
-            <ng-template #defaultAvatar><i class="bi bi-person-circle fs-5"></i></ng-template>
-            <span class="d-none d-xl-inline">{{ layoutSvc.userName || 'Account' }}</span>
+        <div class="dropdown" *ngIf="layoutSvc.wnGuest; else guest">
+          <a class="btn btn-link text-decoration-none d-flex align-items-center gap-2" data-bs-toggle="dropdown">
+            <img *ngIf="avatarUrl; else icon" [src]="avatarUrl" class="rounded-circle" width="28" height="28">
+            <ng-template #icon><i class="bi bi-person-circle fs-5"></i></ng-template>
+            <span class="d-none d-md-inline">{{ layoutSvc.wnGuest?.displayName || 'Account' }}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li *ngIf="layoutSvc.mode==='customer'"><a class="dropdown-item" routerLink="/account">My Account</a></li>
-            <li *ngIf="layoutSvc.mode==='owner'"><a class="dropdown-item" routerLink="/host">Host Dashboard</a></li>
-            <li *ngIf="layoutSvc.mode==='provider'"><a class="dropdown-item" routerLink="/provider">Provider Dashboard</a></li>
-            <li *ngIf="layoutSvc.mode==='admin'"><a class="dropdown-item" routerLink="/admin">Admin Panel</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item text-danger" routerLink="/signout">Sign out</a></li>
+            <li><a class="dropdown-item" routerLink="/profile-edit">My profile</a></li>
+            <li><a class="dropdown-item" routerLink="/changepwd">Reset password</a></li>
+            <li><a class="dropdown-item" routerLink="/account">My bookings</a></li>
+            <li><a class="dropdown-item" routerLink="/account/payments">Payments</a></li>
+            <li><a class="dropdown-item" routerLink="/account/reviews">Reviews</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item text-danger" (click)="logout()">Sign out</a></li>
           </ul>
         </div>
 
-        <!-- Guest -->
-        <ng-template #guestMenu>
-          <div class="dropdown">
-            <a class="btn btn-link text-decoration-none" data-bs-toggle="dropdown" role="button">
-              <i class="bi bi-person-circle fs-5"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" routerLink="/signin">Sign in</a></li>
-              <li><a class="dropdown-item" routerLink="/signup">Create account</a></li>
-            </ul>
-          </div>
+        <ng-template #guest>
+          <a class="btn btn-outline-secondary rounded-pill" routerLink="/login">Log in</a>
+          <a class="btn btn-outline-secondary rounded-pill" routerLink="/signup">Create account</a>
         </ng-template>
-      </div>
-
-      <!-- MOBILE CTAs -->
-      <div class="d-lg-none mt-3">
-        <a *ngIf="primaryCta" class="btn btn-dark w-100 mb-2 rounded-pill" [routerLink]="primaryCta.link">
-          <i *ngIf="primaryCta.icon" class="bi me-1" [ngClass]="primaryCta.icon"></i>{{ primaryCta.label }}
-        </a>
-        <a *ngIf="secondaryCta" class="btn btn-outline-secondary w-100 rounded-pill" [routerLink]="secondaryCta.link">
-          <i *ngIf="secondaryCta.icon" class="bi me-1" [ngClass]="secondaryCta.icon"></i>{{ secondaryCta.label }}
-        </a>
       </div>
     </div>
   </div>

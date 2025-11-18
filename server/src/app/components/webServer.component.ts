@@ -5,6 +5,8 @@ import http from 'http';
 import cors from 'cors';
 import { UtilsService } from '../services/utils.service';
 import { StripeService } from '../services/stripeAdn';
+import { BookingsService } from '../services/booking.service'
+import { UsersService } from '../services/users.service'
 
 const FRONTEND_ORIGIN = 'http://localhost:8100';
 
@@ -21,7 +23,12 @@ export class WebServerComponent {
   private router = express.Router();
   private port!: number; // ✅ definite assignment (or initialize in constructor)
 
-  constructor(private utilsSvc: UtilsService, private stripeSvc: StripeService) {}
+  constructor(
+    private utilsSvc: UtilsService, 
+    private stripeSvc: StripeService,
+    private bookingsSvc: BookingsService,
+    private usersSvc: UsersService,
+  ) {}
 
   async initWebServer(): Promise<void> {
     // ✅ resolve port with fallback and number coercion
@@ -73,5 +80,7 @@ export class WebServerComponent {
   private setRoutes(): void {
     this.utilsSvc.setRoutes(this.router);
     this.stripeSvc.setRoutes(this.router);
+    this.bookingsSvc.setRoutes(this.router);
+    this.usersSvc.setRoutes(this.router);
   }
 }
