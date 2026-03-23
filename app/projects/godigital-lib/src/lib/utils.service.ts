@@ -88,9 +88,9 @@ export class UtilsService {
   public backendURL;
 
 
-  public mdb;
-  public mst;
-  public mauth;
+//  public mdb;
+//  public mst;
+//  public mauth;
 
   public sdb = [];
   public sst: {

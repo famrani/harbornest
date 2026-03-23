@@ -240,8 +240,10 @@ let ProfileEditComponent = class ProfileEditComponent {
   profile;
   sub;
   photoUrls = [];
-  // 🔹 extra flags for Stripe buttons
+  // Stripe-related UI state (coming from owners/providers records via API)
   stripeActionRunning = false;
+  stripeStatus;
+  stripeStatusError;
   constructor(fb, storeDb, utilSvc) {
     var _this = this;
     this.fb = fb;
@@ -260,15 +262,14 @@ let ProfileEditComponent = class ProfileEditComponent {
         return _ref.apply(this, arguments);
       };
     }());
-    // 🔹 2) role control is now editable (default: customer)
+    // role is now editable (guest -> owner / provider)
     this.form = this.fb.group({
       firstname: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__.Validators.required],
       lastname: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__.Validators.required],
       displayName: [''],
       phone: [''],
       country: [''],
-      role: ['customer'],
-      // was disabled before
+      role: [godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.CUSTOMER],
       state: ['active'],
       socialnetwork: this.fb.array([])
     });
@@ -285,32 +286,43 @@ let ProfileEditComponent = class ProfileEditComponent {
       url: [url]
     });
   }
-  // 🔹 3) convenience getters for role / stripe in template
+  // --- Role / Stripe helpers -------------------------------------------------
   get currentRole() {
-    return this.form.get('role')?.value || 'customer';
+    return this.form.get('role')?.value || godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.CUSTOMER;
   }
   get isOwnerOrProvider() {
-    return this.currentRole === 'owner' || this.currentRole === 'provider';
+    return this.currentRole === godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.OWNER || this.currentRole === godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.PROVIDER;
   }
   get stripeConnected() {
-    return !!this.profile?.stripeStandard?.stripe_user_id;
+    return !!this.stripeStatus?.connected;
   }
   get stripeStatusLabel() {
-    if (!this.isOwnerOrProvider) return 'Not applicable for this role';
-    if (!this.stripeConnected) return 'Not connected';
-    if (this.profile?.stripeStandard?.stripe_user_id) return this.profile.stripeStandard?.stripe_user_id;
-    return 'Connected';
+    if (!this.isOwnerOrProvider) {
+      return 'Not applicable for this role';
+    }
+    if (!this.stripeStatus) {
+      // No owner/provider record yet, or never connected
+      return 'Not connected';
+    }
+    if (!this.stripeStatus.connected) {
+      return 'Not connected';
+    }
+    if (this.stripeStatus.connected && !this.stripeStatus.livemode) {
+      return this.stripeStatus.stripe_user_id ? `Connected (test: ${this.stripeStatus.stripe_user_id})` : 'Connected (test mode)';
+    }
+    return this.stripeStatus.stripe_user_id ? `Connected (${this.stripeStatus.stripe_user_id})` : 'Connected';
   }
+  // --- Load profile (Users) --------------------------------------------------
   loadProfile() {
     var _this2 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this2.loading = true;
       _this2.error = undefined;
+      _this2.stripeStatusError = undefined;
       try {
-        const doc = yield _this2.storeDb.getObject(_this2.utilSvc.backendFBstoreId, _this2.utilSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_3__.OBJECTNAME.bnUsers, _this2.uid);
+        const doc = yield _this2.storeDb.getObject(godigital_lib__WEBPACK_IMPORTED_MODULE_3__.OBJECTNAME.bnUsers, _this2.uid);
         _this2.profile = doc || undefined;
-        // 🔹 4) keep existing role if present, otherwise default to customer
-        const role = doc?.role || 'customer';
+        const role = doc?.role ?? godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.CUSTOMER;
         _this2.form.reset({
           firstname: doc?.firstname || '',
           lastname: doc?.lastname || '',
@@ -325,6 +337,12 @@ let ProfileEditComponent = class ProfileEditComponent {
         (doc?.socialnetwork || []).forEach(s => _this2.socials.push(_this2.newSocial(s.label, s.url)));
         // photos
         _this2.photoUrls = (doc?.photos || []).slice();
+        // Load Stripe status only for owner / provider
+        if (_this2.isOwnerOrProvider) {
+          yield _this2.loadStripeStatus();
+        } else {
+          _this2.stripeStatus = undefined;
+        }
         _this2.loading = false;
       } catch (e) {
         _this2.error = e?.message || 'Failed to load profile';
@@ -332,92 +350,127 @@ let ProfileEditComponent = class ProfileEditComponent {
       }
     })();
   }
-  onPhotosSelected(files) {
+  // --- Load Stripe status (from owners/providers side) ----------------------
+  loadStripeStatus() {
     var _this3 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!files?.length) return;
       if (!_this3.uid) return;
-      _this3.saving = true;
+      _this3.stripeStatus = undefined;
+      _this3.stripeStatusError = undefined;
       try {
-        const dir = `users/${_this3.uid}`;
-        for (const file of Array.from(files)) {
-          const url = yield _this3.storeDb.uploadObjects1(_this3.utilSvc.backendFBstoreId, file, dir);
-          _this3.photoUrls.push(url);
+        // Currently using the owner endpoint. If you add a dedicated provider
+        // endpoint later, you can branch here based on this.currentRole.
+        const url = `${_this3.utilSvc.backendURL}/owner/stripe/status?ownerId=${encodeURIComponent(_this3.uid)}`;
+        const res = yield fetch(url);
+        if (!res.ok) {
+          const text = yield res.text();
+          throw new Error(text || 'Failed to load Stripe status');
         }
+        const data = yield res.json();
+        _this3.stripeStatus = data;
       } catch (e) {
-        _this3.error = e?.message || 'Photo upload failed';
-      } finally {
-        _this3.saving = false;
+        console.error('Stripe status error', e);
+        _this3.stripeStatusError = e?.message || 'Stripe status unavailable';
       }
     })();
   }
-  // 🔹 5) Stripe connect: redirect to backend OAuth authorize endpoint
-  connectStripe() {
-    if (!this.uid) return;
-    if (!this.isOwnerOrProvider) {
-      this.error = 'Choose "Boat owner" or "Provider" role before connecting Stripe.';
-      return;
-    }
-    this.stripeActionRunning = true;
-    const accountType = this.currentRole === 'provider' ? 'provider' : 'owner';
-    const params = new URLSearchParams({
-      ownerId: this.uid,
-      accountType
-    });
-    // Frontend is presumably proxied to backend under /api
-    window.location.href = this.utilSvc.backendURL + `/stripe/connect/authorize?${params.toString()}`;
-  }
-  // 🔹 6) Stripe disconnect: call /stripe/connect/deauthorize
-  disconnectStripe() {
+  // --- Photos ---------------------------------------------------------------
+  onPhotosSelected(files) {
     var _this4 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!files?.length) return;
       if (!_this4.uid) return;
-      _this4.stripeActionRunning = true;
-      _this4.error = undefined;
+      _this4.saving = true;
       try {
-        const res = yield fetch(_this4.utilSvc.backendURL + '/stripe/connect/deauthorize', {
+        const dir = `users/${_this4.uid}`;
+        for (const file of Array.from(files)) {
+          const url = yield _this4.storeDb.uploadFile(dir, file);
+          _this4.photoUrls.push(url);
+        }
+      } catch (e) {
+        _this4.error = e?.message || 'Photo upload failed';
+      } finally {
+        _this4.saving = false;
+      }
+    })();
+  }
+  // --- Stripe connect / disconnect -----------------------------------------
+  /** Stripe connect: redirect to backend OAuth authorize endpoint */
+  connectStripe() {
+    var _this5 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this5.uid) return;
+      if (!_this5.isOwnerOrProvider) {
+        _this5.error = 'Choose "Boat owner" or "Provider" role before connecting Stripe.';
+        return;
+      }
+      // 1) Save profile first so the new role (owner/provider) is persisted
+      if (!_this5.saving) {
+        yield _this5.save(); // save() is already async
+        if (_this5.error) {
+          // If save failed, do NOT continue to Stripe
+          return;
+        }
+      }
+      _this5.stripeActionRunning = true;
+      // 2) Backend expects 'owner' | 'provider' strings
+      const accountType = _this5.currentRole === godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.PROVIDER ? 'provider' : 'owner';
+      // 3) Remember where to come back after Stripe
+      const returnUrl = window.location.href; // current Profile Edit page
+      const params = new URLSearchParams({
+        ownerId: _this5.uid,
+        accountType,
+        returnUrl
+      });
+      window.location.href = _this5.utilSvc.backendURL + `/stripe/connect/authorize?${params.toString()}`;
+    })();
+  }
+  /** Stripe disconnect: call /stripe/connect/deauthorize on backend */
+  disconnectStripe() {
+    var _this6 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this6.uid) return;
+      _this6.stripeActionRunning = true;
+      _this6.error = undefined;
+      try {
+        const res = yield fetch(_this6.utilSvc.backendURL + '/stripe/connect/deauthorize', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            ownerId: _this4.uid
+            ownerId: _this6.uid
           })
         });
         if (!res.ok) {
           const text = yield res.text();
           throw new Error(text || 'Failed to disconnect Stripe');
         }
-        // Locally clear Stripe fields in the profile snapshot
-        if (_this4.profile) {
-          _this4.profile = {
-            ..._this4.profile,
-            stripeStandard: undefined
-          };
-        }
+        // Clear local Stripe status
+        _this6.stripeStatus = undefined;
       } catch (e) {
-        _this4.error = e?.message || 'Failed to disconnect Stripe';
+        _this6.error = e?.message || 'Failed to disconnect Stripe';
       } finally {
-        _this4.stripeActionRunning = false;
+        _this6.stripeActionRunning = false;
       }
     })();
   }
+  // --- Save profile (Users) -------------------------------------------------
   save() {
-    var _this5 = this;
+    var _this7 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this5.error = undefined;
-      _this5.success = false;
-      if (!_this5.uid) return;
-      _this5.saving = true;
+      _this7.error = undefined;
+      _this7.success = false;
+      if (!_this7.uid) return;
+      _this7.saving = true;
       try {
-        const v = _this5.form.value;
+        const v = _this7.form.value;
         const now = Date.now();
-        // Preserve immutable/sensitive fields from existing doc
-        const base = _this5.profile || {
-          userId: _this5.uid,
+        const base = _this7.profile || {
+          userId: _this7.uid,
           email: ''
         };
-        // 🔹 7) compute role safely: admin can only be preserved, not set by client
+        // Compute next role: admin cannot self-downgrade/upgrade
         let nextRole = godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.CUSTOMER;
         if (base.role === godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.ADMIN) {
           nextRole = godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.ADMIN;
@@ -425,7 +478,7 @@ let ProfileEditComponent = class ProfileEditComponent {
           nextRole = v.role;
         }
         const payload = {
-          userId: _this5.uid,
+          userId: _this7.uid,
           email: base.email || '',
           firstname: v.firstname || '',
           lastname: v.lastname || '',
@@ -433,8 +486,8 @@ let ProfileEditComponent = class ProfileEditComponent {
           phone: v.phone || '',
           country: v.country || '',
           role: nextRole,
-          photos: _this5.photoUrls,
-          photoURL: _this5.photoUrls[0] || base.photoURL || '',
+          photos: _this7.photoUrls,
+          photoURL: _this7.photoUrls[0] || base.photoURL || '',
           socialnetwork: (v.socialnetwork || []).map(s => ({
             label: s.label || '',
             url: s.url || ''
@@ -442,18 +495,24 @@ let ProfileEditComponent = class ProfileEditComponent {
           emailverified: base.emailverified ?? false,
           provider: base.provider || 'firebase',
           state: v.state || base.state || 'active',
-          // stripe fields preserved (or cleared locally via disconnectStripe)
-          stripeStandard: base.stripeStandard || undefined,
+          // All Stripe connection data lives in owners/providers collections,
+          // so we do NOT put stripestandard fields in Users documents.
           createdTS: base.createdTS || now,
           modifiedTS: now
         };
-        yield _this5.storeDb.updateObject(_this5.utilSvc.backendFBstoreId, _this5.utilSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_3__.OBJECTNAME.bnUsers, payload, _this5.uid);
-        _this5.profile = payload;
-        _this5.success = true;
+        yield _this7.storeDb.updateObject(godigital_lib__WEBPACK_IMPORTED_MODULE_3__.OBJECTNAME.bnUsers, payload, _this7.uid);
+        _this7.profile = payload;
+        _this7.success = true;
+        // If role changed to owner/provider, refresh Stripe status
+        if (_this7.isOwnerOrProvider) {
+          yield _this7.loadStripeStatus();
+        } else {
+          _this7.stripeStatus = undefined;
+        }
       } catch (e) {
-        _this5.error = e?.message || 'Failed to save profile';
+        _this7.error = e?.message || 'Failed to save profile';
       } finally {
-        _this5.saving = false;
+        _this7.saving = false;
       }
     })();
   }

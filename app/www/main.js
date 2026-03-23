@@ -49,23 +49,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   fileExtensionRegex: () => (/* binding */ fileExtensionRegex),
 /* harmony export */   firebaseConfig: () => (/* binding */ firebaseConfig$1),
 /* harmony export */   guidregex: () => (/* binding */ guidregex),
-/* harmony export */   hourInMilliseconds: () => (/* binding */ hourInMilliseconds),
-/* harmony export */   regexEmail: () => (/* binding */ regexEmail),
-/* harmony export */   regexFixedNo: () => (/* binding */ regexFixedNo),
-/* harmony export */   regexMobileNo: () => (/* binding */ regexMobileNo),
-/* harmony export */   regexUrl: () => (/* binding */ regexUrl),
-/* harmony export */   regexUrlImage: () => (/* binding */ regexUrlImage),
-/* harmony export */   regexUrlMedia: () => (/* binding */ regexUrlMedia),
-/* harmony export */   regexUrlVideo: () => (/* binding */ regexUrlVideo)
+/* harmony export */   hourInMilliseconds: () => (/* binding */ hourInMilliseconds)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
 /* harmony import */ var firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! firebase/compat/app */ 3602);
 /* harmony import */ var firebase_compat_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! firebase/compat/auth */ 12043);
 /* harmony import */ var firebase_compat_database__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! firebase/compat/database */ 36994);
 /* harmony import */ var firebase_compat_storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! firebase/compat/storage */ 45700);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs */ 75797);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/common/http */ 93262);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs */ 75797);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/common */ 35135);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs/operators */ 70271);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs/operators */ 89475);
@@ -106,6 +99,303 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var OBJECTNAME;
+(function (OBJECTNAME) {
+  OBJECTNAME["bnBoats"] = "backendboats";
+  OBJECTNAME["bnUsers"] = "backendusers";
+  OBJECTNAME["bnMessages"] = "backendmessages";
+  OBJECTNAME["bnBookings"] = "backendbookings";
+  OBJECTNAME["bnFeedbacks"] = "backendfeedbacks";
+  OBJECTNAME["bnMainpage"] = "backendmainpage";
+  OBJECTNAME["bnEvents"] = "backendevents";
+  OBJECTNAME["bnSkippers"] = "backendskippers";
+  OBJECTNAME["bnOwners"] = "backendowners";
+})(OBJECTNAME || (OBJECTNAME = {}));
+var AUTHSTATUS;
+(function (AUTHSTATUS) {
+  AUTHSTATUS[AUTHSTATUS["SUCCESS"] = 1] = "SUCCESS";
+  AUTHSTATUS[AUTHSTATUS["EMAILNOTVERIFIED"] = -1] = "EMAILNOTVERIFIED";
+  AUTHSTATUS[AUTHSTATUS["UPDATETOKENFAILED"] = -2] = "UPDATETOKENFAILED";
+  AUTHSTATUS[AUTHSTATUS["UNKNOWNERROR"] = -100] = "UNKNOWNERROR";
+})(AUTHSTATUS || (AUTHSTATUS = {}));
+class StoreDbService {
+  app;
+  totototo;
+  /** Firebase singletons (ready after init()) */
+  db;
+  storage;
+  auth;
+  /** Auth state */
+  currentUser = null;
+  authState$ = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
+  /** You call this ONCE at app startup */
+  init(config) {
+    if (this.app) return;
+    this.app = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].initializeApp(config);
+    this.db = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].database(this.app);
+    this.storage = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].storage(this.app);
+    this.auth = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth(this.app);
+    // Persist session
+    this.auth.setPersistence(firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth.Auth.Persistence.LOCAL).catch(() => {});
+    // Support redirect flows (Google auth etc.)
+    this.auth.getRedirectResult().catch(() => {});
+    this.auth.onAuthStateChanged(user => {
+      this.currentUser = user;
+      this.authState$.next(user);
+    });
+  }
+  /** Safety guard (helps catch "init not called" early) */
+  ensureReady() {
+    if (!this.app || !this.db || !this.storage || !this.auth) {
+      throw new Error('Firebase not initialized. Call StoreDbService.init(firebaseConfig) once before using it.');
+    }
+  }
+  // ---------------------------------------------------------------------------
+  // RTDB PATH NORMALIZATION
+  // ---------------------------------------------------------------------------
+  /**
+   * Supports BOTH styles:
+   *  - "backendmainpage/owner-home-layali"
+   *  - "backendmainpage" + refId
+   * Also supports your old "storeId" prefix by stripping it if present:
+   *  - "1000/backendmainpage/..." -> "backendmainpage/..."
+   */
+  normalizeDbPath(pathOrObject, refId) {
+    let p = (pathOrObject || '').trim().replace(/^\/+/, '');
+    // If caller passes "backendmainpage" + id
+    if (refId !== undefined && refId !== null && refId !== -1 && `${refId}`.length) {
+      if (!p.endsWith('/')) p += '/';
+      p += String(refId);
+    }
+    // Strip "1000/" or "<digits>/" if you still have that in DB paths
+    p = p.replace(/^\d+\//, '');
+    return p;
+  }
+  // ---------------------------------------------------------------------------
+  // RTDB CRUD
+  // ---------------------------------------------------------------------------
+  getObject(fbObjectOrPath, refId) {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this.ensureReady();
+      const path = _this.normalizeDbPath(fbObjectOrPath, refId);
+      const snap = yield _this.db.ref(path).once('value');
+      return snap.exists() ? snap.val() : null;
+    })();
+  }
+  updateObject(fbObjectOrPath, objectData, refId) {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this2.ensureReady();
+      if (!objectData) throw new Error('updateObject: objectData is required');
+      const path = _this2.normalizeDbPath(fbObjectOrPath, refId);
+      // Keep your modifiedTS behavior
+      const now = Date.now();
+      objectData.modifiedTS = now;
+      yield _this2.db.ref(path).set(objectData);
+      return objectData;
+    })();
+  }
+  partialUpdateObject(fbObjectOrPath, patch, refId) {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this3.ensureReady();
+      if (!patch) throw new Error('partialUpdateObject: patch is required');
+      const path = _this3.normalizeDbPath(fbObjectOrPath, refId);
+      patch.modifiedTS = Date.now();
+      yield _this3.db.ref(path).update(patch);
+      return patch;
+    })();
+  }
+  removeObject(fbObjectOrPath, refId) {
+    var _this4 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this4.ensureReady();
+      if (refId === undefined || refId === null) return undefined;
+      const path = _this4.normalizeDbPath(fbObjectOrPath, refId);
+      yield _this4.db.ref(path).remove();
+      return String(refId);
+    })();
+  }
+  // ---------------------------------------------------------------------------
+  // RTDB SUBSCRIPTIONS (simple)
+  // ---------------------------------------------------------------------------
+  /**
+   * Subscribe to "value" changes.
+   * Returns an unsubscribe function.
+   */
+  subscribeObject(fbObjectOrPath, onValue, refId) {
+    this.ensureReady();
+    const path = this.normalizeDbPath(fbObjectOrPath, refId);
+    const ref = this.db.ref(path);
+    const handler = snap => {
+      onValue(snap.exists() ? snap.val() : null);
+    };
+    ref.on('value', handler);
+    return () => ref.off('value', handler);
+  }
+  // ---------------------------------------------------------------------------
+  // STORAGE HELPERS
+  // ---------------------------------------------------------------------------
+  /**
+   * Accepts:
+   *  - Full URL -> returned as-is
+   *  - "mainpages/owner-home-layali/boat/a.webp" -> tokened URL
+   *  - "/mainpages/..." -> tokened URL
+   */
+  getDownloadUrl(pathOrUrl) {
+    var _this5 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this5.ensureReady();
+      const p = (pathOrUrl || '').trim();
+      if (!p) throw new Error('getDownloadUrl: empty path');
+      if (/^https?:\/\//i.test(p)) return p;
+      const clean = p.replace(/^\/+/, '');
+      return _this5.storage.ref(clean).getDownloadURL();
+    })();
+  }
+  /**
+   * List image URLs directly under a folder (no recursion).
+   */
+  listImageUrlsFlat(folderPath) {
+    var _this6 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this6.ensureReady();
+      const clean = (folderPath || '').trim().replace(/^\/+/, '');
+      if (!clean) return [];
+      try {
+        const res = yield _this6.storage.ref(clean).listAll();
+        const urls = [];
+        for (const item of res.items) {
+          const n = (item.name || '').toLowerCase();
+          if (n === '.ds_store') continue;
+          if (!/\.(png|jpg|jpeg|webp|gif|avif|svg)$/i.test(n)) continue;
+          urls.push(yield item.getDownloadURL());
+        }
+        return urls;
+      } catch {
+        return [];
+      }
+    })();
+  }
+  /**
+   * Recursive listing (folder + subfolders).
+   */
+  listImageUrlsRecursive(folderPath) {
+    var _this7 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this7.ensureReady();
+      const clean = (folderPath || '').trim().replace(/^\/+/, '');
+      if (!clean) return [];
+      try {
+        const ref = _this7.storage.ref(clean);
+        const res = yield ref.listAll();
+        const urls = [];
+        for (const item of res.items) {
+          const n = (item.name || '').toLowerCase();
+          if (n === '.ds_store') continue;
+          if (!/\.(png|jpg|jpeg|webp|gif|avif|svg)$/i.test(n)) continue;
+          urls.push(yield item.getDownloadURL());
+        }
+        for (const sub of res.prefixes) {
+          urls.push(...(yield _this7.listImageUrlsRecursive(sub.fullPath)));
+        }
+        return urls;
+      } catch {
+        return [];
+      }
+    })();
+  }
+  /** Upload a File to Storage under `directory/filename` and return download URL */
+  uploadFile(directory, file) {
+    var _this8 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this8.ensureReady();
+      if (!file) throw new Error('uploadFile: file is required');
+      const cleanDir = (directory || '').trim().replace(/^\/+/, '').replace(/\/+$/, '');
+      const fullPath = cleanDir ? `${cleanDir}/${file.name}` : file.name;
+      const ref = _this8.storage.ref(fullPath);
+      yield ref.put(file);
+      return yield ref.getDownloadURL();
+    })();
+  }
+  /** Upload from an <input type="file"> change event */
+  uploadFromInputEvent(directory, event) {
+    var _this9 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const file = event?.target?.files?.[0];
+      if (!file) throw new Error('uploadFromInputEvent: no file found in event.target.files[0]');
+      return _this9.uploadFile(directory, file);
+    })();
+  }
+  /** Delete by storage path like "mainpages/owner-home-layali/boat/a.webp" */
+  deleteByPath(path) {
+    var _this10 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this10.ensureReady();
+      const clean = (path || '').trim().replace(/^\/+/, '');
+      if (!clean) return;
+      yield _this10.storage.ref(clean).delete();
+    })();
+  }
+  /** Delete by full download URL */
+  deleteByUrl(url) {
+    var _this11 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this11.ensureReady();
+      const u = (url || '').trim();
+      if (!u) return;
+      yield _this11.storage.refFromURL(u).delete();
+    })();
+  }
+  /** Get a Storage reference directly (useful for advanced operations) */
+  storageRef(path) {
+    this.ensureReady();
+    const clean = (path || '').trim().replace(/^\/+/, '');
+    return this.storage.ref(clean);
+  }
+  // ---------------------------------------------------------------------------
+  // RTDB MULTI-PATH UPDATE (atomic)
+  // ---------------------------------------------------------------------------
+  multiPathUpdate(updates) {
+    var _this12 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this12.ensureReady();
+      if (!updates || typeof updates !== 'object') throw new Error('multiPathUpdate: updates is required');
+      // normalize keys: remove leading slashes and any "<digits>/" prefix
+      const normalized = {};
+      for (const [k, v] of Object.entries(updates)) {
+        const cleanKey = _this12.normalizeDbPath(k);
+        normalized[cleanKey] = v;
+      }
+      yield _this12.db.ref().update(normalized);
+    })();
+  }
+  /** RTDB push key generator for unique IDs */
+  pushKey(path) {
+    this.ensureReady();
+    const clean = this.normalizeDbPath(path);
+    const ref = this.db.ref(clean).push();
+    if (!ref.key) throw new Error('pushKey: failed to create key');
+    return ref.key;
+  }
+  static ɵfac = function StoreDbService_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || StoreDbService)();
+  };
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjectable"]({
+    token: StoreDbService,
+    factory: StoreDbService.ɵfac,
+    providedIn: 'root'
+  });
+}
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](StoreDbService, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Injectable,
+    args: [{
+      providedIn: 'root'
+    }]
+  }], null, null);
+})();
 class ScriptLoadingService {
   zone;
   constructor(zone) {
@@ -133,22 +423,22 @@ class ScriptLoadingService {
     document.getElementsByTagName('head')[0].appendChild(scriptElement);
   }
   static ɵfac = function ScriptLoadingService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || ScriptLoadingService)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_core__WEBPACK_IMPORTED_MODULE_7__.NgZone));
+    return new (__ngFactoryType__ || ScriptLoadingService)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](_angular_core__WEBPACK_IMPORTED_MODULE_8__.NgZone));
   };
-  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjectable"]({
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjectable"]({
     token: ScriptLoadingService,
     factory: ScriptLoadingService.ɵfac,
     providedIn: 'root'
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](ScriptLoadingService, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Injectable,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](ScriptLoadingService, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Injectable,
     args: [{
       providedIn: 'root'
     }]
   }], () => [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.NgZone
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.NgZone
   }], null);
 })();
 
@@ -240,9 +530,9 @@ class UtilsService {
   scriptLoadingSvc;
   backendWSURL;
   backendURL;
-  mdb;
-  mst;
-  mauth;
+  //  public mdb;
+  //  public mst;
+  //  public mauth;
   sdb = [];
   sst = {};
   sauth = [];
@@ -254,7 +544,7 @@ class UtilsService {
   uploadState;
   uploadProgress;
   downloadURL = '';
-  addressBSS = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject([]);
+  addressBSS = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject([]);
   addressBSSdata = this.addressBSS.asObservable();
   backendFBstoreId = '1000';
   backendFBstoreId2 = '2001';
@@ -403,7 +693,7 @@ class UtilsService {
     });
   }
   autoCompleteAddress(fieldName) {
-    const subject = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
+    const subject = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
     if (typeof places !== 'undefined') {
       const placesAutocomplete = places({
         appId: 'pl9PLUYVD4F4',
@@ -422,7 +712,7 @@ class UtilsService {
     return subject.asObservable();
   }
   autoCompleteAddress1(addressField) {
-    const subject = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
+    const subject = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
     if (!window.google || !google.maps.places) {
       console.error('Google Maps script not loaded');
       subject.next({});
@@ -676,14 +966,14 @@ class UtilsService {
     }
   }
   checkFileIonic(dir, fileName, check) {
-    var _this = this;
+    var _this13 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       let result = 0;
       return new Promise(/*#__PURE__*/function () {
         var _ref = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve) {
-          _this.fileIonic.checkFile(_this.fileIonic.externalDataDirectory + dir, fileName).then(/*#__PURE__*/function () {
+          _this13.fileIonic.checkFile(_this13.fileIonic.externalDataDirectory + dir, fileName).then(/*#__PURE__*/function () {
             var _ref2 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (data) {
-              _this.fileIonic.resolveLocalFilesystemUrl(_this.fileIonic.externalDataDirectory + dir + fileName).then(data1 => {
+              _this13.fileIonic.resolveLocalFilesystemUrl(_this13.fileIonic.externalDataDirectory + dir + fileName).then(data1 => {
                 data1.getMetadata(metadata => {
                   if (metadata.size > 2000) {
                     result = metadata.size;
@@ -711,7 +1001,7 @@ class UtilsService {
     }
   }
   checkFileTablet(url, check) {
-    var _this2 = this;
+    var _this14 = this;
     return new Promise(/*#__PURE__*/function () {
       var _ref3 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
         const pathnameRegex = /(\/?(.+)\/)/;
@@ -723,7 +1013,7 @@ class UtilsService {
             const filedir = 'dist2/' + filedirt[0];
             const filename = filenamet[1];
             try {
-              const temp = yield _this2.checkFile(filedir, filename, check);
+              const temp = yield _this14.checkFile(filedir, filename, check);
               resolve(temp);
             } catch (e) {
               resolve(false);
@@ -741,7 +1031,7 @@ class UtilsService {
     }());
   }
   downloadThumb2(url, dir, localurl, check, force) {
-    var _this3 = this;
+    var _this15 = this;
     return new Promise(/*#__PURE__*/function () {
       var _ref4 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolvef) {
         const filenameRegyoutube = /(youtube\.com|youtu\.be)/;
@@ -773,31 +1063,31 @@ class UtilsService {
               filename = filenameC[1] + '.png';
             }
           }
-          localurl = localurl ? localurl : filename ? dir + _this3.isEncoded(filename) : undefined;
-          const temp11 = yield _this3.checkFileBackend(localurl, check);
+          localurl = localurl ? localurl : filename ? dir + _this15.isEncoded(filename) : undefined;
+          const temp11 = yield _this15.checkFileBackend(localurl, check);
           //        const url1 = url;
           let promise1;
           if (temp11 === false || force) {
             promise1 = new Promise(resolve => {
-              const params1 = new _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpParams().set('url', _this3.isEncoded(url)).set('dir', _this3.isEncoded(dir));
-              const urldownloadUrl = _this3.backendURL + 'store/downloadUrl';
+              const params1 = new _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpParams().set('url', _this15.isEncoded(url)).set('dir', _this15.isEncoded(dir));
+              const urldownloadUrl = _this15.backendURL + 'store/downloadUrl';
               // tslint:disable-next-line: deprecation
               if (check) {
-                console.log('this.isEncoded(url))=', _this3.isEncoded(url));
+                console.log('this.isEncoded(url))=', _this15.isEncoded(url));
               }
-              _this3.http.get(urldownloadUrl, {
+              _this15.http.get(urldownloadUrl, {
                 params: params1
               }).subscribe(/*#__PURE__*/function () {
                 var _ref5 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (temp12) {
                   const result = temp12;
                   localurl = result.backendurl;
-                  if (_this3.platformDevice && _this3.platformDevice.is('cordova')) {
-                    const temp13 = yield _this3.checkFileTablet(localurl, check);
+                  if (_this15.platformDevice && _this15.platformDevice.is('cordova')) {
+                    const temp13 = yield _this15.checkFileTablet(localurl, check);
                     if (temp13 === 0) {
-                      const fileTransfer = _this3.transfer.create();
+                      const fileTransfer = _this15.transfer.create();
                       let resultt;
                       try {
-                        yield fileTransfer.download(_this3.backendURL + localurl, _this3.fileIonic.externalDataDirectory + 'dist2/' + localurl);
+                        yield fileTransfer.download(_this15.backendURL + localurl, _this15.fileIonic.externalDataDirectory + 'dist2/' + localurl);
                       } catch (e) {
                         resultt = e;
                       }
@@ -813,7 +1103,7 @@ class UtilsService {
                   return _ref5.apply(this, arguments);
                 };
               }(), error1 => {
-                console.log('error=', error1, ' , urlToDownload=', _this3.isEncoded(url));
+                console.log('error=', error1, ' , urlToDownload=', _this15.isEncoded(url));
                 resolve(undefined);
               });
             });
@@ -824,15 +1114,15 @@ class UtilsService {
           }
           promise1.then(/*#__PURE__*/function () {
             var _ref6 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (temp3) {
-              if (localurl && _this3.platformDevice && _this3.platformDevice.is('cordova')) {
-                const temp1 = yield _this3.checkFileTablet(localurl, check);
+              if (localurl && _this15.platformDevice && _this15.platformDevice.is('cordova')) {
+                const temp1 = yield _this15.checkFileTablet(localurl, check);
                 if (temp1 === 0) {
-                  const fileTransfer = _this3.transfer.create();
+                  const fileTransfer = _this15.transfer.create();
                   let temp;
                   try {
-                    temp = yield fileTransfer.download(_this3.backendURL + localurl, _this3.fileIonic.externalDataDirectory + 'dist2/' + localurl);
+                    temp = yield fileTransfer.download(_this15.backendURL + localurl, _this15.fileIonic.externalDataDirectory + 'dist2/' + localurl);
                   } catch (e) {
-                    console.log('error 1 on %s error =', _this3.backendURL + localurl, e);
+                    console.log('error 1 on %s error =', _this15.backendURL + localurl, e);
                   }
                 }
               }
@@ -852,34 +1142,34 @@ class UtilsService {
     }());
   }
   downloadThumb(urlToDownload, dir, localurl, check) {
-    var _this4 = this;
+    var _this16 = this;
     return new Promise(/*#__PURE__*/function () {
       var _ref7 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
         if (urlToDownload) {
           let temp1;
           if (localurl === undefined) {
-            localurl = _this4.getFilename(dir, urlToDownload);
+            localurl = _this16.getFilename(dir, urlToDownload);
           }
           if (localurl !== undefined && localurl !== null && localurl && localurl.length > 0) {
-            temp1 = yield _this4.checkFileBackend(localurl, check);
+            temp1 = yield _this16.checkFileBackend(localurl, check);
             if (temp1 === false) {
               const params1 = new _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpParams().set('url', encodeURI(urlToDownload)).set('dir', encodeURI(dir));
-              const url = _this4.backendURL + 'store/downloadUrl';
+              const url = _this16.backendURL + 'store/downloadUrl';
               // tslint:disable-next-line: deprecation
-              _this4.http.get(url, {
+              _this16.http.get(url, {
                 params: params1
               }).subscribe(/*#__PURE__*/function () {
                 var _ref8 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (temp) {
                   const result = temp;
                   localurl = result.backendurl;
-                  if (_this4.platformDevice && _this4.platformDevice.is('cordova')) {
-                    temp1 = yield _this4.checkFileTablet(localurl, check);
+                  if (_this16.platformDevice && _this16.platformDevice.is('cordova')) {
+                    temp1 = yield _this16.checkFileTablet(localurl, check);
                     if (temp1 === 0) {
-                      const fileTransfer = _this4.transfer.create();
+                      const fileTransfer = _this16.transfer.create();
                       try {
-                        yield fileTransfer.download(_this4.backendURL + localurl, _this4.fileIonic.externalDataDirectory + 'dist2/' + localurl);
+                        yield fileTransfer.download(_this16.backendURL + localurl, _this16.fileIonic.externalDataDirectory + 'dist2/' + localurl);
                       } catch (e) {
-                        console.log('error 1 on %s error =', _this4.backendURL + localurl, e);
+                        console.log('error 1 on %s error =', _this16.backendURL + localurl, e);
                       }
                       const temp3 = {
                         backendurl: localurl
@@ -906,15 +1196,15 @@ class UtilsService {
                 reject(undefined);
               });
             } else {
-              if (_this4.platformDevice && _this4.platformDevice.is('cordova')) {
+              if (_this16.platformDevice && _this16.platformDevice.is('cordova')) {
                 let toto;
-                temp1 = yield _this4.checkFileTablet(localurl, check);
+                temp1 = yield _this16.checkFileTablet(localurl, check);
                 if (temp1 === 0) {
-                  const fileTransfer = _this4.transfer.create();
+                  const fileTransfer = _this16.transfer.create();
                   try {
-                    toto = yield fileTransfer.download(_this4.backendURL + localurl, _this4.fileIonic.externalDataDirectory + 'dist2/' + localurl);
+                    toto = yield fileTransfer.download(_this16.backendURL + localurl, _this16.fileIonic.externalDataDirectory + 'dist2/' + localurl);
                   } catch (e) {
-                    console.log('error 2 on %s error =', _this4.backendURL + localurl, e);
+                    console.log('error 2 on %s error =', _this16.backendURL + localurl, e);
                   }
                   const temp = {
                     backendurl: localurl
@@ -935,21 +1225,21 @@ class UtilsService {
             }
           } else {
             const params1 = new _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpParams().set('url', encodeURI(urlToDownload)).set('dir', encodeURI(dir));
-            const url = _this4.backendURL + 'store/downloadUrl';
+            const url = _this16.backendURL + 'store/downloadUrl';
             // tslint:disable-next-line: deprecation
-            _this4.http.get(url, {
+            _this16.http.get(url, {
               params: params1
             }).subscribe(/*#__PURE__*/function () {
               var _ref9 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (temp) {
                 const result = temp;
                 localurl = result.backendurl;
-                if (_this4.platformDevice && _this4.platformDevice.is('cordova')) {
+                if (_this16.platformDevice && _this16.platformDevice.is('cordova')) {
                   let toto;
-                  temp1 = yield _this4.checkFileTablet(localurl);
+                  temp1 = yield _this16.checkFileTablet(localurl);
                   if (localurl !== undefined && temp1 === 0) {
-                    const fileTransfer = _this4.transfer.create();
+                    const fileTransfer = _this16.transfer.create();
                     try {
-                      toto = yield fileTransfer.download(_this4.backendURL + localurl, _this4.fileIonic.externalDataDirectory + 'dist2/' + localurl);
+                      toto = yield fileTransfer.download(_this16.backendURL + localurl, _this16.fileIonic.externalDataDirectory + 'dist2/' + localurl);
                     } catch (e) {
                       console.log('error 3 on %s error =', localurl, e);
                     }
@@ -1000,25 +1290,25 @@ class UtilsService {
     });
   }
   getLocalUrl(mainAssetUrl, defaultAssetUrl, check) {
-    var _this5 = this;
+    var _this17 = this;
     let result;
     return new Promise(/*#__PURE__*/function () {
       var _ref10 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
         let toto = false;
         if (mainAssetUrl !== undefined) {
           //        if (false) {
-          if (_this5.platformDevice && _this5.platformDevice.is('cordova')) {
-            const temp = yield _this5.checkFileTablet(mainAssetUrl, check);
+          if (_this17.platformDevice && _this17.platformDevice.is('cordova')) {
+            const temp = yield _this17.checkFileTablet(mainAssetUrl, check);
             if (temp) {
-              result = _this5.webview.convertFileSrc(_this5.fileIonic.externalDataDirectory + 'dist2/' + encodeURI(mainAssetUrl));
+              result = _this17.webview.convertFileSrc(_this17.fileIonic.externalDataDirectory + 'dist2/' + encodeURI(mainAssetUrl));
               toto = true;
             }
           }
           if (!toto) {
-            if (_this5.connected) {
-              if (yield _this5.checkFileBackend(mainAssetUrl)) {
+            if (_this17.connected) {
+              if (yield _this17.checkFileBackend(mainAssetUrl)) {
                 if (mainAssetUrl) {
-                  result = _this5.backendURL + encodeURI(mainAssetUrl);
+                  result = _this17.backendURL + encodeURI(mainAssetUrl);
                   toto = true;
                 }
               }
@@ -1053,14 +1343,14 @@ class UtilsService {
     }
   }
   listDir(path, dirName) {
-    var _this6 = this;
+    var _this18 = this;
     return new Promise(/*#__PURE__*/function () {
       var _ref11 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
-        if (_this6.platformDevice && _this6.platformDevice.is('cordova')) {
-          const path1 = _this6.fileIonic.externalDataDirectory + path;
+        if (_this18.platformDevice && _this18.platformDevice.is('cordova')) {
+          const path1 = _this18.fileIonic.externalDataDirectory + path;
           let dirList;
           try {
-            dirList = yield _this6.fileIonic.listDir(path1, dirName);
+            dirList = yield _this18.fileIonic.listDir(path1, dirName);
           } catch (e) {
             console.log('error 5 listDir %s error ', path1, e);
             reject(e);
@@ -1330,543 +1620,30 @@ class UtilsService {
     return socialPatterns.some(pattern => pattern.test(url));
   }
   static ɵfac = function UtilsService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || UtilsService)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_core__WEBPACK_IMPORTED_MODULE_7__.NgZone), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_common__WEBPACK_IMPORTED_MODULE_12__.DatePipe), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ng2_haversine__WEBPACK_IMPORTED_MODULE_5__.HaversineService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ScriptLoadingService));
+    return new (__ngFactoryType__ || UtilsService)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](_angular_core__WEBPACK_IMPORTED_MODULE_8__.NgZone), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](_angular_common__WEBPACK_IMPORTED_MODULE_12__.DatePipe), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](ng2_haversine__WEBPACK_IMPORTED_MODULE_5__.HaversineService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](ScriptLoadingService));
   };
-  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjectable"]({
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjectable"]({
     token: UtilsService,
     factory: UtilsService.ɵfac,
     providedIn: 'root'
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](UtilsService, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Injectable,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](UtilsService, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Injectable,
     args: [{
       providedIn: 'root'
     }]
   }], () => [{
     type: _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient
   }, {
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.NgZone
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.NgZone
   }, {
     type: _angular_common__WEBPACK_IMPORTED_MODULE_12__.DatePipe
   }, {
     type: ng2_haversine__WEBPACK_IMPORTED_MODULE_5__.HaversineService
   }, {
     type: ScriptLoadingService
-  }], null);
-})();
-var OBJECTNAME;
-(function (OBJECTNAME) {
-  OBJECTNAME["bnLocations"] = "backendlocations";
-  OBJECTNAME["bnBoats"] = "backendboats";
-  OBJECTNAME["bnUsers"] = "backendusers";
-  OBJECTNAME["bnMessages"] = "backendmessages";
-  OBJECTNAME["bnBookings"] = "backendbookings";
-  OBJECTNAME["bnFeedbacks"] = "backendfeedbacks";
-  OBJECTNAME["bnPartners"] = "backendpartners";
-  OBJECTNAME["bnEvents"] = "backendevents";
-  OBJECTNAME["bnAvailability"] = "backendavailability";
-  OBJECTNAME["bnBoatServices"] = "backendservices";
-  OBJECTNAME["bnOwners"] = "backendowners";
-})(OBJECTNAME || (OBJECTNAME = {}));
-var AUTHSTATUS;
-(function (AUTHSTATUS) {
-  AUTHSTATUS[AUTHSTATUS["SUCCESS"] = 1] = "SUCCESS";
-  AUTHSTATUS[AUTHSTATUS["EMAILNOTVERIFIED"] = -1] = "EMAILNOTVERIFIED";
-  AUTHSTATUS[AUTHSTATUS["UPDATETOKENFAILED"] = -2] = "UPDATETOKENFAILED";
-  AUTHSTATUS[AUTHSTATUS["UNKNOWNERROR"] = -100] = "UNKNOWNERROR";
-})(AUTHSTATUS || (AUTHSTATUS = {}));
-class StoreDbService {
-  http;
-  ngZone;
-  utilSvc;
-  firebaseApp = {};
-  adb;
-  bdb;
-  baf;
-  currentUser = null;
-  // ✅ reactive auth state
-  authState$ = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
-  envPlatform;
-  firebaseBSS = {};
-  firebaseBSSdata = {};
-  firebaseRefOn = [];
-  firebaseData = {};
-  backendFbRef = {};
-  storageFbRef = [];
-  uploadProgress$;
-  firebaseauth;
-  constructor(http, ngZone, utilSvc) {
-    this.http = http;
-    this.ngZone = ngZone;
-    this.utilSvc = utilSvc;
-  }
-  initFBlistener(storeId, fbObject) {
-    this.firebaseBSS[storeId][fbObject] = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject([]);
-    this.firebaseBSSdata[storeId][fbObject] = this.firebaseBSS[storeId][fbObject].asObservable();
-    this.firebaseData[storeId][fbObject] = [];
-  }
-  closeFBlistener(storeId, fbObject) {
-    if (this.firebaseBSS[storeId]) {
-      delete this.firebaseBSS[storeId][fbObject];
-    }
-    if (this.firebaseBSSdata[storeId]) {
-      delete this.firebaseBSSdata[storeId][fbObject];
-    }
-    if (this.firebaseData[storeId]) {
-      delete this.firebaseData[storeId][fbObject];
-    }
-  }
-  initFB(storeId, config, appName, storage, auth, firebaseObjects, fbRef) {
-    return new Promise((resolve, reject) => {
-      this.firebaseData[storeId] = this.firebaseData[storeId] ?? {};
-      this.firebaseBSS[storeId] = this.firebaseBSS[storeId] ?? {};
-      this.firebaseBSSdata[storeId] = this.firebaseBSSdata[storeId] ?? {};
-      this.firebaseRefOn[storeId] = this.firebaseRefOn[storeId] ? this.firebaseRefOn[storeId] : [];
-      firebaseObjects.forEach(fbObject => {
-        this.initFBlistener(storeId, fbObject);
-      });
-      let data;
-      data = this.initFirebaseDatabase(config, appName);
-      const databaseString = 'database';
-      const authString = 'auth';
-      const storageString = 'storage';
-      fbRef[databaseString] = data;
-      if (auth) {
-        let data1;
-        data1 = this.initFirebaseAuth(config, appName);
-        data1.languageCode = 'fr';
-        fbRef[authString] = data1;
-      }
-      if (storage) {
-        let data2;
-        data2 = this.initFirebaseStorage(config, appName);
-        fbRef[storageString] = data2;
-      }
-      resolve(fbRef);
-    });
-  }
-  closeFB(storeId, firebaseObjects, fbRef) {
-    return new Promise(resolve => {
-      const promises = [];
-      firebaseObjects.forEach(fbObject => {
-        this.closeFBlistener(storeId, fbObject);
-      });
-      this.firebaseData[storeId] = {};
-      this.firebaseBSS[storeId] = {};
-      this.firebaseBSSdata[storeId] = {};
-      this.firebaseRefOn[storeId] = [];
-      fbRef = [];
-      Promise.all(promises).then(() => resolve(1));
-    });
-  }
-  // method for initialisation of FB
-  initFirebaseDatabase(config, appname) {
-    if (!this.firebaseApp[appname]) {
-      this.firebaseApp[appname] = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].initializeApp(config, appname);
-    }
-    const database = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].database(this.firebaseApp[appname]);
-    return database;
-  }
-  initFirebaseStorage(config, appname) {
-    if (!this.firebaseApp[appname]) {
-      this.firebaseApp[appname] = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].initializeApp(config, appname);
-    }
-    const storage = this.firebaseApp[appname].storage();
-    return storage;
-  }
-  initFirebaseAuth(config, appname) {
-    if (!this.firebaseApp[appname]) {
-      this.firebaseApp[appname] = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].initializeApp(config, appname);
-    }
-    // ✅ get the *instance* bound to the named app
-    const auth = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth(this.firebaseApp[appname]);
-    // ✅ keep the instance on the service
-    this.firebaseauth = auth;
-    // Persist sessions locally
-    auth.setPersistence(firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth.Auth.Persistence.LOCAL).catch(() => {});
-    // Pick up Google redirect results
-    auth.getRedirectResult().catch(() => {});
-    // Track auth state
-    auth.onAuthStateChanged(user => {
-      this.currentUser = user;
-      this.authState$.next(user);
-    });
-    return auth; // ✅
-  }
-  // CRUD methods for a given object
-  subscribeObject(storeId, fbDbRef, fbObject, refId) {
-    let tempObject = fbObject;
-    if (fbObject.indexOf('backend') !== 0) {
-      tempObject = storeId + '/' + fbObject;
-    }
-    if (refId && refId !== -1) {
-      tempObject = tempObject + '/' + refId;
-    }
-    this.firebaseRefOn[storeId][fbObject] = fbDbRef.ref(tempObject).on('value', data => {
-      let temp = data.val();
-      if (temp == null) {
-        temp = undefined;
-      }
-      if (refId !== undefined) {
-        if (refId !== -1) {
-          this.firebaseData[storeId][fbObject][refId] = temp;
-        } else {
-          this.firebaseData[storeId][fbObject] = temp;
-        }
-      } else {
-        if (temp !== undefined) {
-          this.firebaseData[storeId][fbObject] = this.utilSvc.objectToArray(data.val());
-        }
-      }
-      if (this.firebaseBSS[storeId][fbObject]) {
-        this.firebaseBSS[storeId][fbObject].next([temp]);
-      }
-    });
-  }
-  unsubscribeObject(storeId, fbDbRef, fbObject, refId) {
-    if (this.firebaseRefOn[storeId]) {
-      if (this.firebaseRefOn[storeId][fbObject]) {
-        let tempObject = fbObject;
-        if (fbObject.indexOf('backend') !== 0) {
-          tempObject = storeId + '/' + fbObject;
-        }
-        if (refId && refId !== -1) {
-          tempObject = tempObject + '/' + refId + '/';
-        }
-        fbDbRef.ref(tempObject).off();
-        delete this.firebaseRefOn[storeId][fbObject];
-      }
-    }
-  }
-  getObject(storeId, fbDbRef, fbObject, refId) {
-    return new Promise((resolve, reject) => {
-      let tempObject = fbObject;
-      if (fbObject.indexOf('backend') !== 0) {
-        tempObject = storeId + '/' + fbObject;
-      }
-      if (refId !== undefined && refId !== -1) {
-        tempObject = tempObject + '/' + refId;
-      }
-      if (fbDbRef) {
-        fbDbRef.ref(tempObject).once('value').then(data => {
-          resolve(data.val());
-        }, error => {
-          reject(error);
-        });
-      } else {
-        resolve(null);
-      }
-    });
-  }
-  removeObject(storeId, fbDbRef, fbObject, refId) {
-    return new Promise((resolve, reject) => {
-      let tempObject;
-      if (refId !== undefined) {
-        if (fbObject.indexOf('backend') !== 0) {
-          tempObject = storeId + '/' + fbObject + '/' + refId;
-        } else {
-          tempObject = fbObject + '/' + refId;
-        }
-        fbDbRef.ref(tempObject).remove().then(() => {
-          resolve(String(refId));
-        }, error => {
-          reject(error);
-        });
-      } else {
-        resolve(undefined);
-      }
-    });
-  }
-  updateObject(storeId, fbDbRef, fbObject, objectData, refId) {
-    return new Promise((resolve, reject) => {
-      let tempObject = fbObject;
-      if (fbObject.indexOf('backend') !== 0) {
-        tempObject = storeId + '/' + fbObject;
-      } else {}
-      const tod = new Date().getTime();
-      if (refId) {
-        tempObject = tempObject + '/' + refId;
-        objectData.modifiedTS = tod;
-      }
-      if (objectData) {
-        fbDbRef.ref(tempObject).set(objectData).then(/*#__PURE__*/function () {
-          var _ref12 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (data) {
-            resolve(objectData);
-          });
-          return function (_x16) {
-            return _ref12.apply(this, arguments);
-          };
-        }(), error => reject(error));
-      } else {
-        reject(undefined);
-      }
-    });
-  }
-  searchObject(storeId, fbDbRef, fbObject, field, fieldvalue) {
-    var _this7 = this;
-    return new Promise(/*#__PURE__*/function () {
-      var _ref13 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
-        let tempObject = fbObject;
-        if (fbObject.indexOf('backend') !== 0) {
-          tempObject = storeId + '/' + fbObject;
-        } else {}
-        const tod = new Date().getTime();
-        const snapshot = yield fbDbRef.ref(tempObject).orderByChild(field).equalTo(fieldvalue).once('value');
-        if (snapshot.exists()) {
-          const userDatat = snapshot.val();
-          const userData = _this7.utilSvc.objectToArray(userDatat);
-          resolve(userData);
-        } else {
-          console.log('No user with this state found.');
-          reject('No user with this state found.');
-        }
-      });
-      return function (_x17, _x18) {
-        return _ref13.apply(this, arguments);
-      };
-    }());
-  }
-  getAvailableObjectId(BEStoreId, fbObject, idName) {
-    return new Promise((resolve, reject) => {
-      this.getObject(BEStoreId, this.utilSvc.mdb, fbObject).then(data => {
-        const temp = data;
-        const objectId = temp[temp.length - 1][idName] + 1;
-        resolve(objectId);
-      }, error => reject(error));
-    });
-  }
-  deleteObject(storeId, objectToDelete) {
-    let ref;
-    const regexasset = /(\/?assets\/)(.+)/;
-    const temp = regexasset.exec(objectToDelete);
-    if (temp && temp[2]) {
-      if (storeId === this.utilSvc.backendFBstoreId) {
-        // Create a reference to the file to delete
-        ref = this.utilSvc.mst.ref(temp[2]);
-      } else {
-        ref = this.utilSvc.sst[storeId].ref(temp[2]);
-      }
-      // Delete the file
-      ref.delete();
-    }
-  }
-  deleteObjectFromUrl(storeId, url) {
-    let ref;
-    let error;
-    if (storeId === this.utilSvc.backendFBstoreId) {
-      // Create a reference to the file to delete
-      try {
-        ref = this.utilSvc.mst.refFromURL(url);
-      } catch (e) {
-        error = e;
-      }
-    } else {
-      try {
-        ref = this.utilSvc.sst[storeId].refFromURL(url);
-      } catch (e) {
-        error = e;
-      }
-    }
-    // Delete the file
-    if (ref) {
-      try {
-        ref.delete();
-      } catch (e) {}
-    }
-  }
-  uploadObjects(event, directory, read) {
-    return new Promise((resolve, reject) => {
-      let ref;
-      const fileName = event.target.files[0].name;
-      ref = this.utilSvc.mst.ref(directory + '/' + fileName);
-      const task = ref.put(event.target.files[0]).then(/*#__PURE__*/function () {
-        var _ref14 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (snapshot) {
-          try {
-            const downloadURL = yield ref.getDownloadURL();
-            resolve(downloadURL);
-          } catch (e) {
-            reject(e);
-          }
-        });
-        return function (_x19) {
-          return _ref14.apply(this, arguments);
-        };
-      }(), error => {
-        reject(error);
-      });
-    });
-  }
-  uploadObjects1(storeId, file, directory, read) {
-    return new Promise((resolve, reject) => {
-      let ref;
-      const fileName = file.name;
-      if (storeId !== this.utilSvc.backendFBstoreId) {
-        ref = this.utilSvc.sst[storeId].ref(directory + '/' + fileName);
-      } else {
-        ref = this.utilSvc.mst.ref(directory + '/' + fileName);
-      }
-      const task = ref.put(file).then(/*#__PURE__*/function () {
-        var _ref15 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (snapshot) {
-          try {
-            const downloadURL = yield ref.getDownloadURL();
-            resolve(downloadURL);
-          } catch (e) {
-            reject(e);
-          }
-        });
-        return function (_x20) {
-          return _ref15.apply(this, arguments);
-        };
-      }(), error => {
-        reject(error);
-      });
-    });
-  }
-  uploadMedia(storeId, event, directory) {
-    var _this8 = this;
-    return new Promise(/*#__PURE__*/function () {
-      var _ref16 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
-        let thumb;
-        if (!directory) {
-          directory = '';
-        }
-        if (event) {
-          try {
-            thumb = yield _this8.uploadObjects(event, directory, false);
-          } catch (e) {
-            console.log('quick connect error e=', e);
-          }
-        }
-        resolve(thumb);
-      });
-      return function (_x21, _x22) {
-        return _ref16.apply(this, arguments);
-      };
-    }());
-  }
-  uploadMedia1(storeId, file, directory) {
-    var _this9 = this;
-    return new Promise(/*#__PURE__*/function () {
-      var _ref17 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
-        let thumb;
-        if (!directory) {
-          directory = '';
-        }
-        if (event) {
-          try {
-            thumb = yield _this9.uploadObjects1(storeId, file, directory, false);
-          } catch (e) {}
-        }
-        resolve(thumb);
-      });
-      return function (_x23, _x24) {
-        return _ref17.apply(this, arguments);
-      };
-    }());
-  }
-  deletePImage(storeId, pImage, objectName) {
-    return new Promise((resolve, reject) => {
-      if (pImage.fburl) {
-        this.deleteObject(storeId, pImage.backendurl);
-      }
-      this.removeObject(storeId, this.utilSvc.sdb[storeId], objectName, String(pImage.assetId)).then(data => {
-        resolve(pImage);
-      }, error => {
-        reject(error);
-      });
-    });
-  }
-  deletePVideo(storeId, pVideo, objectName) {
-    return new Promise((resolve, reject) => {
-      if (pVideo.fburl) {
-        this.deleteObject(storeId, pVideo.backendurl);
-      }
-      this.removeObject(storeId, this.utilSvc.sdb[storeId], objectName, String(pVideo.assetId)).then(data => {
-        resolve(pVideo);
-      }, error => {
-        reject(error);
-      });
-    });
-  }
-  createPImage(storeId, pImageName, objectName, type1) {
-    return new Promise((resolve, reject) => {
-      const pImage = {
-        nickName: pImageName,
-        assetId: Math.floor(Math.random() * 100000),
-        type: type1
-      };
-      this.updateObject(storeId, this.utilSvc.sdb[storeId], objectName, pImage, pImage.assetId).then(data => {
-        resolve(pImage);
-      }, error => {
-        reject(error);
-      });
-    });
-  }
-  updatePImage(storeId, pImage, pImageName, objectName) {
-    return new Promise((resolve, reject) => {
-      pImage.nickName = pImageName;
-      this.updateObject(storeId, this.utilSvc.sdb[storeId], objectName, pImage, pImage.assetId).then(data => {
-        resolve(pImage);
-      }, error => {
-        reject(error);
-      });
-    });
-  }
-  createPVideo(storeId, pVideoName, objectName, type1) {
-    return new Promise((resolve, reject) => {
-      const pVideo = {
-        nickName: pVideoName,
-        assetId: Math.floor(Math.random() * 100000),
-        type: type1
-      };
-      this.updateObject(storeId, this.utilSvc.sdb[storeId], objectName, pVideo, pVideo.assetId).then(data => {
-        resolve(pVideo);
-      }, error => {
-        reject(error);
-      });
-    });
-  }
-  updatePVideo(storeId, pVideo, pVideoName, objectName) {
-    return new Promise((resolve, reject) => {
-      pVideo.nickName = pVideoName;
-      this.updateObject(storeId, this.utilSvc.sdb[storeId], objectName, pVideo, pVideo.assetId).then(data => {
-        resolve(pVideo);
-      }, error => {
-        reject(error);
-      });
-    });
-  }
-  validateVideoFile(file) {
-    const video = document.createElement('video');
-    video.preload = 'metadata';
-    video.onloadedmetadata = () => {
-      window.URL.revokeObjectURL(video.src);
-    };
-    video.srcObject = file;
-  }
-  static ɵfac = function StoreDbService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || StoreDbService)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_core__WEBPACK_IMPORTED_MODULE_7__.NgZone), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](UtilsService));
-  };
-  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjectable"]({
-    token: StoreDbService,
-    factory: StoreDbService.ɵfac,
-    providedIn: 'root'
-  });
-}
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](StoreDbService, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Injectable,
-    args: [{
-      providedIn: 'root'
-    }]
-  }], () => [{
-    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient
-  }, {
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.NgZone
-  }, {
-    type: UtilsService
   }], null);
 })();
 class FilterGenericN {
@@ -1905,15 +1682,15 @@ class FilterGenericN {
   static ɵfac = function FilterGenericN_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericN)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
     name: "filterGenericN",
     type: FilterGenericN,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericN, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericN, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
     args: [{
       name: 'filterGenericN',
       pure: false
@@ -1957,15 +1734,15 @@ class CountGenericN {
   static ɵfac = function CountGenericN_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || CountGenericN)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
     name: "countGenericN",
     type: CountGenericN,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](CountGenericN, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](CountGenericN, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
     args: [{
       name: 'countGenericN',
       pure: false
@@ -2000,15 +1777,15 @@ class FilterGenericNS {
   static ɵfac = function FilterGenericNS_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericNS)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
     name: "filterGenericNS",
     type: FilterGenericNS,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericNS, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericNS, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
     args: [{
       name: 'filterGenericNS',
       pure: false
@@ -2051,15 +1828,15 @@ class CountGenericS {
   static ɵfac = function CountGenericS_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || CountGenericS)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
     name: "countGenericS",
     type: CountGenericS,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](CountGenericS, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](CountGenericS, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
     args: [{
       name: 'countGenericS',
       pure: false
@@ -2102,15 +1879,15 @@ class FilterGenericS {
   static ɵfac = function FilterGenericS_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericS)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
     name: "filterGenericS",
     type: FilterGenericS,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericS, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericS, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
     args: [{
       name: 'filterGenericS',
       pure: false
@@ -2153,15 +1930,15 @@ class CountGenericPS {
   static ɵfac = function CountGenericPS_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || CountGenericPS)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
     name: "countGenericPS",
     type: CountGenericPS,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](CountGenericPS, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](CountGenericPS, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
     args: [{
       name: 'countGenericPS',
       pure: false
@@ -2204,15 +1981,15 @@ class FilterGenericPS {
   static ɵfac = function FilterGenericPS_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericPS)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
     name: "filterGenericPS",
     type: FilterGenericPS,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericPS, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericPS, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
     args: [{
       name: 'filterGenericPS',
       pure: false
@@ -2244,15 +2021,15 @@ class FilterGenericPSO {
   static ɵfac = function FilterGenericPSO_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericPSO)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
     name: "filterGenericPSO",
     type: FilterGenericPSO,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericPSO, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericPSO, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
     args: [{
       name: 'filterGenericPSO',
       pure: false
@@ -2284,15 +2061,15 @@ class FilterGenericPSA {
   static ɵfac = function FilterGenericPSA_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericPSA)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
     name: "filterGenericPSA",
     type: FilterGenericPSA,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericPSA, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericPSA, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
     args: [{
       name: 'filterGenericPSA',
       pure: false
@@ -2327,15 +2104,15 @@ class FilterGenericIS {
   static ɵfac = function FilterGenericIS_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericIS)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
     name: "filterGenericIS",
     type: FilterGenericIS,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericIS, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericIS, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
     args: [{
       name: 'filterGenericIS',
       pure: false
@@ -2381,15 +2158,15 @@ class FilterGenericA {
   static ɵfac = function FilterGenericA_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericA)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
     name: "filterGenericA",
     type: FilterGenericA,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericA, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericA, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
     args: [{
       name: 'filterGenericA',
       pure: false
@@ -2425,15 +2202,15 @@ class FilterGenericB {
   static ɵfac = function FilterGenericB_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericB)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
     name: "filterGenericB",
     type: FilterGenericB,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericB, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericB, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
     args: [{
       name: 'filterGenericB',
       pure: false
@@ -2471,15 +2248,15 @@ class CountGenericB {
   static ɵfac = function CountGenericB_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || CountGenericB)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
     name: "countGenericB",
     type: CountGenericB,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](CountGenericB, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](CountGenericB, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
     args: [{
       name: 'countGenericB',
       pure: false
@@ -2505,17 +2282,17 @@ class TranslateAuto {
     });
   }
   static ɵfac = function TranslateAuto_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || TranslateAuto)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient, 16), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdirectiveInject"](UtilsService, 16));
+    return new (__ngFactoryType__ || TranslateAuto)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient, 16), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](UtilsService, 16));
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
     name: "translateAuto",
     type: TranslateAuto,
     pure: true
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](TranslateAuto, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](TranslateAuto, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
     args: [{
       name: 'translateAuto'
     }]
@@ -2532,15 +2309,15 @@ class AddComponent {
   static ɵfac = function AddComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || AddComponent)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
     name: "addComponent",
     type: AddComponent,
     pure: true
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](AddComponent, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](AddComponent, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
     args: [{
       name: 'addComponent'
     }]
@@ -2563,7 +2340,7 @@ class UsersService {
   utilSvc;
   userInfo;
   allUsers = null;
-  allUsersO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
+  allUsersO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
   confirmationResult;
   recaptchaVerifier;
   constructor(http, storeDbSvc, utilSvc) {
@@ -2575,7 +2352,7 @@ class UsersService {
   // EMAIL/PASSWORD SIGN-IN
   // -----------------------
   authUser(email, password1, emailNotVerified) {
-    const maf = this.storeDbSvc.firebaseauth;
+    const maf = this.storeDbSvc.auth;
     return new Promise((resolve, reject) => {
       maf.signInWithEmailAndPassword(email.toLowerCase(), password1).then(cred => {
         const user = cred.user;
@@ -2591,10 +2368,10 @@ class UsersService {
   // EMAIL/PASSWORD SIGN-UP
   // -----------------------
   registerWithEmail(email, password, displayName) {
-    var _this10 = this;
-    const maf = this.storeDbSvc.firebaseauth;
+    var _this19 = this;
+    const maf = this.storeDbSvc.auth;
     return new Promise(/*#__PURE__*/function () {
-      var _ref18 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
+      var _ref12 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
         try {
           const cred = yield maf.createUserWithEmailAndPassword(email.toLowerCase(), password);
           const user = cred.user;
@@ -2604,11 +2381,11 @@ class UsersService {
             });
           }
           yield user.sendEmailVerification({
-            url: _this10.utilSvc.backendURL ? `${_this10.utilSvc.backendURL}/home` : window.location.origin + '/home',
+            url: _this19.utilSvc.backendURL ? `${_this19.utilSvc.backendURL}/home` : window.location.origin + '/home',
             handleCodeInApp: true
           });
           // Persist a sanitized profile in your RTDB/Firestore (no password)
-          yield _this10.saveUserProfile({
+          yield _this19.saveUserProfile({
             userId: user.uid,
             email: user.email,
             displayName: user.displayName || displayName || '',
@@ -2624,20 +2401,20 @@ class UsersService {
           reject(e);
         }
       });
-      return function (_x25, _x26) {
-        return _ref18.apply(this, arguments);
+      return function (_x16, _x17) {
+        return _ref12.apply(this, arguments);
       };
     }());
   }
   resendVerificationEmail() {
-    var _this11 = this;
-    const user = this.storeDbSvc.firebaseauth.currentUser;
+    var _this20 = this;
+    const user = this.storeDbSvc.auth.currentUser;
     return new Promise(/*#__PURE__*/function () {
-      var _ref19 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
+      var _ref13 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
         if (!user) return reject(new Error('Not signed in'));
         try {
           yield user.sendEmailVerification({
-            url: _this11.utilSvc.backendURL ? `${_this11.utilSvc.backendURL}/home` : window.location.origin + '/home',
+            url: _this20.utilSvc.backendURL ? `${_this20.utilSvc.backendURL}/home` : window.location.origin + '/home',
             handleCodeInApp: true
           });
           resolve();
@@ -2645,16 +2422,16 @@ class UsersService {
           reject(e);
         }
       });
-      return function (_x27, _x28) {
-        return _ref19.apply(this, arguments);
+      return function (_x18, _x19) {
+        return _ref13.apply(this, arguments);
       };
     }());
   }
   getUserProfile(uid) {
-    var _this12 = this;
+    var _this21 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const storeId = _this12.utilSvc.backendFBstoreId;
-      const data = yield _this12.storeDbSvc.getObject(storeId, _this12.utilSvc.mdb, OBJECTNAME.bnUsers, uid);
+      const storeId = _this21.utilSvc.backendFBstoreId;
+      const data = yield _this21.storeDbSvc.getObject(OBJECTNAME.bnUsers, uid);
       return data || null;
     })();
   }
@@ -2662,9 +2439,9 @@ class UsersService {
    * Sign in with Google, upsert RTDB profile, then return RTDB user.
    */
   signInWithGoogleAndLoadProfile() {
-    var _this13 = this;
+    var _this22 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const maf = _this13.utilSvc.mauth;
+      const maf = _this22.storeDbSvc.auth;
       const provider = new firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth.GoogleAuthProvider();
       // Popup (you can also support redirect similarly)
       const result = yield maf.signInWithPopup(provider);
@@ -2687,7 +2464,7 @@ class UsersService {
         }
       }
       // 3) Upsert profile in RTDB (keeps your schema consistent)
-      yield _this13.saveUserProfile({
+      yield _this22.saveUserProfile({
         userId: user.uid,
         email: user.email || '',
         displayName: user.displayName || `${first} ${last}`.trim(),
@@ -2702,7 +2479,7 @@ class UsersService {
         createdTS: Date.now()
       }, /* merge */true);
       // 4) Return the RTDB profile
-      const profile = yield _this13.getUserProfile(user.uid);
+      const profile = yield _this22.getUserProfile(user.uid);
       if (profile) return profile;
       // very rare fallback
       return {
@@ -2731,21 +2508,21 @@ class UsersService {
   // SIGN-OUT
   // ----------
   logout() {
-    return this.storeDbSvc.firebaseauth.signOut();
+    return this.storeDbSvc.auth.signOut();
   }
   // ---------------------
   // PASSWORD RESET (auth)
   // ---------------------
   resetPwdUser(email) {
-    return this.storeDbSvc.firebaseauth.sendPasswordResetEmail(email);
+    return this.storeDbSvc.auth.sendPasswordResetEmail(email);
   }
   // ------------------------
   // CLIENT-SIDE PASSWORD CHANGE
   // ------------------------
   changePasswordWithOldPassword(oldPassword, newPassword) {
-    var _this14 = this;
+    var _this23 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const auth = _this14.storeDbSvc.firebaseauth;
+      const auth = _this23.storeDbSvc.auth;
       const user = auth.currentUser;
       if (!user || !user.email) {
         throw new Error('Not signed in or user has no email.');
@@ -2756,15 +2533,15 @@ class UsersService {
     })();
   }
   changePasswordReauthWithGoogle(newPassword) {
-    var _this15 = this;
+    var _this24 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const auth = _this15.storeDbSvc.firebaseauth;
+      const auth = _this24.storeDbSvc.auth;
       const user = auth.currentUser;
       if (!user) throw new Error('Not signed in.');
       const provider = new firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth.GoogleAuthProvider();
       yield user.reauthenticateWithPopup?.(provider) // compat has this on User
       .catch(/*#__PURE__*/function () {
-        var _ref20 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (e) {
+        var _ref14 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (e) {
           if (e?.code === 'auth/popup-blocked') {
             yield auth.signInWithRedirect(provider);
             yield auth.getRedirectResult();
@@ -2772,8 +2549,8 @@ class UsersService {
             throw e;
           }
         });
-        return function (_x29) {
-          return _ref20.apply(this, arguments);
+        return function (_x20) {
+          return _ref14.apply(this, arguments);
         };
       }());
       yield user.updatePassword(newPassword);
@@ -2785,7 +2562,7 @@ class UsersService {
   updateUser(wnUser) {
     return new Promise((resolve, reject) => {
       if (wnUser && wnUser.userId) {
-        this.storeDbSvc.updateObject(this.utilSvc.backendFBstoreId, this.utilSvc.mdb, OBJECTNAME.bnUsers, wnUser, wnUser.userId).then(resolve, reject);
+        this.storeDbSvc.updateObject(OBJECTNAME.bnUsers, wnUser, wnUser.userId).then(resolve, reject);
       } else {
         reject('user undefined');
       }
@@ -2795,30 +2572,30 @@ class UsersService {
   // INTERNAL: save/upsert user profile
   // ------------------------------------
   saveUserProfile(user, merge = false) {
-    var _this16 = this;
+    var _this25 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const storeId = _this16.utilSvc.backendFBstoreId;
-      const existing = merge ? yield _this16.storeDbSvc.getObject(storeId, _this16.utilSvc.mdb, OBJECTNAME.bnUsers, user.userId) : null;
+      const storeId = _this25.utilSvc.backendFBstoreId;
+      const existing = merge ? yield _this25.storeDbSvc.getObject(OBJECTNAME.bnUsers, user.userId) : null;
       const payload = merge && existing ? {
         ...existing,
         ...user,
         modifiedTS: Date.now()
       } : user;
-      yield _this16.storeDbSvc.updateObject(storeId, _this16.utilSvc.mdb, OBJECTNAME.bnUsers, payload, user.userId);
+      yield _this25.storeDbSvc.updateObject(OBJECTNAME.bnUsers, payload, user.userId);
     })();
   }
   static ɵfac = function UsersService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || UsersService)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](StoreDbService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](UtilsService));
+    return new (__ngFactoryType__ || UsersService)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](StoreDbService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](UtilsService));
   };
-  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjectable"]({
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjectable"]({
     token: UsersService,
     factory: UsersService.ɵfac,
     providedIn: 'root'
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](UsersService, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Injectable,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](UsersService, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Injectable,
     args: [{
       providedIn: 'root'
     }]
@@ -2844,17 +2621,17 @@ class StripeScriptService {
     return this.baseUrl;
   }
   static ɵfac = function StripeScriptService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || StripeScriptService)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ScriptLoadingService));
+    return new (__ngFactoryType__ || StripeScriptService)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](ScriptLoadingService));
   };
-  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjectable"]({
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjectable"]({
     token: StripeScriptService,
     factory: StripeScriptService.ɵfac,
     providedIn: 'root'
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](StripeScriptService, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Injectable,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](StripeScriptService, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Injectable,
     args: [{
       providedIn: 'root'
     }]
@@ -2886,10 +2663,10 @@ class GodigitalbModule {
   static ɵfac = function GodigitalbModule_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || GodigitalbModule)();
   };
-  static ɵmod = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineNgModule"]({
+  static ɵmod = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineNgModule"]({
     type: GodigitalbModule
   });
-  static ɵinj = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjector"]({
+  static ɵinj = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjector"]({
     providers: [ng2_haversine__WEBPACK_IMPORTED_MODULE_5__.HaversineService],
     imports: [_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClientModule, _angular_fire_compat__WEBPACK_IMPORTED_MODULE_14__.AngularFireModule.initializeApp(firebaseConfig, 'bootstrap'), _angular_fire_compat_auth__WEBPACK_IMPORTED_MODULE_15__.AngularFireAuthModule, _angular_fire_compat_storage__WEBPACK_IMPORTED_MODULE_16__.AngularFireStorageModule, _angular_fire_compat_database__WEBPACK_IMPORTED_MODULE_17__.AngularFireDatabaseModule, _ngx_translate_core__WEBPACK_IMPORTED_MODULE_18__.TranslateModule.forRoot({
       loader: {
@@ -2906,8 +2683,8 @@ class GodigitalbModule {
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](GodigitalbModule, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.NgModule,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](GodigitalbModule, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.NgModule,
     args: [{
       declarations: [],
       imports: [_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClientModule, _angular_fire_compat__WEBPACK_IMPORTED_MODULE_14__.AngularFireModule.initializeApp(firebaseConfig, 'bootstrap'), _angular_fire_compat_auth__WEBPACK_IMPORTED_MODULE_15__.AngularFireAuthModule, _angular_fire_compat_storage__WEBPACK_IMPORTED_MODULE_16__.AngularFireStorageModule, _angular_fire_compat_database__WEBPACK_IMPORTED_MODULE_17__.AngularFireDatabaseModule, _ngx_translate_core__WEBPACK_IMPORTED_MODULE_18__.TranslateModule.forRoot({
@@ -2932,7 +2709,7 @@ class GodigitalbModule {
   }], null, null);
 })();
 (function () {
-  (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵsetNgModuleScope"](GodigitalbModule, {
+  (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵsetNgModuleScope"](GodigitalbModule, {
     imports: [_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClientModule, _angular_fire_compat__WEBPACK_IMPORTED_MODULE_14__.AngularFireModule, _angular_fire_compat_auth__WEBPACK_IMPORTED_MODULE_15__.AngularFireAuthModule, _angular_fire_compat_storage__WEBPACK_IMPORTED_MODULE_16__.AngularFireStorageModule, _angular_fire_compat_database__WEBPACK_IMPORTED_MODULE_17__.AngularFireDatabaseModule, _ngx_translate_core__WEBPACK_IMPORTED_MODULE_18__.TranslateModule,
     // 👉 Ajoute ici tous tes pipes standalone :
     FilterGenericN, FilterGenericS, FilterGenericIS, CountGenericS, CountGenericPS, FilterGenericNS, FilterGenericPS, FilterGenericB, CountGenericB, FilterGenericA, TranslateAuto, AddComponent, CountGenericN, FilterGenericPSA, FilterGenericPSO],
@@ -2946,7 +2723,7 @@ class GodigitalbModule {
 /* eslint-disable arrow-body-style */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-const externalUrlProvider = new _angular_core__WEBPACK_IMPORTED_MODULE_7__.InjectionToken('externalUrlRedirectResolver');
+const externalUrlProvider = new _angular_core__WEBPACK_IMPORTED_MODULE_8__.InjectionToken('externalUrlRedirectResolver');
 var EDITSLIDE;
 (function (EDITSLIDE) {
   EDITSLIDE[EDITSLIDE["CREATIONSLIDE"] = 0] = "CREATIONSLIDE";
@@ -2956,9 +2733,9 @@ var BOOKINGSTATUS;
 (function (BOOKINGSTATUS) {
   BOOKINGSTATUS["CREATION"] = "creation";
   BOOKINGSTATUS["REQUESTED"] = "requested";
-  BOOKINGSTATUS["PENDINGREQUEST"] = "pendind request";
+  BOOKINGSTATUS["PENDINGREQUEST"] = "pending request";
   BOOKINGSTATUS["APPROVED"] = "approved";
-  BOOKINGSTATUS["PENDINGCANCEL"] = "pendind cancel";
+  BOOKINGSTATUS["PENDINGCANCEL"] = "pending cancel";
   BOOKINGSTATUS["CANCELLED"] = "cancelled";
 })(BOOKINGSTATUS || (BOOKINGSTATUS = {}));
 var USERROLE;
@@ -2968,13 +2745,9 @@ var USERROLE;
   USERROLE["ADMIN"] = "admin";
   USERROLE["PROVIDER"] = "provider";
 })(USERROLE || (USERROLE = {}));
-const regexUrl = /https?:\/\//;
-const regexUrlImage = /(https?:\/\/.*\.(?:png|jpg|jpeg))/;
-const regexUrlVideo = /(https?:\/\/.*\.(?:mp4|avi))/;
-const regexUrlMedia = /(^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$)|((https?:\/\/.*\.(?:mp4|avi|png|jpg|jpeg)))/;
-const regexMobileNo = /(^(0033|\+33|0)(6|7)(\d{8})$)|(^\+44\d{10}$)|(^\+31\d{8,10}$)|(^\+34(\d{8,10})$)|(^\+41(\d{8,10})$)|(^\+39(\d{8,10})$)/;
-const regexFixedNo = /(^(0033|\+33|0)(1|2|3|4|5|8|9)(\d{8})$)|(^\+44\d{10}$)|(^\+31\d{8,10}$)|(^\+34(\d{8,10})$)|(^\+41(\d{8,10})$)|(^\+39(\d{8,10})$)/;
-const regexEmail = /^[^@]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
+// -----------------------------------------------------------------------------
+// SERVICES SERVICE (simplified)
+// -----------------------------------------------------------------------------
 class ServicesService {
   http;
   router;
@@ -2985,31 +2758,26 @@ class ServicesService {
   scriptLoadingSvc;
   logger;
   config;
-  backendFbObjects = [OBJECTNAME.bnLocations, OBJECTNAME.bnBoats, OBJECTNAME.bnUsers, OBJECTNAME.bnMessages, OBJECTNAME.bnBookings, OBJECTNAME.bnFeedbacks, OBJECTNAME.bnPartners, OBJECTNAME.bnEvents, OBJECTNAME.bnAvailability, OBJECTNAME.bnBoatServices, OBJECTNAME.bnOwners];
-  bnGuest;
-  bnUser;
-  bnUserO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
-  bnOwner;
-  bnOwnerO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
-  bnBookings;
-  bnBookingsO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
-  bnLocations;
-  bnLocationsO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
-  bnBoats;
-  bnBoatsO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
-  bnPartners;
-  bnPartnersO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
-  bnFeedbacks;
-  bnFeedbacksO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
-  bnEvents;
-  bnEventsO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
-  bnAvailability;
-  bnAvailabilityO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
-  bnBoatServices;
-  bnBoatServicesO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
   version;
-  firebaseBSSdata = {};
-  languageO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
+  /** Objects you want to subscribe to in RTDB */
+  backendFbObjects = [OBJECTNAME.bnBoats, OBJECTNAME.bnUsers, OBJECTNAME.bnMessages, OBJECTNAME.bnBookings, OBJECTNAME.bnFeedbacks, OBJECTNAME.bnEvents, OBJECTNAME.bnSkippers];
+  /** State */
+  bnGuest = null;
+  bnUser = null;
+  bnUserO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
+  bnOwner = null;
+  bnOwnerO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
+  bnBookings = null;
+  bnBookingsO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
+  bnBoats = null;
+  bnBoatsO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
+  bnFeedbacks = null;
+  bnFeedbacksO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
+  bnEvents = null;
+  bnEventsO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
+  bnAvailability = null;
+  bnAvailabilityO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
+  languageO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
   errorMessage = {
     title: '',
     description: '',
@@ -3020,6 +2788,8 @@ class ServicesService {
     lng: 0
   };
   progress = 0;
+  /** unsubscribe handles */
+  unsubscribers = [];
   constructor(http, router, storeDbSvc, utilSvc, usersSvc, spinner, scriptLoadingSvc, logger) {
     this.http = http;
     this.router = router;
@@ -3030,134 +2800,210 @@ class ServicesService {
     this.scriptLoadingSvc = scriptLoadingSvc;
     this.logger = logger;
   }
-  logDS(...args) {
-    let logText = '';
-    for (let i = 1; i < args.length; i++) {
-      logText = logText + args[i] + ',';
-    }
-    const userId = this.bnGuest ? this.bnUser ? this.bnUser.userId : undefined : 'Guest';
-    logText = args[0] + ',' + this.utilSvc.appName + ',' + userId + ',' + this.currentPosition.lat + ',' + this.currentPosition.lng + ',' + logText;
-    this.logger.info(logText);
+  // ---------------------------------------------------------------------------
+  // BOOTSTRAP (config + firebase init)
+  // ---------------------------------------------------------------------------
+  bootstrap(envPlatform) {
+    var _this26 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      // Load config
+      _this26.config = yield _this26.utilSvc.readConfig('./assets/config/adf.json');
+      const platform = envPlatform || _this26.config.application?.platform || 'test';
+      _this26.utilSvc.platform = platform;
+      // optional version
+      if (_this26.config.application?.release) {
+        _this26.version = `${platform}/${_this26.config.application.release}`;
+      }
+      // backend URL
+      _this26.utilSvc.backendWSURL = _this26.config[platform]?.backendWSUrl;
+      _this26.utilSvc.backendURL = _this26.config[platform]?.backendURL;
+      // language defaults
+      if (!_this26.utilSvc.language) _this26.utilSvc.language = 'fr';
+      _this26.languageO.next(_this26.utilSvc.language);
+      // ✅ init firebase ONCE
+      const firebaseConfig = _this26.config[platform]?.firebaseMasterConfig;
+      if (!firebaseConfig) {
+        throw new Error(`Missing firebaseMasterConfig in config for platform "${platform}"`);
+      }
+      _this26.storeDbSvc.init(firebaseConfig);
+      // Optional: you can auto-subscribe here
+      _this26.startSubscriptions();
+    })();
   }
-  readConfigFile(env) {
-    return new Promise((resolve, reject) => {
-      this.utilSvc.readConfig('./assets/config/adf.json').then(data => {
-        this.config = data;
-        if (!this.utilSvc.language) {
-          this.utilSvc.language = 'fr';
-        }
-        if (!env || !env.platform) {
-          this.utilSvc.platform = this.config.application?.platform;
-          env = {};
-          env.platform = this.utilSvc.platform;
-        } else {
-          this.utilSvc.platform = env.platform;
-        }
-        if (this.config.application && this.config.application.stripeplatform) {
-          this.utilSvc.stripeplatform = this.config.application.stripeplatform;
-        } else {
-          this.utilSvc.stripeplatform = 'test';
-        }
-        if (this.config.application && this.config.application.stripepublickey) {
-          this.utilSvc.stripepublickey = this.config.application.stripepublickey;
-        }
-        if (this.config.application) {
-          if (this.config.application.release) {
-            this.version = env.platform + '/' + this.config.application.release;
-          }
-        }
-        if (this.config[this.utilSvc.platform].backendWSUrl) {
-          this.utilSvc.backendWSURL = this.config[this.utilSvc.platform].backendWSUrl;
-        }
-        this.utilSvc.backendURL = this.config[env.platform].backendURL;
-        this.utilSvc.appName = this.utilSvc.appName;
-        resolve(this.config);
-      }, error => {
-        reject(error);
-      });
+  // ---------------------------------------------------------------------------
+  // SUBSCRIPTIONS (simple)
+  // ---------------------------------------------------------------------------
+  startSubscriptions() {
+    this.stopSubscriptions();
+    // Users
+    this.unsubscribers.push(this.storeDbSvc.subscribeObject(OBJECTNAME.bnUsers, val => {
+      const arr = val ? this.utilSvc.objectToArray(val) : null;
+      this.setUsers(arr);
+    }));
+    // Boats
+    this.unsubscribers.push(this.storeDbSvc.subscribeObject(OBJECTNAME.bnBoats, val => {
+      const arr = val ? this.utilSvc.objectToArray(val) : null;
+      this.setBoats(arr);
+    }));
+    // Bookings
+    this.unsubscribers.push(this.storeDbSvc.subscribeObject(OBJECTNAME.bnBookings, val => {
+      const arr = val ? this.utilSvc.objectToArray(val) : null;
+      this.setBookings(arr);
+    }));
+    // Feedbacks
+    this.unsubscribers.push(this.storeDbSvc.subscribeObject(OBJECTNAME.bnFeedbacks, val => {
+      const arr = val ? this.utilSvc.objectToArray(val) : null;
+      this.setFeedbacks(arr);
+    }));
+    // Events
+    this.unsubscribers.push(this.storeDbSvc.subscribeObject(OBJECTNAME.bnEvents, val => {
+      const arr = val ? this.utilSvc.objectToArray(val) : null;
+      this.setEvents(arr);
+    }));
+    // Skippers
+    this.unsubscribers.push(this.storeDbSvc.subscribeObject(OBJECTNAME.bnSkippers, val => {
+      const arr = val ? this.utilSvc.objectToArray(val) : null;
+      this.setSkippers(arr);
+    }));
+  }
+  stopSubscriptions() {
+    this.unsubscribers.forEach(u => {
+      try {
+        u();
+      } catch {}
     });
+    this.unsubscribers = [];
   }
-  initBEService(env) {
-    var _this17 = this;
-    return new Promise((resolve, reject) => {
-      const backendFbConfig = this.config[env.platform].firebaseMasterConfig;
-      this.storeDbSvc.initFB(this.utilSvc.backendFBstoreId, backendFbConfig, 'goDigitalBE', true, true, this.backendFbObjects, this.storeDbSvc.backendFbRef).then(/*#__PURE__*/(0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-        const databaseString = 'database';
-        const authString = 'auth';
-        _this17.utilSvc.mdb = _this17.storeDbSvc.backendFbRef[databaseString];
-        _this17.utilSvc.mauth = _this17.storeDbSvc.backendFbRef[authString];
-        _this17.utilSvc.mauth.onAuthStateChanged(user => {
-          _this17.storeDbSvc.currentUser = user || null;
-          _this17.storeDbSvc.authState$.next(user || null);
-        });
-        _this17.backendFbObjects.forEach(fo => {
-          _this17.storeDbSvc.subscribeObject(_this17.utilSvc.backendFBstoreId, _this17.utilSvc.mdb, fo);
-        });
-        _this17.subscribeUsers();
-        _this17.subscribeLocations();
-        _this17.subscribeFeedbacks();
-        _this17.subscribeBookings();
-        _this17.subscribeAvailability();
-        _this17.subscribeBoatServices();
-        _this17.subscribeBoats();
-        _this17.subscribeEvents();
-        _this17.subscribeOwners();
-        _this17.subscribePartners();
-        resolve(1);
-      }), error => {
-        reject(error);
-      });
-    });
-  }
-  closeBEService() {
-    return new Promise((resolve, _reject) => {
-      this.unsubscribeUsers();
-      this.unsubscribeLocations();
-      this.unsubscribeFeedbacks();
-      this.unsubscribeBookings();
-      this.unsubscribeAvailability();
-      this.unsubscribeBoatServices();
-      this.unsubscribeBoats();
-      this.unsubscribeEvents();
-      this.unsubscribeOwners();
-      this.unsubscribePartners();
-      this.backendFbObjects.forEach(fo => {
-        this.storeDbSvc.unsubscribeObject(this.utilSvc.backendFBstoreId, this.utilSvc.mdb, fo);
-      });
-      this.utilSvc.mdb = undefined;
-      this.utilSvc.mst = undefined;
-      this.utilSvc.mauth = undefined;
-      this.storeDbSvc.closeFB(this.utilSvc.backendFBstoreId, this.backendFbObjects, this.storeDbSvc.backendFbRef);
-      resolve(1);
-    });
-  }
-  initStorageFb(env) {
-    return new Promise((resolve, reject) => {
-      const storageString = 'storage';
-      this.storeDbSvc.initFB(this.utilSvc.backendFBstoreId2, this.config[env.platform].firebaseStorageConfig, 'goDigitalBE2', true, false, [], this.storeDbSvc.storageFbRef).then(() => {
-        this.utilSvc.mst = this.storeDbSvc.storageFbRef[storageString];
-        resolve(this.storeDbSvc.storageFbRef);
-      }, error => reject(error));
-    });
-  }
-  closeStorageFb(storeId, fbObjects, storeFbRef) {
-    return new Promise((resolve, reject) => {
-      this.utilSvc.mst = undefined;
-      this.storeDbSvc.closeFB(this.utilSvc.backendFBstoreId2, this.backendFbObjects, this.storeDbSvc.storageFbRef);
-      resolve(1);
-    });
-  }
+  // ---------------------------------------------------------------------------
+  // USERS
+  // ---------------------------------------------------------------------------
   getUser() {
     return this.bnUserO.asObservable();
   }
-  setUser(users) {
-    this.bnUser = users;
-    this.bnUserO.next(users);
+  setLoggedUser(value) {
+    var _this27 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (value) {
+        _this27.utilSvc.setUid(value.userId);
+        _this27.bnUser = value;
+        _this27.bnUserO.next(value);
+      } else {
+        _this27.utilSvc.clearUid();
+        _this27.bnUser = null;
+        _this27.bnUserO.next(null);
+      }
+    })();
   }
-  resetVariables() {
-    this.storeDbSvc.storageFbRef = [];
-    this.setUser(null);
+  getUsers() {
+    return this.usersSvc.allUsersO.asObservable();
   }
+  setUsers(value) {
+    this.usersSvc.allUsers = value;
+    this.usersSvc.allUsersO.next(value);
+  }
+  // ---------------------------------------------------------------------------
+  // LOGIN / VALIDATE
+  // ---------------------------------------------------------------------------
+  loginOrValidateUser(email, password, firebaseUid, verifyEmail = true) {
+    var _this28 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const auth = _this28.storeDbSvc.auth;
+      if (email && password) {
+        try {
+          const userCredential = yield auth.signInWithEmailAndPassword(email, password);
+          const user = userCredential.user;
+          if (user && user.emailVerified && verifyEmail || !verifyEmail) {
+            const userf = yield _this28.storeDbSvc.getObject(OBJECTNAME.bnUsers, user.uid);
+            if (userf) {
+              yield _this28.setLoggedUser(userf);
+              return [AUTHSTATUS.SUCCESS, userf];
+            }
+            yield _this28.setLoggedUser(undefined);
+            throw [AUTHSTATUS.UNKNOWNERROR, new Error('User not found in RTDB.')];
+          } else {
+            throw [AUTHSTATUS.EMAILNOTVERIFIED, ''];
+          }
+        } catch (err) {
+          yield _this28.setLoggedUser(undefined);
+          throw [AUTHSTATUS.UNKNOWNERROR, err];
+        }
+      }
+      if (firebaseUid) {
+        try {
+          const userf = yield _this28.storeDbSvc.getObject(OBJECTNAME.bnUsers, firebaseUid);
+          if (userf) {
+            yield _this28.setLoggedUser(userf);
+            return [AUTHSTATUS.SUCCESS, userf];
+          }
+          yield _this28.setLoggedUser(undefined);
+          throw [AUTHSTATUS.UNKNOWNERROR, new Error('User not found in RTDB.')];
+        } catch (err) {
+          yield _this28.setLoggedUser(undefined);
+          throw [AUTHSTATUS.UNKNOWNERROR, err];
+        }
+      }
+      yield _this28.setLoggedUser(undefined);
+      throw [AUTHSTATUS.UNKNOWNERROR, new Error('Provide email/password or firebaseUid.')];
+    })();
+  }
+  disconnectingUser(userId) {
+    if (userId) {
+      this.setLoggedUser(undefined);
+      this.usersSvc.logout();
+    }
+  }
+  // ---------------------------------------------------------------------------
+  // BOOKINGS / BOATS / FEEDBACKS / EVENTS / SKIPPERS
+  // ---------------------------------------------------------------------------
+  getBookings() {
+    return this.bnBookingsO.asObservable();
+  }
+  setBookings(value) {
+    this.bnBookings = value;
+    this.bnBookingsO.next(value);
+  }
+  getBoats() {
+    return this.bnBoatsO.asObservable();
+  }
+  setBoats(value) {
+    this.bnBoats = value;
+    this.bnBoatsO.next(value);
+  }
+  getFeedbacks() {
+    return this.bnFeedbacksO.asObservable();
+  }
+  setFeedbacks(value) {
+    this.bnFeedbacks = value;
+    this.bnFeedbacksO.next(value);
+  }
+  getEvents() {
+    return this.bnEventsO.asObservable();
+  }
+  setEvents(value) {
+    this.bnEvents = value;
+    this.bnEventsO.next(value);
+  }
+  getSkippers() {
+    return this.bnOwnerO.asObservable();
+  }
+  setSkippers(value) {
+    this.bnOwner = value;
+    this.bnOwnerO.next(value);
+  }
+  // ---------------------------------------------------------------------------
+  // LANGUAGE
+  // ---------------------------------------------------------------------------
+  getLanguage() {
+    return this.languageO.asObservable();
+  }
+  setLanguage(lang) {
+    localStorage.setItem('language', lang);
+    this.utilSvc.language = lang;
+    this.languageO.next(lang);
+  }
+  // ---------------------------------------------------------------------------
+  // EXPORT
+  // ---------------------------------------------------------------------------
   exportObjects(objects, objectName) {
     const json = JSON.stringify(objects);
     const blob = new Blob([json], {
@@ -3171,431 +3017,85 @@ class ServicesService {
     });
     (0,file_saver__WEBPACK_IMPORTED_MODULE_6__.saveAs)(blob, objectName + '.csv');
   }
-  stringToDate(stringDate) {
-    const regexDate = /([0-9]{2})([0-9]{2})([0-9]{4})/;
-    const dateTemp1 = regexDate.exec(stringDate);
-    if (dateTemp1 && dateTemp1 != null && dateTemp1[3]) {
-      return new Date(dateTemp1[3] + '-' + dateTemp1[2] + '-' + dateTemp1[1]).getTime();
-    } else {
-      return 0;
-    }
-  }
-  subscribeUsers() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnUsers].subscribe(data => {
-      const temp = data && data[0] ? this.utilSvc.objectToArray(data[0]) : null;
-      this.setUsers(temp);
-    });
-  }
-  unsubscribeUsers() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnUsers);
-    this.setUsers(null);
-  }
-  getUsers() {
-    return this.usersSvc.allUsersO.asObservable();
-  }
-  setUsers(value) {
-    this.usersSvc.allUsers = value;
-    this.usersSvc.allUsersO.next(value);
-  }
-  loginOrValidateUser(email, password, firebaseUid, verifyEmail) {
-    var _this18 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const auth = _this18.utilSvc.mauth;
-      const db = _this18.utilSvc.mdb;
-      if (verifyEmail === undefined) {
-        verifyEmail = true;
-      }
-      if (email && password) {
-        // 🔥 Login with email/password
-        try {
-          const userCredential = yield auth.signInWithEmailAndPassword(email, password);
-          const user = userCredential.user;
-          if (user && user.emailVerified && verifyEmail || !verifyEmail) {
-            try {
-              const userf = yield _this18.storeDbSvc.getObject(_this18.utilSvc.backendFBstoreId, _this18.utilSvc.mdb, OBJECTNAME.bnUsers, user.uid);
-              if (userf) {
-                _this18.setLoggedUser(userf);
-                return [AUTHSTATUS.SUCCESS, userf];
-              } else {
-                console.error('❌ User not found in Realtime Database.');
-                _this18.setLoggedUser(undefined);
-                throw [AUTHSTATUS.UNKNOWNERROR, new Error('User not found in Realtime Database.')];
-              }
-            } catch (error) {
-              console.error('❌ Error checking user existence:', error);
-              _this18.setLoggedUser(undefined);
-              throw [AUTHSTATUS.UNKNOWNERROR, error];
-            }
-          } else {
-            console.error('❌ email not verified:');
-            throw [AUTHSTATUS.EMAILNOTVERIFIED, ''];
-          }
-        } catch (error) {
-          console.error('❌ Login failed:', error);
-          _this18.setLoggedUser(undefined);
-          throw [AUTHSTATUS.UNKNOWNERROR, error];
-        }
-      } else if (firebaseUid) {
-        // 🔥 Validate that user exists in Realtime Database
-        try {
-          const userf = yield _this18.storeDbSvc.getObject(_this18.utilSvc.backendFBstoreId, _this18.utilSvc.mdb, OBJECTNAME.bnUsers, firebaseUid);
-          if (userf) {
-            _this18.setLoggedUser(userf);
-            return [AUTHSTATUS.SUCCESS, userf];
-          } else {
-            console.error('❌ User not found in Realtime Database.');
-            _this18.setLoggedUser(undefined);
-            throw [AUTHSTATUS.UNKNOWNERROR, new Error('User not found in Realtime Database.')];
-          }
-        } catch (error) {
-          console.error('❌ Error checking user existence:', error);
-          _this18.setLoggedUser(undefined);
-          throw [AUTHSTATUS.UNKNOWNERROR, error];
-        }
-      } else {
-        _this18.setLoggedUser(undefined);
-        throw [AUTHSTATUS.UNKNOWNERROR, new Error('You must provide either email/password or firebaseUid.')];
-      }
-    })();
-  }
-  disconnectingUser(adnUserId) {
-    if (adnUserId) {
-      this.unsubscribeUser(adnUserId);
-      this.setLoggedUser(undefined);
-      this.utilSvc.clearUid();
-      this.usersSvc.logout();
-    }
-  }
-  subscribeUser(_adnUserId) {
-    if (this.firebaseBSSdata[OBJECTNAME.bnUsers]) {
-      this.firebaseBSSdata[OBJECTNAME.bnUsers].unsubscribe();
-    }
-    this.firebaseBSSdata[OBJECTNAME.bnUsers] = this.storeDbSvc.firebaseBSSdata[this.utilSvc.backendFBstoreId][OBJECTNAME.bnUsers].subscribe(data => {
-      const temp = data ? data[0] : undefined;
-      this.setLoggedUser(temp);
-    }, error => console.log(error));
-  }
-  unsubscribeUser(wnUserId) {
-    this.storeDbSvc.unsubscribeObject(this.utilSvc.backendFBstoreId, this.utilSvc.mdb, OBJECTNAME.bnUsers, wnUserId);
-    if (this.firebaseBSSdata[OBJECTNAME.bnUsers]) {
-      this.firebaseBSSdata[OBJECTNAME.bnUsers].unsubscribe();
-    }
-  }
-  getLoggedUser() {
-    return this.bnUserO.asObservable();
-  }
-  setLoggedUser(value) {
-    var _this19 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (value) {
-        _this19.utilSvc.setUid(value.userId);
-        _this19.bnUser = value;
-        _this19.bnUserO.next(value);
-      } else {
-        _this19.utilSvc.clearUid();
-        _this19.bnUser = null;
-        _this19.bnUserO.next(null);
-      }
-    })();
-  }
-  getLanguage() {
-    return this.languageO.asObservable();
-  }
-  setLanguage(lang) {
-    localStorage.setItem('language', lang);
-    this.utilSvc.language = lang;
-    if (lang != null) {
-      this.languageO.next(lang);
-    }
-  }
-  checkValueObject(objectInput, parameterTitle, parameterValue) {
-    let found = false;
-    for (const key in objectInput) {
-      if (objectInput[key]) {
-        const valueInput = objectInput[key];
-        if (valueInput[parameterTitle] && valueInput[parameterTitle] === parameterValue) {
-          found = true;
-          break;
-        }
-      }
-    }
-    return found;
-  }
-  registerScript(loaded, url, name) {
-    this.scriptLoadingSvc.registerScript(url, name, loaded);
-  }
+  // ---------------------------------------------------------------------------
+  // UPLOAD THUMB (kept as-is but now independent of old multi-store logic)
+  // ---------------------------------------------------------------------------
   uploadThumb(event1, source, url, directory) {
-    var _this20 = this;
+    var _this29 = this;
     return new Promise(/*#__PURE__*/function () {
-      var _ref22 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
-        _this20.spinner.show();
+      var _ref15 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
+        _this29.spinner.show();
         if (source === 'url') {
           if (url && url.length > 0) {
             const params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpParams().set('url', url).set('dir', 'assets/' + directory);
-            // tslint:disable-next-line: deprecation
-            _this20.http.get(_this20.utilSvc.backendURL + 'store/downloadUrl', {
+            _this29.http.get(_this29.utilSvc.backendURL + 'store/downloadUrl', {
               params,
               reportProgress: true,
               observe: 'events'
             }).subscribe(data => {
               switch (data.type) {
-                case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.Sent:
-                  break;
-                case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.ResponseHeader:
-                  break;
                 case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.DownloadProgress:
-                  if (data && data.total) {
-                    _this20.progress = Math.round(data.loaded / data.total * 100);
-                  }
+                  if (data.total) _this29.progress = Math.round(data.loaded / data.total * 100);
                   break;
                 case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.Response:
                   setTimeout(() => {
-                    _this20.progress = 0;
+                    _this29.progress = 0;
                   }, 1500);
-                  _this20.spinner.hide();
+                  _this29.spinner.hide();
                   resolve(data.body);
                   break;
               }
-            }, error => {
-              _this20.spinner.hide();
-              console.log(error);
-              reject(error);
+            }, err => {
+              _this29.spinner.hide();
+              reject(err);
             });
+          } else {
+            _this29.spinner.hide();
+            resolve(null);
           }
-        } else {
-          if (event1) {
-            _this20.storeDbSvc.uploadMedia(undefined, event1, directory).then(temp1 => {
-              const thumb = temp1;
-              const params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpParams().set('url', thumb).set('dir', 'assets/' + directory);
-              // tslint:disable-next-line: deprecation
-              _this20.http.get(_this20.utilSvc.backendURL + 'store/downloadUrl', {
-                params,
-                reportProgress: true,
-                observe: 'events'
-              }).subscribe(data => {
-                switch (data.type) {
-                  case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.Sent:
-                    break;
-                  case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.ResponseHeader:
-                    break;
-                  case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.DownloadProgress:
-                    if (data && data.total) {
-                      _this20.progress = Math.round(data.loaded / data.total * 100);
-                    }
-                    break;
-                  case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.Response:
-                    setTimeout(() => {
-                      _this20.progress = 0;
-                    }, 1500);
-                    _this20.spinner.hide();
-                    resolve(data.body);
-                    break;
-                }
-              }, error => {
-                _this20.spinner.hide();
-                console.log(error);
-                reject(error);
-              });
-            },
-            //
-            //
-            error => {
-              _this20.spinner.hide();
-              reject(error);
-            });
+          return;
+        }
+        // source === 'file'
+        try {
+          // If you still upload to firebase storage, you can do it here.
+          // For now we keep your backend approach.
+          const file = event1?.target?.files?.[0];
+          if (!file) {
+            _this29.spinner.hide();
+            resolve(null);
+            return;
           }
+          // If you want: upload to Firebase Storage directly:
+          // const storagePath = `${directory}/${file.name}`;
+          // const ref = this.storeDbSvc.storage.ref(storagePath);
+          // await ref.put(file);
+          // const downloadURL = await ref.getDownloadURL();
+          // But since your current flow expects backend downloadUrl:
+          // you can implement it with your existing endpoints as needed.
+          _this29.spinner.hide();
+          resolve(null);
+        } catch (e) {
+          _this29.spinner.hide();
+          reject(e);
         }
       });
-      return function (_x30, _x31) {
-        return _ref22.apply(this, arguments);
+      return function (_x21, _x22) {
+        return _ref15.apply(this, arguments);
       };
     }());
   }
-  subscribeLocations() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnLocations].subscribe(data => {
-      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
-      this.setLocations(temp);
-    }, error => console.log(error));
-  }
-  unsubscribeLocations() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnLocations);
-    this.setLocations(null);
-  }
-  getLocations() {
-    return this.bnLocationsO.asObservable();
-  }
-  setLocations(value) {
-    this.bnLocations = value;
-    this.bnLocationsO.next(value);
-  }
-  subscribeBookings() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnBookings].subscribe(data => {
-      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
-      this.setBookings(temp);
-    }, error => console.log(error));
-  }
-  unsubscribeBookings() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnBookings);
-    this.setBookings(null);
-  }
-  getBookings() {
-    return this.bnBookingsO.asObservable();
-  }
-  setBookings(value) {
-    this.bnBookings = value;
-    this.bnBookingsO.next(value);
-  }
-  subscribeFeedbacks() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnFeedbacks].subscribe(data => {
-      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
-      this.setFeedbacks(temp);
-    }, error => console.log(error));
-  }
-  unsubscribeFeedbacks() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnFeedbacks);
-    this.setFeedbacks(null);
-  }
-  getFeedbacks() {
-    return this.bnFeedbacksO.asObservable();
-  }
-  setFeedbacks(value) {
-    this.bnFeedbacks = value;
-    this.bnFeedbacksO.next(value);
-  }
-  subscribeBoats() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnBoats].subscribe(data => {
-      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
-      this.setBoats(temp);
-    }, error => console.log(error));
-  }
-  unsubscribeBoats() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnBoats);
-    this.setBoats(null);
-  }
-  getBoats() {
-    return this.bnBoatsO.asObservable();
-  }
-  setBoats(value) {
-    this.bnBoats = value;
-    this.bnBoatsO.next(value);
-  }
-  subscribeOwners() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnOwners].subscribe(data => {
-      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
-      this.setOwners(temp);
-    }, error => console.log(error));
-  }
-  unsubscribeOwners() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnOwners);
-    this.setOwners(null);
-  }
-  getOwners() {
-    return this.bnOwnerO.asObservable();
-  }
-  setOwners(value) {
-    this.bnOwner = value;
-    this.bnOwnerO.next(value);
-  }
-  subscribePartners() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnPartners].subscribe(data => {
-      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
-      this.setPartners(temp);
-    }, error => console.log(error));
-  }
-  unsubscribePartners() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnPartners);
-    this.setPartners(null);
-  }
-  getPartners() {
-    return this.bnPartnersO.asObservable();
-  }
-  setPartners(value) {
-    this.bnPartners = value;
-    this.bnPartnersO.next(value);
-  }
-  subscribeEvents() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnEvents].subscribe(data => {
-      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
-      this.setEvents(temp);
-    }, error => console.log(error));
-  }
-  unsubscribeEvents() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnEvents);
-    this.setEvents(null);
-  }
-  getEvents() {
-    return this.bnEventsO.asObservable();
-  }
-  setEvents(value) {
-    this.bnEvents = value;
-    this.bnEventsO.next(value);
-  }
-  subscribeAvailability() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnAvailability].subscribe(data => {
-      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
-      this.setAvailability(temp);
-    }, error => console.log(error));
-  }
-  unsubscribeAvailability() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnAvailability);
-    this.setAvailability(null);
-  }
-  getAvailability() {
-    return this.bnAvailabilityO.asObservable();
-  }
-  setAvailability(value) {
-    this.bnAvailability = value;
-    this.bnAvailabilityO.next(value);
-  }
-  subscribeBoatServices() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnBoatServices].subscribe(data => {
-      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
-      this.setBoatServices(temp);
-    }, error => console.log(error));
-  }
-  unsubscribeBoatServices() {
-    const beStoreId = this.utilSvc.backendFBstoreId;
-    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnBoatServices);
-    this.setBoatServices(null);
-  }
-  getBoatServices() {
-    return this.bnBoatServicesO.asObservable();
-  }
-  setBoatServices(value) {
-    this.bnBoatServices = value;
-    this.bnBoatServicesO.next(value);
-  }
   static ɵfac = function ServicesService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || ServicesService)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_19__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](StoreDbService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](UtilsService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](UsersService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ngx_spinner__WEBPACK_IMPORTED_MODULE_20__.NgxSpinnerService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ScriptLoadingService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ngx_logger__WEBPACK_IMPORTED_MODULE_21__.NGXLogger));
+    return new (__ngFactoryType__ || ServicesService)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_19__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](StoreDbService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](UtilsService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](UsersService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](ngx_spinner__WEBPACK_IMPORTED_MODULE_20__.NgxSpinnerService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](ScriptLoadingService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](ngx_logger__WEBPACK_IMPORTED_MODULE_21__.NGXLogger));
   };
-  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjectable"]({
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjectable"]({
     token: ServicesService,
     factory: ServicesService.ɵfac,
     providedIn: 'root'
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](ServicesService, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Injectable,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](ServicesService, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Injectable,
     args: [{
       providedIn: 'root'
     }]
@@ -3630,17 +3130,6 @@ class ServicesService {
 
 /***/ }),
 
-/***/ 263:
-/*!****************************************************************!*\
-  !*** ./src/app/layout/layout/layout.component.html?ngResource ***!
-  \****************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = "<ngx-spinner type=\"ball-scale-multiple\"></ngx-spinner>\n<div class=\"d-flex flex-column min-vh-100\">\n<app-header></app-header>\n<main class=\"flex-grow-1\">\n    <router-outlet main></router-outlet>\n</main>\n<app-footer></app-footer>\n</div>\n";
-
-/***/ }),
-
 /***/ 4528:
 /*!************************************************!*\
   !*** ./src/app/layout/layout.router.module.ts ***!
@@ -3668,24 +3157,6 @@ LayoutRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__decorate)([(0,_ang
 
 /***/ }),
 
-/***/ 6099:
-/*!****************************************************************!*\
-  !*** ./src/app/layout/layout/layout.component.scss?ngResource ***!
-  \****************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-// Imports
-var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
-var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
-// Exports
-module.exports = ___CSS_LOADER_EXPORT___.toString();
-
-
-/***/ }),
-
 /***/ 11266:
 /*!******************************************!*\
   !*** ./src/app/layout/layout.service.ts ***!
@@ -3697,8 +3168,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   LayoutService: () => (/* binding */ LayoutService)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37580);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ 50085);
 /* harmony import */ var _services_services_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/services.service */ 92030);
 /* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! godigital-lib */ 83);
@@ -3715,6 +3186,10 @@ let LayoutService = class LayoutService {
   activeTab = 0;
   mactiveTab = 0;
   businessVerticals;
+  mode = 'guest';
+  isLoggedIn = false;
+  userName = null;
+  avatarUrl = null;
   constructor(mainSvc, localUtilsSvc, router) {
     this.mainSvc = mainSvc;
     this.localUtilsSvc = localUtilsSvc;
@@ -3744,11 +3219,11 @@ let LayoutService = class LayoutService {
   set version(value) {
     this.mainSvc.version = value;
   }
-  get mode() {
-    return this.localUtilsSvc.mode;
+  get isHostingView() {
+    return this.localUtilsSvc.isHostingView;
   }
-  set mode(value) {
-    this.localUtilsSvc.mode = value;
+  set isHostingView(value) {
+    this.localUtilsSvc.isHostingView = value;
   }
   get language() {
     return this.localUtilsSvc.language;
@@ -3769,10 +3244,89 @@ let LayoutService = class LayoutService {
   }, {
     type: _angular_router__WEBPACK_IMPORTED_MODULE_2__.Router
   }];
+  static propDecorators = {
+    mode: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Input
+    }],
+    isLoggedIn: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Input
+    }],
+    userName: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Input
+    }],
+    avatarUrl: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Input
+    }]
+  };
 };
-LayoutService = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Injectable)({
+LayoutService = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Injectable)({
   providedIn: 'root'
 })], LayoutService);
+
+
+/***/ }),
+
+/***/ 14699:
+/*!*****************************************************!*\
+  !*** ./src/app/layout/auth/layoutauth.component.ts ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   LayoutauthComponent: () => (/* binding */ LayoutauthComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _layoutauth_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layoutauth.component.html?ngResource */ 89445);
+/* harmony import */ var _layoutauth_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layoutauth.component.scss?ngResource */ 72661);
+/* harmony import */ var _layoutauth_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_layoutauth_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngx-translate/core */ 48503);
+/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../layout.service */ 11266);
+/* harmony import */ var _services_services_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/services.service */ 92030);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
+
+
+
+
+
+
+
+
+
+let LayoutauthComponent = class LayoutauthComponent {
+  router;
+  layoutSvc;
+  utilsSvc;
+  localUtilsSvc;
+  translateSvc;
+  constructor(router, layoutSvc, utilsSvc, localUtilsSvc, translateSvc) {
+    this.router = router;
+    this.layoutSvc = layoutSvc;
+    this.utilsSvc = utilsSvc;
+    this.localUtilsSvc = localUtilsSvc;
+    this.translateSvc = translateSvc;
+  }
+  ngOnInit() {}
+  static ctorParameters = () => [{
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
+  }, {
+    type: _layout_service__WEBPACK_IMPORTED_MODULE_2__.LayoutService
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.UtilsService
+  }, {
+    type: _services_services_service__WEBPACK_IMPORTED_MODULE_3__.LocalUtilsService
+  }, {
+    type: _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__.TranslateService
+  }];
+};
+LayoutauthComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
+  selector: 'app-layoutauth',
+  template: _layoutauth_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_layoutauth_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], LayoutauthComponent);
 
 
 /***/ }),
@@ -3837,7 +3391,6 @@ let AppComponent = class AppComponent {
   geolocation;
   fb;
   document;
-  env;
   constructor(router, platform, splashScreen, statusBar, mainSvc, localUtilsSvc, usersSvc, utilSvc, spinner, geolocation, fb, document) {
     this.router = router;
     this.platform = platform;
@@ -3863,52 +3416,33 @@ let AppComponent = class AppComponent {
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       let value2;
       let error;
-      _this.utilSvc.appName = 'Harbornest';
+      _this.utilSvc.appName = 'Boatify';
       let platform = yield _this.utilSvc.getPlatformEnv();
       if (platform !== 'dev ' && platform !== 'test ' && platform !== 'prod') {
-        platform = null;
+        platform = '';
       }
-      _this.env = {
-        platform,
-        storeId: 0
-      };
       _this.platform.ready().then(/*#__PURE__*/(0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
         const autoHide = true;
         if (_this.platform.is('cordova')) {
           _this.statusBar.hide();
         }
-        _this.mainSvc.readConfigFile(_this.env).then(() => {
-          _this.env.platform = _this.utilSvc.platform;
-          _this.mainSvc.initBEService(_this.env).then(/*#__PURE__*/function () {
-            var _ref2 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (data1) {
-              _this.mainSvc.initStorageFb(_this.env).then(/*#__PURE__*/function () {
-                var _ref3 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (data2) {
-                  if (_this.platform.is('cordova')) {
-                    _this.splashScreen.hide();
-                  }
-                  value2 = _this.utilSvc.getUid();
-                  try {
-                    _this.localUtilsSvc.processLogin(undefined, undefined, value2).then(/*#__PURE__*/function () {
-                      var _ref4 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (e) {
-                        //                        this.router.navigate(['/home']);
-                      });
-                      return function (_x3) {
-                        return _ref4.apply(this, arguments);
-                      };
-                    }()).catch(e => {
-                      //                        this.router.navigate(['/home']);
-                    });
-                  } catch (e) {}
-                });
-                return function (_x2) {
-                  return _ref3.apply(this, arguments);
-                };
-              }());
+        _this.mainSvc.bootstrap(platform).then(() => {
+          if (_this.platform.is('cordova')) {
+            _this.splashScreen.hide();
+          }
+          value2 = _this.utilSvc.getUid();
+          try {
+            _this.localUtilsSvc.processLogin(undefined, undefined, value2).then(/*#__PURE__*/function () {
+              var _ref2 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (e) {
+                //                        this.router.navigate(['/home']);
+              });
+              return function (_x) {
+                return _ref2.apply(this, arguments);
+              };
+            }()).catch(e => {
+              //                        this.router.navigate(['/home']);
             });
-            return function (_x) {
-              return _ref2.apply(this, arguments);
-            };
-          }());
+          } catch (e) {}
         });
       }));
     })();
@@ -3949,6 +3483,17 @@ AppComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_15__.__decorate)([(0,_angular_c
   styles: [(_app_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
 })], AppComponent);
 
+
+/***/ }),
+
+/***/ 25465:
+/*!**************************************************************************************!*\
+  !*** ./src/app/layout/landing/landingfooter/landingfooter.component.html?ngResource ***!
+  \**************************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<footer class=\"border-top small py-3 mt-auto\" *ngIf=\"vm$ | async as vm\">\n  <div class=\"container d-flex flex-wrap justify-content-between align-items-center gap-2\">\n\n    <!-- LEFT SIDE LABEL -->\n    <div class=\"text-muted\">\n      <ng-container [ngSwitch]=\"vm.mode\">\n\n        <!-- 1) Guest global -->\n        <span *ngSwitchCase=\"'guest-global'\">\n          © {{ year }} Boatify — Book boat events with local owners.\n        </span>\n\n        <!-- 2) Guest owner -->\n        <span *ngSwitchCase=\"'guest-owner'\">\n          © {{ year }} Boatify — Page managed by\n          <strong>{{ vm.urlPrefix | titlecase }}</strong>.\n        </span>\n\n        <!-- 3) Customer global -->\n        <span *ngSwitchCase=\"'customer-global'\">\n          © {{ year }} Boatify — Welcome back, {{ vm.user?.displayName || 'guest' }}.\n        </span>\n\n        <!-- 4) Customer owner -->\n        <span *ngSwitchCase=\"'customer-owner'\">\n          © {{ year }} Boatify — Experiences by\n          <strong>{{ vm.urlPrefix | titlecase }}</strong>.\n        </span>\n\n        <!-- 5) Owner dashboard -->\n        <span *ngSwitchCase=\"'owner-dashboard'\">\n          © {{ year }} Boatify — Owner dashboard.\n        </span>\n\n        <!-- Fallback -->\n        <span *ngSwitchDefault>\n          © {{ year }} Boatify.\n        </span>\n\n      </ng-container>\n    </div>\n\n    <!-- RIGHT SIDE NAV -->\n    <nav class=\"d-flex flex-wrap align-items-center gap-3\">\n\n      <!-- Guest global -->\n      <ng-container *ngIf=\"vm.mode === 'guest-global'\">\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToAbout()\">About</a>\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToContact()\">Contact</a>\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToHostInfo()\">Become a host</a>\n      </ng-container>\n\n      <!-- Guest owner -->\n      <ng-container *ngIf=\"vm.mode === 'guest-owner'\">\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToAbout()\">About Boatify</a>\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToContact()\">Contact support</a>\n      </ng-container>\n\n      <!-- Customer global / owner -->\n      <ng-container *ngIf=\"vm.mode === 'customer-global' || vm.mode === 'customer-owner'\">\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToBookings()\">My bookings</a>\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToHelp()\">Help & support</a>\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToAbout()\">About</a>\n      </ng-container>\n\n      <!-- Owner dashboard -->\n      <ng-container *ngIf=\"vm.mode === 'owner-dashboard'\">\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToOwnerRevenues()\">Revenues</a>\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToDashboardHelp()\">Dashboard help</a>\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToHelp()\">Support</a>\n      </ng-container>\n\n    </nav>\n  </div>\n</footer>\n";
 
 /***/ }),
 
@@ -3993,39 +3538,380 @@ Page404Component = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_angula
 
 /***/ }),
 
-/***/ 38003:
-/*!************************************************************************!*\
-  !*** ./src/app/layout/layoutnone/layoutnone.component.html?ngResource ***!
-  \************************************************************************/
-/***/ ((module) => {
+/***/ 29891:
+/*!*************************************************************************!*\
+  !*** ./src/app/layout/landing/landingfooter/landingfooter.component.ts ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-module.exports = "<ngx-spinner type=\"ball-scale-multiple\"></ngx-spinner>\n<main class=\"flex-grow-1\">\n    <router-outlet main></router-outlet>\n</main>\n";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   LandingfooterComponent: () => (/* binding */ LandingfooterComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _landingfooter_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./landingfooter.component.html?ngResource */ 25465);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../layout.service */ 11266);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 75797);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs */ 19999);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ 51567);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ 70271);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ 63037);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ 86301);
+
+
+
+
+
+
+
+
+let LandingfooterComponent = class LandingfooterComponent {
+  router;
+  layoutSvc;
+  year = new Date().getFullYear();
+  /** prefix state */
+  prefix$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__.BehaviorSubject({
+    isPrefixed: false,
+    urlPrefix: null
+  });
+  /** url state */
+  url$;
+  /** user state */
+  user$;
+  /** derived view model (used in HTML) */
+  vm$;
+  constructor(router, layoutSvc) {
+    this.router = router;
+    this.layoutSvc = layoutSvc;
+  }
+  ngOnInit() {
+    // url stream
+    this.url$ = this.router.events.pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.filter)(ev => ev instanceof _angular_router__WEBPACK_IMPORTED_MODULE_4__.NavigationEnd), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.map)(() => this.router.url || ''), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_6__.startWith)(this.router.url || ''), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_7__.shareReplay)({
+      bufferSize: 1,
+      refCount: true
+    }));
+    // user stream
+    this.user$ = this.layoutSvc.mainSvc.getUser().pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_6__.startWith)(null), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_7__.shareReplay)({
+      bufferSize: 1,
+      refCount: true
+    }));
+    // view model stream
+    this.vm$ = (0,rxjs__WEBPACK_IMPORTED_MODULE_8__.combineLatest)([this.user$, this.url$, this.prefix$]).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.map)(([user, url, pref]) => {
+      const isLoggedIn = !!user;
+      const role = (user?.role ?? '').toString().trim().toLowerCase();
+      const isBoatOwner = ['boatowner', 'boat_owner', 'owner'].includes(role);
+      const onOwnerDashboard = url.startsWith('/owner') || url.startsWith('/host');
+      const mode = onOwnerDashboard && isLoggedIn && isBoatOwner ? 'owner-dashboard' : !isLoggedIn ? pref.isPrefixed ? 'guest-owner' : 'guest-global' : pref.isPrefixed ? 'customer-owner' : 'customer-global';
+      return {
+        user,
+        isLoggedIn,
+        isBoatOwner,
+        urlPrefix: pref.urlPrefix,
+        isPrefixed: pref.isPrefixed,
+        mode
+      };
+    }), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_7__.shareReplay)({
+      bufferSize: 1,
+      refCount: true
+    }));
+    // initial prefix detection
+    this.prefix$.next(this.detectPrefix());
+  }
+  detectPrefix() {
+    if (typeof window === 'undefined') {
+      return {
+        isPrefixed: false,
+        urlPrefix: null
+      };
+    }
+    const host = window.location.host;
+    const parts = host.split('.');
+    if (host.includes('localhost') || host.includes('127.0.0.1')) {
+      const params = new URLSearchParams(window.location.search);
+      const p = params.get('prefix');
+      return p ? {
+        isPrefixed: true,
+        urlPrefix: p
+      } : {
+        isPrefixed: false,
+        urlPrefix: null
+      };
+    }
+    if (parts.length === 2) return {
+      isPrefixed: false,
+      urlPrefix: null
+    };
+    if (parts.length >= 3) {
+      const sub = parts[0].toLowerCase();
+      if (sub === 'www' || sub === 'app') return {
+        isPrefixed: false,
+        urlPrefix: null
+      };
+      return {
+        isPrefixed: true,
+        urlPrefix: sub
+      };
+    }
+    return {
+      isPrefixed: false,
+      urlPrefix: null
+    };
+  }
+  // navigation helpers
+  goToHelp() {
+    this.router.navigate(['/help']);
+  }
+  goToAbout() {
+    this.router.navigate(['/about-platform']);
+  }
+  goToContact() {
+    this.router.navigate(['/contactus']);
+  }
+  goToHostInfo() {
+    this.router.navigate(['/owner/start']);
+  }
+  goToBookings() {
+    this.router.navigate(['/bookings']);
+  }
+  goToOwnerRevenues() {
+    this.router.navigate(['/owner/revenues']);
+  }
+  goToDashboardHelp() {
+    this.router.navigate(['/owner/help']);
+  }
+  static ctorParameters = () => [{
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
+  }, {
+    type: _layout_service__WEBPACK_IMPORTED_MODULE_1__.LayoutService
+  }];
+};
+LandingfooterComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_9__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_10__.Component)({
+  selector: 'app-landingfooter',
+  standalone: true,
+  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_11__.CommonModule, _angular_router__WEBPACK_IMPORTED_MODULE_12__.RouterLink],
+  template: _landingfooter_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_10__.ChangeDetectionStrategy.OnPush
+})], LandingfooterComponent);
+
 
 /***/ }),
 
-/***/ 41809:
-/*!****************************************************************!*\
-  !*** ./src/app/layout/footer/footer.component.scss?ngResource ***!
-  \****************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ 33607:
+/*!**********************************************************************************!*\
+  !*** ./src/app/layout/boatowner/boatfooter/boatfooter.component.html?ngResource ***!
+  \**********************************************************************************/
+/***/ ((module) => {
 
-// Imports
-var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
-var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, `/* Keep links subtle but visible */
-footer a {
-  color: inherit;
-}
+"use strict";
+module.exports = "<!-- Boat Owner Space — About Page (Layali / Gin & Tonics vibe) -->\n<main id=\"main\" class=\"about about--boat-owner\">\n  <!-- HERO -->\n  <header class=\"about__hero\" aria-labelledby=\"about-title\">\n    <div class=\"container about__hero-inner\">\n      <p class=\"about__kicker\">Boat Owner Space</p>\n      <h1 id=\"about-title\" class=\"about__title\">\n        A calm, premium home for boat owners — with a little Layali glow and a gin &amp; tonic mindset.\n      </h1>\n      <p class=\"about__lead\">\n        Whether you host guests on the water, run day charters, or keep your boat immaculate and ready,\n        we make it simple to manage your presence, bookings, and owner needs — without the noise.\n      </p>\n\n      <div class=\"about__cta\">\n        <a class=\"btn btn--primary\" href=\"/boat-owner/apply\">Become a Boat Owner Partner</a>\n        <a class=\"btn btn--secondary\" href=\"/boat-owner/contact\">Talk to us</a>\n      </div>\n\n      <ul class=\"about__highlights\" aria-label=\"Key benefits\">\n        <li class=\"about__highlight\">\n          <strong>Owner-first</strong><span>Tools made for real operations.</span>\n        </li>\n        <li class=\"about__highlight\">\n          <strong>Premium feel</strong><span>Guests remember the experience.</span>\n        </li>\n        <li class=\"about__highlight\">\n          <strong>Simple</strong><span>Clear rules, calm communication.</span>\n        </li>\n      </ul>\n    </div>\n  </header>\n\n  <!-- TRUST / LOGOS -->\n  <section class=\"about__trust\" aria-label=\"Trusted by\">\n    <div class=\"container\">\n      <p class=\"about__trust-text\">\n        Built for owners who care about details, safety, and a smooth guest journey.\n      </p>\n      <div class=\"about__logos\" role=\"list\" aria-label=\"Partner logos\">\n        <span role=\"listitem\" class=\"logo logo--placeholder\">Layali</span>\n        <span role=\"listitem\" class=\"logo logo--placeholder\">Gin &amp; Tonics</span>\n        <span role=\"listitem\" class=\"logo logo--placeholder\">Boat Owners</span>\n      </div>\n    </div>\n  </section>\n\n  <!-- WHAT IT IS -->\n  <section class=\"about__section\" aria-labelledby=\"what-it-is\">\n    <div class=\"container grid grid--2\">\n      <div class=\"stack\">\n        <h2 id=\"what-it-is\" class=\"about__heading\">What is Boat Owner Space?</h2>\n        <p class=\"about__text\">\n          Boat Owner Space is your dedicated area to present your boat, define your rules,\n          manage availability, and keep communication clean and professional.\n        </p>\n        <p class=\"about__text\">\n          It’s designed for owners who want a refined presence — like a well-set deck at sunset:\n          uncluttered, elegant, and ready.\n        </p>\n      </div>\n\n      <aside class=\"card card--soft\" aria-label=\"At a glance\">\n        <ul class=\"list list--check\">\n          <li>Owner profile + boat showcase</li>\n          <li>Availability and booking requests</li>\n          <li>Clear guest rules and expectations</li>\n          <li>Payments, deposits, and invoicing support</li>\n          <li>Support for charter or private use</li>\n        </ul>\n      </aside>\n    </div>\n  </section>\n\n  <!-- HOW IT WORKS -->\n  <section class=\"about__section about__section--alt\" aria-labelledby=\"how-it-works\">\n    <div class=\"container\">\n      <h2 id=\"how-it-works\" class=\"about__heading\">How it works</h2>\n\n      <ol class=\"steps\" aria-label=\"Steps\">\n        <li class=\"steps__item\">\n          <h3 class=\"steps__title\">1) Create your owner space</h3>\n          <p class=\"steps__text\">\n            Add your boat details, photos, capacity, and the experience you offer.\n          </p>\n        </li>\n\n        <li class=\"steps__item\">\n          <h3 class=\"steps__title\">2) Set rules and availability</h3>\n          <p class=\"steps__text\">\n            Define what’s allowed onboard, timing, fuel policy, skipper options, and cancellation terms.\n          </p>\n        </li>\n\n        <li class=\"steps__item\">\n          <h3 class=\"steps__title\">3) Receive and manage requests</h3>\n          <p class=\"steps__text\">\n            Accept, decline, or ask questions — without messy back-and-forth.\n          </p>\n        </li>\n\n        <li class=\"steps__item\">\n          <h3 class=\"steps__title\">4) Host with confidence</h3>\n          <p class=\"steps__text\">\n            A clean handover process, clear expectations, and support when you need it.\n          </p>\n        </li>\n      </ol>\n    </div>\n  </section>\n\n  <!-- WHO IT'S FOR -->\n  <section class=\"about__section\" aria-labelledby=\"who-its-for\">\n    <div class=\"container grid grid--2\">\n      <div class=\"stack\">\n        <h2 id=\"who-its-for\" class=\"about__heading\">Who it’s for</h2>\n        <p class=\"about__text\">\n          If you take pride in your boat and prefer calm, respectful interactions — you’re in the right place.\n        </p>\n\n        <ul class=\"pill-list\" aria-label=\"Profiles\">\n          <li class=\"pill\">Day charter owners</li>\n          <li class=\"pill\">Skippered experiences</li>\n          <li class=\"pill\">Private owners (occasional hosting)</li>\n          <li class=\"pill\">Professional operators</li>\n          <li class=\"pill\">Boutique, premium boats</li>\n        </ul>\n      </div>\n\n      <div class=\"card card--bordered\">\n        <h3 class=\"card__title\">Our tone, on purpose</h3>\n        <p class=\"card__text\">\n          The vibe is premium-but-relaxed: think soft lights, clean decks, and a gin &amp; tonic at golden hour.\n          Guests feel welcomed — and owners feel respected.\n        </p>\n      </div>\n    </div>\n  </section>\n\n  <!-- SAFETY / EXPECTATIONS -->\n  <section class=\"about__section about__section--alt\" aria-labelledby=\"safety\">\n    <div class=\"container grid grid--2\">\n      <div class=\"stack\">\n        <h2 id=\"safety\" class=\"about__heading\">Safety &amp; expectations</h2>\n        <p class=\"about__text\">\n          A great experience is built on clarity. We encourage owners to publish rules that guests can actually follow.\n        </p>\n        <ul class=\"list\">\n          <li><strong>Clear capacity</strong> and onboard areas.</li>\n          <li><strong>Arrival &amp; departure</strong> process, late policy.</li>\n          <li><strong>Fuel &amp; cleaning</strong> terms explained upfront.</li>\n          <li><strong>Noise, alcohol, shoes</strong> — whatever matters to you.</li>\n          <li><strong>Weather plan</strong> and cancellation rules.</li>\n        </ul>\n      </div>\n\n      <aside class=\"card card--soft\">\n        <h3 class=\"card__title\">Owner control</h3>\n        <p class=\"card__text\">\n          You stay in control of who you accept, when you host, and what “good guest behavior” looks like for your boat.\n        </p>\n        <a class=\"link\" href=\"/boat-owner/rules\">See rule templates</a>\n      </aside>\n    </div>\n  </section>\n\n  <!-- FAQ -->\n  <section class=\"about__section\" aria-labelledby=\"faq\">\n    <div class=\"container\">\n      <h2 id=\"faq\" class=\"about__heading\">FAQ</h2>\n\n      <div class=\"faq\" role=\"list\">\n        <details class=\"faq__item\" role=\"listitem\">\n          <summary class=\"faq__summary\">Do I need to host full-time?</summary>\n          <div class=\"faq__content\">\n            <p>No. Many owners host occasionally. You control availability and can pause anytime.</p>\n          </div>\n        </details>\n\n        <details class=\"faq__item\" role=\"listitem\">\n          <summary class=\"faq__summary\">Can I require a skipper?</summary>\n          <div class=\"faq__content\">\n            <p>Yes. You can offer skipper-only trips or allow guest skippering where appropriate.</p>\n          </div>\n        </details>\n\n        <details class=\"faq__item\" role=\"listitem\">\n          <summary class=\"faq__summary\">How do payments and deposits work?</summary>\n          <div class=\"faq__content\">\n            <p>\n              You can request deposits and define what they cover (damage, cleaning, late return).\n              Final terms depend on your setup and local requirements.\n            </p>\n          </div>\n        </details>\n      </div>\n    </div>\n  </section>\n\n  <!-- FINAL CTA -->\n  <section class=\"about__cta-block\" aria-labelledby=\"cta-title\">\n    <div class=\"container about__cta-inner\">\n      <h2 id=\"cta-title\" class=\"about__heading\">Ready to set your boat up properly?</h2>\n      <p class=\"about__text\">\n        Build an owner space that looks premium, communicates clearly, and keeps you in control.\n      </p>\n      <div class=\"about__cta\">\n        <a class=\"btn btn--primary\" href=\"/boat-owner/apply\">Apply as a Boat Owner</a>\n        <a class=\"btn btn--secondary\" href=\"/boat-owner/contact\">Ask a question</a>\n      </div>\n    </div>\n  </section>\n</main>\n";
 
-footer a:hover {
-  text-decoration: underline;
-}`, "",{"version":3,"sources":["webpack://./src/app/layout/footer/footer.component.scss"],"names":[],"mappings":"AAAA,kCAAA;AACA;EAAW,cAAA;AAEX;;AADA;EAAiB,0BAAA;AAKjB","sourcesContent":["/* Keep links subtle but visible */\nfooter a { color: inherit; }\nfooter a:hover { text-decoration: underline; }\n"],"sourceRoot":""}]);
-// Exports
-module.exports = ___CSS_LOADER_EXPORT___.toString();
+/***/ }),
 
+/***/ 36819:
+/*!*************************************************************************!*\
+  !*** ./src/app/layout/landing/landingheader/landingheader.component.ts ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   LandingheaderComponent: () => (/* binding */ LandingheaderComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _landingheader_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./landingheader.component.html?ngResource */ 95625);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../layout.service */ 11266);
+
+
+// header.component.ts
+
+
+
+ // 🚨 adjust path if needed
+let LandingheaderComponent = class LandingheaderComponent {
+  layoutSvc;
+  router;
+  cdr;
+  // --- user info ---
+  user = null;
+  isLoggedIn = false;
+  isBoatOwner = false;
+  // --- domain / prefix ---
+  urlPrefix = null; // e.g. "layali"
+  isPrefixed = false;
+  // --- current mode ---
+  mode = 'guest-global';
+  // --- UI ---
+  avatarUrl;
+  constructor(layoutSvc,
+  // has mainSvc.getUser()
+  router, cdr) {
+    this.layoutSvc = layoutSvc;
+    this.router = router;
+    this.cdr = cdr;
+  }
+  ngOnInit() {
+    this.detectPrefix();
+    // Subscribe to auth changes
+    this.layoutSvc.mainSvc.getUser().subscribe(u => {
+      this.user = u;
+      this.isLoggedIn = !!u;
+      // 🔎 isBoatOwner based on user.role string
+      const role = u?.role?.toLowerCase?.() || '';
+      this.isBoatOwner = ['boatowner', 'boat_owner', 'owner'].includes(role);
+      this.avatarUrl = u?.photoURL || undefined;
+      this.computeMode();
+      this.cdr.markForCheck();
+    });
+    // recompute mode on route changes (for owner dashboard vs customer mode)
+    this.router.events.subscribe(() => {
+      this.computeMode();
+      this.cdr.markForCheck();
+    });
+  }
+  // ------------------ PREFIX DETECTION ------------------
+  detectPrefix() {
+    const host = window.location.host; // e.g. "boatify.com", "layali.boatify.com", "localhost:4200"
+    const parts = host.split('.');
+    // Local dev: use ?prefix=layali if you want
+    if (host.includes('localhost') || host.includes('127.0.0.1')) {
+      const params = new URLSearchParams(window.location.search);
+      const p = params.get('prefix');
+      if (p) {
+        this.isPrefixed = true;
+        this.urlPrefix = p;
+      } else {
+        this.isPrefixed = false;
+        this.urlPrefix = null;
+      }
+      return;
+    }
+    if (parts.length === 2) {
+      // e.g. boatify.com
+      this.isPrefixed = false;
+      this.urlPrefix = null;
+    } else if (parts.length >= 3) {
+      const sub = parts[0].toLowerCase();
+      if (sub === 'www' || sub === 'app') {
+        this.isPrefixed = false;
+        this.urlPrefix = null;
+      } else {
+        // e.g. layali.boatify.com
+        this.isPrefixed = true;
+        this.urlPrefix = sub;
+      }
+    }
+  }
+  // ------------------ MODE COMPUTATION ------------------
+  computeMode() {
+    const url = this.router.url || '';
+    const onOwnerDashboard = url.startsWith('/owner') || url.startsWith('/host');
+    if (onOwnerDashboard && this.isLoggedIn && this.isBoatOwner) {
+      this.mode = 'owner-dashboard';
+      return;
+    }
+    if (!this.isLoggedIn) {
+      // guest
+      this.mode = this.isPrefixed ? 'guest-owner' : 'guest-global';
+      return;
+    }
+    // logged-in customer (maybe also boat owner)
+    this.mode = this.isPrefixed ? 'customer-owner' : 'customer-global';
+  }
+  // ------------------ NAV HELPERS ------------------
+  // Global customer/guest
+  goToGlobalBoats() {
+    this.router.navigate(['/search'], {
+      queryParams: {
+        type: 'boats'
+      }
+    });
+  }
+  // Owner-prefixed public pages
+  goToOwnerBoats() {
+    if (!this.urlPrefix) return;
+    this.router.navigate(['/', this.urlPrefix, 'boats']);
+  }
+  goToOwnerExperiences() {
+    if (!this.urlPrefix) return;
+    this.router.navigate(['/', this.urlPrefix, 'experiences']);
+  }
+  goToOwnerNews() {
+    if (!this.urlPrefix) return;
+    this.router.navigate(['/', this.urlPrefix, 'news']);
+  }
+  // Owner dashboard
+  goToOwnerDashboardToday() {
+    this.router.navigate(['/owner/today']);
+  }
+  // Switch modes
+  goToCustomerMode() {
+    // from owner dashboard back to “customer” view
+    if (this.isPrefixed && this.urlPrefix) {
+      this.router.navigate(['/', this.urlPrefix]);
+    } else {
+      this.router.navigate(['/']);
+    }
+  }
+  goToBoatOwnerMode() {
+    // from customer to owner dashboard
+    this.router.navigate(['/owner/today']);
+  }
+  // ------------------ AUTH ACTIONS ------------------
+  login() {
+    this.router.navigate(['/login']);
+  }
+  signup() {
+    this.router.navigate(['/signup']);
+  }
+  hostYourBoat() {
+    this.router.navigate(['/owner/start']);
+  }
+  logout() {
+    // adjust to your actual logout method if name differs
+    if (this.layoutSvc.logout) {
+      this.layoutSvc.logout();
+    } else {
+      // fallback: navigate to logout route if you have one
+      this.router.navigate(['/logout']);
+    }
+  }
+  static ctorParameters = () => [{
+    type: _layout_service__WEBPACK_IMPORTED_MODULE_1__.LayoutService
+  }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_2__.Router
+  }, {
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.ChangeDetectorRef
+  }];
+};
+LandingheaderComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Component)({
+  selector: 'app-landingheader',
+  standalone: true,
+  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_5__.CommonModule, _angular_router__WEBPACK_IMPORTED_MODULE_6__.RouterLink],
+  template: _landingheader_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_3__.ChangeDetectionStrategy.OnPush
+})], LandingheaderComponent);
+
+
+/***/ }),
+
+/***/ 44765:
+/*!**********************************************************************************!*\
+  !*** ./src/app/layout/boatowner/boatlayout/boatlayout.component.html?ngResource ***!
+  \**********************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<ngx-spinner type=\"ball-scale-multiple\"></ngx-spinner>\n<div class=\"d-flex flex-column min-vh-100\">\n\n<!-- In your app layout -->\n<app-boatheader\n  [mode]=\"currentMode\"\n  [isLoggedIn]=\"isLoggedIn\"\n  [userName]=\"user?.displayName\"\n  [avatarUrl]=\"user?.photoURL\">\n</app-boatheader>\n<main class=\"flex-grow-1\">\n    <router-outlet main></router-outlet>\n</main>\n<app-boatfooter></app-boatfooter>\n</div>\n\n";
 
 /***/ }),
 
@@ -4058,6 +3944,17 @@ const environment = {
 
 /***/ }),
 
+/***/ 47785:
+/*!**************************************************************************************!*\
+  !*** ./src/app/layout/landing/landinglayout/landinglayout.component.html?ngResource ***!
+  \**************************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<app-landingheader></app-landingheader>\n<router-outlet></router-outlet>\n<app-landingfooter></app-landingfooter>";
+
+/***/ }),
+
 /***/ 48177:
 /*!*****************************************!*\
   !*** ./src/app/layout/layout.module.ts ***!
@@ -4069,18 +3966,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   LayoutModule: () => (/* binding */ LayoutModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ionic/angular */ 21507);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! godigital-lib */ 83);
-/* harmony import */ var _layout_layout_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout/layout.component */ 70473);
-/* harmony import */ var _layoutnone_layoutnone_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layoutnone/layoutnone.component */ 51629);
-/* harmony import */ var _header_header_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./header/header.component */ 60679);
-/* harmony import */ var _footer_footer_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./footer/footer.component */ 49719);
-/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ngx-spinner */ 61249);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var _layout_router_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./layout.router.module */ 4528);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @ionic/angular */ 21507);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _auth_layoutauth_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./auth/layoutauth.component */ 14699);
+/* harmony import */ var _boatowner_boatlayout_boatlayout_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./boatowner/boatlayout/boatlayout.component */ 87411);
+/* harmony import */ var _boatowner_boatheader_boatheader_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./boatowner/boatheader/boatheader.component */ 80329);
+/* harmony import */ var _boatowner_boatfooter_boatfooter_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./boatowner/boatfooter/boatfooter.component */ 55237);
+/* harmony import */ var _landing_landinglayout_landinglayout_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./landing/landinglayout/landinglayout.component */ 58515);
+/* harmony import */ var _landing_landingheader_landingheader_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./landing/landingheader/landingheader.component */ 36819);
+/* harmony import */ var _landing_landingfooter_landingfooter_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./landing/landingfooter/landingfooter.component */ 29891);
+/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ngx-spinner */ 61249);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var _layout_router_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./layout.router.module */ 4528);
+
+
+
 
 
 
@@ -4094,106 +3997,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let LayoutModule = class LayoutModule {};
-LayoutModule = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.NgModule)({
-  declarations: [_layout_layout_component__WEBPACK_IMPORTED_MODULE_0__.LayoutComponent, _footer_footer_component__WEBPACK_IMPORTED_MODULE_3__.FooterComponent, _header_header_component__WEBPACK_IMPORTED_MODULE_2__.HeaderComponent, _layoutnone_layoutnone_component__WEBPACK_IMPORTED_MODULE_1__.LayoutnoneComponent],
-  imports: [_layout_layout_component__WEBPACK_IMPORTED_MODULE_0__.LayoutComponent, _footer_footer_component__WEBPACK_IMPORTED_MODULE_3__.FooterComponent, _header_header_component__WEBPACK_IMPORTED_MODULE_2__.HeaderComponent, _angular_common__WEBPACK_IMPORTED_MODULE_7__.CommonModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_8__.IonicModule, godigital_lib__WEBPACK_IMPORTED_MODULE_9__.GodigitalbModule, _angular_forms__WEBPACK_IMPORTED_MODULE_10__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_10__.ReactiveFormsModule, _layout_router_module__WEBPACK_IMPORTED_MODULE_4__.LayoutRoutingModule, ngx_spinner__WEBPACK_IMPORTED_MODULE_11__.NgxSpinnerModule],
+LayoutModule = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.NgModule)({
+  declarations: [_boatowner_boatlayout_boatlayout_component__WEBPACK_IMPORTED_MODULE_1__.BoatlayoutComponent, _landing_landinglayout_landinglayout_component__WEBPACK_IMPORTED_MODULE_4__.LandinglayoutComponent, _landing_landingheader_landingheader_component__WEBPACK_IMPORTED_MODULE_5__.LandingheaderComponent, _auth_layoutauth_component__WEBPACK_IMPORTED_MODULE_0__.LayoutauthComponent, _landing_landingfooter_landingfooter_component__WEBPACK_IMPORTED_MODULE_6__.LandingfooterComponent, _boatowner_boatheader_boatheader_component__WEBPACK_IMPORTED_MODULE_2__.BoatheaderComponent, _boatowner_boatfooter_boatfooter_component__WEBPACK_IMPORTED_MODULE_3__.BoatfooterComponent],
+  imports: [_boatowner_boatlayout_boatlayout_component__WEBPACK_IMPORTED_MODULE_1__.BoatlayoutComponent, _landing_landinglayout_landinglayout_component__WEBPACK_IMPORTED_MODULE_4__.LandinglayoutComponent, _landing_landingheader_landingheader_component__WEBPACK_IMPORTED_MODULE_5__.LandingheaderComponent, _auth_layoutauth_component__WEBPACK_IMPORTED_MODULE_0__.LayoutauthComponent, _landing_landingfooter_landingfooter_component__WEBPACK_IMPORTED_MODULE_6__.LandingfooterComponent, _boatowner_boatheader_boatheader_component__WEBPACK_IMPORTED_MODULE_2__.BoatheaderComponent, _boatowner_boatfooter_boatfooter_component__WEBPACK_IMPORTED_MODULE_3__.BoatfooterComponent, _angular_common__WEBPACK_IMPORTED_MODULE_10__.CommonModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonicModule, godigital_lib__WEBPACK_IMPORTED_MODULE_12__.GodigitalbModule, _angular_forms__WEBPACK_IMPORTED_MODULE_13__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_13__.ReactiveFormsModule, _layout_router_module__WEBPACK_IMPORTED_MODULE_7__.LayoutRoutingModule, ngx_spinner__WEBPACK_IMPORTED_MODULE_14__.NgxSpinnerModule],
   providers: []
 })], LayoutModule);
-
-
-/***/ }),
-
-/***/ 49555:
-/*!************************************************************************!*\
-  !*** ./src/app/layout/layoutnone/layoutnone.component.scss?ngResource ***!
-  \************************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-// Imports
-var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
-var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
-// Exports
-module.exports = ___CSS_LOADER_EXPORT___.toString();
-
-
-/***/ }),
-
-/***/ 49719:
-/*!***************************************************!*\
-  !*** ./src/app/layout/footer/footer.component.ts ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   FooterComponent: () => (/* binding */ FooterComponent)
-/* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _footer_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./footer.component.html?ngResource */ 70197);
-/* harmony import */ var _footer_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./footer.component.scss?ngResource */ 41809);
-/* harmony import */ var _footer_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_footer_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngx-translate/core */ 48503);
-/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../layout.service */ 11266);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 2510);
-
-
-
-/* eslint-disable @typescript-eslint/member-ordering */
-
-
-
-
-
-
-let FooterComponent = class FooterComponent {
-  router;
-  layoutSvc;
-  utilSvc;
-  translateSvc;
-  subscriptions = new rxjs__WEBPACK_IMPORTED_MODULE_3__.Subscription();
-  componentName = 'footer.component';
-  year = new Date().getFullYear();
-  constructor(router, layoutSvc, utilSvc, translateSvc) {
-    this.router = router;
-    this.layoutSvc = layoutSvc;
-    this.utilSvc = utilSvc;
-    this.translateSvc = translateSvc;
-  }
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
-  }
-  ngOnInit() {
-    this.subscriptions.add(this.layoutSvc.mainSvc.getLanguage().subscribe(language => {
-      if (language != null) {
-        this.translateSvc.use(language);
-      }
-    }));
-  }
-  goHome() {
-    this.layoutSvc.goHome();
-  }
-  static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
-  }, {
-    type: _layout_service__WEBPACK_IMPORTED_MODULE_2__.LayoutService
-  }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.UtilsService
-  }, {
-    type: _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__.TranslateService
-  }];
-};
-FooterComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
-  selector: 'app-footer',
-  template: _footer_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  styles: [(_footer_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
-})], FooterComponent);
 
 
 /***/ }),
@@ -4291,68 +4099,14 @@ module.exports = "<p>\n  page404 works!\n</p>";
 
 /***/ }),
 
-/***/ 51629:
-/*!***********************************************************!*\
-  !*** ./src/app/layout/layoutnone/layoutnone.component.ts ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ 52275:
+/*!**********************************************************************************!*\
+  !*** ./src/app/layout/boatowner/boatheader/boatheader.component.html?ngResource ***!
+  \**********************************************************************************/
+/***/ ((module) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   LayoutnoneComponent: () => (/* binding */ LayoutnoneComponent)
-/* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _layoutnone_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layoutnone.component.html?ngResource */ 38003);
-/* harmony import */ var _layoutnone_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layoutnone.component.scss?ngResource */ 49555);
-/* harmony import */ var _layoutnone_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_layoutnone_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngx-translate/core */ 48503);
-/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../layout.service */ 11266);
-/* harmony import */ var _services_services_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/services.service */ 92030);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
-
-
-
-
-
-
-
-
-
-let LayoutnoneComponent = class LayoutnoneComponent {
-  router;
-  layoutSvc;
-  utilsSvc;
-  localUtilsSvc;
-  translateSvc;
-  constructor(router, layoutSvc, utilsSvc, localUtilsSvc, translateSvc) {
-    this.router = router;
-    this.layoutSvc = layoutSvc;
-    this.utilsSvc = utilsSvc;
-    this.localUtilsSvc = localUtilsSvc;
-    this.translateSvc = translateSvc;
-  }
-  ngOnInit() {}
-  static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
-  }, {
-    type: _layout_service__WEBPACK_IMPORTED_MODULE_2__.LayoutService
-  }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.UtilsService
-  }, {
-    type: _services_services_service__WEBPACK_IMPORTED_MODULE_3__.LocalUtilsService
-  }, {
-    type: _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__.TranslateService
-  }];
-};
-LayoutnoneComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
-  selector: 'app-layoutnone',
-  template: _layoutnone_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  styles: [(_layoutnone_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
-})], LayoutnoneComponent);
-
+module.exports = "<nav class=\"navbar navbar-expand-lg bg-white border-bottom sticky-top\">\n  <div class=\"container py-2\">\n\n    <!-- LOGO / BRAND -->\n    <a class=\"navbar-brand d-flex align-items-center gap-2\" [routerLink]=\"homeLinkCommands\"\n      [queryParams]=\"homeLinkQueryParams\">\n      <i class=\"bi bi-ship\"></i>\n\n      <!-- Brand text changes depending on context -->\n      <strong>{{ brandLabel }}</strong>\n\n      <!-- When we are on an owner mainpage, show small \"on Boatify\" badge -->\n      <span *ngIf=\"isOwnerMainpage\" class=\"ms-2 badge text-bg-light border rounded-pill\">\n        on Boatify\n      </span>\n    </a>\n    <!-- MOBILE TOGGLER -->\n    <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navMain\">\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n\n    <div class=\"collapse navbar-collapse\" id=\"navMain\">\n      <ul class=\"navbar-nav me-auto mb-2 mb-lg-0\"></ul>\n\n      <!-- RIGHT: ACTIONS + USER -->\n      <div class=\"d-flex align-items-center gap-3\">\n\n        <!-- GLOBE ICON (language/currency placeholder) -->\n        <button class=\"btn btn-link text-decoration-none d-none d-md-inline\">\n          <i class=\"bi bi-globe\"></i>\n        </button>\n\n        <!-- WHEN LOGGED IN -->\n        <ng-container *ngIf=\"user; else guestButtons\">\n\n          <!-- Traveling mode => Bookings -->\n          <a *ngIf=\"!isOwner || !isHostingView\" class=\"btn btn-link text-decoration-none\"\n            routerLink=\"/account/bookings\">\n            Bookings\n          </a>\n\n          <!-- Hosting mode => Host dashboard -->\n          <a *ngIf=\"isOwner && isHostingView\" class=\"btn btn-link text-decoration-none\" routerLink=\"/owner/dashboard\">\n            Host dashboard\n          </a>\n\n          <!-- AVATAR + DROPDOWN (Airbnb-like pill) -->\n          <div class=\"dropdown\">\n            <button class=\"btn btn-outline-secondary rounded-pill d-flex align-items-center gap-2 px-3 py-1\"\n              type=\"button\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">\n\n              <i class=\"bi bi-list\"></i>\n\n              <ng-container *ngIf=\"avatarUrl; else noAvatar\">\n                <img [src]=\"avatarUrl\" (error)=\"onAvatarError($event)\" class=\"rounded-circle\" width=\"32\" height=\"32\">\n              </ng-container>\n\n              <ng-template #noAvatar>\n                <i class=\"bi bi-person-circle fs-5\"></i>\n              </ng-template>\n            </button>\n\n            <ul class=\"dropdown-menu dropdown-menu-end\">\n\n              <!-- OWNER-ONLY: SWITCH HOSTING/TRAVELING -->\n              <ng-container *ngIf=\"isOwner\">\n                <li>\n                  <button class=\"dropdown-item\" type=\"button\" (click)=\"toggleHostingMode()\">\n                    {{ isHostingView ? 'Switch to traveling' : 'Switch to hosting' }}\n                  </button>\n                </li>\n                <li>\n                  <hr class=\"dropdown-divider\">\n                </li>\n              </ng-container>\n\n              <!-- GUEST-STYLE MENU -->\n              <li><a class=\"dropdown-item\" routerLink=\"/account/messages\">Messages</a></li>\n              <li><a class=\"dropdown-item\" routerLink=\"/account/payments\">Payments</a></li>\n              <li><a class=\"dropdown-item\" routerLink=\"/account/profile\">Account & settings</a></li>\n              <li><a class=\"dropdown-item\" routerLink=\"/help\">Help</a></li>\n\n              <!-- HOSTING BLOCK (owner only) -->\n              <ng-container *ngIf=\"isOwner\">\n                <li>\n                  <hr class=\"dropdown-divider\">\n                </li>\n                <li class=\"dropdown-header small text-muted\">Hosting</li>\n                <li><a class=\"dropdown-item\" routerLink=\"/owner/dashboard\">Host dashboard</a></li>\n                <li><a class=\"dropdown-item\" routerLink=\"/owner/boats\">My boats</a></li>\n                <li><a class=\"dropdown-item\" routerLink=\"/owner/events\">My events</a></li>\n              </ng-container>\n\n              <li>\n                <hr class=\"dropdown-divider\">\n              </li>\n              <li>\n                <button class=\"dropdown-item text-danger\" type=\"button\" (click)=\"logout()\">\n                  Sign out\n                </button>\n              </li>\n            </ul>\n          </div>\n        </ng-container>\n\n        <!-- WHEN LOGGED OUT -->\n        <ng-template #guestButtons>\n          <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/login\">Log in</a>\n          <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/signup\">Create account</a>\n        </ng-template>\n      </div>\n    </div>\n  </div>\n</nav>";
 
 /***/ }),
 
@@ -4378,24 +4132,103 @@ module.exports = webpackEmptyAsyncContext;
 
 /***/ }),
 
-/***/ 60679:
-/*!***************************************************!*\
-  !*** ./src/app/layout/header/header.component.ts ***!
-  \***************************************************/
+/***/ 55237:
+/*!*********************************************************************!*\
+  !*** ./src/app/layout/boatowner/boatfooter/boatfooter.component.ts ***!
+  \*********************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   HeaderComponent: () => (/* binding */ HeaderComponent)
+/* harmony export */   BoatfooterComponent: () => (/* binding */ BoatfooterComponent)
 /* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _boatfooter_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boatfooter.component.html?ngResource */ 33607);
+/* harmony import */ var _boatfooter_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./boatfooter.component.scss?ngResource */ 75663);
+/* harmony import */ var _boatfooter_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_boatfooter_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngx-translate/core */ 48503);
+/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../layout.service */ 11266);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 2510);
+
+
+
+/* eslint-disable @typescript-eslint/member-ordering */
+
+
+
+
+
+
+let BoatfooterComponent = class BoatfooterComponent {
+  router;
+  layoutSvc;
+  utilSvc;
+  translateSvc;
+  subscriptions = new rxjs__WEBPACK_IMPORTED_MODULE_3__.Subscription();
+  componentName = 'boatfooter.component';
+  year = new Date().getFullYear();
+  constructor(router, layoutSvc, utilSvc, translateSvc) {
+    this.router = router;
+    this.layoutSvc = layoutSvc;
+    this.utilSvc = utilSvc;
+    this.translateSvc = translateSvc;
+  }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
+  ngOnInit() {
+    this.subscriptions.add(this.layoutSvc.mainSvc.getLanguage().subscribe(language => {
+      if (language != null) {
+        this.translateSvc.use(language);
+      }
+    }));
+  }
+  goHome() {
+    this.layoutSvc.goHome();
+  }
+  static ctorParameters = () => [{
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
+  }, {
+    type: _layout_service__WEBPACK_IMPORTED_MODULE_2__.LayoutService
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.UtilsService
+  }, {
+    type: _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__.TranslateService
+  }];
+};
+BoatfooterComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
+  selector: 'app-boatfooter',
+  template: _boatfooter_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_boatfooter_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], BoatfooterComponent);
+
+
+/***/ }),
+
+/***/ 58515:
+/*!*************************************************************************!*\
+  !*** ./src/app/layout/landing/landinglayout/landinglayout.component.ts ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   LandinglayoutComponent: () => (/* binding */ LandinglayoutComponent)
+/* harmony export */ });
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _header_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./header.component.html?ngResource */ 87653);
-/* harmony import */ var _header_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./header.component.scss?ngResource */ 63141);
-/* harmony import */ var _header_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_header_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _landinglayout_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./landinglayout.component.html?ngResource */ 47785);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ 93262);
-/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../layout.service */ 11266);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../layout.service */ 11266);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/forms */ 34456);
 /* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! godigital-lib */ 83);
 
 
@@ -4404,95 +4237,91 @@ __webpack_require__.r(__webpack_exports__);
 
  // whatever your real path is
 
-let HeaderComponent = class HeaderComponent {
+
+ // adjust path if needed
+let LandinglayoutComponent = class LandinglayoutComponent {
   layoutSvc;
-  http;
-  avatarUrl;
-  // Role / Stripe display state
-  userRoleLabel = 'Guest';
-  stripeStatus;
-  stripeLoading = false;
-  stripeError;
-  isOwner = false;
-  constructor(layoutSvc, http) {
+  storeDb;
+  router;
+  user = null;
+  authSub;
+  // 🔍 Header search state
+  headerMode = 'boat';
+  headerLocation = '';
+  headerDate = '';
+  headerPeople = null;
+  headerExperienceType = '';
+  // Example experience types (EVJF = bachelorette party in FR)
+  experienceTypes = ['Afterwork at sea', 'EVJF / Bachelorette', 'Birthday', 'Sunset cruise', 'Corporate event', 'Romantic outing', 'Other'];
+  constructor(layoutSvc, storeDb, router) {
     this.layoutSvc = layoutSvc;
-    this.http = http;
+    this.storeDb = storeDb;
+    this.router = router;
   }
   ngOnInit() {
-    const user = this.layoutSvc.wnGuest;
-    if (user) {
-      this.avatarUrl = user.photoURL || undefined;
-      this.userRoleLabel = this.resolveRoleLabel(user);
-      this.isOwner = user.role !== godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.CUSTOMER;
-      if (this.isOwner) {
-        this.loadStripeStatusIfOwner(user);
-      }
-    }
-  }
-  /** Map user object to a human-readable role label */
-  resolveRoleLabel(user) {
-    // Adjust to your actual role logic
-    if (user.role === 'owner' || user.isOwner) return 'Owner';
-    if (user.role === 'crew') return 'Crew';
-    return 'Guest';
-  }
-  /** Only owners have a Stripe account in your current flow */
-  loadStripeStatusIfOwner(user) {
-    const isOwner = user.role === 'owner' || user.isOwner;
-    if (!isOwner) return;
-    const ownerId = user.ownerId || user.uid; // adapt this line!
-    if (!ownerId) return;
-    this.stripeLoading = true;
-    const params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_4__.HttpParams().set('ownerId', ownerId);
-    this.http.get('/api/owner/stripe/status', {
-      params
-    }).subscribe({
-      next: res => {
-        this.stripeStatus = res;
-        this.stripeLoading = false;
-      },
-      error: err => {
-        console.error('Stripe status error', err);
-        this.stripeError = 'Stripe status unavailable';
-        this.stripeLoading = false;
-      }
+    this.authSub = this.storeDb.authState$.subscribe(user => {
+      this.user = user;
     });
   }
-  get stripeStatusLabel() {
-    if (this.stripeLoading) return 'Stripe: loading…';
-    if (this.stripeError) return 'Stripe: error';
-    if (!this.stripeStatus) return 'Stripe: not connected';
-    if (!this.stripeStatus.connected) return 'Stripe: not connected';
-    if (this.stripeStatus.connected && !this.stripeStatus.livemode) {
-      return 'Stripe: connected (test)';
-    }
-    return 'Stripe: connected';
+  ngOnDestroy() {
+    this.authSub?.unsubscribe();
   }
-  get stripeBadgeClass() {
-    if (this.stripeLoading) return 'badge text-bg-secondary';
-    if (this.stripeError) return 'badge text-bg-danger';
-    if (!this.stripeStatus || !this.stripeStatus.connected) {
-      return 'badge text-bg-warning';
+  get isLoggedIn() {
+    return !!this.user;
+  }
+  // TODO: real owner detection
+  get isBoatOwner() {
+    return false;
+  }
+  // 🚤 Rent your boat CTA
+  goToOwnerCta() {
+    if (this.isBoatOwner) {
+      this.router.navigate(['/owner/tours']);
+    } else {
+      this.router.navigate(['/boat-owners/onboarding']);
     }
-    if (this.stripeStatus.connected && !this.stripeStatus.livemode) {
-      return 'badge text-bg-info';
+  }
+  // 🔍 Search handler
+  headerSearch() {
+    const queryParams = {
+      mode: this.headerMode
+    };
+    if (this.headerLocation) queryParams.location = this.headerLocation;
+    if (this.headerDate) queryParams.date = this.headerDate;
+    if (this.headerPeople) queryParams.people = this.headerPeople;
+    if (this.headerMode === 'experience' && this.headerExperienceType) {
+      queryParams.experienceType = this.headerExperienceType;
     }
-    return 'badge text-bg-success';
+    this.router.navigate(['/tours/search'], {
+      queryParams
+    });
   }
   logout() {
-    this.layoutSvc.logout(); // or your actual logout logic
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (_this.storeDb.auth) {
+        try {
+          yield _this.storeDb.auth.signOut();
+        } catch (e) {
+          console.error('Error while logging out', e);
+        }
+      }
+    })();
   }
   static ctorParameters = () => [{
     type: _layout_service__WEBPACK_IMPORTED_MODULE_2__.LayoutService
   }, {
-    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_4__.HttpClient
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_3__.StoreDbService
+  }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
   }];
 };
-HeaderComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
-  selector: 'app-header',
-  template: _header_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  styles: [(_header_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
-})], HeaderComponent);
+LandinglayoutComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+  selector: 'app-landinglayout',
+  standalone: true,
+  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_7__.RouterLink, _angular_router__WEBPACK_IMPORTED_MODULE_4__.RouterOutlet, _angular_common__WEBPACK_IMPORTED_MODULE_8__.NgIf, _angular_common__WEBPACK_IMPORTED_MODULE_8__.AsyncPipe, _angular_common__WEBPACK_IMPORTED_MODULE_8__.NgClass, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormsModule],
+  template: _landinglayout_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__
+})], LandinglayoutComponent);
 
 
 /***/ }),
@@ -4508,10 +4337,10 @@ module.exports = "<router-outlet></router-outlet>\n";
 
 /***/ }),
 
-/***/ 63141:
-/*!****************************************************************!*\
-  !*** ./src/app/layout/header/header.component.scss?ngResource ***!
-  \****************************************************************/
+/***/ 72661:
+/*!******************************************************************!*\
+  !*** ./src/app/layout/auth/layoutauth.component.scss?ngResource ***!
+  \******************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 // Imports
@@ -4519,92 +4348,9 @@ var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `.badge-rounded {
-  border-radius: 50rem;
-}
-
-/* Keep the status compact and aligned */
-.small-header-status {
-  line-height: 1.2;
-}`, "",{"version":3,"sources":["webpack://./src/app/layout/header/header.component.scss"],"names":[],"mappings":"AAAA;EACE,oBAAA;AACF;;AAEA,wCAAA;AACA;EACE,gBAAA;AACF","sourcesContent":[".badge-rounded {\n  border-radius: 50rem;\n}\n\n/* Keep the status compact and aligned */\n.small-header-status {\n  line-height: 1.2;\n}\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
-
-
-/***/ }),
-
-/***/ 70197:
-/*!****************************************************************!*\
-  !*** ./src/app/layout/footer/footer.component.html?ngResource ***!
-  \****************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = "<footer class=\"border-top small py-3\">\n  <div class=\"container d-flex flex-wrap justify-content-between align-items-center gap-2\">\n    <span class=\"text-muted\">© {{ year }} HarborNest</span>\n    <nav class=\"d-flex align-items-center gap-3\">\n      <a class=\"text-decoration-none\" routerLink=\"/contactus\">Contact</a>\n      <span class=\"text-muted\">•</span>\n      <a class=\"text-decoration-none\" routerLink=\"/about\">About</a>\n    </nav>\n  </div>\n</footer>";
-
-/***/ }),
-
-/***/ 70473:
-/*!***************************************************!*\
-  !*** ./src/app/layout/layout/layout.component.ts ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   LayoutComponent: () => (/* binding */ LayoutComponent)
-/* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _layout_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout.component.html?ngResource */ 263);
-/* harmony import */ var _layout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layout.component.scss?ngResource */ 6099);
-/* harmony import */ var _layout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_layout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngx-translate/core */ 48503);
-/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../layout.service */ 11266);
-/* harmony import */ var _services_services_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/services.service */ 92030);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
-
-
-
-
-
-
-
-
-
-let LayoutComponent = class LayoutComponent {
-  router;
-  layoutSvc;
-  utilsSvc;
-  localUtilsSvc;
-  translateSvc;
-  constructor(router, layoutSvc, utilsSvc, localUtilsSvc, translateSvc) {
-    this.router = router;
-    this.layoutSvc = layoutSvc;
-    this.utilsSvc = utilsSvc;
-    this.localUtilsSvc = localUtilsSvc;
-    this.translateSvc = translateSvc;
-  }
-  ngOnInit() {}
-  static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
-  }, {
-    type: _layout_service__WEBPACK_IMPORTED_MODULE_2__.LayoutService
-  }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.UtilsService
-  }, {
-    type: _services_services_service__WEBPACK_IMPORTED_MODULE_3__.LocalUtilsService
-  }, {
-    type: _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__.TranslateService
-  }];
-};
-LayoutComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
-  selector: 'app-layout',
-  template: _layout_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  styles: [(_layout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
-})], LayoutComponent);
 
 
 /***/ }),
@@ -4623,6 +4369,230 @@ var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOUR
 ___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
+/***/ 75663:
+/*!**********************************************************************************!*\
+  !*** ./src/app/layout/boatowner/boatfooter/boatfooter.component.scss?ngResource ***!
+  \**********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `/* Keep links subtle but visible */
+footer a {
+  color: inherit;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}`, "",{"version":3,"sources":["webpack://./src/app/layout/boatowner/boatfooter/boatfooter.component.scss"],"names":[],"mappings":"AAAA,kCAAA;AACA;EAAW,cAAA;AAEX;;AADA;EAAiB,0BAAA;AAKjB","sourcesContent":["/* Keep links subtle but visible */\nfooter a { color: inherit; }\nfooter a:hover { text-decoration: underline; }\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
+/***/ 76477:
+/*!**********************************************************************************!*\
+  !*** ./src/app/layout/boatowner/boatlayout/boatlayout.component.scss?ngResource ***!
+  \**********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
+/***/ 80329:
+/*!*********************************************************************!*\
+  !*** ./src/app/layout/boatowner/boatheader/boatheader.component.ts ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BoatheaderComponent: () => (/* binding */ BoatheaderComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _boatheader_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boatheader.component.html?ngResource */ 52275);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 2510);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 51567);
+/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../layout.service */ 11266);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! godigital-lib */ 83);
+
+
+
+
+
+ // or BoatsService
+
+let BoatheaderComponent = class BoatheaderComponent {
+  layoutSvc;
+  router;
+  route;
+  mainpageId;
+  user;
+  avatarUrl;
+  isOwner = false;
+  isHostingView = false;
+  // Brand / mainpage context
+  brandLabel = 'Boatify';
+  isOwnerMainpage = false;
+  // For [routerLink] & [queryParams]
+  homeLinkCommands = ['/home'];
+  homeLinkQueryParams = null;
+  subs = new rxjs__WEBPACK_IMPORTED_MODULE_2__.Subscription();
+  constructor(layoutSvc, router, route) {
+    this.layoutSvc = layoutSvc;
+    this.router = router;
+    this.route = route;
+  }
+  ngOnInit() {
+    // Logged user
+    this.subs.add(this.layoutSvc.mainSvc.getUser().subscribe(u => {
+      this.user = u;
+      this.avatarUrl = u?.photoURL || undefined;
+      this.isOwner = u?.role === godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.OWNER || u?.role === godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.ADMIN;
+    }));
+    this.isHostingView = this.layoutSvc.isHostingView ?? false;
+    // Recompute context on navigation
+    this.subs.add(this.router.events.pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_4__.filter)(e => e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_5__.NavigationEnd)).subscribe(() => this.resolveMainpageContext()));
+    // Initial
+    this.resolveMainpageContext();
+  }
+  ngOnChanges(changes) {
+    if ('mainpageId' in changes) {
+      this.resolveMainpageContext();
+    }
+  }
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
+  // ----------------------------------------------------------------
+  // MAINPAGE CONTEXT RESOLUTION
+  // ----------------------------------------------------------------
+  resolveMainpageContext() {
+    // 1) If parent explicitly passes mainpageId, use it
+    let effectiveId = this.mainpageId || '';
+    // 2) If not provided, try query param or subdomain
+    if (!effectiveId) {
+      effectiveId = this.detectMainpageIdFromQueryOrSubdomain() || '';
+    }
+    if (effectiveId) {
+      const {
+        id,
+        slug
+      } = this.normalizeMainpageId(effectiveId);
+      this.isOwnerMainpage = true;
+      this.brandLabel = this.toTitleCase(slug);
+      // We want /mainpage?mainpage=<slug>
+      this.homeLinkCommands = ['/mainpage'];
+      this.homeLinkQueryParams = {
+        mainpage: slug
+      };
+      this.mainpageId = id; // store normalized id
+    } else {
+      // Global Boatify context
+      this.isOwnerMainpage = false;
+      this.brandLabel = 'Boatify';
+      this.homeLinkCommands = ['/home'];
+      this.homeLinkQueryParams = null;
+      this.mainpageId = undefined;
+    }
+  }
+  /**
+   * Find mainpage:
+   *   - ?mainpage=layali  OR ?mainpage=owner-home-layali
+   *   - subdomain layali.boatify.com
+   */
+  detectMainpageIdFromQueryOrSubdomain() {
+    // 1) query param
+    const qp = this.route.snapshot.queryParamMap;
+    let main = qp.get('mainpage');
+    // 2) subdomain
+    if (!main && typeof window !== 'undefined') {
+      const host = window.location.hostname; // layali.boatify.com
+      const parts = host.split('.');
+      if (parts.length > 2) {
+        const sub = parts[0];
+        if (sub && sub !== 'www' && sub !== 'localhost') {
+          main = sub;
+        }
+      }
+    }
+    return main;
+  }
+  /**
+   * Accepts:
+   *   "layali"            -> { id: "owner-home-layali", slug: "layali" }
+   *   "owner-home-layali" -> { id: "owner-home-layali", slug: "layali" }
+   */
+  normalizeMainpageId(raw) {
+    const trimmed = raw.trim();
+    const lower = trimmed.toLowerCase();
+    if (lower.startsWith('owner-home-')) {
+      const slug = lower.substring('owner-home-'.length);
+      return {
+        id: lower,
+        slug
+      };
+    }
+    // plain slug
+    return {
+      id: `owner-home-${lower}`,
+      slug: lower
+    };
+  }
+  toTitleCase(slug) {
+    if (!slug) return '';
+    return slug.split('-').filter(Boolean).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  }
+  // ----------------------------------------------------------------
+  // Existing helpers
+  // ----------------------------------------------------------------
+  toggleHostingMode() {
+    this.isHostingView = !this.isHostingView;
+    this.layoutSvc.isHostingView = this.isHostingView;
+  }
+  onAvatarError(evt) {
+    evt.target.style.display = 'none';
+  }
+  logout() {
+    this.layoutSvc.logout();
+  }
+  static ctorParameters = () => [{
+    type: _layout_service__WEBPACK_IMPORTED_MODULE_1__.LayoutService
+  }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_5__.Router
+  }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_5__.ActivatedRoute
+  }];
+  static propDecorators = {
+    mainpageId: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_6__.Input
+    }]
+  };
+};
+BoatheaderComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+  selector: 'app-boatheader',
+  template: _boatheader_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__
+})], BoatheaderComponent);
 
 
 /***/ }),
@@ -4650,14 +4620,62 @@ if (_environments_environment__WEBPACK_IMPORTED_MODULE_2__.environment.productio
 
 /***/ }),
 
-/***/ 87653:
-/*!****************************************************************!*\
-  !*** ./src/app/layout/header/header.component.html?ngResource ***!
-  \****************************************************************/
-/***/ ((module) => {
+/***/ 87411:
+/*!*********************************************************************!*\
+  !*** ./src/app/layout/boatowner/boatlayout/boatlayout.component.ts ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-module.exports = "<nav class=\"navbar navbar-expand-lg bg-white border-bottom sticky-top\">\n  <div class=\"container py-2\">\n    <a class=\"navbar-brand d-flex align-items-center gap-2\" routerLink=\"/home\">\n      <i class=\"bi bi-ship\"></i><strong>HarborNest</strong>\n      <span class=\"ms-2 badge text-bg-dark\">Premium Charter</span>\n    </a>\n\n    <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navMain\">\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n\n    <div class=\"collapse navbar-collapse\" id=\"navMain\">\n      <ul class=\"navbar-nav me-auto mb-2 mb-lg-0\">\n        <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/tours\">Tours</a></li>\n        <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/boat-lagoon40\">Boat</a></li>\n        <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/gallery\">Gallery</a></li>\n      </ul>\n\n      <div class=\"d-flex align-items-center gap-2\">\n        <!-- Role + Stripe badges (only when logged in) -->\n        <!-- Authenticated user -->\n        <ng-container *ngIf=\"layoutSvc.wnGuest as user\">\n\n          <div class=\"d-none d-lg-flex flex-column align-items-end me-2 small-header-status\">\n\n            <div class=\"d-flex gap-1\">\n\n              <!-- ROLE BADGE (always for authenticated users) -->\n              <span class=\"badge text-bg-light border badge-rounded\">\n                <i class=\"bi bi-person-badge me-1\"></i>{{ userRoleLabel }}\n              </span>\n\n              <!-- STRIPE BADGE (ONLY IF OWNER) -->\n              <ng-container *ngIf=\"isOwner\">\n                <span [ngClass]=\"stripeBadgeClass\" class=\"badge badge-rounded\">\n                  <i class=\"bi bi-stripe me-1\"></i>{{ stripeStatusLabel }}\n                </span>\n              </ng-container>\n\n            </div>\n          </div>\n\n        </ng-container>\n\n        <!-- Primary CTA -->\n        <a class=\"btn btn-dark rounded-pill\" routerLink=\"/book\">\n          <i class=\"bi bi-calendar2-check me-1\"></i>Book now\n        </a>\n\n        <!-- User dropdown -->\n        <div class=\"dropdown\" *ngIf=\"layoutSvc.wnGuest; else guest\">\n          <a class=\"btn btn-link text-decoration-none d-flex align-items-center gap-2\" data-bs-toggle=\"dropdown\">\n            <img *ngIf=\"avatarUrl; else icon\" [src]=\"avatarUrl\" class=\"rounded-circle\" width=\"28\" height=\"28\">\n            <ng-template #icon><i class=\"bi bi-person-circle fs-5\"></i></ng-template>\n            <span class=\"d-none d-md-inline\">{{ layoutSvc.wnGuest?.displayName || 'Account' }}</span>\n          </a>\n          <ul class=\"dropdown-menu dropdown-menu-end\">\n            <li><a class=\"dropdown-item\" routerLink=\"/profile-edit\">My profile</a></li>\n            <li><a class=\"dropdown-item\" routerLink=\"/changepwd\">Reset password</a></li>\n            <li><a class=\"dropdown-item\" routerLink=\"/account\">My bookings</a></li>\n            <li><a class=\"dropdown-item\" routerLink=\"/account/payments\">Payments</a></li>\n            <li><a class=\"dropdown-item\" routerLink=\"/account/reviews\">Reviews</a></li>\n            <li>\n              <hr class=\"dropdown-divider\">\n            </li>\n            <li><a class=\"dropdown-item text-danger\" (click)=\"logout()\">Sign out</a></li>\n          </ul>\n        </div>\n\n        <ng-template #guest>\n          <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/login\">Log in</a>\n          <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/signup\">Create account</a>\n        </ng-template>\n      </div>\n    </div>\n  </div>\n</nav>";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BoatlayoutComponent: () => (/* binding */ BoatlayoutComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _boatlayout_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boatlayout.component.html?ngResource */ 44765);
+/* harmony import */ var _boatlayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./boatlayout.component.scss?ngResource */ 76477);
+/* harmony import */ var _boatlayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_boatlayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-translate/core */ 48503);
+/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../layout.service */ 11266);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! godigital-lib */ 83);
+
+
+
+
+
+
+
+
+let BoatlayoutComponent = class BoatlayoutComponent {
+  router;
+  layoutSvc;
+  utilsSvc;
+  translateSvc;
+  constructor(router, layoutSvc, utilsSvc, translateSvc) {
+    this.router = router;
+    this.layoutSvc = layoutSvc;
+    this.utilsSvc = utilsSvc;
+    this.translateSvc = translateSvc;
+  }
+  ngOnInit() {}
+  static ctorParameters = () => [{
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_3__.Router
+  }, {
+    type: _layout_service__WEBPACK_IMPORTED_MODULE_2__.LayoutService
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.UtilsService
+  }, {
+    type: _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__.TranslateService
+  }];
+};
+BoatlayoutComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
+  selector: 'app-boatlayout',
+  template: _boatlayout_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_boatlayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], BoatlayoutComponent);
+
 
 /***/ }),
 
@@ -4926,6 +4944,17 @@ module.exports = webpackAsyncContext;
 
 /***/ }),
 
+/***/ 89445:
+/*!******************************************************************!*\
+  !*** ./src/app/layout/auth/layoutauth.component.html?ngResource ***!
+  \******************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<ngx-spinner type=\"ball-scale-multiple\"></ngx-spinner>\n<main class=\"flex-grow-1\">\n    <router-outlet main></router-outlet>\n</main>\n";
+
+/***/ }),
+
 /***/ 90309:
 /*!**********************************************!*\
   !*** ./src/app/app.component.css?ngResource ***!
@@ -5018,8 +5047,8 @@ let LocalUtilsService = class LocalUtilsService {
   locationCity;
   filteredLocations;
   myLocations;
-  boatServices;
-  boatServicesearch;
+  //  public boatServices: BoatServices[] | null;
+  //  public boatServicesearch: BoatServices[] | null;
   feedbacks;
   users;
   bookings;
@@ -5028,12 +5057,13 @@ let LocalUtilsService = class LocalUtilsService {
   searchMode = 0;
   nearestCity = '';
   currentListing;
-  currentboatServices;
+  //  public currentboatServices: BoatServices[] | null;
   currentOwner;
   currentBooking;
   subscriptions = new rxjs__WEBPACK_IMPORTED_MODULE_5__.Subscription();
   eventToAdd;
   serviceSearch;
+  isHostingView = false;
   cart = {
     dateFrom: '',
     dateTo: '',
@@ -5055,7 +5085,7 @@ let LocalUtilsService = class LocalUtilsService {
     this.init();
   }
   init() {
-    this.subscriptions.add(this.mainSvc.getLoggedUser().subscribe(user => {
+    this.subscriptions.add(this.mainSvc.getUser().subscribe(user => {
       this.wnGuest = user;
     }));
   }
@@ -5177,13 +5207,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AppRoutingModule: () => (/* binding */ AppRoutingModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ 99585);
-/* harmony import */ var _layout_layout_layout_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout/layout/layout.component */ 70473);
-/* harmony import */ var _layout_layoutnone_layoutnone_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layout/layoutnone/layoutnone.component */ 51629);
-/* harmony import */ var _page404_page404_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./page404/page404.component */ 27044);
-/* harmony import */ var _services_services_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./services/services.service */ 92030);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _layout_boatowner_boatlayout_boatlayout_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout/boatowner/boatlayout/boatlayout.component */ 87411);
+/* harmony import */ var _layout_auth_layoutauth_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layout/auth/layoutauth.component */ 14699);
+/* harmony import */ var _layout_landing_landinglayout_landinglayout_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layout/landing/landinglayout/landinglayout.component */ 58515);
+/* harmony import */ var _page404_page404_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./page404/page404.component */ 27044);
+/* harmony import */ var _services_services_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./services/services.service */ 92030);
+
 
 
 
@@ -5193,55 +5225,71 @@ __webpack_require__.r(__webpack_exports__);
 
 const routes = [{
   path: '',
-  component: _layout_layout_layout_component__WEBPACK_IMPORTED_MODULE_0__.LayoutComponent,
+  component: _layout_landing_landinglayout_landinglayout_component__WEBPACK_IMPORTED_MODULE_2__.LandinglayoutComponent,
   children: [{
     path: '',
-    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_home_home_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./home/home.module */ 45055)).then(m => m.HomeModule)
+    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_landingpage_landingpage_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./landingpage/landingpage.module */ 45383)).then(m => m.LandingpageModule)
   }, {
     path: '',
     loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_profile_profile_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./profile/profile.module */ 4219)).then(m => m.ProfileModule)
-  }, {
-    path: '',
-    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_tours_tourhome_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./tours/tourhome.module */ 2231)).then(m => m.TourhomeModule)
-  }, {
-    path: '',
-    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_partners_partners_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./partners/partners.module */ 75451)).then(m => m.PartnersModule)
-  }, {
-    path: '',
-    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_booking_booking_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./booking/booking.module */ 49911)).then(m => m.BookingModule)
-  }, {
-    path: '',
-    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_external_external_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./external/external.module */ 6531)).then(m => m.externalModule)
-  }, {
-    path: '',
-    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_boatowner_boatowner_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./boatowner/boatowner.module */ 81767)).then(m => m.BoatownerModule)
   }]
 }, {
   path: '',
-  component: _layout_layoutnone_layoutnone_component__WEBPACK_IMPORTED_MODULE_1__.LayoutnoneComponent,
+  component: _layout_landing_landinglayout_landinglayout_component__WEBPACK_IMPORTED_MODULE_2__.LandinglayoutComponent,
   children: [{
     path: '',
-    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_login_login_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./login/login.module */ 91307)).then(m => m.LoginModule)
+    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_landingpage_landingpage_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./landingpage/landingpage.module */ 45383)).then(m => m.LandingpageModule)
+  }]
+}, {
+  path: '',
+  component: _layout_boatowner_boatlayout_boatlayout_component__WEBPACK_IMPORTED_MODULE_0__.BoatlayoutComponent,
+  children: [{
+    path: '',
+    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_boatowner_boatowner_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./boatowner/boatowner.module */ 81767)).then(m => m.BoatownerModule)
+  }, {
+    path: '',
+    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_tours_tours_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./tours/tours.module */ 60119)).then(m => m.ToursModule)
+  }, {
+    path: '',
+    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_booking_booking_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./booking/booking.module */ 49911)).then(m => m.BookingModule)
+  }]
+}, {
+  path: '',
+  component: _layout_auth_layoutauth_component__WEBPACK_IMPORTED_MODULE_1__.LayoutauthComponent,
+  children: [{
+    path: '',
+    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_auth_auth_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./auth/auth.module */ 60841)).then(m => m.AuthModule)
   }]
 }, {
   path: 'externalRedirect',
   resolve: {
-    url: _services_services_service__WEBPACK_IMPORTED_MODULE_3__.externalUrlProvider
+    url: _services_services_service__WEBPACK_IMPORTED_MODULE_4__.externalUrlProvider
   },
-  component: _layout_layout_layout_component__WEBPACK_IMPORTED_MODULE_0__.LayoutComponent
+  component: _layout_landing_landinglayout_landinglayout_component__WEBPACK_IMPORTED_MODULE_2__.LandinglayoutComponent
 }, {
   path: '**',
-  component: _page404_page404_component__WEBPACK_IMPORTED_MODULE_2__.Page404Component
+  component: _page404_page404_component__WEBPACK_IMPORTED_MODULE_3__.Page404Component
 }];
 let AppRoutingModule = class AppRoutingModule {};
-AppRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.NgModule)({
-  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_6__.RouterModule.forRoot(routes, {
-    preloadingStrategy: _angular_router__WEBPACK_IMPORTED_MODULE_6__.PreloadAllModules,
+AppRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.NgModule)({
+  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_7__.RouterModule.forRoot(routes, {
+    preloadingStrategy: _angular_router__WEBPACK_IMPORTED_MODULE_7__.PreloadAllModules,
     onSameUrlNavigation: 'reload'
   })],
-  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_6__.RouterModule]
+  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_7__.RouterModule]
 })], AppRoutingModule);
 
+
+/***/ }),
+
+/***/ 95625:
+/*!**************************************************************************************!*\
+  !*** ./src/app/layout/landing/landingheader/landingheader.component.html?ngResource ***!
+  \**************************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<!-- header.component.html -->\n<nav class=\"navbar navbar-expand-lg bg-white border-bottom sticky-top\">\n  <div class=\"container py-2\">\n\n    <!-- Brand -->\n    <a class=\"navbar-brand d-flex align-items-center gap-2\" routerLink=\"/\">\n      <i class=\"bi bi-ship\"></i>\n      <strong>Boatify</strong>\n      <span *ngIf=\"urlPrefix\" class=\"ms-2 badge text-bg-light border\">\n        {{ urlPrefix | titlecase }} owner page\n      </span>\n    </a>\n\n    <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navMain\">\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n\n    <div class=\"collapse navbar-collapse\" id=\"navMain\">\n\n      <!-- LEFT SIDE NAV -->\n      <ul class=\"navbar-nav me-auto mb-2 mb-lg-0\">\n\n        <!-- 1) Guest global & 3) Customer global -->\n        <ng-container *ngIf=\"mode === 'guest-global' || mode === 'customer-global'\">\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" (click)=\"goToGlobalBoats()\">Boats</a>\n          </li>\n        </ng-container>\n\n        <!-- 2) Guest owner & 4) Customer owner -->\n        <ng-container *ngIf=\"mode === 'guest-owner' || mode === 'customer-owner'\">\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" (click)=\"goToOwnerBoats()\">Boats</a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" (click)=\"goToOwnerExperiences()\">Experiences</a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" (click)=\"goToOwnerNews()\">News</a>\n          </li>\n        </ng-container>\n\n        <!-- 5) Owner dashboard -->\n        <ng-container *ngIf=\"mode === 'owner-dashboard'\">\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" (click)=\"goToOwnerDashboardToday()\">Today</a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" routerLink=\"/owner/calendar\">Calendar</a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" routerLink=\"/owner/boats\">Boats</a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" routerLink=\"/owner/events\">Events</a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" routerLink=\"/owner/messages\">Messages</a>\n          </li>\n        </ng-container>\n\n      </ul>\n\n      <!-- RIGHT SIDE -->\n      <div class=\"d-flex align-items-center gap-2\">\n\n        <!-- Guest global: Host your boat(s) -->\n        <button\n          *ngIf=\"mode === 'guest-global'\"\n          class=\"btn btn-outline-secondary rounded-pill d-none d-lg-inline\"\n          (click)=\"hostYourBoat()\">\n          Host your boat(s)\n        </button>\n\n        <!-- MODE SWITCH (RIGHT SIDE) -->\n        <!-- Customer -> Owner -->\n        <button\n          *ngIf=\"isBoatOwner && (mode === 'customer-global' || mode === 'customer-owner')\"\n          class=\"btn btn-outline-secondary rounded-pill d-none d-md-inline\"\n          (click)=\"goToBoatOwnerMode()\">\n          Boat owner mode\n        </button>\n\n        <!-- Owner -> Customer -->\n        <button\n          *ngIf=\"mode === 'owner-dashboard'\"\n          class=\"btn btn-outline-secondary rounded-pill d-none d-md-inline\"\n          (click)=\"goToCustomerMode()\">\n          Customer mode\n        </button>\n\n        <!-- GUEST: login / signup -->\n        <ng-container *ngIf=\"!isLoggedIn; else loggedInMenu\">\n          <button class=\"btn btn-outline-secondary rounded-pill\" (click)=\"login()\">Log in</button>\n          <button class=\"btn btn-dark rounded-pill\" (click)=\"signup()\">Sign up</button>\n        </ng-container>\n\n        <!-- LOGGED-IN DROPDOWN -->\n        <ng-template #loggedInMenu>\n          <div class=\"dropdown\">\n            <button\n              class=\"btn btn-link text-decoration-none d-flex align-items-center gap-2\"\n              data-bs-toggle=\"dropdown\"\n              type=\"button\">\n              <img\n                *ngIf=\"avatarUrl; else defaultAvatar\"\n                [src]=\"avatarUrl\"\n                class=\"rounded-circle\"\n                width=\"32\"\n                height=\"32\"\n              />\n              <ng-template #defaultAvatar>\n                <i class=\"bi bi-person-circle fs-4\"></i>\n              </ng-template>\n            </button>\n            <ul class=\"dropdown-menu dropdown-menu-end\">\n\n              <!-- Customer menus -->\n              <ng-container *ngIf=\"mode === 'customer-global' || mode === 'customer-owner'\">\n                <li><a class=\"dropdown-item\" routerLink=\"/favorites\">Favorites</a></li>\n                <li><a class=\"dropdown-item\" routerLink=\"/bookings\">Bookings / Trips</a></li>\n                <li><a class=\"dropdown-item\" routerLink=\"/messages\">Messages</a></li>\n                <li><hr class=\"dropdown-divider\"></li>\n              </ng-container>\n\n              <!-- Owner dashboard menus -->\n              <ng-container *ngIf=\"mode === 'owner-dashboard'\">\n                <li><a class=\"dropdown-item\" routerLink=\"/owner/account\">Account settings</a></li>\n                <li><a class=\"dropdown-item\" routerLink=\"/owner/revenues\">Revenues</a></li>\n                <li><hr class=\"dropdown-divider\"></li>\n              </ng-container>\n\n              <!-- Shared items for all logged users (except owner-dashboard where we already show account) -->\n              <li *ngIf=\"mode !== 'owner-dashboard'\">\n                <a class=\"dropdown-item\" routerLink=\"/account/profile\">Profile</a>\n              </li>\n              <li *ngIf=\"mode !== 'owner-dashboard'\">\n                <a class=\"dropdown-item\" routerLink=\"/account/settings\">Account settings</a>\n              </li>\n              <li *ngIf=\"mode !== 'owner-dashboard'\">\n                <a class=\"dropdown-item\" routerLink=\"/account/payments\">Payments</a>\n              </li>\n\n              <li><hr class=\"dropdown-divider\"></li>\n              <li>\n                <button class=\"dropdown-item text-danger\" (click)=\"logout()\">\n                  Sign out\n                </button>\n              </li>\n            </ul>\n          </div>\n        </ng-template>\n\n      </div>\n    </div>\n  </div>\n</nav>\n";
 
 /***/ })
 

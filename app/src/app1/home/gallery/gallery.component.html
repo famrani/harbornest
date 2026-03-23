@@ -1,0 +1,18 @@
+<section class="page-hero">
+  <div class="container narrow">
+    <span class="eyebrow">Galerie</span>
+    <h1>Quelques visuels pour donner envie de monter à bord.</h1>
+    <p>
+      Une galerie simple suffit largement pour un site d’information : elle rassure, montre l’ambiance
+      et aide le visiteur à se projeter avant de demander un devis.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container masonry">
+    <img *ngFor="let image of images; let i = index"
+         [src]="image"
+         [alt]="'Photo de sortie en mer ' + (i + 1)" />
+  </div>
+</section>

@@ -1,0 +1,82 @@
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">Sorties en mer privées</span>
+      <h1>Organisez une sortie en mer simple, élégante et sur mesure.</h1>
+      <p>
+        Présentez vos envies, votre date idéale et le type de moment recherché.
+        Nous vous répondons directement avec les informations utiles et un devis adapté.
+      </p>
+      <div class="hero-actions">
+        <a routerLink="/sorties" class="btn btn-primary">Découvrir les sorties</a>
+        <a routerLink="/contact" class="btn btn-secondary">Demander un devis</a>
+      </div>
+      <ul class="hero-points">
+        <li>Contact direct</li>
+        <li>Réponse rapide</li>
+        <li>Sorties privatives</li>
+      </ul>
+    </div>
+
+    <div class="hero-visual">
+      <img [src]="config.heroImage" alt="Sortie en mer" />
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Nos formules</span>
+      <h2>Des idées de sorties pour tous les moments importants</h2>
+      <p>Le site est volontairement simple : vous découvrez les expériences, puis vous nous contactez pour en parler.</p>
+    </div>
+
+    <div class="cards-grid">
+      <article class="card" *ngFor="let outing of featuredOutings">
+        <img [src]="outing.image" [alt]="outing.title" />
+        <div class="card-body">
+          <h3>{{ outing.title }}</h3>
+          <p>{{ outing.description }}</p>
+          <div class="meta">{{ outing.duration }} • {{ outing.guests }}</div>
+          <a routerLink="/contact" class="text-link">Recevoir des informations</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section-light">
+  <div class="container split-grid">
+    <div>
+      <span class="eyebrow">Le bateau</span>
+      <h2>Un cadre confortable pour des sorties conviviales</h2>
+      <p>
+        Le bateau est pensé pour accueillir vos moments de détente, de célébration ou de découverte
+        dans une ambiance privée et soignée.
+      </p>
+      <ul class="check-list">
+        <li *ngFor="let item of highlights">{{ item }}</li>
+      </ul>
+      <a routerLink="/bateau" class="btn btn-secondary">Voir le bateau</a>
+    </div>
+
+    <div class="boat-card">
+      <img [src]="config.boatHeroImage" alt="Le bateau" />
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container contact-banner">
+    <div>
+      <span class="eyebrow">Contact direct</span>
+      <h2>Expliquez votre projet, nous revenons vers vous avec une proposition adaptée.</h2>
+      <p>Anniversaire, sunset, journée complète, sortie d'entreprise ou demande particulière : tout commence par un échange simple.</p>
+    </div>
+    <div class="contact-actions">
+      <a [href]="'tel:' + config.phoneRaw" class="btn btn-secondary">Appeler</a>
+      <a routerLink="/contact" class="btn btn-primary">Faire une demande</a>
+    </div>
+  </div>
+</section>

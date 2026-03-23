@@ -6,16 +6,13 @@ export class UtilsService {
   private backendUrl: string;
   public serverPort: number;
 
-  private stripeClientId: string;
-  private stripeSecretKey: string;
-  private stripePublicKey: string;
-
   private params;
 
   public platformEnv = "test";
 
   private serviceAccountFile = "";
   public databaseURL = "";
+  public storageBucket = "";
   public config;
 
   constructor() {
@@ -47,13 +44,7 @@ export class UtilsService {
           this.serverPort = data[env]["serverPort"];
           this.serviceAccountFile = process.cwd() + "/dist2/config/" + data[env]["serviceAccount"];
           this.databaseURL = data[env]["firebaseMasterConfig"]["databaseURL"];
-
-          this.stripeClientId = data[env]["stripeConfig"]["CLIENT_ID"];
-          this.stripePublicKey = data[env]["stripeConfig"]["STRIPE_API_PUBLIC_KEY"];
-
-
-          this.stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-
+          this.storageBucket = data[env]["firebaseMasterConfig"]["storageBucket"];
 
           resolve(data);
         },

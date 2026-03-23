@@ -1,0 +1,27 @@
+<section class="page-hero">
+  <div class="container narrow">
+    <span class="eyebrow">Nos sorties</span>
+    <h1>Trouvez l’expérience qui correspond à votre envie du moment.</h1>
+    <p>
+      Chaque formule est présentée à titre indicatif. Le site n’est pas transactionnel :
+      vous nous contactez et nous construisons la proposition avec vous.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container grid">
+    <article class="outing-card" *ngFor="let outing of outings">
+      <img [src]="outing.image" [alt]="outing.title" />
+      <div class="content">
+        <div class="meta-top">{{ outing.duration }} • {{ outing.guests }}</div>
+        <h2>{{ outing.title }}</h2>
+        <p>{{ outing.description }}</p>
+        <ul>
+          <li *ngFor="let point of outing.highlights">{{ point }}</li>
+        </ul>
+        <a routerLink="/contact" class="btn">Demander des informations</a>
+      </div>
+    </article>
+  </div>
+</section>

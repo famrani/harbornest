@@ -7,6 +7,7 @@ import { UtilsService } from '../services/utils.service';
 import { StripeService } from '../services/stripeAdn';
 import { BookingsService } from '../services/booking.service'
 import { UsersService } from '../services/users.service'
+import { BoatownersService } from '../services/boatowners.service';
 
 const FRONTEND_ORIGIN = 'http://localhost:8100';
 
@@ -28,6 +29,7 @@ export class WebServerComponent {
     private stripeSvc: StripeService,
     private bookingsSvc: BookingsService,
     private usersSvc: UsersService,
+    private boatownersSvc: BoatownersService,
   ) {}
 
   async initWebServer(): Promise<void> {
@@ -82,5 +84,6 @@ export class WebServerComponent {
     this.stripeSvc.setRoutes(this.router);
     this.bookingsSvc.setRoutes(this.router);
     this.usersSvc.setRoutes(this.router);
+    this.boatownersSvc.setRoutes(this.router);
   }
 }

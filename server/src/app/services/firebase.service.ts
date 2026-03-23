@@ -126,7 +126,7 @@ export interface Equipments {
 @Injectable()
 export class StoreDbService {
   public db;
-  private bucket;
+  public bucket;
   public auth;
 
   public firebaseBSS: any = {};
@@ -144,12 +144,13 @@ export class StoreDbService {
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
       databaseURL: this.utilSvc.databaseURL,
-      storageBucket: 'your-bucket.appspot.com',
+      storageBucket: this.utilSvc.storageBucket,
     });
 
     this.db = admin.database();
     this.auth = admin.auth();
     this.bucket = admin.storage().bucket();
+    const toto = this.bucket;
   }
 
   async getObject(refPath: string) {

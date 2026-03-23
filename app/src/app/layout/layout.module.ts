@@ -1,29 +1,35 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { GodigitalbModule, UtilsService } from 'godigital-lib';
-import { LayoutComponent } from './layout/layout.component';
-import { LayoutnoneComponent } from './layoutnone/layoutnone.component';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { LayoutRoutingModule } from './layout.router.module';
-
-
+import { HomelayoutComponent } from './home/homelayout/homelayout.component';
+import { HomeheaderComponent } from './home/homeheader/homeheader.component';
+import { HomefooterComponent } from './home/homefooter/homefooter.component';
 
 @NgModule({
-  declarations: [LayoutComponent,FooterComponent,HeaderComponent, LayoutnoneComponent],
+  declarations: [
+    HomelayoutComponent,
+    HomeheaderComponent,
+    HomefooterComponent,
+  ],
   imports: [
-    LayoutComponent,FooterComponent,HeaderComponent,
+    HomelayoutComponent,
+    HomeheaderComponent,
+    HomefooterComponent,
     CommonModule,
+    RouterModule,
     IonicModule,
-    GodigitalbModule,
-    FormsModule, ReactiveFormsModule,
-    LayoutRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     NgxSpinnerModule,
   ],
-  providers:[]
+  exports: [
+    HomelayoutComponent,
+    HomeheaderComponent,
+    HomefooterComponent,
+  ],
 })
-export class LayoutModule { }
+export class LayoutModule {}

@@ -1,0 +1,30 @@
+<section class="page-hero">
+  <div class="container text-block">
+    <span class="eyebrow">Le bateau</span>
+    <h1>Un bateau pensé pour des moments confortables et mémorables.</h1>
+    <p>
+      Cette page présente l’essentiel : l’ambiance à bord, les points forts du bateau,
+      et les éléments qui rassurent vos futurs clients avant de vous contacter.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container split-grid">
+    <div>
+      <h2>Pourquoi ce format fonctionne bien pour un site vitrine</h2>
+      <p>
+        Le visiteur n’a pas besoin d’un tunnel de réservation compliqué. Il veut surtout comprendre
+        l’expérience proposée, voir le bateau et savoir comment vous joindre.
+      </p>
+      <ul class="highlights">
+        <li *ngFor="let item of highlights">{{ item }}</li>
+      </ul>
+      <a routerLink="/contact" class="btn">Demander un devis</a>
+    </div>
+
+    <div class="visual-grid">
+      <img *ngFor="let image of images" [src]="image" alt="Photo du bateau" />
+    </div>
+  </div>
+</section>

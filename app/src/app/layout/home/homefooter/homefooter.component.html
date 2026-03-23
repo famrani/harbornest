@@ -1,0 +1,26 @@
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <h3>{{ config.shortBrandName }}</h3>
+      <p>{{ t.footer.summary }}</p>
+    </div>
+
+    <div>
+      <h4>{{ t.footer.navigation }}</h4>
+      <ul>
+        <li><a routerLink="/">{{ t.nav.home }}</a></li>
+        <li><a routerLink="/sorties">{{ t.nav.outings }}</a></li>
+        <li><a routerLink="/bateau">{{ t.nav.boat }}</a></li>
+        <li><a routerLink="/galerie">{{ t.nav.gallery }}</a></li>
+        <li><a routerLink="/contact">{{ t.nav.contact }}</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>{{ t.footer.contact }}</h4>
+      <p>{{ t.contact.labels.directPhone }} : <a [href]="'tel:' + config.phoneRaw">{{ config.phoneDisplay }}</a></p>
+      <p>{{ t.contact.labels.directEmail }} : <a [href]="'mailto:' + config.email">{{ config.email }}</a></p>
+      <p>{{ t.footer.response }}</p>
+    </div>
+  </div>
+</footer>

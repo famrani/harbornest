@@ -8,6 +8,7 @@ import { getAuth } from 'firebase-admin/auth';
 import { BookingsService } from '../services/booking.service';
 import { UsersService } from '../services/users.service';
 import { MailerService } from '../services/mailer.service';
+import { BoatownersService } from '../services/boatowners.service';
 
 config(); // Load .env file
 
@@ -23,9 +24,10 @@ export class MainComponent {
     private stripeSvc = new StripeService(this.storeDbSvc);
     private mailerSvc = new MailerService();
     private usersSvc = new UsersService(this.storeDbSvc);
+    private boatownersSvc = new BoatownersService(this.storeDbSvc);
     private bookingsSvc = new BookingsService(this.mailerSvc, this.storeDbSvc, this.stripeSvc);
 
-    private webServerComponent = new WebServerComponent(this.utilSvc, this.stripeSvc, this.bookingsSvc, this.usersSvc);
+    private webServerComponent = new WebServerComponent(this.utilSvc, this.stripeSvc, this.bookingsSvc, this.usersSvc, this.boatownersSvc);
 
     public version: string | undefined;
 

@@ -7,6 +7,8 @@ import https from 'https';
 import { UtilsService } from '../services/utils.service';
 import { StripeService } from '../services/stripeAdn';
 import { BookingsService } from '../services/booking.service'
+import { UsersService } from '../services/users.service'
+import { BoatownersService } from '../services/boatowners.service';
 
 export class WebServerComponent {
     private app = express();
@@ -19,6 +21,8 @@ export class WebServerComponent {
     private utilsSvc: UtilsService, 
     private stripeSvc: StripeService,
     private bookingsSvc: BookingsService,
+    private usersSvc: UsersService,
+    private boatownersSvc: BoatownersService,
   ) {}
 
     async initWebServer(): Promise<void> {
@@ -86,5 +90,7 @@ export class WebServerComponent {
     this.utilsSvc.setRoutes(this.router);
     this.stripeSvc.setRoutes(this.router);
     this.bookingsSvc.setRoutes(this.router);
+    this.usersSvc.setRoutes(this.router);
+    this.boatownersSvc.setRoutes(this.router);
     }
 }

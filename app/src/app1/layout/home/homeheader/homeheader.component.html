@@ -1,0 +1,25 @@
+<header class="site-header">
+  <div class="container header-bar">
+    <a class="brand" routerLink="/" (click)="closeMenu()">
+      <span class="brand-mark">⛵</span>
+      <span class="brand-text">
+        <strong>Catamaran Bali 4.1</strong>
+        <small>Sorties en mer privées</small>
+      </span>
+    </a>
+
+    <button class="menu-toggle" type="button" (click)="toggleMenu()" aria-label="Ouvrir le menu">
+      ☰
+    </button>
+
+    <nav class="main-nav" [class.open]="menuOpen">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Accueil</a>
+      <a routerLink="/sorties" routerLinkActive="active" (click)="closeMenu()">Nos sorties</a>
+      <a routerLink="/bateau" routerLinkActive="active" (click)="closeMenu()">Notre bateau</a>
+      <a routerLink="/galerie" routerLinkActive="active" (click)="closeMenu()">Galerie</a>
+      <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact</a>
+      <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Reserver</a>
+      <a class="cta-link" routerLink="/contact" (click)="closeMenu()">Demander un devis</a>
+    </nav>
+  </div>
+</header>

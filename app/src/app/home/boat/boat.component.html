@@ -1,0 +1,47 @@
+<section class="page-hero">
+  <div class="container text-block">
+    <span class="eyebrow">{{ t.boat.eyebrow }}</span>
+    <h1>{{ t.boat.title }}</h1>
+    <p>{{ t.boat.intro }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container split-grid">
+    <div>
+      <h2>{{ t.boat.whyTitle }}</h2>
+      <p>{{ t.boat.whyText }}</p>
+      <ul class="highlights">
+        <li *ngFor="let item of highlights">{{ item }}</li>
+      </ul>
+    </div>
+
+    <div class="visual-grid">
+      <img *ngFor="let image of images" [src]="image" [alt]="t.boat.title" />
+    </div>
+  </div>
+</section>
+
+<section class="section section-light">
+  <div class="container text-block narrow">
+    <h2>{{ t.boat.experienceTitle }}</h2>
+    <p>{{ t.boat.experienceText }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container split-grid">
+    <div>
+      <h2>{{ t.boat.occasionsTitle }}</h2>
+      <ul class="highlights">
+        <li *ngFor="let occasion of t.boat.occasions">{{ occasion }}</li>
+      </ul>
+    </div>
+
+    <div class="cta-card">
+      <h2>{{ t.boat.ctaTitle }}</h2>
+      <p>{{ t.boat.ctaText }}</p>
+      <a routerLink="/contact" class="btn">{{ t.boat.ctaButton }}</a>
+    </div>
+  </div>
+</section>

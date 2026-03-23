@@ -1,0 +1,24 @@
+<section class="page-hero">
+  <div class="container narrow">
+    <span class="eyebrow">{{ t.outings.eyebrow }}</span>
+    <h1>{{ t.outings.title }}</h1>
+    <p>{{ t.outings.intro }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container grid">
+    <article class="outing-card" *ngFor="let outing of outings">
+      <img [src]="outing.image" [alt]="outing.title" />
+      <div class="content">
+        <div class="meta-top">{{ outing.duration }} • {{ outing.guests }}</div>
+        <h2>{{ outing.title }}</h2>
+        <p>{{ outing.description }}</p>
+        <ul>
+          <li *ngFor="let point of outing.highlights">{{ point }}</li>
+        </ul>
+        <a routerLink="/contact" class="btn">{{ t.outings.infoButton }}</a>
+      </div>
+    </article>
+  </div>
+</section>
