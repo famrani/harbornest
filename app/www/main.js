@@ -3130,6 +3130,17 @@ class ServicesService {
 
 /***/ }),
 
+/***/ 4527:
+/*!*****************************************************************************!*\
+  !*** ./src/app/layout/home/homeheader/homeheader.component.html?ngResource ***!
+  \*****************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<header class=\"site-header\">\n  <div class=\"container header-bar\">\n    <a class=\"brand\" routerLink=\"/\" (click)=\"closeMenu()\">\n      <span class=\"brand-mark\">⛵</span>\n      <span class=\"brand-text\">\n        <strong>{{ content.brand }}</strong>\n        <small>{{ content.brandTagline }}</small>\n      </span>\n    </a>\n\n    <button class=\"menu-toggle\" type=\"button\" (click)=\"toggleMenu()\" aria-label=\"Open menu\">\n      ☰\n    </button>\n\n    <nav class=\"main-nav\" [class.open]=\"menuOpen\">\n      <a routerLink=\"/\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{ exact: true }\" (click)=\"closeMenu()\">{{ content.nav.home }}</a>\n      <a routerLink=\"/sorties\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.outings }}</a>\n      <a routerLink=\"/bateau\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.boat }}</a>\n      <a routerLink=\"/galerie\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.gallery }}</a>\n      <a routerLink=\"/contact\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.contact }}</a>\n\n      <div class=\"language-switcher\">\n        <select [value]=\"currentLanguage\" (change)=\"changeLanguage($any($event.target).value)\" aria-label=\"Language selector\">\n          <option value=\"fr\">Français</option>\n          <option value=\"en\">English</option>\n          <option value=\"es\">Español</option>\n        </select>\n      </div>\n\n      <a class=\"cta-link\" routerLink=\"/contact\" (click)=\"closeMenu()\">{{ content.nav.quote }}</a>\n    </nav>\n  </div>\n</header>\n";
+
+/***/ }),
+
 /***/ 4528:
 /*!************************************************!*\
   !*** ./src/app/layout/layout.router.module.ts ***!
@@ -3157,176 +3168,527 @@ LayoutRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__decorate)([(0,_ang
 
 /***/ }),
 
-/***/ 11266:
-/*!******************************************!*\
-  !*** ./src/app/layout/layout.service.ts ***!
-  \******************************************/
+/***/ 14009:
+/*!**************************************!*\
+  !*** ./src/app/home/site-content.ts ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   LayoutService: () => (/* binding */ LayoutService)
+/* harmony export */   SITE_CONTENT: () => (/* binding */ SITE_CONTENT)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var _services_services_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/services.service */ 92030);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! godigital-lib */ 83);
-
-/* eslint-disable @typescript-eslint/member-ordering */
-
-
-
-
-let LayoutService = class LayoutService {
-  mainSvc;
-  localUtilsSvc;
-  router;
-  activeTab = 0;
-  mactiveTab = 0;
-  businessVerticals;
-  mode = 'guest';
-  isLoggedIn = false;
-  userName = null;
-  avatarUrl = null;
-  constructor(mainSvc, localUtilsSvc, router) {
-    this.mainSvc = mainSvc;
-    this.localUtilsSvc = localUtilsSvc;
-    this.router = router;
-  }
-  get wnGuest() {
-    return this.localUtilsSvc.wnGuest;
-  }
-  set wnGuest(value) {
-    this.localUtilsSvc.wnGuest = value;
-  }
-  get errorMessage() {
-    return this.localUtilsSvc.errorMessage;
-  }
-  set errorMessage(value) {
-    this.localUtilsSvc.errorMessage = value;
-  }
-  get currentUrl() {
-    return this.localUtilsSvc.currentUrl;
-  }
-  set currentUrl(value) {
-    this.localUtilsSvc.currentUrl = value;
-  }
-  get version() {
-    return this.mainSvc.version;
-  }
-  set version(value) {
-    this.mainSvc.version = value;
-  }
-  get isHostingView() {
-    return this.localUtilsSvc.isHostingView;
-  }
-  set isHostingView(value) {
-    this.localUtilsSvc.isHostingView = value;
-  }
-  get language() {
-    return this.localUtilsSvc.language;
-  }
-  set language(value) {
-    this.localUtilsSvc.language = value;
-  }
-  goHome() {
-    this.router.navigate(['/home']);
-  }
-  logout() {
-    this.localUtilsSvc.logout();
-  }
-  static ctorParameters = () => [{
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_1__.ServicesService
-  }, {
-    type: _services_services_service__WEBPACK_IMPORTED_MODULE_0__.LocalUtilsService
-  }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_2__.Router
-  }];
-  static propDecorators = {
-    mode: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Input
-    }],
-    isLoggedIn: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Input
-    }],
-    userName: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Input
-    }],
-    avatarUrl: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Input
-    }]
-  };
+const sharedImages = {
+  hero: 'assets/img/home/home-hero-generic.jpg',
+  boatHero: 'assets/img/boat/bali4.1/bali-41-4.jpg',
+  gallery: ['assets/img/boat/bali4.1/bali-41-2.jpg', 'assets/img/boat/bali4.1/bali-41-3.jpg', 'assets/img/boat/bali4.1/bali-41-4.jpg', 'assets/img/boat/bali4.1/bali-41-5.jpg', 'assets/img/events/cap-antibes/cap-antibes1.jpg', 'assets/img/events/sunset/sunset2.jpg', 'assets/img/events/leyrins/leyrins1.jpg', 'assets/img/events/afterwork/afterwork1.jpg', 'assets/img/events/evjf/evjf-g3.jpg'],
+  outing1: 'assets/img/events/cap-antibes/cap-antibes1.jpg',
+  outing2: 'assets/img/events/sunset/sunset1.jpg',
+  outing3: 'assets/img/events/afterwork/afterwork1.jpg',
+  outing4: 'assets/img/events/evjf/evjf-g1.jpg',
+  outing5: 'assets/img/events/business-meeting/business-meeting1.jpg',
+  outing6: 'assets/img/events/night-on-board/night-on-board1.jpg'
 };
-LayoutService = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Injectable)({
-  providedIn: 'root'
-})], LayoutService);
-
+const SITE_CONTENT = {
+  fr: {
+    brand: 'Alegria',
+    brandTagline: 'Sorties en mer privées',
+    phoneDisplay: '+33 6 85 26 65 10',
+    phoneRaw: '+33685266510',
+    email: 'contact@alldigitalnetwork.com',
+    departureArea: 'Port Marina Baie des Anges, Villeneuve-Loubet',
+    priceFrom: 'À partir de 1 500 € par jour avec skipper',
+    heroImage: sharedImages.hero,
+    boatHeroImage: sharedImages.boatHero,
+    nav: {
+      home: 'Accueil',
+      outings: 'Sorties',
+      boat: 'Le bateau',
+      gallery: 'Galerie',
+      contact: 'Contact',
+      quote: 'Demander un devis'
+    },
+    common: {
+      from: 'À partir de',
+      dayWithSkipper: 'par jour avec skipper',
+      contactUs: 'Nous contacter',
+      requestQuote: 'Demander un devis',
+      call: 'Appeler',
+      emailUs: 'Envoyer un email',
+      whatsapp: 'WhatsApp',
+      directContact: 'Contact direct',
+      departurePort: 'Port de départ'
+    },
+    home: {
+      eyebrow: 'Sorties en mer privées sur la Côte d’Azur',
+      title: 'Privatisez Alegria pour une journée en mer élégante et conviviale.',
+      intro: 'Profitez d’un catamaran confortable pour une journée de détente, un coucher de soleil, un anniversaire ou un moment privilégié entre amis, en famille ou en couple. Toutes les sorties sont privatives et organisées sur mesure à partir de 1 500 € par jour avec skipper.',
+      primaryCta: 'Découvrir les sorties',
+      secondaryCta: 'Demander un devis',
+      points: ['Sorties privatives', 'À partir de 1 500 € / jour avec skipper', 'Contact direct et réponse rapide'],
+      sectionEyebrow: 'Nos sorties',
+      sectionTitle: 'Des expériences pensées pour le plaisir, la détente et les beaux moments en mer',
+      sectionText: 'Choisissez une idée de sortie ou contactez-nous directement pour construire un programme sur mesure en fonction de votre date, du nombre de personnes et de l’ambiance souhaitée.',
+      boatEyebrow: 'Alegria',
+      boatTitle: 'Un catamaran spacieux et confortable pour profiter pleinement de la navigation',
+      boatText: 'Alegria offre un cadre idéal pour se relaxer, partager un déjeuner à bord, se baigner dans des eaux turquoise et profiter de la Côte d’Azur autrement.',
+      boatCta: 'Découvrir le bateau',
+      contactEyebrow: 'Devis personnalisé',
+      contactTitle: 'Parlez-nous de votre sortie idéale et recevez une proposition adaptée.',
+      contactText: 'Journée en mer, coucher de soleil, anniversaire, EVJF/EVG ou sortie entreprise : nous échangeons directement avec vous pour vous proposer la meilleure formule.'
+    },
+    outingsPage: {
+      eyebrow: 'Nos sorties',
+      title: 'Des sorties privées à bord d’Alegria pour toutes vos envies',
+      intro: 'Toutes les formules sont données à titre indicatif. Nous adaptons chaque sortie à votre projet, dans la limite des conditions météo, du programme souhaité et du nombre de personnes.',
+      cta: 'Recevoir des informations'
+    },
+    boatPage: {
+      eyebrow: 'Le bateau',
+      title: 'Alegria, un catamaran pensé pour des journées en mer confortables et mémorables',
+      intro: 'Alegria est un Bali 4.1 spacieux, stable et accueillant, idéal pour profiter de la mer dans un cadre élégant et détendu. À bord, tout est réuni pour vivre une sortie privée agréable, avec skipper, au rythme de vos envies.',
+      reasonsTitle: 'Pourquoi choisir Alegria ? ',
+      reasonsText: 'Le catamaran est parfaitement adapté aux journées en mer entre proches, aux événements privés et aux moments de détente dans les plus beaux mouillages de la Côte d’Azur.',
+      reasons: ['Grand espace de vie pour circuler et se détendre', 'Navigation confortable et ambiance conviviale', 'Sortie 100 % privative avec skipper', 'Programme flexible selon vos envies et la météo'],
+      comfortTitle: 'Confort et ambiance à bord',
+      comfortText: 'Que vous souhaitiez profiter du soleil, partager un déjeuner, organiser un apéritif au coucher du soleil ou simplement découvrir le littoral, Alegria vous accueille dans des conditions soignées et chaleureuses.',
+      occasionsTitle: 'Idéal pour',
+      occasions: ['une journée en famille', 'une sortie en couple', 'un moment entre amis', 'un anniversaire', 'un EVJF / EVG', 'un événement privé ou professionnel'],
+      cta: 'Demander un devis'
+    },
+    galleryPage: {
+      eyebrow: 'Galerie',
+      title: 'Découvrez l’univers d’Alegria en images',
+      intro: 'Quelques photos pour vous permettre de vous projeter à bord et ressentir l’ambiance des sorties proposées.'
+    },
+    contactPage: {
+      eyebrow: 'Contact / devis',
+      title: 'Parlez-nous de votre projet de sortie en mer',
+      intro: 'Décrivez simplement la sortie souhaitée, votre date idéale et le nombre de participants. Nous revenons vers vous rapidement avec les informations utiles et une proposition adaptée.',
+      formTitle: 'Demande d’informations',
+      name: 'Nom',
+      email: 'Email',
+      phone: 'Téléphone',
+      outingType: 'Type de sortie',
+      outingPlaceholder: 'Sélectionner',
+      preferredDate: 'Date souhaitée',
+      guests: 'Nombre de personnes',
+      message: 'Votre message',
+      sendEmail: 'Envoyer par email',
+      prepareWhatsapp: 'Préparer un message WhatsApp',
+      directTitle: 'Contact direct',
+      directText: 'Vous pouvez aussi nous joindre directement par téléphone ou email pour parler de votre projet et vérifier les disponibilités.',
+      sentNotice: 'Votre message a bien été préparé. Nous vous répondrons rapidement.',
+      outingOptions: ['Journée en mer', 'Coucher de soleil', 'Anniversaire', 'EVJF / EVG', 'Sortie entreprise', 'Projet sur mesure'],
+      emailSubjectPrefix: 'Demande d’informations',
+      whatsappIntro: 'Bonjour, je souhaite obtenir des informations pour une sortie en mer à bord d’Alegria.'
+    },
+    footer: {
+      description: 'Sorties en mer privées à bord d’Alegria au départ de Marina Baie des Anges. À partir de 1 500 € par jour avec skipper.',
+      navigation: 'Navigation',
+      contact: 'Contact',
+      quickReply: 'Réponse rapide pour demandes d’informations et devis.'
+    },
+    notFound: {
+      title: 'Page introuvable',
+      text: 'La page demandée n’existe pas ou n’est plus disponible.',
+      cta: 'Revenir à l’accueil'
+    },
+    outings: [{
+      slug: 'journee',
+      title: 'Journée en mer',
+      duration: 'Journée complète',
+      guests: 'Sortie privative',
+      description: 'Une journée sur l’eau pour profiter de la navigation, d’un déjeuner à bord, des baignades et des plus beaux mouillages de la région.',
+      image: sharedImages.outing1,
+      highlights: ['À partir de 1 500 € avec skipper', 'Programme sur mesure', 'Baignade et détente']
+    }, {
+      slug: 'sunset',
+      title: 'Coucher de soleil',
+      duration: 'Fin de journée',
+      guests: 'Couple, famille ou amis',
+      description: 'Une sortie élégante en mer pour profiter d’une lumière exceptionnelle et d’un moment privilégié à bord d’Alegria.',
+      image: sharedImages.outing2,
+      highlights: ['Ambiance chic et détendue', 'Apéritif possible', 'Moment mémorable']
+    }, {
+      slug: 'anniversaire',
+      title: 'Anniversaire ou événement privé',
+      duration: 'Selon votre projet',
+      guests: 'Privatisation',
+      description: 'Célébrez une date importante dans un cadre original et raffiné, avec une sortie organisée selon vos envies.',
+      image: sharedImages.outing3,
+      highlights: ['Format flexible', 'Cadre unique', 'Souvenirs inoubliables']
+    }, {
+      slug: 'evjf',
+      title: 'EVJF / EVG',
+      duration: 'Demi-journée ou journée',
+      guests: 'Groupe convivial',
+      description: 'Une sortie festive en mer pour partager un très beau moment avant le grand jour.',
+      image: sharedImages.outing4,
+      highlights: ['Privatisation du bateau', 'Photos et ambiance', 'Programme personnalisable']
+    }, {
+      slug: 'entreprise',
+      title: 'Sortie entreprise',
+      duration: 'Demi-journée ou journée',
+      guests: 'Équipe ou invités',
+      description: 'Offrez à vos collaborateurs ou à vos invités un cadre bien plus inspirant qu’une salle de réunion classique.',
+      image: sharedImages.outing5,
+      highlights: ['Cadre premium', 'Moment fédérateur', 'Sur devis']
+    }, {
+      slug: 'sur-mesure',
+      title: 'Expérience sur mesure',
+      duration: 'À définir',
+      guests: 'Selon demande',
+      description: 'Vous avez une idée précise ou une occasion particulière ? Construisons ensemble une proposition parfaitement adaptée.',
+      image: sharedImages.outing6,
+      highlights: ['Échange direct', 'Organisation adaptée', 'Proposition personnalisée']
+    }],
+    galleryImages: sharedImages.gallery,
+    boatHighlights: ['Catamaran Bali 4.1 spacieux et stable', 'Sorties 100 % privatives avec skipper', 'Navigation confortable et ambiance élégante', 'Départ depuis Marina Baie des Anges']
+  },
+  en: {
+    brand: 'Alegria',
+    brandTagline: 'Private sea outings',
+    phoneDisplay: '+33 6 85 26 65 10',
+    phoneRaw: '+33685266510',
+    email: 'contact@alldigitalnetwork.com',
+    departureArea: 'Marina Baie des Anges, Villeneuve-Loubet',
+    priceFrom: 'From €1,500 per day with skipper',
+    heroImage: sharedImages.hero,
+    boatHeroImage: sharedImages.boatHero,
+    nav: {
+      home: 'Home',
+      outings: 'Outings',
+      boat: 'The boat',
+      gallery: 'Gallery',
+      contact: 'Contact',
+      quote: 'Request a quote'
+    },
+    common: {
+      from: 'From',
+      dayWithSkipper: 'per day with skipper',
+      contactUs: 'Contact us',
+      requestQuote: 'Request a quote',
+      call: 'Call',
+      emailUs: 'Send an email',
+      whatsapp: 'WhatsApp',
+      directContact: 'Direct contact',
+      departurePort: 'Departure port'
+    },
+    home: {
+      eyebrow: 'Private sea outings on the French Riviera',
+      title: 'Charter Alegria for an elegant and relaxed day at sea.',
+      intro: 'Enjoy a comfortable catamaran for a full day at sea, a sunset cruise, a birthday celebration or a special moment with friends, family or your partner. All outings are private and tailored to your plans, starting from €1,500 per day with skipper.',
+      primaryCta: 'Discover the outings',
+      secondaryCta: 'Request a quote',
+      points: ['Private charters', 'From €1,500 per day with skipper', 'Direct contact and fast reply'],
+      sectionEyebrow: 'Our outings',
+      sectionTitle: 'Experiences designed for pleasure, relaxation and memorable moments at sea',
+      sectionText: 'Choose one of our suggested outings or contact us directly to build a tailored program based on your preferred date, group size and desired atmosphere.',
+      boatEyebrow: 'Alegria',
+      boatTitle: 'A spacious and comfortable catamaran to fully enjoy the coastline',
+      boatText: 'Alegria offers the ideal setting to relax, enjoy lunch on board, swim in crystal-clear waters and experience the French Riviera from the sea.',
+      boatCta: 'Discover the boat',
+      contactEyebrow: 'Tailored quote',
+      contactTitle: 'Tell us about your ideal outing and receive a personalized proposal.',
+      contactText: 'Full day at sea, sunset cruise, birthday, bachelor or bachelorette party, or corporate outing: we discuss your plans directly and recommend the right format.'
+    },
+    outingsPage: {
+      eyebrow: 'Our outings',
+      title: 'Private experiences aboard Alegria for every occasion',
+      intro: 'All packages are indicative and can be adjusted to your project, weather conditions, preferred route and number of guests.',
+      cta: 'Get more information'
+    },
+    boatPage: {
+      eyebrow: 'The boat',
+      title: 'Alegria, a catamaran designed for comfortable and memorable days at sea',
+      intro: 'Alegria is a spacious, stable and welcoming Bali 4.1, ideal for enjoying the sea in an elegant and relaxed setting. On board, everything is designed for a pleasant private outing with skipper, at your own pace.',
+      reasonsTitle: 'Why choose Alegria?',
+      reasonsText: 'The catamaran is perfectly suited to family outings, private celebrations and relaxing days in some of the Riviera’s most beautiful anchorages.',
+      reasons: ['Large living space to move around and unwind', 'Comfortable cruising and friendly atmosphere', '100% private outing with skipper', 'Flexible itinerary depending on your wishes and the weather'],
+      comfortTitle: 'Comfort and atmosphere on board',
+      comfortText: 'Whether you want to enjoy the sun, share lunch, organize sunset drinks or simply discover the coastline, Alegria welcomes you in a warm and carefully prepared environment.',
+      occasionsTitle: 'Ideal for',
+      occasions: ['a family day out', 'a couple’s escape', 'time with friends', 'a birthday celebration', 'a bachelor or bachelorette party', 'a private or corporate event'],
+      cta: 'Request a quote'
+    },
+    galleryPage: {
+      eyebrow: 'Gallery',
+      title: 'Discover Alegria in pictures',
+      intro: 'A selection of images to help you picture the atmosphere on board and the kind of experiences you can enjoy at sea.'
+    },
+    contactPage: {
+      eyebrow: 'Contact / quote',
+      title: 'Tell us about your sea outing project',
+      intro: 'Simply share the type of outing you want, your preferred date and the number of guests. We will get back to you quickly with useful details and a tailored proposal.',
+      formTitle: 'Information request',
+      name: 'Name',
+      email: 'Email',
+      phone: 'Phone',
+      outingType: 'Type of outing',
+      outingPlaceholder: 'Select',
+      preferredDate: 'Preferred date',
+      guests: 'Number of guests',
+      message: 'Your message',
+      sendEmail: 'Send by email',
+      prepareWhatsapp: 'Prepare a WhatsApp message',
+      directTitle: 'Direct contact',
+      directText: 'You can also contact us directly by phone or email to discuss your plans and check availability.',
+      sentNotice: 'Your message has been prepared. We will reply as soon as possible.',
+      outingOptions: ['Day at sea', 'Sunset cruise', 'Birthday', 'Bachelorette / bachelor party', 'Corporate outing', 'Tailor-made project'],
+      emailSubjectPrefix: 'Information request',
+      whatsappIntro: 'Hello, I would like to receive information about a sea outing aboard Alegria.'
+    },
+    footer: {
+      description: 'Private sea outings aboard Alegria from Marina Baie des Anges. From €1,500 per day with skipper.',
+      navigation: 'Navigation',
+      contact: 'Contact',
+      quickReply: 'Fast reply for information requests and quotations.'
+    },
+    notFound: {
+      title: 'Page not found',
+      text: 'The requested page does not exist or is no longer available.',
+      cta: 'Back to home'
+    },
+    outings: [{
+      slug: 'day-at-sea',
+      title: 'Day at sea',
+      duration: 'Full day',
+      guests: 'Private charter',
+      description: 'A full day on the water to enjoy cruising, lunch on board, swimming stops and some of the most beautiful anchorages on the Riviera.',
+      image: sharedImages.outing1,
+      highlights: ['From €1,500 with skipper', 'Tailored program', 'Swimming and relaxation']
+    }, {
+      slug: 'sunset',
+      title: 'Sunset cruise',
+      duration: 'Late afternoon',
+      guests: 'Couple, family or friends',
+      description: 'An elegant outing at sea to enjoy exceptional light and a special moment aboard Alegria.',
+      image: sharedImages.outing2,
+      highlights: ['Relaxed premium atmosphere', 'Drinks on request', 'Memorable experience']
+    }, {
+      slug: 'birthday',
+      title: 'Birthday or private event',
+      duration: 'According to your plan',
+      guests: 'Private charter',
+      description: 'Celebrate an important date in an original and refined setting, with an outing tailored to your wishes.',
+      image: sharedImages.outing3,
+      highlights: ['Flexible format', 'Unique setting', 'Unforgettable memories']
+    }, {
+      slug: 'hen-stag',
+      title: 'Hen / stag party',
+      duration: 'Half day or full day',
+      guests: 'Friendly group',
+      description: 'A festive sea outing to share a beautiful moment before the big day.',
+      image: sharedImages.outing4,
+      highlights: ['Private boat', 'Great atmosphere', 'Customizable program']
+    }, {
+      slug: 'corporate',
+      title: 'Corporate outing',
+      duration: 'Half day or full day',
+      guests: 'Team or guests',
+      description: 'Offer your team or guests a setting far more inspiring than a traditional meeting room.',
+      image: sharedImages.outing5,
+      highlights: ['Premium setting', 'Team bonding', 'Quote on request']
+    }, {
+      slug: 'custom',
+      title: 'Tailor-made experience',
+      duration: 'To be defined',
+      guests: 'On request',
+      description: 'Have a specific idea or a special occasion in mind? Let’s build the right proposal together.',
+      image: sharedImages.outing6,
+      highlights: ['Direct discussion', 'Adapted organization', 'Personalized proposal']
+    }],
+    galleryImages: sharedImages.gallery,
+    boatHighlights: ['Spacious and stable Bali 4.1 catamaran', '100% private outings with skipper', 'Comfortable cruising and elegant atmosphere', 'Departure from Marina Baie des Anges']
+  },
+  es: {
+    brand: 'Alegria',
+    brandTagline: 'Salidas privadas en el mar',
+    phoneDisplay: '+33 6 85 26 65 10',
+    phoneRaw: '+33685266510',
+    email: 'contact@alldigitalnetwork.com',
+    departureArea: 'Marina Baie des Anges, Villeneuve-Loubet',
+    priceFrom: 'Desde 1.500 € por día con patrón',
+    heroImage: sharedImages.hero,
+    boatHeroImage: sharedImages.boatHero,
+    nav: {
+      home: 'Inicio',
+      outings: 'Salidas',
+      boat: 'El barco',
+      gallery: 'Galería',
+      contact: 'Contacto',
+      quote: 'Solicitar presupuesto'
+    },
+    common: {
+      from: 'Desde',
+      dayWithSkipper: 'por día con patrón',
+      contactUs: 'Contactarnos',
+      requestQuote: 'Solicitar presupuesto',
+      call: 'Llamar',
+      emailUs: 'Enviar un correo',
+      whatsapp: 'WhatsApp',
+      directContact: 'Contacto directo',
+      departurePort: 'Puerto de salida'
+    },
+    home: {
+      eyebrow: 'Salidas privadas en el mar en la Costa Azul',
+      title: 'Privatice Alegria para disfrutar de un día elegante y relajado en el mar.',
+      intro: 'Disfrute de un catamarán cómodo para pasar un día completo en el mar, un atardecer, un cumpleaños o un momento especial con amigos, en familia o en pareja. Todas las salidas son privadas y se organizan a medida desde 1.500 € por día con patrón.',
+      primaryCta: 'Descubrir las salidas',
+      secondaryCta: 'Solicitar presupuesto',
+      points: ['Salidas privadas', 'Desde 1.500 € por día con patrón', 'Contacto directo y respuesta rápida'],
+      sectionEyebrow: 'Nuestras salidas',
+      sectionTitle: 'Experiencias pensadas para disfrutar, relajarse y vivir momentos inolvidables en el mar',
+      sectionText: 'Elija una salida sugerida o contáctenos directamente para crear un programa a medida según su fecha, el número de personas y el ambiente deseado.',
+      boatEyebrow: 'Alegria',
+      boatTitle: 'Un catamarán amplio y cómodo para disfrutar plenamente de la navegación',
+      boatText: 'Alegria ofrece el entorno ideal para relajarse, almorzar a bordo, bañarse en aguas cristalinas y descubrir la Costa Azul desde el mar.',
+      boatCta: 'Descubrir el barco',
+      contactEyebrow: 'Presupuesto personalizado',
+      contactTitle: 'Cuéntenos cómo imagina su salida ideal y reciba una propuesta adaptada.',
+      contactText: 'Día completo en el mar, salida al atardecer, cumpleaños, despedida de soltero o soltera o evento de empresa: hablamos directamente con usted para recomendarle la mejor opción.'
+    },
+    outingsPage: {
+      eyebrow: 'Nuestras salidas',
+      title: 'Experiencias privadas a bordo de Alegria para cada ocasión',
+      intro: 'Todas las fórmulas son orientativas y pueden adaptarse a su proyecto, a las condiciones meteorológicas, a la ruta deseada y al número de invitados.',
+      cta: 'Recibir información'
+    },
+    boatPage: {
+      eyebrow: 'El barco',
+      title: 'Alegria, un catamarán diseñado para días cómodos e inolvidables en el mar',
+      intro: 'Alegria es un Bali 4.1 amplio, estable y acogedor, ideal para disfrutar del mar en un entorno elegante y relajado. A bordo, todo está pensado para vivir una salida privada agradable con patrón y al ritmo de sus deseos.',
+      reasonsTitle: '¿Por qué elegir Alegria?',
+      reasonsText: 'El catamarán es perfecto para salidas en familia, celebraciones privadas y jornadas de relax en algunos de los fondeaderos más bonitos de la Riviera.',
+      reasons: ['Amplio espacio de vida para moverse y relajarse', 'Navegación cómoda y ambiente acogedor', 'Salida 100 % privada con patrón', 'Programa flexible según sus deseos y el tiempo'],
+      comfortTitle: 'Confort y ambiente a bordo',
+      comfortText: 'Tanto si desea disfrutar del sol, compartir un almuerzo, organizar un aperitivo al atardecer o simplemente descubrir la costa, Alegria le recibe en un ambiente cuidado y agradable.',
+      occasionsTitle: 'Ideal para',
+      occasions: ['un día en familia', 'una escapada en pareja', 'un momento entre amigos', 'un cumpleaños', 'una despedida de soltero o soltera', 'un evento privado o corporativo'],
+      cta: 'Solicitar presupuesto'
+    },
+    galleryPage: {
+      eyebrow: 'Galería',
+      title: 'Descubra Alegria en imágenes',
+      intro: 'Una selección de fotos para ayudarle a imaginar el ambiente a bordo y las experiencias que puede vivir en el mar.'
+    },
+    contactPage: {
+      eyebrow: 'Contacto / presupuesto',
+      title: 'Háblenos de su proyecto de salida en el mar',
+      intro: 'Indíquenos el tipo de salida que desea, su fecha ideal y el número de participantes. Le responderemos rápidamente con la información útil y una propuesta adaptada.',
+      formTitle: 'Solicitud de información',
+      name: 'Nombre',
+      email: 'Correo electrónico',
+      phone: 'Teléfono',
+      outingType: 'Tipo de salida',
+      outingPlaceholder: 'Seleccionar',
+      preferredDate: 'Fecha deseada',
+      guests: 'Número de personas',
+      message: 'Su mensaje',
+      sendEmail: 'Enviar por correo',
+      prepareWhatsapp: 'Preparar un mensaje de WhatsApp',
+      directTitle: 'Contacto directo',
+      directText: 'También puede contactarnos directamente por teléfono o correo electrónico para hablar de su proyecto y comprobar la disponibilidad.',
+      sentNotice: 'Su mensaje ha sido preparado. Le responderemos lo antes posible.',
+      outingOptions: ['Día en el mar', 'Atardecer', 'Cumpleaños', 'Despedida de soltero / soltera', 'Salida de empresa', 'Proyecto a medida'],
+      emailSubjectPrefix: 'Solicitud de información',
+      whatsappIntro: 'Hola, me gustaría recibir información sobre una salida en el mar a bordo de Alegria.'
+    },
+    footer: {
+      description: 'Salidas privadas en el mar a bordo de Alegria desde Marina Baie des Anges. Desde 1.500 € por día con patrón.',
+      navigation: 'Navegación',
+      contact: 'Contacto',
+      quickReply: 'Respuesta rápida para solicitudes de información y presupuestos.'
+    },
+    notFound: {
+      title: 'Página no encontrada',
+      text: 'La página solicitada no existe o ya no está disponible.',
+      cta: 'Volver al inicio'
+    },
+    outings: [{
+      slug: 'dia-en-el-mar',
+      title: 'Día en el mar',
+      duration: 'Día completo',
+      guests: 'Salida privada',
+      description: 'Un día en el agua para disfrutar de la navegación, un almuerzo a bordo, baños y algunos de los mejores fondeaderos de la Riviera.',
+      image: sharedImages.outing1,
+      highlights: ['Desde 1.500 € con patrón', 'Programa a medida', 'Baño y relax']
+    }, {
+      slug: 'atardecer',
+      title: 'Salida al atardecer',
+      duration: 'Final del día',
+      guests: 'Pareja, familia o amigos',
+      description: 'Una salida elegante en el mar para disfrutar de una luz excepcional y de un momento especial a bordo de Alegria.',
+      image: sharedImages.outing2,
+      highlights: ['Ambiente relajado y chic', 'Aperitivo posible', 'Experiencia memorable']
+    }, {
+      slug: 'cumpleanos',
+      title: 'Cumpleaños o evento privado',
+      duration: 'Según su proyecto',
+      guests: 'Privatización',
+      description: 'Celebre una fecha importante en un entorno original y refinado, con una salida adaptada a sus deseos.',
+      image: sharedImages.outing3,
+      highlights: ['Formato flexible', 'Entorno único', 'Recuerdos inolvidables']
+    }, {
+      slug: 'despedida',
+      title: 'Despedida de soltero / soltera',
+      duration: 'Medio día o día completo',
+      guests: 'Grupo agradable',
+      description: 'Una salida festiva en el mar para compartir un gran momento antes del gran día.',
+      image: sharedImages.outing4,
+      highlights: ['Barco privatizado', 'Gran ambiente', 'Programa personalizable']
+    }, {
+      slug: 'empresa',
+      title: 'Salida de empresa',
+      duration: 'Medio día o día completo',
+      guests: 'Equipo o invitados',
+      description: 'Ofrezca a su equipo o a sus invitados un entorno mucho más inspirador que una sala de reuniones tradicional.',
+      image: sharedImages.outing5,
+      highlights: ['Entorno premium', 'Cohesión de equipo', 'Presupuesto a medida']
+    }, {
+      slug: 'a-medida',
+      title: 'Experiencia a medida',
+      duration: 'Por definir',
+      guests: 'Según solicitud',
+      description: '¿Tiene una idea concreta o una ocasión especial? Construyamos juntos la propuesta adecuada.',
+      image: sharedImages.outing6,
+      highlights: ['Intercambio directo', 'Organización adaptada', 'Propuesta personalizada']
+    }],
+    galleryImages: sharedImages.gallery,
+    boatHighlights: ['Catamarán Bali 4.1 amplio y estable', 'Salidas 100 % privadas con patrón', 'Navegación cómoda y ambiente elegante', 'Salida desde Marina Baie des Anges']
+  }
+};
 
 /***/ }),
 
-/***/ 14699:
-/*!*****************************************************!*\
-  !*** ./src/app/layout/auth/layoutauth.component.ts ***!
-  \*****************************************************/
+/***/ 14211:
+/*!****************************************************************!*\
+  !*** ./src/app/layout/home/homelayout/homelayout.component.ts ***!
+  \****************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   LayoutauthComponent: () => (/* binding */ LayoutauthComponent)
+/* harmony export */   HomelayoutComponent: () => (/* binding */ HomelayoutComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _layoutauth_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layoutauth.component.html?ngResource */ 89445);
-/* harmony import */ var _layoutauth_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layoutauth.component.scss?ngResource */ 72661);
-/* harmony import */ var _layoutauth_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_layoutauth_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngx-translate/core */ 48503);
-/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../layout.service */ 11266);
-/* harmony import */ var _services_services_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/services.service */ 92030);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _homelayout_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./homelayout.component.html?ngResource */ 48509);
+/* harmony import */ var _homelayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./homelayout.component.scss?ngResource */ 26791);
+/* harmony import */ var _homelayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_homelayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37580);
 
 
 
 
-
-
-
-
-
-let LayoutauthComponent = class LayoutauthComponent {
-  router;
-  layoutSvc;
-  utilsSvc;
-  localUtilsSvc;
-  translateSvc;
-  constructor(router, layoutSvc, utilsSvc, localUtilsSvc, translateSvc) {
-    this.router = router;
-    this.layoutSvc = layoutSvc;
-    this.utilsSvc = utilsSvc;
-    this.localUtilsSvc = localUtilsSvc;
-    this.translateSvc = translateSvc;
-  }
-  ngOnInit() {}
-  static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
-  }, {
-    type: _layout_service__WEBPACK_IMPORTED_MODULE_2__.LayoutService
-  }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.UtilsService
-  }, {
-    type: _services_services_service__WEBPACK_IMPORTED_MODULE_3__.LocalUtilsService
-  }, {
-    type: _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__.TranslateService
-  }];
-};
-LayoutauthComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
-  selector: 'app-layoutauth',
-  template: _layoutauth_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  styles: [(_layoutauth_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
-})], LayoutauthComponent);
+let HomelayoutComponent = class HomelayoutComponent {};
+HomelayoutComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Component)({
+  selector: 'app-homelayout',
+  template: _homelayout_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_homelayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], HomelayoutComponent);
 
 
 /***/ }),
@@ -3486,14 +3848,30 @@ AppComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_15__.__decorate)([(0,_angular_c
 
 /***/ }),
 
-/***/ 25465:
-/*!**************************************************************************************!*\
-  !*** ./src/app/layout/landing/landingfooter/landingfooter.component.html?ngResource ***!
-  \**************************************************************************************/
-/***/ ((module) => {
+/***/ 26791:
+/*!*****************************************************************************!*\
+  !*** ./src/app/layout/home/homelayout/homelayout.component.scss?ngResource ***!
+  \*****************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-module.exports = "<footer class=\"border-top small py-3 mt-auto\" *ngIf=\"vm$ | async as vm\">\n  <div class=\"container d-flex flex-wrap justify-content-between align-items-center gap-2\">\n\n    <!-- LEFT SIDE LABEL -->\n    <div class=\"text-muted\">\n      <ng-container [ngSwitch]=\"vm.mode\">\n\n        <!-- 1) Guest global -->\n        <span *ngSwitchCase=\"'guest-global'\">\n          © {{ year }} Boatify — Book boat events with local owners.\n        </span>\n\n        <!-- 2) Guest owner -->\n        <span *ngSwitchCase=\"'guest-owner'\">\n          © {{ year }} Boatify — Page managed by\n          <strong>{{ vm.urlPrefix | titlecase }}</strong>.\n        </span>\n\n        <!-- 3) Customer global -->\n        <span *ngSwitchCase=\"'customer-global'\">\n          © {{ year }} Boatify — Welcome back, {{ vm.user?.displayName || 'guest' }}.\n        </span>\n\n        <!-- 4) Customer owner -->\n        <span *ngSwitchCase=\"'customer-owner'\">\n          © {{ year }} Boatify — Experiences by\n          <strong>{{ vm.urlPrefix | titlecase }}</strong>.\n        </span>\n\n        <!-- 5) Owner dashboard -->\n        <span *ngSwitchCase=\"'owner-dashboard'\">\n          © {{ year }} Boatify — Owner dashboard.\n        </span>\n\n        <!-- Fallback -->\n        <span *ngSwitchDefault>\n          © {{ year }} Boatify.\n        </span>\n\n      </ng-container>\n    </div>\n\n    <!-- RIGHT SIDE NAV -->\n    <nav class=\"d-flex flex-wrap align-items-center gap-3\">\n\n      <!-- Guest global -->\n      <ng-container *ngIf=\"vm.mode === 'guest-global'\">\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToAbout()\">About</a>\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToContact()\">Contact</a>\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToHostInfo()\">Become a host</a>\n      </ng-container>\n\n      <!-- Guest owner -->\n      <ng-container *ngIf=\"vm.mode === 'guest-owner'\">\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToAbout()\">About Boatify</a>\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToContact()\">Contact support</a>\n      </ng-container>\n\n      <!-- Customer global / owner -->\n      <ng-container *ngIf=\"vm.mode === 'customer-global' || vm.mode === 'customer-owner'\">\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToBookings()\">My bookings</a>\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToHelp()\">Help & support</a>\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToAbout()\">About</a>\n      </ng-container>\n\n      <!-- Owner dashboard -->\n      <ng-container *ngIf=\"vm.mode === 'owner-dashboard'\">\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToOwnerRevenues()\">Revenues</a>\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToDashboardHelp()\">Dashboard help</a>\n        <a class=\"text-decoration-none text-muted\" role=\"button\" (click)=\"goToHelp()\">Support</a>\n      </ng-container>\n\n    </nav>\n  </div>\n</footer>\n";
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.site-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f7fafc;
+}
+
+.site-main {
+  flex: 1;
+}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homelayout/homelayout.component.scss"],"names":[],"mappings":"AAAA;EACE,iBAAA;EACA,aAAA;EACA,sBAAA;EACA,mBAAA;AACF;;AAEA;EACE,OAAA;AACF","sourcesContent":[".site-shell {\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  background: #f7fafc;\n}\n\n.site-main {\n  flex: 1;\n}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
 
 /***/ }),
 
@@ -3508,28 +3886,39 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Page404Component: () => (/* binding */ Page404Component)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _page404_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./page404.component.html?ngResource */ 51108);
 /* harmony import */ var _page404_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./page404.component.scss?ngResource */ 73330);
 /* harmony import */ var _page404_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_page404_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _home_site_content__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../home/site-content */ 14009);
+/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/language.service */ 48756);
+
 
 
 
 
 
 let Page404Component = class Page404Component {
-  router;
-  constructor(router) {
-    this.router = router;
+  languageService;
+  content = _home_site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr;
+  languageSub;
+  constructor(languageService) {
+    this.languageService = languageService;
   }
-  ngOnInit() {}
+  ngOnInit() {
+    this.languageSub = this.languageService.language$.subscribe(language => {
+      this.content = _home_site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT[language];
+    });
+  }
+  ngOnDestroy() {
+    this.languageSub?.unsubscribe();
+  }
   static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_2__.Router
+    type: _services_language_service__WEBPACK_IMPORTED_MODULE_3__.LanguageService
   }];
 };
-Page404Component = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
+Page404Component = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
   selector: 'app-page404',
   template: _page404_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
   styles: [(_page404_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
@@ -3538,380 +3927,282 @@ Page404Component = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_angula
 
 /***/ }),
 
-/***/ 29891:
-/*!*************************************************************************!*\
-  !*** ./src/app/layout/landing/landingfooter/landingfooter.component.ts ***!
-  \*************************************************************************/
+/***/ 38745:
+/*!*****************************************************************************!*\
+  !*** ./src/app/layout/home/homefooter/homefooter.component.scss?ngResource ***!
+  \*****************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.site-footer {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 2.4rem 0 1.4rem;
+}
+
+.container {
+  width: min(1120px, 100% - 2rem);
+  margin: 0 auto;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 1.6rem;
+}
+
+.footer-grid h3 {
+  color: #fff;
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.footer-grid h4 {
+  color: #fff;
+  margin-bottom: 0.8rem;
+  font-size: 0.9rem;
+}
+
+.footer-grid p,
+.footer-grid a,
+.footer-grid li {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+
+.footer-grid ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+@media (max-width: 860px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homefooter/homefooter.component.scss"],"names":[],"mappings":"AAAA;EACE,mBAAA;EACA,cAAA;EACA,wBAAA;AACF;;AAEA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,oCAAA;EACA,WAAA;AACF;;AAEA;EACE,WAAA;EACA,qBAAA;EACA,eAAA;EACA,mBAAA;AACF;;AAEA;EACE,WAAA;EACA,qBAAA;EACA,iBAAA;AACF;;AAEA;;;EAGE,cAAA;EACA,qBAAA;EACA,iBAAA;EACA,gBAAA;AACF;;AAEA;EACE,gBAAA;EACA,UAAA;EACA,SAAA;EACA,aAAA;EACA,WAAA;AACF;;AAEA;EACE;IACE,0BAAA;EACF;AACF","sourcesContent":[".site-footer {\n  background: #0f172a;\n  color: #e2e8f0;\n  padding: 2.4rem 0 1.4rem;\n}\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.footer-grid {\n  display: grid;\n  grid-template-columns: 1.4fr 1fr 1fr;\n  gap: 1.6rem;\n}\n\n.footer-grid h3 {\n  color: #fff;\n  margin-bottom: 0.8rem;\n  font-size: 1rem;\n  white-space: nowrap;\n}\n\n.footer-grid h4 {\n  color: #fff;\n  margin-bottom: 0.8rem;\n  font-size: 0.9rem;\n}\n\n.footer-grid p,\n.footer-grid a,\n.footer-grid li {\n  color: #cbd5e1;\n  text-decoration: none;\n  font-size: 0.8rem;\n  line-height: 1.7;\n}\n\n.footer-grid ul {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n  display: grid;\n  gap: 0.5rem;\n}\n\n@media (max-width: 860px) {\n  .footer-grid {\n    grid-template-columns: 1fr;\n  }\n}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
+/***/ 39829:
+/*!*****************************************************************************!*\
+  !*** ./src/app/layout/home/homeheader/homeheader.component.scss?ngResource ***!
+  \*****************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.96);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.container {
+  width: min(1120px, 100% - 2rem);
+  margin: 0 auto;
+}
+
+.header-bar {
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #0ea5e9, #0369a1);
+  color: #fff;
+  font-size: 1rem;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+}
+
+.brand-text strong {
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.brand-text small {
+  color: #475569;
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+
+.menu-toggle {
+  display: none;
+  border: none;
+  background: #e2e8f0;
+  color: #0f172a;
+  font-size: 1.1rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 10px;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: #334155;
+  font-weight: 500;
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+.main-nav a.active {
+  color: #0f172a;
+}
+
+.language-switcher {
+  display: flex;
+  align-items: center;
+}
+
+.language-switcher select {
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: #fff;
+  color: #0f172a;
+  font-size: 0.83rem;
+  padding: 0.45rem 0.8rem;
+}
+
+.cta-link {
+  padding: 0.72rem 0.95rem;
+  border-radius: 999px;
+  background: #0f172a;
+  color: #fff !important;
+  font-size: 0.84rem;
+}
+
+@media (max-width: 960px) {
+  .menu-toggle {
+    display: inline-flex;
+  }
+  .main-nav {
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    top: 78px;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.35rem;
+    padding: 0.8rem;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 18px;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  }
+  .main-nav.open {
+    display: flex;
+  }
+  .main-nav a,
+  .language-switcher select {
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+  }
+  .cta-link {
+    text-align: center;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homeheader/homeheader.component.scss"],"names":[],"mappings":"AAAA;EACE,gBAAA;EACA,MAAA;EACA,WAAA;EACA,qCAAA;EACA,kCAAA;UAAA,0BAAA;EACA,+CAAA;AACF;;AAEA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,WAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;EACA,cAAA;EACA,qBAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,kBAAA;EACA,aAAA;EACA,mBAAA;EACA,qDAAA;EACA,WAAA;EACA,eAAA;AACF;;AAEA;EACE,aAAA;EACA,sBAAA;EACA,iBAAA;AACF;;AAEA;EACE,eAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE,aAAA;EACA,YAAA;EACA,mBAAA;EACA,cAAA;EACA,iBAAA;EACA,wBAAA;EACA,mBAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;AACF;;AAEA;EACE,yBAAA;EACA,oBAAA;EACA,gBAAA;EACA,cAAA;EACA,kBAAA;EACA,uBAAA;AACF;;AAEA;EACE,wBAAA;EACA,oBAAA;EACA,mBAAA;EACA,sBAAA;EACA,kBAAA;AACF;;AAEA;EACE;IACE,oBAAA;EACF;EAEA;IACE,kBAAA;IACA,UAAA;IACA,WAAA;IACA,SAAA;IACA,aAAA;IACA,sBAAA;IACA,oBAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;IACA,wCAAA;IACA,mBAAA;IACA,8CAAA;EAAF;EAGA;IACE,aAAA;EADF;EAIA;;IAEE,oBAAA;IACA,mBAAA;EAFF;EAKA;IACE,kBAAA;EAHF;AACF","sourcesContent":[".site-header {\n  position: sticky;\n  top: 0;\n  z-index: 20;\n  background: rgba(255, 255, 255, 0.96);\n  backdrop-filter: blur(8px);\n  border-bottom: 1px solid rgba(15, 23, 42, 0.08);\n}\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.header-bar {\n  min-height: 70px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 0.9rem;\n}\n\n.brand {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n  color: #0f172a;\n  text-decoration: none;\n}\n\n.brand-mark {\n  width: 38px;\n  height: 38px;\n  border-radius: 50%;\n  display: grid;\n  place-items: center;\n  background: linear-gradient(135deg, #0ea5e9, #0369a1);\n  color: #fff;\n  font-size: 1rem;\n}\n\n.brand-text {\n  display: flex;\n  flex-direction: column;\n  line-height: 1.05;\n}\n\n.brand-text strong {\n  font-size: 1rem;\n  white-space: nowrap;\n}\n\n.brand-text small {\n  color: #475569;\n  font-size: 0.68rem;\n  white-space: nowrap;\n}\n\n.menu-toggle {\n  display: none;\n  border: none;\n  background: #e2e8f0;\n  color: #0f172a;\n  font-size: 1.1rem;\n  padding: 0.45rem 0.75rem;\n  border-radius: 10px;\n}\n\n.main-nav {\n  display: flex;\n  align-items: center;\n  gap: 0.85rem;\n}\n\n.main-nav a {\n  text-decoration: none;\n  color: #334155;\n  font-weight: 500;\n  font-size: 0.88rem;\n  white-space: nowrap;\n}\n\n.main-nav a.active {\n  color: #0f172a;\n}\n\n.language-switcher {\n  display: flex;\n  align-items: center;\n}\n\n.language-switcher select {\n  border: 1px solid #cbd5e1;\n  border-radius: 999px;\n  background: #fff;\n  color: #0f172a;\n  font-size: 0.83rem;\n  padding: 0.45rem 0.8rem;\n}\n\n.cta-link {\n  padding: 0.72rem 0.95rem;\n  border-radius: 999px;\n  background: #0f172a;\n  color: #fff !important;\n  font-size: 0.84rem;\n}\n\n@media (max-width: 960px) {\n  .menu-toggle {\n    display: inline-flex;\n  }\n\n  .main-nav {\n    position: absolute;\n    left: 1rem;\n    right: 1rem;\n    top: 78px;\n    display: none;\n    flex-direction: column;\n    align-items: stretch;\n    gap: 0.35rem;\n    padding: 0.8rem;\n    background: #ffffff;\n    border: 1px solid rgba(15, 23, 42, 0.08);\n    border-radius: 18px;\n    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);\n  }\n\n  .main-nav.open {\n    display: flex;\n  }\n\n  .main-nav a,\n  .language-switcher select {\n    padding: 0.9rem 1rem;\n    border-radius: 12px;\n  }\n\n  .cta-link {\n    text-align: center;\n  }\n}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
+/***/ 41445:
+/*!****************************************************************!*\
+  !*** ./src/app/layout/home/homefooter/homefooter.component.ts ***!
+  \****************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   LandingfooterComponent: () => (/* binding */ LandingfooterComponent)
-/* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _landingfooter_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./landingfooter.component.html?ngResource */ 25465);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/router */ 99585);
-/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../layout.service */ 11266);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 75797);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs */ 19999);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ 51567);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ 70271);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ 63037);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ 86301);
-
-
-
-
-
-
-
-
-let LandingfooterComponent = class LandingfooterComponent {
-  router;
-  layoutSvc;
-  year = new Date().getFullYear();
-  /** prefix state */
-  prefix$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__.BehaviorSubject({
-    isPrefixed: false,
-    urlPrefix: null
-  });
-  /** url state */
-  url$;
-  /** user state */
-  user$;
-  /** derived view model (used in HTML) */
-  vm$;
-  constructor(router, layoutSvc) {
-    this.router = router;
-    this.layoutSvc = layoutSvc;
-  }
-  ngOnInit() {
-    // url stream
-    this.url$ = this.router.events.pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.filter)(ev => ev instanceof _angular_router__WEBPACK_IMPORTED_MODULE_4__.NavigationEnd), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.map)(() => this.router.url || ''), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_6__.startWith)(this.router.url || ''), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_7__.shareReplay)({
-      bufferSize: 1,
-      refCount: true
-    }));
-    // user stream
-    this.user$ = this.layoutSvc.mainSvc.getUser().pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_6__.startWith)(null), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_7__.shareReplay)({
-      bufferSize: 1,
-      refCount: true
-    }));
-    // view model stream
-    this.vm$ = (0,rxjs__WEBPACK_IMPORTED_MODULE_8__.combineLatest)([this.user$, this.url$, this.prefix$]).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.map)(([user, url, pref]) => {
-      const isLoggedIn = !!user;
-      const role = (user?.role ?? '').toString().trim().toLowerCase();
-      const isBoatOwner = ['boatowner', 'boat_owner', 'owner'].includes(role);
-      const onOwnerDashboard = url.startsWith('/owner') || url.startsWith('/host');
-      const mode = onOwnerDashboard && isLoggedIn && isBoatOwner ? 'owner-dashboard' : !isLoggedIn ? pref.isPrefixed ? 'guest-owner' : 'guest-global' : pref.isPrefixed ? 'customer-owner' : 'customer-global';
-      return {
-        user,
-        isLoggedIn,
-        isBoatOwner,
-        urlPrefix: pref.urlPrefix,
-        isPrefixed: pref.isPrefixed,
-        mode
-      };
-    }), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_7__.shareReplay)({
-      bufferSize: 1,
-      refCount: true
-    }));
-    // initial prefix detection
-    this.prefix$.next(this.detectPrefix());
-  }
-  detectPrefix() {
-    if (typeof window === 'undefined') {
-      return {
-        isPrefixed: false,
-        urlPrefix: null
-      };
-    }
-    const host = window.location.host;
-    const parts = host.split('.');
-    if (host.includes('localhost') || host.includes('127.0.0.1')) {
-      const params = new URLSearchParams(window.location.search);
-      const p = params.get('prefix');
-      return p ? {
-        isPrefixed: true,
-        urlPrefix: p
-      } : {
-        isPrefixed: false,
-        urlPrefix: null
-      };
-    }
-    if (parts.length === 2) return {
-      isPrefixed: false,
-      urlPrefix: null
-    };
-    if (parts.length >= 3) {
-      const sub = parts[0].toLowerCase();
-      if (sub === 'www' || sub === 'app') return {
-        isPrefixed: false,
-        urlPrefix: null
-      };
-      return {
-        isPrefixed: true,
-        urlPrefix: sub
-      };
-    }
-    return {
-      isPrefixed: false,
-      urlPrefix: null
-    };
-  }
-  // navigation helpers
-  goToHelp() {
-    this.router.navigate(['/help']);
-  }
-  goToAbout() {
-    this.router.navigate(['/about-platform']);
-  }
-  goToContact() {
-    this.router.navigate(['/contactus']);
-  }
-  goToHostInfo() {
-    this.router.navigate(['/owner/start']);
-  }
-  goToBookings() {
-    this.router.navigate(['/bookings']);
-  }
-  goToOwnerRevenues() {
-    this.router.navigate(['/owner/revenues']);
-  }
-  goToDashboardHelp() {
-    this.router.navigate(['/owner/help']);
-  }
-  static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
-  }, {
-    type: _layout_service__WEBPACK_IMPORTED_MODULE_1__.LayoutService
-  }];
-};
-LandingfooterComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_9__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_10__.Component)({
-  selector: 'app-landingfooter',
-  standalone: true,
-  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_11__.CommonModule, _angular_router__WEBPACK_IMPORTED_MODULE_12__.RouterLink],
-  template: _landingfooter_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_10__.ChangeDetectionStrategy.OnPush
-})], LandingfooterComponent);
-
-
-/***/ }),
-
-/***/ 33607:
-/*!**********************************************************************************!*\
-  !*** ./src/app/layout/boatowner/boatfooter/boatfooter.component.html?ngResource ***!
-  \**********************************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = "<!-- Boat Owner Space — About Page (Layali / Gin & Tonics vibe) -->\n<main id=\"main\" class=\"about about--boat-owner\">\n  <!-- HERO -->\n  <header class=\"about__hero\" aria-labelledby=\"about-title\">\n    <div class=\"container about__hero-inner\">\n      <p class=\"about__kicker\">Boat Owner Space</p>\n      <h1 id=\"about-title\" class=\"about__title\">\n        A calm, premium home for boat owners — with a little Layali glow and a gin &amp; tonic mindset.\n      </h1>\n      <p class=\"about__lead\">\n        Whether you host guests on the water, run day charters, or keep your boat immaculate and ready,\n        we make it simple to manage your presence, bookings, and owner needs — without the noise.\n      </p>\n\n      <div class=\"about__cta\">\n        <a class=\"btn btn--primary\" href=\"/boat-owner/apply\">Become a Boat Owner Partner</a>\n        <a class=\"btn btn--secondary\" href=\"/boat-owner/contact\">Talk to us</a>\n      </div>\n\n      <ul class=\"about__highlights\" aria-label=\"Key benefits\">\n        <li class=\"about__highlight\">\n          <strong>Owner-first</strong><span>Tools made for real operations.</span>\n        </li>\n        <li class=\"about__highlight\">\n          <strong>Premium feel</strong><span>Guests remember the experience.</span>\n        </li>\n        <li class=\"about__highlight\">\n          <strong>Simple</strong><span>Clear rules, calm communication.</span>\n        </li>\n      </ul>\n    </div>\n  </header>\n\n  <!-- TRUST / LOGOS -->\n  <section class=\"about__trust\" aria-label=\"Trusted by\">\n    <div class=\"container\">\n      <p class=\"about__trust-text\">\n        Built for owners who care about details, safety, and a smooth guest journey.\n      </p>\n      <div class=\"about__logos\" role=\"list\" aria-label=\"Partner logos\">\n        <span role=\"listitem\" class=\"logo logo--placeholder\">Layali</span>\n        <span role=\"listitem\" class=\"logo logo--placeholder\">Gin &amp; Tonics</span>\n        <span role=\"listitem\" class=\"logo logo--placeholder\">Boat Owners</span>\n      </div>\n    </div>\n  </section>\n\n  <!-- WHAT IT IS -->\n  <section class=\"about__section\" aria-labelledby=\"what-it-is\">\n    <div class=\"container grid grid--2\">\n      <div class=\"stack\">\n        <h2 id=\"what-it-is\" class=\"about__heading\">What is Boat Owner Space?</h2>\n        <p class=\"about__text\">\n          Boat Owner Space is your dedicated area to present your boat, define your rules,\n          manage availability, and keep communication clean and professional.\n        </p>\n        <p class=\"about__text\">\n          It’s designed for owners who want a refined presence — like a well-set deck at sunset:\n          uncluttered, elegant, and ready.\n        </p>\n      </div>\n\n      <aside class=\"card card--soft\" aria-label=\"At a glance\">\n        <ul class=\"list list--check\">\n          <li>Owner profile + boat showcase</li>\n          <li>Availability and booking requests</li>\n          <li>Clear guest rules and expectations</li>\n          <li>Payments, deposits, and invoicing support</li>\n          <li>Support for charter or private use</li>\n        </ul>\n      </aside>\n    </div>\n  </section>\n\n  <!-- HOW IT WORKS -->\n  <section class=\"about__section about__section--alt\" aria-labelledby=\"how-it-works\">\n    <div class=\"container\">\n      <h2 id=\"how-it-works\" class=\"about__heading\">How it works</h2>\n\n      <ol class=\"steps\" aria-label=\"Steps\">\n        <li class=\"steps__item\">\n          <h3 class=\"steps__title\">1) Create your owner space</h3>\n          <p class=\"steps__text\">\n            Add your boat details, photos, capacity, and the experience you offer.\n          </p>\n        </li>\n\n        <li class=\"steps__item\">\n          <h3 class=\"steps__title\">2) Set rules and availability</h3>\n          <p class=\"steps__text\">\n            Define what’s allowed onboard, timing, fuel policy, skipper options, and cancellation terms.\n          </p>\n        </li>\n\n        <li class=\"steps__item\">\n          <h3 class=\"steps__title\">3) Receive and manage requests</h3>\n          <p class=\"steps__text\">\n            Accept, decline, or ask questions — without messy back-and-forth.\n          </p>\n        </li>\n\n        <li class=\"steps__item\">\n          <h3 class=\"steps__title\">4) Host with confidence</h3>\n          <p class=\"steps__text\">\n            A clean handover process, clear expectations, and support when you need it.\n          </p>\n        </li>\n      </ol>\n    </div>\n  </section>\n\n  <!-- WHO IT'S FOR -->\n  <section class=\"about__section\" aria-labelledby=\"who-its-for\">\n    <div class=\"container grid grid--2\">\n      <div class=\"stack\">\n        <h2 id=\"who-its-for\" class=\"about__heading\">Who it’s for</h2>\n        <p class=\"about__text\">\n          If you take pride in your boat and prefer calm, respectful interactions — you’re in the right place.\n        </p>\n\n        <ul class=\"pill-list\" aria-label=\"Profiles\">\n          <li class=\"pill\">Day charter owners</li>\n          <li class=\"pill\">Skippered experiences</li>\n          <li class=\"pill\">Private owners (occasional hosting)</li>\n          <li class=\"pill\">Professional operators</li>\n          <li class=\"pill\">Boutique, premium boats</li>\n        </ul>\n      </div>\n\n      <div class=\"card card--bordered\">\n        <h3 class=\"card__title\">Our tone, on purpose</h3>\n        <p class=\"card__text\">\n          The vibe is premium-but-relaxed: think soft lights, clean decks, and a gin &amp; tonic at golden hour.\n          Guests feel welcomed — and owners feel respected.\n        </p>\n      </div>\n    </div>\n  </section>\n\n  <!-- SAFETY / EXPECTATIONS -->\n  <section class=\"about__section about__section--alt\" aria-labelledby=\"safety\">\n    <div class=\"container grid grid--2\">\n      <div class=\"stack\">\n        <h2 id=\"safety\" class=\"about__heading\">Safety &amp; expectations</h2>\n        <p class=\"about__text\">\n          A great experience is built on clarity. We encourage owners to publish rules that guests can actually follow.\n        </p>\n        <ul class=\"list\">\n          <li><strong>Clear capacity</strong> and onboard areas.</li>\n          <li><strong>Arrival &amp; departure</strong> process, late policy.</li>\n          <li><strong>Fuel &amp; cleaning</strong> terms explained upfront.</li>\n          <li><strong>Noise, alcohol, shoes</strong> — whatever matters to you.</li>\n          <li><strong>Weather plan</strong> and cancellation rules.</li>\n        </ul>\n      </div>\n\n      <aside class=\"card card--soft\">\n        <h3 class=\"card__title\">Owner control</h3>\n        <p class=\"card__text\">\n          You stay in control of who you accept, when you host, and what “good guest behavior” looks like for your boat.\n        </p>\n        <a class=\"link\" href=\"/boat-owner/rules\">See rule templates</a>\n      </aside>\n    </div>\n  </section>\n\n  <!-- FAQ -->\n  <section class=\"about__section\" aria-labelledby=\"faq\">\n    <div class=\"container\">\n      <h2 id=\"faq\" class=\"about__heading\">FAQ</h2>\n\n      <div class=\"faq\" role=\"list\">\n        <details class=\"faq__item\" role=\"listitem\">\n          <summary class=\"faq__summary\">Do I need to host full-time?</summary>\n          <div class=\"faq__content\">\n            <p>No. Many owners host occasionally. You control availability and can pause anytime.</p>\n          </div>\n        </details>\n\n        <details class=\"faq__item\" role=\"listitem\">\n          <summary class=\"faq__summary\">Can I require a skipper?</summary>\n          <div class=\"faq__content\">\n            <p>Yes. You can offer skipper-only trips or allow guest skippering where appropriate.</p>\n          </div>\n        </details>\n\n        <details class=\"faq__item\" role=\"listitem\">\n          <summary class=\"faq__summary\">How do payments and deposits work?</summary>\n          <div class=\"faq__content\">\n            <p>\n              You can request deposits and define what they cover (damage, cleaning, late return).\n              Final terms depend on your setup and local requirements.\n            </p>\n          </div>\n        </details>\n      </div>\n    </div>\n  </section>\n\n  <!-- FINAL CTA -->\n  <section class=\"about__cta-block\" aria-labelledby=\"cta-title\">\n    <div class=\"container about__cta-inner\">\n      <h2 id=\"cta-title\" class=\"about__heading\">Ready to set your boat up properly?</h2>\n      <p class=\"about__text\">\n        Build an owner space that looks premium, communicates clearly, and keeps you in control.\n      </p>\n      <div class=\"about__cta\">\n        <a class=\"btn btn--primary\" href=\"/boat-owner/apply\">Apply as a Boat Owner</a>\n        <a class=\"btn btn--secondary\" href=\"/boat-owner/contact\">Ask a question</a>\n      </div>\n    </div>\n  </section>\n</main>\n";
-
-/***/ }),
-
-/***/ 36819:
-/*!*************************************************************************!*\
-  !*** ./src/app/layout/landing/landingheader/landingheader.component.ts ***!
-  \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   LandingheaderComponent: () => (/* binding */ LandingheaderComponent)
+/* harmony export */   HomefooterComponent: () => (/* binding */ HomefooterComponent)
 /* harmony export */ });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _landingheader_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./landingheader.component.html?ngResource */ 95625);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ 99585);
-/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../layout.service */ 11266);
-
-
-// header.component.ts
+/* harmony import */ var _homefooter_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./homefooter.component.html?ngResource */ 72735);
+/* harmony import */ var _homefooter_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./homefooter.component.scss?ngResource */ 38745);
+/* harmony import */ var _homefooter_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_homefooter_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _home_site_content__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../home/site-content */ 14009);
+/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../services/language.service */ 48756);
 
 
 
- // 🚨 adjust path if needed
-let LandingheaderComponent = class LandingheaderComponent {
-  layoutSvc;
-  router;
-  cdr;
-  // --- user info ---
-  user = null;
-  isLoggedIn = false;
-  isBoatOwner = false;
-  // --- domain / prefix ---
-  urlPrefix = null; // e.g. "layali"
-  isPrefixed = false;
-  // --- current mode ---
-  mode = 'guest-global';
-  // --- UI ---
-  avatarUrl;
-  constructor(layoutSvc,
-  // has mainSvc.getUser()
-  router, cdr) {
-    this.layoutSvc = layoutSvc;
-    this.router = router;
-    this.cdr = cdr;
+
+
+
+let HomefooterComponent = class HomefooterComponent {
+  languageService;
+  year = new Date().getFullYear();
+  content = _home_site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr;
+  languageSub;
+  constructor(languageService) {
+    this.languageService = languageService;
   }
   ngOnInit() {
-    this.detectPrefix();
-    // Subscribe to auth changes
-    this.layoutSvc.mainSvc.getUser().subscribe(u => {
-      this.user = u;
-      this.isLoggedIn = !!u;
-      // 🔎 isBoatOwner based on user.role string
-      const role = u?.role?.toLowerCase?.() || '';
-      this.isBoatOwner = ['boatowner', 'boat_owner', 'owner'].includes(role);
-      this.avatarUrl = u?.photoURL || undefined;
-      this.computeMode();
-      this.cdr.markForCheck();
-    });
-    // recompute mode on route changes (for owner dashboard vs customer mode)
-    this.router.events.subscribe(() => {
-      this.computeMode();
-      this.cdr.markForCheck();
+    this.languageSub = this.languageService.language$.subscribe(language => {
+      this.content = _home_site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT[language];
     });
   }
-  // ------------------ PREFIX DETECTION ------------------
-  detectPrefix() {
-    const host = window.location.host; // e.g. "boatify.com", "layali.boatify.com", "localhost:4200"
-    const parts = host.split('.');
-    // Local dev: use ?prefix=layali if you want
-    if (host.includes('localhost') || host.includes('127.0.0.1')) {
-      const params = new URLSearchParams(window.location.search);
-      const p = params.get('prefix');
-      if (p) {
-        this.isPrefixed = true;
-        this.urlPrefix = p;
-      } else {
-        this.isPrefixed = false;
-        this.urlPrefix = null;
-      }
-      return;
-    }
-    if (parts.length === 2) {
-      // e.g. boatify.com
-      this.isPrefixed = false;
-      this.urlPrefix = null;
-    } else if (parts.length >= 3) {
-      const sub = parts[0].toLowerCase();
-      if (sub === 'www' || sub === 'app') {
-        this.isPrefixed = false;
-        this.urlPrefix = null;
-      } else {
-        // e.g. layali.boatify.com
-        this.isPrefixed = true;
-        this.urlPrefix = sub;
-      }
-    }
-  }
-  // ------------------ MODE COMPUTATION ------------------
-  computeMode() {
-    const url = this.router.url || '';
-    const onOwnerDashboard = url.startsWith('/owner') || url.startsWith('/host');
-    if (onOwnerDashboard && this.isLoggedIn && this.isBoatOwner) {
-      this.mode = 'owner-dashboard';
-      return;
-    }
-    if (!this.isLoggedIn) {
-      // guest
-      this.mode = this.isPrefixed ? 'guest-owner' : 'guest-global';
-      return;
-    }
-    // logged-in customer (maybe also boat owner)
-    this.mode = this.isPrefixed ? 'customer-owner' : 'customer-global';
-  }
-  // ------------------ NAV HELPERS ------------------
-  // Global customer/guest
-  goToGlobalBoats() {
-    this.router.navigate(['/search'], {
-      queryParams: {
-        type: 'boats'
-      }
-    });
-  }
-  // Owner-prefixed public pages
-  goToOwnerBoats() {
-    if (!this.urlPrefix) return;
-    this.router.navigate(['/', this.urlPrefix, 'boats']);
-  }
-  goToOwnerExperiences() {
-    if (!this.urlPrefix) return;
-    this.router.navigate(['/', this.urlPrefix, 'experiences']);
-  }
-  goToOwnerNews() {
-    if (!this.urlPrefix) return;
-    this.router.navigate(['/', this.urlPrefix, 'news']);
-  }
-  // Owner dashboard
-  goToOwnerDashboardToday() {
-    this.router.navigate(['/owner/today']);
-  }
-  // Switch modes
-  goToCustomerMode() {
-    // from owner dashboard back to “customer” view
-    if (this.isPrefixed && this.urlPrefix) {
-      this.router.navigate(['/', this.urlPrefix]);
-    } else {
-      this.router.navigate(['/']);
-    }
-  }
-  goToBoatOwnerMode() {
-    // from customer to owner dashboard
-    this.router.navigate(['/owner/today']);
-  }
-  // ------------------ AUTH ACTIONS ------------------
-  login() {
-    this.router.navigate(['/login']);
-  }
-  signup() {
-    this.router.navigate(['/signup']);
-  }
-  hostYourBoat() {
-    this.router.navigate(['/owner/start']);
-  }
-  logout() {
-    // adjust to your actual logout method if name differs
-    if (this.layoutSvc.logout) {
-      this.layoutSvc.logout();
-    } else {
-      // fallback: navigate to logout route if you have one
-      this.router.navigate(['/logout']);
-    }
+  ngOnDestroy() {
+    this.languageSub?.unsubscribe();
   }
   static ctorParameters = () => [{
-    type: _layout_service__WEBPACK_IMPORTED_MODULE_1__.LayoutService
-  }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_2__.Router
-  }, {
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.ChangeDetectorRef
+    type: _services_language_service__WEBPACK_IMPORTED_MODULE_3__.LanguageService
   }];
 };
-LandingheaderComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Component)({
-  selector: 'app-landingheader',
-  standalone: true,
-  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_5__.CommonModule, _angular_router__WEBPACK_IMPORTED_MODULE_6__.RouterLink],
-  template: _landingheader_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_3__.ChangeDetectionStrategy.OnPush
-})], LandingheaderComponent);
+HomefooterComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
+  selector: 'app-homefooter',
+  template: _homefooter_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_homefooter_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], HomefooterComponent);
 
-
-/***/ }),
-
-/***/ 44765:
-/*!**********************************************************************************!*\
-  !*** ./src/app/layout/boatowner/boatlayout/boatlayout.component.html?ngResource ***!
-  \**********************************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = "<ngx-spinner type=\"ball-scale-multiple\"></ngx-spinner>\n<div class=\"d-flex flex-column min-vh-100\">\n\n<!-- In your app layout -->\n<app-boatheader\n  [mode]=\"currentMode\"\n  [isLoggedIn]=\"isLoggedIn\"\n  [userName]=\"user?.displayName\"\n  [avatarUrl]=\"user?.photoURL\">\n</app-boatheader>\n<main class=\"flex-grow-1\">\n    <router-outlet main></router-outlet>\n</main>\n<app-boatfooter></app-boatfooter>\n</div>\n\n";
 
 /***/ }),
 
@@ -3944,17 +4235,6 @@ const environment = {
 
 /***/ }),
 
-/***/ 47785:
-/*!**************************************************************************************!*\
-  !*** ./src/app/layout/landing/landinglayout/landinglayout.component.html?ngResource ***!
-  \**************************************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = "<app-landingheader></app-landingheader>\n<router-outlet></router-outlet>\n<app-landingfooter></app-landingfooter>";
-
-/***/ }),
-
 /***/ 48177:
 /*!*****************************************!*\
   !*** ./src/app/layout/layout.module.ts ***!
@@ -3966,25 +4246,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   LayoutModule: () => (/* binding */ LayoutModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @ionic/angular */ 21507);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! godigital-lib */ 83);
-/* harmony import */ var _auth_layoutauth_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./auth/layoutauth.component */ 14699);
-/* harmony import */ var _boatowner_boatlayout_boatlayout_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./boatowner/boatlayout/boatlayout.component */ 87411);
-/* harmony import */ var _boatowner_boatheader_boatheader_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./boatowner/boatheader/boatheader.component */ 80329);
-/* harmony import */ var _boatowner_boatfooter_boatfooter_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./boatowner/boatfooter/boatfooter.component */ 55237);
-/* harmony import */ var _landing_landinglayout_landinglayout_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./landing/landinglayout/landinglayout.component */ 58515);
-/* harmony import */ var _landing_landingheader_landingheader_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./landing/landingheader/landingheader.component */ 36819);
-/* harmony import */ var _landing_landingfooter_landingfooter_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./landing/landingfooter/landingfooter.component */ 29891);
-/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ngx-spinner */ 61249);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var _layout_router_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./layout.router.module */ 4528);
-
-
-
-
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ionic/angular */ 21507);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ngx-spinner */ 61249);
+/* harmony import */ var _home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home/homelayout/homelayout.component */ 14211);
+/* harmony import */ var _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home/homeheader/homeheader.component */ 48917);
+/* harmony import */ var _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./home/homefooter/homefooter.component */ 41445);
+/* harmony import */ var _layout_router_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./layout.router.module */ 4528);
 
 
 
@@ -3997,11 +4269,138 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let LayoutModule = class LayoutModule {};
-LayoutModule = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.NgModule)({
-  declarations: [_boatowner_boatlayout_boatlayout_component__WEBPACK_IMPORTED_MODULE_1__.BoatlayoutComponent, _landing_landinglayout_landinglayout_component__WEBPACK_IMPORTED_MODULE_4__.LandinglayoutComponent, _landing_landingheader_landingheader_component__WEBPACK_IMPORTED_MODULE_5__.LandingheaderComponent, _auth_layoutauth_component__WEBPACK_IMPORTED_MODULE_0__.LayoutauthComponent, _landing_landingfooter_landingfooter_component__WEBPACK_IMPORTED_MODULE_6__.LandingfooterComponent, _boatowner_boatheader_boatheader_component__WEBPACK_IMPORTED_MODULE_2__.BoatheaderComponent, _boatowner_boatfooter_boatfooter_component__WEBPACK_IMPORTED_MODULE_3__.BoatfooterComponent],
-  imports: [_boatowner_boatlayout_boatlayout_component__WEBPACK_IMPORTED_MODULE_1__.BoatlayoutComponent, _landing_landinglayout_landinglayout_component__WEBPACK_IMPORTED_MODULE_4__.LandinglayoutComponent, _landing_landingheader_landingheader_component__WEBPACK_IMPORTED_MODULE_5__.LandingheaderComponent, _auth_layoutauth_component__WEBPACK_IMPORTED_MODULE_0__.LayoutauthComponent, _landing_landingfooter_landingfooter_component__WEBPACK_IMPORTED_MODULE_6__.LandingfooterComponent, _boatowner_boatheader_boatheader_component__WEBPACK_IMPORTED_MODULE_2__.BoatheaderComponent, _boatowner_boatfooter_boatfooter_component__WEBPACK_IMPORTED_MODULE_3__.BoatfooterComponent, _angular_common__WEBPACK_IMPORTED_MODULE_10__.CommonModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_11__.IonicModule, godigital_lib__WEBPACK_IMPORTED_MODULE_12__.GodigitalbModule, _angular_forms__WEBPACK_IMPORTED_MODULE_13__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_13__.ReactiveFormsModule, _layout_router_module__WEBPACK_IMPORTED_MODULE_7__.LayoutRoutingModule, ngx_spinner__WEBPACK_IMPORTED_MODULE_14__.NgxSpinnerModule],
-  providers: []
+LayoutModule = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.NgModule)({
+  declarations: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent, _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__.HomeheaderComponent, _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__.HomefooterComponent],
+  imports: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent, _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__.HomeheaderComponent, _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__.HomefooterComponent, _angular_common__WEBPACK_IMPORTED_MODULE_6__.CommonModule, _angular_router__WEBPACK_IMPORTED_MODULE_7__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_8__.IonicModule, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.ReactiveFormsModule, ngx_spinner__WEBPACK_IMPORTED_MODULE_10__.NgxSpinnerModule, _layout_router_module__WEBPACK_IMPORTED_MODULE_3__.LayoutRoutingModule],
+  exports: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent]
 })], LayoutModule);
+
+
+/***/ }),
+
+/***/ 48509:
+/*!*****************************************************************************!*\
+  !*** ./src/app/layout/home/homelayout/homelayout.component.html?ngResource ***!
+  \*****************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<div class=\"site-shell\">\n  <app-homeheader></app-homeheader>\n  <main class=\"site-main\">\n    <router-outlet></router-outlet>\n  </main>\n  <app-homefooter></app-homefooter>\n</div>\n";
+
+/***/ }),
+
+/***/ 48756:
+/*!**********************************************!*\
+  !*** ./src/app/services/language.service.ts ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   LanguageService: () => (/* binding */ LanguageService)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ 75797);
+
+
+
+let LanguageService = class LanguageService {
+  storageKey = 'alegria_language';
+  defaultLanguage = 'fr';
+  languageSubject = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject(this.readInitialLanguage());
+  language$ = this.languageSubject.asObservable();
+  get currentLanguage() {
+    return this.languageSubject.value;
+  }
+  setLanguage(language) {
+    this.languageSubject.next(language);
+    try {
+      localStorage.setItem(this.storageKey, language);
+    } catch {
+      // localStorage can be unavailable in some environments.
+    }
+  }
+  readInitialLanguage() {
+    try {
+      const saved = localStorage.getItem(this.storageKey);
+      if (saved === 'fr' || saved === 'en' || saved === 'es') {
+        return saved;
+      }
+    } catch {
+      // ignore storage access issues
+    }
+    return this.defaultLanguage;
+  }
+};
+LanguageService = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_2__.Injectable)({
+  providedIn: 'root'
+})], LanguageService);
+
+
+/***/ }),
+
+/***/ 48917:
+/*!****************************************************************!*\
+  !*** ./src/app/layout/home/homeheader/homeheader.component.ts ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   HomeheaderComponent: () => (/* binding */ HomeheaderComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _homeheader_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./homeheader.component.html?ngResource */ 4527);
+/* harmony import */ var _homeheader_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./homeheader.component.scss?ngResource */ 39829);
+/* harmony import */ var _homeheader_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_homeheader_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _home_site_content__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../home/site-content */ 14009);
+/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../services/language.service */ 48756);
+
+
+
+
+
+
+let HomeheaderComponent = class HomeheaderComponent {
+  languageService;
+  menuOpen = false;
+  currentLanguage = 'fr';
+  content = _home_site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr;
+  languageSub;
+  constructor(languageService) {
+    this.languageService = languageService;
+  }
+  ngOnInit() {
+    this.languageSub = this.languageService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      this.content = _home_site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT[language];
+    });
+  }
+  ngOnDestroy() {
+    this.languageSub?.unsubscribe();
+  }
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+  closeMenu() {
+    this.menuOpen = false;
+  }
+  changeLanguage(language) {
+    this.languageService.setLanguage(language);
+  }
+  static ctorParameters = () => [{
+    type: _services_language_service__WEBPACK_IMPORTED_MODULE_3__.LanguageService
+  }];
+};
+HomeheaderComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
+  selector: 'app-homeheader',
+  template: _homeheader_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_homeheader_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], HomeheaderComponent);
 
 
 /***/ }),
@@ -4095,18 +4494,7 @@ AppModule = (0,tslib__WEBPACK_IMPORTED_MODULE_11__.__decorate)([(0,_angular_core
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<p>\n  page404 works!\n</p>";
-
-/***/ }),
-
-/***/ 52275:
-/*!**********************************************************************************!*\
-  !*** ./src/app/layout/boatowner/boatheader/boatheader.component.html?ngResource ***!
-  \**********************************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = "<nav class=\"navbar navbar-expand-lg bg-white border-bottom sticky-top\">\n  <div class=\"container py-2\">\n\n    <!-- LOGO / BRAND -->\n    <a class=\"navbar-brand d-flex align-items-center gap-2\" [routerLink]=\"homeLinkCommands\"\n      [queryParams]=\"homeLinkQueryParams\">\n      <i class=\"bi bi-ship\"></i>\n\n      <!-- Brand text changes depending on context -->\n      <strong>{{ brandLabel }}</strong>\n\n      <!-- When we are on an owner mainpage, show small \"on Boatify\" badge -->\n      <span *ngIf=\"isOwnerMainpage\" class=\"ms-2 badge text-bg-light border rounded-pill\">\n        on Boatify\n      </span>\n    </a>\n    <!-- MOBILE TOGGLER -->\n    <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navMain\">\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n\n    <div class=\"collapse navbar-collapse\" id=\"navMain\">\n      <ul class=\"navbar-nav me-auto mb-2 mb-lg-0\"></ul>\n\n      <!-- RIGHT: ACTIONS + USER -->\n      <div class=\"d-flex align-items-center gap-3\">\n\n        <!-- GLOBE ICON (language/currency placeholder) -->\n        <button class=\"btn btn-link text-decoration-none d-none d-md-inline\">\n          <i class=\"bi bi-globe\"></i>\n        </button>\n\n        <!-- WHEN LOGGED IN -->\n        <ng-container *ngIf=\"user; else guestButtons\">\n\n          <!-- Traveling mode => Bookings -->\n          <a *ngIf=\"!isOwner || !isHostingView\" class=\"btn btn-link text-decoration-none\"\n            routerLink=\"/account/bookings\">\n            Bookings\n          </a>\n\n          <!-- Hosting mode => Host dashboard -->\n          <a *ngIf=\"isOwner && isHostingView\" class=\"btn btn-link text-decoration-none\" routerLink=\"/owner/dashboard\">\n            Host dashboard\n          </a>\n\n          <!-- AVATAR + DROPDOWN (Airbnb-like pill) -->\n          <div class=\"dropdown\">\n            <button class=\"btn btn-outline-secondary rounded-pill d-flex align-items-center gap-2 px-3 py-1\"\n              type=\"button\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">\n\n              <i class=\"bi bi-list\"></i>\n\n              <ng-container *ngIf=\"avatarUrl; else noAvatar\">\n                <img [src]=\"avatarUrl\" (error)=\"onAvatarError($event)\" class=\"rounded-circle\" width=\"32\" height=\"32\">\n              </ng-container>\n\n              <ng-template #noAvatar>\n                <i class=\"bi bi-person-circle fs-5\"></i>\n              </ng-template>\n            </button>\n\n            <ul class=\"dropdown-menu dropdown-menu-end\">\n\n              <!-- OWNER-ONLY: SWITCH HOSTING/TRAVELING -->\n              <ng-container *ngIf=\"isOwner\">\n                <li>\n                  <button class=\"dropdown-item\" type=\"button\" (click)=\"toggleHostingMode()\">\n                    {{ isHostingView ? 'Switch to traveling' : 'Switch to hosting' }}\n                  </button>\n                </li>\n                <li>\n                  <hr class=\"dropdown-divider\">\n                </li>\n              </ng-container>\n\n              <!-- GUEST-STYLE MENU -->\n              <li><a class=\"dropdown-item\" routerLink=\"/account/messages\">Messages</a></li>\n              <li><a class=\"dropdown-item\" routerLink=\"/account/payments\">Payments</a></li>\n              <li><a class=\"dropdown-item\" routerLink=\"/account/profile\">Account & settings</a></li>\n              <li><a class=\"dropdown-item\" routerLink=\"/help\">Help</a></li>\n\n              <!-- HOSTING BLOCK (owner only) -->\n              <ng-container *ngIf=\"isOwner\">\n                <li>\n                  <hr class=\"dropdown-divider\">\n                </li>\n                <li class=\"dropdown-header small text-muted\">Hosting</li>\n                <li><a class=\"dropdown-item\" routerLink=\"/owner/dashboard\">Host dashboard</a></li>\n                <li><a class=\"dropdown-item\" routerLink=\"/owner/boats\">My boats</a></li>\n                <li><a class=\"dropdown-item\" routerLink=\"/owner/events\">My events</a></li>\n              </ng-container>\n\n              <li>\n                <hr class=\"dropdown-divider\">\n              </li>\n              <li>\n                <button class=\"dropdown-item text-danger\" type=\"button\" (click)=\"logout()\">\n                  Sign out\n                </button>\n              </li>\n            </ul>\n          </div>\n        </ng-container>\n\n        <!-- WHEN LOGGED OUT -->\n        <ng-template #guestButtons>\n          <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/login\">Log in</a>\n          <a class=\"btn btn-outline-secondary rounded-pill\" routerLink=\"/signup\">Create account</a>\n        </ng-template>\n      </div>\n    </div>\n  </div>\n</nav>";
+module.exports = "<section class=\"not-found\">\n  <div class=\"box\">\n    <span class=\"code\">404</span>\n    <h1>{{ content.notFound.title }}</h1>\n    <p>{{ content.notFound.text }}</p>\n    <a routerLink=\"/\">{{ content.notFound.cta }}</a>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -4132,200 +4520,6 @@ module.exports = webpackEmptyAsyncContext;
 
 /***/ }),
 
-/***/ 55237:
-/*!*********************************************************************!*\
-  !*** ./src/app/layout/boatowner/boatfooter/boatfooter.component.ts ***!
-  \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   BoatfooterComponent: () => (/* binding */ BoatfooterComponent)
-/* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _boatfooter_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boatfooter.component.html?ngResource */ 33607);
-/* harmony import */ var _boatfooter_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./boatfooter.component.scss?ngResource */ 75663);
-/* harmony import */ var _boatfooter_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_boatfooter_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngx-translate/core */ 48503);
-/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../layout.service */ 11266);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 2510);
-
-
-
-/* eslint-disable @typescript-eslint/member-ordering */
-
-
-
-
-
-
-let BoatfooterComponent = class BoatfooterComponent {
-  router;
-  layoutSvc;
-  utilSvc;
-  translateSvc;
-  subscriptions = new rxjs__WEBPACK_IMPORTED_MODULE_3__.Subscription();
-  componentName = 'boatfooter.component';
-  year = new Date().getFullYear();
-  constructor(router, layoutSvc, utilSvc, translateSvc) {
-    this.router = router;
-    this.layoutSvc = layoutSvc;
-    this.utilSvc = utilSvc;
-    this.translateSvc = translateSvc;
-  }
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
-  }
-  ngOnInit() {
-    this.subscriptions.add(this.layoutSvc.mainSvc.getLanguage().subscribe(language => {
-      if (language != null) {
-        this.translateSvc.use(language);
-      }
-    }));
-  }
-  goHome() {
-    this.layoutSvc.goHome();
-  }
-  static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
-  }, {
-    type: _layout_service__WEBPACK_IMPORTED_MODULE_2__.LayoutService
-  }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.UtilsService
-  }, {
-    type: _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__.TranslateService
-  }];
-};
-BoatfooterComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
-  selector: 'app-boatfooter',
-  template: _boatfooter_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  styles: [(_boatfooter_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
-})], BoatfooterComponent);
-
-
-/***/ }),
-
-/***/ 58515:
-/*!*************************************************************************!*\
-  !*** ./src/app/layout/landing/landinglayout/landinglayout.component.ts ***!
-  \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   LandinglayoutComponent: () => (/* binding */ LandinglayoutComponent)
-/* harmony export */ });
-/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _landinglayout_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./landinglayout.component.html?ngResource */ 47785);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ 99585);
-/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../layout.service */ 11266);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! godigital-lib */ 83);
-
-
-
-
-
- // whatever your real path is
-
-
- // adjust path if needed
-let LandinglayoutComponent = class LandinglayoutComponent {
-  layoutSvc;
-  storeDb;
-  router;
-  user = null;
-  authSub;
-  // 🔍 Header search state
-  headerMode = 'boat';
-  headerLocation = '';
-  headerDate = '';
-  headerPeople = null;
-  headerExperienceType = '';
-  // Example experience types (EVJF = bachelorette party in FR)
-  experienceTypes = ['Afterwork at sea', 'EVJF / Bachelorette', 'Birthday', 'Sunset cruise', 'Corporate event', 'Romantic outing', 'Other'];
-  constructor(layoutSvc, storeDb, router) {
-    this.layoutSvc = layoutSvc;
-    this.storeDb = storeDb;
-    this.router = router;
-  }
-  ngOnInit() {
-    this.authSub = this.storeDb.authState$.subscribe(user => {
-      this.user = user;
-    });
-  }
-  ngOnDestroy() {
-    this.authSub?.unsubscribe();
-  }
-  get isLoggedIn() {
-    return !!this.user;
-  }
-  // TODO: real owner detection
-  get isBoatOwner() {
-    return false;
-  }
-  // 🚤 Rent your boat CTA
-  goToOwnerCta() {
-    if (this.isBoatOwner) {
-      this.router.navigate(['/owner/tours']);
-    } else {
-      this.router.navigate(['/boat-owners/onboarding']);
-    }
-  }
-  // 🔍 Search handler
-  headerSearch() {
-    const queryParams = {
-      mode: this.headerMode
-    };
-    if (this.headerLocation) queryParams.location = this.headerLocation;
-    if (this.headerDate) queryParams.date = this.headerDate;
-    if (this.headerPeople) queryParams.people = this.headerPeople;
-    if (this.headerMode === 'experience' && this.headerExperienceType) {
-      queryParams.experienceType = this.headerExperienceType;
-    }
-    this.router.navigate(['/tours/search'], {
-      queryParams
-    });
-  }
-  logout() {
-    var _this = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (_this.storeDb.auth) {
-        try {
-          yield _this.storeDb.auth.signOut();
-        } catch (e) {
-          console.error('Error while logging out', e);
-        }
-      }
-    })();
-  }
-  static ctorParameters = () => [{
-    type: _layout_service__WEBPACK_IMPORTED_MODULE_2__.LayoutService
-  }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_3__.StoreDbService
-  }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
-  }];
-};
-LandinglayoutComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
-  selector: 'app-landinglayout',
-  standalone: true,
-  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_7__.RouterLink, _angular_router__WEBPACK_IMPORTED_MODULE_4__.RouterOutlet, _angular_common__WEBPACK_IMPORTED_MODULE_8__.NgIf, _angular_common__WEBPACK_IMPORTED_MODULE_8__.AsyncPipe, _angular_common__WEBPACK_IMPORTED_MODULE_8__.NgClass, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormsModule],
-  template: _landinglayout_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__
-})], LandinglayoutComponent);
-
-
-/***/ }),
-
 /***/ 61584:
 /*!***********************************************!*\
   !*** ./src/app/app.component.html?ngResource ***!
@@ -4337,21 +4531,14 @@ module.exports = "<router-outlet></router-outlet>\n";
 
 /***/ }),
 
-/***/ 72661:
-/*!******************************************************************!*\
-  !*** ./src/app/layout/auth/layoutauth.component.scss?ngResource ***!
-  \******************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ 72735:
+/*!*****************************************************************************!*\
+  !*** ./src/app/layout/home/homefooter/homefooter.component.html?ngResource ***!
+  \*****************************************************************************/
+/***/ ((module) => {
 
-// Imports
-var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
-var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
-// Exports
-module.exports = ___CSS_LOADER_EXPORT___.toString();
-
+"use strict";
+module.exports = "<footer class=\"site-footer\">\n  <div class=\"container footer-grid\">\n    <div>\n      <h3>{{ content.brand }}</h3>\n      <p>{{ content.footer.description }}</p>\n    </div>\n\n    <div>\n      <h4>{{ content.footer.navigation }}</h4>\n      <ul>\n        <li><a routerLink=\"/\">{{ content.nav.home }}</a></li>\n        <li><a routerLink=\"/sorties\">{{ content.nav.outings }}</a></li>\n        <li><a routerLink=\"/bateau\">{{ content.nav.boat }}</a></li>\n        <li><a routerLink=\"/galerie\">{{ content.nav.gallery }}</a></li>\n        <li><a routerLink=\"/contact\">{{ content.nav.contact }}</a></li>\n      </ul>\n    </div>\n\n    <div>\n      <h4>{{ content.footer.contact }}</h4>\n      <p>{{ content.common.departurePort }}: {{ content.departureArea }}</p>\n      <p>{{ content.phoneDisplay }}</p>\n      <p>{{ content.email }}</p>\n      <p>{{ content.footer.quickReply }}</p>\n    </div>\n  </div>\n</footer>\n";
 
 /***/ }),
 
@@ -4366,233 +4553,47 @@ var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../nod
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
-// Exports
-module.exports = ___CSS_LOADER_EXPORT___.toString();
-
-
-/***/ }),
-
-/***/ 75663:
-/*!**********************************************************************************!*\
-  !*** ./src/app/layout/boatowner/boatfooter/boatfooter.component.scss?ngResource ***!
-  \**********************************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-// Imports
-var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
-var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, `/* Keep links subtle but visible */
-footer a {
-  color: inherit;
+___CSS_LOADER_EXPORT___.push([module.id, `.not-found {
+  min-height: 70vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
 }
 
-footer a:hover {
-  text-decoration: underline;
-}`, "",{"version":3,"sources":["webpack://./src/app/layout/boatowner/boatfooter/boatfooter.component.scss"],"names":[],"mappings":"AAAA,kCAAA;AACA;EAAW,cAAA;AAEX;;AADA;EAAiB,0BAAA;AAKjB","sourcesContent":["/* Keep links subtle but visible */\nfooter a { color: inherit; }\nfooter a:hover { text-decoration: underline; }\n"],"sourceRoot":""}]);
+.box {
+  text-align: center;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 24px;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
+}
+
+.code {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #0369a1;
+}
+
+h1 {
+  margin: 0.5rem 0;
+  color: #0f172a;
+}
+
+p {
+  color: #475569;
+}
+
+a {
+  display: inline-block;
+  margin-top: 1rem;
+  text-decoration: none;
+  background: #0f172a;
+  color: #fff;
+  padding: 0.9rem 1.1rem;
+  border-radius: 999px;
+}`, "",{"version":3,"sources":["webpack://./src/app/page404/page404.component.scss"],"names":[],"mappings":"AAAA;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,aAAA;AACF;;AAEA;EACE,kBAAA;EACA,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,8CAAA;AACF;;AAEA;EACE,eAAA;EACA,gBAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,cAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,qBAAA;EACA,gBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,sBAAA;EACA,oBAAA;AACF","sourcesContent":[".not-found {\n  min-height: 70vh;\n  display: grid;\n  place-items: center;\n  padding: 2rem;\n}\n\n.box {\n  text-align: center;\n  background: #fff;\n  padding: 2rem;\n  border-radius: 24px;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.code {\n  font-size: 4rem;\n  font-weight: 800;\n  color: #0369a1;\n}\n\nh1 {\n  margin: 0.5rem 0;\n  color: #0f172a;\n}\n\np {\n  color: #475569;\n}\n\na {\n  display: inline-block;\n  margin-top: 1rem;\n  text-decoration: none;\n  background: #0f172a;\n  color: #fff;\n  padding: 0.9rem 1.1rem;\n  border-radius: 999px;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
-
-
-/***/ }),
-
-/***/ 76477:
-/*!**********************************************************************************!*\
-  !*** ./src/app/layout/boatowner/boatlayout/boatlayout.component.scss?ngResource ***!
-  \**********************************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-// Imports
-var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
-var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
-// Exports
-module.exports = ___CSS_LOADER_EXPORT___.toString();
-
-
-/***/ }),
-
-/***/ 80329:
-/*!*********************************************************************!*\
-  !*** ./src/app/layout/boatowner/boatheader/boatheader.component.ts ***!
-  \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   BoatheaderComponent: () => (/* binding */ BoatheaderComponent)
-/* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _boatheader_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boatheader.component.html?ngResource */ 52275);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 2510);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 51567);
-/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../layout.service */ 11266);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! godigital-lib */ 83);
-
-
-
-
-
- // or BoatsService
-
-let BoatheaderComponent = class BoatheaderComponent {
-  layoutSvc;
-  router;
-  route;
-  mainpageId;
-  user;
-  avatarUrl;
-  isOwner = false;
-  isHostingView = false;
-  // Brand / mainpage context
-  brandLabel = 'Boatify';
-  isOwnerMainpage = false;
-  // For [routerLink] & [queryParams]
-  homeLinkCommands = ['/home'];
-  homeLinkQueryParams = null;
-  subs = new rxjs__WEBPACK_IMPORTED_MODULE_2__.Subscription();
-  constructor(layoutSvc, router, route) {
-    this.layoutSvc = layoutSvc;
-    this.router = router;
-    this.route = route;
-  }
-  ngOnInit() {
-    // Logged user
-    this.subs.add(this.layoutSvc.mainSvc.getUser().subscribe(u => {
-      this.user = u;
-      this.avatarUrl = u?.photoURL || undefined;
-      this.isOwner = u?.role === godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.OWNER || u?.role === godigital_lib__WEBPACK_IMPORTED_MODULE_3__.USERROLE.ADMIN;
-    }));
-    this.isHostingView = this.layoutSvc.isHostingView ?? false;
-    // Recompute context on navigation
-    this.subs.add(this.router.events.pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_4__.filter)(e => e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_5__.NavigationEnd)).subscribe(() => this.resolveMainpageContext()));
-    // Initial
-    this.resolveMainpageContext();
-  }
-  ngOnChanges(changes) {
-    if ('mainpageId' in changes) {
-      this.resolveMainpageContext();
-    }
-  }
-  ngOnDestroy() {
-    this.subs.unsubscribe();
-  }
-  // ----------------------------------------------------------------
-  // MAINPAGE CONTEXT RESOLUTION
-  // ----------------------------------------------------------------
-  resolveMainpageContext() {
-    // 1) If parent explicitly passes mainpageId, use it
-    let effectiveId = this.mainpageId || '';
-    // 2) If not provided, try query param or subdomain
-    if (!effectiveId) {
-      effectiveId = this.detectMainpageIdFromQueryOrSubdomain() || '';
-    }
-    if (effectiveId) {
-      const {
-        id,
-        slug
-      } = this.normalizeMainpageId(effectiveId);
-      this.isOwnerMainpage = true;
-      this.brandLabel = this.toTitleCase(slug);
-      // We want /mainpage?mainpage=<slug>
-      this.homeLinkCommands = ['/mainpage'];
-      this.homeLinkQueryParams = {
-        mainpage: slug
-      };
-      this.mainpageId = id; // store normalized id
-    } else {
-      // Global Boatify context
-      this.isOwnerMainpage = false;
-      this.brandLabel = 'Boatify';
-      this.homeLinkCommands = ['/home'];
-      this.homeLinkQueryParams = null;
-      this.mainpageId = undefined;
-    }
-  }
-  /**
-   * Find mainpage:
-   *   - ?mainpage=layali  OR ?mainpage=owner-home-layali
-   *   - subdomain layali.boatify.com
-   */
-  detectMainpageIdFromQueryOrSubdomain() {
-    // 1) query param
-    const qp = this.route.snapshot.queryParamMap;
-    let main = qp.get('mainpage');
-    // 2) subdomain
-    if (!main && typeof window !== 'undefined') {
-      const host = window.location.hostname; // layali.boatify.com
-      const parts = host.split('.');
-      if (parts.length > 2) {
-        const sub = parts[0];
-        if (sub && sub !== 'www' && sub !== 'localhost') {
-          main = sub;
-        }
-      }
-    }
-    return main;
-  }
-  /**
-   * Accepts:
-   *   "layali"            -> { id: "owner-home-layali", slug: "layali" }
-   *   "owner-home-layali" -> { id: "owner-home-layali", slug: "layali" }
-   */
-  normalizeMainpageId(raw) {
-    const trimmed = raw.trim();
-    const lower = trimmed.toLowerCase();
-    if (lower.startsWith('owner-home-')) {
-      const slug = lower.substring('owner-home-'.length);
-      return {
-        id: lower,
-        slug
-      };
-    }
-    // plain slug
-    return {
-      id: `owner-home-${lower}`,
-      slug: lower
-    };
-  }
-  toTitleCase(slug) {
-    if (!slug) return '';
-    return slug.split('-').filter(Boolean).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  }
-  // ----------------------------------------------------------------
-  // Existing helpers
-  // ----------------------------------------------------------------
-  toggleHostingMode() {
-    this.isHostingView = !this.isHostingView;
-    this.layoutSvc.isHostingView = this.isHostingView;
-  }
-  onAvatarError(evt) {
-    evt.target.style.display = 'none';
-  }
-  logout() {
-    this.layoutSvc.logout();
-  }
-  static ctorParameters = () => [{
-    type: _layout_service__WEBPACK_IMPORTED_MODULE_1__.LayoutService
-  }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_5__.Router
-  }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_5__.ActivatedRoute
-  }];
-  static propDecorators = {
-    mainpageId: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_6__.Input
-    }]
-  };
-};
-BoatheaderComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
-  selector: 'app-boatheader',
-  template: _boatheader_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__
-})], BoatheaderComponent);
 
 
 /***/ }),
@@ -4617,65 +4618,6 @@ if (_environments_environment__WEBPACK_IMPORTED_MODULE_2__.environment.productio
   (0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.enableProdMode)();
 }
 (0,_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_0__.platformBrowserDynamic)().bootstrapModule(_app_app_module__WEBPACK_IMPORTED_MODULE_1__.AppModule).catch(err => console.log(err));
-
-/***/ }),
-
-/***/ 87411:
-/*!*********************************************************************!*\
-  !*** ./src/app/layout/boatowner/boatlayout/boatlayout.component.ts ***!
-  \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   BoatlayoutComponent: () => (/* binding */ BoatlayoutComponent)
-/* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _boatlayout_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boatlayout.component.html?ngResource */ 44765);
-/* harmony import */ var _boatlayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./boatlayout.component.scss?ngResource */ 76477);
-/* harmony import */ var _boatlayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_boatlayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-translate/core */ 48503);
-/* harmony import */ var _layout_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../layout.service */ 11266);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! godigital-lib */ 83);
-
-
-
-
-
-
-
-
-let BoatlayoutComponent = class BoatlayoutComponent {
-  router;
-  layoutSvc;
-  utilsSvc;
-  translateSvc;
-  constructor(router, layoutSvc, utilsSvc, translateSvc) {
-    this.router = router;
-    this.layoutSvc = layoutSvc;
-    this.utilsSvc = utilsSvc;
-    this.translateSvc = translateSvc;
-  }
-  ngOnInit() {}
-  static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_3__.Router
-  }, {
-    type: _layout_service__WEBPACK_IMPORTED_MODULE_2__.LayoutService
-  }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.UtilsService
-  }, {
-    type: _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__.TranslateService
-  }];
-};
-BoatlayoutComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
-  selector: 'app-boatlayout',
-  template: _boatlayout_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  styles: [(_boatlayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
-})], BoatlayoutComponent);
-
 
 /***/ }),
 
@@ -4944,17 +4886,6 @@ module.exports = webpackAsyncContext;
 
 /***/ }),
 
-/***/ 89445:
-/*!******************************************************************!*\
-  !*** ./src/app/layout/auth/layoutauth.component.html?ngResource ***!
-  \******************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = "<ngx-spinner type=\"ball-scale-multiple\"></ngx-spinner>\n<main class=\"flex-grow-1\">\n    <router-outlet main></router-outlet>\n</main>\n";
-
-/***/ }),
-
 /***/ 90309:
 /*!**********************************************!*\
   !*** ./src/app/app.component.css?ngResource ***!
@@ -5207,17 +5138,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AppRoutingModule: () => (/* binding */ AppRoutingModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ 99585);
-/* harmony import */ var _layout_boatowner_boatlayout_boatlayout_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout/boatowner/boatlayout/boatlayout.component */ 87411);
-/* harmony import */ var _layout_auth_layoutauth_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layout/auth/layoutauth.component */ 14699);
-/* harmony import */ var _layout_landing_landinglayout_landinglayout_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layout/landing/landinglayout/landinglayout.component */ 58515);
-/* harmony import */ var _page404_page404_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./page404/page404.component */ 27044);
-/* harmony import */ var _services_services_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./services/services.service */ 92030);
-
-
-
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _layout_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout/home/homelayout/homelayout.component */ 14211);
+/* harmony import */ var _page404_page404_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./page404/page404.component */ 27044);
 
 
 
@@ -5225,71 +5150,26 @@ __webpack_require__.r(__webpack_exports__);
 
 const routes = [{
   path: '',
-  component: _layout_landing_landinglayout_landinglayout_component__WEBPACK_IMPORTED_MODULE_2__.LandinglayoutComponent,
+  component: _layout_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent,
   children: [{
     path: '',
-    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_landingpage_landingpage_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./landingpage/landingpage.module */ 45383)).then(m => m.LandingpageModule)
-  }, {
-    path: '',
-    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_profile_profile_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./profile/profile.module */ 4219)).then(m => m.ProfileModule)
+    loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_home_home_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./home/home.module */ 45055)).then(m => m.HomeModule)
   }]
-}, {
-  path: '',
-  component: _layout_landing_landinglayout_landinglayout_component__WEBPACK_IMPORTED_MODULE_2__.LandinglayoutComponent,
-  children: [{
-    path: '',
-    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_landingpage_landingpage_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./landingpage/landingpage.module */ 45383)).then(m => m.LandingpageModule)
-  }]
-}, {
-  path: '',
-  component: _layout_boatowner_boatlayout_boatlayout_component__WEBPACK_IMPORTED_MODULE_0__.BoatlayoutComponent,
-  children: [{
-    path: '',
-    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_boatowner_boatowner_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./boatowner/boatowner.module */ 81767)).then(m => m.BoatownerModule)
-  }, {
-    path: '',
-    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_tours_tours_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./tours/tours.module */ 60119)).then(m => m.ToursModule)
-  }, {
-    path: '',
-    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_booking_booking_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./booking/booking.module */ 49911)).then(m => m.BookingModule)
-  }]
-}, {
-  path: '',
-  component: _layout_auth_layoutauth_component__WEBPACK_IMPORTED_MODULE_1__.LayoutauthComponent,
-  children: [{
-    path: '',
-    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ngx-cookie_fesm2020_ngx-cookie_mjs"), __webpack_require__.e("src_app_auth_auth_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./auth/auth.module */ 60841)).then(m => m.AuthModule)
-  }]
-}, {
-  path: 'externalRedirect',
-  resolve: {
-    url: _services_services_service__WEBPACK_IMPORTED_MODULE_4__.externalUrlProvider
-  },
-  component: _layout_landing_landinglayout_landinglayout_component__WEBPACK_IMPORTED_MODULE_2__.LandinglayoutComponent
 }, {
   path: '**',
-  component: _page404_page404_component__WEBPACK_IMPORTED_MODULE_3__.Page404Component
+  component: _page404_page404_component__WEBPACK_IMPORTED_MODULE_1__.Page404Component
 }];
 let AppRoutingModule = class AppRoutingModule {};
-AppRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.NgModule)({
-  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_7__.RouterModule.forRoot(routes, {
-    preloadingStrategy: _angular_router__WEBPACK_IMPORTED_MODULE_7__.PreloadAllModules,
-    onSameUrlNavigation: 'reload'
+AppRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.NgModule)({
+  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_4__.RouterModule.forRoot(routes, {
+    preloadingStrategy: _angular_router__WEBPACK_IMPORTED_MODULE_4__.PreloadAllModules,
+    onSameUrlNavigation: 'reload',
+    anchorScrolling: 'enabled',
+    scrollPositionRestoration: 'enabled'
   })],
-  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_7__.RouterModule]
+  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_4__.RouterModule]
 })], AppRoutingModule);
 
-
-/***/ }),
-
-/***/ 95625:
-/*!**************************************************************************************!*\
-  !*** ./src/app/layout/landing/landingheader/landingheader.component.html?ngResource ***!
-  \**************************************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = "<!-- header.component.html -->\n<nav class=\"navbar navbar-expand-lg bg-white border-bottom sticky-top\">\n  <div class=\"container py-2\">\n\n    <!-- Brand -->\n    <a class=\"navbar-brand d-flex align-items-center gap-2\" routerLink=\"/\">\n      <i class=\"bi bi-ship\"></i>\n      <strong>Boatify</strong>\n      <span *ngIf=\"urlPrefix\" class=\"ms-2 badge text-bg-light border\">\n        {{ urlPrefix | titlecase }} owner page\n      </span>\n    </a>\n\n    <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navMain\">\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n\n    <div class=\"collapse navbar-collapse\" id=\"navMain\">\n\n      <!-- LEFT SIDE NAV -->\n      <ul class=\"navbar-nav me-auto mb-2 mb-lg-0\">\n\n        <!-- 1) Guest global & 3) Customer global -->\n        <ng-container *ngIf=\"mode === 'guest-global' || mode === 'customer-global'\">\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" (click)=\"goToGlobalBoats()\">Boats</a>\n          </li>\n        </ng-container>\n\n        <!-- 2) Guest owner & 4) Customer owner -->\n        <ng-container *ngIf=\"mode === 'guest-owner' || mode === 'customer-owner'\">\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" (click)=\"goToOwnerBoats()\">Boats</a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" (click)=\"goToOwnerExperiences()\">Experiences</a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" (click)=\"goToOwnerNews()\">News</a>\n          </li>\n        </ng-container>\n\n        <!-- 5) Owner dashboard -->\n        <ng-container *ngIf=\"mode === 'owner-dashboard'\">\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" (click)=\"goToOwnerDashboardToday()\">Today</a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" routerLink=\"/owner/calendar\">Calendar</a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" routerLink=\"/owner/boats\">Boats</a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" routerLink=\"/owner/events\">Events</a>\n          </li>\n          <li class=\"nav-item\">\n            <a class=\"nav-link\" routerLink=\"/owner/messages\">Messages</a>\n          </li>\n        </ng-container>\n\n      </ul>\n\n      <!-- RIGHT SIDE -->\n      <div class=\"d-flex align-items-center gap-2\">\n\n        <!-- Guest global: Host your boat(s) -->\n        <button\n          *ngIf=\"mode === 'guest-global'\"\n          class=\"btn btn-outline-secondary rounded-pill d-none d-lg-inline\"\n          (click)=\"hostYourBoat()\">\n          Host your boat(s)\n        </button>\n\n        <!-- MODE SWITCH (RIGHT SIDE) -->\n        <!-- Customer -> Owner -->\n        <button\n          *ngIf=\"isBoatOwner && (mode === 'customer-global' || mode === 'customer-owner')\"\n          class=\"btn btn-outline-secondary rounded-pill d-none d-md-inline\"\n          (click)=\"goToBoatOwnerMode()\">\n          Boat owner mode\n        </button>\n\n        <!-- Owner -> Customer -->\n        <button\n          *ngIf=\"mode === 'owner-dashboard'\"\n          class=\"btn btn-outline-secondary rounded-pill d-none d-md-inline\"\n          (click)=\"goToCustomerMode()\">\n          Customer mode\n        </button>\n\n        <!-- GUEST: login / signup -->\n        <ng-container *ngIf=\"!isLoggedIn; else loggedInMenu\">\n          <button class=\"btn btn-outline-secondary rounded-pill\" (click)=\"login()\">Log in</button>\n          <button class=\"btn btn-dark rounded-pill\" (click)=\"signup()\">Sign up</button>\n        </ng-container>\n\n        <!-- LOGGED-IN DROPDOWN -->\n        <ng-template #loggedInMenu>\n          <div class=\"dropdown\">\n            <button\n              class=\"btn btn-link text-decoration-none d-flex align-items-center gap-2\"\n              data-bs-toggle=\"dropdown\"\n              type=\"button\">\n              <img\n                *ngIf=\"avatarUrl; else defaultAvatar\"\n                [src]=\"avatarUrl\"\n                class=\"rounded-circle\"\n                width=\"32\"\n                height=\"32\"\n              />\n              <ng-template #defaultAvatar>\n                <i class=\"bi bi-person-circle fs-4\"></i>\n              </ng-template>\n            </button>\n            <ul class=\"dropdown-menu dropdown-menu-end\">\n\n              <!-- Customer menus -->\n              <ng-container *ngIf=\"mode === 'customer-global' || mode === 'customer-owner'\">\n                <li><a class=\"dropdown-item\" routerLink=\"/favorites\">Favorites</a></li>\n                <li><a class=\"dropdown-item\" routerLink=\"/bookings\">Bookings / Trips</a></li>\n                <li><a class=\"dropdown-item\" routerLink=\"/messages\">Messages</a></li>\n                <li><hr class=\"dropdown-divider\"></li>\n              </ng-container>\n\n              <!-- Owner dashboard menus -->\n              <ng-container *ngIf=\"mode === 'owner-dashboard'\">\n                <li><a class=\"dropdown-item\" routerLink=\"/owner/account\">Account settings</a></li>\n                <li><a class=\"dropdown-item\" routerLink=\"/owner/revenues\">Revenues</a></li>\n                <li><hr class=\"dropdown-divider\"></li>\n              </ng-container>\n\n              <!-- Shared items for all logged users (except owner-dashboard where we already show account) -->\n              <li *ngIf=\"mode !== 'owner-dashboard'\">\n                <a class=\"dropdown-item\" routerLink=\"/account/profile\">Profile</a>\n              </li>\n              <li *ngIf=\"mode !== 'owner-dashboard'\">\n                <a class=\"dropdown-item\" routerLink=\"/account/settings\">Account settings</a>\n              </li>\n              <li *ngIf=\"mode !== 'owner-dashboard'\">\n                <a class=\"dropdown-item\" routerLink=\"/account/payments\">Payments</a>\n              </li>\n\n              <li><hr class=\"dropdown-divider\"></li>\n              <li>\n                <button class=\"dropdown-item text-danger\" (click)=\"logout()\">\n                  Sign out\n                </button>\n              </li>\n            </ul>\n          </div>\n        </ng-template>\n\n      </div>\n    </div>\n  </div>\n</nav>\n";
 
 /***/ })
 

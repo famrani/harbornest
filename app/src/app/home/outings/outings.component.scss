@@ -9,7 +9,7 @@
 
 .page-hero,
 .section {
-  padding: 4.5rem 0;
+  padding: 4rem 0;
 }
 
 .page-hero {
@@ -18,8 +18,8 @@
 
 .eyebrow {
   display: inline-block;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
+  margin-bottom: 0.9rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -27,20 +27,21 @@
 }
 
 h1 {
-  font-size: clamp(2.1rem, 4vw, 3.8rem);
-  line-height: 1.05;
-  margin: 0 0 1rem;
+  font-size: clamp(1.85rem, 3vw, 3rem);
+  line-height: 1.08;
+  margin: 0 0 0.9rem;
   color: #0f172a;
 }
 
 p {
   color: #475569;
   line-height: 1.7;
+  font-size: 0.97rem;
 }
 
 .grid {
   display: grid;
-  gap: 1.4rem;
+  gap: 1.3rem;
 }
 
 .outing-card {
@@ -59,25 +60,28 @@ p {
   object-fit: cover;
 }
 
-.content {
-  padding: 1.5rem;
+.content-card {
+  padding: 1.4rem;
 }
 
 .meta-top {
   color: #64748b;
   font-weight: 600;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.88rem;
 }
 
 h2 {
-  margin: 0 0 0.8rem;
+  margin: 0 0 0.75rem;
   color: #0f172a;
+  font-size: 1.35rem;
 }
 
 ul {
-  padding-left: 1.2rem;
+  padding-left: 1.15rem;
   color: #334155;
   line-height: 1.7;
+  font-size: 0.94rem;
 }
 
 .btn {
@@ -86,9 +90,10 @@ ul {
   text-decoration: none;
   background: #0f172a;
   color: #fff;
-  padding: 0.9rem 1.1rem;
+  padding: 0.85rem 1.05rem;
   border-radius: 999px;
   font-weight: 700;
+  font-size: 0.9rem;
 }
 
 @media (max-width: 860px) {

@@ -1,26 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { SITE_CONTENT, SiteContent } from '../site-content';
 import { LanguageService } from '../../services/language.service';
-import { getContent, siteConfig } from '../site-content';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
-  config = siteConfig;
+export class HomeComponent implements OnInit, OnDestroy {
+  content: SiteContent = SITE_CONTENT.fr;
+  featuredOutings = SITE_CONTENT.fr.outings.slice(0, 4);
+  highlights = SITE_CONTENT.fr.boatHighlights;
+  private languageSub?: Subscription;
 
-  constructor(public languageService: LanguageService) {}
+  constructor(private languageService: LanguageService) {}
 
-  get t() {
-    return getContent(this.languageService.currentLang);
+  ngOnInit(): void {
+    this.languageSub = this.languageService.language$.subscribe((language) => {
+      this.content = SITE_CONTENT[language];
+      this.featuredOutings = this.content.outings.slice(0, 4);
+      this.highlights = this.content.boatHighlights;
+    });
   }
 
-  get featuredOutings() {
-    return this.t.outingsList.slice(0, 4);
-  }
-
-  get highlights() {
-    return this.t.boatHighlights;
+  ngOnDestroy(): void {
+    this.languageSub?.unsubscribe();
   }
 }

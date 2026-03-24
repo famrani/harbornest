@@ -1,39 +1,41 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-export type LanguageCode = 'fr' | 'en' | 'es';
+export type SiteLanguage = 'fr' | 'en' | 'es';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class LanguageService {
-  private readonly storageKey = 'site-language';
-  private readonly subject = new BehaviorSubject<LanguageCode>(this.readInitialLanguage());
+  private readonly storageKey = 'alegria_language';
+  private readonly defaultLanguage: SiteLanguage = 'fr';
+  private readonly languageSubject = new BehaviorSubject<SiteLanguage>(this.readInitialLanguage());
 
-  readonly currentLang$ = this.subject.asObservable();
+  readonly language$ = this.languageSubject.asObservable();
 
-  get currentLang(): LanguageCode {
-    return this.subject.value;
+  get currentLanguage(): SiteLanguage {
+    return this.languageSubject.value;
   }
 
-  setLanguage(lang: LanguageCode): void {
-    this.subject.next(lang);
+  setLanguage(language: SiteLanguage): void {
+    this.languageSubject.next(language);
     try {
-      localStorage.setItem(this.storageKey, lang);
+      localStorage.setItem(this.storageKey, language);
     } catch {
-      // ignore storage errors
+      // localStorage can be unavailable in some environments.
     }
   }
 
-  private readInitialLanguage(): LanguageCode {
+  private readInitialLanguage(): SiteLanguage {
     try {
-      const saved = localStorage.getItem(this.storageKey) as LanguageCode | null;
+      const saved = localStorage.getItem(this.storageKey) as SiteLanguage | null;
       if (saved === 'fr' || saved === 'en' || saved === 'es') {
         return saved;
       }
     } catch {
-      // ignore storage errors
+      // ignore storage access issues
     }
-    return 'fr';
+
+    return this.defaultLanguage;
   }
 }

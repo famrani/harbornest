@@ -1,16 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { SITE_CONTENT, SiteContent } from '../home/site-content';
 import { LanguageService } from '../services/language.service';
-import { getContent } from '../home/site-content';
 
 @Component({
   selector: 'app-page404',
   templateUrl: './page404.component.html',
   styleUrls: ['./page404.component.scss'],
 })
-export class Page404Component {
-  constructor(public languageService: LanguageService) {}
+export class Page404Component implements OnInit, OnDestroy {
+  content: SiteContent = SITE_CONTENT.fr;
+  private languageSub?: Subscription;
 
-  get t() {
-    return getContent(this.languageService.currentLang);
+  constructor(private languageService: LanguageService) {}
+
+  ngOnInit(): void {
+    this.languageSub = this.languageService.language$.subscribe((language) => {
+      this.content = SITE_CONTENT[language];
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.languageSub?.unsubscribe();
   }
 }

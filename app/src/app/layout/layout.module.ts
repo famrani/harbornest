@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { NgxSpinnerModule } from 'ngx-spinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { HomelayoutComponent } from './home/homelayout/homelayout.component';
 import { HomeheaderComponent } from './home/homeheader/homeheader.component';
 import { HomefooterComponent } from './home/homefooter/homefooter.component';
+import { LayoutRoutingModule } from './layout.router.module';
 
 @NgModule({
   declarations: [
@@ -25,11 +26,8 @@ import { HomefooterComponent } from './home/homefooter/homefooter.component';
     FormsModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
+    LayoutRoutingModule,
   ],
-  exports: [
-    HomelayoutComponent,
-    HomeheaderComponent,
-    HomefooterComponent,
-  ],
+  exports: [HomelayoutComponent],
 })
 export class LayoutModule {}

@@ -1,20 +1,21 @@
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-copy">
-      <span class="eyebrow">{{ t.home.eyebrow }}</span>
-      <h1>{{ t.home.title }}</h1>
-      <p>{{ t.home.intro }}</p>
+      <span class="eyebrow">{{ content.home.eyebrow }}</span>
+      <h1>{{ content.home.title }}</h1>
+      <p>{{ content.home.intro }}</p>
+      <div class="price-pill">{{ content.priceFrom }}</div>
       <div class="hero-actions">
-        <a routerLink="/sorties" class="btn btn-primary">{{ t.home.discover }}</a>
-        <a routerLink="/contact" class="btn btn-secondary">{{ t.home.requestQuote }}</a>
+        <a routerLink="/sorties" class="btn btn-primary">{{ content.home.primaryCta }}</a>
+        <a routerLink="/contact" class="btn btn-secondary">{{ content.home.secondaryCta }}</a>
       </div>
       <ul class="hero-points">
-        <li *ngFor="let point of t.home.points">{{ point }}</li>
+        <li *ngFor="let point of content.home.points">{{ point }}</li>
       </ul>
     </div>
 
     <div class="hero-visual">
-      <img [src]="config.heroImage" [alt]="config.brandName" />
+      <img [src]="content.heroImage" [alt]="content.brand" />
     </div>
   </div>
 </section>
@@ -22,9 +23,9 @@
 <section class="section">
   <div class="container">
     <div class="section-head">
-      <span class="eyebrow">{{ t.home.formulasEyebrow }}</span>
-      <h2>{{ t.home.formulasTitle }}</h2>
-      <p>{{ t.home.formulasText }}</p>
+      <span class="eyebrow">{{ content.home.sectionEyebrow }}</span>
+      <h2>{{ content.home.sectionTitle }}</h2>
+      <p>{{ content.home.sectionText }}</p>
     </div>
 
     <div class="cards-grid">
@@ -34,7 +35,7 @@
           <h3>{{ outing.title }}</h3>
           <p>{{ outing.description }}</p>
           <div class="meta">{{ outing.duration }} • {{ outing.guests }}</div>
-          <a routerLink="/contact" class="text-link">{{ t.home.infoLink }}</a>
+          <a routerLink="/contact" class="text-link">{{ content.outingsPage.cta }}</a>
         </div>
       </article>
     </div>
@@ -44,17 +45,17 @@
 <section class="section section-light">
   <div class="container split-grid">
     <div>
-      <span class="eyebrow">{{ t.home.boatEyebrow }}</span>
-      <h2>{{ t.home.boatTitle }}</h2>
-      <p>{{ t.home.boatText }}</p>
+      <span class="eyebrow">{{ content.home.boatEyebrow }}</span>
+      <h2>{{ content.home.boatTitle }}</h2>
+      <p>{{ content.home.boatText }}</p>
       <ul class="check-list">
         <li *ngFor="let item of highlights">{{ item }}</li>
       </ul>
-      <a routerLink="/bateau" class="btn btn-secondary">{{ t.home.boatButton }}</a>
+      <a routerLink="/bateau" class="btn btn-secondary">{{ content.home.boatCta }}</a>
     </div>
 
     <div class="boat-card">
-      <img [src]="config.boatHeroImage" [alt]="t.home.boatTitle" />
+      <img [src]="content.boatHeroImage" [alt]="content.brand" />
     </div>
   </div>
 </section>
@@ -62,13 +63,13 @@
 <section class="section">
   <div class="container contact-banner">
     <div>
-      <span class="eyebrow">{{ t.home.contactEyebrow }}</span>
-      <h2>{{ t.home.contactTitle }}</h2>
-      <p>{{ t.home.contactText }}</p>
+      <span class="eyebrow">{{ content.home.contactEyebrow }}</span>
+      <h2>{{ content.home.contactTitle }}</h2>
+      <p>{{ content.home.contactText }}</p>
     </div>
     <div class="contact-actions">
-      <a [href]="'tel:' + config.phoneRaw" class="btn btn-secondary">{{ t.home.callButton }}</a>
-      <a routerLink="/contact" class="btn btn-primary">{{ t.home.requestButton }}</a>
+      <a [href]="'tel:' + content.phoneRaw" class="btn btn-secondary">{{ content.common.call }}</a>
+      <a routerLink="/contact" class="btn btn-primary">{{ content.common.requestQuote }}</a>
     </div>
   </div>
 </section>

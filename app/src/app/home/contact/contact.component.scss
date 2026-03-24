@@ -9,13 +9,13 @@
 
 .page-hero,
 .section {
-  padding: 4.5rem 0;
+  padding: 4rem 0;
 }
 
 .eyebrow {
   display: inline-block;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
+  margin-bottom: 0.9rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -23,33 +23,35 @@
 }
 
 h1 {
-  font-size: clamp(2.1rem, 4vw, 3.8rem);
-  line-height: 1.05;
-  margin: 0 0 1rem;
+  font-size: clamp(1.85rem, 3vw, 3rem);
+  line-height: 1.08;
+  margin: 0 0 0.9rem;
   color: #0f172a;
 }
 
 h2 {
   margin-top: 0;
   color: #0f172a;
+  font-size: 1.35rem;
 }
 
 p {
   color: #475569;
   line-height: 1.7;
+  font-size: 0.97rem;
 }
 
 .contact-grid {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
-  gap: 1.5rem;
+  gap: 1.4rem;
 }
 
 .contact-card,
 .info-card {
   background: #fff;
   border-radius: 24px;
-  padding: 1.5rem;
+  padding: 1.45rem;
   box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
 }
 
@@ -65,6 +67,7 @@ label {
   gap: 0.45rem;
   color: #334155;
   font-weight: 600;
+  font-size: 0.92rem;
 }
 
 input,
@@ -96,9 +99,10 @@ textarea {
   text-decoration: none;
   border: none;
   cursor: pointer;
-  padding: 0.95rem 1.2rem;
+  padding: 0.9rem 1.15rem;
   border-radius: 999px;
   font-weight: 700;
+  font-size: 0.9rem;
 }
 
 .btn-primary {
@@ -114,7 +118,7 @@ textarea {
 .info-block {
   display: grid;
   gap: 0.35rem;
-  padding: 1rem 0;
+  padding: 0.95rem 0;
   border-bottom: 1px solid #e2e8f0;
 }
 
@@ -124,12 +128,17 @@ textarea {
   text-decoration: none;
 }
 
+.price-info span {
+  font-weight: 700;
+}
+
 .notice {
   margin-top: 1rem;
   padding: 1rem;
   border-radius: 16px;
   background: #eff6ff;
   color: #1e3a8a;
+  font-size: 0.92rem;
 }
 
 @media (max-width: 860px) {

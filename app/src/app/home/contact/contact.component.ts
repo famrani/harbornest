@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { siteConfig, getContent } from '../site-content';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { SITE_CONTENT, SiteContent } from '../site-content';
 import { LocalUtilsService } from '../../services/services.service';
 import { LanguageService } from '../../services/language.service';
 
@@ -18,9 +19,10 @@ interface ContactFormModel {
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
 })
-export class ContactComponent {
-  config = siteConfig;
+export class ContactComponent implements OnInit, OnDestroy {
+  content: SiteContent = SITE_CONTENT.fr;
   submitted = false;
+  private languageSub?: Subscription;
 
   form: ContactFormModel = {
     name: '',
@@ -34,30 +36,42 @@ export class ContactComponent {
 
   constructor(
     public localutilsSvc: LocalUtilsService,
-    public languageService: LanguageService,
+    private languageService: LanguageService,
   ) {}
 
-  get t() {
-    return getContent(this.languageService.currentLang);
+  ngOnInit(): void {
+    this.languageSub = this.languageService.language$.subscribe((language) => {
+      this.content = SITE_CONTENT[language];
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.languageSub?.unsubscribe();
   }
 
   get whatsappHref(): string {
     const lines = [
-      this.t.contact.whatsappIntro,
-      this.form.outingType ? `${this.t.contact.labels.outingType} : ${this.form.outingType}` : '',
-      this.form.preferredDate ? `${this.t.contact.labels.preferredDate} : ${this.form.preferredDate}` : '',
-      this.form.guests ? `${this.t.contact.labels.guests} : ${this.form.guests}` : '',
-      this.form.message ? `${this.t.contact.labels.message} : ${this.form.message}` : '',
+      this.content.contactPage.whatsappIntro,
+      this.form.outingType ? `${this.content.contactPage.outingType}: ${this.form.outingType}` : '',
+      this.form.preferredDate ? `${this.content.contactPage.preferredDate}: ${this.form.preferredDate}` : '',
+      this.form.guests ? `${this.content.contactPage.guests}: ${this.form.guests}` : '',
+      this.form.message ? `${this.content.contactPage.message}: ${this.form.message}` : '',
     ].filter(Boolean);
 
-    return `https://wa.me/${this.config.phoneRaw.replace('+', '')}?text=${encodeURIComponent(lines.join('\n'))}`;
+    return `https://wa.me/${this.content.phoneRaw.replace('+', '')}?text=${encodeURIComponent(lines.join('\n'))}`;
   }
 
   submit(): void {
     this.submitted = true;
 
-    const subject = `${this.t.contact.mailSubjectPrefix} - ${this.form.outingType || this.t.contact.labels.outingType} - ${this.form.preferredDate}`;
+    const subject = `${this.content.contactPage.emailSubjectPrefix} - ${this.form.outingType || this.content.brand} - ${this.form.preferredDate || ''}`;
 
-    this.localutilsSvc.sendEmail(subject, this.form.message, this.form.name, this.form.email, this.form.phone);
+    this.localutilsSvc.sendEmail(
+      subject,
+      this.form.message,
+      this.form.name,
+      this.form.email,
+      this.form.phone,
+    );
   }
 }

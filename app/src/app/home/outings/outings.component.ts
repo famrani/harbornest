@@ -1,20 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { SITE_CONTENT, SiteContent } from '../site-content';
 import { LanguageService } from '../../services/language.service';
-import { getContent } from '../site-content';
 
 @Component({
   selector: 'app-outings',
   templateUrl: './outings.component.html',
   styleUrls: ['./outings.component.scss'],
 })
-export class OutingsComponent {
-  constructor(public languageService: LanguageService) {}
+export class OutingsComponent implements OnInit, OnDestroy {
+  content: SiteContent = SITE_CONTENT.fr;
+  private languageSub?: Subscription;
 
-  get t() {
-    return getContent(this.languageService.currentLang);
+  constructor(private languageService: LanguageService) {}
+
+  ngOnInit(): void {
+    this.languageSub = this.languageService.language$.subscribe((language) => {
+      this.content = SITE_CONTENT[language];
+    });
   }
 
-  get outings() {
-    return this.t.outingsList;
+  ngOnDestroy(): void {
+    this.languageSub?.unsubscribe();
   }
 }

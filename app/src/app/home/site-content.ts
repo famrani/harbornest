@@ -1,4 +1,4 @@
-import { LanguageCode } from '../services/language.service';
+import { SiteLanguage } from '../services/language.service';
 
 export interface OutingItem {
   slug: string;
@@ -10,617 +10,625 @@ export interface OutingItem {
   highlights: string[];
 }
 
-export interface LocalizedContent {
+export interface SiteContent {
+  brand: string;
+  brandTagline: string;
+  phoneDisplay: string;
+  phoneRaw: string;
+  email: string;
+  departureArea: string;
+  priceFrom: string;
+  heroImage: string;
+  boatHeroImage: string;
   nav: {
     home: string;
     outings: string;
     boat: string;
     gallery: string;
     contact: string;
-    book: string;
     quote: string;
   };
-  header: {
-    tagline: string;
-  };
-  footer: {
-    summary: string;
-    navigation: string;
-    contact: string;
-    response: string;
+  common: {
+    from: string;
+    dayWithSkipper: string;
+    contactUs: string;
+    requestQuote: string;
+    call: string;
+    emailUs: string;
+    whatsapp: string;
+    directContact: string;
+    departurePort: string;
   };
   home: {
     eyebrow: string;
     title: string;
     intro: string;
-    discover: string;
-    requestQuote: string;
+    primaryCta: string;
+    secondaryCta: string;
     points: string[];
-    formulasEyebrow: string;
-    formulasTitle: string;
-    formulasText: string;
-    infoLink: string;
+    sectionEyebrow: string;
+    sectionTitle: string;
+    sectionText: string;
     boatEyebrow: string;
     boatTitle: string;
     boatText: string;
-    boatButton: string;
+    boatCta: string;
     contactEyebrow: string;
     contactTitle: string;
     contactText: string;
-    callButton: string;
-    requestButton: string;
   };
-  boat: {
+  outingsPage: {
     eyebrow: string;
     title: string;
     intro: string;
-    whyTitle: string;
-    whyText: string;
-    experienceTitle: string;
-    experienceText: string;
+    cta: string;
+  };
+  boatPage: {
+    eyebrow: string;
+    title: string;
+    intro: string;
+    reasonsTitle: string;
+    reasonsText: string;
+    reasons: string[];
+    comfortTitle: string;
+    comfortText: string;
     occasionsTitle: string;
     occasions: string[];
-    ctaTitle: string;
-    ctaText: string;
-    ctaButton: string;
+    cta: string;
   };
-  outings: {
+  galleryPage: {
     eyebrow: string;
     title: string;
     intro: string;
-    infoButton: string;
   };
-  gallery: {
-    eyebrow: string;
-    title: string;
-    intro: string;
-    imageAlt: string;
-  };
-  contact: {
+  contactPage: {
     eyebrow: string;
     title: string;
     intro: string;
     formTitle: string;
-    infoTitle: string;
-    infoText: string;
-    labels: {
-      name: string;
-      email: string;
-      phone: string;
-      outingType: string;
-      preferredDate: string;
-      guests: string;
-      message: string;
-      select: string;
-      sendEmail: string;
-      whatsapp: string;
-      departureArea: string;
-      directPhone: string;
-      directEmail: string;
-      sent: string;
-    };
-    whatsappIntro: string;
-    mailSubjectPrefix: string;
+    name: string;
+    email: string;
+    phone: string;
+    outingType: string;
+    outingPlaceholder: string;
+    preferredDate: string;
+    guests: string;
+    message: string;
+    sendEmail: string;
+    prepareWhatsapp: string;
+    directTitle: string;
+    directText: string;
+    sentNotice: string;
     outingOptions: string[];
+    emailSubjectPrefix: string;
+    whatsappIntro: string;
+  };
+  footer: {
+    description: string;
+    navigation: string;
+    contact: string;
+    quickReply: string;
   };
   notFound: {
     title: string;
     text: string;
-    back: string;
+    cta: string;
   };
+  outings: OutingItem[];
+  galleryImages: string[];
   boatHighlights: string[];
-  outingsList: OutingItem[];
 }
 
-export const siteConfig = {
-  brandName: 'Catamaran Bali 4.1 - Alegria',
-  shortBrandName: 'Catamaran Bali 4.1',
-  phoneDisplay: '+33 6 85 26 65 10',
-  phoneRaw: '+33685266510',
-  email: 'contact@alldigitalnetwork.com',
-  departureArea: 'Marina Baie des Anges - 06270 Villeneuve-Loubet',
-  heroImage: 'assets/img/home/home-hero-generic.jpg',
-  boatHeroImage: 'assets/img/boat/bali4.1/bali-41-4.jpg',
+const sharedImages = {
+  hero: 'assets/img/home/home-hero-generic.jpg',
+  boatHero: 'assets/img/boat/bali4.1/bali-41-4.jpg',
+  gallery: [
+    'assets/img/boat/bali4.1/bali-41-2.jpg',
+    'assets/img/boat/bali4.1/bali-41-3.jpg',
+    'assets/img/boat/bali4.1/bali-41-4.jpg',
+    'assets/img/boat/bali4.1/bali-41-5.jpg',
+    'assets/img/events/cap-antibes/cap-antibes1.jpg',
+    'assets/img/events/sunset/sunset2.jpg',
+    'assets/img/events/leyrins/leyrins1.jpg',
+    'assets/img/events/afterwork/afterwork1.jpg',
+    'assets/img/events/evjf/evjf-g3.jpg',
+  ],
+  outing1: 'assets/img/events/cap-antibes/cap-antibes1.jpg',
+  outing2: 'assets/img/events/sunset/sunset1.jpg',
+  outing3: 'assets/img/events/afterwork/afterwork1.jpg',
+  outing4: 'assets/img/events/evjf/evjf-g1.jpg',
+  outing5: 'assets/img/events/business-meeting/business-meeting1.jpg',
+  outing6: 'assets/img/events/night-on-board/night-on-board1.jpg',
 };
 
-export const galleryImages: string[] = [
-  'assets/img/boat/bali4.1/bali-41-2.jpg',
-  'assets/img/boat/bali4.1/bali-41-3.jpg',
-  'assets/img/boat/bali4.1/bali-41-4.jpg',
-  'assets/img/boat/bali4.1/bali-41-5.jpg',
-  'assets/img/events/cap-antibes/cap-antibes1.jpg',
-  'assets/img/events/sunset/sunset2.jpg',
-  'assets/img/events/leyrins/leyrins1.jpg',
-  'assets/img/events/afterwork/afterwork1.jpg',
-  'assets/img/events/evjf/evjf-g3.jpg',
-];
-
-const content: Record<LanguageCode, LocalizedContent> = {
+export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
   fr: {
+    brand: 'Alegria',
+    brandTagline: 'Sorties en mer privées',
+    phoneDisplay: '+33 6 85 26 65 10',
+    phoneRaw: '+33685266510',
+    email: 'contact@alldigitalnetwork.com',
+    departureArea: 'Port Marina Baie des Anges, Villeneuve-Loubet',
+    priceFrom: 'À partir de 1 500 € par jour avec skipper',
+    heroImage: sharedImages.hero,
+    boatHeroImage: sharedImages.boatHero,
     nav: {
       home: 'Accueil',
-      outings: 'Nos sorties',
+      outings: 'Sorties',
       boat: 'Le bateau',
       gallery: 'Galerie',
       contact: 'Contact',
-      book: 'Réserver',
       quote: 'Demander un devis',
     },
-    header: {
-      tagline: 'Sorties en mer privées',
-    },
-    footer: {
-      summary: 'Sorties en mer privées, journées à bord, couchers de soleil et événements sur la Côte d’Azur.',
-      navigation: 'Navigation',
-      contact: 'Contact',
-      response: 'Réponse rapide pour demandes d’informations et devis.',
+    common: {
+      from: 'À partir de',
+      dayWithSkipper: 'par jour avec skipper',
+      contactUs: 'Nous contacter',
+      requestQuote: 'Demander un devis',
+      call: 'Appeler',
+      emailUs: 'Envoyer un email',
+      whatsapp: 'WhatsApp',
+      directContact: 'Contact direct',
+      departurePort: 'Port de départ',
     },
     home: {
-      eyebrow: 'Sorties en mer privées',
-      title: 'Offrez-vous une sortie en mer élégante, conviviale et entièrement sur mesure.',
-      intro: 'Que vous souhaitiez une journée de détente, un coucher de soleil, un anniversaire ou une sortie entre amis, nous vous aidons à organiser un moment unique à bord du catamaran.',
-      discover: 'Découvrir les sorties',
-      requestQuote: 'Demander un devis',
-      points: ['Contact direct', 'Réponse rapide', 'Sorties privatives'],
-      formulasEyebrow: 'Nos expériences',
-      formulasTitle: 'Des sorties pensées pour vos plus beaux moments en mer',
-      formulasText: 'Chaque sortie est adaptée à vos envies, à votre rythme et aux conditions du jour, pour une expérience simple, fluide et mémorable.',
-      infoLink: 'Recevoir des informations',
-      boatEyebrow: 'Le bateau',
-      boatTitle: 'Un catamaran confortable pour profiter pleinement de la mer',
-      boatText: 'Spacieux, accueillant et pensé pour la détente, le bateau offre un cadre idéal pour partager un moment privilégié en couple, en famille, entre amis ou avec des invités.',
-      boatButton: 'Voir le bateau',
-      contactEyebrow: 'Contact direct',
-      contactTitle: 'Parlez-nous de votre projet et recevez une proposition adaptée',
-      contactText: 'Journée complète, sunset, anniversaire, EVJF / EVG ou sortie personnalisée : tout commence par un échange simple et rapide.',
-      callButton: 'Appeler',
-      requestButton: 'Faire une demande',
+      eyebrow: 'Sorties en mer privées sur la Côte d’Azur',
+      title: 'Privatisez Alegria pour une journée en mer élégante et conviviale.',
+      intro: 'Profitez d’un catamaran confortable pour une journée de détente, un coucher de soleil, un anniversaire ou un moment privilégié entre amis, en famille ou en couple. Toutes les sorties sont privatives et organisées sur mesure à partir de 1 500 € par jour avec skipper.',
+      primaryCta: 'Découvrir les sorties',
+      secondaryCta: 'Demander un devis',
+      points: ['Sorties privatives', 'À partir de 1 500 € / jour avec skipper', 'Contact direct et réponse rapide'],
+      sectionEyebrow: 'Nos sorties',
+      sectionTitle: 'Des expériences pensées pour le plaisir, la détente et les beaux moments en mer',
+      sectionText: 'Choisissez une idée de sortie ou contactez-nous directement pour construire un programme sur mesure en fonction de votre date, du nombre de personnes et de l’ambiance souhaitée.',
+      boatEyebrow: 'Alegria',
+      boatTitle: 'Un catamaran spacieux et confortable pour profiter pleinement de la navigation',
+      boatText: 'Alegria offre un cadre idéal pour se relaxer, partager un déjeuner à bord, se baigner dans des eaux turquoise et profiter de la Côte d’Azur autrement.',
+      boatCta: 'Découvrir le bateau',
+      contactEyebrow: 'Devis personnalisé',
+      contactTitle: 'Parlez-nous de votre sortie idéale et recevez une proposition adaptée.',
+      contactText: 'Journée en mer, coucher de soleil, anniversaire, EVJF/EVG ou sortie entreprise : nous échangeons directement avec vous pour vous proposer la meilleure formule.',
     },
-    boat: {
-      eyebrow: 'Le bateau',
-      title: 'Un catamaran conçu pour des sorties privées confortables et mémorables',
-      intro: 'À bord du Bali 4.1, tout est réuni pour profiter de la mer dans un cadre élégant, convivial et apaisant. Le bateau se prête aussi bien aux moments de détente qu’aux occasions à célébrer.',
-      whyTitle: 'Pourquoi choisir ce bateau ?',
-      whyText: 'Son espace de vie généreux, sa circulation fluide et son ambiance chaleureuse en font un excellent choix pour vivre la mer autrement, en toute simplicité et dans de très bonnes conditions de confort.',
-      experienceTitle: 'Une expérience pensée pour votre plaisir',
-      experienceText: 'Chaque sortie s’adapte à vos envies : baignade, mouillage dans un lieu agréable, apéritif au coucher du soleil, moment en famille, sortie entre amis ou événement privé. L’objectif est toujours le même : vous faire vivre un moment dont vous garderez un beau souvenir.',
-      occasionsTitle: 'Idéal pour',
-      occasions: ['une sortie en couple', 'une journée en famille', 'un moment entre amis', 'un anniversaire', 'un EVJF / EVG', 'un événement privé ou professionnel'],
-      ctaTitle: 'Vous souhaitez en savoir plus sur le bateau ?',
-      ctaText: 'Contactez-nous pour vérifier les possibilités, poser vos questions et construire une sortie adaptée à vos envies.',
-      ctaButton: 'Demander des informations',
-    },
-    outings: {
+    outingsPage: {
       eyebrow: 'Nos sorties',
-      title: 'Des expériences en mer à adapter à votre envie du moment',
-      intro: 'Ces formules donnent une idée des sorties possibles. Chaque demande est ensuite étudiée avec vous pour construire un programme cohérent, agréable et personnalisé.',
-      infoButton: 'Demander des informations',
+      title: 'Des sorties privées à bord d’Alegria pour toutes vos envies',
+      intro: 'Toutes les formules sont données à titre indicatif. Nous adaptons chaque sortie à votre projet, dans la limite des conditions météo, du programme souhaité et du nombre de personnes.',
+      cta: 'Recevoir des informations',
     },
-    gallery: {
+    boatPage: {
+      eyebrow: 'Le bateau',
+      title: 'Alegria, un catamaran pensé pour des journées en mer confortables et mémorables',
+      intro: 'Alegria est un Bali 4.1 spacieux, stable et accueillant, idéal pour profiter de la mer dans un cadre élégant et détendu. À bord, tout est réuni pour vivre une sortie privée agréable, avec skipper, au rythme de vos envies.',
+      reasonsTitle: 'Pourquoi choisir Alegria ? ',
+      reasonsText: 'Le catamaran est parfaitement adapté aux journées en mer entre proches, aux événements privés et aux moments de détente dans les plus beaux mouillages de la Côte d’Azur.',
+      reasons: ['Grand espace de vie pour circuler et se détendre', 'Navigation confortable et ambiance conviviale', 'Sortie 100 % privative avec skipper', 'Programme flexible selon vos envies et la météo'],
+      comfortTitle: 'Confort et ambiance à bord',
+      comfortText: 'Que vous souhaitiez profiter du soleil, partager un déjeuner, organiser un apéritif au coucher du soleil ou simplement découvrir le littoral, Alegria vous accueille dans des conditions soignées et chaleureuses.',
+      occasionsTitle: 'Idéal pour',
+      occasions: ['une journée en famille', 'une sortie en couple', 'un moment entre amis', 'un anniversaire', 'un EVJF / EVG', 'un événement privé ou professionnel'],
+      cta: 'Demander un devis',
+    },
+    galleryPage: {
       eyebrow: 'Galerie',
-      title: 'Quelques images pour découvrir l’ambiance à bord',
-      intro: 'Découvrez le bateau, l’atmosphère des sorties et quelques lieux qui font le charme d’une journée en mer sur la Côte d’Azur.',
-      imageAlt: 'Photo de sortie en mer',
+      title: 'Découvrez l’univers d’Alegria en images',
+      intro: 'Quelques photos pour vous permettre de vous projeter à bord et ressentir l’ambiance des sorties proposées.',
     },
-    contact: {
+    contactPage: {
       eyebrow: 'Contact / devis',
       title: 'Parlez-nous de votre projet de sortie en mer',
-      intro: 'Indiquez-nous votre date idéale, le type de sortie souhaité et le nombre de participants. Nous vous répondrons rapidement avec les informations utiles et une proposition adaptée.',
+      intro: 'Décrivez simplement la sortie souhaitée, votre date idéale et le nombre de participants. Nous revenons vers vous rapidement avec les informations utiles et une proposition adaptée.',
       formTitle: 'Demande d’informations',
-      infoTitle: 'Contact direct',
-      infoText: 'Vous pouvez également nous joindre directement par téléphone ou par email pour échanger sur votre projet.',
-      labels: {
-        name: 'Nom',
-        email: 'Email',
-        phone: 'Téléphone',
-        outingType: 'Type de sortie',
-        preferredDate: 'Date souhaitée',
-        guests: 'Nombre de personnes',
-        message: 'Votre message',
-        select: 'Sélectionner',
-        sendEmail: 'Envoyer par email',
-        whatsapp: 'Préparer un message WhatsApp',
-        departureArea: 'Zone de départ',
-        directPhone: 'Téléphone',
-        directEmail: 'Email',
-        sent: 'Message envoyé.',
-      },
-      whatsappIntro: 'Bonjour, je souhaite obtenir des informations pour une sortie en mer.',
-      mailSubjectPrefix: 'Demande d’informations',
-      outingOptions: ['Journée en mer', 'Sunset / coucher de soleil', 'Anniversaire', 'EVJF / EVG', 'Sortie entreprise', 'Projet sur mesure'],
+      name: 'Nom',
+      email: 'Email',
+      phone: 'Téléphone',
+      outingType: 'Type de sortie',
+      outingPlaceholder: 'Sélectionner',
+      preferredDate: 'Date souhaitée',
+      guests: 'Nombre de personnes',
+      message: 'Votre message',
+      sendEmail: 'Envoyer par email',
+      prepareWhatsapp: 'Préparer un message WhatsApp',
+      directTitle: 'Contact direct',
+      directText: 'Vous pouvez aussi nous joindre directement par téléphone ou email pour parler de votre projet et vérifier les disponibilités.',
+      sentNotice: 'Votre message a bien été préparé. Nous vous répondrons rapidement.',
+      outingOptions: ['Journée en mer', 'Coucher de soleil', 'Anniversaire', 'EVJF / EVG', 'Sortie entreprise', 'Projet sur mesure'],
+      emailSubjectPrefix: 'Demande d’informations',
+      whatsappIntro: 'Bonjour, je souhaite obtenir des informations pour une sortie en mer à bord d’Alegria.',
+    },
+    footer: {
+      description: 'Sorties en mer privées à bord d’Alegria au départ de Marina Baie des Anges. À partir de 1 500 € par jour avec skipper.',
+      navigation: 'Navigation',
+      contact: 'Contact',
+      quickReply: 'Réponse rapide pour demandes d’informations et devis.',
     },
     notFound: {
       title: 'Page introuvable',
       text: 'La page demandée n’existe pas ou n’est plus disponible.',
-      back: 'Revenir à l’accueil',
+      cta: 'Revenir à l’accueil',
     },
-    boatHighlights: [
-      'Catamaran confortable et bien entretenu',
-      'Sorties privées dans une ambiance conviviale',
-      'Programme adapté selon la météo et vos envies',
-      'Échange direct pour préparer votre sortie',
-    ],
-    outingsList: [
+    outings: [
       {
         slug: 'journee',
         title: 'Journée en mer',
-        duration: 'À la journée',
-        guests: 'Privatisation',
-        description: 'Une sortie idéale pour profiter de la mer, se baigner, déjeuner à bord et découvrir de beaux mouillages.',
-        image: 'assets/img/events/cap-antibes/cap-antibes1.jpg',
-        highlights: ['Programme sur mesure', 'Ambiance détente', 'Baignade et découverte du littoral'],
+        duration: 'Journée complète',
+        guests: 'Sortie privative',
+        description: 'Une journée sur l’eau pour profiter de la navigation, d’un déjeuner à bord, des baignades et des plus beaux mouillages de la région.',
+        image: sharedImages.outing1,
+        highlights: ['À partir de 1 500 € avec skipper', 'Programme sur mesure', 'Baignade et détente'],
       },
       {
         slug: 'sunset',
-        title: 'Sortie coucher de soleil',
+        title: 'Coucher de soleil',
         duration: 'Fin de journée',
-        guests: 'Couple, amis ou famille',
-        description: 'Une parenthèse en mer pour profiter de la lumière de fin de journée dans une atmosphère calme et élégante.',
-        image: 'assets/img/events/sunset/sunset1.jpg',
-        highlights: ['Moment romantique', 'Apéritif possible', 'Lumière exceptionnelle'],
+        guests: 'Couple, famille ou amis',
+        description: 'Une sortie élégante en mer pour profiter d’une lumière exceptionnelle et d’un moment privilégié à bord d’Alegria.',
+        image: sharedImages.outing2,
+        highlights: ['Ambiance chic et détendue', 'Apéritif possible', 'Moment mémorable'],
       },
       {
-        slug: 'evenement-prive',
+        slug: 'anniversaire',
         title: 'Anniversaire ou événement privé',
         duration: 'Selon votre projet',
         guests: 'Privatisation',
-        description: 'Pour célébrer une occasion importante dans un cadre original, raffiné et mémorable.',
-        image: 'assets/img/events/afterwork/afterwork1.jpg',
-        highlights: ['Organisation flexible', 'Moment unique en mer', 'Souvenir marquant'],
+        description: 'Célébrez une date importante dans un cadre original et raffiné, avec une sortie organisée selon vos envies.',
+        image: sharedImages.outing3,
+        highlights: ['Format flexible', 'Cadre unique', 'Souvenirs inoubliables'],
       },
       {
         slug: 'evjf',
         title: 'EVJF / EVG',
         duration: 'Demi-journée ou journée',
         guests: 'Groupe convivial',
-        description: 'Une formule chic et festive pour marquer l’événement avec une sortie conviviale sur l’eau.',
-        image: 'assets/img/events/evjf/evjf-g1.jpg',
-        highlights: ['Esprit festif', 'Photos inoubliables', 'Format personnalisable'],
+        description: 'Une sortie festive en mer pour partager un très beau moment avant le grand jour.',
+        image: sharedImages.outing4,
+        highlights: ['Privatisation du bateau', 'Photos et ambiance', 'Programme personnalisable'],
       },
       {
-        slug: 'afterwork',
-        title: 'Afterwork et sortie entreprise',
-        duration: 'Soirée ou demi-journée',
+        slug: 'entreprise',
+        title: 'Sortie entreprise',
+        duration: 'Demi-journée ou journée',
         guests: 'Équipe ou invités',
-        description: 'Un cadre premium pour rassembler une équipe, recevoir des invités ou partager un moment différent.',
-        image: 'assets/img/events/business-meeting/business-meeting1.jpg',
-        highlights: ['Cadre inspirant', 'Moment fédérateur', 'Devis personnalisé'],
+        description: 'Offrez à vos collaborateurs ou à vos invités un cadre bien plus inspirant qu’une salle de réunion classique.',
+        image: sharedImages.outing5,
+        highlights: ['Cadre premium', 'Moment fédérateur', 'Sur devis'],
       },
       {
         slug: 'sur-mesure',
         title: 'Expérience sur mesure',
         duration: 'À définir',
         guests: 'Selon demande',
-        description: 'Vous avez une idée précise ? Nous construisons avec vous une sortie qui correspond à vos envies et à vos contraintes.',
-        image: 'assets/img/events/night-on-board/night-on-board1.jpg',
-        highlights: ['Projet personnalisé', 'Échange direct', 'Proposition adaptée'],
+        description: 'Vous avez une idée précise ou une occasion particulière ? Construisons ensemble une proposition parfaitement adaptée.',
+        image: sharedImages.outing6,
+        highlights: ['Échange direct', 'Organisation adaptée', 'Proposition personnalisée'],
       },
     ],
+    galleryImages: sharedImages.gallery,
+    boatHighlights: ['Catamaran Bali 4.1 spacieux et stable', 'Sorties 100 % privatives avec skipper', 'Navigation confortable et ambiance élégante', 'Départ depuis Marina Baie des Anges'],
   },
   en: {
+    brand: 'Alegria',
+    brandTagline: 'Private sea outings',
+    phoneDisplay: '+33 6 85 26 65 10',
+    phoneRaw: '+33685266510',
+    email: 'contact@alldigitalnetwork.com',
+    departureArea: 'Marina Baie des Anges, Villeneuve-Loubet',
+    priceFrom: 'From €1,500 per day with skipper',
+    heroImage: sharedImages.hero,
+    boatHeroImage: sharedImages.boatHero,
     nav: {
       home: 'Home',
-      outings: 'Experiences',
+      outings: 'Outings',
       boat: 'The boat',
       gallery: 'Gallery',
       contact: 'Contact',
-      book: 'Book',
       quote: 'Request a quote',
     },
-    header: {
-      tagline: 'Private sea experiences',
-    },
-    footer: {
-      summary: 'Private sea trips, full-day cruises, sunset experiences and events on the French Riviera.',
-      navigation: 'Navigation',
-      contact: 'Contact',
-      response: 'Fast reply for information requests and quotes.',
+    common: {
+      from: 'From',
+      dayWithSkipper: 'per day with skipper',
+      contactUs: 'Contact us',
+      requestQuote: 'Request a quote',
+      call: 'Call',
+      emailUs: 'Send an email',
+      whatsapp: 'WhatsApp',
+      directContact: 'Direct contact',
+      departurePort: 'Departure port',
     },
     home: {
-      eyebrow: 'Private sea experiences',
-      title: 'Enjoy an elegant, friendly and fully tailored day at sea.',
-      intro: 'Whether you are looking for a relaxing day cruise, a sunset outing, a birthday celebration or a special moment with friends, we help you create a unique experience aboard the catamaran.',
-      discover: 'Discover experiences',
-      requestQuote: 'Request a quote',
-      points: ['Direct contact', 'Fast reply', 'Private outings'],
-      formulasEyebrow: 'Our experiences',
-      formulasTitle: 'Sea outings designed for your best moments on the water',
-      formulasText: 'Each outing is shaped around your wishes, your pace and the conditions of the day, for a smooth and memorable experience.',
-      infoLink: 'Get information',
-      boatEyebrow: 'The boat',
-      boatTitle: 'A comfortable catamaran to fully enjoy the sea',
-      boatText: 'Spacious, welcoming and designed for relaxation, the boat provides the perfect setting for a private moment as a couple, with family, friends or guests.',
-      boatButton: 'See the boat',
-      contactEyebrow: 'Direct contact',
-      contactTitle: 'Tell us about your plan and receive a tailored proposal',
-      contactText: 'Full day, sunset, birthday, bachelor or bachelorette party, or custom experience: everything starts with a simple conversation.',
-      callButton: 'Call',
-      requestButton: 'Send a request',
+      eyebrow: 'Private sea outings on the French Riviera',
+      title: 'Charter Alegria for an elegant and relaxed day at sea.',
+      intro: 'Enjoy a comfortable catamaran for a full day at sea, a sunset cruise, a birthday celebration or a special moment with friends, family or your partner. All outings are private and tailored to your plans, starting from €1,500 per day with skipper.',
+      primaryCta: 'Discover the outings',
+      secondaryCta: 'Request a quote',
+      points: ['Private charters', 'From €1,500 per day with skipper', 'Direct contact and fast reply'],
+      sectionEyebrow: 'Our outings',
+      sectionTitle: 'Experiences designed for pleasure, relaxation and memorable moments at sea',
+      sectionText: 'Choose one of our suggested outings or contact us directly to build a tailored program based on your preferred date, group size and desired atmosphere.',
+      boatEyebrow: 'Alegria',
+      boatTitle: 'A spacious and comfortable catamaran to fully enjoy the coastline',
+      boatText: 'Alegria offers the ideal setting to relax, enjoy lunch on board, swim in crystal-clear waters and experience the French Riviera from the sea.',
+      boatCta: 'Discover the boat',
+      contactEyebrow: 'Tailored quote',
+      contactTitle: 'Tell us about your ideal outing and receive a personalized proposal.',
+      contactText: 'Full day at sea, sunset cruise, birthday, bachelor or bachelorette party, or corporate outing: we discuss your plans directly and recommend the right format.',
     },
-    boat: {
+    outingsPage: {
+      eyebrow: 'Our outings',
+      title: 'Private experiences aboard Alegria for every occasion',
+      intro: 'All packages are indicative and can be adjusted to your project, weather conditions, preferred route and number of guests.',
+      cta: 'Get more information',
+    },
+    boatPage: {
       eyebrow: 'The boat',
-      title: 'A catamaran designed for comfortable and memorable private outings',
-      intro: 'Aboard the Bali 4.1, everything is in place to enjoy the sea in an elegant, friendly and relaxing setting. The boat is perfect for quiet moments as well as special occasions.',
-      whyTitle: 'Why choose this boat?',
-      whyText: 'Its generous living space, fluid circulation and warm atmosphere make it an excellent choice for enjoying the sea in a different way, with comfort and simplicity.',
-      experienceTitle: 'An experience designed for your pleasure',
-      experienceText: 'Each outing can be adapted to your wishes: swimming, anchoring in a beautiful spot, sunset aperitif, family time, outing with friends or a private event. The goal is always the same: to create a moment you will remember fondly.',
+      title: 'Alegria, a catamaran designed for comfortable and memorable days at sea',
+      intro: 'Alegria is a spacious, stable and welcoming Bali 4.1, ideal for enjoying the sea in an elegant and relaxed setting. On board, everything is designed for a pleasant private outing with skipper, at your own pace.',
+      reasonsTitle: 'Why choose Alegria?',
+      reasonsText: 'The catamaran is perfectly suited to family outings, private celebrations and relaxing days in some of the Riviera’s most beautiful anchorages.',
+      reasons: ['Large living space to move around and unwind', 'Comfortable cruising and friendly atmosphere', '100% private outing with skipper', 'Flexible itinerary depending on your wishes and the weather'],
+      comfortTitle: 'Comfort and atmosphere on board',
+      comfortText: 'Whether you want to enjoy the sun, share lunch, organize sunset drinks or simply discover the coastline, Alegria welcomes you in a warm and carefully prepared environment.',
       occasionsTitle: 'Ideal for',
-      occasions: ['a couple getaway', 'a family day out', 'time with friends', 'a birthday', 'a bachelor or bachelorette party', 'a private or corporate event'],
-      ctaTitle: 'Would you like to know more about the boat?',
-      ctaText: 'Contact us to check possibilities, ask your questions and create an outing tailored to your wishes.',
-      ctaButton: 'Request information',
+      occasions: ['a family day out', 'a couple’s escape', 'time with friends', 'a birthday celebration', 'a bachelor or bachelorette party', 'a private or corporate event'],
+      cta: 'Request a quote',
     },
-    outings: {
-      eyebrow: 'Experiences',
-      title: 'Sea experiences tailored to the kind of moment you want to enjoy',
-      intro: 'These ideas show the type of outings available. Every request is then reviewed with you to build a coherent, enjoyable and personalised experience.',
-      infoButton: 'Request information',
-    },
-    gallery: {
+    galleryPage: {
       eyebrow: 'Gallery',
-      title: 'A few images to discover the atmosphere on board',
-      intro: 'Discover the boat, the mood of the outings and some of the places that make a day at sea on the French Riviera so special.',
-      imageAlt: 'Sea outing photo',
+      title: 'Discover Alegria in pictures',
+      intro: 'A selection of images to help you picture the atmosphere on board and the kind of experiences you can enjoy at sea.',
     },
-    contact: {
+    contactPage: {
       eyebrow: 'Contact / quote',
       title: 'Tell us about your sea outing project',
-      intro: 'Share your ideal date, the kind of outing you have in mind and the number of guests. We will reply quickly with the relevant information and a tailored proposal.',
-      formTitle: 'Request information',
-      infoTitle: 'Direct contact',
-      infoText: 'You can also contact us directly by phone or email to discuss your project.',
-      labels: {
-        name: 'Name',
-        email: 'Email',
-        phone: 'Phone',
-        outingType: 'Type of outing',
-        preferredDate: 'Preferred date',
-        guests: 'Number of guests',
-        message: 'Your message',
-        select: 'Select',
-        sendEmail: 'Send by email',
-        whatsapp: 'Prepare a WhatsApp message',
-        departureArea: 'Departure area',
-        directPhone: 'Phone',
-        directEmail: 'Email',
-        sent: 'Message sent.',
-      },
-      whatsappIntro: 'Hello, I would like to get information about a sea outing.',
-      mailSubjectPrefix: 'Information request',
-      outingOptions: ['Day at sea', 'Sunset outing', 'Birthday', 'Bachelor / bachelorette party', 'Corporate outing', 'Custom project'],
+      intro: 'Simply share the type of outing you want, your preferred date and the number of guests. We will get back to you quickly with useful details and a tailored proposal.',
+      formTitle: 'Information request',
+      name: 'Name',
+      email: 'Email',
+      phone: 'Phone',
+      outingType: 'Type of outing',
+      outingPlaceholder: 'Select',
+      preferredDate: 'Preferred date',
+      guests: 'Number of guests',
+      message: 'Your message',
+      sendEmail: 'Send by email',
+      prepareWhatsapp: 'Prepare a WhatsApp message',
+      directTitle: 'Direct contact',
+      directText: 'You can also contact us directly by phone or email to discuss your plans and check availability.',
+      sentNotice: 'Your message has been prepared. We will reply as soon as possible.',
+      outingOptions: ['Day at sea', 'Sunset cruise', 'Birthday', 'Bachelorette / bachelor party', 'Corporate outing', 'Tailor-made project'],
+      emailSubjectPrefix: 'Information request',
+      whatsappIntro: 'Hello, I would like to receive information about a sea outing aboard Alegria.',
+    },
+    footer: {
+      description: 'Private sea outings aboard Alegria from Marina Baie des Anges. From €1,500 per day with skipper.',
+      navigation: 'Navigation',
+      contact: 'Contact',
+      quickReply: 'Fast reply for information requests and quotations.',
     },
     notFound: {
       title: 'Page not found',
       text: 'The requested page does not exist or is no longer available.',
-      back: 'Back to home',
+      cta: 'Back to home',
     },
-    boatHighlights: [
-      'Comfortable and well-maintained catamaran',
-      'Private outings with a relaxed atmosphere',
-      'Programme adjusted to weather and your wishes',
-      'Direct discussion to prepare your outing',
-    ],
-    outingsList: [
+    outings: [
       {
         slug: 'day-at-sea',
         title: 'Day at sea',
         duration: 'Full day',
         guests: 'Private charter',
-        description: 'An ideal outing to enjoy the sea, swim, have lunch on board and discover beautiful anchorages.',
-        image: 'assets/img/events/cap-antibes/cap-antibes1.jpg',
-        highlights: ['Tailored programme', 'Relaxed atmosphere', 'Swimming and coastal discovery'],
+        description: 'A full day on the water to enjoy cruising, lunch on board, swimming stops and some of the most beautiful anchorages on the Riviera.',
+        image: sharedImages.outing1,
+        highlights: ['From €1,500 with skipper', 'Tailored program', 'Swimming and relaxation'],
       },
       {
         slug: 'sunset',
-        title: 'Sunset outing',
+        title: 'Sunset cruise',
         duration: 'Late afternoon',
-        guests: 'Couple, friends or family',
-        description: 'A sea escape to enjoy the end-of-day light in a calm and elegant atmosphere.',
-        image: 'assets/img/events/sunset/sunset1.jpg',
-        highlights: ['Romantic moment', 'Optional aperitif', 'Exceptional light'],
+        guests: 'Couple, family or friends',
+        description: 'An elegant outing at sea to enjoy exceptional light and a special moment aboard Alegria.',
+        image: sharedImages.outing2,
+        highlights: ['Relaxed premium atmosphere', 'Drinks on request', 'Memorable experience'],
       },
       {
-        slug: 'private-event',
+        slug: 'birthday',
         title: 'Birthday or private event',
         duration: 'According to your plan',
         guests: 'Private charter',
-        description: 'Celebrate an important occasion in an original, refined and memorable setting.',
-        image: 'assets/img/events/afterwork/afterwork1.jpg',
-        highlights: ['Flexible organisation', 'Unique sea setting', 'Lasting memories'],
+        description: 'Celebrate an important date in an original and refined setting, with an outing tailored to your wishes.',
+        image: sharedImages.outing3,
+        highlights: ['Flexible format', 'Unique setting', 'Unforgettable memories'],
       },
       {
         slug: 'hen-stag',
-        title: 'Bachelor / bachelorette party',
+        title: 'Hen / stag party',
         duration: 'Half day or full day',
         guests: 'Friendly group',
-        description: 'A chic and festive format to celebrate the event with a friendly outing on the water.',
-        image: 'assets/img/events/evjf/evjf-g1.jpg',
-        highlights: ['Festive spirit', 'Memorable photos', 'Customisable format'],
+        description: 'A festive sea outing to share a beautiful moment before the big day.',
+        image: sharedImages.outing4,
+        highlights: ['Private boat', 'Great atmosphere', 'Customizable program'],
       },
       {
         slug: 'corporate',
-        title: 'Afterwork or corporate outing',
-        duration: 'Evening or half day',
+        title: 'Corporate outing',
+        duration: 'Half day or full day',
         guests: 'Team or guests',
-        description: 'A premium setting to gather a team, host guests or share a different kind of moment.',
-        image: 'assets/img/events/business-meeting/business-meeting1.jpg',
-        highlights: ['Inspiring setting', 'Team bonding', 'Tailored quote'],
+        description: 'Offer your team or guests a setting far more inspiring than a traditional meeting room.',
+        image: sharedImages.outing5,
+        highlights: ['Premium setting', 'Team bonding', 'Quote on request'],
       },
       {
         slug: 'custom',
-        title: 'Custom experience',
+        title: 'Tailor-made experience',
         duration: 'To be defined',
         guests: 'On request',
-        description: 'Do you already have a precise idea? We will build an outing around your wishes and constraints.',
-        image: 'assets/img/events/night-on-board/night-on-board1.jpg',
-        highlights: ['Personalised project', 'Direct exchange', 'Adapted proposal'],
+        description: 'Have a specific idea or a special occasion in mind? Let’s build the right proposal together.',
+        image: sharedImages.outing6,
+        highlights: ['Direct discussion', 'Adapted organization', 'Personalized proposal'],
       },
     ],
+    galleryImages: sharedImages.gallery,
+    boatHighlights: ['Spacious and stable Bali 4.1 catamaran', '100% private outings with skipper', 'Comfortable cruising and elegant atmosphere', 'Departure from Marina Baie des Anges'],
   },
   es: {
+    brand: 'Alegria',
+    brandTagline: 'Salidas privadas en el mar',
+    phoneDisplay: '+33 6 85 26 65 10',
+    phoneRaw: '+33685266510',
+    email: 'contact@alldigitalnetwork.com',
+    departureArea: 'Marina Baie des Anges, Villeneuve-Loubet',
+    priceFrom: 'Desde 1.500 € por día con patrón',
+    heroImage: sharedImages.hero,
+    boatHeroImage: sharedImages.boatHero,
     nav: {
       home: 'Inicio',
-      outings: 'Experiencias',
+      outings: 'Salidas',
       boat: 'El barco',
       gallery: 'Galería',
       contact: 'Contacto',
-      book: 'Reservar',
       quote: 'Solicitar presupuesto',
     },
-    header: {
-      tagline: 'Experiencias privadas en el mar',
-    },
-    footer: {
-      summary: 'Salidas privadas en el mar, jornadas a bordo, atardeceres y eventos en la Costa Azul.',
-      navigation: 'Navegación',
-      contact: 'Contacto',
-      response: 'Respuesta rápida para solicitudes de información y presupuestos.',
+    common: {
+      from: 'Desde',
+      dayWithSkipper: 'por día con patrón',
+      contactUs: 'Contactarnos',
+      requestQuote: 'Solicitar presupuesto',
+      call: 'Llamar',
+      emailUs: 'Enviar un correo',
+      whatsapp: 'WhatsApp',
+      directContact: 'Contacto directo',
+      departurePort: 'Puerto de salida',
     },
     home: {
-      eyebrow: 'Experiencias privadas en el mar',
-      title: 'Disfrute de una salida en el mar elegante, agradable y totalmente a medida.',
-      intro: 'Tanto si desea una jornada de relax, una salida al atardecer, un cumpleaños o un momento especial con amigos, le ayudamos a crear una experiencia única a bordo del catamarán.',
-      discover: 'Descubrir experiencias',
-      requestQuote: 'Solicitar presupuesto',
-      points: ['Contacto directo', 'Respuesta rápida', 'Salidas privadas'],
-      formulasEyebrow: 'Nuestras experiencias',
-      formulasTitle: 'Salidas en el mar pensadas para sus mejores momentos',
-      formulasText: 'Cada salida se adapta a sus deseos, a su ritmo y a las condiciones del día para ofrecer una experiencia fluida y memorable.',
-      infoLink: 'Solicitar información',
-      boatEyebrow: 'El barco',
-      boatTitle: 'Un catamarán cómodo para disfrutar plenamente del mar',
-      boatText: 'Amplio, acogedor y pensado para el descanso, el barco ofrece el entorno ideal para compartir un momento privilegiado en pareja, en familia, entre amigos o con invitados.',
-      boatButton: 'Ver el barco',
-      contactEyebrow: 'Contacto directo',
-      contactTitle: 'Cuéntenos su proyecto y reciba una propuesta a medida',
-      contactText: 'Jornada completa, atardecer, cumpleaños, despedida o experiencia personalizada: todo empieza con una conversación sencilla.',
-      callButton: 'Llamar',
-      requestButton: 'Enviar una solicitud',
+      eyebrow: 'Salidas privadas en el mar en la Costa Azul',
+      title: 'Privatice Alegria para disfrutar de un día elegante y relajado en el mar.',
+      intro: 'Disfrute de un catamarán cómodo para pasar un día completo en el mar, un atardecer, un cumpleaños o un momento especial con amigos, en familia o en pareja. Todas las salidas son privadas y se organizan a medida desde 1.500 € por día con patrón.',
+      primaryCta: 'Descubrir las salidas',
+      secondaryCta: 'Solicitar presupuesto',
+      points: ['Salidas privadas', 'Desde 1.500 € por día con patrón', 'Contacto directo y respuesta rápida'],
+      sectionEyebrow: 'Nuestras salidas',
+      sectionTitle: 'Experiencias pensadas para disfrutar, relajarse y vivir momentos inolvidables en el mar',
+      sectionText: 'Elija una salida sugerida o contáctenos directamente para crear un programa a medida según su fecha, el número de personas y el ambiente deseado.',
+      boatEyebrow: 'Alegria',
+      boatTitle: 'Un catamarán amplio y cómodo para disfrutar plenamente de la navegación',
+      boatText: 'Alegria ofrece el entorno ideal para relajarse, almorzar a bordo, bañarse en aguas cristalinas y descubrir la Costa Azul desde el mar.',
+      boatCta: 'Descubrir el barco',
+      contactEyebrow: 'Presupuesto personalizado',
+      contactTitle: 'Cuéntenos cómo imagina su salida ideal y reciba una propuesta adaptada.',
+      contactText: 'Día completo en el mar, salida al atardecer, cumpleaños, despedida de soltero o soltera o evento de empresa: hablamos directamente con usted para recomendarle la mejor opción.',
     },
-    boat: {
+    outingsPage: {
+      eyebrow: 'Nuestras salidas',
+      title: 'Experiencias privadas a bordo de Alegria para cada ocasión',
+      intro: 'Todas las fórmulas son orientativas y pueden adaptarse a su proyecto, a las condiciones meteorológicas, a la ruta deseada y al número de invitados.',
+      cta: 'Recibir información',
+    },
+    boatPage: {
       eyebrow: 'El barco',
-      title: 'Un catamarán pensado para salidas privadas cómodas y memorables',
-      intro: 'A bordo del Bali 4.1, todo está preparado para disfrutar del mar en un entorno elegante, acogedor y relajante. El barco es ideal tanto para momentos tranquilos como para ocasiones especiales.',
-      whyTitle: '¿Por qué elegir este barco?',
-      whyText: 'Su amplio espacio de vida, su circulación fluida y su ambiente cálido lo convierten en una excelente opción para vivir el mar de otra manera, con sencillez y un gran nivel de confort.',
-      experienceTitle: 'Una experiencia pensada para su disfrute',
-      experienceText: 'Cada salida se adapta a sus deseos: baño, fondeo en un lugar agradable, aperitivo al atardecer, tiempo en familia, salida con amigos o evento privado. El objetivo es siempre el mismo: ofrecerle un momento que recordará con gusto.',
+      title: 'Alegria, un catamarán diseñado para días cómodos e inolvidables en el mar',
+      intro: 'Alegria es un Bali 4.1 amplio, estable y acogedor, ideal para disfrutar del mar en un entorno elegante y relajado. A bordo, todo está pensado para vivir una salida privada agradable con patrón y al ritmo de sus deseos.',
+      reasonsTitle: '¿Por qué elegir Alegria?',
+      reasonsText: 'El catamarán es perfecto para salidas en familia, celebraciones privadas y jornadas de relax en algunos de los fondeaderos más bonitos de la Riviera.',
+      reasons: ['Amplio espacio de vida para moverse y relajarse', 'Navegación cómoda y ambiente acogedor', 'Salida 100 % privada con patrón', 'Programa flexible según sus deseos y el tiempo'],
+      comfortTitle: 'Confort y ambiente a bordo',
+      comfortText: 'Tanto si desea disfrutar del sol, compartir un almuerzo, organizar un aperitivo al atardecer o simplemente descubrir la costa, Alegria le recibe en un ambiente cuidado y agradable.',
       occasionsTitle: 'Ideal para',
-      occasions: ['una salida en pareja', 'un día en familia', 'un momento con amigos', 'un cumpleaños', 'una despedida de soltera o soltero', 'un evento privado o corporativo'],
-      ctaTitle: '¿Le gustaría saber más sobre el barco?',
-      ctaText: 'Contáctenos para conocer las posibilidades, resolver sus dudas y crear una salida adaptada a sus deseos.',
-      ctaButton: 'Solicitar información',
+      occasions: ['un día en familia', 'una escapada en pareja', 'un momento entre amigos', 'un cumpleaños', 'una despedida de soltero o soltera', 'un evento privado o corporativo'],
+      cta: 'Solicitar presupuesto',
     },
-    outings: {
-      eyebrow: 'Experiencias',
-      title: 'Experiencias en el mar adaptadas al momento que desea vivir',
-      intro: 'Estas ideas muestran el tipo de salidas disponibles. Después, cada solicitud se estudia con usted para crear una experiencia coherente, agradable y personalizada.',
-      infoButton: 'Solicitar información',
-    },
-    gallery: {
+    galleryPage: {
       eyebrow: 'Galería',
-      title: 'Algunas imágenes para descubrir el ambiente a bordo',
-      intro: 'Descubra el barco, el ambiente de las salidas y algunos de los lugares que hacen tan especial un día en el mar en la Costa Azul.',
-      imageAlt: 'Foto de salida en el mar',
+      title: 'Descubra Alegria en imágenes',
+      intro: 'Una selección de fotos para ayudarle a imaginar el ambiente a bordo y las experiencias que puede vivir en el mar.',
     },
-    contact: {
+    contactPage: {
       eyebrow: 'Contacto / presupuesto',
-      title: 'Cuéntenos su proyecto de salida en el mar',
-      intro: 'Indíquenos su fecha ideal, el tipo de salida deseado y el número de participantes. Le responderemos rápidamente con la información útil y una propuesta adaptada.',
+      title: 'Háblenos de su proyecto de salida en el mar',
+      intro: 'Indíquenos el tipo de salida que desea, su fecha ideal y el número de participantes. Le responderemos rápidamente con la información útil y una propuesta adaptada.',
       formTitle: 'Solicitud de información',
-      infoTitle: 'Contacto directo',
-      infoText: 'También puede contactarnos directamente por teléfono o correo electrónico para hablar de su proyecto.',
-      labels: {
-        name: 'Nombre',
-        email: 'Correo electrónico',
-        phone: 'Teléfono',
-        outingType: 'Tipo de salida',
-        preferredDate: 'Fecha deseada',
-        guests: 'Número de personas',
-        message: 'Su mensaje',
-        select: 'Seleccionar',
-        sendEmail: 'Enviar por correo',
-        whatsapp: 'Preparar un mensaje de WhatsApp',
-        departureArea: 'Zona de salida',
-        directPhone: 'Teléfono',
-        directEmail: 'Correo electrónico',
-        sent: 'Mensaje enviado.',
-      },
-      whatsappIntro: 'Hola, me gustaría recibir información sobre una salida en el mar.',
-      mailSubjectPrefix: 'Solicitud de información',
-      outingOptions: ['Jornada en el mar', 'Salida al atardecer', 'Cumpleaños', 'Despedida de soltera o soltero', 'Salida corporativa', 'Proyecto a medida'],
+      name: 'Nombre',
+      email: 'Correo electrónico',
+      phone: 'Teléfono',
+      outingType: 'Tipo de salida',
+      outingPlaceholder: 'Seleccionar',
+      preferredDate: 'Fecha deseada',
+      guests: 'Número de personas',
+      message: 'Su mensaje',
+      sendEmail: 'Enviar por correo',
+      prepareWhatsapp: 'Preparar un mensaje de WhatsApp',
+      directTitle: 'Contacto directo',
+      directText: 'También puede contactarnos directamente por teléfono o correo electrónico para hablar de su proyecto y comprobar la disponibilidad.',
+      sentNotice: 'Su mensaje ha sido preparado. Le responderemos lo antes posible.',
+      outingOptions: ['Día en el mar', 'Atardecer', 'Cumpleaños', 'Despedida de soltero / soltera', 'Salida de empresa', 'Proyecto a medida'],
+      emailSubjectPrefix: 'Solicitud de información',
+      whatsappIntro: 'Hola, me gustaría recibir información sobre una salida en el mar a bordo de Alegria.',
+    },
+    footer: {
+      description: 'Salidas privadas en el mar a bordo de Alegria desde Marina Baie des Anges. Desde 1.500 € por día con patrón.',
+      navigation: 'Navegación',
+      contact: 'Contacto',
+      quickReply: 'Respuesta rápida para solicitudes de información y presupuestos.',
     },
     notFound: {
       title: 'Página no encontrada',
       text: 'La página solicitada no existe o ya no está disponible.',
-      back: 'Volver al inicio',
+      cta: 'Volver al inicio',
     },
-    boatHighlights: [
-      'Catamarán cómodo y bien mantenido',
-      'Salidas privadas en un ambiente agradable',
-      'Programa adaptado al clima y a sus deseos',
-      'Contacto directo para preparar su salida',
-    ],
-    outingsList: [
+    outings: [
       {
-        slug: 'jornada-en-el-mar',
-        title: 'Jornada en el mar',
+        slug: 'dia-en-el-mar',
+        title: 'Día en el mar',
         duration: 'Día completo',
-        guests: 'Privatización',
-        description: 'Una salida ideal para disfrutar del mar, bañarse, almorzar a bordo y descubrir bonitos fondeos.',
-        image: 'assets/img/events/cap-antibes/cap-antibes1.jpg',
-        highlights: ['Programa a medida', 'Ambiente relajado', 'Baño y descubrimiento de la costa'],
+        guests: 'Salida privada',
+        description: 'Un día en el agua para disfrutar de la navegación, un almuerzo a bordo, baños y algunos de los mejores fondeaderos de la Riviera.',
+        image: sharedImages.outing1,
+        highlights: ['Desde 1.500 € con patrón', 'Programa a medida', 'Baño y relax'],
       },
       {
         slug: 'atardecer',
         title: 'Salida al atardecer',
         duration: 'Final del día',
-        guests: 'Pareja, amigos o familia',
-        description: 'Una escapada en el mar para disfrutar de la luz del final del día en un ambiente tranquilo y elegante.',
-        image: 'assets/img/events/sunset/sunset1.jpg',
-        highlights: ['Momento romántico', 'Aperitivo posible', 'Luz excepcional'],
+        guests: 'Pareja, familia o amigos',
+        description: 'Una salida elegante en el mar para disfrutar de una luz excepcional y de un momento especial a bordo de Alegria.',
+        image: sharedImages.outing2,
+        highlights: ['Ambiente relajado y chic', 'Aperitivo posible', 'Experiencia memorable'],
       },
       {
-        slug: 'evento-privado',
+        slug: 'cumpleanos',
         title: 'Cumpleaños o evento privado',
         duration: 'Según su proyecto',
         guests: 'Privatización',
-        description: 'Para celebrar una ocasión importante en un entorno original, refinado y memorable.',
-        image: 'assets/img/events/afterwork/afterwork1.jpg',
-        highlights: ['Organización flexible', 'Momento único en el mar', 'Recuerdo inolvidable'],
+        description: 'Celebre una fecha importante en un entorno original y refinado, con una salida adaptada a sus deseos.',
+        image: sharedImages.outing3,
+        highlights: ['Formato flexible', 'Entorno único', 'Recuerdos inolvidables'],
       },
       {
         slug: 'despedida',
-        title: 'Despedida de soltera o soltero',
+        title: 'Despedida de soltero / soltera',
         duration: 'Medio día o día completo',
-        guests: 'Grupo cercano',
-        description: 'Una fórmula chic y festiva para celebrar el evento con una salida agradable sobre el agua.',
-        image: 'assets/img/events/evjf/evjf-g1.jpg',
-        highlights: ['Ambiente festivo', 'Fotos inolvidables', 'Formato personalizable'],
+        guests: 'Grupo agradable',
+        description: 'Una salida festiva en el mar para compartir un gran momento antes del gran día.',
+        image: sharedImages.outing4,
+        highlights: ['Barco privatizado', 'Gran ambiente', 'Programa personalizable'],
       },
       {
-        slug: 'corporativa',
-        title: 'Afterwork o salida corporativa',
-        duration: 'Tarde o medio día',
+        slug: 'empresa',
+        title: 'Salida de empresa',
+        duration: 'Medio día o día completo',
         guests: 'Equipo o invitados',
-        description: 'Un entorno premium para reunir a un equipo, recibir invitados o compartir un momento diferente.',
-        image: 'assets/img/events/business-meeting/business-meeting1.jpg',
-        highlights: ['Entorno inspirador', 'Cohesión de equipo', 'Presupuesto personalizado'],
+        description: 'Ofrezca a su equipo o a sus invitados un entorno mucho más inspirador que una sala de reuniones tradicional.',
+        image: sharedImages.outing5,
+        highlights: ['Entorno premium', 'Cohesión de equipo', 'Presupuesto a medida'],
       },
       {
-        slug: 'personalizada',
+        slug: 'a-medida',
         title: 'Experiencia a medida',
         duration: 'Por definir',
         guests: 'Según solicitud',
-        description: '¿Tiene una idea precisa? Diseñamos con usted una salida que se ajuste a sus deseos y limitaciones.',
-        image: 'assets/img/events/night-on-board/night-on-board1.jpg',
-        highlights: ['Proyecto personalizado', 'Intercambio directo', 'Propuesta adaptada'],
+        description: '¿Tiene una idea concreta o una ocasión especial? Construyamos juntos la propuesta adecuada.',
+        image: sharedImages.outing6,
+        highlights: ['Intercambio directo', 'Organización adaptada', 'Propuesta personalizada'],
       },
     ],
+    galleryImages: sharedImages.gallery,
+    boatHighlights: ['Catamarán Bali 4.1 amplio y estable', 'Salidas 100 % privadas con patrón', 'Navegación cómoda y ambiente elegante', 'Salida desde Marina Baie des Anges'],
   },
 };
-
-export function getContent(lang: LanguageCode): LocalizedContent {
-  return content[lang] || content.fr;
-}

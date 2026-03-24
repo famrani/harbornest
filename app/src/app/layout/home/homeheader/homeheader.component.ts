@@ -1,29 +1,30 @@
-import { Component } from '@angular/core';
-import { LanguageCode, LanguageService } from '../../../services/language.service';
-import { getContent, siteConfig } from '../../../home/site-content';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { SITE_CONTENT, SiteContent } from '../../../home/site-content';
+import { LanguageService, SiteLanguage } from '../../../services/language.service';
 
 @Component({
   selector: 'app-homeheader',
   templateUrl: './homeheader.component.html',
   styleUrls: ['./homeheader.component.scss'],
 })
-export class HomeheaderComponent {
+export class HomeheaderComponent implements OnInit, OnDestroy {
   menuOpen = false;
-  config = siteConfig;
+  currentLanguage: SiteLanguage = 'fr';
+  content: SiteContent = SITE_CONTENT.fr;
+  private languageSub?: Subscription;
 
-  constructor(public languageService: LanguageService) {}
+  constructor(private languageService: LanguageService) {}
 
-  get t() {
-    return getContent(this.languageService.currentLang);
+  ngOnInit(): void {
+    this.languageSub = this.languageService.language$.subscribe((language) => {
+      this.currentLanguage = language;
+      this.content = SITE_CONTENT[language];
+    });
   }
 
-  get currentLang(): LanguageCode {
-    return this.languageService.currentLang;
-  }
-
-  setLanguage(lang: LanguageCode): void {
-    this.languageService.setLanguage(lang);
-    this.closeMenu();
+  ngOnDestroy(): void {
+    this.languageSub?.unsubscribe();
   }
 
   toggleMenu(): void {
@@ -32,5 +33,9 @@ export class HomeheaderComponent {
 
   closeMenu(): void {
     this.menuOpen = false;
+  }
+
+  changeLanguage(language: string): void {
+    this.languageService.setLanguage(language as SiteLanguage);
   }
 }

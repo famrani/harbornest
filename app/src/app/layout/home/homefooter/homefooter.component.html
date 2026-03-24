@@ -1,26 +1,27 @@
 <footer class="site-footer">
   <div class="container footer-grid">
     <div>
-      <h3>{{ config.shortBrandName }}</h3>
-      <p>{{ t.footer.summary }}</p>
+      <h3>{{ content.brand }}</h3>
+      <p>{{ content.footer.description }}</p>
     </div>
 
     <div>
-      <h4>{{ t.footer.navigation }}</h4>
+      <h4>{{ content.footer.navigation }}</h4>
       <ul>
-        <li><a routerLink="/">{{ t.nav.home }}</a></li>
-        <li><a routerLink="/sorties">{{ t.nav.outings }}</a></li>
-        <li><a routerLink="/bateau">{{ t.nav.boat }}</a></li>
-        <li><a routerLink="/galerie">{{ t.nav.gallery }}</a></li>
-        <li><a routerLink="/contact">{{ t.nav.contact }}</a></li>
+        <li><a routerLink="/">{{ content.nav.home }}</a></li>
+        <li><a routerLink="/sorties">{{ content.nav.outings }}</a></li>
+        <li><a routerLink="/bateau">{{ content.nav.boat }}</a></li>
+        <li><a routerLink="/galerie">{{ content.nav.gallery }}</a></li>
+        <li><a routerLink="/contact">{{ content.nav.contact }}</a></li>
       </ul>
     </div>
 
     <div>
-      <h4>{{ t.footer.contact }}</h4>
-      <p>{{ t.contact.labels.directPhone }} : <a [href]="'tel:' + config.phoneRaw">{{ config.phoneDisplay }}</a></p>
-      <p>{{ t.contact.labels.directEmail }} : <a [href]="'mailto:' + config.email">{{ config.email }}</a></p>
-      <p>{{ t.footer.response }}</p>
+      <h4>{{ content.footer.contact }}</h4>
+      <p>{{ content.common.departurePort }}: {{ content.departureArea }}</p>
+      <p>{{ content.phoneDisplay }}</p>
+      <p>{{ content.email }}</p>
+      <p>{{ content.footer.quickReply }}</p>
     </div>
   </div>
 </footer>
