@@ -1,27 +1,17 @@
-<footer class="site-footer">
-  <div class="container footer-grid">
-    <div>
-      <h3>{{ content.brand }}</h3>
-      <p>{{ content.footer.description }}</p>
+<footer class="site-footer-simple">
+  <div class="container footer-simple">
+    
+    <div class="footer-left">
+      © {{ year }} {{ content.brand }}
     </div>
 
-    <div>
-      <h4>{{ content.footer.navigation }}</h4>
-      <ul>
-        <li><a routerLink="/">{{ content.nav.home }}</a></li>
-        <li><a routerLink="/sorties">{{ content.nav.outings }}</a></li>
-        <li><a routerLink="/bateau">{{ content.nav.boat }}</a></li>
-        <li><a routerLink="/galerie">{{ content.nav.gallery }}</a></li>
-        <li><a routerLink="/contact">{{ content.nav.contact }}</a></li>
-      </ul>
+    <div class="footer-center">
+      {{ mainSvc.version }}
     </div>
 
-    <div>
-      <h4>{{ content.footer.contact }}</h4>
-      <p>{{ content.common.departurePort }}: {{ content.departureArea }}</p>
-      <p>{{ content.phoneDisplay }}</p>
-      <p>{{ content.email }}</p>
-      <p>{{ content.footer.quickReply }}</p>
+    <div class="footer-right">
+      <a routerLink="/contact">{{ content.nav.contact }}</a>
     </div>
+
   </div>
 </footer>

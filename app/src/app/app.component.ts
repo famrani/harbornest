@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
 
     let platform = await this.utilSvc.getPlatformEnv() as string;
     if (platform !== 'dev ' && platform !== 'test ' && platform !== 'prod') {
-      platform = '';
+      platform = 'test';
     }
 
     this.platform.ready().then(async () => {
@@ -64,6 +64,7 @@ export class AppComponent implements OnInit {
 
       this.mainSvc.bootstrap(platform).then(
         () => {
+          console.log('version =', this.mainSvc.version);
           if (this.platform.is('cordova')) {
             this.splashScreen.hide();
           }

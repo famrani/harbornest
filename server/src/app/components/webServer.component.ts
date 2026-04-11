@@ -55,8 +55,8 @@ export class WebServerComponent {
 
         // SSL options
         const sslOptions = {
-            key: fs.readFileSync('./sslKeys/kamli.net/_.kamli.net.key'),
-            cert: fs.readFileSync('./sslKeys/kamli.net/_.kamli.net.crt'),
+            key: fs.readFileSync('./sslKeys/kamli.net/alldigitalnetwork.com.key'),
+            cert: fs.readFileSync('./sslKeys/kamli.net/alldigitalnetwork.com.crt'),
             ca: [fs.readFileSync('./sslKeys/kamli.net/GandiCert.pem')],
         };
 

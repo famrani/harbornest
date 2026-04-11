@@ -41,7 +41,6 @@ export class LocalUtilsService {
 
   public platform;
 
-  public version;
   public event;
   public currentNickname = '';
   public geolocalised = 'yes';
