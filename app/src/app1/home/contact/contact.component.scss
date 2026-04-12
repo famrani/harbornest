@@ -1,0 +1,149 @@
+.container {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.narrow {
+  max-width: 760px;
+}
+
+.page-hero,
+.section {
+  padding: 4rem 0;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0369a1;
+}
+
+h1 {
+  font-size: clamp(1.85rem, 3vw, 3rem);
+  line-height: 1.08;
+  margin: 0 0 0.9rem;
+  color: #0f172a;
+}
+
+h2 {
+  margin-top: 0;
+  color: #0f172a;
+  font-size: 1.35rem;
+}
+
+p {
+  color: #475569;
+  line-height: 1.7;
+  font-size: 0.97rem;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1.4rem;
+}
+
+.contact-card,
+.info-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 1.45rem;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  color: #334155;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+input,
+select,
+textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+  font: inherit;
+  color: #0f172a;
+  background: #fff;
+}
+
+.full-width {
+  margin-top: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.9rem 1.15rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.btn-primary {
+  background: #0f172a;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.info-block {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.info-block a,
+.info-block span {
+  color: #0369a1;
+  text-decoration: none;
+}
+
+.price-info span {
+  font-weight: 700;
+}
+
+.notice {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 16px;
+  background: #eff6ff;
+  color: #1e3a8a;
+  font-size: 0.92rem;
+}
+
+@media (max-width: 860px) {
+  .contact-grid,
+  .field-grid {
+    grid-template-columns: 1fr;
+  }
+}

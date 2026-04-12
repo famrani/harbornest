@@ -9,4 +9,4 @@ bootstrap2
 server/node_modules
 server/dist
 server/.env
-server/dist2
+server/dist3

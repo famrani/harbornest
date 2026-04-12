@@ -1,0 +1,90 @@
+<section class="page-hero">
+  <div class="container narrow">
+    <span class="eyebrow">{{ content.contactPage.eyebrow }}</span>
+    <h1>{{ content.contactPage.title }}</h1>
+    <p>{{ content.contactPage.intro }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container contact-grid">
+    <div class="contact-card">
+      <h2>{{ content.contactPage.formTitle }}</h2>
+      <form #contactForm="ngForm" (ngSubmit)="submit()">
+        <div class="field-grid">
+          <label>
+            <span>{{ content.contactPage.name }}</span>
+            <input type="text" name="name" [(ngModel)]="form.name" required />
+          </label>
+
+          <label>
+            <span>{{ content.contactPage.email }}</span>
+            <input type="email" name="email" [(ngModel)]="form.email" required />
+          </label>
+
+          <label>
+            <span>{{ content.contactPage.phone }}</span>
+            <input type="text" name="phone" [(ngModel)]="form.phone" />
+          </label>
+
+          <label>
+            <span>{{ content.contactPage.outingType }}</span>
+            <select name="outingType" [(ngModel)]="form.outingType">
+              <option value="">{{ content.contactPage.outingPlaceholder }}</option>
+              <option *ngFor="let option of content.contactPage.outingOptions">{{ option }}</option>
+            </select>
+          </label>
+
+          <label>
+            <span>{{ content.contactPage.preferredDate }}</span>
+            <input type="date" name="preferredDate" [(ngModel)]="form.preferredDate" />
+          </label>
+
+          <label>
+            <span>{{ content.contactPage.guests }}</span>
+            <input type="text" name="guests" [(ngModel)]="form.guests" />
+          </label>
+        </div>
+
+        <label class="full-width">
+          <span>{{ content.contactPage.message }}</span>
+          <textarea name="message" [(ngModel)]="form.message" rows="6"></textarea>
+        </label>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit" [disabled]="contactForm.invalid">{{ content.contactPage.sendEmail }}</button>
+          <a class="btn btn-secondary" [href]="whatsappHref" target="_blank" rel="noreferrer">{{ content.contactPage.prepareWhatsapp }}</a>
+        </div>
+      </form>
+    </div>
+
+    <aside class="info-card">
+      <h2>{{ content.contactPage.directTitle }}</h2>
+      <p>{{ content.contactPage.directText }}</p>
+
+      <div class="info-block">
+        <strong>{{ content.contactPage.phone }}</strong>
+        <a [href]="'tel:' + content.phoneRaw">{{ content.phoneDisplay }}</a>
+      </div>
+
+      <div class="info-block">
+        <strong>{{ content.contactPage.email }}</strong>
+        <a [href]="'mailto:' + content.email">{{ content.email }}</a>
+      </div>
+
+      <div class="info-block">
+        <strong>{{ content.common.departurePort }}</strong>
+        <span>{{ content.departureArea }}</span>
+      </div>
+
+      <div class="info-block price-info">
+        <strong>{{ content.common.requestQuote }}</strong>
+        <span>{{ content.priceFrom }}</span>
+      </div>
+
+      <div class="notice" *ngIf="submitted">
+        {{ content.contactPage.sentNotice }}
+      </div>
+    </aside>
+  </div>
+</section>

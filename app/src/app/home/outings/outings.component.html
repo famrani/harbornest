@@ -17,7 +17,7 @@
         <ul>
           <li *ngFor="let point of outing.highlights">{{ point }}</li>
         </ul>
-        <a routerLink="/contact" class="btn">{{ content.outingsPage.cta }}</a>
+        <a [routerLink]="['/sorties', outing.slug]" class="btn">{{ content.outingsPage.cta }}</a>
       </div>
     </article>
   </div>

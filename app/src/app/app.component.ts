@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
   async initializeApp() {
     let value2;
     let error;
-    this.utilSvc.appName = 'Boatify';
+    this.utilSvc.appName = 'Alegria';
 
     let platform = await this.utilSvc.getPlatformEnv() as string;
     if (platform !== 'dev ' && platform !== 'test ' && platform !== 'prod') {

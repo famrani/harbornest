@@ -14,7 +14,7 @@ export class HomefooterComponent implements OnInit, OnDestroy {
   content: SiteContent = SITE_CONTENT.fr;
   private languageSub?: Subscription;
 
-  constructor(private languageService: LanguageService, private mainSvc: ServicesService) {}
+  constructor(private languageService: LanguageService, public mainSvc: ServicesService) {}
 
   ngOnInit(): void {
     this.languageSub = this.languageService.language$.subscribe((language) => {
