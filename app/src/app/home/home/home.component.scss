@@ -238,3 +238,27 @@ p {
     min-height: 270px;
   }
 }
+
+
+.home-all-tours-cta {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.cards-grid {
+  align-items: stretch;
+}
+
+.card {
+  height: 100%;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card-body .text-link {
+  margin-top: auto;
+}

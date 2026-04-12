@@ -32,6 +32,8 @@ export interface TourPage {
   idealFor: string[];
   cta: string;
   contactNote: string;
+  galleryTitle?: string;
+  gallery?: string[];
 }
 
 const images = {
@@ -39,12 +41,40 @@ const images = {
   sunset: 'assets/img/events/sunset/sunset1.jpg',
   sunset2: 'assets/img/events/sunset/sunset2.jpg',
   afterwork: 'assets/img/events/afterwork/afterwork1.jpg',
-  evjf: 'assets/img/events/evjf/evjf-g1.jpg',
+  evjf1: 'assets/img/events/evjf/evjf-g1.jpg',
+  evjf2: 'assets/img/events/evjf/evjf-g2.jpg',
+  evjf3: 'assets/img/events/evjf/evjf-g3.jpg',
+  evjf4: 'assets/img/events/evjf/evjf-g4.jpg',
+  evjf5: 'assets/img/events/evjf/evjf-g5.jpg',
+  evjf6: 'assets/img/events/evjf/evjf-g6.jpg',
+  evjf7: 'assets/img/events/evjf/evjf-g7.jpg',
+  evjf8: 'assets/img/events/evjf/evjf-g8.jpg',
   business: 'assets/img/events/business-meeting/business-meeting1.jpg',
-  lerins: 'assets/img/events/leyrins/leyrins1.jpg',
-  night: 'assets/img/events/night-on-board/night-on-board1.jpg',
+  lerins1: 'assets/img/events/leyrins/leyrins1.jpg',
+  lerins2: 'assets/img/events/leyrins/leyrins2.jpg',
+  night1: 'assets/img/events/night-on-board/night-on-board1.jpg',
+  night2: 'assets/img/events/night-on-board/night-on-board2.jpg',
   boat: 'assets/img/boat/bali4.1/bali-41-4.jpg',
+  business_meeting1: 'assets/img/events/business-meeting/business-meeting1.jpg',
 };
+
+const TOUR_GALLERIES: Record<TourKey, string[]> = {
+  'journee-en-mer': [images.capAntibes],
+  'coucher-de-soleil': [images.sunset, images.sunset2],
+  'afterwork-en-mer': [images.afterwork],
+  'evjf-evg': [images.evjf1, images.evjf2, images.evjf3, images.evjf4, images.evjf5, images.evjf6, images.evjf7, images.evjf8, ],
+  'sortie-entreprise': [images.business_meeting1],
+  'escapade-lerins': [images.lerins1, images.lerins2],
+  'nuit-a-bord': [images.night1, images.night2],
+  'experience-sur-mesure': [images.boat, 'assets/img/boat/bali4.1/bali-41-2.jpg', 'assets/img/boat/bali4.1/bali-41-3.jpg', 'assets/img/boat/bali4.1/bali-41-5.jpg']
+};
+
+const GALLERY_TITLES: Record<SiteLanguage, string> = {
+  fr: 'Galerie photos',
+  en: 'Photo gallery',
+  es: 'Galería de fotos'
+};
+
 
 export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
   fr: {
@@ -91,7 +121,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       image: images.sunset,
       duration: 'Fin de journée',
       guests: 'Couple, famille ou petit groupe',
-      price: 'À partir de 1 500 € / jour avec skipper',
+      price: 'À partir de 1 000 € / jour avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: [
         'Ambiance élégante et détendue',
@@ -124,7 +154,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       image: images.afterwork,
       duration: 'Fin de journée ou début de soirée',
       guests: 'Groupe convivial',
-      price: 'À partir de 1 500 € / jour avec skipper',
+      price: 'À partir de 1 200 € / jour avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: [
         'Cadre original et valorisant',
@@ -154,10 +184,10 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       title: 'EVJF / EVG à bord d’Alegria',
       subtitle: 'Un moment fort avant le grand jour, dans un cadre exclusif et mémorable.',
       intro: 'Privatisez Alegria pour organiser un enterrement de vie de jeune fille ou de garçon chic, joyeux et bien encadré. La sortie peut être festive, élégante ou plus relaxante selon l’esprit du groupe.',
-      image: images.evjf,
+      image: images.evjf1,
       duration: 'Demi-journée ou journée',
       guests: 'Groupe privatif',
-      price: 'À partir de 1 500 € / jour avec skipper',
+      price: 'À partir de 2 000 € / jour avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: [
         'Format personnalisable',
@@ -190,7 +220,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       image: images.business,
       duration: 'Demi-journée ou journée',
       guests: 'Équipe, clients ou invités',
-      price: 'À partir de 1 500 € / jour avec skipper',
+      price: 'À partir de 2 500 € / jour avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: [
         'Image premium pour votre entreprise',
@@ -220,10 +250,10 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       title: 'Escapade vers les îles de Lérins',
       subtitle: 'Une sortie à la journée pour découvrir l’un des plus beaux décors marins de la région.',
       intro: 'Profitez d’une navigation vers les îles de Lérins pour vivre une journée entre paysages emblématiques, eaux translucides et atmosphère méditerranéenne. Une formule parfaite pour les visiteurs comme pour les habitués de la Côte d’Azur.',
-      image: images.lerins,
+      image: images.lerins1,
       duration: 'Journée complète',
       guests: 'Privatisation avec skipper',
-      price: 'À partir de 1 500 € / jour avec skipper',
+      price: 'À partir de 2 000 € / jour avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: [
         'Destination très recherchée sur la Côte d’Azur',
@@ -253,10 +283,10 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       title: 'Nuit à bord',
       subtitle: 'Vivez Alegria autrement avec une soirée prolongée et une nuit sur le bateau.',
       intro: 'Pour certains projets, il est possible d’imaginer une expérience plus longue incluant une soirée à bord et une nuit dans un cadre calme et exclusif. Cette formule se construit uniquement sur demande, selon disponibilité et programme.',
-      image: images.night,
+      image: images.night1,
       duration: 'Soirée et nuit',
       guests: 'Selon la configuration',
-      price: 'Sur demande à partir d’une base de 1 500 € avec skipper',
+      price: 'Sur demande à partir d’une base de 1 200 € avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: [
         'Format rare et très exclusif',
@@ -342,7 +372,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       intro: 'Alegria welcomes you for a refined escape at sea during the most beautiful moment of the day. Perfect for drinks on board, an intimate celebration or simply enjoying the coastline at sunset.',
       image: images.sunset,
       duration: 'Late afternoon', guests: 'Couple, family or small group',
-      price: 'From €1,500 per day with skipper',
+      price: 'From €1,000 per day with skipper',
       highlightsTitle: 'Highlights',
       highlights: ['Elegant and relaxed atmosphere', 'Perfect for sunset drinks at sea', 'Ideal light for photos', 'An intimate private experience'],
       programTitle: 'Sample program',
@@ -362,7 +392,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       intro: 'Enjoy a real break with a friendly sea outing at the end of the day. Perfect for colleagues, friends or partners in a setting far more inspiring than a traditional venue.',
       image: images.afterwork,
       duration: 'Late afternoon or early evening', guests: 'Friendly group',
-      price: 'From €1,500 per day with skipper',
+      price: 'From €1,200 per day with skipper',
       highlightsTitle: 'Highlights',
       highlights: ['Original and high-end setting', 'Easy format to organize', 'Relaxed atmosphere with sea views', 'Full private charter of the boat'],
       programTitle: 'Sample program',
@@ -380,9 +410,9 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       title: 'Hen or stag party aboard Alegria',
       subtitle: 'A memorable moment before the big day in an exclusive setting.',
       intro: 'Charter Alegria for a stylish and joyful bachelor or bachelorette celebration. The outing can be festive, elegant or more relaxed depending on your group.',
-      image: images.evjf,
+      image: images.evjf1,
       duration: 'Half day or full day', guests: 'Private group',
-      price: 'From €1,500 per day with skipper',
+      price: 'From €2,000 per day with skipper',
       highlightsTitle: 'Highlights',
       highlights: ['Customizable format', 'Great photo memories in a unique setting', 'Atmosphere tailored to your group', 'Full private charter of the boat'],
       programTitle: 'Sample program',
@@ -402,7 +432,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       intro: 'Alegria offers a rare setting for a quality professional escape: team outing, client hospitality, bonding moment or meeting in a discreet and premium atmosphere.',
       image: images.business,
       duration: 'Half day or full day', guests: 'Team, clients or guests',
-      price: 'From €1,500 per day with skipper',
+      price: 'From €2,500 per day with skipper',
       highlightsTitle: 'Highlights',
       highlights: ['Premium image for your company', 'Flexible and original format', 'Ideal setting for conversations', 'Memorable experience for guests and teams'],
       programTitle: 'Sample program',
@@ -420,9 +450,9 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       title: 'Lérins Islands day escape',
       subtitle: 'A full-day outing to discover one of the Riviera’s most beautiful marine settings.',
       intro: 'Enjoy a cruise to the Lérins Islands for a day of iconic scenery, clear waters and Mediterranean atmosphere. A perfect option for visitors and Riviera regulars alike.',
-      image: images.lerins,
+      image: images.lerins1,
       duration: 'Full day', guests: 'Private charter with skipper',
-      price: 'From €1,500 per day with skipper',
+      price: 'From €2,000 per day with skipper',
       highlightsTitle: 'Highlights',
       highlights: ['One of the Riviera’s most sought-after destinations', 'Beautiful anchorages', 'Ideal day for swimming and relaxation', 'Private experience aboard Alegria'],
       programTitle: 'Sample program',
@@ -440,9 +470,9 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       title: 'Night on board',
       subtitle: 'Experience Alegria in a different way with an evening and night on the boat.',
       intro: 'For certain projects, it is possible to imagine a longer experience including an evening aboard and an overnight stay in a calm and exclusive setting. This option is arranged only on request, depending on availability and program.',
-      image: images.night,
+      image: images.night1,
       duration: 'Evening and overnight', guests: 'Depending on configuration',
-      price: 'On request, from a base of €1,500 with skipper',
+      price: 'On request, from a base of €1,200 with skipper',
       highlightsTitle: 'Highlights',
       highlights: ['Rare and highly exclusive format', 'Intimate atmosphere on board', 'Premium tailor-made experience', 'Project reviewed case by case'],
       programTitle: 'Sample program',
@@ -504,7 +534,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       intro: 'Alegria le recibe para una escapada refinada en el mar en el momento más bonito del día. Ideal para un aperitivo, una celebración íntima o simplemente para contemplar la costa al atardecer.',
       image: images.sunset,
       duration: 'Final de la tarde', guests: 'Pareja, familia o grupo pequeño',
-      price: 'Desde 1.500 € por día con patrón',
+      price: 'Desde 1.000 € por día con patrón',
       highlightsTitle: 'Puntos fuertes',
       highlights: ['Ambiente elegante y relajado', 'Perfecto para un aperitivo en el mar', 'Luz ideal para fotos', 'Experiencia privada e íntima'],
       programTitle: 'Programa orientativo',
@@ -524,7 +554,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       intro: 'Disfrute de una verdadera pausa con una salida agradable en el mar al final de la jornada. Ideal para colegas, amigos o socios en un entorno mucho más inspirador que un lugar clásico.',
       image: images.afterwork,
       duration: 'Final de la tarde o comienzo de la noche', guests: 'Grupo convivial',
-      price: 'Desde 1.500 € por día con patrón',
+      price: 'Desde 1.200 € por día con patrón',
       highlightsTitle: 'Puntos fuertes',
       highlights: ['Entorno original y de alta gama', 'Formato fácil de organizar', 'Ambiente relajado con vistas al mar', 'Privatización completa del barco'],
       programTitle: 'Programa orientativo',
@@ -542,9 +572,9 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       title: 'Despedida de soltera o soltero a bordo de Alegria',
       subtitle: 'Un momento inolvidable antes del gran día en un entorno exclusivo.',
       intro: 'Privatice Alegria para organizar una despedida de soltera o soltero elegante, alegre y bien organizada. La salida puede ser festiva, refinada o más relajada según el estilo del grupo.',
-      image: images.evjf,
+      image: images.evjf1,
       duration: 'Medio día o día completo', guests: 'Grupo privado',
-      price: 'Desde 1.500 € por día con patrón',
+      price: 'Desde 2.000 € por día con patrón',
       highlightsTitle: 'Puntos fuertes',
       highlights: ['Formato personalizable', 'Recuerdos fotográficos en un escenario único', 'Ambiente adaptado al grupo', 'Privatización completa del barco'],
       programTitle: 'Programa orientativo',
@@ -564,7 +594,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       intro: 'Alegria ofrece un marco excepcional para una experiencia profesional de calidad: salida de equipo, acogida de clientes, momento de cohesión o reunión en un ambiente discreto y premium.',
       image: images.business,
       duration: 'Medio día o día completo', guests: 'Equipo, clientes o invitados',
-      price: 'Desde 1.500 € por día con patrón',
+      price: 'Desde 2.500 € por día con patrón',
       highlightsTitle: 'Puntos fuertes',
       highlights: ['Imagen premium para su empresa', 'Formato flexible y original', 'Entorno propicio para conversar', 'Experiencia memorable para invitados y colaboradores'],
       programTitle: 'Programa orientativo',
@@ -582,9 +612,9 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       title: 'Escapada a las islas de Lérins',
       subtitle: 'Una salida de día completo para descubrir uno de los paisajes marinos más bellos de la región.',
       intro: 'Disfrute de una navegación hacia las islas de Lérins para vivir un día entre paisajes emblemáticos, aguas transparentes y ambiente mediterráneo. Una fórmula perfecta tanto para visitantes como para habituales de la Costa Azul.',
-      image: images.lerins,
+      image: images.lerins1,
       duration: 'Día completo', guests: 'Privatización con patrón',
-      price: 'Desde 1.500 € por día con patrón',
+      price: 'Desde 2.000 € por día con patrón',
       highlightsTitle: 'Puntos fuertes',
       highlights: ['Destino muy buscado en la Costa Azul', 'Fondeos magníficos', 'Jornada ideal para baño y relax', 'Experiencia privada a bordo de Alegria'],
       programTitle: 'Programa orientativo',
@@ -602,9 +632,9 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       title: 'Noche a bordo',
       subtitle: 'Viva Alegria de otra forma con una velada prolongada y una noche en el barco.',
       intro: 'Para ciertos proyectos, es posible imaginar una experiencia más larga que incluya una velada a bordo y una noche en un entorno tranquilo y exclusivo. Esta fórmula se estudia únicamente bajo petición, según disponibilidad y programa.',
-      image: images.night,
+      image: images.night1,
       duration: 'Velada y noche', guests: 'Según la configuración',
-      price: 'Bajo petición, con una base desde 1.500 € con patrón',
+      price: 'Bajo petición, con una base desde 1.200 € con patrón',
       highlightsTitle: 'Puntos fuertes',
       highlights: ['Formato raro y muy exclusivo', 'Ambiente íntimo a bordo', 'Experiencia premium a medida', 'Proyecto estudiado caso por caso'],
       programTitle: 'Programa orientativo',
@@ -638,6 +668,14 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
     }
   }
 };
+
+
+(Object.keys(TOUR_CONTENT) as SiteLanguage[]).forEach((language) => {
+  (Object.keys(TOUR_CONTENT[language]) as TourKey[]).forEach((key) => {
+    TOUR_CONTENT[language][key].galleryTitle = GALLERY_TITLES[language];
+    TOUR_CONTENT[language][key].gallery = TOUR_GALLERIES[key];
+  });
+});
 
 export function getTourContent(language: SiteLanguage, key: TourKey): TourPage {
   return TOUR_CONTENT[language][key];

@@ -30,7 +30,7 @@
 
     <div class="cards-grid">
       <article class="card" *ngFor="let outing of featuredOutings">
-        <img [src]="outing.image" [alt]="outing.title" />
+        <img [src]="outing.image" [alt]="outing.title" [routerLink]="['/sorties', outing.slug]"/>
         <div class="card-body">
           <h3>{{ outing.title }}</h3>
           <p>{{ outing.description }}</p>
@@ -38,6 +38,10 @@
           <a [routerLink]="['/sorties', outing.slug]" class="text-link">{{ content.outingsPage.cta }}</a>
         </div>
       </article>
+    </div>
+
+    <div class="home-all-tours-cta">
+      <a routerLink="/sorties" class="btn btn-secondary">{{ content.nav.outings }}</a>
     </div>
   </div>
 </section>

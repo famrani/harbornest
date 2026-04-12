@@ -10,7 +10,7 @@ import { LanguageService } from '../../services/language.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   content: SiteContent = SITE_CONTENT.fr;
-  featuredOutings = SITE_CONTENT.fr.outings.slice(0, 4);
+  featuredOutings = SITE_CONTENT.fr.outings;
   highlights = SITE_CONTENT.fr.boatHighlights;
   private languageSub?: Subscription;
 
@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.content = SITE_CONTENT[language];
-      this.featuredOutings = this.content.outings.slice(0, 4);
+      this.featuredOutings = this.content.outings;
       this.highlights = this.content.boatHighlights;
     });
   }

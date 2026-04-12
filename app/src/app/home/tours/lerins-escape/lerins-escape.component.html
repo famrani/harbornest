@@ -46,6 +46,16 @@
   </div>
 </section>
 
+
+<section class="section" *ngIf="tour.gallery?.length">
+  <div class="container">
+    <h2>{{ tour.galleryTitle }}</h2>
+    <div class="gallery-grid">
+      <img *ngFor="let photo of tour.gallery" [src]="photo" [alt]="tour.title" />
+    </div>
+  </div>
+</section>
+
 <section class="section">
   <div class="container two-col">
     <div>
