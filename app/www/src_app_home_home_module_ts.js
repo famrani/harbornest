@@ -352,7 +352,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ content.contactPage.eyebrow }}</span>\n    <h1>{{ content.contactPage.title }}</h1>\n    <p>{{ content.contactPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container contact-grid\">\n    <div class=\"contact-card\">\n      <h2>{{ content.contactPage.formTitle }}</h2>\n      <form #contactForm=\"ngForm\" (ngSubmit)=\"submit()\">\n        <div class=\"field-grid\">\n          <label>\n            <span>{{ content.contactPage.name }}</span>\n            <input type=\"text\" name=\"name\" [(ngModel)]=\"form.name\" required />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.email }}</span>\n            <input type=\"email\" name=\"email\" [(ngModel)]=\"form.email\" required />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.phone }}</span>\n            <input type=\"text\" name=\"phone\" [(ngModel)]=\"form.phone\" />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.outingType }}</span>\n            <select name=\"outingType\" [(ngModel)]=\"form.outingType\">\n              <option value=\"\">{{ content.contactPage.outingPlaceholder }}</option>\n              <option *ngFor=\"let option of content.contactPage.outingOptions\">{{ option }}</option>\n            </select>\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.preferredDate }}</span>\n            <input type=\"date\" name=\"preferredDate\" [(ngModel)]=\"form.preferredDate\" />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.guests }}</span>\n            <input type=\"text\" name=\"guests\" [(ngModel)]=\"form.guests\" />\n          </label>\n        </div>\n\n        <label class=\"full-width\">\n          <span>{{ content.contactPage.message }}</span>\n          <textarea name=\"message\" [(ngModel)]=\"form.message\" rows=\"6\"></textarea>\n        </label>\n\n        <div class=\"form-actions\">\n          <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"contactForm.invalid\">{{ content.contactPage.sendEmail }}</button>\n          <a class=\"btn btn-secondary\" [href]=\"whatsappHref\" target=\"_blank\" rel=\"noreferrer\">{{ content.contactPage.prepareWhatsapp }}</a>\n        </div>\n      </form>\n    </div>\n\n    <aside class=\"info-card\">\n      <h2>{{ content.contactPage.directTitle }}</h2>\n      <p>{{ content.contactPage.directText }}</p>\n\n      <div class=\"info-block\">\n        <strong>{{ content.contactPage.phone }}</strong>\n        <a [href]=\"'tel:' + content.phoneRaw\">{{ content.phoneDisplay }}</a>\n      </div>\n\n      <div class=\"info-block\">\n        <strong>{{ content.contactPage.email }}</strong>\n        <a [href]=\"'mailto:' + content.email\">{{ content.email }}</a>\n      </div>\n\n      <div class=\"info-block\">\n        <strong>{{ content.common.departurePort }}</strong>\n        <span>{{ content.departureArea }}</span>\n      </div>\n\n      <div class=\"info-block price-info\">\n        <strong>{{ content.common.requestQuote }}</strong>\n        <span>{{ content.priceFrom }}</span>\n      </div>\n\n      <div class=\"notice\" *ngIf=\"submitted\">\n        {{ content.contactPage.sentNotice }}\n      </div>\n    </aside>\n  </div>\n</section>\n";
+module.exports = "<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ content.contactPage.eyebrow }}</span>\n    <h1>{{ content.contactPage.title }}</h1>\n    <p>{{ content.contactPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container contact-grid\">\n    <div class=\"contact-card\">\n      <h2>{{ content.contactPage.formTitle }}</h2>\n      <form #contactForm=\"ngForm\" (ngSubmit)=\"submit()\">\n        <div class=\"field-grid\">\n          <label>\n            <span>{{ content.contactPage.name }}</span>\n            <input type=\"text\" name=\"name\" [(ngModel)]=\"form.name\" required />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.email }}</span>\n            <input type=\"email\" name=\"email\" [(ngModel)]=\"form.email\" required />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.phone }}</span>\n            <input type=\"text\" name=\"phone\" [(ngModel)]=\"form.phone\" />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.outingType }}</span>\n            <select name=\"outingType\" [(ngModel)]=\"form.outingType\">\n              <option value=\"\">{{ content.contactPage.outingPlaceholder }}</option>\n              <option *ngFor=\"let option of content.contactPage.outingOptions\">{{ option }}</option>\n            </select>\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.preferredDate }}</span>\n            <input type=\"date\" name=\"preferredDate\" [(ngModel)]=\"form.preferredDate\" />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.guests }}</span>\n            <input type=\"text\" name=\"guests\" [(ngModel)]=\"form.guests\" />\n          </label>\n        </div>\n\n        <label class=\"full-width\">\n          <span>{{ content.contactPage.message }}</span>\n          <textarea name=\"message\" [(ngModel)]=\"form.message\" rows=\"6\"></textarea>\n        </label>\n\n        <div class=\"form-actions\">\n          <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"contactForm.invalid\">{{ content.contactPage.sendEmail }}</button>\n          <a class=\"btn btn-secondary\" [href]=\"whatsappHref\" target=\"_blank\" rel=\"noreferrer\">{{ content.contactPage.prepareWhatsapp }}</a>\n        </div>\n      </form>\n    </div>\n\n    <aside class=\"info-card\">\n      <h2>{{ content.contactPage.directTitle }}</h2>\n      <p>{{ content.contactPage.directText }}</p>\n\n      <div class=\"info-block\">\n        <strong>{{ content.contactPage.phone }}</strong>\n        <a [href]=\"'tel:' + content.phoneRaw\">{{ content.phoneDisplay }}</a>\n      </div>\n\n      <div class=\"info-block\">\n        <strong>{{ content.contactPage.email }}</strong>\n        <a [href]=\"'mailto:' + content.email\">{{ content.email }}</a>\n      </div>\n\n      <div class=\"info-block\">\n        <strong>{{ content.common.departurePort }}</strong>\n        <span>{{ content.departureArea }}</span>\n      </div>\n\n      <div class=\"info-block price-info\">\n        <strong>{{ content.common.requestQuote }}</strong>\n        <span>{{ content.priceFrom }}</span>\n      </div>\n\n            <div class=\"info-block\">\n        <strong>Click & Boat</strong>\n        <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\" target=\"_blank\" rel=\"noreferrer\">{{ content.common.bookOnClickAndBoat }}</a>\n      </div>\n\n      <div class=\"notice\" *ngIf=\"submitted\">\n        {{ content.contactPage.sentNotice }}\n      </div>\n    </aside>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -554,14 +554,14 @@ __webpack_require__.r(__webpack_exports__);
 
 let EvjfEvgComponent = class EvjfEvgComponent {
   languageService;
-  tour = (0,_tour_content__WEBPACK_IMPORTED_MODULE_3__.getTourContent)('fr', 'evjf-evg');
+  tour = (0,_tour_content__WEBPACK_IMPORTED_MODULE_3__.getTourContent)('fr', 'anniversaire');
   languageSub;
   constructor(languageService) {
     this.languageService = languageService;
   }
   ngOnInit() {
     this.languageSub = this.languageService.language$.subscribe(language => {
-      this.tour = (0,_tour_content__WEBPACK_IMPORTED_MODULE_3__.getTourContent)(language, 'evjf-evg');
+      this.tour = (0,_tour_content__WEBPACK_IMPORTED_MODULE_3__.getTourContent)(language, 'anniversaire');
     });
   }
   ngOnDestroy() {
@@ -1160,7 +1160,7 @@ SunsetCruiseComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_a
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"hero\">\n  <div class=\"container hero-grid\">\n    <div class=\"hero-copy\">\n      <span class=\"eyebrow\">{{ content.home.eyebrow }}</span>\n      <h1>{{ content.home.title }}</h1>\n      <p>{{ content.home.intro }}</p>\n      <div class=\"price-pill\">{{ content.priceFrom }}</div>\n      <div class=\"hero-actions\">\n        <a routerLink=\"/sorties\" class=\"btn btn-primary\">{{ content.home.primaryCta }}</a>\n        <a routerLink=\"/contact\" class=\"btn btn-secondary\">{{ content.home.secondaryCta }}</a>\n      </div>\n      <ul class=\"hero-points\">\n        <li *ngFor=\"let point of content.home.points\">{{ point }}</li>\n      </ul>\n    </div>\n\n    <div class=\"hero-visual\">\n      <img [src]=\"content.heroImage\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ content.home.sectionEyebrow }}</span>\n      <h2>{{ content.home.sectionTitle }}</h2>\n      <p>{{ content.home.sectionText }}</p>\n    </div>\n\n    <div class=\"cards-grid\">\n      <article class=\"card\" *ngFor=\"let outing of featuredOutings\">\n        <img [src]=\"outing.image\" [alt]=\"outing.title\" [routerLink]=\"['/sorties', outing.slug]\"/>\n        <div class=\"card-body\">\n          <h3>{{ outing.title }}</h3>\n          <p>{{ outing.description }}</p>\n          <div class=\"meta\">{{ outing.duration }} • {{ outing.guests }}</div>\n          <a [routerLink]=\"['/sorties', outing.slug]\" class=\"text-link\">{{ content.outingsPage.cta }}</a>\n        </div>\n      </article>\n    </div>\n\n    <div class=\"home-all-tours-cta\">\n      <a routerLink=\"/sorties\" class=\"btn btn-secondary\">{{ content.nav.outings }}</a>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container split-grid\">\n    <div>\n      <span class=\"eyebrow\">{{ content.home.boatEyebrow }}</span>\n      <h2>{{ content.home.boatTitle }}</h2>\n      <p>{{ content.home.boatText }}</p>\n      <ul class=\"check-list\">\n        <li *ngFor=\"let item of highlights\">{{ item }}</li>\n      </ul>\n      <a routerLink=\"/bateau\" class=\"btn btn-secondary\">{{ content.home.boatCta }}</a>\n    </div>\n\n    <div class=\"boat-card\">\n      <img [src]=\"content.boatHeroImage\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container contact-banner\">\n    <div>\n      <span class=\"eyebrow\">{{ content.home.contactEyebrow }}</span>\n      <h2>{{ content.home.contactTitle }}</h2>\n      <p>{{ content.home.contactText }}</p>\n    </div>\n    <div class=\"contact-actions\">\n      <a [href]=\"'tel:' + content.phoneRaw\" class=\"btn btn-secondary\">{{ content.common.call }}</a>\n      <a routerLink=\"/contact\" class=\"btn btn-primary\">{{ content.common.requestQuote }}</a>\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"hero\">\n  <div class=\"container hero-grid\">\n    <div class=\"hero-copy\">\n      <span class=\"eyebrow\">{{ content.home.eyebrow }}</span>\n      <h1>{{ content.home.title }}</h1>\n      <p>{{ content.home.intro }}</p>\n      <div class=\"price-pill\">{{ content.priceFrom }}</div>\n\n      <div class=\"hero-actions\">\n        <a routerLink=\"/sorties\" class=\"btn btn-primary btn-equal\">\n          {{ content.home.primaryCta }}\n        </a>\n\n        <a routerLink=\"/contact\" class=\"btn btn-secondary btn-equal\">\n          {{ content.home.secondaryCta }}\n        </a>\n                <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\"\n          target=\"_blank\" rel=\"noreferrer\" class=\"btn btn-book\">{{ content.common.bookOnClickAndBoat }}</a>\n\n      </div>\n      <ul class=\"hero-points\">\n        <li *ngFor=\"let point of content.home.points\">{{ point }}</li>\n      </ul>\n    </div>\n\n    <div class=\"hero-visual\">\n      <img [src]=\"content.heroImage\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ content.home.sectionEyebrow }}</span>\n      <h2>{{ content.home.sectionTitle }}</h2>\n      <p>{{ content.home.sectionText }}</p>\n    </div>\n\n    <div class=\"cards-grid\">\n      <article class=\"card\" *ngFor=\"let outing of featuredOutings\">\n        <img [src]=\"outing.image\" [alt]=\"outing.title\" [routerLink]=\"['/sorties', outing.slug]\" />\n        <div class=\"card-body\">\n          <h3>{{ outing.title }}</h3>\n          <p>{{ outing.description }}</p>\n          <div class=\"meta\">{{ outing.duration }} • {{ outing.guests }}</div>\n          <a [routerLink]=\"['/sorties', outing.slug]\" class=\"text-link\">{{ content.outingsPage.cta }}</a>\n        </div>\n      </article>\n    </div>\n\n    <div class=\"home-all-tours-cta\">\n      <a routerLink=\"/sorties\" class=\"btn btn-secondary\">{{ content.nav.outings }}</a>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container split-grid\">\n    <div>\n      <span class=\"eyebrow\">{{ content.home.boatEyebrow }}</span>\n      <h2>{{ content.home.boatTitle }}</h2>\n      <p>{{ content.home.boatText }}</p>\n      <ul class=\"check-list\">\n        <li *ngFor=\"let item of highlights\">{{ item }}</li>\n      </ul>\n      <a routerLink=\"/bateau\" class=\"btn btn-secondary\">{{ content.home.boatCta }}</a>\n    </div>\n\n    <div class=\"boat-card\">\n      <img [src]=\"content.boatHeroImage\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container contact-banner\">\n    <div>\n      <span class=\"eyebrow\">{{ content.home.contactEyebrow }}</span>\n      <h2>{{ content.home.contactTitle }}</h2>\n      <p>{{ content.home.contactText }}</p>\n    </div>\n    <div class=\"contact-actions\">\n      <a [href]=\"'tel:' + content.phoneRaw\" class=\"btn btn-secondary\">{{ content.common.call }}</a>\n      <a routerLink=\"/contact\" class=\"btn btn-primary\">{{ content.common.requestQuote }}</a>\n      <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\"\n        target=\"_blank\" rel=\"noreferrer\" class=\"btn btn-book\">{{ content.common.bookOnClickAndBoat }}</a>\n    </div>\n  </div>\n</section>";
 
 /***/ }),
 
@@ -1440,7 +1440,7 @@ const TOUR_GALLERIES = {
   'journee-en-mer': [images.capAntibes],
   'coucher-de-soleil': [images.sunset, images.sunset2],
   'afterwork-en-mer': [images.afterwork],
-  'evjf-evg': [images.evjf1, images.evjf2, images.evjf3, images.evjf4, images.evjf5, images.evjf6, images.evjf7, images.evjf8],
+  'anniversaire': [images.evjf1, images.evjf2, images.evjf3, images.evjf4, images.evjf5, images.evjf6, images.evjf7, images.evjf8],
   'sortie-entreprise': [images.business_meeting1],
   'escapade-lerins': [images.lerins1, images.lerins2],
   'nuit-a-bord': [images.night1, images.night2],
@@ -1485,7 +1485,7 @@ const TOUR_CONTENT = {
       image: images.sunset,
       duration: 'Fin de journée',
       guests: 'Couple, famille ou petit groupe',
-      price: 'À partir de 1 000 € / jour avec skipper',
+      price: 'À partir de 1 500 € / jour avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: ['Ambiance élégante et détendue', 'Sortie parfaite pour un apéritif en mer', 'Lumière idéale pour les photos', 'Expérience intime et privative'],
       programTitle: 'Exemple de programme',
@@ -1507,7 +1507,7 @@ const TOUR_CONTENT = {
       image: images.afterwork,
       duration: 'Fin de journée ou début de soirée',
       guests: 'Groupe convivial',
-      price: 'À partir de 1 200 € / jour avec skipper',
+      price: 'À partir de 1 500 € / jour avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: ['Cadre original et valorisant', 'Format simple à organiser', 'Ambiance détendue avec vue mer', 'Privatisation intégrale du bateau'],
       programTitle: 'Exemple de programme',
@@ -1519,17 +1519,17 @@ const TOUR_CONTENT = {
       cta: 'Demander un devis',
       contactNote: 'Nous adaptons la durée et l’ambiance à votre objectif.'
     },
-    'evjf-evg': {
-      key: 'evjf-evg',
-      route: 'evjf-evg',
+    'anniversaire': {
+      key: 'anniversaire',
+      route: 'anniversaire',
       eyebrow: 'Sortie festive',
-      title: 'EVJF / EVG à bord d’Alegria',
-      subtitle: 'Un moment fort avant le grand jour, dans un cadre exclusif et mémorable.',
-      intro: 'Privatisez Alegria pour organiser un enterrement de vie de jeune fille ou de garçon chic, joyeux et bien encadré. La sortie peut être festive, élégante ou plus relaxante selon l’esprit du groupe.',
+      title: 'Anniversaire à bord d’Alegria',
+      subtitle: 'Un moment unique pour célébrer un anniversaire en mer dans un cadre exclusif et mémorable.',
+      intro: 'Privatisez Alegria pour organiser un anniversaire chic, joyeux et bien encadré. La sortie peut être festive, élégante ou plus relaxante selon l’esprit du groupe.',
       image: images.evjf1,
       duration: 'Demi-journée ou journée',
       guests: 'Groupe privatif',
-      price: 'À partir de 2 000 € / jour avec skipper',
+      price: 'À partir de 1 500 € / jour avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: ['Format personnalisable', 'Souvenirs photo dans un décor unique', 'Ambiance adaptée à votre groupe', 'Privatisation complète du bateau'],
       programTitle: 'Exemple de programme',
@@ -1537,9 +1537,9 @@ const TOUR_CONTENT = {
       includesTitle: 'Ce qui est prévu',
       includes: ['Skipper', 'Privatisation du bateau', 'Organisation personnalisée', 'Cadre exclusif sur la Côte d’Azur'],
       idealForTitle: 'Idéal pour',
-      idealFor: ['Un EVJF élégant', 'Un EVG raffiné', 'Un groupe mixte', 'Une journée dont tout le monde se souviendra'],
-      cta: 'Préparer votre projet',
-      contactNote: 'Expliquez-nous le style recherché et nous construirons la bonne formule.'
+      idealFor: ['Un anniversaire entre amis', 'Une célébration en famille', 'Un moment festif ou élégant', 'Une journée dont tout le monde se souviendra'],
+      cta: 'Organiser votre anniversaire',
+      contactNote: 'Expliquez-nous l’ambiance recherchée et nous construirons la bonne formule.'
     },
     'sortie-entreprise': {
       key: 'sortie-entreprise',
@@ -1551,7 +1551,7 @@ const TOUR_CONTENT = {
       image: images.business,
       duration: 'Demi-journée ou journée',
       guests: 'Équipe, clients ou invités',
-      price: 'À partir de 2 500 € / jour avec skipper',
+      price: 'À partir de 1 500 € / jour avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: ['Image premium pour votre entreprise', 'Format souple et original', 'Cadre propice aux échanges', 'Expérience mémorable pour invités et collaborateurs'],
       programTitle: 'Exemple de programme',
@@ -1573,7 +1573,7 @@ const TOUR_CONTENT = {
       image: images.lerins1,
       duration: 'Journée complète',
       guests: 'Privatisation avec skipper',
-      price: 'À partir de 2 000 € / jour avec skipper',
+      price: 'À partir de 1 500 € / jour avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: ['Destination très recherchée sur la Côte d’Azur', 'Mouillages magnifiques', 'Journée idéale pour baignade et détente', 'Expérience privative à bord d’Alegria'],
       programTitle: 'Exemple de programme',
@@ -1595,7 +1595,7 @@ const TOUR_CONTENT = {
       image: images.night1,
       duration: 'Soirée et nuit',
       guests: 'Selon la configuration',
-      price: 'Sur demande à partir d’une base de 1 200 € avec skipper',
+      price: 'Sur demande, à partir de 1 500 € avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: ['Format rare et très exclusif', 'Ambiance intime à bord', 'Expérience premium sur mesure', 'Projet étudié au cas par cas'],
       programTitle: 'Exemple de programme',
@@ -1697,13 +1697,13 @@ const TOUR_CONTENT = {
       cta: 'Request a quote',
       contactNote: 'We adapt the duration and mood to your goal.'
     },
-    'evjf-evg': {
-      key: 'evjf-evg',
-      route: 'evjf-evg',
-      eyebrow: 'Festive outing',
-      title: 'Hen or stag party aboard Alegria',
-      subtitle: 'A memorable moment before the big day in an exclusive setting.',
-      intro: 'Charter Alegria for a stylish and joyful bachelor or bachelorette celebration. The outing can be festive, elegant or more relaxed depending on your group.',
+    'anniversaire': {
+      key: 'anniversaire',
+      route: 'anniversaire',
+      eyebrow: 'Celebration outing',
+      title: 'Birthday celebration aboard Alegria',
+      subtitle: 'A memorable way to celebrate a birthday in an exclusive setting at sea.',
+      intro: 'Charter Alegria for a stylish and joyful birthday celebration at sea. The outing can be festive, elegant or more relaxed depending on your group.',
       image: images.evjf1,
       duration: 'Half day or full day',
       guests: 'Private group',
@@ -1715,9 +1715,9 @@ const TOUR_CONTENT = {
       includesTitle: 'What is included',
       includes: ['Skipper', 'Private charter', 'Personalized organization', 'Exclusive Riviera setting'],
       idealForTitle: 'Ideal for',
-      idealFor: ['A chic hen party', 'A refined stag party', 'A mixed group', 'A day everyone will remember'],
-      cta: 'Plan your outing',
-      contactNote: 'Tell us the style you are looking for and we will build the right option.'
+      idealFor: ['A birthday with friends', 'A family celebration', 'A festive or elegant moment', 'A day everyone will remember'],
+      cta: 'Plan your birthday',
+      contactNote: 'Tell us the atmosphere you are looking for and we will build the right option.'
     },
     'sortie-entreprise': {
       key: 'sortie-entreprise',
@@ -1875,13 +1875,13 @@ const TOUR_CONTENT = {
       cta: 'Solicitar presupuesto',
       contactNote: 'Adaptamos la duración y el ambiente a su objetivo.'
     },
-    'evjf-evg': {
-      key: 'evjf-evg',
-      route: 'evjf-evg',
+    'anniversaire': {
+      key: 'anniversaire',
+      route: 'anniversaire',
       eyebrow: 'Salida festiva',
-      title: 'Despedida de soltera o soltero a bordo de Alegria',
-      subtitle: 'Un momento inolvidable antes del gran día en un entorno exclusivo.',
-      intro: 'Privatice Alegria para organizar una despedida de soltera o soltero elegante, alegre y bien organizada. La salida puede ser festiva, refinada o más relajada según el estilo del grupo.',
+      title: 'Cumpleaños a bordo de Alegria',
+      subtitle: 'Una forma inolvidable de celebrar un cumpleaños en un entorno exclusivo.',
+      intro: 'Privatice Alegria para organizar un cumpleaños elegante, alegre y bien organizado. La salida puede ser festiva, refinada o más relajada según el estilo del grupo.',
       image: images.evjf1,
       duration: 'Medio día o día completo',
       guests: 'Grupo privado',
@@ -1893,9 +1893,9 @@ const TOUR_CONTENT = {
       includesTitle: 'Qué está incluido',
       includes: ['Patrón', 'Privatización del barco', 'Organización personalizada', 'Entorno exclusivo en la Costa Azul'],
       idealForTitle: 'Ideal para',
-      idealFor: ['Una despedida de soltera chic', 'Una despedida de soltero elegante', 'Un grupo mixto', 'Un día que todos recordarán'],
-      cta: 'Preparar su proyecto',
-      contactNote: 'Cuéntenos el estilo que busca y crearemos la mejor fórmula.'
+      idealFor: ['Un cumpleaños con amigos', 'Una celebración en familia', 'Un momento festivo o elegante', 'Un día que todos recordarán'],
+      cta: 'Organizar su cumpleaños',
+      contactNote: 'Cuéntenos el ambiente que busca y crearemos la mejor fórmula.'
     },
     'sortie-entreprise': {
       key: 'sortie-entreprise',
@@ -2147,6 +2147,17 @@ p {
   min-height: 390px;
 }
 
+.hero-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-equal {
+  flex: 1;
+  max-width: 220px;
+  text-align: center;
+}
+
 .section-head {
   max-width: 760px;
   margin-bottom: 2rem;
@@ -2270,7 +2281,73 @@ p {
 
 .card-body .text-link {
   margin-top: auto;
-}`, "",{"version":3,"sources":["webpack://./src/app/home/home/home.component.scss"],"names":[],"mappings":"AAAA,gBAAgB;AAAhB;EACE,+BAAA;EACA,cAAA;AAEF;;AACA;EACE,eAAA;AAEF;;AACA;EACE,mBAAA;AAEF;;AACA;EACE,wBAAA;EACA,6DAAA;AAEF;;AACA;;EAEE,aAAA;EACA,oCAAA;EACA,WAAA;EACA,mBAAA;AAEF;;AACA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AAEF;;AACA;EACE,qCAAA;EACA,iBAAA;EACA,gBAAA;EACA,cAAA;AAEF;;AACA;EACE,wCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AAEF;;AACA;EACE,kBAAA;AAEF;;AACA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AAEF;;AACA;EACE,gBAAA;AAEF;;AACA;EACE,oBAAA;EACA,mBAAA;EACA,kBAAA;EACA,wBAAA;EACA,oBAAA;EACA,kCAAA;EACA,cAAA;EACA,kBAAA;EACA,gBAAA;AAEF;;AACA;;EAEE,aAAA;EACA,eAAA;EACA,WAAA;EACA,kBAAA;AAEF;;AACA;EACE,oBAAA;EACA,mBAAA;EACA,uBAAA;EACA,qBAAA;EACA,wBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;AAEF;;AACA;EACE,mBAAA;EACA,WAAA;AAEF;;AACA;EACE,mBAAA;EACA,cAAA;AAEF;;AACA;EACE,aAAA;EACA,eAAA;EACA,WAAA;EACA,gBAAA;EACA,UAAA;EACA,kBAAA;AAEF;;AACA;EACE,sBAAA;EACA,oBAAA;EACA,kCAAA;EACA,cAAA;EACA,kBAAA;AAEF;;AACA;;;EAGE,WAAA;EACA,cAAA;EACA,mBAAA;EACA,iBAAA;AAEF;;AACA;;EAEE,iBAAA;AAEF;;AACA;EACE,gBAAA;EACA,mBAAA;AAEF;;AACA;EACE,aAAA;EACA,qCAAA;EACA,WAAA;AAEF;;AACA;EACE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,8CAAA;AAEF;;AACA;EACE,aAAA;AAEF;;AACA;EACE,gBAAA;AAEF;;AACA;EACE,kBAAA;EACA,cAAA;AAEF;;AACA;EACE,iBAAA;EACA,cAAA;EACA,kBAAA;AAEF;;AACA;EACE,cAAA;EACA,gBAAA;EACA,qBAAA;EACA,iBAAA;AAEF;;AACA;EACE,gBAAA;EACA,UAAA;EACA,uBAAA;EACA,aAAA;EACA,YAAA;AAEF;;AACA;EACE,kBAAA;EACA,qBAAA;EACA,cAAA;EACA,kBAAA;AAEF;;AACA;EACE,YAAA;EACA,kBAAA;EACA,OAAA;EACA,MAAA;EACA,cAAA;EACA,gBAAA;AAEF;;AACA;EACE,eAAA;EACA,mBAAA;EACA,qDAAA;EACA,WAAA;EACA,aAAA;EACA,8BAAA;EACA,WAAA;EACA,mBAAA;AAEF;;AACA;;;EAGE,WAAA;AAEF;;AACA;EACE;IACE,qCAAA;EAEF;AACF;AACA;EACE;;;IAGE,0BAAA;IACA,sBAAA;EACF;EAEA;;IAEE,iBAAA;EAAF;AACF;AAIA;EACE,kBAAA;EACA,kBAAA;AAFF;;AAKA;EACE,oBAAA;AAFF;;AAKA;EACE,YAAA;AAFF;;AAKA;EACE,aAAA;EACA,sBAAA;EACA,YAAA;AAFF;;AAKA;EACE,gBAAA;AAFF","sourcesContent":[".container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.section {\n  padding: 4rem 0;\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.hero {\n  padding: 3.5rem 0 2.8rem;\n  background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%);\n}\n\n.hero-grid,\n.split-grid {\n  display: grid;\n  grid-template-columns: 1.05fr 0.95fr;\n  gap: 1.8rem;\n  align-items: center;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0369a1;\n}\n\nh1 {\n  font-size: clamp(1.8rem, 3.1vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 1rem;\n  color: #0f172a;\n}\n\nh2 {\n  font-size: clamp(1.45rem, 2.4vw, 2.1rem);\n  line-height: 1.12;\n  margin: 0 0 0.9rem;\n  color: #0f172a;\n}\n\nh3 {\n  font-size: 1.05rem;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.hero-copy p {\n  max-width: 640px;\n}\n\n.price-pill {\n  display: inline-flex;\n  align-items: center;\n  margin-top: 0.6rem;\n  padding: 0.55rem 0.85rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0c4a6e;\n  font-size: 0.86rem;\n  font-weight: 700;\n}\n\n.hero-actions,\n.contact-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.9rem;\n  margin-top: 1.4rem;\n}\n\n.btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  text-decoration: none;\n  padding: 0.88rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n.btn-primary {\n  background: #0f172a;\n  color: #fff;\n}\n\n.btn-secondary {\n  background: #e2e8f0;\n  color: #0f172a;\n}\n\n.hero-points {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.7rem;\n  list-style: none;\n  padding: 0;\n  margin: 1.3rem 0 0;\n}\n\n.hero-points li {\n  padding: 0.5rem 0.8rem;\n  border-radius: 999px;\n  background: rgba(15, 23, 42, 0.06);\n  color: #334155;\n  font-size: 0.84rem;\n}\n\n.hero-visual img,\n.boat-card img,\n.card img {\n  width: 100%;\n  display: block;\n  border-radius: 24px;\n  object-fit: cover;\n}\n\n.hero-visual img,\n.boat-card img {\n  min-height: 390px;\n}\n\n.section-head {\n  max-width: 760px;\n  margin-bottom: 2rem;\n}\n\n.cards-grid {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  gap: 1.1rem;\n}\n\n.card {\n  background: #fff;\n  border-radius: 22px;\n  overflow: hidden;\n  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);\n}\n\n.card img {\n  height: 215px;\n}\n\n.card-body {\n  padding: 1.15rem;\n}\n\n.card h3 {\n  margin: 0 0 0.7rem;\n  color: #0f172a;\n}\n\n.meta {\n  margin: 0.75rem 0;\n  color: #64748b;\n  font-size: 0.88rem;\n}\n\n.text-link {\n  color: #0369a1;\n  font-weight: 700;\n  text-decoration: none;\n  font-size: 0.9rem;\n}\n\n.check-list {\n  list-style: none;\n  padding: 0;\n  margin: 1.2rem 0 1.8rem;\n  display: grid;\n  gap: 0.72rem;\n}\n\n.check-list li {\n  position: relative;\n  padding-left: 1.55rem;\n  color: #334155;\n  font-size: 0.94rem;\n}\n\n.check-list li::before {\n  content: '✓';\n  position: absolute;\n  left: 0;\n  top: 0;\n  color: #16a34a;\n  font-weight: 700;\n}\n\n.contact-banner {\n  padding: 1.9rem;\n  border-radius: 26px;\n  background: linear-gradient(135deg, #0f172a, #1e293b);\n  color: #fff;\n  display: flex;\n  justify-content: space-between;\n  gap: 1.5rem;\n  align-items: center;\n}\n\n.contact-banner h2,\n.contact-banner p,\n.contact-banner .eyebrow {\n  color: #fff;\n}\n\n@media (max-width: 980px) {\n  .cards-grid {\n    grid-template-columns: repeat(2, 1fr);\n  }\n}\n\n@media (max-width: 860px) {\n  .hero-grid,\n  .split-grid,\n  .contact-banner {\n    grid-template-columns: 1fr;\n    flex-direction: column;\n  }\n\n  .hero-visual img,\n  .boat-card img {\n    min-height: 270px;\n  }\n}\n\n\n.home-all-tours-cta {\n  margin-top: 1.5rem;\n  text-align: center;\n}\n\n.cards-grid {\n  align-items: stretch;\n}\n\n.card {\n  height: 100%;\n}\n\n.card-body {\n  display: flex;\n  flex-direction: column;\n  gap: 0.75rem;\n}\n\n.card-body .text-link {\n  margin-top: auto;\n}\n"],"sourceRoot":""}]);
+}
+
+.hero-video {
+  position: relative;
+  overflow: hidden;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  background: url("/assets/img/boat/bali4.1/bali-41-4.jpg") center/cover no-repeat;
+}
+
+.hero-video-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-video .hero-copy,
+.hero-video .eyebrow,
+.hero-video h1,
+.hero-video p,
+.hero-video li {
+  color: #fff;
+}
+
+.hero-video .price-pill {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.hero-video .hero-points li {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.hero-visual-placeholder {
+  min-height: 1px;
+}
+
+.btn-book {
+  background: #f97316;
+  color: #fff;
+}
+
+.btn-book:hover {
+  background: #ea580c;
+}
+
+@media (max-width: 768px) {
+  .hero-video {
+    min-height: 70vh;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/home/home.component.scss"],"names":[],"mappings":"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","sourcesContent":[".container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.section {\n  padding: 4rem 0;\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.hero {\n  padding: 3.5rem 0 2.8rem;\n  background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%);\n}\n\n.hero-grid,\n.split-grid {\n  display: grid;\n  grid-template-columns: 1.05fr 0.95fr;\n  gap: 1.8rem;\n  align-items: center;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0369a1;\n}\n\nh1 {\n  font-size: clamp(1.8rem, 3.1vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 1rem;\n  color: #0f172a;\n}\n\nh2 {\n  font-size: clamp(1.45rem, 2.4vw, 2.1rem);\n  line-height: 1.12;\n  margin: 0 0 0.9rem;\n  color: #0f172a;\n}\n\nh3 {\n  font-size: 1.05rem;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.hero-copy p {\n  max-width: 640px;\n}\n\n.price-pill {\n  display: inline-flex;\n  align-items: center;\n  margin-top: 0.6rem;\n  padding: 0.55rem 0.85rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0c4a6e;\n  font-size: 0.86rem;\n  font-weight: 700;\n}\n\n.hero-actions,\n.contact-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.9rem;\n  margin-top: 1.4rem;\n}\n\n.btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  text-decoration: none;\n  padding: 0.88rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n.btn-primary {\n  background: #0f172a;\n  color: #fff;\n}\n\n.btn-secondary {\n  background: #e2e8f0;\n  color: #0f172a;\n}\n\n.hero-points {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.7rem;\n  list-style: none;\n  padding: 0;\n  margin: 1.3rem 0 0;\n}\n\n.hero-points li {\n  padding: 0.5rem 0.8rem;\n  border-radius: 999px;\n  background: rgba(15, 23, 42, 0.06);\n  color: #334155;\n  font-size: 0.84rem;\n}\n\n.hero-visual img,\n.boat-card img,\n.card img {\n  width: 100%;\n  display: block;\n  border-radius: 24px;\n  object-fit: cover;\n}\n\n.hero-visual img,\n.boat-card img {\n  min-height: 390px;\n}\n\n.hero-actions {\n  display: flex;\n  gap: 12px;\n}\n\n.btn-equal {\n  flex: 1;\n  max-width: 220px;\n  text-align: center;\n}\n\n.section-head {\n  max-width: 760px;\n  margin-bottom: 2rem;\n}\n\n.cards-grid {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  gap: 1.1rem;\n}\n\n.card {\n  background: #fff;\n  border-radius: 22px;\n  overflow: hidden;\n  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);\n}\n\n.card img {\n  height: 215px;\n}\n\n.card-body {\n  padding: 1.15rem;\n}\n\n.card h3 {\n  margin: 0 0 0.7rem;\n  color: #0f172a;\n}\n\n.meta {\n  margin: 0.75rem 0;\n  color: #64748b;\n  font-size: 0.88rem;\n}\n\n.text-link {\n  color: #0369a1;\n  font-weight: 700;\n  text-decoration: none;\n  font-size: 0.9rem;\n}\n\n.check-list {\n  list-style: none;\n  padding: 0;\n  margin: 1.2rem 0 1.8rem;\n  display: grid;\n  gap: 0.72rem;\n}\n\n.check-list li {\n  position: relative;\n  padding-left: 1.55rem;\n  color: #334155;\n  font-size: 0.94rem;\n}\n\n.check-list li::before {\n  content: '✓';\n  position: absolute;\n  left: 0;\n  top: 0;\n  color: #16a34a;\n  font-weight: 700;\n}\n\n.contact-banner {\n  padding: 1.9rem;\n  border-radius: 26px;\n  background: linear-gradient(135deg, #0f172a, #1e293b);\n  color: #fff;\n  display: flex;\n  justify-content: space-between;\n  gap: 1.5rem;\n  align-items: center;\n}\n\n.contact-banner h2,\n.contact-banner p,\n.contact-banner .eyebrow {\n  color: #fff;\n}\n\n@media (max-width: 980px) {\n  .cards-grid {\n    grid-template-columns: repeat(2, 1fr);\n  }\n}\n\n@media (max-width: 860px) {\n  .hero-grid,\n  .split-grid,\n  .contact-banner {\n    grid-template-columns: 1fr;\n    flex-direction: column;\n  }\n\n  .hero-visual img,\n  .boat-card img {\n    min-height: 270px;\n  }\n}\n\n\n.home-all-tours-cta {\n  margin-top: 1.5rem;\n  text-align: center;\n}\n\n.cards-grid {\n  align-items: stretch;\n}\n\n.card {\n  height: 100%;\n}\n\n.card-body {\n  display: flex;\n  flex-direction: column;\n  gap: 0.75rem;\n}\n\n.card-body .text-link {\n  margin-top: auto;\n}\n\n\n.hero-video {\n  position: relative;\n  overflow: hidden;\n  min-height: 85vh;\n  display: flex;\n  align-items: center;\n  background: url('/assets/img/boat/bali4.1/bali-41-4.jpg') center/cover no-repeat;\n}\n\n.hero-video-bg {\n  position: absolute;\n  inset: 0;\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n\n.hero-video-overlay {\n  position: absolute;\n  inset: 0;\n  background: rgba(15, 23, 42, 0.45);\n}\n\n.hero-content {\n  position: relative;\n  z-index: 2;\n}\n\n.hero-video .hero-copy,\n.hero-video .eyebrow,\n.hero-video h1,\n.hero-video p,\n.hero-video li {\n  color: #fff;\n}\n\n.hero-video .price-pill {\n  background: rgba(255, 255, 255, 0.14);\n  color: #fff;\n  border: 1px solid rgba(255, 255, 255, 0.24);\n}\n\n.hero-video .hero-points li {\n  background: rgba(255, 255, 255, 0.14);\n  color: #fff;\n}\n\n.hero-visual-placeholder {\n  min-height: 1px;\n}\n\n.btn-book {\n  background: #f97316;\n  color: #fff;\n}\n\n.btn-book:hover {\n  background: #ea580c;\n}\n\n@media (max-width: 768px) {\n  .hero-video {\n    min-height: 70vh;\n  }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -2336,7 +2413,7 @@ const routes = [{
   path: 'sorties/afterwork-en-mer',
   component: _tours_afterwork_afterwork_component__WEBPACK_IMPORTED_MODULE_7__.AfterworkComponent
 }, {
-  path: 'sorties/evjf-evg',
+  path: 'sorties/anniversaire',
   component: _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_8__.EvjfEvgComponent
 }, {
   path: 'sorties/sortie-entreprise',
@@ -2559,7 +2636,7 @@ module.exports = "<section class=\"page-hero\">\n  <div class=\"container narrow
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"page-hero\">\n  <div class=\"container text-block\">\n    <span class=\"eyebrow\">{{ content.boatPage.eyebrow }}</span>\n    <h1>{{ content.boatPage.title }}</h1>\n    <p>{{ content.boatPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container split-grid\">\n    <div>\n      <h2>{{ content.boatPage.reasonsTitle }}</h2>\n      <p>{{ content.boatPage.reasonsText }}</p>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of content.boatPage.reasons\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"visual-grid\">\n      <img *ngFor=\"let image of images\" [src]=\"image\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container split-grid secondary-grid\">\n    <div>\n      <h2>{{ content.boatPage.comfortTitle }}</h2>\n      <p>{{ content.boatPage.comfortText }}</p>\n      <div class=\"price-box\">{{ content.priceFrom }}</div>\n      <a routerLink=\"/contact\" class=\"btn\">{{ content.boatPage.cta }}</a>\n    </div>\n\n    <div>\n      <h2>{{ content.boatPage.occasionsTitle }}</h2>\n      <ul class=\"occasions-list\">\n        <li *ngFor=\"let item of content.boatPage.occasions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"page-hero\">\n  <div class=\"container text-block\">\n    <span class=\"eyebrow\">{{ content.boatPage.eyebrow }}</span>\n    <h1>{{ content.boatPage.title }}</h1>\n    <p>{{ content.boatPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container split-grid\">\n    <div>\n      <h2>{{ content.boatPage.reasonsTitle }}</h2>\n      <p>{{ content.boatPage.reasonsText }}</p>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of content.boatPage.reasons\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"visual-grid\">\n      <img *ngFor=\"let image of images\" [src]=\"image\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container split-grid secondary-grid\">\n    <div>\n      <h2>{{ content.boatPage.comfortTitle }}</h2>\n      <p>{{ content.boatPage.comfortText }}</p>\n      <div class=\"price-box\">{{ content.priceFrom }}</div>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/contact\" class=\"btn\">{{ content.boatPage.cta }}</a>\n        <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\" target=\"_blank\" rel=\"noreferrer\" class=\"btn btn-book\">{{ content.common.bookOnClickAndBoat }}</a>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ content.boatPage.occasionsTitle }}</h2>\n      <ul class=\"occasions-list\">\n        <li *ngFor=\"let item of content.boatPage.occasions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -3748,7 +3825,18 @@ p {
   .visual-grid {
     grid-template-columns: 1fr;
   }
-}`, "",{"version":3,"sources":["webpack://./src/app/home/boat/boat.component.scss"],"names":[],"mappings":"AAAA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,qDAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,oCAAA;EACA,WAAA;EACA,kBAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;;EAEE,gBAAA;EACA,UAAA;EACA,kBAAA;EACA,aAAA;EACA,YAAA;AACF;;AAEA;;EAEE,qCAAA;EACA,8BAAA;EACA,gBAAA;EACA,mBAAA;EACA,cAAA;EACA,8CAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,qCAAA;EACA,YAAA;AACF;;AAEA;EACE,WAAA;EACA,aAAA;EACA,iBAAA;EACA,mBAAA;AACF;;AAEA;EACE,oBAAA;EACA,qBAAA;EACA,wBAAA;EACA,oBAAA;EACA,kCAAA;EACA,cAAA;EACA,kBAAA;EACA,gBAAA;AACF;;AAEA;EACE,oBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,uBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE;;IAEE,0BAAA;EACF;AACF","sourcesContent":[".container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #ffffff, #f8fafc);\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.text-block {\n  max-width: 820px;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0369a1;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #0f172a;\n}\n\nh2 {\n  margin-top: 0;\n  color: #0f172a;\n  font-size: 1.45rem;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.split-grid {\n  display: grid;\n  grid-template-columns: 0.95fr 1.05fr;\n  gap: 1.8rem;\n  align-items: start;\n}\n\n.secondary-grid {\n  align-items: center;\n}\n\n.highlights,\n.occasions-list {\n  list-style: none;\n  padding: 0;\n  margin: 1.3rem 0 0;\n  display: grid;\n  gap: 0.85rem;\n}\n\n.highlights li,\n.occasions-list li {\n  padding: 0.95rem 1rem 0.95rem 1.05rem;\n  border-left: 4px solid #0ea5e9;\n  background: #fff;\n  border-radius: 14px;\n  color: #334155;\n  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.04);\n  font-size: 0.94rem;\n}\n\n.visual-grid {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 0.95rem;\n}\n\n.visual-grid img {\n  width: 100%;\n  height: 220px;\n  object-fit: cover;\n  border-radius: 20px;\n}\n\n.price-box {\n  display: inline-flex;\n  margin: 1rem 0 1.3rem;\n  padding: 0.65rem 0.95rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0c4a6e;\n  font-size: 0.88rem;\n  font-weight: 700;\n}\n\n.btn {\n  display: inline-flex;\n  text-decoration: none;\n  background: #0f172a;\n  color: #fff;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n@media (max-width: 860px) {\n  .split-grid,\n  .visual-grid {\n    grid-template-columns: 1fr;\n  }\n}\n"],"sourceRoot":""}]);
+}
+.boat-actions {
+  display: flex;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.btn-book {
+  background: #f97316;
+  color: #fff;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/boat/boat.component.scss"],"names":[],"mappings":"AAAA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,qDAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,oCAAA;EACA,WAAA;EACA,kBAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;;EAEE,gBAAA;EACA,UAAA;EACA,kBAAA;EACA,aAAA;EACA,YAAA;AACF;;AAEA;;EAEE,qCAAA;EACA,8BAAA;EACA,gBAAA;EACA,mBAAA;EACA,cAAA;EACA,8CAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,qCAAA;EACA,YAAA;AACF;;AAEA;EACE,WAAA;EACA,aAAA;EACA,iBAAA;EACA,mBAAA;AACF;;AAEA;EACE,oBAAA;EACA,qBAAA;EACA,wBAAA;EACA,oBAAA;EACA,kCAAA;EACA,cAAA;EACA,kBAAA;EACA,gBAAA;AACF;;AAEA;EACE,oBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,uBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE;;IAEE,0BAAA;EACF;AACF;AAGA;EACE,aAAA;EACA,WAAA;EACA,eAAA;EACA,gBAAA;AADF;;AAIA;EACE,mBAAA;EACA,WAAA;AADF","sourcesContent":[".container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #ffffff, #f8fafc);\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.text-block {\n  max-width: 820px;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0369a1;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #0f172a;\n}\n\nh2 {\n  margin-top: 0;\n  color: #0f172a;\n  font-size: 1.45rem;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.split-grid {\n  display: grid;\n  grid-template-columns: 0.95fr 1.05fr;\n  gap: 1.8rem;\n  align-items: start;\n}\n\n.secondary-grid {\n  align-items: center;\n}\n\n.highlights,\n.occasions-list {\n  list-style: none;\n  padding: 0;\n  margin: 1.3rem 0 0;\n  display: grid;\n  gap: 0.85rem;\n}\n\n.highlights li,\n.occasions-list li {\n  padding: 0.95rem 1rem 0.95rem 1.05rem;\n  border-left: 4px solid #0ea5e9;\n  background: #fff;\n  border-radius: 14px;\n  color: #334155;\n  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.04);\n  font-size: 0.94rem;\n}\n\n.visual-grid {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 0.95rem;\n}\n\n.visual-grid img {\n  width: 100%;\n  height: 220px;\n  object-fit: cover;\n  border-radius: 20px;\n}\n\n.price-box {\n  display: inline-flex;\n  margin: 1rem 0 1.3rem;\n  padding: 0.65rem 0.95rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0c4a6e;\n  font-size: 0.88rem;\n  font-weight: 700;\n}\n\n.btn {\n  display: inline-flex;\n  text-decoration: none;\n  background: #0f172a;\n  color: #fff;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n@media (max-width: 860px) {\n  .split-grid,\n  .visual-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n.boat-actions {\n  display: flex;\n  gap: 0.9rem;\n  flex-wrap: wrap;\n  margin-top: 1rem;\n}\n\n.btn-book {\n  background: #f97316;\n  color: #fff;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 

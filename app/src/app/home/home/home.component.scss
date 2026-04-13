@@ -134,6 +134,17 @@ p {
   min-height: 390px;
 }
 
+.hero-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-equal {
+  flex: 1;
+  max-width: 220px;
+  text-align: center;
+}
+
 .section-head {
   max-width: 760px;
   margin-bottom: 2rem;
@@ -261,4 +272,71 @@ p {
 
 .card-body .text-link {
   margin-top: auto;
+}
+
+
+.hero-video {
+  position: relative;
+  overflow: hidden;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  background: url('/assets/img/boat/bali4.1/bali-41-4.jpg') center/cover no-repeat;
+}
+
+.hero-video-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-video .hero-copy,
+.hero-video .eyebrow,
+.hero-video h1,
+.hero-video p,
+.hero-video li {
+  color: #fff;
+}
+
+.hero-video .price-pill {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.hero-video .hero-points li {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.hero-visual-placeholder {
+  min-height: 1px;
+}
+
+.btn-book {
+  background: #f97316;
+  color: #fff;
+}
+
+.btn-book:hover {
+  background: #ea580c;
+}
+
+@media (max-width: 768px) {
+  .hero-video {
+    min-height: 70vh;
+  }
 }

@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'sorties/journee-en-mer', component: FullDayComponent },
   { path: 'sorties/coucher-de-soleil', component: SunsetCruiseComponent },
   { path: 'sorties/afterwork-en-mer', component: AfterworkComponent },
-  { path: 'sorties/evjf-evg', component: EvjfEvgComponent },
+  { path: 'sorties/anniversaire', component: EvjfEvgComponent },
   { path: 'sorties/sortie-entreprise', component: BusinessOutingComponent },
   { path: 'sorties/escapade-lerins', component: LerinsEscapeComponent },
   { path: 'sorties/nuit-a-bord', component: NightOnBoardComponent },

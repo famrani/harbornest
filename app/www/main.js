@@ -3220,12 +3220,13 @@ const SITE_CONTENT = {
       emailUs: 'Envoyer un email',
       whatsapp: 'WhatsApp',
       directContact: 'Contact direct',
-      departurePort: 'Port de départ'
+      departurePort: 'Port de départ',
+      bookOnClickAndBoat: 'Réserver sur Click & Boat'
     },
     home: {
       eyebrow: 'Sorties en mer privées sur la Côte d’Azur',
       title: 'Privatisez Alegria pour une journée élégante, détendue et inoubliable en mer.',
-      intro: 'Alegria accueille vos journées en mer, couchers de soleil, escapades aux îles de Lérins, EVJF/EVG, afterworks et événements privés. Chaque sortie est organisée sur mesure, avec skipper, à partir de 1 500 € par jour.',
+      intro: 'Alegria accueille vos journées en mer, couchers de soleil, escapades aux îles de Lérins, anniversaires, afterworks et événements privés. Chaque sortie est organisée sur mesure, avec skipper, à partir de 1 500 € par jour.',
       primaryCta: 'Découvrir les sorties',
       secondaryCta: 'Demander un devis',
       points: ['Sorties 100 % privatives', 'À partir de 1 500 € / jour avec skipper', 'Contact direct et réponse rapide'],
@@ -3256,7 +3257,7 @@ const SITE_CONTENT = {
       comfortTitle: 'Confort et ambiance à bord',
       comfortText: 'Que vous souhaitiez déjeuner, prendre un apéritif, vous détendre au mouillage ou profiter d’une simple navigation côtière, Alegria offre un cadre chaleureux et premium.',
       occasionsTitle: 'Idéal pour',
-      occasions: ['une journée en famille', 'un moment en couple', 'une sortie entre amis', 'un EVJF / EVG', 'un événement privé', 'une sortie entreprise'],
+      occasions: ['une journée en famille', 'un moment en couple', 'une sortie entre amis', 'un anniversaire', 'un événement privé', 'une sortie entreprise'],
       cta: 'Demander un devis'
     },
     galleryPage: {
@@ -3282,7 +3283,7 @@ const SITE_CONTENT = {
       directTitle: 'Contact direct',
       directText: 'Vous pouvez aussi nous joindre directement par téléphone ou email pour parler de votre projet et vérifier les disponibilités.',
       sentNotice: 'Votre message a bien été préparé. Nous vous répondrons rapidement.',
-      outingOptions: ['Journée en mer', 'Coucher de soleil', 'Afterwork en mer', 'EVJF / EVG', 'Sortie entreprise', 'Escapade Lérins', 'Nuit à bord', 'Projet sur mesure'],
+      outingOptions: ['Journée en mer', 'Coucher de soleil', 'Afterwork en mer', 'Anniversaire', 'Sortie entreprise', 'Escapade Lérins', 'Nuit à bord', 'Projet sur mesure'],
       emailSubjectPrefix: 'Demande d’informations',
       whatsappIntro: 'Bonjour, je souhaite obtenir des informations pour une sortie en mer à bord d’Alegria.'
     },
@@ -3322,11 +3323,11 @@ const SITE_CONTENT = {
       image: sharedImages.afterwork,
       highlights: ['Cadre original', 'Privatisation', 'Format simple à organiser']
     }, {
-      slug: 'evjf-evg',
-      title: 'EVJF / EVG',
+      slug: 'anniversaire',
+      title: 'Anniversaire',
       duration: 'Demi-journée ou journée',
       guests: 'Groupe privatif',
-      description: 'Une sortie festive et soignée pour marquer un moment important avant le grand jour.',
+      description: 'Une sortie festive et soignée pour célébrer un anniversaire dans un cadre exceptionnel.',
       image: sharedImages.evjf,
       highlights: ['Programme personnalisable', 'Photos et ambiance', 'Souvenirs garantis']
     }, {
@@ -3392,7 +3393,8 @@ const SITE_CONTENT = {
       emailUs: 'Send an email',
       whatsapp: 'WhatsApp',
       directContact: 'Direct contact',
-      departurePort: 'Departure port'
+      departurePort: 'Departure port',
+      bookOnClickAndBoat: 'Book on Click & Boat'
     },
     home: {
       eyebrow: 'Private sea outings on the French Riviera',
@@ -3454,7 +3456,7 @@ const SITE_CONTENT = {
       directTitle: 'Direct contact',
       directText: 'You can also call or email us directly to discuss your project and check availability.',
       sentNotice: 'Your message has been prepared. We will reply shortly.',
-      outingOptions: ['Full day at sea', 'Sunset cruise', 'Afterwork at sea', 'Hen / stag party', 'Corporate outing', 'Lérins escape', 'Night on board', 'Tailor-made project'],
+      outingOptions: ['Full day at sea', 'Sunset cruise', 'Afterwork at sea', 'Birthday celebration', 'Corporate outing', 'Lérins escape', 'Night on board', 'Tailor-made project'],
       emailSubjectPrefix: 'Information request',
       whatsappIntro: 'Hello, I would like information about a sea outing aboard Alegria.'
     },
@@ -3494,11 +3496,11 @@ const SITE_CONTENT = {
       image: sharedImages.afterwork,
       highlights: ['Original setting', 'Private charter', 'Easy to organize']
     }, {
-      slug: 'evjf-evg',
-      title: 'Hen / stag party',
+      slug: 'anniversaire',
+      title: 'Birthday celebration',
       duration: 'Half day or full day',
       guests: 'Private group',
-      description: 'A festive and refined outing to celebrate before the big day.',
+      description: 'A festive and refined outing to celebrate a birthday at sea.',
       image: sharedImages.evjf,
       highlights: ['Custom program', 'Photos and atmosphere', 'Great memories']
     }, {
@@ -3564,12 +3566,13 @@ const SITE_CONTENT = {
       emailUs: 'Enviar un correo',
       whatsapp: 'WhatsApp',
       directContact: 'Contacto directo',
-      departurePort: 'Puerto de salida'
+      departurePort: 'Puerto de salida',
+      bookOnClickAndBoat: 'Reservar en Click & Boat'
     },
     home: {
       eyebrow: 'Salidas privadas en el mar en la Costa Azul',
       title: 'Privatice Alegria para disfrutar de un día elegante, relajado e inolvidable en el mar.',
-      intro: 'Alegria propone días completos, atardeceres, escapadas a las islas de Lérins, despedidas, afterworks y eventos privados. Cada salida se organiza a medida, con patrón, desde 1.500 € por día.',
+      intro: 'Alegria propone días completos, atardeceres, escapadas a las islas de Lérins, cumpleaños, afterworks y eventos privados. Cada salida se organiza a medida, con patrón, desde 1.500 € por día.',
       primaryCta: 'Descubrir las salidas',
       secondaryCta: 'Solicitar presupuesto',
       points: ['Salidas 100 % privadas', 'Desde 1.500 € / día con patrón', 'Contacto directo y respuesta rápida'],
@@ -3600,7 +3603,7 @@ const SITE_CONTENT = {
       comfortTitle: 'Confort y ambiente a bordo',
       comfortText: 'Ya sea para almorzar, tomar un aperitivo, relajarse fondeados o simplemente navegar por la costa, Alegria ofrece un marco cálido y premium.',
       occasionsTitle: 'Ideal para',
-      occasions: ['un día en familia', 'un momento en pareja', 'una salida con amigos', 'una despedida de soltera o soltero', 'un evento privado', 'una salida de empresa'],
+      occasions: ['un día en familia', 'un momento en pareja', 'una salida con amigos', 'un cumpleaños', 'un evento privado', 'una salida de empresa'],
       cta: 'Solicitar presupuesto'
     },
     galleryPage: {
@@ -3626,7 +3629,7 @@ const SITE_CONTENT = {
       directTitle: 'Contacto directo',
       directText: 'También puede llamarnos o escribirnos directamente para comentar su proyecto y comprobar disponibilidad.',
       sentNotice: 'Su mensaje ha sido preparado. Le responderemos en breve.',
-      outingOptions: ['Día completo en el mar', 'Salida al atardecer', 'Afterwork en el mar', 'Despedida', 'Salida de empresa', 'Escapada Lérins', 'Noche a bordo', 'Proyecto a medida'],
+      outingOptions: ['Día completo en el mar', 'Salida al atardecer', 'Afterwork en el mar', 'Cumpleaños', 'Salida de empresa', 'Escapada Lérins', 'Noche a bordo', 'Proyecto a medida'],
       emailSubjectPrefix: 'Solicitud de información',
       whatsappIntro: 'Hola, me gustaría recibir información sobre una salida en el mar a bordo de Alegria.'
     },
@@ -3666,11 +3669,11 @@ const SITE_CONTENT = {
       image: sharedImages.afterwork,
       highlights: ['Entorno original', 'Privatización', 'Fácil de organizar']
     }, {
-      slug: 'evjf-evg',
-      title: 'Despedida de soltera o soltero',
+      slug: 'anniversaire',
+      title: 'Cumpleaños',
       duration: 'Medio día o día completo',
       guests: 'Grupo privado',
-      description: 'Una salida festiva y cuidada para celebrar antes del gran día.',
+      description: 'Una salida festiva y cuidada para celebrar un cumpleaños en el mar.',
       image: sharedImages.evjf,
       highlights: ['Programa personalizable', 'Fotos y ambiente', 'Grandes recuerdos']
     }, {

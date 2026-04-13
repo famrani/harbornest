@@ -11,14 +11,14 @@ import { TourPage, getTourContent } from '../tour-content';
   styleUrls: ['./evjf-evg.component.scss'],
 })
 export class EvjfEvgComponent implements OnInit, OnDestroy {
-  tour: TourPage = getTourContent('fr', 'evjf-evg');
+  tour: TourPage = getTourContent('fr', 'anniversaire');
   private languageSub?: Subscription;
 
   constructor(private languageService: LanguageService) {}
 
   ngOnInit(): void {
     this.languageSub = this.languageService.language$.subscribe((language) => {
-      this.tour = getTourContent(language, 'evjf-evg');
+      this.tour = getTourContent(language, 'anniversaire');
     });
   }
 

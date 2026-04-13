@@ -5,7 +5,7 @@ export type TourKey =
   | 'journee-en-mer'
   | 'coucher-de-soleil'
   | 'afterwork-en-mer'
-  | 'evjf-evg'
+  | 'anniversaire'
   | 'sortie-entreprise'
   | 'escapade-lerins'
   | 'nuit-a-bord'
@@ -62,7 +62,7 @@ const TOUR_GALLERIES: Record<TourKey, string[]> = {
   'journee-en-mer': [images.capAntibes],
   'coucher-de-soleil': [images.sunset, images.sunset2],
   'afterwork-en-mer': [images.afterwork],
-  'evjf-evg': [images.evjf1, images.evjf2, images.evjf3, images.evjf4, images.evjf5, images.evjf6, images.evjf7, images.evjf8, ],
+  'anniversaire': [images.evjf1, images.evjf2, images.evjf3, images.evjf4, images.evjf5, images.evjf6, images.evjf7, images.evjf8],
   'sortie-entreprise': [images.business_meeting1],
   'escapade-lerins': [images.lerins1, images.lerins2],
   'nuit-a-bord': [images.night1, images.night2],
@@ -121,7 +121,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       image: images.sunset,
       duration: 'Fin de journée',
       guests: 'Couple, famille ou petit groupe',
-      price: 'À partir de 1 000 € / jour avec skipper',
+      price: 'À partir de 1 500 € / jour avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: [
         'Ambiance élégante et détendue',
@@ -154,7 +154,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       image: images.afterwork,
       duration: 'Fin de journée ou début de soirée',
       guests: 'Groupe convivial',
-      price: 'À partir de 1 200 € / jour avec skipper',
+      price: 'À partir de 1 500 € / jour avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: [
         'Cadre original et valorisant',
@@ -177,17 +177,17 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       cta: 'Demander un devis',
       contactNote: 'Nous adaptons la durée et l’ambiance à votre objectif.'
     },
-    'evjf-evg': {
-      key: 'evjf-evg',
-      route: 'evjf-evg',
+    'anniversaire': {
+      key: 'anniversaire',
+      route: 'anniversaire',
       eyebrow: 'Sortie festive',
-      title: 'EVJF / EVG à bord d’Alegria',
-      subtitle: 'Un moment fort avant le grand jour, dans un cadre exclusif et mémorable.',
-      intro: 'Privatisez Alegria pour organiser un enterrement de vie de jeune fille ou de garçon chic, joyeux et bien encadré. La sortie peut être festive, élégante ou plus relaxante selon l’esprit du groupe.',
+      title: 'Anniversaire à bord d’Alegria',
+      subtitle: 'Un moment unique pour célébrer un anniversaire en mer dans un cadre exclusif et mémorable.',
+      intro: 'Privatisez Alegria pour organiser un anniversaire chic, joyeux et bien encadré. La sortie peut être festive, élégante ou plus relaxante selon l’esprit du groupe.',
       image: images.evjf1,
       duration: 'Demi-journée ou journée',
       guests: 'Groupe privatif',
-      price: 'À partir de 2 000 € / jour avec skipper',
+      price: 'À partir de 1 500 € / jour avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: [
         'Format personnalisable',
@@ -206,9 +206,9 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       includesTitle: 'Ce qui est prévu',
       includes: ['Skipper', 'Privatisation du bateau', 'Organisation personnalisée', 'Cadre exclusif sur la Côte d’Azur'],
       idealForTitle: 'Idéal pour',
-      idealFor: ['Un EVJF élégant', 'Un EVG raffiné', 'Un groupe mixte', 'Une journée dont tout le monde se souviendra'],
-      cta: 'Préparer votre projet',
-      contactNote: 'Expliquez-nous le style recherché et nous construirons la bonne formule.'
+      idealFor: ['Un anniversaire entre amis', 'Une célébration en famille', 'Un moment festif ou élégant', 'Une journée dont tout le monde se souviendra'],
+      cta: 'Organiser votre anniversaire',
+      contactNote: 'Expliquez-nous l’ambiance recherchée et nous construirons la bonne formule.'
     },
     'sortie-entreprise': {
       key: 'sortie-entreprise',
@@ -220,7 +220,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       image: images.business,
       duration: 'Demi-journée ou journée',
       guests: 'Équipe, clients ou invités',
-      price: 'À partir de 2 500 € / jour avec skipper',
+      price: 'À partir de 1 500 € / jour avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: [
         'Image premium pour votre entreprise',
@@ -253,7 +253,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       image: images.lerins1,
       duration: 'Journée complète',
       guests: 'Privatisation avec skipper',
-      price: 'À partir de 2 000 € / jour avec skipper',
+      price: 'À partir de 1 500 € / jour avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: [
         'Destination très recherchée sur la Côte d’Azur',
@@ -286,7 +286,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       image: images.night1,
       duration: 'Soirée et nuit',
       guests: 'Selon la configuration',
-      price: 'Sur demande à partir d’une base de 1 200 € avec skipper',
+      price: 'Sur demande, à partir de 1 500 € avec skipper',
       highlightsTitle: 'Les points forts',
       highlights: [
         'Format rare et très exclusif',
@@ -404,12 +404,12 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       cta: 'Request a quote',
       contactNote: 'We adapt the duration and mood to your goal.'
     },
-    'evjf-evg': {
-      key: 'evjf-evg', route: 'evjf-evg',
-      eyebrow: 'Festive outing',
-      title: 'Hen or stag party aboard Alegria',
-      subtitle: 'A memorable moment before the big day in an exclusive setting.',
-      intro: 'Charter Alegria for a stylish and joyful bachelor or bachelorette celebration. The outing can be festive, elegant or more relaxed depending on your group.',
+    'anniversaire': {
+      key: 'anniversaire', route: 'anniversaire',
+      eyebrow: 'Celebration outing',
+      title: 'Birthday celebration aboard Alegria',
+      subtitle: 'A memorable way to celebrate a birthday in an exclusive setting at sea.',
+      intro: 'Charter Alegria for a stylish and joyful birthday celebration at sea. The outing can be festive, elegant or more relaxed depending on your group.',
       image: images.evjf1,
       duration: 'Half day or full day', guests: 'Private group',
       price: 'From €2,000 per day with skipper',
@@ -420,9 +420,9 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       includesTitle: 'What is included',
       includes: ['Skipper', 'Private charter', 'Personalized organization', 'Exclusive Riviera setting'],
       idealForTitle: 'Ideal for',
-      idealFor: ['A chic hen party', 'A refined stag party', 'A mixed group', 'A day everyone will remember'],
-      cta: 'Plan your outing',
-      contactNote: 'Tell us the style you are looking for and we will build the right option.'
+      idealFor: ['A birthday with friends', 'A family celebration', 'A festive or elegant moment', 'A day everyone will remember'],
+      cta: 'Plan your birthday',
+      contactNote: 'Tell us the atmosphere you are looking for and we will build the right option.'
     },
     'sortie-entreprise': {
       key: 'sortie-entreprise', route: 'sortie-entreprise',
@@ -566,12 +566,12 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       cta: 'Solicitar presupuesto',
       contactNote: 'Adaptamos la duración y el ambiente a su objetivo.'
     },
-    'evjf-evg': {
-      key: 'evjf-evg', route: 'evjf-evg',
+    'anniversaire': {
+      key: 'anniversaire', route: 'anniversaire',
       eyebrow: 'Salida festiva',
-      title: 'Despedida de soltera o soltero a bordo de Alegria',
-      subtitle: 'Un momento inolvidable antes del gran día en un entorno exclusivo.',
-      intro: 'Privatice Alegria para organizar una despedida de soltera o soltero elegante, alegre y bien organizada. La salida puede ser festiva, refinada o más relajada según el estilo del grupo.',
+      title: 'Cumpleaños a bordo de Alegria',
+      subtitle: 'Una forma inolvidable de celebrar un cumpleaños en un entorno exclusivo.',
+      intro: 'Privatice Alegria para organizar un cumpleaños elegante, alegre y bien organizado. La salida puede ser festiva, refinada o más relajada según el estilo del grupo.',
       image: images.evjf1,
       duration: 'Medio día o día completo', guests: 'Grupo privado',
       price: 'Desde 2.000 € por día con patrón',
@@ -582,9 +582,9 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       includesTitle: 'Qué está incluido',
       includes: ['Patrón', 'Privatización del barco', 'Organización personalizada', 'Entorno exclusivo en la Costa Azul'],
       idealForTitle: 'Ideal para',
-      idealFor: ['Una despedida de soltera chic', 'Una despedida de soltero elegante', 'Un grupo mixto', 'Un día que todos recordarán'],
-      cta: 'Preparar su proyecto',
-      contactNote: 'Cuéntenos el estilo que busca y crearemos la mejor fórmula.'
+      idealFor: ['Un cumpleaños con amigos', 'Una celebración en familia', 'Un momento festivo o elegante', 'Un día que todos recordarán'],
+      cta: 'Organizar su cumpleaños',
+      contactNote: 'Cuéntenos el ambiente que busca y crearemos la mejor fórmula.'
     },
     'sortie-entreprise': {
       key: 'sortie-entreprise', route: 'sortie-entreprise',
