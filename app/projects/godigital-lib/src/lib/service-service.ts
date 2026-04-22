@@ -290,7 +290,7 @@ export class ServicesService {
 
     // optional version
     if (this.config.application?.release) {
-      this.version = `${platform}/${this.config.application.release}`;
+      this.version = `${this.config.application.release}`;
     }
 
     // backend URL

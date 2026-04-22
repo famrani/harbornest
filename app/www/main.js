@@ -2812,7 +2812,7 @@ class ServicesService {
       _this26.utilSvc.platform = platform;
       // optional version
       if (_this26.config.application?.release) {
-        _this26.version = `${platform}/${_this26.config.application.release}`;
+        _this26.version = `${_this26.config.application.release}`;
       }
       // backend URL
       _this26.utilSvc.backendWSURL = _this26.config[platform]?.backendWSUrl;
@@ -3195,7 +3195,7 @@ const sharedImages = {
 const SITE_CONTENT = {
   fr: {
     brand: 'Alegria',
-    brandTagline: 'Sorties en mer privées',
+    brandTagline: 'Location de catamaran en coque nue privées',
     phoneDisplay: '+33 6 85 26 65 10',
     phoneRaw: '+33685266510',
     email: 'contact@alldigitalnetwork.com',
@@ -3209,13 +3209,13 @@ const SITE_CONTENT = {
       boat: 'Le bateau',
       gallery: 'Galerie',
       contact: 'Contact',
-      quote: 'Demander un devis'
+      quote: 'Voir la disponibilité'
     },
     common: {
       from: 'À partir de',
       dayWithSkipper: 'par jour avec skipper',
       contactUs: 'Nous contacter',
-      requestQuote: 'Demander un devis',
+      requestQuote: 'Voir la disponibilité',
       call: 'Appeler',
       emailUs: 'Envoyer un email',
       whatsapp: 'WhatsApp',
@@ -3224,11 +3224,11 @@ const SITE_CONTENT = {
       bookOnClickAndBoat: 'Réserver sur Click & Boat'
     },
     home: {
-      eyebrow: 'Sorties en mer privées sur la Côte d’Azur',
-      title: 'Privatisez Alegria pour une journée élégante, détendue et inoubliable en mer.',
+      eyebrow: 'Location de catamaran en coque nue privées',
+      title: 'Privatisez Alegria pour une sortie inoubliable en mer',
       intro: 'Alegria accueille vos journées en mer, couchers de soleil, escapades aux îles de Lérins, anniversaires, afterworks et événements privés. Chaque sortie est organisée sur mesure, avec skipper, à partir de 1 500 € par jour.',
       primaryCta: 'Découvrir les sorties',
-      secondaryCta: 'Demander un devis',
+      secondaryCta: 'Voir la disponibilité',
       points: ['Sorties 100 % privatives', 'À partir de 1 500 € / jour avec skipper', 'Contact direct et réponse rapide'],
       sectionEyebrow: 'Nos sorties',
       sectionTitle: 'Des formats variés, un même niveau d’attention et de confort',
@@ -3258,7 +3258,7 @@ const SITE_CONTENT = {
       comfortText: 'Que vous souhaitiez déjeuner, prendre un apéritif, vous détendre au mouillage ou profiter d’une simple navigation côtière, Alegria offre un cadre chaleureux et premium.',
       occasionsTitle: 'Idéal pour',
       occasions: ['une journée en famille', 'un moment en couple', 'une sortie entre amis', 'un anniversaire', 'un événement privé', 'une sortie entreprise'],
-      cta: 'Demander un devis'
+      cta: 'Voir la disponibilité'
     },
     galleryPage: {
       eyebrow: 'Galerie',
@@ -3288,7 +3288,7 @@ const SITE_CONTENT = {
       whatsappIntro: 'Bonjour, je souhaite obtenir des informations pour une sortie en mer à bord d’Alegria.'
     },
     footer: {
-      description: 'Sorties en mer privées à bord d’Alegria.',
+      description: 'Location de catamaran en coque nue privées à bord d’Alegria.',
       navigation: 'Navigation',
       contact: 'Contact',
       quickReply: 'Réponse rapide.'
@@ -4568,7 +4568,7 @@ module.exports = "<router-outlet></router-outlet>\n";
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<footer class=\"site-footer-simple\">\n  <div class=\"container footer-simple\">\n    \n    <div class=\"footer-left\">\n      © {{ year }} {{ content.brand }}\n    </div>\n\n    <div class=\"footer-center\">\n      {{ mainSvc.version }}\n    </div>\n\n    <div class=\"footer-right\">\n      <a routerLink=\"/contact\">{{ content.nav.contact }}</a>\n    </div>\n\n  </div>\n</footer>";
+module.exports = "<footer class=\"site-footer-simple\">\n  <div class=\"container footer-simple\">\n    \n    <div class=\"footer-left\">\n      © {{ year }} {{ content.brand }}\n    </div>\n\n    <div class=\"footer-center\">\n      version {{ mainSvc.version }}\n    </div>\n\n    <div class=\"footer-right\">\n      <a routerLink=\"/contact\">{{ content.nav.contact }}</a>\n    </div>\n\n  </div>\n</footer>";
 
 /***/ }),
 

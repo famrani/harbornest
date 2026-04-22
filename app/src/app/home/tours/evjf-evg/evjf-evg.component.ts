@@ -2,7 +2,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LanguageService } from '../../../services/language.service';
-import { SITE_CONTENT } from '../../site-content';
 import { TourPage, getTourContent } from '../tour-content';
 
 @Component({

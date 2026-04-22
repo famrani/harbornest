@@ -1428,6 +1428,9 @@ const images = {
   evjf6: 'assets/img/events/evjf/evjf-g6.jpg',
   evjf7: 'assets/img/events/evjf/evjf-g7.jpg',
   evjf8: 'assets/img/events/evjf/evjf-g8.jpg',
+  evjf9: 'assets/img/events/evjf/evjf-g9.jpg',
+  evjf10: 'assets/img/events/evjf/evjf-g10.jpg',
+  evjf11: 'assets/img/events/evjf/evjf-g11.jpg',
   business: 'assets/img/events/business-meeting/business-meeting1.jpg',
   lerins1: 'assets/img/events/leyrins/leyrins1.jpg',
   lerins2: 'assets/img/events/leyrins/leyrins2.jpg',
@@ -1440,7 +1443,7 @@ const TOUR_GALLERIES = {
   'journee-en-mer': [images.capAntibes],
   'coucher-de-soleil': [images.sunset, images.sunset2],
   'afterwork-en-mer': [images.afterwork],
-  'anniversaire': [images.evjf1, images.evjf2, images.evjf3, images.evjf4, images.evjf5, images.evjf6, images.evjf7, images.evjf8],
+  'anniversaire': [images.evjf1, images.evjf2, images.evjf3, images.evjf4, images.evjf5, images.evjf6, images.evjf7, images.evjf8, images.evjf9, images.evjf10, images.evjf11],
   'sortie-entreprise': [images.business_meeting1],
   'escapade-lerins': [images.lerins1, images.lerins2],
   'nuit-a-bord': [images.night1, images.night2],
@@ -1472,7 +1475,7 @@ const TOUR_CONTENT = {
       includes: ['Skipper', 'Privatisation du bateau', 'Organisation sur mesure', 'Temps de baignade et découverte du littoral'],
       idealForTitle: 'Idéal pour',
       idealFor: ['Une journée en famille', 'Une sortie entre amis', 'Un moment en couple', 'Un anniversaire discret et élégant'],
-      cta: 'Demander un devis',
+      cta: 'Voir la disponibilité',
       contactNote: 'Parlez-nous de votre date, du nombre de personnes et de l’ambiance souhaitée.'
     },
     'coucher-de-soleil': {
@@ -1516,7 +1519,7 @@ const TOUR_CONTENT = {
       includes: ['Skipper', 'Bateau privatisé', 'Format flexible', 'Accompagnement direct pour l’organisation'],
       idealForTitle: 'Idéal pour',
       idealFor: ['Un afterwork entre collègues', 'Un moment clients ou partenaires', 'Un groupe d’amis', 'Une célébration décontractée'],
-      cta: 'Demander un devis',
+      cta: 'Voir la disponibilité',
       contactNote: 'Nous adaptons la durée et l’ambiance à votre objectif.'
     },
     'anniversaire': {
