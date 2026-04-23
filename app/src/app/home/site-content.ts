@@ -1,4 +1,3 @@
-
 import { SiteLanguage } from '../services/language.service';
 
 export interface OutingItem {
@@ -21,6 +20,7 @@ export interface SiteContent {
   priceFrom: string;
   heroImage: string;
   boatHeroImage: string;
+
   nav: {
     home: string;
     outings: string;
@@ -29,6 +29,7 @@ export interface SiteContent {
     contact: string;
     quote: string;
   };
+
   common: {
     from: string;
     dayWithSkipper: string;
@@ -40,7 +41,10 @@ export interface SiteContent {
     directContact: string;
     departurePort: string;
     bookOnClickAndBoat: string;
+    legalAsterisk: string;
+    boardingPorts: string;
   };
+
   home: {
     eyebrow: string;
     title: string;
@@ -59,63 +63,15 @@ export interface SiteContent {
     contactTitle: string;
     contactText: string;
   };
-  outingsPage: {
-    eyebrow: string;
-    title: string;
-    intro: string;
-    cta: string;
-  };
-  boatPage: {
-    eyebrow: string;
-    title: string;
-    intro: string;
-    reasonsTitle: string;
-    reasonsText: string;
-    reasons: string[];
-    comfortTitle: string;
-    comfortText: string;
-    occasionsTitle: string;
-    occasions: string[];
-    cta: string;
-  };
-  galleryPage: {
-    eyebrow: string;
-    title: string;
-    intro: string;
-  };
-  contactPage: {
-    eyebrow: string;
-    title: string;
-    intro: string;
-    formTitle: string;
-    name: string;
-    email: string;
-    phone: string;
-    outingType: string;
-    outingPlaceholder: string;
-    preferredDate: string;
-    guests: string;
-    message: string;
-    sendEmail: string;
-    prepareWhatsapp: string;
-    directTitle: string;
-    directText: string;
-    sentNotice: string;
-    outingOptions: string[];
-    emailSubjectPrefix: string;
-    whatsappIntro: string;
-  };
-  footer: {
-    description: string;
-    navigation: string;
-    contact: string;
-    quickReply: string;
-  };
-  notFound: {
-    title: string;
-    text: string;
-    cta: string;
-  };
+
+  outingsPage: any;
+  boatPage: any;
+  galleryPage: any;
+  contactPage: any;
+
+  footer: any;
+  notFound: any;
+
   outings: OutingItem[];
   galleryImages: string[];
   boatHighlights: string[];
@@ -137,12 +93,8 @@ const sharedImages = {
   ],
   capAntibes: 'assets/img/events/cap-antibes/cap-antibes1.jpg',
   sunset: 'assets/img/events/sunset/sunset1.jpg',
-  afterwork: 'assets/img/events/afterwork/afterwork1.jpg',
-  evjf: 'assets/img/events/evjf/evjf-g1.jpg',
   business: 'assets/img/events/business-meeting/business-meeting1.jpg',
-  lerins: 'assets/img/events/leyrins/leyrins1.jpg',
-  night: 'assets/img/events/night-on-board/night-on-board1.jpg',
-  boat: 'assets/img/boat/bali4.1/bali-41-5.jpg',
+  birthday: 'assets/img/events/evjf/evjf-g1.jpg',
 };
 
 export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
@@ -156,7 +108,15 @@ export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
     priceFrom: 'À partir de 1 500 € par jour avec skipper',
     heroImage: sharedImages.hero,
     boatHeroImage: sharedImages.boatHero,
-    nav: { home: 'Accueil', outings: 'Sorties', boat: 'Le bateau', gallery: 'Galerie', contact: 'Contact', quote: 'Voir la disponibilité' },
+    nav: {
+      home: 'Accueil',
+      outings: 'Expériences',
+      boat: 'Le bateau',
+      gallery: 'Galerie',
+      contact: 'Contact',
+      quote: 'Voir la disponibilité'
+    },
+
     common: {
       from: 'À partir de',
       dayWithSkipper: 'par jour avec skipper',
@@ -165,27 +125,32 @@ export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
       call: 'Appeler',
       emailUs: 'Envoyer un email',
       whatsapp: 'WhatsApp',
-      directContact: 'Contact direct',
+      directContact: 'Contact',
       departurePort: 'Port de départ',
       bookOnClickAndBoat: 'Réserver sur Click & Boat',
+      legalAsterisk: '* Location en coque nue. Skipper professionnel indépendant obligatoire.',
+      boardingPorts: '* Embarquement : Marina Baie des Anges, Antibes ou Cannes.'
     },
+
     home: {
-      eyebrow: 'Location de catamaran en coque nue privées',
-      title: 'Privatisez Alegria pour une sortie inoubliable en mer',
-      intro: 'Alegria accueille vos journées en mer, couchers de soleil, escapades aux îles de Lérins, anniversaires, afterworks et événements privés. Chaque sortie est organisée sur mesure, avec skipper, à partir de 1 500 € par jour.',
-      primaryCta: 'Découvrir les sorties',
+      eyebrow: 'Location de catamaran sur la Côte d’Azur',
+      title: 'Une journée en mer à bord d’Alegria',
+      intro: 'Catamaran disponible en coque nue avec skipper indépendant.',
+      primaryCta: 'Découvrir',
       secondaryCta: 'Voir la disponibilité',
-      points: ['Sorties 100 % privatives', 'À partir de 1 500 € / jour avec skipper', 'Contact direct et réponse rapide'],
-      sectionEyebrow: 'Nos sorties',
-      sectionTitle: 'Des formats variés, un même niveau d’attention et de confort',
-      sectionText: 'Découvrez plusieurs idées de sorties et cliquez sur chaque expérience pour consulter sa page dédiée. Nous pouvons aussi construire un programme entièrement sur mesure.',
-      boatEyebrow: 'Alegria',
+      points: ['Coque nue*', 'Skipper indépendant', 'Côte d’Azur'],
+      sectionEyebrow: 'Expériences',
+      sectionTitle: '4 formats simples et efficaces',
+      sectionText: '',
+
+      boatEyebrow: 'Le bateau',
       boatTitle: 'Un catamaran spacieux et confortable pour profiter pleinement de la navigation',
       boatText: 'Alegria offre un cadre idéal pour déjeuner à bord, se baigner, profiter du soleil et découvrir la Côte d’Azur autrement.',
       boatCta: 'Découvrir le bateau',
+
       contactEyebrow: 'Projet sur mesure',
       contactTitle: 'Parlez-nous de votre sortie idéale et recevez une proposition adaptée.',
-      contactText: 'Date souhaitée, nombre de participants, occasion, ambiance recherchée : nous vous répondons rapidement avec une proposition claire.',
+      contactText: 'Date souhaitée, nombre de participants, occasion, ambiance recherchée : nous vous répondons rapidement avec une proposition claire.'
     },
     outingsPage: {
       eyebrow: 'Nos sorties',
@@ -241,17 +206,45 @@ export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
     },
     notFound: { title: 'Page introuvable', text: 'La page demandée n’existe pas ou n’est plus disponible.', cta: 'Revenir à l’accueil' },
     outings: [
-      { slug: 'journee-en-mer', title: 'Journée en mer', duration: 'Journée complète', guests: 'Privatisation', description: 'Une journée complète pour naviguer, se baigner et profiter des plus beaux mouillages de la région.', image: sharedImages.capAntibes, highlights: ['Skipper inclus', 'Programme sur mesure', 'Déjeuner et baignade'] },
-      { slug: 'coucher-de-soleil', title: 'Coucher de soleil', duration: 'Fin de journée', guests: 'Couple, famille ou amis', description: 'Un moment élégant et intimiste au meilleur moment de la journée.', image: sharedImages.sunset, highlights: ['Ambiance chic', 'Apéritif possible', 'Photos inoubliables'] },
-      { slug: 'afterwork-en-mer', title: 'Afterwork en mer', duration: 'Soirée', guests: 'Groupe convivial', description: 'Une sortie idéale pour décompresser après le travail dans un cadre premium.', image: sharedImages.afterwork, highlights: ['Cadre original', 'Privatisation', 'Format simple à organiser'] },
-      { slug: 'anniversaire', title: 'Anniversaire', duration: 'Demi-journée ou journée', guests: 'Groupe privatif', description: 'Une sortie festive et soignée pour célébrer un anniversaire dans un cadre exceptionnel.', image: sharedImages.evjf, highlights: ['Programme personnalisable', 'Photos et ambiance', 'Souvenirs garantis'] },
-      { slug: 'sortie-entreprise', title: 'Sortie entreprise', duration: 'Demi-journée ou journée', guests: 'Équipe ou invités', description: 'Un cadre bien plus inspirant qu’une salle classique pour réunir collaborateurs ou clients.', image: sharedImages.business, highlights: ['Image premium', 'Format corporate', 'Sur devis'] },
-      { slug: 'escapade-lerins', title: 'Escapade aux îles de Lérins', duration: 'Journée complète', guests: 'Privatisation', description: 'Une navigation vers un site emblématique pour profiter d’une vraie journée d’évasion.', image: sharedImages.lerins, highlights: ['Destination phare', 'Baignade', 'Décor exceptionnel'] },
-      { slug: 'nuit-a-bord', title: 'Nuit à bord', duration: 'Soirée et nuit', guests: 'Sur demande', description: 'Une expérience plus exclusive construite au cas par cas selon votre projet.', image: sharedImages.night, highlights: ['Projet spécial', 'Format rare', 'Sur demande'] },
-      { slug: 'experience-sur-mesure', title: 'Expérience sur mesure', duration: 'Selon votre projet', guests: 'À définir', description: 'Une formule ouverte pour construire une sortie exactement adaptée à votre demande.', image: sharedImages.boat, highlights: ['Projet unique', 'Échange direct', 'Organisation personnalisée'] },
+      {
+        slug: 'journee-en-mer',
+        title: 'Journée en mer',
+        duration: 'Journée',
+        guests: '10 passagers',
+        description: 'Profitez d’une journée complète en mer pour naviguer et vous détendre.',
+        image: sharedImages.capAntibes,
+        highlights: ['Coque nue*', 'Skipper indépendant']
+      },
+      {
+        slug: 'coucher-de-soleil',
+        title: 'Coucher de soleil',
+        duration: 'demi-journée',
+        guests: '10 passagers',
+        description: 'Une sortie élégante en fin de journée.',
+        image: sharedImages.sunset,
+        highlights: []
+      },
+      {
+        slug: 'anniversaire',
+        title: 'Anniversaire',
+        duration: 'Journée',
+        guests: '10 passagers',
+        description: 'Une journée festive et mémorable en mer.',
+        image: sharedImages.birthday,
+        highlights: []
+      },
+      {
+        slug: 'sortie-entreprise',
+        title: 'Sortie entreprise',
+        duration: 'demi-journée',
+        guests: '10 passagers',
+        description: 'Un cadre original pour vos événements professionnels.',
+        image: sharedImages.business,
+        highlights: []
+      }
     ],
     galleryImages: sharedImages.gallery,
-    boatHighlights: ['Catamaran Bali 4.1 spacieux et stable', 'Sorties 100 % privatives avec skipper', 'Navigation confortable et ambiance élégante', 'Départ depuis Marina Baie des Anges'],
+    boatHighlights: ['Catamaran Bali 4.1 spacieux et stable', 'Sorties 100 % privatives avec skipper', 'Navigation confortable et ambiance élégante', 'Départ depuis Marina Baie des Anges, Antibes ou Cannes'],
   },
   en: {
     brand: 'Alegria',
@@ -263,36 +256,50 @@ export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
     priceFrom: 'From €1,500 per day with skipper',
     heroImage: sharedImages.hero,
     boatHeroImage: sharedImages.boatHero,
-    nav: { home: 'Home', outings: 'Outings', boat: 'The boat', gallery: 'Gallery', contact: 'Contact', quote: 'Request a quote' },
+    nav: {
+      home: 'Home',
+      outings: 'Experiences',
+      boat: 'The boat',
+      gallery: 'Gallery',
+      contact: 'Contact',
+      quote: 'Check availability'
+    },
+
     common: {
       from: 'From',
-      dayWithSkipper: 'per day with skipper',
-      contactUs: 'Contact us',
-      requestQuote: 'Request a quote',
+      dayWithSkipper: 'per day',
+      contactUs: 'Contact',
+      requestQuote: 'Check availability',
       call: 'Call',
-      emailUs: 'Send an email',
+      emailUs: 'Email',
       whatsapp: 'WhatsApp',
-      directContact: 'Direct contact',
-      departurePort: 'Departure port',
+      directContact: 'Contact',
+      departurePort: 'Departure',
       bookOnClickAndBoat: 'Book on Click & Boat',
+      legalAsterisk: '* Bareboat rental. Independent skipper required.',
+      boardingPorts: '* Boarding: Marina Baie des Anges, Antibes or Cannes.'
     },
+
     home: {
-      eyebrow: 'Private sea outings on the French Riviera',
-      title: 'Charter Alegria for an elegant, relaxed and memorable day at sea.',
-      intro: 'Alegria welcomes full day charters, sunset cruises, Lérins Islands escapes, hen or stag parties, afterwork outings and private events. Every outing is tailored to your plans, with skipper, from €1,500 per day.',
-      primaryCta: 'Discover the outings',
-      secondaryCta: 'Request a quote',
-      points: ['100% private outings', 'From €1,500 / day with skipper', 'Direct contact and fast response'],
-      sectionEyebrow: 'Our outings',
-      sectionTitle: 'Several experiences, one consistent level of comfort and care',
-      sectionText: 'Each outing now has its own page so you can explore the format in more detail. We can also create a fully tailor-made program.',
-      boatEyebrow: 'Alegria',
-      boatTitle: 'A spacious and comfortable catamaran to fully enjoy the coastline',
-      boatText: 'Alegria provides the ideal setting for lunch on board, swimming stops, sunshine and a different way to discover the Riviera.',
+      eyebrow: 'Catamaran rental',
+      title: 'A day at sea aboard Alegria',
+      intro: 'Bareboat rental with independent skipper.',
+      primaryCta: 'Discover',
+      secondaryCta: 'Check availability',
+      points: ['Bareboat*', 'Independent skipper', 'French Riviera'],
+
+      sectionEyebrow: 'Experiences',
+      sectionTitle: '4 simple formats',
+      sectionText: '',
+
+      boatEyebrow: 'The boat',
+      boatTitle: 'A spacious and comfortable catamaran',
+      boatText: 'Perfect for relaxing, swimming and enjoying the Riviera.',
       boatCta: 'Discover the boat',
-      contactEyebrow: 'Tailor-made plan',
-      contactTitle: 'Tell us about your ideal outing and receive a clear proposal.',
-      contactText: 'Preferred date, number of guests, occasion and desired atmosphere: we reply quickly with practical details.',
+
+      contactEyebrow: 'Tailor-made project',
+      contactTitle: 'Tell us about your ideal outing and receive a tailored proposal.',
+      contactText: 'Preferred date, number of guests, occasion and desired atmosphere: we will reply quickly with a clear proposal.'
     },
     outingsPage: { eyebrow: 'Our outings', title: 'Eight experiences to discover aboard Alegria', intro: 'Each outing now has its own dedicated page so guests can better picture the experience. These formats are indicative and can be adapted to weather, group size and occasion.', cta: 'View details' },
     boatPage: {
@@ -333,18 +340,45 @@ export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
     },
     footer: { description: 'Private outings aboard Alegria.', navigation: 'Navigation', contact: 'Contact', quickReply: 'Fast reply.' },
     notFound: { title: 'Page not found', text: 'The requested page does not exist or is no longer available.', cta: 'Back to home' },
-    outings: [
-      { slug: 'journee-en-mer', title: 'Full day at sea', duration: 'Full day', guests: 'Private charter', description: 'A full day to cruise, swim and enjoy some of the most beautiful anchorages on the Riviera.', image: sharedImages.capAntibes, highlights: ['Skipper included', 'Tailored program', 'Lunch and swimming'] },
-      { slug: 'coucher-de-soleil', title: 'Sunset cruise', duration: 'Late afternoon', guests: 'Couple, family or friends', description: 'An elegant and intimate moment during the most beautiful light of the day.', image: sharedImages.sunset, highlights: ['Chic atmosphere', 'Drinks possible', 'Memorable photos'] },
-      { slug: 'afterwork-en-mer', title: 'Afterwork at sea', duration: 'Evening', guests: 'Friendly group', description: 'An ideal outing to unwind after work in a premium setting.', image: sharedImages.afterwork, highlights: ['Original setting', 'Private charter', 'Easy to organize'] },
-      { slug: 'anniversaire', title: 'Birthday celebration', duration: 'Half day or full day', guests: 'Private group', description: 'A festive and refined outing to celebrate a birthday at sea.', image: sharedImages.evjf, highlights: ['Custom program', 'Photos and atmosphere', 'Great memories'] },
-      { slug: 'sortie-entreprise', title: 'Corporate outing', duration: 'Half day or full day', guests: 'Team or guests', description: 'A setting far more inspiring than a standard room to host guests or bring a team together.', image: sharedImages.business, highlights: ['Premium image', 'Corporate format', 'On quotation'] },
-      { slug: 'escapade-lerins', title: 'Lérins Islands escape', duration: 'Full day', guests: 'Private charter', description: 'A navigation to an iconic destination for a true day of escape.', image: sharedImages.lerins, highlights: ['Flagship destination', 'Swimming', 'Exceptional scenery'] },
-      { slug: 'nuit-a-bord', title: 'Night on board', duration: 'Evening and overnight', guests: 'On request', description: 'A more exclusive format built case by case according to your plans.', image: sharedImages.night, highlights: ['Special project', 'Rare format', 'On request'] },
-      { slug: 'experience-sur-mesure', title: 'Tailor-made experience', duration: 'According to your plan', guests: 'To be defined', description: 'An open format to build an outing precisely adapted to your request.', image: sharedImages.boat, highlights: ['Unique project', 'Direct discussion', 'Personalized planning'] },
-    ],
-    galleryImages: sharedImages.gallery,
-    boatHighlights: ['Spacious and stable Bali 4.1 catamaran', '100% private outings with skipper', 'Comfortable cruising and elegant atmosphere', 'Departure from Marina Baie des Anges'],
+outings: [
+  {
+    slug: 'journee-en-mer',
+    title: 'Full day at sea',
+    duration: 'Full day',
+    guests: 'Up to 10 guests',
+    description: 'Enjoy a full day at sea to cruise, relax and make the most of the Riviera.',
+    image: sharedImages.capAntibes,
+    highlights: ['Bareboat*', 'Independent skipper']
+  },
+  {
+    slug: 'coucher-de-soleil',
+    title: 'Sunset cruise',
+    duration: 'Half day',
+    guests: 'Up to 10 guests',
+    description: 'An elegant late-day outing to enjoy the calm atmosphere of sunset.',
+    image: sharedImages.sunset,
+    highlights: []
+  },
+  {
+    slug: 'anniversaire',
+    title: 'Birthday',
+    duration: 'Full day',
+    guests: 'Up to 10 guests',
+    description: 'A festive and memorable day at sea to celebrate a special occasion.',
+    image: sharedImages.birthday,
+    highlights: []
+  },
+  {
+    slug: 'sortie-entreprise',
+    title: 'Corporate outing',
+    duration: 'Half day',
+    guests: 'Up to 10 guests',
+    description: 'A unique and inspiring setting for your professional events.',
+    image: sharedImages.business,
+    highlights: []
+  }
+],    galleryImages: sharedImages.gallery,
+    boatHighlights: ['Spacious and stable Bali 4.1 catamaran', '100% private outings with skipper', 'Comfortable cruising and elegant atmosphere', 'Departure from Marina Baie des Anges, Antibes or Cannes'],
   },
   es: {
     brand: 'Alegria',
@@ -359,15 +393,17 @@ export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
     nav: { home: 'Inicio', outings: 'Salidas', boat: 'El barco', gallery: 'Galería', contact: 'Contacto', quote: 'Solicitar presupuesto' },
     common: {
       from: 'Desde',
-      dayWithSkipper: 'por día con patrón',
-      contactUs: 'Contactar',
-      requestQuote: 'Solicitar presupuesto',
+      dayWithSkipper: 'por día',
+      contactUs: 'Contacto',
+      requestQuote: 'Ver disponibilidad',
       call: 'Llamar',
-      emailUs: 'Enviar un correo',
+      emailUs: 'Email',
       whatsapp: 'WhatsApp',
-      directContact: 'Contacto directo',
-      departurePort: 'Puerto de salida',
-      bookOnClickAndBoat: 'Reservar en Click & Boat',
+      directContact: 'Contacto',
+      departurePort: 'Salida',
+      bookOnClickAndBoat: 'Reservar',
+      legalAsterisk: '* Alquiler casco desnudo.',
+      boardingPorts: '* Embarque Costa Azul'
     },
     home: {
       eyebrow: 'Salidas privadas en el mar en la Costa Azul',
@@ -426,17 +462,44 @@ export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
     },
     footer: { description: 'Salidas privadas a bordo de Alegria.', navigation: 'Navegación', contact: 'Contacto', quickReply: 'Respuesta rápida.' },
     notFound: { title: 'Página no encontrada', text: 'La página solicitada no existe o ya no está disponible.', cta: 'Volver al inicio' },
-    outings: [
-      { slug: 'journee-en-mer', title: 'Día en el mar', duration: 'Día completo', guests: 'Privatización', description: 'Un día completo para navegar, bañarse y disfrutar de algunos de los mejores fondeos de la región.', image: sharedImages.capAntibes, highlights: ['Patrón incluido', 'Programa a medida', 'Almuerzo y baño'] },
-      { slug: 'coucher-de-soleil', title: 'Atardecer', duration: 'Final de la tarde', guests: 'Pareja, familia o amigos', description: 'Un momento elegante e íntimo durante la mejor luz del día.', image: sharedImages.sunset, highlights: ['Ambiente chic', 'Aperitivo posible', 'Fotos memorables'] },
-      { slug: 'afterwork-en-mer', title: 'Afterwork en el mar', duration: 'Tarde / noche', guests: 'Grupo convivial', description: 'La salida ideal para desconectar después del trabajo en un entorno premium.', image: sharedImages.afterwork, highlights: ['Entorno original', 'Privatización', 'Fácil de organizar'] },
-      { slug: 'anniversaire', title: 'Cumpleaños', duration: 'Medio día o día completo', guests: 'Grupo privado', description: 'Una salida festiva y cuidada para celebrar un cumpleaños en el mar.', image: sharedImages.evjf, highlights: ['Programa personalizable', 'Fotos y ambiente', 'Grandes recuerdos'] },
-      { slug: 'sortie-entreprise', title: 'Salida de empresa', duration: 'Medio día o día completo', guests: 'Equipo o invitados', description: 'Un marco mucho más inspirador que una sala clásica para recibir invitados o reunir a un equipo.', image: sharedImages.business, highlights: ['Imagen premium', 'Formato corporate', 'Bajo presupuesto'] },
-      { slug: 'escapade-lerins', title: 'Escapada a Lérins', duration: 'Día completo', guests: 'Privatización', description: 'Una navegación hacia un destino emblemático para vivir una verdadera jornada de evasión.', image: sharedImages.lerins, highlights: ['Destino destacado', 'Baño', 'Escenario excepcional'] },
-      { slug: 'nuit-a-bord', title: 'Noche a bordo', duration: 'Velada y noche', guests: 'Bajo petición', description: 'Un formato más exclusivo diseñado caso por caso según su proyecto.', image: sharedImages.night, highlights: ['Proyecto especial', 'Formato raro', 'Bajo petición'] },
-      { slug: 'experience-sur-mesure', title: 'Experiencia a medida', duration: 'Según su proyecto', guests: 'Por definir', description: 'Un formato abierto para construir una salida exactamente adaptada a su solicitud.', image: sharedImages.boat, highlights: ['Proyecto único', 'Intercambio directo', 'Organización personalizada'] },
-    ],
-    galleryImages: sharedImages.gallery,
-    boatHighlights: ['Catamarán Bali 4.1 amplio y estable', 'Salidas 100 % privadas con patrón', 'Navegación cómoda y ambiente elegante', 'Salida desde Marina Baie des Anges'],
+outings: [
+  {
+    slug: 'journee-en-mer',
+    title: 'Día en el mar',
+    duration: 'Día completo',
+    guests: 'Hasta 10 pasajeros',
+    description: 'Disfrute de un día completo en el mar para navegar y relajarse.',
+    image: sharedImages.capAntibes,
+    highlights: ['Casco desnudo*', 'Patrón independiente']
+  },
+  {
+    slug: 'coucher-de-soleil',
+    title: 'Atardecer',
+    duration: 'Medio día',
+    guests: 'Hasta 10 pasajeros',
+    description: 'Una salida elegante al final del día para disfrutar del atardecer.',
+    image: sharedImages.sunset,
+    highlights: []
+  },
+  {
+    slug: 'anniversaire',
+    title: 'Cumpleaños',
+    duration: 'Día completo',
+    guests: 'Hasta 10 pasajeros',
+    description: 'Un día festivo y memorable en el mar para celebrar una ocasión especial.',
+    image: sharedImages.birthday,
+    highlights: []
+  },
+  {
+    slug: 'sortie-entreprise',
+    title: 'Evento de empresa',
+    duration: 'Medio día',
+    guests: 'Hasta 10 pasajeros',
+    description: 'Un entorno original y estimulante para sus eventos profesionales.',
+    image: sharedImages.business,
+    highlights: []
+  }
+],    galleryImages: sharedImages.gallery,
+    boatHighlights: ['Catamarán Bali 4.1 amplio y estable', 'Salidas 100 % privadas con patrón', 'Navegación cómoda y ambiente elegante', 'Salida desde Marina Baie des Anges, Antibes, Cannes'],
   },
 };

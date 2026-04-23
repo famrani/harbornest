@@ -12,6 +12,7 @@ import { TourPage, getTourContent } from '../tour-content';
 })
 export class SunsetCruiseComponent implements OnInit, OnDestroy {
   tour: TourPage = getTourContent('fr', 'coucher-de-soleil');
+  content = SITE_CONTENT.fr;
   private languageSub?: Subscription;
 
   constructor(private languageService: LanguageService) {}
@@ -19,6 +20,7 @@ export class SunsetCruiseComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.tour = getTourContent(language, 'coucher-de-soleil');
+      this.content = SITE_CONTENT[language];
     });
   }
 

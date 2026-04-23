@@ -111,7 +111,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       includes: ['Skipper', 'Privatisation du bateau', 'Organisation sur mesure', 'Temps de baignade et découverte du littoral'],
       idealForTitle: 'Idéal pour',
       idealFor: ['Une journée en famille', 'Une sortie entre amis', 'Un moment en couple', 'Un anniversaire discret et élégant'],
-      cta: 'Voir la disponibilité',
+      cta: 'Demander un devis',
       contactNote: 'Parlez-nous de votre date, du nombre de personnes et de l’ambiance souhaitée.'
     },
     'coucher-de-soleil': {
@@ -177,7 +177,7 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
       includes: ['Skipper', 'Bateau privatisé', 'Format flexible', 'Accompagnement direct pour l’organisation'],
       idealForTitle: 'Idéal pour',
       idealFor: ['Un afterwork entre collègues', 'Un moment clients ou partenaires', 'Un groupe d’amis', 'Une célébration décontractée'],
-      cta: 'Voir la disponibilité',
+      cta: 'Demander un devis',
       contactNote: 'Nous adaptons la durée et l’ambiance à votre objectif.'
     },
     'anniversaire': {

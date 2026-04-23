@@ -2,6 +2,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LanguageService } from '../../../services/language.service';
+import { SITE_CONTENT } from '../../site-content';
 import { TourPage, getTourContent } from '../tour-content';
 
 @Component({
@@ -11,6 +12,7 @@ import { TourPage, getTourContent } from '../tour-content';
 })
 export class EvjfEvgComponent implements OnInit, OnDestroy {
   tour: TourPage = getTourContent('fr', 'anniversaire');
+  content = SITE_CONTENT.fr;
   private languageSub?: Subscription;
 
   constructor(private languageService: LanguageService) {}
@@ -18,6 +20,7 @@ export class EvjfEvgComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.tour = getTourContent(language, 'anniversaire');
+      this.content = SITE_CONTENT[language];
     });
   }
 

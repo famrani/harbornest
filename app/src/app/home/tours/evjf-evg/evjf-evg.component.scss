@@ -157,3 +157,16 @@ p, li {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+
+.legal-note,
+.boarding-note {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #5b6470;
+  margin-top: 0.5rem;
+}
+
+.legal-note {
+  font-style: italic;
+}
