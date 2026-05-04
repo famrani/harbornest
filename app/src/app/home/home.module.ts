@@ -10,14 +10,12 @@ import { OutingsComponent } from './outings/outings.component';
 import { BoatComponent } from './boat/boat.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { ContactComponent } from './contact/contact.component';
+import { CrewComponent } from './crew/crew.component';
 import { FullDayComponent } from './tours/full-day/full-day.component';
 import { SunsetCruiseComponent } from './tours/sunset-cruise/sunset-cruise.component';
-import { AfterworkComponent } from './tours/afterwork/afterwork.component';
 import { EvjfEvgComponent } from './tours/evjf-evg/evjf-evg.component';
 import { BusinessOutingComponent } from './tours/business-outing/business-outing.component';
-import { LerinsEscapeComponent } from './tours/lerins-escape/lerins-escape.component';
-import { NightOnBoardComponent } from './tours/night-on-board/night-on-board.component';
-import { CustomExperienceComponent } from './tours/custom-experience/custom-experience.component';
+import { TermsComponent } from './terms/terms.component';
 
 @NgModule({
   declarations: [
@@ -26,14 +24,12 @@ import { CustomExperienceComponent } from './tours/custom-experience/custom-expe
     BoatComponent,
     GalleryComponent,
     ContactComponent,
+    CrewComponent,
     FullDayComponent,
     SunsetCruiseComponent,
-    AfterworkComponent,
     EvjfEvgComponent,
     BusinessOutingComponent,
-    LerinsEscapeComponent,
-    NightOnBoardComponent,
-    CustomExperienceComponent,
+    TermsComponent,
   ],
   imports: [
     CommonModule,

@@ -3137,7 +3137,7 @@ class ServicesService {
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<header class=\"site-header\">\n  <div class=\"container header-bar\">\n    <a class=\"brand\" routerLink=\"/\" (click)=\"closeMenu()\">\n      <span class=\"brand-mark\">⛵</span>\n      <span class=\"brand-text\">\n        <strong>{{ content.brand }}</strong>\n        <small>{{ content.brandTagline }}</small>\n      </span>\n    </a>\n\n    <button class=\"menu-toggle\" type=\"button\" (click)=\"toggleMenu()\" aria-label=\"Open menu\">\n      ☰\n    </button>\n\n    <nav class=\"main-nav\" [class.open]=\"menuOpen\">\n      <a routerLink=\"/\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{ exact: true }\" (click)=\"closeMenu()\">{{ content.nav.home }}</a>\n      <a routerLink=\"/sorties\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.outings }}</a>\n      <a routerLink=\"/bateau\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.boat }}</a>\n      <a routerLink=\"/galerie\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.gallery }}</a>\n      <a routerLink=\"/contact\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.contact }}</a>\n\n      <div class=\"language-switcher\">\n        <select [value]=\"currentLanguage\" (change)=\"changeLanguage($any($event.target).value)\" aria-label=\"Language selector\">\n          <option value=\"fr\">Français</option>\n          <option value=\"en\">English</option>\n          <option value=\"es\">Español</option>\n        </select>\n      </div>\n\n      <a class=\"cta-link\" routerLink=\"/contact\" (click)=\"closeMenu()\">{{ content.nav.quote }}</a>\n    </nav>\n  </div>\n</header>\n";
+module.exports = "<header class=\"site-header\">\n  <div class=\"container header-bar\">\n    <a class=\"brand\" routerLink=\"/\" (click)=\"closeMenu()\">\n      <span class=\"brand-mark\">⛵</span>\n      <span class=\"brand-text\">\n        <strong>{{ content.brand }}</strong>\n        <small>{{ content.brandTagline }}</small>\n      </span>\n    </a>\n\n    <button class=\"menu-toggle\" type=\"button\" (click)=\"toggleMenu()\" aria-label=\"Open menu\">\n      ☰\n    </button>\n\n    <nav class=\"main-nav\" [class.open]=\"menuOpen\">\n      <a routerLink=\"/\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{ exact: true }\" (click)=\"closeMenu()\">{{ content.nav.home }}</a>\n      <a routerLink=\"/sorties\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.outings }}</a>\n      <a routerLink=\"/bateau\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.boat }}</a>\n      <a routerLink=\"/galerie\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.gallery }}</a>\n      <a routerLink=\"/contact\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.contact }}</a>\n      <a routerLink=\"/crew\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.crew }}</a>\n\n      <div class=\"language-switcher\">\n        <select [value]=\"currentLanguage\" (change)=\"changeLanguage($any($event.target).value)\" aria-label=\"Language selector\">\n          <option value=\"fr\">Français</option>\n          <option value=\"en\">English</option>\n          <option value=\"es\">Español</option>\n        </select>\n      </div>\n\n      <a class=\"cta-link\" routerLink=\"/contact\" (click)=\"closeMenu()\">{{ content.nav.quote }}</a>\n    </nav>\n  </div>\n</header>\n";
 
 /***/ }),
 
@@ -3182,29 +3182,30 @@ __webpack_require__.r(__webpack_exports__);
 const sharedImages = {
   hero: 'assets/img/home/home-hero-generic.jpg',
   boatHero: 'assets/img/boat/bali4.1/bali-41-4.jpg',
-  gallery: ['assets/img/boat/bali4.1/bali-41-2.jpg', 'assets/img/boat/bali4.1/bali-41-3.jpg', 'assets/img/boat/bali4.1/bali-41-4.jpg', 'assets/img/boat/bali4.1/bali-41-5.jpg', 'assets/img/events/cap-antibes/cap-antibes1.jpg', 'assets/img/events/sunset/sunset2.jpg', 'assets/img/events/leyrins/leyrins1.jpg', 'assets/img/events/afterwork/afterwork1.jpg', 'assets/img/events/evjf/evjf-g3.jpg'],
-  capAntibes: 'assets/img/events/cap-antibes/cap-antibes1.jpg',
-  sunset: 'assets/img/events/sunset/sunset1.jpg',
-  business: 'assets/img/events/business-meeting/business-meeting1.jpg',
-  birthday: 'assets/img/events/evjf/evjf-g1.jpg'
+  gallery: ['assets/img/boat/bali4.1/bali-41-2.jpg', 'assets/img/boat/bali4.1/bali-41-3.jpg', 'assets/img/boat/bali4.1/bali-41-4.jpg', 'assets/img/boat/bali4.1/bali-41-5.jpg', 'assets/img/events/de/de1.png', 'assets/img/events/sunset/sunset2.jpg', 'assets/img/events/business-meeting/business-meeting1.jpg', 'assets/img/events/party/party3.jpg'],
+  de1: 'assets/img/events/de/de1.png',
+  sunset1: 'assets/img/events/sunset/sunset1.jpg',
+  business1: 'assets/img/events/business-meeting/business-meeting1.jpg',
+  party1: 'assets/img/events/party/party1.jpg'
 };
 const SITE_CONTENT = {
   fr: {
     brand: 'Alegria',
-    brandTagline: 'Location de catamaran en coque nue privées',
     phoneDisplay: '+33 6 85 26 65 10',
     phoneRaw: '+33685266510',
     email: 'contact@alldigitalnetwork.com',
-    departureArea: 'Port Marina Baie des Anges, Villeneuve-Loubet',
-    priceFrom: 'À partir de 1 500 € par jour avec skipper',
+    departureArea: 'Quais d’honneur : Marina Baie des Anges, Antibes, Cannes',
     heroImage: sharedImages.hero,
     boatHeroImage: sharedImages.boatHero,
+    brandTagline: 'Location de catamaran sur la Côte d’Azur',
+    priceFrom: 'À partir de 999 € + 300 € skipper',
     nav: {
       home: 'Accueil',
-      outings: 'Expériences',
+      outings: 'Sorties',
       boat: 'Le bateau',
       gallery: 'Galerie',
       contact: 'Contact',
+      crew: 'Équipage',
       quote: 'Voir la disponibilité'
     },
     common: {
@@ -3215,23 +3216,23 @@ const SITE_CONTENT = {
       call: 'Appeler',
       emailUs: 'Envoyer un email',
       whatsapp: 'WhatsApp',
-      directContact: 'Contact',
+      directContact: 'Contact direct',
       departurePort: 'Port de départ',
       bookOnClickAndBoat: 'Réserver sur Click & Boat',
       legalAsterisk: '* Location en coque nue. Skipper professionnel indépendant obligatoire.',
-      boardingPorts: '* Embarquement : Marina Baie des Anges, Antibes ou Cannes.'
+      boardingPorts: '* Embarquement : quais d’honneur Marina Baie des Anges, Antibes ou Cannes.'
     },
     home: {
-      eyebrow: 'Location de catamaran sur la Côte d’Azur',
+      eyebrow: 'Catamaran sur la Côte d’Azur',
       title: 'Une journée en mer à bord d’Alegria',
-      intro: 'Catamaran disponible en coque nue avec skipper indépendant.',
-      primaryCta: 'Découvrir',
+      intro: 'Profitez d’une expérience privée en mer à bord d’un catamaran spacieux et confortable.',
+      primaryCta: 'Découvrir les sorties',
       secondaryCta: 'Voir la disponibilité',
-      points: ['Coque nue*', 'Skipper indépendant', 'Côte d’Azur'],
-      sectionEyebrow: 'Expériences',
+      points: ['À partir de 999 €', 'Skipper indépendant : 300 €', 'Départs Côte d’Azur'],
+      sectionEyebrow: 'Nos sorties',
       sectionTitle: '4 formats simples et efficaces',
-      sectionText: '',
-      boatEyebrow: 'Le bateau',
+      sectionText: 'Choisissez parmi nos quatre formats principaux. Chaque expérience peut être adaptée selon la météo, votre groupe et l’ambiance recherchée.',
+      boatEyebrow: 'Alegria',
       boatTitle: 'Un catamaran spacieux et confortable pour profiter pleinement de la navigation',
       boatText: 'Alegria offre un cadre idéal pour déjeuner à bord, se baigner, profiter du soleil et découvrir la Côte d’Azur autrement.',
       boatCta: 'Découvrir le bateau',
@@ -3241,21 +3242,21 @@ const SITE_CONTENT = {
     },
     outingsPage: {
       eyebrow: 'Nos sorties',
-      title: 'Huit expériences à découvrir à bord d’Alegria',
-      intro: 'Chaque sortie dispose désormais de sa propre page pour vous permettre de mieux vous projeter. Ces formats sont indicatifs et peuvent être adaptés selon la météo, votre groupe et votre occasion.',
+      title: '4 expériences à découvrir à bord d’Alegria',
+      intro: 'Des formats clairs, élégants et adaptables : journée en mer, coucher de soleil, Fête privée ou sortie entreprise.',
       cta: 'Voir le détail'
     },
     boatPage: {
       eyebrow: 'Le bateau',
       title: 'Alegria, un catamaran pensé pour des journées en mer confortables et mémorables',
-      intro: 'Alegria est un Bali 4.1 spacieux, stable et accueillant, idéal pour vivre une sortie privée dans un cadre élégant et détendu.',
+      intro: 'Alegria est un Bali 4.1 spacieux, stable et accueillant, idéal pour vivre une expérience privée dans un cadre élégant et détendu.',
       reasonsTitle: 'Pourquoi choisir Alegria ?',
-      reasonsText: 'Le bateau se prête aussi bien à une journée en mer qu’à un événement privé, un coucher de soleil ou une escapade vers les îles de Lérins.',
-      reasons: ['Grand espace de vie et circulation fluide à bord', 'Navigation confortable avec skipper', 'Atmosphère conviviale et soignée', 'Programme flexible selon vos envies'],
+      reasonsText: 'Le bateau se prête aussi bien à une journée en mer qu’à une fête privée, un événement privé, une sortie entreprise ou un coucher de soleil.',
+      reasons: ['Grand espace de vie et circulation fluide à bord', 'Navigation confortable avec skipper indépendant', 'Atmosphère conviviale et soignée', 'Programme flexible selon vos envies'],
       comfortTitle: 'Confort et ambiance à bord',
-      comfortText: 'Que vous souhaitiez déjeuner, prendre un apéritif, vous détendre au mouillage ou profiter d’une simple navigation côtière, Alegria offre un cadre chaleureux et premium.',
+      comfortText: 'Que vous souhaitiez déjeuner, prendre un apéritif, vous détendre au mouillage ou profiter d’une navigation côtière, Alegria offre un cadre chaleureux et premium.',
       occasionsTitle: 'Idéal pour',
-      occasions: ['une journée en famille', 'un moment en couple', 'une sortie entre amis', 'un anniversaire', 'un événement privé', 'une sortie entreprise'],
+      occasions: ['une journée en famille', 'un moment en couple', 'une sortie entre amis', 'une fête privée', 'un événement privé', 'une sortie entreprise'],
       cta: 'Voir la disponibilité'
     },
     galleryPage: {
@@ -3264,7 +3265,7 @@ const SITE_CONTENT = {
       intro: 'Une sélection de photos pour vous aider à vous projeter à bord et imaginer l’ambiance de votre sortie.'
     },
     contactPage: {
-      eyebrow: 'Contact / devis',
+      eyebrow: 'Contact / disponibilité',
       title: 'Parlez-nous de votre projet de sortie en mer',
       intro: 'Décrivez la formule qui vous intéresse, votre date idéale et le nombre de participants. Nous revenons vers vous rapidement avec les informations utiles.',
       formTitle: 'Demande d’informations',
@@ -3279,14 +3280,14 @@ const SITE_CONTENT = {
       sendEmail: 'Envoyer par email',
       prepareWhatsapp: 'Préparer un message WhatsApp',
       directTitle: 'Contact direct',
-      directText: 'Vous pouvez aussi nous joindre directement par téléphone ou email pour parler de votre projet et vérifier les disponibilités.',
+      directText: 'Vous pouvez aussi nous joindre directement par email ou WhatsApp pour parler de votre projet et vérifier les disponibilités.',
       sentNotice: 'Votre message a bien été préparé. Nous vous répondrons rapidement.',
-      outingOptions: ['Journée en mer', 'Coucher de soleil', 'Afterwork en mer', 'Anniversaire', 'Sortie entreprise', 'Escapade Lérins', 'Nuit à bord', 'Projet sur mesure'],
+      outingOptions: ['Journée en mer', 'Coucher de soleil', 'Fête privée', 'Sortie entreprise'],
       emailSubjectPrefix: 'Demande d’informations',
       whatsappIntro: 'Bonjour, je souhaite obtenir des informations pour une sortie en mer à bord d’Alegria.'
     },
     footer: {
-      description: 'Location de catamaran en coque nue privées à bord d’Alegria.',
+      description: 'Location de catamaran en coque nue à bord d’Alegria.',
       navigation: 'Navigation',
       contact: 'Contact',
       quickReply: 'Réponse rapide.'
@@ -3299,47 +3300,47 @@ const SITE_CONTENT = {
     outings: [{
       slug: 'journee-en-mer',
       title: 'Journée en mer',
-      duration: 'Journée',
-      guests: '10 passagers',
-      description: 'Profitez d’une journée complète en mer pour naviguer et vous détendre.',
-      image: sharedImages.capAntibes,
+      duration: 'Journée ou demi-journée',
+      guests: '12 passagers max',
+      description: 'Profitez d’une journée complète en mer pour naviguer, vous détendre et découvrir les plus beaux mouillages de la Côte d’Azur.',
+      image: sharedImages.de1,
       highlights: ['Coque nue*', 'Skipper indépendant']
     }, {
       slug: 'coucher-de-soleil',
       title: 'Coucher de soleil',
-      duration: 'demi-journée',
-      guests: '10 passagers',
-      description: 'Une sortie élégante en fin de journée.',
-      image: sharedImages.sunset,
+      duration: 'Coucher de soleil',
+      guests: '12 passagers max',
+      description: 'Une sortie en fin de journée pour admirer la lumière du coucher de soleil dans un cadre calme et élégant.',
+      image: sharedImages.sunset1,
       highlights: []
     }, {
       slug: 'anniversaire',
-      title: 'Anniversaire',
+      title: 'Fête privée',
       duration: 'Journée',
-      guests: '10 passagers',
-      description: 'Une journée festive et mémorable en mer.',
-      image: sharedImages.birthday,
+      guests: '12 passagers max',
+      description: 'Célébrez un moment spécial à bord d’Alegria dans une ambiance conviviale et mémorable en mer.',
+      image: sharedImages.party1,
       highlights: []
     }, {
       slug: 'sortie-entreprise',
       title: 'Sortie entreprise',
-      duration: 'demi-journée',
-      guests: '10 passagers',
-      description: 'Un cadre original pour vos événements professionnels.',
-      image: sharedImages.business,
+      duration: 'Journée ou demi-journée',
+      guests: '12 passagers max',
+      description: 'Un cadre original et valorisant pour réunir collaborateurs ou clients en dehors d’un environnement classique.',
+      image: sharedImages.business1,
       highlights: []
     }],
     galleryImages: sharedImages.gallery,
-    boatHighlights: ['Catamaran Bali 4.1 spacieux et stable', 'Sorties 100 % privatives avec skipper', 'Navigation confortable et ambiance élégante', 'Départ depuis Marina Baie des Anges, Antibes ou Cannes']
+    boatHighlights: ['Catamaran Bali 4.1 spacieux et stable', 'Jusqu’à 12 passagers', 'Navigation confortable et ambiance élégante', 'Départ dans le 06: Villeneuve-loubet, Antibes ou Cannes']
   },
   en: {
+    brandTagline: 'Catamaran experiences on the French Riviera',
+    priceFrom: 'From €1,000 + €300 skipper',
     brand: 'Alegria',
-    brandTagline: 'Private sea outings',
     phoneDisplay: '+33 6 85 26 65 10',
     phoneRaw: '+33685266510',
     email: 'contact@alldigitalnetwork.com',
-    departureArea: 'Marina Baie des Anges, Villeneuve-Loubet',
-    priceFrom: 'From €1,500 per day with skipper',
+    departureArea: 'Marina Baie des Anges, Antibes, Cannes',
     heroImage: sharedImages.hero,
     boatHeroImage: sharedImages.boatHero,
     nav: {
@@ -3348,58 +3349,59 @@ const SITE_CONTENT = {
       boat: 'The boat',
       gallery: 'Gallery',
       contact: 'Contact',
+      crew: 'Crew',
       quote: 'Check availability'
     },
     common: {
       from: 'From',
-      dayWithSkipper: 'per day',
-      contactUs: 'Contact',
+      dayWithSkipper: 'per day with skipper',
+      contactUs: 'Contact us',
       requestQuote: 'Check availability',
       call: 'Call',
-      emailUs: 'Email',
+      emailUs: 'Send email',
       whatsapp: 'WhatsApp',
       directContact: 'Contact',
-      departurePort: 'Departure',
+      departurePort: 'Departure port',
       bookOnClickAndBoat: 'Book on Click & Boat',
-      legalAsterisk: '* Bareboat rental. Independent skipper required.',
+      legalAsterisk: '* Bareboat rental. Independent professional skipper required.',
       boardingPorts: '* Boarding: Marina Baie des Anges, Antibes or Cannes.'
     },
     home: {
-      eyebrow: 'Catamaran rental',
+      eyebrow: 'Catamaran on the French Riviera',
       title: 'A day at sea aboard Alegria',
-      intro: 'Bareboat rental with independent skipper.',
-      primaryCta: 'Discover',
+      intro: 'Enjoy a private sea experience aboard a spacious and comfortable catamaran.',
+      primaryCta: 'Discover the excursions',
       secondaryCta: 'Check availability',
-      points: ['Bareboat*', 'Independent skipper', 'French Riviera'],
+      points: ['From €1,000', 'Independent skipper: €300', 'French Riviera departures'],
       sectionEyebrow: 'Experiences',
-      sectionTitle: '4 simple formats',
-      sectionText: '',
-      boatEyebrow: 'The boat',
-      boatTitle: 'A spacious and comfortable catamaran',
-      boatText: 'Perfect for relaxing, swimming and enjoying the Riviera.',
+      sectionTitle: '4 simple and effective formats',
+      sectionText: 'Choose from four core formats. Each experience can be adapted to the weather, your group and the atmosphere you are looking for.',
+      boatEyebrow: 'Alegria',
+      boatTitle: 'A spacious and comfortable catamaran to fully enjoy the sea',
+      boatText: 'Alegria provides the perfect setting to enjoy lunch on board, swim, relax in the sun and discover the French Riviera from a different perspective.',
       boatCta: 'Discover the boat',
       contactEyebrow: 'Tailor-made project',
-      contactTitle: 'Tell us about your ideal outing and receive a tailored proposal.',
+      contactTitle: 'Tell us about your ideal excursion and receive a tailored proposal.',
       contactText: 'Preferred date, number of guests, occasion and desired atmosphere: we will reply quickly with a clear proposal.'
     },
     outingsPage: {
-      eyebrow: 'Our outings',
-      title: 'Eight experiences to discover aboard Alegria',
-      intro: 'Each outing now has its own dedicated page so guests can better picture the experience. These formats are indicative and can be adapted to weather, group size and occasion.',
+      eyebrow: 'Our excursions',
+      title: '4 experiences aboard Alegria',
+      intro: 'Clear, elegant and adaptable formats: full day at sea, sunset cruise, birthday or corporate excursion.',
       cta: 'View details'
     },
     boatPage: {
       eyebrow: 'The boat',
       title: 'Alegria, a catamaran designed for comfortable and memorable days at sea',
-      intro: 'Alegria is a spacious, stable and welcoming Bali 4.1, ideal for private outings in an elegant and relaxed setting.',
+      intro: 'Alegria is a spacious, stable and welcoming Bali 4.1, ideal for private experiences in an elegant and relaxed setting.',
       reasonsTitle: 'Why choose Alegria?',
-      reasonsText: 'The boat is well suited to full-day charters, private events, sunset outings and escapes to the Lérins Islands.',
-      reasons: ['Large living space and easy circulation', 'Comfortable cruising with skipper', 'Friendly and refined atmosphere', 'Flexible plan according to your wishes'],
+      reasonsText: 'The boat is well suited to a full day at sea, a birthday, a private event, a corporate excursion or a sunset cruise.',
+      reasons: ['Large living space and easy circulation', 'Comfortable cruising with independent skipper', 'Friendly and refined atmosphere', 'Flexible program according to your wishes'],
       comfortTitle: 'Comfort and atmosphere on board',
-      comfortText: 'Whether you want lunch, drinks, a relaxing anchorage or a simple coastal cruise, Alegria offers a warm and premium environment.',
+      comfortText: 'Whether you want lunch, drinks, a relaxing anchorage or a coastal cruise, Alegria offers a warm and premium environment.',
       occasionsTitle: 'Ideal for',
-      occasions: ['a family day out', 'a couple’s moment', 'time with friends', 'a hen or stag party', 'a private event', 'a corporate outing'],
-      cta: 'Request a quote'
+      occasions: ['a family day out', 'a couple’s moment', 'time with friends', 'a birthday', 'a private event', 'a corporate excursion'],
+      cta: 'Check availability'
     },
     galleryPage: {
       eyebrow: 'Gallery',
@@ -3407,14 +3409,14 @@ const SITE_CONTENT = {
       intro: 'A selection of images to help you imagine the atmosphere on board.'
     },
     contactPage: {
-      eyebrow: 'Contact / quote',
-      title: 'Tell us about your sea outing project',
-      intro: 'Describe the option you are interested in, your ideal date and the number of guests. We will reply quickly with the useful details.',
+      eyebrow: 'Contact / availability',
+      title: 'Tell us about your sea excursion project',
+      intro: 'Describe the option you are interested in, your ideal date and the number of guests. We will reply quickly with useful details.',
       formTitle: 'Information request',
       name: 'Name',
       email: 'Email',
       phone: 'Phone',
-      outingType: 'Type of outing',
+      outingType: 'Type of excursion',
       outingPlaceholder: 'Select',
       preferredDate: 'Preferred date',
       guests: 'Number of guests',
@@ -3422,14 +3424,14 @@ const SITE_CONTENT = {
       sendEmail: 'Send by email',
       prepareWhatsapp: 'Prepare a WhatsApp message',
       directTitle: 'Direct contact',
-      directText: 'You can also call or email us directly to discuss your project and check availability.',
+      directText: 'You can also email or WhatsApp us directly to discuss your plans and check availability.',
       sentNotice: 'Your message has been prepared. We will reply shortly.',
-      outingOptions: ['Full day at sea', 'Sunset cruise', 'Afterwork at sea', 'Birthday celebration', 'Corporate outing', 'Lérins escape', 'Night on board', 'Tailor-made project'],
+      outingOptions: ['Full day at sea', 'Sunset cruise', 'Birthday', 'Corporate excursion'],
       emailSubjectPrefix: 'Information request',
-      whatsappIntro: 'Hello, I would like information about a sea outing aboard Alegria.'
+      whatsappIntro: 'Hello, I would like information about a sea excursion aboard Alegria.'
     },
     footer: {
-      description: 'Private outings aboard Alegria.',
+      description: 'Bareboat catamaran rental aboard Alegria.',
       navigation: 'Navigation',
       contact: 'Contact',
       quickReply: 'Fast reply.'
@@ -3442,107 +3444,108 @@ const SITE_CONTENT = {
     outings: [{
       slug: 'journee-en-mer',
       title: 'Full day at sea',
-      duration: 'Full day',
-      guests: 'Up to 10 guests',
-      description: 'Enjoy a full day at sea to cruise, relax and make the most of the Riviera.',
-      image: sharedImages.capAntibes,
+      duration: 'Full day or half day',
+      guests: 'Up to 12 guests',
+      description: 'Enjoy a full day at sea to relax, cruise and discover the most beautiful anchorages of the French Riviera.',
+      image: sharedImages.de1,
       highlights: ['Bareboat*', 'Independent skipper']
     }, {
       slug: 'coucher-de-soleil',
       title: 'Sunset cruise',
-      duration: 'Half day',
-      guests: 'Up to 10 guests',
-      description: 'An elegant late-day outing to enjoy the calm atmosphere of sunset.',
-      image: sharedImages.sunset,
+      duration: 'Sunset',
+      guests: 'Up to 12 guests',
+      description: 'A late afternoon excursion to enjoy the golden light of sunset in a calm and elegant setting.',
+      image: sharedImages.sunset1,
       highlights: []
     }, {
       slug: 'anniversaire',
       title: 'Birthday',
       duration: 'Full day',
-      guests: 'Up to 10 guests',
-      description: 'A festive and memorable day at sea to celebrate a special occasion.',
-      image: sharedImages.birthday,
+      guests: 'Up to 12 guests',
+      description: 'Celebrate a birthday aboard Alegria in a friendly and memorable atmosphere at sea.',
+      image: sharedImages.party1,
       highlights: []
     }, {
       slug: 'sortie-entreprise',
-      title: 'Corporate outing',
-      duration: 'Half day',
-      guests: 'Up to 10 guests',
-      description: 'A unique and inspiring setting for your professional events.',
-      image: sharedImages.business,
+      title: 'Corporate excursion',
+      duration: 'Full day or half day',
+      guests: 'Up to 12 guests',
+      description: 'A unique and inspiring setting to bring together your team or host clients outside a traditional environment.',
+      image: sharedImages.business1,
       highlights: []
     }],
     galleryImages: sharedImages.gallery,
-    boatHighlights: ['Spacious and stable Bali 4.1 catamaran', '100% private outings with skipper', 'Comfortable cruising and elegant atmosphere', 'Departure from Marina Baie des Anges, Antibes or Cannes']
+    boatHighlights: ['Spacious and stable Bali 4.1 catamaran', 'Up to 12 guests', 'Comfortable cruising and elegant atmosphere', 'Departure: Marina Baie des Anges, Antibes or Cannes']
   },
   es: {
+    brandTagline: 'Experiencias en catamarán en la Costa Azul',
+    priceFrom: 'Desde 1.000 € + 300 € patrón',
     brand: 'Alegria',
-    brandTagline: 'Salidas privadas en el mar',
     phoneDisplay: '+33 6 85 26 65 10',
     phoneRaw: '+33685266510',
     email: 'contact@alldigitalnetwork.com',
-    departureArea: 'Marina Baie des Anges, Villeneuve-Loubet',
-    priceFrom: 'Desde 1.500 € por día con patrón',
+    departureArea: 'Marina Baie des Anges, Antibes, Cannes',
     heroImage: sharedImages.hero,
     boatHeroImage: sharedImages.boatHero,
     nav: {
       home: 'Inicio',
-      outings: 'Salidas',
+      outings: 'Experiencias',
       boat: 'El barco',
       gallery: 'Galería',
       contact: 'Contacto',
-      quote: 'Solicitar presupuesto'
+      crew: 'Tripulación',
+      quote: 'Ver disponibilidad'
     },
     common: {
       from: 'Desde',
-      dayWithSkipper: 'por día',
-      contactUs: 'Contacto',
+      dayWithSkipper: 'por día con patrón',
+      contactUs: 'Contactar',
       requestQuote: 'Ver disponibilidad',
       call: 'Llamar',
-      emailUs: 'Email',
+      emailUs: 'Enviar email',
       whatsapp: 'WhatsApp',
       directContact: 'Contacto',
-      departurePort: 'Salida',
-      bookOnClickAndBoat: 'Reservar',
-      legalAsterisk: '* Alquiler casco desnudo.',
-      boardingPorts: '* Embarque Costa Azul'
+      departurePort: 'Puerto de salida',
+      bookOnClickAndBoat: 'Reservar en Click & Boat',
+      legalAsterisk: '* Alquiler en casco desnudo. Patrón independiente obligatorio.',
+      boardingPorts: '* Embarque: Marina Baie des Anges, Antibes o Cannes.'
     },
     home: {
-      eyebrow: 'Salidas privadas en el mar en la Costa Azul',
-      title: 'Privatice Alegria para disfrutar de un día elegante, relajado e inolvidable en el mar.',
-      intro: 'Alegria propone días completos, atardeceres, escapadas a las islas de Lérins, cumpleaños, afterworks y eventos privados. Cada salida se organiza a medida, con patrón, desde 1.500 € por día.',
+      eyebrow: 'Catamarán en la Costa Azul',
+      title: 'Un día en el mar a bordo de Alegria',
+      intro: 'Disfrute de una experiencia privada en el mar a bordo de un catamarán amplio y confortable.',
       primaryCta: 'Descubrir las salidas',
-      secondaryCta: 'Solicitar presupuesto',
-      points: ['Salidas 100 % privadas', 'Desde 1.500 € / día con patrón', 'Contacto directo y respuesta rápida'],
-      sectionEyebrow: 'Nuestras salidas',
-      sectionTitle: 'Varios formatos, el mismo nivel de confort y atención',
-      sectionText: 'Cada salida dispone ahora de su propia página para que pueda descubrir mejor la experiencia. También podemos crear un programa totalmente a medida.',
+      secondaryCta: 'Ver disponibilidad',
+      points: ['Desde 1.000 €', 'Patrón independiente: 300 €', 'Salidas Costa Azul'],
+      sectionEyebrow: 'Experiencias',
+      sectionTitle: '4 formatos simples y eficaces',
+      sectionText: 'Elija entre cuatro formatos principales. Cada experiencia puede adaptarse al clima, al grupo y al ambiente deseado.',
       boatEyebrow: 'Alegria',
-      boatTitle: 'Un catamarán amplio y cómodo para disfrutar plenamente de la navegación',
-      boatText: 'Alegria ofrece el entorno ideal para comer a bordo, bañarse, disfrutar del sol y descubrir la Costa Azul de otra manera.',
+      boatTitle: 'Un catamarán amplio y confortable para disfrutar plenamente del mar',
+      boatText: 'Alegria ofrece el entorno ideal para almorzar a bordo, bañarse, disfrutar del sol y descubrir la Costa Azul de otra manera.',
       boatCta: 'Descubrir el barco',
       contactEyebrow: 'Proyecto a medida',
-      contactTitle: 'Cuéntenos cómo imagina su salida ideal y reciba una propuesta clara.',
-      contactText: 'Fecha, número de personas, ocasión y ambiente deseado: respondemos rápidamente con la información útil.'
+      contactTitle: 'Cuéntenos su salida ideal y reciba una propuesta adaptada.',
+      contactText: 'Fecha, número de personas, ocasión y ambiente deseado: le responderemos rápidamente con una propuesta clara.'
     },
     outingsPage: {
       eyebrow: 'Nuestras salidas',
-      title: 'Ocho experiencias para descubrir a bordo de Alegria',
-      intro: 'Cada salida cuenta ahora con su propia página para ayudarle a visualizar mejor la experiencia. Estos formatos son orientativos y pueden adaptarse al clima, al grupo y a la ocasión.',
+      title: '4 experiencias a bordo de Alegria',
+      intro: 'Formatos claros, elegantes y adaptables: día en el mar, atardecer, cumpleaños o evento de empresa.',
       cta: 'Ver detalle'
     },
     boatPage: {
       eyebrow: 'El barco',
       title: 'Alegria, un catamarán pensado para días cómodos y memorables en el mar',
-      intro: 'Alegria es un Bali 4.1 amplio, estable y acogedor, ideal para salidas privadas en un entorno elegante y relajado.',
+      intro: 'Alegria es un Bali 4.1 amplio, estable y acogedor, ideal para experiencias privadas en un entorno elegante y relajado.',
       reasonsTitle: '¿Por qué elegir Alegria?',
-      reasonsText: 'El barco se adapta perfectamente a días completos, eventos privados, salidas al atardecer o escapadas a las islas de Lérins.',
-      reasons: ['Gran espacio de vida y circulación cómoda a bordo', 'Navegación confortable con patrón', 'Ambiente acogedor y cuidado', 'Programa flexible según sus deseos'],
+      reasonsText: 'El barco se adapta perfectamente a un día en el mar, un cumpleaños, un evento privado, una salida de empresa o una salida al atardecer.',
+      reasons: ['Gran espacio de vida y circulación cómoda', 'Navegación confortable con patrón independiente', 'Ambiente acogedor y cuidado', 'Programa flexible según sus deseos'],
       comfortTitle: 'Confort y ambiente a bordo',
-      comfortText: 'Ya sea para almorzar, tomar un aperitivo, relajarse fondeados o simplemente navegar por la costa, Alegria ofrece un marco cálido y premium.',
+      comfortText: 'Ya sea para almorzar, tomar un aperitivo, relajarse fondeados o navegar por la costa, Alegria ofrece un marco cálido y premium.',
       occasionsTitle: 'Ideal para',
       occasions: ['un día en familia', 'un momento en pareja', 'una salida con amigos', 'un cumpleaños', 'un evento privado', 'una salida de empresa'],
-      cta: 'Solicitar presupuesto'
+      cta: 'Ver disponibilidad'
     },
     galleryPage: {
       eyebrow: 'Galería',
@@ -3550,7 +3553,7 @@ const SITE_CONTENT = {
       intro: 'Una selección de fotos para ayudarle a imaginar el ambiente a bordo.'
     },
     contactPage: {
-      eyebrow: 'Contacto / presupuesto',
+      eyebrow: 'Contacto / disponibilidad',
       title: 'Cuéntenos su proyecto de salida en el mar',
       intro: 'Describa la opción que le interesa, su fecha ideal y el número de participantes. Le responderemos rápidamente con la información útil.',
       formTitle: 'Solicitud de información',
@@ -3565,14 +3568,14 @@ const SITE_CONTENT = {
       sendEmail: 'Enviar por email',
       prepareWhatsapp: 'Preparar un mensaje de WhatsApp',
       directTitle: 'Contacto directo',
-      directText: 'También puede llamarnos o escribirnos directamente para comentar su proyecto y comprobar disponibilidad.',
+      directText: 'También puede escribirnos por email o WhatsApp para comentar su proyecto y comprobar disponibilidad.',
       sentNotice: 'Su mensaje ha sido preparado. Le responderemos en breve.',
-      outingOptions: ['Día completo en el mar', 'Salida al atardecer', 'Afterwork en el mar', 'Cumpleaños', 'Salida de empresa', 'Escapada Lérins', 'Noche a bordo', 'Proyecto a medida'],
+      outingOptions: ['Día en el mar', 'Atardecer', 'Cumpleaños', 'Evento de empresa'],
       emailSubjectPrefix: 'Solicitud de información',
       whatsappIntro: 'Hola, me gustaría recibir información sobre una salida en el mar a bordo de Alegria.'
     },
     footer: {
-      description: 'Salidas privadas a bordo de Alegria.',
+      description: 'Alquiler de catamarán en casco desnudo a bordo de Alegria.',
       navigation: 'Navegación',
       contact: 'Contacto',
       quickReply: 'Respuesta rápida.'
@@ -3585,38 +3588,38 @@ const SITE_CONTENT = {
     outings: [{
       slug: 'journee-en-mer',
       title: 'Día en el mar',
-      duration: 'Día completo',
-      guests: 'Hasta 10 pasajeros',
-      description: 'Disfrute de un día completo en el mar para navegar y relajarse.',
-      image: sharedImages.capAntibes,
+      duration: 'Día completo o medio día',
+      guests: 'Hasta 12 pasajeros',
+      description: 'Disfrute de un día completo en el mar para navegar, relajarse y descubrir los mejores fondeos de la Costa Azul.',
+      image: sharedImages.de1,
       highlights: ['Casco desnudo*', 'Patrón independiente']
     }, {
       slug: 'coucher-de-soleil',
       title: 'Atardecer',
-      duration: 'Medio día',
-      guests: 'Hasta 10 pasajeros',
-      description: 'Una salida elegante al final del día para disfrutar del atardecer.',
-      image: sharedImages.sunset,
+      duration: 'Atardecer',
+      guests: 'Hasta 12 pasajeros',
+      description: 'Una salida al final del día para disfrutar de la luz dorada del atardecer en un entorno tranquilo y elegante.',
+      image: sharedImages.sunset1,
       highlights: []
     }, {
       slug: 'anniversaire',
       title: 'Cumpleaños',
       duration: 'Día completo',
-      guests: 'Hasta 10 pasajeros',
-      description: 'Un día festivo y memorable en el mar para celebrar una ocasión especial.',
-      image: sharedImages.birthday,
+      guests: 'Hasta 12 pasajeros',
+      description: 'Celebre un cumpleaños a bordo de Alegria en un ambiente agradable y memorable en el mar.',
+      image: sharedImages.party1,
       highlights: []
     }, {
       slug: 'sortie-entreprise',
-      title: 'Evento de empresa',
-      duration: 'Medio día',
-      guests: 'Hasta 10 pasajeros',
-      description: 'Un entorno original y estimulante para sus eventos profesionales.',
-      image: sharedImages.business,
+      title: 'Evento empresa',
+      duration: 'Día completo o medio día',
+      guests: 'Hasta 12 pasajeros',
+      description: 'Un entorno original y profesional para reunir a su equipo o recibir clientes fuera de lo habitual.',
+      image: sharedImages.business1,
       highlights: []
     }],
     galleryImages: sharedImages.gallery,
-    boatHighlights: ['Catamarán Bali 4.1 amplio y estable', 'Salidas 100 % privadas con patrón', 'Navegación cómoda y ambiente elegante', 'Salida desde Marina Baie des Anges, Antibes, Cannes']
+    boatHighlights: ['Catamarán Bali 4.1 amplio y estable', 'Hasta 12 pasajeros', 'Navegación cómoda y ambiente elegante', 'Salida: Marina Baie des Anges, Antibes o Cannes']
   }
 };
 
@@ -3818,17 +3821,73 @@ AppComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_15__.__decorate)([(0,_angular_c
 var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap);"]);
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.site-shell {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f7fafc;
+  background: #fbf8f2;
 }
 
 .site-main {
   flex: 1;
-}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homelayout/homelayout.component.scss"],"names":[],"mappings":"AAAA;EACE,iBAAA;EACA,aAAA;EACA,sBAAA;EACA,mBAAA;AACF;;AAEA;EACE,OAAA;AACF","sourcesContent":[".site-shell {\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  background: #f7fafc;\n}\n\n.site-main {\n  flex: 1;\n}\n"],"sourceRoot":""}]);
+}
+
+/* Charte graphique Alegria */
+:host {
+  --alegria-deep: #08263a;
+  --alegria-ocean: #0b6e8f;
+  --alegria-ocean-light: #e8f4f7;
+  --alegria-orange: #f28c28;
+  --alegria-sand: #fbf8f2;
+  --alegria-text: #2f3a45;
+  --alegria-muted: #667085;
+}
+
+h1, h2, h3, .brand-text strong, .title, .page-title {
+  font-family: "Playfair Display", Georgia, serif;
+  color: var(--alegria-deep);
+  letter-spacing: -0.015em;
+}
+
+.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {
+  font-family: "Raleway", Arial, sans-serif;
+}
+
+p, li, input, textarea, select, .card-body, .term-section {
+  font-family: "Lato", Arial, sans-serif;
+  color: var(--alegria-text);
+}
+
+.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {
+  color: var(--alegria-ocean);
+}
+
+.btn-primary, .cta-link, .btn-book {
+  background: var(--alegria-orange) !important;
+  color: #fff !important;
+  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);
+}
+
+.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {
+  background: var(--alegria-ocean-light);
+  color: var(--alegria-deep);
+}
+
+.price-pill {
+  background: rgba(242, 140, 40, 0.13);
+  color: #9a4d08;
+  border: 1px solid rgba(242, 140, 40, 0.28);
+}
+
+.page-hero {
+  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);
+}
+
+.section-light {
+  background: var(--alegria-sand);
+}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homelayout/homelayout.component.scss"],"names":[],"mappings":"AACA;EACE,iBAAA;EACA,aAAA;EACA,sBAAA;EACA,mBAAA;AACF;;AAEA;EACE,OAAA;AACF;;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAAF;;AAGA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAAF;;AAGA;EACE,yCAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,2BAAA;AAAF;;AAGA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAAF;;AAGA;EACE,6DAAA;AAAF;;AAGA;EACE,+BAAA;AAAF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.site-shell {\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  background: #fbf8f2;\n}\n\n.site-main {\n  flex: 1;\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -3897,6 +3956,7 @@ Page404Component = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angula
 var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap);"]);
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.site-footer-simple {
   border-top: 1px solid #e5e7eb;
@@ -3919,7 +3979,95 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.site-footer-simple {
 
 .footer-simple a:hover {
   text-decoration: underline;
-}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homefooter/homefooter.component.scss"],"names":[],"mappings":"AAAA;EACE,6BAAA;EACA,eAAA;EACA,iBAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,aAAA;EACA,8BAAA;EACA,mBAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;AACF;;AAEA;EACE,0BAAA;AACF","sourcesContent":[".site-footer-simple {\n  border-top: 1px solid #e5e7eb;\n  padding: 15px 0;\n  font-size: 0.8rem;\n  color: #6b7280;\n  background: #fff;\n}\n\n.footer-simple {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.footer-simple a {\n  text-decoration: none;\n  color: #374151;\n}\n\n.footer-simple a:hover {\n  text-decoration: underline;\n}"],"sourceRoot":""}]);
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .footer-simple {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+  .footer-right {
+    justify-content: center;
+  }
+}
+/* Charte graphique Alegria */
+:host {
+  --alegria-deep: #08263a;
+  --alegria-ocean: #0b6e8f;
+  --alegria-ocean-light: #e8f4f7;
+  --alegria-orange: #f28c28;
+  --alegria-sand: #fbf8f2;
+  --alegria-text: #2f3a45;
+  --alegria-muted: #667085;
+}
+
+h1, h2, h3, .brand-text strong, .title, .page-title {
+  font-family: "Playfair Display", Georgia, serif;
+  color: var(--alegria-deep);
+  letter-spacing: -0.015em;
+}
+
+.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {
+  font-family: "Raleway", Arial, sans-serif;
+}
+
+p, li, input, textarea, select, .card-body, .term-section {
+  font-family: "Lato", Arial, sans-serif;
+  color: var(--alegria-text);
+}
+
+.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {
+  color: var(--alegria-ocean);
+}
+
+.btn-primary, .cta-link, .btn-book {
+  background: var(--alegria-orange) !important;
+  color: #fff !important;
+  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);
+}
+
+.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {
+  background: var(--alegria-ocean-light);
+  color: var(--alegria-deep);
+}
+
+.price-pill {
+  background: rgba(242, 140, 40, 0.13);
+  color: #9a4d08;
+  border: 1px solid rgba(242, 140, 40, 0.28);
+}
+
+.page-hero {
+  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);
+}
+
+.section-light {
+  background: var(--alegria-sand);
+}
+
+/* Footer charte override */
+.site-footer-simple {
+  background: #08263a !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+  border-top: none !important;
+}
+
+.footer-simple a, .footer-simple strong, .footer-simple span {
+  color: rgba(255, 255, 255, 0.86) !important;
+}
+
+.footer-simple a:hover {
+  color: #f28c28 !important;
+}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homefooter/homefooter.component.scss"],"names":[],"mappings":"AACA;EACE,6BAAA;EACA,eAAA;EACA,iBAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,aAAA;EACA,8BAAA;EACA,mBAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;AACF;;AAEA;EACE,0BAAA;AACF;;AACA;EAAgB,aAAA;EAAe,mBAAA;EAAqB,SAAA;EAAW,eAAA;EAAiB,yBAAA;AAOhF;;AANA;EAA4B;IAAiB,sBAAA;IAAwB,QAAA;IAAU,kBAAA;EAa7E;EAbmG;IAAgB,uBAAA;EAgBnH;AACF;AAdA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAgBF;;AAbA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAgBF;;AAbA;EACE,yCAAA;AAgBF;;AAbA;EACE,sCAAA;EACA,0BAAA;AAgBF;;AAbA;EACE,2BAAA;AAgBF;;AAbA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAgBF;;AAbA;EACE,sCAAA;EACA,0BAAA;AAgBF;;AAbA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAgBF;;AAbA;EACE,6DAAA;AAgBF;;AAbA;EACE,+BAAA;AAgBF;;AAZA,2BAAA;AACA;EACE,8BAAA;EACA,2CAAA;EACA,2BAAA;AAeF;;AAbA;EACE,2CAAA;AAgBF;;AAdA;EAAyB,yBAAA;AAkBzB","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.site-footer-simple {\n  border-top: 1px solid #e5e7eb;\n  padding: 15px 0;\n  font-size: 0.8rem;\n  color: #6b7280;\n  background: #fff;\n}\n\n.footer-simple {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.footer-simple a {\n  text-decoration: none;\n  color: #374151;\n}\n\n.footer-simple a:hover {\n  text-decoration: underline;\n}\n.footer-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: flex-end; }\n@media (max-width: 768px) { .footer-simple { flex-direction: column; gap: 8px; text-align: center; } .footer-right { justify-content: center; } }\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Footer charte override */\n.site-footer-simple {\n  background: #08263a !important;\n  color: rgba(255,255,255,0.75) !important;\n  border-top: none !important;\n}\n.footer-simple a, .footer-simple strong, .footer-simple span {\n  color: rgba(255,255,255,0.86) !important;\n}\n.footer-simple a:hover { color: #f28c28 !important; }\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -3936,6 +4084,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap);"]);
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.site-header {
   position: sticky;
@@ -3964,7 +4113,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.site-header {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: #0f172a;
+  color: #08263a;
   text-decoration: none;
 }
 
@@ -3974,7 +4123,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.site-header {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, #0ea5e9, #0369a1);
+  background: linear-gradient(135deg, #0b6e8f, #0b6e8f);
   color: #fff;
   font-size: 1rem;
 }
@@ -3999,8 +4148,8 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.site-header {
 .menu-toggle {
   display: none;
   border: none;
-  background: #e2e8f0;
-  color: #0f172a;
+  background: #e8f4f7;
+  color: #08263a;
   font-size: 1.1rem;
   padding: 0.45rem 0.75rem;
   border-radius: 10px;
@@ -4021,7 +4170,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.site-header {
 }
 
 .main-nav a.active {
-  color: #0f172a;
+  color: #08263a;
 }
 
 .language-switcher {
@@ -4033,7 +4182,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.site-header {
   border: 1px solid #cbd5e1;
   border-radius: 999px;
   background: #fff;
-  color: #0f172a;
+  color: #08263a;
   font-size: 0.83rem;
   padding: 0.45rem 0.8rem;
 }
@@ -4041,7 +4190,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.site-header {
 .cta-link {
   padding: 0.72rem 0.95rem;
   border-radius: 999px;
-  background: #0f172a;
+  background: #08263a;
   color: #fff !important;
   font-size: 0.84rem;
 }
@@ -4076,7 +4225,102 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.site-header {
   .cta-link {
     text-align: center;
   }
-}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homeheader/homeheader.component.scss"],"names":[],"mappings":"AAAA;EACE,gBAAA;EACA,MAAA;EACA,WAAA;EACA,qCAAA;EACA,kCAAA;UAAA,0BAAA;EACA,+CAAA;AACF;;AAEA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,WAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;EACA,cAAA;EACA,qBAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,kBAAA;EACA,aAAA;EACA,mBAAA;EACA,qDAAA;EACA,WAAA;EACA,eAAA;AACF;;AAEA;EACE,aAAA;EACA,sBAAA;EACA,iBAAA;AACF;;AAEA;EACE,eAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE,aAAA;EACA,YAAA;EACA,mBAAA;EACA,cAAA;EACA,iBAAA;EACA,wBAAA;EACA,mBAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;AACF;;AAEA;EACE,yBAAA;EACA,oBAAA;EACA,gBAAA;EACA,cAAA;EACA,kBAAA;EACA,uBAAA;AACF;;AAEA;EACE,wBAAA;EACA,oBAAA;EACA,mBAAA;EACA,sBAAA;EACA,kBAAA;AACF;;AAEA;EACE;IACE,oBAAA;EACF;EAEA;IACE,kBAAA;IACA,UAAA;IACA,WAAA;IACA,SAAA;IACA,aAAA;IACA,sBAAA;IACA,oBAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;IACA,wCAAA;IACA,mBAAA;IACA,8CAAA;EAAF;EAGA;IACE,aAAA;EADF;EAIA;;IAEE,oBAAA;IACA,mBAAA;EAFF;EAKA;IACE,kBAAA;EAHF;AACF","sourcesContent":[".site-header {\n  position: sticky;\n  top: 0;\n  z-index: 20;\n  background: rgba(255, 255, 255, 0.96);\n  backdrop-filter: blur(8px);\n  border-bottom: 1px solid rgba(15, 23, 42, 0.08);\n}\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.header-bar {\n  min-height: 70px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 0.9rem;\n}\n\n.brand {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n  color: #0f172a;\n  text-decoration: none;\n}\n\n.brand-mark {\n  width: 38px;\n  height: 38px;\n  border-radius: 50%;\n  display: grid;\n  place-items: center;\n  background: linear-gradient(135deg, #0ea5e9, #0369a1);\n  color: #fff;\n  font-size: 1rem;\n}\n\n.brand-text {\n  display: flex;\n  flex-direction: column;\n  line-height: 1.05;\n}\n\n.brand-text strong {\n  font-size: 1rem;\n  white-space: nowrap;\n}\n\n.brand-text small {\n  color: #475569;\n  font-size: 0.68rem;\n  white-space: nowrap;\n}\n\n.menu-toggle {\n  display: none;\n  border: none;\n  background: #e2e8f0;\n  color: #0f172a;\n  font-size: 1.1rem;\n  padding: 0.45rem 0.75rem;\n  border-radius: 10px;\n}\n\n.main-nav {\n  display: flex;\n  align-items: center;\n  gap: 0.85rem;\n}\n\n.main-nav a {\n  text-decoration: none;\n  color: #334155;\n  font-weight: 500;\n  font-size: 0.88rem;\n  white-space: nowrap;\n}\n\n.main-nav a.active {\n  color: #0f172a;\n}\n\n.language-switcher {\n  display: flex;\n  align-items: center;\n}\n\n.language-switcher select {\n  border: 1px solid #cbd5e1;\n  border-radius: 999px;\n  background: #fff;\n  color: #0f172a;\n  font-size: 0.83rem;\n  padding: 0.45rem 0.8rem;\n}\n\n.cta-link {\n  padding: 0.72rem 0.95rem;\n  border-radius: 999px;\n  background: #0f172a;\n  color: #fff !important;\n  font-size: 0.84rem;\n}\n\n@media (max-width: 960px) {\n  .menu-toggle {\n    display: inline-flex;\n  }\n\n  .main-nav {\n    position: absolute;\n    left: 1rem;\n    right: 1rem;\n    top: 78px;\n    display: none;\n    flex-direction: column;\n    align-items: stretch;\n    gap: 0.35rem;\n    padding: 0.8rem;\n    background: #ffffff;\n    border: 1px solid rgba(15, 23, 42, 0.08);\n    border-radius: 18px;\n    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);\n  }\n\n  .main-nav.open {\n    display: flex;\n  }\n\n  .main-nav a,\n  .language-switcher select {\n    padding: 0.9rem 1rem;\n    border-radius: 12px;\n  }\n\n  .cta-link {\n    text-align: center;\n  }\n}\n"],"sourceRoot":""}]);
+}
+/* Charte graphique Alegria */
+:host {
+  --alegria-deep: #08263a;
+  --alegria-ocean: #0b6e8f;
+  --alegria-ocean-light: #e8f4f7;
+  --alegria-orange: #f28c28;
+  --alegria-sand: #fbf8f2;
+  --alegria-text: #2f3a45;
+  --alegria-muted: #667085;
+}
+
+h1, h2, h3, .brand-text strong, .title, .page-title {
+  font-family: "Playfair Display", Georgia, serif;
+  color: var(--alegria-deep);
+  letter-spacing: -0.015em;
+}
+
+.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {
+  font-family: "Raleway", Arial, sans-serif;
+}
+
+p, li, input, textarea, select, .card-body, .term-section {
+  font-family: "Lato", Arial, sans-serif;
+  color: var(--alegria-text);
+}
+
+.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {
+  color: var(--alegria-ocean);
+}
+
+.btn-primary, .cta-link, .btn-book {
+  background: var(--alegria-orange) !important;
+  color: #fff !important;
+  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);
+}
+
+.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {
+  background: var(--alegria-ocean-light);
+  color: var(--alegria-deep);
+}
+
+.price-pill {
+  background: rgba(242, 140, 40, 0.13);
+  color: #9a4d08;
+  border: 1px solid rgba(242, 140, 40, 0.28);
+}
+
+.page-hero {
+  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);
+}
+
+.section-light {
+  background: var(--alegria-sand);
+}
+
+/* Header charte override */
+.site-header {
+  background: rgba(8, 38, 58, 0.96) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.brand, .brand-text strong, .main-nav a, .main-nav a.active {
+  color: #fff !important;
+}
+
+.brand-text small {
+  color: rgba(255, 255, 255, 0.72) !important;
+}
+
+.brand-mark {
+  background: var(--alegria-orange) !important;
+  color: #fff !important;
+}
+
+.menu-toggle {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #fff !important;
+}
+
+.language-switcher select {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.language-switcher select option {
+  color: #08263a;
+}
+
+@media (max-width: 960px) {
+  .main-nav {
+    background: #08263a !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homeheader/homeheader.component.scss"],"names":[],"mappings":"AACA;EACE,gBAAA;EACA,MAAA;EACA,WAAA;EACA,qCAAA;EACA,kCAAA;UAAA,0BAAA;EACA,+CAAA;AACF;;AAEA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,WAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;EACA,cAAA;EACA,qBAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,kBAAA;EACA,aAAA;EACA,mBAAA;EACA,qDAAA;EACA,WAAA;EACA,eAAA;AACF;;AAEA;EACE,aAAA;EACA,sBAAA;EACA,iBAAA;AACF;;AAEA;EACE,eAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE,aAAA;EACA,YAAA;EACA,mBAAA;EACA,cAAA;EACA,iBAAA;EACA,wBAAA;EACA,mBAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;AACF;;AAEA;EACE,yBAAA;EACA,oBAAA;EACA,gBAAA;EACA,cAAA;EACA,kBAAA;EACA,uBAAA;AACF;;AAEA;EACE,wBAAA;EACA,oBAAA;EACA,mBAAA;EACA,sBAAA;EACA,kBAAA;AACF;;AAEA;EACE;IACE,oBAAA;EACF;EAEA;IACE,kBAAA;IACA,UAAA;IACA,WAAA;IACA,SAAA;IACA,aAAA;IACA,sBAAA;IACA,oBAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;IACA,wCAAA;IACA,mBAAA;IACA,8CAAA;EAAF;EAGA;IACE,aAAA;EADF;EAIA;;IAEE,oBAAA;IACA,mBAAA;EAFF;EAKA;IACE,kBAAA;EAHF;AACF;AAOA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AALF;;AAQA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AALF;;AAQA;EACE,yCAAA;AALF;;AAQA;EACE,sCAAA;EACA,0BAAA;AALF;;AAQA;EACE,2BAAA;AALF;;AAQA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AALF;;AAQA;EACE,sCAAA;EACA,0BAAA;AALF;;AAQA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AALF;;AAQA;EACE,6DAAA;AALF;;AAQA;EACE,+BAAA;AALF;;AASA,2BAAA;AACA;EACE,4CAAA;EACA,6DAAA;AANF;;AAQA;EACE,sBAAA;AALF;;AAOA;EAAoB,2CAAA;AAHpB;;AAIA;EAAc,4CAAA;EAA8C,sBAAA;AAC5D;;AAAA;EAAe,gDAAA;EAA+C,sBAAA;AAK9D;;AAJA;EAA4B,+CAAA;EAA8C,sBAAA;EAAuB,kDAAA;AAUjG;;AATA;EAAmC,cAAA;AAanC;;AAZA;EACE;IAAY,8BAAA;IAAgC,kDAAA;EAiB5C;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.site-header {\n  position: sticky;\n  top: 0;\n  z-index: 20;\n  background: rgba(255, 255, 255, 0.96);\n  backdrop-filter: blur(8px);\n  border-bottom: 1px solid rgba(15, 23, 42, 0.08);\n}\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.header-bar {\n  min-height: 70px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 0.9rem;\n}\n\n.brand {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n  color: #08263a;\n  text-decoration: none;\n}\n\n.brand-mark {\n  width: 38px;\n  height: 38px;\n  border-radius: 50%;\n  display: grid;\n  place-items: center;\n  background: linear-gradient(135deg, #0b6e8f, #0b6e8f);\n  color: #fff;\n  font-size: 1rem;\n}\n\n.brand-text {\n  display: flex;\n  flex-direction: column;\n  line-height: 1.05;\n}\n\n.brand-text strong {\n  font-size: 1rem;\n  white-space: nowrap;\n}\n\n.brand-text small {\n  color: #475569;\n  font-size: 0.68rem;\n  white-space: nowrap;\n}\n\n.menu-toggle {\n  display: none;\n  border: none;\n  background: #e8f4f7;\n  color: #08263a;\n  font-size: 1.1rem;\n  padding: 0.45rem 0.75rem;\n  border-radius: 10px;\n}\n\n.main-nav {\n  display: flex;\n  align-items: center;\n  gap: 0.85rem;\n}\n\n.main-nav a {\n  text-decoration: none;\n  color: #334155;\n  font-weight: 500;\n  font-size: 0.88rem;\n  white-space: nowrap;\n}\n\n.main-nav a.active {\n  color: #08263a;\n}\n\n.language-switcher {\n  display: flex;\n  align-items: center;\n}\n\n.language-switcher select {\n  border: 1px solid #cbd5e1;\n  border-radius: 999px;\n  background: #fff;\n  color: #08263a;\n  font-size: 0.83rem;\n  padding: 0.45rem 0.8rem;\n}\n\n.cta-link {\n  padding: 0.72rem 0.95rem;\n  border-radius: 999px;\n  background: #08263a;\n  color: #fff !important;\n  font-size: 0.84rem;\n}\n\n@media (max-width: 960px) {\n  .menu-toggle {\n    display: inline-flex;\n  }\n\n  .main-nav {\n    position: absolute;\n    left: 1rem;\n    right: 1rem;\n    top: 78px;\n    display: none;\n    flex-direction: column;\n    align-items: stretch;\n    gap: 0.35rem;\n    padding: 0.8rem;\n    background: #ffffff;\n    border: 1px solid rgba(15, 23, 42, 0.08);\n    border-radius: 18px;\n    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);\n  }\n\n  .main-nav.open {\n    display: flex;\n  }\n\n  .main-nav a,\n  .language-switcher select {\n    padding: 0.9rem 1rem;\n    border-radius: 12px;\n  }\n\n  .cta-link {\n    text-align: center;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Header charte override */\n.site-header {\n  background: rgba(8, 38, 58, 0.96) !important;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;\n}\n.brand, .brand-text strong, .main-nav a, .main-nav a.active {\n  color: #fff !important;\n}\n.brand-text small { color: rgba(255,255,255,0.72) !important; }\n.brand-mark { background: var(--alegria-orange) !important; color:#fff !important; }\n.menu-toggle { background: rgba(255,255,255,0.12) !important; color:#fff !important; }\n.language-switcher select { background: rgba(255,255,255,0.1) !important; color:#fff !important; border-color: rgba(255,255,255,0.25) !important; }\n.language-switcher select option { color:#08263a; }\n@media (max-width: 960px) {\n  .main-nav { background: #08263a !important; border-color: rgba(255,255,255,.12) !important; }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -4114,6 +4358,7 @@ let HomefooterComponent = class HomefooterComponent {
   mainSvc;
   year = new Date().getFullYear();
   content = _home_site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr;
+  currentLanguage = 'fr';
   languageSub;
   constructor(languageService, mainSvc) {
     this.languageService = languageService;
@@ -4121,8 +4366,18 @@ let HomefooterComponent = class HomefooterComponent {
   }
   ngOnInit() {
     this.languageSub = this.languageService.language$.subscribe(language => {
+      this.currentLanguage = language;
       this.content = _home_site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT[language];
     });
+  }
+  get termsLabel() {
+    if (this.currentLanguage === 'en') {
+      return 'Terms & Conditions';
+    }
+    if (this.currentLanguage === 'es') {
+      return 'Términos y condiciones';
+    }
+    return 'Conditions générales';
   }
   ngOnDestroy() {
     this.languageSub?.unsubscribe();
@@ -4182,17 +4437,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   LayoutModule: () => (/* binding */ LayoutModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ 99585);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ionic/angular */ 21507);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ngx-spinner */ 61249);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @ionic/angular */ 21507);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ngx-spinner */ 61249);
 /* harmony import */ var _home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home/homelayout/homelayout.component */ 14211);
 /* harmony import */ var _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home/homeheader/homeheader.component */ 48917);
 /* harmony import */ var _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./home/homefooter/homefooter.component */ 41445);
 /* harmony import */ var _layout_router_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./layout.router.module */ 4528);
+/* harmony import */ var _cookie_consent_cookie_consent_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./cookie-consent/cookie-consent.component */ 64759);
+
 
 
 
@@ -4205,9 +4462,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let LayoutModule = class LayoutModule {};
-LayoutModule = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.NgModule)({
-  declarations: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent, _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__.HomeheaderComponent, _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__.HomefooterComponent],
-  imports: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent, _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__.HomeheaderComponent, _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__.HomefooterComponent, _angular_common__WEBPACK_IMPORTED_MODULE_6__.CommonModule, _angular_router__WEBPACK_IMPORTED_MODULE_7__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_8__.IonicModule, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.ReactiveFormsModule, ngx_spinner__WEBPACK_IMPORTED_MODULE_10__.NgxSpinnerModule, _layout_router_module__WEBPACK_IMPORTED_MODULE_3__.LayoutRoutingModule],
+LayoutModule = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.NgModule)({
+  declarations: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent, _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__.HomeheaderComponent, _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__.HomefooterComponent, _cookie_consent_cookie_consent_component__WEBPACK_IMPORTED_MODULE_4__.CookieConsentComponent],
+  imports: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent, _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__.HomeheaderComponent, _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__.HomefooterComponent, _cookie_consent_cookie_consent_component__WEBPACK_IMPORTED_MODULE_4__.CookieConsentComponent, _angular_common__WEBPACK_IMPORTED_MODULE_7__.CommonModule, _angular_router__WEBPACK_IMPORTED_MODULE_8__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_9__.IonicModule, _angular_forms__WEBPACK_IMPORTED_MODULE_10__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_10__.ReactiveFormsModule, ngx_spinner__WEBPACK_IMPORTED_MODULE_11__.NgxSpinnerModule, _layout_router_module__WEBPACK_IMPORTED_MODULE_3__.LayoutRoutingModule],
   exports: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent]
 })], LayoutModule);
 
@@ -4221,7 +4478,7 @@ LayoutModule = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_co
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<div class=\"site-shell\">\n  <app-homeheader></app-homeheader>\n  <main class=\"site-main\">\n    <router-outlet></router-outlet>\n  </main>\n  <app-homefooter></app-homefooter>\n</div>\n";
+module.exports = "<div class=\"site-shell\">\n  <app-homeheader></app-homeheader>\n  <main class=\"site-main\">\n    <router-outlet></router-outlet>\n  </main>\n  <app-homefooter></app-homefooter>\n  <app-cookie-consent></app-cookie-consent>\n</div>\n";
 
 /***/ }),
 
@@ -4467,6 +4724,94 @@ module.exports = "<router-outlet></router-outlet>\n";
 
 /***/ }),
 
+/***/ 64759:
+/*!*******************************************************************!*\
+  !*** ./src/app/layout/cookie-consent/cookie-consent.component.ts ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   CookieConsentComponent: () => (/* binding */ CookieConsentComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _cookie_consent_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./cookie-consent.component.html?ngResource */ 66101);
+/* harmony import */ var _cookie_consent_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cookie-consent.component.scss?ngResource */ 83589);
+/* harmony import */ var _cookie_consent_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_cookie_consent_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+
+
+
+
+
+const COOKIE_COPY = {
+  fr: {
+    title: 'Gestion des cookies',
+    text: 'Nous utilisons des cookies nécessaires au bon fonctionnement du site et, le cas échéant, à l’amélioration de votre expérience. En continuant, vous acceptez leur utilisation.',
+    accept: 'J’accepte',
+    learnMore: 'Conditions générales'
+  },
+  en: {
+    title: 'Cookie notice',
+    text: 'We use cookies required for the website to function properly and, where applicable, to improve your experience. By continuing, you accept their use.',
+    accept: 'Accept',
+    learnMore: 'Terms & Conditions'
+  },
+  es: {
+    title: 'Aviso de cookies',
+    text: 'Utilizamos cookies necesarios para el correcto funcionamiento del sitio y, cuando corresponda, para mejorar su experiencia. Al continuar, acepta su uso.',
+    accept: 'Aceptar',
+    learnMore: 'Términos y condiciones'
+  }
+};
+let CookieConsentComponent = class CookieConsentComponent {
+  languageService;
+  visible = false;
+  copy = COOKIE_COPY.fr;
+  languageSub;
+  storageKey = 'alegria_cookie_consent_v1';
+  constructor(languageService) {
+    this.languageService = languageService;
+  }
+  ngOnInit() {
+    this.visible = localStorage.getItem(this.storageKey) !== 'accepted';
+    this.languageSub = this.languageService.language$.subscribe(language => {
+      this.copy = COOKIE_COPY[language];
+    });
+  }
+  ngOnDestroy() {
+    this.languageSub?.unsubscribe();
+  }
+  accept() {
+    localStorage.setItem(this.storageKey, 'accepted');
+    this.visible = false;
+  }
+  static ctorParameters = () => [{
+    type: _services_language_service__WEBPACK_IMPORTED_MODULE_2__.LanguageService
+  }];
+};
+CookieConsentComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
+  selector: 'app-cookie-consent',
+  template: _cookie_consent_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_cookie_consent_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], CookieConsentComponent);
+
+
+/***/ }),
+
+/***/ 66101:
+/*!********************************************************************************!*\
+  !*** ./src/app/layout/cookie-consent/cookie-consent.component.html?ngResource ***!
+  \********************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<div class=\"cookie-banner\" *ngIf=\"visible\" role=\"dialog\" aria-live=\"polite\" aria-label=\"Cookie notice\">\n  <div class=\"cookie-copy\">\n    <strong>{{ copy.title }}</strong>\n    <p>{{ copy.text }}</p>\n  </div>\n  <div class=\"cookie-actions\">\n    <a routerLink=\"/terms\" class=\"cookie-link\">{{ copy.learnMore }}</a>\n    <button type=\"button\" class=\"cookie-accept\" (click)=\"accept()\">{{ copy.accept }}</button>\n  </div>\n</div>\n";
+
+/***/ }),
+
 /***/ 72735:
 /*!*****************************************************************************!*\
   !*** ./src/app/layout/home/homefooter/homefooter.component.html?ngResource ***!
@@ -4474,7 +4819,7 @@ module.exports = "<router-outlet></router-outlet>\n";
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<footer class=\"site-footer-simple\">\n  <div class=\"container footer-simple\">\n    \n    <div class=\"footer-left\">\n      © {{ year }} {{ content.brand }}\n    </div>\n\n    <div class=\"footer-center\">\n      {{ mainSvc.version }}\n    </div>\n\n    <div class=\"footer-right\">\n      <a routerLink=\"/contact\">{{ content.nav.contact }}</a>\n    </div>\n\n  </div>\n</footer>";
+module.exports = "<footer class=\"site-footer-simple\">\n  <div class=\"container footer-simple\">\n    \n    <div class=\"footer-left\">\n      © {{ year }} {{ content.brand }}\n    </div>\n\n    <div class=\"footer-center\">\n      {{ mainSvc.version }}\n    </div>\n\n    <div class=\"footer-right\">\n      <a routerLink=\"/contact\">{{ content.nav.contact }}</a>\n      <a routerLink=\"/terms\">{{ termsLabel }}</a>\n    </div>\n\n  </div>\n</footer>";
 
 /***/ }),
 
@@ -4488,6 +4833,7 @@ module.exports = "<footer class=\"site-footer-simple\">\n  <div class=\"containe
 var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap);"]);
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.not-found {
   min-height: 70vh;
@@ -4507,12 +4853,12 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.not-found {
 .code {
   font-size: 4rem;
   font-weight: 800;
-  color: #0369a1;
+  color: #0b6e8f;
 }
 
 h1 {
   margin: 0.5rem 0;
-  color: #0f172a;
+  color: #08263a;
 }
 
 p {
@@ -4523,11 +4869,214 @@ a {
   display: inline-block;
   margin-top: 1rem;
   text-decoration: none;
-  background: #0f172a;
+  background: #08263a;
   color: #fff;
   padding: 0.9rem 1.1rem;
   border-radius: 999px;
-}`, "",{"version":3,"sources":["webpack://./src/app/page404/page404.component.scss"],"names":[],"mappings":"AAAA;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,aAAA;AACF;;AAEA;EACE,kBAAA;EACA,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,8CAAA;AACF;;AAEA;EACE,eAAA;EACA,gBAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,cAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,qBAAA;EACA,gBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,sBAAA;EACA,oBAAA;AACF","sourcesContent":[".not-found {\n  min-height: 70vh;\n  display: grid;\n  place-items: center;\n  padding: 2rem;\n}\n\n.box {\n  text-align: center;\n  background: #fff;\n  padding: 2rem;\n  border-radius: 24px;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.code {\n  font-size: 4rem;\n  font-weight: 800;\n  color: #0369a1;\n}\n\nh1 {\n  margin: 0.5rem 0;\n  color: #0f172a;\n}\n\np {\n  color: #475569;\n}\n\na {\n  display: inline-block;\n  margin-top: 1rem;\n  text-decoration: none;\n  background: #0f172a;\n  color: #fff;\n  padding: 0.9rem 1.1rem;\n  border-radius: 999px;\n}\n"],"sourceRoot":""}]);
+}
+
+/* Charte graphique Alegria */
+:host {
+  --alegria-deep: #08263a;
+  --alegria-ocean: #0b6e8f;
+  --alegria-ocean-light: #e8f4f7;
+  --alegria-orange: #f28c28;
+  --alegria-sand: #fbf8f2;
+  --alegria-text: #2f3a45;
+  --alegria-muted: #667085;
+}
+
+h1, h2, h3, .brand-text strong, .title, .page-title {
+  font-family: "Playfair Display", Georgia, serif;
+  color: var(--alegria-deep);
+  letter-spacing: -0.015em;
+}
+
+.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {
+  font-family: "Raleway", Arial, sans-serif;
+}
+
+p, li, input, textarea, select, .card-body, .term-section {
+  font-family: "Lato", Arial, sans-serif;
+  color: var(--alegria-text);
+}
+
+.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {
+  color: var(--alegria-ocean);
+}
+
+.btn-primary, .cta-link, .btn-book {
+  background: var(--alegria-orange) !important;
+  color: #fff !important;
+  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);
+}
+
+.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {
+  background: var(--alegria-ocean-light);
+  color: var(--alegria-deep);
+}
+
+.price-pill {
+  background: rgba(242, 140, 40, 0.13);
+  color: #9a4d08;
+  border: 1px solid rgba(242, 140, 40, 0.28);
+}
+
+.page-hero {
+  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);
+}
+
+.section-light {
+  background: var(--alegria-sand);
+}`, "",{"version":3,"sources":["webpack://./src/app/page404/page404.component.scss"],"names":[],"mappings":"AACA;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,aAAA;AACF;;AAEA;EACE,kBAAA;EACA,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,8CAAA;AACF;;AAEA;EACE,eAAA;EACA,gBAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,cAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,qBAAA;EACA,gBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,sBAAA;EACA,oBAAA;AACF;;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAAF;;AAGA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAAF;;AAGA;EACE,yCAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,2BAAA;AAAF;;AAGA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAAF;;AAGA;EACE,6DAAA;AAAF;;AAGA;EACE,+BAAA;AAAF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.not-found {\n  min-height: 70vh;\n  display: grid;\n  place-items: center;\n  padding: 2rem;\n}\n\n.box {\n  text-align: center;\n  background: #fff;\n  padding: 2rem;\n  border-radius: 24px;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.code {\n  font-size: 4rem;\n  font-weight: 800;\n  color: #0b6e8f;\n}\n\nh1 {\n  margin: 0.5rem 0;\n  color: #08263a;\n}\n\np {\n  color: #475569;\n}\n\na {\n  display: inline-block;\n  margin-top: 1rem;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.1rem;\n  border-radius: 999px;\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
+/***/ 83589:
+/*!********************************************************************************!*\
+  !*** ./src/app/layout/cookie-consent/cookie-consent.component.scss?ngResource ***!
+  \********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap);"]);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.cookie-banner {
+  position: fixed;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 18px 20px;
+  background: rgba(6, 40, 61, 0.97);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(6, 40, 61, 0.35);
+}
+
+.cookie-copy strong {
+  display: block;
+  font-family: "Raleway", sans-serif;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.cookie-copy p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-family: "Lato", sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.cookie-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.cookie-link {
+  color: #fff;
+  font-family: "Raleway", sans-serif;
+  font-size: 0.82rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.cookie-accept {
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-sun-orange, #f28c38);
+  color: #fff;
+  cursor: pointer;
+  font-family: "Raleway", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 10px 16px;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .cookie-banner {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+  }
+  .cookie-actions {
+    justify-content: space-between;
+  }
+}
+/* Charte graphique Alegria */
+:host {
+  --alegria-deep: #08263a;
+  --alegria-ocean: #0b6e8f;
+  --alegria-ocean-light: #e8f4f7;
+  --alegria-orange: #f28c28;
+  --alegria-sand: #fbf8f2;
+  --alegria-text: #2f3a45;
+  --alegria-muted: #667085;
+}
+
+h1, h2, h3, .brand-text strong, .title, .page-title {
+  font-family: "Playfair Display", Georgia, serif;
+  color: var(--alegria-deep);
+  letter-spacing: -0.015em;
+}
+
+.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {
+  font-family: "Raleway", Arial, sans-serif;
+}
+
+p, li, input, textarea, select, .card-body, .term-section {
+  font-family: "Lato", Arial, sans-serif;
+  color: var(--alegria-text);
+}
+
+.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {
+  color: var(--alegria-ocean);
+}
+
+.btn-primary, .cta-link, .btn-book {
+  background: var(--alegria-orange) !important;
+  color: #fff !important;
+  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);
+}
+
+.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {
+  background: var(--alegria-ocean-light);
+  color: var(--alegria-deep);
+}
+
+.price-pill {
+  background: rgba(242, 140, 40, 0.13);
+  color: #9a4d08;
+  border: 1px solid rgba(242, 140, 40, 0.28);
+}
+
+.page-hero {
+  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);
+}
+
+.section-light {
+  background: var(--alegria-sand);
+}`, "",{"version":3,"sources":["webpack://./src/app/layout/cookie-consent/cookie-consent.component.scss"],"names":[],"mappings":"AACA;EACE,eAAA;EACA,UAAA;EACA,WAAA;EACA,YAAA;EACA,aAAA;EACA,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,SAAA;EACA,iBAAA;EACA,cAAA;EACA,kBAAA;EACA,iCAAA;EACA,WAAA;EACA,2CAAA;EACA,mBAAA;EACA,6CAAA;AACF;;AAEA;EACE,cAAA;EACA,kCAAA;EACA,kBAAA;EACA,kBAAA;AACF;;AAEA;EACE,SAAA;EACA,gCAAA;EACA,+BAAA;EACA,kBAAA;EACA,iBAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,SAAA;EACA,cAAA;AACF;;AAEA;EACE,WAAA;EACA,kCAAA;EACA,kBAAA;EACA,0BAAA;EACA,0BAAA;AACF;;AAEA;EACE,SAAA;EACA,oBAAA;EACA,4CAAA;EACA,WAAA;EACA,eAAA;EACA,kCAAA;EACA,kBAAA;EACA,gBAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE;IACE,UAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,oBAAA;IACA,aAAA;EACF;EAEA;IACE,8BAAA;EAAF;AACF;AAIA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAFF;;AAKA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAFF;;AAKA;EACE,yCAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,2BAAA;AAFF;;AAKA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAFF;;AAKA;EACE,6DAAA;AAFF;;AAKA;EACE,+BAAA;AAFF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.cookie-banner {\n  position: fixed;\n  left: 24px;\n  right: 24px;\n  bottom: 24px;\n  z-index: 9999;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 22px;\n  max-width: 1080px;\n  margin: 0 auto;\n  padding: 18px 20px;\n  background: rgba(6, 40, 61, 0.97);\n  color: #fff;\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 18px;\n  box-shadow: 0 20px 60px rgba(6, 40, 61, 0.35);\n}\n\n.cookie-copy strong {\n  display: block;\n  font-family: 'Raleway', sans-serif;\n  font-size: 0.95rem;\n  margin-bottom: 4px;\n}\n\n.cookie-copy p {\n  margin: 0;\n  color: rgba(255, 255, 255, 0.82);\n  font-family: 'Lato', sans-serif;\n  font-size: 0.88rem;\n  line-height: 1.45;\n}\n\n.cookie-actions {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  flex-shrink: 0;\n}\n\n.cookie-link {\n  color: #fff;\n  font-family: 'Raleway', sans-serif;\n  font-size: 0.82rem;\n  text-decoration: underline;\n  text-underline-offset: 4px;\n}\n\n.cookie-accept {\n  border: 0;\n  border-radius: 999px;\n  background: var(--color-sun-orange, #f28c38);\n  color: #fff;\n  cursor: pointer;\n  font-family: 'Raleway', sans-serif;\n  font-size: 0.82rem;\n  font-weight: 800;\n  padding: 10px 16px;\n  white-space: nowrap;\n}\n\n@media (max-width: 768px) {\n  .cookie-banner {\n    left: 12px;\n    right: 12px;\n    bottom: 12px;\n    flex-direction: column;\n    align-items: stretch;\n    padding: 16px;\n  }\n\n  .cookie-actions {\n    justify-content: space-between;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -4832,8 +5381,10 @@ module.exports = webpackAsyncContext;
 var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ 35950);
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, `
+`, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 

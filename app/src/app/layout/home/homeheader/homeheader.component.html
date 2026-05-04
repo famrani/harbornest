@@ -18,6 +18,7 @@
       <a routerLink="/bateau" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.boat }}</a>
       <a routerLink="/galerie" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.gallery }}</a>
       <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.contact }}</a>
+      <a routerLink="/crew" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.crew }}</a>
 
       <div class="language-switcher">
         <select [value]="currentLanguage" (change)="changeLanguage($any($event.target).value)" aria-label="Language selector">
