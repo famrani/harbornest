@@ -216,3 +216,29 @@ p, li, input, textarea, select, .card-body, .term-section {
 @media (max-width: 960px) {
   .main-nav { background: #08263a !important; border-color: rgba(255,255,255,.12) !important; }
 }
+
+
+/* Mobile + Alegria logo refinements */
+.brand-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  object-fit: contain;
+  display: block;
+  flex: 0 0 auto;
+  background: #08263a;
+}
+
+@media (max-width: 960px) {
+  .header-bar { min-height: 64px; }
+  .brand { min-width: 0; }
+  .brand-logo { width: 40px; height: 40px; border-radius: 10px; }
+  .brand-text strong { font-size: 0.94rem; }
+  .brand-text small { max-width: 170px; overflow: hidden; text-overflow: ellipsis; }
+  .main-nav { top: 70px; max-height: calc(100vh - 86px); overflow-y: auto; }
+}
+
+@media (max-width: 420px) {
+  .container { width: min(100% - 1rem, 1120px); }
+  .brand-text small { display: none; }
+}

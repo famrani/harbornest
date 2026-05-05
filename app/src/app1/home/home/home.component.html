@@ -1,0 +1,90 @@
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">{{ content.home.eyebrow }}</span>
+      <h1>{{ content.home.title }}</h1>
+      <p>{{ content.home.intro }}</p>
+      <div class="price-pill">{{ content.priceFrom }}</div>
+
+      <div class="hero-actions">
+        <a routerLink="/sorties" class="btn btn-primary btn-equal">
+          {{ content.home.primaryCta }}
+        </a>
+
+        <a routerLink="/contact" class="btn btn-secondary btn-equal">
+          {{ content.home.secondaryCta }}
+        </a>
+                <a href="https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556"
+          target="_blank" rel="noreferrer" class="btn btn-book">{{ content.common.bookOnClickAndBoat }}</a>
+
+      </div>
+      <ul class="hero-points">
+        <li *ngFor="let point of content.home.points">{{ point }}</li>
+      </ul>
+    </div>
+
+    <div class="hero-visual">
+      <img [src]="content.heroImage" [alt]="content.brand" />
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">{{ content.home.sectionEyebrow }}</span>
+      <h2>{{ content.home.sectionTitle }}</h2>
+      <p>{{ content.home.sectionText }}</p>
+    </div>
+
+    <div class="cards-grid">
+      <article class="card" *ngFor="let outing of featuredOutings">
+        <img [src]="outing.image" [alt]="outing.title" [routerLink]="['/sorties', outing.slug]" />
+        <div class="card-body">
+          <h3>{{ outing.title }}</h3>
+          <p>{{ outing.description }}</p>
+          <div class="meta">{{ outing.duration }} • {{ outing.guests }}</div>
+          <a [routerLink]="['/sorties', outing.slug]" class="text-link">{{ content.outingsPage.cta }}</a>
+        </div>
+      </article>
+    </div>
+
+    <div class="home-all-tours-cta">
+      <a routerLink="/sorties" class="btn btn-secondary">{{ content.nav.outings }}</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-light">
+  <div class="container split-grid">
+    <div>
+      <span class="eyebrow">{{ content.home.boatEyebrow }}</span>
+      <h2>{{ content.home.boatTitle }}</h2>
+      <p>{{ content.home.boatText }}</p>
+      <ul class="check-list">
+        <li *ngFor="let item of highlights">{{ item }}</li>
+      </ul>
+      <a routerLink="/bateau" class="btn btn-secondary">{{ content.home.boatCta }}</a>
+    </div>
+
+    <div class="boat-card">
+      <img [src]="content.boatHeroImage" [alt]="content.brand" />
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container contact-banner">
+    <div>
+      <span class="eyebrow">{{ content.home.contactEyebrow }}</span>
+      <h2>{{ content.home.contactTitle }}</h2>
+      <p>{{ content.home.contactText }}</p>
+    </div>
+    <div class="contact-actions">
+      <a routerLink="/contact" class="btn btn-primary">{{ content.common.requestQuote }}</a>
+      <a href="https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556"
+        target="_blank" rel="noreferrer" class="btn btn-book">{{ content.common.bookOnClickAndBoat }}</a>
+    </div>
+  </div>
+</section>

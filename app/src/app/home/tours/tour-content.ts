@@ -60,13 +60,14 @@ const images = {
   party11: 'assets/img/events/party/party11.jpg',
   business1: 'assets/img/events/business-meeting/business-meeting1.jpg',
   business2: 'assets/img/events/business-meeting/business-meeting2.jpg',
+  business3: 'assets/img/events/business-meeting/business-meeting3.jpg',
 };
 
 const TOUR_GALLERIES: Record<TourKey, string[]> = {
   'journee-en-mer': [images.de1, images.de2, images.de3, images.de4, images.de5, images.de6],
   'coucher-de-soleil': [images.sunset1, images.sunset2, images.sunset3],
   'anniversaire': [images.party1, images.party2, images.party3, images.party4, images.party5, images.party6, images.party7, images.party8, images.party9, images.party10, images.party11],
-  'sortie-entreprise': [images.business1, images.business2],
+  'sortie-entreprise': [images.business1, images.business2, images.business3],
 };
 
 const GALLERY_TITLES: Record<SiteLanguage, string> = {

@@ -1,0 +1,98 @@
+
+<section class="page-hero">
+  <div class="container narrow">
+    <span class="eyebrow">{{ tour.eyebrow }}</span>
+    <h1>{{ tour.title }}</h1>
+    <p class="subtitle">{{ tour.subtitle }}</p>
+    <p>{{ tour.intro }}</p>
+    <div class="price-pill">{{ tour.price }}</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container detail-grid">
+    <div class="image-col">
+      <img [src]="tour.image" [alt]="tour.title" />
+      <div class="meta-box">
+        <div>{{ tour.duration }}</div>
+        <div>{{ tour.guests }}</div>
+      </div>
+    </div>
+
+    <div>
+      <h2>{{ tour.highlightsTitle }}</h2>
+      <ul class="bullet-list">
+        <li *ngFor="let item of tour.highlights">{{ item }}</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section section-light">
+  <div class="container two-col">
+    <div>
+      <h2>{{ tour.programTitle }}</h2>
+      <ol class="program-list">
+        <li *ngFor="let item of tour.program">{{ item }}</li>
+      </ol>
+    </div>
+
+    <div>
+      <h2>{{ tour.includesTitle }}</h2>
+      <ul class="bullet-list">
+        <li *ngFor="let item of tour.includes">{{ item }}</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container offering-grid">
+    <div class="offer-card">
+      <h2>{{ tour.coreOfferingTitle }}</h2>
+      <ul class="bullet-list">
+        <li *ngFor="let item of tour.coreOffering">{{ item }}</li>
+      </ul>
+    </div>
+
+    <div class="offer-card">
+      <h2>{{ tour.optionalExtrasTitle }}</h2>
+      <ul class="bullet-list">
+        <li *ngFor="let item of tour.optionalExtras">{{ item }}</li>
+      </ul>
+    </div>
+
+    <div class="offer-card">
+      <h2>{{ tour.suggestionsTitle }}</h2>
+      <ul class="bullet-list">
+        <li *ngFor="let item of tour.guestSuggestions">{{ item }}</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" *ngIf="tour.gallery?.length">
+  <div class="container">
+    <h2>{{ tour.galleryTitle }}</h2>
+    <div class="gallery-grid">
+      <img *ngFor="let photo of tour.gallery" [src]="photo" [alt]="tour.title" />
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container two-col">
+    <div>
+      <h2>{{ tour.idealForTitle }}</h2>
+      <ul class="bullet-list">
+        <li *ngFor="let item of tour.idealFor">{{ item }}</li>
+      </ul>
+    </div>
+
+    <div class="cta-card">
+      <p>{{ tour.contactNote }}</p>
+      <a routerLink="/contact" class="btn">{{ tour.cta }}</a>
+    </div>
+  </div>
+</section>
