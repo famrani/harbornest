@@ -393,7 +393,100 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .section-light {
   background: var(--alegria-sand);
-}`, "",{"version":3,"sources":["webpack://./src/app/home/tours/evjf-evg/evjf-evg.component.scss"],"names":[],"mappings":"AAEA;EACE,+BAAA;EACA,cAAA;AAAF;;AAGA;EACE,gBAAA;AAAF;;AAGA;;EAEE,eAAA;AAAF;;AAGA;EACE,qDAAA;AAAF;;AAGA;EACE,mBAAA;AAAF;;AAGA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AAAF;;AAGA;EACE,qCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AAAF;;AAGA;EACE,aAAA;EACA,qBAAA;EACA,cAAA;EACA,iBAAA;AAAF;;AAGA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AAAF;;AAGA;EACE,kBAAA;EACA,cAAA;EACA,gBAAA;EACA,qBAAA;AAAF;;AAGA;EACE,oBAAA;EACA,gBAAA;EACA,wBAAA;EACA,oBAAA;EACA,kCAAA;EACA,cAAA;EACA,kBAAA;EACA,gBAAA;AAAF;;AAGA;;EAEE,aAAA;EACA,oCAAA;EACA,WAAA;EACA,kBAAA;AAAF;;AAGA;EACE,WAAA;EACA,iBAAA;EACA,iBAAA;EACA,mBAAA;EACA,cAAA;AAAF;;AAGA;;EAEE,gBAAA;EACA,mBAAA;EACA,mBAAA;EACA,eAAA;EACA,8CAAA;AAAF;;AAGA;EACE,aAAA;EACA,eAAA;EACA,SAAA;EACA,gBAAA;EACA,cAAA;AAAF;;AAGA;;EAEE,SAAA;EACA,oBAAA;AAAF;;AAGA;;EAEE,sBAAA;AAAF;;AAGA;EACE,oBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,uBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;EACA,kBAAA;AAAF;;AAGA;EACE;;IAEE,0BAAA;EAAF;EAGA;IACE,iBAAA;EADF;AACF;AAKA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AAHF;;AAMA;EACE,WAAA;EACA,iBAAA;EACA,iBAAA;EACA,mBAAA;EACA,cAAA;EACA,8CAAA;AAHF;;AAMA;EACE;IACE,gDAAA;EAHF;AACF;AAOA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AALF;;AAQA;EACE,gBAAA;EACA,mBAAA;EACA,eAAA;EACA,8CAAA;AALF;;AAQA;EACE,iBAAA;AALF;;AAQA;EACE;IACE,0BAAA;EALF;AACF;AASA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAPF;;AAUA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAPF;;AAUA;EACE,yCAAA;AAPF;;AAUA;EACE,sCAAA;EACA,0BAAA;AAPF;;AAUA;EACE,2BAAA;AAPF;;AAUA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAPF;;AAUA;EACE,sCAAA;EACA,0BAAA;AAPF;;AAUA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAPF;;AAUA;EACE,6DAAA;AAPF;;AAUA;EACE,+BAAA;AAPF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #ffffff, #fbf8f2);\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.8rem, 3vw, 2.8rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  margin-bottom: 0.9rem;\n  color: #08263a;\n  font-size: 1.4rem;\n}\n\np, li {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.96rem;\n}\n\n.subtitle {\n  font-size: 1.06rem;\n  color: #08263a;\n  font-weight: 600;\n  margin-bottom: 0.7rem;\n}\n\n.price-pill {\n  display: inline-flex;\n  margin-top: 1rem;\n  padding: 0.65rem 0.95rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0b6e8f;\n  font-size: 0.88rem;\n  font-weight: 700;\n}\n\n.detail-grid,\n.two-col {\n  display: grid;\n  grid-template-columns: 1.02fr 0.98fr;\n  gap: 1.6rem;\n  align-items: start;\n}\n\n.image-col img {\n  width: 100%;\n  min-height: 340px;\n  object-fit: cover;\n  border-radius: 24px;\n  display: block;\n}\n\n.meta-box,\n.cta-card {\n  margin-top: 1rem;\n  background: #ffffff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.meta-box {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  font-weight: 600;\n  color: #08263a;\n}\n\n.bullet-list,\n.program-list {\n  margin: 0;\n  padding-left: 1.2rem;\n}\n\n.bullet-list li,\n.program-list li {\n  margin-bottom: 0.55rem;\n}\n\n.btn {\n  display: inline-flex;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n  margin-top: 0.8rem;\n}\n\n@media (max-width: 860px) {\n  .detail-grid,\n  .two-col {\n    grid-template-columns: 1fr;\n  }\n\n  .image-col img {\n    min-height: 250px;\n  }\n}\n\n\n.gallery-grid {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.gallery-grid img {\n  width: 100%;\n  aspect-ratio: 1 / 1;\n  object-fit: cover;\n  border-radius: 18px;\n  display: block;\n  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);\n}\n\n@media (max-width: 860px) {\n  .gallery-grid {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n\n\n.offering-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.offer-card {\n  background: #fff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.offer-card h2 {\n  font-size: 1.1rem;\n}\n\n@media (max-width: 860px) {\n  .offering-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+}
+
+/* Mobile no-overlay / responsive safety patch */
+:host {
+  display: block;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img, video {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container, .container.narrow, .narrow {
+    width: min(100% - 1rem, 1120px) !important;
+    max-width: calc(100vw - 1rem) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .page-hero, .section, .hero {
+    padding-top: 2.2rem !important;
+    padding-bottom: 2.2rem !important;
+  }
+  h1 {
+    font-size: clamp(1.65rem, 8vw, 2.15rem) !important;
+    line-height: 1.12 !important;
+  }
+  h2 {
+    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
+    line-height: 1.18 !important;
+  }
+  h3 {
+    font-size: 1.05rem !important;
+  }
+  p, li {
+    font-size: 0.95rem !important;
+    line-height: 1.65 !important;
+  }
+  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 16/10 !important;
+    object-fit: cover !important;
+    display: block !important;
+    position: static !important;
+  }
+  .content-card, .card-body, .meta-box, .cta-card, .offer-card {
+    position: static !important;
+    transform: none !important;
+  }
+  .hero-actions, .contact-actions, .boat-actions, .form-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+  }
+  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+}
+@media (max-width: 480px) {
+  .page-hero, .section, .hero {
+    padding-top: 1.7rem !important;
+    padding-bottom: 1.7rem !important;
+  }
+  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card {
+    padding: 1rem !important;
+  }
+  .contact-banner {
+    padding: 1.2rem !important;
+    border-radius: 18px !important;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/tours/evjf-evg/evjf-evg.component.scss"],"names":[],"mappings":"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","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #ffffff, #fbf8f2);\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.8rem, 3vw, 2.8rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  margin-bottom: 0.9rem;\n  color: #08263a;\n  font-size: 1.4rem;\n}\n\np, li {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.96rem;\n}\n\n.subtitle {\n  font-size: 1.06rem;\n  color: #08263a;\n  font-weight: 600;\n  margin-bottom: 0.7rem;\n}\n\n.price-pill {\n  display: inline-flex;\n  margin-top: 1rem;\n  padding: 0.65rem 0.95rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0b6e8f;\n  font-size: 0.88rem;\n  font-weight: 700;\n}\n\n.detail-grid,\n.two-col {\n  display: grid;\n  grid-template-columns: 1.02fr 0.98fr;\n  gap: 1.6rem;\n  align-items: start;\n}\n\n.image-col img {\n  width: 100%;\n  min-height: 340px;\n  object-fit: cover;\n  border-radius: 24px;\n  display: block;\n}\n\n.meta-box,\n.cta-card {\n  margin-top: 1rem;\n  background: #ffffff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.meta-box {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  font-weight: 600;\n  color: #08263a;\n}\n\n.bullet-list,\n.program-list {\n  margin: 0;\n  padding-left: 1.2rem;\n}\n\n.bullet-list li,\n.program-list li {\n  margin-bottom: 0.55rem;\n}\n\n.btn {\n  display: inline-flex;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n  margin-top: 0.8rem;\n}\n\n@media (max-width: 860px) {\n  .detail-grid,\n  .two-col {\n    grid-template-columns: 1fr;\n  }\n\n  .image-col img {\n    min-height: 250px;\n  }\n}\n\n\n.gallery-grid {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.gallery-grid img {\n  width: 100%;\n  aspect-ratio: 1 / 1;\n  object-fit: cover;\n  border-radius: 18px;\n  display: block;\n  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);\n}\n\n@media (max-width: 860px) {\n  .gallery-grid {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n\n\n.offering-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.offer-card {\n  background: #fff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.offer-card h2 {\n  font-size: 1.1rem;\n}\n\n@media (max-width: 860px) {\n  .offering-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Mobile no-overlay / responsive safety patch */\n:host { display:block; overflow-x:hidden; }\n* { box-sizing: border-box; }\nimg, video { max-width: 100%; }\n\n@media (max-width: 768px) {\n  .container, .container.narrow, .narrow {\n    width: min(100% - 1rem, 1120px) !important;\n    max-width: calc(100vw - 1rem) !important;\n    margin-left: auto !important;\n    margin-right: auto !important;\n  }\n\n  .page-hero, .section, .hero {\n    padding-top: 2.2rem !important;\n    padding-bottom: 2.2rem !important;\n  }\n\n  h1 { font-size: clamp(1.65rem, 8vw, 2.15rem) !important; line-height: 1.12 !important; }\n  h2 { font-size: clamp(1.25rem, 6vw, 1.65rem) !important; line-height: 1.18 !important; }\n  h3 { font-size: 1.05rem !important; }\n  p, li { font-size: 0.95rem !important; line-height: 1.65 !important; }\n\n  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {\n    display: grid !important;\n    grid-template-columns: 1fr !important;\n    gap: 1rem !important;\n  }\n\n  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow: hidden !important;\n  }\n\n  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {\n    width: 100% !important;\n    height: auto !important;\n    min-height: 0 !important;\n    aspect-ratio: 16 / 10 !important;\n    object-fit: cover !important;\n    display: block !important;\n    position: static !important;\n  }\n\n  .content-card, .card-body, .meta-box, .cta-card, .offer-card {\n    position: static !important;\n    transform: none !important;\n  }\n\n  .hero-actions, .contact-actions, .boat-actions, .form-actions {\n    flex-direction: column !important;\n    align-items: stretch !important;\n    width: 100% !important;\n  }\n\n  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {\n    width: 100% !important;\n    max-width: none !important;\n    justify-content: center !important;\n    text-align: center !important;\n    white-space: normal !important;\n  }\n}\n\n@media (max-width: 480px) {\n  .page-hero, .section, .hero { padding-top: 1.7rem !important; padding-bottom: 1.7rem !important; }\n  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card { padding: 1rem !important; }\n  .contact-banner { padding: 1.2rem !important; border-radius: 18px !important; }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -653,7 +746,100 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .section-light {
   background: var(--alegria-sand);
-}`, "",{"version":3,"sources":["webpack://./src/app/home/tours/full-day/full-day.component.scss"],"names":[],"mappings":"AAEA;EACE,+BAAA;EACA,cAAA;AAAF;;AAGA;EACE,gBAAA;AAAF;;AAGA;;EAEE,eAAA;AAAF;;AAGA;EACE,qDAAA;AAAF;;AAGA;EACE,mBAAA;AAAF;;AAGA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AAAF;;AAGA;EACE,qCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AAAF;;AAGA;EACE,aAAA;EACA,qBAAA;EACA,cAAA;EACA,iBAAA;AAAF;;AAGA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AAAF;;AAGA;EACE,kBAAA;EACA,cAAA;EACA,gBAAA;EACA,qBAAA;AAAF;;AAGA;EACE,oBAAA;EACA,gBAAA;EACA,wBAAA;EACA,oBAAA;EACA,kCAAA;EACA,cAAA;EACA,kBAAA;EACA,gBAAA;AAAF;;AAGA;;EAEE,aAAA;EACA,oCAAA;EACA,WAAA;EACA,kBAAA;AAAF;;AAGA;EACE,WAAA;EACA,iBAAA;EACA,iBAAA;EACA,mBAAA;EACA,cAAA;AAAF;;AAGA;;EAEE,gBAAA;EACA,mBAAA;EACA,mBAAA;EACA,eAAA;EACA,8CAAA;AAAF;;AAGA;EACE,aAAA;EACA,eAAA;EACA,SAAA;EACA,gBAAA;EACA,cAAA;AAAF;;AAGA;;EAEE,SAAA;EACA,oBAAA;AAAF;;AAGA;;EAEE,sBAAA;AAAF;;AAGA;EACE,oBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,uBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;EACA,kBAAA;AAAF;;AAGA;EACE;;IAEE,0BAAA;EAAF;EAGA;IACE,iBAAA;EADF;AACF;AAKA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AAHF;;AAMA;EACE,WAAA;EACA,iBAAA;EACA,iBAAA;EACA,mBAAA;EACA,cAAA;EACA,8CAAA;AAHF;;AAMA;EACE;IACE,gDAAA;EAHF;AACF;AAOA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AALF;;AAQA;EACE,gBAAA;EACA,mBAAA;EACA,eAAA;EACA,8CAAA;AALF;;AAQA;EACE,iBAAA;AALF;;AAQA;EACE;IACE,0BAAA;EALF;AACF;AASA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAPF;;AAUA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAPF;;AAUA;EACE,yCAAA;AAPF;;AAUA;EACE,sCAAA;EACA,0BAAA;AAPF;;AAUA;EACE,2BAAA;AAPF;;AAUA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAPF;;AAUA;EACE,sCAAA;EACA,0BAAA;AAPF;;AAUA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAPF;;AAUA;EACE,6DAAA;AAPF;;AAUA;EACE,+BAAA;AAPF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #ffffff, #fbf8f2);\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.8rem, 3vw, 2.8rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  margin-bottom: 0.9rem;\n  color: #08263a;\n  font-size: 1.4rem;\n}\n\np, li {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.96rem;\n}\n\n.subtitle {\n  font-size: 1.06rem;\n  color: #08263a;\n  font-weight: 600;\n  margin-bottom: 0.7rem;\n}\n\n.price-pill {\n  display: inline-flex;\n  margin-top: 1rem;\n  padding: 0.65rem 0.95rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0b6e8f;\n  font-size: 0.88rem;\n  font-weight: 700;\n}\n\n.detail-grid,\n.two-col {\n  display: grid;\n  grid-template-columns: 1.02fr 0.98fr;\n  gap: 1.6rem;\n  align-items: start;\n}\n\n.image-col img {\n  width: 100%;\n  min-height: 340px;\n  object-fit: cover;\n  border-radius: 24px;\n  display: block;\n}\n\n.meta-box,\n.cta-card {\n  margin-top: 1rem;\n  background: #ffffff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.meta-box {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  font-weight: 600;\n  color: #08263a;\n}\n\n.bullet-list,\n.program-list {\n  margin: 0;\n  padding-left: 1.2rem;\n}\n\n.bullet-list li,\n.program-list li {\n  margin-bottom: 0.55rem;\n}\n\n.btn {\n  display: inline-flex;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n  margin-top: 0.8rem;\n}\n\n@media (max-width: 860px) {\n  .detail-grid,\n  .two-col {\n    grid-template-columns: 1fr;\n  }\n\n  .image-col img {\n    min-height: 250px;\n  }\n}\n\n\n.gallery-grid {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.gallery-grid img {\n  width: 100%;\n  aspect-ratio: 1 / 1;\n  object-fit: cover;\n  border-radius: 18px;\n  display: block;\n  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);\n}\n\n@media (max-width: 860px) {\n  .gallery-grid {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n\n\n.offering-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.offer-card {\n  background: #fff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.offer-card h2 {\n  font-size: 1.1rem;\n}\n\n@media (max-width: 860px) {\n  .offering-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+}
+
+/* Mobile no-overlay / responsive safety patch */
+:host {
+  display: block;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img, video {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container, .container.narrow, .narrow {
+    width: min(100% - 1rem, 1120px) !important;
+    max-width: calc(100vw - 1rem) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .page-hero, .section, .hero {
+    padding-top: 2.2rem !important;
+    padding-bottom: 2.2rem !important;
+  }
+  h1 {
+    font-size: clamp(1.65rem, 8vw, 2.15rem) !important;
+    line-height: 1.12 !important;
+  }
+  h2 {
+    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
+    line-height: 1.18 !important;
+  }
+  h3 {
+    font-size: 1.05rem !important;
+  }
+  p, li {
+    font-size: 0.95rem !important;
+    line-height: 1.65 !important;
+  }
+  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 16/10 !important;
+    object-fit: cover !important;
+    display: block !important;
+    position: static !important;
+  }
+  .content-card, .card-body, .meta-box, .cta-card, .offer-card {
+    position: static !important;
+    transform: none !important;
+  }
+  .hero-actions, .contact-actions, .boat-actions, .form-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+  }
+  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+}
+@media (max-width: 480px) {
+  .page-hero, .section, .hero {
+    padding-top: 1.7rem !important;
+    padding-bottom: 1.7rem !important;
+  }
+  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card {
+    padding: 1rem !important;
+  }
+  .contact-banner {
+    padding: 1.2rem !important;
+    border-radius: 18px !important;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/tours/full-day/full-day.component.scss"],"names":[],"mappings":"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","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #ffffff, #fbf8f2);\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.8rem, 3vw, 2.8rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  margin-bottom: 0.9rem;\n  color: #08263a;\n  font-size: 1.4rem;\n}\n\np, li {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.96rem;\n}\n\n.subtitle {\n  font-size: 1.06rem;\n  color: #08263a;\n  font-weight: 600;\n  margin-bottom: 0.7rem;\n}\n\n.price-pill {\n  display: inline-flex;\n  margin-top: 1rem;\n  padding: 0.65rem 0.95rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0b6e8f;\n  font-size: 0.88rem;\n  font-weight: 700;\n}\n\n.detail-grid,\n.two-col {\n  display: grid;\n  grid-template-columns: 1.02fr 0.98fr;\n  gap: 1.6rem;\n  align-items: start;\n}\n\n.image-col img {\n  width: 100%;\n  min-height: 340px;\n  object-fit: cover;\n  border-radius: 24px;\n  display: block;\n}\n\n.meta-box,\n.cta-card {\n  margin-top: 1rem;\n  background: #ffffff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.meta-box {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  font-weight: 600;\n  color: #08263a;\n}\n\n.bullet-list,\n.program-list {\n  margin: 0;\n  padding-left: 1.2rem;\n}\n\n.bullet-list li,\n.program-list li {\n  margin-bottom: 0.55rem;\n}\n\n.btn {\n  display: inline-flex;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n  margin-top: 0.8rem;\n}\n\n@media (max-width: 860px) {\n  .detail-grid,\n  .two-col {\n    grid-template-columns: 1fr;\n  }\n\n  .image-col img {\n    min-height: 250px;\n  }\n}\n\n\n.gallery-grid {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.gallery-grid img {\n  width: 100%;\n  aspect-ratio: 1 / 1;\n  object-fit: cover;\n  border-radius: 18px;\n  display: block;\n  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);\n}\n\n@media (max-width: 860px) {\n  .gallery-grid {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n\n\n.offering-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.offer-card {\n  background: #fff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.offer-card h2 {\n  font-size: 1.1rem;\n}\n\n@media (max-width: 860px) {\n  .offering-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Mobile no-overlay / responsive safety patch */\n:host { display:block; overflow-x:hidden; }\n* { box-sizing: border-box; }\nimg, video { max-width: 100%; }\n\n@media (max-width: 768px) {\n  .container, .container.narrow, .narrow {\n    width: min(100% - 1rem, 1120px) !important;\n    max-width: calc(100vw - 1rem) !important;\n    margin-left: auto !important;\n    margin-right: auto !important;\n  }\n\n  .page-hero, .section, .hero {\n    padding-top: 2.2rem !important;\n    padding-bottom: 2.2rem !important;\n  }\n\n  h1 { font-size: clamp(1.65rem, 8vw, 2.15rem) !important; line-height: 1.12 !important; }\n  h2 { font-size: clamp(1.25rem, 6vw, 1.65rem) !important; line-height: 1.18 !important; }\n  h3 { font-size: 1.05rem !important; }\n  p, li { font-size: 0.95rem !important; line-height: 1.65 !important; }\n\n  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {\n    display: grid !important;\n    grid-template-columns: 1fr !important;\n    gap: 1rem !important;\n  }\n\n  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow: hidden !important;\n  }\n\n  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {\n    width: 100% !important;\n    height: auto !important;\n    min-height: 0 !important;\n    aspect-ratio: 16 / 10 !important;\n    object-fit: cover !important;\n    display: block !important;\n    position: static !important;\n  }\n\n  .content-card, .card-body, .meta-box, .cta-card, .offer-card {\n    position: static !important;\n    transform: none !important;\n  }\n\n  .hero-actions, .contact-actions, .boat-actions, .form-actions {\n    flex-direction: column !important;\n    align-items: stretch !important;\n    width: 100% !important;\n  }\n\n  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {\n    width: 100% !important;\n    max-width: none !important;\n    justify-content: center !important;\n    text-align: center !important;\n    white-space: normal !important;\n  }\n}\n\n@media (max-width: 480px) {\n  .page-hero, .section, .hero { padding-top: 1.7rem !important; padding-bottom: 1.7rem !important; }\n  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card { padding: 1rem !important; }\n  .contact-banner { padding: 1.2rem !important; border-radius: 18px !important; }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -880,7 +1066,112 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .section-light {
   background: var(--alegria-sand);
-}`, "",{"version":3,"sources":["webpack://./src/app/home/outings/outings.component.scss"],"names":[],"mappings":"AACA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,WAAA;AACF;;AAEA;EACE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,gCAAA;EACA,8CAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,iBAAA;EACA,iBAAA;AACF;;AAEA;EACE,eAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,sBAAA;EACA,kBAAA;AACF;;AAEA;EACE,mBAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,oBAAA;EACA,gBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,wBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE;IACE,0BAAA;EACF;AACF;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AADF;;AAIA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AADF;;AAIA;EACE,yCAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,2BAAA;AADF;;AAIA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AADF;;AAIA;EACE,6DAAA;AADF;;AAIA;EACE,+BAAA;AADF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: #ffffff;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.grid {\n  display: grid;\n  gap: 1.3rem;\n}\n\n.outing-card {\n  background: #fff;\n  border-radius: 24px;\n  overflow: hidden;\n  display: grid;\n  grid-template-columns: 320px 1fr;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.outing-card img {\n  width: 100%;\n  height: 100%;\n  min-height: 260px;\n  object-fit: cover;\n}\n\n.content-card {\n  padding: 1.4rem;\n}\n\n.meta-top {\n  color: #64748b;\n  font-weight: 600;\n  margin-bottom: 0.75rem;\n  font-size: 0.88rem;\n}\n\nh2 {\n  margin: 0 0 0.75rem;\n  color: #08263a;\n  font-size: 1.35rem;\n}\n\nul {\n  padding-left: 1.15rem;\n  color: #334155;\n  line-height: 1.7;\n  font-size: 0.94rem;\n}\n\n.btn {\n  display: inline-flex;\n  margin-top: 1rem;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.85rem 1.05rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n@media (max-width: 860px) {\n  .outing-card {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+}
+
+/* Mobile no-overlay / responsive safety patch */
+:host {
+  display: block;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img, video {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container, .container.narrow, .narrow {
+    width: min(100% - 1rem, 1120px) !important;
+    max-width: calc(100vw - 1rem) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .page-hero, .section, .hero {
+    padding-top: 2.2rem !important;
+    padding-bottom: 2.2rem !important;
+  }
+  h1 {
+    font-size: clamp(1.65rem, 8vw, 2.15rem) !important;
+    line-height: 1.12 !important;
+  }
+  h2 {
+    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
+    line-height: 1.18 !important;
+  }
+  h3 {
+    font-size: 1.05rem !important;
+  }
+  p, li {
+    font-size: 0.95rem !important;
+    line-height: 1.65 !important;
+  }
+  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 16/10 !important;
+    object-fit: cover !important;
+    display: block !important;
+    position: static !important;
+  }
+  .content-card, .card-body, .meta-box, .cta-card, .offer-card {
+    position: static !important;
+    transform: none !important;
+  }
+  .hero-actions, .contact-actions, .boat-actions, .form-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+  }
+  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+}
+@media (max-width: 480px) {
+  .page-hero, .section, .hero {
+    padding-top: 1.7rem !important;
+    padding-bottom: 1.7rem !important;
+  }
+  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card {
+    padding: 1rem !important;
+  }
+  .contact-banner {
+    padding: 1.2rem !important;
+    border-radius: 18px !important;
+  }
+}
+/* Experience page: never overlay text on photos on mobile */
+@media (max-width: 768px) {
+  .outing-card {
+    display: block !important;
+  }
+  .outing-card img {
+    border-radius: 18px 18px 0 0 !important;
+  }
+  .content-card {
+    background: #fff !important;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/outings/outings.component.scss"],"names":[],"mappings":"AACA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,WAAA;AACF;;AAEA;EACE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,gCAAA;EACA,8CAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,iBAAA;EACA,iBAAA;AACF;;AAEA;EACE,eAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,sBAAA;EACA,kBAAA;AACF;;AAEA;EACE,mBAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,oBAAA;EACA,gBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,wBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE;IACE,0BAAA;EACF;AACF;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AADF;;AAIA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AADF;;AAIA;EACE,yCAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,2BAAA;AADF;;AAIA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AADF;;AAIA;EACE,6DAAA;AADF;;AAIA;EACE,+BAAA;AADF;;AAKA,gDAAA;AACA;EAAQ,cAAA;EAAe,kBAAA;AAAvB;;AACA;EAAI,sBAAA;AAGJ;;AAFA;EAAa,eAAA;AAMb;;AAJA;EACE;IACE,0CAAA;IACA,wCAAA;IACA,4BAAA;IACA,6BAAA;EAOF;EAJA;IACE,8BAAA;IACA,iCAAA;EAMF;EAHA;IAAK,kDAAA;IAAoD,4BAAA;EAOzD;EANA;IAAK,kDAAA;IAAoD,4BAAA;EAUzD;EATA;IAAK,6BAAA;EAYL;EAXA;IAAQ,6BAAA;IAA+B,4BAAA;EAevC;EAbA;IACE,wBAAA;IACA,qCAAA;IACA,oBAAA;EAeF;EAZA;IACE,qCAAA;EAcF;EAXA;IACE,sBAAA;IACA,0BAAA;IACA,2BAAA;EAaF;EAVA;IACE,sBAAA;IACA,uBAAA;IACA,wBAAA;IACA,8BAAA;IACA,4BAAA;IACA,yBAAA;IACA,2BAAA;EAYF;EATA;IACE,2BAAA;IACA,0BAAA;EAWF;EARA;IACE,iCAAA;IACA,+BAAA;IACA,sBAAA;EAUF;EAPA;IACE,sBAAA;IACA,0BAAA;IACA,kCAAA;IACA,6BAAA;IACA,8BAAA;EASF;AACF;AANA;EACE;IAA8B,8BAAA;IAAgC,iCAAA;EAU9D;EATA;IAA+E,wBAAA;EAY/E;EAXA;IAAkB,0BAAA;IAA4B,8BAAA;EAe9C;AACF;AAZA,4DAAA;AACA;EACE;IAAe,yBAAA;EAef;EAdA;IAAmB,uCAAA;EAiBnB;EAhBA;IAAgB,2BAAA;EAmBhB;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: #ffffff;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.grid {\n  display: grid;\n  gap: 1.3rem;\n}\n\n.outing-card {\n  background: #fff;\n  border-radius: 24px;\n  overflow: hidden;\n  display: grid;\n  grid-template-columns: 320px 1fr;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.outing-card img {\n  width: 100%;\n  height: 100%;\n  min-height: 260px;\n  object-fit: cover;\n}\n\n.content-card {\n  padding: 1.4rem;\n}\n\n.meta-top {\n  color: #64748b;\n  font-weight: 600;\n  margin-bottom: 0.75rem;\n  font-size: 0.88rem;\n}\n\nh2 {\n  margin: 0 0 0.75rem;\n  color: #08263a;\n  font-size: 1.35rem;\n}\n\nul {\n  padding-left: 1.15rem;\n  color: #334155;\n  line-height: 1.7;\n  font-size: 0.94rem;\n}\n\n.btn {\n  display: inline-flex;\n  margin-top: 1rem;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.85rem 1.05rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n@media (max-width: 860px) {\n  .outing-card {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Mobile no-overlay / responsive safety patch */\n:host { display:block; overflow-x:hidden; }\n* { box-sizing: border-box; }\nimg, video { max-width: 100%; }\n\n@media (max-width: 768px) {\n  .container, .container.narrow, .narrow {\n    width: min(100% - 1rem, 1120px) !important;\n    max-width: calc(100vw - 1rem) !important;\n    margin-left: auto !important;\n    margin-right: auto !important;\n  }\n\n  .page-hero, .section, .hero {\n    padding-top: 2.2rem !important;\n    padding-bottom: 2.2rem !important;\n  }\n\n  h1 { font-size: clamp(1.65rem, 8vw, 2.15rem) !important; line-height: 1.12 !important; }\n  h2 { font-size: clamp(1.25rem, 6vw, 1.65rem) !important; line-height: 1.18 !important; }\n  h3 { font-size: 1.05rem !important; }\n  p, li { font-size: 0.95rem !important; line-height: 1.65 !important; }\n\n  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {\n    display: grid !important;\n    grid-template-columns: 1fr !important;\n    gap: 1rem !important;\n  }\n\n  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow: hidden !important;\n  }\n\n  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {\n    width: 100% !important;\n    height: auto !important;\n    min-height: 0 !important;\n    aspect-ratio: 16 / 10 !important;\n    object-fit: cover !important;\n    display: block !important;\n    position: static !important;\n  }\n\n  .content-card, .card-body, .meta-box, .cta-card, .offer-card {\n    position: static !important;\n    transform: none !important;\n  }\n\n  .hero-actions, .contact-actions, .boat-actions, .form-actions {\n    flex-direction: column !important;\n    align-items: stretch !important;\n    width: 100% !important;\n  }\n\n  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {\n    width: 100% !important;\n    max-width: none !important;\n    justify-content: center !important;\n    text-align: center !important;\n    white-space: normal !important;\n  }\n}\n\n@media (max-width: 480px) {\n  .page-hero, .section, .hero { padding-top: 1.7rem !important; padding-bottom: 1.7rem !important; }\n  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card { padding: 1rem !important; }\n  .contact-banner { padding: 1.2rem !important; border-radius: 18px !important; }\n}\n\n\n/* Experience page: never overlay text on photos on mobile */\n@media (max-width: 768px) {\n  .outing-card { display: block !important; }\n  .outing-card img { border-radius: 18px 18px 0 0 !important; }\n  .content-card { background: #fff !important; }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -914,7 +1205,7 @@ __webpack_require__.r(__webpack_exports__);
 let BoatComponent = class BoatComponent {
   languageService;
   content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr;
-  images = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr.galleryImages.slice(0, 4);
+  images = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr.galleryImages.slice(0, 13);
   languageSub;
   specs = [];
   coreOffering = [];
@@ -970,7 +1261,7 @@ let BoatComponent = class BoatComponent {
   ngOnInit() {
     this.languageSub = this.languageService.language$.subscribe(language => {
       this.content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT[language];
-      this.images = this.content.galleryImages.slice(0, 4);
+      this.images = this.content.galleryImages.slice(0, 13);
       const localized = this.localizedData[language];
       this.specsTitle = localized.specsTitle;
       this.servicesTitle = localized.servicesTitle;
@@ -1234,7 +1525,100 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .section-light {
   background: var(--alegria-sand);
-}`, "",{"version":3,"sources":["webpack://./src/app/home/crew/crew.component.scss"],"names":[],"mappings":"AAEA;EAAa,+BAAA;EAAuC,cAAA;AAEpD;;AADA;EAAU,gBAAA;AAKV;;AAJA;EAAuB,eAAA;AAQvB;;AAPA;EAAW,qBAAA;EAAsB,qBAAA;EAAqB,kBAAA;EAAkB,gBAAA;EAAiB,sBAAA;EAAsB,yBAAA;EAA0B,cAAA;AAiBzI;;AAhBA;EAAK,oCAAA;EAAsC,iBAAA;EAAkB,kBAAA;EAAkB,cAAA;AAuB/E;;AAtBA;EAAI,cAAA;EAAe,gBAAA;EAAiB,kBAAA;AA4BpC;;AA3BA;EAAc,aAAA;EAAc,qCAAA;EAAuC,SAAA;AAiCnE;;AAhCA;EAAa,eAAA;EAAgB,gBAAA;EAAiB,mBAAA;EAAoB,8CAAA;EAA2C,cAAA;AAwC7G;;AAvCA;EAAgB,SAAA;EAAU,eAAA;EAAgB,cAAA;AA6C1C;;AA5CA;EAA2B;IAAc,0BAAA;EAiDvC;AACF;AA/CA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAiDF;;AA9CA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAiDF;;AA9CA;EACE,yCAAA;AAiDF;;AA9CA;EACE,sCAAA;EACA,0BAAA;AAiDF;;AA9CA;EACE,2BAAA;AAiDF;;AA9CA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAiDF;;AA9CA;EACE,sCAAA;EACA,0BAAA;AAiDF;;AA9CA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAiDF;;AA9CA;EACE,6DAAA;AAiDF;;AA9CA;EACE,+BAAA;AAiDF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n\n.container { width: min(1120px, calc(100% - 2rem)); margin: 0 auto; }\n.narrow { max-width: 760px; }\n.page-hero, .section { padding: 4rem 0; }\n.eyebrow { display:inline-block; margin-bottom:.9rem; font-size:.82rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#0b6e8f; }\nh1 { font-size: clamp(1.85rem, 3vw, 3rem); line-height:1.08; margin:0 0 .9rem; color:#08263a; }\np { color:#475569; line-height:1.7; font-size:.97rem; }\n.cards-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:1rem; }\n.crew-card { padding:1.2rem; background:#fff; border-radius:18px; box-shadow:0 12px 28px rgba(15,23,42,.05); color:#334155; }\n.crew-card h2 { margin:0; font-size:1rem; color:#08263a; }\n@media (max-width: 860px){ .cards-grid { grid-template-columns:1fr; } }\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+}
+
+/* Mobile no-overlay / responsive safety patch */
+:host {
+  display: block;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img, video {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container, .container.narrow, .narrow {
+    width: min(100% - 1rem, 1120px) !important;
+    max-width: calc(100vw - 1rem) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .page-hero, .section, .hero {
+    padding-top: 2.2rem !important;
+    padding-bottom: 2.2rem !important;
+  }
+  h1 {
+    font-size: clamp(1.65rem, 8vw, 2.15rem) !important;
+    line-height: 1.12 !important;
+  }
+  h2 {
+    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
+    line-height: 1.18 !important;
+  }
+  h3 {
+    font-size: 1.05rem !important;
+  }
+  p, li {
+    font-size: 0.95rem !important;
+    line-height: 1.65 !important;
+  }
+  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 16/10 !important;
+    object-fit: cover !important;
+    display: block !important;
+    position: static !important;
+  }
+  .content-card, .card-body, .meta-box, .cta-card, .offer-card {
+    position: static !important;
+    transform: none !important;
+  }
+  .hero-actions, .contact-actions, .boat-actions, .form-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+  }
+  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+}
+@media (max-width: 480px) {
+  .page-hero, .section, .hero {
+    padding-top: 1.7rem !important;
+    padding-bottom: 1.7rem !important;
+  }
+  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card {
+    padding: 1rem !important;
+  }
+  .contact-banner {
+    padding: 1.2rem !important;
+    border-radius: 18px !important;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/crew/crew.component.scss"],"names":[],"mappings":"AAEA;EAAa,+BAAA;EAAuC,cAAA;AAEpD;;AADA;EAAU,gBAAA;AAKV;;AAJA;EAAuB,eAAA;AAQvB;;AAPA;EAAW,qBAAA;EAAsB,qBAAA;EAAqB,kBAAA;EAAkB,gBAAA;EAAiB,sBAAA;EAAsB,yBAAA;EAA0B,cAAA;AAiBzI;;AAhBA;EAAK,oCAAA;EAAsC,iBAAA;EAAkB,kBAAA;EAAkB,cAAA;AAuB/E;;AAtBA;EAAI,cAAA;EAAe,gBAAA;EAAiB,kBAAA;AA4BpC;;AA3BA;EAAc,aAAA;EAAc,qCAAA;EAAuC,SAAA;AAiCnE;;AAhCA;EAAa,eAAA;EAAgB,gBAAA;EAAiB,mBAAA;EAAoB,8CAAA;EAA2C,cAAA;AAwC7G;;AAvCA;EAAgB,SAAA;EAAU,eAAA;EAAgB,cAAA;AA6C1C;;AA5CA;EAA2B;IAAc,0BAAA;EAiDvC;AACF;AA/CA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAiDF;;AA9CA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAiDF;;AA9CA;EACE,yCAAA;AAiDF;;AA9CA;EACE,sCAAA;EACA,0BAAA;AAiDF;;AA9CA;EACE,2BAAA;AAiDF;;AA9CA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAiDF;;AA9CA;EACE,sCAAA;EACA,0BAAA;AAiDF;;AA9CA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAiDF;;AA9CA;EACE,6DAAA;AAiDF;;AA9CA;EACE,+BAAA;AAiDF;;AA7CA,gDAAA;AACA;EAAQ,cAAA;EAAe,kBAAA;AAkDvB;;AAjDA;EAAI,sBAAA;AAqDJ;;AApDA;EAAa,eAAA;AAwDb;;AAtDA;EACE;IACE,0CAAA;IACA,wCAAA;IACA,4BAAA;IACA,6BAAA;EAyDF;EAtDA;IACE,8BAAA;IACA,iCAAA;EAwDF;EArDA;IAAK,kDAAA;IAAoD,4BAAA;EAyDzD;EAxDA;IAAK,kDAAA;IAAoD,4BAAA;EA4DzD;EA3DA;IAAK,6BAAA;EA8DL;EA7DA;IAAQ,6BAAA;IAA+B,4BAAA;EAiEvC;EA/DA;IACE,wBAAA;IACA,qCAAA;IACA,oBAAA;EAiEF;EA9DA;IACE,qCAAA;EAgEF;EA7DA;IACE,sBAAA;IACA,0BAAA;IACA,2BAAA;EA+DF;EA5DA;IACE,sBAAA;IACA,uBAAA;IACA,wBAAA;IACA,8BAAA;IACA,4BAAA;IACA,yBAAA;IACA,2BAAA;EA8DF;EA3DA;IACE,2BAAA;IACA,0BAAA;EA6DF;EA1DA;IACE,iCAAA;IACA,+BAAA;IACA,sBAAA;EA4DF;EAzDA;IACE,sBAAA;IACA,0BAAA;IACA,kCAAA;IACA,6BAAA;IACA,8BAAA;EA2DF;AACF;AAxDA;EACE;IAA8B,8BAAA;IAAgC,iCAAA;EA4D9D;EA3DA;IAA+E,wBAAA;EA8D/E;EA7DA;IAAkB,0BAAA;IAA4B,8BAAA;EAiE9C;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n\n.container { width: min(1120px, calc(100% - 2rem)); margin: 0 auto; }\n.narrow { max-width: 760px; }\n.page-hero, .section { padding: 4rem 0; }\n.eyebrow { display:inline-block; margin-bottom:.9rem; font-size:.82rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#0b6e8f; }\nh1 { font-size: clamp(1.85rem, 3vw, 3rem); line-height:1.08; margin:0 0 .9rem; color:#08263a; }\np { color:#475569; line-height:1.7; font-size:.97rem; }\n.cards-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:1rem; }\n.crew-card { padding:1.2rem; background:#fff; border-radius:18px; box-shadow:0 12px 28px rgba(15,23,42,.05); color:#334155; }\n.crew-card h2 { margin:0; font-size:1rem; color:#08263a; }\n@media (max-width: 860px){ .cards-grid { grid-template-columns:1fr; } }\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Mobile no-overlay / responsive safety patch */\n:host { display:block; overflow-x:hidden; }\n* { box-sizing: border-box; }\nimg, video { max-width: 100%; }\n\n@media (max-width: 768px) {\n  .container, .container.narrow, .narrow {\n    width: min(100% - 1rem, 1120px) !important;\n    max-width: calc(100vw - 1rem) !important;\n    margin-left: auto !important;\n    margin-right: auto !important;\n  }\n\n  .page-hero, .section, .hero {\n    padding-top: 2.2rem !important;\n    padding-bottom: 2.2rem !important;\n  }\n\n  h1 { font-size: clamp(1.65rem, 8vw, 2.15rem) !important; line-height: 1.12 !important; }\n  h2 { font-size: clamp(1.25rem, 6vw, 1.65rem) !important; line-height: 1.18 !important; }\n  h3 { font-size: 1.05rem !important; }\n  p, li { font-size: 0.95rem !important; line-height: 1.65 !important; }\n\n  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {\n    display: grid !important;\n    grid-template-columns: 1fr !important;\n    gap: 1rem !important;\n  }\n\n  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow: hidden !important;\n  }\n\n  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {\n    width: 100% !important;\n    height: auto !important;\n    min-height: 0 !important;\n    aspect-ratio: 16 / 10 !important;\n    object-fit: cover !important;\n    display: block !important;\n    position: static !important;\n  }\n\n  .content-card, .card-body, .meta-box, .cta-card, .offer-card {\n    position: static !important;\n    transform: none !important;\n  }\n\n  .hero-actions, .contact-actions, .boat-actions, .form-actions {\n    flex-direction: column !important;\n    align-items: stretch !important;\n    width: 100% !important;\n  }\n\n  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {\n    width: 100% !important;\n    max-width: none !important;\n    justify-content: center !important;\n    text-align: center !important;\n    white-space: normal !important;\n  }\n}\n\n@media (max-width: 480px) {\n  .page-hero, .section, .hero { padding-top: 1.7rem !important; padding-bottom: 1.7rem !important; }\n  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card { padding: 1rem !important; }\n  .contact-banner { padding: 1.2rem !important; border-radius: 18px !important; }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -1518,7 +1902,100 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .section-light {
   background: var(--alegria-sand);
-}`, "",{"version":3,"sources":["webpack://./src/app/home/terms/terms.component.scss"],"names":[],"mappings":"AACA;EACE,mBAAA;EACA,eAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,uCAAA;EACA,kCAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;AACF;;AAEA;EACE,sCAAA;EACA,sCAAA;EACA,mCAAA;EACA,iBAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;EACA,+BAAA;EACA,kBAAA;EACA,gBAAA;EACA,gBAAA;EACA,mBAAA;AACF;;AAEA;EACE,mBAAA;EACA,uCAAA;EACA,mBAAA;EACA,6CAAA;EACA,aAAA;AACF;;AAEA;EACE,2CAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE,uCAAA;EACA,kCAAA;EACA,iBAAA;EACA,gBAAA;EACA,gBAAA;AACF;;AAEA;;EAEE,cAAA;EACA,+BAAA;EACA,kBAAA;EACA,iBAAA;AACF;;AAEA;EACE,SAAA;EACA,oBAAA;AACF;;AAEA;EACE;IACE,eAAA;EACF;EAEA;IACE,mBAAA;IACA,aAAA;EAAF;AACF;AAIA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAFF;;AAKA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAFF;;AAKA;EACE,yCAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,2BAAA;AAFF;;AAKA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAFF;;AAKA;EACE,6DAAA;AAFF;;AAKA;EACE,+BAAA;AAFF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.terms-page {\n  background: #f7fbfd;\n  padding: 72px 0;\n}\n\n.terms-container {\n  max-width: 980px;\n}\n\n.eyebrow {\n  color: var(--color-ocean-blue, #0f6f8f);\n  font-family: 'Raleway', sans-serif;\n  font-size: 0.78rem;\n  font-weight: 700;\n  letter-spacing: 0.14em;\n  text-transform: uppercase;\n}\n\nh1 {\n  color: var(--color-deep-blue, #06283d);\n  font-family: 'Playfair Display', serif;\n  font-size: clamp(2rem, 4vw, 3.4rem);\n  line-height: 1.08;\n  margin: 16px 0 18px;\n}\n\n.terms-intro {\n  color: #52616b;\n  font-family: 'Lato', sans-serif;\n  font-size: 1.02rem;\n  line-height: 1.7;\n  max-width: 780px;\n  margin-bottom: 34px;\n}\n\n.terms-content {\n  background: #ffffff;\n  border: 1px solid rgba(6, 40, 61, 0.08);\n  border-radius: 24px;\n  box-shadow: 0 18px 50px rgba(6, 40, 61, 0.08);\n  padding: 34px;\n}\n\n.term-section + .term-section {\n  border-top: 1px solid rgba(6, 40, 61, 0.08);\n  margin-top: 28px;\n  padding-top: 28px;\n}\n\nh2 {\n  color: var(--color-ocean-blue, #0f6f8f);\n  font-family: 'Raleway', sans-serif;\n  font-size: 1.1rem;\n  font-weight: 800;\n  margin: 0 0 14px;\n}\n\np,\nli {\n  color: #2d3740;\n  font-family: 'Lato', sans-serif;\n  font-size: 0.98rem;\n  line-height: 1.75;\n}\n\nul {\n  margin: 0;\n  padding-left: 1.2rem;\n}\n\n@media (max-width: 768px) {\n  .terms-page {\n    padding: 46px 0;\n  }\n\n  .terms-content {\n    border-radius: 18px;\n    padding: 22px;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+}
+
+/* Mobile no-overlay / responsive safety patch */
+:host {
+  display: block;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img, video {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container, .container.narrow, .narrow {
+    width: min(100% - 1rem, 1120px) !important;
+    max-width: calc(100vw - 1rem) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .page-hero, .section, .hero {
+    padding-top: 2.2rem !important;
+    padding-bottom: 2.2rem !important;
+  }
+  h1 {
+    font-size: clamp(1.65rem, 8vw, 2.15rem) !important;
+    line-height: 1.12 !important;
+  }
+  h2 {
+    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
+    line-height: 1.18 !important;
+  }
+  h3 {
+    font-size: 1.05rem !important;
+  }
+  p, li {
+    font-size: 0.95rem !important;
+    line-height: 1.65 !important;
+  }
+  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 16/10 !important;
+    object-fit: cover !important;
+    display: block !important;
+    position: static !important;
+  }
+  .content-card, .card-body, .meta-box, .cta-card, .offer-card {
+    position: static !important;
+    transform: none !important;
+  }
+  .hero-actions, .contact-actions, .boat-actions, .form-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+  }
+  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+}
+@media (max-width: 480px) {
+  .page-hero, .section, .hero {
+    padding-top: 1.7rem !important;
+    padding-bottom: 1.7rem !important;
+  }
+  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card {
+    padding: 1rem !important;
+  }
+  .contact-banner {
+    padding: 1.2rem !important;
+    border-radius: 18px !important;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/terms/terms.component.scss"],"names":[],"mappings":"AACA;EACE,mBAAA;EACA,eAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,uCAAA;EACA,kCAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;AACF;;AAEA;EACE,sCAAA;EACA,sCAAA;EACA,mCAAA;EACA,iBAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;EACA,+BAAA;EACA,kBAAA;EACA,gBAAA;EACA,gBAAA;EACA,mBAAA;AACF;;AAEA;EACE,mBAAA;EACA,uCAAA;EACA,mBAAA;EACA,6CAAA;EACA,aAAA;AACF;;AAEA;EACE,2CAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE,uCAAA;EACA,kCAAA;EACA,iBAAA;EACA,gBAAA;EACA,gBAAA;AACF;;AAEA;;EAEE,cAAA;EACA,+BAAA;EACA,kBAAA;EACA,iBAAA;AACF;;AAEA;EACE,SAAA;EACA,oBAAA;AACF;;AAEA;EACE;IACE,eAAA;EACF;EAEA;IACE,mBAAA;IACA,aAAA;EAAF;AACF;AAIA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAFF;;AAKA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAFF;;AAKA;EACE,yCAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,2BAAA;AAFF;;AAKA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAFF;;AAKA;EACE,6DAAA;AAFF;;AAKA;EACE,+BAAA;AAFF;;AAMA,gDAAA;AACA;EAAQ,cAAA;EAAe,kBAAA;AADvB;;AAEA;EAAI,sBAAA;AAEJ;;AADA;EAAa,eAAA;AAKb;;AAHA;EACE;IACE,0CAAA;IACA,wCAAA;IACA,4BAAA;IACA,6BAAA;EAMF;EAHA;IACE,8BAAA;IACA,iCAAA;EAKF;EAFA;IAAK,kDAAA;IAAoD,4BAAA;EAMzD;EALA;IAAK,kDAAA;IAAoD,4BAAA;EASzD;EARA;IAAK,6BAAA;EAWL;EAVA;IAAQ,6BAAA;IAA+B,4BAAA;EAcvC;EAZA;IACE,wBAAA;IACA,qCAAA;IACA,oBAAA;EAcF;EAXA;IACE,qCAAA;EAaF;EAVA;IACE,sBAAA;IACA,0BAAA;IACA,2BAAA;EAYF;EATA;IACE,sBAAA;IACA,uBAAA;IACA,wBAAA;IACA,8BAAA;IACA,4BAAA;IACA,yBAAA;IACA,2BAAA;EAWF;EARA;IACE,2BAAA;IACA,0BAAA;EAUF;EAPA;IACE,iCAAA;IACA,+BAAA;IACA,sBAAA;EASF;EANA;IACE,sBAAA;IACA,0BAAA;IACA,kCAAA;IACA,6BAAA;IACA,8BAAA;EAQF;AACF;AALA;EACE;IAA8B,8BAAA;IAAgC,iCAAA;EAS9D;EARA;IAA+E,wBAAA;EAW/E;EAVA;IAAkB,0BAAA;IAA4B,8BAAA;EAc9C;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.terms-page {\n  background: #f7fbfd;\n  padding: 72px 0;\n}\n\n.terms-container {\n  max-width: 980px;\n}\n\n.eyebrow {\n  color: var(--color-ocean-blue, #0f6f8f);\n  font-family: 'Raleway', sans-serif;\n  font-size: 0.78rem;\n  font-weight: 700;\n  letter-spacing: 0.14em;\n  text-transform: uppercase;\n}\n\nh1 {\n  color: var(--color-deep-blue, #06283d);\n  font-family: 'Playfair Display', serif;\n  font-size: clamp(2rem, 4vw, 3.4rem);\n  line-height: 1.08;\n  margin: 16px 0 18px;\n}\n\n.terms-intro {\n  color: #52616b;\n  font-family: 'Lato', sans-serif;\n  font-size: 1.02rem;\n  line-height: 1.7;\n  max-width: 780px;\n  margin-bottom: 34px;\n}\n\n.terms-content {\n  background: #ffffff;\n  border: 1px solid rgba(6, 40, 61, 0.08);\n  border-radius: 24px;\n  box-shadow: 0 18px 50px rgba(6, 40, 61, 0.08);\n  padding: 34px;\n}\n\n.term-section + .term-section {\n  border-top: 1px solid rgba(6, 40, 61, 0.08);\n  margin-top: 28px;\n  padding-top: 28px;\n}\n\nh2 {\n  color: var(--color-ocean-blue, #0f6f8f);\n  font-family: 'Raleway', sans-serif;\n  font-size: 1.1rem;\n  font-weight: 800;\n  margin: 0 0 14px;\n}\n\np,\nli {\n  color: #2d3740;\n  font-family: 'Lato', sans-serif;\n  font-size: 0.98rem;\n  line-height: 1.75;\n}\n\nul {\n  margin: 0;\n  padding-left: 1.2rem;\n}\n\n@media (max-width: 768px) {\n  .terms-page {\n    padding: 46px 0;\n  }\n\n  .terms-content {\n    border-radius: 18px;\n    padding: 22px;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Mobile no-overlay / responsive safety patch */\n:host { display:block; overflow-x:hidden; }\n* { box-sizing: border-box; }\nimg, video { max-width: 100%; }\n\n@media (max-width: 768px) {\n  .container, .container.narrow, .narrow {\n    width: min(100% - 1rem, 1120px) !important;\n    max-width: calc(100vw - 1rem) !important;\n    margin-left: auto !important;\n    margin-right: auto !important;\n  }\n\n  .page-hero, .section, .hero {\n    padding-top: 2.2rem !important;\n    padding-bottom: 2.2rem !important;\n  }\n\n  h1 { font-size: clamp(1.65rem, 8vw, 2.15rem) !important; line-height: 1.12 !important; }\n  h2 { font-size: clamp(1.25rem, 6vw, 1.65rem) !important; line-height: 1.18 !important; }\n  h3 { font-size: 1.05rem !important; }\n  p, li { font-size: 0.95rem !important; line-height: 1.65 !important; }\n\n  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {\n    display: grid !important;\n    grid-template-columns: 1fr !important;\n    gap: 1rem !important;\n  }\n\n  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow: hidden !important;\n  }\n\n  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {\n    width: 100% !important;\n    height: auto !important;\n    min-height: 0 !important;\n    aspect-ratio: 16 / 10 !important;\n    object-fit: cover !important;\n    display: block !important;\n    position: static !important;\n  }\n\n  .content-card, .card-body, .meta-box, .cta-card, .offer-card {\n    position: static !important;\n    transform: none !important;\n  }\n\n  .hero-actions, .contact-actions, .boat-actions, .form-actions {\n    flex-direction: column !important;\n    align-items: stretch !important;\n    width: 100% !important;\n  }\n\n  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {\n    width: 100% !important;\n    max-width: none !important;\n    justify-content: center !important;\n    text-align: center !important;\n    white-space: normal !important;\n  }\n}\n\n@media (max-width: 480px) {\n  .page-hero, .section, .hero { padding-top: 1.7rem !important; padding-bottom: 1.7rem !important; }\n  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card { padding: 1rem !important; }\n  .contact-banner { padding: 1.2rem !important; border-radius: 18px !important; }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -1615,13 +2092,14 @@ const images = {
   party10: 'assets/img/events/party/party10.jpg',
   party11: 'assets/img/events/party/party11.jpg',
   business1: 'assets/img/events/business-meeting/business-meeting1.jpg',
-  business2: 'assets/img/events/business-meeting/business-meeting2.jpg'
+  business2: 'assets/img/events/business-meeting/business-meeting2.jpg',
+  business3: 'assets/img/events/business-meeting/business-meeting3.jpg'
 };
 const TOUR_GALLERIES = {
   'journee-en-mer': [images.de1, images.de2, images.de3, images.de4, images.de5, images.de6],
   'coucher-de-soleil': [images.sunset1, images.sunset2, images.sunset3],
   'anniversaire': [images.party1, images.party2, images.party3, images.party4, images.party5, images.party6, images.party7, images.party8, images.party9, images.party10, images.party11],
-  'sortie-entreprise': [images.business1, images.business2]
+  'sortie-entreprise': [images.business1, images.business2, images.business3]
 };
 const GALLERY_TITLES = {
   fr: 'Galerie photos',
@@ -2347,7 +2825,113 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .section-light {
   background: var(--alegria-sand);
-}`, "",{"version":3,"sources":["webpack://./src/app/home/home/home.component.scss"],"names":[],"mappings":"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","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.section {\n  padding: 4rem 0;\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.hero {\n  padding: 3.5rem 0 2.8rem;\n  background: linear-gradient(180deg, #e8f4f7 0%, #fbf8f2 100%);\n}\n\n.hero-grid,\n.split-grid {\n  display: grid;\n  grid-template-columns: 1.05fr 0.95fr;\n  gap: 1.8rem;\n  align-items: center;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.8rem, 3.1vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 1rem;\n  color: #08263a;\n}\n\nh2 {\n  font-size: clamp(1.45rem, 2.4vw, 2.1rem);\n  line-height: 1.12;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh3 {\n  font-size: 1.05rem;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.hero-copy p {\n  max-width: 640px;\n}\n\n.price-pill {\n  display: inline-flex;\n  align-items: center;\n  margin-top: 0.6rem;\n  padding: 0.55rem 0.85rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0b6e8f;\n  font-size: 0.86rem;\n  font-weight: 700;\n}\n\n.hero-actions,\n.contact-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.9rem;\n  margin-top: 1.4rem;\n}\n\n.btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  text-decoration: none;\n  padding: 0.88rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n.btn-primary {\n  background: #08263a;\n  color: #fff;\n}\n\n.btn-secondary {\n  background: #e8f4f7;\n  color: #08263a;\n}\n\n.hero-points {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.7rem;\n  list-style: none;\n  padding: 0;\n  margin: 1.3rem 0 0;\n}\n\n.hero-points li {\n  padding: 0.5rem 0.8rem;\n  border-radius: 999px;\n  background: rgba(15, 23, 42, 0.06);\n  color: #334155;\n  font-size: 0.84rem;\n}\n\n.hero-visual img,\n.boat-card img,\n.card img {\n  width: 100%;\n  display: block;\n  border-radius: 24px;\n  object-fit: cover;\n}\n\n.hero-visual img,\n.boat-card img {\n  min-height: 390px;\n}\n\n.hero-actions {\n  display: flex;\n  gap: 12px;\n}\n\n.btn-equal {\n  flex: 1;\n  max-width: 220px;\n  text-align: center;\n}\n\n.section-head {\n  max-width: 760px;\n  margin-bottom: 2rem;\n}\n\n.cards-grid {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  gap: 1.1rem;\n}\n\n.card {\n  background: #fff;\n  border-radius: 22px;\n  overflow: hidden;\n  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);\n}\n\n.card img {\n  height: 215px;\n}\n\n.card-body {\n  padding: 1.15rem;\n}\n\n.card h3 {\n  margin: 0 0 0.7rem;\n  color: #08263a;\n}\n\n.meta {\n  margin: 0.75rem 0;\n  color: #64748b;\n  font-size: 0.88rem;\n}\n\n.text-link {\n  color: #0b6e8f;\n  font-weight: 700;\n  text-decoration: none;\n  font-size: 0.9rem;\n}\n\n.check-list {\n  list-style: none;\n  padding: 0;\n  margin: 1.2rem 0 1.8rem;\n  display: grid;\n  gap: 0.72rem;\n}\n\n.check-list li {\n  position: relative;\n  padding-left: 1.55rem;\n  color: #334155;\n  font-size: 0.94rem;\n}\n\n.check-list li::before {\n  content: '✓';\n  position: absolute;\n  left: 0;\n  top: 0;\n  color: #16a34a;\n  font-weight: 700;\n}\n\n.contact-banner {\n  padding: 1.9rem;\n  border-radius: 26px;\n  background: linear-gradient(135deg, #08263a, #1e293b);\n  color: #fff;\n  display: flex;\n  justify-content: space-between;\n  gap: 1.5rem;\n  align-items: center;\n}\n\n.contact-banner h2,\n.contact-banner p,\n.contact-banner .eyebrow {\n  color: #fff;\n}\n\n@media (max-width: 980px) {\n  .cards-grid {\n    grid-template-columns: repeat(2, 1fr);\n  }\n}\n\n@media (max-width: 860px) {\n  .hero-grid,\n  .split-grid,\n  .contact-banner {\n    grid-template-columns: 1fr;\n    flex-direction: column;\n  }\n\n  .hero-visual img,\n  .boat-card img {\n    min-height: 270px;\n  }\n}\n\n\n.home-all-tours-cta {\n  margin-top: 1.5rem;\n  text-align: center;\n}\n\n.cards-grid {\n  align-items: stretch;\n}\n\n.card {\n  height: 100%;\n}\n\n.card-body {\n  display: flex;\n  flex-direction: column;\n  gap: 0.75rem;\n}\n\n.card-body .text-link {\n  margin-top: auto;\n}\n\n\n.hero-video {\n  position: relative;\n  overflow: hidden;\n  min-height: 85vh;\n  display: flex;\n  align-items: center;\n  background: url('/assets/img/boat/bali4.1/bali-41-4.jpg') center/cover no-repeat;\n}\n\n.hero-video-bg {\n  position: absolute;\n  inset: 0;\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n\n.hero-video-overlay {\n  position: absolute;\n  inset: 0;\n  background: rgba(15, 23, 42, 0.45);\n}\n\n.hero-content {\n  position: relative;\n  z-index: 2;\n}\n\n.hero-video .hero-copy,\n.hero-video .eyebrow,\n.hero-video h1,\n.hero-video p,\n.hero-video li {\n  color: #fff;\n}\n\n.hero-video .price-pill {\n  background: rgba(255, 255, 255, 0.14);\n  color: #fff;\n  border: 1px solid rgba(255, 255, 255, 0.24);\n}\n\n.hero-video .hero-points li {\n  background: rgba(255, 255, 255, 0.14);\n  color: #fff;\n}\n\n.hero-visual-placeholder {\n  min-height: 1px;\n}\n\n.btn-book {\n  background: #f28c28;\n  color: #fff;\n}\n\n.btn-book:hover {\n  background: #ea580c;\n}\n\n@media (max-width: 768px) {\n  .hero-video {\n    min-height: 70vh;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+}
+
+/* Mobile no-overlay / responsive safety patch */
+:host {
+  display: block;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img, video {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container, .container.narrow, .narrow {
+    width: min(100% - 1rem, 1120px) !important;
+    max-width: calc(100vw - 1rem) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .page-hero, .section, .hero {
+    padding-top: 2.2rem !important;
+    padding-bottom: 2.2rem !important;
+  }
+  h1 {
+    font-size: clamp(1.65rem, 8vw, 2.15rem) !important;
+    line-height: 1.12 !important;
+  }
+  h2 {
+    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
+    line-height: 1.18 !important;
+  }
+  h3 {
+    font-size: 1.05rem !important;
+  }
+  p, li {
+    font-size: 0.95rem !important;
+    line-height: 1.65 !important;
+  }
+  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 16/10 !important;
+    object-fit: cover !important;
+    display: block !important;
+    position: static !important;
+  }
+  .content-card, .card-body, .meta-box, .cta-card, .offer-card {
+    position: static !important;
+    transform: none !important;
+  }
+  .hero-actions, .contact-actions, .boat-actions, .form-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+  }
+  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+}
+@media (max-width: 480px) {
+  .page-hero, .section, .hero {
+    padding-top: 1.7rem !important;
+    padding-bottom: 1.7rem !important;
+  }
+  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card {
+    padding: 1rem !important;
+  }
+  .contact-banner {
+    padding: 1.2rem !important;
+    border-radius: 18px !important;
+  }
+}
+/* Home cards explicit mobile stacking */
+@media (max-width: 640px) {
+  .cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .card img {
+    height: auto !important;
+    aspect-ratio: 16/10 !important;
+  }
+  .hero-video-bg, .hero-video-overlay {
+    position: absolute !important;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/home/home.component.scss"],"names":[],"mappings":"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","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.section {\n  padding: 4rem 0;\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.hero {\n  padding: 3.5rem 0 2.8rem;\n  background: linear-gradient(180deg, #e8f4f7 0%, #fbf8f2 100%);\n}\n\n.hero-grid,\n.split-grid {\n  display: grid;\n  grid-template-columns: 1.05fr 0.95fr;\n  gap: 1.8rem;\n  align-items: center;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.8rem, 3.1vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 1rem;\n  color: #08263a;\n}\n\nh2 {\n  font-size: clamp(1.45rem, 2.4vw, 2.1rem);\n  line-height: 1.12;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh3 {\n  font-size: 1.05rem;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.hero-copy p {\n  max-width: 640px;\n}\n\n.price-pill {\n  display: inline-flex;\n  align-items: center;\n  margin-top: 0.6rem;\n  padding: 0.55rem 0.85rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0b6e8f;\n  font-size: 0.86rem;\n  font-weight: 700;\n}\n\n.hero-actions,\n.contact-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.9rem;\n  margin-top: 1.4rem;\n}\n\n.btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  text-decoration: none;\n  padding: 0.88rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n.btn-primary {\n  background: #08263a;\n  color: #fff;\n}\n\n.btn-secondary {\n  background: #e8f4f7;\n  color: #08263a;\n}\n\n.hero-points {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.7rem;\n  list-style: none;\n  padding: 0;\n  margin: 1.3rem 0 0;\n}\n\n.hero-points li {\n  padding: 0.5rem 0.8rem;\n  border-radius: 999px;\n  background: rgba(15, 23, 42, 0.06);\n  color: #334155;\n  font-size: 0.84rem;\n}\n\n.hero-visual img,\n.boat-card img,\n.card img {\n  width: 100%;\n  display: block;\n  border-radius: 24px;\n  object-fit: cover;\n}\n\n.hero-visual img,\n.boat-card img {\n  min-height: 390px;\n}\n\n.hero-actions {\n  display: flex;\n  gap: 12px;\n}\n\n.btn-equal {\n  flex: 1;\n  max-width: 220px;\n  text-align: center;\n}\n\n.section-head {\n  max-width: 760px;\n  margin-bottom: 2rem;\n}\n\n.cards-grid {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  gap: 1.1rem;\n}\n\n.card {\n  background: #fff;\n  border-radius: 22px;\n  overflow: hidden;\n  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);\n}\n\n.card img {\n  height: 215px;\n}\n\n.card-body {\n  padding: 1.15rem;\n}\n\n.card h3 {\n  margin: 0 0 0.7rem;\n  color: #08263a;\n}\n\n.meta {\n  margin: 0.75rem 0;\n  color: #64748b;\n  font-size: 0.88rem;\n}\n\n.text-link {\n  color: #0b6e8f;\n  font-weight: 700;\n  text-decoration: none;\n  font-size: 0.9rem;\n}\n\n.check-list {\n  list-style: none;\n  padding: 0;\n  margin: 1.2rem 0 1.8rem;\n  display: grid;\n  gap: 0.72rem;\n}\n\n.check-list li {\n  position: relative;\n  padding-left: 1.55rem;\n  color: #334155;\n  font-size: 0.94rem;\n}\n\n.check-list li::before {\n  content: '✓';\n  position: absolute;\n  left: 0;\n  top: 0;\n  color: #16a34a;\n  font-weight: 700;\n}\n\n.contact-banner {\n  padding: 1.9rem;\n  border-radius: 26px;\n  background: linear-gradient(135deg, #08263a, #1e293b);\n  color: #fff;\n  display: flex;\n  justify-content: space-between;\n  gap: 1.5rem;\n  align-items: center;\n}\n\n.contact-banner h2,\n.contact-banner p,\n.contact-banner .eyebrow {\n  color: #fff;\n}\n\n@media (max-width: 980px) {\n  .cards-grid {\n    grid-template-columns: repeat(2, 1fr);\n  }\n}\n\n@media (max-width: 860px) {\n  .hero-grid,\n  .split-grid,\n  .contact-banner {\n    grid-template-columns: 1fr;\n    flex-direction: column;\n  }\n\n  .hero-visual img,\n  .boat-card img {\n    min-height: 270px;\n  }\n}\n\n\n.home-all-tours-cta {\n  margin-top: 1.5rem;\n  text-align: center;\n}\n\n.cards-grid {\n  align-items: stretch;\n}\n\n.card {\n  height: 100%;\n}\n\n.card-body {\n  display: flex;\n  flex-direction: column;\n  gap: 0.75rem;\n}\n\n.card-body .text-link {\n  margin-top: auto;\n}\n\n\n.hero-video {\n  position: relative;\n  overflow: hidden;\n  min-height: 85vh;\n  display: flex;\n  align-items: center;\n  background: url('/assets/img/boat/bali4.1/bali-41-4.jpg') center/cover no-repeat;\n}\n\n.hero-video-bg {\n  position: absolute;\n  inset: 0;\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n\n.hero-video-overlay {\n  position: absolute;\n  inset: 0;\n  background: rgba(15, 23, 42, 0.45);\n}\n\n.hero-content {\n  position: relative;\n  z-index: 2;\n}\n\n.hero-video .hero-copy,\n.hero-video .eyebrow,\n.hero-video h1,\n.hero-video p,\n.hero-video li {\n  color: #fff;\n}\n\n.hero-video .price-pill {\n  background: rgba(255, 255, 255, 0.14);\n  color: #fff;\n  border: 1px solid rgba(255, 255, 255, 0.24);\n}\n\n.hero-video .hero-points li {\n  background: rgba(255, 255, 255, 0.14);\n  color: #fff;\n}\n\n.hero-visual-placeholder {\n  min-height: 1px;\n}\n\n.btn-book {\n  background: #f28c28;\n  color: #fff;\n}\n\n.btn-book:hover {\n  background: #ea580c;\n}\n\n@media (max-width: 768px) {\n  .hero-video {\n    min-height: 70vh;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Mobile no-overlay / responsive safety patch */\n:host { display:block; overflow-x:hidden; }\n* { box-sizing: border-box; }\nimg, video { max-width: 100%; }\n\n@media (max-width: 768px) {\n  .container, .container.narrow, .narrow {\n    width: min(100% - 1rem, 1120px) !important;\n    max-width: calc(100vw - 1rem) !important;\n    margin-left: auto !important;\n    margin-right: auto !important;\n  }\n\n  .page-hero, .section, .hero {\n    padding-top: 2.2rem !important;\n    padding-bottom: 2.2rem !important;\n  }\n\n  h1 { font-size: clamp(1.65rem, 8vw, 2.15rem) !important; line-height: 1.12 !important; }\n  h2 { font-size: clamp(1.25rem, 6vw, 1.65rem) !important; line-height: 1.18 !important; }\n  h3 { font-size: 1.05rem !important; }\n  p, li { font-size: 0.95rem !important; line-height: 1.65 !important; }\n\n  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {\n    display: grid !important;\n    grid-template-columns: 1fr !important;\n    gap: 1rem !important;\n  }\n\n  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow: hidden !important;\n  }\n\n  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {\n    width: 100% !important;\n    height: auto !important;\n    min-height: 0 !important;\n    aspect-ratio: 16 / 10 !important;\n    object-fit: cover !important;\n    display: block !important;\n    position: static !important;\n  }\n\n  .content-card, .card-body, .meta-box, .cta-card, .offer-card {\n    position: static !important;\n    transform: none !important;\n  }\n\n  .hero-actions, .contact-actions, .boat-actions, .form-actions {\n    flex-direction: column !important;\n    align-items: stretch !important;\n    width: 100% !important;\n  }\n\n  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {\n    width: 100% !important;\n    max-width: none !important;\n    justify-content: center !important;\n    text-align: center !important;\n    white-space: normal !important;\n  }\n}\n\n@media (max-width: 480px) {\n  .page-hero, .section, .hero { padding-top: 1.7rem !important; padding-bottom: 1.7rem !important; }\n  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card { padding: 1rem !important; }\n  .contact-banner { padding: 1.2rem !important; border-radius: 18px !important; }\n}\n\n\n/* Home cards explicit mobile stacking */\n@media (max-width: 640px) {\n  .cards-grid { grid-template-columns: 1fr !important; }\n  .card img { height: auto !important; aspect-ratio: 16 / 10 !important; }\n  .hero-video-bg, .hero-video-overlay { position: absolute !important; }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -2711,7 +3295,100 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .section-light {
   background: var(--alegria-sand);
-}`, "",{"version":3,"sources":["webpack://./src/app/home/tours/business-outing/business-outing.component.scss"],"names":[],"mappings":"AAEA;EACE,+BAAA;EACA,cAAA;AAAF;;AAGA;EACE,gBAAA;AAAF;;AAGA;;EAEE,eAAA;AAAF;;AAGA;EACE,qDAAA;AAAF;;AAGA;EACE,mBAAA;AAAF;;AAGA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AAAF;;AAGA;EACE,qCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AAAF;;AAGA;EACE,aAAA;EACA,qBAAA;EACA,cAAA;EACA,iBAAA;AAAF;;AAGA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AAAF;;AAGA;EACE,kBAAA;EACA,cAAA;EACA,gBAAA;EACA,qBAAA;AAAF;;AAGA;EACE,oBAAA;EACA,gBAAA;EACA,wBAAA;EACA,oBAAA;EACA,kCAAA;EACA,cAAA;EACA,kBAAA;EACA,gBAAA;AAAF;;AAGA;;EAEE,aAAA;EACA,oCAAA;EACA,WAAA;EACA,kBAAA;AAAF;;AAGA;EACE,WAAA;EACA,iBAAA;EACA,iBAAA;EACA,mBAAA;EACA,cAAA;AAAF;;AAGA;;EAEE,gBAAA;EACA,mBAAA;EACA,mBAAA;EACA,eAAA;EACA,8CAAA;AAAF;;AAGA;EACE,aAAA;EACA,eAAA;EACA,SAAA;EACA,gBAAA;EACA,cAAA;AAAF;;AAGA;;EAEE,SAAA;EACA,oBAAA;AAAF;;AAGA;;EAEE,sBAAA;AAAF;;AAGA;EACE,oBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,uBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;EACA,kBAAA;AAAF;;AAGA;EACE;;IAEE,0BAAA;EAAF;EAGA;IACE,iBAAA;EADF;AACF;AAKA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AAHF;;AAMA;EACE,WAAA;EACA,iBAAA;EACA,iBAAA;EACA,mBAAA;EACA,cAAA;EACA,8CAAA;AAHF;;AAMA;EACE;IACE,gDAAA;EAHF;AACF;AAOA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AALF;;AAQA;EACE,gBAAA;EACA,mBAAA;EACA,eAAA;EACA,8CAAA;AALF;;AAQA;EACE,iBAAA;AALF;;AAQA;EACE;IACE,0BAAA;EALF;AACF;AASA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAPF;;AAUA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAPF;;AAUA;EACE,yCAAA;AAPF;;AAUA;EACE,sCAAA;EACA,0BAAA;AAPF;;AAUA;EACE,2BAAA;AAPF;;AAUA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAPF;;AAUA;EACE,sCAAA;EACA,0BAAA;AAPF;;AAUA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAPF;;AAUA;EACE,6DAAA;AAPF;;AAUA;EACE,+BAAA;AAPF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #ffffff, #fbf8f2);\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.8rem, 3vw, 2.8rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  margin-bottom: 0.9rem;\n  color: #08263a;\n  font-size: 1.4rem;\n}\n\np, li {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.96rem;\n}\n\n.subtitle {\n  font-size: 1.06rem;\n  color: #08263a;\n  font-weight: 600;\n  margin-bottom: 0.7rem;\n}\n\n.price-pill {\n  display: inline-flex;\n  margin-top: 1rem;\n  padding: 0.65rem 0.95rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0b6e8f;\n  font-size: 0.88rem;\n  font-weight: 700;\n}\n\n.detail-grid,\n.two-col {\n  display: grid;\n  grid-template-columns: 1.02fr 0.98fr;\n  gap: 1.6rem;\n  align-items: start;\n}\n\n.image-col img {\n  width: 100%;\n  min-height: 340px;\n  object-fit: cover;\n  border-radius: 24px;\n  display: block;\n}\n\n.meta-box,\n.cta-card {\n  margin-top: 1rem;\n  background: #ffffff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.meta-box {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  font-weight: 600;\n  color: #08263a;\n}\n\n.bullet-list,\n.program-list {\n  margin: 0;\n  padding-left: 1.2rem;\n}\n\n.bullet-list li,\n.program-list li {\n  margin-bottom: 0.55rem;\n}\n\n.btn {\n  display: inline-flex;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n  margin-top: 0.8rem;\n}\n\n@media (max-width: 860px) {\n  .detail-grid,\n  .two-col {\n    grid-template-columns: 1fr;\n  }\n\n  .image-col img {\n    min-height: 250px;\n  }\n}\n\n\n.gallery-grid {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.gallery-grid img {\n  width: 100%;\n  aspect-ratio: 1 / 1;\n  object-fit: cover;\n  border-radius: 18px;\n  display: block;\n  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);\n}\n\n@media (max-width: 860px) {\n  .gallery-grid {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n\n\n.offering-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.offer-card {\n  background: #fff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.offer-card h2 {\n  font-size: 1.1rem;\n}\n\n@media (max-width: 860px) {\n  .offering-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+}
+
+/* Mobile no-overlay / responsive safety patch */
+:host {
+  display: block;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img, video {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container, .container.narrow, .narrow {
+    width: min(100% - 1rem, 1120px) !important;
+    max-width: calc(100vw - 1rem) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .page-hero, .section, .hero {
+    padding-top: 2.2rem !important;
+    padding-bottom: 2.2rem !important;
+  }
+  h1 {
+    font-size: clamp(1.65rem, 8vw, 2.15rem) !important;
+    line-height: 1.12 !important;
+  }
+  h2 {
+    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
+    line-height: 1.18 !important;
+  }
+  h3 {
+    font-size: 1.05rem !important;
+  }
+  p, li {
+    font-size: 0.95rem !important;
+    line-height: 1.65 !important;
+  }
+  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 16/10 !important;
+    object-fit: cover !important;
+    display: block !important;
+    position: static !important;
+  }
+  .content-card, .card-body, .meta-box, .cta-card, .offer-card {
+    position: static !important;
+    transform: none !important;
+  }
+  .hero-actions, .contact-actions, .boat-actions, .form-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+  }
+  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+}
+@media (max-width: 480px) {
+  .page-hero, .section, .hero {
+    padding-top: 1.7rem !important;
+    padding-bottom: 1.7rem !important;
+  }
+  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card {
+    padding: 1rem !important;
+  }
+  .contact-banner {
+    padding: 1.2rem !important;
+    border-radius: 18px !important;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/tours/business-outing/business-outing.component.scss"],"names":[],"mappings":"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","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #ffffff, #fbf8f2);\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.8rem, 3vw, 2.8rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  margin-bottom: 0.9rem;\n  color: #08263a;\n  font-size: 1.4rem;\n}\n\np, li {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.96rem;\n}\n\n.subtitle {\n  font-size: 1.06rem;\n  color: #08263a;\n  font-weight: 600;\n  margin-bottom: 0.7rem;\n}\n\n.price-pill {\n  display: inline-flex;\n  margin-top: 1rem;\n  padding: 0.65rem 0.95rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0b6e8f;\n  font-size: 0.88rem;\n  font-weight: 700;\n}\n\n.detail-grid,\n.two-col {\n  display: grid;\n  grid-template-columns: 1.02fr 0.98fr;\n  gap: 1.6rem;\n  align-items: start;\n}\n\n.image-col img {\n  width: 100%;\n  min-height: 340px;\n  object-fit: cover;\n  border-radius: 24px;\n  display: block;\n}\n\n.meta-box,\n.cta-card {\n  margin-top: 1rem;\n  background: #ffffff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.meta-box {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  font-weight: 600;\n  color: #08263a;\n}\n\n.bullet-list,\n.program-list {\n  margin: 0;\n  padding-left: 1.2rem;\n}\n\n.bullet-list li,\n.program-list li {\n  margin-bottom: 0.55rem;\n}\n\n.btn {\n  display: inline-flex;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n  margin-top: 0.8rem;\n}\n\n@media (max-width: 860px) {\n  .detail-grid,\n  .two-col {\n    grid-template-columns: 1fr;\n  }\n\n  .image-col img {\n    min-height: 250px;\n  }\n}\n\n\n.gallery-grid {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.gallery-grid img {\n  width: 100%;\n  aspect-ratio: 1 / 1;\n  object-fit: cover;\n  border-radius: 18px;\n  display: block;\n  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);\n}\n\n@media (max-width: 860px) {\n  .gallery-grid {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n\n\n.offering-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.offer-card {\n  background: #fff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.offer-card h2 {\n  font-size: 1.1rem;\n}\n\n@media (max-width: 860px) {\n  .offering-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Mobile no-overlay / responsive safety patch */\n:host { display:block; overflow-x:hidden; }\n* { box-sizing: border-box; }\nimg, video { max-width: 100%; }\n\n@media (max-width: 768px) {\n  .container, .container.narrow, .narrow {\n    width: min(100% - 1rem, 1120px) !important;\n    max-width: calc(100vw - 1rem) !important;\n    margin-left: auto !important;\n    margin-right: auto !important;\n  }\n\n  .page-hero, .section, .hero {\n    padding-top: 2.2rem !important;\n    padding-bottom: 2.2rem !important;\n  }\n\n  h1 { font-size: clamp(1.65rem, 8vw, 2.15rem) !important; line-height: 1.12 !important; }\n  h2 { font-size: clamp(1.25rem, 6vw, 1.65rem) !important; line-height: 1.18 !important; }\n  h3 { font-size: 1.05rem !important; }\n  p, li { font-size: 0.95rem !important; line-height: 1.65 !important; }\n\n  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {\n    display: grid !important;\n    grid-template-columns: 1fr !important;\n    gap: 1rem !important;\n  }\n\n  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow: hidden !important;\n  }\n\n  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {\n    width: 100% !important;\n    height: auto !important;\n    min-height: 0 !important;\n    aspect-ratio: 16 / 10 !important;\n    object-fit: cover !important;\n    display: block !important;\n    position: static !important;\n  }\n\n  .content-card, .card-body, .meta-box, .cta-card, .offer-card {\n    position: static !important;\n    transform: none !important;\n  }\n\n  .hero-actions, .contact-actions, .boat-actions, .form-actions {\n    flex-direction: column !important;\n    align-items: stretch !important;\n    width: 100% !important;\n  }\n\n  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {\n    width: 100% !important;\n    max-width: none !important;\n    justify-content: center !important;\n    text-align: center !important;\n    white-space: normal !important;\n  }\n}\n\n@media (max-width: 480px) {\n  .page-hero, .section, .hero { padding-top: 1.7rem !important; padding-bottom: 1.7rem !important; }\n  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card { padding: 1rem !important; }\n  .contact-banner { padding: 1.2rem !important; border-radius: 18px !important; }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -2932,7 +3609,100 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .section-light {
   background: var(--alegria-sand);
-}`, "",{"version":3,"sources":["webpack://./src/app/home/contact/contact.component.scss"],"names":[],"mappings":"AACA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,kCAAA;EACA,WAAA;AACF;;AAEA;;EAEE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,8CAAA;AACF;;AAEA;EACE,aAAA;EACA,qCAAA;EACA,SAAA;AACF;;AAEA;EACE,aAAA;EACA,sBAAA;EACA,YAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;;;EAGE,yBAAA;EACA,mBAAA;EACA,oBAAA;EACA,aAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,aAAA;EACA,eAAA;EACA,SAAA;EACA,kBAAA;AACF;;AAEA;EACE,oBAAA;EACA,uBAAA;EACA,mBAAA;EACA,qBAAA;EACA,YAAA;EACA,eAAA;EACA,uBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE,mBAAA;EACA,WAAA;AACF;;AAEA;EACE,mBAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,YAAA;EACA,kBAAA;EACA,gCAAA;AACF;;AAEA;;EAEE,cAAA;EACA,qBAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,mBAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE;;IAEE,0BAAA;EACF;AACF;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AADF;;AAIA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AADF;;AAIA;EACE,yCAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,2BAAA;AADF;;AAIA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AADF;;AAIA;EACE,6DAAA;AADF;;AAIA;EACE,+BAAA;AADF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  color: #08263a;\n  font-size: 1.35rem;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.contact-grid {\n  display: grid;\n  grid-template-columns: 1.2fr 0.8fr;\n  gap: 1.4rem;\n}\n\n.contact-card,\n.info-card {\n  background: #fff;\n  border-radius: 24px;\n  padding: 1.45rem;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.field-grid {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 1rem;\n}\n\nlabel {\n  display: flex;\n  flex-direction: column;\n  gap: 0.45rem;\n  color: #334155;\n  font-weight: 600;\n  font-size: 0.92rem;\n}\n\ninput,\nselect,\ntextarea {\n  border: 1px solid #cbd5e1;\n  border-radius: 14px;\n  padding: 0.9rem 1rem;\n  font: inherit;\n  color: #08263a;\n  background: #fff;\n}\n\n.full-width {\n  margin-top: 1rem;\n}\n\n.form-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  margin-top: 1.2rem;\n}\n\n.btn {\n  display: inline-flex;\n  justify-content: center;\n  align-items: center;\n  text-decoration: none;\n  border: none;\n  cursor: pointer;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n.btn-primary {\n  background: #08263a;\n  color: #fff;\n}\n\n.btn-secondary {\n  background: #e8f4f7;\n  color: #08263a;\n}\n\n.info-block {\n  display: grid;\n  gap: 0.35rem;\n  padding: 0.95rem 0;\n  border-bottom: 1px solid #e8f4f7;\n}\n\n.info-block a,\n.info-block span {\n  color: #0b6e8f;\n  text-decoration: none;\n}\n\n.price-info span {\n  font-weight: 700;\n}\n\n.notice {\n  margin-top: 1rem;\n  padding: 1rem;\n  border-radius: 16px;\n  background: #e8f4f7;\n  color: #08263a;\n  font-size: 0.92rem;\n}\n\n@media (max-width: 860px) {\n  .contact-grid,\n  .field-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+}
+
+/* Mobile no-overlay / responsive safety patch */
+:host {
+  display: block;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img, video {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container, .container.narrow, .narrow {
+    width: min(100% - 1rem, 1120px) !important;
+    max-width: calc(100vw - 1rem) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .page-hero, .section, .hero {
+    padding-top: 2.2rem !important;
+    padding-bottom: 2.2rem !important;
+  }
+  h1 {
+    font-size: clamp(1.65rem, 8vw, 2.15rem) !important;
+    line-height: 1.12 !important;
+  }
+  h2 {
+    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
+    line-height: 1.18 !important;
+  }
+  h3 {
+    font-size: 1.05rem !important;
+  }
+  p, li {
+    font-size: 0.95rem !important;
+    line-height: 1.65 !important;
+  }
+  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 16/10 !important;
+    object-fit: cover !important;
+    display: block !important;
+    position: static !important;
+  }
+  .content-card, .card-body, .meta-box, .cta-card, .offer-card {
+    position: static !important;
+    transform: none !important;
+  }
+  .hero-actions, .contact-actions, .boat-actions, .form-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+  }
+  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+}
+@media (max-width: 480px) {
+  .page-hero, .section, .hero {
+    padding-top: 1.7rem !important;
+    padding-bottom: 1.7rem !important;
+  }
+  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card {
+    padding: 1rem !important;
+  }
+  .contact-banner {
+    padding: 1.2rem !important;
+    border-radius: 18px !important;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/contact/contact.component.scss"],"names":[],"mappings":"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","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  color: #08263a;\n  font-size: 1.35rem;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.contact-grid {\n  display: grid;\n  grid-template-columns: 1.2fr 0.8fr;\n  gap: 1.4rem;\n}\n\n.contact-card,\n.info-card {\n  background: #fff;\n  border-radius: 24px;\n  padding: 1.45rem;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.field-grid {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 1rem;\n}\n\nlabel {\n  display: flex;\n  flex-direction: column;\n  gap: 0.45rem;\n  color: #334155;\n  font-weight: 600;\n  font-size: 0.92rem;\n}\n\ninput,\nselect,\ntextarea {\n  border: 1px solid #cbd5e1;\n  border-radius: 14px;\n  padding: 0.9rem 1rem;\n  font: inherit;\n  color: #08263a;\n  background: #fff;\n}\n\n.full-width {\n  margin-top: 1rem;\n}\n\n.form-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  margin-top: 1.2rem;\n}\n\n.btn {\n  display: inline-flex;\n  justify-content: center;\n  align-items: center;\n  text-decoration: none;\n  border: none;\n  cursor: pointer;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n.btn-primary {\n  background: #08263a;\n  color: #fff;\n}\n\n.btn-secondary {\n  background: #e8f4f7;\n  color: #08263a;\n}\n\n.info-block {\n  display: grid;\n  gap: 0.35rem;\n  padding: 0.95rem 0;\n  border-bottom: 1px solid #e8f4f7;\n}\n\n.info-block a,\n.info-block span {\n  color: #0b6e8f;\n  text-decoration: none;\n}\n\n.price-info span {\n  font-weight: 700;\n}\n\n.notice {\n  margin-top: 1rem;\n  padding: 1rem;\n  border-radius: 16px;\n  background: #e8f4f7;\n  color: #08263a;\n  font-size: 0.92rem;\n}\n\n@media (max-width: 860px) {\n  .contact-grid,\n  .field-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Mobile no-overlay / responsive safety patch */\n:host { display:block; overflow-x:hidden; }\n* { box-sizing: border-box; }\nimg, video { max-width: 100%; }\n\n@media (max-width: 768px) {\n  .container, .container.narrow, .narrow {\n    width: min(100% - 1rem, 1120px) !important;\n    max-width: calc(100vw - 1rem) !important;\n    margin-left: auto !important;\n    margin-right: auto !important;\n  }\n\n  .page-hero, .section, .hero {\n    padding-top: 2.2rem !important;\n    padding-bottom: 2.2rem !important;\n  }\n\n  h1 { font-size: clamp(1.65rem, 8vw, 2.15rem) !important; line-height: 1.12 !important; }\n  h2 { font-size: clamp(1.25rem, 6vw, 1.65rem) !important; line-height: 1.18 !important; }\n  h3 { font-size: 1.05rem !important; }\n  p, li { font-size: 0.95rem !important; line-height: 1.65 !important; }\n\n  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {\n    display: grid !important;\n    grid-template-columns: 1fr !important;\n    gap: 1rem !important;\n  }\n\n  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow: hidden !important;\n  }\n\n  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {\n    width: 100% !important;\n    height: auto !important;\n    min-height: 0 !important;\n    aspect-ratio: 16 / 10 !important;\n    object-fit: cover !important;\n    display: block !important;\n    position: static !important;\n  }\n\n  .content-card, .card-body, .meta-box, .cta-card, .offer-card {\n    position: static !important;\n    transform: none !important;\n  }\n\n  .hero-actions, .contact-actions, .boat-actions, .form-actions {\n    flex-direction: column !important;\n    align-items: stretch !important;\n    width: 100% !important;\n  }\n\n  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {\n    width: 100% !important;\n    max-width: none !important;\n    justify-content: center !important;\n    text-align: center !important;\n    white-space: normal !important;\n  }\n}\n\n@media (max-width: 480px) {\n  .page-hero, .section, .hero { padding-top: 1.7rem !important; padding-bottom: 1.7rem !important; }\n  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card { padding: 1rem !important; }\n  .contact-banner { padding: 1.2rem !important; border-radius: 18px !important; }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -3188,7 +3958,100 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .section-light {
   background: var(--alegria-sand);
-}`, "",{"version":3,"sources":["webpack://./src/app/home/gallery/gallery.component.scss"],"names":[],"mappings":"AACA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,eAAA;EACA,gBAAA;AACF;;AAEA;EACE,WAAA;EACA,mBAAA;EACA,mBAAA;EACA,cAAA;EACA,mBAAA;AACF;;AAEA;EACE;IACE,eAAA;EACF;AACF;AAEA;EACE;IACE,eAAA;EAAF;AACF;AAIA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAFF;;AAKA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAFF;;AAKA;EACE,yCAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,2BAAA;AAFF;;AAKA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAFF;;AAKA;EACE,6DAAA;AAFF;;AAKA;EACE,+BAAA;AAFF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.masonry {\n  column-count: 3;\n  column-gap: 1rem;\n}\n\n.masonry img {\n  width: 100%;\n  margin-bottom: 1rem;\n  border-radius: 22px;\n  display: block;\n  break-inside: avoid;\n}\n\n@media (max-width: 860px) {\n  .masonry {\n    column-count: 2;\n  }\n}\n\n@media (max-width: 560px) {\n  .masonry {\n    column-count: 1;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+}
+
+/* Mobile no-overlay / responsive safety patch */
+:host {
+  display: block;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img, video {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container, .container.narrow, .narrow {
+    width: min(100% - 1rem, 1120px) !important;
+    max-width: calc(100vw - 1rem) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .page-hero, .section, .hero {
+    padding-top: 2.2rem !important;
+    padding-bottom: 2.2rem !important;
+  }
+  h1 {
+    font-size: clamp(1.65rem, 8vw, 2.15rem) !important;
+    line-height: 1.12 !important;
+  }
+  h2 {
+    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
+    line-height: 1.18 !important;
+  }
+  h3 {
+    font-size: 1.05rem !important;
+  }
+  p, li {
+    font-size: 0.95rem !important;
+    line-height: 1.65 !important;
+  }
+  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 16/10 !important;
+    object-fit: cover !important;
+    display: block !important;
+    position: static !important;
+  }
+  .content-card, .card-body, .meta-box, .cta-card, .offer-card {
+    position: static !important;
+    transform: none !important;
+  }
+  .hero-actions, .contact-actions, .boat-actions, .form-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+  }
+  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+}
+@media (max-width: 480px) {
+  .page-hero, .section, .hero {
+    padding-top: 1.7rem !important;
+    padding-bottom: 1.7rem !important;
+  }
+  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card {
+    padding: 1rem !important;
+  }
+  .contact-banner {
+    padding: 1.2rem !important;
+    border-radius: 18px !important;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/gallery/gallery.component.scss"],"names":[],"mappings":"AACA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,eAAA;EACA,gBAAA;AACF;;AAEA;EACE,WAAA;EACA,mBAAA;EACA,mBAAA;EACA,cAAA;EACA,mBAAA;AACF;;AAEA;EACE;IACE,eAAA;EACF;AACF;AAEA;EACE;IACE,eAAA;EAAF;AACF;AAIA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAFF;;AAKA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAFF;;AAKA;EACE,yCAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,2BAAA;AAFF;;AAKA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAFF;;AAKA;EACE,6DAAA;AAFF;;AAKA;EACE,+BAAA;AAFF;;AAMA,gDAAA;AACA;EAAQ,cAAA;EAAe,kBAAA;AADvB;;AAEA;EAAI,sBAAA;AAEJ;;AADA;EAAa,eAAA;AAKb;;AAHA;EACE;IACE,0CAAA;IACA,wCAAA;IACA,4BAAA;IACA,6BAAA;EAMF;EAHA;IACE,8BAAA;IACA,iCAAA;EAKF;EAFA;IAAK,kDAAA;IAAoD,4BAAA;EAMzD;EALA;IAAK,kDAAA;IAAoD,4BAAA;EASzD;EARA;IAAK,6BAAA;EAWL;EAVA;IAAQ,6BAAA;IAA+B,4BAAA;EAcvC;EAZA;IACE,wBAAA;IACA,qCAAA;IACA,oBAAA;EAcF;EAXA;IACE,qCAAA;EAaF;EAVA;IACE,sBAAA;IACA,0BAAA;IACA,2BAAA;EAYF;EATA;IACE,sBAAA;IACA,uBAAA;IACA,wBAAA;IACA,8BAAA;IACA,4BAAA;IACA,yBAAA;IACA,2BAAA;EAWF;EARA;IACE,2BAAA;IACA,0BAAA;EAUF;EAPA;IACE,iCAAA;IACA,+BAAA;IACA,sBAAA;EASF;EANA;IACE,sBAAA;IACA,0BAAA;IACA,kCAAA;IACA,6BAAA;IACA,8BAAA;EAQF;AACF;AALA;EACE;IAA8B,8BAAA;IAAgC,iCAAA;EAS9D;EARA;IAA+E,wBAAA;EAW/E;EAVA;IAAkB,0BAAA;IAA4B,8BAAA;EAc9C;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.masonry {\n  column-count: 3;\n  column-gap: 1rem;\n}\n\n.masonry img {\n  width: 100%;\n  margin-bottom: 1rem;\n  border-radius: 22px;\n  display: block;\n  break-inside: avoid;\n}\n\n@media (max-width: 860px) {\n  .masonry {\n    column-count: 2;\n  }\n}\n\n@media (max-width: 560px) {\n  .masonry {\n    column-count: 1;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Mobile no-overlay / responsive safety patch */\n:host { display:block; overflow-x:hidden; }\n* { box-sizing: border-box; }\nimg, video { max-width: 100%; }\n\n@media (max-width: 768px) {\n  .container, .container.narrow, .narrow {\n    width: min(100% - 1rem, 1120px) !important;\n    max-width: calc(100vw - 1rem) !important;\n    margin-left: auto !important;\n    margin-right: auto !important;\n  }\n\n  .page-hero, .section, .hero {\n    padding-top: 2.2rem !important;\n    padding-bottom: 2.2rem !important;\n  }\n\n  h1 { font-size: clamp(1.65rem, 8vw, 2.15rem) !important; line-height: 1.12 !important; }\n  h2 { font-size: clamp(1.25rem, 6vw, 1.65rem) !important; line-height: 1.18 !important; }\n  h3 { font-size: 1.05rem !important; }\n  p, li { font-size: 0.95rem !important; line-height: 1.65 !important; }\n\n  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {\n    display: grid !important;\n    grid-template-columns: 1fr !important;\n    gap: 1rem !important;\n  }\n\n  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow: hidden !important;\n  }\n\n  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {\n    width: 100% !important;\n    height: auto !important;\n    min-height: 0 !important;\n    aspect-ratio: 16 / 10 !important;\n    object-fit: cover !important;\n    display: block !important;\n    position: static !important;\n  }\n\n  .content-card, .card-body, .meta-box, .cta-card, .offer-card {\n    position: static !important;\n    transform: none !important;\n  }\n\n  .hero-actions, .contact-actions, .boat-actions, .form-actions {\n    flex-direction: column !important;\n    align-items: stretch !important;\n    width: 100% !important;\n  }\n\n  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {\n    width: 100% !important;\n    max-width: none !important;\n    justify-content: center !important;\n    text-align: center !important;\n    white-space: normal !important;\n  }\n}\n\n@media (max-width: 480px) {\n  .page-hero, .section, .hero { padding-top: 1.7rem !important; padding-bottom: 1.7rem !important; }\n  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card { padding: 1rem !important; }\n  .contact-banner { padding: 1.2rem !important; border-radius: 18px !important; }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -3437,7 +4300,100 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .section-light {
   background: var(--alegria-sand);
-}`, "",{"version":3,"sources":["webpack://./src/app/home/tours/sunset-cruise/sunset-cruise.component.scss"],"names":[],"mappings":"AAEA;EACE,+BAAA;EACA,cAAA;AAAF;;AAGA;EACE,gBAAA;AAAF;;AAGA;;EAEE,eAAA;AAAF;;AAGA;EACE,qDAAA;AAAF;;AAGA;EACE,mBAAA;AAAF;;AAGA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AAAF;;AAGA;EACE,qCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AAAF;;AAGA;EACE,aAAA;EACA,qBAAA;EACA,cAAA;EACA,iBAAA;AAAF;;AAGA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AAAF;;AAGA;EACE,kBAAA;EACA,cAAA;EACA,gBAAA;EACA,qBAAA;AAAF;;AAGA;EACE,oBAAA;EACA,gBAAA;EACA,wBAAA;EACA,oBAAA;EACA,kCAAA;EACA,cAAA;EACA,kBAAA;EACA,gBAAA;AAAF;;AAGA;;EAEE,aAAA;EACA,oCAAA;EACA,WAAA;EACA,kBAAA;AAAF;;AAGA;EACE,WAAA;EACA,iBAAA;EACA,iBAAA;EACA,mBAAA;EACA,cAAA;AAAF;;AAGA;;EAEE,gBAAA;EACA,mBAAA;EACA,mBAAA;EACA,eAAA;EACA,8CAAA;AAAF;;AAGA;EACE,aAAA;EACA,eAAA;EACA,SAAA;EACA,gBAAA;EACA,cAAA;AAAF;;AAGA;;EAEE,SAAA;EACA,oBAAA;AAAF;;AAGA;;EAEE,sBAAA;AAAF;;AAGA;EACE,oBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,uBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;EACA,kBAAA;AAAF;;AAGA;EACE;;IAEE,0BAAA;EAAF;EAGA;IACE,iBAAA;EADF;AACF;AAKA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AAHF;;AAMA;EACE,WAAA;EACA,iBAAA;EACA,iBAAA;EACA,mBAAA;EACA,cAAA;EACA,8CAAA;AAHF;;AAMA;EACE;IACE,gDAAA;EAHF;AACF;AAOA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AALF;;AAQA;EACE,gBAAA;EACA,mBAAA;EACA,eAAA;EACA,8CAAA;AALF;;AAQA;EACE,iBAAA;AALF;;AAQA;EACE;IACE,0BAAA;EALF;AACF;AASA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAPF;;AAUA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAPF;;AAUA;EACE,yCAAA;AAPF;;AAUA;EACE,sCAAA;EACA,0BAAA;AAPF;;AAUA;EACE,2BAAA;AAPF;;AAUA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAPF;;AAUA;EACE,sCAAA;EACA,0BAAA;AAPF;;AAUA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAPF;;AAUA;EACE,6DAAA;AAPF;;AAUA;EACE,+BAAA;AAPF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #ffffff, #fbf8f2);\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.8rem, 3vw, 2.8rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  margin-bottom: 0.9rem;\n  color: #08263a;\n  font-size: 1.4rem;\n}\n\np, li {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.96rem;\n}\n\n.subtitle {\n  font-size: 1.06rem;\n  color: #08263a;\n  font-weight: 600;\n  margin-bottom: 0.7rem;\n}\n\n.price-pill {\n  display: inline-flex;\n  margin-top: 1rem;\n  padding: 0.65rem 0.95rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0b6e8f;\n  font-size: 0.88rem;\n  font-weight: 700;\n}\n\n.detail-grid,\n.two-col {\n  display: grid;\n  grid-template-columns: 1.02fr 0.98fr;\n  gap: 1.6rem;\n  align-items: start;\n}\n\n.image-col img {\n  width: 100%;\n  min-height: 340px;\n  object-fit: cover;\n  border-radius: 24px;\n  display: block;\n}\n\n.meta-box,\n.cta-card {\n  margin-top: 1rem;\n  background: #ffffff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.meta-box {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  font-weight: 600;\n  color: #08263a;\n}\n\n.bullet-list,\n.program-list {\n  margin: 0;\n  padding-left: 1.2rem;\n}\n\n.bullet-list li,\n.program-list li {\n  margin-bottom: 0.55rem;\n}\n\n.btn {\n  display: inline-flex;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n  margin-top: 0.8rem;\n}\n\n@media (max-width: 860px) {\n  .detail-grid,\n  .two-col {\n    grid-template-columns: 1fr;\n  }\n\n  .image-col img {\n    min-height: 250px;\n  }\n}\n\n\n.gallery-grid {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.gallery-grid img {\n  width: 100%;\n  aspect-ratio: 1 / 1;\n  object-fit: cover;\n  border-radius: 18px;\n  display: block;\n  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);\n}\n\n@media (max-width: 860px) {\n  .gallery-grid {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n\n\n.offering-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.offer-card {\n  background: #fff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.offer-card h2 {\n  font-size: 1.1rem;\n}\n\n@media (max-width: 860px) {\n  .offering-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+}
+
+/* Mobile no-overlay / responsive safety patch */
+:host {
+  display: block;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img, video {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container, .container.narrow, .narrow {
+    width: min(100% - 1rem, 1120px) !important;
+    max-width: calc(100vw - 1rem) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .page-hero, .section, .hero {
+    padding-top: 2.2rem !important;
+    padding-bottom: 2.2rem !important;
+  }
+  h1 {
+    font-size: clamp(1.65rem, 8vw, 2.15rem) !important;
+    line-height: 1.12 !important;
+  }
+  h2 {
+    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
+    line-height: 1.18 !important;
+  }
+  h3 {
+    font-size: 1.05rem !important;
+  }
+  p, li {
+    font-size: 0.95rem !important;
+    line-height: 1.65 !important;
+  }
+  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 16/10 !important;
+    object-fit: cover !important;
+    display: block !important;
+    position: static !important;
+  }
+  .content-card, .card-body, .meta-box, .cta-card, .offer-card {
+    position: static !important;
+    transform: none !important;
+  }
+  .hero-actions, .contact-actions, .boat-actions, .form-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+  }
+  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+}
+@media (max-width: 480px) {
+  .page-hero, .section, .hero {
+    padding-top: 1.7rem !important;
+    padding-bottom: 1.7rem !important;
+  }
+  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card {
+    padding: 1rem !important;
+  }
+  .contact-banner {
+    padding: 1.2rem !important;
+    border-radius: 18px !important;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/tours/sunset-cruise/sunset-cruise.component.scss"],"names":[],"mappings":"AAEA;EACE,+BAAA;EACA,cAAA;AAAF;;AAGA;EACE,gBAAA;AAAF;;AAGA;;EAEE,eAAA;AAAF;;AAGA;EACE,qDAAA;AAAF;;AAGA;EACE,mBAAA;AAAF;;AAGA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AAAF;;AAGA;EACE,qCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AAAF;;AAGA;EACE,aAAA;EACA,qBAAA;EACA,cAAA;EACA,iBAAA;AAAF;;AAGA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AAAF;;AAGA;EACE,kBAAA;EACA,cAAA;EACA,gBAAA;EACA,qBAAA;AAAF;;AAGA;EACE,oBAAA;EACA,gBAAA;EACA,wBAAA;EACA,oBAAA;EACA,kCAAA;EACA,cAAA;EACA,kBAAA;EACA,gBAAA;AAAF;;AAGA;;EAEE,aAAA;EACA,oCAAA;EACA,WAAA;EACA,kBAAA;AAAF;;AAGA;EACE,WAAA;EACA,iBAAA;EACA,iBAAA;EACA,mBAAA;EACA,cAAA;AAAF;;AAGA;;EAEE,gBAAA;EACA,mBAAA;EACA,mBAAA;EACA,eAAA;EACA,8CAAA;AAAF;;AAGA;EACE,aAAA;EACA,eAAA;EACA,SAAA;EACA,gBAAA;EACA,cAAA;AAAF;;AAGA;;EAEE,SAAA;EACA,oBAAA;AAAF;;AAGA;;EAEE,sBAAA;AAAF;;AAGA;EACE,oBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,uBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;EACA,kBAAA;AAAF;;AAGA;EACE;;IAEE,0BAAA;EAAF;EAGA;IACE,iBAAA;EADF;AACF;AAKA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AAHF;;AAMA;EACE,WAAA;EACA,iBAAA;EACA,iBAAA;EACA,mBAAA;EACA,cAAA;EACA,8CAAA;AAHF;;AAMA;EACE;IACE,gDAAA;EAHF;AACF;AAOA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AALF;;AAQA;EACE,gBAAA;EACA,mBAAA;EACA,eAAA;EACA,8CAAA;AALF;;AAQA;EACE,iBAAA;AALF;;AAQA;EACE;IACE,0BAAA;EALF;AACF;AASA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAPF;;AAUA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAPF;;AAUA;EACE,yCAAA;AAPF;;AAUA;EACE,sCAAA;EACA,0BAAA;AAPF;;AAUA;EACE,2BAAA;AAPF;;AAUA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAPF;;AAUA;EACE,sCAAA;EACA,0BAAA;AAPF;;AAUA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAPF;;AAUA;EACE,6DAAA;AAPF;;AAUA;EACE,+BAAA;AAPF;;AAWA,gDAAA;AACA;EAAQ,cAAA;EAAe,kBAAA;AANvB;;AAOA;EAAI,sBAAA;AAHJ;;AAIA;EAAa,eAAA;AAAb;;AAEA;EACE;IACE,0CAAA;IACA,wCAAA;IACA,4BAAA;IACA,6BAAA;EACF;EAEA;IACE,8BAAA;IACA,iCAAA;EAAF;EAGA;IAAK,kDAAA;IAAoD,4BAAA;EACzD;EAAA;IAAK,kDAAA;IAAoD,4BAAA;EAIzD;EAHA;IAAK,6BAAA;EAML;EALA;IAAQ,6BAAA;IAA+B,4BAAA;EASvC;EAPA;IACE,wBAAA;IACA,qCAAA;IACA,oBAAA;EASF;EANA;IACE,qCAAA;EAQF;EALA;IACE,sBAAA;IACA,0BAAA;IACA,2BAAA;EAOF;EAJA;IACE,sBAAA;IACA,uBAAA;IACA,wBAAA;IACA,8BAAA;IACA,4BAAA;IACA,yBAAA;IACA,2BAAA;EAMF;EAHA;IACE,2BAAA;IACA,0BAAA;EAKF;EAFA;IACE,iCAAA;IACA,+BAAA;IACA,sBAAA;EAIF;EADA;IACE,sBAAA;IACA,0BAAA;IACA,kCAAA;IACA,6BAAA;IACA,8BAAA;EAGF;AACF;AAAA;EACE;IAA8B,8BAAA;IAAgC,iCAAA;EAI9D;EAHA;IAA+E,wBAAA;EAM/E;EALA;IAAkB,0BAAA;IAA4B,8BAAA;EAS9C;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #ffffff, #fbf8f2);\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.8rem, 3vw, 2.8rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  margin-bottom: 0.9rem;\n  color: #08263a;\n  font-size: 1.4rem;\n}\n\np, li {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.96rem;\n}\n\n.subtitle {\n  font-size: 1.06rem;\n  color: #08263a;\n  font-weight: 600;\n  margin-bottom: 0.7rem;\n}\n\n.price-pill {\n  display: inline-flex;\n  margin-top: 1rem;\n  padding: 0.65rem 0.95rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0b6e8f;\n  font-size: 0.88rem;\n  font-weight: 700;\n}\n\n.detail-grid,\n.two-col {\n  display: grid;\n  grid-template-columns: 1.02fr 0.98fr;\n  gap: 1.6rem;\n  align-items: start;\n}\n\n.image-col img {\n  width: 100%;\n  min-height: 340px;\n  object-fit: cover;\n  border-radius: 24px;\n  display: block;\n}\n\n.meta-box,\n.cta-card {\n  margin-top: 1rem;\n  background: #ffffff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.meta-box {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  font-weight: 600;\n  color: #08263a;\n}\n\n.bullet-list,\n.program-list {\n  margin: 0;\n  padding-left: 1.2rem;\n}\n\n.bullet-list li,\n.program-list li {\n  margin-bottom: 0.55rem;\n}\n\n.btn {\n  display: inline-flex;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n  margin-top: 0.8rem;\n}\n\n@media (max-width: 860px) {\n  .detail-grid,\n  .two-col {\n    grid-template-columns: 1fr;\n  }\n\n  .image-col img {\n    min-height: 250px;\n  }\n}\n\n\n.gallery-grid {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.gallery-grid img {\n  width: 100%;\n  aspect-ratio: 1 / 1;\n  object-fit: cover;\n  border-radius: 18px;\n  display: block;\n  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);\n}\n\n@media (max-width: 860px) {\n  .gallery-grid {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n\n\n.offering-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.offer-card {\n  background: #fff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.offer-card h2 {\n  font-size: 1.1rem;\n}\n\n@media (max-width: 860px) {\n  .offering-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Mobile no-overlay / responsive safety patch */\n:host { display:block; overflow-x:hidden; }\n* { box-sizing: border-box; }\nimg, video { max-width: 100%; }\n\n@media (max-width: 768px) {\n  .container, .container.narrow, .narrow {\n    width: min(100% - 1rem, 1120px) !important;\n    max-width: calc(100vw - 1rem) !important;\n    margin-left: auto !important;\n    margin-right: auto !important;\n  }\n\n  .page-hero, .section, .hero {\n    padding-top: 2.2rem !important;\n    padding-bottom: 2.2rem !important;\n  }\n\n  h1 { font-size: clamp(1.65rem, 8vw, 2.15rem) !important; line-height: 1.12 !important; }\n  h2 { font-size: clamp(1.25rem, 6vw, 1.65rem) !important; line-height: 1.18 !important; }\n  h3 { font-size: 1.05rem !important; }\n  p, li { font-size: 0.95rem !important; line-height: 1.65 !important; }\n\n  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {\n    display: grid !important;\n    grid-template-columns: 1fr !important;\n    gap: 1rem !important;\n  }\n\n  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow: hidden !important;\n  }\n\n  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {\n    width: 100% !important;\n    height: auto !important;\n    min-height: 0 !important;\n    aspect-ratio: 16 / 10 !important;\n    object-fit: cover !important;\n    display: block !important;\n    position: static !important;\n  }\n\n  .content-card, .card-body, .meta-box, .cta-card, .offer-card {\n    position: static !important;\n    transform: none !important;\n  }\n\n  .hero-actions, .contact-actions, .boat-actions, .form-actions {\n    flex-direction: column !important;\n    align-items: stretch !important;\n    width: 100% !important;\n  }\n\n  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {\n    width: 100% !important;\n    max-width: none !important;\n    justify-content: center !important;\n    text-align: center !important;\n    white-space: normal !important;\n  }\n}\n\n@media (max-width: 480px) {\n  .page-hero, .section, .hero { padding-top: 1.7rem !important; padding-bottom: 1.7rem !important; }\n  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card { padding: 1rem !important; }\n  .contact-banner { padding: 1.2rem !important; border-radius: 18px !important; }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -3757,7 +4713,100 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .section-light {
   background: var(--alegria-sand);
-}`, "",{"version":3,"sources":["webpack://./src/app/home/boat/boat.component.scss"],"names":[],"mappings":"AACA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,qDAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,oCAAA;EACA,WAAA;EACA,kBAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;;EAEE,gBAAA;EACA,UAAA;EACA,kBAAA;EACA,aAAA;EACA,YAAA;AACF;;AAEA;;EAEE,qCAAA;EACA,8BAAA;EACA,gBAAA;EACA,mBAAA;EACA,cAAA;EACA,8CAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,qCAAA;EACA,YAAA;AACF;;AAEA;EACE,WAAA;EACA,aAAA;EACA,iBAAA;EACA,mBAAA;AACF;;AAEA;EACE,oBAAA;EACA,qBAAA;EACA,wBAAA;EACA,oBAAA;EACA,kCAAA;EACA,cAAA;EACA,kBAAA;EACA,gBAAA;AACF;;AAEA;EACE,oBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,uBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE;;IAEE,0BAAA;EACF;AACF;AAGA;EACE,aAAA;EACA,WAAA;EACA,eAAA;EACA,gBAAA;AADF;;AAIA;EACE,mBAAA;EACA,WAAA;AADF;;AAKA;EACE,aAAA;EACA,kCAAA;EACA,WAAA;EACA,kBAAA;AAFF;;AAKA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;EACA,gBAAA;AAFF;;AAKA;EACE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,8CAAA;AAFF;;AAKA;EACE,aAAA;EACA,qBAAA;EACA,cAAA;EACA,eAAA;AAFF;;AAKA;EACE,SAAA;EACA,oBAAA;AAFF;;AAKA;EACE;;IAEE,0BAAA;EAFF;AACF;AAMA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAJF;;AAOA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAJF;;AAOA;EACE,yCAAA;AAJF;;AAOA;EACE,sCAAA;EACA,0BAAA;AAJF;;AAOA;EACE,2BAAA;AAJF;;AAOA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAJF;;AAOA;EACE,sCAAA;EACA,0BAAA;AAJF;;AAOA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAJF;;AAOA;EACE,6DAAA;AAJF;;AAOA;EACE,+BAAA;AAJF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #ffffff, #fbf8f2);\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.text-block {\n  max-width: 820px;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  color: #08263a;\n  font-size: 1.45rem;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.split-grid {\n  display: grid;\n  grid-template-columns: 0.95fr 1.05fr;\n  gap: 1.8rem;\n  align-items: start;\n}\n\n.secondary-grid {\n  align-items: center;\n}\n\n.highlights,\n.occasions-list {\n  list-style: none;\n  padding: 0;\n  margin: 1.3rem 0 0;\n  display: grid;\n  gap: 0.85rem;\n}\n\n.highlights li,\n.occasions-list li {\n  padding: 0.95rem 1rem 0.95rem 1.05rem;\n  border-left: 4px solid #0b6e8f;\n  background: #fff;\n  border-radius: 14px;\n  color: #334155;\n  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.04);\n  font-size: 0.94rem;\n}\n\n.visual-grid {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 0.95rem;\n}\n\n.visual-grid img {\n  width: 100%;\n  height: 220px;\n  object-fit: cover;\n  border-radius: 20px;\n}\n\n.price-box {\n  display: inline-flex;\n  margin: 1rem 0 1.3rem;\n  padding: 0.65rem 0.95rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0b6e8f;\n  font-size: 0.88rem;\n  font-weight: 700;\n}\n\n.btn {\n  display: inline-flex;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n@media (max-width: 860px) {\n  .split-grid,\n  .visual-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n.boat-actions {\n  display: flex;\n  gap: 0.9rem;\n  flex-wrap: wrap;\n  margin-top: 1rem;\n}\n\n.btn-book {\n  background: #f28c28;\n  color: #fff;\n}\n\n\n.specs-grid {\n  display: grid;\n  grid-template-columns: 0.9fr 1.1fr;\n  gap: 1.8rem;\n  align-items: start;\n}\n\n.offering-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 1rem;\n  margin-top: 1rem;\n}\n\n.offer-card {\n  background: #fff;\n  border-radius: 18px;\n  padding: 1.15rem;\n  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);\n}\n\n.offer-card h3 {\n  margin-top: 0;\n  margin-bottom: 0.8rem;\n  color: #08263a;\n  font-size: 1rem;\n}\n\n.bullet-list {\n  margin: 0;\n  padding-left: 1.1rem;\n}\n\n@media (max-width: 860px) {\n  .specs-grid,\n  .offering-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+}
+
+/* Mobile no-overlay / responsive safety patch */
+:host {
+  display: block;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img, video {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container, .container.narrow, .narrow {
+    width: min(100% - 1rem, 1120px) !important;
+    max-width: calc(100vw - 1rem) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .page-hero, .section, .hero {
+    padding-top: 2.2rem !important;
+    padding-bottom: 2.2rem !important;
+  }
+  h1 {
+    font-size: clamp(1.65rem, 8vw, 2.15rem) !important;
+    line-height: 1.12 !important;
+  }
+  h2 {
+    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
+    line-height: 1.18 !important;
+  }
+  h3 {
+    font-size: 1.05rem !important;
+  }
+  p, li {
+    font-size: 0.95rem !important;
+    line-height: 1.65 !important;
+  }
+  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 16/10 !important;
+    object-fit: cover !important;
+    display: block !important;
+    position: static !important;
+  }
+  .content-card, .card-body, .meta-box, .cta-card, .offer-card {
+    position: static !important;
+    transform: none !important;
+  }
+  .hero-actions, .contact-actions, .boat-actions, .form-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+  }
+  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+}
+@media (max-width: 480px) {
+  .page-hero, .section, .hero {
+    padding-top: 1.7rem !important;
+    padding-bottom: 1.7rem !important;
+  }
+  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card {
+    padding: 1rem !important;
+  }
+  .contact-banner {
+    padding: 1.2rem !important;
+    border-radius: 18px !important;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/boat/boat.component.scss"],"names":[],"mappings":"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","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #ffffff, #fbf8f2);\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.text-block {\n  max-width: 820px;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  color: #08263a;\n  font-size: 1.45rem;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.split-grid {\n  display: grid;\n  grid-template-columns: 0.95fr 1.05fr;\n  gap: 1.8rem;\n  align-items: start;\n}\n\n.secondary-grid {\n  align-items: center;\n}\n\n.highlights,\n.occasions-list {\n  list-style: none;\n  padding: 0;\n  margin: 1.3rem 0 0;\n  display: grid;\n  gap: 0.85rem;\n}\n\n.highlights li,\n.occasions-list li {\n  padding: 0.95rem 1rem 0.95rem 1.05rem;\n  border-left: 4px solid #0b6e8f;\n  background: #fff;\n  border-radius: 14px;\n  color: #334155;\n  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.04);\n  font-size: 0.94rem;\n}\n\n.visual-grid {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 0.95rem;\n}\n\n.visual-grid img {\n  width: 100%;\n  height: 220px;\n  object-fit: cover;\n  border-radius: 20px;\n}\n\n.price-box {\n  display: inline-flex;\n  margin: 1rem 0 1.3rem;\n  padding: 0.65rem 0.95rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0b6e8f;\n  font-size: 0.88rem;\n  font-weight: 700;\n}\n\n.btn {\n  display: inline-flex;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n@media (max-width: 860px) {\n  .split-grid,\n  .visual-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n.boat-actions {\n  display: flex;\n  gap: 0.9rem;\n  flex-wrap: wrap;\n  margin-top: 1rem;\n}\n\n.btn-book {\n  background: #f28c28;\n  color: #fff;\n}\n\n\n.specs-grid {\n  display: grid;\n  grid-template-columns: 0.9fr 1.1fr;\n  gap: 1.8rem;\n  align-items: start;\n}\n\n.offering-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 1rem;\n  margin-top: 1rem;\n}\n\n.offer-card {\n  background: #fff;\n  border-radius: 18px;\n  padding: 1.15rem;\n  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);\n}\n\n.offer-card h3 {\n  margin-top: 0;\n  margin-bottom: 0.8rem;\n  color: #08263a;\n  font-size: 1rem;\n}\n\n.bullet-list {\n  margin: 0;\n  padding-left: 1.1rem;\n}\n\n@media (max-width: 860px) {\n  .specs-grid,\n  .offering-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Mobile no-overlay / responsive safety patch */\n:host { display:block; overflow-x:hidden; }\n* { box-sizing: border-box; }\nimg, video { max-width: 100%; }\n\n@media (max-width: 768px) {\n  .container, .container.narrow, .narrow {\n    width: min(100% - 1rem, 1120px) !important;\n    max-width: calc(100vw - 1rem) !important;\n    margin-left: auto !important;\n    margin-right: auto !important;\n  }\n\n  .page-hero, .section, .hero {\n    padding-top: 2.2rem !important;\n    padding-bottom: 2.2rem !important;\n  }\n\n  h1 { font-size: clamp(1.65rem, 8vw, 2.15rem) !important; line-height: 1.12 !important; }\n  h2 { font-size: clamp(1.25rem, 6vw, 1.65rem) !important; line-height: 1.18 !important; }\n  h3 { font-size: 1.05rem !important; }\n  p, li { font-size: 0.95rem !important; line-height: 1.65 !important; }\n\n  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {\n    display: grid !important;\n    grid-template-columns: 1fr !important;\n    gap: 1rem !important;\n  }\n\n  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow: hidden !important;\n  }\n\n  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {\n    width: 100% !important;\n    height: auto !important;\n    min-height: 0 !important;\n    aspect-ratio: 16 / 10 !important;\n    object-fit: cover !important;\n    display: block !important;\n    position: static !important;\n  }\n\n  .content-card, .card-body, .meta-box, .cta-card, .offer-card {\n    position: static !important;\n    transform: none !important;\n  }\n\n  .hero-actions, .contact-actions, .boat-actions, .form-actions {\n    flex-direction: column !important;\n    align-items: stretch !important;\n    width: 100% !important;\n  }\n\n  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {\n    width: 100% !important;\n    max-width: none !important;\n    justify-content: center !important;\n    text-align: center !important;\n    white-space: normal !important;\n  }\n}\n\n@media (max-width: 480px) {\n  .page-hero, .section, .hero { padding-top: 1.7rem !important; padding-bottom: 1.7rem !important; }\n  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card { padding: 1rem !important; }\n  .contact-banner { padding: 1.2rem !important; border-radius: 18px !important; }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
