@@ -1,8 +1,7 @@
 <header class="site-header">
   <div class="container header-bar">
     <a class="brand" routerLink="/" (click)="closeMenu()">
-      <span class="brand-mark">⛵</span>
-      <span class="brand-text">
+      <img class="brand-logo" src="assets/img/logo-Alegria.png" alt="Alegria" /> <span class="brand-text">
         <strong>{{ content.brand }}</strong>
         <small>{{ content.brandTagline }}</small>
       </span>
@@ -13,7 +12,8 @@
     </button>
 
     <nav class="main-nav" [class.open]="menuOpen">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">{{ content.nav.home }}</a>
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">{{
+        content.nav.home }}</a>
       <a routerLink="/sorties" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.outings }}</a>
       <a routerLink="/bateau" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.boat }}</a>
       <a routerLink="/galerie" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.gallery }}</a>
@@ -21,7 +21,8 @@
       <a routerLink="/crew" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.crew }}</a>
 
       <div class="language-switcher">
-        <select [value]="currentLanguage" (change)="changeLanguage($any($event.target).value)" aria-label="Language selector">
+        <select [value]="currentLanguage" (change)="changeLanguage($any($event.target).value)"
+          aria-label="Language selector">
           <option value="fr">Français</option>
           <option value="en">English</option>
           <option value="es">Español</option>
