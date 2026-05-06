@@ -5,4 +5,27 @@
   </main>
   <app-homefooter></app-homefooter>
   <app-cookie-consent></app-cookie-consent>
+
+  <div
+    class="image-modal"
+    *ngIf="zoomedImageSrc"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="zoomedImageAlt"
+    (click)="closeImageZoom()"
+  >
+    <button
+      class="image-modal__close"
+      type="button"
+      aria-label="Close image preview"
+      (click)="closeImageZoom(); $event.stopPropagation()"
+    >
+      ×
+    </button>
+
+    <div class="image-modal__content" (click)="$event.stopPropagation()">
+      <img [src]="zoomedImageSrc" [alt]="zoomedImageAlt" />
+      <p *ngIf="zoomedImageAlt">{{ zoomedImageAlt }}</p>
+    </div>
+  </div>
 </div>

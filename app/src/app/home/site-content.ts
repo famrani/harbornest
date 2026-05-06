@@ -125,9 +125,8 @@ export interface SiteContent {
 
 const sharedImages = {
   hero: 'assets/img/home/home-hero-generic.jpg',
-  boatHero: 'assets/img/boat/bali4.1/bali-41-4.jpg',
+  boatHero: 'assets/img/boat/bali4.1/bali-41-1.jpg',
   gallery: [
-    'assets/img/boat/bali4.1/bali-41-1.jpg',
     'assets/img/boat/bali4.1/bali-41-2.jpg',
     'assets/img/boat/bali4.1/bali-41-3.jpg',
     'assets/img/boat/bali4.1/bali-41-4.jpg',
@@ -140,7 +139,6 @@ const sharedImages = {
     'assets/img/boat/bali4.1/bali-41-11.jpg',
     'assets/img/boat/bali4.1/bali-41-12.jpg',
     'assets/img/boat/bali4.1/bali-41-13.jpg',
-    'assets/img/boat/bali4.1/bali-41-14.jpg',
   ],
   de1: 'assets/img/events/de/de1.png',
   sunset1: 'assets/img/events/sunset/sunset1.jpg',

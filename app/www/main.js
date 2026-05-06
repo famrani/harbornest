@@ -3137,7 +3137,7 @@ class ServicesService {
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<header class=\"site-header\">\n  <div class=\"container header-bar\">\n    <a class=\"brand\" routerLink=\"/\" (click)=\"closeMenu()\">\n      <img class=\"brand-logo\" src=\"assets/img/logo-Alegria.png\" [alt]=\"content.brand + ' logo'\" />\n      <span class=\"brand-text\">\n        <strong>{{ content.brand }}</strong>\n        <small>{{ content.brandTagline }}</small>\n      </span>\n    </a>\n\n    <button class=\"menu-toggle\" type=\"button\" (click)=\"toggleMenu()\" aria-label=\"Open menu\">\n      ☰\n    </button>\n\n    <nav class=\"main-nav\" [class.open]=\"menuOpen\">\n      <a routerLink=\"/\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{ exact: true }\" (click)=\"closeMenu()\">{{ content.nav.home }}</a>\n      <a routerLink=\"/sorties\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.outings }}</a>\n      <a routerLink=\"/bateau\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.boat }}</a>\n      <a routerLink=\"/galerie\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.gallery }}</a>\n      <a routerLink=\"/contact\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.contact }}</a>\n      <a routerLink=\"/crew\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.crew }}</a>\n\n      <div class=\"language-switcher\">\n        <select [value]=\"currentLanguage\" (change)=\"changeLanguage($any($event.target).value)\" aria-label=\"Language selector\">\n          <option value=\"fr\">Français</option>\n          <option value=\"en\">English</option>\n          <option value=\"es\">Español</option>\n        </select>\n      </div>\n\n      <a class=\"cta-link\" routerLink=\"/contact\" (click)=\"closeMenu()\">{{ content.nav.quote }}</a>\n    </nav>\n  </div>\n</header>\n";
+module.exports = "<header class=\"site-header\">\n  <div class=\"container header-bar\">\n    <a class=\"brand\" routerLink=\"/\" (click)=\"closeMenu()\">\n      <span class=\"brand-mark\">⛵</span>\n      <span class=\"brand-text\">\n        <strong>{{ content.brand }}</strong>\n        <small>{{ content.brandTagline }}</small>\n      </span>\n    </a>\n\n    <button class=\"menu-toggle\" type=\"button\" (click)=\"toggleMenu()\" aria-label=\"Open menu\">\n      ☰\n    </button>\n\n    <nav class=\"main-nav\" [class.open]=\"menuOpen\">\n      <a routerLink=\"/\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{ exact: true }\" (click)=\"closeMenu()\">{{ content.nav.home }}</a>\n      <a routerLink=\"/sorties\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.outings }}</a>\n      <a routerLink=\"/bateau\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.boat }}</a>\n      <a routerLink=\"/galerie\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.gallery }}</a>\n      <a routerLink=\"/contact\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.contact }}</a>\n      <a routerLink=\"/crew\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.crew }}</a>\n\n      <div class=\"language-switcher\">\n        <select [value]=\"currentLanguage\" (change)=\"changeLanguage($any($event.target).value)\" aria-label=\"Language selector\">\n          <option value=\"fr\">Français</option>\n          <option value=\"en\">English</option>\n          <option value=\"es\">Español</option>\n        </select>\n      </div>\n\n      <a class=\"cta-link\" routerLink=\"/contact\" (click)=\"closeMenu()\">{{ content.nav.quote }}</a>\n    </nav>\n  </div>\n</header>\n";
 
 /***/ }),
 
@@ -3181,8 +3181,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const sharedImages = {
   hero: 'assets/img/home/home-hero-generic.jpg',
-  boatHero: 'assets/img/boat/bali4.1/bali-41-4.jpg',
-  gallery: ['assets/img/boat/bali4.1/bali-41-1.jpg', 'assets/img/boat/bali4.1/bali-41-2.jpg', 'assets/img/boat/bali4.1/bali-41-3.jpg', 'assets/img/boat/bali4.1/bali-41-4.jpg', 'assets/img/boat/bali4.1/bali-41-5.jpg', 'assets/img/boat/bali4.1/bali-41-6.jpg', 'assets/img/boat/bali4.1/bali-41-7.jpg', 'assets/img/boat/bali4.1/bali-41-8.jpg', 'assets/img/boat/bali4.1/bali-41-9.jpg', 'assets/img/boat/bali4.1/bali-41-10.jpg', 'assets/img/boat/bali4.1/bali-41-11.jpg', 'assets/img/boat/bali4.1/bali-41-12.jpg', 'assets/img/boat/bali4.1/bali-41-13.jpg', 'assets/img/boat/bali4.1/bali-41-14.jpg'],
+  boatHero: 'assets/img/boat/bali4.1/bali-41-1.jpg',
+  gallery: ['assets/img/boat/bali4.1/bali-41-2.jpg', 'assets/img/boat/bali4.1/bali-41-3.jpg', 'assets/img/boat/bali4.1/bali-41-4.jpg', 'assets/img/boat/bali4.1/bali-41-5.jpg', 'assets/img/boat/bali4.1/bali-41-6.jpg', 'assets/img/boat/bali4.1/bali-41-7.jpg', 'assets/img/boat/bali4.1/bali-41-8.jpg', 'assets/img/boat/bali4.1/bali-41-9.jpg', 'assets/img/boat/bali4.1/bali-41-10.jpg', 'assets/img/boat/bali4.1/bali-41-11.jpg', 'assets/img/boat/bali4.1/bali-41-12.jpg', 'assets/img/boat/bali4.1/bali-41-13.jpg'],
   de1: 'assets/img/events/de/de1.png',
   sunset1: 'assets/img/events/sunset/sunset1.jpg',
   business1: 'assets/img/events/business-meeting/business-meeting1.jpg',
@@ -3636,17 +3636,108 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomelayoutComponent: () => (/* binding */ HomelayoutComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _homelayout_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./homelayout.component.html?ngResource */ 48509);
 /* harmony import */ var _homelayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./homelayout.component.scss?ngResource */ 26791);
 /* harmony import */ var _homelayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_homelayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ 19770);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 51567);
 
 
 
 
-let HomelayoutComponent = class HomelayoutComponent {};
-HomelayoutComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Component)({
+
+
+
+let HomelayoutComponent = class HomelayoutComponent {
+  document;
+  router;
+  zoomedImageSrc = '';
+  zoomedImageAlt = '';
+  clickHandler;
+  keydownHandler;
+  routerSub;
+  constructor(document, router) {
+    this.document = document;
+    this.router = router;
+  }
+  ngOnInit() {
+    this.clickHandler = event => this.handleDocumentClick(event);
+    this.keydownHandler = event => {
+      if (event.key === 'Escape') {
+        this.closeImageZoom();
+      }
+    };
+    // Capture phase lets the lightbox intercept image clicks before Angular router links.
+    this.document.addEventListener('click', this.clickHandler, true);
+    this.document.addEventListener('keydown', this.keydownHandler, true);
+    this.routerSub = this.router.events.pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_2__.filter)(event => event instanceof _angular_router__WEBPACK_IMPORTED_MODULE_3__.NavigationEnd)).subscribe(() => {
+      this.updateHomeImageZoomState();
+      this.closeImageZoom();
+    });
+    this.updateHomeImageZoomState();
+  }
+  ngOnDestroy() {
+    if (this.clickHandler) {
+      this.document.removeEventListener('click', this.clickHandler, true);
+    }
+    if (this.keydownHandler) {
+      this.document.removeEventListener('keydown', this.keydownHandler, true);
+    }
+    this.routerSub?.unsubscribe();
+    this.document.body.classList.remove('home-no-image-zoom');
+  }
+  closeImageZoom() {
+    this.zoomedImageSrc = '';
+    this.zoomedImageAlt = '';
+    this.document.body.classList.remove('image-modal-open');
+  }
+  handleDocumentClick(event) {
+    if (this.isHomeRoute()) {
+      return;
+    }
+    const target = event.target;
+    if (!target || target.closest('.image-modal')) {
+      return;
+    }
+    if (target.tagName.toLowerCase() !== 'img') {
+      return;
+    }
+    const image = target;
+    if (image.classList.contains('no-image-zoom') || image.closest('.no-image-zoom') || image.closest('.site-header')) {
+      return;
+    }
+    const source = image.currentSrc || image.src;
+    if (!source) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    this.zoomedImageSrc = source;
+    this.zoomedImageAlt = image.alt || 'Image Alegria';
+    this.document.body.classList.add('image-modal-open');
+  }
+  isHomeRoute() {
+    const currentUrl = (this.router.url || '/').split('?')[0].split('#')[0];
+    return currentUrl === '/' || currentUrl === '';
+  }
+  updateHomeImageZoomState() {
+    this.document.body.classList.toggle('home-no-image-zoom', this.isHomeRoute());
+  }
+  static ctorParameters = () => [{
+    type: Document,
+    decorators: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_4__.Inject,
+      args: [_angular_common__WEBPACK_IMPORTED_MODULE_5__.DOCUMENT]
+    }]
+  }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_3__.Router
+  }];
+};
+HomelayoutComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
   selector: 'app-homelayout',
   template: _homelayout_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
   styles: [(_homelayout_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
@@ -3889,98 +3980,112 @@ p, li, input, textarea, select, .card-body, .term-section {
   background: var(--alegria-sand);
 }
 
-/* Mobile no-overlay / responsive safety patch */
-:host {
+/* Global image zoom modal */
+:host ::ng-deep .site-main img:not(.no-image-zoom) {
+  cursor: zoom-in;
+}
+
+.image-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(18px, 4vw, 56px);
+  background: rgba(8, 38, 58, 0.92);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+  animation: image-modal-fade 160ms ease-out;
+}
+
+.image-modal__content {
+  max-width: min(1120px, 94vw);
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.image-modal__content img {
   display: block;
-  overflow-x: hidden;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-img, video {
   max-width: 100%;
+  max-height: 82vh;
+  object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+  cursor: default;
 }
 
-@media (max-width: 768px) {
-  .container, .container.narrow, .narrow {
-    width: min(100% - 1rem, 1120px) !important;
-    max-width: calc(100vw - 1rem) !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+.image-modal__content p {
+  max-width: 900px;
+  margin: 0;
+  color: #fff;
+  text-align: center;
+  font-family: "Raleway", Arial, sans-serif;
+  font-size: 0.9rem;
+}
+
+.image-modal__close {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.image-modal__close:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.24);
+}
+
+@keyframes image-modal-fade {
+  from {
+    opacity: 0;
   }
-  .page-hero, .section, .hero {
-    padding-top: 2.2rem !important;
-    padding-bottom: 2.2rem !important;
-  }
-  h1 {
-    font-size: clamp(1.65rem, 8vw, 2.15rem) !important;
-    line-height: 1.12 !important;
-  }
-  h2 {
-    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
-    line-height: 1.18 !important;
-  }
-  h3 {
-    font-size: 1.05rem !important;
-  }
-  p, li {
-    font-size: 0.95rem !important;
-    line-height: 1.65 !important;
-  }
-  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
-  }
-  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {
-    grid-template-columns: 1fr !important;
-  }
-  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow: hidden !important;
-  }
-  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    aspect-ratio: 16/10 !important;
-    object-fit: cover !important;
-    display: block !important;
-    position: static !important;
-  }
-  .content-card, .card-body, .meta-box, .cta-card, .offer-card {
-    position: static !important;
-    transform: none !important;
-  }
-  .hero-actions, .contact-actions, .boat-actions, .form-actions {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    width: 100% !important;
-  }
-  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {
-    width: 100% !important;
-    max-width: none !important;
-    justify-content: center !important;
-    text-align: center !important;
-    white-space: normal !important;
+  to {
+    opacity: 1;
   }
 }
-@media (max-width: 480px) {
-  .page-hero, .section, .hero {
-    padding-top: 1.7rem !important;
-    padding-bottom: 1.7rem !important;
+@media (max-width: 768px) {
+  .image-modal {
+    padding: 14px;
   }
-  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card {
-    padding: 1rem !important;
+  .image-modal__content {
+    max-width: 96vw;
+    max-height: 84vh;
   }
-  .contact-banner {
-    padding: 1.2rem !important;
-    border-radius: 18px !important;
+  .image-modal__content img {
+    max-height: 74vh;
+    border-radius: 12px;
   }
-}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homelayout/homelayout.component.scss"],"names":[],"mappings":"AACA;EACE,iBAAA;EACA,aAAA;EACA,sBAAA;EACA,mBAAA;AACF;;AAEA;EACE,OAAA;AACF;;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAAF;;AAGA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAAF;;AAGA;EACE,yCAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,2BAAA;AAAF;;AAGA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAAF;;AAGA;EACE,6DAAA;AAAF;;AAGA;EACE,+BAAA;AAAF;;AAIA,gDAAA;AACA;EAAQ,cAAA;EAAe,kBAAA;AACvB;;AAAA;EAAI,sBAAA;AAIJ;;AAHA;EAAa,eAAA;AAOb;;AALA;EACE;IACE,0CAAA;IACA,wCAAA;IACA,4BAAA;IACA,6BAAA;EAQF;EALA;IACE,8BAAA;IACA,iCAAA;EAOF;EAJA;IAAK,kDAAA;IAAoD,4BAAA;EAQzD;EAPA;IAAK,kDAAA;IAAoD,4BAAA;EAWzD;EAVA;IAAK,6BAAA;EAaL;EAZA;IAAQ,6BAAA;IAA+B,4BAAA;EAgBvC;EAdA;IACE,wBAAA;IACA,qCAAA;IACA,oBAAA;EAgBF;EAbA;IACE,qCAAA;EAeF;EAZA;IACE,sBAAA;IACA,0BAAA;IACA,2BAAA;EAcF;EAXA;IACE,sBAAA;IACA,uBAAA;IACA,wBAAA;IACA,8BAAA;IACA,4BAAA;IACA,yBAAA;IACA,2BAAA;EAaF;EAVA;IACE,2BAAA;IACA,0BAAA;EAYF;EATA;IACE,iCAAA;IACA,+BAAA;IACA,sBAAA;EAWF;EARA;IACE,sBAAA;IACA,0BAAA;IACA,kCAAA;IACA,6BAAA;IACA,8BAAA;EAUF;AACF;AAPA;EACE;IAA8B,8BAAA;IAAgC,iCAAA;EAW9D;EAVA;IAA+E,wBAAA;EAa/E;EAZA;IAAkB,0BAAA;IAA4B,8BAAA;EAgB9C;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.site-shell {\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  background: #fbf8f2;\n}\n\n.site-main {\n  flex: 1;\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Mobile no-overlay / responsive safety patch */\n:host { display:block; overflow-x:hidden; }\n* { box-sizing: border-box; }\nimg, video { max-width: 100%; }\n\n@media (max-width: 768px) {\n  .container, .container.narrow, .narrow {\n    width: min(100% - 1rem, 1120px) !important;\n    max-width: calc(100vw - 1rem) !important;\n    margin-left: auto !important;\n    margin-right: auto !important;\n  }\n\n  .page-hero, .section, .hero {\n    padding-top: 2.2rem !important;\n    padding-bottom: 2.2rem !important;\n  }\n\n  h1 { font-size: clamp(1.65rem, 8vw, 2.15rem) !important; line-height: 1.12 !important; }\n  h2 { font-size: clamp(1.25rem, 6vw, 1.65rem) !important; line-height: 1.18 !important; }\n  h3 { font-size: 1.05rem !important; }\n  p, li { font-size: 0.95rem !important; line-height: 1.65 !important; }\n\n  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {\n    display: grid !important;\n    grid-template-columns: 1fr !important;\n    gap: 1rem !important;\n  }\n\n  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow: hidden !important;\n  }\n\n  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {\n    width: 100% !important;\n    height: auto !important;\n    min-height: 0 !important;\n    aspect-ratio: 16 / 10 !important;\n    object-fit: cover !important;\n    display: block !important;\n    position: static !important;\n  }\n\n  .content-card, .card-body, .meta-box, .cta-card, .offer-card {\n    position: static !important;\n    transform: none !important;\n  }\n\n  .hero-actions, .contact-actions, .boat-actions, .form-actions {\n    flex-direction: column !important;\n    align-items: stretch !important;\n    width: 100% !important;\n  }\n\n  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {\n    width: 100% !important;\n    max-width: none !important;\n    justify-content: center !important;\n    text-align: center !important;\n    white-space: normal !important;\n  }\n}\n\n@media (max-width: 480px) {\n  .page-hero, .section, .hero { padding-top: 1.7rem !important; padding-bottom: 1.7rem !important; }\n  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card { padding: 1rem !important; }\n  .contact-banner { padding: 1.2rem !important; border-radius: 18px !important; }\n}\n"],"sourceRoot":""}]);
+  .image-modal__content p {
+    font-size: 0.8rem;
+  }
+  .image-modal__close {
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.8rem;
+  }
+}
+:host ::ng-deep body.image-modal-open {
+  overflow: hidden;
+}
+
+:host ::ng-deep body.home-no-image-zoom .site-main img:not(.no-image-zoom) {
+  cursor: default;
+}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homelayout/homelayout.component.scss"],"names":[],"mappings":"AACA;EACE,iBAAA;EACA,aAAA;EACA,sBAAA;EACA,mBAAA;AACF;;AAEA;EACE,OAAA;AACF;;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAAF;;AAGA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAAF;;AAGA;EACE,yCAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,2BAAA;AAAF;;AAGA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAAF;;AAGA;EACE,6DAAA;AAAF;;AAGA;EACE,+BAAA;AAAF;;AAGA,4BAAA;AACA;EACE,eAAA;AAAF;;AAGA;EACE,eAAA;EACA,QAAA;EACA,aAAA;EACA,aAAA;EACA,mBAAA;EACA,uBAAA;EACA,+BAAA;EACA,iCAAA;EACA,kCAAA;UAAA,0BAAA;EACA,0CAAA;AAAF;;AAGA;EACE,4BAAA;EACA,gBAAA;EACA,aAAA;EACA,sBAAA;EACA,mBAAA;EACA,SAAA;AAAF;;AAGA;EACE,cAAA;EACA,eAAA;EACA,gBAAA;EACA,mBAAA;EACA,mBAAA;EACA,2CAAA;EACA,eAAA;AAAF;;AAGA;EACE,gBAAA;EACA,SAAA;EACA,WAAA;EACA,kBAAA;EACA,yCAAA;EACA,iBAAA;AAAF;;AAGA;EACE,eAAA;EACA,SAAA;EACA,WAAA;EACA,WAAA;EACA,YAAA;EACA,2CAAA;EACA,oBAAA;EACA,qCAAA;EACA,WAAA;EACA,eAAA;EACA,cAAA;EACA,eAAA;EACA,uDAAA;AAAF;;AAGA;EACE,sBAAA;EACA,qCAAA;AAAF;;AAGA;EACE;IACE,UAAA;EAAF;EAEA;IACE,UAAA;EAAF;AACF;AAGA;EACE;IACE,aAAA;EADF;EAIA;IACE,eAAA;IACA,gBAAA;EAFF;EAKA;IACE,gBAAA;IACA,mBAAA;EAHF;EAMA;IACE,iBAAA;EAJF;EAOA;IACE,SAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,iBAAA;EALF;AACF;AAQA;EACE,gBAAA;AANF;;AASA;EACE,eAAA;AANF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.site-shell {\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  background: #fbf8f2;\n}\n\n.site-main {\n  flex: 1;\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n/* Global image zoom modal */\n:host ::ng-deep .site-main img:not(.no-image-zoom) {\n  cursor: zoom-in;\n}\n\n.image-modal {\n  position: fixed;\n  inset: 0;\n  z-index: 9999;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: clamp(18px, 4vw, 56px);\n  background: rgba(8, 38, 58, 0.92);\n  backdrop-filter: blur(8px);\n  animation: image-modal-fade 160ms ease-out;\n}\n\n.image-modal__content {\n  max-width: min(1120px, 94vw);\n  max-height: 88vh;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 12px;\n}\n\n.image-modal__content img {\n  display: block;\n  max-width: 100%;\n  max-height: 82vh;\n  object-fit: contain;\n  border-radius: 18px;\n  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);\n  cursor: default;\n}\n\n.image-modal__content p {\n  max-width: 900px;\n  margin: 0;\n  color: #fff;\n  text-align: center;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-size: 0.9rem;\n}\n\n.image-modal__close {\n  position: fixed;\n  top: 18px;\n  right: 18px;\n  width: 44px;\n  height: 44px;\n  border: 1px solid rgba(255, 255, 255, 0.35);\n  border-radius: 999px;\n  background: rgba(255, 255, 255, 0.14);\n  color: #fff;\n  font-size: 2rem;\n  line-height: 1;\n  cursor: pointer;\n  transition: transform 160ms ease, background 160ms ease;\n}\n\n.image-modal__close:hover {\n  transform: scale(1.05);\n  background: rgba(255, 255, 255, 0.24);\n}\n\n@keyframes image-modal-fade {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n\n@media (max-width: 768px) {\n  .image-modal {\n    padding: 14px;\n  }\n\n  .image-modal__content {\n    max-width: 96vw;\n    max-height: 84vh;\n  }\n\n  .image-modal__content img {\n    max-height: 74vh;\n    border-radius: 12px;\n  }\n\n  .image-modal__content p {\n    font-size: 0.8rem;\n  }\n\n  .image-modal__close {\n    top: 12px;\n    right: 12px;\n    width: 40px;\n    height: 40px;\n    font-size: 1.8rem;\n  }\n}\n\n:host ::ng-deep body.image-modal-open {\n  overflow: hidden;\n}\n\n:host ::ng-deep body.home-no-image-zoom .site-main img:not(.no-image-zoom) {\n  cursor: default;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -4160,100 +4265,7 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .footer-simple a:hover {
   color: #f28c28 !important;
-}
-
-/* Mobile no-overlay / responsive safety patch */
-:host {
-  display: block;
-  overflow-x: hidden;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-img, video {
-  max-width: 100%;
-}
-
-@media (max-width: 768px) {
-  .container, .container.narrow, .narrow {
-    width: min(100% - 1rem, 1120px) !important;
-    max-width: calc(100vw - 1rem) !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-  .page-hero, .section, .hero {
-    padding-top: 2.2rem !important;
-    padding-bottom: 2.2rem !important;
-  }
-  h1 {
-    font-size: clamp(1.65rem, 8vw, 2.15rem) !important;
-    line-height: 1.12 !important;
-  }
-  h2 {
-    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
-    line-height: 1.18 !important;
-  }
-  h3 {
-    font-size: 1.05rem !important;
-  }
-  p, li {
-    font-size: 0.95rem !important;
-    line-height: 1.65 !important;
-  }
-  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
-  }
-  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {
-    grid-template-columns: 1fr !important;
-  }
-  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow: hidden !important;
-  }
-  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    aspect-ratio: 16/10 !important;
-    object-fit: cover !important;
-    display: block !important;
-    position: static !important;
-  }
-  .content-card, .card-body, .meta-box, .cta-card, .offer-card {
-    position: static !important;
-    transform: none !important;
-  }
-  .hero-actions, .contact-actions, .boat-actions, .form-actions {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    width: 100% !important;
-  }
-  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {
-    width: 100% !important;
-    max-width: none !important;
-    justify-content: center !important;
-    text-align: center !important;
-    white-space: normal !important;
-  }
-}
-@media (max-width: 480px) {
-  .page-hero, .section, .hero {
-    padding-top: 1.7rem !important;
-    padding-bottom: 1.7rem !important;
-  }
-  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card {
-    padding: 1rem !important;
-  }
-  .contact-banner {
-    padding: 1.2rem !important;
-    border-radius: 18px !important;
-  }
-}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homefooter/homefooter.component.scss"],"names":[],"mappings":"AACA;EACE,6BAAA;EACA,eAAA;EACA,iBAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,aAAA;EACA,8BAAA;EACA,mBAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;AACF;;AAEA;EACE,0BAAA;AACF;;AACA;EAAgB,aAAA;EAAe,mBAAA;EAAqB,SAAA;EAAW,eAAA;EAAiB,yBAAA;AAOhF;;AANA;EAA4B;IAAiB,sBAAA;IAAwB,QAAA;IAAU,kBAAA;EAa7E;EAbmG;IAAgB,uBAAA;EAgBnH;AACF;AAdA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAgBF;;AAbA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAgBF;;AAbA;EACE,yCAAA;AAgBF;;AAbA;EACE,sCAAA;EACA,0BAAA;AAgBF;;AAbA;EACE,2BAAA;AAgBF;;AAbA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAgBF;;AAbA;EACE,sCAAA;EACA,0BAAA;AAgBF;;AAbA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAgBF;;AAbA;EACE,6DAAA;AAgBF;;AAbA;EACE,+BAAA;AAgBF;;AAZA,2BAAA;AACA;EACE,8BAAA;EACA,2CAAA;EACA,2BAAA;AAeF;;AAbA;EACE,2CAAA;AAgBF;;AAdA;EAAyB,yBAAA;AAkBzB;;AAfA,gDAAA;AACA;EAAQ,cAAA;EAAe,kBAAA;AAoBvB;;AAnBA;EAAI,sBAAA;AAuBJ;;AAtBA;EAAa,eAAA;AA0Bb;;AAxBA;EACE;IACE,0CAAA;IACA,wCAAA;IACA,4BAAA;IACA,6BAAA;EA2BF;EAxBA;IACE,8BAAA;IACA,iCAAA;EA0BF;EAvBA;IAAK,kDAAA;IAAoD,4BAAA;EA2BzD;EA1BA;IAAK,kDAAA;IAAoD,4BAAA;EA8BzD;EA7BA;IAAK,6BAAA;EAgCL;EA/BA;IAAQ,6BAAA;IAA+B,4BAAA;EAmCvC;EAjCA;IACE,wBAAA;IACA,qCAAA;IACA,oBAAA;EAmCF;EAhCA;IACE,qCAAA;EAkCF;EA/BA;IACE,sBAAA;IACA,0BAAA;IACA,2BAAA;EAiCF;EA9BA;IACE,sBAAA;IACA,uBAAA;IACA,wBAAA;IACA,8BAAA;IACA,4BAAA;IACA,yBAAA;IACA,2BAAA;EAgCF;EA7BA;IACE,2BAAA;IACA,0BAAA;EA+BF;EA5BA;IACE,iCAAA;IACA,+BAAA;IACA,sBAAA;EA8BF;EA3BA;IACE,sBAAA;IACA,0BAAA;IACA,kCAAA;IACA,6BAAA;IACA,8BAAA;EA6BF;AACF;AA1BA;EACE;IAA8B,8BAAA;IAAgC,iCAAA;EA8B9D;EA7BA;IAA+E,wBAAA;EAgC/E;EA/BA;IAAkB,0BAAA;IAA4B,8BAAA;EAmC9C;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.site-footer-simple {\n  border-top: 1px solid #e5e7eb;\n  padding: 15px 0;\n  font-size: 0.8rem;\n  color: #6b7280;\n  background: #fff;\n}\n\n.footer-simple {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.footer-simple a {\n  text-decoration: none;\n  color: #374151;\n}\n\n.footer-simple a:hover {\n  text-decoration: underline;\n}\n.footer-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: flex-end; }\n@media (max-width: 768px) { .footer-simple { flex-direction: column; gap: 8px; text-align: center; } .footer-right { justify-content: center; } }\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Footer charte override */\n.site-footer-simple {\n  background: #08263a !important;\n  color: rgba(255,255,255,0.75) !important;\n  border-top: none !important;\n}\n.footer-simple a, .footer-simple strong, .footer-simple span {\n  color: rgba(255,255,255,0.86) !important;\n}\n.footer-simple a:hover { color: #f28c28 !important; }\n\n\n/* Mobile no-overlay / responsive safety patch */\n:host { display:block; overflow-x:hidden; }\n* { box-sizing: border-box; }\nimg, video { max-width: 100%; }\n\n@media (max-width: 768px) {\n  .container, .container.narrow, .narrow {\n    width: min(100% - 1rem, 1120px) !important;\n    max-width: calc(100vw - 1rem) !important;\n    margin-left: auto !important;\n    margin-right: auto !important;\n  }\n\n  .page-hero, .section, .hero {\n    padding-top: 2.2rem !important;\n    padding-bottom: 2.2rem !important;\n  }\n\n  h1 { font-size: clamp(1.65rem, 8vw, 2.15rem) !important; line-height: 1.12 !important; }\n  h2 { font-size: clamp(1.25rem, 6vw, 1.65rem) !important; line-height: 1.18 !important; }\n  h3 { font-size: 1.05rem !important; }\n  p, li { font-size: 0.95rem !important; line-height: 1.65 !important; }\n\n  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {\n    display: grid !important;\n    grid-template-columns: 1fr !important;\n    gap: 1rem !important;\n  }\n\n  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow: hidden !important;\n  }\n\n  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {\n    width: 100% !important;\n    height: auto !important;\n    min-height: 0 !important;\n    aspect-ratio: 16 / 10 !important;\n    object-fit: cover !important;\n    display: block !important;\n    position: static !important;\n  }\n\n  .content-card, .card-body, .meta-box, .cta-card, .offer-card {\n    position: static !important;\n    transform: none !important;\n  }\n\n  .hero-actions, .contact-actions, .boat-actions, .form-actions {\n    flex-direction: column !important;\n    align-items: stretch !important;\n    width: 100% !important;\n  }\n\n  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {\n    width: 100% !important;\n    max-width: none !important;\n    justify-content: center !important;\n    text-align: center !important;\n    white-space: normal !important;\n  }\n}\n\n@media (max-width: 480px) {\n  .page-hero, .section, .hero { padding-top: 1.7rem !important; padding-bottom: 1.7rem !important; }\n  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card { padding: 1rem !important; }\n  .contact-banner { padding: 1.2rem !important; border-radius: 18px !important; }\n}\n"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homefooter/homefooter.component.scss"],"names":[],"mappings":"AACA;EACE,6BAAA;EACA,eAAA;EACA,iBAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,aAAA;EACA,8BAAA;EACA,mBAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;AACF;;AAEA;EACE,0BAAA;AACF;;AACA;EAAgB,aAAA;EAAe,mBAAA;EAAqB,SAAA;EAAW,eAAA;EAAiB,yBAAA;AAOhF;;AANA;EAA4B;IAAiB,sBAAA;IAAwB,QAAA;IAAU,kBAAA;EAa7E;EAbmG;IAAgB,uBAAA;EAgBnH;AACF;AAdA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAgBF;;AAbA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAgBF;;AAbA;EACE,yCAAA;AAgBF;;AAbA;EACE,sCAAA;EACA,0BAAA;AAgBF;;AAbA;EACE,2BAAA;AAgBF;;AAbA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAgBF;;AAbA;EACE,sCAAA;EACA,0BAAA;AAgBF;;AAbA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAgBF;;AAbA;EACE,6DAAA;AAgBF;;AAbA;EACE,+BAAA;AAgBF;;AAZA,2BAAA;AACA;EACE,8BAAA;EACA,2CAAA;EACA,2BAAA;AAeF;;AAbA;EACE,2CAAA;AAgBF;;AAdA;EAAyB,yBAAA;AAkBzB","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.site-footer-simple {\n  border-top: 1px solid #e5e7eb;\n  padding: 15px 0;\n  font-size: 0.8rem;\n  color: #6b7280;\n  background: #fff;\n}\n\n.footer-simple {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.footer-simple a {\n  text-decoration: none;\n  color: #374151;\n}\n\n.footer-simple a:hover {\n  text-decoration: underline;\n}\n.footer-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: flex-end; }\n@media (max-width: 768px) { .footer-simple { flex-direction: column; gap: 8px; text-align: center; } .footer-right { justify-content: center; } }\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Footer charte override */\n.site-footer-simple {\n  background: #08263a !important;\n  color: rgba(255,255,255,0.75) !important;\n  border-top: none !important;\n}\n.footer-simple a, .footer-simple strong, .footer-simple span {\n  color: rgba(255,255,255,0.86) !important;\n}\n.footer-simple a:hover { color: #f28c28 !important; }\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -4506,52 +4518,7 @@ p, li, input, textarea, select, .card-body, .term-section {
     background: #08263a !important;
     border-color: rgba(255, 255, 255, 0.12) !important;
   }
-}
-/* Mobile + Alegria logo refinements */
-.brand-logo {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  object-fit: contain;
-  display: block;
-  flex: 0 0 auto;
-  background: #08263a;
-}
-
-@media (max-width: 960px) {
-  .header-bar {
-    min-height: 64px;
-  }
-  .brand {
-    min-width: 0;
-  }
-  .brand-logo {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-  }
-  .brand-text strong {
-    font-size: 0.94rem;
-  }
-  .brand-text small {
-    max-width: 170px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .main-nav {
-    top: 70px;
-    max-height: calc(100vh - 86px);
-    overflow-y: auto;
-  }
-}
-@media (max-width: 420px) {
-  .container {
-    width: min(100% - 1rem, 1120px);
-  }
-  .brand-text small {
-    display: none;
-  }
-}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homeheader/homeheader.component.scss"],"names":[],"mappings":"AACA;EACE,gBAAA;EACA,MAAA;EACA,WAAA;EACA,qCAAA;EACA,kCAAA;UAAA,0BAAA;EACA,+CAAA;AACF;;AAEA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,WAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;EACA,cAAA;EACA,qBAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,kBAAA;EACA,aAAA;EACA,mBAAA;EACA,qDAAA;EACA,WAAA;EACA,eAAA;AACF;;AAEA;EACE,aAAA;EACA,sBAAA;EACA,iBAAA;AACF;;AAEA;EACE,eAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE,aAAA;EACA,YAAA;EACA,mBAAA;EACA,cAAA;EACA,iBAAA;EACA,wBAAA;EACA,mBAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;AACF;;AAEA;EACE,yBAAA;EACA,oBAAA;EACA,gBAAA;EACA,cAAA;EACA,kBAAA;EACA,uBAAA;AACF;;AAEA;EACE,wBAAA;EACA,oBAAA;EACA,mBAAA;EACA,sBAAA;EACA,kBAAA;AACF;;AAEA;EACE;IACE,oBAAA;EACF;EAEA;IACE,kBAAA;IACA,UAAA;IACA,WAAA;IACA,SAAA;IACA,aAAA;IACA,sBAAA;IACA,oBAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;IACA,wCAAA;IACA,mBAAA;IACA,8CAAA;EAAF;EAGA;IACE,aAAA;EADF;EAIA;;IAEE,oBAAA;IACA,mBAAA;EAFF;EAKA;IACE,kBAAA;EAHF;AACF;AAOA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AALF;;AAQA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AALF;;AAQA;EACE,yCAAA;AALF;;AAQA;EACE,sCAAA;EACA,0BAAA;AALF;;AAQA;EACE,2BAAA;AALF;;AAQA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AALF;;AAQA;EACE,sCAAA;EACA,0BAAA;AALF;;AAQA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AALF;;AAQA;EACE,6DAAA;AALF;;AAQA;EACE,+BAAA;AALF;;AASA,2BAAA;AACA;EACE,4CAAA;EACA,6DAAA;AANF;;AAQA;EACE,sBAAA;AALF;;AAOA;EAAoB,2CAAA;AAHpB;;AAIA;EAAc,4CAAA;EAA8C,sBAAA;AAC5D;;AAAA;EAAe,gDAAA;EAA+C,sBAAA;AAK9D;;AAJA;EAA4B,+CAAA;EAA8C,sBAAA;EAAuB,kDAAA;AAUjG;;AATA;EAAmC,cAAA;AAanC;;AAZA;EACE;IAAY,8BAAA;IAAgC,kDAAA;EAiB5C;AACF;AAdA,sCAAA;AACA;EACE,WAAA;EACA,YAAA;EACA,mBAAA;EACA,mBAAA;EACA,cAAA;EACA,cAAA;EACA,mBAAA;AAgBF;;AAbA;EACE;IAAc,gBAAA;EAiBd;EAhBA;IAAS,YAAA;EAmBT;EAlBA;IAAc,WAAA;IAAa,YAAA;IAAc,mBAAA;EAuBzC;EAtBA;IAAqB,kBAAA;EAyBrB;EAxBA;IAAoB,gBAAA;IAAkB,gBAAA;IAAkB,uBAAA;EA6BxD;EA5BA;IAAY,SAAA;IAAW,8BAAA;IAAgC,gBAAA;EAiCvD;AACF;AA/BA;EACE;IAAa,+BAAA;EAkCb;EAjCA;IAAoB,aAAA;EAoCpB;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.site-header {\n  position: sticky;\n  top: 0;\n  z-index: 20;\n  background: rgba(255, 255, 255, 0.96);\n  backdrop-filter: blur(8px);\n  border-bottom: 1px solid rgba(15, 23, 42, 0.08);\n}\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.header-bar {\n  min-height: 70px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 0.9rem;\n}\n\n.brand {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n  color: #08263a;\n  text-decoration: none;\n}\n\n.brand-mark {\n  width: 38px;\n  height: 38px;\n  border-radius: 50%;\n  display: grid;\n  place-items: center;\n  background: linear-gradient(135deg, #0b6e8f, #0b6e8f);\n  color: #fff;\n  font-size: 1rem;\n}\n\n.brand-text {\n  display: flex;\n  flex-direction: column;\n  line-height: 1.05;\n}\n\n.brand-text strong {\n  font-size: 1rem;\n  white-space: nowrap;\n}\n\n.brand-text small {\n  color: #475569;\n  font-size: 0.68rem;\n  white-space: nowrap;\n}\n\n.menu-toggle {\n  display: none;\n  border: none;\n  background: #e8f4f7;\n  color: #08263a;\n  font-size: 1.1rem;\n  padding: 0.45rem 0.75rem;\n  border-radius: 10px;\n}\n\n.main-nav {\n  display: flex;\n  align-items: center;\n  gap: 0.85rem;\n}\n\n.main-nav a {\n  text-decoration: none;\n  color: #334155;\n  font-weight: 500;\n  font-size: 0.88rem;\n  white-space: nowrap;\n}\n\n.main-nav a.active {\n  color: #08263a;\n}\n\n.language-switcher {\n  display: flex;\n  align-items: center;\n}\n\n.language-switcher select {\n  border: 1px solid #cbd5e1;\n  border-radius: 999px;\n  background: #fff;\n  color: #08263a;\n  font-size: 0.83rem;\n  padding: 0.45rem 0.8rem;\n}\n\n.cta-link {\n  padding: 0.72rem 0.95rem;\n  border-radius: 999px;\n  background: #08263a;\n  color: #fff !important;\n  font-size: 0.84rem;\n}\n\n@media (max-width: 960px) {\n  .menu-toggle {\n    display: inline-flex;\n  }\n\n  .main-nav {\n    position: absolute;\n    left: 1rem;\n    right: 1rem;\n    top: 78px;\n    display: none;\n    flex-direction: column;\n    align-items: stretch;\n    gap: 0.35rem;\n    padding: 0.8rem;\n    background: #ffffff;\n    border: 1px solid rgba(15, 23, 42, 0.08);\n    border-radius: 18px;\n    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);\n  }\n\n  .main-nav.open {\n    display: flex;\n  }\n\n  .main-nav a,\n  .language-switcher select {\n    padding: 0.9rem 1rem;\n    border-radius: 12px;\n  }\n\n  .cta-link {\n    text-align: center;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Header charte override */\n.site-header {\n  background: rgba(8, 38, 58, 0.96) !important;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;\n}\n.brand, .brand-text strong, .main-nav a, .main-nav a.active {\n  color: #fff !important;\n}\n.brand-text small { color: rgba(255,255,255,0.72) !important; }\n.brand-mark { background: var(--alegria-orange) !important; color:#fff !important; }\n.menu-toggle { background: rgba(255,255,255,0.12) !important; color:#fff !important; }\n.language-switcher select { background: rgba(255,255,255,0.1) !important; color:#fff !important; border-color: rgba(255,255,255,0.25) !important; }\n.language-switcher select option { color:#08263a; }\n@media (max-width: 960px) {\n  .main-nav { background: #08263a !important; border-color: rgba(255,255,255,.12) !important; }\n}\n\n\n/* Mobile + Alegria logo refinements */\n.brand-logo {\n  width: 44px;\n  height: 44px;\n  border-radius: 12px;\n  object-fit: contain;\n  display: block;\n  flex: 0 0 auto;\n  background: #08263a;\n}\n\n@media (max-width: 960px) {\n  .header-bar { min-height: 64px; }\n  .brand { min-width: 0; }\n  .brand-logo { width: 40px; height: 40px; border-radius: 10px; }\n  .brand-text strong { font-size: 0.94rem; }\n  .brand-text small { max-width: 170px; overflow: hidden; text-overflow: ellipsis; }\n  .main-nav { top: 70px; max-height: calc(100vh - 86px); overflow-y: auto; }\n}\n\n@media (max-width: 420px) {\n  .container { width: min(100% - 1rem, 1120px); }\n  .brand-text small { display: none; }\n}\n"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homeheader/homeheader.component.scss"],"names":[],"mappings":"AACA;EACE,gBAAA;EACA,MAAA;EACA,WAAA;EACA,qCAAA;EACA,kCAAA;UAAA,0BAAA;EACA,+CAAA;AACF;;AAEA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,WAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;EACA,cAAA;EACA,qBAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,kBAAA;EACA,aAAA;EACA,mBAAA;EACA,qDAAA;EACA,WAAA;EACA,eAAA;AACF;;AAEA;EACE,aAAA;EACA,sBAAA;EACA,iBAAA;AACF;;AAEA;EACE,eAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE,aAAA;EACA,YAAA;EACA,mBAAA;EACA,cAAA;EACA,iBAAA;EACA,wBAAA;EACA,mBAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;AACF;;AAEA;EACE,yBAAA;EACA,oBAAA;EACA,gBAAA;EACA,cAAA;EACA,kBAAA;EACA,uBAAA;AACF;;AAEA;EACE,wBAAA;EACA,oBAAA;EACA,mBAAA;EACA,sBAAA;EACA,kBAAA;AACF;;AAEA;EACE;IACE,oBAAA;EACF;EAEA;IACE,kBAAA;IACA,UAAA;IACA,WAAA;IACA,SAAA;IACA,aAAA;IACA,sBAAA;IACA,oBAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;IACA,wCAAA;IACA,mBAAA;IACA,8CAAA;EAAF;EAGA;IACE,aAAA;EADF;EAIA;;IAEE,oBAAA;IACA,mBAAA;EAFF;EAKA;IACE,kBAAA;EAHF;AACF;AAOA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AALF;;AAQA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AALF;;AAQA;EACE,yCAAA;AALF;;AAQA;EACE,sCAAA;EACA,0BAAA;AALF;;AAQA;EACE,2BAAA;AALF;;AAQA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AALF;;AAQA;EACE,sCAAA;EACA,0BAAA;AALF;;AAQA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AALF;;AAQA;EACE,6DAAA;AALF;;AAQA;EACE,+BAAA;AALF;;AASA,2BAAA;AACA;EACE,4CAAA;EACA,6DAAA;AANF;;AAQA;EACE,sBAAA;AALF;;AAOA;EAAoB,2CAAA;AAHpB;;AAIA;EAAc,4CAAA;EAA8C,sBAAA;AAC5D;;AAAA;EAAe,gDAAA;EAA+C,sBAAA;AAK9D;;AAJA;EAA4B,+CAAA;EAA8C,sBAAA;EAAuB,kDAAA;AAUjG;;AATA;EAAmC,cAAA;AAanC;;AAZA;EACE;IAAY,8BAAA;IAAgC,kDAAA;EAiB5C;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.site-header {\n  position: sticky;\n  top: 0;\n  z-index: 20;\n  background: rgba(255, 255, 255, 0.96);\n  backdrop-filter: blur(8px);\n  border-bottom: 1px solid rgba(15, 23, 42, 0.08);\n}\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.header-bar {\n  min-height: 70px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 0.9rem;\n}\n\n.brand {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n  color: #08263a;\n  text-decoration: none;\n}\n\n.brand-mark {\n  width: 38px;\n  height: 38px;\n  border-radius: 50%;\n  display: grid;\n  place-items: center;\n  background: linear-gradient(135deg, #0b6e8f, #0b6e8f);\n  color: #fff;\n  font-size: 1rem;\n}\n\n.brand-text {\n  display: flex;\n  flex-direction: column;\n  line-height: 1.05;\n}\n\n.brand-text strong {\n  font-size: 1rem;\n  white-space: nowrap;\n}\n\n.brand-text small {\n  color: #475569;\n  font-size: 0.68rem;\n  white-space: nowrap;\n}\n\n.menu-toggle {\n  display: none;\n  border: none;\n  background: #e8f4f7;\n  color: #08263a;\n  font-size: 1.1rem;\n  padding: 0.45rem 0.75rem;\n  border-radius: 10px;\n}\n\n.main-nav {\n  display: flex;\n  align-items: center;\n  gap: 0.85rem;\n}\n\n.main-nav a {\n  text-decoration: none;\n  color: #334155;\n  font-weight: 500;\n  font-size: 0.88rem;\n  white-space: nowrap;\n}\n\n.main-nav a.active {\n  color: #08263a;\n}\n\n.language-switcher {\n  display: flex;\n  align-items: center;\n}\n\n.language-switcher select {\n  border: 1px solid #cbd5e1;\n  border-radius: 999px;\n  background: #fff;\n  color: #08263a;\n  font-size: 0.83rem;\n  padding: 0.45rem 0.8rem;\n}\n\n.cta-link {\n  padding: 0.72rem 0.95rem;\n  border-radius: 999px;\n  background: #08263a;\n  color: #fff !important;\n  font-size: 0.84rem;\n}\n\n@media (max-width: 960px) {\n  .menu-toggle {\n    display: inline-flex;\n  }\n\n  .main-nav {\n    position: absolute;\n    left: 1rem;\n    right: 1rem;\n    top: 78px;\n    display: none;\n    flex-direction: column;\n    align-items: stretch;\n    gap: 0.35rem;\n    padding: 0.8rem;\n    background: #ffffff;\n    border: 1px solid rgba(15, 23, 42, 0.08);\n    border-radius: 18px;\n    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);\n  }\n\n  .main-nav.open {\n    display: flex;\n  }\n\n  .main-nav a,\n  .language-switcher select {\n    padding: 0.9rem 1rem;\n    border-radius: 12px;\n  }\n\n  .cta-link {\n    text-align: center;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Header charte override */\n.site-header {\n  background: rgba(8, 38, 58, 0.96) !important;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;\n}\n.brand, .brand-text strong, .main-nav a, .main-nav a.active {\n  color: #fff !important;\n}\n.brand-text small { color: rgba(255,255,255,0.72) !important; }\n.brand-mark { background: var(--alegria-orange) !important; color:#fff !important; }\n.menu-toggle { background: rgba(255,255,255,0.12) !important; color:#fff !important; }\n.language-switcher select { background: rgba(255,255,255,0.1) !important; color:#fff !important; border-color: rgba(255,255,255,0.25) !important; }\n.language-switcher select option { color:#08263a; }\n@media (max-width: 960px) {\n  .main-nav { background: #08263a !important; border-color: rgba(255,255,255,.12) !important; }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -4709,7 +4676,7 @@ LayoutModule = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_co
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<div class=\"site-shell\">\n  <app-homeheader></app-homeheader>\n  <main class=\"site-main\">\n    <router-outlet></router-outlet>\n  </main>\n  <app-homefooter></app-homefooter>\n  <app-cookie-consent></app-cookie-consent>\n</div>\n";
+module.exports = "<div class=\"site-shell\">\n  <app-homeheader></app-homeheader>\n  <main class=\"site-main\">\n    <router-outlet></router-outlet>\n  </main>\n  <app-homefooter></app-homefooter>\n  <app-cookie-consent></app-cookie-consent>\n\n  <div\n    class=\"image-modal\"\n    *ngIf=\"zoomedImageSrc\"\n    role=\"dialog\"\n    aria-modal=\"true\"\n    [attr.aria-label]=\"zoomedImageAlt\"\n    (click)=\"closeImageZoom()\"\n  >\n    <button\n      class=\"image-modal__close\"\n      type=\"button\"\n      aria-label=\"Close image preview\"\n      (click)=\"closeImageZoom(); $event.stopPropagation()\"\n    >\n      ×\n    </button>\n\n    <div class=\"image-modal__content\" (click)=\"$event.stopPropagation()\">\n      <img [src]=\"zoomedImageSrc\" [alt]=\"zoomedImageAlt\" />\n      <p *ngIf=\"zoomedImageAlt\">{{ zoomedImageAlt }}</p>\n    </div>\n  </div>\n</div>\n";
 
 /***/ }),
 
@@ -5159,100 +5126,7 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .section-light {
   background: var(--alegria-sand);
-}
-
-/* Mobile no-overlay / responsive safety patch */
-:host {
-  display: block;
-  overflow-x: hidden;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-img, video {
-  max-width: 100%;
-}
-
-@media (max-width: 768px) {
-  .container, .container.narrow, .narrow {
-    width: min(100% - 1rem, 1120px) !important;
-    max-width: calc(100vw - 1rem) !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-  .page-hero, .section, .hero {
-    padding-top: 2.2rem !important;
-    padding-bottom: 2.2rem !important;
-  }
-  h1 {
-    font-size: clamp(1.65rem, 8vw, 2.15rem) !important;
-    line-height: 1.12 !important;
-  }
-  h2 {
-    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
-    line-height: 1.18 !important;
-  }
-  h3 {
-    font-size: 1.05rem !important;
-  }
-  p, li {
-    font-size: 0.95rem !important;
-    line-height: 1.65 !important;
-  }
-  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
-  }
-  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {
-    grid-template-columns: 1fr !important;
-  }
-  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow: hidden !important;
-  }
-  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    aspect-ratio: 16/10 !important;
-    object-fit: cover !important;
-    display: block !important;
-    position: static !important;
-  }
-  .content-card, .card-body, .meta-box, .cta-card, .offer-card {
-    position: static !important;
-    transform: none !important;
-  }
-  .hero-actions, .contact-actions, .boat-actions, .form-actions {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    width: 100% !important;
-  }
-  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {
-    width: 100% !important;
-    max-width: none !important;
-    justify-content: center !important;
-    text-align: center !important;
-    white-space: normal !important;
-  }
-}
-@media (max-width: 480px) {
-  .page-hero, .section, .hero {
-    padding-top: 1.7rem !important;
-    padding-bottom: 1.7rem !important;
-  }
-  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card {
-    padding: 1rem !important;
-  }
-  .contact-banner {
-    padding: 1.2rem !important;
-    border-radius: 18px !important;
-  }
-}`, "",{"version":3,"sources":["webpack://./src/app/page404/page404.component.scss"],"names":[],"mappings":"AACA;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,aAAA;AACF;;AAEA;EACE,kBAAA;EACA,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,8CAAA;AACF;;AAEA;EACE,eAAA;EACA,gBAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,cAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,qBAAA;EACA,gBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,sBAAA;EACA,oBAAA;AACF;;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAAF;;AAGA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAAF;;AAGA;EACE,yCAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,2BAAA;AAAF;;AAGA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAAF;;AAGA;EACE,6DAAA;AAAF;;AAGA;EACE,+BAAA;AAAF;;AAIA,gDAAA;AACA;EAAQ,cAAA;EAAe,kBAAA;AACvB;;AAAA;EAAI,sBAAA;AAIJ;;AAHA;EAAa,eAAA;AAOb;;AALA;EACE;IACE,0CAAA;IACA,wCAAA;IACA,4BAAA;IACA,6BAAA;EAQF;EALA;IACE,8BAAA;IACA,iCAAA;EAOF;EAJA;IAAK,kDAAA;IAAoD,4BAAA;EAQzD;EAPA;IAAK,kDAAA;IAAoD,4BAAA;EAWzD;EAVA;IAAK,6BAAA;EAaL;EAZA;IAAQ,6BAAA;IAA+B,4BAAA;EAgBvC;EAdA;IACE,wBAAA;IACA,qCAAA;IACA,oBAAA;EAgBF;EAbA;IACE,qCAAA;EAeF;EAZA;IACE,sBAAA;IACA,0BAAA;IACA,2BAAA;EAcF;EAXA;IACE,sBAAA;IACA,uBAAA;IACA,wBAAA;IACA,8BAAA;IACA,4BAAA;IACA,yBAAA;IACA,2BAAA;EAaF;EAVA;IACE,2BAAA;IACA,0BAAA;EAYF;EATA;IACE,iCAAA;IACA,+BAAA;IACA,sBAAA;EAWF;EARA;IACE,sBAAA;IACA,0BAAA;IACA,kCAAA;IACA,6BAAA;IACA,8BAAA;EAUF;AACF;AAPA;EACE;IAA8B,8BAAA;IAAgC,iCAAA;EAW9D;EAVA;IAA+E,wBAAA;EAa/E;EAZA;IAAkB,0BAAA;IAA4B,8BAAA;EAgB9C;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.not-found {\n  min-height: 70vh;\n  display: grid;\n  place-items: center;\n  padding: 2rem;\n}\n\n.box {\n  text-align: center;\n  background: #fff;\n  padding: 2rem;\n  border-radius: 24px;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.code {\n  font-size: 4rem;\n  font-weight: 800;\n  color: #0b6e8f;\n}\n\nh1 {\n  margin: 0.5rem 0;\n  color: #08263a;\n}\n\np {\n  color: #475569;\n}\n\na {\n  display: inline-block;\n  margin-top: 1rem;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.1rem;\n  border-radius: 999px;\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Mobile no-overlay / responsive safety patch */\n:host { display:block; overflow-x:hidden; }\n* { box-sizing: border-box; }\nimg, video { max-width: 100%; }\n\n@media (max-width: 768px) {\n  .container, .container.narrow, .narrow {\n    width: min(100% - 1rem, 1120px) !important;\n    max-width: calc(100vw - 1rem) !important;\n    margin-left: auto !important;\n    margin-right: auto !important;\n  }\n\n  .page-hero, .section, .hero {\n    padding-top: 2.2rem !important;\n    padding-bottom: 2.2rem !important;\n  }\n\n  h1 { font-size: clamp(1.65rem, 8vw, 2.15rem) !important; line-height: 1.12 !important; }\n  h2 { font-size: clamp(1.25rem, 6vw, 1.65rem) !important; line-height: 1.18 !important; }\n  h3 { font-size: 1.05rem !important; }\n  p, li { font-size: 0.95rem !important; line-height: 1.65 !important; }\n\n  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {\n    display: grid !important;\n    grid-template-columns: 1fr !important;\n    gap: 1rem !important;\n  }\n\n  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow: hidden !important;\n  }\n\n  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {\n    width: 100% !important;\n    height: auto !important;\n    min-height: 0 !important;\n    aspect-ratio: 16 / 10 !important;\n    object-fit: cover !important;\n    display: block !important;\n    position: static !important;\n  }\n\n  .content-card, .card-body, .meta-box, .cta-card, .offer-card {\n    position: static !important;\n    transform: none !important;\n  }\n\n  .hero-actions, .contact-actions, .boat-actions, .form-actions {\n    flex-direction: column !important;\n    align-items: stretch !important;\n    width: 100% !important;\n  }\n\n  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {\n    width: 100% !important;\n    max-width: none !important;\n    justify-content: center !important;\n    text-align: center !important;\n    white-space: normal !important;\n  }\n}\n\n@media (max-width: 480px) {\n  .page-hero, .section, .hero { padding-top: 1.7rem !important; padding-bottom: 1.7rem !important; }\n  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card { padding: 1rem !important; }\n  .contact-banner { padding: 1.2rem !important; border-radius: 18px !important; }\n}\n"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/app/page404/page404.component.scss"],"names":[],"mappings":"AACA;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,aAAA;AACF;;AAEA;EACE,kBAAA;EACA,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,8CAAA;AACF;;AAEA;EACE,eAAA;EACA,gBAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,cAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,qBAAA;EACA,gBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,sBAAA;EACA,oBAAA;AACF;;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAAF;;AAGA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAAF;;AAGA;EACE,yCAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,2BAAA;AAAF;;AAGA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAAF;;AAGA;EACE,6DAAA;AAAF;;AAGA;EACE,+BAAA;AAAF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.not-found {\n  min-height: 70vh;\n  display: grid;\n  place-items: center;\n  padding: 2rem;\n}\n\n.box {\n  text-align: center;\n  background: #fff;\n  padding: 2rem;\n  border-radius: 24px;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.code {\n  font-size: 4rem;\n  font-weight: 800;\n  color: #0b6e8f;\n}\n\nh1 {\n  margin: 0.5rem 0;\n  color: #08263a;\n}\n\np {\n  color: #475569;\n}\n\na {\n  display: inline-block;\n  margin-top: 1rem;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.1rem;\n  border-radius: 999px;\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -5400,100 +5274,7 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .section-light {
   background: var(--alegria-sand);
-}
-
-/* Mobile no-overlay / responsive safety patch */
-:host {
-  display: block;
-  overflow-x: hidden;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-img, video {
-  max-width: 100%;
-}
-
-@media (max-width: 768px) {
-  .container, .container.narrow, .narrow {
-    width: min(100% - 1rem, 1120px) !important;
-    max-width: calc(100vw - 1rem) !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-  .page-hero, .section, .hero {
-    padding-top: 2.2rem !important;
-    padding-bottom: 2.2rem !important;
-  }
-  h1 {
-    font-size: clamp(1.65rem, 8vw, 2.15rem) !important;
-    line-height: 1.12 !important;
-  }
-  h2 {
-    font-size: clamp(1.25rem, 6vw, 1.65rem) !important;
-    line-height: 1.18 !important;
-  }
-  h3 {
-    font-size: 1.05rem !important;
-  }
-  p, li {
-    font-size: 0.95rem !important;
-    line-height: 1.65 !important;
-  }
-  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
-  }
-  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {
-    grid-template-columns: 1fr !important;
-  }
-  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow: hidden !important;
-  }
-  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    aspect-ratio: 16/10 !important;
-    object-fit: cover !important;
-    display: block !important;
-    position: static !important;
-  }
-  .content-card, .card-body, .meta-box, .cta-card, .offer-card {
-    position: static !important;
-    transform: none !important;
-  }
-  .hero-actions, .contact-actions, .boat-actions, .form-actions {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    width: 100% !important;
-  }
-  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {
-    width: 100% !important;
-    max-width: none !important;
-    justify-content: center !important;
-    text-align: center !important;
-    white-space: normal !important;
-  }
-}
-@media (max-width: 480px) {
-  .page-hero, .section, .hero {
-    padding-top: 1.7rem !important;
-    padding-bottom: 1.7rem !important;
-  }
-  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card {
-    padding: 1rem !important;
-  }
-  .contact-banner {
-    padding: 1.2rem !important;
-    border-radius: 18px !important;
-  }
-}`, "",{"version":3,"sources":["webpack://./src/app/layout/cookie-consent/cookie-consent.component.scss"],"names":[],"mappings":"AACA;EACE,eAAA;EACA,UAAA;EACA,WAAA;EACA,YAAA;EACA,aAAA;EACA,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,SAAA;EACA,iBAAA;EACA,cAAA;EACA,kBAAA;EACA,iCAAA;EACA,WAAA;EACA,2CAAA;EACA,mBAAA;EACA,6CAAA;AACF;;AAEA;EACE,cAAA;EACA,kCAAA;EACA,kBAAA;EACA,kBAAA;AACF;;AAEA;EACE,SAAA;EACA,gCAAA;EACA,+BAAA;EACA,kBAAA;EACA,iBAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,SAAA;EACA,cAAA;AACF;;AAEA;EACE,WAAA;EACA,kCAAA;EACA,kBAAA;EACA,0BAAA;EACA,0BAAA;AACF;;AAEA;EACE,SAAA;EACA,oBAAA;EACA,4CAAA;EACA,WAAA;EACA,eAAA;EACA,kCAAA;EACA,kBAAA;EACA,gBAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE;IACE,UAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,oBAAA;IACA,aAAA;EACF;EAEA;IACE,8BAAA;EAAF;AACF;AAIA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAFF;;AAKA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAFF;;AAKA;EACE,yCAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,2BAAA;AAFF;;AAKA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAFF;;AAKA;EACE,6DAAA;AAFF;;AAKA;EACE,+BAAA;AAFF;;AAMA,gDAAA;AACA;EAAQ,cAAA;EAAe,kBAAA;AADvB;;AAEA;EAAI,sBAAA;AAEJ;;AADA;EAAa,eAAA;AAKb;;AAHA;EACE;IACE,0CAAA;IACA,wCAAA;IACA,4BAAA;IACA,6BAAA;EAMF;EAHA;IACE,8BAAA;IACA,iCAAA;EAKF;EAFA;IAAK,kDAAA;IAAoD,4BAAA;EAMzD;EALA;IAAK,kDAAA;IAAoD,4BAAA;EASzD;EARA;IAAK,6BAAA;EAWL;EAVA;IAAQ,6BAAA;IAA+B,4BAAA;EAcvC;EAZA;IACE,wBAAA;IACA,qCAAA;IACA,oBAAA;EAcF;EAXA;IACE,qCAAA;EAaF;EAVA;IACE,sBAAA;IACA,0BAAA;IACA,2BAAA;EAYF;EATA;IACE,sBAAA;IACA,uBAAA;IACA,wBAAA;IACA,8BAAA;IACA,4BAAA;IACA,yBAAA;IACA,2BAAA;EAWF;EARA;IACE,2BAAA;IACA,0BAAA;EAUF;EAPA;IACE,iCAAA;IACA,+BAAA;IACA,sBAAA;EASF;EANA;IACE,sBAAA;IACA,0BAAA;IACA,kCAAA;IACA,6BAAA;IACA,8BAAA;EAQF;AACF;AALA;EACE;IAA8B,8BAAA;IAAgC,iCAAA;EAS9D;EARA;IAA+E,wBAAA;EAW/E;EAVA;IAAkB,0BAAA;IAA4B,8BAAA;EAc9C;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.cookie-banner {\n  position: fixed;\n  left: 24px;\n  right: 24px;\n  bottom: 24px;\n  z-index: 9999;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 22px;\n  max-width: 1080px;\n  margin: 0 auto;\n  padding: 18px 20px;\n  background: rgba(6, 40, 61, 0.97);\n  color: #fff;\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 18px;\n  box-shadow: 0 20px 60px rgba(6, 40, 61, 0.35);\n}\n\n.cookie-copy strong {\n  display: block;\n  font-family: 'Raleway', sans-serif;\n  font-size: 0.95rem;\n  margin-bottom: 4px;\n}\n\n.cookie-copy p {\n  margin: 0;\n  color: rgba(255, 255, 255, 0.82);\n  font-family: 'Lato', sans-serif;\n  font-size: 0.88rem;\n  line-height: 1.45;\n}\n\n.cookie-actions {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  flex-shrink: 0;\n}\n\n.cookie-link {\n  color: #fff;\n  font-family: 'Raleway', sans-serif;\n  font-size: 0.82rem;\n  text-decoration: underline;\n  text-underline-offset: 4px;\n}\n\n.cookie-accept {\n  border: 0;\n  border-radius: 999px;\n  background: var(--color-sun-orange, #f28c38);\n  color: #fff;\n  cursor: pointer;\n  font-family: 'Raleway', sans-serif;\n  font-size: 0.82rem;\n  font-weight: 800;\n  padding: 10px 16px;\n  white-space: nowrap;\n}\n\n@media (max-width: 768px) {\n  .cookie-banner {\n    left: 12px;\n    right: 12px;\n    bottom: 12px;\n    flex-direction: column;\n    align-items: stretch;\n    padding: 16px;\n  }\n\n  .cookie-actions {\n    justify-content: space-between;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Mobile no-overlay / responsive safety patch */\n:host { display:block; overflow-x:hidden; }\n* { box-sizing: border-box; }\nimg, video { max-width: 100%; }\n\n@media (max-width: 768px) {\n  .container, .container.narrow, .narrow {\n    width: min(100% - 1rem, 1120px) !important;\n    max-width: calc(100vw - 1rem) !important;\n    margin-left: auto !important;\n    margin-right: auto !important;\n  }\n\n  .page-hero, .section, .hero {\n    padding-top: 2.2rem !important;\n    padding-bottom: 2.2rem !important;\n  }\n\n  h1 { font-size: clamp(1.65rem, 8vw, 2.15rem) !important; line-height: 1.12 !important; }\n  h2 { font-size: clamp(1.25rem, 6vw, 1.65rem) !important; line-height: 1.18 !important; }\n  h3 { font-size: 1.05rem !important; }\n  p, li { font-size: 0.95rem !important; line-height: 1.65 !important; }\n\n  .hero-grid, .split-grid, .detail-grid, .two-col, .contact-grid, .specs-grid {\n    display: grid !important;\n    grid-template-columns: 1fr !important;\n    gap: 1rem !important;\n  }\n\n  .cards-grid, .grid, .gallery-grid, .visual-grid, .masonry, .offering-grid, .field-grid {\n    grid-template-columns: 1fr !important;\n  }\n\n  .card, .outing-card, .offer-card, .contact-card, .info-card, .cta-card, .meta-box {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow: hidden !important;\n  }\n\n  .card img, .outing-card img, .image-col img, .visual-grid img, .gallery-grid img, .masonry img, .boat-card img, .hero-visual img {\n    width: 100% !important;\n    height: auto !important;\n    min-height: 0 !important;\n    aspect-ratio: 16 / 10 !important;\n    object-fit: cover !important;\n    display: block !important;\n    position: static !important;\n  }\n\n  .content-card, .card-body, .meta-box, .cta-card, .offer-card {\n    position: static !important;\n    transform: none !important;\n  }\n\n  .hero-actions, .contact-actions, .boat-actions, .form-actions {\n    flex-direction: column !important;\n    align-items: stretch !important;\n    width: 100% !important;\n  }\n\n  .btn, .btn-equal, .btn-primary, .btn-secondary, .btn-book, .cta-link, button {\n    width: 100% !important;\n    max-width: none !important;\n    justify-content: center !important;\n    text-align: center !important;\n    white-space: normal !important;\n  }\n}\n\n@media (max-width: 480px) {\n  .page-hero, .section, .hero { padding-top: 1.7rem !important; padding-bottom: 1.7rem !important; }\n  .card-body, .content-card, .contact-card, .info-card, .offer-card, .cta-card { padding: 1rem !important; }\n  .contact-banner { padding: 1.2rem !important; border-radius: 18px !important; }\n}\n"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/app/layout/cookie-consent/cookie-consent.component.scss"],"names":[],"mappings":"AACA;EACE,eAAA;EACA,UAAA;EACA,WAAA;EACA,YAAA;EACA,aAAA;EACA,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,SAAA;EACA,iBAAA;EACA,cAAA;EACA,kBAAA;EACA,iCAAA;EACA,WAAA;EACA,2CAAA;EACA,mBAAA;EACA,6CAAA;AACF;;AAEA;EACE,cAAA;EACA,kCAAA;EACA,kBAAA;EACA,kBAAA;AACF;;AAEA;EACE,SAAA;EACA,gCAAA;EACA,+BAAA;EACA,kBAAA;EACA,iBAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,SAAA;EACA,cAAA;AACF;;AAEA;EACE,WAAA;EACA,kCAAA;EACA,kBAAA;EACA,0BAAA;EACA,0BAAA;AACF;;AAEA;EACE,SAAA;EACA,oBAAA;EACA,4CAAA;EACA,WAAA;EACA,eAAA;EACA,kCAAA;EACA,kBAAA;EACA,gBAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE;IACE,UAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,oBAAA;IACA,aAAA;EACF;EAEA;IACE,8BAAA;EAAF;AACF;AAIA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAFF;;AAKA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAFF;;AAKA;EACE,yCAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,2BAAA;AAFF;;AAKA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAFF;;AAKA;EACE,6DAAA;AAFF;;AAKA;EACE,+BAAA;AAFF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.cookie-banner {\n  position: fixed;\n  left: 24px;\n  right: 24px;\n  bottom: 24px;\n  z-index: 9999;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 22px;\n  max-width: 1080px;\n  margin: 0 auto;\n  padding: 18px 20px;\n  background: rgba(6, 40, 61, 0.97);\n  color: #fff;\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 18px;\n  box-shadow: 0 20px 60px rgba(6, 40, 61, 0.35);\n}\n\n.cookie-copy strong {\n  display: block;\n  font-family: 'Raleway', sans-serif;\n  font-size: 0.95rem;\n  margin-bottom: 4px;\n}\n\n.cookie-copy p {\n  margin: 0;\n  color: rgba(255, 255, 255, 0.82);\n  font-family: 'Lato', sans-serif;\n  font-size: 0.88rem;\n  line-height: 1.45;\n}\n\n.cookie-actions {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  flex-shrink: 0;\n}\n\n.cookie-link {\n  color: #fff;\n  font-family: 'Raleway', sans-serif;\n  font-size: 0.82rem;\n  text-decoration: underline;\n  text-underline-offset: 4px;\n}\n\n.cookie-accept {\n  border: 0;\n  border-radius: 999px;\n  background: var(--color-sun-orange, #f28c38);\n  color: #fff;\n  cursor: pointer;\n  font-family: 'Raleway', sans-serif;\n  font-size: 0.82rem;\n  font-weight: 800;\n  padding: 10px 16px;\n  white-space: nowrap;\n}\n\n@media (max-width: 768px) {\n  .cookie-banner {\n    left: 12px;\n    right: 12px;\n    bottom: 12px;\n    flex-direction: column;\n    align-items: stretch;\n    padding: 16px;\n  }\n\n  .cookie-actions {\n    justify-content: space-between;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
