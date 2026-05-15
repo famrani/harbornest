@@ -3181,8 +3181,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const sharedImages = {
   hero: 'assets/img/home/home-hero-generic.jpg',
-  boatHero: 'assets/img/boat/bali4.1/bali-41-1.jpg',
-  gallery: ['assets/img/boat/bali4.1/bali-41-2.jpg', 'assets/img/boat/bali4.1/bali-41-3.jpg', 'assets/img/boat/bali4.1/bali-41-4.jpg', 'assets/img/boat/bali4.1/bali-41-5.jpg', 'assets/img/boat/bali4.1/bali-41-6.jpg', 'assets/img/boat/bali4.1/bali-41-7.jpg', 'assets/img/boat/bali4.1/bali-41-8.jpg', 'assets/img/boat/bali4.1/bali-41-9.jpg', 'assets/img/boat/bali4.1/bali-41-10.jpg', 'assets/img/boat/bali4.1/bali-41-11.jpg', 'assets/img/boat/bali4.1/bali-41-12.jpg', 'assets/img/boat/bali4.1/bali-41-13.jpg'],
+  boatHero: 'assets/img/boat/bali4.1/bali-41-4.jpg',
+  gallery: ['assets/img/boat/bali4.1/bali-41-2.jpg', 'assets/img/boat/bali4.1/bali-41-3.jpg', 'assets/img/boat/bali4.1/bali-41-4.jpg', 'assets/img/boat/bali4.1/bali-41-5.jpg', 'assets/img/events/de/de1.png', 'assets/img/events/sunset/sunset2.jpg', 'assets/img/events/business-meeting/business-meeting1.jpg', 'assets/img/events/party/party3.jpg'],
   de1: 'assets/img/events/de/de1.png',
   sunset1: 'assets/img/events/sunset/sunset1.jpg',
   business1: 'assets/img/events/business-meeting/business-meeting1.jpg',

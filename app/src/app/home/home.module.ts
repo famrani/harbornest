@@ -16,6 +16,7 @@ import { SunsetCruiseComponent } from './tours/sunset-cruise/sunset-cruise.compo
 import { EvjfEvgComponent } from './tours/evjf-evg/evjf-evg.component';
 import { BusinessOutingComponent } from './tours/business-outing/business-outing.component';
 import { TermsComponent } from './terms/terms.component';
+import { SafetyInstructionsComponent } from './safety-instructions/safety-instructions.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { TermsComponent } from './terms/terms.component';
     EvjfEvgComponent,
     BusinessOutingComponent,
     TermsComponent,
+    SafetyInstructionsComponent,
   ],
   imports: [
     CommonModule,

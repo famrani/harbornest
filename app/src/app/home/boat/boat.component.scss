@@ -232,3 +232,36 @@ p, li, input, textarea, select, .card-body, .term-section {
 .section-light {
   background: var(--alegria-sand);
 }
+
+
+.safety-link-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 1.25rem;
+  background: #f7fbfc;
+  border: 1px solid rgba(10, 55, 79, .12);
+}
+
+.safety-link-box h2 {
+  margin: .35rem 0 .5rem;
+}
+
+.safety-link-box p {
+  margin: 0;
+  color: var(--text-muted, #5f6f7a);
+}
+
+@media (max-width: 768px) {
+  .safety-link-box {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .safety-link-box .btn {
+    width: 100%;
+    text-align: center;
+  }
+}

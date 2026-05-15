@@ -660,6 +660,17 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 /***/ }),
 
+/***/ 19798:
+/*!****************************************************************************************!*\
+  !*** ./src/app/home/safety-instructions/safety-instructions.component.html?ngResource ***!
+  \****************************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<section class=\"safety-section\">\n  <div class=\"container safety-container\">\n    <div class=\"safety-head\">\n      <span class=\"eyebrow\">{{ content.eyebrow }}</span>\n      <h2>{{ content.title }}</h2>\n      <p>{{ content.subtitle }}</p>\n    </div>\n\n    <div class=\"safety-accordion\">\n      <article class=\"safety-card\" *ngFor=\"let section of content.sections; let i = index\" [class.open]=\"openIndex === i\">\n        <button class=\"safety-toggle\" type=\"button\" (click)=\"toggle(i)\" [attr.aria-expanded]=\"openIndex === i\">\n          <span class=\"safety-title\">\n            <span class=\"safety-icon\">{{ section.icon }}</span>\n            {{ section.title }}\n          </span>\n          <span class=\"safety-plus\">{{ openIndex === i ? '−' : '+' }}</span>\n        </button>\n\n        <div class=\"safety-body\" *ngIf=\"openIndex === i\">\n          <p class=\"safety-intro\" *ngIf=\"section.intro\">{{ section.intro }}</p>\n          <ul>\n            <li *ngFor=\"let item of section.items\">{{ item }}</li>\n          </ul>\n        </div>\n      </article>\n    </div>\n\n    <p class=\"safety-note\">{{ content.note }}</p>\n  </div>\n</section>\n";
+
+/***/ }),
+
 /***/ 26668:
 /*!***********************************************************!*\
   !*** ./src/app/home/tours/evjf-evg/evjf-evg.component.ts ***!
@@ -724,7 +735,22 @@ var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modul
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `.container {
+___CSS_LOADER_EXPORT___.push([module.id, `:host {
+  --alegria-deep: #08263a;
+  --alegria-ocean: #0b6e8f;
+  --alegria-ocean-light: #e8f4f7;
+  --alegria-orange: #f28c28;
+  --alegria-sand: #fbf8f2;
+  --alegria-text: #2f3a45;
+  --alegria-muted: #667085;
+  display: block;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
   width: min(1120px, 100% - 2rem);
   margin: 0 auto;
 }
@@ -739,28 +765,43 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.container {
 }
 
 .page-hero {
-  background: #ffffff;
+  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);
 }
 
 .eyebrow {
   display: inline-block;
   margin-bottom: 0.9rem;
+  font-family: "Raleway", Arial, sans-serif;
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #0b6e8f;
+  color: var(--alegria-ocean);
+}
+
+h1,
+h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  color: var(--alegria-deep);
+  letter-spacing: -0.015em;
 }
 
 h1 {
   font-size: clamp(1.85rem, 3vw, 3rem);
   line-height: 1.08;
   margin: 0 0 0.9rem;
-  color: #08263a;
 }
 
-p {
-  color: #475569;
+h2 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.25rem, 2vw, 1.55rem);
+  line-height: 1.15;
+}
+
+p,
+li {
+  font-family: "Lato", Arial, sans-serif;
+  color: var(--alegria-text);
   line-height: 1.7;
   font-size: 0.97rem;
 }
@@ -775,11 +816,19 @@ p {
   border-radius: 24px;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: minmax(260px, 320px) 1fr;
   box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
 }
 
-.outing-card img {
+.image-link {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--alegria-sand);
+}
+
+.image-link img {
+  display: block;
   width: 100%;
   height: 100%;
   min-height: 260px;
@@ -788,23 +837,20 @@ p {
 
 .content-card {
   padding: 1.4rem;
+  min-width: 0;
 }
 
 .meta-top {
-  color: #64748b;
+  font-family: "Raleway", Arial, sans-serif;
+  color: var(--alegria-muted);
   font-weight: 600;
   margin-bottom: 0.75rem;
   font-size: 0.88rem;
 }
 
-h2 {
-  margin: 0 0 0.75rem;
-  color: #08263a;
-  font-size: 1.35rem;
-}
-
 ul {
   padding-left: 1.15rem;
+  margin: 1rem 0 0;
   color: #334155;
   line-height: 1.7;
   font-size: 0.94rem;
@@ -812,75 +858,78 @@ ul {
 
 .btn {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-top: 1rem;
   text-decoration: none;
-  background: #08263a;
-  color: #fff;
+  background: var(--alegria-ocean-light);
+  color: var(--alegria-deep);
   padding: 0.85rem 1.05rem;
   border-radius: 999px;
+  font-family: "Raleway", Arial, sans-serif;
   font-weight: 700;
   font-size: 0.9rem;
 }
 
+.btn:hover {
+  background: var(--alegria-orange);
+  color: #fff;
+}
+
 @media (max-width: 860px) {
+  .page-hero,
+  .section {
+    padding: 2.5rem 0;
+  }
+  .container {
+    width: min(100% - 1.25rem, 1120px);
+  }
   .outing-card {
-    grid-template-columns: 1fr;
+    display: block;
+    border-radius: 20px;
+  }
+  .image-link {
+    width: 100%;
+  }
+  .image-link img {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16/10;
+    object-fit: cover;
+  }
+  .content-card {
+    position: static !important;
+    transform: none !important;
+    padding: 1rem;
+    background: #fff;
+  }
+  .meta-top {
+    font-size: 0.78rem;
+  }
+  p,
+  li {
+    font-size: 0.92rem;
+  }
+  .btn {
+    width: 100%;
   }
 }
-/* Charte graphique Alegria */
-:host {
-  --alegria-deep: #08263a;
-  --alegria-ocean: #0b6e8f;
-  --alegria-ocean-light: #e8f4f7;
-  --alegria-orange: #f28c28;
-  --alegria-sand: #fbf8f2;
-  --alegria-text: #2f3a45;
-  --alegria-muted: #667085;
-}
-
-h1, h2, h3, .brand-text strong, .title, .page-title {
-  font-family: "Playfair Display", Georgia, serif;
-  color: var(--alegria-deep);
-  letter-spacing: -0.015em;
-}
-
-.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {
-  font-family: "Raleway", Arial, sans-serif;
-}
-
-p, li, input, textarea, select, .card-body, .term-section {
-  font-family: "Lato", Arial, sans-serif;
-  color: var(--alegria-text);
-}
-
-.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {
-  color: var(--alegria-ocean);
-}
-
-.btn-primary, .cta-link, .btn-book {
-  background: var(--alegria-orange) !important;
-  color: #fff !important;
-  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);
-}
-
-.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {
-  background: var(--alegria-ocean-light);
-  color: var(--alegria-deep);
-}
-
-.price-pill {
-  background: rgba(242, 140, 40, 0.13);
-  color: #9a4d08;
-  border: 1px solid rgba(242, 140, 40, 0.28);
-}
-
-.page-hero {
-  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);
-}
-
-.section-light {
-  background: var(--alegria-sand);
-}`, "",{"version":3,"sources":["webpack://./src/app/home/outings/outings.component.scss"],"names":[],"mappings":"AACA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,WAAA;AACF;;AAEA;EACE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,gCAAA;EACA,8CAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,iBAAA;EACA,iBAAA;AACF;;AAEA;EACE,eAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,sBAAA;EACA,kBAAA;AACF;;AAEA;EACE,mBAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,oBAAA;EACA,gBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,wBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE;IACE,0BAAA;EACF;AACF;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AADF;;AAIA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AADF;;AAIA;EACE,yCAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,2BAAA;AADF;;AAIA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AADF;;AAIA;EACE,6DAAA;AADF;;AAIA;EACE,+BAAA;AADF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: #ffffff;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.grid {\n  display: grid;\n  gap: 1.3rem;\n}\n\n.outing-card {\n  background: #fff;\n  border-radius: 24px;\n  overflow: hidden;\n  display: grid;\n  grid-template-columns: 320px 1fr;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.outing-card img {\n  width: 100%;\n  height: 100%;\n  min-height: 260px;\n  object-fit: cover;\n}\n\n.content-card {\n  padding: 1.4rem;\n}\n\n.meta-top {\n  color: #64748b;\n  font-weight: 600;\n  margin-bottom: 0.75rem;\n  font-size: 0.88rem;\n}\n\nh2 {\n  margin: 0 0 0.75rem;\n  color: #08263a;\n  font-size: 1.35rem;\n}\n\nul {\n  padding-left: 1.15rem;\n  color: #334155;\n  line-height: 1.7;\n  font-size: 0.94rem;\n}\n\n.btn {\n  display: inline-flex;\n  margin-top: 1rem;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.85rem 1.05rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n@media (max-width: 860px) {\n  .outing-card {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+@media (max-width: 480px) {
+  .container {
+    width: min(100% - 1rem, 1120px);
+  }
+  .page-hero,
+  .section {
+    padding: 2rem 0;
+  }
+  .grid {
+    gap: 1rem;
+  }
+  .content-card {
+    padding: 0.95rem;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/outings/outings.component.scss"],"names":[],"mappings":"AAEA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;EACA,cAAA;AAAF;;AAGA;EACE,sBAAA;AAAF;;AAGA;EACE,+BAAA;EACA,cAAA;AAAF;;AAGA;EACE,gBAAA;AAAF;;AAGA;;EAEE,eAAA;AAAF;;AAGA;EACE,6DAAA;AAAF;;AAGA;EACE,qBAAA;EACA,qBAAA;EACA,yCAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,2BAAA;AAAF;;AAGA;;EAEE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAAF;;AAGA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;AAAF;;AAGA;EACE,mBAAA;EACA,uCAAA;EACA,iBAAA;AAAF;;AAGA;;EAEE,sCAAA;EACA,0BAAA;EACA,gBAAA;EACA,kBAAA;AAAF;;AAGA;EACE,aAAA;EACA,WAAA;AAAF;;AAGA;EACE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,+CAAA;EACA,8CAAA;AAAF;;AAGA;EACE,cAAA;EACA,YAAA;EACA,gBAAA;EACA,+BAAA;AAAF;;AAGA;EACE,cAAA;EACA,WAAA;EACA,YAAA;EACA,iBAAA;EACA,iBAAA;AAAF;;AAGA;EACE,eAAA;EACA,YAAA;AAAF;;AAGA;EACE,yCAAA;EACA,2BAAA;EACA,gBAAA;EACA,sBAAA;EACA,kBAAA;AAAF;;AAGA;EACE,qBAAA;EACA,gBAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;AAAF;;AAGA;EACE,oBAAA;EACA,mBAAA;EACA,uBAAA;EACA,gBAAA;EACA,qBAAA;EACA,sCAAA;EACA,0BAAA;EACA,wBAAA;EACA,oBAAA;EACA,yCAAA;EACA,gBAAA;EACA,iBAAA;AAAF;;AAGA;EACE,iCAAA;EACA,WAAA;AAAF;;AAGA;EACE;;IAEE,iBAAA;EAAF;EAGA;IACE,kCAAA;EADF;EAIA;IACE,cAAA;IACA,mBAAA;EAFF;EAKA;IACE,WAAA;EAHF;EAMA;IACE,WAAA;IACA,YAAA;IACA,aAAA;IACA,mBAAA;IACA,iBAAA;EAJF;EAOA;IACE,2BAAA;IACA,0BAAA;IACA,aAAA;IACA,gBAAA;EALF;EAQA;IACE,kBAAA;EANF;EASA;;IAEE,kBAAA;EAPF;EAUA;IACE,WAAA;EARF;AACF;AAWA;EACE;IACE,+BAAA;EATF;EAYA;;IAEE,eAAA;EAVF;EAaA;IACE,SAAA;EAXF;EAcA;IACE,gBAAA;EAZF;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n  display: block;\n}\n\n* {\n  box-sizing: border-box;\n}\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: var(--alegria-ocean);\n}\n\nh1,\nh2 {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n}\n\nh2 {\n  margin: 0 0 0.75rem;\n  font-size: clamp(1.25rem, 2vw, 1.55rem);\n  line-height: 1.15;\n}\n\np,\nli {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.grid {\n  display: grid;\n  gap: 1.3rem;\n}\n\n.outing-card {\n  background: #fff;\n  border-radius: 24px;\n  overflow: hidden;\n  display: grid;\n  grid-template-columns: minmax(260px, 320px) 1fr;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.image-link {\n  display: block;\n  min-width: 0;\n  overflow: hidden;\n  background: var(--alegria-sand);\n}\n\n.image-link img {\n  display: block;\n  width: 100%;\n  height: 100%;\n  min-height: 260px;\n  object-fit: cover;\n}\n\n.content-card {\n  padding: 1.4rem;\n  min-width: 0;\n}\n\n.meta-top {\n  font-family: 'Raleway', Arial, sans-serif;\n  color: var(--alegria-muted);\n  font-weight: 600;\n  margin-bottom: 0.75rem;\n  font-size: 0.88rem;\n}\n\nul {\n  padding-left: 1.15rem;\n  margin: 1rem 0 0;\n  color: #334155;\n  line-height: 1.7;\n  font-size: 0.94rem;\n}\n\n.btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  margin-top: 1rem;\n  text-decoration: none;\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n  padding: 0.85rem 1.05rem;\n  border-radius: 999px;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n.btn:hover {\n  background: var(--alegria-orange);\n  color: #fff;\n}\n\n@media (max-width: 860px) {\n  .page-hero,\n  .section {\n    padding: 2.5rem 0;\n  }\n\n  .container {\n    width: min(100% - 1.25rem, 1120px);\n  }\n\n  .outing-card {\n    display: block;\n    border-radius: 20px;\n  }\n\n  .image-link {\n    width: 100%;\n  }\n\n  .image-link img {\n    width: 100%;\n    height: auto;\n    min-height: 0;\n    aspect-ratio: 16 / 10;\n    object-fit: cover;\n  }\n\n  .content-card {\n    position: static !important;\n    transform: none !important;\n    padding: 1rem;\n    background: #fff;\n  }\n\n  .meta-top {\n    font-size: 0.78rem;\n  }\n\n  p,\n  li {\n    font-size: 0.92rem;\n  }\n\n  .btn {\n    width: 100%;\n  }\n}\n\n@media (max-width: 480px) {\n  .container {\n    width: min(100% - 1rem, 1120px);\n  }\n\n  .page-hero,\n  .section {\n    padding: 2rem 0;\n  }\n\n  .grid {\n    gap: 1rem;\n  }\n\n  .content-card {\n    padding: 0.95rem;\n  }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -914,7 +963,7 @@ __webpack_require__.r(__webpack_exports__);
 let BoatComponent = class BoatComponent {
   languageService;
   content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr;
-  images = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr.galleryImages.slice(0, 13);
+  images = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr.galleryImages.slice(0, 4);
   languageSub;
   specs = [];
   coreOffering = [];
@@ -970,7 +1019,7 @@ let BoatComponent = class BoatComponent {
   ngOnInit() {
     this.languageSub = this.languageService.language$.subscribe(language => {
       this.content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT[language];
-      this.images = this.content.galleryImages.slice(0, 13);
+      this.images = this.content.galleryImages.slice(0, 4);
       const localized = this.localizedData[language];
       this.specsTitle = localized.specsTitle;
       this.servicesTitle = localized.servicesTitle;
@@ -1000,6 +1049,145 @@ BoatComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_c
 
 /***/ }),
 
+/***/ 39290:
+/*!****************************************************************************************!*\
+  !*** ./src/app/home/safety-instructions/safety-instructions.component.scss?ngResource ***!
+  \****************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.safety-section {
+  padding: 4.5rem 0;
+  background: #f7fbfc;
+}
+
+.safety-container {
+  max-width: 1100px;
+}
+
+.safety-head {
+  max-width: 780px;
+  margin: 0 auto 2rem;
+  text-align: center;
+}
+
+.safety-head h2 {
+  margin: 0.5rem 0 1rem;
+}
+
+.safety-head p {
+  color: var(--text-muted, #5f6f7a);
+  line-height: 1.8;
+}
+
+.safety-accordion {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.safety-card {
+  overflow: hidden;
+  border: 1px solid rgba(10, 55, 79, 0.12);
+  border-radius: 1.1rem;
+  background: #fff;
+  box-shadow: 0 0.8rem 1.8rem rgba(9, 39, 55, 0.06);
+}
+
+.safety-toggle {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  text-align: left;
+  cursor: pointer;
+  color: var(--deep-blue, #08263a);
+  font-family: var(--font-nav, "Raleway", sans-serif);
+  font-weight: 700;
+}
+
+.safety-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.safety-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: rgba(237, 126, 49, 0.12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.safety-plus {
+  font-size: 1.7rem;
+  line-height: 1;
+  color: var(--sun-orange, #ed7e31);
+}
+
+.safety-body {
+  padding: 0 1.25rem 1.25rem 3.95rem;
+  color: var(--text, #263238);
+}
+
+.safety-intro {
+  margin: 0.15rem 0 0.75rem;
+  color: var(--text-muted, #5f6f7a);
+}
+
+.safety-body ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.safety-body li {
+  line-height: 1.65;
+}
+
+.safety-note {
+  margin: 2rem auto 0;
+  max-width: 780px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--deep-blue, #08263a);
+}
+
+@media (max-width: 768px) {
+  .safety-section {
+    padding: 3rem 0;
+  }
+  .safety-head {
+    text-align: left;
+  }
+  .safety-toggle {
+    padding: 1rem;
+  }
+  .safety-title {
+    align-items: flex-start;
+  }
+  .safety-body {
+    padding: 0 1rem 1rem;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/safety-instructions/safety-instructions.component.scss"],"names":[],"mappings":"AAAA;EACE,iBAAA;EACA,mBAAA;AACF;;AAEA;EACE,iBAAA;AACF;;AAEA;EACE,gBAAA;EACA,mBAAA;EACA,kBAAA;AACF;;AAEA;EACE,qBAAA;AACF;;AAEA;EACE,iCAAA;EACA,gBAAA;AACF;;AAEA;EACE,aAAA;EACA,WAAA;AACF;;AAEA;EACE,gBAAA;EACA,wCAAA;EACA,qBAAA;EACA,gBAAA;EACA,iDAAA;AACF;;AAEA;EACE,WAAA;EACA,SAAA;EACA,uBAAA;EACA,uBAAA;EACA,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,SAAA;EACA,gBAAA;EACA,eAAA;EACA,gCAAA;EACA,mDAAA;EACA,gBAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,oBAAA;EACA,oCAAA;EACA,oBAAA;EACA,mBAAA;EACA,uBAAA;EACA,cAAA;AACF;;AAEA;EACE,iBAAA;EACA,cAAA;EACA,iCAAA;AACF;;AAEA;EACE,kCAAA;EACA,2BAAA;AACF;;AAEA;EACE,yBAAA;EACA,iCAAA;AACF;;AAEA;EACE,SAAA;EACA,oBAAA;EACA,aAAA;EACA,YAAA;AACF;;AAEA;EACE,iBAAA;AACF;;AAEA;EACE,mBAAA;EACA,gBAAA;EACA,kBAAA;EACA,gBAAA;EACA,gCAAA;AACF;;AAEA;EACE;IACE,eAAA;EACF;EAEA;IACE,gBAAA;EAAF;EAGA;IACE,aAAA;EADF;EAIA;IACE,uBAAA;EAFF;EAKA;IACE,oBAAA;EAHF;AACF","sourcesContent":[".safety-section {\n  padding: 4.5rem 0;\n  background: #f7fbfc;\n}\n\n.safety-container {\n  max-width: 1100px;\n}\n\n.safety-head {\n  max-width: 780px;\n  margin: 0 auto 2rem;\n  text-align: center;\n}\n\n.safety-head h2 {\n  margin: .5rem 0 1rem;\n}\n\n.safety-head p {\n  color: var(--text-muted, #5f6f7a);\n  line-height: 1.8;\n}\n\n.safety-accordion {\n  display: grid;\n  gap: .9rem;\n}\n\n.safety-card {\n  overflow: hidden;\n  border: 1px solid rgba(10, 55, 79, .12);\n  border-radius: 1.1rem;\n  background: #fff;\n  box-shadow: 0 .8rem 1.8rem rgba(9, 39, 55, .06);\n}\n\n.safety-toggle {\n  width: 100%;\n  border: 0;\n  background: transparent;\n  padding: 1.1rem 1.25rem;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 1rem;\n  text-align: left;\n  cursor: pointer;\n  color: var(--deep-blue, #08263a);\n  font-family: var(--font-nav, 'Raleway', sans-serif);\n  font-weight: 700;\n}\n\n.safety-title {\n  display: flex;\n  align-items: center;\n  gap: .75rem;\n}\n\n.safety-icon {\n  width: 2rem;\n  height: 2rem;\n  border-radius: 999px;\n  background: rgba(237, 126, 49, .12);\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  flex: 0 0 auto;\n}\n\n.safety-plus {\n  font-size: 1.7rem;\n  line-height: 1;\n  color: var(--sun-orange, #ed7e31);\n}\n\n.safety-body {\n  padding: 0 1.25rem 1.25rem 3.95rem;\n  color: var(--text, #263238);\n}\n\n.safety-intro {\n  margin: .15rem 0 .75rem;\n  color: var(--text-muted, #5f6f7a);\n}\n\n.safety-body ul {\n  margin: 0;\n  padding-left: 1.1rem;\n  display: grid;\n  gap: .55rem;\n}\n\n.safety-body li {\n  line-height: 1.65;\n}\n\n.safety-note {\n  margin: 2rem auto 0;\n  max-width: 780px;\n  text-align: center;\n  font-weight: 700;\n  color: var(--deep-blue, #08263a);\n}\n\n@media (max-width: 768px) {\n  .safety-section {\n    padding: 3rem 0;\n  }\n\n  .safety-head {\n    text-align: left;\n  }\n\n  .safety-toggle {\n    padding: 1rem;\n  }\n\n  .safety-title {\n    align-items: flex-start;\n  }\n\n  .safety-body {\n    padding: 0 1rem 1rem;\n  }\n}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
 /***/ 45055:
 /*!*************************************!*\
   !*** ./src/app/home/home.module.ts ***!
@@ -1011,12 +1199,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeModule: () => (/* binding */ HomeModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/router */ 99585);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @ionic/angular */ 21507);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @ionic/angular */ 21507);
 /* harmony import */ var _home_router_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home.router.module */ 61506);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
@@ -1029,6 +1217,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./tours/evjf-evg/evjf-evg.component */ 26668);
 /* harmony import */ var _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./tours/business-outing/business-outing.component */ 48854);
 /* harmony import */ var _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./terms/terms.component */ 79542);
+/* harmony import */ var _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./safety-instructions/safety-instructions.component */ 65642);
+
 
 
 
@@ -1048,9 +1238,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let HomeModule = class HomeModule {};
-HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_12__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_13__.NgModule)({
-  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent],
-  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_14__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_15__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_16__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_17__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule]
+HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_13__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_14__.NgModule)({
+  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent, _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__.SafetyInstructionsComponent],
+  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_15__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_16__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_17__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_18__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule]
 })], HomeModule);
 
 
@@ -2365,9 +2555,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeRoutingModule: () => (/* binding */ HomeRoutingModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/router */ 99585);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
 /* harmony import */ var _boat_boat_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./boat/boat.component */ 36424);
@@ -2379,6 +2569,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./tours/evjf-evg/evjf-evg.component */ 26668);
 /* harmony import */ var _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./tours/business-outing/business-outing.component */ 48854);
 /* harmony import */ var _terms_terms_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./terms/terms.component */ 79542);
+/* harmony import */ var _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./safety-instructions/safety-instructions.component */ 65642);
+
 
 
 
@@ -2426,11 +2618,14 @@ const routes = [{
 }, {
   path: 'terms',
   component: _terms_terms_component__WEBPACK_IMPORTED_MODULE_10__.TermsComponent
+}, {
+  path: 'safety',
+  component: _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_11__.SafetyInstructionsComponent
 }];
 let HomeRoutingModule = class HomeRoutingModule {};
-HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_11__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_12__.NgModule)({
-  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_13__.RouterModule.forChild(routes)],
-  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_13__.RouterModule]
+HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_12__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_13__.NgModule)({
+  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_14__.RouterModule.forChild(routes)],
+  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_14__.RouterModule]
 })], HomeRoutingModule);
 
 
@@ -2443,7 +2638,7 @@ HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_11__.__decorate)([(0,_angu
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ content.outingsPage.eyebrow }}</span>\n    <h1>{{ content.outingsPage.title }}</h1>\n    <p>{{ content.outingsPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container grid\">\n    <article class=\"outing-card\" *ngFor=\"let outing of content.outings\">\n      <img [src]=\"outing.image\" [alt]=\"outing.title\" />\n      <div class=\"content-card\">\n        <div class=\"meta-top\">{{ outing.duration }} • {{ outing.guests }}</div>\n        <h2>{{ outing.title }}</h2>\n        <p>{{ outing.description }}</p>\n        <ul>\n          <li *ngFor=\"let point of outing.highlights\">{{ point }}</li>\n        </ul>\n        <a [routerLink]=\"['/sorties', outing.slug]\" class=\"btn\">{{ content.outingsPage.cta }}</a>\n      </div>\n    </article>\n  </div>\n</section>\n";
+module.exports = "<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ content.outingsPage.eyebrow }}</span>\n    <h1>{{ content.outingsPage.title }}</h1>\n    <p>{{ content.outingsPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container grid\">\n    <article class=\"outing-card\" *ngFor=\"let outing of content.outings\">\n      <a class=\"image-link\" [routerLink]=\"['/sorties', outing.slug]\" [attr.aria-label]=\"outing.title\">\n        <img [src]=\"outing.image\" [alt]=\"outing.title\" />\n      </a>\n\n      <div class=\"content-card\">\n        <div class=\"meta-top\">{{ outing.duration }} • {{ outing.guests }}</div>\n        <h2>{{ outing.title }}</h2>\n        <p>{{ outing.description }}</p>\n\n        <ul *ngIf=\"outing.highlights?.length\">\n          <li *ngFor=\"let point of outing.highlights\">{{ point }}</li>\n        </ul>\n\n        <a [routerLink]=\"['/sorties', outing.slug]\" class=\"btn\">{{ content.outingsPage.cta }}</a>\n      </div>\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -2454,7 +2649,7 @@ module.exports = "<section class=\"page-hero\">\n  <div class=\"container narrow
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"page-hero\">\n  <div class=\"container text-block\">\n    <span class=\"eyebrow\">{{ content.boatPage.eyebrow }}</span>\n    <h1>{{ content.boatPage.title }}</h1>\n    <p>{{ content.boatPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container split-grid\">\n    <div>\n      <h2>{{ content.boatPage.reasonsTitle }}</h2>\n      <p>{{ content.boatPage.reasonsText }}</p>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of content.boatPage.reasons\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"visual-grid\">\n      <img *ngFor=\"let image of images\" [src]=\"image\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container split-grid secondary-grid\">\n    <div>\n      <h2>{{ content.boatPage.comfortTitle }}</h2>\n      <p>{{ content.boatPage.comfortText }}</p>\n      <div class=\"price-box\">{{ content.priceFrom }}</div>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/contact\" class=\"btn\">{{ content.boatPage.cta }}</a>\n        <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\" target=\"_blank\" rel=\"noreferrer\" class=\"btn btn-book\">{{ content.common.bookOnClickAndBoat }}</a>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ content.boatPage.occasionsTitle }}</h2>\n      <ul class=\"occasions-list\">\n        <li *ngFor=\"let item of content.boatPage.occasions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container specs-grid\">\n    <div>\n      <h2>{{ specsTitle }}</h2>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of specs\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div>\n      <h2>{{ servicesTitle }}</h2>\n      <div class=\"offering-grid\">\n        <div class=\"offer-card\">\n          <h3>{{ coreTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of coreOffering\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ optionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of optionalExtras\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ suggestionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of guestSuggestions\">{{ item }}</li>\n          </ul>\n        </div>\n      </div>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/crew\" class=\"btn btn-secondary\">{{ crewCta }}</a>\n      </div>\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"page-hero\">\n  <div class=\"container text-block\">\n    <span class=\"eyebrow\">{{ content.boatPage.eyebrow }}</span>\n    <h1>{{ content.boatPage.title }}</h1>\n    <p>{{ content.boatPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container split-grid\">\n    <div>\n      <h2>{{ content.boatPage.reasonsTitle }}</h2>\n      <p>{{ content.boatPage.reasonsText }}</p>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of content.boatPage.reasons\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"visual-grid\">\n      <img *ngFor=\"let image of images\" [src]=\"image\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container split-grid secondary-grid\">\n    <div>\n      <h2>{{ content.boatPage.comfortTitle }}</h2>\n      <p>{{ content.boatPage.comfortText }}</p>\n      <div class=\"price-box\">{{ content.priceFrom }}</div>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/contact\" class=\"btn\">{{ content.boatPage.cta }}</a>\n        <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\" target=\"_blank\" rel=\"noreferrer\" class=\"btn btn-book\">{{ content.common.bookOnClickAndBoat }}</a>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ content.boatPage.occasionsTitle }}</h2>\n      <ul class=\"occasions-list\">\n        <li *ngFor=\"let item of content.boatPage.occasions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section safety-link-section\">\n  <div class=\"container safety-link-box\">\n    <div>\n      <span class=\"eyebrow\">Safety</span>\n      <h2>Consignes de sécurité à bord</h2>\n      <p>Retrouvez les consignes principales pour profiter de votre navigation à bord d’Alegria en toute sérénité.</p>\n    </div>\n    <a routerLink=\"/safety\" class=\"btn btn-secondary\">Voir les consignes</a>\n  </div>\n</section>\n\n<app-safety-instructions></app-safety-instructions>\n\n<section class=\"section\">\n  <div class=\"container specs-grid\">\n    <div>\n      <h2>{{ specsTitle }}</h2>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of specs\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div>\n      <h2>{{ servicesTitle }}</h2>\n      <div class=\"offering-grid\">\n        <div class=\"offer-card\">\n          <h3>{{ coreTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of coreOffering\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ optionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of optionalExtras\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ suggestionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of guestSuggestions\">{{ item }}</li>\n          </ul>\n        </div>\n      </div>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/crew\" class=\"btn btn-secondary\">{{ crewCta }}</a>\n      </div>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -2466,6 +2661,242 @@ module.exports = "<section class=\"page-hero\">\n  <div class=\"container text-b
 
 "use strict";
 module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ content[language].eyebrow }}</span>\n    <h1>{{ content[language].title }}</h1>\n    <p>{{ content[language].intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container cards-grid\">\n    <article class=\"crew-card\" *ngFor=\"let item of content[language].cards\">\n      <h2>{{ item }}</h2>\n    </article>\n  </div>\n</section>\n";
+
+/***/ }),
+
+/***/ 65642:
+/*!***************************************************************************!*\
+  !*** ./src/app/home/safety-instructions/safety-instructions.component.ts ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SafetyInstructionsComponent: () => (/* binding */ SafetyInstructionsComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _safety_instructions_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./safety-instructions.component.html?ngResource */ 19798);
+/* harmony import */ var _safety_instructions_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./safety-instructions.component.scss?ngResource */ 39290);
+/* harmony import */ var _safety_instructions_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_safety_instructions_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+
+
+
+
+
+const SAFETY_CONTENT = {
+  fr: {
+    eyebrow: 'Sécurité à bord',
+    title: 'Consignes de sécurité à bord',
+    subtitle: 'Bienvenue à bord d’Alegria Boat. Pour votre sécurité et celle des autres passagers, merci de lire attentivement ces consignes et de les respecter pendant toute la sortie.',
+    note: 'Merci pour votre attention et profitez pleinement de votre navigation à bord d’Alegria Boat. ⛵ alegriaboat.eu',
+    sections: [{
+      icon: '🦺',
+      title: 'Gilets de sauvetage',
+      items: ['Chaque passager dispose d’un gilet de sauvetage facilement accessible.', 'Le capitaine vous indiquera avant le départ où ils sont rangés et comment les utiliser.', 'Vous devez les porter dès que le capitaine vous le demande. Vous pouvez également les porter à tout moment si cela vous rassure.', 'Un radeau de survie est présent à bord. Il ne sera déployé qu’en situation extrême.']
+    }, {
+      icon: '🧍‍♂️',
+      title: 'Homme à la mer',
+      intro: 'Les premières secondes sont essentielles : gardez votre calme et suivez les consignes du capitaine.',
+      items: ['Criez clairement « Homme à la mer ! » et assurez-vous que le capitaine et l’équipage sont alertés.', 'Gardez un contact visuel permanent avec la personne ; une personne doit la pointer en continu.', 'Lancez immédiatement la bouée ou la bouée fer à cheval, idéalement avec la lampe flottante de nuit.', 'Le capitaine manœuvre le bateau pour la récupération. Ne perdez jamais la personne de vue.', 'Si la personne est consciente et porte ou peut atteindre un gilet : ne sautez pas à l’eau. Restez à bord, préparez l’échelle, les lignes ou la sangle de récupération, rassurez-la et aidez-la à remonter quand le bateau est positionné en sécurité.', 'Si la personne semble inconsciente, coule ou ne porte pas de gilet : prévenez immédiatement le capitaine. Préparez les moyens de flottaison et les lignes. Entrer dans l’eau n’est qu’un dernier recours, uniquement sur ordre direct du capitaine, si le bateau est arrêté, moteur au neutre, mer gérable, et si le sauveteur est bon nageur, équipé d’un gilet et sécurisé par une ligne.', 'Après récupération : surveillez le choc et l’hypothermie. Si la personne est inconsciente et ne respire pas, commencez immédiatement la réanimation et appelez les secours par VHF canal 16 / DSC.']
+    }, {
+      icon: '🔥',
+      title: 'Incendie à bord',
+      items: ['Informez immédiatement le capitaine ou un membre de l’équipage.', 'Éloignez-vous calmement de la zone concernée et suivez les consignes de l’équipage.', 'Si demandé, regroupez-vous dans la zone indiquée par le capitaine.', 'N’utilisez un extincteur que sur instruction directe du capitaine ou d’un membre de l’équipage.', 'Ne retournez jamais chercher des effets personnels.']
+    }, {
+      icon: '🍳',
+      title: 'Gaz à bord et réchaud',
+      items: ['Plusieurs bouteilles de gaz sont présentes à bord.', 'Si vous sentez une odeur de gaz, informez immédiatement le capitaine ou un membre de l’équipage.', 'Le réchaud à gaz ne peut être utilisé que par l’équipage. Les passagers ne sont pas autorisés à l’allumer ni à le manipuler.']
+    }, {
+      icon: '⚕️',
+      title: 'Trousse de premiers secours',
+      items: ['Une trousse de premiers secours est disponible à bord.', 'En cas de blessure ou de malaise, prévenez immédiatement le capitaine ou un membre de l’équipage.']
+    }, {
+      icon: '🚽',
+      title: 'Toilettes',
+      items: ['Utilisez uniquement les toilettes situées à tribord, côté droit du bateau.', 'Utilisez uniquement le papier toilette fourni à bord.', 'Ne jetez ni papier toilette, ni lingettes, ni protections hygiéniques, ni aucun autre déchet dans les toilettes. Déposez tout dans le contenant prévu.', 'Si les toilettes se bouchent, prévenez l’équipage et n’essayez pas de réparer vous-même.']
+    }, {
+      icon: '🏊‍♀️',
+      title: 'Baignade',
+      items: ['La baignade est autorisée uniquement avec l’accord du capitaine.', 'Il est strictement interdit de sauter depuis le haut ou les côtés du bateau.', 'Ne jamais entrer dans l’eau lorsque les moteurs sont en marche.']
+    }, {
+      icon: '🤢',
+      title: 'Mal de mer',
+      items: ['Des sacs et petits seaux sont disponibles à bord.', 'Prévenez le capitaine ou un membre de l’équipage si vous commencez à vous sentir mal.', 'Ne vomissez pas par-dessus bord : il existe un risque de chute à l’eau. Utilisez les sacs ou seaux prévus.']
+    }, {
+      icon: '🚨',
+      title: 'Urgence et évacuation',
+      items: ['Suivez toujours les instructions du capitaine et de l’équipage.', 'Si vous êtes bloqué dans une cabine, utilisez le panneau d’évacuation situé sous les escaliers.', 'Restez calme et aidez les autres si cela est possible.']
+    }, {
+      icon: '⚓',
+      title: 'Comportement à bord',
+      items: ['Suivez les consignes du capitaine et de l’équipage, surtout pendant les manœuvres de port.', 'Ne distrayez pas l’équipage pendant le départ, l’arrivée ou les manœuvres d’ancre.', 'Pendant le départ et l’arrivée, merci de vous regrouper à l’avant du bateau.', 'Ne marchez pas sur les capots de pont / skylights : ils peuvent se casser ou provoquer un accident.', 'Le tabac est toléré sur l’une des plateformes arrière.', 'Ne déplacez aucun équipement sans autorisation.']
+    }, {
+      icon: '🏖️',
+      title: 'Équipement plage et activités nautiques',
+      items: ['Deux paddleboards, un kayak-canoë et des kits snorkeling sont disponibles : masque, tuba et palmes.', 'Le port du gilet est obligatoire pour utiliser les paddleboards ou le kayak.', 'Manipulez tout le matériel avec soin et remontez-le à bord après utilisation.']
+    }, {
+      icon: '🏡',
+      title: 'Respect du bateau',
+      items: ['Traitez le bateau comme votre propre maison.', 'Évitez les chocs, taches et objets coupants.', 'Manipulez tous les équipements avec précaution.']
+    }, {
+      icon: '🍷',
+      title: 'Alcool',
+      items: ['La consommation d’alcool que vous apportez à bord est autorisée.', 'Aucun alcool n’est vendu à bord.', 'Le capitaine se réserve le droit d’annuler la sortie ou de débarquer tout passager alcoolisé si la sécurité est compromise.']
+    }]
+  },
+  en: {
+    eyebrow: 'Safety on board',
+    title: 'Safety instructions on board',
+    subtitle: 'Welcome aboard Alegria Boat. For your safety and that of other passengers, please read these instructions carefully and follow them throughout the trip.',
+    note: 'Thank you for your attention and enjoy your cruise aboard Alegria Boat. ⛵ alegriaboat.eu',
+    sections: [{
+      icon: '🦺',
+      title: 'Life jackets',
+      items: ['Each passenger has an easily accessible life jacket.', 'The captain will show you where they are stored and how to use them before departure.', 'You must wear them whenever instructed by the captain. You may also wear one at any time if it makes you feel more comfortable.', 'There is a life raft on board. It will only be deployed in extremis.']
+    }, {
+      icon: '🧍‍♂️',
+      title: 'Man overboard',
+      intro: 'The first seconds are critical: stay calm and follow the captain’s instructions.',
+      items: ['Shout “Man overboard!” loudly and make sure the captain and crew are aware.', 'Keep visual contact at all times; the spotter must point continuously.', 'Deploy the lifebuoy or horseshoe buoy immediately, ideally with the floating light if at night.', 'The captain maneuvers the boat for recovery. Never lose sight of the person.', 'If the person is conscious and wearing, or able to reach, a lifejacket: do not jump in. Stay on board, prepare the ladder, lines or life sling, reassure them verbally and help them reboard once the boat is safely positioned.', 'If the person appears unconscious, is sinking or is not wearing a lifejacket: alert the captain immediately. Prepare flotation equipment and recovery lines. Entering the water is only a last resort and only under direct captain’s order, if the boat is stopped, engine neutral, sea state manageable, and the rescuer is a strong swimmer wearing a lifejacket and secured with a lifeline.', 'After recovery: treat for shock and hypothermia. If unconscious and not breathing, begin CPR immediately and call for emergency assistance on VHF CH16 / DSC distress.']
+    }, {
+      icon: '🔥',
+      title: 'Fire on board',
+      items: ['Inform the captain or a crew member immediately.', 'Move calmly away from the affected area and follow crew instructions.', 'If instructed, gather in the area designated by the captain.', 'Only use a fire extinguisher if directly instructed by the captain or crew.', 'Never go back to retrieve personal belongings.']
+    }, {
+      icon: '🍳',
+      title: 'Gas on board and gas stove',
+      items: ['There are multiple gas cylinders on board.', 'If you smell gas, inform the captain or a member of the crew immediately.', 'The gas stove may only be used by the crew. Passengers are not allowed to light or operate it.']
+    }, {
+      icon: '⚕️',
+      title: 'First aid kit',
+      items: ['A first aid kit is available on board.', 'Inform the captain or a member of the crew immediately in case of injury or illness.']
+    }, {
+      icon: '🚽',
+      title: 'Toilets',
+      items: ['Use only the toilet on the starboard, right side of the boat.', 'Use only the toilet paper provided on board.', 'Do not throw toilet paper, wipes, sanitary items or any other waste into the toilet. Please place everything in the container provided.', 'If the toilet gets blocked, tell the crew and do not attempt to fix it yourself.']
+    }, {
+      icon: '🏊‍♀️',
+      title: 'Swimming',
+      items: ['Swimming is allowed only when authorized by the captain.', 'It is strictly forbidden to jump from the top or sides of the boat.', 'Never enter the water while the engines are running.']
+    }, {
+      icon: '🤢',
+      title: 'Seasickness',
+      items: ['Paper bags and small buckets are available on board.', 'Inform the captain or a member of the crew if you start to feel unwell.', 'Do not vomit overboard because there is a risk of falling into the water. Use the bags or buckets provided.']
+    }, {
+      icon: '🚨',
+      title: 'Emergency and evacuation',
+      items: ['Always follow the captain’s and crew’s instructions.', 'If you are trapped in a cabin, use the emergency hatch under the stairs.', 'Stay calm and assist others if possible.']
+    }, {
+      icon: '⚓',
+      title: 'Behavior on board',
+      items: ['Always follow the captain’s and crew’s directions, especially during port maneuvers.', 'Do not distract the crew during departure, arrival, or while dropping or retrieving the anchor.', 'During departure and arrival, please gather at the front, bow, of the boat.', 'Do not walk on the deck hatches or skylights; they can break or cause accidents.', 'Smoking is tolerated on one of the rear platforms.', 'Do not move equipment without authorization.']
+    }, {
+      icon: '🏖️',
+      title: 'Beach and water equipment',
+      items: ['Two paddleboards, one kayak-canoe and snorkeling sets are available: mask, snorkel and fins.', 'Wearing a life jacket is mandatory when using the paddleboards or the kayak.', 'Handle all equipment with care and return it on board after use.']
+    }, {
+      icon: '🏡',
+      title: 'Care for the boat',
+      items: ['Treat the boat as you would your own home.', 'Avoid impacts, stains and sharp objects.', 'Handle all equipment carefully.']
+    }, {
+      icon: '🍷',
+      title: 'Alcohol',
+      items: ['Consumption of alcohol you bring on board is permitted.', 'No alcohol is sold on board.', 'The captain reserves the right to cancel the trip or disembark any intoxicated passenger if safety is compromised.']
+    }]
+  },
+  es: {
+    eyebrow: 'Seguridad a bordo',
+    title: 'Instrucciones de seguridad a bordo',
+    subtitle: 'Bienvenido a bordo de Alegria Boat. Por su seguridad y la de los demás pasajeros, lea atentamente estas instrucciones y respételas durante toda la salida.',
+    note: 'Gracias por su atención y disfrute de su navegación a bordo de Alegria Boat. ⛵ alegriaboat.eu',
+    sections: [{
+      icon: '🦺',
+      title: 'Chalecos salvavidas',
+      items: ['Cada pasajero dispone de un chaleco salvavidas fácilmente accesible.', 'El capitán le mostrará dónde están guardados y cómo utilizarlos antes de la salida.', 'Debe llevarlo siempre que el capitán lo indique. También puede ponérselo en cualquier momento si se siente más cómodo.', 'Hay una balsa salvavidas a bordo. Solo se desplegará en una situación extrema.']
+    }, {
+      icon: '🧍‍♂️',
+      title: 'Hombre al agua',
+      intro: 'Los primeros segundos son esenciales: mantenga la calma y siga las instrucciones del capitán.',
+      items: ['Grite “¡Hombre al agua!” y asegúrese de que el capitán y la tripulación estén avisados.', 'Mantenga contacto visual en todo momento; una persona debe señalar continuamente al náufrago.', 'Lance inmediatamente el aro salvavidas o la boya de herradura, idealmente con luz flotante si es de noche.', 'El capitán maniobra el barco para la recuperación. No pierda nunca de vista a la persona.', 'Si la persona está consciente y lleva, o puede alcanzar, un chaleco: no salte al agua. Permanezca a bordo, prepare la escalera, cabos o sistema de recuperación, tranquilícela verbalmente y ayúdela a subir cuando el barco esté colocado de forma segura.', 'Si la persona parece inconsciente, se hunde o no lleva chaleco: avise inmediatamente al capitán. Prepare material de flotación y cabos de recuperación. Entrar al agua es solo un último recurso y únicamente bajo orden directa del capitán, si el barco está parado, el motor en punto muerto, el estado del mar lo permite, y el rescatador es buen nadador, lleva chaleco y está asegurado con una línea.', 'Después de la recuperación: trate el shock y la hipotermia. Si está inconsciente y no respira, inicie RCP inmediatamente y llame a emergencias por VHF canal 16 / DSC.']
+    }, {
+      icon: '🔥',
+      title: 'Fuego a bordo',
+      items: ['Informe inmediatamente al capitán o a un miembro de la tripulación.', 'Aléjese con calma de la zona afectada y siga las instrucciones de la tripulación.', 'Si se le indica, reúnase en la zona designada por el capitán.', 'Utilice un extintor únicamente bajo instrucción directa del capitán o de la tripulación.', 'Nunca vuelva a buscar objetos personales.']
+    }, {
+      icon: '🍳',
+      title: 'Gas a bordo y cocina de gas',
+      items: ['Hay varias botellas de gas a bordo.', 'Si huele a gas, informe inmediatamente al capitán o a un miembro de la tripulación.', 'La cocina de gas solo puede ser utilizada por la tripulación. Los pasajeros no están autorizados a encenderla ni manipularla.']
+    }, {
+      icon: '⚕️',
+      title: 'Botiquín de primeros auxilios',
+      items: ['Hay un botiquín de primeros auxilios disponible a bordo.', 'En caso de lesión o malestar, informe inmediatamente al capitán o a un miembro de la tripulación.']
+    }, {
+      icon: '🚽',
+      title: 'Aseos',
+      items: ['Utilice únicamente el aseo de estribor, lado derecho del barco.', 'Utilice únicamente el papel higiénico proporcionado a bordo.', 'No tire papel higiénico, toallitas, productos higiénicos ni ningún otro residuo al aseo. Deposite todo en el recipiente previsto.', 'Si el aseo se bloquea, avise a la tripulación y no intente repararlo usted mismo.']
+    }, {
+      icon: '🏊‍♀️',
+      title: 'Baño',
+      items: ['El baño está permitido únicamente con autorización del capitán.', 'Está estrictamente prohibido saltar desde la parte superior o los costados del barco.', 'Nunca entre al agua cuando los motores estén en marcha.']
+    }, {
+      icon: '🤢',
+      title: 'Mareo',
+      items: ['Hay bolsas de papel y pequeños cubos disponibles a bordo.', 'Informe al capitán o a un miembro de la tripulación si empieza a sentirse mal.', 'No vomite por la borda, ya que existe riesgo de caer al agua. Utilice las bolsas o cubos proporcionados.']
+    }, {
+      icon: '🚨',
+      title: 'Emergencia y evacuación',
+      items: ['Siga siempre las instrucciones del capitán y de la tripulación.', 'Si queda atrapado en una cabina, utilice la escotilla de emergencia situada bajo las escaleras.', 'Mantenga la calma y ayude a los demás si es posible.']
+    }, {
+      icon: '⚓',
+      title: 'Comportamiento a bordo',
+      items: ['Siga siempre las indicaciones del capitán y de la tripulación, especialmente durante las maniobras de puerto.', 'No distraiga a la tripulación durante la salida, la llegada o las maniobras de fondeo.', 'Durante la salida y la llegada, permanezca en la parte delantera, proa, del barco.', 'No pise las escotillas o claraboyas de cubierta; pueden romperse o causar accidentes.', 'Se tolera fumar en una de las plataformas traseras.', 'No mueva ningún equipo sin autorización.']
+    }, {
+      icon: '🏖️',
+      title: 'Equipo de playa y náutico',
+      items: ['Hay dos paddleboards, un kayak-canoa y equipos de snorkel disponibles: máscara, tubo y aletas.', 'El uso de chaleco salvavidas es obligatorio al utilizar los paddleboards o el kayak.', 'Manipule todo el material con cuidado y devuélvalo a bordo después de usarlo.']
+    }, {
+      icon: '🏡',
+      title: 'Cuidado del barco',
+      items: ['Trate el barco como si fuera su propia casa.', 'Evite golpes, manchas y objetos cortantes.', 'Manipule todos los equipos con cuidado.']
+    }, {
+      icon: '🍷',
+      title: 'Alcohol',
+      items: ['Está permitido consumir el alcohol que usted traiga a bordo.', 'No se vende alcohol a bordo.', 'El capitán se reserva el derecho de cancelar la salida o desembarcar a cualquier pasajero ebrio si la seguridad se ve comprometida.']
+    }]
+  }
+};
+let SafetyInstructionsComponent = class SafetyInstructionsComponent {
+  languageService;
+  content = SAFETY_CONTENT.fr;
+  openIndex = 0;
+  languageSub;
+  constructor(languageService) {
+    this.languageService = languageService;
+  }
+  ngOnInit() {
+    this.languageSub = this.languageService.language$.subscribe(language => {
+      this.content = SAFETY_CONTENT[language];
+    });
+  }
+  ngOnDestroy() {
+    this.languageSub?.unsubscribe();
+  }
+  toggle(index) {
+    this.openIndex = this.openIndex === index ? -1 : index;
+  }
+  static ctorParameters = () => [{
+    type: _services_language_service__WEBPACK_IMPORTED_MODULE_2__.LanguageService
+  }];
+};
+SafetyInstructionsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
+  selector: 'app-safety-instructions',
+  template: _safety_instructions_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_safety_instructions_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], SafetyInstructionsComponent);
+
 
 /***/ }),
 
@@ -3757,7 +4188,38 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .section-light {
   background: var(--alegria-sand);
-}`, "",{"version":3,"sources":["webpack://./src/app/home/boat/boat.component.scss"],"names":[],"mappings":"AACA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,qDAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,oCAAA;EACA,WAAA;EACA,kBAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;;EAEE,gBAAA;EACA,UAAA;EACA,kBAAA;EACA,aAAA;EACA,YAAA;AACF;;AAEA;;EAEE,qCAAA;EACA,8BAAA;EACA,gBAAA;EACA,mBAAA;EACA,cAAA;EACA,8CAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,qCAAA;EACA,YAAA;AACF;;AAEA;EACE,WAAA;EACA,aAAA;EACA,iBAAA;EACA,mBAAA;AACF;;AAEA;EACE,oBAAA;EACA,qBAAA;EACA,wBAAA;EACA,oBAAA;EACA,kCAAA;EACA,cAAA;EACA,kBAAA;EACA,gBAAA;AACF;;AAEA;EACE,oBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,uBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE;;IAEE,0BAAA;EACF;AACF;AAGA;EACE,aAAA;EACA,WAAA;EACA,eAAA;EACA,gBAAA;AADF;;AAIA;EACE,mBAAA;EACA,WAAA;AADF;;AAKA;EACE,aAAA;EACA,kCAAA;EACA,WAAA;EACA,kBAAA;AAFF;;AAKA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;EACA,gBAAA;AAFF;;AAKA;EACE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,8CAAA;AAFF;;AAKA;EACE,aAAA;EACA,qBAAA;EACA,cAAA;EACA,eAAA;AAFF;;AAKA;EACE,SAAA;EACA,oBAAA;AAFF;;AAKA;EACE;;IAEE,0BAAA;EAFF;AACF;AAMA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAJF;;AAOA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAJF;;AAOA;EACE,yCAAA;AAJF;;AAOA;EACE,sCAAA;EACA,0BAAA;AAJF;;AAOA;EACE,2BAAA;AAJF;;AAOA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAJF;;AAOA;EACE,sCAAA;EACA,0BAAA;AAJF;;AAOA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAJF;;AAOA;EACE,6DAAA;AAJF;;AAOA;EACE,+BAAA;AAJF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #ffffff, #fbf8f2);\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.text-block {\n  max-width: 820px;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  color: #08263a;\n  font-size: 1.45rem;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.split-grid {\n  display: grid;\n  grid-template-columns: 0.95fr 1.05fr;\n  gap: 1.8rem;\n  align-items: start;\n}\n\n.secondary-grid {\n  align-items: center;\n}\n\n.highlights,\n.occasions-list {\n  list-style: none;\n  padding: 0;\n  margin: 1.3rem 0 0;\n  display: grid;\n  gap: 0.85rem;\n}\n\n.highlights li,\n.occasions-list li {\n  padding: 0.95rem 1rem 0.95rem 1.05rem;\n  border-left: 4px solid #0b6e8f;\n  background: #fff;\n  border-radius: 14px;\n  color: #334155;\n  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.04);\n  font-size: 0.94rem;\n}\n\n.visual-grid {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 0.95rem;\n}\n\n.visual-grid img {\n  width: 100%;\n  height: 220px;\n  object-fit: cover;\n  border-radius: 20px;\n}\n\n.price-box {\n  display: inline-flex;\n  margin: 1rem 0 1.3rem;\n  padding: 0.65rem 0.95rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0b6e8f;\n  font-size: 0.88rem;\n  font-weight: 700;\n}\n\n.btn {\n  display: inline-flex;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n@media (max-width: 860px) {\n  .split-grid,\n  .visual-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n.boat-actions {\n  display: flex;\n  gap: 0.9rem;\n  flex-wrap: wrap;\n  margin-top: 1rem;\n}\n\n.btn-book {\n  background: #f28c28;\n  color: #fff;\n}\n\n\n.specs-grid {\n  display: grid;\n  grid-template-columns: 0.9fr 1.1fr;\n  gap: 1.8rem;\n  align-items: start;\n}\n\n.offering-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 1rem;\n  margin-top: 1rem;\n}\n\n.offer-card {\n  background: #fff;\n  border-radius: 18px;\n  padding: 1.15rem;\n  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);\n}\n\n.offer-card h3 {\n  margin-top: 0;\n  margin-bottom: 0.8rem;\n  color: #08263a;\n  font-size: 1rem;\n}\n\n.bullet-list {\n  margin: 0;\n  padding-left: 1.1rem;\n}\n\n@media (max-width: 860px) {\n  .specs-grid,\n  .offering-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+}
+
+.safety-link-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 1.25rem;
+  background: #f7fbfc;
+  border: 1px solid rgba(10, 55, 79, 0.12);
+}
+
+.safety-link-box h2 {
+  margin: 0.35rem 0 0.5rem;
+}
+
+.safety-link-box p {
+  margin: 0;
+  color: var(--text-muted, #5f6f7a);
+}
+
+@media (max-width: 768px) {
+  .safety-link-box {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .safety-link-box .btn {
+    width: 100%;
+    text-align: center;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/boat/boat.component.scss"],"names":[],"mappings":"AACA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,qDAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,oCAAA;EACA,WAAA;EACA,kBAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;;EAEE,gBAAA;EACA,UAAA;EACA,kBAAA;EACA,aAAA;EACA,YAAA;AACF;;AAEA;;EAEE,qCAAA;EACA,8BAAA;EACA,gBAAA;EACA,mBAAA;EACA,cAAA;EACA,8CAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,qCAAA;EACA,YAAA;AACF;;AAEA;EACE,WAAA;EACA,aAAA;EACA,iBAAA;EACA,mBAAA;AACF;;AAEA;EACE,oBAAA;EACA,qBAAA;EACA,wBAAA;EACA,oBAAA;EACA,kCAAA;EACA,cAAA;EACA,kBAAA;EACA,gBAAA;AACF;;AAEA;EACE,oBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,uBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE;;IAEE,0BAAA;EACF;AACF;AAGA;EACE,aAAA;EACA,WAAA;EACA,eAAA;EACA,gBAAA;AADF;;AAIA;EACE,mBAAA;EACA,WAAA;AADF;;AAKA;EACE,aAAA;EACA,kCAAA;EACA,WAAA;EACA,kBAAA;AAFF;;AAKA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;EACA,gBAAA;AAFF;;AAKA;EACE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,8CAAA;AAFF;;AAKA;EACE,aAAA;EACA,qBAAA;EACA,cAAA;EACA,eAAA;AAFF;;AAKA;EACE,SAAA;EACA,oBAAA;AAFF;;AAKA;EACE;;IAEE,0BAAA;EAFF;AACF;AAMA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAJF;;AAOA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAJF;;AAOA;EACE,yCAAA;AAJF;;AAOA;EACE,sCAAA;EACA,0BAAA;AAJF;;AAOA;EACE,2BAAA;AAJF;;AAOA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAJF;;AAOA;EACE,sCAAA;EACA,0BAAA;AAJF;;AAOA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAJF;;AAOA;EACE,6DAAA;AAJF;;AAOA;EACE,+BAAA;AAJF;;AAQA;EACE,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,WAAA;EACA,eAAA;EACA,sBAAA;EACA,mBAAA;EACA,wCAAA;AALF;;AAQA;EACE,wBAAA;AALF;;AAQA;EACE,SAAA;EACA,iCAAA;AALF;;AAQA;EACE;IACE,sBAAA;IACA,oBAAA;EALF;EAQA;IACE,WAAA;IACA,kBAAA;EANF;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #ffffff, #fbf8f2);\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.text-block {\n  max-width: 820px;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  color: #08263a;\n  font-size: 1.45rem;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.split-grid {\n  display: grid;\n  grid-template-columns: 0.95fr 1.05fr;\n  gap: 1.8rem;\n  align-items: start;\n}\n\n.secondary-grid {\n  align-items: center;\n}\n\n.highlights,\n.occasions-list {\n  list-style: none;\n  padding: 0;\n  margin: 1.3rem 0 0;\n  display: grid;\n  gap: 0.85rem;\n}\n\n.highlights li,\n.occasions-list li {\n  padding: 0.95rem 1rem 0.95rem 1.05rem;\n  border-left: 4px solid #0b6e8f;\n  background: #fff;\n  border-radius: 14px;\n  color: #334155;\n  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.04);\n  font-size: 0.94rem;\n}\n\n.visual-grid {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 0.95rem;\n}\n\n.visual-grid img {\n  width: 100%;\n  height: 220px;\n  object-fit: cover;\n  border-radius: 20px;\n}\n\n.price-box {\n  display: inline-flex;\n  margin: 1rem 0 1.3rem;\n  padding: 0.65rem 0.95rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0b6e8f;\n  font-size: 0.88rem;\n  font-weight: 700;\n}\n\n.btn {\n  display: inline-flex;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n@media (max-width: 860px) {\n  .split-grid,\n  .visual-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n.boat-actions {\n  display: flex;\n  gap: 0.9rem;\n  flex-wrap: wrap;\n  margin-top: 1rem;\n}\n\n.btn-book {\n  background: #f28c28;\n  color: #fff;\n}\n\n\n.specs-grid {\n  display: grid;\n  grid-template-columns: 0.9fr 1.1fr;\n  gap: 1.8rem;\n  align-items: start;\n}\n\n.offering-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 1rem;\n  margin-top: 1rem;\n}\n\n.offer-card {\n  background: #fff;\n  border-radius: 18px;\n  padding: 1.15rem;\n  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);\n}\n\n.offer-card h3 {\n  margin-top: 0;\n  margin-bottom: 0.8rem;\n  color: #08263a;\n  font-size: 1rem;\n}\n\n.bullet-list {\n  margin: 0;\n  padding-left: 1.1rem;\n}\n\n@media (max-width: 860px) {\n  .specs-grid,\n  .offering-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n.safety-link-box {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 1.5rem;\n  padding: 1.5rem;\n  border-radius: 1.25rem;\n  background: #f7fbfc;\n  border: 1px solid rgba(10, 55, 79, .12);\n}\n\n.safety-link-box h2 {\n  margin: .35rem 0 .5rem;\n}\n\n.safety-link-box p {\n  margin: 0;\n  color: var(--text-muted, #5f6f7a);\n}\n\n@media (max-width: 768px) {\n  .safety-link-box {\n    flex-direction: column;\n    align-items: stretch;\n  }\n\n  .safety-link-box .btn {\n    width: 100%;\n    text-align: center;\n  }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 

@@ -1,0 +1,126 @@
+.safety-section {
+  padding: 4.5rem 0;
+  background: #f7fbfc;
+}
+
+.safety-container {
+  max-width: 1100px;
+}
+
+.safety-head {
+  max-width: 780px;
+  margin: 0 auto 2rem;
+  text-align: center;
+}
+
+.safety-head h2 {
+  margin: .5rem 0 1rem;
+}
+
+.safety-head p {
+  color: var(--text-muted, #5f6f7a);
+  line-height: 1.8;
+}
+
+.safety-accordion {
+  display: grid;
+  gap: .9rem;
+}
+
+.safety-card {
+  overflow: hidden;
+  border: 1px solid rgba(10, 55, 79, .12);
+  border-radius: 1.1rem;
+  background: #fff;
+  box-shadow: 0 .8rem 1.8rem rgba(9, 39, 55, .06);
+}
+
+.safety-toggle {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  text-align: left;
+  cursor: pointer;
+  color: var(--deep-blue, #08263a);
+  font-family: var(--font-nav, 'Raleway', sans-serif);
+  font-weight: 700;
+}
+
+.safety-title {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+.safety-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: rgba(237, 126, 49, .12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.safety-plus {
+  font-size: 1.7rem;
+  line-height: 1;
+  color: var(--sun-orange, #ed7e31);
+}
+
+.safety-body {
+  padding: 0 1.25rem 1.25rem 3.95rem;
+  color: var(--text, #263238);
+}
+
+.safety-intro {
+  margin: .15rem 0 .75rem;
+  color: var(--text-muted, #5f6f7a);
+}
+
+.safety-body ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: .55rem;
+}
+
+.safety-body li {
+  line-height: 1.65;
+}
+
+.safety-note {
+  margin: 2rem auto 0;
+  max-width: 780px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--deep-blue, #08263a);
+}
+
+@media (max-width: 768px) {
+  .safety-section {
+    padding: 3rem 0;
+  }
+
+  .safety-head {
+    text-align: left;
+  }
+
+  .safety-toggle {
+    padding: 1rem;
+  }
+
+  .safety-title {
+    align-items: flex-start;
+  }
+
+  .safety-body {
+    padding: 0 1rem 1rem;
+  }
+}

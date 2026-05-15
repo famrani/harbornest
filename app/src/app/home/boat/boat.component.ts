@@ -10,7 +10,7 @@ import { LanguageService } from '../../services/language.service';
 })
 export class BoatComponent implements OnInit, OnDestroy {
   content: SiteContent = SITE_CONTENT.fr;
-  images = SITE_CONTENT.fr.galleryImages.slice(0, 13);
+  images = SITE_CONTENT.fr.galleryImages.slice(0, 4);
   private languageSub?: Subscription;
 
   specs: string[] = [];
@@ -68,7 +68,7 @@ export class BoatComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.content = SITE_CONTENT[language];
-      this.images = this.content.galleryImages.slice(0, 13);
+      this.images = this.content.galleryImages.slice(0, 4);
       const localized = this.localizedData[language];
       this.specsTitle = localized.specsTitle;
       this.servicesTitle = localized.servicesTitle;

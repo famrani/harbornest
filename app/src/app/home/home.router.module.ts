@@ -12,6 +12,7 @@ import { SunsetCruiseComponent } from './tours/sunset-cruise/sunset-cruise.compo
 import { EvjfEvgComponent } from './tours/evjf-evg/evjf-evg.component';
 import { BusinessOutingComponent } from './tours/business-outing/business-outing.component';
 import { TermsComponent } from './terms/terms.component';
+import { SafetyInstructionsComponent } from './safety-instructions/safety-instructions.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   { path: 'crew', component: CrewComponent },
   { path: 'terms', component: TermsComponent },
+  { path: 'safety', component: SafetyInstructionsComponent },
 ];
 
 @NgModule({
