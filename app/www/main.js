@@ -3137,7 +3137,7 @@ class ServicesService {
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<header class=\"site-header\">\n  <div class=\"container header-bar\">\n    <a class=\"brand\" routerLink=\"/\" (click)=\"closeMenu()\">\n      <img class=\"brand-logo\" src=\"assets/img/logo-Alegria.png\" alt=\"Alegria\" /> <span class=\"brand-text\">\n        <strong>{{ content.brand }}</strong>\n        <small>{{ content.brandTagline }}</small>\n      </span>\n    </a>\n\n    <button class=\"menu-toggle\" type=\"button\" (click)=\"toggleMenu()\" aria-label=\"Open menu\">\n      ☰\n    </button>\n\n    <nav class=\"main-nav\" [class.open]=\"menuOpen\">\n      <a routerLink=\"/\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{ exact: true }\" (click)=\"closeMenu()\">{{\n        content.nav.home }}</a>\n      <a routerLink=\"/sorties\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.outings }}</a>\n      <a routerLink=\"/bateau\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.boat }}</a>\n      <a routerLink=\"/galerie\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.gallery }}</a>\n      <a routerLink=\"/contact\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.contact }}</a>\n      <a routerLink=\"/crew\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.crew }}</a>\n\n      <div class=\"language-switcher\">\n        <select [value]=\"currentLanguage\" (change)=\"changeLanguage($any($event.target).value)\"\n          aria-label=\"Language selector\">\n          <option value=\"fr\">Français</option>\n          <option value=\"en\">English</option>\n          <option value=\"es\">Español</option>\n        </select>\n      </div>\n\n      <a class=\"cta-link\" routerLink=\"/contact\" (click)=\"closeMenu()\">{{ content.nav.quote }}</a>\n    </nav>\n  </div>\n</header>";
+module.exports = "<header class=\"site-header\">\n  <div class=\"container header-bar\">\n    <a class=\"brand\" routerLink=\"/\" (click)=\"closeMenu()\">\n      <img class=\"brand-logo\" src=\"assets/img/logo-Alegria.png\" alt=\"Alegria\" /> <span class=\"brand-text\">\n        <strong>{{ content.brand }}</strong>\n        <small>{{ content.brandTagline }}</small>\n      </span>\n    </a>\n\n    <button class=\"menu-toggle\" type=\"button\" (click)=\"toggleMenu()\" aria-label=\"Open menu\">\n      ☰\n    </button>\n\n    <nav class=\"main-nav\" [class.open]=\"menuOpen\">\n      <a routerLink=\"/\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{ exact: true }\" (click)=\"closeMenu()\">{{ content.nav.home }}</a>\n      <a routerLink=\"/sorties\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.outings }}</a>\n      <a routerLink=\"/bateau\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.boat }}</a>\n      <a routerLink=\"/galerie\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.gallery }}</a>\n      <a routerLink=\"/contact\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.contact }}</a>\n      <a routerLink=\"/crew\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.crew }}</a>\n\n      <div class=\"language-switcher\">\n        <select [value]=\"currentLanguage\" (change)=\"changeLanguage($any($event.target).value)\" aria-label=\"Language selector\">\n          <option value=\"fr\">Français</option>\n          <option value=\"en\">English</option>\n          <option value=\"es\">Español</option>\n        </select>\n      </div>\n\n      <a class=\"cta-link\" routerLink=\"/contact\" (click)=\"closeMenu()\">{{ content.nav.quote }}</a>\n    </nav>\n  </div>\n</header>\n";
 
 /***/ }),
 
@@ -3182,7 +3182,7 @@ __webpack_require__.r(__webpack_exports__);
 const sharedImages = {
   hero: 'assets/img/home/home-hero-generic.jpg',
   boatHero: 'assets/img/boat/bali4.1/bali-41-4.jpg',
-  gallery: ['assets/img/boat/bali4.1/bali-41-2.jpg', 'assets/img/boat/bali4.1/bali-41-3.jpg', 'assets/img/boat/bali4.1/bali-41-4.jpg', 'assets/img/boat/bali4.1/bali-41-5.jpg', 'assets/img/events/de/de1.png', 'assets/img/events/sunset/sunset2.jpg', 'assets/img/events/business-meeting/business-meeting1.jpg', 'assets/img/events/party/party3.jpg'],
+  gallery: ['assets/img/boat/bali4.1/bali-41-2.jpg', 'assets/img/boat/bali4.1/bali-41-3.jpg', 'assets/img/boat/bali4.1/bali-41-4.jpg', 'assets/img/boat/bali4.1/bali-41-5.jpg', 'assets/img/boat/bali4.1/bali-41-1.jpg', 'assets/img/boat/bali4.1/bali-41-6.jpg', 'assets/img/boat/bali4.1/bali-41-7.jpg', 'assets/img/boat/bali4.1/bali-41-8.jpg', 'assets/img/boat/bali4.1/bali-41-9.jpg', 'assets/img/boat/bali4.1/bali-41-10.jpg', 'assets/img/boat/bali4.1/bali-41-11.jpg', 'assets/img/boat/bali4.1/bali-41-12.jpg', 'assets/img/boat/bali4.1/bali-41-13.jpg'],
   de1: 'assets/img/events/de/de1.png',
   sunset1: 'assets/img/events/sunset/sunset1.jpg',
   business1: 'assets/img/events/business-meeting/business-meeting1.jpg',
@@ -3243,7 +3243,7 @@ const SITE_CONTENT = {
     outingsPage: {
       eyebrow: 'Nos sorties',
       title: '4 expériences à découvrir à bord d’Alegria',
-      intro: 'Des formats clairs, élégants et adaptables : journée en mer, coucher de soleil, Fête privée ou sortie entreprise.',
+      intro: 'Des formats clairs, élégants et adaptables : journée ou demi-journée en mer autour de Villeneuve-Loubet, coucher de soleil, fête privée ou sortie entreprise.',
       cta: 'Voir le détail'
     },
     boatPage: {
@@ -3302,7 +3302,7 @@ const SITE_CONTENT = {
       title: 'Journée en mer',
       duration: 'Journée ou demi-journée',
       guests: '12 passagers max',
-      description: 'Profitez d’une journée complète en mer pour naviguer, vous détendre et découvrir les plus beaux mouillages de la Côte d’Azur.',
+      description: 'Profitez d’une journée ou demi-journée en mer au départ de Villeneuve-Loubet pour naviguer, vous détendre et découvrir les plus beaux mouillages proches : îles de Lérins, baie des Milliardaires, Cap d’Antibes ou Villefranche selon la météo.',
       image: sharedImages.de1,
       highlights: ['Coque nue*', 'Skipper indépendant']
     }, {
@@ -3335,7 +3335,7 @@ const SITE_CONTENT = {
   },
   en: {
     brandTagline: 'Catamaran experiences on the French Riviera',
-    priceFrom: 'From €1,000 + €300 skipper',
+    priceFrom: 'From €999 + €300 skipper',
     brand: 'Alegria',
     phoneDisplay: '+33 6 85 26 65 10',
     phoneRaw: '+33685266510',
@@ -3372,7 +3372,7 @@ const SITE_CONTENT = {
       intro: 'Enjoy a private sea experience aboard a spacious and comfortable catamaran.',
       primaryCta: 'Discover the excursions',
       secondaryCta: 'Check availability',
-      points: ['From €1,000', 'Independent skipper: €300', 'French Riviera departures'],
+      points: ['From €999', 'Independent skipper: €300', 'French Riviera departures'],
       sectionEyebrow: 'Experiences',
       sectionTitle: '4 simple and effective formats',
       sectionText: 'Choose from four core formats. Each experience can be adapted to the weather, your group and the atmosphere you are looking for.',
@@ -3387,7 +3387,7 @@ const SITE_CONTENT = {
     outingsPage: {
       eyebrow: 'Our excursions',
       title: '4 experiences aboard Alegria',
-      intro: 'Clear, elegant and adaptable formats: full day at sea, sunset cruise, birthday or corporate excursion.',
+      intro: 'Clear, elegant and adaptable formats: full day or half day at sea around Villeneuve-Loubet, sunset cruise, private party or corporate excursion.',
       cta: 'View details'
     },
     boatPage: {
@@ -3395,12 +3395,12 @@ const SITE_CONTENT = {
       title: 'Alegria, a catamaran designed for comfortable and memorable days at sea',
       intro: 'Alegria is a spacious, stable and welcoming Bali 4.1, ideal for private experiences in an elegant and relaxed setting.',
       reasonsTitle: 'Why choose Alegria?',
-      reasonsText: 'The boat is well suited to a full day at sea, a birthday, a private event, a corporate excursion or a sunset cruise.',
+      reasonsText: 'The boat is well suited to a full day at sea, a private party, a private event, a corporate excursion or a sunset cruise.',
       reasons: ['Large living space and easy circulation', 'Comfortable cruising with independent skipper', 'Friendly and refined atmosphere', 'Flexible program according to your wishes'],
       comfortTitle: 'Comfort and atmosphere on board',
       comfortText: 'Whether you want lunch, drinks, a relaxing anchorage or a coastal cruise, Alegria offers a warm and premium environment.',
       occasionsTitle: 'Ideal for',
-      occasions: ['a family day out', 'a couple’s moment', 'time with friends', 'a birthday', 'a private event', 'a corporate excursion'],
+      occasions: ['a family day out', 'a couple’s moment', 'time with friends', 'a private party', 'a private event', 'a corporate excursion'],
       cta: 'Check availability'
     },
     galleryPage: {
@@ -3426,7 +3426,7 @@ const SITE_CONTENT = {
       directTitle: 'Direct contact',
       directText: 'You can also email or WhatsApp us directly to discuss your plans and check availability.',
       sentNotice: 'Your message has been prepared. We will reply shortly.',
-      outingOptions: ['Full day at sea', 'Sunset cruise', 'Birthday', 'Corporate excursion'],
+      outingOptions: ['Full day at sea', 'Sunset cruise', 'Private party', 'Corporate excursion'],
       emailSubjectPrefix: 'Information request',
       whatsappIntro: 'Hello, I would like information about a sea excursion aboard Alegria.'
     },
@@ -3443,10 +3443,10 @@ const SITE_CONTENT = {
     },
     outings: [{
       slug: 'journee-en-mer',
-      title: 'Full day at sea',
+      title: 'Day or half day at sea',
       duration: 'Full day or half day',
       guests: 'Up to 12 guests',
-      description: 'Enjoy a full day at sea to relax, cruise and discover the most beautiful anchorages of the French Riviera.',
+      description: 'Enjoy a full day or half day at sea from Villeneuve-Loubet to relax, cruise and discover nearby highlights such as the Lérins Islands, Billionaires’ Bay, Cap d’Antibes or Villefranche depending on weather conditions.',
       image: sharedImages.de1,
       highlights: ['Bareboat*', 'Independent skipper']
     }, {
@@ -3459,10 +3459,10 @@ const SITE_CONTENT = {
       highlights: []
     }, {
       slug: 'anniversaire',
-      title: 'Birthday',
+      title: 'Private party',
       duration: 'Full day',
       guests: 'Up to 12 guests',
-      description: 'Celebrate a birthday aboard Alegria in a friendly and memorable atmosphere at sea.',
+      description: 'Celebrate a private party aboard Alegria in a friendly and memorable atmosphere at sea.',
       image: sharedImages.party1,
       highlights: []
     }, {
@@ -3479,7 +3479,7 @@ const SITE_CONTENT = {
   },
   es: {
     brandTagline: 'Experiencias en catamarán en la Costa Azul',
-    priceFrom: 'Desde 1.000 € + 300 € patrón',
+    priceFrom: 'Desde 999 € + 300 € patrón',
     brand: 'Alegria',
     phoneDisplay: '+33 6 85 26 65 10',
     phoneRaw: '+33685266510',
@@ -3516,7 +3516,7 @@ const SITE_CONTENT = {
       intro: 'Disfrute de una experiencia privada en el mar a bordo de un catamarán amplio y confortable.',
       primaryCta: 'Descubrir las salidas',
       secondaryCta: 'Ver disponibilidad',
-      points: ['Desde 1.000 €', 'Patrón independiente: 300 €', 'Salidas Costa Azul'],
+      points: ['Desde 999 €', 'Patrón independiente: 300 €', 'Salidas Costa Azul'],
       sectionEyebrow: 'Experiencias',
       sectionTitle: '4 formatos simples y eficaces',
       sectionText: 'Elija entre cuatro formatos principales. Cada experiencia puede adaptarse al clima, al grupo y al ambiente deseado.',
@@ -3531,7 +3531,7 @@ const SITE_CONTENT = {
     outingsPage: {
       eyebrow: 'Nuestras salidas',
       title: '4 experiencias a bordo de Alegria',
-      intro: 'Formatos claros, elegantes y adaptables: día en el mar, atardecer, cumpleaños o evento de empresa.',
+      intro: 'Formatos claros, elegantes y adaptables: día completo o medio día en el mar cerca de Villeneuve-Loubet, atardecer, fiesta privada o evento de empresa.',
       cta: 'Ver detalle'
     },
     boatPage: {
@@ -3539,12 +3539,12 @@ const SITE_CONTENT = {
       title: 'Alegria, un catamarán pensado para días cómodos y memorables en el mar',
       intro: 'Alegria es un Bali 4.1 amplio, estable y acogedor, ideal para experiencias privadas en un entorno elegante y relajado.',
       reasonsTitle: '¿Por qué elegir Alegria?',
-      reasonsText: 'El barco se adapta perfectamente a un día en el mar, un cumpleaños, un evento privado, una salida de empresa o una salida al atardecer.',
+      reasonsText: 'El barco se adapta perfectamente a un día en el mar, una fiesta privada, un evento privado, una salida de empresa o una salida al atardecer.',
       reasons: ['Gran espacio de vida y circulación cómoda', 'Navegación confortable con patrón independiente', 'Ambiente acogedor y cuidado', 'Programa flexible según sus deseos'],
       comfortTitle: 'Confort y ambiente a bordo',
       comfortText: 'Ya sea para almorzar, tomar un aperitivo, relajarse fondeados o navegar por la costa, Alegria ofrece un marco cálido y premium.',
       occasionsTitle: 'Ideal para',
-      occasions: ['un día en familia', 'un momento en pareja', 'una salida con amigos', 'un cumpleaños', 'un evento privado', 'una salida de empresa'],
+      occasions: ['un día en familia', 'un momento en pareja', 'una salida con amigos', 'una fiesta privada', 'un evento privado', 'una salida de empresa'],
       cta: 'Ver disponibilidad'
     },
     galleryPage: {
@@ -3570,7 +3570,7 @@ const SITE_CONTENT = {
       directTitle: 'Contacto directo',
       directText: 'También puede escribirnos por email o WhatsApp para comentar su proyecto y comprobar disponibilidad.',
       sentNotice: 'Su mensaje ha sido preparado. Le responderemos en breve.',
-      outingOptions: ['Día en el mar', 'Atardecer', 'Cumpleaños', 'Evento de empresa'],
+      outingOptions: ['Día en el mar', 'Atardecer', 'Fiesta privada', 'Evento de empresa'],
       emailSubjectPrefix: 'Solicitud de información',
       whatsappIntro: 'Hola, me gustaría recibir información sobre una salida en el mar a bordo de Alegria.'
     },
@@ -3587,10 +3587,10 @@ const SITE_CONTENT = {
     },
     outings: [{
       slug: 'journee-en-mer',
-      title: 'Día en el mar',
+      title: 'Día o medio día en el mar',
       duration: 'Día completo o medio día',
       guests: 'Hasta 12 pasajeros',
-      description: 'Disfrute de un día completo en el mar para navegar, relajarse y descubrir los mejores fondeos de la Costa Azul.',
+      description: 'Disfrute de un día completo o medio día en el mar desde Villeneuve-Loubet para navegar, relajarse y descubrir lugares cercanos como las islas de Lérins, la bahía de los Millonarios, Cap d’Antibes o Villefranche según la meteorología.',
       image: sharedImages.de1,
       highlights: ['Casco desnudo*', 'Patrón independiente']
     }, {
@@ -3603,10 +3603,10 @@ const SITE_CONTENT = {
       highlights: []
     }, {
       slug: 'anniversaire',
-      title: 'Cumpleaños',
+      title: 'Fiesta privada',
       duration: 'Día completo',
       guests: 'Hasta 12 pasajeros',
-      description: 'Celebre un cumpleaños a bordo de Alegria en un ambiente agradable y memorable en el mar.',
+      description: 'Celebre una fiesta privada a bordo de Alegria en un ambiente agradable y memorable en el mar.',
       image: sharedImages.party1,
       highlights: []
     }, {
@@ -3656,6 +3656,8 @@ let HomelayoutComponent = class HomelayoutComponent {
   router;
   zoomedImageSrc = '';
   zoomedImageAlt = '';
+  zoomGallery = [];
+  zoomIndex = -1;
   clickHandler;
   keydownHandler;
   routerSub;
@@ -3668,6 +3670,17 @@ let HomelayoutComponent = class HomelayoutComponent {
     this.keydownHandler = event => {
       if (event.key === 'Escape') {
         this.closeImageZoom();
+      }
+      if (!this.zoomedImageSrc || !this.isGalleryRoute()) {
+        return;
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        this.showNextImage();
+      }
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        this.showPreviousImage();
       }
     };
     // Capture phase lets the lightbox intercept image clicks before Angular router links.
@@ -3692,7 +3705,23 @@ let HomelayoutComponent = class HomelayoutComponent {
   closeImageZoom() {
     this.zoomedImageSrc = '';
     this.zoomedImageAlt = '';
+    this.zoomGallery = [];
+    this.zoomIndex = -1;
     this.document.body.classList.remove('image-modal-open');
+  }
+  showNextImage() {
+    if (!this.zoomGallery.length) {
+      return;
+    }
+    const nextIndex = (this.zoomIndex + 1) % this.zoomGallery.length;
+    this.setZoomImage(nextIndex);
+  }
+  showPreviousImage() {
+    if (!this.zoomGallery.length) {
+      return;
+    }
+    const previousIndex = (this.zoomIndex - 1 + this.zoomGallery.length) % this.zoomGallery.length;
+    this.setZoomImage(previousIndex);
   }
   handleDocumentClick(event) {
     if (this.isHomeRoute()) {
@@ -3716,9 +3745,59 @@ let HomelayoutComponent = class HomelayoutComponent {
     event.preventDefault();
     event.stopPropagation();
     event.stopImmediatePropagation();
-    this.zoomedImageSrc = source;
-    this.zoomedImageAlt = image.alt || 'Image Alegria';
+    this.prepareZoomGallery(image);
+    if (this.zoomIndex < 0) {
+      this.zoomGallery = [{
+        src: source,
+        alt: image.alt || 'Image Alegria'
+      }];
+      this.zoomIndex = 0;
+    }
+    this.setZoomImage(this.zoomIndex);
     this.document.body.classList.add('image-modal-open');
+  }
+  prepareZoomGallery(selectedImage) {
+    const selectedSource = selectedImage.currentSrc || selectedImage.src;
+    if (!this.isGalleryRoute()) {
+      this.zoomGallery = [{
+        src: selectedSource,
+        alt: selectedImage.alt || 'Image Alegria'
+      }];
+      this.zoomIndex = 0;
+      return;
+    }
+    const images = Array.from(this.document.querySelectorAll('.site-main img:not(.no-image-zoom)')).filter(img => {
+      const src = img.currentSrc || img.src;
+      return !!src && !img.closest('.site-header') && !img.closest('.image-modal');
+    });
+    const uniqueImages = [];
+    const seen = new Set();
+    images.forEach(img => {
+      const src = img.currentSrc || img.src;
+      if (!src || seen.has(src)) {
+        return;
+      }
+      seen.add(src);
+      uniqueImages.push({
+        src,
+        alt: img.alt || 'Image Alegria'
+      });
+    });
+    this.zoomGallery = uniqueImages;
+    this.zoomIndex = uniqueImages.findIndex(item => item.src === selectedSource);
+  }
+  setZoomImage(index) {
+    const item = this.zoomGallery[index];
+    if (!item) {
+      return;
+    }
+    this.zoomIndex = index;
+    this.zoomedImageSrc = item.src;
+    this.zoomedImageAlt = item.alt;
+  }
+  isGalleryRoute() {
+    const currentUrl = (this.router.url || '/').split('?')[0].split('#')[0];
+    return currentUrl === '/bateau' || currentUrl === '/sorties' || currentUrl.startsWith('/sorties/');
   }
   isHomeRoute() {
     const currentUrl = (this.router.url || '/').split('?')[0].split('#')[0];
@@ -4085,7 +4164,70 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 :host ::ng-deep body.home-no-image-zoom .site-main img:not(.no-image-zoom) {
   cursor: default;
-}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homelayout/homelayout.component.scss"],"names":[],"mappings":"AACA;EACE,iBAAA;EACA,aAAA;EACA,sBAAA;EACA,mBAAA;AACF;;AAEA;EACE,OAAA;AACF;;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAAF;;AAGA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAAF;;AAGA;EACE,yCAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,2BAAA;AAAF;;AAGA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAAF;;AAGA;EACE,6DAAA;AAAF;;AAGA;EACE,+BAAA;AAAF;;AAGA,4BAAA;AACA;EACE,eAAA;AAAF;;AAGA;EACE,eAAA;EACA,QAAA;EACA,aAAA;EACA,aAAA;EACA,mBAAA;EACA,uBAAA;EACA,+BAAA;EACA,iCAAA;EACA,kCAAA;UAAA,0BAAA;EACA,0CAAA;AAAF;;AAGA;EACE,4BAAA;EACA,gBAAA;EACA,aAAA;EACA,sBAAA;EACA,mBAAA;EACA,SAAA;AAAF;;AAGA;EACE,cAAA;EACA,eAAA;EACA,gBAAA;EACA,mBAAA;EACA,mBAAA;EACA,2CAAA;EACA,eAAA;AAAF;;AAGA;EACE,gBAAA;EACA,SAAA;EACA,WAAA;EACA,kBAAA;EACA,yCAAA;EACA,iBAAA;AAAF;;AAGA;EACE,eAAA;EACA,SAAA;EACA,WAAA;EACA,WAAA;EACA,YAAA;EACA,2CAAA;EACA,oBAAA;EACA,qCAAA;EACA,WAAA;EACA,eAAA;EACA,cAAA;EACA,eAAA;EACA,uDAAA;AAAF;;AAGA;EACE,sBAAA;EACA,qCAAA;AAAF;;AAGA;EACE;IACE,UAAA;EAAF;EAEA;IACE,UAAA;EAAF;AACF;AAGA;EACE;IACE,aAAA;EADF;EAIA;IACE,eAAA;IACA,gBAAA;EAFF;EAKA;IACE,gBAAA;IACA,mBAAA;EAHF;EAMA;IACE,iBAAA;EAJF;EAOA;IACE,SAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,iBAAA;EALF;AACF;AAQA;EACE,gBAAA;AANF;;AASA;EACE,eAAA;AANF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.site-shell {\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  background: #fbf8f2;\n}\n\n.site-main {\n  flex: 1;\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n/* Global image zoom modal */\n:host ::ng-deep .site-main img:not(.no-image-zoom) {\n  cursor: zoom-in;\n}\n\n.image-modal {\n  position: fixed;\n  inset: 0;\n  z-index: 9999;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: clamp(18px, 4vw, 56px);\n  background: rgba(8, 38, 58, 0.92);\n  backdrop-filter: blur(8px);\n  animation: image-modal-fade 160ms ease-out;\n}\n\n.image-modal__content {\n  max-width: min(1120px, 94vw);\n  max-height: 88vh;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 12px;\n}\n\n.image-modal__content img {\n  display: block;\n  max-width: 100%;\n  max-height: 82vh;\n  object-fit: contain;\n  border-radius: 18px;\n  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);\n  cursor: default;\n}\n\n.image-modal__content p {\n  max-width: 900px;\n  margin: 0;\n  color: #fff;\n  text-align: center;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-size: 0.9rem;\n}\n\n.image-modal__close {\n  position: fixed;\n  top: 18px;\n  right: 18px;\n  width: 44px;\n  height: 44px;\n  border: 1px solid rgba(255, 255, 255, 0.35);\n  border-radius: 999px;\n  background: rgba(255, 255, 255, 0.14);\n  color: #fff;\n  font-size: 2rem;\n  line-height: 1;\n  cursor: pointer;\n  transition: transform 160ms ease, background 160ms ease;\n}\n\n.image-modal__close:hover {\n  transform: scale(1.05);\n  background: rgba(255, 255, 255, 0.24);\n}\n\n@keyframes image-modal-fade {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n\n@media (max-width: 768px) {\n  .image-modal {\n    padding: 14px;\n  }\n\n  .image-modal__content {\n    max-width: 96vw;\n    max-height: 84vh;\n  }\n\n  .image-modal__content img {\n    max-height: 74vh;\n    border-radius: 12px;\n  }\n\n  .image-modal__content p {\n    font-size: 0.8rem;\n  }\n\n  .image-modal__close {\n    top: 12px;\n    right: 12px;\n    width: 40px;\n    height: 40px;\n    font-size: 1.8rem;\n  }\n}\n\n:host ::ng-deep body.image-modal-open {\n  overflow: hidden;\n}\n\n:host ::ng-deep body.home-no-image-zoom .site-main img:not(.no-image-zoom) {\n  cursor: default;\n}\n"],"sourceRoot":""}]);
+}
+
+.image-modal__nav {
+  position: fixed;
+  top: 50%;
+  z-index: 10000;
+  width: clamp(42px, 5vw, 58px);
+  height: clamp(42px, 5vw, 58px);
+  transform: translateY(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 0.85;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.image-modal__nav:hover {
+  transform: translateY(-50%) scale(1.05);
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.image-modal__nav--previous {
+  left: clamp(12px, 3vw, 28px);
+}
+
+.image-modal__nav--next {
+  right: clamp(12px, 3vw, 28px);
+}
+
+.image-modal__counter {
+  color: rgba(255, 255, 255, 0.86);
+  font-family: "Raleway", Arial, sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 768px) {
+  .image-modal__nav {
+    top: auto;
+    bottom: 16px;
+    transform: none;
+    width: 44px;
+    height: 44px;
+    font-size: 2.4rem;
+  }
+  .image-modal__nav:hover {
+    transform: none;
+  }
+  .image-modal__nav--previous {
+    left: calc(50% - 58px);
+  }
+  .image-modal__nav--next {
+    right: calc(50% - 58px);
+  }
+  .image-modal__counter {
+    margin-bottom: 54px;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homelayout/homelayout.component.scss"],"names":[],"mappings":"AACA;EACE,iBAAA;EACA,aAAA;EACA,sBAAA;EACA,mBAAA;AACF;;AAEA;EACE,OAAA;AACF;;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAAF;;AAGA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAAF;;AAGA;EACE,yCAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,2BAAA;AAAF;;AAGA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAAF;;AAGA;EACE,sCAAA;EACA,0BAAA;AAAF;;AAGA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAAF;;AAGA;EACE,6DAAA;AAAF;;AAGA;EACE,+BAAA;AAAF;;AAGA,4BAAA;AACA;EACE,eAAA;AAAF;;AAGA;EACE,eAAA;EACA,QAAA;EACA,aAAA;EACA,aAAA;EACA,mBAAA;EACA,uBAAA;EACA,+BAAA;EACA,iCAAA;EACA,kCAAA;UAAA,0BAAA;EACA,0CAAA;AAAF;;AAGA;EACE,4BAAA;EACA,gBAAA;EACA,aAAA;EACA,sBAAA;EACA,mBAAA;EACA,SAAA;AAAF;;AAGA;EACE,cAAA;EACA,eAAA;EACA,gBAAA;EACA,mBAAA;EACA,mBAAA;EACA,2CAAA;EACA,eAAA;AAAF;;AAGA;EACE,gBAAA;EACA,SAAA;EACA,WAAA;EACA,kBAAA;EACA,yCAAA;EACA,iBAAA;AAAF;;AAGA;EACE,eAAA;EACA,SAAA;EACA,WAAA;EACA,WAAA;EACA,YAAA;EACA,2CAAA;EACA,oBAAA;EACA,qCAAA;EACA,WAAA;EACA,eAAA;EACA,cAAA;EACA,eAAA;EACA,uDAAA;AAAF;;AAGA;EACE,sBAAA;EACA,qCAAA;AAAF;;AAGA;EACE;IACE,UAAA;EAAF;EAEA;IACE,UAAA;EAAF;AACF;AAGA;EACE;IACE,aAAA;EADF;EAIA;IACE,eAAA;IACA,gBAAA;EAFF;EAKA;IACE,gBAAA;IACA,mBAAA;EAHF;EAMA;IACE,iBAAA;EAJF;EAOA;IACE,SAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,iBAAA;EALF;AACF;AAQA;EACE,gBAAA;AANF;;AASA;EACE,eAAA;AANF;;AASA;EACE,eAAA;EACA,QAAA;EACA,cAAA;EACA,6BAAA;EACA,8BAAA;EACA,2BAAA;EACA,2CAAA;EACA,oBAAA;EACA,qCAAA;EACA,WAAA;EACA,qCAAA;EACA,iBAAA;EACA,aAAA;EACA,mBAAA;EACA,uBAAA;EACA,eAAA;EACA,uDAAA;AANF;;AASA;EACE,uCAAA;EACA,qCAAA;AANF;;AASA;EACE,4BAAA;AANF;;AASA;EACE,6BAAA;AANF;;AASA;EACE,gCAAA;EACA,yCAAA;EACA,kBAAA;EACA,sBAAA;AANF;;AASA;EACE;IACE,SAAA;IACA,YAAA;IACA,eAAA;IACA,WAAA;IACA,YAAA;IACA,iBAAA;EANF;EASA;IACE,eAAA;EAPF;EAUA;IACE,sBAAA;EARF;EAWA;IACE,uBAAA;EATF;EAYA;IACE,mBAAA;EAVF;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.site-shell {\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  background: #fbf8f2;\n}\n\n.site-main {\n  flex: 1;\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n/* Global image zoom modal */\n:host ::ng-deep .site-main img:not(.no-image-zoom) {\n  cursor: zoom-in;\n}\n\n.image-modal {\n  position: fixed;\n  inset: 0;\n  z-index: 9999;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: clamp(18px, 4vw, 56px);\n  background: rgba(8, 38, 58, 0.92);\n  backdrop-filter: blur(8px);\n  animation: image-modal-fade 160ms ease-out;\n}\n\n.image-modal__content {\n  max-width: min(1120px, 94vw);\n  max-height: 88vh;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 12px;\n}\n\n.image-modal__content img {\n  display: block;\n  max-width: 100%;\n  max-height: 82vh;\n  object-fit: contain;\n  border-radius: 18px;\n  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);\n  cursor: default;\n}\n\n.image-modal__content p {\n  max-width: 900px;\n  margin: 0;\n  color: #fff;\n  text-align: center;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-size: 0.9rem;\n}\n\n.image-modal__close {\n  position: fixed;\n  top: 18px;\n  right: 18px;\n  width: 44px;\n  height: 44px;\n  border: 1px solid rgba(255, 255, 255, 0.35);\n  border-radius: 999px;\n  background: rgba(255, 255, 255, 0.14);\n  color: #fff;\n  font-size: 2rem;\n  line-height: 1;\n  cursor: pointer;\n  transition: transform 160ms ease, background 160ms ease;\n}\n\n.image-modal__close:hover {\n  transform: scale(1.05);\n  background: rgba(255, 255, 255, 0.24);\n}\n\n@keyframes image-modal-fade {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n\n@media (max-width: 768px) {\n  .image-modal {\n    padding: 14px;\n  }\n\n  .image-modal__content {\n    max-width: 96vw;\n    max-height: 84vh;\n  }\n\n  .image-modal__content img {\n    max-height: 74vh;\n    border-radius: 12px;\n  }\n\n  .image-modal__content p {\n    font-size: 0.8rem;\n  }\n\n  .image-modal__close {\n    top: 12px;\n    right: 12px;\n    width: 40px;\n    height: 40px;\n    font-size: 1.8rem;\n  }\n}\n\n:host ::ng-deep body.image-modal-open {\n  overflow: hidden;\n}\n\n:host ::ng-deep body.home-no-image-zoom .site-main img:not(.no-image-zoom) {\n  cursor: default;\n}\n\n.image-modal__nav {\n  position: fixed;\n  top: 50%;\n  z-index: 10000;\n  width: clamp(42px, 5vw, 58px);\n  height: clamp(42px, 5vw, 58px);\n  transform: translateY(-50%);\n  border: 1px solid rgba(255, 255, 255, 0.35);\n  border-radius: 999px;\n  background: rgba(255, 255, 255, 0.14);\n  color: #fff;\n  font-size: clamp(2.2rem, 5vw, 3.4rem);\n  line-height: 0.85;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  cursor: pointer;\n  transition: transform 160ms ease, background 160ms ease;\n}\n\n.image-modal__nav:hover {\n  transform: translateY(-50%) scale(1.05);\n  background: rgba(255, 255, 255, 0.24);\n}\n\n.image-modal__nav--previous {\n  left: clamp(12px, 3vw, 28px);\n}\n\n.image-modal__nav--next {\n  right: clamp(12px, 3vw, 28px);\n}\n\n.image-modal__counter {\n  color: rgba(255, 255, 255, 0.86);\n  font-family: 'Raleway', Arial, sans-serif;\n  font-size: 0.78rem;\n  letter-spacing: 0.08em;\n}\n\n@media (max-width: 768px) {\n  .image-modal__nav {\n    top: auto;\n    bottom: 16px;\n    transform: none;\n    width: 44px;\n    height: 44px;\n    font-size: 2.4rem;\n  }\n\n  .image-modal__nav:hover {\n    transform: none;\n  }\n\n  .image-modal__nav--previous {\n    left: calc(50% - 58px);\n  }\n\n  .image-modal__nav--next {\n    right: calc(50% - 58px);\n  }\n\n  .image-modal__counter {\n    margin-bottom: 54px;\n  }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -4590,6 +4732,15 @@ let HomefooterComponent = class HomefooterComponent {
     }
     return 'Conditions générales';
   }
+  get safetyLabel() {
+    if (this.currentLanguage === 'en') {
+      return 'Safety instructions';
+    }
+    if (this.currentLanguage === 'es') {
+      return 'Instrucciones de seguridad';
+    }
+    return 'Consignes de sécurité';
+  }
   ngOnDestroy() {
     this.languageSub?.unsubscribe();
   }
@@ -4689,7 +4840,7 @@ LayoutModule = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_co
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<div class=\"site-shell\">\n  <app-homeheader></app-homeheader>\n  <main class=\"site-main\">\n    <router-outlet></router-outlet>\n  </main>\n  <app-homefooter></app-homefooter>\n  <app-cookie-consent></app-cookie-consent>\n\n  <div\n    class=\"image-modal\"\n    *ngIf=\"zoomedImageSrc\"\n    role=\"dialog\"\n    aria-modal=\"true\"\n    [attr.aria-label]=\"zoomedImageAlt\"\n    (click)=\"closeImageZoom()\"\n  >\n    <button\n      class=\"image-modal__close\"\n      type=\"button\"\n      aria-label=\"Close image preview\"\n      (click)=\"closeImageZoom(); $event.stopPropagation()\"\n    >\n      ×\n    </button>\n\n    <div class=\"image-modal__content\" (click)=\"$event.stopPropagation()\">\n      <img [src]=\"zoomedImageSrc\" [alt]=\"zoomedImageAlt\" />\n      <p *ngIf=\"zoomedImageAlt\">{{ zoomedImageAlt }}</p>\n    </div>\n  </div>\n</div>\n";
+module.exports = "<div class=\"site-shell\">\n  <app-homeheader></app-homeheader>\n  <main class=\"site-main\">\n    <router-outlet></router-outlet>\n  </main>\n  <app-homefooter></app-homefooter>\n  <app-cookie-consent></app-cookie-consent>\n\n  <div\n    class=\"image-modal\"\n    *ngIf=\"zoomedImageSrc\"\n    role=\"dialog\"\n    aria-modal=\"true\"\n    [attr.aria-label]=\"zoomedImageAlt\"\n    (click)=\"closeImageZoom()\"\n  >\n    <button\n      class=\"image-modal__close\"\n      type=\"button\"\n      aria-label=\"Close image preview\"\n      (click)=\"closeImageZoom(); $event.stopPropagation()\"\n    >\n      ×\n    </button>\n\n    <button\n      class=\"image-modal__nav image-modal__nav--previous\"\n      type=\"button\"\n      aria-label=\"Previous image\"\n      *ngIf=\"zoomGallery.length > 1\"\n      (click)=\"showPreviousImage(); $event.stopPropagation()\"\n    >\n      ‹\n    </button>\n\n    <div class=\"image-modal__content\" (click)=\"$event.stopPropagation()\">\n      <img [src]=\"zoomedImageSrc\" [alt]=\"zoomedImageAlt\" />\n      <p *ngIf=\"zoomedImageAlt\">{{ zoomedImageAlt }}</p>\n      <span class=\"image-modal__counter\" *ngIf=\"zoomGallery.length > 1\">\n        {{ zoomIndex + 1 }} / {{ zoomGallery.length }}\n      </span>\n    </div>\n\n    <button\n      class=\"image-modal__nav image-modal__nav--next\"\n      type=\"button\"\n      aria-label=\"Next image\"\n      *ngIf=\"zoomGallery.length > 1\"\n      (click)=\"showNextImage(); $event.stopPropagation()\"\n    >\n      ›\n    </button>\n  </div>\n</div>\n";
 
 /***/ }),
 
@@ -5030,7 +5181,7 @@ module.exports = "<div class=\"cookie-banner\" *ngIf=\"visible\" role=\"dialog\"
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<footer class=\"site-footer-simple\">\n  <div class=\"container footer-simple\">\n    \n    <div class=\"footer-left\">\n      © {{ year }} {{ content.brand }}\n    </div>\n\n    <div class=\"footer-center\">\n      {{ mainSvc.version }}\n    </div>\n\n    <div class=\"footer-right\">\n      <a routerLink=\"/contact\">{{ content.nav.contact }}</a>\n      <a routerLink=\"/terms\">{{ termsLabel }}</a>\n    </div>\n\n  </div>\n</footer>";
+module.exports = "<footer class=\"site-footer-simple\">\n  <div class=\"container footer-simple\">\n    \n    <div class=\"footer-left\">\n      © {{ year }} {{ content.brand }}\n    </div>\n\n    <div class=\"footer-center\">\n      {{ mainSvc.version }}\n    </div>\n\n    <div class=\"footer-right\">\n      <a routerLink=\"/contact\">{{ content.nav.contact }}</a>\n      <a routerLink=\"/terms\">{{ termsLabel }}</a>\n      <a routerLink=\"/safety\">{{ safetyLabel }}</a>\n    </div>\n\n  </div>\n</footer>";
 
 /***/ }),
 

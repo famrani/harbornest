@@ -735,22 +735,7 @@ var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modul
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `:host {
-  --alegria-deep: #08263a;
-  --alegria-ocean: #0b6e8f;
-  --alegria-ocean-light: #e8f4f7;
-  --alegria-orange: #f28c28;
-  --alegria-sand: #fbf8f2;
-  --alegria-text: #2f3a45;
-  --alegria-muted: #667085;
-  display: block;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-.container {
+___CSS_LOADER_EXPORT___.push([module.id, `.container {
   width: min(1120px, 100% - 2rem);
   margin: 0 auto;
 }
@@ -765,43 +750,28 @@ ___CSS_LOADER_EXPORT___.push([module.id, `:host {
 }
 
 .page-hero {
-  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);
+  background: #ffffff;
 }
 
 .eyebrow {
   display: inline-block;
   margin-bottom: 0.9rem;
-  font-family: "Raleway", Arial, sans-serif;
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--alegria-ocean);
-}
-
-h1,
-h2 {
-  font-family: "Playfair Display", Georgia, serif;
-  color: var(--alegria-deep);
-  letter-spacing: -0.015em;
+  color: #0b6e8f;
 }
 
 h1 {
   font-size: clamp(1.85rem, 3vw, 3rem);
   line-height: 1.08;
   margin: 0 0 0.9rem;
+  color: #08263a;
 }
 
-h2 {
-  margin: 0 0 0.75rem;
-  font-size: clamp(1.25rem, 2vw, 1.55rem);
-  line-height: 1.15;
-}
-
-p,
-li {
-  font-family: "Lato", Arial, sans-serif;
-  color: var(--alegria-text);
+p {
+  color: #475569;
   line-height: 1.7;
   font-size: 0.97rem;
 }
@@ -816,19 +786,11 @@ li {
   border-radius: 24px;
   overflow: hidden;
   display: grid;
-  grid-template-columns: minmax(260px, 320px) 1fr;
+  grid-template-columns: 320px 1fr;
   box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
 }
 
-.image-link {
-  display: block;
-  min-width: 0;
-  overflow: hidden;
-  background: var(--alegria-sand);
-}
-
-.image-link img {
-  display: block;
+.outing-card img {
   width: 100%;
   height: 100%;
   min-height: 260px;
@@ -837,20 +799,23 @@ li {
 
 .content-card {
   padding: 1.4rem;
-  min-width: 0;
 }
 
 .meta-top {
-  font-family: "Raleway", Arial, sans-serif;
-  color: var(--alegria-muted);
+  color: #64748b;
   font-weight: 600;
   margin-bottom: 0.75rem;
   font-size: 0.88rem;
 }
 
+h2 {
+  margin: 0 0 0.75rem;
+  color: #08263a;
+  font-size: 1.35rem;
+}
+
 ul {
   padding-left: 1.15rem;
-  margin: 1rem 0 0;
   color: #334155;
   line-height: 1.7;
   font-size: 0.94rem;
@@ -858,78 +823,75 @@ ul {
 
 .btn {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
   margin-top: 1rem;
   text-decoration: none;
-  background: var(--alegria-ocean-light);
-  color: var(--alegria-deep);
+  background: #08263a;
+  color: #fff;
   padding: 0.85rem 1.05rem;
   border-radius: 999px;
-  font-family: "Raleway", Arial, sans-serif;
   font-weight: 700;
   font-size: 0.9rem;
 }
 
-.btn:hover {
-  background: var(--alegria-orange);
-  color: #fff;
+@media (max-width: 860px) {
+  .outing-card {
+    grid-template-columns: 1fr;
+  }
+}
+/* Charte graphique Alegria */
+:host {
+  --alegria-deep: #08263a;
+  --alegria-ocean: #0b6e8f;
+  --alegria-ocean-light: #e8f4f7;
+  --alegria-orange: #f28c28;
+  --alegria-sand: #fbf8f2;
+  --alegria-text: #2f3a45;
+  --alegria-muted: #667085;
 }
 
-@media (max-width: 860px) {
-  .page-hero,
-  .section {
-    padding: 2.5rem 0;
-  }
-  .container {
-    width: min(100% - 1.25rem, 1120px);
-  }
-  .outing-card {
-    display: block;
-    border-radius: 20px;
-  }
-  .image-link {
-    width: 100%;
-  }
-  .image-link img {
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    aspect-ratio: 16/10;
-    object-fit: cover;
-  }
-  .content-card {
-    position: static !important;
-    transform: none !important;
-    padding: 1rem;
-    background: #fff;
-  }
-  .meta-top {
-    font-size: 0.78rem;
-  }
-  p,
-  li {
-    font-size: 0.92rem;
-  }
-  .btn {
-    width: 100%;
-  }
+h1, h2, h3, .brand-text strong, .title, .page-title {
+  font-family: "Playfair Display", Georgia, serif;
+  color: var(--alegria-deep);
+  letter-spacing: -0.015em;
 }
-@media (max-width: 480px) {
-  .container {
-    width: min(100% - 1rem, 1120px);
-  }
-  .page-hero,
-  .section {
-    padding: 2rem 0;
-  }
-  .grid {
-    gap: 1rem;
-  }
-  .content-card {
-    padding: 0.95rem;
-  }
-}`, "",{"version":3,"sources":["webpack://./src/app/home/outings/outings.component.scss"],"names":[],"mappings":"AAEA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;EACA,cAAA;AAAF;;AAGA;EACE,sBAAA;AAAF;;AAGA;EACE,+BAAA;EACA,cAAA;AAAF;;AAGA;EACE,gBAAA;AAAF;;AAGA;;EAEE,eAAA;AAAF;;AAGA;EACE,6DAAA;AAAF;;AAGA;EACE,qBAAA;EACA,qBAAA;EACA,yCAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,2BAAA;AAAF;;AAGA;;EAEE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAAF;;AAGA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;AAAF;;AAGA;EACE,mBAAA;EACA,uCAAA;EACA,iBAAA;AAAF;;AAGA;;EAEE,sCAAA;EACA,0BAAA;EACA,gBAAA;EACA,kBAAA;AAAF;;AAGA;EACE,aAAA;EACA,WAAA;AAAF;;AAGA;EACE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,+CAAA;EACA,8CAAA;AAAF;;AAGA;EACE,cAAA;EACA,YAAA;EACA,gBAAA;EACA,+BAAA;AAAF;;AAGA;EACE,cAAA;EACA,WAAA;EACA,YAAA;EACA,iBAAA;EACA,iBAAA;AAAF;;AAGA;EACE,eAAA;EACA,YAAA;AAAF;;AAGA;EACE,yCAAA;EACA,2BAAA;EACA,gBAAA;EACA,sBAAA;EACA,kBAAA;AAAF;;AAGA;EACE,qBAAA;EACA,gBAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;AAAF;;AAGA;EACE,oBAAA;EACA,mBAAA;EACA,uBAAA;EACA,gBAAA;EACA,qBAAA;EACA,sCAAA;EACA,0BAAA;EACA,wBAAA;EACA,oBAAA;EACA,yCAAA;EACA,gBAAA;EACA,iBAAA;AAAF;;AAGA;EACE,iCAAA;EACA,WAAA;AAAF;;AAGA;EACE;;IAEE,iBAAA;EAAF;EAGA;IACE,kCAAA;EADF;EAIA;IACE,cAAA;IACA,mBAAA;EAFF;EAKA;IACE,WAAA;EAHF;EAMA;IACE,WAAA;IACA,YAAA;IACA,aAAA;IACA,mBAAA;IACA,iBAAA;EAJF;EAOA;IACE,2BAAA;IACA,0BAAA;IACA,aAAA;IACA,gBAAA;EALF;EAQA;IACE,kBAAA;EANF;EASA;;IAEE,kBAAA;EAPF;EAUA;IACE,WAAA;EARF;AACF;AAWA;EACE;IACE,+BAAA;EATF;EAYA;;IAEE,eAAA;EAVF;EAaA;IACE,SAAA;EAXF;EAcA;IACE,gBAAA;EAZF;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n  display: block;\n}\n\n* {\n  box-sizing: border-box;\n}\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: var(--alegria-ocean);\n}\n\nh1,\nh2 {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n}\n\nh2 {\n  margin: 0 0 0.75rem;\n  font-size: clamp(1.25rem, 2vw, 1.55rem);\n  line-height: 1.15;\n}\n\np,\nli {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.grid {\n  display: grid;\n  gap: 1.3rem;\n}\n\n.outing-card {\n  background: #fff;\n  border-radius: 24px;\n  overflow: hidden;\n  display: grid;\n  grid-template-columns: minmax(260px, 320px) 1fr;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.image-link {\n  display: block;\n  min-width: 0;\n  overflow: hidden;\n  background: var(--alegria-sand);\n}\n\n.image-link img {\n  display: block;\n  width: 100%;\n  height: 100%;\n  min-height: 260px;\n  object-fit: cover;\n}\n\n.content-card {\n  padding: 1.4rem;\n  min-width: 0;\n}\n\n.meta-top {\n  font-family: 'Raleway', Arial, sans-serif;\n  color: var(--alegria-muted);\n  font-weight: 600;\n  margin-bottom: 0.75rem;\n  font-size: 0.88rem;\n}\n\nul {\n  padding-left: 1.15rem;\n  margin: 1rem 0 0;\n  color: #334155;\n  line-height: 1.7;\n  font-size: 0.94rem;\n}\n\n.btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  margin-top: 1rem;\n  text-decoration: none;\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n  padding: 0.85rem 1.05rem;\n  border-radius: 999px;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n.btn:hover {\n  background: var(--alegria-orange);\n  color: #fff;\n}\n\n@media (max-width: 860px) {\n  .page-hero,\n  .section {\n    padding: 2.5rem 0;\n  }\n\n  .container {\n    width: min(100% - 1.25rem, 1120px);\n  }\n\n  .outing-card {\n    display: block;\n    border-radius: 20px;\n  }\n\n  .image-link {\n    width: 100%;\n  }\n\n  .image-link img {\n    width: 100%;\n    height: auto;\n    min-height: 0;\n    aspect-ratio: 16 / 10;\n    object-fit: cover;\n  }\n\n  .content-card {\n    position: static !important;\n    transform: none !important;\n    padding: 1rem;\n    background: #fff;\n  }\n\n  .meta-top {\n    font-size: 0.78rem;\n  }\n\n  p,\n  li {\n    font-size: 0.92rem;\n  }\n\n  .btn {\n    width: 100%;\n  }\n}\n\n@media (max-width: 480px) {\n  .container {\n    width: min(100% - 1rem, 1120px);\n  }\n\n  .page-hero,\n  .section {\n    padding: 2rem 0;\n  }\n\n  .grid {\n    gap: 1rem;\n  }\n\n  .content-card {\n    padding: 0.95rem;\n  }\n}\n"],"sourceRoot":""}]);
+
+.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {
+  font-family: "Raleway", Arial, sans-serif;
+}
+
+p, li, input, textarea, select, .card-body, .term-section {
+  font-family: "Lato", Arial, sans-serif;
+  color: var(--alegria-text);
+}
+
+.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {
+  color: var(--alegria-ocean);
+}
+
+.btn-primary, .cta-link, .btn-book {
+  background: var(--alegria-orange) !important;
+  color: #fff !important;
+  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);
+}
+
+.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {
+  background: var(--alegria-ocean-light);
+  color: var(--alegria-deep);
+}
+
+.price-pill {
+  background: rgba(242, 140, 40, 0.13);
+  color: #9a4d08;
+  border: 1px solid rgba(242, 140, 40, 0.28);
+}
+
+.page-hero {
+  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);
+}
+
+.section-light {
+  background: var(--alegria-sand);
+}`, "",{"version":3,"sources":["webpack://./src/app/home/outings/outings.component.scss"],"names":[],"mappings":"AACA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,WAAA;AACF;;AAEA;EACE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,gCAAA;EACA,8CAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,iBAAA;EACA,iBAAA;AACF;;AAEA;EACE,eAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,sBAAA;EACA,kBAAA;AACF;;AAEA;EACE,mBAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,oBAAA;EACA,gBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,wBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE;IACE,0BAAA;EACF;AACF;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AADF;;AAIA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AADF;;AAIA;EACE,yCAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,2BAAA;AADF;;AAIA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AADF;;AAIA;EACE,6DAAA;AADF;;AAIA;EACE,+BAAA;AADF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: #ffffff;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.grid {\n  display: grid;\n  gap: 1.3rem;\n}\n\n.outing-card {\n  background: #fff;\n  border-radius: 24px;\n  overflow: hidden;\n  display: grid;\n  grid-template-columns: 320px 1fr;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.outing-card img {\n  width: 100%;\n  height: 100%;\n  min-height: 260px;\n  object-fit: cover;\n}\n\n.content-card {\n  padding: 1.4rem;\n}\n\n.meta-top {\n  color: #64748b;\n  font-weight: 600;\n  margin-bottom: 0.75rem;\n  font-size: 0.88rem;\n}\n\nh2 {\n  margin: 0 0 0.75rem;\n  color: #08263a;\n  font-size: 1.35rem;\n}\n\nul {\n  padding-left: 1.15rem;\n  color: #334155;\n  line-height: 1.7;\n  font-size: 0.94rem;\n}\n\n.btn {\n  display: inline-flex;\n  margin-top: 1rem;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.85rem 1.05rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n@media (max-width: 860px) {\n  .outing-card {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -963,7 +925,7 @@ __webpack_require__.r(__webpack_exports__);
 let BoatComponent = class BoatComponent {
   languageService;
   content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr;
-  images = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr.galleryImages.slice(0, 4);
+  images = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr.galleryImages.slice(0, 13);
   languageSub;
   specs = [];
   coreOffering = [];
@@ -1019,7 +981,7 @@ let BoatComponent = class BoatComponent {
   ngOnInit() {
     this.languageSub = this.languageService.language$.subscribe(language => {
       this.content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT[language];
-      this.images = this.content.galleryImages.slice(0, 4);
+      this.images = this.content.galleryImages.slice(0, 13);
       const localized = this.localizedData[language];
       this.specsTitle = localized.specsTitle;
       this.servicesTitle = localized.servicesTitle;
@@ -1852,15 +1814,15 @@ const TOUR_CONTENT = {
       eyebrow: 'Sortie signature',
       title: 'Journée en mer à bord d’Alegria',
       subtitle: 'Une journée ou demi-journée privative pour profiter de la Côte d’Azur.',
-      intro: 'Embarquez pour une expérience élégante et détendue : navigation, baignade, mouillages calmes et moments de détente à bord.',
+      intro: 'Embarquez pour une journée ou demi-journée élégante au départ de Villeneuve-Loubet : navigation, baignade et mouillages proches comme les îles de Lérins, la baie des Milliardaires, le Cap d’Antibes ou Villefranche selon la météo.',
       image: images.de1,
       duration: 'Journée ou demi-journée',
       guests: '12 passagers max',
-      price: 'À partir de 999 € / jour*',
+      price: 'À partir de 999 € + 300 € skipper',
       highlightsTitle: 'Les points forts',
       highlights: ['Location en coque nue*', 'Skipper indépendant obligatoire', 'Programme adaptable selon la météo', 'Cadre premium pour famille, couple ou amis'],
       programTitle: 'Exemple de programme',
-      program: ['Embarquement sur les quais d’honneur', 'Navigation vers un mouillage adapté', 'Temps libre pour baignade et détente', 'Déjeuner à bord ou escale selon votre projet', 'Retour au port'],
+      program: ['Embarquement sur les quais d’honneur', 'Navigation vers un mouillage proche : îles de Lérins, baie des Milliardaires, Cap d’Antibes ou Villefranche selon les conditions', 'Temps libre pour baignade et détente', 'Déjeuner à bord ou escale selon votre projet', 'Retour au port'],
       includesTitle: 'Ce qui est prévu',
       includes: ['Bateau privatisé en coque nue', 'Organisation sur mesure', 'Temps de baignade', 'Confort à bord'],
       idealForTitle: 'Idéal pour',
@@ -1878,7 +1840,7 @@ const TOUR_CONTENT = {
       image: images.sunset1,
       duration: 'Coucher de soleil',
       guests: '12 passagers max',
-      price: 'À partir de 999 € / jour*',
+      price: 'À partir de 999 € + 300 € skipper',
       highlightsTitle: 'Les points forts',
       highlights: ['Ambiance élégante et détendue', 'Lumière idéale pour les photos', 'Format parfait pour un apéritif en mer', 'Expérience privative'],
       programTitle: 'Exemple de programme',
@@ -1900,7 +1862,7 @@ const TOUR_CONTENT = {
       image: images.party1,
       duration: 'Journée',
       guests: '12 passagers max',
-      price: 'À partir de 999 € / jour*',
+      price: 'À partir de 999 € + 300 € skipper',
       highlightsTitle: 'Les points forts',
       highlights: ['Format personnalisable', 'Souvenirs photo dans un décor unique', 'Ambiance adaptée à votre groupe', 'Bateau privatisé en coque nue'],
       programTitle: 'Exemple de programme',
@@ -1922,7 +1884,7 @@ const TOUR_CONTENT = {
       image: images.business1,
       duration: 'Journée ou demi-journée',
       guests: '12 passagers max',
-      price: 'À partir de 999 € / jour*',
+      price: 'À partir de 999 € + 300 € skipper',
       highlightsTitle: 'Les points forts',
       highlights: ['Image premium pour votre entreprise', 'Format souple et original', 'Cadre propice aux échanges', 'Expérience mémorable'],
       programTitle: 'Exemple de programme',
@@ -1940,17 +1902,17 @@ const TOUR_CONTENT = {
       key: 'journee-en-mer',
       route: 'journee-en-mer',
       eyebrow: 'Signature outing',
-      title: 'Full day at sea aboard Alegria',
-      subtitle: 'A full or half day private experience on the French Riviera.',
-      intro: 'Step aboard for an elegant and relaxed experience: cruising, swimming, quiet anchorages and time to unwind.',
+      title: 'Day or half day at sea aboard Alegria',
+      subtitle: 'A private full-day or half-day experience around Villeneuve-Loubet and the French Riviera.',
+      intro: 'Step aboard for an elegant full-day or half-day experience from Villeneuve-Loubet: cruising, swimming and nearby anchorages such as the Lérins Islands, Billionaires’ Bay, Cap d’Antibes or Villefranche depending on conditions.',
       image: images.de1,
       duration: 'Full day or half day',
       guests: 'Up to 12 guests',
-      price: 'From €1,500 / day*',
+      price: 'From €999 + €300 skipper',
       highlightsTitle: 'Highlights',
       highlights: ['Bareboat rental*', 'Independent skipper required', 'Flexible program depending on weather', 'Premium setting for family, couples or friends'],
       programTitle: 'Sample program',
-      program: ['Boarding from honorary quays', 'Cruise to a suitable anchorage', 'Free time for swimming and relaxation', 'Lunch on board or stop ashore depending on your plans', 'Return to port'],
+      program: ['Boarding from honorary quays', 'Cruise to a nearby anchorage: Lérins Islands, Billionaires’ Bay, Cap d’Antibes or Villefranche depending on conditions', 'Free time for swimming and relaxation', 'Lunch on board or stop ashore depending on your plans', 'Return to port'],
       includesTitle: 'What is included',
       includes: ['Private bareboat charter', 'Tailored organization', 'Swimming time', 'On-board comfort'],
       idealForTitle: 'Ideal for',
@@ -1968,7 +1930,7 @@ const TOUR_CONTENT = {
       image: images.sunset1,
       duration: 'Sunset',
       guests: 'Up to 12 guests',
-      price: 'From €1,500 / day*',
+      price: 'From €999 + €300 skipper',
       highlightsTitle: 'Highlights',
       highlights: ['Elegant and relaxed atmosphere', 'Ideal light for photos', 'Perfect for drinks at sea', 'Private experience'],
       programTitle: 'Sample program',
@@ -1984,13 +1946,13 @@ const TOUR_CONTENT = {
       key: 'anniversaire',
       route: 'anniversaire',
       eyebrow: 'Festive outing',
-      title: 'Birthday aboard Alegria',
+      title: 'Private party aboard Alegria',
       subtitle: 'A celebration at sea in an exclusive and memorable setting.',
-      intro: 'Celebrate a birthday in a friendly, festive or elegant atmosphere depending on your wishes, with a unique Riviera backdrop.',
+      intro: 'Celebrate a private party in a friendly, festive or elegant atmosphere depending on your wishes, with a unique Riviera backdrop.',
       image: images.party1,
       duration: 'Full day',
       guests: 'Up to 12 guests',
-      price: 'From €1,500 / day*',
+      price: 'From €999 + €300 skipper',
       highlightsTitle: 'Highlights',
       highlights: ['Customizable format', 'Great photo memories', 'Atmosphere tailored to your group', 'Private bareboat charter'],
       programTitle: 'Sample program',
@@ -1998,7 +1960,7 @@ const TOUR_CONTENT = {
       includesTitle: 'What is included',
       includes: ['Private bareboat charter', 'Independent skipper required', 'Personalized organization', 'Exclusive setting'],
       idealForTitle: 'Ideal for',
-      idealFor: ['A birthday with friends', 'A family celebration', 'A festive moment', 'A memorable surprise'],
+      idealFor: ['A private party with friends', 'A family celebration', 'A festive moment', 'A memorable surprise'],
       cta: 'Plan your outing',
       contactNote: 'Tell us the style you are looking for and we will build the right option.'
     },
@@ -2012,7 +1974,7 @@ const TOUR_CONTENT = {
       image: images.business1,
       duration: 'Full day or half day',
       guests: 'Up to 12 guests',
-      price: 'From €1,500 / day*',
+      price: 'From €999 + €300 skipper',
       highlightsTitle: 'Highlights',
       highlights: ['Premium image for your company', 'Flexible and original format', 'Ideal setting for conversations', 'Memorable experience'],
       programTitle: 'Sample program',
@@ -2030,17 +1992,17 @@ const TOUR_CONTENT = {
       key: 'journee-en-mer',
       route: 'journee-en-mer',
       eyebrow: 'Salida emblemática',
-      title: 'Día en el mar a bordo de Alegria',
-      subtitle: 'Una experiencia privada de día completo o medio día en la Costa Azul.',
-      intro: 'Suba a bordo para una experiencia elegante y relajada: navegación, baño, fondeos tranquilos y tiempo para disfrutar.',
+      title: 'Día o medio día en el mar a bordo de Alegria',
+      subtitle: 'Una experiencia privada de día completo o medio día alrededor de Villeneuve-Loubet y la Costa Azul.',
+      intro: 'Suba a bordo para una experiencia elegante de día completo o medio día desde Villeneuve-Loubet: navegación, baño y fondeos cercanos como las islas de Lérins, la bahía de los Millonarios, Cap d’Antibes o Villefranche según las condiciones.',
       image: images.de1,
       duration: 'Día completo o medio día',
       guests: 'Hasta 12 pasajeros',
-      price: 'Desde 1.500 € / día*',
+      price: 'Desde 999 € + 300 € patrón',
       highlightsTitle: 'Puntos fuertes',
       highlights: ['Alquiler en casco desnudo*', 'Patrón independiente obligatorio', 'Programa flexible según la meteorología', 'Entorno premium para familia, pareja o amigos'],
       programTitle: 'Programa orientativo',
-      program: ['Embarque desde los muelles de honor', 'Navegación hacia un fondeo adecuado', 'Tiempo libre para bañarse y relajarse', 'Almuerzo a bordo o parada en tierra según el plan', 'Regreso al puerto'],
+      program: ['Embarque desde los muelles de honor', 'Navegación hacia un fondeo cercano: islas de Lérins, bahía de los Millonarios, Cap d’Antibes o Villefranche según las condiciones', 'Tiempo libre para bañarse y relajarse', 'Almuerzo a bordo o parada en tierra según el plan', 'Regreso al puerto'],
       includesTitle: 'Qué está incluido',
       includes: ['Alquiler privado en casco desnudo', 'Organización a medida', 'Tiempo para baño', 'Confort a bordo'],
       idealForTitle: 'Ideal para',
@@ -2058,7 +2020,7 @@ const TOUR_CONTENT = {
       image: images.sunset1,
       duration: 'Atardecer',
       guests: 'Hasta 12 pasajeros',
-      price: 'Desde 1.500 € / día*',
+      price: 'Desde 999 € + 300 € patrón',
       highlightsTitle: 'Puntos fuertes',
       highlights: ['Ambiente elegante y relajado', 'Luz ideal para fotos', 'Perfecto para un aperitivo en el mar', 'Experiencia privada'],
       programTitle: 'Programa orientativo',
@@ -2074,13 +2036,13 @@ const TOUR_CONTENT = {
       key: 'anniversaire',
       route: 'anniversaire',
       eyebrow: 'Salida festiva',
-      title: 'Cumpleaños a bordo de Alegria',
+      title: 'Fiesta privada a bordo de Alegria',
       subtitle: 'Una celebración en el mar en un entorno exclusivo y memorable.',
-      intro: 'Celebre un cumpleaños en un ambiente agradable, festivo o elegante según sus deseos, con un escenario único en la Costa Azul.',
+      intro: 'Celebre una fiesta privada en un ambiente agradable, festivo o elegante según sus deseos, con un escenario único en la Costa Azul.',
       image: images.party1,
       duration: 'Día completo',
       guests: 'Hasta 12 pasajeros',
-      price: 'Desde 1.500 € / día*',
+      price: 'Desde 999 € + 300 € patrón',
       highlightsTitle: 'Puntos fuertes',
       highlights: ['Formato personalizable', 'Recuerdos fotográficos únicos', 'Ambiente adaptado al grupo', 'Alquiler privado en casco desnudo'],
       programTitle: 'Programa orientativo',
@@ -2088,7 +2050,7 @@ const TOUR_CONTENT = {
       includesTitle: 'Qué está incluido',
       includes: ['Alquiler privado en casco desnudo', 'Patrón independiente obligatorio', 'Organización personalizada', 'Entorno exclusivo'],
       idealForTitle: 'Ideal para',
-      idealFor: ['Un cumpleaños con amigos', 'Una celebración familiar', 'Un momento festivo', 'Una sorpresa memorable'],
+      idealFor: ['Un fiesta privada con amigos', 'Una celebración familiar', 'Un momento festivo', 'Una sorpresa memorable'],
       cta: 'Preparar su salida',
       contactNote: 'Cuéntenos el estilo que busca y crearemos la mejor fórmula.'
     },
@@ -2102,7 +2064,7 @@ const TOUR_CONTENT = {
       image: images.business1,
       duration: 'Día completo o medio día',
       guests: 'Hasta 12 pasajeros',
-      price: 'Desde 1.500 € / día*',
+      price: 'Desde 999 € + 300 € patrón',
       highlightsTitle: 'Puntos fuertes',
       highlights: ['Imagen premium para su empresa', 'Formato flexible y original', 'Entorno propicio para conversar', 'Experiencia memorable'],
       programTitle: 'Programa orientativo',
@@ -2638,7 +2600,7 @@ HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_12__.__decorate)([(0,_angu
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ content.outingsPage.eyebrow }}</span>\n    <h1>{{ content.outingsPage.title }}</h1>\n    <p>{{ content.outingsPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container grid\">\n    <article class=\"outing-card\" *ngFor=\"let outing of content.outings\">\n      <a class=\"image-link\" [routerLink]=\"['/sorties', outing.slug]\" [attr.aria-label]=\"outing.title\">\n        <img [src]=\"outing.image\" [alt]=\"outing.title\" />\n      </a>\n\n      <div class=\"content-card\">\n        <div class=\"meta-top\">{{ outing.duration }} • {{ outing.guests }}</div>\n        <h2>{{ outing.title }}</h2>\n        <p>{{ outing.description }}</p>\n\n        <ul *ngIf=\"outing.highlights?.length\">\n          <li *ngFor=\"let point of outing.highlights\">{{ point }}</li>\n        </ul>\n\n        <a [routerLink]=\"['/sorties', outing.slug]\" class=\"btn\">{{ content.outingsPage.cta }}</a>\n      </div>\n    </article>\n  </div>\n</section>\n";
+module.exports = "<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ content.outingsPage.eyebrow }}</span>\n    <h1>{{ content.outingsPage.title }}</h1>\n    <p>{{ content.outingsPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container grid\">\n    <article class=\"outing-card\" *ngFor=\"let outing of content.outings\">\n      <img [src]=\"outing.image\" [alt]=\"outing.title\" />\n      <div class=\"content-card\">\n        <div class=\"meta-top\">{{ outing.duration }} • {{ outing.guests }}</div>\n        <h2>{{ outing.title }}</h2>\n        <p>{{ outing.description }}</p>\n        <ul>\n          <li *ngFor=\"let point of outing.highlights\">{{ point }}</li>\n        </ul>\n        <a [routerLink]=\"['/sorties', outing.slug]\" class=\"btn\">{{ content.outingsPage.cta }}</a>\n      </div>\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -2704,7 +2666,7 @@ const SAFETY_CONTENT = {
     }, {
       icon: '🔥',
       title: 'Incendie à bord',
-      items: ['Informez immédiatement le capitaine ou un membre de l’équipage.', 'Éloignez-vous calmement de la zone concernée et suivez les consignes de l’équipage.', 'Si demandé, regroupez-vous dans la zone indiquée par le capitaine.', 'N’utilisez un extincteur que sur instruction directe du capitaine ou d’un membre de l’équipage.', 'Ne retournez jamais chercher des effets personnels.']
+      items: ['Informez immédiatement le capitaine.', 'Éloignez-vous du feu, fermez hublots, capots et ouvertures, puis coupez l’alimentation électrique si demandé.', 'N’utilisez un extincteur que sur instruction du capitaine.']
     }, {
       icon: '🍳',
       title: 'Gaz à bord et réchaud',
@@ -2764,7 +2726,7 @@ const SAFETY_CONTENT = {
     }, {
       icon: '🔥',
       title: 'Fire on board',
-      items: ['Inform the captain or a crew member immediately.', 'Move calmly away from the affected area and follow crew instructions.', 'If instructed, gather in the area designated by the captain.', 'Only use a fire extinguisher if directly instructed by the captain or crew.', 'Never go back to retrieve personal belongings.']
+      items: ['Inform the captain immediately.', 'Move away from the fire, close hatches and windows, and cut electrical power if instructed.', 'Use a fire extinguisher only when instructed by the captain.']
     }, {
       icon: '🍳',
       title: 'Gas on board and gas stove',
@@ -2824,7 +2786,7 @@ const SAFETY_CONTENT = {
     }, {
       icon: '🔥',
       title: 'Fuego a bordo',
-      items: ['Informe inmediatamente al capitán o a un miembro de la tripulación.', 'Aléjese con calma de la zona afectada y siga las instrucciones de la tripulación.', 'Si se le indica, reúnase en la zona designada por el capitán.', 'Utilice un extintor únicamente bajo instrucción directa del capitán o de la tripulación.', 'Nunca vuelva a buscar objetos personales.']
+      items: ['Informe inmediatamente al capitán.', 'Aléjese del fuego, cierre escotillas y ventanas, y corte la electricidad si se le indica.', 'Utilice un extintor solo cuando el capitán lo indique.']
     }, {
       icon: '🍳',
       title: 'Gas a bordo y cocina de gas',

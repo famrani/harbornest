@@ -9,19 +9,14 @@
 <section class="section">
   <div class="container grid">
     <article class="outing-card" *ngFor="let outing of content.outings">
-      <a class="image-link" [routerLink]="['/sorties', outing.slug]" [attr.aria-label]="outing.title">
-        <img [src]="outing.image" [alt]="outing.title" />
-      </a>
-
+      <img [src]="outing.image" [alt]="outing.title" />
       <div class="content-card">
         <div class="meta-top">{{ outing.duration }} • {{ outing.guests }}</div>
         <h2>{{ outing.title }}</h2>
         <p>{{ outing.description }}</p>
-
-        <ul *ngIf="outing.highlights?.length">
+        <ul>
           <li *ngFor="let point of outing.highlights">{{ point }}</li>
         </ul>
-
         <a [routerLink]="['/sorties', outing.slug]" class="btn">{{ content.outingsPage.cta }}</a>
       </div>
     </article>

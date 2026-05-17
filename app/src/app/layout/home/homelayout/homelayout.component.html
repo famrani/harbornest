@@ -23,9 +23,32 @@
       ×
     </button>
 
+    <button
+      class="image-modal__nav image-modal__nav--previous"
+      type="button"
+      aria-label="Previous image"
+      *ngIf="zoomGallery.length > 1"
+      (click)="showPreviousImage(); $event.stopPropagation()"
+    >
+      ‹
+    </button>
+
     <div class="image-modal__content" (click)="$event.stopPropagation()">
       <img [src]="zoomedImageSrc" [alt]="zoomedImageAlt" />
       <p *ngIf="zoomedImageAlt">{{ zoomedImageAlt }}</p>
+      <span class="image-modal__counter" *ngIf="zoomGallery.length > 1">
+        {{ zoomIndex + 1 }} / {{ zoomGallery.length }}
+      </span>
     </div>
+
+    <button
+      class="image-modal__nav image-modal__nav--next"
+      type="button"
+      aria-label="Next image"
+      *ngIf="zoomGallery.length > 1"
+      (click)="showNextImage(); $event.stopPropagation()"
+    >
+      ›
+    </button>
   </div>
 </div>

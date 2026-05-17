@@ -52,11 +52,9 @@ const SAFETY_CONTENT: Record<SiteLanguage, SafetyContent> = {
         icon: '🔥',
         title: 'Incendie à bord',
         items: [
-          'Informez immédiatement le capitaine ou un membre de l’équipage.',
-          'Éloignez-vous calmement de la zone concernée et suivez les consignes de l’équipage.',
-          'Si demandé, regroupez-vous dans la zone indiquée par le capitaine.',
-          'N’utilisez un extincteur que sur instruction directe du capitaine ou d’un membre de l’équipage.',
-          'Ne retournez jamais chercher des effets personnels.'
+          'Informez immédiatement le capitaine.',
+          'Éloignez-vous du feu, fermez hublots, capots et ouvertures, puis coupez l’alimentation électrique si demandé.',
+          'N’utilisez un extincteur que sur instruction du capitaine.'
         ]
       },
       {
@@ -188,11 +186,10 @@ const SAFETY_CONTENT: Record<SiteLanguage, SafetyContent> = {
         icon: '🔥',
         title: 'Fire on board',
         items: [
-          'Inform the captain or a crew member immediately.',
-          'Move calmly away from the affected area and follow crew instructions.',
-          'If instructed, gather in the area designated by the captain.',
-          'Only use a fire extinguisher if directly instructed by the captain or crew.',
-          'Never go back to retrieve personal belongings.']
+          'Inform the captain immediately.',
+          'Move away from the fire, close hatches and windows, and cut electrical power if instructed.',
+          'Use a fire extinguisher only when instructed by the captain.'
+        ]
       },
       {
         icon: '🍳',
@@ -323,11 +320,10 @@ const SAFETY_CONTENT: Record<SiteLanguage, SafetyContent> = {
         icon: '🔥',
         title: 'Fuego a bordo',
         items: [
-          'Informe inmediatamente al capitán o a un miembro de la tripulación.',
-          'Aléjese con calma de la zona afectada y siga las instrucciones de la tripulación.',
-          'Si se le indica, reúnase en la zona designada por el capitán.',
-          'Utilice un extintor únicamente bajo instrucción directa del capitán o de la tripulación.',
-          'Nunca vuelva a buscar objetos personales.']
+          'Informe inmediatamente al capitán.',
+          'Aléjese del fuego, cierre escotillas y ventanas, y corte la electricidad si se le indica.',
+          'Utilice un extintor solo cuando el capitán lo indique.'
+        ]
       },
       {
         icon: '🍳',
@@ -436,7 +432,7 @@ export class SafetyInstructionsComponent implements OnInit, OnDestroy {
   openIndex = 0;
   private languageSub?: Subscription;
 
-  constructor(private languageService: LanguageService) { }
+  constructor(private languageService: LanguageService) {}
 
   ngOnInit(): void {
     this.languageSub = this.languageService.language$.subscribe((language) => {

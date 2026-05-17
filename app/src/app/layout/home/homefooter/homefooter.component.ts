@@ -34,6 +34,17 @@ export class HomefooterComponent implements OnInit, OnDestroy {
     return 'Conditions générales';
   }
 
+
+  get safetyLabel(): string {
+    if (this.currentLanguage === 'en') {
+      return 'Safety instructions';
+    }
+    if (this.currentLanguage === 'es') {
+      return 'Instrucciones de seguridad';
+    }
+    return 'Consignes de sécurité';
+  }
+
   ngOnDestroy(): void {
     this.languageSub?.unsubscribe();
   }
