@@ -1,9 +1,8 @@
-
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { LanguageService } from '../../../services/language.service';
-import { SITE_CONTENT } from '../../site-content';
+import { LanguageService, SiteLanguage } from '../../../services/language.service';
 import { TourPage, getTourContent } from '../tour-content';
+import { DynamicOuting, OutingsDataService } from '../../outings-data.service';
 
 @Component({
   selector: 'app-full-day',
@@ -11,18 +10,39 @@ import { TourPage, getTourContent } from '../tour-content';
   styleUrls: ['./full-day.component.scss'],
 })
 export class FullDayComponent implements OnInit, OnDestroy {
-  tour: TourPage = getTourContent('fr', 'journee-en-mer');
+  tour: TourPage = getTourContent('fr', 'journee-en-mer' as any);
+  private currentLanguage: SiteLanguage = 'fr';
+  private dynamicOuting?: DynamicOuting;
   private languageSub?: Subscription;
 
-  constructor(private languageService: LanguageService) {}
+  constructor(
+    private languageService: LanguageService,
+    private outingsData: OutingsDataService,
+  ) {}
 
   ngOnInit(): void {
     this.languageSub = this.languageService.language$.subscribe((language) => {
-      this.tour = getTourContent(language, 'journee-en-mer');
+      this.currentLanguage = language;
+      this.applyTour();
     });
+    this.loadDynamicTour();
   }
 
   ngOnDestroy(): void {
     this.languageSub?.unsubscribe();
+  }
+
+  private async loadDynamicTour(): Promise<void> {
+    try {
+      this.dynamicOuting = await this.outingsData.getOutingBySlug('journee-en-mer');
+    } catch {
+      this.dynamicOuting = undefined;
+    }
+    this.applyTour();
+  }
+
+  private applyTour(): void {
+    const fallback = getTourContent(this.currentLanguage, 'journee-en-mer' as any);
+    this.tour = this.outingsData.toTourPage(this.dynamicOuting, this.currentLanguage, fallback);
   }
 }

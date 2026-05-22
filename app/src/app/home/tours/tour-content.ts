@@ -4,6 +4,7 @@ export type TourKey =
   | 'journee-en-mer'
   | 'coucher-de-soleil'
   | 'anniversaire'
+  | 'party'
   | 'sortie-entreprise';
 
 export interface TourPage {
@@ -66,6 +67,7 @@ const TOUR_GALLERIES: Record<TourKey, string[]> = {
   'journee-en-mer': [images.de1, images.de2, images.de3, images.de4, images.de5, images.de6],
   'coucher-de-soleil': [images.sunset1, images.sunset2, images.sunset3],
   'anniversaire': [images.party1, images.party2, images.party3, images.party4, images.party5, images.party6, images.party7, images.party8, images.party9, images.party10, images.party11],
+  'party': [images.party1, images.party2, images.party3, images.party4, images.party5, images.party6, images.party7, images.party8, images.party9, images.party10, images.party11],
   'sortie-entreprise': [images.business1, images.business2],
 };
 
@@ -102,7 +104,7 @@ const SERVICE_BLOCKS: Record<SiteLanguage, { coreTitle: string; core: string[]; 
   },
 };
 
-export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
+export const TOUR_CONTENT: Record<SiteLanguage, any> = {
   fr: {
     'journee-en-mer': {
       key: 'journee-en-mer', route: 'journee-en-mer', eyebrow: 'Sortie signature', title: 'Journée en mer à bord d’Alegria', subtitle: 'Une journée ou demi-journée privative pour profiter de la Côte d’Azur.', intro: 'Embarquez pour une journée ou demi-journée élégante au départ de Villeneuve-Loubet : navigation, baignade et mouillages proches comme les îles de Lérins, la baie des Milliardaires, le Cap d’Antibes ou Villefranche selon la météo.', image: images.de1, duration: 'Journée ou demi-journée', guests: '12 passagers max', price: 'À partir de 999 € + 300 € skipper', highlightsTitle: 'Les points forts', highlights: ['Location en coque nue*', 'Skipper indépendant obligatoire', 'Programme adaptable selon la météo', 'Cadre premium pour famille, couple ou amis'], programTitle: 'Exemple de programme', program: ['Embarquement sur les quais d’honneur', 'Navigation vers un mouillage proche : îles de Lérins, baie des Milliardaires, Cap d’Antibes ou Villefranche selon les conditions', 'Temps libre pour baignade et détente', 'Déjeuner à bord ou escale selon votre projet', 'Retour au port'], includesTitle: 'Ce qui est prévu', includes: ['Bateau privatisé en coque nue', 'Organisation sur mesure', 'Temps de baignade', 'Confort à bord'], idealForTitle: 'Idéal pour', idealFor: ['Une journée en famille', 'Une sortie entre amis', 'Un moment en couple', 'Une découverte de la Côte d’Azur'], cta: 'Voir la disponibilité', contactNote: 'Indiquez votre date, le nombre de personnes et l’ambiance souhaitée.'
@@ -130,6 +132,19 @@ export const TOUR_CONTENT: Record<SiteLanguage, Record<TourKey, TourPage>> = {
     'sortie-entreprise': { key: 'sortie-entreprise', route: 'sortie-entreprise', eyebrow: 'Corporate', title: 'Evento de empresa a bordo de Alegria', subtitle: 'Un entorno único para equipos, clientes o socios.', intro: 'Alegria ofrece un marco excepcional para una experiencia profesional de calidad: cohesión, atención a clientes o una pausa premium.', image: images.business1, duration: 'Día completo o medio día', guests: 'Hasta 12 pasajeros', price: 'Desde 999 € + 300 € patrón', highlightsTitle: 'Puntos fuertes', highlights: ['Imagen premium para su empresa', 'Formato flexible y original', 'Entorno propicio para conversar', 'Experiencia memorable'], programTitle: 'Programa orientativo', program: ['Recepción del grupo en el puerto', 'Navegación o fondeo según el formato elegido', 'Tiempo para conversar, relajarse o recibir clientes', 'Cóctel, opciones o servicios bajo petición', 'Regreso al puerto'], includesTitle: 'Qué está incluido', includes: ['Alquiler privado en casco desnudo', 'Patrón independiente obligatorio', 'Preparación directa con usted', 'Programa adaptable'], idealForTitle: 'Ideal para', idealFor: ['Un comité reducido', 'Una salida incentive', 'Una reunión con clientes', 'Un momento de cohesión de equipo'], cta: 'Recibir una propuesta', contactNote: 'Podemos ayudarle a diseñar un formato sobrio, premium y eficaz.' },
   },
 };
+
+// Backward compatibility: older static content used the `anniversaire` key for the private party page.
+// The new Firebase structure uses `party`, so we expose both keys in the static fallback.
+(Object.keys(TOUR_CONTENT) as SiteLanguage[]).forEach((language) => {
+  if (!TOUR_CONTENT[language].party && TOUR_CONTENT[language].anniversaire) {
+    TOUR_CONTENT[language].party = {
+      ...TOUR_CONTENT[language].anniversaire,
+      key: 'party',
+      route: 'party',
+    };
+  }
+});
+
 
 (Object.keys(TOUR_CONTENT) as SiteLanguage[]).forEach((language) => {
   (Object.keys(TOUR_CONTENT[language]) as TourKey[]).forEach((key) => {

@@ -1,0 +1,209 @@
+<section class="admin-outings-page">
+  <div class="container">
+    <div class="page-head">
+      <span class="eyebrow">{{ t('eyebrow') }}</span>
+      <h1>{{ t('title') }}</h1>
+      <p>{{ t('intro') }}</p>
+    </div>
+
+    <div class="admin-warning" *ngIf="!isAdmin">
+      {{ t('adminOnly') }}
+    </div>
+
+    <ng-container *ngIf="isAdmin">
+      <div class="mode-toolbar">
+        <button type="button" class="btn btn-secondary" [class.active]="mode === 'list'" (click)="showList()">
+          {{ t('listOutings') }}
+        </button>
+        <button type="button" class="btn btn-primary" (click)="startCreate()">
+          {{ t('newOuting') }}
+        </button>
+      </div>
+
+      <div class="outings-list-card" *ngIf="mode === 'list'">
+        <div class="list-head">
+          <h2>{{ t('allOutings') }}</h2>
+          <button type="button" class="btn btn-primary" (click)="startCreate()">{{ t('newOuting') }}</button>
+        </div>
+
+        <p class="empty" *ngIf="loading">{{ t('loading') }}</p>
+        <p class="empty" *ngIf="!loading && outings.length === 0">{{ t('empty') }}</p>
+        <div class="notice error" *ngIf="closeError">{{ closeError }}</div>
+
+        <article class="outing-row compact-row" *ngFor="let outing of outings">
+          <div class="outing-summary">
+            <div>
+              <h3>{{ outing.outingType }}</h3>
+              <p>{{ formatOutingDate(outing) }}</p>
+              <p>{{ outing.destination }} · {{ outing.passengers }} {{ t('passengers') }}</p>
+            </div>
+            <div class="outing-actions">
+              <span class="status" [class.closed]="outing.status === 'closed'">
+                {{ outing.status === 'closed' ? t('closed') : t('open') }}
+              </span>
+              <button type="button" class="detail-link" (click)="startEdit(outing)">{{ t('edit') }}</button>
+              <button type="button" class="detail-link" *ngIf="outing.status !== 'closed'" (click)="startClose(outing)">{{ t('close') }}</button>
+              <button type="button" class="detail-link danger" (click)="deleteOuting(outing)">{{ t('delete') }}</button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="outing-form-card" *ngIf="mode === 'create' || mode === 'edit'">
+        <div class="form-title-row">
+          <h2>{{ mode === 'create' ? t('createTitle') : t('editTitle') }}</h2>
+          <button type="button" class="btn btn-secondary" (click)="showList()">{{ t('backToList') }}</button>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            {{ t('outingType') }} *
+            <select [(ngModel)]="form.outingType">
+              <option *ngFor="let option of outingTypes[currentLanguage]" [value]="option">{{ option }}</option>
+            </select>
+          </label>
+
+          <label>
+            {{ t('passengers') }} *
+            <input type="number" min="1" max="12" [(ngModel)]="form.passengers" />
+          </label>
+
+          <label>
+            {{ t('departureDate') }} *
+            <input type="date" [(ngModel)]="form.departureDate" />
+          </label>
+
+          <label>
+            {{ t('departureTime') }} *
+            <input type="time" [(ngModel)]="form.departureTime" />
+          </label>
+
+          <label>
+            {{ t('arrivalDate') }} *
+            <input type="date" [(ngModel)]="form.arrivalDate" />
+          </label>
+
+          <label>
+            {{ t('arrivalTime') }} *
+            <input type="time" [(ngModel)]="form.arrivalTime" />
+          </label>
+
+          <label>
+            {{ t('portEngine') }}
+            <input type="number" min="0" step="0.1" [(ngModel)]="form.portEngineHoursDeparture" />
+          </label>
+
+          <label>
+            {{ t('starboardEngine') }}
+            <input type="number" min="0" step="0.1" [(ngModel)]="form.starboardEngineHoursDeparture" />
+          </label>
+
+          <label>
+            {{ t('wind') }} ({{ t('knots') }})
+            <input type="number" min="0" step="1" [(ngModel)]="form.actualWindSpeed" />
+          </label>
+
+          <label class="wide">
+            {{ t('destination') }} *
+            <input type="text" [(ngModel)]="form.destination" placeholder="Lérins, Baie des Milliardaires, Cap d’Antibes..." />
+          </label>
+
+          <label class="wide">
+            {{ t('comments') }}
+            <textarea rows="4" [(ngModel)]="form.comments"></textarea>
+          </label>
+        </div>
+
+        <div class="checklist-block">
+          <div class="checklist-head">
+            <h2>{{ t('departureChecklist') }}</h2>
+            <span [class.complete]="departureChecklistComplete">
+              {{ countDoneDepartureItems() }} / {{ countAllDepartureItems() }}
+            </span>
+          </div>
+
+          <div class="checklist-group" *ngFor="let group of departureChecklistGroups">
+            <div class="checklist-subhead">
+              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>
+              <span [class.complete]="countDoneGroup(group) === group.items.length">
+                {{ countDoneGroup(group) }} / {{ group.items.length }}
+              </span>
+            </div>
+
+            <div class="checklist-grid">
+              <label class="check-item" *ngFor="let item of group.items" [class.done]="item.done">
+                <input type="checkbox" [checked]="item.done" (change)="toggleChecklist(item)" />
+                <span class="fake-radio"></span>
+                <span>
+                  {{ item.label[currentLanguage] || item.label.fr }}
+                  <small class="check-meta" *ngIf="item.doneAt">{{ formatChecklistMeta(item) }}</small>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-primary" [disabled]="saving || !departureChecklistComplete" (click)="mode === 'create' ? createOuting() : updateOuting()">
+            {{ saving ? t('saving') : (mode === 'create' ? t('create') : t('saveChanges')) }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="showList()">{{ t('cancel') }}</button>
+        </div>
+
+        <div class="notice success" *ngIf="saved">{{ t('saved') }}</div>
+        <div class="notice error" *ngIf="error">{{ error }}</div>
+      </div>
+
+      <div class="outing-form-card" *ngIf="mode === 'close' && selectedOuting">
+        <div class="form-title-row">
+          <div>
+            <h2>{{ t('closeTitle') }}</h2>
+            <p>{{ selectedOuting.outingType }} · {{ formatOutingDate(selectedOuting) }}</p>
+          </div>
+          <button type="button" class="btn btn-secondary" (click)="showList()">{{ t('backToList') }}</button>
+        </div>
+
+        <div class="checklist-block">
+          <div class="checklist-head">
+            <h2>{{ t('arrivalChecklist') }}</h2>
+            <span [class.complete]="arrivalChecklistComplete(selectedOuting.outingId)">
+              {{ countDoneArrivalItems(selectedOuting.outingId) }} / {{ countArrivalItems(selectedOuting.outingId) }}
+            </span>
+          </div>
+
+          <div class="checklist-group" *ngFor="let group of arrivalChecklistGroupsByOuting[selectedOuting.outingId]">
+            <div class="checklist-subhead">
+              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>
+              <span [class.complete]="countDoneGroup(group) === group.items.length">
+                {{ countDoneGroup(group) }} / {{ group.items.length }}
+              </span>
+            </div>
+            <div class="checklist-grid">
+              <label class="check-item" *ngFor="let item of group.items" [class.done]="item.done">
+                <input type="checkbox" [checked]="item.done" (change)="toggleChecklist(item)" />
+                <span class="fake-radio"></span>
+                <span>
+                  {{ item.label[currentLanguage] || item.label.fr }}
+                  <small class="check-meta" *ngIf="item.doneAt">{{ formatChecklistMeta(item) }}</small>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <label class="closure-comments">
+          {{ t('closureComments') }}
+          <textarea rows="3" [(ngModel)]="closureComments[selectedOuting.outingId]"></textarea>
+        </label>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-primary" [disabled]="closingId === selectedOuting.outingId || !arrivalChecklistComplete(selectedOuting.outingId)" (click)="closeOuting(selectedOuting)">
+            {{ closingId === selectedOuting.outingId ? t('closing') : t('close') }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="showList()">{{ t('cancel') }}</button>
+        </div>
+        <div class="notice error" *ngIf="closeError">{{ closeError }}</div>
+      </div>
+    </ng-container>
+  </div>
+</section>

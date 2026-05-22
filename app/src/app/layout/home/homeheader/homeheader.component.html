@@ -1,7 +1,8 @@
 <header class="site-header">
   <div class="container header-bar">
     <a class="brand" routerLink="/" (click)="closeMenu()">
-      <img class="brand-logo" src="assets/img/logo-Alegria.png" alt="Alegria" /> <span class="brand-text">
+      <img class="brand-logo" src="assets/img/logo-Alegria.png" alt="Alegria" />
+      <span class="brand-text">
         <strong>{{ content.brand }}</strong>
         <small>{{ content.brandTagline }}</small>
       </span>
@@ -12,12 +13,39 @@
     </button>
 
     <nav class="main-nav" [class.open]="menuOpen">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">{{ content.nav.home }}</a>
-      <a routerLink="/sorties" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.outings }}</a>
-      <a routerLink="/bateau" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.boat }}</a>
-      <a routerLink="/galerie" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.gallery }}</a>
+      <details class="nav-dropdown">
+        <summary>{{ content.nav.outings }}</summary>
+        <div class="dropdown-panel">
+          <a routerLink="/sorties" routerLinkActive="active" (click)="closeMenu()">{{ allOutingsLabel }}</a>
+          <a routerLink="/sorties/journee-en-mer" routerLinkActive="active" (click)="closeMenu()">{{ dayAtSeaLabel }}</a>
+          <a routerLink="/sorties/coucher-de-soleil" routerLinkActive="active" (click)="closeMenu()">{{ sunsetLabel }}</a>
+          <a routerLink="/sorties/anniversaire" routerLinkActive="active" (click)="closeMenu()">{{ partyLabel }}</a>
+          <a routerLink="/sorties/sortie-entreprise" routerLinkActive="active" (click)="closeMenu()">{{ corporateLabel }}</a>
+        </div>
+      </details>
+
+      <details class="nav-dropdown">
+        <summary>{{ content.nav.boat }}</summary>
+        <div class="dropdown-panel">
+          <a routerLink="/bateau" routerLinkActive="active" (click)="closeMenu()">{{ boatPresentationLabel }}</a>
+          <a routerLink="/galerie" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.gallery }}</a>
+          <a routerLink="/crew" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.crew }}</a>
+          <a routerLink="/checklist" routerLinkActive="active" (click)="closeMenu()">{{ checklistLabel }}</a>
+          <a routerLink="/safety" routerLinkActive="active" (click)="closeMenu()">{{ safetyLabel }}</a>
+        </div>
+      </details>
+
+      <details class="nav-dropdown">
+        <summary>{{ practicalInfoLabel }}</summary>
+        <div class="dropdown-panel">
+          <a routerLink="/how-it-works" routerLinkActive="active" (click)="closeMenu()">{{ guestJourneyLabel }}</a>
+          <a routerLink="/faq" routerLinkActive="active" (click)="closeMenu()">{{ faqLabel }}</a>
+          <a routerLink="/terms" routerLinkActive="active" (click)="closeMenu()">{{ termsLabel }}</a>
+          <a routerLink="/deposit" routerLinkActive="active" (click)="closeMenu()">{{ depositLabel }}</a>
+        </div>
+      </details>
+
       <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.contact }}</a>
-      <a routerLink="/crew" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.crew }}</a>
 
       <div class="language-switcher">
         <select [value]="currentLanguage" (change)="changeLanguage($any($event.target).value)" aria-label="Language selector">
@@ -27,7 +55,25 @@
         </select>
       </div>
 
-      <a class="cta-link" routerLink="/contact" (click)="closeMenu()">{{ content.nav.quote }}</a>
+      <details class="nav-dropdown account-dropdown">
+        <summary>{{ accountSummaryLabel }}</summary>
+
+        <div class="dropdown-panel dropdown-panel-right" *ngIf="!isLoggedIn">
+          <a routerLink="/login" routerLinkActive="active" (click)="closeMenu()">{{ loginLabel }}</a>
+          <a routerLink="/signup" routerLinkActive="active" (click)="closeMenu()">{{ signupLabel }}</a>
+          <a routerLink="/deposit" [queryParams]="{ guest: 'true' }" (click)="closeMenu()">{{ guestLabel }}</a>
+        </div>
+
+        <div class="dropdown-panel dropdown-panel-right" *ngIf="isLoggedIn">
+          <a routerLink="/my-bookings" routerLinkActive="active" (click)="closeMenu()">{{ myBookingsLabel }}</a>
+          <a routerLink="/my-payments" routerLinkActive="active" (click)="closeMenu()">{{ myPaymentsLabel }}</a>
+          <a routerLink="/my-profile" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
+          <a *ngIf="!isAdmin" routerLink="/my-feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ myFeedbacksLabel }}</a>
+          <a *ngIf="isAdmin" routerLink="/admin/feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ adminFeedbacksLabel }}</a>
+          <a *ngIf="isAdmin" routerLink="/admin/outings" routerLinkActive="active" (click)="closeMenu()">{{ adminOutingsLabel }}</a>
+          <button class="dropdown-action" type="button" (click)="logout()">{{ logoutLabel }}</button>
+        </div>
+      </details>
     </nav>
   </div>
 </header>

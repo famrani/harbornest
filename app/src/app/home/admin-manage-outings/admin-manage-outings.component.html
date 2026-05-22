@@ -1,0 +1,57 @@
+<section class="admin-page">
+  <div class="container">
+    <div class="admin-head">
+      <span class="eyebrow">Admin</span>
+      <h1>{{ t('title') }}</h1>
+      <p>{{ t('intro') }}</p>
+    </div>
+
+    <p class="alert error" *ngIf="error">{{ error }}</p>
+    <p class="alert success" *ngIf="message">{{ message }}</p>
+
+    <div class="admin-grid" *ngIf="!loading">
+      <aside class="outing-list">
+        <button type="button" *ngFor="let outing of outings" [class.active]="selected?.slug === outing.slug" (click)="select(outing)">
+          <strong>{{ outing[currentLanguage]?.title || outing.fr.title }}</strong>
+          <small>{{ outing.slug }}</small>
+        </button>
+      </aside>
+
+      <form class="editor" *ngIf="selected" (ngSubmit)="save()">
+        <div class="editor-row compact">
+          <label><input type="checkbox" [(ngModel)]="selected.active" name="active" /> {{ t('active') }}</label>
+        </div>
+
+        <div class="editor-row">
+          <label>{{ t('image') }}</label>
+          <input type="text" [(ngModel)]="selected.image" name="image" />
+        </div>
+
+        <div class="editor-row">
+          <label>{{ t('price') }}</label>
+          <input type="number" [(ngModel)]="selected.priceFrom" name="priceFrom" />
+        </div>
+
+        <div class="lang-block" *ngFor="let lang of ['fr', 'en', 'es']">
+          <h2>{{ lang | uppercase }}</h2>
+          <div class="editor-row"><label>Title</label><input type="text" [(ngModel)]="selected[lang].title" name="title-{{lang}}" /></div>
+          <div class="editor-row"><label>{{ t('duration') }}</label><input type="text" [(ngModel)]="selected[lang].duration" name="duration-{{lang}}" /></div>
+          <div class="editor-row"><label>{{ t('guests') }}</label><input type="text" [(ngModel)]="selected[lang].guests" name="guests-{{lang}}" /></div>
+          <div class="editor-row"><label>Price label</label><input type="text" [(ngModel)]="selected[lang].priceLabel" name="priceLabel-{{lang}}" /></div>
+          <div class="editor-row"><label>{{ t('description') }}</label><textarea rows="4" [(ngModel)]="selected[lang].description" name="description-{{lang}}"></textarea></div>
+
+          <div class="editor-row">
+            <label>{{ t('highlights') }}</label>
+            <div class="highlight-row" *ngFor="let item of selected[lang].highlights; let i = index">
+              <input type="text" [(ngModel)]="selected[lang].highlights![i]" name="highlight-{{lang}}-{{i}}" />
+              <button type="button" class="small-danger" (click)="removeHighlight(lang, i)">×</button>
+            </div>
+            <button type="button" class="secondary" (click)="addHighlight(lang)">+ Add</button>
+          </div>
+        </div>
+
+        <button type="submit" class="primary" [disabled]="saving">{{ saving ? t('saving') : t('save') }}</button>
+      </form>
+    </div>
+  </div>
+</section>

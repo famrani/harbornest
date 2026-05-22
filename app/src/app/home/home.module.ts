@@ -17,6 +17,17 @@ import { EvjfEvgComponent } from './tours/evjf-evg/evjf-evg.component';
 import { BusinessOutingComponent } from './tours/business-outing/business-outing.component';
 import { TermsComponent } from './terms/terms.component';
 import { SafetyInstructionsComponent } from './safety-instructions/safety-instructions.component';
+import { DepositComponent } from './deposit/deposit.component';
+import { ChecklistComponent } from './checklist/checklist.component';
+import { AccountSummaryComponent } from './account-summary/account-summary.component';
+import { MyProfileComponent } from './my-profile/my-profile.component';
+import { MyFeedbacksComponent } from './my-feedbacks/my-feedbacks.component';
+import { AdminFeedbacksComponent } from './admin-feedbacks/admin-feedbacks.component';
+import { AdminOutingsComponent } from './admin-outings/admin-outings.component';
+import { AdminOutingDetailComponent } from './admin-outing-detail/admin-outing-detail.component';
+import { AdminManageOutingsComponent } from './admin-manage-outings/admin-manage-outings.component';
+import { GuestFaqComponent } from './guest-faq/guest-faq.component';
+import { GuestJourneyComponent } from './guest-journey/guest-journey.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +43,17 @@ import { SafetyInstructionsComponent } from './safety-instructions/safety-instru
     BusinessOutingComponent,
     TermsComponent,
     SafetyInstructionsComponent,
+    DepositComponent,
+    ChecklistComponent,
+    AccountSummaryComponent,
+    MyProfileComponent,
+    MyFeedbacksComponent,
+    AdminFeedbacksComponent,
+    AdminOutingsComponent,
+    AdminOutingDetailComponent,
+    AdminManageOutingsComponent,
+    GuestFaqComponent,
+    GuestJourneyComponent,
   ],
   imports: [
     CommonModule,

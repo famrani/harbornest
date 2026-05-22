@@ -1,0 +1,43 @@
+<section class="profile-page">
+  <div class="container profile-card">
+    <span class="eyebrow">{{ t('eyebrow') }}</span>
+    <h1>{{ t('title') }}</h1>
+    <p class="intro">{{ t('intro') }}</p>
+
+    <form class="profile-form" (ngSubmit)="saveProfile()">
+      <label>
+        <span>{{ t('firstname') }}</span>
+        <input type="text" name="firstname" [(ngModel)]="profile.firstname" />
+      </label>
+
+      <label>
+        <span>{{ t('lastname') }}</span>
+        <input type="text" name="lastname" [(ngModel)]="profile.lastname" />
+      </label>
+
+      <label>
+        <span>{{ t('phone') }}</span>
+        <input type="tel" name="phone" [(ngModel)]="profile.phone" />
+      </label>
+
+      <label>
+        <span>{{ t('email') }}</span>
+        <input type="email" name="email" [(ngModel)]="profile.email" />
+      </label>
+
+      <label class="full">
+        <span>{{ t('address') }}</span>
+        <textarea name="address" rows="3" [(ngModel)]="profile.address"></textarea>
+      </label>
+
+      <div class="form-actions full">
+        <button class="btn btn-primary" type="submit" [disabled]="loading">
+          {{ loading ? t('saving') : t('save') }}
+        </button>
+      </div>
+
+      <p class="success full" *ngIf="saved">{{ t('saved') }}</p>
+      <p class="error full" *ngIf="error">{{ error }}</p>
+    </form>
+  </div>
+</section>

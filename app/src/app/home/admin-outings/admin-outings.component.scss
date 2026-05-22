@@ -1,0 +1,430 @@
+.admin-outings-page {
+  min-height: 70vh;
+  padding: 72px 0;
+  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 58%);
+}
+
+.container {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.page-head {
+  max-width: 820px;
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-family: 'Raleway', Arial, sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #0b6e8f;
+  font-weight: 700;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: #08263a;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.05;
+  margin-bottom: 14px;
+}
+
+p, label, input, select, textarea, button, span {
+  font-family: 'Lato', Arial, sans-serif;
+}
+
+.page-head p {
+  color: #475569;
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+.admin-warning,
+.outing-form-card,
+.outings-list-card {
+  background: #fff;
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow: 0 22px 55px rgba(8, 38, 58, 0.12);
+  border: 1px solid rgba(8, 38, 58, 0.08);
+}
+
+.admin-warning {
+  color: #9a4d08;
+  background: rgba(242, 140, 40, 0.12);
+  font-weight: 700;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+  color: #08263a;
+  font-weight: 700;
+}
+
+label.wide {
+  grid-column: span 3;
+}
+
+input, select, textarea {
+  width: 100%;
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 14px;
+  padding: 0.85rem 0.95rem;
+  font-size: 1rem;
+  color: #08263a;
+  background: #fff;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #0b6e8f;
+  box-shadow: 0 0 0 4px rgba(11, 110, 143, 0.12);
+}
+
+.checklist-block {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(8, 38, 58, 0.1);
+}
+
+.checklist-head,
+.outing-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.checklist-head span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(11, 110, 143, 0.1);
+  color: #0b6e8f;
+  font-weight: 800;
+}
+
+.checklist-head span.complete {
+  background: rgba(16, 185, 129, 0.14);
+  color: #047857;
+}
+
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.checklist-grid.compact {
+  grid-template-columns: 1fr;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(8, 38, 58, 0.12);
+  border-radius: 16px;
+  cursor: pointer;
+  background: #fff;
+  transition: 0.2s ease;
+}
+
+.check-item:hover {
+  background: rgba(11, 110, 143, 0.05);
+}
+
+.check-item.done {
+  border-color: rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.06);
+}
+
+.check-item input {
+  display: none;
+}
+
+.fake-radio {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #0b6e8f;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.check-item input:checked + .fake-radio::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: #f28c28;
+}
+
+.form-actions {
+  margin-top: 26px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.9rem 1.25rem;
+  font-family: 'Raleway', Arial, sans-serif;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #f28c28;
+  color: #fff;
+  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);
+}
+
+.btn-secondary {
+  background: #e8f4f7;
+  color: #08263a;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.notice {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-weight: 700;
+}
+
+.notice.success {
+  color: #047857;
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.notice.error {
+  color: #b42318;
+  background: rgba(244, 63, 94, 0.1);
+}
+
+.outings-list-card {
+  margin-top: 28px;
+}
+
+.empty {
+  color: #64748b;
+}
+
+.outing-row {
+  margin-top: 18px;
+  padding: 20px;
+  border: 1px solid rgba(8, 38, 58, 0.1);
+  border-radius: 22px;
+}
+
+.outing-summary h3 {
+  font-size: 1.35rem;
+  margin-bottom: 6px;
+}
+
+.outing-summary p {
+  margin: 2px 0;
+  color: #64748b;
+}
+
+.status {
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(242, 140, 40, 0.13);
+  color: #9a4d08;
+  font-weight: 800;
+}
+
+.status.closed {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+}
+
+.closure {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px dashed rgba(8, 38, 58, 0.18);
+}
+
+.closure-comments {
+  margin: 18px 0;
+}
+
+@media (max-width: 820px) {
+  .admin-outings-page {
+    padding: 44px 0;
+  }
+
+  .outing-form-card,
+  .outings-list-card {
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .form-grid,
+  .checklist-grid {
+    grid-template-columns: 1fr;
+  }
+
+  label.wide {
+    grid-column: span 1;
+  }
+
+  .checklist-head,
+  .outing-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .form-actions,
+  .btn {
+    width: 100%;
+  }
+}
+
+.checklist-group {
+  margin-top: 22px;
+  padding: 18px;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  border-radius: 22px;
+  background: rgba(251, 248, 242, 0.65);
+}
+
+.checklist-subhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.checklist-subhead h3 {
+  font-size: 1.18rem;
+}
+
+.checklist-subhead span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 62px;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(11, 110, 143, 0.1);
+  color: #0b6e8f;
+  font-weight: 800;
+}
+
+.checklist-subhead span.complete {
+  background: rgba(16, 185, 129, 0.14);
+  color: #047857;
+}
+
+@media (max-width: 768px) {
+  .checklist-subhead {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .checklist-group {
+    padding: 14px;
+  }
+}
+
+.outing-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+.detail-link { color: var(--sun-orange, #f59e0b); font-family: 'Raleway', sans-serif; font-weight: 800; text-decoration: none; }
+.detail-link:hover { text-decoration: underline; }
+.check-meta { display:block; margin-top:4px; color:#64748b; font-size:.78rem; font-family:'Lato', sans-serif; }
+
+.detail-link.danger { border: none; background: transparent; color: #b91c1c; cursor: pointer; padding: 0; }
+.detail-link.danger:hover { text-decoration: underline; }
+.checklist-subhead h4 { margin: 0; font-size: 1.02rem; color: #08263a; }
+
+.mode-toolbar,
+.list-head,
+.form-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.mode-toolbar {
+  justify-content: flex-start;
+}
+
+.mode-toolbar .active {
+  outline: 3px solid rgba(242, 140, 40, 0.22);
+}
+
+.outing-form-card {
+  margin-top: 28px;
+}
+
+.form-title-row p {
+  margin: 6px 0 0;
+  color: #64748b;
+}
+
+.form-actions {
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.compact-row .outing-summary {
+  margin-bottom: 0;
+}
+
+button.detail-link {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+@media (max-width: 820px) {
+  .mode-toolbar,
+  .list-head,
+  .form-title-row,
+  .outing-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .outing-actions .status,
+  .outing-actions .detail-link {
+    align-self: flex-start;
+  }
+}

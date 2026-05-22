@@ -265,3 +265,21 @@ p, li, input, textarea, select, .card-body, .term-section {
     text-align: center;
   }
 }
+
+
+.checklist-link-section {
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+@media (max-width: 768px) {
+  .checklist-link-section .safety-link-box {
+    display: grid;
+    gap: 18px;
+  }
+
+  .checklist-link-section .btn {
+    width: 100%;
+    text-align: center;
+  }
+}

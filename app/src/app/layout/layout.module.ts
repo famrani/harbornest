@@ -8,6 +8,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { HomelayoutComponent } from './home/homelayout/homelayout.component';
 import { HomeheaderComponent } from './home/homeheader/homeheader.component';
 import { HomefooterComponent } from './home/homefooter/homefooter.component';
+import { LayoutnoneComponent } from './layoutnone/layoutnone.component';
 import { LayoutRoutingModule } from './layout.router.module';
 import { CookieConsentComponent } from './cookie-consent/cookie-consent.component';
 
@@ -16,6 +17,7 @@ import { CookieConsentComponent } from './cookie-consent/cookie-consent.componen
     HomelayoutComponent,
     HomeheaderComponent,
     HomefooterComponent,
+    LayoutnoneComponent,
     CookieConsentComponent,
   ],
   imports: [

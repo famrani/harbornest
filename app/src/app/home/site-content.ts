@@ -8,6 +8,7 @@ export interface OutingItem {
   description: string;
   image: string;
   highlights: string[];
+  priceLabel?: string;
 }
 
 export interface SiteContent {

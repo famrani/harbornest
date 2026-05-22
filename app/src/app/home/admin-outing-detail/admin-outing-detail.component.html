@@ -1,0 +1,146 @@
+<section class="admin-outing-detail-page">
+  <div class="container">
+    <button type="button" class="back-link" (click)="back()">← {{ t('back') }}</button>
+
+    <div class="section-head">
+      <span class="eyebrow">{{ t('eyebrow') }}</span>
+      <h1>{{ t('title') }}</h1>
+      <p>{{ t('intro') }}</p>
+    </div>
+
+    <div class="notice error" *ngIf="!isAdmin">{{ t('adminOnly') }}</div>
+    <div class="notice error" *ngIf="error">{{ error }}</div>
+    <div class="notice success" *ngIf="saved">{{ t('saved') }}</div>
+
+    <ng-container *ngIf="isAdmin && outing">
+      <div class="detail-card">
+        <div class="status-row">
+          <span class="status" [class.closed]="outing.status === 'closed'">
+            {{ outing.status === 'closed' ? t('closed') : t('open') }}
+          </span>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            {{ t('outingType') }}
+            <select [(ngModel)]="outing.outingType">
+              <option *ngFor="let type of outingTypes[currentLanguage]" [value]="type">{{ type }}</option>
+            </select>
+          </label>
+
+          <label>
+            {{ t('passengers') }}
+            <input type="number" min="1" [(ngModel)]="outing.passengers" />
+          </label>
+
+          <label>
+            {{ t('departureDate') }}
+            <input type="date" [(ngModel)]="outing.departureDate" />
+          </label>
+
+          <label>
+            {{ t('departureTime') }}
+            <input type="time" [(ngModel)]="outing.departureTime" />
+          </label>
+
+          <label>
+            {{ t('arrivalDate') }}
+            <input type="date" [(ngModel)]="outing.arrivalDate" />
+          </label>
+
+          <label>
+            {{ t('arrivalTime') }}
+            <input type="time" [(ngModel)]="outing.arrivalTime" />
+          </label>
+
+          <label>
+            {{ t('portEngine') }}
+            <input type="number" min="0" step="0.1" [(ngModel)]="outing.portEngineHoursDeparture" />
+          </label>
+
+          <label>
+            {{ t('starboardEngine') }}
+            <input type="number" min="0" step="0.1" [(ngModel)]="outing.starboardEngineHoursDeparture" />
+          </label>
+
+          <label>
+            {{ t('wind') }} ({{ t('knots') }})
+            <input type="number" min="0" step="1" [(ngModel)]="outing.actualWindSpeed" />
+          </label>
+
+          <label class="wide">
+            {{ t('destination') }}
+            <input type="text" [(ngModel)]="outing.destination" />
+          </label>
+
+          <label class="wide">
+            {{ t('comments') }}
+            <textarea rows="4" [(ngModel)]="outing.comments"></textarea>
+          </label>
+
+          <label class="wide">
+            {{ t('closureComments') }}
+            <textarea rows="3" [(ngModel)]="outing.closureComments"></textarea>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-primary" [disabled]="saving" (click)="saveDetails()">
+            {{ saving ? t('saving') : t('save') }}
+          </button>
+          <button type="button" class="btn btn-secondary" *ngIf="outing.status !== 'closed'" [disabled]="saving || !arrivalComplete" (click)="closeOuting()">
+            {{ t('close') }}
+          </button>
+        </div>
+      </div>
+
+      <div class="checklist-card">
+        <div class="checklist-head">
+          <h2>{{ t('departureChecklist') }}</h2>
+          <span [class.complete]="departureComplete">{{ countDoneDepartureItems() }} / {{ countDepartureItems() }}</span>
+        </div>
+
+        <div class="checklist-group" *ngFor="let group of departureChecklistGroups">
+          <div class="checklist-subhead">
+            <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>
+            <span [class.complete]="countDoneGroup(group) === group.items.length">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>
+          </div>
+          <div class="checklist-grid">
+            <label class="check-item" *ngFor="let item of group.items" [class.done]="item.done">
+              <input type="checkbox" [checked]="item.done" (change)="toggleChecklist(item)" />
+              <span class="fake-radio"></span>
+              <span>
+                {{ item.label[currentLanguage] || item.label.fr }}
+                <small class="check-meta" *ngIf="item.doneAt">{{ formatChecklistMeta(item) }}</small>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="checklist-card">
+        <div class="checklist-head">
+          <h2>{{ t('arrivalChecklist') }}</h2>
+          <span [class.complete]="arrivalComplete">{{ countDoneArrivalItems() }} / {{ countArrivalItems() }}</span>
+        </div>
+
+        <div class="checklist-group" *ngFor="let group of arrivalChecklistGroups">
+          <div class="checklist-subhead">
+            <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>
+            <span [class.complete]="countDoneGroup(group) === group.items.length">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>
+          </div>
+          <div class="checklist-grid">
+            <label class="check-item" *ngFor="let item of group.items" [class.done]="item.done">
+              <input type="checkbox" [checked]="item.done" (change)="toggleChecklist(item)" />
+              <span class="fake-radio"></span>
+              <span>
+                {{ item.label[currentLanguage] || item.label.fr }}
+                <small class="check-meta" *ngIf="item.doneAt">{{ formatChecklistMeta(item) }}</small>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</section>

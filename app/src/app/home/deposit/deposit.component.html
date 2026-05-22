@@ -1,0 +1,57 @@
+<section class="deposit-page">
+  <div class="container deposit-layout">
+    <div class="deposit-copy">
+      <span class="eyebrow">{{ copy.eyebrow }}</span>
+      <h1>{{ copy.title }}</h1>
+      <p>{{ copy.intro }}</p>
+
+      <div class="summary-card">
+        <h2>{{ copy.includedTitle }}</h2>
+        <ul>
+          <li *ngFor="let item of copy.included">{{ item }}</li>
+        </ul>
+        <p class="note">{{ copy.note }}</p>
+      </div>
+    </div>
+
+    <form class="deposit-card" (ngSubmit)="payDeposit()">
+      <label>
+        <span>{{ copy.customerName }}</span>
+        <input type="text" name="customerName" [(ngModel)]="customerName" autocomplete="name" required />
+      </label>
+
+      <label>
+        <span>{{ copy.customerEmail }}</span>
+        <input type="email" name="customerEmail" [(ngModel)]="customerEmail" autocomplete="email" required />
+      </label>
+
+      <label>
+        <span>{{ copy.outingDate }}</span>
+        <input type="date" name="outingDate" [(ngModel)]="outingDate" required />
+      </label>
+
+      <label>
+        <span>{{ copy.outingType }}</span>
+        <input type="text" name="outingType" [(ngModel)]="outingType" />
+      </label>
+
+      <label>
+        <span>{{ copy.totalPrice }}</span>
+        <input type="number" name="totalPrice" [(ngModel)]="totalPrice" min="1" step="0.01" required />
+      </label>
+
+      <div class="deposit-total">
+        <span>{{ copy.deposit }}</span>
+        <strong>{{ formatAmount(depositAmount) }}</strong>
+      </div>
+
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+        {{ isLoading ? copy.loading : copy.payDeposit }}
+      </button>
+
+      <p class="secure">{{ copy.securePayment }}</p>
+    </form>
+  </div>
+</section>

@@ -158,3 +158,10 @@ p, li, input, textarea, select, .card-body, .term-section {
 .section-light {
   background: var(--alegria-sand);
 }
+
+.price-line {
+  margin: 0.35rem 0 0.75rem;
+  color: var(--sun, #f59e0b);
+  font-family: 'Raleway', sans-serif;
+  font-weight: 800;
+}

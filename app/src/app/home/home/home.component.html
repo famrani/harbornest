@@ -45,6 +45,7 @@
           <h3>{{ outing.title }}</h3>
           <p>{{ outing.description }}</p>
           <div class="meta">{{ outing.duration }} • {{ outing.guests }}</div>
+          <div class="meta price" *ngIf="outing.priceLabel">{{ outing.priceLabel }}</div>
           <a [routerLink]="['/sorties', outing.slug]" class="text-link">{{ content.outingsPage.cta }}</a>
         </div>
       </article>

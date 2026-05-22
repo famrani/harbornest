@@ -1,0 +1,165 @@
+<section class="feedback-page">
+  <div class="container feedback-card">
+    <span class="eyebrow">{{ t('eyebrow') }}</span>
+    <h1>{{ t('title') }}</h1>
+    <p class="intro">{{ t('intro') }}</p>
+
+    <div class="state-card" *ngIf="!loggedUser">
+      <p>{{ t('loginRequired') }}</p>
+      <a routerLink="/login" class="btn btn-primary">{{ t('login') }}</a>
+    </div>
+
+    <form class="feedback-form" *ngIf="loggedUser" (ngSubmit)="saveFeedback()">
+      <div class="form-head full">
+        <h2>{{ t('formTitle') }}</h2>
+        <p>{{ t('formIntro') }}</p>
+      </div>
+
+      <label>
+        <span>{{ t('formDate') }}</span>
+        <input type="date" name="date" [(ngModel)]="feedback.date" required />
+      </label>
+
+      <label>
+        <span>{{ t('time') }}</span>
+        <input type="time" name="time" [(ngModel)]="feedback.time" required />
+      </label>
+
+      <label class="full">
+        <span>{{ t('outingType') }}</span>
+        <select name="outingType" [(ngModel)]="feedback.outingType" required>
+          <option *ngFor="let option of outingOptions[currentLanguage]" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+      </label>
+
+      <label class="full">
+        <span>{{ t('rating') }}</span>
+        <div class="rating-buttons" role="radiogroup" [attr.aria-label]="t('rating')">
+          <button
+            type="button"
+            *ngFor="let value of [1,2,3,4,5]"
+            [class.active]="feedback.rating === value"
+            (click)="setRating(value)"
+            [attr.aria-pressed]="feedback.rating === value">
+            {{ value }} ★
+          </button>
+        </div>
+      </label>
+
+      <label class="full">
+        <span>{{ t('comments') }}</span>
+        <textarea name="comments" rows="5" [(ngModel)]="feedback.comments" required></textarea>
+      </label>
+
+      <div class="form-actions full">
+        <button class="btn btn-primary" type="submit" [disabled]="saving">
+          {{ saving ? t('saving') : t('save') }}
+        </button>
+      </div>
+
+      <p class="success full" *ngIf="saved">{{ t('saved') }}</p>
+      <p class="error full" *ngIf="saveError">{{ saveError }}</p>
+    </form>
+
+    <div class="feedback-list" *ngIf="loggedUser">
+      <h2>{{ t('listTitle') }}</h2>
+
+      <div class="state-card" *ngIf="loading">
+        <p>{{ t('loading') }}</p>
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+      <p class="success" *ngIf="editSaved">{{ editSaved }}</p>
+      <p class="error" *ngIf="editError">{{ editError }}</p>
+
+      <div class="state-card" *ngIf="!loading && !error && feedbacks.length === 0">
+        <p>{{ t('empty') }}</p>
+      </div>
+
+      <div class="feedback-grid" *ngIf="!loading && feedbacks.length > 0">
+        <article class="feedback-item" *ngFor="let item of feedbacks">
+          <ng-container *ngIf="editingFeedbackId !== feedbackId(item); else editBlock">
+            <div class="feedback-topline">
+              <strong>{{ item.outingType || '-' }}</strong>
+              <span class="stars">{{ stars(item.rating || item.rate) }}</span>
+            </div>
+
+            <div class="feedback-meta">
+              <span>{{ t('date') }}: {{ item.date || '-' }}</span>
+              <span>{{ t('time') }}: {{ item.time || '-' }}</span>
+            </div>
+
+            <p class="feedback-comment">{{ displayComment(item) }}</p>
+
+            <div class="feedback-actions">
+              <button type="button" class="btn btn-secondary" (click)="startEdit(item)">
+                {{ t('edit') }}
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="deleteFeedback(item)"
+                [disabled]="deletingFeedbackId === feedbackId(item)">
+                {{ t('delete') }}
+              </button>
+            </div>
+          </ng-container>
+
+          <ng-template #editBlock>
+            <form class="feedback-form edit-form" (ngSubmit)="updateExistingFeedback(item)">
+              <label>
+                <span>{{ t('formDate') }}</span>
+                <input type="date" name="editDate{{ feedbackId(item) }}" [(ngModel)]="editFeedback.date" required />
+              </label>
+
+              <label>
+                <span>{{ t('time') }}</span>
+                <input type="time" name="editTime{{ feedbackId(item) }}" [(ngModel)]="editFeedback.time" required />
+              </label>
+
+              <label class="full">
+                <span>{{ t('outingType') }}</span>
+                <select name="editOutingType{{ feedbackId(item) }}" [(ngModel)]="editFeedback.outingType" required>
+                  <option *ngFor="let option of outingOptions[currentLanguage]" [value]="option">
+                    {{ option }}
+                  </option>
+                </select>
+              </label>
+
+              <label class="full">
+                <span>{{ t('rating') }}</span>
+                <div class="rating-buttons" role="radiogroup" [attr.aria-label]="t('rating')">
+                  <button
+                    type="button"
+                    *ngFor="let value of [1,2,3,4,5]"
+                    [class.active]="editFeedback.rating === value"
+                    (click)="setEditRating(value)"
+                    [attr.aria-pressed]="editFeedback.rating === value">
+                    {{ value }} ★
+                  </button>
+                </div>
+              </label>
+
+              <label class="full">
+                <span>{{ t('comments') }}</span>
+                <textarea name="editComments{{ feedbackId(item) }}" rows="4" [(ngModel)]="editFeedback.comments" required></textarea>
+              </label>
+
+              <div class="form-actions full edit-actions">
+                <button class="btn btn-primary" type="submit" [disabled]="saving">
+                  {{ saving ? t('saving') : t('update') }}
+                </button>
+                <button class="btn btn-secondary" type="button" (click)="cancelEdit()">
+                  {{ t('cancel') }}
+                </button>
+              </div>
+            </form>
+          </ng-template>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>

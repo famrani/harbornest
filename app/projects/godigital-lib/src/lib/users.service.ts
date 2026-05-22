@@ -41,7 +41,7 @@ export class UsersService {
   // EMAIL/PASSWORD SIGN-IN
   // -----------------------
   authUser(email: string, password1: string, emailNotVerified?: boolean) {
-    const maf = this.storeDbSvc.auth!;
+    const maf = this.storeDbSvc.firebaseauth!;
     return new Promise((resolve, reject) => {
       maf.signInWithEmailAndPassword(email.toLowerCase(), password1)
         .then((cred: firebase.auth.UserCredential) => {
@@ -60,7 +60,7 @@ export class UsersService {
   // EMAIL/PASSWORD SIGN-UP
   // -----------------------
   registerWithEmail(email: string, password: string, displayName?: string): Promise<{ uid: string }> {
-    const maf = this.storeDbSvc.auth!;
+    const maf = this.storeDbSvc.firebaseauth!;
     return new Promise(async (resolve, reject) => {
       try {
         const cred = await maf.createUserWithEmailAndPassword(email.toLowerCase(), password);
@@ -92,7 +92,7 @@ export class UsersService {
   }
 
   resendVerificationEmail(): Promise<void> {
-    const user = this.storeDbSvc.auth!.currentUser;
+    const user = this.storeDbSvc.firebaseauth!.currentUser;
     return new Promise(async (resolve, reject) => {
       if (!user) return reject(new Error('Not signed in'));
       try {
@@ -109,7 +109,7 @@ export class UsersService {
 
   private async getUserProfile(uid: string): Promise<Users | null> {
     const storeId = this.utilSvc.backendFBstoreId;
-    const data = await this.storeDbSvc.getObject(OBJECTNAME.bnUsers, uid);
+    const data = await this.storeDbSvc.getObject(storeId, this.utilSvc.mdb, OBJECTNAME.bnUsers, uid);
     return (data as Users) || null;
   }
 
@@ -117,7 +117,7 @@ export class UsersService {
    * Sign in with Google, upsert RTDB profile, then return RTDB user.
    */
 async signInWithGoogleAndLoadProfile(): Promise<Users> {
-  const maf = this.storeDbSvc.auth;
+  const maf = this.utilSvc.mauth;
   const provider = new firebase.auth.GoogleAuthProvider();
 
   // Popup (you can also support redirect similarly)
@@ -190,21 +190,21 @@ async signInWithGoogleAndLoadProfile(): Promise<Users> {
   // SIGN-OUT
   // ----------
   logout() {
-    return this.storeDbSvc.auth!.signOut();
+    return this.storeDbSvc.firebaseauth!.signOut();
   }
 
   // ---------------------
   // PASSWORD RESET (auth)
   // ---------------------
   resetPwdUser(email: string) {
-    return this.storeDbSvc.auth!.sendPasswordResetEmail(email);
+    return this.storeDbSvc.firebaseauth!.sendPasswordResetEmail(email);
   }
 
   // ------------------------
   // CLIENT-SIDE PASSWORD CHANGE
   // ------------------------
   async changePasswordWithOldPassword(oldPassword: string, newPassword: string): Promise<void> {
-    const auth = this.storeDbSvc.auth!;
+    const auth = this.storeDbSvc.firebaseauth!;
     const user = auth.currentUser;
     if (!user || !user.email) {
       throw new Error('Not signed in or user has no email.');
@@ -216,7 +216,7 @@ async signInWithGoogleAndLoadProfile(): Promise<Users> {
   }
 
   async changePasswordReauthWithGoogle(newPassword: string): Promise<void> {
-    const auth = this.storeDbSvc.auth!;
+    const auth = this.storeDbSvc.firebaseauth!;
     const user = auth.currentUser;
     if (!user) throw new Error('Not signed in.');
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -239,7 +239,7 @@ async signInWithGoogleAndLoadProfile(): Promise<Users> {
     return new Promise((resolve, reject) => {
       if (wnUser && wnUser.userId) {
         this.storeDbSvc
-          .updateObject(OBJECTNAME.bnUsers, wnUser, wnUser.userId)
+          .updateObject(this.utilSvc.backendFBstoreId, this.utilSvc.mdb, OBJECTNAME.bnUsers, wnUser, wnUser.userId)
           .then(resolve, reject);
       } else {
         reject('user undefined');
@@ -253,9 +253,9 @@ async signInWithGoogleAndLoadProfile(): Promise<Users> {
   private async saveUserProfile(user: Partial<Users> & { userId: string }, merge = false): Promise<void> {
     const storeId = this.utilSvc.backendFBstoreId;
     const existing = merge
-      ? await this.storeDbSvc.getObject(OBJECTNAME.bnUsers, user.userId)
+      ? await this.storeDbSvc.getObject(storeId, this.utilSvc.mdb, OBJECTNAME.bnUsers, user.userId)
       : null;
     const payload = merge && existing ? { ...existing, ...user, modifiedTS: Date.now() } : user;
-    await this.storeDbSvc.updateObject(OBJECTNAME.bnUsers, payload, user.userId);
+    await this.storeDbSvc.updateObject(storeId, this.utilSvc.mdb, OBJECTNAME.bnUsers, payload, user.userId);
   }
 }

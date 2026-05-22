@@ -13,13 +13,25 @@ import { EvjfEvgComponent } from './tours/evjf-evg/evjf-evg.component';
 import { BusinessOutingComponent } from './tours/business-outing/business-outing.component';
 import { TermsComponent } from './terms/terms.component';
 import { SafetyInstructionsComponent } from './safety-instructions/safety-instructions.component';
+import { DepositComponent } from './deposit/deposit.component';
+import { ChecklistComponent } from './checklist/checklist.component';
+import { AccountSummaryComponent } from './account-summary/account-summary.component';
+import { MyProfileComponent } from './my-profile/my-profile.component';
+import { MyFeedbacksComponent } from './my-feedbacks/my-feedbacks.component';
+import { AdminFeedbacksComponent } from './admin-feedbacks/admin-feedbacks.component';
+import { AdminOutingsComponent } from './admin-outings/admin-outings.component';
+import { AdminOutingDetailComponent } from './admin-outing-detail/admin-outing-detail.component';
+import { AdminManageOutingsComponent } from './admin-manage-outings/admin-manage-outings.component';
+import { GuestFaqComponent } from './guest-faq/guest-faq.component';
+import { GuestJourneyComponent } from './guest-journey/guest-journey.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'sorties', component: OutingsComponent },
   { path: 'sorties/journee-en-mer', component: FullDayComponent },
   { path: 'sorties/coucher-de-soleil', component: SunsetCruiseComponent },
-  { path: 'sorties/anniversaire', component: EvjfEvgComponent },
+  { path: 'sorties/party', component: EvjfEvgComponent },
+  { path: 'sorties/anniversaire', redirectTo: 'sorties/party', pathMatch: 'full' },
   { path: 'sorties/sortie-entreprise', component: BusinessOutingComponent },
   { path: 'bateau', component: BoatComponent },
   { path: 'galerie', component: GalleryComponent },
@@ -27,6 +39,19 @@ const routes: Routes = [
   { path: 'crew', component: CrewComponent },
   { path: 'terms', component: TermsComponent },
   { path: 'safety', component: SafetyInstructionsComponent },
+  { path: 'checklist', component: ChecklistComponent },
+  { path: 'deposit', component: DepositComponent },
+  { path: 'faq', component: GuestFaqComponent },
+  { path: 'how-it-works', component: GuestJourneyComponent },
+  { path: 'my-bookings', component: AccountSummaryComponent, data: { section: 'bookings' } },
+  { path: 'my-payments', component: AccountSummaryComponent, data: { section: 'payments' } },
+  { path: 'my-profile', component: MyProfileComponent },
+  { path: 'my-feedbacks', component: MyFeedbacksComponent },
+  { path: 'leave-feedback', redirectTo: 'my-feedbacks', pathMatch: 'full' },
+  { path: 'admin/feedbacks', component: AdminFeedbacksComponent },
+  { path: 'admin/outings', component: AdminOutingsComponent },
+  { path: 'admin/outings/:outingId', component: AdminOutingDetailComponent },
+  { path: 'admin/manage-outings', component: AdminManageOutingsComponent },
 ];
 
 @NgModule({

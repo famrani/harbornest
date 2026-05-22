@@ -1,0 +1,138 @@
+<section class="admin-feedback-page">
+  <div class="container admin-feedback-card">
+    <span class="eyebrow">{{ t('eyebrow') }}</span>
+    <h1>{{ t('title') }}</h1>
+    <p class="intro">{{ t('intro') }}</p>
+
+    <div class="state-card denied" *ngIf="!isAdmin">
+      <p>{{ t('accessDenied') }}</p>
+    </div>
+
+    <ng-container *ngIf="isAdmin">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <strong>{{ feedbacks.length }}</strong>
+          <span>{{ t('feedbacks') }}</span>
+        </div>
+        <div class="stat-card">
+          <strong>{{ averageRating }}</strong>
+          <span>{{ t('average') }}</span>
+        </div>
+      </div>
+
+      <div class="filters">
+        <input type="search" [(ngModel)]="searchText" (ngModelChange)="applyFilters()" [placeholder]="t('search')" />
+        <select [(ngModel)]="selectedRating" (ngModelChange)="applyFilters()">
+          <option value="">{{ t('allRatings') }}</option>
+          <option value="5">5 ★</option>
+          <option value="4">4 ★</option>
+          <option value="3">3 ★</option>
+          <option value="2">2 ★</option>
+          <option value="1">1 ★</option>
+        </select>
+      </div>
+
+      <p class="success" *ngIf="actionMessage">{{ actionMessage }}</p>
+      <p class="error" *ngIf="actionError">{{ actionError }}</p>
+
+      <div class="state-card" *ngIf="loading">
+        <p>{{ t('loading') }}</p>
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+
+      <div class="state-card" *ngIf="!loading && !error && filteredFeedbacks.length === 0">
+        <p>{{ t('empty') }}</p>
+      </div>
+
+      <div class="table-wrap" *ngIf="!loading && filteredFeedbacks.length > 0">
+        <table>
+          <thead>
+            <tr>
+              <th>{{ t('customer') }}</th>
+              <th>{{ t('date') }}</th>
+              <th>{{ t('time') }}</th>
+              <th>{{ t('outing') }}</th>
+              <th>{{ t('rating') }}</th>
+              <th>{{ t('comments') }}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of filteredFeedbacks">
+              <tr *ngIf="editingFeedbackId !== feedbackId(item); else adminEditRow">
+                <td>
+                  <strong>{{ customerName(item) }}</strong>
+                  <small *ngIf="item.email">{{ item.email }}</small>
+                </td>
+                <td>{{ item.date || '-' }}</td>
+                <td>{{ item.time || '-' }}</td>
+                <td>{{ item.outingType || '-' }}</td>
+                <td class="rating">{{ stars(item.rating || item.rate) }}</td>
+                <td>{{ displayComment(item) }}</td>
+                <td class="actions-cell">
+                  <button type="button" class="mini-btn" (click)="startEdit(item)">
+                    {{ t('edit') }}
+                  </button>
+                  <button type="button" class="mini-btn danger" (click)="deleteFeedback(item)" [disabled]="deletingFeedbackId === feedbackId(item)">
+                    {{ t('delete') }}
+                  </button>
+                </td>
+              </tr>
+
+              <ng-template #adminEditRow>
+                <tr class="edit-row">
+                  <td colspan="7">
+                    <form class="admin-edit-form" (ngSubmit)="updateFeedback(item)">
+                      <label>
+                        <span>{{ t('date') }}</span>
+                        <input type="date" name="adminEditDate{{ feedbackId(item) }}" [(ngModel)]="editFeedback.date" required />
+                      </label>
+
+                      <label>
+                        <span>{{ t('time') }}</span>
+                        <input type="time" name="adminEditTime{{ feedbackId(item) }}" [(ngModel)]="editFeedback.time" required />
+                      </label>
+
+                      <label>
+                        <span>{{ t('outing') }}</span>
+                        <input type="text" name="adminEditOuting{{ feedbackId(item) }}" [(ngModel)]="editFeedback.outingType" required />
+                      </label>
+
+                      <label>
+                        <span>{{ t('rating') }}</span>
+                        <div class="rating-buttons">
+                          <button
+                            type="button"
+                            *ngFor="let value of [1,2,3,4,5]"
+                            [class.active]="editFeedback.rating === value"
+                            (click)="setEditRating(value)">
+                            {{ value }} ★
+                          </button>
+                        </div>
+                      </label>
+
+                      <label class="full">
+                        <span>{{ t('comments') }}</span>
+                        <textarea name="adminEditComments{{ feedbackId(item) }}" rows="4" [(ngModel)]="editFeedback.comments" required></textarea>
+                      </label>
+
+                      <div class="full edit-actions">
+                        <button class="mini-btn primary" type="submit" [disabled]="saving">
+                          {{ saving ? t('saving') : t('update') }}
+                        </button>
+                        <button class="mini-btn" type="button" (click)="cancelEdit()">
+                          {{ t('cancel') }}
+                        </button>
+                      </div>
+                    </form>
+                  </td>
+                </tr>
+              </ng-template>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+  </div>
+</section>

@@ -52,13 +52,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   hourInMilliseconds: () => (/* binding */ hourInMilliseconds)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
 /* harmony import */ var firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! firebase/compat/app */ 3602);
 /* harmony import */ var firebase_compat_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! firebase/compat/auth */ 12043);
 /* harmony import */ var firebase_compat_database__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! firebase/compat/database */ 36994);
 /* harmony import */ var firebase_compat_storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! firebase/compat/storage */ 45700);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs */ 75797);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs */ 75797);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/common */ 35135);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs/operators */ 70271);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs/operators */ 89475);
@@ -99,303 +99,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var OBJECTNAME;
-(function (OBJECTNAME) {
-  OBJECTNAME["bnBoats"] = "backendboats";
-  OBJECTNAME["bnUsers"] = "backendusers";
-  OBJECTNAME["bnMessages"] = "backendmessages";
-  OBJECTNAME["bnBookings"] = "backendbookings";
-  OBJECTNAME["bnFeedbacks"] = "backendfeedbacks";
-  OBJECTNAME["bnMainpage"] = "backendmainpage";
-  OBJECTNAME["bnEvents"] = "backendevents";
-  OBJECTNAME["bnSkippers"] = "backendskippers";
-  OBJECTNAME["bnOwners"] = "backendowners";
-})(OBJECTNAME || (OBJECTNAME = {}));
-var AUTHSTATUS;
-(function (AUTHSTATUS) {
-  AUTHSTATUS[AUTHSTATUS["SUCCESS"] = 1] = "SUCCESS";
-  AUTHSTATUS[AUTHSTATUS["EMAILNOTVERIFIED"] = -1] = "EMAILNOTVERIFIED";
-  AUTHSTATUS[AUTHSTATUS["UPDATETOKENFAILED"] = -2] = "UPDATETOKENFAILED";
-  AUTHSTATUS[AUTHSTATUS["UNKNOWNERROR"] = -100] = "UNKNOWNERROR";
-})(AUTHSTATUS || (AUTHSTATUS = {}));
-class StoreDbService {
-  app;
-  totototo;
-  /** Firebase singletons (ready after init()) */
-  db;
-  storage;
-  auth;
-  /** Auth state */
-  currentUser = null;
-  authState$ = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
-  /** You call this ONCE at app startup */
-  init(config) {
-    if (this.app) return;
-    this.app = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].initializeApp(config);
-    this.db = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].database(this.app);
-    this.storage = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].storage(this.app);
-    this.auth = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth(this.app);
-    // Persist session
-    this.auth.setPersistence(firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth.Auth.Persistence.LOCAL).catch(() => {});
-    // Support redirect flows (Google auth etc.)
-    this.auth.getRedirectResult().catch(() => {});
-    this.auth.onAuthStateChanged(user => {
-      this.currentUser = user;
-      this.authState$.next(user);
-    });
-  }
-  /** Safety guard (helps catch "init not called" early) */
-  ensureReady() {
-    if (!this.app || !this.db || !this.storage || !this.auth) {
-      throw new Error('Firebase not initialized. Call StoreDbService.init(firebaseConfig) once before using it.');
-    }
-  }
-  // ---------------------------------------------------------------------------
-  // RTDB PATH NORMALIZATION
-  // ---------------------------------------------------------------------------
-  /**
-   * Supports BOTH styles:
-   *  - "backendmainpage/owner-home-layali"
-   *  - "backendmainpage" + refId
-   * Also supports your old "storeId" prefix by stripping it if present:
-   *  - "1000/backendmainpage/..." -> "backendmainpage/..."
-   */
-  normalizeDbPath(pathOrObject, refId) {
-    let p = (pathOrObject || '').trim().replace(/^\/+/, '');
-    // If caller passes "backendmainpage" + id
-    if (refId !== undefined && refId !== null && refId !== -1 && `${refId}`.length) {
-      if (!p.endsWith('/')) p += '/';
-      p += String(refId);
-    }
-    // Strip "1000/" or "<digits>/" if you still have that in DB paths
-    p = p.replace(/^\d+\//, '');
-    return p;
-  }
-  // ---------------------------------------------------------------------------
-  // RTDB CRUD
-  // ---------------------------------------------------------------------------
-  getObject(fbObjectOrPath, refId) {
-    var _this = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this.ensureReady();
-      const path = _this.normalizeDbPath(fbObjectOrPath, refId);
-      const snap = yield _this.db.ref(path).once('value');
-      return snap.exists() ? snap.val() : null;
-    })();
-  }
-  updateObject(fbObjectOrPath, objectData, refId) {
-    var _this2 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this2.ensureReady();
-      if (!objectData) throw new Error('updateObject: objectData is required');
-      const path = _this2.normalizeDbPath(fbObjectOrPath, refId);
-      // Keep your modifiedTS behavior
-      const now = Date.now();
-      objectData.modifiedTS = now;
-      yield _this2.db.ref(path).set(objectData);
-      return objectData;
-    })();
-  }
-  partialUpdateObject(fbObjectOrPath, patch, refId) {
-    var _this3 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this3.ensureReady();
-      if (!patch) throw new Error('partialUpdateObject: patch is required');
-      const path = _this3.normalizeDbPath(fbObjectOrPath, refId);
-      patch.modifiedTS = Date.now();
-      yield _this3.db.ref(path).update(patch);
-      return patch;
-    })();
-  }
-  removeObject(fbObjectOrPath, refId) {
-    var _this4 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this4.ensureReady();
-      if (refId === undefined || refId === null) return undefined;
-      const path = _this4.normalizeDbPath(fbObjectOrPath, refId);
-      yield _this4.db.ref(path).remove();
-      return String(refId);
-    })();
-  }
-  // ---------------------------------------------------------------------------
-  // RTDB SUBSCRIPTIONS (simple)
-  // ---------------------------------------------------------------------------
-  /**
-   * Subscribe to "value" changes.
-   * Returns an unsubscribe function.
-   */
-  subscribeObject(fbObjectOrPath, onValue, refId) {
-    this.ensureReady();
-    const path = this.normalizeDbPath(fbObjectOrPath, refId);
-    const ref = this.db.ref(path);
-    const handler = snap => {
-      onValue(snap.exists() ? snap.val() : null);
-    };
-    ref.on('value', handler);
-    return () => ref.off('value', handler);
-  }
-  // ---------------------------------------------------------------------------
-  // STORAGE HELPERS
-  // ---------------------------------------------------------------------------
-  /**
-   * Accepts:
-   *  - Full URL -> returned as-is
-   *  - "mainpages/owner-home-layali/boat/a.webp" -> tokened URL
-   *  - "/mainpages/..." -> tokened URL
-   */
-  getDownloadUrl(pathOrUrl) {
-    var _this5 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this5.ensureReady();
-      const p = (pathOrUrl || '').trim();
-      if (!p) throw new Error('getDownloadUrl: empty path');
-      if (/^https?:\/\//i.test(p)) return p;
-      const clean = p.replace(/^\/+/, '');
-      return _this5.storage.ref(clean).getDownloadURL();
-    })();
-  }
-  /**
-   * List image URLs directly under a folder (no recursion).
-   */
-  listImageUrlsFlat(folderPath) {
-    var _this6 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this6.ensureReady();
-      const clean = (folderPath || '').trim().replace(/^\/+/, '');
-      if (!clean) return [];
-      try {
-        const res = yield _this6.storage.ref(clean).listAll();
-        const urls = [];
-        for (const item of res.items) {
-          const n = (item.name || '').toLowerCase();
-          if (n === '.ds_store') continue;
-          if (!/\.(png|jpg|jpeg|webp|gif|avif|svg)$/i.test(n)) continue;
-          urls.push(yield item.getDownloadURL());
-        }
-        return urls;
-      } catch {
-        return [];
-      }
-    })();
-  }
-  /**
-   * Recursive listing (folder + subfolders).
-   */
-  listImageUrlsRecursive(folderPath) {
-    var _this7 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this7.ensureReady();
-      const clean = (folderPath || '').trim().replace(/^\/+/, '');
-      if (!clean) return [];
-      try {
-        const ref = _this7.storage.ref(clean);
-        const res = yield ref.listAll();
-        const urls = [];
-        for (const item of res.items) {
-          const n = (item.name || '').toLowerCase();
-          if (n === '.ds_store') continue;
-          if (!/\.(png|jpg|jpeg|webp|gif|avif|svg)$/i.test(n)) continue;
-          urls.push(yield item.getDownloadURL());
-        }
-        for (const sub of res.prefixes) {
-          urls.push(...(yield _this7.listImageUrlsRecursive(sub.fullPath)));
-        }
-        return urls;
-      } catch {
-        return [];
-      }
-    })();
-  }
-  /** Upload a File to Storage under `directory/filename` and return download URL */
-  uploadFile(directory, file) {
-    var _this8 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this8.ensureReady();
-      if (!file) throw new Error('uploadFile: file is required');
-      const cleanDir = (directory || '').trim().replace(/^\/+/, '').replace(/\/+$/, '');
-      const fullPath = cleanDir ? `${cleanDir}/${file.name}` : file.name;
-      const ref = _this8.storage.ref(fullPath);
-      yield ref.put(file);
-      return yield ref.getDownloadURL();
-    })();
-  }
-  /** Upload from an <input type="file"> change event */
-  uploadFromInputEvent(directory, event) {
-    var _this9 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const file = event?.target?.files?.[0];
-      if (!file) throw new Error('uploadFromInputEvent: no file found in event.target.files[0]');
-      return _this9.uploadFile(directory, file);
-    })();
-  }
-  /** Delete by storage path like "mainpages/owner-home-layali/boat/a.webp" */
-  deleteByPath(path) {
-    var _this10 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this10.ensureReady();
-      const clean = (path || '').trim().replace(/^\/+/, '');
-      if (!clean) return;
-      yield _this10.storage.ref(clean).delete();
-    })();
-  }
-  /** Delete by full download URL */
-  deleteByUrl(url) {
-    var _this11 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this11.ensureReady();
-      const u = (url || '').trim();
-      if (!u) return;
-      yield _this11.storage.refFromURL(u).delete();
-    })();
-  }
-  /** Get a Storage reference directly (useful for advanced operations) */
-  storageRef(path) {
-    this.ensureReady();
-    const clean = (path || '').trim().replace(/^\/+/, '');
-    return this.storage.ref(clean);
-  }
-  // ---------------------------------------------------------------------------
-  // RTDB MULTI-PATH UPDATE (atomic)
-  // ---------------------------------------------------------------------------
-  multiPathUpdate(updates) {
-    var _this12 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this12.ensureReady();
-      if (!updates || typeof updates !== 'object') throw new Error('multiPathUpdate: updates is required');
-      // normalize keys: remove leading slashes and any "<digits>/" prefix
-      const normalized = {};
-      for (const [k, v] of Object.entries(updates)) {
-        const cleanKey = _this12.normalizeDbPath(k);
-        normalized[cleanKey] = v;
-      }
-      yield _this12.db.ref().update(normalized);
-    })();
-  }
-  /** RTDB push key generator for unique IDs */
-  pushKey(path) {
-    this.ensureReady();
-    const clean = this.normalizeDbPath(path);
-    const ref = this.db.ref(clean).push();
-    if (!ref.key) throw new Error('pushKey: failed to create key');
-    return ref.key;
-  }
-  static ɵfac = function StoreDbService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || StoreDbService)();
-  };
-  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjectable"]({
-    token: StoreDbService,
-    factory: StoreDbService.ɵfac,
-    providedIn: 'root'
-  });
-}
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](StoreDbService, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Injectable,
-    args: [{
-      providedIn: 'root'
-    }]
-  }], null, null);
-})();
 class ScriptLoadingService {
   zone;
   constructor(zone) {
@@ -423,22 +126,22 @@ class ScriptLoadingService {
     document.getElementsByTagName('head')[0].appendChild(scriptElement);
   }
   static ɵfac = function ScriptLoadingService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || ScriptLoadingService)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](_angular_core__WEBPACK_IMPORTED_MODULE_8__.NgZone));
+    return new (__ngFactoryType__ || ScriptLoadingService)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_core__WEBPACK_IMPORTED_MODULE_7__.NgZone));
   };
-  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjectable"]({
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjectable"]({
     token: ScriptLoadingService,
     factory: ScriptLoadingService.ɵfac,
     providedIn: 'root'
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](ScriptLoadingService, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Injectable,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](ScriptLoadingService, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Injectable,
     args: [{
       providedIn: 'root'
     }]
   }], () => [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.NgZone
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.NgZone
   }], null);
 })();
 
@@ -530,9 +233,9 @@ class UtilsService {
   scriptLoadingSvc;
   backendWSURL;
   backendURL;
-  //  public mdb;
-  //  public mst;
-  //  public mauth;
+  mdb;
+  mst;
+  mauth;
   sdb = [];
   sst = {};
   sauth = [];
@@ -544,7 +247,7 @@ class UtilsService {
   uploadState;
   uploadProgress;
   downloadURL = '';
-  addressBSS = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject([]);
+  addressBSS = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject([]);
   addressBSSdata = this.addressBSS.asObservable();
   backendFBstoreId = '1000';
   backendFBstoreId2 = '2001';
@@ -693,7 +396,7 @@ class UtilsService {
     });
   }
   autoCompleteAddress(fieldName) {
-    const subject = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
+    const subject = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
     if (typeof places !== 'undefined') {
       const placesAutocomplete = places({
         appId: 'pl9PLUYVD4F4',
@@ -712,7 +415,7 @@ class UtilsService {
     return subject.asObservable();
   }
   autoCompleteAddress1(addressField) {
-    const subject = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
+    const subject = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
     if (!window.google || !google.maps.places) {
       console.error('Google Maps script not loaded');
       subject.next({});
@@ -966,14 +669,14 @@ class UtilsService {
     }
   }
   checkFileIonic(dir, fileName, check) {
-    var _this13 = this;
+    var _this = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       let result = 0;
       return new Promise(/*#__PURE__*/function () {
         var _ref = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve) {
-          _this13.fileIonic.checkFile(_this13.fileIonic.externalDataDirectory + dir, fileName).then(/*#__PURE__*/function () {
+          _this.fileIonic.checkFile(_this.fileIonic.externalDataDirectory + dir, fileName).then(/*#__PURE__*/function () {
             var _ref2 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (data) {
-              _this13.fileIonic.resolveLocalFilesystemUrl(_this13.fileIonic.externalDataDirectory + dir + fileName).then(data1 => {
+              _this.fileIonic.resolveLocalFilesystemUrl(_this.fileIonic.externalDataDirectory + dir + fileName).then(data1 => {
                 data1.getMetadata(metadata => {
                   if (metadata.size > 2000) {
                     result = metadata.size;
@@ -1001,7 +704,7 @@ class UtilsService {
     }
   }
   checkFileTablet(url, check) {
-    var _this14 = this;
+    var _this2 = this;
     return new Promise(/*#__PURE__*/function () {
       var _ref3 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
         const pathnameRegex = /(\/?(.+)\/)/;
@@ -1013,7 +716,7 @@ class UtilsService {
             const filedir = 'dist2/' + filedirt[0];
             const filename = filenamet[1];
             try {
-              const temp = yield _this14.checkFile(filedir, filename, check);
+              const temp = yield _this2.checkFile(filedir, filename, check);
               resolve(temp);
             } catch (e) {
               resolve(false);
@@ -1031,7 +734,7 @@ class UtilsService {
     }());
   }
   downloadThumb2(url, dir, localurl, check, force) {
-    var _this15 = this;
+    var _this3 = this;
     return new Promise(/*#__PURE__*/function () {
       var _ref4 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolvef) {
         const filenameRegyoutube = /(youtube\.com|youtu\.be)/;
@@ -1063,31 +766,31 @@ class UtilsService {
               filename = filenameC[1] + '.png';
             }
           }
-          localurl = localurl ? localurl : filename ? dir + _this15.isEncoded(filename) : undefined;
-          const temp11 = yield _this15.checkFileBackend(localurl, check);
+          localurl = localurl ? localurl : filename ? dir + _this3.isEncoded(filename) : undefined;
+          const temp11 = yield _this3.checkFileBackend(localurl, check);
           //        const url1 = url;
           let promise1;
           if (temp11 === false || force) {
             promise1 = new Promise(resolve => {
-              const params1 = new _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpParams().set('url', _this15.isEncoded(url)).set('dir', _this15.isEncoded(dir));
-              const urldownloadUrl = _this15.backendURL + 'store/downloadUrl';
+              const params1 = new _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpParams().set('url', _this3.isEncoded(url)).set('dir', _this3.isEncoded(dir));
+              const urldownloadUrl = _this3.backendURL + 'store/downloadUrl';
               // tslint:disable-next-line: deprecation
               if (check) {
-                console.log('this.isEncoded(url))=', _this15.isEncoded(url));
+                console.log('this.isEncoded(url))=', _this3.isEncoded(url));
               }
-              _this15.http.get(urldownloadUrl, {
+              _this3.http.get(urldownloadUrl, {
                 params: params1
               }).subscribe(/*#__PURE__*/function () {
                 var _ref5 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (temp12) {
                   const result = temp12;
                   localurl = result.backendurl;
-                  if (_this15.platformDevice && _this15.platformDevice.is('cordova')) {
-                    const temp13 = yield _this15.checkFileTablet(localurl, check);
+                  if (_this3.platformDevice && _this3.platformDevice.is('cordova')) {
+                    const temp13 = yield _this3.checkFileTablet(localurl, check);
                     if (temp13 === 0) {
-                      const fileTransfer = _this15.transfer.create();
+                      const fileTransfer = _this3.transfer.create();
                       let resultt;
                       try {
-                        yield fileTransfer.download(_this15.backendURL + localurl, _this15.fileIonic.externalDataDirectory + 'dist2/' + localurl);
+                        yield fileTransfer.download(_this3.backendURL + localurl, _this3.fileIonic.externalDataDirectory + 'dist2/' + localurl);
                       } catch (e) {
                         resultt = e;
                       }
@@ -1103,7 +806,7 @@ class UtilsService {
                   return _ref5.apply(this, arguments);
                 };
               }(), error1 => {
-                console.log('error=', error1, ' , urlToDownload=', _this15.isEncoded(url));
+                console.log('error=', error1, ' , urlToDownload=', _this3.isEncoded(url));
                 resolve(undefined);
               });
             });
@@ -1114,15 +817,15 @@ class UtilsService {
           }
           promise1.then(/*#__PURE__*/function () {
             var _ref6 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (temp3) {
-              if (localurl && _this15.platformDevice && _this15.platformDevice.is('cordova')) {
-                const temp1 = yield _this15.checkFileTablet(localurl, check);
+              if (localurl && _this3.platformDevice && _this3.platformDevice.is('cordova')) {
+                const temp1 = yield _this3.checkFileTablet(localurl, check);
                 if (temp1 === 0) {
-                  const fileTransfer = _this15.transfer.create();
+                  const fileTransfer = _this3.transfer.create();
                   let temp;
                   try {
-                    temp = yield fileTransfer.download(_this15.backendURL + localurl, _this15.fileIonic.externalDataDirectory + 'dist2/' + localurl);
+                    temp = yield fileTransfer.download(_this3.backendURL + localurl, _this3.fileIonic.externalDataDirectory + 'dist2/' + localurl);
                   } catch (e) {
-                    console.log('error 1 on %s error =', _this15.backendURL + localurl, e);
+                    console.log('error 1 on %s error =', _this3.backendURL + localurl, e);
                   }
                 }
               }
@@ -1142,34 +845,34 @@ class UtilsService {
     }());
   }
   downloadThumb(urlToDownload, dir, localurl, check) {
-    var _this16 = this;
+    var _this4 = this;
     return new Promise(/*#__PURE__*/function () {
       var _ref7 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
         if (urlToDownload) {
           let temp1;
           if (localurl === undefined) {
-            localurl = _this16.getFilename(dir, urlToDownload);
+            localurl = _this4.getFilename(dir, urlToDownload);
           }
           if (localurl !== undefined && localurl !== null && localurl && localurl.length > 0) {
-            temp1 = yield _this16.checkFileBackend(localurl, check);
+            temp1 = yield _this4.checkFileBackend(localurl, check);
             if (temp1 === false) {
               const params1 = new _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpParams().set('url', encodeURI(urlToDownload)).set('dir', encodeURI(dir));
-              const url = _this16.backendURL + 'store/downloadUrl';
+              const url = _this4.backendURL + 'store/downloadUrl';
               // tslint:disable-next-line: deprecation
-              _this16.http.get(url, {
+              _this4.http.get(url, {
                 params: params1
               }).subscribe(/*#__PURE__*/function () {
                 var _ref8 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (temp) {
                   const result = temp;
                   localurl = result.backendurl;
-                  if (_this16.platformDevice && _this16.platformDevice.is('cordova')) {
-                    temp1 = yield _this16.checkFileTablet(localurl, check);
+                  if (_this4.platformDevice && _this4.platformDevice.is('cordova')) {
+                    temp1 = yield _this4.checkFileTablet(localurl, check);
                     if (temp1 === 0) {
-                      const fileTransfer = _this16.transfer.create();
+                      const fileTransfer = _this4.transfer.create();
                       try {
-                        yield fileTransfer.download(_this16.backendURL + localurl, _this16.fileIonic.externalDataDirectory + 'dist2/' + localurl);
+                        yield fileTransfer.download(_this4.backendURL + localurl, _this4.fileIonic.externalDataDirectory + 'dist2/' + localurl);
                       } catch (e) {
-                        console.log('error 1 on %s error =', _this16.backendURL + localurl, e);
+                        console.log('error 1 on %s error =', _this4.backendURL + localurl, e);
                       }
                       const temp3 = {
                         backendurl: localurl
@@ -1196,15 +899,15 @@ class UtilsService {
                 reject(undefined);
               });
             } else {
-              if (_this16.platformDevice && _this16.platformDevice.is('cordova')) {
+              if (_this4.platformDevice && _this4.platformDevice.is('cordova')) {
                 let toto;
-                temp1 = yield _this16.checkFileTablet(localurl, check);
+                temp1 = yield _this4.checkFileTablet(localurl, check);
                 if (temp1 === 0) {
-                  const fileTransfer = _this16.transfer.create();
+                  const fileTransfer = _this4.transfer.create();
                   try {
-                    toto = yield fileTransfer.download(_this16.backendURL + localurl, _this16.fileIonic.externalDataDirectory + 'dist2/' + localurl);
+                    toto = yield fileTransfer.download(_this4.backendURL + localurl, _this4.fileIonic.externalDataDirectory + 'dist2/' + localurl);
                   } catch (e) {
-                    console.log('error 2 on %s error =', _this16.backendURL + localurl, e);
+                    console.log('error 2 on %s error =', _this4.backendURL + localurl, e);
                   }
                   const temp = {
                     backendurl: localurl
@@ -1225,21 +928,21 @@ class UtilsService {
             }
           } else {
             const params1 = new _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpParams().set('url', encodeURI(urlToDownload)).set('dir', encodeURI(dir));
-            const url = _this16.backendURL + 'store/downloadUrl';
+            const url = _this4.backendURL + 'store/downloadUrl';
             // tslint:disable-next-line: deprecation
-            _this16.http.get(url, {
+            _this4.http.get(url, {
               params: params1
             }).subscribe(/*#__PURE__*/function () {
               var _ref9 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (temp) {
                 const result = temp;
                 localurl = result.backendurl;
-                if (_this16.platformDevice && _this16.platformDevice.is('cordova')) {
+                if (_this4.platformDevice && _this4.platformDevice.is('cordova')) {
                   let toto;
-                  temp1 = yield _this16.checkFileTablet(localurl);
+                  temp1 = yield _this4.checkFileTablet(localurl);
                   if (localurl !== undefined && temp1 === 0) {
-                    const fileTransfer = _this16.transfer.create();
+                    const fileTransfer = _this4.transfer.create();
                     try {
-                      toto = yield fileTransfer.download(_this16.backendURL + localurl, _this16.fileIonic.externalDataDirectory + 'dist2/' + localurl);
+                      toto = yield fileTransfer.download(_this4.backendURL + localurl, _this4.fileIonic.externalDataDirectory + 'dist2/' + localurl);
                     } catch (e) {
                       console.log('error 3 on %s error =', localurl, e);
                     }
@@ -1290,25 +993,25 @@ class UtilsService {
     });
   }
   getLocalUrl(mainAssetUrl, defaultAssetUrl, check) {
-    var _this17 = this;
+    var _this5 = this;
     let result;
     return new Promise(/*#__PURE__*/function () {
       var _ref10 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
         let toto = false;
         if (mainAssetUrl !== undefined) {
           //        if (false) {
-          if (_this17.platformDevice && _this17.platformDevice.is('cordova')) {
-            const temp = yield _this17.checkFileTablet(mainAssetUrl, check);
+          if (_this5.platformDevice && _this5.platformDevice.is('cordova')) {
+            const temp = yield _this5.checkFileTablet(mainAssetUrl, check);
             if (temp) {
-              result = _this17.webview.convertFileSrc(_this17.fileIonic.externalDataDirectory + 'dist2/' + encodeURI(mainAssetUrl));
+              result = _this5.webview.convertFileSrc(_this5.fileIonic.externalDataDirectory + 'dist2/' + encodeURI(mainAssetUrl));
               toto = true;
             }
           }
           if (!toto) {
-            if (_this17.connected) {
-              if (yield _this17.checkFileBackend(mainAssetUrl)) {
+            if (_this5.connected) {
+              if (yield _this5.checkFileBackend(mainAssetUrl)) {
                 if (mainAssetUrl) {
-                  result = _this17.backendURL + encodeURI(mainAssetUrl);
+                  result = _this5.backendURL + encodeURI(mainAssetUrl);
                   toto = true;
                 }
               }
@@ -1343,14 +1046,14 @@ class UtilsService {
     }
   }
   listDir(path, dirName) {
-    var _this18 = this;
+    var _this6 = this;
     return new Promise(/*#__PURE__*/function () {
       var _ref11 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
-        if (_this18.platformDevice && _this18.platformDevice.is('cordova')) {
-          const path1 = _this18.fileIonic.externalDataDirectory + path;
+        if (_this6.platformDevice && _this6.platformDevice.is('cordova')) {
+          const path1 = _this6.fileIonic.externalDataDirectory + path;
           let dirList;
           try {
-            dirList = yield _this18.fileIonic.listDir(path1, dirName);
+            dirList = yield _this6.fileIonic.listDir(path1, dirName);
           } catch (e) {
             console.log('error 5 listDir %s error ', path1, e);
             reject(e);
@@ -1620,30 +1323,556 @@ class UtilsService {
     return socialPatterns.some(pattern => pattern.test(url));
   }
   static ɵfac = function UtilsService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || UtilsService)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](_angular_core__WEBPACK_IMPORTED_MODULE_8__.NgZone), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](_angular_common__WEBPACK_IMPORTED_MODULE_12__.DatePipe), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](ng2_haversine__WEBPACK_IMPORTED_MODULE_5__.HaversineService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](ScriptLoadingService));
+    return new (__ngFactoryType__ || UtilsService)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_core__WEBPACK_IMPORTED_MODULE_7__.NgZone), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_common__WEBPACK_IMPORTED_MODULE_12__.DatePipe), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ng2_haversine__WEBPACK_IMPORTED_MODULE_5__.HaversineService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ScriptLoadingService));
   };
-  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjectable"]({
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjectable"]({
     token: UtilsService,
     factory: UtilsService.ɵfac,
     providedIn: 'root'
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](UtilsService, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Injectable,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](UtilsService, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Injectable,
     args: [{
       providedIn: 'root'
     }]
   }], () => [{
     type: _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient
   }, {
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.NgZone
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.NgZone
   }, {
     type: _angular_common__WEBPACK_IMPORTED_MODULE_12__.DatePipe
   }, {
     type: ng2_haversine__WEBPACK_IMPORTED_MODULE_5__.HaversineService
   }, {
     type: ScriptLoadingService
+  }], null);
+})();
+var OBJECTNAME;
+(function (OBJECTNAME) {
+  OBJECTNAME["bnLocations"] = "backendlocations";
+  OBJECTNAME["bnBoats"] = "backendboats";
+  OBJECTNAME["bnUsers"] = "backendusers";
+  OBJECTNAME["bnMessages"] = "backendmessages";
+  OBJECTNAME["bnBookings"] = "backendbookings";
+  OBJECTNAME["bnFeedbacks"] = "backendfeedbacks";
+  OBJECTNAME["bnPartners"] = "backendpartners";
+  OBJECTNAME["bnEvents"] = "backendevents";
+  OBJECTNAME["bnAvailability"] = "backendavailability";
+  OBJECTNAME["bnBoatServices"] = "backendservices";
+  OBJECTNAME["bnOwners"] = "backendowners";
+})(OBJECTNAME || (OBJECTNAME = {}));
+var AUTHSTATUS;
+(function (AUTHSTATUS) {
+  AUTHSTATUS[AUTHSTATUS["SUCCESS"] = 1] = "SUCCESS";
+  AUTHSTATUS[AUTHSTATUS["EMAILNOTVERIFIED"] = -1] = "EMAILNOTVERIFIED";
+  AUTHSTATUS[AUTHSTATUS["UPDATETOKENFAILED"] = -2] = "UPDATETOKENFAILED";
+  AUTHSTATUS[AUTHSTATUS["UNKNOWNERROR"] = -100] = "UNKNOWNERROR";
+})(AUTHSTATUS || (AUTHSTATUS = {}));
+class StoreDbService {
+  http;
+  ngZone;
+  utilSvc;
+  firebaseApp = {};
+  adb;
+  bdb;
+  baf;
+  currentUser = null;
+  // ✅ reactive auth state
+  authState$ = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
+  envPlatform;
+  firebaseBSS = {};
+  firebaseBSSdata = {};
+  firebaseRefOn = [];
+  firebaseData = {};
+  backendFbRef = {};
+  storageFbRef = [];
+  uploadProgress$;
+  firebaseauth;
+  constructor(http, ngZone, utilSvc) {
+    this.http = http;
+    this.ngZone = ngZone;
+    this.utilSvc = utilSvc;
+  }
+  initFBlistener(storeId, fbObject) {
+    this.firebaseBSS[storeId][fbObject] = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject([]);
+    this.firebaseBSSdata[storeId][fbObject] = this.firebaseBSS[storeId][fbObject].asObservable();
+    this.firebaseData[storeId][fbObject] = [];
+  }
+  closeFBlistener(storeId, fbObject) {
+    if (this.firebaseBSS[storeId]) {
+      delete this.firebaseBSS[storeId][fbObject];
+    }
+    if (this.firebaseBSSdata[storeId]) {
+      delete this.firebaseBSSdata[storeId][fbObject];
+    }
+    if (this.firebaseData[storeId]) {
+      delete this.firebaseData[storeId][fbObject];
+    }
+  }
+  initFB(storeId, config, appName, storage, auth, firebaseObjects, fbRef) {
+    return new Promise((resolve, reject) => {
+      this.firebaseData[storeId] = this.firebaseData[storeId] ?? {};
+      this.firebaseBSS[storeId] = this.firebaseBSS[storeId] ?? {};
+      this.firebaseBSSdata[storeId] = this.firebaseBSSdata[storeId] ?? {};
+      this.firebaseRefOn[storeId] = this.firebaseRefOn[storeId] ? this.firebaseRefOn[storeId] : [];
+      firebaseObjects.forEach(fbObject => {
+        this.initFBlistener(storeId, fbObject);
+      });
+      let data;
+      data = this.initFirebaseDatabase(config, appName);
+      const databaseString = 'database';
+      const authString = 'auth';
+      const storageString = 'storage';
+      fbRef[databaseString] = data;
+      if (auth) {
+        let data1;
+        data1 = this.initFirebaseAuth(config, appName);
+        data1.languageCode = 'fr';
+        fbRef[authString] = data1;
+      }
+      if (storage) {
+        let data2;
+        data2 = this.initFirebaseStorage(config, appName);
+        fbRef[storageString] = data2;
+      }
+      resolve(fbRef);
+    });
+  }
+  closeFB(storeId, firebaseObjects, fbRef) {
+    return new Promise(resolve => {
+      const promises = [];
+      firebaseObjects.forEach(fbObject => {
+        this.closeFBlistener(storeId, fbObject);
+      });
+      this.firebaseData[storeId] = {};
+      this.firebaseBSS[storeId] = {};
+      this.firebaseBSSdata[storeId] = {};
+      this.firebaseRefOn[storeId] = [];
+      fbRef = [];
+      Promise.all(promises).then(() => resolve(1));
+    });
+  }
+  // method for initialisation of FB
+  initFirebaseDatabase(config, appname) {
+    if (!this.firebaseApp[appname]) {
+      this.firebaseApp[appname] = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].initializeApp(config, appname);
+    }
+    const database = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].database(this.firebaseApp[appname]);
+    return database;
+  }
+  initFirebaseStorage(config, appname) {
+    if (!this.firebaseApp[appname]) {
+      this.firebaseApp[appname] = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].initializeApp(config, appname);
+    }
+    const storage = this.firebaseApp[appname].storage();
+    return storage;
+  }
+  initFirebaseAuth(config, appname) {
+    if (!this.firebaseApp[appname]) {
+      this.firebaseApp[appname] = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].initializeApp(config, appname);
+    }
+    // ✅ get the *instance* bound to the named app
+    const auth = firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth(this.firebaseApp[appname]);
+    // ✅ keep the instance on the service
+    this.firebaseauth = auth;
+    // Persist sessions locally
+    auth.setPersistence(firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth.Auth.Persistence.LOCAL).catch(() => {});
+    // Pick up Google redirect results
+    auth.getRedirectResult().catch(() => {});
+    // Track auth state
+    auth.onAuthStateChanged(user => {
+      this.currentUser = user;
+      this.authState$.next(user);
+    });
+    return auth; // ✅
+  }
+  // CRUD methods for a given object
+  subscribeObject(storeId, fbDbRef, fbObject, refId) {
+    let tempObject = fbObject;
+    if (fbObject.indexOf('backend') !== 0) {
+      tempObject = storeId + '/' + fbObject;
+    }
+    if (refId && refId !== -1) {
+      tempObject = tempObject + '/' + refId;
+    }
+    this.firebaseRefOn[storeId][fbObject] = fbDbRef.ref(tempObject).on('value', data => {
+      let temp = data.val();
+      if (temp == null) {
+        temp = undefined;
+      }
+      if (refId !== undefined) {
+        if (refId !== -1) {
+          this.firebaseData[storeId][fbObject][refId] = temp;
+        } else {
+          this.firebaseData[storeId][fbObject] = temp;
+        }
+      } else {
+        if (temp !== undefined) {
+          this.firebaseData[storeId][fbObject] = this.utilSvc.objectToArray(data.val());
+        }
+      }
+      if (this.firebaseBSS[storeId][fbObject]) {
+        this.firebaseBSS[storeId][fbObject].next([temp]);
+      }
+    });
+  }
+  unsubscribeObject(storeId, fbDbRef, fbObject, refId) {
+    if (this.firebaseRefOn[storeId]) {
+      if (this.firebaseRefOn[storeId][fbObject]) {
+        let tempObject = fbObject;
+        if (fbObject.indexOf('backend') !== 0) {
+          tempObject = storeId + '/' + fbObject;
+        }
+        if (refId && refId !== -1) {
+          tempObject = tempObject + '/' + refId + '/';
+        }
+        fbDbRef.ref(tempObject).off();
+        delete this.firebaseRefOn[storeId][fbObject];
+      }
+    }
+  }
+  getObject(storeId, fbDbRef, fbObject, refId) {
+    return new Promise((resolve, reject) => {
+      let tempObject = fbObject;
+      if (fbObject.indexOf('backend') !== 0) {
+        tempObject = storeId + '/' + fbObject;
+      }
+      if (refId !== undefined && refId !== -1) {
+        tempObject = tempObject + '/' + refId;
+      }
+      if (fbDbRef) {
+        fbDbRef.ref(tempObject).once('value').then(data => {
+          resolve(data.val());
+        }, error => {
+          reject(error);
+        });
+      } else {
+        resolve(null);
+      }
+    });
+  }
+  removeObject(storeId, fbDbRef, fbObject, refId) {
+    return new Promise((resolve, reject) => {
+      let tempObject;
+      if (refId !== undefined) {
+        if (fbObject.indexOf('backend') !== 0) {
+          tempObject = storeId + '/' + fbObject + '/' + refId;
+        } else {
+          tempObject = fbObject + '/' + refId;
+        }
+        fbDbRef.ref(tempObject).remove().then(() => {
+          resolve(String(refId));
+        }, error => {
+          reject(error);
+        });
+      } else {
+        resolve(undefined);
+      }
+    });
+  }
+  updateObject(storeId, fbDbRef, fbObject, objectData, refId) {
+    return new Promise((resolve, reject) => {
+      let tempObject = fbObject;
+      if (fbObject.indexOf('backend') !== 0) {
+        tempObject = storeId + '/' + fbObject;
+      } else {}
+      const tod = new Date().getTime();
+      if (refId) {
+        tempObject = tempObject + '/' + refId;
+        objectData.modifiedTS = tod;
+      }
+      if (objectData) {
+        fbDbRef.ref(tempObject).set(objectData).then(/*#__PURE__*/function () {
+          var _ref12 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (data) {
+            resolve(objectData);
+          });
+          return function (_x16) {
+            return _ref12.apply(this, arguments);
+          };
+        }(), error => reject(error));
+      } else {
+        reject(undefined);
+      }
+    });
+  }
+  partialUpdateObject(storeId, fbDbRef, fbObject, patch, refId) {
+    return new Promise((resolve, reject) => {
+      let tempObject = fbObject;
+      if (fbObject.indexOf('backend') !== 0) {
+        tempObject = storeId + '/' + fbObject;
+      }
+      if (refId) {
+        tempObject = tempObject + '/' + refId;
+        patch.modifiedTS = new Date().getTime();
+      }
+      fbDbRef.ref(tempObject).update(patch).then(() => resolve(patch), err => reject(err));
+    });
+  }
+  searchObject(storeId, fbDbRef, fbObject, field, fieldvalue) {
+    var _this7 = this;
+    return new Promise(/*#__PURE__*/function () {
+      var _ref13 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
+        let tempObject = fbObject;
+        if (fbObject.indexOf('backend') !== 0) {
+          tempObject = storeId + '/' + fbObject;
+        } else {}
+        const tod = new Date().getTime();
+        const snapshot = yield fbDbRef.ref(tempObject).orderByChild(field).equalTo(fieldvalue).once('value');
+        if (snapshot.exists()) {
+          const userDatat = snapshot.val();
+          const userData = _this7.utilSvc.objectToArray(userDatat);
+          resolve(userData);
+        } else {
+          console.log('No user with this state found.');
+          reject('No user with this state found.');
+        }
+      });
+      return function (_x17, _x18) {
+        return _ref13.apply(this, arguments);
+      };
+    }());
+  }
+  getAvailableObjectId(BEStoreId, fbObject, idName) {
+    return new Promise((resolve, reject) => {
+      this.getObject(BEStoreId, this.utilSvc.mdb, fbObject).then(data => {
+        const temp = data;
+        const objectId = temp[temp.length - 1][idName] + 1;
+        resolve(objectId);
+      }, error => reject(error));
+    });
+  }
+  deleteObject(storeId, objectToDelete) {
+    let ref;
+    const regexasset = /(\/?assets\/)(.+)/;
+    const temp = regexasset.exec(objectToDelete);
+    if (temp && temp[2]) {
+      if (storeId === this.utilSvc.backendFBstoreId) {
+        // Create a reference to the file to delete
+        ref = this.utilSvc.mst.ref(temp[2]);
+      } else {
+        ref = this.utilSvc.sst[storeId].ref(temp[2]);
+      }
+      // Delete the file
+      ref.delete();
+    }
+  }
+  deleteObjectFromUrl(storeId, url) {
+    let ref;
+    let error;
+    if (storeId === this.utilSvc.backendFBstoreId) {
+      // Create a reference to the file to delete
+      try {
+        ref = this.utilSvc.mst.refFromURL(url);
+      } catch (e) {
+        error = e;
+      }
+    } else {
+      try {
+        ref = this.utilSvc.sst[storeId].refFromURL(url);
+      } catch (e) {
+        error = e;
+      }
+    }
+    // Delete the file
+    if (ref) {
+      try {
+        ref.delete();
+      } catch (e) {}
+    }
+  }
+  uploadObjects(event, directory, read) {
+    return new Promise((resolve, reject) => {
+      let ref;
+      const fileName = event.target.files[0].name;
+      ref = this.utilSvc.mst.ref(directory + '/' + fileName);
+      const task = ref.put(event.target.files[0]).then(/*#__PURE__*/function () {
+        var _ref14 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (snapshot) {
+          try {
+            const downloadURL = yield ref.getDownloadURL();
+            resolve(downloadURL);
+          } catch (e) {
+            reject(e);
+          }
+        });
+        return function (_x19) {
+          return _ref14.apply(this, arguments);
+        };
+      }(), error => {
+        reject(error);
+      });
+    });
+  }
+  uploadObjects1(storeId, file, directory, read) {
+    return new Promise((resolve, reject) => {
+      let ref;
+      const fileName = file.name;
+      if (storeId !== this.utilSvc.backendFBstoreId) {
+        ref = this.utilSvc.sst[storeId].ref(directory + '/' + fileName);
+      } else {
+        ref = this.utilSvc.mst.ref(directory + '/' + fileName);
+      }
+      const task = ref.put(file).then(/*#__PURE__*/function () {
+        var _ref15 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (snapshot) {
+          try {
+            const downloadURL = yield ref.getDownloadURL();
+            resolve(downloadURL);
+          } catch (e) {
+            reject(e);
+          }
+        });
+        return function (_x20) {
+          return _ref15.apply(this, arguments);
+        };
+      }(), error => {
+        reject(error);
+      });
+    });
+  }
+  uploadMedia(storeId, event, directory) {
+    var _this8 = this;
+    return new Promise(/*#__PURE__*/function () {
+      var _ref16 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
+        let thumb;
+        if (!directory) {
+          directory = '';
+        }
+        if (event) {
+          try {
+            thumb = yield _this8.uploadObjects(event, directory, false);
+          } catch (e) {
+            console.log('quick connect error e=', e);
+          }
+        }
+        resolve(thumb);
+      });
+      return function (_x21, _x22) {
+        return _ref16.apply(this, arguments);
+      };
+    }());
+  }
+  uploadMedia1(storeId, file, directory) {
+    var _this9 = this;
+    return new Promise(/*#__PURE__*/function () {
+      var _ref17 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
+        let thumb;
+        if (!directory) {
+          directory = '';
+        }
+        if (event) {
+          try {
+            thumb = yield _this9.uploadObjects1(storeId, file, directory, false);
+          } catch (e) {}
+        }
+        resolve(thumb);
+      });
+      return function (_x23, _x24) {
+        return _ref17.apply(this, arguments);
+      };
+    }());
+  }
+  deletePImage(storeId, pImage, objectName) {
+    return new Promise((resolve, reject) => {
+      if (pImage.fburl) {
+        this.deleteObject(storeId, pImage.backendurl);
+      }
+      this.removeObject(storeId, this.utilSvc.sdb[storeId], objectName, String(pImage.assetId)).then(data => {
+        resolve(pImage);
+      }, error => {
+        reject(error);
+      });
+    });
+  }
+  deletePVideo(storeId, pVideo, objectName) {
+    return new Promise((resolve, reject) => {
+      if (pVideo.fburl) {
+        this.deleteObject(storeId, pVideo.backendurl);
+      }
+      this.removeObject(storeId, this.utilSvc.sdb[storeId], objectName, String(pVideo.assetId)).then(data => {
+        resolve(pVideo);
+      }, error => {
+        reject(error);
+      });
+    });
+  }
+  createPImage(storeId, pImageName, objectName, type1) {
+    return new Promise((resolve, reject) => {
+      const pImage = {
+        nickName: pImageName,
+        assetId: Math.floor(Math.random() * 100000),
+        type: type1
+      };
+      this.updateObject(storeId, this.utilSvc.sdb[storeId], objectName, pImage, pImage.assetId).then(data => {
+        resolve(pImage);
+      }, error => {
+        reject(error);
+      });
+    });
+  }
+  updatePImage(storeId, pImage, pImageName, objectName) {
+    return new Promise((resolve, reject) => {
+      pImage.nickName = pImageName;
+      this.updateObject(storeId, this.utilSvc.sdb[storeId], objectName, pImage, pImage.assetId).then(data => {
+        resolve(pImage);
+      }, error => {
+        reject(error);
+      });
+    });
+  }
+  createPVideo(storeId, pVideoName, objectName, type1) {
+    return new Promise((resolve, reject) => {
+      const pVideo = {
+        nickName: pVideoName,
+        assetId: Math.floor(Math.random() * 100000),
+        type: type1
+      };
+      this.updateObject(storeId, this.utilSvc.sdb[storeId], objectName, pVideo, pVideo.assetId).then(data => {
+        resolve(pVideo);
+      }, error => {
+        reject(error);
+      });
+    });
+  }
+  updatePVideo(storeId, pVideo, pVideoName, objectName) {
+    return new Promise((resolve, reject) => {
+      pVideo.nickName = pVideoName;
+      this.updateObject(storeId, this.utilSvc.sdb[storeId], objectName, pVideo, pVideo.assetId).then(data => {
+        resolve(pVideo);
+      }, error => {
+        reject(error);
+      });
+    });
+  }
+  validateVideoFile(file) {
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+    video.onloadedmetadata = () => {
+      window.URL.revokeObjectURL(video.src);
+    };
+    video.srcObject = file;
+  }
+  static ɵfac = function StoreDbService_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || StoreDbService)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_core__WEBPACK_IMPORTED_MODULE_7__.NgZone), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](UtilsService));
+  };
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjectable"]({
+    token: StoreDbService,
+    factory: StoreDbService.ɵfac,
+    providedIn: 'root'
+  });
+}
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](StoreDbService, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Injectable,
+    args: [{
+      providedIn: 'root'
+    }]
+  }], () => [{
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient
+  }, {
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.NgZone
+  }, {
+    type: UtilsService
   }], null);
 })();
 class FilterGenericN {
@@ -1682,15 +1911,15 @@ class FilterGenericN {
   static ɵfac = function FilterGenericN_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericN)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
     name: "filterGenericN",
     type: FilterGenericN,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericN, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericN, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
     args: [{
       name: 'filterGenericN',
       pure: false
@@ -1734,15 +1963,15 @@ class CountGenericN {
   static ɵfac = function CountGenericN_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || CountGenericN)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
     name: "countGenericN",
     type: CountGenericN,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](CountGenericN, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](CountGenericN, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
     args: [{
       name: 'countGenericN',
       pure: false
@@ -1777,15 +2006,15 @@ class FilterGenericNS {
   static ɵfac = function FilterGenericNS_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericNS)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
     name: "filterGenericNS",
     type: FilterGenericNS,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericNS, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericNS, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
     args: [{
       name: 'filterGenericNS',
       pure: false
@@ -1828,15 +2057,15 @@ class CountGenericS {
   static ɵfac = function CountGenericS_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || CountGenericS)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
     name: "countGenericS",
     type: CountGenericS,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](CountGenericS, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](CountGenericS, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
     args: [{
       name: 'countGenericS',
       pure: false
@@ -1879,15 +2108,15 @@ class FilterGenericS {
   static ɵfac = function FilterGenericS_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericS)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
     name: "filterGenericS",
     type: FilterGenericS,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericS, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericS, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
     args: [{
       name: 'filterGenericS',
       pure: false
@@ -1930,15 +2159,15 @@ class CountGenericPS {
   static ɵfac = function CountGenericPS_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || CountGenericPS)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
     name: "countGenericPS",
     type: CountGenericPS,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](CountGenericPS, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](CountGenericPS, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
     args: [{
       name: 'countGenericPS',
       pure: false
@@ -1981,15 +2210,15 @@ class FilterGenericPS {
   static ɵfac = function FilterGenericPS_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericPS)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
     name: "filterGenericPS",
     type: FilterGenericPS,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericPS, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericPS, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
     args: [{
       name: 'filterGenericPS',
       pure: false
@@ -2021,15 +2250,15 @@ class FilterGenericPSO {
   static ɵfac = function FilterGenericPSO_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericPSO)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
     name: "filterGenericPSO",
     type: FilterGenericPSO,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericPSO, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericPSO, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
     args: [{
       name: 'filterGenericPSO',
       pure: false
@@ -2061,15 +2290,15 @@ class FilterGenericPSA {
   static ɵfac = function FilterGenericPSA_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericPSA)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
     name: "filterGenericPSA",
     type: FilterGenericPSA,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericPSA, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericPSA, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
     args: [{
       name: 'filterGenericPSA',
       pure: false
@@ -2104,15 +2333,15 @@ class FilterGenericIS {
   static ɵfac = function FilterGenericIS_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericIS)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
     name: "filterGenericIS",
     type: FilterGenericIS,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericIS, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericIS, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
     args: [{
       name: 'filterGenericIS',
       pure: false
@@ -2158,15 +2387,15 @@ class FilterGenericA {
   static ɵfac = function FilterGenericA_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericA)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
     name: "filterGenericA",
     type: FilterGenericA,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericA, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericA, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
     args: [{
       name: 'filterGenericA',
       pure: false
@@ -2202,15 +2431,15 @@ class FilterGenericB {
   static ɵfac = function FilterGenericB_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || FilterGenericB)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
     name: "filterGenericB",
     type: FilterGenericB,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](FilterGenericB, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](FilterGenericB, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
     args: [{
       name: 'filterGenericB',
       pure: false
@@ -2248,15 +2477,15 @@ class CountGenericB {
   static ɵfac = function CountGenericB_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || CountGenericB)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
     name: "countGenericB",
     type: CountGenericB,
     pure: false
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](CountGenericB, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](CountGenericB, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
     args: [{
       name: 'countGenericB',
       pure: false
@@ -2282,17 +2511,17 @@ class TranslateAuto {
     });
   }
   static ɵfac = function TranslateAuto_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || TranslateAuto)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient, 16), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](UtilsService, 16));
+    return new (__ngFactoryType__ || TranslateAuto)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient, 16), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdirectiveInject"](UtilsService, 16));
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
     name: "translateAuto",
     type: TranslateAuto,
     pure: true
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](TranslateAuto, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](TranslateAuto, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
     args: [{
       name: 'translateAuto'
     }]
@@ -2309,15 +2538,15 @@ class AddComponent {
   static ɵfac = function AddComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || AddComponent)();
   };
-  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefinePipe"]({
+  static ɵpipe = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefinePipe"]({
     name: "addComponent",
     type: AddComponent,
     pure: true
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](AddComponent, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Pipe,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](AddComponent, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Pipe,
     args: [{
       name: 'addComponent'
     }]
@@ -2340,7 +2569,7 @@ class UsersService {
   utilSvc;
   userInfo;
   allUsers = null;
-  allUsersO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
+  allUsersO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
   confirmationResult;
   recaptchaVerifier;
   constructor(http, storeDbSvc, utilSvc) {
@@ -2352,7 +2581,7 @@ class UsersService {
   // EMAIL/PASSWORD SIGN-IN
   // -----------------------
   authUser(email, password1, emailNotVerified) {
-    const maf = this.storeDbSvc.auth;
+    const maf = this.storeDbSvc.firebaseauth;
     return new Promise((resolve, reject) => {
       maf.signInWithEmailAndPassword(email.toLowerCase(), password1).then(cred => {
         const user = cred.user;
@@ -2368,10 +2597,10 @@ class UsersService {
   // EMAIL/PASSWORD SIGN-UP
   // -----------------------
   registerWithEmail(email, password, displayName) {
-    var _this19 = this;
-    const maf = this.storeDbSvc.auth;
+    var _this10 = this;
+    const maf = this.storeDbSvc.firebaseauth;
     return new Promise(/*#__PURE__*/function () {
-      var _ref12 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
+      var _ref18 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
         try {
           const cred = yield maf.createUserWithEmailAndPassword(email.toLowerCase(), password);
           const user = cred.user;
@@ -2381,11 +2610,11 @@ class UsersService {
             });
           }
           yield user.sendEmailVerification({
-            url: _this19.utilSvc.backendURL ? `${_this19.utilSvc.backendURL}/home` : window.location.origin + '/home',
+            url: _this10.utilSvc.backendURL ? `${_this10.utilSvc.backendURL}/home` : window.location.origin + '/home',
             handleCodeInApp: true
           });
           // Persist a sanitized profile in your RTDB/Firestore (no password)
-          yield _this19.saveUserProfile({
+          yield _this10.saveUserProfile({
             userId: user.uid,
             email: user.email,
             displayName: user.displayName || displayName || '',
@@ -2401,20 +2630,20 @@ class UsersService {
           reject(e);
         }
       });
-      return function (_x16, _x17) {
-        return _ref12.apply(this, arguments);
+      return function (_x25, _x26) {
+        return _ref18.apply(this, arguments);
       };
     }());
   }
   resendVerificationEmail() {
-    var _this20 = this;
-    const user = this.storeDbSvc.auth.currentUser;
+    var _this11 = this;
+    const user = this.storeDbSvc.firebaseauth.currentUser;
     return new Promise(/*#__PURE__*/function () {
-      var _ref13 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
+      var _ref19 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
         if (!user) return reject(new Error('Not signed in'));
         try {
           yield user.sendEmailVerification({
-            url: _this20.utilSvc.backendURL ? `${_this20.utilSvc.backendURL}/home` : window.location.origin + '/home',
+            url: _this11.utilSvc.backendURL ? `${_this11.utilSvc.backendURL}/home` : window.location.origin + '/home',
             handleCodeInApp: true
           });
           resolve();
@@ -2422,16 +2651,16 @@ class UsersService {
           reject(e);
         }
       });
-      return function (_x18, _x19) {
-        return _ref13.apply(this, arguments);
+      return function (_x27, _x28) {
+        return _ref19.apply(this, arguments);
       };
     }());
   }
   getUserProfile(uid) {
-    var _this21 = this;
+    var _this12 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const storeId = _this21.utilSvc.backendFBstoreId;
-      const data = yield _this21.storeDbSvc.getObject(OBJECTNAME.bnUsers, uid);
+      const storeId = _this12.utilSvc.backendFBstoreId;
+      const data = yield _this12.storeDbSvc.getObject(storeId, _this12.utilSvc.mdb, OBJECTNAME.bnUsers, uid);
       return data || null;
     })();
   }
@@ -2439,9 +2668,9 @@ class UsersService {
    * Sign in with Google, upsert RTDB profile, then return RTDB user.
    */
   signInWithGoogleAndLoadProfile() {
-    var _this22 = this;
+    var _this13 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const maf = _this22.storeDbSvc.auth;
+      const maf = _this13.utilSvc.mauth;
       const provider = new firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth.GoogleAuthProvider();
       // Popup (you can also support redirect similarly)
       const result = yield maf.signInWithPopup(provider);
@@ -2464,7 +2693,7 @@ class UsersService {
         }
       }
       // 3) Upsert profile in RTDB (keeps your schema consistent)
-      yield _this22.saveUserProfile({
+      yield _this13.saveUserProfile({
         userId: user.uid,
         email: user.email || '',
         displayName: user.displayName || `${first} ${last}`.trim(),
@@ -2479,7 +2708,7 @@ class UsersService {
         createdTS: Date.now()
       }, /* merge */true);
       // 4) Return the RTDB profile
-      const profile = yield _this22.getUserProfile(user.uid);
+      const profile = yield _this13.getUserProfile(user.uid);
       if (profile) return profile;
       // very rare fallback
       return {
@@ -2508,21 +2737,21 @@ class UsersService {
   // SIGN-OUT
   // ----------
   logout() {
-    return this.storeDbSvc.auth.signOut();
+    return this.storeDbSvc.firebaseauth.signOut();
   }
   // ---------------------
   // PASSWORD RESET (auth)
   // ---------------------
   resetPwdUser(email) {
-    return this.storeDbSvc.auth.sendPasswordResetEmail(email);
+    return this.storeDbSvc.firebaseauth.sendPasswordResetEmail(email);
   }
   // ------------------------
   // CLIENT-SIDE PASSWORD CHANGE
   // ------------------------
   changePasswordWithOldPassword(oldPassword, newPassword) {
-    var _this23 = this;
+    var _this14 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const auth = _this23.storeDbSvc.auth;
+      const auth = _this14.storeDbSvc.firebaseauth;
       const user = auth.currentUser;
       if (!user || !user.email) {
         throw new Error('Not signed in or user has no email.');
@@ -2533,15 +2762,15 @@ class UsersService {
     })();
   }
   changePasswordReauthWithGoogle(newPassword) {
-    var _this24 = this;
+    var _this15 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const auth = _this24.storeDbSvc.auth;
+      const auth = _this15.storeDbSvc.firebaseauth;
       const user = auth.currentUser;
       if (!user) throw new Error('Not signed in.');
       const provider = new firebase_compat_app__WEBPACK_IMPORTED_MODULE_1__["default"].auth.GoogleAuthProvider();
       yield user.reauthenticateWithPopup?.(provider) // compat has this on User
       .catch(/*#__PURE__*/function () {
-        var _ref14 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (e) {
+        var _ref20 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (e) {
           if (e?.code === 'auth/popup-blocked') {
             yield auth.signInWithRedirect(provider);
             yield auth.getRedirectResult();
@@ -2549,8 +2778,8 @@ class UsersService {
             throw e;
           }
         });
-        return function (_x20) {
-          return _ref14.apply(this, arguments);
+        return function (_x29) {
+          return _ref20.apply(this, arguments);
         };
       }());
       yield user.updatePassword(newPassword);
@@ -2562,7 +2791,7 @@ class UsersService {
   updateUser(wnUser) {
     return new Promise((resolve, reject) => {
       if (wnUser && wnUser.userId) {
-        this.storeDbSvc.updateObject(OBJECTNAME.bnUsers, wnUser, wnUser.userId).then(resolve, reject);
+        this.storeDbSvc.updateObject(this.utilSvc.backendFBstoreId, this.utilSvc.mdb, OBJECTNAME.bnUsers, wnUser, wnUser.userId).then(resolve, reject);
       } else {
         reject('user undefined');
       }
@@ -2572,30 +2801,30 @@ class UsersService {
   // INTERNAL: save/upsert user profile
   // ------------------------------------
   saveUserProfile(user, merge = false) {
-    var _this25 = this;
+    var _this16 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const storeId = _this25.utilSvc.backendFBstoreId;
-      const existing = merge ? yield _this25.storeDbSvc.getObject(OBJECTNAME.bnUsers, user.userId) : null;
+      const storeId = _this16.utilSvc.backendFBstoreId;
+      const existing = merge ? yield _this16.storeDbSvc.getObject(storeId, _this16.utilSvc.mdb, OBJECTNAME.bnUsers, user.userId) : null;
       const payload = merge && existing ? {
         ...existing,
         ...user,
         modifiedTS: Date.now()
       } : user;
-      yield _this25.storeDbSvc.updateObject(OBJECTNAME.bnUsers, payload, user.userId);
+      yield _this16.storeDbSvc.updateObject(storeId, _this16.utilSvc.mdb, OBJECTNAME.bnUsers, payload, user.userId);
     })();
   }
   static ɵfac = function UsersService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || UsersService)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](StoreDbService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](UtilsService));
+    return new (__ngFactoryType__ || UsersService)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](StoreDbService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](UtilsService));
   };
-  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjectable"]({
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjectable"]({
     token: UsersService,
     factory: UsersService.ɵfac,
     providedIn: 'root'
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](UsersService, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Injectable,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](UsersService, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Injectable,
     args: [{
       providedIn: 'root'
     }]
@@ -2621,17 +2850,17 @@ class StripeScriptService {
     return this.baseUrl;
   }
   static ɵfac = function StripeScriptService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || StripeScriptService)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](ScriptLoadingService));
+    return new (__ngFactoryType__ || StripeScriptService)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ScriptLoadingService));
   };
-  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjectable"]({
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjectable"]({
     token: StripeScriptService,
     factory: StripeScriptService.ɵfac,
     providedIn: 'root'
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](StripeScriptService, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Injectable,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](StripeScriptService, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Injectable,
     args: [{
       providedIn: 'root'
     }]
@@ -2663,10 +2892,10 @@ class GodigitalbModule {
   static ɵfac = function GodigitalbModule_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || GodigitalbModule)();
   };
-  static ɵmod = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineNgModule"]({
+  static ɵmod = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineNgModule"]({
     type: GodigitalbModule
   });
-  static ɵinj = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjector"]({
+  static ɵinj = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjector"]({
     providers: [ng2_haversine__WEBPACK_IMPORTED_MODULE_5__.HaversineService],
     imports: [_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClientModule, _angular_fire_compat__WEBPACK_IMPORTED_MODULE_14__.AngularFireModule.initializeApp(firebaseConfig, 'bootstrap'), _angular_fire_compat_auth__WEBPACK_IMPORTED_MODULE_15__.AngularFireAuthModule, _angular_fire_compat_storage__WEBPACK_IMPORTED_MODULE_16__.AngularFireStorageModule, _angular_fire_compat_database__WEBPACK_IMPORTED_MODULE_17__.AngularFireDatabaseModule, _ngx_translate_core__WEBPACK_IMPORTED_MODULE_18__.TranslateModule.forRoot({
       loader: {
@@ -2683,8 +2912,8 @@ class GodigitalbModule {
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](GodigitalbModule, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.NgModule,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](GodigitalbModule, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.NgModule,
     args: [{
       declarations: [],
       imports: [_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClientModule, _angular_fire_compat__WEBPACK_IMPORTED_MODULE_14__.AngularFireModule.initializeApp(firebaseConfig, 'bootstrap'), _angular_fire_compat_auth__WEBPACK_IMPORTED_MODULE_15__.AngularFireAuthModule, _angular_fire_compat_storage__WEBPACK_IMPORTED_MODULE_16__.AngularFireStorageModule, _angular_fire_compat_database__WEBPACK_IMPORTED_MODULE_17__.AngularFireDatabaseModule, _ngx_translate_core__WEBPACK_IMPORTED_MODULE_18__.TranslateModule.forRoot({
@@ -2709,7 +2938,7 @@ class GodigitalbModule {
   }], null, null);
 })();
 (function () {
-  (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵsetNgModuleScope"](GodigitalbModule, {
+  (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵsetNgModuleScope"](GodigitalbModule, {
     imports: [_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClientModule, _angular_fire_compat__WEBPACK_IMPORTED_MODULE_14__.AngularFireModule, _angular_fire_compat_auth__WEBPACK_IMPORTED_MODULE_15__.AngularFireAuthModule, _angular_fire_compat_storage__WEBPACK_IMPORTED_MODULE_16__.AngularFireStorageModule, _angular_fire_compat_database__WEBPACK_IMPORTED_MODULE_17__.AngularFireDatabaseModule, _ngx_translate_core__WEBPACK_IMPORTED_MODULE_18__.TranslateModule,
     // 👉 Ajoute ici tous tes pipes standalone :
     FilterGenericN, FilterGenericS, FilterGenericIS, CountGenericS, CountGenericPS, FilterGenericNS, FilterGenericPS, FilterGenericB, CountGenericB, FilterGenericA, TranslateAuto, AddComponent, CountGenericN, FilterGenericPSA, FilterGenericPSO],
@@ -2723,7 +2952,7 @@ class GodigitalbModule {
 /* eslint-disable arrow-body-style */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-const externalUrlProvider = new _angular_core__WEBPACK_IMPORTED_MODULE_8__.InjectionToken('externalUrlRedirectResolver');
+const externalUrlProvider = new _angular_core__WEBPACK_IMPORTED_MODULE_7__.InjectionToken('externalUrlRedirectResolver');
 var EDITSLIDE;
 (function (EDITSLIDE) {
   EDITSLIDE[EDITSLIDE["CREATIONSLIDE"] = 0] = "CREATIONSLIDE";
@@ -2745,9 +2974,6 @@ var USERROLE;
   USERROLE["ADMIN"] = "admin";
   USERROLE["PROVIDER"] = "provider";
 })(USERROLE || (USERROLE = {}));
-// -----------------------------------------------------------------------------
-// SERVICES SERVICE (simplified)
-// -----------------------------------------------------------------------------
 class ServicesService {
   http;
   router;
@@ -2758,26 +2984,31 @@ class ServicesService {
   scriptLoadingSvc;
   logger;
   config;
+  backendFbObjects = [OBJECTNAME.bnLocations || 'backendlocations', OBJECTNAME.bnBoats, OBJECTNAME.bnUsers, OBJECTNAME.bnMessages, OBJECTNAME.bnBookings, OBJECTNAME.bnFeedbacks, OBJECTNAME.bnPartners || 'backendpartners', OBJECTNAME.bnEvents, OBJECTNAME.bnAvailability || 'backendavailability', OBJECTNAME.bnBoatServices || 'backendservices', OBJECTNAME.bnOwners || 'backendowners'];
+  bnGuest;
+  bnUser;
+  bnUserO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
+  bnOwner;
+  bnOwnerO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
+  bnBookings;
+  bnBookingsO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
+  bnLocations;
+  bnLocationsO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
+  bnBoats;
+  bnBoatsO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
+  bnPartners;
+  bnPartnersO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
+  bnFeedbacks;
+  bnFeedbacksO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
+  bnEvents;
+  bnEventsO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
+  bnAvailability;
+  bnAvailabilityO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
+  /*    public bnBoatServices: BoatServices[] | null;
+      public bnBoatServicesO: BehaviorSubject<BoatServices[] | null> = new BehaviorSubject<BoatServices[] | null>(null);*/
   version;
-  /** Objects you want to subscribe to in RTDB */
-  backendFbObjects = [OBJECTNAME.bnBoats, OBJECTNAME.bnUsers, OBJECTNAME.bnMessages, OBJECTNAME.bnBookings, OBJECTNAME.bnFeedbacks, OBJECTNAME.bnEvents, OBJECTNAME.bnSkippers];
-  /** State */
-  bnGuest = null;
-  bnUser = null;
-  bnUserO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
-  bnOwner = null;
-  bnOwnerO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
-  bnBookings = null;
-  bnBookingsO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
-  bnBoats = null;
-  bnBoatsO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
-  bnFeedbacks = null;
-  bnFeedbacksO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
-  bnEvents = null;
-  bnEventsO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
-  bnAvailability = null;
-  bnAvailabilityO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
-  languageO = new rxjs__WEBPACK_IMPORTED_MODULE_7__.BehaviorSubject(null);
+  firebaseBSSdata = {};
+  languageO = new rxjs__WEBPACK_IMPORTED_MODULE_8__.BehaviorSubject(null);
   errorMessage = {
     title: '',
     description: '',
@@ -2788,8 +3019,6 @@ class ServicesService {
     lng: 0
   };
   progress = 0;
-  /** unsubscribe handles */
-  unsubscribers = [];
   constructor(http, router, storeDbSvc, utilSvc, usersSvc, spinner, scriptLoadingSvc, logger) {
     this.http = http;
     this.router = router;
@@ -2800,210 +3029,134 @@ class ServicesService {
     this.scriptLoadingSvc = scriptLoadingSvc;
     this.logger = logger;
   }
-  // ---------------------------------------------------------------------------
-  // BOOTSTRAP (config + firebase init)
-  // ---------------------------------------------------------------------------
-  bootstrap(envPlatform) {
-    var _this26 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      // Load config
-      _this26.config = yield _this26.utilSvc.readConfig('./assets/config/adf.json');
-      const platform = envPlatform || _this26.config.application?.platform || 'test';
-      _this26.utilSvc.platform = platform;
-      // optional version
-      if (_this26.config.application?.release) {
-        _this26.version = `${_this26.config.application.release}`;
-      }
-      // backend URL
-      _this26.utilSvc.backendWSURL = _this26.config[platform]?.backendWSUrl;
-      _this26.utilSvc.backendURL = _this26.config[platform]?.backendURL;
-      // language defaults
-      if (!_this26.utilSvc.language) _this26.utilSvc.language = 'fr';
-      _this26.languageO.next(_this26.utilSvc.language);
-      // ✅ init firebase ONCE
-      const firebaseConfig = _this26.config[platform]?.firebaseMasterConfig;
-      if (!firebaseConfig) {
-        throw new Error(`Missing firebaseMasterConfig in config for platform "${platform}"`);
-      }
-      _this26.storeDbSvc.init(firebaseConfig);
-      // Optional: you can auto-subscribe here
-      _this26.startSubscriptions();
-    })();
+  logDS(...args) {
+    let logText = '';
+    for (let i = 1; i < args.length; i++) {
+      logText = logText + args[i] + ',';
+    }
+    const userId = this.bnGuest ? this.bnUser ? this.bnUser.userId : undefined : 'Guest';
+    logText = args[0] + ',' + this.utilSvc.appName + ',' + userId + ',' + this.currentPosition.lat + ',' + this.currentPosition.lng + ',' + logText;
+    this.logger.info(logText);
   }
-  // ---------------------------------------------------------------------------
-  // SUBSCRIPTIONS (simple)
-  // ---------------------------------------------------------------------------
-  startSubscriptions() {
-    this.stopSubscriptions();
-    // Users
-    this.unsubscribers.push(this.storeDbSvc.subscribeObject(OBJECTNAME.bnUsers, val => {
-      const arr = val ? this.utilSvc.objectToArray(val) : null;
-      this.setUsers(arr);
-    }));
-    // Boats
-    this.unsubscribers.push(this.storeDbSvc.subscribeObject(OBJECTNAME.bnBoats, val => {
-      const arr = val ? this.utilSvc.objectToArray(val) : null;
-      this.setBoats(arr);
-    }));
-    // Bookings
-    this.unsubscribers.push(this.storeDbSvc.subscribeObject(OBJECTNAME.bnBookings, val => {
-      const arr = val ? this.utilSvc.objectToArray(val) : null;
-      this.setBookings(arr);
-    }));
-    // Feedbacks
-    this.unsubscribers.push(this.storeDbSvc.subscribeObject(OBJECTNAME.bnFeedbacks, val => {
-      const arr = val ? this.utilSvc.objectToArray(val) : null;
-      this.setFeedbacks(arr);
-    }));
-    // Events
-    this.unsubscribers.push(this.storeDbSvc.subscribeObject(OBJECTNAME.bnEvents, val => {
-      const arr = val ? this.utilSvc.objectToArray(val) : null;
-      this.setEvents(arr);
-    }));
-    // Skippers
-    this.unsubscribers.push(this.storeDbSvc.subscribeObject(OBJECTNAME.bnSkippers, val => {
-      const arr = val ? this.utilSvc.objectToArray(val) : null;
-      this.setSkippers(arr);
-    }));
-  }
-  stopSubscriptions() {
-    this.unsubscribers.forEach(u => {
-      try {
-        u();
-      } catch {}
+  readConfigFile(env) {
+    return new Promise((resolve, reject) => {
+      this.utilSvc.readConfig('./assets/config/adf.json').then(data => {
+        this.config = data;
+        if (!this.utilSvc.language) {
+          this.utilSvc.language = 'fr';
+        }
+        if (!env || !env.platform) {
+          this.utilSvc.platform = this.config.application?.platform;
+          env = {};
+          env.platform = this.utilSvc.platform;
+        } else {
+          this.utilSvc.platform = env.platform;
+        }
+        if (this.config.application && this.config.application.stripeplatform) {
+          this.utilSvc.stripeplatform = this.config.application.stripeplatform;
+        } else {
+          this.utilSvc.stripeplatform = 'test';
+        }
+        if (this.config.application && this.config.application.stripepublickey) {
+          this.utilSvc.stripepublickey = this.config.application.stripepublickey;
+        }
+        if (this.config.application) {
+          if (this.config.application.release) {
+            this.version = env.platform + '/' + this.config.application.release;
+          }
+        }
+        if (this.config[this.utilSvc.platform].backendWSUrl) {
+          this.utilSvc.backendWSURL = this.config[this.utilSvc.platform].backendWSUrl;
+        }
+        this.utilSvc.backendURL = this.config[env.platform].backendURL;
+        this.utilSvc.appName = this.utilSvc.appName;
+        resolve(this.config);
+      }, error => {
+        reject(error);
+      });
     });
-    this.unsubscribers = [];
   }
-  // ---------------------------------------------------------------------------
-  // USERS
-  // ---------------------------------------------------------------------------
+  initBEService(env) {
+    var _this17 = this;
+    return new Promise((resolve, reject) => {
+      const backendFbConfig = this.config[env.platform].firebaseMasterConfig;
+      this.storeDbSvc.initFB(this.utilSvc.backendFBstoreId, backendFbConfig, 'goDigitalBE', true, true, this.backendFbObjects, this.storeDbSvc.backendFbRef).then(/*#__PURE__*/(0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+        const databaseString = 'database';
+        const authString = 'auth';
+        _this17.utilSvc.mdb = _this17.storeDbSvc.backendFbRef[databaseString];
+        _this17.utilSvc.mauth = _this17.storeDbSvc.backendFbRef[authString];
+        _this17.utilSvc.mauth.onAuthStateChanged(user => {
+          _this17.storeDbSvc.currentUser = user || null;
+          _this17.storeDbSvc.authState$.next(user || null);
+        });
+        _this17.backendFbObjects.forEach(fo => {
+          _this17.storeDbSvc.subscribeObject(_this17.utilSvc.backendFBstoreId, _this17.utilSvc.mdb, fo);
+        });
+        _this17.subscribeUsers();
+        _this17.subscribeLocations();
+        _this17.subscribeFeedbacks();
+        _this17.subscribeBookings();
+        _this17.subscribeAvailability();
+        //                        this.subscribeBoatServices();
+        _this17.subscribeBoats();
+        _this17.subscribeEvents();
+        _this17.subscribeOwners();
+        _this17.subscribePartners();
+        resolve(1);
+      }), error => {
+        reject(error);
+      });
+    });
+  }
+  closeBEService() {
+    return new Promise((resolve, _reject) => {
+      this.unsubscribeUsers();
+      this.unsubscribeLocations();
+      this.unsubscribeFeedbacks();
+      this.unsubscribeBookings();
+      this.unsubscribeAvailability();
+      //            this.unsubscribeBoatServices();
+      this.unsubscribeBoats();
+      this.unsubscribeEvents();
+      this.unsubscribeOwners();
+      this.unsubscribePartners();
+      this.backendFbObjects.forEach(fo => {
+        this.storeDbSvc.unsubscribeObject(this.utilSvc.backendFBstoreId, this.utilSvc.mdb, fo);
+      });
+      this.utilSvc.mdb = undefined;
+      this.utilSvc.mst = undefined;
+      this.utilSvc.mauth = undefined;
+      this.storeDbSvc.closeFB(this.utilSvc.backendFBstoreId, this.backendFbObjects, this.storeDbSvc.backendFbRef);
+      resolve(1);
+    });
+  }
+  initStorageFb(env) {
+    return new Promise((resolve, reject) => {
+      const storageString = 'storage';
+      this.storeDbSvc.initFB(this.utilSvc.backendFBstoreId2, this.config[env.platform].firebaseStorageConfig, 'goDigitalBE2', true, false, [], this.storeDbSvc.storageFbRef).then(() => {
+        this.utilSvc.mst = this.storeDbSvc.storageFbRef[storageString];
+        resolve(this.storeDbSvc.storageFbRef);
+      }, error => reject(error));
+    });
+  }
+  closeStorageFb(storeId, fbObjects, storeFbRef) {
+    return new Promise((resolve, reject) => {
+      this.utilSvc.mst = undefined;
+      this.storeDbSvc.closeFB(this.utilSvc.backendFBstoreId2, this.backendFbObjects, this.storeDbSvc.storageFbRef);
+      resolve(1);
+    });
+  }
   getUser() {
     return this.bnUserO.asObservable();
   }
-  setLoggedUser(value) {
-    var _this27 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (value) {
-        _this27.utilSvc.setUid(value.userId);
-        _this27.bnUser = value;
-        _this27.bnUserO.next(value);
-      } else {
-        _this27.utilSvc.clearUid();
-        _this27.bnUser = null;
-        _this27.bnUserO.next(null);
-      }
-    })();
+  setUser(users) {
+    this.bnUser = users;
+    this.bnUserO.next(users);
   }
-  getUsers() {
-    return this.usersSvc.allUsersO.asObservable();
+  resetVariables() {
+    this.storeDbSvc.storageFbRef = [];
+    this.setUser(null);
   }
-  setUsers(value) {
-    this.usersSvc.allUsers = value;
-    this.usersSvc.allUsersO.next(value);
-  }
-  // ---------------------------------------------------------------------------
-  // LOGIN / VALIDATE
-  // ---------------------------------------------------------------------------
-  loginOrValidateUser(email, password, firebaseUid, verifyEmail = true) {
-    var _this28 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const auth = _this28.storeDbSvc.auth;
-      if (email && password) {
-        try {
-          const userCredential = yield auth.signInWithEmailAndPassword(email, password);
-          const user = userCredential.user;
-          if (user && user.emailVerified && verifyEmail || !verifyEmail) {
-            const userf = yield _this28.storeDbSvc.getObject(OBJECTNAME.bnUsers, user.uid);
-            if (userf) {
-              yield _this28.setLoggedUser(userf);
-              return [AUTHSTATUS.SUCCESS, userf];
-            }
-            yield _this28.setLoggedUser(undefined);
-            throw [AUTHSTATUS.UNKNOWNERROR, new Error('User not found in RTDB.')];
-          } else {
-            throw [AUTHSTATUS.EMAILNOTVERIFIED, ''];
-          }
-        } catch (err) {
-          yield _this28.setLoggedUser(undefined);
-          throw [AUTHSTATUS.UNKNOWNERROR, err];
-        }
-      }
-      if (firebaseUid) {
-        try {
-          const userf = yield _this28.storeDbSvc.getObject(OBJECTNAME.bnUsers, firebaseUid);
-          if (userf) {
-            yield _this28.setLoggedUser(userf);
-            return [AUTHSTATUS.SUCCESS, userf];
-          }
-          yield _this28.setLoggedUser(undefined);
-          throw [AUTHSTATUS.UNKNOWNERROR, new Error('User not found in RTDB.')];
-        } catch (err) {
-          yield _this28.setLoggedUser(undefined);
-          throw [AUTHSTATUS.UNKNOWNERROR, err];
-        }
-      }
-      yield _this28.setLoggedUser(undefined);
-      throw [AUTHSTATUS.UNKNOWNERROR, new Error('Provide email/password or firebaseUid.')];
-    })();
-  }
-  disconnectingUser(userId) {
-    if (userId) {
-      this.setLoggedUser(undefined);
-      this.usersSvc.logout();
-    }
-  }
-  // ---------------------------------------------------------------------------
-  // BOOKINGS / BOATS / FEEDBACKS / EVENTS / SKIPPERS
-  // ---------------------------------------------------------------------------
-  getBookings() {
-    return this.bnBookingsO.asObservable();
-  }
-  setBookings(value) {
-    this.bnBookings = value;
-    this.bnBookingsO.next(value);
-  }
-  getBoats() {
-    return this.bnBoatsO.asObservable();
-  }
-  setBoats(value) {
-    this.bnBoats = value;
-    this.bnBoatsO.next(value);
-  }
-  getFeedbacks() {
-    return this.bnFeedbacksO.asObservable();
-  }
-  setFeedbacks(value) {
-    this.bnFeedbacks = value;
-    this.bnFeedbacksO.next(value);
-  }
-  getEvents() {
-    return this.bnEventsO.asObservable();
-  }
-  setEvents(value) {
-    this.bnEvents = value;
-    this.bnEventsO.next(value);
-  }
-  getSkippers() {
-    return this.bnOwnerO.asObservable();
-  }
-  setSkippers(value) {
-    this.bnOwner = value;
-    this.bnOwnerO.next(value);
-  }
-  // ---------------------------------------------------------------------------
-  // LANGUAGE
-  // ---------------------------------------------------------------------------
-  getLanguage() {
-    return this.languageO.asObservable();
-  }
-  setLanguage(lang) {
-    localStorage.setItem('language', lang);
-    this.utilSvc.language = lang;
-    this.languageO.next(lang);
-  }
-  // ---------------------------------------------------------------------------
-  // EXPORT
-  // ---------------------------------------------------------------------------
   exportObjects(objects, objectName) {
     const json = JSON.stringify(objects);
     const blob = new Blob([json], {
@@ -3017,85 +3170,500 @@ class ServicesService {
     });
     (0,file_saver__WEBPACK_IMPORTED_MODULE_6__.saveAs)(blob, objectName + '.csv');
   }
-  // ---------------------------------------------------------------------------
-  // UPLOAD THUMB (kept as-is but now independent of old multi-store logic)
-  // ---------------------------------------------------------------------------
+  stringToDate(stringDate) {
+    const regexDate = /([0-9]{2})([0-9]{2})([0-9]{4})/;
+    const dateTemp1 = regexDate.exec(stringDate);
+    if (dateTemp1 && dateTemp1 != null && dateTemp1[3]) {
+      return new Date(dateTemp1[3] + '-' + dateTemp1[2] + '-' + dateTemp1[1]).getTime();
+    } else {
+      return 0;
+    }
+  }
+  subscribeUsers() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnUsers].subscribe(data => {
+      const temp = data && data[0] ? this.utilSvc.objectToArray(data[0]) : null;
+      this.setUsers(temp);
+    });
+  }
+  unsubscribeUsers() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnUsers);
+    this.setUsers(null);
+  }
+  getUsers() {
+    return this.usersSvc.allUsersO.asObservable();
+  }
+  setUsers(value) {
+    this.usersSvc.allUsers = value;
+    this.usersSvc.allUsersO.next(value);
+  }
+  loginOrValidateUser(email, password, firebaseUid, verifyEmail) {
+    var _this18 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const auth = _this18.utilSvc.mauth;
+      const db = _this18.utilSvc.mdb;
+      if (verifyEmail === undefined) {
+        verifyEmail = true;
+      }
+      if (email && password) {
+        // 🔥 Login with email/password
+        try {
+          const userCredential = yield auth.signInWithEmailAndPassword(email, password);
+          const user = userCredential.user;
+          if (user && user.emailVerified && verifyEmail || !verifyEmail) {
+            try {
+              const userf = yield _this18.storeDbSvc.getObject(_this18.utilSvc.backendFBstoreId, _this18.utilSvc.mdb, OBJECTNAME.bnUsers, user.uid);
+              if (userf) {
+                _this18.setLoggedUser(userf);
+                return [AUTHSTATUS.SUCCESS, userf];
+              } else {
+                console.error('❌ User not found in Realtime Database.');
+                _this18.setLoggedUser(undefined);
+                throw [AUTHSTATUS.UNKNOWNERROR, new Error('User not found in Realtime Database.')];
+              }
+            } catch (error) {
+              console.error('❌ Error checking user existence:', error);
+              _this18.setLoggedUser(undefined);
+              throw [AUTHSTATUS.UNKNOWNERROR, error];
+            }
+          } else {
+            console.error('❌ email not verified:');
+            throw [AUTHSTATUS.EMAILNOTVERIFIED, ''];
+          }
+        } catch (error) {
+          console.error('❌ Login failed:', error);
+          _this18.setLoggedUser(undefined);
+          throw [AUTHSTATUS.UNKNOWNERROR, error];
+        }
+      } else if (firebaseUid) {
+        // 🔥 Validate that user exists in Realtime Database
+        try {
+          const userf = yield _this18.storeDbSvc.getObject(_this18.utilSvc.backendFBstoreId, _this18.utilSvc.mdb, OBJECTNAME.bnUsers, firebaseUid);
+          if (userf) {
+            _this18.setLoggedUser(userf);
+            return [AUTHSTATUS.SUCCESS, userf];
+          } else {
+            console.error('❌ User not found in Realtime Database.');
+            _this18.setLoggedUser(undefined);
+            throw [AUTHSTATUS.UNKNOWNERROR, new Error('User not found in Realtime Database.')];
+          }
+        } catch (error) {
+          console.error('❌ Error checking user existence:', error);
+          _this18.setLoggedUser(undefined);
+          throw [AUTHSTATUS.UNKNOWNERROR, error];
+        }
+      } else {
+        _this18.setLoggedUser(undefined);
+        throw [AUTHSTATUS.UNKNOWNERROR, new Error('You must provide either email/password or firebaseUid.')];
+      }
+    })();
+  }
+  disconnectingUser(adnUserId) {
+    if (adnUserId) {
+      this.unsubscribeUser(adnUserId);
+      this.setLoggedUser(undefined);
+      this.utilSvc.clearUid();
+      this.usersSvc.logout();
+    }
+  }
+  subscribeUser(_adnUserId) {
+    if (this.firebaseBSSdata[OBJECTNAME.bnUsers]) {
+      this.firebaseBSSdata[OBJECTNAME.bnUsers].unsubscribe();
+    }
+    this.firebaseBSSdata[OBJECTNAME.bnUsers] = this.storeDbSvc.firebaseBSSdata[this.utilSvc.backendFBstoreId][OBJECTNAME.bnUsers].subscribe(data => {
+      const temp = data ? data[0] : undefined;
+      this.setLoggedUser(temp);
+    }, error => console.log(error));
+  }
+  unsubscribeUser(wnUserId) {
+    this.storeDbSvc.unsubscribeObject(this.utilSvc.backendFBstoreId, this.utilSvc.mdb, OBJECTNAME.bnUsers, wnUserId);
+    if (this.firebaseBSSdata[OBJECTNAME.bnUsers]) {
+      this.firebaseBSSdata[OBJECTNAME.bnUsers].unsubscribe();
+    }
+  }
+  getLoggedUser() {
+    return this.bnUserO.asObservable();
+  }
+  setLoggedUser(value) {
+    var _this19 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (value) {
+        _this19.utilSvc.setUid(value.userId);
+        _this19.bnUser = value;
+        _this19.bnUserO.next(value);
+      } else {
+        _this19.utilSvc.clearUid();
+        _this19.bnUser = null;
+        _this19.bnUserO.next(null);
+      }
+    })();
+  }
+  getLanguage() {
+    return this.languageO.asObservable();
+  }
+  setLanguage(lang) {
+    localStorage.setItem('language', lang);
+    this.utilSvc.language = lang;
+    if (lang != null) {
+      this.languageO.next(lang);
+    }
+  }
+  checkValueObject(objectInput, parameterTitle, parameterValue) {
+    let found = false;
+    for (const key in objectInput) {
+      if (objectInput[key]) {
+        const valueInput = objectInput[key];
+        if (valueInput[parameterTitle] && valueInput[parameterTitle] === parameterValue) {
+          found = true;
+          break;
+        }
+      }
+    }
+    return found;
+  }
+  registerScript(loaded, url, name) {
+    this.scriptLoadingSvc.registerScript(url, name, loaded);
+  }
   uploadThumb(event1, source, url, directory) {
-    var _this29 = this;
+    var _this20 = this;
     return new Promise(/*#__PURE__*/function () {
-      var _ref15 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
-        _this29.spinner.show();
+      var _ref22 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (resolve, reject) {
+        _this20.spinner.show();
         if (source === 'url') {
           if (url && url.length > 0) {
             const params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpParams().set('url', url).set('dir', 'assets/' + directory);
-            _this29.http.get(_this29.utilSvc.backendURL + 'store/downloadUrl', {
+            // tslint:disable-next-line: deprecation
+            _this20.http.get(_this20.utilSvc.backendURL + 'store/downloadUrl', {
               params,
               reportProgress: true,
               observe: 'events'
             }).subscribe(data => {
               switch (data.type) {
+                case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.Sent:
+                  break;
+                case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.ResponseHeader:
+                  break;
                 case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.DownloadProgress:
-                  if (data.total) _this29.progress = Math.round(data.loaded / data.total * 100);
+                  if (data && data.total) {
+                    _this20.progress = Math.round(data.loaded / data.total * 100);
+                  }
                   break;
                 case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.Response:
                   setTimeout(() => {
-                    _this29.progress = 0;
+                    _this20.progress = 0;
                   }, 1500);
-                  _this29.spinner.hide();
+                  _this20.spinner.hide();
                   resolve(data.body);
                   break;
               }
-            }, err => {
-              _this29.spinner.hide();
-              reject(err);
+            }, error => {
+              _this20.spinner.hide();
+              console.log(error);
+              reject(error);
             });
-          } else {
-            _this29.spinner.hide();
-            resolve(null);
           }
-          return;
-        }
-        // source === 'file'
-        try {
-          // If you still upload to firebase storage, you can do it here.
-          // For now we keep your backend approach.
-          const file = event1?.target?.files?.[0];
-          if (!file) {
-            _this29.spinner.hide();
-            resolve(null);
-            return;
+        } else {
+          if (event1) {
+            _this20.storeDbSvc.uploadMedia(undefined, event1, directory).then(temp1 => {
+              const thumb = temp1;
+              const params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpParams().set('url', thumb).set('dir', 'assets/' + directory);
+              // tslint:disable-next-line: deprecation
+              _this20.http.get(_this20.utilSvc.backendURL + 'store/downloadUrl', {
+                params,
+                reportProgress: true,
+                observe: 'events'
+              }).subscribe(data => {
+                switch (data.type) {
+                  case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.Sent:
+                    break;
+                  case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.ResponseHeader:
+                    break;
+                  case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.DownloadProgress:
+                    if (data && data.total) {
+                      _this20.progress = Math.round(data.loaded / data.total * 100);
+                    }
+                    break;
+                  case _angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpEventType.Response:
+                    setTimeout(() => {
+                      _this20.progress = 0;
+                    }, 1500);
+                    _this20.spinner.hide();
+                    resolve(data.body);
+                    break;
+                }
+              }, error => {
+                _this20.spinner.hide();
+                console.log(error);
+                reject(error);
+              });
+            },
+            //
+            //
+            error => {
+              _this20.spinner.hide();
+              reject(error);
+            });
           }
-          // If you want: upload to Firebase Storage directly:
-          // const storagePath = `${directory}/${file.name}`;
-          // const ref = this.storeDbSvc.storage.ref(storagePath);
-          // await ref.put(file);
-          // const downloadURL = await ref.getDownloadURL();
-          // But since your current flow expects backend downloadUrl:
-          // you can implement it with your existing endpoints as needed.
-          _this29.spinner.hide();
-          resolve(null);
-        } catch (e) {
-          _this29.spinner.hide();
-          reject(e);
         }
       });
-      return function (_x21, _x22) {
-        return _ref15.apply(this, arguments);
+      return function (_x30, _x31) {
+        return _ref22.apply(this, arguments);
       };
     }());
   }
+  subscribeLocations() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnLocations || 'backendlocations'].subscribe(data => {
+      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
+      this.setLocations(temp);
+    }, error => console.log(error));
+  }
+  unsubscribeLocations() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnLocations || 'backendlocations');
+    this.setLocations(null);
+  }
+  getLocations() {
+    return this.bnLocationsO.asObservable();
+  }
+  setLocations(value) {
+    this.bnLocations = value;
+    this.bnLocationsO.next(value);
+  }
+  subscribeBookings() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnBookings].subscribe(data => {
+      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
+      this.setBookings(temp);
+    }, error => console.log(error));
+  }
+  unsubscribeBookings() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnBookings);
+    this.setBookings(null);
+  }
+  getBookings() {
+    return this.bnBookingsO.asObservable();
+  }
+  setBookings(value) {
+    this.bnBookings = value;
+    this.bnBookingsO.next(value);
+  }
+  subscribeFeedbacks() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnFeedbacks].subscribe(data => {
+      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
+      this.setFeedbacks(temp);
+    }, error => console.log(error));
+  }
+  unsubscribeFeedbacks() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnFeedbacks);
+    this.setFeedbacks(null);
+  }
+  getFeedbacks() {
+    return this.bnFeedbacksO.asObservable();
+  }
+  setFeedbacks(value) {
+    this.bnFeedbacks = value;
+    this.bnFeedbacksO.next(value);
+  }
+  subscribeBoats() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnBoats].subscribe(data => {
+      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
+      this.setBoats(temp);
+    }, error => console.log(error));
+  }
+  unsubscribeBoats() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnBoats);
+    this.setBoats(null);
+  }
+  getBoats() {
+    return this.bnBoatsO.asObservable();
+  }
+  setBoats(value) {
+    this.bnBoats = value;
+    this.bnBoatsO.next(value);
+  }
+  subscribeOwners() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnOwners || 'backendowners'].subscribe(data => {
+      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
+      this.setOwners(temp);
+    }, error => console.log(error));
+  }
+  unsubscribeOwners() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnOwners || 'backendowners');
+    this.setOwners(null);
+  }
+  getOwners() {
+    return this.bnOwnerO.asObservable();
+  }
+  setOwners(value) {
+    this.bnOwner = value;
+    this.bnOwnerO.next(value);
+  }
+  subscribePartners() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnPartners || 'backendpartners'].subscribe(data => {
+      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
+      this.setPartners(temp);
+    }, error => console.log(error));
+  }
+  unsubscribePartners() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnPartners || 'backendpartners');
+    this.setPartners(null);
+  }
+  getPartners() {
+    return this.bnPartnersO.asObservable();
+  }
+  setPartners(value) {
+    this.bnPartners = value;
+    this.bnPartnersO.next(value);
+  }
+  subscribeEvents() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnEvents].subscribe(data => {
+      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
+      this.setEvents(temp);
+    }, error => console.log(error));
+  }
+  unsubscribeEvents() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnEvents);
+    this.setEvents(null);
+  }
+  getEvents() {
+    return this.bnEventsO.asObservable();
+  }
+  setEvents(value) {
+    this.bnEvents = value;
+    this.bnEventsO.next(value);
+  }
+  subscribeAvailability() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.firebaseBSSdata[beStoreId][OBJECTNAME.bnAvailability || 'backendavailability'].subscribe(data => {
+      const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
+      this.setAvailability(temp);
+    }, error => console.log(error));
+  }
+  unsubscribeAvailability() {
+    const beStoreId = this.utilSvc.backendFBstoreId;
+    this.storeDbSvc.unsubscribeObject(beStoreId, this.utilSvc.mdb, OBJECTNAME.bnAvailability || 'backendavailability');
+    this.setAvailability(null);
+  }
+  getAvailability() {
+    return this.bnAvailabilityO.asObservable();
+  }
+  setAvailability(value) {
+    this.bnAvailability = value;
+    this.bnAvailabilityO.next(value);
+  }
+  /*    subscribeBoatServices() {
+          const beStoreId = this.utilSvc.backendFBstoreId;
+          this.storeDbSvc.firebaseBSSdata[beStoreId][((OBJECTNAME as any).bnBoatServices || 'backendservices')].subscribe(
+              data => {
+                  const temp = data && data[0] != null ? this.utilSvc.objectToArray(data[0]) : null;
+                  this.setBoatServices(temp);
+              },
+              error => console.log(error)
+          );
+      }
+      public unsubscribeBoatServices() {
+          const beStoreId = this.utilSvc.backendFBstoreId;
+          this.storeDbSvc.unsubscribeObject(
+              beStoreId,
+              this.utilSvc.mdb,
+              ((OBJECTNAME as any).bnBoatServices || 'backendservices')
+          );
+          this.setBoatServices(null);
+      }
+      public getBoatServices(): Observable<BoatServices[] | null> {
+          return this.bnBoatServicesO.asObservable();
+      }
+      public setBoatServices(value: BoatServices[] | null) {
+          this.bnBoatServices = value;
+          this.bnBoatServicesO.next(value);
+      }*/
+  // ---------------------------------------------------------------------------
+  // MERGED METHODS FROM SIMPLIFIED VERSION
+  // ---------------------------------------------------------------------------
+  /**
+   * Newer bootstrap-style initializer kept for callers that use the simplified API.
+   * It delegates to the legacy three-step initialization when available.
+   */
+  bootstrap(envPlatform) {
+    var _this21 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const env = envPlatform ? {
+        platform: envPlatform
+      } : {};
+      yield _this21.readConfigFile(env);
+      yield _this21.initBEService(env);
+      yield _this21.initStorageFb(env);
+    })();
+  }
+  /**
+   * Compatibility helper for code that expects the simplified subscription API.
+   * Legacy initBEService already starts subscriptions, so this is intentionally safe.
+   */
+  startSubscriptions() {
+    try {
+      this.subscribeUsers();
+      this.subscribeLocations();
+      this.subscribeFeedbacks();
+      this.subscribeBookings();
+      this.subscribeAvailability();
+      this.subscribeBoats();
+      this.subscribeEvents();
+      this.subscribeOwners();
+      this.subscribePartners();
+    } catch (e) {
+      // Subscriptions may already be active or Firebase may not be initialized yet.
+      this.logger?.warn?.('startSubscriptions skipped', e);
+    }
+  }
+  /** Stop all legacy subscriptions. */
+  stopSubscriptions() {
+    try {
+      this.unsubscribeUsers();
+      this.unsubscribeLocations();
+      this.unsubscribeFeedbacks();
+      this.unsubscribeBookings();
+      this.unsubscribeAvailability();
+      this.unsubscribeBoats();
+      this.unsubscribeEvents();
+      this.unsubscribeOwners();
+      this.unsubscribePartners();
+    } catch (e) {
+      this.logger?.warn?.('stopSubscriptions skipped', e);
+    }
+  }
+  /** Alias kept for code that uses Skippers naming from the simplified file. */
+  getSkippers() {
+    return this.getOwners();
+  }
+  /** Alias kept for code that uses Skippers naming from the simplified file. */
+  setSkippers(value) {
+    this.setOwners(value);
+  }
   static ɵfac = function ServicesService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || ServicesService)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_19__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](StoreDbService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](UtilsService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](UsersService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](ngx_spinner__WEBPACK_IMPORTED_MODULE_20__.NgxSpinnerService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](ScriptLoadingService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵinject"](ngx_logger__WEBPACK_IMPORTED_MODULE_21__.NGXLogger));
+    return new (__ngFactoryType__ || ServicesService)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_11__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_19__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](StoreDbService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](UtilsService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](UsersService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ngx_spinner__WEBPACK_IMPORTED_MODULE_20__.NgxSpinnerService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ScriptLoadingService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](ngx_logger__WEBPACK_IMPORTED_MODULE_21__.NGXLogger));
   };
-  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjectable"]({
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjectable"]({
     token: ServicesService,
     factory: ServicesService.ɵfac,
     providedIn: 'root'
   });
 }
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵsetClassMetadata"](ServicesService, [{
-    type: _angular_core__WEBPACK_IMPORTED_MODULE_8__.Injectable,
+  (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵsetClassMetadata"](ServicesService, [{
+    type: _angular_core__WEBPACK_IMPORTED_MODULE_7__.Injectable,
     args: [{
       providedIn: 'root'
     }]
@@ -3137,7 +3705,7 @@ class ServicesService {
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<header class=\"site-header\">\n  <div class=\"container header-bar\">\n    <a class=\"brand\" routerLink=\"/\" (click)=\"closeMenu()\">\n      <img class=\"brand-logo\" src=\"assets/img/logo-Alegria.png\" alt=\"Alegria\" /> <span class=\"brand-text\">\n        <strong>{{ content.brand }}</strong>\n        <small>{{ content.brandTagline }}</small>\n      </span>\n    </a>\n\n    <button class=\"menu-toggle\" type=\"button\" (click)=\"toggleMenu()\" aria-label=\"Open menu\">\n      ☰\n    </button>\n\n    <nav class=\"main-nav\" [class.open]=\"menuOpen\">\n      <a routerLink=\"/\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{ exact: true }\" (click)=\"closeMenu()\">{{ content.nav.home }}</a>\n      <a routerLink=\"/sorties\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.outings }}</a>\n      <a routerLink=\"/bateau\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.boat }}</a>\n      <a routerLink=\"/galerie\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.gallery }}</a>\n      <a routerLink=\"/contact\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.contact }}</a>\n      <a routerLink=\"/crew\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.crew }}</a>\n\n      <div class=\"language-switcher\">\n        <select [value]=\"currentLanguage\" (change)=\"changeLanguage($any($event.target).value)\" aria-label=\"Language selector\">\n          <option value=\"fr\">Français</option>\n          <option value=\"en\">English</option>\n          <option value=\"es\">Español</option>\n        </select>\n      </div>\n\n      <a class=\"cta-link\" routerLink=\"/contact\" (click)=\"closeMenu()\">{{ content.nav.quote }}</a>\n    </nav>\n  </div>\n</header>\n";
+module.exports = "<header class=\"site-header\">\n  <div class=\"container header-bar\">\n    <a class=\"brand\" routerLink=\"/\" (click)=\"closeMenu()\">\n      <img class=\"brand-logo\" src=\"assets/img/logo-Alegria.png\" alt=\"Alegria\" />\n      <span class=\"brand-text\">\n        <strong>{{ content.brand }}</strong>\n        <small>{{ content.brandTagline }}</small>\n      </span>\n    </a>\n\n    <button class=\"menu-toggle\" type=\"button\" (click)=\"toggleMenu()\" aria-label=\"Open menu\">\n      ☰\n    </button>\n\n    <nav class=\"main-nav\" [class.open]=\"menuOpen\">\n      <details class=\"nav-dropdown\">\n        <summary>{{ content.nav.outings }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/sorties\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ allOutingsLabel }}</a>\n          <a routerLink=\"/sorties/journee-en-mer\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ dayAtSeaLabel }}</a>\n          <a routerLink=\"/sorties/coucher-de-soleil\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ sunsetLabel }}</a>\n          <a routerLink=\"/sorties/anniversaire\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ partyLabel }}</a>\n          <a routerLink=\"/sorties/sortie-entreprise\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ corporateLabel }}</a>\n        </div>\n      </details>\n\n      <details class=\"nav-dropdown\">\n        <summary>{{ content.nav.boat }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/bateau\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ boatPresentationLabel }}</a>\n          <a routerLink=\"/galerie\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.gallery }}</a>\n          <a routerLink=\"/crew\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.crew }}</a>\n          <a routerLink=\"/checklist\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ checklistLabel }}</a>\n          <a routerLink=\"/safety\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ safetyLabel }}</a>\n        </div>\n      </details>\n\n      <details class=\"nav-dropdown\">\n        <summary>{{ practicalInfoLabel }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/how-it-works\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ guestJourneyLabel }}</a>\n          <a routerLink=\"/faq\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ faqLabel }}</a>\n          <a routerLink=\"/terms\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ termsLabel }}</a>\n          <a routerLink=\"/deposit\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ depositLabel }}</a>\n        </div>\n      </details>\n\n      <a routerLink=\"/contact\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.contact }}</a>\n\n      <div class=\"language-switcher\">\n        <select [value]=\"currentLanguage\" (change)=\"changeLanguage($any($event.target).value)\" aria-label=\"Language selector\">\n          <option value=\"fr\">Français</option>\n          <option value=\"en\">English</option>\n          <option value=\"es\">Español</option>\n        </select>\n      </div>\n\n      <details class=\"nav-dropdown account-dropdown\">\n        <summary>{{ accountSummaryLabel }}</summary>\n\n        <div class=\"dropdown-panel dropdown-panel-right\" *ngIf=\"!isLoggedIn\">\n          <a routerLink=\"/login\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ loginLabel }}</a>\n          <a routerLink=\"/signup\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ signupLabel }}</a>\n          <a routerLink=\"/deposit\" [queryParams]=\"{ guest: 'true' }\" (click)=\"closeMenu()\">{{ guestLabel }}</a>\n        </div>\n\n        <div class=\"dropdown-panel dropdown-panel-right\" *ngIf=\"isLoggedIn\">\n          <a routerLink=\"/my-bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myBookingsLabel }}</a>\n          <a routerLink=\"/my-payments\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myPaymentsLabel }}</a>\n          <a routerLink=\"/my-profile\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProfileLabel }}</a>\n          <a *ngIf=\"!isAdmin\" routerLink=\"/my-feedbacks\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myFeedbacksLabel }}</a>\n          <a *ngIf=\"isAdmin\" routerLink=\"/admin/feedbacks\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ adminFeedbacksLabel }}</a>\n          <a *ngIf=\"isAdmin\" routerLink=\"/admin/outings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ adminOutingsLabel }}</a>\n          <button class=\"dropdown-action\" type=\"button\" (click)=\"logout()\">{{ logoutLabel }}</button>\n        </div>\n      </details>\n    </nav>\n  </div>\n</header>\n";
 
 /***/ }),
 
@@ -4286,6 +4854,17 @@ Page404Component = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angula
 
 /***/ }),
 
+/***/ 38003:
+/*!************************************************************************!*\
+  !*** ./src/app/layout/layoutnone/layoutnone.component.html?ngResource ***!
+  \************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<ngx-spinner type=\"ball-scale-multiple\"></ngx-spinner>\n<main class=\"flex-grow-1\">\n    <router-outlet main></router-outlet>\n</main>\n";
+
+/***/ }),
+
 /***/ 38745:
 /*!*****************************************************************************!*\
   !*** ./src/app/layout/home/homefooter/homefooter.component.scss?ngResource ***!
@@ -4426,7 +5005,8 @@ var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../node_mo
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `.site-header {
+___CSS_LOADER_EXPORT___.push([module.id, `@charset "UTF-8";
+.site-header {
   position: sticky;
   top: 0;
   z-index: 20;
@@ -4673,7 +5253,146 @@ p, li, input, textarea, select, .card-body, .term-section {
   .brand-logo {
     height: 38px;
   }
-}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homeheader/homeheader.component.scss"],"names":[],"mappings":"AACA;EACE,gBAAA;EACA,MAAA;EACA,WAAA;EACA,qCAAA;EACA,kCAAA;UAAA,0BAAA;EACA,+CAAA;AACF;;AAEA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,WAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;EACA,cAAA;EACA,qBAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,kBAAA;EACA,aAAA;EACA,mBAAA;EACA,qDAAA;EACA,WAAA;EACA,eAAA;AACF;;AAEA;EACE,aAAA;EACA,sBAAA;EACA,iBAAA;AACF;;AAEA;EACE,eAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE,aAAA;EACA,YAAA;EACA,mBAAA;EACA,cAAA;EACA,iBAAA;EACA,wBAAA;EACA,mBAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;AACF;;AAEA;EACE,yBAAA;EACA,oBAAA;EACA,gBAAA;EACA,cAAA;EACA,kBAAA;EACA,uBAAA;AACF;;AAEA;EACE,wBAAA;EACA,oBAAA;EACA,mBAAA;EACA,sBAAA;EACA,kBAAA;AACF;;AAEA;EACE;IACE,oBAAA;EACF;EAEA;IACE,kBAAA;IACA,UAAA;IACA,WAAA;IACA,SAAA;IACA,aAAA;IACA,sBAAA;IACA,oBAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;IACA,wCAAA;IACA,mBAAA;IACA,8CAAA;EAAF;EAGA;IACE,aAAA;EADF;EAIA;;IAEE,oBAAA;IACA,mBAAA;EAFF;EAKA;IACE,kBAAA;EAHF;AACF;AAOA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AALF;;AAQA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AALF;;AAQA;EACE,yCAAA;AALF;;AAQA;EACE,sCAAA;EACA,0BAAA;AALF;;AAQA;EACE,2BAAA;AALF;;AAQA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AALF;;AAQA;EACE,sCAAA;EACA,0BAAA;AALF;;AAQA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AALF;;AAQA;EACE,6DAAA;AALF;;AAQA;EACE,+BAAA;AALF;;AASA,2BAAA;AACA;EACE,4CAAA;EACA,6DAAA;AANF;;AAQA;EACE,sBAAA;AALF;;AAOA;EAAoB,2CAAA;AAHpB;;AAIA;EAAc,4CAAA;EAA8C,sBAAA;AAC5D;;AAAA;EAAe,gDAAA;EAA+C,sBAAA;AAK9D;;AAJA;EAA4B,+CAAA;EAA8C,sBAAA;EAAuB,kDAAA;AAUjG;;AATA;EAAmC,cAAA;AAanC;;AAZA;EACE;IAAY,8BAAA;IAAgC,kDAAA;EAiB5C;AACF;AAhBA;EACE,YAAA;EACA,WAAA;EACA,mBAAA;EACA,cAAA;EACA,cAAA;AAkBF;;AAfA;EACE;IACE,YAAA;EAkBF;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.site-header {\n  position: sticky;\n  top: 0;\n  z-index: 20;\n  background: rgba(255, 255, 255, 0.96);\n  backdrop-filter: blur(8px);\n  border-bottom: 1px solid rgba(15, 23, 42, 0.08);\n}\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.header-bar {\n  min-height: 70px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 0.9rem;\n}\n\n.brand {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n  color: #08263a;\n  text-decoration: none;\n}\n\n.brand-mark {\n  width: 38px;\n  height: 38px;\n  border-radius: 50%;\n  display: grid;\n  place-items: center;\n  background: linear-gradient(135deg, #0b6e8f, #0b6e8f);\n  color: #fff;\n  font-size: 1rem;\n}\n\n.brand-text {\n  display: flex;\n  flex-direction: column;\n  line-height: 1.05;\n}\n\n.brand-text strong {\n  font-size: 1rem;\n  white-space: nowrap;\n}\n\n.brand-text small {\n  color: #475569;\n  font-size: 0.68rem;\n  white-space: nowrap;\n}\n\n.menu-toggle {\n  display: none;\n  border: none;\n  background: #e8f4f7;\n  color: #08263a;\n  font-size: 1.1rem;\n  padding: 0.45rem 0.75rem;\n  border-radius: 10px;\n}\n\n.main-nav {\n  display: flex;\n  align-items: center;\n  gap: 0.85rem;\n}\n\n.main-nav a {\n  text-decoration: none;\n  color: #334155;\n  font-weight: 500;\n  font-size: 0.88rem;\n  white-space: nowrap;\n}\n\n.main-nav a.active {\n  color: #08263a;\n}\n\n.language-switcher {\n  display: flex;\n  align-items: center;\n}\n\n.language-switcher select {\n  border: 1px solid #cbd5e1;\n  border-radius: 999px;\n  background: #fff;\n  color: #08263a;\n  font-size: 0.83rem;\n  padding: 0.45rem 0.8rem;\n}\n\n.cta-link {\n  padding: 0.72rem 0.95rem;\n  border-radius: 999px;\n  background: #08263a;\n  color: #fff !important;\n  font-size: 0.84rem;\n}\n\n@media (max-width: 960px) {\n  .menu-toggle {\n    display: inline-flex;\n  }\n\n  .main-nav {\n    position: absolute;\n    left: 1rem;\n    right: 1rem;\n    top: 78px;\n    display: none;\n    flex-direction: column;\n    align-items: stretch;\n    gap: 0.35rem;\n    padding: 0.8rem;\n    background: #ffffff;\n    border: 1px solid rgba(15, 23, 42, 0.08);\n    border-radius: 18px;\n    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);\n  }\n\n  .main-nav.open {\n    display: flex;\n  }\n\n  .main-nav a,\n  .language-switcher select {\n    padding: 0.9rem 1rem;\n    border-radius: 12px;\n  }\n\n  .cta-link {\n    text-align: center;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Header charte override */\n.site-header {\n  background: rgba(8, 38, 58, 0.96) !important;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;\n}\n.brand, .brand-text strong, .main-nav a, .main-nav a.active {\n  color: #fff !important;\n}\n.brand-text small { color: rgba(255,255,255,0.72) !important; }\n.brand-mark { background: var(--alegria-orange) !important; color:#fff !important; }\n.menu-toggle { background: rgba(255,255,255,0.12) !important; color:#fff !important; }\n.language-switcher select { background: rgba(255,255,255,0.1) !important; color:#fff !important; border-color: rgba(255,255,255,0.25) !important; }\n.language-switcher select option { color:#08263a; }\n@media (max-width: 960px) {\n  .main-nav { background: #08263a !important; border-color: rgba(255,255,255,.12) !important; }\n}\n.brand-logo {\n  height: 48px;\n  width: auto;\n  object-fit: contain;\n  display: block;\n  flex: 0 0 auto;\n}\n\n@media (max-width: 768px) {\n  .brand-logo {\n    height: 38px;\n  }\n}"],"sourceRoot":""}]);
+}
+/* Organized dropdown header */
+.main-nav {
+  gap: 0.65rem;
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown summary {
+  list-style: none;
+  cursor: pointer;
+  color: #fff;
+  font-family: "Raleway", Arial, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0.55rem 0.35rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.nav-dropdown summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav-dropdown summary::after {
+  content: "▾";
+  font-size: 0.68rem;
+  opacity: 0.8;
+  transform: translateY(1px);
+}
+
+.dropdown-panel {
+  position: absolute;
+  top: calc(100% + 0.8rem);
+  left: 0;
+  min-width: 230px;
+  padding: 0.55rem;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 20px 45px rgba(8, 38, 58, 0.22);
+  border: 1px solid rgba(8, 38, 58, 0.1);
+  display: grid;
+  gap: 0.15rem;
+  z-index: 50;
+}
+
+.dropdown-panel-right {
+  right: 0;
+  left: auto;
+}
+
+.dropdown-panel a {
+  color: #08263a !important;
+  padding: 0.78rem 0.9rem;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.dropdown-panel a:hover,
+.dropdown-panel a.active {
+  background: #e8f4f7;
+  color: #0b6e8f !important;
+}
+
+.account-dropdown summary {
+  padding: 0.68rem 0.95rem;
+  border-radius: 999px;
+  background: #f28c28;
+  color: #fff;
+  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);
+}
+
+@media (min-width: 961px) {
+  .nav-dropdown:not([open]) .dropdown-panel {
+    display: none;
+  }
+}
+@media (max-width: 960px) {
+  .main-nav {
+    gap: 0.35rem;
+    max-height: calc(100vh - 92px);
+    overflow-y: auto;
+  }
+  .nav-dropdown {
+    width: 100%;
+  }
+  .nav-dropdown summary,
+  .main-nav > a {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    justify-content: space-between;
+  }
+  .account-dropdown summary {
+    background: #f28c28;
+    justify-content: space-between;
+  }
+  .dropdown-panel,
+  .dropdown-panel-right {
+    position: static;
+    min-width: 0;
+    margin-top: 0.35rem;
+    margin-bottom: 0.45rem;
+    padding: 0.35rem;
+    border-radius: 14px;
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.98);
+  }
+  .dropdown-panel a {
+    padding: 0.82rem 0.9rem;
+  }
+  .language-switcher select {
+    width: 100%;
+  }
+}
+.dropdown-action {
+  appearance: none;
+  border: 0;
+  width: 100%;
+  text-align: left;
+  color: #08263a !important;
+  background: transparent;
+  padding: 0.78rem 0.9rem;
+  border-radius: 12px;
+  font-family: "Raleway", Arial, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dropdown-action:hover {
+  background: #e8f4f7;
+  color: #0b6e8f !important;
+}`, "",{"version":3,"sources":["webpack://./src/app/layout/home/homeheader/homeheader.component.scss"],"names":[],"mappings":"AAAA,gBAAgB;AAChB;EACE,gBAAA;EACA,MAAA;EACA,WAAA;EACA,qCAAA;EACA,kCAAA;UAAA,0BAAA;EACA,+CAAA;AAEF;;AACA;EACE,+BAAA;EACA,cAAA;AAEF;;AACA;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,WAAA;AAEF;;AACA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;EACA,cAAA;EACA,qBAAA;AAEF;;AACA;EACE,WAAA;EACA,YAAA;EACA,kBAAA;EACA,aAAA;EACA,mBAAA;EACA,qDAAA;EACA,WAAA;EACA,eAAA;AAEF;;AACA;EACE,aAAA;EACA,sBAAA;EACA,iBAAA;AAEF;;AACA;EACE,eAAA;EACA,mBAAA;AAEF;;AACA;EACE,cAAA;EACA,kBAAA;EACA,mBAAA;AAEF;;AACA;EACE,aAAA;EACA,YAAA;EACA,mBAAA;EACA,cAAA;EACA,iBAAA;EACA,wBAAA;EACA,mBAAA;AAEF;;AACA;EACE,aAAA;EACA,mBAAA;EACA,YAAA;AAEF;;AACA;EACE,qBAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;EACA,mBAAA;AAEF;;AACA;EACE,cAAA;AAEF;;AACA;EACE,aAAA;EACA,mBAAA;AAEF;;AACA;EACE,yBAAA;EACA,oBAAA;EACA,gBAAA;EACA,cAAA;EACA,kBAAA;EACA,uBAAA;AAEF;;AACA;EACE,wBAAA;EACA,oBAAA;EACA,mBAAA;EACA,sBAAA;EACA,kBAAA;AAEF;;AACA;EACE;IACE,oBAAA;EAEF;EACA;IACE,kBAAA;IACA,UAAA;IACA,WAAA;IACA,SAAA;IACA,aAAA;IACA,sBAAA;IACA,oBAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;IACA,wCAAA;IACA,mBAAA;IACA,8CAAA;EACF;EAEA;IACE,aAAA;EAAF;EAGA;;IAEE,oBAAA;IACA,mBAAA;EADF;EAIA;IACE,kBAAA;EAFF;AACF;AAMA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAJF;;AAOA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAJF;;AAOA;EACE,yCAAA;AAJF;;AAOA;EACE,sCAAA;EACA,0BAAA;AAJF;;AAOA;EACE,2BAAA;AAJF;;AAOA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAJF;;AAOA;EACE,sCAAA;EACA,0BAAA;AAJF;;AAOA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAJF;;AAOA;EACE,6DAAA;AAJF;;AAOA;EACE,+BAAA;AAJF;;AAQA,2BAAA;AACA;EACE,4CAAA;EACA,6DAAA;AALF;;AAOA;EACE,sBAAA;AAJF;;AAMA;EAAoB,2CAAA;AAFpB;;AAGA;EAAc,4CAAA;EAA8C,sBAAA;AAE5D;;AADA;EAAe,gDAAA;EAA+C,sBAAA;AAM9D;;AALA;EAA4B,+CAAA;EAA8C,sBAAA;EAAuB,kDAAA;AAWjG;;AAVA;EAAmC,cAAA;AAcnC;;AAbA;EACE;IAAY,8BAAA;IAAgC,kDAAA;EAkB5C;AACF;AAjBA;EACE,YAAA;EACA,WAAA;EACA,mBAAA;EACA,cAAA;EACA,cAAA;AAmBF;;AAhBA;EACE;IACE,YAAA;EAmBF;AACF;AAjBA,8BAAA;AACA;EACE,YAAA;AAmBF;;AAhBA;EACE,kBAAA;AAmBF;;AAhBA;EACE,gBAAA;EACA,eAAA;EACA,WAAA;EACA,yCAAA;EACA,kBAAA;EACA,gBAAA;EACA,mBAAA;EACA,wBAAA;EACA,oBAAA;EACA,mBAAA;EACA,YAAA;AAmBF;;AAhBA;EACE,aAAA;AAmBF;;AAhBA;EACE,YAAA;EACA,kBAAA;EACA,YAAA;EACA,0BAAA;AAmBF;;AAhBA;EACE,kBAAA;EACA,wBAAA;EACA,OAAA;EACA,gBAAA;EACA,gBAAA;EACA,mBAAA;EACA,mBAAA;EACA,6CAAA;EACA,sCAAA;EACA,aAAA;EACA,YAAA;EACA,WAAA;AAmBF;;AAhBA;EACE,QAAA;EACA,UAAA;AAmBF;;AAhBA;EACE,yBAAA;EACA,uBAAA;EACA,mBAAA;EACA,kBAAA;EACA,gBAAA;AAmBF;;AAhBA;;EAEE,mBAAA;EACA,yBAAA;AAmBF;;AAhBA;EACE,wBAAA;EACA,oBAAA;EACA,mBAAA;EACA,WAAA;EACA,gDAAA;AAmBF;;AAhBA;EACE;IACE,aAAA;EAmBF;AACF;AAhBA;EACE;IACE,YAAA;IACA,8BAAA;IACA,gBAAA;EAkBF;EAfA;IACE,WAAA;EAiBF;EAdA;;IAEE,WAAA;IACA,oBAAA;IACA,mBAAA;IACA,qCAAA;IACA,8BAAA;EAgBF;EAbA;IACE,mBAAA;IACA,8BAAA;EAeF;EAZA;;IAEE,gBAAA;IACA,YAAA;IACA,mBAAA;IACA,sBAAA;IACA,gBAAA;IACA,mBAAA;IACA,gBAAA;IACA,qCAAA;EAcF;EAXA;IACE,uBAAA;EAaF;EAVA;IACE,WAAA;EAYF;AACF;AATA;EACE,gBAAA;EACA,SAAA;EACA,WAAA;EACA,gBAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,mBAAA;EACA,yCAAA;EACA,kBAAA;EACA,gBAAA;EACA,eAAA;AAWF;;AARA;EACE,mBAAA;EACA,yBAAA;AAWF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.site-header {\n  position: sticky;\n  top: 0;\n  z-index: 20;\n  background: rgba(255, 255, 255, 0.96);\n  backdrop-filter: blur(8px);\n  border-bottom: 1px solid rgba(15, 23, 42, 0.08);\n}\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.header-bar {\n  min-height: 70px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 0.9rem;\n}\n\n.brand {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n  color: #08263a;\n  text-decoration: none;\n}\n\n.brand-mark {\n  width: 38px;\n  height: 38px;\n  border-radius: 50%;\n  display: grid;\n  place-items: center;\n  background: linear-gradient(135deg, #0b6e8f, #0b6e8f);\n  color: #fff;\n  font-size: 1rem;\n}\n\n.brand-text {\n  display: flex;\n  flex-direction: column;\n  line-height: 1.05;\n}\n\n.brand-text strong {\n  font-size: 1rem;\n  white-space: nowrap;\n}\n\n.brand-text small {\n  color: #475569;\n  font-size: 0.68rem;\n  white-space: nowrap;\n}\n\n.menu-toggle {\n  display: none;\n  border: none;\n  background: #e8f4f7;\n  color: #08263a;\n  font-size: 1.1rem;\n  padding: 0.45rem 0.75rem;\n  border-radius: 10px;\n}\n\n.main-nav {\n  display: flex;\n  align-items: center;\n  gap: 0.85rem;\n}\n\n.main-nav a {\n  text-decoration: none;\n  color: #334155;\n  font-weight: 500;\n  font-size: 0.88rem;\n  white-space: nowrap;\n}\n\n.main-nav a.active {\n  color: #08263a;\n}\n\n.language-switcher {\n  display: flex;\n  align-items: center;\n}\n\n.language-switcher select {\n  border: 1px solid #cbd5e1;\n  border-radius: 999px;\n  background: #fff;\n  color: #08263a;\n  font-size: 0.83rem;\n  padding: 0.45rem 0.8rem;\n}\n\n.cta-link {\n  padding: 0.72rem 0.95rem;\n  border-radius: 999px;\n  background: #08263a;\n  color: #fff !important;\n  font-size: 0.84rem;\n}\n\n@media (max-width: 960px) {\n  .menu-toggle {\n    display: inline-flex;\n  }\n\n  .main-nav {\n    position: absolute;\n    left: 1rem;\n    right: 1rem;\n    top: 78px;\n    display: none;\n    flex-direction: column;\n    align-items: stretch;\n    gap: 0.35rem;\n    padding: 0.8rem;\n    background: #ffffff;\n    border: 1px solid rgba(15, 23, 42, 0.08);\n    border-radius: 18px;\n    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);\n  }\n\n  .main-nav.open {\n    display: flex;\n  }\n\n  .main-nav a,\n  .language-switcher select {\n    padding: 0.9rem 1rem;\n    border-radius: 12px;\n  }\n\n  .cta-link {\n    text-align: center;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n\n/* Header charte override */\n.site-header {\n  background: rgba(8, 38, 58, 0.96) !important;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;\n}\n.brand, .brand-text strong, .main-nav a, .main-nav a.active {\n  color: #fff !important;\n}\n.brand-text small { color: rgba(255,255,255,0.72) !important; }\n.brand-mark { background: var(--alegria-orange) !important; color:#fff !important; }\n.menu-toggle { background: rgba(255,255,255,0.12) !important; color:#fff !important; }\n.language-switcher select { background: rgba(255,255,255,0.1) !important; color:#fff !important; border-color: rgba(255,255,255,0.25) !important; }\n.language-switcher select option { color:#08263a; }\n@media (max-width: 960px) {\n  .main-nav { background: #08263a !important; border-color: rgba(255,255,255,.12) !important; }\n}\n.brand-logo {\n  height: 48px;\n  width: auto;\n  object-fit: contain;\n  display: block;\n  flex: 0 0 auto;\n}\n\n@media (max-width: 768px) {\n  .brand-logo {\n    height: 38px;\n  }\n}\n/* Organized dropdown header */\n.main-nav {\n  gap: 0.65rem;\n}\n\n.nav-dropdown {\n  position: relative;\n}\n\n.nav-dropdown summary {\n  list-style: none;\n  cursor: pointer;\n  color: #fff;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-size: 0.88rem;\n  font-weight: 600;\n  white-space: nowrap;\n  padding: 0.55rem 0.35rem;\n  display: inline-flex;\n  align-items: center;\n  gap: 0.35rem;\n}\n\n.nav-dropdown summary::-webkit-details-marker {\n  display: none;\n}\n\n.nav-dropdown summary::after {\n  content: '▾';\n  font-size: 0.68rem;\n  opacity: 0.8;\n  transform: translateY(1px);\n}\n\n.dropdown-panel {\n  position: absolute;\n  top: calc(100% + 0.8rem);\n  left: 0;\n  min-width: 230px;\n  padding: 0.55rem;\n  border-radius: 16px;\n  background: #ffffff;\n  box-shadow: 0 20px 45px rgba(8, 38, 58, 0.22);\n  border: 1px solid rgba(8, 38, 58, 0.1);\n  display: grid;\n  gap: 0.15rem;\n  z-index: 50;\n}\n\n.dropdown-panel-right {\n  right: 0;\n  left: auto;\n}\n\n.dropdown-panel a {\n  color: #08263a !important;\n  padding: 0.78rem 0.9rem;\n  border-radius: 12px;\n  font-size: 0.88rem;\n  font-weight: 600;\n}\n\n.dropdown-panel a:hover,\n.dropdown-panel a.active {\n  background: #e8f4f7;\n  color: #0b6e8f !important;\n}\n\n.account-dropdown summary {\n  padding: 0.68rem 0.95rem;\n  border-radius: 999px;\n  background: #f28c28;\n  color: #fff;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n@media (min-width: 961px) {\n  .nav-dropdown:not([open]) .dropdown-panel {\n    display: none;\n  }\n}\n\n@media (max-width: 960px) {\n  .main-nav {\n    gap: 0.35rem;\n    max-height: calc(100vh - 92px);\n    overflow-y: auto;\n  }\n\n  .nav-dropdown {\n    width: 100%;\n  }\n\n  .nav-dropdown summary,\n  .main-nav > a {\n    width: 100%;\n    padding: 0.9rem 1rem;\n    border-radius: 12px;\n    background: rgba(255,255,255,0.06);\n    justify-content: space-between;\n  }\n\n  .account-dropdown summary {\n    background: #f28c28;\n    justify-content: space-between;\n  }\n\n  .dropdown-panel,\n  .dropdown-panel-right {\n    position: static;\n    min-width: 0;\n    margin-top: 0.35rem;\n    margin-bottom: 0.45rem;\n    padding: 0.35rem;\n    border-radius: 14px;\n    box-shadow: none;\n    background: rgba(255,255,255,0.98);\n  }\n\n  .dropdown-panel a {\n    padding: 0.82rem 0.9rem;\n  }\n\n  .language-switcher select {\n    width: 100%;\n  }\n}\n\n.dropdown-action {\n  appearance: none;\n  border: 0;\n  width: 100%;\n  text-align: left;\n  color: #08263a !important;\n  background: transparent;\n  padding: 0.78rem 0.9rem;\n  border-radius: 12px;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-size: 0.88rem;\n  font-weight: 600;\n  cursor: pointer;\n}\n\n.dropdown-action:hover {\n  background: #e8f4f7;\n  color: #0b6e8f !important;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -4799,18 +5518,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   LayoutModule: () => (/* binding */ LayoutModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ 99585);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @ionic/angular */ 21507);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ngx-spinner */ 61249);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @ionic/angular */ 21507);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ngx-spinner */ 61249);
 /* harmony import */ var _home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home/homelayout/homelayout.component */ 14211);
 /* harmony import */ var _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home/homeheader/homeheader.component */ 48917);
 /* harmony import */ var _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./home/homefooter/homefooter.component */ 41445);
-/* harmony import */ var _layout_router_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./layout.router.module */ 4528);
-/* harmony import */ var _cookie_consent_cookie_consent_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./cookie-consent/cookie-consent.component */ 64759);
+/* harmony import */ var _layoutnone_layoutnone_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./layoutnone/layoutnone.component */ 51629);
+/* harmony import */ var _layout_router_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./layout.router.module */ 4528);
+/* harmony import */ var _cookie_consent_cookie_consent_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./cookie-consent/cookie-consent.component */ 64759);
+
 
 
 
@@ -4824,9 +5545,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let LayoutModule = class LayoutModule {};
-LayoutModule = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.NgModule)({
-  declarations: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent, _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__.HomeheaderComponent, _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__.HomefooterComponent, _cookie_consent_cookie_consent_component__WEBPACK_IMPORTED_MODULE_4__.CookieConsentComponent],
-  imports: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent, _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__.HomeheaderComponent, _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__.HomefooterComponent, _cookie_consent_cookie_consent_component__WEBPACK_IMPORTED_MODULE_4__.CookieConsentComponent, _angular_common__WEBPACK_IMPORTED_MODULE_7__.CommonModule, _angular_router__WEBPACK_IMPORTED_MODULE_8__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_9__.IonicModule, _angular_forms__WEBPACK_IMPORTED_MODULE_10__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_10__.ReactiveFormsModule, ngx_spinner__WEBPACK_IMPORTED_MODULE_11__.NgxSpinnerModule, _layout_router_module__WEBPACK_IMPORTED_MODULE_3__.LayoutRoutingModule],
+LayoutModule = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.NgModule)({
+  declarations: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent, _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__.HomeheaderComponent, _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__.HomefooterComponent, _layoutnone_layoutnone_component__WEBPACK_IMPORTED_MODULE_3__.LayoutnoneComponent, _cookie_consent_cookie_consent_component__WEBPACK_IMPORTED_MODULE_5__.CookieConsentComponent],
+  imports: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent, _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__.HomeheaderComponent, _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__.HomefooterComponent, _cookie_consent_cookie_consent_component__WEBPACK_IMPORTED_MODULE_5__.CookieConsentComponent, _angular_common__WEBPACK_IMPORTED_MODULE_8__.CommonModule, _angular_router__WEBPACK_IMPORTED_MODULE_9__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_10__.IonicModule, _angular_forms__WEBPACK_IMPORTED_MODULE_11__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_11__.ReactiveFormsModule, ngx_spinner__WEBPACK_IMPORTED_MODULE_12__.NgxSpinnerModule, _layout_router_module__WEBPACK_IMPORTED_MODULE_4__.LayoutRoutingModule],
   exports: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent]
 })], LayoutModule);
 
@@ -4907,11 +5628,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeheaderComponent: () => (/* binding */ HomeheaderComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _homeheader_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./homeheader.component.html?ngResource */ 4527);
 /* harmony import */ var _homeheader_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./homeheader.component.scss?ngResource */ 39829);
 /* harmony import */ var _homeheader_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_homeheader_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _home_site_content__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../home/site-content */ 14009);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../services/language.service */ 48756);
 
@@ -4920,23 +5643,41 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 let HomeheaderComponent = class HomeheaderComponent {
   languageService;
+  router;
+  mainSvc;
   menuOpen = false;
   currentLanguage = 'fr';
   content = _home_site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr;
+  loggedUser = null;
   languageSub;
-  constructor(languageService) {
+  accountSub;
+  constructor(languageService, router, mainSvc) {
     this.languageService = languageService;
+    this.router = router;
+    this.mainSvc = mainSvc;
   }
   ngOnInit() {
     this.languageSub = this.languageService.language$.subscribe(language => {
       this.currentLanguage = language;
       this.content = _home_site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT[language];
     });
+    const svc = this.mainSvc;
+    const userObservable = typeof svc.getLoggedUser === 'function' ? svc.getLoggedUser() : typeof svc.getUser === 'function' ? svc.getUser() : svc.bnUserO;
+    if (userObservable && typeof userObservable.subscribe === 'function') {
+      this.accountSub = userObservable.subscribe(user => {
+        this.loggedUser = user || null;
+      });
+    } else if (svc.bnUser) {
+      this.loggedUser = svc.bnUser;
+    }
   }
   ngOnDestroy() {
     this.languageSub?.unsubscribe();
+    this.accountSub?.unsubscribe();
   }
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
@@ -4947,15 +5688,141 @@ let HomeheaderComponent = class HomeheaderComponent {
   changeLanguage(language) {
     this.languageService.setLanguage(language);
   }
+  logout() {
+    const svc = this.mainSvc;
+    const userId = this.loggedUser?.userId || this.loggedUser?.uid;
+    if (typeof svc.disconnectingUser === 'function' && userId) {
+      svc.disconnectingUser(userId);
+    } else if (typeof svc.setLoggedUser === 'function') {
+      svc.setLoggedUser(undefined);
+    } else if (svc.bnUserO && typeof svc.bnUserO.next === 'function') {
+      svc.bnUserO.next(null);
+    }
+    this.loggedUser = null;
+    this.closeMenu();
+    this.router.navigateByUrl('/');
+  }
+  get isLoggedIn() {
+    return !!this.loggedUser;
+  }
+  get isAdmin() {
+    const role = String(this.loggedUser?.role || '').toLowerCase();
+    return role === 'admin' || this.loggedUser?.isAdmin === true;
+  }
+  get firstName() {
+    const user = this.loggedUser || {};
+    const fromName = user.firstname || user.firstName || user.displayName || user.email || '';
+    return String(fromName).split(' ')[0] || this.accountLabel;
+  }
+  get accountSummaryLabel() {
+    if (this.isLoggedIn) {
+      return this.currentLanguage === 'fr' ? `Bonjour ${this.firstName}` : this.currentLanguage === 'es' ? `Hola ${this.firstName}` : `Hi ${this.firstName}`;
+    }
+    return this.accountLabel;
+  }
+  get allOutingsLabel() {
+    return this.currentLanguage === 'fr' ? 'Toutes les sorties' : this.currentLanguage === 'es' ? 'Todas las salidas' : 'All experiences';
+  }
+  get dayAtSeaLabel() {
+    return this.currentLanguage === 'fr' ? 'Journée en mer' : this.currentLanguage === 'es' ? 'Día en el mar' : 'Full day at sea';
+  }
+  get sunsetLabel() {
+    return this.currentLanguage === 'fr' ? 'Coucher de soleil' : this.currentLanguage === 'es' ? 'Atardecer' : 'Sunset cruise';
+  }
+  get partyLabel() {
+    return this.currentLanguage === 'fr' ? 'Fête privée' : this.currentLanguage === 'es' ? 'Fiesta privada' : 'Private party';
+  }
+  get corporateLabel() {
+    return this.currentLanguage === 'fr' ? 'Sortie entreprise' : this.currentLanguage === 'es' ? 'Evento de empresa' : 'Corporate outing';
+  }
+  get boatPresentationLabel() {
+    return this.currentLanguage === 'fr' ? 'Présentation' : this.currentLanguage === 'es' ? 'Presentación' : 'Overview';
+  }
+  get checklistLabel() {
+    return this.currentLanguage === 'fr' ? 'Checklist sécurité' : this.currentLanguage === 'es' ? 'Checklist de seguridad' : 'Safety checklist';
+  }
+  get safetyLabel() {
+    return this.currentLanguage === 'fr' ? 'Consignes de sécurité' : this.currentLanguage === 'es' ? 'Instrucciones de seguridad' : 'Safety instructions';
+  }
+  get practicalInfoLabel() {
+    return this.currentLanguage === 'fr' ? 'Infos pratiques' : this.currentLanguage === 'es' ? 'Información práctica' : 'Practical info';
+  }
+  get guestJourneyLabel() {
+    return this.currentLanguage === 'fr' ? 'Comment se déroule la sortie' : this.currentLanguage === 'es' ? 'Cómo será la salida' : 'How the outing works';
+  }
+  get faqLabel() {
+    return this.currentLanguage === 'fr' ? 'FAQ invités' : this.currentLanguage === 'es' ? 'FAQ invitados' : 'Guest FAQ';
+  }
+  get termsLabel() {
+    return this.currentLanguage === 'fr' ? 'Conditions générales' : this.currentLanguage === 'es' ? 'Condiciones generales' : 'Terms & conditions';
+  }
+  get depositLabel() {
+    return this.currentLanguage === 'fr' ? 'Acompte sécurisé' : this.currentLanguage === 'es' ? 'Depósito seguro' : 'Secure deposit';
+  }
+  get accountLabel() {
+    return this.currentLanguage === 'fr' ? 'Compte' : this.currentLanguage === 'es' ? 'Cuenta' : 'Account';
+  }
+  get loginLabel() {
+    return this.currentLanguage === 'fr' ? 'Se connecter' : this.currentLanguage === 'es' ? 'Iniciar sesión' : 'Log in';
+  }
+  get signupLabel() {
+    return this.currentLanguage === 'fr' ? 'Créer un compte' : this.currentLanguage === 'es' ? 'Crear una cuenta' : 'Create account';
+  }
+  get guestLabel() {
+    return this.currentLanguage === 'fr' ? 'Continuer comme invité' : this.currentLanguage === 'es' ? 'Continuar como invitado' : 'Continue as guest';
+  }
+  get myBookingsLabel() {
+    return this.currentLanguage === 'fr' ? 'Mes réservations' : this.currentLanguage === 'es' ? 'Mis reservas' : 'My bookings';
+  }
+  get myPaymentsLabel() {
+    return this.currentLanguage === 'fr' ? 'Mes paiements' : this.currentLanguage === 'es' ? 'Mis pagos' : 'My payments';
+  }
+  get myProfileLabel() {
+    return this.currentLanguage === 'fr' ? 'Mon profil' : this.currentLanguage === 'es' ? 'Mi perfil' : 'My profile';
+  }
+  get myFeedbacksLabel() {
+    return this.currentLanguage === 'fr' ? 'Mes avis' : this.currentLanguage === 'es' ? 'Mis comentarios' : 'My feedbacks';
+  }
+  get adminFeedbacksLabel() {
+    return this.currentLanguage === 'fr' ? 'Avis clients (admin)' : this.currentLanguage === 'es' ? 'Comentarios clientes (admin)' : 'Customer feedbacks (admin)';
+  }
+  get adminOutingsLabel() {
+    return 'Boat Log Manager';
+  }
+  get logoutLabel() {
+    return this.currentLanguage === 'fr' ? 'Se déconnecter' : this.currentLanguage === 'es' ? 'Cerrar sesión' : 'Logout';
+  }
   static ctorParameters = () => [{
     type: _services_language_service__WEBPACK_IMPORTED_MODULE_3__.LanguageService
+  }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.ServicesService
   }];
 };
-HomeheaderComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
+HomeheaderComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
   selector: 'app-homeheader',
   template: _homeheader_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
   styles: [(_homeheader_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
 })], HomeheaderComponent);
+
+
+/***/ }),
+
+/***/ 49555:
+/*!************************************************************************!*\
+  !*** ./src/app/layout/layoutnone/layoutnone.component.scss?ngResource ***!
+  \************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 
 /***/ }),
@@ -5050,6 +5917,65 @@ AppModule = (0,tslib__WEBPACK_IMPORTED_MODULE_11__.__decorate)([(0,_angular_core
 
 "use strict";
 module.exports = "<section class=\"not-found\">\n  <div class=\"box\">\n    <span class=\"code\">404</span>\n    <h1>{{ content.notFound.title }}</h1>\n    <p>{{ content.notFound.text }}</p>\n    <a routerLink=\"/\">{{ content.notFound.cta }}</a>\n  </div>\n</section>\n";
+
+/***/ }),
+
+/***/ 51629:
+/*!***********************************************************!*\
+  !*** ./src/app/layout/layoutnone/layoutnone.component.ts ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   LayoutnoneComponent: () => (/* binding */ LayoutnoneComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _layoutnone_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layoutnone.component.html?ngResource */ 38003);
+/* harmony import */ var _layoutnone_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layoutnone.component.scss?ngResource */ 49555);
+/* harmony import */ var _layoutnone_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_layoutnone_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-translate/core */ 48503);
+/* harmony import */ var _services_services_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/services.service */ 92030);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! godigital-lib */ 83);
+
+
+
+
+
+
+
+
+let LayoutnoneComponent = class LayoutnoneComponent {
+  router;
+  utilsSvc;
+  localUtilsSvc;
+  translateSvc;
+  constructor(router, utilsSvc, localUtilsSvc, translateSvc) {
+    this.router = router;
+    this.utilsSvc = utilsSvc;
+    this.localUtilsSvc = localUtilsSvc;
+    this.translateSvc = translateSvc;
+  }
+  ngOnInit() {}
+  static ctorParameters = () => [{
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_3__.Router
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.UtilsService
+  }, {
+    type: _services_services_service__WEBPACK_IMPORTED_MODULE_2__.LocalUtilsService
+  }, {
+    type: _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__.TranslateService
+  }];
+};
+LayoutnoneComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
+  selector: 'app-layoutnone',
+  template: _layoutnone_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_layoutnone_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], LayoutnoneComponent);
+
 
 /***/ }),
 
@@ -6002,6 +6928,13 @@ const routes = [{
   children: [{
     path: '',
     loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_home_home_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./home/home.module */ 45055)).then(m => m.HomeModule)
+  }]
+}, {
+  path: '',
+  component: _layout_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent,
+  children: [{
+    path: '',
+    loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_login_login_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./login/login.module */ 91307)).then(m => m.LoginModule)
   }]
 }, {
   path: '**',

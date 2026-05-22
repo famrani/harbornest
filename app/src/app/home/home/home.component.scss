@@ -397,3 +397,8 @@ p, li, input, textarea, select, .card-body, .term-section {
 .section-light {
   background: var(--alegria-sand);
 }
+
+.meta.price {
+  color: var(--sun, #f59e0b);
+  font-weight: 800;
+}
