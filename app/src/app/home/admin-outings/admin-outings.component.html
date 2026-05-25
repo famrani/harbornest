@@ -52,10 +52,31 @@
       <div class="outing-form-card" *ngIf="mode === 'create' || mode === 'edit'">
         <div class="form-title-row">
           <h2>{{ mode === 'create' ? t('createTitle') : t('editTitle') }}</h2>
-          <button type="button" class="btn btn-secondary" (click)="showList()">{{ t('backToList') }}</button>
+          <div class="form-title-actions">
+            <button type="button" class="btn btn-secondary" *ngIf="mode === 'edit' && selectedOuting && selectedOuting.status !== 'closed'" (click)="startClose(selectedOuting)">
+              {{ t('arrivalChecklist') }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="showList()">{{ t('backToList') }}</button>
+          </div>
         </div>
 
-        <div class="form-grid">
+        
+        <div class="outing-tabs">
+          <button type="button" class="outing-tab" [class.active]="activeTab === 'details'" (click)="activeTab = 'details'">
+            Details
+          </button>
+          <button type="button" class="outing-tab" [class.active]="activeTab === 'departure'" (click)="activeTab = 'departure'">
+            Departure
+          </button>
+          <button type="button" class="outing-tab" [class.active]="activeTab === 'anchoring'" (click)="activeTab = 'anchoring'">
+            Anchoring
+          </button>
+          <button type="button" class="outing-tab" [class.active]="activeTab === 'return'" (click)="activeTab = 'return'">
+            Return
+          </button>
+        </div>
+
+        <div class="form-grid" *ngIf="activeTab === 'details'">
           <label>
             {{ t('outingType') }} *
             <select [(ngModel)]="form.outingType">
@@ -78,15 +99,6 @@
             <input type="time" [(ngModel)]="form.departureTime" />
           </label>
 
-          <label>
-            {{ t('arrivalDate') }} *
-            <input type="date" [(ngModel)]="form.arrivalDate" />
-          </label>
-
-          <label>
-            {{ t('arrivalTime') }} *
-            <input type="time" [(ngModel)]="form.arrivalTime" />
-          </label>
 
           <label>
             {{ t('portEngine') }}
@@ -114,7 +126,7 @@
           </label>
         </div>
 
-        <div class="checklist-block">
+        <div class="checklist-block" *ngIf="activeTab === 'departure'">
           <div class="checklist-head">
             <h2>{{ t('departureChecklist') }}</h2>
             <span [class.complete]="departureChecklistComplete">
@@ -143,7 +155,7 @@
           </div>
         </div>
 
-        <div class="anchorages-block">
+        <div class="anchorages-block" *ngIf="activeTab === 'anchoring'">
           <div class="checklist-head">
             <h2>{{ t('anchorages') }}</h2>
             <span>{{ currentAnchorages.length }}</span>
@@ -230,6 +242,34 @@
           </article>
         </div>
 
+        <div class="checklist-block" *ngIf="mode === 'edit' && selectedOuting && activeTab === 'return'">
+          <div class="checklist-head">
+            <h2>{{ t('arrivalChecklist') }}</h2>
+            <span [class.complete]="arrivalChecklistComplete(selectedOuting.outingId)">
+              {{ countDoneArrivalItems(selectedOuting.outingId) }} / {{ countArrivalItems(selectedOuting.outingId) }}
+            </span>
+          </div>
+
+          <div class="checklist-group" *ngFor="let group of arrivalChecklistGroupsByOuting[selectedOuting.outingId]">
+            <div class="checklist-subhead">
+              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>
+              <span [class.complete]="countDoneGroup(group) === group.items.length">
+                {{ countDoneGroup(group) }} / {{ group.items.length }}
+              </span>
+            </div>
+            <div class="checklist-grid">
+              <label class="check-item" *ngFor="let item of group.items" [class.done]="item.done">
+                <input type="checkbox" [checked]="item.done" (change)="toggleChecklist(item)" />
+                <span class="fake-radio"></span>
+                <span>
+                  {{ item.label[currentLanguage] || item.label.fr }}
+                  <small class="check-meta" *ngIf="item.doneAt">{{ formatChecklistMeta(item) }}</small>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
         <div class="form-actions">
           <button type="button" class="btn btn-primary" [disabled]="saving" (click)="mode === 'create' ? createOuting() : updateOuting()">
             {{ saving ? t('saving') : (mode === 'create' ? t('create') : t('saveChanges')) }}
@@ -248,6 +288,29 @@
             <p>{{ selectedOuting.outingType }} · {{ formatOutingDate(selectedOuting) }}</p>
           </div>
           <button type="button" class="btn btn-secondary" (click)="showList()">{{ t('backToList') }}</button>
+        </div>
+
+
+        <div class="form-grid">
+          <label>
+            {{ t('arrivalDate') }} *
+            <input type="date" [(ngModel)]="form.arrivalDate" />
+          </label>
+
+          <label>
+            {{ t('arrivalTime') }} *
+            <input type="time" [(ngModel)]="form.arrivalTime" />
+          </label>
+
+          <label>
+            {{ t('portEngineArrival') }}
+            <input type="number" min="0" step="0.1" [(ngModel)]="form.portEngineHoursArrival" />
+          </label>
+
+          <label>
+            {{ t('starboardEngineArrival') }}
+            <input type="number" min="0" step="0.1" [(ngModel)]="form.starboardEngineHoursArrival" />
+          </label>
         </div>
 
         <div class="checklist-block">

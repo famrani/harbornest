@@ -64,6 +64,8 @@ interface AdminOuting {
   styleUrls: ['./admin-outing-detail.component.scss'],
 })
 export class AdminOutingDetailComponent implements OnInit, OnDestroy {
+  activeTab: 'details' | 'departure' | 'anchoring' | 'return' = 'details';
+
   currentLanguage: SiteLanguage = 'fr';
   loggedUser: any = null;
   outingId = '';
@@ -543,7 +545,6 @@ export class AdminOutingDetailComponent implements OnInit, OnDestroy {
           { id: 'face_wind_anchor', done: false, label: { fr: 'Se mettre face au vent et mouiller l’ancre', en: 'Face into the wind and set the anchor', es: 'Ponerse proa al viento y fondear' } },
           { id: 'anchor_bridle', done: false, label: { fr: 'Une fois l’ancre prise, installer la bride de mouillage', en: 'Once set, attach the anchor bridle', es: 'Una vez fijada, colocar la brida del ancla' } },
           { id: 'check_anchor_not_dragging', done: false, label: { fr: 'Vérifier que l’ancre ne chasse pas avant d’éteindre le moteur', en: 'Check that the anchor is not dragging before turning off the engine', es: 'Comprobar que el ancla no garrea antes de apagar el motor' } },
-          { id: 'release_security_lines', done: false, label: { fr: 'Relâcher les lignes de sécurité', en: 'Release the security lines', es: 'Soltar las líneas de seguridad' } },
           { id: 'swimming_ladder_down', done: false, label: { fr: 'Descendre l’échelle de bain', en: 'Put down the swimming ladder', es: 'Bajar la escalera de baño' } },
           { id: 'toys_setup', done: false, label: { fr: 'Installer les jouets nautiques', en: 'Set up the toys', es: 'Preparar los juguetes acuáticos' } },
         ],
@@ -560,7 +561,6 @@ export class AdminOutingDetailComponent implements OnInit, OnDestroy {
           { id: 'everyone_aboard', done: false, label: { fr: 'Vérifier que tout le monde est à bord', en: 'Make sure everyone is aboard', es: 'Comprobar que todos están a bordo' } },
           { id: 'equipment_aboard', done: false, label: { fr: 'Vérifier que tout le matériel est à bord', en: 'Make sure all equipment is aboard', es: 'Comprobar que todo el equipo está a bordo' } },
           { id: 'swimming_ladder_up', done: false, label: { fr: 'Remonter l’échelle de bain', en: 'Bring up the swimming ladder', es: 'Subir la escalera de baño' } },
-          { id: 'attach_security_lines', done: false, label: { fr: 'Attacher les lignes de sécurité', en: 'Attach security lines', es: 'Fijar las líneas de seguridad' } },
           { id: 'anchoring_engine_on', done: false, label: { fr: 'Démarrer le moteur', en: 'Engine on', es: 'Encender motor' } },
           { id: 'anchor_up', done: false, label: { fr: 'Remonter l’ancre', en: 'Bring the anchor up', es: 'Subir el ancla' } },
           { id: 'remove_anchor_bridle', done: false, label: { fr: 'Retirer la bride de mouillage', en: 'Remove the anchor bridle', es: 'Retirar la brida del ancla' } },
@@ -582,7 +582,6 @@ export class AdminOutingDetailComponent implements OnInit, OnDestroy {
           { id: 'logbook_start', done: false, label: { fr: 'Préparer le journal de bord avec la page de signature passagers', en: 'Start the logbook including the page for guests to sign in', es: 'Preparar el libro de navegación con la página de firma de pasajeros' } },
           { id: 'open_boat', done: false, label: { fr: 'Ouvrir le bateau : hublots, coussins, musique', en: 'Open up the boat: hatches, cushions, music', es: 'Abrir el barco: escotillas, cojines, música' } },
           { id: 'bins_fridge_toilets', done: false, label: { fr: 'Vérifier poubelles vides, frigo propre et toilettes propres', en: 'Check bins are empty, fridge is clear and toilets are clean', es: 'Comprobar papeleras vacías, nevera limpia y baños limpios' } },
-          { id: 'security_bars_removed', done: false, label: { fr: 'Retirer les barres de sécurité', en: 'Remove security bars', es: 'Retirar las barras de seguridad' } },
           { id: 'stock_ice', done: false, label: { fr: 'Mettre la glace à bord', en: 'Stock ice', es: 'Cargar hielo' } },
           { id: 'prepare_breakfast', done: false, label: { fr: 'Préparer le petit-déjeuner', en: 'Prepare breakfast', es: 'Preparar el desayuno' } },
           { id: 'install_foot_bridge', done: false, label: { fr: 'Installer la passerelle', en: 'Install foot bridge', es: 'Instalar la pasarela' } },
@@ -608,8 +607,6 @@ export class AdminOutingDetailComponent implements OnInit, OnDestroy {
         title: { fr: 'Tout le monde à bord', en: 'When all aboard', es: 'Todos a bordo' },
         items: [
           { id: 'formal_intros', done: false, label: { fr: 'Présentations formelles', en: 'Formal introductions', es: 'Presentaciones formales' } },
-          { id: 'security_champion', done: false, label: { fr: 'Choisir un référent sécurité', en: 'Choose security champion', es: 'Elegir responsable de seguridad' } },
-          { id: 'security_brief', done: false, label: { fr: 'Brief sécurité', en: 'Security brief', es: 'Briefing de seguridad' } },
           { id: 'day_plan', done: false, label: { fr: 'Présenter le programme de la journée', en: 'Overview of day’s plan', es: 'Presentar el plan del día' } },
           { id: 'clients_clear', done: false, label: { fr: 'Demander aux clients de rester à l’écart pendant les manœuvres', en: 'Clients stay out of the way as we get going', es: 'Clientes apartados durante las maniobras' } },
           { id: 'engine_on', done: false, label: { fr: 'Moteurs démarrés', en: 'Engine on', es: 'Motor encendido' } },
@@ -624,10 +621,8 @@ export class AdminOutingDetailComponent implements OnInit, OnDestroy {
           { id: 'gear_stern_lines', done: false, label: { fr: 'Bateau en marche arrière, préparation des amarres arrière sauf si déjà préparées', en: 'Boat in gear backwards, prepare stern lines unless already prepped', es: 'Barco en marcha atrás, preparar amarras de popa salvo si ya están preparadas' } },
           { id: 'lines_off', done: false, label: { fr: 'Retirer les gardes, amarres avant puis amarres arrière', en: 'Cross lines off, bow lines off, stern lines off', es: 'Soltar traveses, amarras de proa y amarras de popa' } },
           { id: 'depart', done: false, label: { fr: 'Départ effectif', en: 'Depart', es: 'Salida' } },
-          { id: 'security_champion_tour', done: false, label: { fr: 'Une fois sorti du port, faire le tour sécurité avec le référent', en: 'Once out of harbour, show the security champion around', es: 'Fuera del puerto, mostrar el recorrido de seguridad al responsable' } },
           { id: 'switch_vhf16', done: false, label: { fr: 'Passer sur le canal VHF 16', en: 'Switch to VHF channel 16', es: 'Cambiar al canal VHF 16' } },
           { id: 'fenders_up', done: false, label: { fr: 'Remonter les pare-battages', en: 'Bring up the fenders', es: 'Subir defensas' } },
-          { id: 'fasten_security_lines', done: false, label: { fr: 'Fixer les lignes de sécurité', en: 'Fasten the security lines', es: 'Fijar las líneas de seguridad' } },
           { id: 'breakfast_cleanup', done: false, label: { fr: 'Ranger le petit-déjeuner', en: 'Breakfast clean-up', es: 'Recoger el desayuno' } },
         ],
       },
@@ -641,7 +636,6 @@ export class AdminOutingDetailComponent implements OnInit, OnDestroy {
         title: { fr: 'Retour au port', en: 'Return', es: 'Regreso al puerto' },
         items: [
           { id: 'return_permission_enter_vhf09', done: false, label: { fr: 'À 1/2 mille nautique du port, demander l’autorisation d’entrer – VHF 09', en: 'At 1/2 NM from harbour request permission to enter – VHF 09', es: 'A 1/2 milla náutica del puerto, solicitar permiso para entrar – VHF 09' } },
-          { id: 'return_security_lines_off', done: false, label: { fr: 'Retirer les lignes de sécurité', en: 'Security lines off', es: 'Quitar las líneas de seguridad' } },
           { id: 'return_fenders_down', done: false, label: { fr: 'Descendre les pare-battages', en: 'Fenders down', es: 'Bajar defensas' } },
           { id: 'return_ready_ropes', done: false, label: { fr: 'Préparer les amarres', en: 'Ready ropes', es: 'Preparar cabos' } },
           { id: 'return_protect_boat', done: false, label: { fr: 'L’équipage protège le bateau pendant l’amarrage', en: 'Crew protect boat as we moor', es: 'La tripulación protege el barco durante el amarre' } },
@@ -662,7 +656,6 @@ export class AdminOutingDetailComponent implements OnInit, OnDestroy {
           { id: 'tidy_attach_electricity', done: false, label: { fr: 'Brancher l’électricité', en: 'Attach electricity', es: 'Conectar electricidad' } },
           { id: 'tidy_invertor_off', done: false, label: { fr: 'Éteindre l’inverter', en: 'Turn off invertor', es: 'Apagar el inversor' } },
           { id: 'tidy_galley_bins_fridge', done: false, label: { fr: 'Nettoyer la cuisine, trier les poubelles et le frigo', en: 'Clean up galley, sort out bins and fridge', es: 'Limpiar la cocina, ordenar papeleras y nevera' } },
-          { id: 'tidy_security_bars', done: false, label: { fr: 'Remettre les barres de sécurité', en: 'Replace security bars', es: 'Volver a colocar las barras de seguridad' } },
         ],
       },
       {

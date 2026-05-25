@@ -20,7 +20,7 @@
 
       <p class="comments" *ngIf="booking.comments">{{ booking.comments }}</p>
 
-      <button class="btn btn-primary" type="button" (click)="goToPayment()">Open payment page</button>
+      <button class="btn btn-primary" type="button" (click)="goToPayment()">{{ paymentButtonLabel }}</button>
     </article>
   </div>
 </section>

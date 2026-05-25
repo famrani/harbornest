@@ -475,3 +475,32 @@ button.detail-link {
     flex-direction: column;
   }
 }
+
+.form-title-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+
+.outing-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.outing-tab {
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+}
+
+.outing-tab.active {
+  background: #0f172a;
+  color: #fff;
+  border-color: #0f172a;
+}

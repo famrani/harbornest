@@ -30,7 +30,6 @@
           <a routerLink="/bateau" routerLinkActive="active" (click)="closeMenu()">{{ boatPresentationLabel }}</a>
           <a routerLink="/galerie" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.gallery }}</a>
           <a routerLink="/crew" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.crew }}</a>
-          <a routerLink="/checklist" routerLinkActive="active" (click)="closeMenu()">{{ checklistLabel }}</a>
           <a routerLink="/safety" routerLinkActive="active" (click)="closeMenu()">{{ safetyLabel }}</a>
         </div>
       </details>
@@ -41,7 +40,7 @@
           <a routerLink="/how-it-works" routerLinkActive="active" (click)="closeMenu()">{{ guestJourneyLabel }}</a>
           <a routerLink="/faq" routerLinkActive="active" (click)="closeMenu()">{{ faqLabel }}</a>
           <a routerLink="/terms" routerLinkActive="active" (click)="closeMenu()">{{ termsLabel }}</a>
-          <a routerLink="/deposit" routerLinkActive="active" (click)="closeMenu()">{{ depositLabel }}</a>
+          <a *ngIf="!isAdmin" routerLink="/deposit" routerLinkActive="active" (click)="closeMenu()">{{ depositLabel }}</a>
         </div>
       </details>
 
@@ -64,14 +63,20 @@
           <a routerLink="/deposit" [queryParams]="{ guest: 'true' }" (click)="closeMenu()">{{ guestLabel }}</a>
         </div>
 
-        <div class="dropdown-panel dropdown-panel-right" *ngIf="isLoggedIn">
+        <div class="dropdown-panel dropdown-panel-right" *ngIf="isLoggedIn && isAdmin">
+          <a routerLink="/admin/bookings" routerLinkActive="active" (click)="closeMenu()">{{ adminBookingsLabel }}</a>
+          <a routerLink="/admin/outings" routerLinkActive="active" (click)="closeMenu()">{{ adminOutingsLabel }}</a>
+          <a routerLink="/admin/feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ adminFeedbacksLabel }}</a>
+          <a routerLink="/admin/manage-outings" routerLinkActive="active" (click)="closeMenu()">{{ adminPublicOutingsLabel }}</a>
+          <a routerLink="/my-profile" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
+          <button class="dropdown-action" type="button" (click)="logout()">{{ logoutLabel }}</button>
+        </div>
+
+        <div class="dropdown-panel dropdown-panel-right" *ngIf="isLoggedIn && isCustomer">
           <a routerLink="/my-bookings" routerLinkActive="active" (click)="closeMenu()">{{ myBookingsLabel }}</a>
           <a routerLink="/my-payments" routerLinkActive="active" (click)="closeMenu()">{{ myPaymentsLabel }}</a>
           <a routerLink="/my-profile" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
-          <a *ngIf="!isAdmin" routerLink="/my-feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ myFeedbacksLabel }}</a>
-          <a *ngIf="isAdmin" routerLink="/admin/bookings" routerLinkActive="active" (click)="closeMenu()">{{ adminBookingsLabel }}</a>
-          <a *ngIf="isAdmin" routerLink="/admin/feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ adminFeedbacksLabel }}</a>
-          <a *ngIf="isAdmin" routerLink="/admin/outings" routerLinkActive="active" (click)="closeMenu()">{{ adminOutingsLabel }}</a>
+          <a routerLink="/my-feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ myFeedbacksLabel }}</a>
           <button class="dropdown-action" type="button" (click)="logout()">{{ logoutLabel }}</button>
         </div>
       </details>

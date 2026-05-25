@@ -1791,14 +1791,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AccountSummaryComponent: () => (/* binding */ AccountSummaryComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _account_summary_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./account-summary.component.html?ngResource */ 44878);
 /* harmony import */ var _account_summary_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./account-summary.component.scss?ngResource */ 80458);
 /* harmony import */ var _account_summary_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_account_summary_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../site-content */ 14009);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+
 
 
 
@@ -1809,15 +1811,27 @@ __webpack_require__.r(__webpack_exports__);
 let AccountSummaryComponent = class AccountSummaryComponent {
   route;
   languageService;
+  router;
+  mainSvc;
   content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr;
   currentLanguage = 'fr';
   section = 'bookings';
-  constructor(route, languageService) {
+  constructor(route, languageService, router, mainSvc) {
     this.route = route;
     this.languageService = languageService;
+    this.router = router;
+    this.mainSvc = mainSvc;
   }
   ngOnInit() {
     this.section = this.route.snapshot.data['section'] || 'bookings';
+    const svc = this.mainSvc;
+    const user = svc.bnUser || svc.currentUser || null;
+    const role = String(user?.role || '').toLowerCase();
+    const isAdmin = role === 'admin' || role === 'owner' || user?.isAdmin === true;
+    if (isAdmin && (this.section === 'bookings' || this.section === 'payments' || this.section === 'feedbacks')) {
+      this.router.navigate(['/admin/bookings']);
+      return;
+    }
     this.languageService.language$.subscribe(language => {
       this.currentLanguage = language;
       this.content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT[language];
@@ -1883,9 +1897,13 @@ let AccountSummaryComponent = class AccountSummaryComponent {
     type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.ActivatedRoute
   }, {
     type: _services_language_service__WEBPACK_IMPORTED_MODULE_3__.LanguageService
+  }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.ServicesService
   }];
 };
-AccountSummaryComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+AccountSummaryComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
   selector: 'app-account-summary',
   template: _account_summary_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
   styles: [(_account_summary_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
@@ -1926,14 +1944,39 @@ let MyBookingsComponent = class MyBookingsComponent {
   router;
   bookings = [];
   loading = true;
+  loggedUser = null;
+  userSub;
   constructor(bookingApi, mainSvc, router) {
     this.bookingApi = bookingApi;
     this.mainSvc = mainSvc;
     this.router = router;
   }
   ngOnInit() {
-    const user = this.mainSvc.bnUser || this.mainSvc.currentUser || {};
-    const email = user?.email || '';
+    const svc = this.mainSvc;
+    const userObservable = typeof svc.getLoggedUser === 'function' ? svc.getLoggedUser() : typeof svc.getUser === 'function' ? svc.getUser() : svc.bnUserO;
+    if (userObservable && typeof userObservable.subscribe === 'function') {
+      this.userSub = userObservable.subscribe(user => {
+        this.loggedUser = user || svc.bnUser || svc.currentUser || null;
+        this.loadForCurrentMode();
+      });
+    } else {
+      this.loggedUser = svc.bnUser || svc.currentUser || null;
+      this.loadForCurrentMode();
+    }
+  }
+  ngOnDestroy() {
+    this.userSub?.unsubscribe();
+  }
+  get isAdmin() {
+    const role = String(this.loggedUser?.role || '').toLowerCase();
+    return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
+  }
+  loadForCurrentMode() {
+    if (this.isAdmin) {
+      this.router.navigate(['/admin/bookings']);
+      return;
+    }
+    const email = this.loggedUser?.email || '';
     this.bookingApi.getBookings(email).subscribe(bookings => {
       this.bookings = bookings;
       this.loading = false;
@@ -2590,7 +2633,7 @@ EvjfEvgComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angula
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"admin-outings-page\">\n  <div class=\"container\">\n    <div class=\"page-head\">\n      <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n\n    <div class=\"admin-warning\" *ngIf=\"!isAdmin\">\n      {{ t('adminOnly') }}\n    </div>\n\n    <ng-container *ngIf=\"isAdmin\">\n      <div class=\"mode-toolbar\">\n        <button type=\"button\" class=\"btn btn-secondary\" [class.active]=\"mode === 'list'\" (click)=\"showList()\">\n          {{ t('listOutings') }}\n        </button>\n        <button type=\"button\" class=\"btn btn-primary\" (click)=\"startCreate()\">\n          {{ t('newOuting') }}\n        </button>\n      </div>\n\n      <div class=\"outings-list-card\" *ngIf=\"mode === 'list'\">\n        <div class=\"list-head\">\n          <h2>{{ t('allOutings') }}</h2>\n          <button type=\"button\" class=\"btn btn-primary\" (click)=\"startCreate()\">{{ t('newOuting') }}</button>\n        </div>\n\n        <p class=\"empty\" *ngIf=\"loading\">{{ t('loading') }}</p>\n        <p class=\"empty\" *ngIf=\"!loading && outings.length === 0\">{{ t('empty') }}</p>\n        <div class=\"notice error\" *ngIf=\"closeError\">{{ closeError }}</div>\n\n        <article class=\"outing-row compact-row\" *ngFor=\"let outing of outings\">\n          <div class=\"outing-summary\">\n            <div>\n              <h3>{{ outing.outingType }}</h3>\n              <p>{{ formatOutingDate(outing) }}</p>\n              <p>{{ outing.destination }} · {{ outing.passengers }} {{ t('passengers') }}</p>\n            </div>\n            <div class=\"outing-actions\">\n              <span class=\"status\" [class.closed]=\"outing.status === 'closed'\">\n                {{ outing.status === 'closed' ? t('closed') : t('open') }}\n              </span>\n              <button type=\"button\" class=\"detail-link\" (click)=\"startEdit(outing)\">{{ t('edit') }}</button>\n              <button type=\"button\" class=\"detail-link\" *ngIf=\"outing.status !== 'closed'\" (click)=\"startClose(outing)\">{{ t('close') }}</button>\n              <button type=\"button\" class=\"detail-link danger\" (click)=\"deleteOuting(outing)\">{{ t('delete') }}</button>\n            </div>\n          </div>\n        </article>\n      </div>\n\n      <div class=\"outing-form-card\" *ngIf=\"mode === 'create' || mode === 'edit'\">\n        <div class=\"form-title-row\">\n          <h2>{{ mode === 'create' ? t('createTitle') : t('editTitle') }}</h2>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('backToList') }}</button>\n        </div>\n\n        <div class=\"form-grid\">\n          <label>\n            {{ t('outingType') }} *\n            <select [(ngModel)]=\"form.outingType\">\n              <option *ngFor=\"let option of outingTypes[currentLanguage]\" [value]=\"option\">{{ option }}</option>\n            </select>\n          </label>\n\n          <label>\n            {{ t('passengers') }} *\n            <input type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"form.passengers\" />\n          </label>\n\n          <label>\n            {{ t('departureDate') }} *\n            <input type=\"date\" [(ngModel)]=\"form.departureDate\" />\n          </label>\n\n          <label>\n            {{ t('departureTime') }} *\n            <input type=\"time\" [(ngModel)]=\"form.departureTime\" />\n          </label>\n\n          <label>\n            {{ t('arrivalDate') }} *\n            <input type=\"date\" [(ngModel)]=\"form.arrivalDate\" />\n          </label>\n\n          <label>\n            {{ t('arrivalTime') }} *\n            <input type=\"time\" [(ngModel)]=\"form.arrivalTime\" />\n          </label>\n\n          <label>\n            {{ t('portEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.portEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('starboardEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.starboardEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('wind') }} ({{ t('knots') }})\n            <input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"form.actualWindSpeed\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('destination') }} *\n            <input type=\"text\" [(ngModel)]=\"form.destination\" placeholder=\"Lérins, Baie des Milliardaires, Cap d’Antibes...\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('comments') }}\n            <textarea rows=\"4\" [(ngModel)]=\"form.comments\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"checklist-block\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('departureChecklist') }}</h2>\n            <span [class.complete]=\"departureChecklistComplete\">\n              {{ countDoneDepartureItems() }} / {{ countAllDepartureItems() }}\n            </span>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of departureChecklistGroups\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">\n                {{ countDoneGroup(group) }} / {{ group.items.length }}\n              </span>\n            </div>\n\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>\n                  {{ item.label[currentLanguage] || item.label.fr }}\n                  <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                </span>\n              </label>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"anchorages-block\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('anchorages') }}</h2>\n            <span>{{ currentAnchorages.length }}</span>\n          </div>\n\n          <div class=\"form-grid anchorage-form-grid\">\n            <label class=\"wide\">\n              {{ t('anchorageLocation') }}\n              <input type=\"text\" [(ngModel)]=\"anchorageForm.location\" placeholder=\"Lérins, Baie des Milliardaires, Cap d’Antibes...\" />\n            </label>\n            <label class=\"wide\">\n              {{ t('comments') }}\n              <textarea rows=\"2\" [(ngModel)]=\"anchorageForm.comments\"></textarea>\n            </label>\n          </div>\n\n          <div class=\"form-actions mini-actions\">\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"addOrUpdateAnchorage()\">\n              {{ editingAnchorageId ? t('updateAnchorage') : t('dropAnchor') }}\n            </button>\n            <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"editingAnchorageId\" (click)=\"cancelAnchorageEdit()\">\n              {{ t('cancel') }}\n            </button>\n          </div>\n\n          <p class=\"empty\" *ngIf=\"currentAnchorages.length === 0\">{{ t('noAnchorages') }}</p>\n\n          <article class=\"anchorage-card\" *ngFor=\"let anchorage of currentAnchorages\">\n            <div class=\"anchorage-card-head\">\n              <div>\n                <h3>{{ anchorage.location }}</h3>\n                <p *ngIf=\"anchorage.arrivalTime || anchorage.departureTime\">\n                  {{ anchorage.arrivalTime || '—' }} → {{ anchorage.departureTime || '—' }}\n                </p>\n                <p *ngIf=\"anchorage.comments\">{{ anchorage.comments }}</p>\n              </div>\n              <div class=\"outing-actions\">\n                <span class=\"status\" [class.closed]=\"anchorage.status === 'closed'\">\n                  {{ anchorage.status === 'closed' ? t('anchorageClosed') : t('anchorageOpen') }}\n                </span>\n                <span class=\"status\" [class.closed]=\"anchorageChecklistComplete(anchorage)\">\n                  {{ countDone(anchorage.arrivalChecklistGroups[0]?.items) + countDone(anchorage.departureChecklistGroups[0]?.items) }} /\n                  {{ (anchorage.arrivalChecklistGroups[0]?.items.length || 0) + (anchorage.departureChecklistGroups[0]?.items.length || 0) }}\n                </span>\n                <button type=\"button\" class=\"detail-link\" *ngIf=\"anchorage.status !== 'closed'\" (click)=\"closeAnchorage(anchorage)\">{{ t('liftAnchor') }}</button>\n                <button type=\"button\" class=\"detail-link\" (click)=\"editAnchorage(anchorage)\">{{ t('edit') }}</button>\n                <button type=\"button\" class=\"detail-link danger\" (click)=\"removeAnchorage(anchorage)\">{{ t('delete') }}</button>\n              </div>\n            </div>\n\n            <div class=\"checklist-group\" *ngFor=\"let group of anchorage.arrivalChecklistGroups\">\n              <div class=\"checklist-subhead\">\n                <h3>{{ t('anchorageArrival') }}</h3>\n                <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n              </div>\n              <div class=\"checklist-grid\">\n                <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                  <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                  <span class=\"fake-radio\"></span>\n                  <span>\n                    {{ item.label[currentLanguage] || item.label.fr }}\n                    <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                  </span>\n                </label>\n              </div>\n            </div>\n\n            <div class=\"checklist-group\" *ngFor=\"let group of anchorage.departureChecklistGroups\">\n              <div class=\"checklist-subhead\">\n                <h3>{{ t('anchorageDeparture') }}</h3>\n                <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n              </div>\n              <div class=\"checklist-grid\">\n                <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                  <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                  <span class=\"fake-radio\"></span>\n                  <span>\n                    {{ item.label[currentLanguage] || item.label.fr }}\n                    <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                  </span>\n                </label>\n              </div>\n            </div>\n          </article>\n        </div>\n\n        <div class=\"form-actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"saving\" (click)=\"mode === 'create' ? createOuting() : updateOuting()\">\n            {{ saving ? t('saving') : (mode === 'create' ? t('create') : t('saveChanges')) }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('cancel') }}</button>\n        </div>\n\n        <div class=\"notice success\" *ngIf=\"saved\">{{ t('saved') }}</div>\n        <div class=\"notice error\" *ngIf=\"error\">{{ error }}</div>\n      </div>\n\n      <div class=\"outing-form-card\" *ngIf=\"mode === 'close' && selectedOuting\">\n        <div class=\"form-title-row\">\n          <div>\n            <h2>{{ t('closeTitle') }}</h2>\n            <p>{{ selectedOuting.outingType }} · {{ formatOutingDate(selectedOuting) }}</p>\n          </div>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('backToList') }}</button>\n        </div>\n\n        <div class=\"checklist-block\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('arrivalChecklist') }}</h2>\n            <span [class.complete]=\"arrivalChecklistComplete(selectedOuting.outingId)\">\n              {{ countDoneArrivalItems(selectedOuting.outingId) }} / {{ countArrivalItems(selectedOuting.outingId) }}\n            </span>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of arrivalChecklistGroupsByOuting[selectedOuting.outingId]\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">\n                {{ countDoneGroup(group) }} / {{ group.items.length }}\n              </span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>\n                  {{ item.label[currentLanguage] || item.label.fr }}\n                  <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                </span>\n              </label>\n            </div>\n          </div>\n        </div>\n\n        <label class=\"closure-comments\">\n          {{ t('closureComments') }}\n          <textarea rows=\"3\" [(ngModel)]=\"closureComments[selectedOuting.outingId]\"></textarea>\n        </label>\n\n        <div class=\"form-actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"closingId === selectedOuting.outingId\" (click)=\"closeOuting(selectedOuting)\">\n            {{ closingId === selectedOuting.outingId ? t('closing') : t('close') }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('cancel') }}</button>\n        </div>\n        <div class=\"notice error\" *ngIf=\"closeError\">{{ closeError }}</div>\n      </div>\n    </ng-container>\n  </div>\n</section>\n";
+module.exports = "<section class=\"admin-outings-page\">\n  <div class=\"container\">\n    <div class=\"page-head\">\n      <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n\n    <div class=\"admin-warning\" *ngIf=\"!isAdmin\">\n      {{ t('adminOnly') }}\n    </div>\n\n    <ng-container *ngIf=\"isAdmin\">\n      <div class=\"mode-toolbar\">\n        <button type=\"button\" class=\"btn btn-secondary\" [class.active]=\"mode === 'list'\" (click)=\"showList()\">\n          {{ t('listOutings') }}\n        </button>\n        <button type=\"button\" class=\"btn btn-primary\" (click)=\"startCreate()\">\n          {{ t('newOuting') }}\n        </button>\n      </div>\n\n      <div class=\"outings-list-card\" *ngIf=\"mode === 'list'\">\n        <div class=\"list-head\">\n          <h2>{{ t('allOutings') }}</h2>\n          <button type=\"button\" class=\"btn btn-primary\" (click)=\"startCreate()\">{{ t('newOuting') }}</button>\n        </div>\n\n        <p class=\"empty\" *ngIf=\"loading\">{{ t('loading') }}</p>\n        <p class=\"empty\" *ngIf=\"!loading && outings.length === 0\">{{ t('empty') }}</p>\n        <div class=\"notice error\" *ngIf=\"closeError\">{{ closeError }}</div>\n\n        <article class=\"outing-row compact-row\" *ngFor=\"let outing of outings\">\n          <div class=\"outing-summary\">\n            <div>\n              <h3>{{ outing.outingType }}</h3>\n              <p>{{ formatOutingDate(outing) }}</p>\n              <p>{{ outing.destination }} · {{ outing.passengers }} {{ t('passengers') }}</p>\n            </div>\n            <div class=\"outing-actions\">\n              <span class=\"status\" [class.closed]=\"outing.status === 'closed'\">\n                {{ outing.status === 'closed' ? t('closed') : t('open') }}\n              </span>\n              <button type=\"button\" class=\"detail-link\" (click)=\"startEdit(outing)\">{{ t('edit') }}</button>\n              <button type=\"button\" class=\"detail-link\" *ngIf=\"outing.status !== 'closed'\" (click)=\"startClose(outing)\">{{ t('close') }}</button>\n              <button type=\"button\" class=\"detail-link danger\" (click)=\"deleteOuting(outing)\">{{ t('delete') }}</button>\n            </div>\n          </div>\n        </article>\n      </div>\n\n      <div class=\"outing-form-card\" *ngIf=\"mode === 'create' || mode === 'edit'\">\n        <div class=\"form-title-row\">\n          <h2>{{ mode === 'create' ? t('createTitle') : t('editTitle') }}</h2>\n          <div class=\"form-title-actions\">\n            <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"mode === 'edit' && selectedOuting && selectedOuting.status !== 'closed'\" (click)=\"startClose(selectedOuting)\">\n              {{ t('arrivalChecklist') }}\n            </button>\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('backToList') }}</button>\n          </div>\n        </div>\n\n        \n        <div class=\"outing-tabs\">\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'details'\" (click)=\"activeTab = 'details'\">\n            Details\n          </button>\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'departure'\" (click)=\"activeTab = 'departure'\">\n            Departure\n          </button>\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'anchoring'\" (click)=\"activeTab = 'anchoring'\">\n            Anchoring\n          </button>\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'return'\" (click)=\"activeTab = 'return'\">\n            Return\n          </button>\n        </div>\n\n        <div class=\"form-grid\" *ngIf=\"activeTab === 'details'\">\n          <label>\n            {{ t('outingType') }} *\n            <select [(ngModel)]=\"form.outingType\">\n              <option *ngFor=\"let option of outingTypes[currentLanguage]\" [value]=\"option\">{{ option }}</option>\n            </select>\n          </label>\n\n          <label>\n            {{ t('passengers') }} *\n            <input type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"form.passengers\" />\n          </label>\n\n          <label>\n            {{ t('departureDate') }} *\n            <input type=\"date\" [(ngModel)]=\"form.departureDate\" />\n          </label>\n\n          <label>\n            {{ t('departureTime') }} *\n            <input type=\"time\" [(ngModel)]=\"form.departureTime\" />\n          </label>\n\n\n          <label>\n            {{ t('portEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.portEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('starboardEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.starboardEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('wind') }} ({{ t('knots') }})\n            <input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"form.actualWindSpeed\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('destination') }} *\n            <input type=\"text\" [(ngModel)]=\"form.destination\" placeholder=\"Lérins, Baie des Milliardaires, Cap d’Antibes...\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('comments') }}\n            <textarea rows=\"4\" [(ngModel)]=\"form.comments\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"checklist-block\" *ngIf=\"activeTab === 'departure'\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('departureChecklist') }}</h2>\n            <span [class.complete]=\"departureChecklistComplete\">\n              {{ countDoneDepartureItems() }} / {{ countAllDepartureItems() }}\n            </span>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of departureChecklistGroups\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">\n                {{ countDoneGroup(group) }} / {{ group.items.length }}\n              </span>\n            </div>\n\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>\n                  {{ item.label[currentLanguage] || item.label.fr }}\n                  <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                </span>\n              </label>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"anchorages-block\" *ngIf=\"activeTab === 'anchoring'\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('anchorages') }}</h2>\n            <span>{{ currentAnchorages.length }}</span>\n          </div>\n\n          <div class=\"form-grid anchorage-form-grid\">\n            <label class=\"wide\">\n              {{ t('anchorageLocation') }}\n              <input type=\"text\" [(ngModel)]=\"anchorageForm.location\" placeholder=\"Lérins, Baie des Milliardaires, Cap d’Antibes...\" />\n            </label>\n            <label class=\"wide\">\n              {{ t('comments') }}\n              <textarea rows=\"2\" [(ngModel)]=\"anchorageForm.comments\"></textarea>\n            </label>\n          </div>\n\n          <div class=\"form-actions mini-actions\">\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"addOrUpdateAnchorage()\">\n              {{ editingAnchorageId ? t('updateAnchorage') : t('dropAnchor') }}\n            </button>\n            <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"editingAnchorageId\" (click)=\"cancelAnchorageEdit()\">\n              {{ t('cancel') }}\n            </button>\n          </div>\n\n          <p class=\"empty\" *ngIf=\"currentAnchorages.length === 0\">{{ t('noAnchorages') }}</p>\n\n          <article class=\"anchorage-card\" *ngFor=\"let anchorage of currentAnchorages\">\n            <div class=\"anchorage-card-head\">\n              <div>\n                <h3>{{ anchorage.location }}</h3>\n                <p *ngIf=\"anchorage.arrivalTime || anchorage.departureTime\">\n                  {{ anchorage.arrivalTime || '—' }} → {{ anchorage.departureTime || '—' }}\n                </p>\n                <p *ngIf=\"anchorage.comments\">{{ anchorage.comments }}</p>\n              </div>\n              <div class=\"outing-actions\">\n                <span class=\"status\" [class.closed]=\"anchorage.status === 'closed'\">\n                  {{ anchorage.status === 'closed' ? t('anchorageClosed') : t('anchorageOpen') }}\n                </span>\n                <span class=\"status\" [class.closed]=\"anchorageChecklistComplete(anchorage)\">\n                  {{ countDone(anchorage.arrivalChecklistGroups[0]?.items) + countDone(anchorage.departureChecklistGroups[0]?.items) }} /\n                  {{ (anchorage.arrivalChecklistGroups[0]?.items.length || 0) + (anchorage.departureChecklistGroups[0]?.items.length || 0) }}\n                </span>\n                <button type=\"button\" class=\"detail-link\" *ngIf=\"anchorage.status !== 'closed'\" (click)=\"closeAnchorage(anchorage)\">{{ t('liftAnchor') }}</button>\n                <button type=\"button\" class=\"detail-link\" (click)=\"editAnchorage(anchorage)\">{{ t('edit') }}</button>\n                <button type=\"button\" class=\"detail-link danger\" (click)=\"removeAnchorage(anchorage)\">{{ t('delete') }}</button>\n              </div>\n            </div>\n\n            <div class=\"checklist-group\" *ngFor=\"let group of anchorage.arrivalChecklistGroups\">\n              <div class=\"checklist-subhead\">\n                <h3>{{ t('anchorageArrival') }}</h3>\n                <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n              </div>\n              <div class=\"checklist-grid\">\n                <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                  <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                  <span class=\"fake-radio\"></span>\n                  <span>\n                    {{ item.label[currentLanguage] || item.label.fr }}\n                    <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                  </span>\n                </label>\n              </div>\n            </div>\n\n            <div class=\"checklist-group\" *ngFor=\"let group of anchorage.departureChecklistGroups\">\n              <div class=\"checklist-subhead\">\n                <h3>{{ t('anchorageDeparture') }}</h3>\n                <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n              </div>\n              <div class=\"checklist-grid\">\n                <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                  <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                  <span class=\"fake-radio\"></span>\n                  <span>\n                    {{ item.label[currentLanguage] || item.label.fr }}\n                    <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                  </span>\n                </label>\n              </div>\n            </div>\n          </article>\n        </div>\n\n        <div class=\"checklist-block\" *ngIf=\"mode === 'edit' && selectedOuting && activeTab === 'return'\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('arrivalChecklist') }}</h2>\n            <span [class.complete]=\"arrivalChecklistComplete(selectedOuting.outingId)\">\n              {{ countDoneArrivalItems(selectedOuting.outingId) }} / {{ countArrivalItems(selectedOuting.outingId) }}\n            </span>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of arrivalChecklistGroupsByOuting[selectedOuting.outingId]\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">\n                {{ countDoneGroup(group) }} / {{ group.items.length }}\n              </span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>\n                  {{ item.label[currentLanguage] || item.label.fr }}\n                  <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                </span>\n              </label>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"form-actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"saving\" (click)=\"mode === 'create' ? createOuting() : updateOuting()\">\n            {{ saving ? t('saving') : (mode === 'create' ? t('create') : t('saveChanges')) }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('cancel') }}</button>\n        </div>\n\n        <div class=\"notice success\" *ngIf=\"saved\">{{ t('saved') }}</div>\n        <div class=\"notice error\" *ngIf=\"error\">{{ error }}</div>\n      </div>\n\n      <div class=\"outing-form-card\" *ngIf=\"mode === 'close' && selectedOuting\">\n        <div class=\"form-title-row\">\n          <div>\n            <h2>{{ t('closeTitle') }}</h2>\n            <p>{{ selectedOuting.outingType }} · {{ formatOutingDate(selectedOuting) }}</p>\n          </div>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('backToList') }}</button>\n        </div>\n\n\n        <div class=\"form-grid\">\n          <label>\n            {{ t('arrivalDate') }} *\n            <input type=\"date\" [(ngModel)]=\"form.arrivalDate\" />\n          </label>\n\n          <label>\n            {{ t('arrivalTime') }} *\n            <input type=\"time\" [(ngModel)]=\"form.arrivalTime\" />\n          </label>\n\n          <label>\n            {{ t('portEngineArrival') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.portEngineHoursArrival\" />\n          </label>\n\n          <label>\n            {{ t('starboardEngineArrival') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.starboardEngineHoursArrival\" />\n          </label>\n        </div>\n\n        <div class=\"checklist-block\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('arrivalChecklist') }}</h2>\n            <span [class.complete]=\"arrivalChecklistComplete(selectedOuting.outingId)\">\n              {{ countDoneArrivalItems(selectedOuting.outingId) }} / {{ countArrivalItems(selectedOuting.outingId) }}\n            </span>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of arrivalChecklistGroupsByOuting[selectedOuting.outingId]\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">\n                {{ countDoneGroup(group) }} / {{ group.items.length }}\n              </span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>\n                  {{ item.label[currentLanguage] || item.label.fr }}\n                  <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                </span>\n              </label>\n            </div>\n          </div>\n        </div>\n\n        <label class=\"closure-comments\">\n          {{ t('closureComments') }}\n          <textarea rows=\"3\" [(ngModel)]=\"closureComments[selectedOuting.outingId]\"></textarea>\n        </label>\n\n        <div class=\"form-actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"closingId === selectedOuting.outingId\" (click)=\"closeOuting(selectedOuting)\">\n            {{ closingId === selectedOuting.outingId ? t('closing') : t('close') }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('cancel') }}</button>\n        </div>\n        <div class=\"notice error\" *ngIf=\"closeError\">{{ closeError }}</div>\n      </div>\n    </ng-container>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -2715,7 +2758,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <p *ngIf=\"loading\" class=\"muted\">Loading booking...</p>\n\n    <article class=\"booking-detail-card\" *ngIf=\"!loading && booking\">\n      <span class=\"eyebrow\">Booking detail</span>\n      <h1>{{ booking.outingType }}</h1>\n      <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>\n\n      <div class=\"detail-grid\">\n        <div><strong>Customer</strong><span>{{ booking.customerName }}</span></div>\n        <div><strong>Email</strong><span>{{ booking.email }}</span></div>\n        <div><strong>Phone</strong><span>{{ booking.phone || '-' }}</span></div>\n        <div><strong>Passengers</strong><span>{{ booking.passengers || '-' }}</span></div>\n        <div><strong>Total price</strong><span>€{{ booking.totalPrice || 0 }}</span></div>\n        <div><strong>Deposit</strong><span>{{ booking.depositStatus || 'pending' }}</span></div>\n        <div><strong>Warranty</strong><span>{{ booking.warrantyStatus || 'not_registered' }}</span></div>\n        <div><strong>Status</strong><span>{{ booking.bookingStatus || 'requested' }}</span></div>\n      </div>\n\n      <p class=\"comments\" *ngIf=\"booking.comments\">{{ booking.comments }}</p>\n\n      <button class=\"btn btn-primary\" type=\"button\" (click)=\"goToPayment()\">Open payment page</button>\n    </article>\n  </div>\n</section>\n";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <p *ngIf=\"loading\" class=\"muted\">Loading booking...</p>\n\n    <article class=\"booking-detail-card\" *ngIf=\"!loading && booking\">\n      <span class=\"eyebrow\">Booking detail</span>\n      <h1>{{ booking.outingType }}</h1>\n      <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>\n\n      <div class=\"detail-grid\">\n        <div><strong>Customer</strong><span>{{ booking.customerName }}</span></div>\n        <div><strong>Email</strong><span>{{ booking.email }}</span></div>\n        <div><strong>Phone</strong><span>{{ booking.phone || '-' }}</span></div>\n        <div><strong>Passengers</strong><span>{{ booking.passengers || '-' }}</span></div>\n        <div><strong>Total price</strong><span>€{{ booking.totalPrice || 0 }}</span></div>\n        <div><strong>Deposit</strong><span>{{ booking.depositStatus || 'pending' }}</span></div>\n        <div><strong>Warranty</strong><span>{{ booking.warrantyStatus || 'not_registered' }}</span></div>\n        <div><strong>Status</strong><span>{{ booking.bookingStatus || 'requested' }}</span></div>\n      </div>\n\n      <p class=\"comments\" *ngIf=\"booking.comments\">{{ booking.comments }}</p>\n\n      <button class=\"btn btn-primary\" type=\"button\" (click)=\"goToPayment()\">{{ paymentButtonLabel }}</button>\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -3807,6 +3850,7 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
   storeDb;
   utilSvc;
   http;
+  activeTab = 'details';
   currentLanguage = 'fr';
   loggedUser = null;
   outingId = '';
@@ -4277,14 +4321,6 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
           es: 'Comprobar que el ancla no garrea antes de apagar el motor'
         }
       }, {
-        id: 'release_security_lines',
-        done: false,
-        label: {
-          fr: 'Relâcher les lignes de sécurité',
-          en: 'Release the security lines',
-          es: 'Soltar las líneas de seguridad'
-        }
-      }, {
         id: 'swimming_ladder_down',
         done: false,
         label: {
@@ -4334,14 +4370,6 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
           fr: 'Remonter l’échelle de bain',
           en: 'Bring up the swimming ladder',
           es: 'Subir la escalera de baño'
-        }
-      }, {
-        id: 'attach_security_lines',
-        done: false,
-        label: {
-          fr: 'Attacher les lignes de sécurité',
-          en: 'Attach security lines',
-          es: 'Fijar las líneas de seguridad'
         }
       }, {
         id: 'anchoring_engine_on',
@@ -4433,14 +4461,6 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
           fr: 'Vérifier poubelles vides, frigo propre et toilettes propres',
           en: 'Check bins are empty, fridge is clear and toilets are clean',
           es: 'Comprobar papeleras vacías, nevera limpia y baños limpios'
-        }
-      }, {
-        id: 'security_bars_removed',
-        done: false,
-        label: {
-          fr: 'Retirer les barres de sécurité',
-          en: 'Remove security bars',
-          es: 'Retirar las barras de seguridad'
         }
       }, {
         id: 'stock_ice',
@@ -4563,22 +4583,6 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
           es: 'Presentaciones formales'
         }
       }, {
-        id: 'security_champion',
-        done: false,
-        label: {
-          fr: 'Choisir un référent sécurité',
-          en: 'Choose security champion',
-          es: 'Elegir responsable de seguridad'
-        }
-      }, {
-        id: 'security_brief',
-        done: false,
-        label: {
-          fr: 'Brief sécurité',
-          en: 'Security brief',
-          es: 'Briefing de seguridad'
-        }
-      }, {
         id: 'day_plan',
         done: false,
         label: {
@@ -4651,14 +4655,6 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
           es: 'Salida'
         }
       }, {
-        id: 'security_champion_tour',
-        done: false,
-        label: {
-          fr: 'Une fois sorti du port, faire le tour sécurité avec le référent',
-          en: 'Once out of harbour, show the security champion around',
-          es: 'Fuera del puerto, mostrar el recorrido de seguridad al responsable'
-        }
-      }, {
         id: 'switch_vhf16',
         done: false,
         label: {
@@ -4673,14 +4669,6 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
           fr: 'Remonter les pare-battages',
           en: 'Bring up the fenders',
           es: 'Subir defensas'
-        }
-      }, {
-        id: 'fasten_security_lines',
-        done: false,
-        label: {
-          fr: 'Fixer les lignes de sécurité',
-          en: 'Fasten the security lines',
-          es: 'Fijar las líneas de seguridad'
         }
       }, {
         id: 'breakfast_cleanup',
@@ -4708,14 +4696,6 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
           fr: 'À 1/2 mille nautique du port, demander l’autorisation d’entrer – VHF 09',
           en: 'At 1/2 NM from harbour request permission to enter – VHF 09',
           es: 'A 1/2 milla náutica del puerto, solicitar permiso para entrar – VHF 09'
-        }
-      }, {
-        id: 'return_security_lines_off',
-        done: false,
-        label: {
-          fr: 'Retirer les lignes de sécurité',
-          en: 'Security lines off',
-          es: 'Quitar las líneas de seguridad'
         }
       }, {
         id: 'return_fenders_down',
@@ -4836,14 +4816,6 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
           fr: 'Nettoyer la cuisine, trier les poubelles et le frigo',
           en: 'Clean up galley, sort out bins and fridge',
           es: 'Limpiar la cocina, ordenar papeleras y nevera'
-        }
-      }, {
-        id: 'tidy_security_bars',
-        done: false,
-        label: {
-          fr: 'Remettre les barres de sécurité',
-          en: 'Replace security bars',
-          es: 'Volver a colocar las barras de seguridad'
         }
       }]
     }, {
@@ -5102,12 +5074,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeModule: () => (/* binding */ HomeModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! @angular/router */ 99585);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! @ionic/angular */ 21507);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! @ionic/angular */ 21507);
 /* harmony import */ var _home_router_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home.router.module */ 61506);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
@@ -5122,20 +5094,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./terms/terms.component */ 79542);
 /* harmony import */ var _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./safety-instructions/safety-instructions.component */ 65642);
 /* harmony import */ var _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./deposit/deposit.component */ 22902);
-/* harmony import */ var _checklist_checklist_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./checklist/checklist.component */ 55822);
-/* harmony import */ var _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./account-summary/account-summary.component */ 15066);
-/* harmony import */ var _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./my-profile/my-profile.component */ 95772);
-/* harmony import */ var _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./my-feedbacks/my-feedbacks.component */ 83302);
-/* harmony import */ var _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./admin-feedbacks/admin-feedbacks.component */ 9822);
-/* harmony import */ var _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./admin-outings/admin-outings.component */ 93974);
-/* harmony import */ var _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./admin-outing-detail/admin-outing-detail.component */ 43474);
-/* harmony import */ var _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./admin-manage-outings/admin-manage-outings.component */ 41678);
-/* harmony import */ var _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./guest-faq/guest-faq.component */ 30066);
-/* harmony import */ var _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./guest-journey/guest-journey.component */ 35822);
-/* harmony import */ var _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./bookings/bookings.component */ 88636);
-/* harmony import */ var _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./my-bookings/my-bookings.component */ 18170);
-/* harmony import */ var _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./booking-detail/booking-detail.component */ 82474);
-
+/* harmony import */ var _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./account-summary/account-summary.component */ 15066);
+/* harmony import */ var _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./my-profile/my-profile.component */ 95772);
+/* harmony import */ var _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./my-feedbacks/my-feedbacks.component */ 83302);
+/* harmony import */ var _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./admin-feedbacks/admin-feedbacks.component */ 9822);
+/* harmony import */ var _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./admin-outings/admin-outings.component */ 93974);
+/* harmony import */ var _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./admin-outing-detail/admin-outing-detail.component */ 43474);
+/* harmony import */ var _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./admin-manage-outings/admin-manage-outings.component */ 41678);
+/* harmony import */ var _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./guest-faq/guest-faq.component */ 30066);
+/* harmony import */ var _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./guest-journey/guest-journey.component */ 35822);
+/* harmony import */ var _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./bookings/bookings.component */ 88636);
+/* harmony import */ var _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./my-bookings/my-bookings.component */ 18170);
+/* harmony import */ var _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./booking-detail/booking-detail.component */ 82474);
 
 
 
@@ -5169,9 +5139,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let HomeModule = class HomeModule {};
-HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_27__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_28__.NgModule)({
-  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent, _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__.SafetyInstructionsComponent, _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_13__.DepositComponent, _checklist_checklist_component__WEBPACK_IMPORTED_MODULE_14__.ChecklistComponent, _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_15__.AccountSummaryComponent, _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_16__.MyProfileComponent, _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.MyFeedbacksComponent, _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_18__.AdminFeedbacksComponent, _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_19__.AdminOutingsComponent, _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_20__.AdminOutingDetailComponent, _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_21__.AdminManageOutingsComponent, _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_22__.GuestFaqComponent, _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_23__.GuestJourneyComponent, _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_24__.BookingsComponent, _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_25__.MyBookingsComponent, _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_26__.BookingDetailComponent],
-  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_29__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_30__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_31__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_32__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule]
+HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_26__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_27__.NgModule)({
+  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent, _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__.SafetyInstructionsComponent, _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_13__.DepositComponent, _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__.AccountSummaryComponent, _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_15__.MyProfileComponent, _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__.MyFeedbacksComponent, _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.AdminFeedbacksComponent, _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingsComponent, _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_19__.AdminOutingDetailComponent, _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__.AdminManageOutingsComponent, _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_21__.GuestFaqComponent, _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__.GuestJourneyComponent, _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__.BookingsComponent, _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__.MyBookingsComponent, _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__.BookingDetailComponent],
+  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_28__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_29__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_30__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_31__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule]
 })], HomeModule);
 
 
@@ -6554,97 +6524,6 @@ function getTourContent(language, key) {
 
 /***/ }),
 
-/***/ 55822:
-/*!*******************************************************!*\
-  !*** ./src/app/home/checklist/checklist.component.ts ***!
-  \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ChecklistComponent: () => (/* binding */ ChecklistComponent)
-/* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _checklist_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./checklist.component.html?ngResource */ 78250);
-/* harmony import */ var _checklist_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./checklist.component.scss?ngResource */ 86846);
-/* harmony import */ var _checklist_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_checklist_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/language.service */ 48756);
-
-
-
-
-
-let ChecklistComponent = class ChecklistComponent {
-  languageService;
-  checklist = [];
-  languageSub;
-  localizedContent = {
-    fr: {
-      eyebrow: 'Checklist avant départ',
-      title: 'Validation des points de sécurité',
-      intro: 'Validez chaque point avant le départ afin de confirmer que les éléments essentiels ont été vérifiés.',
-      progressLabel: 'éléments validés',
-      completeMessage: 'Checklist complète. Le départ peut être préparé.',
-      items: ['Gilets de sauvetage accessibles et adaptés au nombre de passagers', 'Radeau de survie et bouée de secours identifiés', 'Extincteurs visibles et accessibles', 'Trousse de premiers secours à bord', 'VHF / moyens de communication opérationnels', 'Météo et conditions de mer vérifiées', 'Carburant, eau et batteries vérifiés', 'Matériel nautique sécurisé avant le départ', 'Briefing sécurité passagers effectué', 'Consignes toilettes, baignade et comportement à bord expliquées']
-    },
-    en: {
-      eyebrow: 'Pre-departure checklist',
-      title: 'Safety validation checklist',
-      intro: 'Validate each item before departure to confirm that the essential safety points have been checked.',
-      progressLabel: 'items completed',
-      completeMessage: 'Checklist complete. Departure can be prepared.',
-      items: ['Life jackets accessible and suitable for the number of guests', 'Life raft and lifebuoy identified', 'Fire extinguishers visible and accessible', 'First aid kit on board', 'VHF / communication equipment operational', 'Weather and sea conditions checked', 'Fuel, water and batteries checked', 'Water sports equipment secured before departure', 'Passenger safety briefing completed', 'Toilet, swimming and onboard conduct instructions explained']
-    },
-    es: {
-      eyebrow: 'Checklist antes de la salida',
-      title: 'Validación de seguridad',
-      intro: 'Valide cada punto antes de la salida para confirmar que los elementos esenciales han sido comprobados.',
-      progressLabel: 'elementos validados',
-      completeMessage: 'Checklist completa. La salida puede prepararse.',
-      items: ['Chalecos salvavidas accesibles y adaptados al número de pasajeros', 'Balsa salvavidas y aro salvavidas identificados', 'Extintores visibles y accesibles', 'Botiquín de primeros auxilios a bordo', 'VHF / medios de comunicación operativos', 'Meteorología y condiciones del mar comprobadas', 'Combustible, agua y baterías comprobados', 'Equipos náuticos asegurados antes de la salida', 'Briefing de seguridad para pasajeros realizado', 'Instrucciones sobre baños, baño en el mar y comportamiento a bordo explicadas']
-    }
-  };
-  content = this.localizedContent.fr;
-  constructor(languageService) {
-    this.languageService = languageService;
-  }
-  ngOnInit() {
-    this.languageSub = this.languageService.language$.subscribe(language => {
-      this.content = this.localizedContent[language];
-      this.checklist = this.content.items.map((label, index) => ({
-        id: index + 1,
-        label,
-        done: false
-      }));
-    });
-  }
-  ngOnDestroy() {
-    this.languageSub?.unsubscribe();
-  }
-  get completedCount() {
-    return this.checklist.filter(item => item.done).length;
-  }
-  get allCompleted() {
-    return this.checklist.length > 0 && this.checklist.every(item => item.done);
-  }
-  toggleItem(item) {
-    item.done = !item.done;
-  }
-  static ctorParameters = () => [{
-    type: _services_language_service__WEBPACK_IMPORTED_MODULE_2__.LanguageService
-  }];
-};
-ChecklistComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
-  selector: 'app-checklist',
-  template: _checklist_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  styles: [(_checklist_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
-})], ChecklistComponent);
-
-
-/***/ }),
-
 /***/ 56196:
 /*!***************************************************************!*\
   !*** ./node_modules/rxjs/dist/esm/internal/firstValueFrom.js ***!
@@ -7109,9 +6988,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeRoutingModule: () => (/* binding */ HomeRoutingModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @angular/router */ 99585);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
 /* harmony import */ var _boat_boat_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./boat/boat.component */ 36424);
@@ -7125,20 +7004,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _terms_terms_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./terms/terms.component */ 79542);
 /* harmony import */ var _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./safety-instructions/safety-instructions.component */ 65642);
 /* harmony import */ var _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./deposit/deposit.component */ 22902);
-/* harmony import */ var _checklist_checklist_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./checklist/checklist.component */ 55822);
-/* harmony import */ var _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./account-summary/account-summary.component */ 15066);
-/* harmony import */ var _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./my-profile/my-profile.component */ 95772);
-/* harmony import */ var _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./my-feedbacks/my-feedbacks.component */ 83302);
-/* harmony import */ var _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./admin-feedbacks/admin-feedbacks.component */ 9822);
-/* harmony import */ var _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./admin-outings/admin-outings.component */ 93974);
-/* harmony import */ var _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./admin-outing-detail/admin-outing-detail.component */ 43474);
-/* harmony import */ var _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./admin-manage-outings/admin-manage-outings.component */ 41678);
-/* harmony import */ var _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./guest-faq/guest-faq.component */ 30066);
-/* harmony import */ var _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./guest-journey/guest-journey.component */ 35822);
-/* harmony import */ var _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./bookings/bookings.component */ 88636);
-/* harmony import */ var _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./my-bookings/my-bookings.component */ 18170);
-/* harmony import */ var _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./booking-detail/booking-detail.component */ 82474);
-
+/* harmony import */ var _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./account-summary/account-summary.component */ 15066);
+/* harmony import */ var _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./my-profile/my-profile.component */ 95772);
+/* harmony import */ var _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./my-feedbacks/my-feedbacks.component */ 83302);
+/* harmony import */ var _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./admin-feedbacks/admin-feedbacks.component */ 9822);
+/* harmony import */ var _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./admin-outings/admin-outings.component */ 93974);
+/* harmony import */ var _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./admin-outing-detail/admin-outing-detail.component */ 43474);
+/* harmony import */ var _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./admin-manage-outings/admin-manage-outings.component */ 41678);
+/* harmony import */ var _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./guest-faq/guest-faq.component */ 30066);
+/* harmony import */ var _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./guest-journey/guest-journey.component */ 35822);
+/* harmony import */ var _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./bookings/bookings.component */ 88636);
+/* harmony import */ var _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./my-bookings/my-bookings.component */ 18170);
+/* harmony import */ var _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./booking-detail/booking-detail.component */ 82474);
 
 
 
@@ -7208,65 +7085,62 @@ const routes = [{
   path: 'safety',
   component: _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_11__.SafetyInstructionsComponent
 }, {
-  path: 'checklist',
-  component: _checklist_checklist_component__WEBPACK_IMPORTED_MODULE_13__.ChecklistComponent
-}, {
   path: 'deposit',
   component: _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_12__.DepositComponent
 }, {
   path: 'faq',
-  component: _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_21__.GuestFaqComponent
+  component: _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_20__.GuestFaqComponent
 }, {
   path: 'how-it-works',
-  component: _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__.GuestJourneyComponent
+  component: _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_21__.GuestJourneyComponent
 }, {
   path: 'my-bookings',
-  component: _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__.MyBookingsComponent
+  component: _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_23__.MyBookingsComponent
 }, {
   path: 'my-payments',
-  component: _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__.AccountSummaryComponent,
+  component: _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_13__.AccountSummaryComponent,
   data: {
     section: 'payments'
   }
 }, {
   path: 'bookings/:bookingId',
-  component: _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__.BookingDetailComponent
+  component: _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_24__.BookingDetailComponent
 }, {
   path: 'payment/:bookingId',
   component: _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_12__.DepositComponent
 }, {
   path: 'my-profile',
-  component: _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_15__.MyProfileComponent
+  component: _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_14__.MyProfileComponent
 }, {
   path: 'my-feedbacks',
-  component: _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__.MyFeedbacksComponent
+  component: _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_15__.MyFeedbacksComponent
 }, {
   path: 'leave-feedback',
   redirectTo: 'my-feedbacks',
   pathMatch: 'full'
 }, {
   path: 'admin/feedbacks',
-  component: _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.AdminFeedbacksComponent
+  component: _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__.AdminFeedbacksComponent
 }, {
   path: 'admin/bookings',
-  component: _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__.BookingsComponent
+  component: _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_22__.BookingsComponent
 }, {
   path: 'admin/bookings/:bookingId',
-  component: _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__.BookingDetailComponent
+  component: _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_24__.BookingDetailComponent
 }, {
   path: 'admin/outings',
-  component: _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingsComponent
+  component: _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_17__.AdminOutingsComponent
 }, {
   path: 'admin/outings/:outingId',
-  component: _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_19__.AdminOutingDetailComponent
+  component: _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingDetailComponent
 }, {
   path: 'admin/manage-outings',
-  component: _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__.AdminManageOutingsComponent
+  component: _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_19__.AdminManageOutingsComponent
 }];
 let HomeRoutingModule = class HomeRoutingModule {};
-HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_26__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_27__.NgModule)({
-  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_28__.RouterModule.forChild(routes)],
-  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_28__.RouterModule]
+HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_25__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_26__.NgModule)({
+  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_27__.RouterModule.forChild(routes)],
+  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_27__.RouterModule]
 })], HomeRoutingModule);
 
 
@@ -7635,7 +7509,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"page-hero\">\n  <div class=\"container text-block\">\n    <span class=\"eyebrow\">{{ content.boatPage.eyebrow }}</span>\n    <h1>{{ content.boatPage.title }}</h1>\n    <p>{{ content.boatPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container split-grid\">\n    <div>\n      <h2>{{ content.boatPage.reasonsTitle }}</h2>\n      <p>{{ content.boatPage.reasonsText }}</p>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of content.boatPage.reasons\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"visual-grid\">\n      <img *ngFor=\"let image of images\" [src]=\"image\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container split-grid secondary-grid\">\n    <div>\n      <h2>{{ content.boatPage.comfortTitle }}</h2>\n      <p>{{ content.boatPage.comfortText }}</p>\n      <div class=\"price-box\">{{ content.priceFrom }}</div>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/contact\" class=\"btn\">{{ content.boatPage.cta }}</a>\n        <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\" target=\"_blank\" rel=\"noreferrer\" class=\"btn btn-book\">{{ content.common.bookOnClickAndBoat }}</a>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ content.boatPage.occasionsTitle }}</h2>\n      <ul class=\"occasions-list\">\n        <li *ngFor=\"let item of content.boatPage.occasions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section safety-link-section\">\n  <div class=\"container safety-link-box\">\n    <div>\n      <span class=\"eyebrow\">Safety</span>\n      <h2>Consignes de sécurité à bord</h2>\n      <p>Retrouvez les consignes principales pour profiter de votre navigation à bord d’Alegria en toute sérénité.</p>\n    </div>\n    <a routerLink=\"/safety\" class=\"btn btn-secondary\">Voir les consignes</a>\n  </div>\n</section>\n\n<app-safety-instructions></app-safety-instructions>\n\n\n<section class=\"section checklist-link-section\">\n  <div class=\"container safety-link-box\">\n    <div>\n      <span class=\"eyebrow\">Checklist</span>\n      <h2>Checklist avant départ</h2>\n      <p>Validez les points de préparation et de sécurité avant la sortie en mer.</p>\n    </div>\n    <a routerLink=\"/checklist\" class=\"btn btn-secondary\">Voir la checklist</a>\n  </div>\n</section>\n\n<section class=\"section checklist-wrapper\">\n  <app-checklist></app-checklist>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container specs-grid\">\n    <div>\n      <h2>{{ specsTitle }}</h2>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of specs\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div>\n      <h2>{{ servicesTitle }}</h2>\n      <div class=\"offering-grid\">\n        <div class=\"offer-card\">\n          <h3>{{ coreTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of coreOffering\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ optionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of optionalExtras\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ suggestionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of guestSuggestions\">{{ item }}</li>\n          </ul>\n        </div>\n      </div>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/crew\" class=\"btn btn-secondary\">{{ crewCta }}</a>\n      </div>\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"page-hero\">\n  <div class=\"container text-block\">\n    <span class=\"eyebrow\">{{ content.boatPage.eyebrow }}</span>\n    <h1>{{ content.boatPage.title }}</h1>\n    <p>{{ content.boatPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container split-grid\">\n    <div>\n      <h2>{{ content.boatPage.reasonsTitle }}</h2>\n      <p>{{ content.boatPage.reasonsText }}</p>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of content.boatPage.reasons\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"visual-grid\">\n      <img *ngFor=\"let image of images\" [src]=\"image\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container split-grid secondary-grid\">\n    <div>\n      <h2>{{ content.boatPage.comfortTitle }}</h2>\n      <p>{{ content.boatPage.comfortText }}</p>\n      <div class=\"price-box\">{{ content.priceFrom }}</div>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/contact\" class=\"btn\">{{ content.boatPage.cta }}</a>\n        <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\" target=\"_blank\" rel=\"noreferrer\" class=\"btn btn-book\">{{ content.common.bookOnClickAndBoat }}</a>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ content.boatPage.occasionsTitle }}</h2>\n      <ul class=\"occasions-list\">\n        <li *ngFor=\"let item of content.boatPage.occasions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section safety-link-section\">\n  <div class=\"container safety-link-box\">\n    <div>\n      <span class=\"eyebrow\">Safety</span>\n      <h2>Consignes de sécurité à bord</h2>\n      <p>Retrouvez les consignes principales pour profiter de votre navigation à bord d’Alegria en toute sérénité.</p>\n    </div>\n    <a routerLink=\"/safety\" class=\"btn btn-secondary\">Voir les consignes</a>\n  </div>\n</section>\n\n<app-safety-instructions></app-safety-instructions>\n\n\n<section class=\"section checklist-wrapper\">\n  <app-checklist></app-checklist>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container specs-grid\">\n    <div>\n      <h2>{{ specsTitle }}</h2>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of specs\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div>\n      <h2>{{ servicesTitle }}</h2>\n      <div class=\"offering-grid\">\n        <div class=\"offer-card\">\n          <h3>{{ coreTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of coreOffering\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ optionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of optionalExtras\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ suggestionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of guestSuggestions\">{{ item }}</li>\n          </ul>\n        </div>\n      </div>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/crew\" class=\"btn btn-secondary\">{{ crewCta }}</a>\n      </div>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -8977,17 +8851,6 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 /***/ }),
 
-/***/ 78250:
-/*!********************************************************************!*\
-  !*** ./src/app/home/checklist/checklist.component.html?ngResource ***!
-  \********************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = "<section class=\"checklist-section\">\n  <div class=\"container\">\n    <div class=\"checklist-card\">\n      <div class=\"checklist-header\">\n        <span class=\"eyebrow\">{{ content.eyebrow }}</span>\n        <h2>{{ content.title }}</h2>\n        <p>{{ content.intro }}</p>\n      </div>\n\n      <div class=\"progress-pill\">\n        {{ completedCount }} / {{ checklist.length }} {{ content.progressLabel }}\n      </div>\n\n      <div class=\"checklist-items\">\n        <label class=\"checklist-item\" *ngFor=\"let item of checklist\" [class.checked]=\"item.done\">\n          <input\n            type=\"checkbox\"\n            [checked]=\"item.done\"\n            (change)=\"toggleItem(item)\"\n          />\n          <span class=\"custom-check\" aria-hidden=\"true\"></span>\n          <span class=\"item-label\">{{ item.label }}</span>\n        </label>\n      </div>\n\n      <div class=\"success-message\" *ngIf=\"allCompleted\">\n        {{ content.completeMessage }}\n      </div>\n    </div>\n  </div>\n</section>\n";
-
-/***/ }),
-
 /***/ 78652:
 /*!************************************************************************!*\
   !*** ./src/app/home/tours/full-day/full-day.component.html?ngResource ***!
@@ -9142,13 +9005,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   BookingDetailComponent: () => (/* binding */ BookingDetailComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _booking_detail_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./booking-detail.component.html?ngResource */ 29118);
 /* harmony import */ var _booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./booking-detail.component.scss?ngResource */ 64662);
 /* harmony import */ var _booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../bookings/booking-api.service */ 74854);
+
 
 
 
@@ -9159,23 +9024,39 @@ let BookingDetailComponent = class BookingDetailComponent {
   route;
   router;
   bookingApi;
+  mainSvc;
   booking;
   loading = true;
-  constructor(route, router, bookingApi) {
+  loggedUser = null;
+  constructor(route, router, bookingApi, mainSvc) {
     this.route = route;
     this.router = router;
     this.bookingApi = bookingApi;
+    this.mainSvc = mainSvc;
   }
   ngOnInit() {
+    const svc = this.mainSvc;
+    this.loggedUser = svc.bnUser || svc.currentUser || null;
     const bookingId = this.route.snapshot.paramMap.get('bookingId') || '';
     this.bookingApi.getBooking(bookingId).subscribe(booking => {
       this.booking = booking;
       this.loading = false;
     });
   }
+  get isAdmin() {
+    const role = String(this.loggedUser?.role || '').toLowerCase();
+    return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
+  }
+  get paymentButtonLabel() {
+    return this.isAdmin ? 'Open warranty page' : 'Open payment page';
+  }
   goToPayment() {
     if (this.booking?.bookingId) {
-      this.router.navigate(['/payment', this.booking.bookingId]);
+      this.router.navigate(['/payment', this.booking.bookingId], {
+        queryParams: this.isAdmin ? {
+          mode: 'warranty'
+        } : {}
+      });
     }
   }
   static ctorParameters = () => [{
@@ -9184,9 +9065,11 @@ let BookingDetailComponent = class BookingDetailComponent {
     type: _angular_router__WEBPACK_IMPORTED_MODULE_3__.Router
   }, {
     type: _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_2__.BookingApiService
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.ServicesService
   }];
 };
-BookingDetailComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
+BookingDetailComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
   selector: 'app-booking-detail',
   template: _booking_detail_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
   styles: [(_booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
@@ -10160,7 +10043,34 @@ button.detail-link {
   .anchorage-card-head {
     flex-direction: column;
   }
-}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-outings/admin-outings.component.scss"],"names":[],"mappings":"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","sourcesContent":[".admin-outings-page {\n  min-height: 70vh;\n  padding: 72px 0;\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 58%);\n}\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.page-head {\n  max-width: 820px;\n  margin-bottom: 32px;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 10px;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-size: 0.78rem;\n  letter-spacing: 0.14em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n  font-weight: 700;\n}\n\nh1, h2, h3 {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: #08263a;\n  margin: 0;\n}\n\nh1 {\n  font-size: clamp(2rem, 5vw, 3.4rem);\n  line-height: 1.05;\n  margin-bottom: 14px;\n}\n\np, label, input, select, textarea, button, span {\n  font-family: 'Lato', Arial, sans-serif;\n}\n\n.page-head p {\n  color: #475569;\n  line-height: 1.8;\n  font-size: 1.05rem;\n}\n\n.admin-warning,\n.outing-form-card,\n.outings-list-card {\n  background: #fff;\n  border-radius: 28px;\n  padding: 28px;\n  box-shadow: 0 22px 55px rgba(8, 38, 58, 0.12);\n  border: 1px solid rgba(8, 38, 58, 0.08);\n}\n\n.admin-warning {\n  color: #9a4d08;\n  background: rgba(242, 140, 40, 0.12);\n  font-weight: 700;\n}\n\n.form-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 18px;\n}\n\nlabel {\n  display: grid;\n  gap: 8px;\n  color: #08263a;\n  font-weight: 700;\n}\n\nlabel.wide {\n  grid-column: span 3;\n}\n\ninput, select, textarea {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.16);\n  border-radius: 14px;\n  padding: 0.85rem 0.95rem;\n  font-size: 1rem;\n  color: #08263a;\n  background: #fff;\n  outline: none;\n}\n\ntextarea {\n  resize: vertical;\n}\n\ninput:focus, select:focus, textarea:focus {\n  border-color: #0b6e8f;\n  box-shadow: 0 0 0 4px rgba(11, 110, 143, 0.12);\n}\n\n.checklist-block {\n  margin-top: 28px;\n  padding-top: 24px;\n  border-top: 1px solid rgba(8, 38, 58, 0.1);\n}\n\n.checklist-head,\n.outing-summary {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 16px;\n  margin-bottom: 18px;\n}\n\n.checklist-head span {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 72px;\n  padding: 0.45rem 0.8rem;\n  border-radius: 999px;\n  background: rgba(11, 110, 143, 0.1);\n  color: #0b6e8f;\n  font-weight: 800;\n}\n\n.checklist-head span.complete {\n  background: rgba(16, 185, 129, 0.14);\n  color: #047857;\n}\n\n.checklist-grid {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 12px;\n}\n\n.checklist-grid.compact {\n  grid-template-columns: 1fr;\n}\n\n.check-item {\n  display: flex;\n  align-items: center;\n  grid-template-columns: auto 1fr;\n  gap: 12px;\n  padding: 14px;\n  border: 1px solid rgba(8, 38, 58, 0.12);\n  border-radius: 16px;\n  cursor: pointer;\n  background: #fff;\n  transition: 0.2s ease;\n}\n\n.check-item:hover {\n  background: rgba(11, 110, 143, 0.05);\n}\n\n.check-item.done {\n  border-color: rgba(16, 185, 129, 0.35);\n  background: rgba(16, 185, 129, 0.06);\n}\n\n.check-item input {\n  display: none;\n}\n\n.fake-radio {\n  width: 22px;\n  height: 22px;\n  border-radius: 50%;\n  border: 2px solid #0b6e8f;\n  position: relative;\n  flex: 0 0 auto;\n}\n\n.check-item input:checked + .fake-radio::after {\n  content: '';\n  position: absolute;\n  inset: 4px;\n  border-radius: 50%;\n  background: #f28c28;\n}\n\n.form-actions {\n  margin-top: 26px;\n  display: flex;\n  justify-content: flex-end;\n}\n\n.btn {\n  border: 0;\n  border-radius: 999px;\n  padding: 0.9rem 1.25rem;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 800;\n  cursor: pointer;\n}\n\n.btn-primary {\n  background: #f28c28;\n  color: #fff;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary {\n  background: #e8f4f7;\n  color: #08263a;\n}\n\n.btn:disabled {\n  opacity: 0.45;\n  cursor: not-allowed;\n}\n\n.notice {\n  margin-top: 18px;\n  padding: 14px 16px;\n  border-radius: 14px;\n  font-weight: 700;\n}\n\n.notice.success {\n  color: #047857;\n  background: rgba(16, 185, 129, 0.12);\n}\n\n.notice.error {\n  color: #b42318;\n  background: rgba(244, 63, 94, 0.1);\n}\n\n.outings-list-card {\n  margin-top: 28px;\n}\n\n.empty {\n  color: #64748b;\n}\n\n.outing-row {\n  margin-top: 18px;\n  padding: 20px;\n  border: 1px solid rgba(8, 38, 58, 0.1);\n  border-radius: 22px;\n}\n\n.outing-summary h3 {\n  font-size: 1.35rem;\n  margin-bottom: 6px;\n}\n\n.outing-summary p {\n  margin: 2px 0;\n  color: #64748b;\n}\n\n.status {\n  padding: 0.45rem 0.8rem;\n  border-radius: 999px;\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  font-weight: 800;\n}\n\n.status.closed {\n  background: rgba(16, 185, 129, 0.12);\n  color: #047857;\n}\n\n.closure {\n  margin-top: 18px;\n  padding-top: 18px;\n  border-top: 1px dashed rgba(8, 38, 58, 0.18);\n}\n\n.closure-comments {\n  margin: 18px 0;\n}\n\n@media (max-width: 820px) {\n  .admin-outings-page {\n    padding: 44px 0;\n  }\n\n  .outing-form-card,\n  .outings-list-card {\n    padding: 20px;\n    border-radius: 22px;\n  }\n\n  .form-grid,\n  .checklist-grid {\n    grid-template-columns: 1fr;\n  }\n\n  label.wide {\n    grid-column: span 1;\n  }\n\n  .checklist-head,\n  .outing-summary {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n\n  .form-actions,\n  .btn {\n    width: 100%;\n  }\n}\n\n.checklist-group {\n  margin-top: 22px;\n  padding: 18px;\n  border: 1px solid rgba(8, 38, 58, 0.08);\n  border-radius: 22px;\n  background: rgba(251, 248, 242, 0.65);\n}\n\n.checklist-subhead {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 14px;\n  margin-bottom: 14px;\n}\n\n.checklist-subhead h3 {\n  font-size: 1.18rem;\n}\n\n.checklist-subhead span {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 62px;\n  padding: 0.35rem 0.7rem;\n  border-radius: 999px;\n  background: rgba(11, 110, 143, 0.1);\n  color: #0b6e8f;\n  font-weight: 800;\n}\n\n.checklist-subhead span.complete {\n  background: rgba(16, 185, 129, 0.14);\n  color: #047857;\n}\n\n@media (max-width: 768px) {\n  .checklist-subhead {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n\n  .checklist-group {\n    padding: 14px;\n  }\n}\n\n.outing-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }\n.detail-link { color: var(--sun-orange, #f59e0b); font-family: 'Raleway', sans-serif; font-weight: 800; text-decoration: none; }\n.detail-link:hover { text-decoration: underline; }\n.check-meta { display:block; margin-top:4px; color:#64748b; font-size:.78rem; font-family:'Lato', sans-serif; }\n\n.detail-link.danger { border: none; background: transparent; color: #b91c1c; cursor: pointer; padding: 0; }\n.detail-link.danger:hover { text-decoration: underline; }\n.checklist-subhead h4 { margin: 0; font-size: 1.02rem; color: #08263a; }\n\n.mode-toolbar,\n.list-head,\n.form-title-row {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 14px;\n  margin-bottom: 22px;\n  flex-wrap: wrap;\n}\n\n.mode-toolbar {\n  justify-content: flex-start;\n}\n\n.mode-toolbar .active {\n  outline: 3px solid rgba(242, 140, 40, 0.22);\n}\n\n.outing-form-card {\n  margin-top: 28px;\n}\n\n.form-title-row p {\n  margin: 6px 0 0;\n  color: #64748b;\n}\n\n.form-actions {\n  gap: 12px;\n  flex-wrap: wrap;\n}\n\n.compact-row .outing-summary {\n  margin-bottom: 0;\n}\n\nbutton.detail-link {\n  border: none;\n  background: transparent;\n  cursor: pointer;\n  padding: 0;\n}\n\n@media (max-width: 820px) {\n  .mode-toolbar,\n  .list-head,\n  .form-title-row,\n  .outing-actions {\n    align-items: stretch;\n    flex-direction: column;\n  }\n\n  .outing-actions .status,\n  .outing-actions .detail-link {\n    align-self: flex-start;\n  }\n}\n\n.anchorages-block {\n  margin-top: 1.5rem;\n  padding: 1.25rem;\n  border: 1px solid rgba(20, 54, 79, 0.12);\n  border-radius: 18px;\n  background: rgba(255, 255, 255, 0.72);\n}\n\n.anchorage-form-grid {\n  margin-top: 1rem;\n}\n\n.mini-actions {\n  margin-top: 0.75rem;\n  justify-content: flex-start;\n}\n\n.anchorage-card {\n  margin-top: 1rem;\n  padding: 1rem;\n  border: 1px solid rgba(20, 54, 79, 0.1);\n  border-radius: 16px;\n  background: #fff;\n}\n\n.anchorage-card-head {\n  display: flex;\n  gap: 1rem;\n  align-items: flex-start;\n  justify-content: space-between;\n  margin-bottom: 1rem;\n}\n\n.anchorage-card-head h3 {\n  margin: 0 0 0.25rem;\n}\n\n.anchorage-card-head p {\n  margin: 0.1rem 0;\n}\n\n@media (max-width: 760px) {\n  .anchorage-card-head {\n    flex-direction: column;\n  }\n}\n"],"sourceRoot":""}]);
+}
+.form-title-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.outing-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.outing-tab {
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+}
+
+.outing-tab.active {
+  background: #0f172a;
+  color: #fff;
+  border-color: #0f172a;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-outings/admin-outings.component.scss"],"names":[],"mappings":"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","sourcesContent":[".admin-outings-page {\n  min-height: 70vh;\n  padding: 72px 0;\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 58%);\n}\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.page-head {\n  max-width: 820px;\n  margin-bottom: 32px;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 10px;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-size: 0.78rem;\n  letter-spacing: 0.14em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n  font-weight: 700;\n}\n\nh1, h2, h3 {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: #08263a;\n  margin: 0;\n}\n\nh1 {\n  font-size: clamp(2rem, 5vw, 3.4rem);\n  line-height: 1.05;\n  margin-bottom: 14px;\n}\n\np, label, input, select, textarea, button, span {\n  font-family: 'Lato', Arial, sans-serif;\n}\n\n.page-head p {\n  color: #475569;\n  line-height: 1.8;\n  font-size: 1.05rem;\n}\n\n.admin-warning,\n.outing-form-card,\n.outings-list-card {\n  background: #fff;\n  border-radius: 28px;\n  padding: 28px;\n  box-shadow: 0 22px 55px rgba(8, 38, 58, 0.12);\n  border: 1px solid rgba(8, 38, 58, 0.08);\n}\n\n.admin-warning {\n  color: #9a4d08;\n  background: rgba(242, 140, 40, 0.12);\n  font-weight: 700;\n}\n\n.form-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 18px;\n}\n\nlabel {\n  display: grid;\n  gap: 8px;\n  color: #08263a;\n  font-weight: 700;\n}\n\nlabel.wide {\n  grid-column: span 3;\n}\n\ninput, select, textarea {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.16);\n  border-radius: 14px;\n  padding: 0.85rem 0.95rem;\n  font-size: 1rem;\n  color: #08263a;\n  background: #fff;\n  outline: none;\n}\n\ntextarea {\n  resize: vertical;\n}\n\ninput:focus, select:focus, textarea:focus {\n  border-color: #0b6e8f;\n  box-shadow: 0 0 0 4px rgba(11, 110, 143, 0.12);\n}\n\n.checklist-block {\n  margin-top: 28px;\n  padding-top: 24px;\n  border-top: 1px solid rgba(8, 38, 58, 0.1);\n}\n\n.checklist-head,\n.outing-summary {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 16px;\n  margin-bottom: 18px;\n}\n\n.checklist-head span {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 72px;\n  padding: 0.45rem 0.8rem;\n  border-radius: 999px;\n  background: rgba(11, 110, 143, 0.1);\n  color: #0b6e8f;\n  font-weight: 800;\n}\n\n.checklist-head span.complete {\n  background: rgba(16, 185, 129, 0.14);\n  color: #047857;\n}\n\n.checklist-grid {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 12px;\n}\n\n.checklist-grid.compact {\n  grid-template-columns: 1fr;\n}\n\n.check-item {\n  display: flex;\n  align-items: center;\n  grid-template-columns: auto 1fr;\n  gap: 12px;\n  padding: 14px;\n  border: 1px solid rgba(8, 38, 58, 0.12);\n  border-radius: 16px;\n  cursor: pointer;\n  background: #fff;\n  transition: 0.2s ease;\n}\n\n.check-item:hover {\n  background: rgba(11, 110, 143, 0.05);\n}\n\n.check-item.done {\n  border-color: rgba(16, 185, 129, 0.35);\n  background: rgba(16, 185, 129, 0.06);\n}\n\n.check-item input {\n  display: none;\n}\n\n.fake-radio {\n  width: 22px;\n  height: 22px;\n  border-radius: 50%;\n  border: 2px solid #0b6e8f;\n  position: relative;\n  flex: 0 0 auto;\n}\n\n.check-item input:checked + .fake-radio::after {\n  content: '';\n  position: absolute;\n  inset: 4px;\n  border-radius: 50%;\n  background: #f28c28;\n}\n\n.form-actions {\n  margin-top: 26px;\n  display: flex;\n  justify-content: flex-end;\n}\n\n.btn {\n  border: 0;\n  border-radius: 999px;\n  padding: 0.9rem 1.25rem;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 800;\n  cursor: pointer;\n}\n\n.btn-primary {\n  background: #f28c28;\n  color: #fff;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary {\n  background: #e8f4f7;\n  color: #08263a;\n}\n\n.btn:disabled {\n  opacity: 0.45;\n  cursor: not-allowed;\n}\n\n.notice {\n  margin-top: 18px;\n  padding: 14px 16px;\n  border-radius: 14px;\n  font-weight: 700;\n}\n\n.notice.success {\n  color: #047857;\n  background: rgba(16, 185, 129, 0.12);\n}\n\n.notice.error {\n  color: #b42318;\n  background: rgba(244, 63, 94, 0.1);\n}\n\n.outings-list-card {\n  margin-top: 28px;\n}\n\n.empty {\n  color: #64748b;\n}\n\n.outing-row {\n  margin-top: 18px;\n  padding: 20px;\n  border: 1px solid rgba(8, 38, 58, 0.1);\n  border-radius: 22px;\n}\n\n.outing-summary h3 {\n  font-size: 1.35rem;\n  margin-bottom: 6px;\n}\n\n.outing-summary p {\n  margin: 2px 0;\n  color: #64748b;\n}\n\n.status {\n  padding: 0.45rem 0.8rem;\n  border-radius: 999px;\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  font-weight: 800;\n}\n\n.status.closed {\n  background: rgba(16, 185, 129, 0.12);\n  color: #047857;\n}\n\n.closure {\n  margin-top: 18px;\n  padding-top: 18px;\n  border-top: 1px dashed rgba(8, 38, 58, 0.18);\n}\n\n.closure-comments {\n  margin: 18px 0;\n}\n\n@media (max-width: 820px) {\n  .admin-outings-page {\n    padding: 44px 0;\n  }\n\n  .outing-form-card,\n  .outings-list-card {\n    padding: 20px;\n    border-radius: 22px;\n  }\n\n  .form-grid,\n  .checklist-grid {\n    grid-template-columns: 1fr;\n  }\n\n  label.wide {\n    grid-column: span 1;\n  }\n\n  .checklist-head,\n  .outing-summary {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n\n  .form-actions,\n  .btn {\n    width: 100%;\n  }\n}\n\n.checklist-group {\n  margin-top: 22px;\n  padding: 18px;\n  border: 1px solid rgba(8, 38, 58, 0.08);\n  border-radius: 22px;\n  background: rgba(251, 248, 242, 0.65);\n}\n\n.checklist-subhead {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 14px;\n  margin-bottom: 14px;\n}\n\n.checklist-subhead h3 {\n  font-size: 1.18rem;\n}\n\n.checklist-subhead span {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 62px;\n  padding: 0.35rem 0.7rem;\n  border-radius: 999px;\n  background: rgba(11, 110, 143, 0.1);\n  color: #0b6e8f;\n  font-weight: 800;\n}\n\n.checklist-subhead span.complete {\n  background: rgba(16, 185, 129, 0.14);\n  color: #047857;\n}\n\n@media (max-width: 768px) {\n  .checklist-subhead {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n\n  .checklist-group {\n    padding: 14px;\n  }\n}\n\n.outing-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }\n.detail-link { color: var(--sun-orange, #f59e0b); font-family: 'Raleway', sans-serif; font-weight: 800; text-decoration: none; }\n.detail-link:hover { text-decoration: underline; }\n.check-meta { display:block; margin-top:4px; color:#64748b; font-size:.78rem; font-family:'Lato', sans-serif; }\n\n.detail-link.danger { border: none; background: transparent; color: #b91c1c; cursor: pointer; padding: 0; }\n.detail-link.danger:hover { text-decoration: underline; }\n.checklist-subhead h4 { margin: 0; font-size: 1.02rem; color: #08263a; }\n\n.mode-toolbar,\n.list-head,\n.form-title-row {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 14px;\n  margin-bottom: 22px;\n  flex-wrap: wrap;\n}\n\n.mode-toolbar {\n  justify-content: flex-start;\n}\n\n.mode-toolbar .active {\n  outline: 3px solid rgba(242, 140, 40, 0.22);\n}\n\n.outing-form-card {\n  margin-top: 28px;\n}\n\n.form-title-row p {\n  margin: 6px 0 0;\n  color: #64748b;\n}\n\n.form-actions {\n  gap: 12px;\n  flex-wrap: wrap;\n}\n\n.compact-row .outing-summary {\n  margin-bottom: 0;\n}\n\nbutton.detail-link {\n  border: none;\n  background: transparent;\n  cursor: pointer;\n  padding: 0;\n}\n\n@media (max-width: 820px) {\n  .mode-toolbar,\n  .list-head,\n  .form-title-row,\n  .outing-actions {\n    align-items: stretch;\n    flex-direction: column;\n  }\n\n  .outing-actions .status,\n  .outing-actions .detail-link {\n    align-self: flex-start;\n  }\n}\n\n.anchorages-block {\n  margin-top: 1.5rem;\n  padding: 1.25rem;\n  border: 1px solid rgba(20, 54, 79, 0.12);\n  border-radius: 18px;\n  background: rgba(255, 255, 255, 0.72);\n}\n\n.anchorage-form-grid {\n  margin-top: 1rem;\n}\n\n.mini-actions {\n  margin-top: 0.75rem;\n  justify-content: flex-start;\n}\n\n.anchorage-card {\n  margin-top: 1rem;\n  padding: 1rem;\n  border: 1px solid rgba(20, 54, 79, 0.1);\n  border-radius: 16px;\n  background: #fff;\n}\n\n.anchorage-card-head {\n  display: flex;\n  gap: 1rem;\n  align-items: flex-start;\n  justify-content: space-between;\n  margin-bottom: 1rem;\n}\n\n.anchorage-card-head h3 {\n  margin: 0 0 0.25rem;\n}\n\n.anchorage-card-head p {\n  margin: 0.1rem 0;\n}\n\n@media (max-width: 760px) {\n  .anchorage-card-head {\n    flex-direction: column;\n  }\n}\n\n.form-title-actions {\n  display: flex;\n  gap: 0.75rem;\n  align-items: center;\n  flex-wrap: wrap;\n}\n\n\n.outing-tabs {\n  display: flex;\n  gap: 0.5rem;\n  margin: 1.5rem 0;\n  flex-wrap: wrap;\n}\n\n.outing-tab {\n  padding: 0.75rem 1rem;\n  border-radius: 999px;\n  border: 1px solid #ddd;\n  background: #fff;\n  cursor: pointer;\n}\n\n.outing-tab.active {\n  background: #0f172a;\n  color: #fff;\n  border-color: #0f172a;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -10548,187 +10458,6 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 /***/ }),
 
-/***/ 86846:
-/*!********************************************************************!*\
-  !*** ./src/app/home/checklist/checklist.component.scss?ngResource ***!
-  \********************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-// Imports
-var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
-var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
-___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap);"]);
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, `@charset "UTF-8";
-:host {
-  --alegria-deep: #08263a;
-  --alegria-ocean: #0b6e8f;
-  --alegria-ocean-light: #e8f4f7;
-  --alegria-orange: #f28c28;
-  --alegria-sand: #fbf8f2;
-  --alegria-text: #2f3a45;
-  --alegria-muted: #667085;
-}
-
-.checklist-section {
-  padding: 4rem 0;
-  background: linear-gradient(180deg, #ffffff 0%, var(--alegria-sand) 100%);
-}
-
-.container {
-  width: min(1120px, 100% - 2rem);
-  margin: 0 auto;
-}
-
-.checklist-card {
-  max-width: 920px;
-  margin: 0 auto;
-  padding: clamp(1.25rem, 4vw, 2.2rem);
-  border-radius: 28px;
-  background: #ffffff;
-  box-shadow: 0 18px 45px rgba(8, 38, 58, 0.12);
-  border: 1px solid rgba(8, 38, 58, 0.08);
-}
-
-.checklist-header {
-  margin-bottom: 1.4rem;
-}
-
-.eyebrow {
-  display: inline-block;
-  margin-bottom: 0.75rem;
-  font-family: "Raleway", Arial, sans-serif;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--alegria-ocean);
-  font-weight: 700;
-}
-
-h2 {
-  margin: 0 0 0.8rem;
-  font-family: "Playfair Display", Georgia, serif;
-  color: var(--alegria-deep);
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  line-height: 1.08;
-}
-
-p,
-.item-label {
-  font-family: "Lato", Arial, sans-serif;
-  color: var(--alegria-text);
-  line-height: 1.65;
-}
-
-.progress-pill {
-  display: inline-flex;
-  align-items: center;
-  margin-bottom: 1.4rem;
-  padding: 0.75rem 1rem;
-  border-radius: 999px;
-  background: rgba(13, 111, 143, 0.1);
-  color: var(--alegria-ocean);
-  font-family: "Raleway", Arial, sans-serif;
-  font-weight: 700;
-  font-size: 0.9rem;
-}
-
-.checklist-items {
-  display: grid;
-  gap: 0.9rem;
-}
-
-.checklist-item {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 0.9rem;
-  padding: 1rem;
-  border: 1px solid rgba(8, 38, 58, 0.12);
-  border-radius: 18px;
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-
-.checklist-item:hover {
-  background: rgba(13, 111, 143, 0.05);
-  border-color: rgba(13, 111, 143, 0.28);
-}
-
-.checklist-item.checked {
-  background: rgba(13, 111, 143, 0.07);
-  border-color: rgba(13, 111, 143, 0.34);
-}
-
-.checklist-item input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.custom-check {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 2px solid var(--alegria-ocean);
-  position: relative;
-  flex: 0 0 auto;
-}
-
-.checklist-item input:checked + .custom-check {
-  background: var(--alegria-orange);
-  border-color: var(--alegria-orange);
-}
-
-.checklist-item input:checked + .custom-check::after {
-  content: "✓";
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  color: #ffffff;
-  font-family: "Raleway", Arial, sans-serif;
-  font-weight: 700;
-  font-size: 0.9rem;
-}
-
-.item-label {
-  font-size: 0.97rem;
-}
-
-.checklist-item.checked .item-label {
-  color: var(--alegria-muted);
-  text-decoration: line-through;
-}
-
-.success-message {
-  margin-top: 1.4rem;
-  padding: 1rem;
-  border-radius: 18px;
-  background: rgba(16, 185, 129, 0.12);
-  color: #047857;
-  font-family: "Raleway", Arial, sans-serif;
-  font-weight: 700;
-}
-
-@media (max-width: 640px) {
-  .checklist-section {
-    padding: 2.5rem 0;
-  }
-  .checklist-card {
-    border-radius: 22px;
-  }
-  .checklist-item {
-    align-items: start;
-  }
-}`, "",{"version":3,"sources":["webpack://./src/app/home/checklist/checklist.component.scss"],"names":[],"mappings":"AAAA,gBAAgB;AAEhB;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AACF;;AAEA;EACE,eAAA;EACA,yEAAA;AACF;;AAEA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,cAAA;EACA,oCAAA;EACA,mBAAA;EACA,mBAAA;EACA,6CAAA;EACA,uCAAA;AACF;;AAEA;EACE,qBAAA;AACF;;AAEA;EACE,qBAAA;EACA,sBAAA;EACA,yCAAA;EACA,kBAAA;EACA,yBAAA;EACA,sBAAA;EACA,2BAAA;EACA,gBAAA;AACF;;AAEA;EACE,kBAAA;EACA,+CAAA;EACA,0BAAA;EACA,qCAAA;EACA,iBAAA;AACF;;AAEA;;EAEE,sCAAA;EACA,0BAAA;EACA,iBAAA;AACF;;AAEA;EACE,oBAAA;EACA,mBAAA;EACA,qBAAA;EACA,qBAAA;EACA,oBAAA;EACA,mCAAA;EACA,2BAAA;EACA,yCAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE,aAAA;EACA,WAAA;AACF;;AAEA;EACE,aAAA;EACA,+BAAA;EACA,mBAAA;EACA,WAAA;EACA,aAAA;EACA,uCAAA;EACA,mBAAA;EACA,eAAA;EACA,6EAAA;AACF;;AAEA;EACE,oCAAA;EACA,sCAAA;AACF;;AAEA;EACE,oCAAA;EACA,sCAAA;AACF;;AAEA;EACE,kBAAA;EACA,UAAA;EACA,oBAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,kBAAA;EACA,sCAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,iCAAA;EACA,mCAAA;AACF;;AAEA;EACE,YAAA;EACA,kBAAA;EACA,QAAA;EACA,aAAA;EACA,mBAAA;EACA,cAAA;EACA,yCAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE,kBAAA;AACF;;AAEA;EACE,2BAAA;EACA,6BAAA;AACF;;AAEA;EACE,kBAAA;EACA,aAAA;EACA,mBAAA;EACA,oCAAA;EACA,cAAA;EACA,yCAAA;EACA,gBAAA;AACF;;AAEA;EACE;IACE,iBAAA;EACF;EAEA;IACE,mBAAA;EAAF;EAGA;IACE,kBAAA;EADF;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\n.checklist-section {\n  padding: 4rem 0;\n  background: linear-gradient(180deg, #ffffff 0%, var(--alegria-sand) 100%);\n}\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.checklist-card {\n  max-width: 920px;\n  margin: 0 auto;\n  padding: clamp(1.25rem, 4vw, 2.2rem);\n  border-radius: 28px;\n  background: #ffffff;\n  box-shadow: 0 18px 45px rgba(8, 38, 58, 0.12);\n  border: 1px solid rgba(8, 38, 58, 0.08);\n}\n\n.checklist-header {\n  margin-bottom: 1.4rem;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.75rem;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-size: 0.78rem;\n  text-transform: uppercase;\n  letter-spacing: 0.14em;\n  color: var(--alegria-ocean);\n  font-weight: 700;\n}\n\nh2 {\n  margin: 0 0 0.8rem;\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  font-size: clamp(1.8rem, 4vw, 2.6rem);\n  line-height: 1.08;\n}\n\np,\n.item-label {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n  line-height: 1.65;\n}\n\n.progress-pill {\n  display: inline-flex;\n  align-items: center;\n  margin-bottom: 1.4rem;\n  padding: 0.75rem 1rem;\n  border-radius: 999px;\n  background: rgba(13, 111, 143, 0.1);\n  color: var(--alegria-ocean);\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n.checklist-items {\n  display: grid;\n  gap: 0.9rem;\n}\n\n.checklist-item {\n  display: grid;\n  grid-template-columns: auto 1fr;\n  align-items: center;\n  gap: 0.9rem;\n  padding: 1rem;\n  border: 1px solid rgba(8, 38, 58, 0.12);\n  border-radius: 18px;\n  cursor: pointer;\n  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;\n}\n\n.checklist-item:hover {\n  background: rgba(13, 111, 143, 0.05);\n  border-color: rgba(13, 111, 143, 0.28);\n}\n\n.checklist-item.checked {\n  background: rgba(13, 111, 143, 0.07);\n  border-color: rgba(13, 111, 143, 0.34);\n}\n\n.checklist-item input {\n  position: absolute;\n  opacity: 0;\n  pointer-events: none;\n}\n\n.custom-check {\n  width: 24px;\n  height: 24px;\n  border-radius: 50%;\n  border: 2px solid var(--alegria-ocean);\n  position: relative;\n  flex: 0 0 auto;\n}\n\n.checklist-item input:checked + .custom-check {\n  background: var(--alegria-orange);\n  border-color: var(--alegria-orange);\n}\n\n.checklist-item input:checked + .custom-check::after {\n  content: '✓';\n  position: absolute;\n  inset: 0;\n  display: grid;\n  place-items: center;\n  color: #ffffff;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n.item-label {\n  font-size: 0.97rem;\n}\n\n.checklist-item.checked .item-label {\n  color: var(--alegria-muted);\n  text-decoration: line-through;\n}\n\n.success-message {\n  margin-top: 1.4rem;\n  padding: 1rem;\n  border-radius: 18px;\n  background: rgba(16, 185, 129, 0.12);\n  color: #047857;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 700;\n}\n\n@media (max-width: 640px) {\n  .checklist-section {\n    padding: 2.5rem 0;\n  }\n\n  .checklist-card {\n    border-radius: 22px;\n  }\n\n  .checklist-item {\n    align-items: start;\n  }\n}\n"],"sourceRoot":""}]);
-// Exports
-module.exports = ___CSS_LOADER_EXPORT___.toString();
-
-
-/***/ }),
-
 /***/ 87592:
 /*!************************************************************************!*\
   !*** ./src/app/home/tours/evjf-evg/evjf-evg.component.html?ngResource ***!
@@ -10955,13 +10684,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   BookingsComponent: () => (/* binding */ BookingsComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bookings.component.html?ngResource */ 26456);
 /* harmony import */ var _bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bookings.component.scss?ngResource */ 62992);
 /* harmony import */ var _bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _booking_api_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./booking-api.service */ 74854);
+
 
 
 
@@ -10971,15 +10702,28 @@ __webpack_require__.r(__webpack_exports__);
 let BookingsComponent = class BookingsComponent {
   bookingApi;
   router;
+  mainSvc;
   bookings = [];
   loading = true;
   errorMessage = '';
-  constructor(bookingApi, router) {
+  loggedUser = null;
+  constructor(bookingApi, router, mainSvc) {
     this.bookingApi = bookingApi;
     this.router = router;
+    this.mainSvc = mainSvc;
   }
   ngOnInit() {
+    const svc = this.mainSvc;
+    this.loggedUser = svc.bnUser || svc.currentUser || null;
+    if (!this.isAdmin) {
+      this.router.navigate(['/my-bookings']);
+      return;
+    }
     this.loadBookings();
+  }
+  get isAdmin() {
+    const role = String(this.loggedUser?.role || '').toLowerCase();
+    return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
   }
   loadBookings() {
     this.loading = true;
@@ -11003,7 +10747,11 @@ let BookingsComponent = class BookingsComponent {
     this.router.navigate(['/admin/bookings', booking.bookingId]);
   }
   payment(booking) {
-    this.router.navigate(['/payment', booking.bookingId]);
+    this.router.navigate(['/payment', booking.bookingId], {
+      queryParams: {
+        mode: 'warranty'
+      }
+    });
   }
   trackByBookingId(index, booking) {
     return booking.bookingId || String(index);
@@ -11045,9 +10793,11 @@ let BookingsComponent = class BookingsComponent {
     type: _booking_api_service__WEBPACK_IMPORTED_MODULE_2__.BookingApiService
   }, {
     type: _angular_router__WEBPACK_IMPORTED_MODULE_3__.Router
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.ServicesService
   }];
 };
-BookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
+BookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
   selector: 'app-bookings',
   template: _bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
   styles: [(_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
@@ -11344,7 +11094,28 @@ h2, h3 {
   margin: 0;
   font-size: 1.02rem;
   color: #08263a;
-}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-outing-detail/admin-outing-detail.component.scss"],"names":[],"mappings":"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","sourcesContent":[".admin-outing-detail-page {\n  padding: 64px 0;\n  background: #f7fbfd;\n  min-height: 80vh;\n}\n.container { max-width: 1120px; margin: 0 auto; padding: 0 20px; }\n.back-link { border: 0; background: transparent; color: #0d4f6d; font-family: 'Raleway', sans-serif; font-weight: 800; cursor: pointer; margin-bottom: 18px; }\n.section-head { margin-bottom: 28px; }\n.eyebrow { display:inline-block; color:#0d6f8f; text-transform:uppercase; letter-spacing:.16em; font-family:'Raleway',sans-serif; font-weight:800; font-size:.75rem; }\nh1 { margin: 10px 0; color:#08263a; font-family:'Playfair Display',serif; font-size:clamp(2rem,5vw,3.5rem); }\np { color:#526173; font-family:'Lato',sans-serif; }\n.detail-card, .checklist-card { background:#fff; border-radius:24px; padding:28px; box-shadow:0 18px 45px rgba(8,38,58,.1); margin-bottom:24px; }\n.status-row { display:flex; justify-content:flex-end; margin-bottom:12px; }\n.status { border-radius:999px; padding:8px 14px; background:rgba(245,158,11,.16); color:#92400e; font-family:'Raleway',sans-serif; font-weight:800; }\n.status.closed { background:rgba(16,185,129,.14); color:#047857; }\n.form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }\n.form-grid label { display:flex; flex-direction:column; gap:8px; color:#0f2d3f; font-family:'Raleway',sans-serif; font-weight:800; }\n.form-grid .wide { grid-column:1 / -1; }\ninput, select, textarea { width:100%; border:1px solid rgba(8,38,58,.16); border-radius:14px; padding:12px 14px; font-family:'Lato',sans-serif; font-size:1rem; background:#fff; color:#0f172a; }\ntextarea { resize:vertical; }\n.actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:22px; }\n.btn { border:0; border-radius:999px; padding:12px 20px; font-family:'Raleway',sans-serif; font-weight:900; cursor:pointer; text-decoration:none; }\n.btn:disabled { opacity:.45; cursor:not-allowed; }\n.btn-primary { background:#f59e0b; color:#08263a; }\n.btn-secondary { background:#0d4f6d; color:#fff; }\n.notice { border-radius:16px; padding:14px 16px; margin:14px 0; font-family:'Raleway',sans-serif; font-weight:800; }\n.notice.success { background:rgba(16,185,129,.13); color:#047857; }\n.notice.error { background:rgba(239,68,68,.12); color:#b91c1c; }\n.checklist-head, .checklist-subhead { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:16px; }\nh2, h3 { margin:0; color:#08263a; font-family:'Playfair Display',serif; }\n.checklist-head span, .checklist-subhead span { border-radius:999px; padding:8px 12px; background:#e5eef3; color:#0d4f6d; font-family:'Raleway',sans-serif; font-weight:900; white-space:nowrap; }\n.checklist-head span.complete, .checklist-subhead span.complete { background:rgba(16,185,129,.14); color:#047857; }\n.checklist-group { border-top:1px solid rgba(8,38,58,.1); padding-top:20px; margin-top:20px; }\n.checklist-grid { display:grid; gap:12px; }\n.check-item { display:flex; align-items:flex-start; gap:12px; padding:14px; border:1px solid rgba(8,38,58,.12); border-radius:16px; background:#fff; cursor:pointer; font-family:'Lato',sans-serif; color:#1f2937; }\n.check-item.done { background:rgba(13,111,143,.06); }\n.check-item input { display:none; }\n.fake-radio { width:22px; height:22px; border-radius:50%; border:2px solid #0d6f8f; flex:0 0 auto; position:relative; margin-top:1px; }\n.check-item.done .fake-radio::after { content:''; position:absolute; inset:4px; border-radius:50%; background:#f59e0b; }\n.check-meta { display:block; margin-top:5px; color:#64748b; font-size:.78rem; }\n@media (max-width: 760px) { .form-grid { grid-template-columns:1fr; } .detail-card,.checklist-card { padding:20px; border-radius:18px; } .actions .btn { width:100%; } .checklist-head,.checklist-subhead { align-items:flex-start; flex-direction:column; } }\n\n.checklist-subhead h4 { margin: 0; font-size: 1.02rem; color: #08263a; }\n"],"sourceRoot":""}]);
+}
+
+.outing-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.outing-tab {
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+}
+
+.outing-tab.active {
+  background: #0f172a;
+  color: #fff;
+  border-color: #0f172a;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-outing-detail/admin-outing-detail.component.scss"],"names":[],"mappings":"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","sourcesContent":[".admin-outing-detail-page {\n  padding: 64px 0;\n  background: #f7fbfd;\n  min-height: 80vh;\n}\n.container { max-width: 1120px; margin: 0 auto; padding: 0 20px; }\n.back-link { border: 0; background: transparent; color: #0d4f6d; font-family: 'Raleway', sans-serif; font-weight: 800; cursor: pointer; margin-bottom: 18px; }\n.section-head { margin-bottom: 28px; }\n.eyebrow { display:inline-block; color:#0d6f8f; text-transform:uppercase; letter-spacing:.16em; font-family:'Raleway',sans-serif; font-weight:800; font-size:.75rem; }\nh1 { margin: 10px 0; color:#08263a; font-family:'Playfair Display',serif; font-size:clamp(2rem,5vw,3.5rem); }\np { color:#526173; font-family:'Lato',sans-serif; }\n.detail-card, .checklist-card { background:#fff; border-radius:24px; padding:28px; box-shadow:0 18px 45px rgba(8,38,58,.1); margin-bottom:24px; }\n.status-row { display:flex; justify-content:flex-end; margin-bottom:12px; }\n.status { border-radius:999px; padding:8px 14px; background:rgba(245,158,11,.16); color:#92400e; font-family:'Raleway',sans-serif; font-weight:800; }\n.status.closed { background:rgba(16,185,129,.14); color:#047857; }\n.form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }\n.form-grid label { display:flex; flex-direction:column; gap:8px; color:#0f2d3f; font-family:'Raleway',sans-serif; font-weight:800; }\n.form-grid .wide { grid-column:1 / -1; }\ninput, select, textarea { width:100%; border:1px solid rgba(8,38,58,.16); border-radius:14px; padding:12px 14px; font-family:'Lato',sans-serif; font-size:1rem; background:#fff; color:#0f172a; }\ntextarea { resize:vertical; }\n.actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:22px; }\n.btn { border:0; border-radius:999px; padding:12px 20px; font-family:'Raleway',sans-serif; font-weight:900; cursor:pointer; text-decoration:none; }\n.btn:disabled { opacity:.45; cursor:not-allowed; }\n.btn-primary { background:#f59e0b; color:#08263a; }\n.btn-secondary { background:#0d4f6d; color:#fff; }\n.notice { border-radius:16px; padding:14px 16px; margin:14px 0; font-family:'Raleway',sans-serif; font-weight:800; }\n.notice.success { background:rgba(16,185,129,.13); color:#047857; }\n.notice.error { background:rgba(239,68,68,.12); color:#b91c1c; }\n.checklist-head, .checklist-subhead { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:16px; }\nh2, h3 { margin:0; color:#08263a; font-family:'Playfair Display',serif; }\n.checklist-head span, .checklist-subhead span { border-radius:999px; padding:8px 12px; background:#e5eef3; color:#0d4f6d; font-family:'Raleway',sans-serif; font-weight:900; white-space:nowrap; }\n.checklist-head span.complete, .checklist-subhead span.complete { background:rgba(16,185,129,.14); color:#047857; }\n.checklist-group { border-top:1px solid rgba(8,38,58,.1); padding-top:20px; margin-top:20px; }\n.checklist-grid { display:grid; gap:12px; }\n.check-item { display:flex; align-items:flex-start; gap:12px; padding:14px; border:1px solid rgba(8,38,58,.12); border-radius:16px; background:#fff; cursor:pointer; font-family:'Lato',sans-serif; color:#1f2937; }\n.check-item.done { background:rgba(13,111,143,.06); }\n.check-item input { display:none; }\n.fake-radio { width:22px; height:22px; border-radius:50%; border:2px solid #0d6f8f; flex:0 0 auto; position:relative; margin-top:1px; }\n.check-item.done .fake-radio::after { content:''; position:absolute; inset:4px; border-radius:50%; background:#f59e0b; }\n.check-meta { display:block; margin-top:5px; color:#64748b; font-size:.78rem; }\n@media (max-width: 760px) { .form-grid { grid-template-columns:1fr; } .detail-card,.checklist-card { padding:20px; border-radius:18px; } .actions .btn { width:100%; } .checklist-head,.checklist-subhead { align-items:flex-start; flex-direction:column; } }\n\n.checklist-subhead h4 { margin: 0; font-size: 1.02rem; color: #08263a; }\n\n\n.outing-tabs {\n  display: flex;\n  gap: 0.5rem;\n  margin: 1.5rem 0;\n  flex-wrap: wrap;\n}\n\n.outing-tab {\n  padding: 0.75rem 1rem;\n  border-radius: 999px;\n  border: 1px solid #ddd;\n  background: #fff;\n  cursor: pointer;\n}\n\n.outing-tab.active {\n  background: #0f172a;\n  color: #fff;\n  border-color: #0f172a;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -11437,6 +11208,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
   storeDb;
   utilSvc;
   http;
+  activeTab = 'details';
   currentLanguage = 'fr';
   loggedUser = null;
   outings = [];
@@ -11565,6 +11337,8 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       arrivalTime: outing.arrivalTime || '',
       portEngineHoursDeparture: outing.portEngineHoursDeparture,
       starboardEngineHoursDeparture: outing.starboardEngineHoursDeparture,
+      portEngineHoursArrival: outing.portEngineHoursArrival ?? null,
+      starboardEngineHoursArrival: outing.starboardEngineHoursArrival ?? null,
       actualWindSpeed: outing.actualWindSpeed,
       destination: outing.destination || '',
       comments: outing.comments || ''
@@ -11579,6 +11353,13 @@ let AdminOutingsComponent = class AdminOutingsComponent {
   startClose(outing) {
     this.mode = 'close';
     this.selectedOuting = outing;
+    this.form = {
+      ...this.emptyForm(),
+      arrivalDate: outing.arrivalDate || '',
+      arrivalTime: outing.arrivalTime || '',
+      portEngineHoursArrival: outing.portEngineHoursArrival ?? null,
+      starboardEngineHoursArrival: outing.starboardEngineHoursArrival ?? null
+    };
     const groups = this.arrivalGroupsFromOuting(outing);
     this.arrivalChecklistGroupsByOuting[outing.outingId] = groups;
     this.arrivalChecklistByOuting[outing.outingId] = this.flattenChecklistGroups(groups);
@@ -11595,6 +11376,8 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       arrivalTime: '',
       portEngineHoursDeparture: null,
       starboardEngineHoursDeparture: null,
+      portEngineHoursArrival: null,
+      starboardEngineHoursArrival: null,
       actualWindSpeed: null,
       destination: '',
       comments: ''
@@ -11667,14 +11450,6 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           es: 'Comprobar papeleras vacías, nevera limpia y baños limpios'
         }
       }, {
-        id: 'security_bars_removed',
-        done: false,
-        label: {
-          fr: 'Retirer les barres de sécurité',
-          en: 'Remove security bars',
-          es: 'Retirar las barras de seguridad'
-        }
-      }, {
         id: 'stock_ice',
         done: false,
         label: {
@@ -11686,9 +11461,9 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         id: 'prepare_breakfast',
         done: false,
         label: {
-          fr: 'Préparer le petit-déjeuner',
-          en: 'Prepare breakfast',
-          es: 'Preparar el desayuno'
+          fr: 'Préparer le petit-déjeuner avant de débrancher l’électricité',
+          en: 'Prepare breakfast before electricity is removed',
+          es: 'Preparar el desayuno antes de desconectar la electricidad'
         }
       }, {
         id: 'install_foot_bridge',
@@ -11721,6 +11496,14 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           fr: 'S’il n’y a pas de vent, préparer les amarres arrière',
           en: 'If there is no wind, prep the stern lines',
           es: 'Si no hay viento, preparar las amarras de popa'
+        }
+      }, {
+        id: 'sunshade_up',
+        done: false,
+        label: {
+          fr: 'Installer le taud / pare-soleil',
+          en: 'Put up the sunshade',
+          es: 'Instalar el toldo / parasol'
         }
       }]
     }, {
@@ -11795,22 +11578,6 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           es: 'Presentaciones formales'
         }
       }, {
-        id: 'security_champion',
-        done: false,
-        label: {
-          fr: 'Choisir un référent sécurité',
-          en: 'Choose security champion',
-          es: 'Elegir responsable de seguridad'
-        }
-      }, {
-        id: 'security_brief',
-        done: false,
-        label: {
-          fr: 'Brief sécurité',
-          en: 'Security brief',
-          es: 'Briefing de seguridad'
-        }
-      }, {
         id: 'day_plan',
         done: false,
         label: {
@@ -11859,6 +11626,14 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           es: 'El capitán solicita permiso para salir – VHF 09'
         }
       }, {
+        id: 'start_chart_track',
+        done: false,
+        label: {
+          fr: 'Démarrer la trace sur la carte',
+          en: 'Start the chart track',
+          es: 'Iniciar el track en la carta'
+        }
+      }, {
         id: 'gear_stern_lines',
         done: false,
         label: {
@@ -11867,12 +11642,28 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           es: 'Barco en marcha atrás, preparar amarras de popa salvo si ya están preparadas'
         }
       }, {
-        id: 'lines_off',
+        id: 'cross_lines_off',
         done: false,
         label: {
-          fr: 'Retirer les gardes, amarres avant puis amarres arrière',
-          en: 'Cross lines off, bow lines off, stern lines off',
-          es: 'Soltar traveses, amarras de proa y amarras de popa'
+          fr: 'Retirer les gardes',
+          en: 'Cross lines off',
+          es: 'Soltar traveses'
+        }
+      }, {
+        id: 'bow_lines_off_forward',
+        done: false,
+        label: {
+          fr: 'Bateau en marche avant, retirer les amarres avant',
+          en: 'Boat in gear forwards, bow lines off',
+          es: 'Barco avante, soltar amarras de proa'
+        }
+      }, {
+        id: 'stern_lines_off',
+        done: false,
+        label: {
+          fr: 'Retirer les amarres arrière',
+          en: 'Stern lines off',
+          es: 'Soltar amarras de popa'
         }
       }, {
         id: 'depart',
@@ -11881,14 +11672,6 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           fr: 'Départ effectif',
           en: 'Depart',
           es: 'Salida'
-        }
-      }, {
-        id: 'security_champion_tour',
-        done: false,
-        label: {
-          fr: 'Une fois sorti du port, faire le tour sécurité avec le référent',
-          en: 'Once out of harbour, show the security champion around',
-          es: 'Fuera del puerto, mostrar el recorrido de seguridad al responsable'
         }
       }, {
         id: 'switch_vhf16',
@@ -11905,14 +11688,6 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           fr: 'Remonter les pare-battages',
           en: 'Bring up the fenders',
           es: 'Subir defensas'
-        }
-      }, {
-        id: 'fasten_security_lines',
-        done: false,
-        label: {
-          fr: 'Fixer les lignes de sécurité',
-          en: 'Fasten the security lines',
-          es: 'Fijar las líneas de seguridad'
         }
       }, {
         id: 'breakfast_cleanup',
@@ -11976,14 +11751,6 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           es: 'Comprobar que el ancla no garrea antes de apagar el motor'
         }
       }, {
-        id: 'release_security_lines',
-        done: false,
-        label: {
-          fr: 'Relâcher les lignes de sécurité',
-          en: 'Release the security lines',
-          es: 'Soltar las líneas de seguridad'
-        }
-      }, {
         id: 'swimming_ladder_down',
         done: false,
         label: {
@@ -12033,14 +11800,6 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           fr: 'Remonter l’échelle de bain',
           en: 'Bring up the swimming ladder',
           es: 'Subir la escalera de baño'
-        }
-      }, {
-        id: 'attach_security_lines',
-        done: false,
-        label: {
-          fr: 'Attacher les lignes de sécurité',
-          en: 'Attach security lines',
-          es: 'Fijar las líneas de seguridad'
         }
       }, {
         id: 'anchoring_engine_on',
@@ -12106,6 +11865,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     }
     this.anchorageForm = this.emptyAnchorageForm();
     this.editingAnchorageId = '';
+    this.saveChecklistChangeImmediately().catch(() => undefined);
   }
   closeAnchorage(anchorage) {
     const now = Date.now();
@@ -12119,6 +11879,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       anchorUp.doneByUid = this.loggedUser?.userId || this.loggedUser?.uid || '';
       anchorUp.doneAt = now;
     }
+    this.saveChecklistChangeImmediately().catch(() => undefined);
   }
   editAnchorage(anchorage) {
     this.editingAnchorageId = anchorage.anchorageId;
@@ -12134,6 +11895,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
   removeAnchorage(anchorage) {
     this.currentAnchorages = this.currentAnchorages.filter(item => item.anchorageId !== anchorage.anchorageId);
     if (this.editingAnchorageId === anchorage.anchorageId) this.cancelAnchorageEdit();
+    this.saveChecklistChangeImmediately().catch(() => undefined);
   }
   serializeAnchorages(anchorages) {
     return (anchorages || []).map(anchorage => ({
@@ -12177,14 +11939,6 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           fr: 'À 1/2 mille nautique du port, demander l’autorisation d’entrer – VHF 09',
           en: 'At 1/2 NM from harbour request permission to enter – VHF 09',
           es: 'A 1/2 milla náutica del puerto, solicitar permiso para entrar – VHF 09'
-        }
-      }, {
-        id: 'return_security_lines_off',
-        done: false,
-        label: {
-          fr: 'Retirer les lignes de sécurité',
-          en: 'Security lines off',
-          es: 'Quitar las líneas de seguridad'
         }
       }, {
         id: 'return_fenders_down',
@@ -12306,14 +12060,6 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           en: 'Clean up galley, sort out bins and fridge',
           es: 'Limpiar la cocina, ordenar papeleras y nevera'
         }
-      }, {
-        id: 'tidy_security_bars',
-        done: false,
-        label: {
-          fr: 'Remettre les barres de sécurité',
-          en: 'Replace security bars',
-          es: 'Volver a colocar las barras de seguridad'
-        }
       }]
     }, {
       id: 'leave_boat',
@@ -12385,63 +12131,91 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     return this.flattenChecklistGroups(this.buildArrivalChecklistGroups());
   }
   toggleChecklist(item) {
-    item.done = !item.done;
-    if (item.done) {
-      item.doneBy = this.getLoggedUserName();
-      item.doneByUid = this.loggedUser?.userId || this.loggedUser?.uid || '';
-      item.doneAt = Date.now();
-    } else {
-      item.doneBy = '';
-      item.doneByUid = '';
-      item.doneAt = null;
-    }
-    this.scheduleChecklistAutosave();
-  }
-  scheduleChecklistAutosave() {
-    if (this.mode === 'create' || !this.selectedOuting || !this.selectedOuting.outingId) return;
-    if (this.checklistSaveTimer) {
-      clearTimeout(this.checklistSaveTimer);
-    }
-    this.checklistSaveTimer = setTimeout(() => {
-      this.persistCurrentChecklistState().catch(() => undefined);
-    }, 300);
-  }
-  persistCurrentChecklistState() {
     var _this = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this.selectedOuting?.outingId) return;
+      item.done = !item.done;
+      if (item.done) {
+        item.doneBy = _this.getLoggedUserName();
+        item.doneByUid = _this.loggedUser?.userId || _this.loggedUser?.uid || '';
+        item.doneAt = Date.now();
+      } else {
+        item.doneBy = '';
+        item.doneByUid = '';
+        item.doneAt = null;
+      }
+      // Persist immediately when an existing outing is being edited or closed.
+      // In create mode the outing does not yet have an id, so the checklist is saved when the outing is created.
+      yield _this.saveChecklistChangeImmediately();
+    })();
+  }
+  saveChecklistChangeImmediately() {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (_this2.mode === 'create' || !_this2.selectedOuting || !_this2.selectedOuting.outingId) return;
+      _this2.saving = true;
+      _this2.error = '';
+      _this2.closeError = '';
+      try {
+        yield _this2.persistCurrentChecklistState();
+        _this2.saved = true;
+      } catch (e) {
+        const message = e?.message || _this2.t('saveError');
+        if (_this2.mode === 'close') {
+          _this2.closeError = message;
+        } else {
+          _this2.error = message;
+        }
+      } finally {
+        _this2.saving = false;
+      }
+    })();
+  }
+  scheduleChecklistAutosave() {
+    // Kept for backward compatibility with any existing template calls, but saving is now immediate.
+    this.saveChecklistChangeImmediately().catch(() => undefined);
+  }
+  persistCurrentChecklistState() {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this3.selectedOuting?.outingId) return;
       const base = {
-        ..._this.selectedOuting
+        ..._this3.selectedOuting
       };
       let updated;
-      if (_this.mode === 'close') {
-        const groups = _this.arrivalChecklistGroupsByOuting[base.outingId] || _this.arrivalGroupsFromOuting(base);
+      if (_this3.mode === 'close') {
+        const groups = _this3.arrivalChecklistGroupsByOuting[base.outingId] || _this3.arrivalGroupsFromOuting(base);
         updated = {
           ...base,
-          arrivalChecklist: _this.serializeChecklist(_this.flattenChecklistGroups(groups)),
-          arrivalChecklistGroups: _this.serializeChecklistGroups(groups),
-          closureComments: _this.closureComments[base.outingId] || base.closureComments || '',
-          modifiedBy: _this.loggedUser?.userId || _this.loggedUser?.uid || '',
+          arrivalChecklist: _this3.serializeChecklist(_this3.flattenChecklistGroups(groups)),
+          arrivalChecklistGroups: _this3.serializeChecklistGroups(groups),
+          arrivalDate: _this3.form.arrivalDate || base.arrivalDate || '',
+          arrivalTime: _this3.form.arrivalTime || base.arrivalTime || '',
+          portEngineHoursArrival: _this3.form.portEngineHoursArrival === null || _this3.form.portEngineHoursArrival === '' ? null : Number(_this3.form.portEngineHoursArrival),
+          starboardEngineHoursArrival: _this3.form.starboardEngineHoursArrival === null || _this3.form.starboardEngineHoursArrival === '' ? null : Number(_this3.form.starboardEngineHoursArrival),
+          closureComments: _this3.closureComments[base.outingId] || base.closureComments || '',
+          modifiedBy: _this3.loggedUser?.userId || _this3.loggedUser?.uid || '',
           modifiedTS: Date.now()
         };
       } else {
         updated = {
           ...base,
-          ..._this.form,
-          passengers: _this.form.passengers === null || _this.form.passengers === '' ? null : Number(_this.form.passengers),
-          portEngineHoursDeparture: _this.form.portEngineHoursDeparture === null || _this.form.portEngineHoursDeparture === '' ? null : Number(_this.form.portEngineHoursDeparture),
-          starboardEngineHoursDeparture: _this.form.starboardEngineHoursDeparture === null || _this.form.starboardEngineHoursDeparture === '' ? null : Number(_this.form.starboardEngineHoursDeparture),
-          actualWindSpeed: _this.form.actualWindSpeed === null || _this.form.actualWindSpeed === '' ? null : Number(_this.form.actualWindSpeed),
-          departureChecklist: _this.serializeChecklist(_this.flattenChecklistGroups(_this.departureChecklistGroups)),
-          departureChecklistGroups: _this.serializeChecklistGroups(_this.departureChecklistGroups),
-          anchorages: _this.serializeAnchorages(_this.currentAnchorages),
-          modifiedBy: _this.loggedUser?.userId || _this.loggedUser?.uid || '',
+          ..._this3.form,
+          passengers: _this3.form.passengers === null || _this3.form.passengers === '' ? null : Number(_this3.form.passengers),
+          portEngineHoursDeparture: _this3.form.portEngineHoursDeparture === null || _this3.form.portEngineHoursDeparture === '' ? null : Number(_this3.form.portEngineHoursDeparture),
+          starboardEngineHoursDeparture: _this3.form.starboardEngineHoursDeparture === null || _this3.form.starboardEngineHoursDeparture === '' ? null : Number(_this3.form.starboardEngineHoursDeparture),
+          actualWindSpeed: _this3.form.actualWindSpeed === null || _this3.form.actualWindSpeed === '' ? null : Number(_this3.form.actualWindSpeed),
+          departureChecklist: _this3.serializeChecklist(_this3.flattenChecklistGroups(_this3.departureChecklistGroups)),
+          departureChecklistGroups: _this3.serializeChecklistGroups(_this3.departureChecklistGroups),
+          arrivalChecklist: _this3.serializeChecklist(_this3.flattenChecklistGroups(_this3.arrivalChecklistGroupsByOuting[base.outingId] || _this3.arrivalGroupsFromOuting(base))),
+          arrivalChecklistGroups: _this3.serializeChecklistGroups(_this3.arrivalChecklistGroupsByOuting[base.outingId] || _this3.arrivalGroupsFromOuting(base)),
+          anchorages: _this3.serializeAnchorages(_this3.currentAnchorages),
+          modifiedBy: _this3.loggedUser?.userId || _this3.loggedUser?.uid || '',
           modifiedTS: Date.now()
         };
       }
-      yield _this.saveToFirebase(updated.outingId, updated);
-      _this.selectedOuting = updated;
-      _this.outings = _this.outings.map(item => item.outingId === updated.outingId ? updated : item);
+      yield _this3.saveToFirebase(updated.outingId, updated);
+      _this3.selectedOuting = updated;
+      _this3.outings = _this3.outings.map(item => item.outingId === updated.outingId ? updated : item);
     })();
   }
   getLoggedUserName() {
@@ -12457,50 +12231,50 @@ let AdminOutingsComponent = class AdminOutingsComponent {
   }
   validateForm() {
     if (!this.isAdmin) return this.t('adminOnly');
-    if (!this.form.outingType || !this.form.passengers || !this.form.departureDate || !this.form.departureTime || !this.form.arrivalDate || !this.form.arrivalTime || !this.form.destination) {
+    if (!this.form.outingType || !this.form.passengers || !this.form.departureDate || !this.form.departureTime || !this.form.destination) {
       return this.t('required');
     }
     return '';
   }
   loadOutings() {
-    var _this2 = this;
+    var _this4 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this2.loading = true;
-      _this2.error = '';
+      _this4.loading = true;
+      _this4.error = '';
       try {
-        const collectionName = _this2.outingsCollectionName;
+        const collectionName = _this4.outingsCollectionName;
         let raw = null;
-        const store = _this2.storeDb;
-        const util = _this2.utilSvc;
-        raw = yield _this2.readRootAdminOutings();
+        const store = _this4.storeDb;
+        const util = _this4.utilSvc;
+        raw = yield _this4.readRootAdminOutings();
         const list = raw ? Object.keys(raw).map(key => ({
           ...raw[key],
           outingId: raw[key]?.outingId || key
         })).filter(item => !item.deleted) : [];
-        _this2.outings = list.sort((a, b) => (b.createdTS || 0) - (a.createdTS || 0));
-        _this2.outings.forEach(outing => {
-          const groups = _this2.arrivalGroupsFromOuting(outing);
-          _this2.arrivalChecklistGroupsByOuting[outing.outingId] = groups;
-          _this2.arrivalChecklistByOuting[outing.outingId] = _this2.flattenChecklistGroups(groups);
+        _this4.outings = list.sort((a, b) => (b.createdTS || 0) - (a.createdTS || 0));
+        _this4.outings.forEach(outing => {
+          const groups = _this4.arrivalGroupsFromOuting(outing);
+          _this4.arrivalChecklistGroupsByOuting[outing.outingId] = groups;
+          _this4.arrivalChecklistByOuting[outing.outingId] = _this4.flattenChecklistGroups(groups);
         });
       } catch (e) {
-        _this2.error = e?.message || _this2.t('loadError');
+        _this4.error = e?.message || _this4.t('loadError');
       } finally {
-        _this2.loading = false;
+        _this4.loading = false;
       }
     })();
   }
   readRootAdminOutings() {
-    var _this3 = this;
+    var _this5 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const collectionName = _this3.outingsCollectionName;
-      const store = _this3.storeDb;
-      const util = _this3.utilSvc;
+      const collectionName = _this5.outingsCollectionName;
+      const store = _this5.storeDb;
+      const util = _this5.utilSvc;
       // 1) Read directly through the underlying Firebase Realtime Database SDK when available.
       const dbCandidates = [util?.mdb, store?.backendFbRef?.database, store?.backendFbRef?.['database'], store?.firebaseBSSdata?.database].filter((db, index, array) => db && typeof db.ref === 'function' && array.indexOf(db) === index);
       for (const db of dbCandidates) {
-        const direct = yield _this3.readDatabasePath(db, collectionName);
-        const extracted = _this3.extractAdminOutings(direct);
+        const direct = yield _this5.readDatabasePath(db, collectionName);
+        const extracted = _this5.extractAdminOutings(direct);
         if (extracted) return extracted;
       }
       // 2) Try godigital-lib signatures. The current data lives at ROOT /bnAdminOutings.
@@ -12509,7 +12283,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         for (const candidate of candidates) {
           try {
             const value = yield candidate();
-            const extracted = _this3.extractAdminOutings(value);
+            const extracted = _this5.extractAdminOutings(value);
             if (extracted) return extracted;
           } catch {}
         }
@@ -12517,11 +12291,11 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       // 3) Check already-loaded in-memory snapshots.
       const memoryCandidates = [store.firebaseBSSdata?.[collectionName], store.firebaseBSSdata?.['1000']?.[collectionName], store.firebaseBSSdata?.[util.backendFBstoreId]?.[collectionName], store.firebaseBSSdata, store?.data?.[collectionName], store?.data?.['1000']?.[collectionName], store?.[collectionName]];
       for (const value of memoryCandidates) {
-        const extracted = _this3.extractAdminOutings(value);
+        const extracted = _this5.extractAdminOutings(value);
         if (extracted) return extracted;
       }
       // 4) Last resort REST read. Useful when godigital-lib has not hydrated its cache yet.
-      return yield _this3.readAdminOutingsViaRest();
+      return yield _this5.readAdminOutingsViaRest();
     })();
   }
   readDatabasePath(db, path) {
@@ -12548,24 +12322,24 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     return null;
   }
   readAdminOutingsViaRest() {
-    var _this4 = this;
+    var _this6 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const paths = [_this4.outingsCollectionName, `1000/${_this4.outingsCollectionName}`];
-      for (const baseUrl of _this4.restDatabaseUrls) {
+      const paths = [_this6.outingsCollectionName, `1000/${_this6.outingsCollectionName}`];
+      for (const baseUrl of _this6.restDatabaseUrls) {
         for (const path of paths) {
           try {
             const url = `${baseUrl.replace(/\/+$/, '')}/${path}.json`;
-            const value = yield _this4.http.get(url).toPromise();
-            const extracted = _this4.extractAdminOutings(value);
+            const value = yield _this6.http.get(url).toPromise();
+            const extracted = _this6.extractAdminOutings(value);
             if (extracted) return extracted;
           } catch {}
         }
       }
-      for (const baseUrl of _this4.restDatabaseUrls) {
+      for (const baseUrl of _this6.restDatabaseUrls) {
         try {
           const url = `${baseUrl.replace(/\/+$/, '')}/.json`;
-          const value = yield _this4.http.get(url).toPromise();
-          const extracted = _this4.extractAdminOutings(value);
+          const value = yield _this6.http.get(url).toPromise();
+          const extracted = _this6.extractAdminOutings(value);
           if (extracted) return extracted;
         } catch {}
       }
@@ -12624,108 +12398,114 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     return '';
   }
   updateOuting() {
-    var _this5 = this;
+    var _this7 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this5.saved = false;
-      _this5.error = _this5.validateEditForm();
-      if (_this5.error || !_this5.selectedOuting) return;
-      _this5.saving = true;
+      _this7.saved = false;
+      _this7.error = _this7.validateEditForm();
+      if (_this7.error || !_this7.selectedOuting) return;
+      _this7.saving = true;
       try {
         const updated = {
-          ..._this5.selectedOuting,
-          ..._this5.form,
-          passengers: Number(_this5.form.passengers),
-          portEngineHoursDeparture: _this5.form.portEngineHoursDeparture === null || _this5.form.portEngineHoursDeparture === '' ? null : Number(_this5.form.portEngineHoursDeparture),
-          starboardEngineHoursDeparture: _this5.form.starboardEngineHoursDeparture === null || _this5.form.starboardEngineHoursDeparture === '' ? null : Number(_this5.form.starboardEngineHoursDeparture),
-          actualWindSpeed: _this5.form.actualWindSpeed === null || _this5.form.actualWindSpeed === '' ? null : Number(_this5.form.actualWindSpeed),
-          departureChecklist: _this5.serializeChecklist(_this5.flattenChecklistGroups(_this5.departureChecklistGroups)),
-          departureChecklistGroups: _this5.serializeChecklistGroups(_this5.departureChecklistGroups),
-          anchorages: _this5.serializeAnchorages(_this5.currentAnchorages),
-          modifiedBy: _this5.loggedUser?.userId || _this5.loggedUser?.uid || '',
+          ..._this7.selectedOuting,
+          ..._this7.form,
+          passengers: Number(_this7.form.passengers),
+          portEngineHoursDeparture: _this7.form.portEngineHoursDeparture === null || _this7.form.portEngineHoursDeparture === '' ? null : Number(_this7.form.portEngineHoursDeparture),
+          starboardEngineHoursDeparture: _this7.form.starboardEngineHoursDeparture === null || _this7.form.starboardEngineHoursDeparture === '' ? null : Number(_this7.form.starboardEngineHoursDeparture),
+          actualWindSpeed: _this7.form.actualWindSpeed === null || _this7.form.actualWindSpeed === '' ? null : Number(_this7.form.actualWindSpeed),
+          departureChecklist: _this7.serializeChecklist(_this7.flattenChecklistGroups(_this7.departureChecklistGroups)),
+          departureChecklistGroups: _this7.serializeChecklistGroups(_this7.departureChecklistGroups),
+          arrivalChecklist: _this7.serializeChecklist(_this7.flattenChecklistGroups(_this7.arrivalChecklistGroupsByOuting[_this7.selectedOuting.outingId] || _this7.arrivalGroupsFromOuting(_this7.selectedOuting))),
+          arrivalChecklistGroups: _this7.serializeChecklistGroups(_this7.arrivalChecklistGroupsByOuting[_this7.selectedOuting.outingId] || _this7.arrivalGroupsFromOuting(_this7.selectedOuting)),
+          anchorages: _this7.serializeAnchorages(_this7.currentAnchorages),
+          modifiedBy: _this7.loggedUser?.userId || _this7.loggedUser?.uid || '',
           modifiedTS: Date.now()
         };
-        yield _this5.saveToFirebase(updated.outingId, updated);
-        _this5.outings = _this5.outings.map(item => item.outingId === updated.outingId ? updated : item);
-        _this5.selectedOuting = updated;
-        _this5.saved = true;
-        _this5.showList();
+        yield _this7.saveToFirebase(updated.outingId, updated);
+        _this7.outings = _this7.outings.map(item => item.outingId === updated.outingId ? updated : item);
+        _this7.selectedOuting = updated;
+        _this7.saved = true;
+        _this7.showList();
       } catch (e) {
-        _this5.error = e?.message || _this5.t('saveError');
+        _this7.error = e?.message || _this7.t('saveError');
       } finally {
-        _this5.saving = false;
+        _this7.saving = false;
       }
     })();
   }
   createOuting() {
-    var _this6 = this;
+    var _this8 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this6.saved = false;
-      _this6.error = _this6.validateForm();
-      if (_this6.error) return;
-      _this6.saving = true;
+      _this8.saved = false;
+      _this8.error = _this8.validateForm();
+      if (_this8.error) return;
+      _this8.saving = true;
       try {
         const id = `outing_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
         const payload = {
           outingId: id,
-          ..._this6.form,
-          passengers: Number(_this6.form.passengers),
-          portEngineHoursDeparture: _this6.form.portEngineHoursDeparture === null || _this6.form.portEngineHoursDeparture === '' ? null : Number(_this6.form.portEngineHoursDeparture),
-          starboardEngineHoursDeparture: _this6.form.starboardEngineHoursDeparture === null || _this6.form.starboardEngineHoursDeparture === '' ? null : Number(_this6.form.starboardEngineHoursDeparture),
-          actualWindSpeed: _this6.form.actualWindSpeed === null || _this6.form.actualWindSpeed === '' ? null : Number(_this6.form.actualWindSpeed),
-          departureChecklist: _this6.serializeChecklist(_this6.flattenChecklistGroups(_this6.departureChecklistGroups)),
-          departureChecklistGroups: _this6.serializeChecklistGroups(_this6.departureChecklistGroups),
-          arrivalChecklist: _this6.serializeChecklist(_this6.buildArrivalChecklist()),
-          arrivalChecklistGroups: _this6.serializeChecklistGroups(_this6.buildArrivalChecklistGroups()),
-          anchorages: _this6.serializeAnchorages(_this6.currentAnchorages),
+          ..._this8.form,
+          passengers: Number(_this8.form.passengers),
+          portEngineHoursDeparture: _this8.form.portEngineHoursDeparture === null || _this8.form.portEngineHoursDeparture === '' ? null : Number(_this8.form.portEngineHoursDeparture),
+          starboardEngineHoursDeparture: _this8.form.starboardEngineHoursDeparture === null || _this8.form.starboardEngineHoursDeparture === '' ? null : Number(_this8.form.starboardEngineHoursDeparture),
+          actualWindSpeed: _this8.form.actualWindSpeed === null || _this8.form.actualWindSpeed === '' ? null : Number(_this8.form.actualWindSpeed),
+          departureChecklist: _this8.serializeChecklist(_this8.flattenChecklistGroups(_this8.departureChecklistGroups)),
+          departureChecklistGroups: _this8.serializeChecklistGroups(_this8.departureChecklistGroups),
+          arrivalChecklist: _this8.serializeChecklist(_this8.buildArrivalChecklist()),
+          arrivalChecklistGroups: _this8.serializeChecklistGroups(_this8.buildArrivalChecklistGroups()),
+          anchorages: _this8.serializeAnchorages(_this8.currentAnchorages),
           status: 'open',
-          createdBy: _this6.loggedUser?.userId || _this6.loggedUser?.uid || '',
+          createdBy: _this8.loggedUser?.userId || _this8.loggedUser?.uid || '',
           createdTS: Date.now()
         };
-        yield _this6.saveToFirebase(payload.outingId, payload);
-        _this6.outings = [payload, ..._this6.outings];
-        const arrivalGroups = _this6.buildArrivalChecklistGroups();
-        _this6.arrivalChecklistGroupsByOuting[payload.outingId] = arrivalGroups;
-        _this6.arrivalChecklistByOuting[payload.outingId] = _this6.flattenChecklistGroups(arrivalGroups);
-        _this6.form = _this6.emptyForm();
-        _this6.form.outingType = _this6.outingTypes[_this6.currentLanguage][0];
-        _this6.departureChecklistGroups = _this6.buildDepartureChecklistGroups();
-        _this6.currentAnchorages = [];
-        _this6.anchorageForm = _this6.emptyAnchorageForm();
-        _this6.editingAnchorageId = '';
-        _this6.saved = true;
-        _this6.showList();
+        yield _this8.saveToFirebase(payload.outingId, payload);
+        _this8.outings = [payload, ..._this8.outings];
+        const arrivalGroups = _this8.buildArrivalChecklistGroups();
+        _this8.arrivalChecklistGroupsByOuting[payload.outingId] = arrivalGroups;
+        _this8.arrivalChecklistByOuting[payload.outingId] = _this8.flattenChecklistGroups(arrivalGroups);
+        _this8.form = _this8.emptyForm();
+        _this8.form.outingType = _this8.outingTypes[_this8.currentLanguage][0];
+        _this8.departureChecklistGroups = _this8.buildDepartureChecklistGroups();
+        _this8.currentAnchorages = [];
+        _this8.anchorageForm = _this8.emptyAnchorageForm();
+        _this8.editingAnchorageId = '';
+        _this8.saved = true;
+        _this8.showList();
       } catch (e) {
-        _this6.error = e?.message || _this6.t('saveError');
+        _this8.error = e?.message || _this8.t('saveError');
       } finally {
-        _this6.saving = false;
+        _this8.saving = false;
       }
     })();
   }
   closeOuting(outing) {
-    var _this7 = this;
+    var _this9 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this7.closeError = '';
-      if (!_this7.isAdmin) {
-        _this7.closeError = _this7.t('adminOnly');
+      _this9.closeError = '';
+      if (!_this9.isAdmin) {
+        _this9.closeError = _this9.t('adminOnly');
         return;
       }
-      _this7.closingId = outing.outingId;
+      _this9.closingId = outing.outingId;
       try {
         const updated = {
           ...outing,
-          arrivalChecklist: _this7.serializeChecklist(_this7.flattenChecklistGroups(_this7.arrivalChecklistGroupsByOuting[outing.outingId] || [])),
-          arrivalChecklistGroups: _this7.serializeChecklistGroups(_this7.arrivalChecklistGroupsByOuting[outing.outingId] || []),
-          closureComments: _this7.closureComments[outing.outingId] || '',
+          arrivalChecklist: _this9.serializeChecklist(_this9.flattenChecklistGroups(_this9.arrivalChecklistGroupsByOuting[outing.outingId] || [])),
+          arrivalChecklistGroups: _this9.serializeChecklistGroups(_this9.arrivalChecklistGroupsByOuting[outing.outingId] || []),
+          arrivalDate: _this9.form.arrivalDate || outing.arrivalDate || '',
+          arrivalTime: _this9.form.arrivalTime || outing.arrivalTime || '',
+          portEngineHoursArrival: _this9.form.portEngineHoursArrival === null || _this9.form.portEngineHoursArrival === '' ? null : Number(_this9.form.portEngineHoursArrival),
+          starboardEngineHoursArrival: _this9.form.starboardEngineHoursArrival === null || _this9.form.starboardEngineHoursArrival === '' ? null : Number(_this9.form.starboardEngineHoursArrival),
+          closureComments: _this9.closureComments[outing.outingId] || '',
           status: 'closed',
           closedTS: Date.now()
         };
-        yield _this7.saveToFirebase(updated.outingId, updated);
-        _this7.outings = _this7.outings.map(item => item.outingId === updated.outingId ? updated : item);
-        _this7.showList();
+        yield _this9.saveToFirebase(updated.outingId, updated);
+        _this9.outings = _this9.outings.map(item => item.outingId === updated.outingId ? updated : item);
+        _this9.showList();
       } catch (e) {
-        _this7.closeError = e?.message || _this7.t('closeError');
+        _this9.closeError = e?.message || _this9.t('closeError');
       } finally {
-        _this7.closingId = '';
+        _this9.closingId = '';
       }
     })();
   }
@@ -12740,49 +12520,49 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     }));
   }
   deleteOuting(outing) {
-    var _this8 = this;
+    var _this10 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this8.closeError = '';
-      if (!_this8.isAdmin) {
-        _this8.closeError = _this8.t('adminOnly');
+      _this10.closeError = '';
+      if (!_this10.isAdmin) {
+        _this10.closeError = _this10.t('adminOnly');
         return;
       }
-      const ok = window.confirm(`${_this8.t('deleteConfirm')} ${outing.outingType || ''} ?`);
+      const ok = window.confirm(`${_this10.t('deleteConfirm')} ${outing.outingType || ''} ?`);
       if (!ok) return;
       try {
-        yield _this8.deleteFromFirebase(outing.outingId, outing);
-        _this8.outings = _this8.outings.filter(item => item.outingId !== outing.outingId);
-        delete _this8.arrivalChecklistByOuting[outing.outingId];
-        delete _this8.arrivalChecklistGroupsByOuting[outing.outingId];
+        yield _this10.deleteFromFirebase(outing.outingId, outing);
+        _this10.outings = _this10.outings.filter(item => item.outingId !== outing.outingId);
+        delete _this10.arrivalChecklistByOuting[outing.outingId];
+        delete _this10.arrivalChecklistGroupsByOuting[outing.outingId];
       } catch (e) {
-        _this8.closeError = e?.message || _this8.t('deleteError');
+        _this10.closeError = e?.message || _this10.t('deleteError');
       }
     })();
   }
   deleteFromFirebase(id, outing) {
-    var _this9 = this;
+    var _this11 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const store = _this9.storeDb;
-      const util = _this9.utilSvc;
+      const store = _this11.storeDb;
+      const util = _this11.utilSvc;
       if (typeof store.deleteObject === 'function') {
         try {
-          yield store.deleteObject(util.backendFBstoreId, util.mdb, _this9.outingsCollectionName, id);
+          yield store.deleteObject(util.backendFBstoreId, util.mdb, _this11.outingsCollectionName, id);
           return;
         } catch {
-          yield store.deleteObject(_this9.outingsCollectionName, id);
+          yield store.deleteObject(_this11.outingsCollectionName, id);
           return;
         }
       }
       if (typeof store.removeObject === 'function') {
         try {
-          yield store.removeObject(util.backendFBstoreId, util.mdb, _this9.outingsCollectionName, id);
+          yield store.removeObject(util.backendFBstoreId, util.mdb, _this11.outingsCollectionName, id);
           return;
         } catch {
-          yield store.removeObject(_this9.outingsCollectionName, id);
+          yield store.removeObject(_this11.outingsCollectionName, id);
           return;
         }
       }
-      yield _this9.saveToFirebase(id, {
+      yield _this11.saveToFirebase(id, {
         ...outing,
         status: 'closed',
         deleted: true,
@@ -12791,14 +12571,14 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     })();
   }
   writeRootAdminOutingViaSdk(id, payload) {
-    var _this10 = this;
+    var _this12 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const store = _this10.storeDb;
-      const util = _this10.utilSvc;
+      const store = _this12.storeDb;
+      const util = _this12.utilSvc;
       const dbCandidates = [util?.mdb, store?.backendFbRef?.database, store?.backendFbRef?.['database'], store?.firebaseBSSdata?.database].filter((db, index, array) => db && typeof db.ref === 'function' && array.indexOf(db) === index);
       for (const db of dbCandidates) {
         try {
-          yield db.ref(`${_this10.outingsCollectionName}/${id}`).update(payload);
+          yield db.ref(`${_this12.outingsCollectionName}/${id}`).update(payload);
           return true;
         } catch {}
       }
@@ -12806,12 +12586,12 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     })();
   }
   writeRootAdminOutingViaRest(id, payload) {
-    var _this11 = this;
+    var _this13 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      for (const baseUrl of _this11.restDatabaseUrls) {
+      for (const baseUrl of _this13.restDatabaseUrls) {
         try {
-          const url = `${baseUrl.replace(/\/+$/, '')}/${_this11.outingsCollectionName}/${id}.json`;
-          yield _this11.http.patch(url, payload).toPromise();
+          const url = `${baseUrl.replace(/\/+$/, '')}/${_this13.outingsCollectionName}/${id}.json`;
+          yield _this13.http.patch(url, payload).toPromise();
           return true;
         } catch {}
       }
@@ -12819,25 +12599,25 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     })();
   }
   saveToFirebase(id, payload) {
-    var _this12 = this;
+    var _this14 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const store = _this12.storeDb;
-      const util = _this12.utilSvc;
+      const store = _this14.storeDb;
+      const util = _this14.utilSvc;
       // Current Firebase structure uses root /bnAdminOutings.
       // Prefer direct root writes so checklist done/doneBy/doneAt are effectively persisted.
-      if (yield _this12.writeRootAdminOutingViaSdk(id, payload)) return;
+      if (yield _this14.writeRootAdminOutingViaSdk(id, payload)) return;
       if (typeof store.updateObject === 'function') {
-        const candidates = [() => store.updateObject(_this12.outingsCollectionName, payload, id), () => store.updateObject(_this12.outingsCollectionName, id, payload), () => store.updateObject(`/${_this12.outingsCollectionName}`, payload, id), () => store.updateObject(util.backendFBstoreId, util.mdb, _this12.outingsCollectionName, payload, id), () => store.updateObject('1000', util.mdb, _this12.outingsCollectionName, payload, id)];
+        const candidates = [() => store.updateObject(_this14.outingsCollectionName, payload, id), () => store.updateObject(_this14.outingsCollectionName, id, payload), () => store.updateObject(`/${_this14.outingsCollectionName}`, payload, id), () => store.updateObject(util.backendFBstoreId, util.mdb, _this14.outingsCollectionName, payload, id), () => store.updateObject('1000', util.mdb, _this14.outingsCollectionName, payload, id)];
         for (const candidate of candidates) {
           try {
             yield candidate();
             // Also try root REST afterwards; if it fails silently, the library write still succeeded.
-            yield _this12.writeRootAdminOutingViaRest(id, payload);
+            yield _this14.writeRootAdminOutingViaRest(id, payload);
             return;
           } catch {}
         }
       }
-      if (yield _this12.writeRootAdminOutingViaRest(id, payload)) return;
+      if (yield _this14.writeRootAdminOutingViaRest(id, payload)) return;
       throw new Error('Firebase updateObject is not available.');
     })();
   }
@@ -12845,7 +12625,9 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     return 'bnAdminOutings';
   }
   formatOutingDate(outing) {
-    return `${outing.departureDate || ''} ${outing.departureTime || ''} → ${outing.arrivalDate || ''} ${outing.arrivalTime || ''}`;
+    const start = `${outing.departureDate || ''} ${outing.departureTime || ''}`.trim();
+    const end = `${outing.arrivalDate || ''} ${outing.arrivalTime || ''}`.trim();
+    return end ? `${start} → ${end}` : start;
   }
   t(key) {
     const labels = {
@@ -12862,6 +12644,8 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         arrivalTime: 'Heure d’arrivée',
         portEngine: 'Heures moteur bâbord au départ',
         starboardEngine: 'Heures moteur tribord au départ',
+        portEngineArrival: 'Heures moteur bâbord à l’arrivée',
+        starboardEngineArrival: 'Heures moteur tribord à l’arrivée',
         wind: 'Vent réel actuel',
         destination: 'Destination',
         comments: 'Commentaires',
@@ -12928,6 +12712,8 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         arrivalTime: 'Arrival time',
         portEngine: 'Port engine hours at departure',
         starboardEngine: 'Starboard engine hours at departure',
+        portEngineArrival: 'Port engine hours at arrival',
+        starboardEngineArrival: 'Starboard engine hours at arrival',
         wind: 'Actual wind speed',
         destination: 'Outing destination',
         comments: 'Comments',
@@ -12994,6 +12780,8 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         arrivalTime: 'Hora de llegada',
         portEngine: 'Horas motor babor al salir',
         starboardEngine: 'Horas motor estribor al salir',
+        portEngineArrival: 'Horas motor babor a la llegada',
+        starboardEngineArrival: 'Horas motor estribor a la llegada',
         wind: 'Velocidad real del viento',
         destination: 'Destino de la salida',
         comments: 'Comentarios',
@@ -13710,7 +13498,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"admin-outing-detail-page\">\n  <div class=\"container\">\n    <button type=\"button\" class=\"back-link\" (click)=\"back()\">← {{ t('back') }}</button>\n\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n\n    <div class=\"notice error\" *ngIf=\"!isAdmin\">{{ t('adminOnly') }}</div>\n    <div class=\"notice error\" *ngIf=\"error\">{{ error }}</div>\n    <div class=\"notice success\" *ngIf=\"saved\">{{ t('saved') }}</div>\n\n    <ng-container *ngIf=\"isAdmin && outing\">\n      <div class=\"detail-card\">\n        <div class=\"status-row\">\n          <span class=\"status\" [class.closed]=\"outing.status === 'closed'\">\n            {{ outing.status === 'closed' ? t('closed') : t('open') }}\n          </span>\n        </div>\n\n        <div class=\"form-grid\">\n          <label>\n            {{ t('outingType') }}\n            <select [(ngModel)]=\"outing.outingType\">\n              <option *ngFor=\"let type of outingTypes[currentLanguage]\" [value]=\"type\">{{ type }}</option>\n            </select>\n          </label>\n\n          <label>\n            {{ t('passengers') }}\n            <input type=\"number\" min=\"1\" [(ngModel)]=\"outing.passengers\" />\n          </label>\n\n          <label>\n            {{ t('departureDate') }}\n            <input type=\"date\" [(ngModel)]=\"outing.departureDate\" />\n          </label>\n\n          <label>\n            {{ t('departureTime') }}\n            <input type=\"time\" [(ngModel)]=\"outing.departureTime\" />\n          </label>\n\n          <label>\n            {{ t('arrivalDate') }}\n            <input type=\"date\" [(ngModel)]=\"outing.arrivalDate\" />\n          </label>\n\n          <label>\n            {{ t('arrivalTime') }}\n            <input type=\"time\" [(ngModel)]=\"outing.arrivalTime\" />\n          </label>\n\n          <label>\n            {{ t('portEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"outing.portEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('starboardEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"outing.starboardEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('wind') }} ({{ t('knots') }})\n            <input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"outing.actualWindSpeed\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('destination') }}\n            <input type=\"text\" [(ngModel)]=\"outing.destination\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('comments') }}\n            <textarea rows=\"4\" [(ngModel)]=\"outing.comments\"></textarea>\n          </label>\n\n          <label class=\"wide\">\n            {{ t('closureComments') }}\n            <textarea rows=\"3\" [(ngModel)]=\"outing.closureComments\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"saving\" (click)=\"saveDetails()\">\n            {{ saving ? t('saving') : t('save') }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"outing.status !== 'closed'\" [disabled]=\"saving\" (click)=\"closeOuting()\">\n            {{ t('close') }}\n          </button>\n        </div>\n      </div>\n\n      <div class=\"checklist-card\">\n        <div class=\"checklist-head\">\n          <h2>{{ t('departureChecklist') }}</h2>\n          <span [class.complete]=\"departureComplete\">{{ countDoneDepartureItems() }} / {{ countDepartureItems() }}</span>\n        </div>\n\n        <div class=\"checklist-group\" *ngFor=\"let group of departureChecklistGroups\">\n          <div class=\"checklist-subhead\">\n            <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n            <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n          </div>\n          <div class=\"checklist-grid\">\n            <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n              <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n              <span class=\"fake-radio\"></span>\n              <span>\n                {{ item.label[currentLanguage] || item.label.fr }}\n                <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n              </span>\n            </label>\n          </div>\n        </div>\n      </div>\n\n\n      <div class=\"checklist-card\">\n        <div class=\"checklist-head\">\n          <h2>{{ t('anchorages') }}</h2>\n          <span>{{ currentAnchorages.length }}</span>\n        </div>\n\n        <div class=\"form-grid\">\n          <label class=\"wide\">\n            {{ t('anchorageLocation') }}\n            <input type=\"text\" [(ngModel)]=\"anchorageForm.location\" placeholder=\"Lérins, Baie des Milliardaires, Cap d’Antibes...\" />\n          </label>\n          <label class=\"wide\">\n            {{ t('comments') }}\n            <textarea rows=\"2\" [(ngModel)]=\"anchorageForm.comments\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"actions\">\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"addOrUpdateAnchorage()\">\n            {{ editingAnchorageId ? t('updateAnchorage') : t('dropAnchor') }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"editingAnchorageId\" (click)=\"cancelAnchorageEdit()\">\n            {{ t('cancel') }}\n          </button>\n        </div>\n\n        <p class=\"empty\" *ngIf=\"currentAnchorages.length === 0\">—</p>\n\n        <div class=\"checklist-group\" *ngFor=\"let anchorage of currentAnchorages\">\n          <div class=\"checklist-subhead\">\n            <h3>{{ anchorage.location }}</h3>\n            <span [class.complete]=\"anchorage.status === 'closed'\">\n              {{ anchorage.status === 'closed' ? t('anchorageClosed') : t('anchorageOpen') }}\n            </span>\n          </div>\n          <p *ngIf=\"anchorage.arrivalTime || anchorage.departureTime\">{{ anchorage.arrivalTime || '—' }} → {{ anchorage.departureTime || '—' }}</p>\n          <p *ngIf=\"anchorage.comments\">{{ anchorage.comments }}</p>\n          <div class=\"actions\">\n            <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"anchorage.status !== 'closed'\" (click)=\"closeAnchorage(anchorage)\">{{ t('liftAnchor') }}</button>\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"editAnchorage(anchorage)\">{{ t('edit') }}</button>\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"removeAnchorage(anchorage)\">{{ t('delete') }}</button>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of anchorage.arrivalChecklistGroups\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ t('anchorageArrival') }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>{{ item.label[currentLanguage] || item.label.fr }}<small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small></span>\n              </label>\n            </div>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of anchorage.departureChecklistGroups\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ t('anchorageDeparture') }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>{{ item.label[currentLanguage] || item.label.fr }}<small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small></span>\n              </label>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"checklist-card\">\n        <div class=\"checklist-head\">\n          <h2>{{ t('arrivalChecklist') }}</h2>\n          <span [class.complete]=\"arrivalComplete\">{{ countDoneArrivalItems() }} / {{ countArrivalItems() }}</span>\n        </div>\n\n        <div class=\"checklist-group\" *ngFor=\"let group of arrivalChecklistGroups\">\n          <div class=\"checklist-subhead\">\n            <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n            <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n          </div>\n          <div class=\"checklist-grid\">\n            <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n              <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n              <span class=\"fake-radio\"></span>\n              <span>\n                {{ item.label[currentLanguage] || item.label.fr }}\n                <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n              </span>\n            </label>\n          </div>\n        </div>\n      </div>\n    </ng-container>\n  </div>\n</section>\n";
+module.exports = "<section class=\"admin-outing-detail-page\">\n  <div class=\"container\">\n    <button type=\"button\" class=\"back-link\" (click)=\"back()\">← {{ t('back') }}</button>\n\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n\n    <div class=\"notice error\" *ngIf=\"!isAdmin\">{{ t('adminOnly') }}</div>\n    <div class=\"notice error\" *ngIf=\"error\">{{ error }}</div>\n    <div class=\"notice success\" *ngIf=\"saved\">{{ t('saved') }}</div>\n\n    <ng-container *ngIf=\"isAdmin && outing\">\n      <div class=\"detail-card\">\n        <div class=\"status-row\">\n          <span class=\"status\" [class.closed]=\"outing.status === 'closed'\">\n            {{ outing.status === 'closed' ? t('closed') : t('open') }}\n          </span>\n        </div>\n\n        \n        <div class=\"outing-tabs\">\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'details'\" (click)=\"activeTab = 'details'\">\n            Outing Details\n          </button>\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'departure'\" (click)=\"activeTab = 'departure'\">\n            Departure\n          </button>\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'anchoring'\" (click)=\"activeTab = 'anchoring'\">\n            Anchoring\n          </button>\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'return'\" (click)=\"activeTab = 'return'\">\n            Return\n          </button>\n        </div>\n\n        <div class=\"form-grid\" *ngIf=\"activeTab === 'details'\">\n          <label>\n            {{ t('outingType') }}\n            <select [(ngModel)]=\"outing.outingType\">\n              <option *ngFor=\"let type of outingTypes[currentLanguage]\" [value]=\"type\">{{ type }}</option>\n            </select>\n          </label>\n\n          <label>\n            {{ t('passengers') }}\n            <input type=\"number\" min=\"1\" [(ngModel)]=\"outing.passengers\" />\n          </label>\n\n          <label>\n            {{ t('departureDate') }}\n            <input type=\"date\" [(ngModel)]=\"outing.departureDate\" />\n          </label>\n\n          <label>\n            {{ t('departureTime') }}\n            <input type=\"time\" [(ngModel)]=\"outing.departureTime\" />\n          </label>\n\n          <label>\n            {{ t('arrivalDate') }}\n            <input type=\"date\" [(ngModel)]=\"outing.arrivalDate\" />\n          </label>\n\n          <label>\n            {{ t('arrivalTime') }}\n            <input type=\"time\" [(ngModel)]=\"outing.arrivalTime\" />\n          </label>\n\n          <label>\n            {{ t('portEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"outing.portEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('starboardEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"outing.starboardEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('wind') }} ({{ t('knots') }})\n            <input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"outing.actualWindSpeed\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('destination') }}\n            <input type=\"text\" [(ngModel)]=\"outing.destination\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('comments') }}\n            <textarea rows=\"4\" [(ngModel)]=\"outing.comments\"></textarea>\n          </label>\n\n          <label class=\"wide\">\n            {{ t('closureComments') }}\n            <textarea rows=\"3\" [(ngModel)]=\"outing.closureComments\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"saving\" (click)=\"saveDetails()\">\n            {{ saving ? t('saving') : t('save') }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"outing.status !== 'closed'\" [disabled]=\"saving\" (click)=\"closeOuting()\">\n            {{ t('close') }}\n          </button>\n        </div>\n      </div>\n\n      <div class=\"checklist-card\">\n        <div class=\"checklist-head\">\n          <h2>{{ t('departureChecklist') }}</h2>\n          <span [class.complete]=\"departureComplete\">{{ countDoneDepartureItems() }} / {{ countDepartureItems() }}</span>\n        </div>\n\n        <div class=\"checklist-group\" *ngFor=\"let group of departureChecklistGroups\">\n          <div class=\"checklist-subhead\">\n            <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n            <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n          </div>\n          <div class=\"checklist-grid\">\n            <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n              <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n              <span class=\"fake-radio\"></span>\n              <span>\n                {{ item.label[currentLanguage] || item.label.fr }}\n                <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n              </span>\n            </label>\n          </div>\n        </div>\n      </div>\n\n\n      <div class=\"checklist-card\">\n        <div class=\"checklist-head\">\n          <h2>{{ t('anchorages') }}</h2>\n          <span>{{ currentAnchorages.length }}</span>\n        </div>\n\n        <div class=\"form-grid\">\n          <label class=\"wide\">\n            {{ t('anchorageLocation') }}\n            <input type=\"text\" [(ngModel)]=\"anchorageForm.location\" placeholder=\"Lérins, Baie des Milliardaires, Cap d’Antibes...\" />\n          </label>\n          <label class=\"wide\">\n            {{ t('comments') }}\n            <textarea rows=\"2\" [(ngModel)]=\"anchorageForm.comments\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"actions\">\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"addOrUpdateAnchorage()\">\n            {{ editingAnchorageId ? t('updateAnchorage') : t('dropAnchor') }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"editingAnchorageId\" (click)=\"cancelAnchorageEdit()\">\n            {{ t('cancel') }}\n          </button>\n        </div>\n\n        <p class=\"empty\" *ngIf=\"currentAnchorages.length === 0\">—</p>\n\n        <div class=\"checklist-group\" *ngFor=\"let anchorage of currentAnchorages\">\n          <div class=\"checklist-subhead\">\n            <h3>{{ anchorage.location }}</h3>\n            <span [class.complete]=\"anchorage.status === 'closed'\">\n              {{ anchorage.status === 'closed' ? t('anchorageClosed') : t('anchorageOpen') }}\n            </span>\n          </div>\n          <p *ngIf=\"anchorage.arrivalTime || anchorage.departureTime\">{{ anchorage.arrivalTime || '—' }} → {{ anchorage.departureTime || '—' }}</p>\n          <p *ngIf=\"anchorage.comments\">{{ anchorage.comments }}</p>\n          <div class=\"actions\">\n            <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"anchorage.status !== 'closed'\" (click)=\"closeAnchorage(anchorage)\">{{ t('liftAnchor') }}</button>\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"editAnchorage(anchorage)\">{{ t('edit') }}</button>\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"removeAnchorage(anchorage)\">{{ t('delete') }}</button>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of anchorage.arrivalChecklistGroups\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ t('anchorageArrival') }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>{{ item.label[currentLanguage] || item.label.fr }}<small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small></span>\n              </label>\n            </div>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of anchorage.departureChecklistGroups\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ t('anchorageDeparture') }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>{{ item.label[currentLanguage] || item.label.fr }}<small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small></span>\n              </label>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"checklist-card\">\n        <div class=\"checklist-head\">\n          <h2>{{ t('arrivalChecklist') }}</h2>\n          <span [class.complete]=\"arrivalComplete\">{{ countDoneArrivalItems() }} / {{ countArrivalItems() }}</span>\n        </div>\n\n        <div class=\"checklist-group\" *ngFor=\"let group of arrivalChecklistGroups\">\n          <div class=\"checklist-subhead\">\n            <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n            <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n          </div>\n          <div class=\"checklist-grid\">\n            <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n              <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n              <span class=\"fake-radio\"></span>\n              <span>\n                {{ item.label[currentLanguage] || item.label.fr }}\n                <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n              </span>\n            </label>\n          </div>\n        </div>\n      </div>\n    </ng-container>\n  </div>\n</section>\n";
 
 /***/ }),
 

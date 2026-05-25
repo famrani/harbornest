@@ -20,7 +20,23 @@
           </span>
         </div>
 
-        <div class="form-grid">
+        
+        <div class="outing-tabs">
+          <button type="button" class="outing-tab" [class.active]="activeTab === 'details'" (click)="activeTab = 'details'">
+            Outing Details
+          </button>
+          <button type="button" class="outing-tab" [class.active]="activeTab === 'departure'" (click)="activeTab = 'departure'">
+            Departure
+          </button>
+          <button type="button" class="outing-tab" [class.active]="activeTab === 'anchoring'" (click)="activeTab = 'anchoring'">
+            Anchoring
+          </button>
+          <button type="button" class="outing-tab" [class.active]="activeTab === 'return'" (click)="activeTab = 'return'">
+            Return
+          </button>
+        </div>
+
+        <div class="form-grid" *ngIf="activeTab === 'details'">
           <label>
             {{ t('outingType') }}
             <select [(ngModel)]="outing.outingType">

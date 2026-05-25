@@ -93,7 +93,11 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
 
   get isAdmin(): boolean {
     const role = String(this.loggedUser?.role || '').toLowerCase();
-    return role === 'admin' || this.loggedUser?.isAdmin === true;
+    return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
+  }
+
+  get isCustomer(): boolean {
+    return this.isLoggedIn && !this.isAdmin;
   }
 
   get firstName(): string {
@@ -206,6 +210,10 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
 
   get adminOutingsLabel(): string {
     return 'Boat Log Manager';
+  }
+
+  get adminPublicOutingsLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Offres sorties' : this.currentLanguage === 'es' ? 'Ofertas de salidas' : 'Public outings';
   }
 
   get logoutLabel(): string {

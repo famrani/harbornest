@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ServicesService } from 'godigital-lib';
 import { BookingApiService, AlegriaBooking } from './booking-api.service';
 
 interface BookingFieldView {
@@ -19,10 +20,27 @@ export class BookingsComponent implements OnInit {
   loading = true;
   errorMessage = '';
 
-  constructor(private bookingApi: BookingApiService, private router: Router) {}
+  loggedUser: any = null;
+
+  constructor(
+    private bookingApi: BookingApiService,
+    private router: Router,
+    private mainSvc: ServicesService
+  ) {}
 
   ngOnInit(): void {
+    const svc = this.mainSvc as any;
+    this.loggedUser = svc.bnUser || svc.currentUser || null;
+    if (!this.isAdmin) {
+      this.router.navigate(['/my-bookings']);
+      return;
+    }
     this.loadBookings();
+  }
+
+  get isAdmin(): boolean {
+    const role = String(this.loggedUser?.role || '').toLowerCase();
+    return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
   }
 
   loadBookings(): void {
@@ -50,7 +68,7 @@ export class BookingsComponent implements OnInit {
   }
 
   payment(booking: AlegriaBooking): void {
-    this.router.navigate(['/payment', booking.bookingId]);
+    this.router.navigate(['/payment', booking.bookingId], { queryParams: { mode: 'warranty' } });
   }
 
   trackByBookingId(index: number, booking: BookingView): string {

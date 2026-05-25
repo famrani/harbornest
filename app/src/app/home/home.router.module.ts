@@ -14,7 +14,6 @@ import { BusinessOutingComponent } from './tours/business-outing/business-outing
 import { TermsComponent } from './terms/terms.component';
 import { SafetyInstructionsComponent } from './safety-instructions/safety-instructions.component';
 import { DepositComponent } from './deposit/deposit.component';
-import { ChecklistComponent } from './checklist/checklist.component';
 import { AccountSummaryComponent } from './account-summary/account-summary.component';
 import { MyProfileComponent } from './my-profile/my-profile.component';
 import { MyFeedbacksComponent } from './my-feedbacks/my-feedbacks.component';
@@ -42,7 +41,6 @@ const routes: Routes = [
   { path: 'crew', component: CrewComponent },
   { path: 'terms', component: TermsComponent },
   { path: 'safety', component: SafetyInstructionsComponent },
-  { path: 'checklist', component: ChecklistComponent },
   { path: 'deposit', component: DepositComponent },
   { path: 'faq', component: GuestFaqComponent },
   { path: 'how-it-works', component: GuestJourneyComponent },

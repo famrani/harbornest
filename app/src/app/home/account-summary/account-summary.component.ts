@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ServicesService } from 'godigital-lib';
 import { SITE_CONTENT, SiteContent } from '../site-content';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
 
@@ -15,11 +16,21 @@ export class AccountSummaryComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private router: Router,
+    private mainSvc: ServicesService
   ) {}
 
   ngOnInit(): void {
     this.section = this.route.snapshot.data['section'] || 'bookings';
+    const svc = this.mainSvc as any;
+    const user = svc.bnUser || svc.currentUser || null;
+    const role = String(user?.role || '').toLowerCase();
+    const isAdmin = role === 'admin' || role === 'owner' || user?.isAdmin === true;
+    if (isAdmin && (this.section === 'bookings' || this.section === 'payments' || this.section === 'feedbacks')) {
+      this.router.navigate(['/admin/bookings']);
+      return;
+    }
 
     this.languageService.language$.subscribe((language) => {
       this.currentLanguage = language;

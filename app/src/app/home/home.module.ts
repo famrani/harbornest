@@ -18,7 +18,6 @@ import { BusinessOutingComponent } from './tours/business-outing/business-outing
 import { TermsComponent } from './terms/terms.component';
 import { SafetyInstructionsComponent } from './safety-instructions/safety-instructions.component';
 import { DepositComponent } from './deposit/deposit.component';
-import { ChecklistComponent } from './checklist/checklist.component';
 import { AccountSummaryComponent } from './account-summary/account-summary.component';
 import { MyProfileComponent } from './my-profile/my-profile.component';
 import { MyFeedbacksComponent } from './my-feedbacks/my-feedbacks.component';
@@ -47,7 +46,6 @@ import { BookingDetailComponent } from './booking-detail/booking-detail.componen
     TermsComponent,
     SafetyInstructionsComponent,
     DepositComponent,
-    ChecklistComponent,
     AccountSummaryComponent,
     MyProfileComponent,
     MyFeedbacksComponent,
