@@ -2,9 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { UtilsService } from 'godigital-lib';
+import { ServicesService, UtilsService } from 'godigital-lib';
 
 import { LanguageService, SiteLanguage } from '../../services/language.service';
+import { AlegriaBooking, BookingApiService } from '../bookings/booking-api.service';
 
 type DepositCopy = {
   eyebrow: string;
@@ -116,17 +117,28 @@ export class DepositComponent implements OnInit, OnDestroy {
 
   bookingId = '';
   ownerId = '';
+  booking?: AlegriaBooking;
+
+  loggedUser: any = null;
+  warrantyChargeAmount: number | null = null;
+  warrantyReason = '';
+  isChargingWarranty = false;
+  warrantyMessage = '';
+  warrantyError = '';
 
   isLoading = false;
   errorMessage = '';
 
   private languageSub?: Subscription;
+  private userSub?: Subscription;
 
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
     private languageService: LanguageService,
-    private utilsSvc: UtilsService
+    private utilsSvc: UtilsService,
+    private bookingApi: BookingApiService,
+    private mainSvc: ServicesService
   ) {}
 
   ngOnInit(): void {
@@ -134,6 +146,37 @@ export class DepositComponent implements OnInit, OnDestroy {
       this.currentLanguage = language;
       this.copy = COPY[language];
     });
+
+    const svc = this.mainSvc as any;
+    const userObservable = typeof svc.getLoggedUser === 'function'
+      ? svc.getLoggedUser()
+      : typeof svc.getUser === 'function'
+        ? svc.getUser()
+        : svc.bnUserO;
+
+    if (userObservable && typeof userObservable.subscribe === 'function') {
+      this.userSub = userObservable.subscribe((user: any) => {
+        this.loggedUser = user || null;
+      });
+    } else {
+      this.loggedUser = svc.bnUser || null;
+    }
+
+    this.bookingId = this.route.snapshot.paramMap.get('bookingId') || this.bookingId;
+
+    if (this.bookingId) {
+      this.bookingApi.getBooking(this.bookingId).subscribe((booking) => {
+        if (booking) {
+          this.booking = booking;
+          this.customerName = booking.customerName || this.customerName;
+          this.customerEmail = booking.email || this.customerEmail;
+          this.outingDate = booking.outingDate || this.outingDate;
+          this.outingType = booking.outingType || this.outingType;
+          this.totalPrice = booking.totalPrice || this.totalPrice;
+          this.warrantyChargeAmount = booking.warrantyAmount || this.warrantyChargeAmount;
+        }
+      });
+    }
 
     this.route.queryParamMap.subscribe((params) => {
       this.customerName = params.get('name') || params.get('customerName') || this.customerName;
@@ -153,6 +196,23 @@ export class DepositComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.languageSub?.unsubscribe();
+    this.userSub?.unsubscribe();
+  }
+
+  get isAdmin(): boolean {
+    const role = String(this.loggedUser?.role || '').toLowerCase();
+    return role === 'admin' || this.loggedUser?.isAdmin === true;
+  }
+
+  get warrantyAmount(): number {
+    return Number(this.booking?.warrantyAmount || this.warrantyChargeAmount || 0);
+  }
+
+  get warrantyStatusLabel(): string {
+    const value = this.booking?.warrantyStatus;
+    if (value === true) return 'registered';
+    if (value === false || value === undefined || value === null || value === '') return 'not registered';
+    return String(value);
   }
 
   get depositAmount(): number {
@@ -177,6 +237,50 @@ export class DepositComponent implements OnInit, OnDestroy {
     }).format(value);
   }
 
+  chargeWarranty(): void {
+    this.warrantyError = '';
+    this.warrantyMessage = '';
+
+    if (!this.isAdmin) {
+      this.warrantyError = 'Only an admin can charge the warranty.';
+      return;
+    }
+    if (!this.bookingId) {
+      this.warrantyError = 'Missing booking id.';
+      return;
+    }
+    const amount = Number(this.warrantyChargeAmount || this.booking?.warrantyAmount || 0);
+    if (!amount || amount <= 0) {
+      this.warrantyError = 'Please enter a warranty amount to charge.';
+      return;
+    }
+    if (!this.warrantyReason.trim()) {
+      this.warrantyError = 'Please enter the reason for charging the warranty.';
+      return;
+    }
+
+    this.isChargingWarranty = true;
+    this.bookingApi.chargeWarranty(this.bookingId, amount, this.warrantyReason.trim()).subscribe({
+      next: async () => {
+        try {
+          await this.bookingApi.updateBooking(this.bookingId, {
+            warrantyStatus: 'charged',
+            warrantyAmount: amount,
+            warrantyChargedAmount: amount,
+            warrantyChargeReason: this.warrantyReason.trim(),
+            warrantyChargedTS: Date.now(),
+          } as any);
+        } catch {}
+        this.warrantyMessage = 'Warranty charge requested successfully.';
+        this.isChargingWarranty = false;
+      },
+      error: () => {
+        this.warrantyError = 'Unable to charge warranty. Please check the Stripe backend endpoint.';
+        this.isChargingWarranty = false;
+      }
+    });
+  }
+
   payDeposit(): void {
     this.errorMessage = '';
 
@@ -199,8 +303,8 @@ export class DepositComponent implements OnInit, OnDestroy {
       currency: this.currency,
       bookingId: this.bookingId || undefined,
       ownerId: this.ownerId || undefined,
-      successUrl: `${window.location.origin}/deposit?payment=success`,
-      cancelUrl: `${window.location.origin}/deposit?payment=cancelled`,
+      successUrl: `${window.location.origin}/payment/${this.bookingId || ''}?payment=success`,
+      cancelUrl: `${window.location.origin}/payment/${this.bookingId || ''}?payment=cancelled`,
       metadata: {
         source: 'alegria-deposit-page',
         outingType: this.outingType,

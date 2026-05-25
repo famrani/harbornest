@@ -1,0 +1,26 @@
+<section class="booking-page">
+  <div class="container booking-shell">
+    <p *ngIf="loading" class="muted">Loading booking...</p>
+
+    <article class="booking-detail-card" *ngIf="!loading && booking">
+      <span class="eyebrow">Booking detail</span>
+      <h1>{{ booking.outingType }}</h1>
+      <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>
+
+      <div class="detail-grid">
+        <div><strong>Customer</strong><span>{{ booking.customerName }}</span></div>
+        <div><strong>Email</strong><span>{{ booking.email }}</span></div>
+        <div><strong>Phone</strong><span>{{ booking.phone || '-' }}</span></div>
+        <div><strong>Passengers</strong><span>{{ booking.passengers || '-' }}</span></div>
+        <div><strong>Total price</strong><span>€{{ booking.totalPrice || 0 }}</span></div>
+        <div><strong>Deposit</strong><span>{{ booking.depositStatus || 'pending' }}</span></div>
+        <div><strong>Warranty</strong><span>{{ booking.warrantyStatus || 'not_registered' }}</span></div>
+        <div><strong>Status</strong><span>{{ booking.bookingStatus || 'requested' }}</span></div>
+      </div>
+
+      <p class="comments" *ngIf="booking.comments">{{ booking.comments }}</p>
+
+      <button class="btn btn-primary" type="button" (click)="goToPayment()">Open payment page</button>
+    </article>
+  </div>
+</section>

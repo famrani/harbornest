@@ -24,6 +24,9 @@ import { AdminOutingDetailComponent } from './admin-outing-detail/admin-outing-d
 import { AdminManageOutingsComponent } from './admin-manage-outings/admin-manage-outings.component';
 import { GuestFaqComponent } from './guest-faq/guest-faq.component';
 import { GuestJourneyComponent } from './guest-journey/guest-journey.component';
+import { BookingsComponent } from './bookings/bookings.component';
+import { MyBookingsComponent } from './my-bookings/my-bookings.component';
+import { BookingDetailComponent } from './booking-detail/booking-detail.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -43,12 +46,16 @@ const routes: Routes = [
   { path: 'deposit', component: DepositComponent },
   { path: 'faq', component: GuestFaqComponent },
   { path: 'how-it-works', component: GuestJourneyComponent },
-  { path: 'my-bookings', component: AccountSummaryComponent, data: { section: 'bookings' } },
+  { path: 'my-bookings', component: MyBookingsComponent },
   { path: 'my-payments', component: AccountSummaryComponent, data: { section: 'payments' } },
+  { path: 'bookings/:bookingId', component: BookingDetailComponent },
+  { path: 'payment/:bookingId', component: DepositComponent },
   { path: 'my-profile', component: MyProfileComponent },
   { path: 'my-feedbacks', component: MyFeedbacksComponent },
   { path: 'leave-feedback', redirectTo: 'my-feedbacks', pathMatch: 'full' },
   { path: 'admin/feedbacks', component: AdminFeedbacksComponent },
+  { path: 'admin/bookings', component: BookingsComponent },
+  { path: 'admin/bookings/:bookingId', component: BookingDetailComponent },
   { path: 'admin/outings', component: AdminOutingsComponent },
   { path: 'admin/outings/:outingId', component: AdminOutingDetailComponent },
   { path: 'admin/manage-outings', component: AdminManageOutingsComponent },

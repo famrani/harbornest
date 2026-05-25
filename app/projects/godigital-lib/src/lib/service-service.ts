@@ -363,7 +363,7 @@ export class ServicesService {
                     if (this.config.application) {
                         if (this.config.application.release) {
                             this.version =
-                                env.platform + '/' + this.config.application.release;
+                                this.config.application.release;
                         }
                     }
                     if (this.config[this.utilSvc.platform].backendWSUrl) {

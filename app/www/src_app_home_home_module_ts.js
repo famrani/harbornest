@@ -1177,7 +1177,7 @@ AdminFeedbacksComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"deposit-page\">\n  <div class=\"container deposit-layout\">\n    <div class=\"deposit-copy\">\n      <span class=\"eyebrow\">{{ copy.eyebrow }}</span>\n      <h1>{{ copy.title }}</h1>\n      <p>{{ copy.intro }}</p>\n\n      <div class=\"summary-card\">\n        <h2>{{ copy.includedTitle }}</h2>\n        <ul>\n          <li *ngFor=\"let item of copy.included\">{{ item }}</li>\n        </ul>\n        <p class=\"note\">{{ copy.note }}</p>\n      </div>\n    </div>\n\n    <form class=\"deposit-card\" (ngSubmit)=\"payDeposit()\">\n      <label>\n        <span>{{ copy.customerName }}</span>\n        <input type=\"text\" name=\"customerName\" [(ngModel)]=\"customerName\" autocomplete=\"name\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.customerEmail }}</span>\n        <input type=\"email\" name=\"customerEmail\" [(ngModel)]=\"customerEmail\" autocomplete=\"email\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.outingDate }}</span>\n        <input type=\"date\" name=\"outingDate\" [(ngModel)]=\"outingDate\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.outingType }}</span>\n        <input type=\"text\" name=\"outingType\" [(ngModel)]=\"outingType\" />\n      </label>\n\n      <label>\n        <span>{{ copy.totalPrice }}</span>\n        <input type=\"number\" name=\"totalPrice\" [(ngModel)]=\"totalPrice\" min=\"1\" step=\"0.01\" required />\n      </label>\n\n      <div class=\"deposit-total\">\n        <span>{{ copy.deposit }}</span>\n        <strong>{{ formatAmount(depositAmount) }}</strong>\n      </div>\n\n      <p class=\"error\" *ngIf=\"errorMessage\">{{ errorMessage }}</p>\n\n      <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"isLoading\">\n        {{ isLoading ? copy.loading : copy.payDeposit }}\n      </button>\n\n      <p class=\"secure\">{{ copy.securePayment }}</p>\n    </form>\n  </div>\n</section>\n";
+module.exports = "<section class=\"deposit-page\">\n  <div class=\"container deposit-layout\">\n    <div class=\"deposit-copy\">\n      <span class=\"eyebrow\">{{ copy.eyebrow }}</span>\n      <h1>{{ copy.title }}</h1>\n      <p>{{ copy.intro }}</p>\n\n      <div class=\"summary-card\">\n        <h2>{{ copy.includedTitle }}</h2>\n        <ul>\n          <li *ngFor=\"let item of copy.included\">{{ item }}</li>\n        </ul>\n        <p class=\"note\">{{ copy.note }}</p>\n      </div>\n    </div>\n\n    <form class=\"deposit-card\" (ngSubmit)=\"payDeposit()\">\n      <label>\n        <span>{{ copy.customerName }}</span>\n        <input type=\"text\" name=\"customerName\" [(ngModel)]=\"customerName\" autocomplete=\"name\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.customerEmail }}</span>\n        <input type=\"email\" name=\"customerEmail\" [(ngModel)]=\"customerEmail\" autocomplete=\"email\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.outingDate }}</span>\n        <input type=\"date\" name=\"outingDate\" [(ngModel)]=\"outingDate\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.outingType }}</span>\n        <input type=\"text\" name=\"outingType\" [(ngModel)]=\"outingType\" />\n      </label>\n\n      <label>\n        <span>{{ copy.totalPrice }}</span>\n        <input type=\"number\" name=\"totalPrice\" [(ngModel)]=\"totalPrice\" min=\"1\" step=\"0.01\" required />\n      </label>\n\n      <div class=\"deposit-total\">\n        <span>{{ copy.deposit }}</span>\n        <strong>{{ formatAmount(depositAmount) }}</strong>\n      </div>\n\n      <p class=\"error\" *ngIf=\"errorMessage\">{{ errorMessage }}</p>\n\n      <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"isLoading\">\n        {{ isLoading ? copy.loading : copy.payDeposit }}\n      </button>\n\n      <p class=\"secure\">{{ copy.securePayment }}</p>\n    </form>\n\n    <section class=\"deposit-card admin-warranty-card\" *ngIf=\"isAdmin && booking\">\n      <span class=\"eyebrow\">Admin</span>\n      <h2>Warranty / damage charge</h2>\n      <p class=\"note\">This admin area is only for charging the warranty if damage has been confirmed. Clients should use the deposit payment flow.</p>\n\n      <div class=\"deposit-total\">\n        <span>Warranty status</span>\n        <strong>{{ warrantyStatusLabel }}</strong>\n      </div>\n\n      <label>\n        <span>Amount to charge</span>\n        <input type=\"number\" name=\"warrantyChargeAmount\" [(ngModel)]=\"warrantyChargeAmount\" min=\"1\" step=\"0.01\" />\n      </label>\n\n      <label>\n        <span>Reason / damage note</span>\n        <textarea name=\"warrantyReason\" rows=\"4\" [(ngModel)]=\"warrantyReason\" placeholder=\"Describe the damage or reason for charging the warranty\"></textarea>\n      </label>\n\n      <p class=\"error\" *ngIf=\"warrantyError\">{{ warrantyError }}</p>\n      <p class=\"success\" *ngIf=\"warrantyMessage\">{{ warrantyMessage }}</p>\n\n      <button type=\"button\" class=\"btn btn-primary danger\" [disabled]=\"isChargingWarranty\" (click)=\"chargeWarranty()\">\n        {{ isChargingWarranty ? 'Charging...' : 'Charge warranty' }}\n      </button>\n    </section>\n\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -1894,6 +1894,74 @@ AccountSummaryComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,
 
 /***/ }),
 
+/***/ 18170:
+/*!***********************************************************!*\
+  !*** ./src/app/home/my-bookings/my-bookings.component.ts ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   MyBookingsComponent: () => (/* binding */ MyBookingsComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _my_bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./my-bookings.component.html?ngResource */ 67710);
+/* harmony import */ var _my_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./my-bookings.component.scss?ngResource */ 95938);
+/* harmony import */ var _my_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_my_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../bookings/booking-api.service */ 74854);
+
+
+
+
+
+
+
+let MyBookingsComponent = class MyBookingsComponent {
+  bookingApi;
+  mainSvc;
+  router;
+  bookings = [];
+  loading = true;
+  constructor(bookingApi, mainSvc, router) {
+    this.bookingApi = bookingApi;
+    this.mainSvc = mainSvc;
+    this.router = router;
+  }
+  ngOnInit() {
+    const user = this.mainSvc.bnUser || this.mainSvc.currentUser || {};
+    const email = user?.email || '';
+    this.bookingApi.getBookings(email).subscribe(bookings => {
+      this.bookings = bookings;
+      this.loading = false;
+    });
+  }
+  openBooking(booking) {
+    this.router.navigate(['/bookings', booking.bookingId]);
+  }
+  payBooking(booking) {
+    this.router.navigate(['/payment', booking.bookingId]);
+  }
+  static ctorParameters = () => [{
+    type: _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_2__.BookingApiService
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_3__.ServicesService
+  }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
+  }];
+};
+MyBookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+  selector: 'app-my-bookings',
+  template: _my_bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_my_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], MyBookingsComponent);
+
+
+/***/ }),
+
 /***/ 18642:
 /*!******************************************************************************************!*\
   !*** ./src/app/home/admin-manage-outings/admin-manage-outings.component.html?ngResource ***!
@@ -1927,15 +1995,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   DepositComponent: () => (/* binding */ DepositComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _deposit_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./deposit.component.html?ngResource */ 10842);
-/* harmony import */ var _deposit_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./deposit.component.scss?ngResource */ 26278);
-/* harmony import */ var _deposit_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_deposit_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ 93262);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
-/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _deposit_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./deposit.component.html?ngResource */ 10842);
+/* harmony import */ var _deposit_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./deposit.component.scss?ngResource */ 26278);
+/* harmony import */ var _deposit_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_deposit_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+/* harmony import */ var _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../bookings/booking-api.service */ 74854);
+
+
 
 
 
@@ -2008,6 +2080,8 @@ let DepositComponent = class DepositComponent {
   route;
   languageService;
   utilsSvc;
+  bookingApi;
+  mainSvc;
   copy = COPY.fr;
   currentLanguage = 'fr';
   customerName = '';
@@ -2018,20 +2092,53 @@ let DepositComponent = class DepositComponent {
   currency = 'eur';
   bookingId = '';
   ownerId = '';
+  booking;
+  loggedUser = null;
+  warrantyChargeAmount = null;
+  warrantyReason = '';
+  isChargingWarranty = false;
+  warrantyMessage = '';
+  warrantyError = '';
   isLoading = false;
   errorMessage = '';
   languageSub;
-  constructor(http, route, languageService, utilsSvc) {
+  userSub;
+  constructor(http, route, languageService, utilsSvc, bookingApi, mainSvc) {
     this.http = http;
     this.route = route;
     this.languageService = languageService;
     this.utilsSvc = utilsSvc;
+    this.bookingApi = bookingApi;
+    this.mainSvc = mainSvc;
   }
   ngOnInit() {
     this.languageSub = this.languageService.language$.subscribe(language => {
       this.currentLanguage = language;
       this.copy = COPY[language];
     });
+    const svc = this.mainSvc;
+    const userObservable = typeof svc.getLoggedUser === 'function' ? svc.getLoggedUser() : typeof svc.getUser === 'function' ? svc.getUser() : svc.bnUserO;
+    if (userObservable && typeof userObservable.subscribe === 'function') {
+      this.userSub = userObservable.subscribe(user => {
+        this.loggedUser = user || null;
+      });
+    } else {
+      this.loggedUser = svc.bnUser || null;
+    }
+    this.bookingId = this.route.snapshot.paramMap.get('bookingId') || this.bookingId;
+    if (this.bookingId) {
+      this.bookingApi.getBooking(this.bookingId).subscribe(booking => {
+        if (booking) {
+          this.booking = booking;
+          this.customerName = booking.customerName || this.customerName;
+          this.customerEmail = booking.email || this.customerEmail;
+          this.outingDate = booking.outingDate || this.outingDate;
+          this.outingType = booking.outingType || this.outingType;
+          this.totalPrice = booking.totalPrice || this.totalPrice;
+          this.warrantyChargeAmount = booking.warrantyAmount || this.warrantyChargeAmount;
+        }
+      });
+    }
     this.route.queryParamMap.subscribe(params => {
       this.customerName = params.get('name') || params.get('customerName') || this.customerName;
       this.customerEmail = params.get('email') || params.get('customerEmail') || this.customerEmail;
@@ -2048,6 +2155,20 @@ let DepositComponent = class DepositComponent {
   }
   ngOnDestroy() {
     this.languageSub?.unsubscribe();
+    this.userSub?.unsubscribe();
+  }
+  get isAdmin() {
+    const role = String(this.loggedUser?.role || '').toLowerCase();
+    return role === 'admin' || this.loggedUser?.isAdmin === true;
+  }
+  get warrantyAmount() {
+    return Number(this.booking?.warrantyAmount || this.warrantyChargeAmount || 0);
+  }
+  get warrantyStatusLabel() {
+    const value = this.booking?.warrantyStatus;
+    if (value === true) return 'registered';
+    if (value === false || value === undefined || value === null || value === '') return 'not registered';
+    return String(value);
   }
   get depositAmount() {
     return Math.round((this.totalPrice || 0) * 0.5 * 100) / 100;
@@ -2061,6 +2182,53 @@ let DepositComponent = class DepositComponent {
       style: 'currency',
       currency: 'EUR'
     }).format(value);
+  }
+  chargeWarranty() {
+    var _this = this;
+    this.warrantyError = '';
+    this.warrantyMessage = '';
+    if (!this.isAdmin) {
+      this.warrantyError = 'Only an admin can charge the warranty.';
+      return;
+    }
+    if (!this.bookingId) {
+      this.warrantyError = 'Missing booking id.';
+      return;
+    }
+    const amount = Number(this.warrantyChargeAmount || this.booking?.warrantyAmount || 0);
+    if (!amount || amount <= 0) {
+      this.warrantyError = 'Please enter a warranty amount to charge.';
+      return;
+    }
+    if (!this.warrantyReason.trim()) {
+      this.warrantyError = 'Please enter the reason for charging the warranty.';
+      return;
+    }
+    this.isChargingWarranty = true;
+    this.bookingApi.chargeWarranty(this.bookingId, amount, this.warrantyReason.trim()).subscribe({
+      next: function () {
+        var _ref = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+          try {
+            yield _this.bookingApi.updateBooking(_this.bookingId, {
+              warrantyStatus: 'charged',
+              warrantyAmount: amount,
+              warrantyChargedAmount: amount,
+              warrantyChargeReason: _this.warrantyReason.trim(),
+              warrantyChargedTS: Date.now()
+            });
+          } catch {}
+          _this.warrantyMessage = 'Warranty charge requested successfully.';
+          _this.isChargingWarranty = false;
+        });
+        return function next() {
+          return _ref.apply(this, arguments);
+        };
+      }(),
+      error: () => {
+        this.warrantyError = 'Unable to charge warranty. Please check the Stripe backend endpoint.';
+        this.isChargingWarranty = false;
+      }
+    });
   }
   payDeposit() {
     this.errorMessage = '';
@@ -2081,8 +2249,8 @@ let DepositComponent = class DepositComponent {
       currency: this.currency,
       bookingId: this.bookingId || undefined,
       ownerId: this.ownerId || undefined,
-      successUrl: `${window.location.origin}/deposit?payment=success`,
-      cancelUrl: `${window.location.origin}/deposit?payment=cancelled`,
+      successUrl: `${window.location.origin}/payment/${this.bookingId || ''}?payment=success`,
+      cancelUrl: `${window.location.origin}/payment/${this.bookingId || ''}?payment=cancelled`,
       metadata: {
         source: 'alegria-deposit-page',
         outingType: this.outingType,
@@ -2110,19 +2278,23 @@ let DepositComponent = class DepositComponent {
     });
   }
   static ctorParameters = () => [{
-    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_3__.HttpClient
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_5__.HttpClient
   }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.ActivatedRoute
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_6__.ActivatedRoute
   }, {
-    type: _services_language_service__WEBPACK_IMPORTED_MODULE_2__.LanguageService
+    type: _services_language_service__WEBPACK_IMPORTED_MODULE_3__.LanguageService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.UtilsService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.UtilsService
+  }, {
+    type: _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_4__.BookingApiService
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.ServicesService
   }];
 };
-DepositComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
+DepositComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.Component)({
   selector: 'app-deposit',
-  template: _deposit_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  styles: [(_deposit_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+  template: _deposit_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
+  styles: [(_deposit_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
 })], DepositComponent);
 
 
@@ -2291,10 +2463,44 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.deposit-page {
     align-items: flex-start;
     flex-direction: column;
   }
-}`, "",{"version":3,"sources":["webpack://./src/app/home/deposit/deposit.component.scss"],"names":[],"mappings":"AAAA;EACE,iCAAA;EACA,6FACE;AAAJ;;AAIA;EACE,aAAA;EACA,2CAAA;EACA,2BAAA;EACA,kBAAA;AADF;;AAIA;EACE,gBAAA;AADF;;AAIA;EACE,gBAAA;AADF;;AAIA;;EAEE,mBAAA;EACA,uCAAA;EACA,6CAAA;EACA,mBAAA;AADF;;AAIA;EACE,gBAAA;EACA,+BAAA;AADF;;AAIA;EACE,aAAA;EACA,mBAAA;AADF;;AAIA;EACE,SAAA;EACA,kBAAA;AADF;;AAIA;EACE,mBAAA;AADF;;AAIA;EACE,gBAAA;EACA,kBAAA;EACA,aAAA;AADF;;AAIA;EACE,+BAAA;EACA,aAAA;EACA,SAAA;AADF;;AAIA;EACE,aAAA;EACA,QAAA;EACA,qDAAA;EACA,gBAAA;EACA,sCAAA;AADF;;AAIA;EACE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,kBAAA;EACA,aAAA;EACA,gBAAA;AADF;;AAIA;EACE,2CAAA;EACA,sCAAA;AADF;;AAIA;EACE,aAAA;EACA,8BAAA;EACA,mBAAA;EACA,SAAA;EACA,aAAA;EACA,mBAAA;EACA,oCAAA;EACA,sCAAA;AADF;;AAIA;EACE,qDAAA;EACA,gBAAA;AADF;;AAIA;EACE,mCAAA;EACA,uCAAA;AADF;;AAIA;EACE,WAAA;AADF;;AAIA;EACE,aAAA;EACA,mBAAA;AADF;;AAIA;EACE,SAAA;EACA,cAAA;EACA,gBAAA;AADF;;AAIA;EACE,SAAA;EACA,kBAAA;EACA,iBAAA;EACA,YAAA;AADF;;AAIA;EACE;IACE,0BAAA;EADF;AACF;AAIA;EACE;IACE,eAAA;EAFF;EAKA;;IAEE,mBAAA;EAHF;EAMA;IACE,uBAAA;IACA,sBAAA;EAJF;AACF","sourcesContent":[".deposit-page {\n  padding: clamp(48px, 8vw, 96px) 0;\n  background:\n    linear-gradient(135deg, rgba(6, 38, 58, 0.06), rgba(16, 110, 138, 0.08)),\n    #ffffff;\n}\n\n.deposit-layout {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) 420px;\n  gap: clamp(28px, 6vw, 72px);\n  align-items: start;\n}\n\n.deposit-copy h1 {\n  max-width: 720px;\n}\n\n.deposit-copy p {\n  max-width: 680px;\n}\n\n.summary-card,\n.deposit-card {\n  background: #ffffff;\n  border: 1px solid rgba(8, 38, 58, 0.12);\n  box-shadow: 0 20px 50px rgba(8, 38, 58, 0.08);\n  border-radius: 24px;\n}\n\n.summary-card {\n  margin-top: 32px;\n  padding: clamp(20px, 4vw, 32px);\n}\n\n.summary-card h2 {\n  margin-top: 0;\n  margin-bottom: 16px;\n}\n\n.summary-card ul {\n  margin: 0;\n  padding-left: 20px;\n}\n\n.summary-card li {\n  margin-bottom: 10px;\n}\n\n.note {\n  margin-top: 18px;\n  font-size: 0.95rem;\n  opacity: 0.75;\n}\n\n.deposit-card {\n  padding: clamp(20px, 4vw, 32px);\n  display: grid;\n  gap: 18px;\n}\n\n.deposit-card label {\n  display: grid;\n  gap: 8px;\n  font-family: var(--font-label, 'Raleway', sans-serif);\n  font-weight: 600;\n  color: var(--color-deep-blue, #08263a);\n}\n\n.deposit-card input {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.18);\n  border-radius: 14px;\n  padding: 13px 14px;\n  font: inherit;\n  background: #fff;\n}\n\n.deposit-card input:focus {\n  outline: 2px solid rgba(236, 126, 48, 0.35);\n  border-color: rgba(236, 126, 48, 0.65);\n}\n\n.deposit-total {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 12px;\n  padding: 18px;\n  border-radius: 18px;\n  background: rgba(236, 126, 48, 0.12);\n  color: var(--color-deep-blue, #08263a);\n}\n\n.deposit-total span {\n  font-family: var(--font-label, 'Raleway', sans-serif);\n  font-weight: 700;\n}\n\n.deposit-total strong {\n  font-size: clamp(1.4rem, 4vw, 2rem);\n  color: var(--color-sun-orange, #ec7e30);\n}\n\n.deposit-card button {\n  width: 100%;\n}\n\n.deposit-card button:disabled {\n  opacity: 0.65;\n  cursor: not-allowed;\n}\n\n.error {\n  margin: 0;\n  color: #b42318;\n  font-weight: 700;\n}\n\n.secure {\n  margin: 0;\n  text-align: center;\n  font-size: 0.9rem;\n  opacity: 0.7;\n}\n\n@media (max-width: 900px) {\n  .deposit-layout {\n    grid-template-columns: 1fr;\n  }\n}\n\n@media (max-width: 560px) {\n  .deposit-page {\n    padding: 36px 0;\n  }\n\n  .summary-card,\n  .deposit-card {\n    border-radius: 18px;\n  }\n\n  .deposit-total {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n}\n"],"sourceRoot":""}]);
+}
+.admin-warranty-card {
+  grid-column: 1/-1;
+}
+
+.admin-warranty-card textarea {
+  width: 100%;
+  border: 1px solid rgba(8, 38, 58, 0.18);
+  border-radius: 14px;
+  padding: 13px 14px;
+  font: inherit;
+  resize: vertical;
+}
+
+.success {
+  margin: 0;
+  color: #067647;
+  font-weight: 700;
+}
+
+.btn.danger {
+  background: #b42318;
+  border-color: #b42318;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/deposit/deposit.component.scss"],"names":[],"mappings":"AAAA;EACE,iCAAA;EACA,6FACE;AAAJ;;AAIA;EACE,aAAA;EACA,2CAAA;EACA,2BAAA;EACA,kBAAA;AADF;;AAIA;EACE,gBAAA;AADF;;AAIA;EACE,gBAAA;AADF;;AAIA;;EAEE,mBAAA;EACA,uCAAA;EACA,6CAAA;EACA,mBAAA;AADF;;AAIA;EACE,gBAAA;EACA,+BAAA;AADF;;AAIA;EACE,aAAA;EACA,mBAAA;AADF;;AAIA;EACE,SAAA;EACA,kBAAA;AADF;;AAIA;EACE,mBAAA;AADF;;AAIA;EACE,gBAAA;EACA,kBAAA;EACA,aAAA;AADF;;AAIA;EACE,+BAAA;EACA,aAAA;EACA,SAAA;AADF;;AAIA;EACE,aAAA;EACA,QAAA;EACA,qDAAA;EACA,gBAAA;EACA,sCAAA;AADF;;AAIA;EACE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,kBAAA;EACA,aAAA;EACA,gBAAA;AADF;;AAIA;EACE,2CAAA;EACA,sCAAA;AADF;;AAIA;EACE,aAAA;EACA,8BAAA;EACA,mBAAA;EACA,SAAA;EACA,aAAA;EACA,mBAAA;EACA,oCAAA;EACA,sCAAA;AADF;;AAIA;EACE,qDAAA;EACA,gBAAA;AADF;;AAIA;EACE,mCAAA;EACA,uCAAA;AADF;;AAIA;EACE,WAAA;AADF;;AAIA;EACE,aAAA;EACA,mBAAA;AADF;;AAIA;EACE,SAAA;EACA,cAAA;EACA,gBAAA;AADF;;AAIA;EACE,SAAA;EACA,kBAAA;EACA,iBAAA;EACA,YAAA;AADF;;AAIA;EACE;IACE,0BAAA;EADF;AACF;AAIA;EACE;IACE,eAAA;EAFF;EAKA;;IAEE,mBAAA;EAHF;EAMA;IACE,uBAAA;IACA,sBAAA;EAJF;AACF;AAQA;EACE,iBAAA;AANF;;AASA;EACE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,kBAAA;EACA,aAAA;EACA,gBAAA;AANF;;AASA;EACE,SAAA;EACA,cAAA;EACA,gBAAA;AANF;;AASA;EACE,mBAAA;EACA,qBAAA;AANF","sourcesContent":[".deposit-page {\n  padding: clamp(48px, 8vw, 96px) 0;\n  background:\n    linear-gradient(135deg, rgba(6, 38, 58, 0.06), rgba(16, 110, 138, 0.08)),\n    #ffffff;\n}\n\n.deposit-layout {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) 420px;\n  gap: clamp(28px, 6vw, 72px);\n  align-items: start;\n}\n\n.deposit-copy h1 {\n  max-width: 720px;\n}\n\n.deposit-copy p {\n  max-width: 680px;\n}\n\n.summary-card,\n.deposit-card {\n  background: #ffffff;\n  border: 1px solid rgba(8, 38, 58, 0.12);\n  box-shadow: 0 20px 50px rgba(8, 38, 58, 0.08);\n  border-radius: 24px;\n}\n\n.summary-card {\n  margin-top: 32px;\n  padding: clamp(20px, 4vw, 32px);\n}\n\n.summary-card h2 {\n  margin-top: 0;\n  margin-bottom: 16px;\n}\n\n.summary-card ul {\n  margin: 0;\n  padding-left: 20px;\n}\n\n.summary-card li {\n  margin-bottom: 10px;\n}\n\n.note {\n  margin-top: 18px;\n  font-size: 0.95rem;\n  opacity: 0.75;\n}\n\n.deposit-card {\n  padding: clamp(20px, 4vw, 32px);\n  display: grid;\n  gap: 18px;\n}\n\n.deposit-card label {\n  display: grid;\n  gap: 8px;\n  font-family: var(--font-label, 'Raleway', sans-serif);\n  font-weight: 600;\n  color: var(--color-deep-blue, #08263a);\n}\n\n.deposit-card input {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.18);\n  border-radius: 14px;\n  padding: 13px 14px;\n  font: inherit;\n  background: #fff;\n}\n\n.deposit-card input:focus {\n  outline: 2px solid rgba(236, 126, 48, 0.35);\n  border-color: rgba(236, 126, 48, 0.65);\n}\n\n.deposit-total {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 12px;\n  padding: 18px;\n  border-radius: 18px;\n  background: rgba(236, 126, 48, 0.12);\n  color: var(--color-deep-blue, #08263a);\n}\n\n.deposit-total span {\n  font-family: var(--font-label, 'Raleway', sans-serif);\n  font-weight: 700;\n}\n\n.deposit-total strong {\n  font-size: clamp(1.4rem, 4vw, 2rem);\n  color: var(--color-sun-orange, #ec7e30);\n}\n\n.deposit-card button {\n  width: 100%;\n}\n\n.deposit-card button:disabled {\n  opacity: 0.65;\n  cursor: not-allowed;\n}\n\n.error {\n  margin: 0;\n  color: #b42318;\n  font-weight: 700;\n}\n\n.secure {\n  margin: 0;\n  text-align: center;\n  font-size: 0.9rem;\n  opacity: 0.7;\n}\n\n@media (max-width: 900px) {\n  .deposit-layout {\n    grid-template-columns: 1fr;\n  }\n}\n\n@media (max-width: 560px) {\n  .deposit-page {\n    padding: 36px 0;\n  }\n\n  .summary-card,\n  .deposit-card {\n    border-radius: 18px;\n  }\n\n  .deposit-total {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n}\n\n\n.admin-warranty-card {\n  grid-column: 1 / -1;\n}\n\n.admin-warranty-card textarea {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.18);\n  border-radius: 14px;\n  padding: 13px 14px;\n  font: inherit;\n  resize: vertical;\n}\n\n.success {\n  margin: 0;\n  color: #067647;\n  font-weight: 700;\n}\n\n.btn.danger {\n  background: #b42318;\n  border-color: #b42318;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
+
+/***/ }),
+
+/***/ 26456:
+/*!******************************************************************!*\
+  !*** ./src/app/home/bookings/bookings.component.html?ngResource ***!
+  \******************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">Admin</span>\n      <h1>Bookings</h1>\n      <p>Bookings loaded from Firebase Realtime Database <strong>/bnBookings</strong>.</p>\n    </div>\n\n    <div class=\"booking-toolbar\">\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadBookings()\">Refresh</button>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n    <p *ngIf=\"!loading && errorMessage\" class=\"error-message\">{{ errorMessage }}</p>\n    <p *ngIf=\"!loading && !errorMessage && bookings.length === 0\" class=\"muted\">\n      No bookings found in Firebase under <strong>/bnBookings</strong>.\n    </p>\n\n    <div class=\"booking-grid\" *ngIf=\"!loading && bookings.length > 0\">\n      <article class=\"booking-card\" *ngFor=\"let booking of bookings; trackBy: trackByBookingId\">\n        <div class=\"booking-card-main\">\n          <span class=\"status-pill\">{{ booking.bookingStatus || 'requested' }}</span>\n          <h2>{{ booking.outingType || 'Outing' }}</h2>\n          <p>\n            {{ booking.outingDate || 'Date not set' }}\n            <span *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</span>\n          </p>\n          <p>{{ booking.customerName || 'Customer not set' }} <span *ngIf=\"booking.email\">• {{ booking.email }}</span></p>\n        </div>\n\n        <div class=\"booking-meta\">\n          <span>Total: €{{ booking.totalPrice || 0 }}</span>\n          <span>Deposit: {{ booking.depositStatus }}</span>\n          <span>Warranty: {{ booking.warrantyStatus }}</span>\n        </div>\n\n        <div class=\"firebase-fields\" *ngIf=\"booking.displayFields.length > 0\">\n          <h3>Firebase fields</h3>\n          <div class=\"firebase-field\" *ngFor=\"let field of booking.displayFields; trackBy: trackByFieldKey\">\n            <strong>{{ field.key }}</strong>\n            <pre>{{ field.value }}</pre>\n          </div>\n        </div>\n\n        <div class=\"booking-actions\">\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"openBooking(booking)\">Open</button>\n          <button class=\"btn btn-primary\" type=\"button\" (click)=\"payment(booking)\">Payment</button>\n        </div>\n      </article>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -2384,7 +2590,7 @@ EvjfEvgComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angula
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"admin-outings-page\">\n  <div class=\"container\">\n    <div class=\"page-head\">\n      <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n\n    <div class=\"admin-warning\" *ngIf=\"!isAdmin\">\n      {{ t('adminOnly') }}\n    </div>\n\n    <ng-container *ngIf=\"isAdmin\">\n      <div class=\"mode-toolbar\">\n        <button type=\"button\" class=\"btn btn-secondary\" [class.active]=\"mode === 'list'\" (click)=\"showList()\">\n          {{ t('listOutings') }}\n        </button>\n        <button type=\"button\" class=\"btn btn-primary\" (click)=\"startCreate()\">\n          {{ t('newOuting') }}\n        </button>\n      </div>\n\n      <div class=\"outings-list-card\" *ngIf=\"mode === 'list'\">\n        <div class=\"list-head\">\n          <h2>{{ t('allOutings') }}</h2>\n          <button type=\"button\" class=\"btn btn-primary\" (click)=\"startCreate()\">{{ t('newOuting') }}</button>\n        </div>\n\n        <p class=\"empty\" *ngIf=\"loading\">{{ t('loading') }}</p>\n        <p class=\"empty\" *ngIf=\"!loading && outings.length === 0\">{{ t('empty') }}</p>\n        <div class=\"notice error\" *ngIf=\"closeError\">{{ closeError }}</div>\n\n        <article class=\"outing-row compact-row\" *ngFor=\"let outing of outings\">\n          <div class=\"outing-summary\">\n            <div>\n              <h3>{{ outing.outingType }}</h3>\n              <p>{{ formatOutingDate(outing) }}</p>\n              <p>{{ outing.destination }} · {{ outing.passengers }} {{ t('passengers') }}</p>\n            </div>\n            <div class=\"outing-actions\">\n              <span class=\"status\" [class.closed]=\"outing.status === 'closed'\">\n                {{ outing.status === 'closed' ? t('closed') : t('open') }}\n              </span>\n              <button type=\"button\" class=\"detail-link\" (click)=\"startEdit(outing)\">{{ t('edit') }}</button>\n              <button type=\"button\" class=\"detail-link\" *ngIf=\"outing.status !== 'closed'\" (click)=\"startClose(outing)\">{{ t('close') }}</button>\n              <button type=\"button\" class=\"detail-link danger\" (click)=\"deleteOuting(outing)\">{{ t('delete') }}</button>\n            </div>\n          </div>\n        </article>\n      </div>\n\n      <div class=\"outing-form-card\" *ngIf=\"mode === 'create' || mode === 'edit'\">\n        <div class=\"form-title-row\">\n          <h2>{{ mode === 'create' ? t('createTitle') : t('editTitle') }}</h2>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('backToList') }}</button>\n        </div>\n\n        <div class=\"form-grid\">\n          <label>\n            {{ t('outingType') }} *\n            <select [(ngModel)]=\"form.outingType\">\n              <option *ngFor=\"let option of outingTypes[currentLanguage]\" [value]=\"option\">{{ option }}</option>\n            </select>\n          </label>\n\n          <label>\n            {{ t('passengers') }} *\n            <input type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"form.passengers\" />\n          </label>\n\n          <label>\n            {{ t('departureDate') }} *\n            <input type=\"date\" [(ngModel)]=\"form.departureDate\" />\n          </label>\n\n          <label>\n            {{ t('departureTime') }} *\n            <input type=\"time\" [(ngModel)]=\"form.departureTime\" />\n          </label>\n\n          <label>\n            {{ t('arrivalDate') }} *\n            <input type=\"date\" [(ngModel)]=\"form.arrivalDate\" />\n          </label>\n\n          <label>\n            {{ t('arrivalTime') }} *\n            <input type=\"time\" [(ngModel)]=\"form.arrivalTime\" />\n          </label>\n\n          <label>\n            {{ t('portEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.portEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('starboardEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.starboardEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('wind') }} ({{ t('knots') }})\n            <input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"form.actualWindSpeed\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('destination') }} *\n            <input type=\"text\" [(ngModel)]=\"form.destination\" placeholder=\"Lérins, Baie des Milliardaires, Cap d’Antibes...\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('comments') }}\n            <textarea rows=\"4\" [(ngModel)]=\"form.comments\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"checklist-block\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('departureChecklist') }}</h2>\n            <span [class.complete]=\"departureChecklistComplete\">\n              {{ countDoneDepartureItems() }} / {{ countAllDepartureItems() }}\n            </span>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of departureChecklistGroups\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">\n                {{ countDoneGroup(group) }} / {{ group.items.length }}\n              </span>\n            </div>\n\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>\n                  {{ item.label[currentLanguage] || item.label.fr }}\n                  <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                </span>\n              </label>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"form-actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"saving || !departureChecklistComplete\" (click)=\"mode === 'create' ? createOuting() : updateOuting()\">\n            {{ saving ? t('saving') : (mode === 'create' ? t('create') : t('saveChanges')) }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('cancel') }}</button>\n        </div>\n\n        <div class=\"notice success\" *ngIf=\"saved\">{{ t('saved') }}</div>\n        <div class=\"notice error\" *ngIf=\"error\">{{ error }}</div>\n      </div>\n\n      <div class=\"outing-form-card\" *ngIf=\"mode === 'close' && selectedOuting\">\n        <div class=\"form-title-row\">\n          <div>\n            <h2>{{ t('closeTitle') }}</h2>\n            <p>{{ selectedOuting.outingType }} · {{ formatOutingDate(selectedOuting) }}</p>\n          </div>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('backToList') }}</button>\n        </div>\n\n        <div class=\"checklist-block\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('arrivalChecklist') }}</h2>\n            <span [class.complete]=\"arrivalChecklistComplete(selectedOuting.outingId)\">\n              {{ countDoneArrivalItems(selectedOuting.outingId) }} / {{ countArrivalItems(selectedOuting.outingId) }}\n            </span>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of arrivalChecklistGroupsByOuting[selectedOuting.outingId]\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">\n                {{ countDoneGroup(group) }} / {{ group.items.length }}\n              </span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>\n                  {{ item.label[currentLanguage] || item.label.fr }}\n                  <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                </span>\n              </label>\n            </div>\n          </div>\n        </div>\n\n        <label class=\"closure-comments\">\n          {{ t('closureComments') }}\n          <textarea rows=\"3\" [(ngModel)]=\"closureComments[selectedOuting.outingId]\"></textarea>\n        </label>\n\n        <div class=\"form-actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"closingId === selectedOuting.outingId || !arrivalChecklistComplete(selectedOuting.outingId)\" (click)=\"closeOuting(selectedOuting)\">\n            {{ closingId === selectedOuting.outingId ? t('closing') : t('close') }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('cancel') }}</button>\n        </div>\n        <div class=\"notice error\" *ngIf=\"closeError\">{{ closeError }}</div>\n      </div>\n    </ng-container>\n  </div>\n</section>\n";
+module.exports = "<section class=\"admin-outings-page\">\n  <div class=\"container\">\n    <div class=\"page-head\">\n      <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n\n    <div class=\"admin-warning\" *ngIf=\"!isAdmin\">\n      {{ t('adminOnly') }}\n    </div>\n\n    <ng-container *ngIf=\"isAdmin\">\n      <div class=\"mode-toolbar\">\n        <button type=\"button\" class=\"btn btn-secondary\" [class.active]=\"mode === 'list'\" (click)=\"showList()\">\n          {{ t('listOutings') }}\n        </button>\n        <button type=\"button\" class=\"btn btn-primary\" (click)=\"startCreate()\">\n          {{ t('newOuting') }}\n        </button>\n      </div>\n\n      <div class=\"outings-list-card\" *ngIf=\"mode === 'list'\">\n        <div class=\"list-head\">\n          <h2>{{ t('allOutings') }}</h2>\n          <button type=\"button\" class=\"btn btn-primary\" (click)=\"startCreate()\">{{ t('newOuting') }}</button>\n        </div>\n\n        <p class=\"empty\" *ngIf=\"loading\">{{ t('loading') }}</p>\n        <p class=\"empty\" *ngIf=\"!loading && outings.length === 0\">{{ t('empty') }}</p>\n        <div class=\"notice error\" *ngIf=\"closeError\">{{ closeError }}</div>\n\n        <article class=\"outing-row compact-row\" *ngFor=\"let outing of outings\">\n          <div class=\"outing-summary\">\n            <div>\n              <h3>{{ outing.outingType }}</h3>\n              <p>{{ formatOutingDate(outing) }}</p>\n              <p>{{ outing.destination }} · {{ outing.passengers }} {{ t('passengers') }}</p>\n            </div>\n            <div class=\"outing-actions\">\n              <span class=\"status\" [class.closed]=\"outing.status === 'closed'\">\n                {{ outing.status === 'closed' ? t('closed') : t('open') }}\n              </span>\n              <button type=\"button\" class=\"detail-link\" (click)=\"startEdit(outing)\">{{ t('edit') }}</button>\n              <button type=\"button\" class=\"detail-link\" *ngIf=\"outing.status !== 'closed'\" (click)=\"startClose(outing)\">{{ t('close') }}</button>\n              <button type=\"button\" class=\"detail-link danger\" (click)=\"deleteOuting(outing)\">{{ t('delete') }}</button>\n            </div>\n          </div>\n        </article>\n      </div>\n\n      <div class=\"outing-form-card\" *ngIf=\"mode === 'create' || mode === 'edit'\">\n        <div class=\"form-title-row\">\n          <h2>{{ mode === 'create' ? t('createTitle') : t('editTitle') }}</h2>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('backToList') }}</button>\n        </div>\n\n        <div class=\"form-grid\">\n          <label>\n            {{ t('outingType') }} *\n            <select [(ngModel)]=\"form.outingType\">\n              <option *ngFor=\"let option of outingTypes[currentLanguage]\" [value]=\"option\">{{ option }}</option>\n            </select>\n          </label>\n\n          <label>\n            {{ t('passengers') }} *\n            <input type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"form.passengers\" />\n          </label>\n\n          <label>\n            {{ t('departureDate') }} *\n            <input type=\"date\" [(ngModel)]=\"form.departureDate\" />\n          </label>\n\n          <label>\n            {{ t('departureTime') }} *\n            <input type=\"time\" [(ngModel)]=\"form.departureTime\" />\n          </label>\n\n          <label>\n            {{ t('arrivalDate') }} *\n            <input type=\"date\" [(ngModel)]=\"form.arrivalDate\" />\n          </label>\n\n          <label>\n            {{ t('arrivalTime') }} *\n            <input type=\"time\" [(ngModel)]=\"form.arrivalTime\" />\n          </label>\n\n          <label>\n            {{ t('portEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.portEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('starboardEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.starboardEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('wind') }} ({{ t('knots') }})\n            <input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"form.actualWindSpeed\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('destination') }} *\n            <input type=\"text\" [(ngModel)]=\"form.destination\" placeholder=\"Lérins, Baie des Milliardaires, Cap d’Antibes...\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('comments') }}\n            <textarea rows=\"4\" [(ngModel)]=\"form.comments\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"checklist-block\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('departureChecklist') }}</h2>\n            <span [class.complete]=\"departureChecklistComplete\">\n              {{ countDoneDepartureItems() }} / {{ countAllDepartureItems() }}\n            </span>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of departureChecklistGroups\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">\n                {{ countDoneGroup(group) }} / {{ group.items.length }}\n              </span>\n            </div>\n\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>\n                  {{ item.label[currentLanguage] || item.label.fr }}\n                  <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                </span>\n              </label>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"anchorages-block\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('anchorages') }}</h2>\n            <span>{{ currentAnchorages.length }}</span>\n          </div>\n\n          <div class=\"form-grid anchorage-form-grid\">\n            <label class=\"wide\">\n              {{ t('anchorageLocation') }}\n              <input type=\"text\" [(ngModel)]=\"anchorageForm.location\" placeholder=\"Lérins, Baie des Milliardaires, Cap d’Antibes...\" />\n            </label>\n            <label class=\"wide\">\n              {{ t('comments') }}\n              <textarea rows=\"2\" [(ngModel)]=\"anchorageForm.comments\"></textarea>\n            </label>\n          </div>\n\n          <div class=\"form-actions mini-actions\">\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"addOrUpdateAnchorage()\">\n              {{ editingAnchorageId ? t('updateAnchorage') : t('dropAnchor') }}\n            </button>\n            <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"editingAnchorageId\" (click)=\"cancelAnchorageEdit()\">\n              {{ t('cancel') }}\n            </button>\n          </div>\n\n          <p class=\"empty\" *ngIf=\"currentAnchorages.length === 0\">{{ t('noAnchorages') }}</p>\n\n          <article class=\"anchorage-card\" *ngFor=\"let anchorage of currentAnchorages\">\n            <div class=\"anchorage-card-head\">\n              <div>\n                <h3>{{ anchorage.location }}</h3>\n                <p *ngIf=\"anchorage.arrivalTime || anchorage.departureTime\">\n                  {{ anchorage.arrivalTime || '—' }} → {{ anchorage.departureTime || '—' }}\n                </p>\n                <p *ngIf=\"anchorage.comments\">{{ anchorage.comments }}</p>\n              </div>\n              <div class=\"outing-actions\">\n                <span class=\"status\" [class.closed]=\"anchorage.status === 'closed'\">\n                  {{ anchorage.status === 'closed' ? t('anchorageClosed') : t('anchorageOpen') }}\n                </span>\n                <span class=\"status\" [class.closed]=\"anchorageChecklistComplete(anchorage)\">\n                  {{ countDone(anchorage.arrivalChecklistGroups[0]?.items) + countDone(anchorage.departureChecklistGroups[0]?.items) }} /\n                  {{ (anchorage.arrivalChecklistGroups[0]?.items.length || 0) + (anchorage.departureChecklistGroups[0]?.items.length || 0) }}\n                </span>\n                <button type=\"button\" class=\"detail-link\" *ngIf=\"anchorage.status !== 'closed'\" (click)=\"closeAnchorage(anchorage)\">{{ t('liftAnchor') }}</button>\n                <button type=\"button\" class=\"detail-link\" (click)=\"editAnchorage(anchorage)\">{{ t('edit') }}</button>\n                <button type=\"button\" class=\"detail-link danger\" (click)=\"removeAnchorage(anchorage)\">{{ t('delete') }}</button>\n              </div>\n            </div>\n\n            <div class=\"checklist-group\" *ngFor=\"let group of anchorage.arrivalChecklistGroups\">\n              <div class=\"checklist-subhead\">\n                <h3>{{ t('anchorageArrival') }}</h3>\n                <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n              </div>\n              <div class=\"checklist-grid\">\n                <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                  <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                  <span class=\"fake-radio\"></span>\n                  <span>\n                    {{ item.label[currentLanguage] || item.label.fr }}\n                    <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                  </span>\n                </label>\n              </div>\n            </div>\n\n            <div class=\"checklist-group\" *ngFor=\"let group of anchorage.departureChecklistGroups\">\n              <div class=\"checklist-subhead\">\n                <h3>{{ t('anchorageDeparture') }}</h3>\n                <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n              </div>\n              <div class=\"checklist-grid\">\n                <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                  <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                  <span class=\"fake-radio\"></span>\n                  <span>\n                    {{ item.label[currentLanguage] || item.label.fr }}\n                    <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                  </span>\n                </label>\n              </div>\n            </div>\n          </article>\n        </div>\n\n        <div class=\"form-actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"saving\" (click)=\"mode === 'create' ? createOuting() : updateOuting()\">\n            {{ saving ? t('saving') : (mode === 'create' ? t('create') : t('saveChanges')) }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('cancel') }}</button>\n        </div>\n\n        <div class=\"notice success\" *ngIf=\"saved\">{{ t('saved') }}</div>\n        <div class=\"notice error\" *ngIf=\"error\">{{ error }}</div>\n      </div>\n\n      <div class=\"outing-form-card\" *ngIf=\"mode === 'close' && selectedOuting\">\n        <div class=\"form-title-row\">\n          <div>\n            <h2>{{ t('closeTitle') }}</h2>\n            <p>{{ selectedOuting.outingType }} · {{ formatOutingDate(selectedOuting) }}</p>\n          </div>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('backToList') }}</button>\n        </div>\n\n        <div class=\"checklist-block\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('arrivalChecklist') }}</h2>\n            <span [class.complete]=\"arrivalChecklistComplete(selectedOuting.outingId)\">\n              {{ countDoneArrivalItems(selectedOuting.outingId) }} / {{ countArrivalItems(selectedOuting.outingId) }}\n            </span>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of arrivalChecklistGroupsByOuting[selectedOuting.outingId]\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">\n                {{ countDoneGroup(group) }} / {{ group.items.length }}\n              </span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>\n                  {{ item.label[currentLanguage] || item.label.fr }}\n                  <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                </span>\n              </label>\n            </div>\n          </div>\n        </div>\n\n        <label class=\"closure-comments\">\n          {{ t('closureComments') }}\n          <textarea rows=\"3\" [(ngModel)]=\"closureComments[selectedOuting.outingId]\"></textarea>\n        </label>\n\n        <div class=\"form-actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"closingId === selectedOuting.outingId\" (click)=\"closeOuting(selectedOuting)\">\n            {{ closingId === selectedOuting.outingId ? t('closing') : t('close') }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('cancel') }}</button>\n        </div>\n        <div class=\"notice error\" *ngIf=\"closeError\">{{ closeError }}</div>\n      </div>\n    </ng-container>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -2499,6 +2705,17 @@ h1 {
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
+
+/***/ }),
+
+/***/ 29118:
+/*!******************************************************************************!*\
+  !*** ./src/app/home/booking-detail/booking-detail.component.html?ngResource ***!
+  \******************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <p *ngIf=\"loading\" class=\"muted\">Loading booking...</p>\n\n    <article class=\"booking-detail-card\" *ngIf=\"!loading && booking\">\n      <span class=\"eyebrow\">Booking detail</span>\n      <h1>{{ booking.outingType }}</h1>\n      <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>\n\n      <div class=\"detail-grid\">\n        <div><strong>Customer</strong><span>{{ booking.customerName }}</span></div>\n        <div><strong>Email</strong><span>{{ booking.email }}</span></div>\n        <div><strong>Phone</strong><span>{{ booking.phone || '-' }}</span></div>\n        <div><strong>Passengers</strong><span>{{ booking.passengers || '-' }}</span></div>\n        <div><strong>Total price</strong><span>€{{ booking.totalPrice || 0 }}</span></div>\n        <div><strong>Deposit</strong><span>{{ booking.depositStatus || 'pending' }}</span></div>\n        <div><strong>Warranty</strong><span>{{ booking.warrantyStatus || 'not_registered' }}</span></div>\n        <div><strong>Status</strong><span>{{ booking.bookingStatus || 'requested' }}</span></div>\n      </div>\n\n      <p class=\"comments\" *ngIf=\"booking.comments\">{{ booking.comments }}</p>\n\n      <button class=\"btn btn-primary\" type=\"button\" (click)=\"goToPayment()\">Open payment page</button>\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -3564,14 +3781,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AdminOutingDetailComponent: () => (/* binding */ AdminOutingDetailComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _admin_outing_detail_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin-outing-detail.component.html?ngResource */ 96678);
 /* harmony import */ var _admin_outing_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./admin-outing-detail.component.scss?ngResource */ 90810);
 /* harmony import */ var _admin_outing_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_admin_outing_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ 93262);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
 /* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+
 
 
 
@@ -3587,6 +3806,7 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
   mainSvc;
   storeDb;
   utilSvc;
+  http;
   currentLanguage = 'fr';
   loggedUser = null;
   outingId = '';
@@ -3594,7 +3814,14 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
   departureChecklistGroups = [];
   arrivalChecklist = [];
   arrivalChecklistGroups = [];
+  currentAnchorages = [];
+  anchorageForm = {
+    location: '',
+    comments: ''
+  };
+  editingAnchorageId = '';
   loading = false;
+  restDatabaseUrls = ['https://adn-dev-4d05d-default-rtdb.europe-west1.firebasedatabase.app', 'https://adn-dev-4d05d-default-rtdb.firebaseio.com', 'https://adn-dev-4d05d.firebaseio.com'];
   saving = false;
   saved = false;
   error = '';
@@ -3605,13 +3832,14 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
   };
   languageSub;
   userSub;
-  constructor(route, router, languageService, mainSvc, storeDb, utilSvc) {
+  constructor(route, router, languageService, mainSvc, storeDb, utilSvc, http) {
     this.route = route;
     this.router = router;
     this.languageService = languageService;
     this.mainSvc = mainSvc;
     this.storeDb = storeDb;
     this.utilSvc = utilSvc;
+    this.http = http;
   }
   ngOnInit() {
     this.outingId = this.route.snapshot.paramMap.get('outingId') || '';
@@ -3678,6 +3906,7 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
         _this.departureChecklistGroups = _this.fromStoredGroups(raw.departureChecklistGroups, _this.buildDepartureChecklistGroups());
         _this.arrivalChecklistGroups = _this.arrivalGroupsFromOuting(raw);
         _this.arrivalChecklist = _this.flattenChecklistGroups(_this.arrivalChecklistGroups);
+        _this.currentAnchorages = _this.anchoragesFromOuting(raw);
       } catch (e) {
         _this.error = e?.message || _this.t('loadError');
       } finally {
@@ -3702,7 +3931,8 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
           departureChecklist: _this2.serializeChecklist(_this2.flattenChecklistGroups(_this2.departureChecklistGroups)),
           departureChecklistGroups: _this2.serializeChecklistGroups(_this2.departureChecklistGroups),
           arrivalChecklist: _this2.serializeChecklist(_this2.flattenChecklistGroups(_this2.arrivalChecklistGroups)),
-          arrivalChecklistGroups: _this2.serializeChecklistGroups(_this2.arrivalChecklistGroups)
+          arrivalChecklistGroups: _this2.serializeChecklistGroups(_this2.arrivalChecklistGroups),
+          anchorages: _this2.serializeAnchorages(_this2.currentAnchorages)
         };
         yield _this2.saveToFirebase(payload.outingId, payload);
         _this2.outing = payload;
@@ -3734,10 +3964,9 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
     var _this4 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!_this4.outing) return;
-      if (!_this4.arrivalComplete) {
-        _this4.error = _this4.t('arrivalRequired');
-        return;
-      }
+      // The log can be closed even if the arrival checklist is not fully complete.
+      // Incomplete checklist items are still saved with their current state for operational follow-up.
+      _this4.error = '';
       _this4.outing.status = 'closed';
       _this4.outing.closedTS = Date.now();
       yield _this4.saveDetails();
@@ -3816,37 +4045,338 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
   getFromFirebase(id) {
     var _this5 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const collectionName = _this5.outingsCollectionName;
       const store = _this5.storeDb;
       const util = _this5.utilSvc;
-      if (typeof store.getObject !== 'function') return null;
-      try {
-        return yield store.getObject(util.backendFBstoreId, util.mdb, _this5.outingsCollectionName, id);
-      } catch {
-        try {
-          return yield store.getObject(_this5.outingsCollectionName, id);
-        } catch {
-          return null;
+      const dbCandidates = [util?.mdb, store?.backendFbRef?.database, store?.backendFbRef?.['database'], store?.firebaseBSSdata?.database].filter((db, index, array) => db && typeof db.ref === 'function' && array.indexOf(db) === index);
+      for (const db of dbCandidates) {
+        const direct = yield _this5.readDatabasePath(db, `${collectionName}/${id}`);
+        if (direct) return {
+          ...direct,
+          outingId: direct.outingId || id
+        };
+      }
+      if (typeof store.getObject === 'function') {
+        const candidates = [() => store.getObject(collectionName, id), () => store.getObject(`/${collectionName}/${id}`), () => store.getObject(collectionName, id, -1), () => store.getObject(undefined, util.mdb, collectionName, id), () => store.getObject(util.backendFBstoreId, util.mdb, collectionName, id), () => store.getObject('1000', util.mdb, collectionName, id)];
+        for (const candidate of candidates) {
+          try {
+            const value = yield candidate();
+            const extracted = _this5.extractSingleOuting(value, id);
+            if (extracted) return extracted;
+          } catch {}
         }
+      }
+      const memoryCandidates = [store.firebaseBSSdata?.[collectionName]?.[id], store.firebaseBSSdata?.['1000']?.[collectionName]?.[id], store.firebaseBSSdata?.[util.backendFBstoreId]?.[collectionName]?.[id], store?.data?.[collectionName]?.[id], store?.data?.['1000']?.[collectionName]?.[id], store?.[collectionName]?.[id]];
+      for (const value of memoryCandidates) {
+        const extracted = _this5.extractSingleOuting(value, id);
+        if (extracted) return extracted;
+      }
+      return yield _this5.readSingleOutingViaRest(id);
+    })();
+  }
+  readDatabasePath(db, path) {
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      try {
+        const cleanPath = path.replace(/^\/+/, '');
+        const snapshot = yield db.ref(cleanPath).once('value');
+        return snapshot && typeof snapshot.val === 'function' ? snapshot.val() : null;
+      } catch {
+        return null;
       }
     })();
   }
-  saveToFirebase(id, payload) {
+  extractSingleOuting(value, id) {
+    if (!value) return null;
+    const collectionName = this.outingsCollectionName;
+    const candidate = value?.[collectionName]?.[id] || value?.['1000']?.[collectionName]?.[id] || value?.[id] || value;
+    if (candidate && typeof candidate === 'object' && (candidate.outingId || candidate.departureDate || candidate.outingType)) {
+      return {
+        ...candidate,
+        outingId: candidate.outingId || id
+      };
+    }
+    return null;
+  }
+  readSingleOutingViaRest(id) {
     var _this6 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const store = _this6.storeDb;
-      const util = _this6.utilSvc;
+      const paths = [`${_this6.outingsCollectionName}/${id}`, `1000/${_this6.outingsCollectionName}/${id}`];
+      for (const baseUrl of _this6.restDatabaseUrls) {
+        for (const path of paths) {
+          try {
+            const url = `${baseUrl.replace(/\/+$/, '')}/${path}.json`;
+            const value = yield _this6.http.get(url).toPromise();
+            const extracted = _this6.extractSingleOuting(value, id);
+            if (extracted) return extracted;
+          } catch {}
+        }
+      }
+      return null;
+    })();
+  }
+  saveToFirebase(id, payload) {
+    var _this7 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const store = _this7.storeDb;
+      const util = _this7.utilSvc;
       if (typeof store.updateObject !== 'function') {
         throw new Error('Firebase updateObject is not available.');
       }
+      // Current Firebase structure uses root /bnAdminOutings.
       try {
-        yield store.updateObject(util.backendFBstoreId, util.mdb, _this6.outingsCollectionName, payload, id);
+        yield store.updateObject(_this7.outingsCollectionName, payload, id);
       } catch {
-        yield store.updateObject(_this6.outingsCollectionName, id, payload);
+        try {
+          yield store.updateObject(_this7.outingsCollectionName, id, payload);
+        } catch {
+          yield store.updateObject(util.backendFBstoreId, util.mdb, _this7.outingsCollectionName, payload, id);
+        }
       }
     })();
   }
   get outingsCollectionName() {
     return 'bnAdminOutings';
+  }
+  emptyAnchorageForm() {
+    return {
+      location: '',
+      comments: ''
+    };
+  }
+  currentTimeForInput() {
+    const d = new Date();
+    return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  }
+  addOrUpdateAnchorage() {
+    if (!this.anchorageForm.location) return;
+    if (this.editingAnchorageId) {
+      this.currentAnchorages = this.currentAnchorages.map(anchorage => anchorage.anchorageId === this.editingAnchorageId ? {
+        ...anchorage,
+        location: this.anchorageForm.location,
+        comments: this.anchorageForm.comments || ''
+      } : anchorage);
+    } else {
+      const now = Date.now();
+      this.currentAnchorages = [...this.currentAnchorages, {
+        anchorageId: `anchorage_${now}_${Math.random().toString(36).slice(2, 8)}`,
+        location: this.anchorageForm.location,
+        comments: this.anchorageForm.comments || '',
+        arrivalTime: this.currentTimeForInput(),
+        departureTime: '',
+        status: 'open',
+        anchorDroppedAt: now,
+        anchorLiftedAt: null,
+        arrivalChecklistGroups: this.buildAnchorageArrivalChecklistGroups(),
+        departureChecklistGroups: this.buildAnchorageDepartureChecklistGroups()
+      }];
+    }
+    this.anchorageForm = this.emptyAnchorageForm();
+    this.editingAnchorageId = '';
+  }
+  closeAnchorage(anchorage) {
+    const now = Date.now();
+    anchorage.status = 'closed';
+    anchorage.anchorLiftedAt = now;
+    anchorage.departureTime = anchorage.departureTime || this.currentTimeForInput();
+    const anchorUp = (anchorage.departureChecklistGroups || []).flatMap(group => group.items || []).find(item => item.id === 'anchor_up');
+    if (anchorUp && !anchorUp.done) {
+      anchorUp.done = true;
+      anchorUp.doneBy = this.getLoggedUserName();
+      anchorUp.doneByUid = this.loggedUser?.userId || this.loggedUser?.uid || '';
+      anchorUp.doneAt = now;
+    }
+  }
+  editAnchorage(anchorage) {
+    this.editingAnchorageId = anchorage.anchorageId;
+    this.anchorageForm = {
+      location: anchorage.location || '',
+      comments: anchorage.comments || ''
+    };
+  }
+  cancelAnchorageEdit() {
+    this.editingAnchorageId = '';
+    this.anchorageForm = this.emptyAnchorageForm();
+  }
+  removeAnchorage(anchorage) {
+    this.currentAnchorages = this.currentAnchorages.filter(item => item.anchorageId !== anchorage.anchorageId);
+    if (this.editingAnchorageId === anchorage.anchorageId) this.cancelAnchorageEdit();
+  }
+  anchorageChecklistComplete(anchorage) {
+    const groups = [...(anchorage.arrivalChecklistGroups || []), ...(anchorage.departureChecklistGroups || [])];
+    return groups.length > 0 && groups.every(group => group.items.every(item => item.done));
+  }
+  serializeAnchorages(anchorages) {
+    return (anchorages || []).map(anchorage => ({
+      anchorageId: anchorage.anchorageId,
+      location: anchorage.location || '',
+      arrivalTime: anchorage.arrivalTime || '',
+      departureTime: anchorage.departureTime || '',
+      comments: anchorage.comments || '',
+      status: anchorage.status || (anchorage.departureTime ? 'closed' : 'open'),
+      anchorDroppedAt: anchorage.anchorDroppedAt || null,
+      anchorLiftedAt: anchorage.anchorLiftedAt || null,
+      arrivalChecklist: this.serializeChecklist(this.flattenChecklistGroups(anchorage.arrivalChecklistGroups || [])),
+      arrivalChecklistGroups: this.serializeChecklistGroups(anchorage.arrivalChecklistGroups || []),
+      departureChecklist: this.serializeChecklist(this.flattenChecklistGroups(anchorage.departureChecklistGroups || [])),
+      departureChecklistGroups: this.serializeChecklistGroups(anchorage.departureChecklistGroups || [])
+    }));
+  }
+  anchoragesFromOuting(outing) {
+    const raw = Array.isArray(outing.anchorages) ? outing.anchorages : [];
+    return raw.map(anchorage => ({
+      anchorageId: anchorage.anchorageId || `anchorage_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+      location: anchorage.location || '',
+      arrivalTime: anchorage.arrivalTime || '',
+      departureTime: anchorage.departureTime || '',
+      comments: anchorage.comments || '',
+      status: anchorage.status || (anchorage.departureTime ? 'closed' : 'open'),
+      anchorDroppedAt: anchorage.anchorDroppedAt || null,
+      anchorLiftedAt: anchorage.anchorLiftedAt || null,
+      arrivalChecklistGroups: this.fromStoredGroups(anchorage.arrivalChecklistGroups, this.buildAnchorageArrivalChecklistGroups()),
+      departureChecklistGroups: this.fromStoredGroups(anchorage.departureChecklistGroups, this.buildAnchorageDepartureChecklistGroups())
+    }));
+  }
+  buildAnchorageArrivalChecklistGroups() {
+    return [{
+      id: 'anchorage_arrival',
+      title: {
+        fr: 'Ancre jetée',
+        en: 'Anchor dropped',
+        es: 'Ancla echada'
+      },
+      items: [{
+        id: 'choose_spot',
+        done: false,
+        label: {
+          fr: 'Choisir un spot : fond sableux entre 5 m et 10 m',
+          en: 'Choose a spot: sandy bottom with 5m to 10m depth',
+          es: 'Elegir un lugar: fondo arenoso entre 5 m y 10 m'
+        }
+      }, {
+        id: 'face_wind_anchor',
+        done: false,
+        label: {
+          fr: 'Se mettre face au vent et mouiller l’ancre',
+          en: 'Face into the wind and set the anchor',
+          es: 'Ponerse proa al viento y fondear'
+        }
+      }, {
+        id: 'anchor_bridle',
+        done: false,
+        label: {
+          fr: 'Une fois l’ancre prise, installer la bride de mouillage',
+          en: 'Once set, attach the anchor bridle',
+          es: 'Una vez fijada, colocar la brida del ancla'
+        }
+      }, {
+        id: 'check_anchor_not_dragging',
+        done: false,
+        label: {
+          fr: 'Vérifier que l’ancre ne chasse pas avant d’éteindre le moteur',
+          en: 'Check that the anchor is not dragging before turning off the engine',
+          es: 'Comprobar que el ancla no garrea antes de apagar el motor'
+        }
+      }, {
+        id: 'release_security_lines',
+        done: false,
+        label: {
+          fr: 'Relâcher les lignes de sécurité',
+          en: 'Release the security lines',
+          es: 'Soltar las líneas de seguridad'
+        }
+      }, {
+        id: 'swimming_ladder_down',
+        done: false,
+        label: {
+          fr: 'Descendre l’échelle de bain',
+          en: 'Put down the swimming ladder',
+          es: 'Bajar la escalera de baño'
+        }
+      }, {
+        id: 'toys_setup',
+        done: false,
+        label: {
+          fr: 'Installer les jouets nautiques',
+          en: 'Set up the toys',
+          es: 'Preparar los juguetes acuáticos'
+        }
+      }]
+    }];
+  }
+  buildAnchorageDepartureChecklistGroups() {
+    return [{
+      id: 'anchorage_departure',
+      title: {
+        fr: 'Ancre levée',
+        en: 'Anchor lifted',
+        es: 'Ancla levantada'
+      },
+      items: [{
+        id: 'everyone_aboard',
+        done: false,
+        label: {
+          fr: 'Vérifier que tout le monde est à bord',
+          en: 'Make sure everyone is aboard',
+          es: 'Comprobar que todos están a bordo'
+        }
+      }, {
+        id: 'equipment_aboard',
+        done: false,
+        label: {
+          fr: 'Vérifier que tout le matériel est à bord',
+          en: 'Make sure all equipment is aboard',
+          es: 'Comprobar que todo el equipo está a bordo'
+        }
+      }, {
+        id: 'swimming_ladder_up',
+        done: false,
+        label: {
+          fr: 'Remonter l’échelle de bain',
+          en: 'Bring up the swimming ladder',
+          es: 'Subir la escalera de baño'
+        }
+      }, {
+        id: 'attach_security_lines',
+        done: false,
+        label: {
+          fr: 'Attacher les lignes de sécurité',
+          en: 'Attach security lines',
+          es: 'Fijar las líneas de seguridad'
+        }
+      }, {
+        id: 'anchoring_engine_on',
+        done: false,
+        label: {
+          fr: 'Démarrer le moteur',
+          en: 'Engine on',
+          es: 'Encender motor'
+        }
+      }, {
+        id: 'anchor_up',
+        done: false,
+        label: {
+          fr: 'Remonter l’ancre',
+          en: 'Bring the anchor up',
+          es: 'Subir el ancla'
+        }
+      }, {
+        id: 'remove_anchor_bridle',
+        done: false,
+        label: {
+          fr: 'Retirer la bride de mouillage',
+          en: 'Remove the anchor bridle',
+          es: 'Retirar la brida del ancla'
+        }
+      }, {
+        id: 'confirm_anchor_in_place',
+        done: false,
+        label: {
+          fr: 'Confirmer que l’ancre est en place avant de repartir',
+          en: 'Confirm the anchor is in place before moving off',
+          es: 'Confirmar que el ancla está en su sitio antes de avanzar'
+        }
+      }]
+    }];
   }
   buildDepartureChecklistGroups() {
     return [{
@@ -3885,7 +4415,7 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
         done: false,
         label: {
           fr: 'Préparer le journal de bord avec la page de signature passagers',
-          en: 'Start log book including the page for guests to sign in',
+          en: 'Start the logbook including the page for guests to sign in',
           es: 'Preparar el libro de navegación con la página de firma de pasajeros'
         }
       }, {
@@ -3929,11 +4459,11 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
           es: 'Preparar el desayuno'
         }
       }, {
-        id: 'install_passerelle',
+        id: 'install_foot_bridge',
         done: false,
         label: {
           fr: 'Installer la passerelle',
-          en: 'Install passerelle',
+          en: 'Install foot bridge',
           es: 'Instalar la pasarela'
         }
       }, {
@@ -3943,6 +4473,22 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
           fr: 'Débrancher la connexion électrique',
           en: 'Remove electric connection',
           es: 'Desconectar la conexión eléctrica'
+        }
+      }, {
+        id: 'invertor_on',
+        done: false,
+        label: {
+          fr: 'Allumer l’inverter',
+          en: 'Turn on the invertor',
+          es: 'Encender el inversor'
+        }
+      }, {
+        id: 'prep_stern_lines_no_wind',
+        done: false,
+        label: {
+          fr: 'S’il n’y a pas de vent, préparer les amarres arrière',
+          en: 'If there is no wind, prep the stern lines',
+          es: 'Si no hay viento, preparar las amarras de popa'
         }
       }]
     }, {
@@ -3957,7 +4503,7 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
         done: false,
         label: {
           fr: 'Accueillir les passagers à bord',
-          en: 'Welcome aboard',
+          en: 'Welcome the clients aboard',
           es: 'Dar la bienvenida a bordo'
         }
       }, {
@@ -4057,11 +4603,11 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
           es: 'Motor encendido'
         }
       }, {
-        id: 'passerelle_in',
+        id: 'foot_bridge_in',
         done: false,
         label: {
           fr: 'Rentrer la passerelle',
-          en: 'Passerelle brought in',
+          en: 'Foot bridge brought in',
           es: 'Recoger la pasarela'
         }
       }]
@@ -4073,20 +4619,20 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
         es: 'Salida'
       },
       items: [{
-        id: 'permission_leave',
+        id: 'permission_leave_vhf09',
         done: false,
         label: {
-          fr: 'Le capitaine demande l’autorisation de quitter le port',
-          en: 'Captain requests permission to leave',
-          es: 'El capitán solicita permiso para salir'
+          fr: 'Le capitaine demande l’autorisation de quitter le port – VHF 09',
+          en: 'Captain requests permission to leave – VHF 09',
+          es: 'El capitán solicita permiso para salir – VHF 09'
         }
       }, {
         id: 'gear_stern_lines',
         done: false,
         label: {
-          fr: 'Bateau en marche arrière, préparation des amarres arrière',
-          en: 'Boat in gear backwards, prepare stern lines',
-          es: 'Barco en marcha atrás, preparar amarras de popa'
+          fr: 'Bateau en marche arrière, préparation des amarres arrière sauf si déjà préparées',
+          en: 'Boat in gear backwards, prepare stern lines unless already prepped',
+          es: 'Barco en marcha atrás, preparar amarras de popa salvo si ya están preparadas'
         }
       }, {
         id: 'lines_off',
@@ -4113,19 +4659,35 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
           es: 'Fuera del puerto, mostrar el recorrido de seguridad al responsable'
         }
       }, {
+        id: 'switch_vhf16',
+        done: false,
+        label: {
+          fr: 'Passer sur le canal VHF 16',
+          en: 'Switch to VHF channel 16',
+          es: 'Cambiar al canal VHF 16'
+        }
+      }, {
         id: 'fenders_up',
         done: false,
         label: {
           fr: 'Remonter les pare-battages',
-          en: 'Bring up fenders',
+          en: 'Bring up the fenders',
           es: 'Subir defensas'
+        }
+      }, {
+        id: 'fasten_security_lines',
+        done: false,
+        label: {
+          fr: 'Fixer les lignes de sécurité',
+          en: 'Fasten the security lines',
+          es: 'Fijar las líneas de seguridad'
         }
       }, {
         id: 'breakfast_cleanup',
         done: false,
         label: {
           fr: 'Ranger le petit-déjeuner',
-          en: 'Breakfast clean up',
+          en: 'Breakfast clean-up',
           es: 'Recoger el desayuno'
         }
       }]
@@ -4133,19 +4695,27 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
   }
   buildArrivalChecklistGroups() {
     return [{
-      id: 'return_entrance_to_port',
+      id: 'return',
       title: {
-        fr: '1.1. Entrée au port',
-        en: '1.1. Entrance to the port',
-        es: '1.1. Entrada al puerto'
+        fr: 'Retour au port',
+        en: 'Return',
+        es: 'Regreso al puerto'
       },
       items: [{
-        id: 'return_permission_enter',
+        id: 'return_permission_enter_vhf09',
         done: false,
         label: {
-          fr: 'À 1/2 mille nautique du port, demander l’autorisation d’entrer',
-          en: 'At 1/2 NM from harbour request permission to enter',
-          es: 'A 1/2 milla náutica del puerto, solicitar permiso para entrar'
+          fr: 'À 1/2 mille nautique du port, demander l’autorisation d’entrer – VHF 09',
+          en: 'At 1/2 NM from harbour request permission to enter – VHF 09',
+          es: 'A 1/2 milla náutica del puerto, solicitar permiso para entrar – VHF 09'
+        }
+      }, {
+        id: 'return_security_lines_off',
+        done: false,
+        label: {
+          fr: 'Retirer les lignes de sécurité',
+          en: 'Security lines off',
+          es: 'Quitar las líneas de seguridad'
         }
       }, {
         id: 'return_fenders_down',
@@ -4188,11 +4758,11 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
           es: 'Apagar motores'
         }
       }, {
-        id: 'return_install_passerelle',
+        id: 'return_install_foot_bridge',
         done: false,
         label: {
           fr: 'Installer la passerelle',
-          en: 'Install passerelle',
+          en: 'Install foot bridge',
           es: 'Instalar la pasarela'
         }
       }, {
@@ -4213,11 +4783,11 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
         }
       }]
     }, {
-      id: 'return_tidy_up',
+      id: 'tidy_up',
       title: {
-        fr: '1.2. Rangement',
-        en: '1.2. Tidy up',
-        es: '1.2. Ordenar'
+        fr: 'Rangement',
+        en: 'Tidy up',
+        es: 'Ordenar'
       },
       items: [{
         id: 'tidy_remove_front_cushions',
@@ -4231,9 +4801,9 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
         id: 'tidy_attach_bow_ropes',
         done: false,
         label: {
-          fr: 'Attacher les amarres avant / pendilles',
-          en: 'Attach bow ropes (pendi)',
-          es: 'Amarrar cabos de proa / pendille'
+          fr: 'Attacher les amarres avant / lazy lines',
+          en: 'Attach bow ropes (lazy lines)',
+          es: 'Amarrar cabos de proa / lazy lines'
         }
       }, {
         id: 'tidy_review_lines',
@@ -4252,28 +4822,36 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
           es: 'Conectar electricidad'
         }
       }, {
-        id: 'tidy_clean_galley_bins_fridge',
+        id: 'tidy_invertor_off',
         done: false,
         label: {
-          fr: 'Nettoyer la cuisine, trier les poubelles et le réfrigérateur',
-          en: 'Clean up galley, sort out bins and fridge',
-          es: 'Limpiar cocina, ordenar basura y nevera'
+          fr: 'Éteindre l’inverter',
+          en: 'Turn off invertor',
+          es: 'Apagar el inversor'
         }
       }, {
-        id: 'tidy_replace_security_bars',
+        id: 'tidy_galley_bins_fridge',
+        done: false,
+        label: {
+          fr: 'Nettoyer la cuisine, trier les poubelles et le frigo',
+          en: 'Clean up galley, sort out bins and fridge',
+          es: 'Limpiar la cocina, ordenar papeleras y nevera'
+        }
+      }, {
+        id: 'tidy_security_bars',
         done: false,
         label: {
           fr: 'Remettre les barres de sécurité',
           en: 'Replace security bars',
-          es: 'Volver a colocar barras de seguridad'
+          es: 'Volver a colocar las barras de seguridad'
         }
       }]
     }, {
-      id: 'return_leave_boat',
+      id: 'leave_boat',
       title: {
-        fr: '1.3. Quitter le bateau',
-        en: '1.3. Leave boat',
-        es: '1.3. Salir del barco'
+        fr: 'Quitter le bateau',
+        en: 'Leave boat',
+        es: 'Dejar el barco'
       },
       items: [{
         id: 'leave_close_hatches',
@@ -4354,7 +4932,7 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
         notFound: 'Sortie introuvable.',
         loadError: 'Impossible de charger la sortie.',
         saveError: 'Impossible d’enregistrer la sortie.',
-        arrivalRequired: 'La checklist arrivée au port doit être complète pour clôturer.',
+        arrivalRequired: 'La checklist arrivée au port peut rester partielle : le log est sauvegardable et clôturable.',
         outingType: 'Type de sortie',
         passengers: 'Passagers',
         departureDate: 'Jour de départ',
@@ -4370,7 +4948,19 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
         closureComments: 'Commentaires de clôture',
         departureChecklist: 'Checklists de départ',
         arrivalChecklist: 'Checklist arrivée au port',
-        validatedBy: 'Validé par'
+        validatedBy: 'Validé par',
+        anchorages: 'Mouillages',
+        anchorageLocation: 'Lieu du mouillage',
+        dropAnchor: 'Jeter l’ancre / créer le mouillage',
+        liftAnchor: 'Lever l’ancre / fermer le mouillage',
+        anchorageOpen: 'Mouillage ouvert',
+        anchorageClosed: 'Mouillage fermé',
+        anchorageArrival: 'Checklist ancre jetée',
+        anchorageDeparture: 'Checklist ancre levée',
+        delete: 'Supprimer',
+        edit: 'Modifier',
+        cancel: 'Annuler',
+        updateAnchorage: 'Modifier le mouillage'
       },
       en: {
         eyebrow: 'Administration',
@@ -4387,7 +4977,7 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
         notFound: 'Outing not found.',
         loadError: 'Unable to load outing.',
         saveError: 'Unable to save outing.',
-        arrivalRequired: 'The arrival in port checklist must be complete before closing.',
+        arrivalRequired: 'The arrival checklist can remain partial: the log can still be saved and closed.',
         outingType: 'Outing type',
         passengers: 'Passengers',
         departureDate: 'Departure date',
@@ -4403,7 +4993,19 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
         closureComments: 'Closure comments',
         departureChecklist: 'Departure checklists',
         arrivalChecklist: 'Arrival in port checklist',
-        validatedBy: 'Validated by'
+        validatedBy: 'Validated by',
+        anchorages: 'Anchorages',
+        anchorageLocation: 'Anchorage location',
+        dropAnchor: 'Drop anchor / create anchorage',
+        liftAnchor: 'Lift anchor / close anchorage',
+        anchorageOpen: 'Anchorage open',
+        anchorageClosed: 'Anchorage closed',
+        anchorageArrival: 'Anchor dropped checklist',
+        anchorageDeparture: 'Anchor lifted checklist',
+        delete: 'Delete',
+        edit: 'Edit',
+        cancel: 'Cancel',
+        updateAnchorage: 'Update anchorage'
       },
       es: {
         eyebrow: 'Administración',
@@ -4420,7 +5022,7 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
         notFound: 'Salida no encontrada.',
         loadError: 'No se puede cargar la salida.',
         saveError: 'No se puede guardar la salida.',
-        arrivalRequired: 'La checklist de llegada a puerto debe estar completa para cerrar.',
+        arrivalRequired: 'La checklist de llegada puede quedar parcial: el log se puede guardar y cerrar.',
         outingType: 'Tipo de salida',
         passengers: 'Pasajeros',
         departureDate: 'Fecha de salida',
@@ -4436,7 +5038,19 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
         closureComments: 'Comentarios de cierre',
         departureChecklist: 'Checklists de salida',
         arrivalChecklist: 'Checklist de llegada a puerto',
-        validatedBy: 'Validado por'
+        validatedBy: 'Validado por',
+        anchorages: 'Fondeos',
+        anchorageLocation: 'Lugar de fondeo',
+        dropAnchor: 'Echar el ancla / crear fondeo',
+        liftAnchor: 'Levantar el ancla / cerrar fondeo',
+        anchorageOpen: 'Fondeo abierto',
+        anchorageClosed: 'Fondeo cerrado',
+        anchorageArrival: 'Checklist ancla echada',
+        anchorageDeparture: 'Checklist ancla levantada',
+        delete: 'Eliminar',
+        edit: 'Modificar',
+        cancel: 'Cancelar',
+        updateAnchorage: 'Actualizar fondeo'
       }
     };
     return labels[this.currentLanguage]?.[key] || labels.en[key] || key;
@@ -4453,9 +5067,11 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
     type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.StoreDbService
   }, {
     type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.UtilsService
+  }, {
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__.HttpClient
   }];
 };
-AdminOutingDetailComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
+AdminOutingDetailComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
   selector: 'app-admin-outing-detail',
   template: _admin_outing_detail_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_admin_outing_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
@@ -4486,12 +5102,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeModule: () => (/* binding */ HomeModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @angular/router */ 99585);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @ionic/angular */ 21507);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! @ionic/angular */ 21507);
 /* harmony import */ var _home_router_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home.router.module */ 61506);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
@@ -4516,6 +5132,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./admin-manage-outings/admin-manage-outings.component */ 41678);
 /* harmony import */ var _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./guest-faq/guest-faq.component */ 30066);
 /* harmony import */ var _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./guest-journey/guest-journey.component */ 35822);
+/* harmony import */ var _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./bookings/bookings.component */ 88636);
+/* harmony import */ var _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./my-bookings/my-bookings.component */ 18170);
+/* harmony import */ var _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./booking-detail/booking-detail.component */ 82474);
+
+
+
 
 
 
@@ -4547,9 +5169,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let HomeModule = class HomeModule {};
-HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_24__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_25__.NgModule)({
-  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent, _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__.SafetyInstructionsComponent, _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_13__.DepositComponent, _checklist_checklist_component__WEBPACK_IMPORTED_MODULE_14__.ChecklistComponent, _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_15__.AccountSummaryComponent, _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_16__.MyProfileComponent, _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.MyFeedbacksComponent, _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_18__.AdminFeedbacksComponent, _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_19__.AdminOutingsComponent, _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_20__.AdminOutingDetailComponent, _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_21__.AdminManageOutingsComponent, _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_22__.GuestFaqComponent, _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_23__.GuestJourneyComponent],
-  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_26__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_27__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_28__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_29__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule]
+HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_27__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_28__.NgModule)({
+  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent, _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__.SafetyInstructionsComponent, _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_13__.DepositComponent, _checklist_checklist_component__WEBPACK_IMPORTED_MODULE_14__.ChecklistComponent, _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_15__.AccountSummaryComponent, _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_16__.MyProfileComponent, _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.MyFeedbacksComponent, _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_18__.AdminFeedbacksComponent, _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_19__.AdminOutingsComponent, _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_20__.AdminOutingDetailComponent, _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_21__.AdminManageOutingsComponent, _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_22__.GuestFaqComponent, _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_23__.GuestJourneyComponent, _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_24__.BookingsComponent, _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_25__.MyBookingsComponent, _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_26__.BookingDetailComponent],
+  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_29__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_30__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_31__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_32__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule]
 })], HomeModule);
 
 
@@ -6487,9 +7109,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeRoutingModule: () => (/* binding */ HomeRoutingModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @angular/router */ 99585);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
 /* harmony import */ var _boat_boat_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./boat/boat.component */ 36424);
@@ -6513,6 +7135,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./admin-manage-outings/admin-manage-outings.component */ 41678);
 /* harmony import */ var _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./guest-faq/guest-faq.component */ 30066);
 /* harmony import */ var _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./guest-journey/guest-journey.component */ 35822);
+/* harmony import */ var _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./bookings/bookings.component */ 88636);
+/* harmony import */ var _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./my-bookings/my-bookings.component */ 18170);
+/* harmony import */ var _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./booking-detail/booking-detail.component */ 82474);
+
+
+
 
 
 
@@ -6593,16 +7221,19 @@ const routes = [{
   component: _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__.GuestJourneyComponent
 }, {
   path: 'my-bookings',
-  component: _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__.AccountSummaryComponent,
-  data: {
-    section: 'bookings'
-  }
+  component: _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__.MyBookingsComponent
 }, {
   path: 'my-payments',
   component: _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__.AccountSummaryComponent,
   data: {
     section: 'payments'
   }
+}, {
+  path: 'bookings/:bookingId',
+  component: _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__.BookingDetailComponent
+}, {
+  path: 'payment/:bookingId',
+  component: _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_12__.DepositComponent
 }, {
   path: 'my-profile',
   component: _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_15__.MyProfileComponent
@@ -6617,6 +7248,12 @@ const routes = [{
   path: 'admin/feedbacks',
   component: _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.AdminFeedbacksComponent
 }, {
+  path: 'admin/bookings',
+  component: _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__.BookingsComponent
+}, {
+  path: 'admin/bookings/:bookingId',
+  component: _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__.BookingDetailComponent
+}, {
   path: 'admin/outings',
   component: _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingsComponent
 }, {
@@ -6627,10 +7264,209 @@ const routes = [{
   component: _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__.AdminManageOutingsComponent
 }];
 let HomeRoutingModule = class HomeRoutingModule {};
-HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_23__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_24__.NgModule)({
-  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_25__.RouterModule.forChild(routes)],
-  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_25__.RouterModule]
+HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_26__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_27__.NgModule)({
+  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_28__.RouterModule.forChild(routes)],
+  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_28__.RouterModule]
 })], HomeRoutingModule);
+
+
+/***/ }),
+
+/***/ 62992:
+/*!******************************************************************!*\
+  !*** ./src/app/home/bookings/bookings.component.scss?ngResource ***!
+  \******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.booking-page {
+  padding: 80px 0;
+  background: #f6f2ea;
+  min-height: 70vh;
+}
+
+.booking-shell {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.section-head {
+  margin-bottom: 28px;
+  max-width: 760px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: #b58b4a;
+  font-weight: 700;
+}
+
+h1 {
+  color: #08263a;
+  margin: 8px 0;
+}
+
+.booking-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.booking-card, .booking-detail-card, .empty-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 18px 45px rgba(8, 38, 58, 0.08);
+  border: 1px solid rgba(8, 38, 58, 0.08);
+}
+
+.booking-card h2 {
+  margin: 12px 0 8px;
+  color: #08263a;
+  font-size: 1.25rem;
+}
+
+.booking-card p {
+  margin: 4px 0;
+  color: #516070;
+}
+
+.status-pill {
+  display: inline-flex;
+  border-radius: 999px;
+  background: rgba(181, 139, 74, 0.12);
+  color: #8a652d;
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.booking-meta {
+  display: grid;
+  gap: 6px;
+  margin: 18px 0;
+  color: #08263a;
+}
+
+.booking-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: #08263a;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #efe7da;
+  color: #08263a;
+}
+
+.muted {
+  color: #667;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin: 24px 0;
+}
+
+.detail-grid div {
+  background: #f8f5ef;
+  border-radius: 16px;
+  padding: 14px;
+  display: grid;
+  gap: 4px;
+}
+
+.detail-grid strong {
+  color: #08263a;
+}
+
+.detail-grid span {
+  color: #516070;
+}
+
+.comments {
+  background: #f8f5ef;
+  padding: 16px;
+  border-radius: 16px;
+  color: #516070;
+}
+
+.booking-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  color: #9f1d1d;
+  background: rgba(159, 29, 29, 0.08);
+  border: 1px solid rgba(159, 29, 29, 0.18);
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+}
+
+.firebase-fields {
+  margin-top: 1rem;
+  border-top: 1px solid rgba(10, 43, 61, 0.12);
+  padding-top: 1rem;
+}
+
+.firebase-fields h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+
+.firebase-field {
+  display: grid;
+  grid-template-columns: minmax(120px, 180px) 1fr;
+  gap: 0.75rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(10, 43, 61, 0.08);
+}
+
+.firebase-field strong {
+  color: #0a2b3d;
+  font-size: 0.9rem;
+}
+
+.firebase-field pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: inherit;
+  color: #435a66;
+}
+
+@media (max-width: 640px) {
+  .firebase-field {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/bookings/bookings.component.scss"],"names":[],"mappings":"AAAA;EAAgB,eAAA;EAAiB,mBAAA;EAAqB,gBAAA;AAItD;;AAHA;EAAiB,iBAAA;EAAmB,cAAA;AAQpC;;AAPA;EAAgB,mBAAA;EAAqB,gBAAA;AAYrC;;AAXA;EAAW,yBAAA;EAA2B,sBAAA;EAAuB,kBAAA;EAAmB,cAAA;EAAgB,gBAAA;AAmBhG;;AAlBA;EAAK,cAAA;EAAgB,aAAA;AAuBrB;;AAtBA;EAAgB,aAAA;EAAe,2DAAA;EAA6D,SAAA;AA4B5F;;AA3BA;EAAmD,gBAAA;EAAkB,mBAAA;EAAqB,aAAA;EAAe,6CAAA;EAA2C,uCAAA;AAmCpJ;;AAlCA;EAAmB,kBAAA;EAAoB,cAAA;EAAgB,kBAAA;AAwCvD;;AAvCA;EAAkB,aAAA;EAAe,cAAA;AA4CjC;;AA3CA;EAAe,oBAAA;EAAsB,oBAAA;EAAsB,oCAAA;EAAkC,cAAA;EAAgB,iBAAA;EAAmB,kBAAA;EAAmB,gBAAA;AAqDnJ;;AApDA;EAAgB,aAAA;EAAe,QAAA;EAAU,cAAA;EAAgB,cAAA;AA2DzD;;AA1DA;EAAmB,aAAA;EAAe,SAAA;EAAW,eAAA;AAgE7C;;AA/DA;EAAO,SAAA;EAAW,oBAAA;EAAsB,kBAAA;EAAoB,gBAAA;EAAkB,eAAA;EAAiB,qBAAA;AAwE/F;;AAvEA;EAAe,mBAAA;EAAqB,WAAA;AA4EpC;;AA3EA;EAAiB,mBAAA;EAAqB,cAAA;AAgFtC;;AA/EA;EAAS,WAAA;AAmFT;;AAlFA;EAAe,aAAA;EAAe,2DAAA;EAA6D,SAAA;EAAW,cAAA;AAyFtG;;AAxFA;EAAmB,mBAAA;EAAqB,mBAAA;EAAqB,aAAA;EAAe,aAAA;EAAe,QAAA;AAgG3F;;AA/FA;EAAsB,cAAA;AAmGtB;;AAlGA;EAAoB,cAAA;AAsGpB;;AArGA;EAAY,mBAAA;EAAqB,aAAA;EAAe,mBAAA;EAAqB,cAAA;AA4GrE;;AA1GA;EACE,aAAA;EACA,yBAAA;EACA,mBAAA;AA6GF;;AA1GA;EACE,cAAA;EACA,mCAAA;EACA,yCAAA;EACA,mBAAA;EACA,qBAAA;AA6GF;;AA1GA;EACE,gBAAA;EACA,4CAAA;EACA,iBAAA;AA6GF;;AA1GA;EACE,mBAAA;EACA,eAAA;AA6GF;;AA1GA;EACE,aAAA;EACA,+CAAA;EACA,YAAA;EACA,kBAAA;EACA,+CAAA;AA6GF;;AA1GA;EACE,cAAA;EACA,iBAAA;AA6GF;;AA1GA;EACE,SAAA;EACA,qBAAA;EACA,sBAAA;EACA,oBAAA;EACA,cAAA;AA6GF;;AA1GA;EACE;IACE,0BAAA;IACA,YAAA;EA6GF;AACF","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n\n.booking-toolbar {\n  display: flex;\n  justify-content: flex-end;\n  margin-bottom: 1rem;\n}\n\n.error-message {\n  color: #9f1d1d;\n  background: rgba(159, 29, 29, 0.08);\n  border: 1px solid rgba(159, 29, 29, 0.18);\n  border-radius: 14px;\n  padding: 0.85rem 1rem;\n}\n\n.firebase-fields {\n  margin-top: 1rem;\n  border-top: 1px solid rgba(10, 43, 61, 0.12);\n  padding-top: 1rem;\n}\n\n.firebase-fields h3 {\n  margin: 0 0 0.75rem;\n  font-size: 1rem;\n}\n\n.firebase-field {\n  display: grid;\n  grid-template-columns: minmax(120px, 180px) 1fr;\n  gap: 0.75rem;\n  padding: 0.55rem 0;\n  border-bottom: 1px solid rgba(10, 43, 61, 0.08);\n}\n\n.firebase-field strong {\n  color: #0a2b3d;\n  font-size: 0.9rem;\n}\n\n.firebase-field pre {\n  margin: 0;\n  white-space: pre-wrap;\n  word-break: break-word;\n  font-family: inherit;\n  color: #435a66;\n}\n\n@media (max-width: 640px) {\n  .firebase-field {\n    grid-template-columns: 1fr;\n    gap: 0.25rem;\n  }\n}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 
 /***/ }),
@@ -6643,6 +7479,152 @@ HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_23__.__decorate)([(0,_angu
 
 "use strict";
 module.exports = "<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ content.outingsPage.eyebrow }}</span>\n    <h1>{{ content.outingsPage.title }}</h1>\n    <p>{{ content.outingsPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container grid\">\n    <article class=\"outing-card\" *ngFor=\"let outing of outings\">\n      <img [src]=\"outing.image\" [alt]=\"outing.title\" />\n      <div class=\"content-card\">\n        <div class=\"meta-top\">{{ outing.duration }} • {{ outing.guests }}</div>\n        <div class=\"price-line\" *ngIf=\"outing.priceLabel\">{{ outing.priceLabel }}</div>\n        <h2>{{ outing.title }}</h2>\n        <p>{{ outing.description }}</p>\n        <ul>\n          <li *ngFor=\"let point of outing.highlights\">{{ point }}</li>\n        </ul>\n        <a [routerLink]=\"['/sorties', outing.slug]\" class=\"btn\">{{ content.outingsPage.cta }}</a>\n      </div>\n    </article>\n  </div>\n</section>\n";
+
+/***/ }),
+
+/***/ 64662:
+/*!******************************************************************************!*\
+  !*** ./src/app/home/booking-detail/booking-detail.component.scss?ngResource ***!
+  \******************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.booking-page {
+  padding: 80px 0;
+  background: #f6f2ea;
+  min-height: 70vh;
+}
+
+.booking-shell {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.section-head {
+  margin-bottom: 28px;
+  max-width: 760px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: #b58b4a;
+  font-weight: 700;
+}
+
+h1 {
+  color: #08263a;
+  margin: 8px 0;
+}
+
+.booking-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.booking-card, .booking-detail-card, .empty-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 18px 45px rgba(8, 38, 58, 0.08);
+  border: 1px solid rgba(8, 38, 58, 0.08);
+}
+
+.booking-card h2 {
+  margin: 12px 0 8px;
+  color: #08263a;
+  font-size: 1.25rem;
+}
+
+.booking-card p {
+  margin: 4px 0;
+  color: #516070;
+}
+
+.status-pill {
+  display: inline-flex;
+  border-radius: 999px;
+  background: rgba(181, 139, 74, 0.12);
+  color: #8a652d;
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.booking-meta {
+  display: grid;
+  gap: 6px;
+  margin: 18px 0;
+  color: #08263a;
+}
+
+.booking-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: #08263a;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #efe7da;
+  color: #08263a;
+}
+
+.muted {
+  color: #667;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin: 24px 0;
+}
+
+.detail-grid div {
+  background: #f8f5ef;
+  border-radius: 16px;
+  padding: 14px;
+  display: grid;
+  gap: 4px;
+}
+
+.detail-grid strong {
+  color: #08263a;
+}
+
+.detail-grid span {
+  color: #516070;
+}
+
+.comments {
+  background: #f8f5ef;
+  padding: 16px;
+  border-radius: 16px;
+  color: #516070;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/booking-detail/booking-detail.component.scss"],"names":[],"mappings":"AAAA;EAAgB,eAAA;EAAiB,mBAAA;EAAqB,gBAAA;AAItD;;AAHA;EAAiB,iBAAA;EAAmB,cAAA;AAQpC;;AAPA;EAAgB,mBAAA;EAAqB,gBAAA;AAYrC;;AAXA;EAAW,yBAAA;EAA2B,sBAAA;EAAuB,kBAAA;EAAmB,cAAA;EAAgB,gBAAA;AAmBhG;;AAlBA;EAAK,cAAA;EAAgB,aAAA;AAuBrB;;AAtBA;EAAgB,aAAA;EAAe,2DAAA;EAA6D,SAAA;AA4B5F;;AA3BA;EAAmD,gBAAA;EAAkB,mBAAA;EAAqB,aAAA;EAAe,6CAAA;EAA2C,uCAAA;AAmCpJ;;AAlCA;EAAmB,kBAAA;EAAoB,cAAA;EAAgB,kBAAA;AAwCvD;;AAvCA;EAAkB,aAAA;EAAe,cAAA;AA4CjC;;AA3CA;EAAe,oBAAA;EAAsB,oBAAA;EAAsB,oCAAA;EAAkC,cAAA;EAAgB,iBAAA;EAAmB,kBAAA;EAAmB,gBAAA;AAqDnJ;;AApDA;EAAgB,aAAA;EAAe,QAAA;EAAU,cAAA;EAAgB,cAAA;AA2DzD;;AA1DA;EAAmB,aAAA;EAAe,SAAA;EAAW,eAAA;AAgE7C;;AA/DA;EAAO,SAAA;EAAW,oBAAA;EAAsB,kBAAA;EAAoB,gBAAA;EAAkB,eAAA;EAAiB,qBAAA;AAwE/F;;AAvEA;EAAe,mBAAA;EAAqB,WAAA;AA4EpC;;AA3EA;EAAiB,mBAAA;EAAqB,cAAA;AAgFtC;;AA/EA;EAAS,WAAA;AAmFT;;AAlFA;EAAe,aAAA;EAAe,2DAAA;EAA6D,SAAA;EAAW,cAAA;AAyFtG;;AAxFA;EAAmB,mBAAA;EAAqB,mBAAA;EAAqB,aAAA;EAAe,aAAA;EAAe,QAAA;AAgG3F;;AA/FA;EAAsB,cAAA;AAmGtB;;AAlGA;EAAoB,cAAA;AAsGpB;;AArGA;EAAY,mBAAA;EAAqB,aAAA;EAAe,mBAAA;EAAqB,cAAA;AA4GrE","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
 
 /***/ }),
 
@@ -7153,6 +8135,17 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 /***/ }),
 
+/***/ 67710:
+/*!************************************************************************!*\
+  !*** ./src/app/home/my-bookings/my-bookings.component.html?ngResource ***!
+  \************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">My bookings</span>\n      <h1>Upcoming and confirmed bookings</h1>\n      <p>View your confirmed outings, payment status and warranty registration.</p>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n\n    <div *ngIf=\"!loading && bookings.length === 0\" class=\"empty-card\">\n      No booking is linked to your account yet.\n    </div>\n\n    <div class=\"booking-grid\" *ngIf=\"!loading && bookings.length\">\n      <article class=\"booking-card\" *ngFor=\"let booking of bookings\">\n        <div>\n          <span class=\"status-pill\">{{ booking.bookingStatus || 'requested' }}</span>\n          <h2>{{ booking.outingType || 'Outing' }}</h2>\n          <p>{{ booking.outingDate }} <span *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</span></p>\n          <p>{{ booking.customerName }} • {{ booking.email }}</p>\n        </div>\n\n        <div class=\"booking-meta\">\n          <span>Total: €{{ booking.totalPrice || 0 }}</span>\n          <span>Deposit: {{ booking.depositStatus || 'pending' }}</span>\n          <span>Warranty: {{ booking.warrantyStatus || 'not_registered' }}</span>\n        </div>\n\n        <div class=\"booking-actions\">\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"openBooking(booking)\">Details</button>\n          <button type=\"button\" class=\"btn btn-primary\" (click)=\"payBooking(booking)\">Payment</button>\n        </div>\n      </article>\n    </div>\n  </div>\n</section>\n";
+
+/***/ }),
+
 /***/ 73110:
 /*!****************************************************************!*\
   !*** ./src/app/home/contact/contact.component.scss?ngResource ***!
@@ -7382,6 +8375,347 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 "use strict";
 module.exports = "<section class=\"terms-page\">\n  <div class=\"container terms-container\">\n\n    <ng-container [ngSwitch]=\"language\">\n\n      <ng-container *ngSwitchCase=\"'fr'\">\n        <span class=\"eyebrow\">Conditions</span>\n        <h1>Conditions générales de location de catamaran</h1>\n        <p class=\"terms-intro\">\n          Ces conditions définissent le cadre général applicable aux expériences privées à bord d’Alegria.\n          Elles sont fournies à titre informatif et peuvent être complétées par des conditions particulières de réservation.\n        </p>\n      </ng-container>\n\n      <ng-container *ngSwitchCase=\"'es'\">\n        <span class=\"eyebrow\">Condiciones</span>\n        <h1>Condiciones generales de alquiler de catamarán</h1>\n        <p class=\"terms-intro\">\n          Estas condiciones definen el marco general aplicable a las experiencias privadas a bordo de Alegria.\n          Se proporcionan con carácter informativo y pueden completarse con condiciones particulares de reserva.\n        </p>\n      </ng-container>\n\n      <ng-container *ngSwitchDefault>\n        <span class=\"eyebrow\">Legal</span>\n        <h1>Catamaran Charter Terms and Conditions</h1>\n        <p class=\"terms-intro\">\n          These terms define the general conditions applicable to private catamaran experiences aboard Alegria.\n          They are provided for information and may be completed by specific booking conditions depending on the platform or agreement used.\n        </p>\n      </ng-container>\n\n    </ng-container>\n\n    <div class=\"terms-content\">\n\n      <article class=\"term-section\">\n        <h2>1. {{ language === 'fr' ? 'Réservation et paiement' : (language === 'es' ? 'Reserva y pago' : 'Booking and Payment') }}</h2>\n        <ul>\n          <li *ngIf=\"language==='fr'\">Un acompte de 50 % est requis pour confirmer la réservation.</li>\n          <li *ngIf=\"language==='es'\">Se requiere un depósito del 50 % para confirmar la reserva.</li>\n          <li *ngIf=\"language==='en'\">A deposit of 50% of the total charter fee is required to confirm the booking.</li>\n\n          <li *ngIf=\"language==='fr'\">Le solde doit être réglé au plus tard 30 jours avant le départ.</li>\n          <li *ngIf=\"language==='es'\">El saldo debe abonarse a más tardar 30 días antes de la salida.</li>\n          <li *ngIf=\"language==='en'\">The remaining balance must be paid no later than 30 days before the charter start date.</li>\n\n          <li *ngIf=\"language==='fr'\">Les réservations effectuées moins de 30 jours avant le départ doivent être réglées intégralement.</li>\n          <li *ngIf=\"language==='es'\">Las reservas realizadas con menos de 30 días deben pagarse en su totalidad.</li>\n          <li *ngIf=\"language==='en'\">Bookings made less than 30 days before departure must be paid in full at the time of reservation.</li>\n\n          <li *ngIf=\"language==='fr'\">Les prix incluent l’utilisation du catamaran, l’équipement standard, l’assurance et le nettoyage sauf mention contraire.</li>\n          <li *ngIf=\"language==='es'\">Los precios incluyen el uso del catamarán, equipamiento estándar, seguro y limpieza salvo indicación contraria.</li>\n          <li *ngIf=\"language==='en'\">Prices include the use of the catamaran, standard equipment, insurance, and cleaning unless otherwise specified.</li>\n        </ul>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>2. {{ language === 'fr' ? 'Annulations' : (language === 'es' ? 'Cancelaciones' : 'Cancellations') }}</h2>\n        <ul>\n          <li *ngIf=\"language==='fr'\">Toute annulation doit être faite par écrit.</li>\n          <li *ngIf=\"language==='es'\">Toda cancelación debe realizarse por escrito.</li>\n          <li *ngIf=\"language==='en'\">Cancellation must be made in writing.</li>\n\n          <li *ngIf=\"language==='fr'\">Plus de 60 jours : remboursement intégral hors frais administratifs.</li>\n          <li *ngIf=\"language==='es'\">Más de 60 días: reembolso completo menos gastos administrativos.</li>\n          <li *ngIf=\"language==='en'\">More than 60 days before departure: full refund minus administrative fee.</li>\n\n          <li *ngIf=\"language==='fr'\">Entre 30 et 60 jours : remboursement de 50 %.</li>\n          <li *ngIf=\"language==='es'\">Entre 30 y 60 días: reembolso del 50 %.</li>\n          <li *ngIf=\"language==='en'\">30–60 days before departure: 50% refund.</li>\n\n          <li *ngIf=\"language==='fr'\">Moins de 30 jours : aucun remboursement.</li>\n          <li *ngIf=\"language==='es'\">Menos de 30 días: sin reembolso.</li>\n          <li *ngIf=\"language==='en'\">Less than 30 days before departure: no refund.</li>\n\n          <li *ngIf=\"language==='fr'\">En cas d’annulation par la société pour raison technique ou météo, un remboursement ou report sera proposé.</li>\n          <li *ngIf=\"language==='es'\">Si la empresa cancela por motivos técnicos o meteorológicos, se ofrecerá reembolso o cambio de fecha.</li>\n          <li *ngIf=\"language==='en'\">If the charter company cancels due to technical issues or unsafe weather, a full refund or rescheduling option will be offered.</li>\n        </ul>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>3. {{ language === 'fr' ? 'Skipper et équipage' : (language === 'es' ? 'Patrón y tripulación' : 'Skipper and Crew') }}</h2>\n        <p *ngIf=\"language==='fr'\">Le skipper a pleine autorité pour assurer la sécurité des passagers et du navire. Ses consignes doivent être respectées à tout moment.</p>\n        <p *ngIf=\"language==='es'\">El patrón tiene plena autoridad para garantizar la seguridad de los pasajeros y de la embarcación. Sus instrucciones deben respetarse en todo momento.</p>\n        <p *ngIf=\"language==='en'\">The skipper has full authority to make decisions for the safety of passengers and vessel. Passengers must comply with the skipper’s instructions at all times.</p>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>4. {{ language === 'fr' ? 'Sécurité et comportement' : (language === 'es' ? 'Seguridad y conducta' : 'Safety and Conduct') }}</h2>\n        <p *ngIf=\"language==='fr'\">Les invités doivent respecter les règles maritimes, la consommation de drogues est interdite, et les enfants doivent rester sous surveillance.</p>\n        <p *ngIf=\"language==='es'\">Los invitados deben respetar las normas marítimas, el consumo de drogas está prohibido y los niños deben estar supervisados.</p>\n        <p *ngIf=\"language==='en'\">All guests must act responsibly, drug use is prohibited, and children must be supervised by adults at all times.</p>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>5. {{ language === 'fr' ? 'Dommages et responsabilité' : (language === 'es' ? 'Daños y responsabilidad' : 'Damage and Liability') }}</h2>\n        <p *ngIf=\"language==='fr'\">Le locataire est responsable des dommages causés par négligence. Les effets personnels restent sous la responsabilité des invités.</p>\n        <p *ngIf=\"language==='es'\">El cliente es responsable de los daños causados por negligencia. Los efectos personales quedan bajo responsabilidad de los invitados.</p>\n        <p *ngIf=\"language==='en'\">The charterer is financially responsible for any damage caused by guests through negligence. Personal belongings remain the responsibility of guests.</p>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>6. {{ language === 'fr' ? 'Utilisation du navire' : (language === 'es' ? 'Uso de la embarcación' : 'Use of the Vessel') }}</h2>\n        <p *ngIf=\"language==='fr'\">Le navire doit être utilisé uniquement dans la zone autorisée et pour des usages légaux.</p>\n        <p *ngIf=\"language==='es'\">La embarcación solo puede utilizarse dentro de la zona autorizada y para fines legales.</p>\n        <p *ngIf=\"language==='en'\">The vessel must be used only within the designated cruising area and for lawful purposes.</p>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>7. {{ language === 'fr' ? 'Environnement et respect' : (language === 'es' ? 'Medio ambiente y respeto' : 'Environment and Respect') }}</h2>\n        <p *ngIf=\"language==='fr'\">Les invités sont invités à respecter la vie marine et à éviter tout déchet en mer.</p>\n        <p *ngIf=\"language==='es'\">Se espera que los invitados respeten la vida marina y eviten residuos en el mar.</p>\n        <p *ngIf=\"language==='en'\">Guests are expected to respect marine life and local environmental regulations.</p>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>8. Force Majeure</h2>\n        <p *ngIf=\"language==='fr'\">Aucune des parties ne pourra être tenue responsable en cas d’événements hors de son contrôle.</p>\n        <p *ngIf=\"language==='es'\">Ninguna de las partes será responsable por eventos fuera de su control.</p>\n        <p *ngIf=\"language==='en'\">Neither party shall be liable for delays or cancellations caused by events beyond their control.</p>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>9. {{ language === 'fr' ? 'Droit applicable' : (language === 'es' ? 'Ley aplicable' : 'Governing Law') }}</h2>\n        <p *ngIf=\"language==='fr'\">Le présent accord est soumis au droit du pays où la prestation a lieu.</p>\n        <p *ngIf=\"language==='es'\">Este acuerdo se rige por las leyes del país donde se realiza la actividad.</p>\n        <p *ngIf=\"language==='en'\">This agreement is governed by the laws of the country in which the charter takes place.</p>\n      </article>\n\n    </div>\n  </div>\n</section>\n";
+
+/***/ }),
+
+/***/ 74854:
+/*!******************************************************!*\
+  !*** ./src/app/home/bookings/booking-api.service.ts ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BookingApiService: () => (/* binding */ BookingApiService)
+/* harmony export */ });
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ 95429);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 59452);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 43942);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ 61318);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ 70271);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! godigital-lib */ 83);
+
+
+
+
+
+
+
+let BookingApiService = class BookingApiService {
+  http;
+  utilsSvc;
+  storeDb;
+  collectionName = 'bnBookings';
+  restDatabaseUrls = ['https://adn-dev-4d05d-default-rtdb.europe-west1.firebasedatabase.app', 'https://adn-dev-4d05d-default-rtdb.firebaseio.com', 'https://adn-dev-4d05d.firebaseio.com'];
+  fallbackBookings = [];
+  constructor(http, utilsSvc, storeDb) {
+    this.http = http;
+    this.utilsSvc = utilsSvc;
+    this.storeDb = storeDb;
+  }
+  getBookings(email) {
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.getBookingsFromFirebase(email)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => this.getBookingsFromBackend(email)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)(this.fallbackBookings)));
+  }
+  getBooking(bookingId) {
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.getBookingFromFirebase(bookingId)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => this.getBookingFromBackend(bookingId)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)(undefined)));
+  }
+  createDepositCheckout(bookingId) {
+    return this.http.post(`${this.baseUrl}/stripe/deposit-checkout`, {
+      bookingId
+    }, {
+      withCredentials: true
+    });
+  }
+  createWarrantySetup(bookingId) {
+    return this.http.post(`${this.baseUrl}/stripe/warranty-setup`, {
+      bookingId
+    }, {
+      withCredentials: true
+    });
+  }
+  chargeWarranty(bookingId, amount, reason) {
+    const payload = {
+      bookingId,
+      amount,
+      warrantyAmount: amount,
+      reason
+    };
+    const endpoints = [`${this.baseUrl}/stripe/warranty-charge`, `${this.baseUrl}/api/payments/charge-warranty`, `${this.baseUrl}/api/stripe/warranty-charge`];
+    return new rxjs__WEBPACK_IMPORTED_MODULE_4__.Observable(observer => {
+      let index = 0;
+      const tryNext = () => {
+        if (index >= endpoints.length) {
+          observer.error(new Error('Unable to charge warranty.'));
+          return;
+        }
+        this.http.post(endpoints[index++], payload, {
+          withCredentials: true
+        }).subscribe({
+          next: response => {
+            observer.next(response);
+            observer.complete();
+          },
+          error: () => tryNext()
+        });
+      };
+      tryNext();
+    });
+  }
+  updateBooking(bookingId, payload) {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const store = _this.storeDb;
+      const util = _this.utilsSvc;
+      const existing = yield _this.getBookingFromFirebase(bookingId).catch(() => undefined);
+      const merged = {
+        ...(existing?.raw || existing || {}),
+        ...payload,
+        bookingId,
+        modifiedTS: Date.now()
+      };
+      // Prefer real RTDB handles when available.
+      for (const db of _this.getRealtimeDatabaseCandidates(store, util)) {
+        try {
+          yield db.ref(`${_this.collectionName}/${bookingId}`).set(merged);
+          return;
+        } catch {}
+      }
+      // REST fallback to root /bnBookings/{bookingId}.
+      for (const baseUrl of _this.restDatabaseUrls) {
+        try {
+          yield _this.http.put(`${baseUrl.replace(/\/+$/, '')}/${_this.collectionName}/${bookingId}.json`, merged).toPromise();
+          return;
+        } catch {}
+      }
+      if (typeof store.updateObject !== 'function') {
+        throw new Error('Firebase updateObject is not available.');
+      }
+      try {
+        yield store.updateObject(_this.collectionName, merged, bookingId);
+        return;
+      } catch {}
+      try {
+        yield store.updateObject(_this.collectionName, bookingId, merged);
+        return;
+      } catch {}
+      yield store.updateObject(util.backendFBstoreId, util.mdb, _this.collectionName, merged, bookingId);
+    })();
+  }
+  get baseUrl() {
+    return this.utilsSvc?.backendURL || '';
+  }
+  getBookingsFromBackend(email) {
+    const suffix = email ? `?email=${encodeURIComponent(email)}` : '';
+    return this.http.get(`${this.baseUrl}/bookings${suffix}`, {
+      withCredentials: true
+    }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.map)(response => this.normalizeBookings(response)));
+  }
+  getBookingFromBackend(bookingId) {
+    return this.http.get(`${this.baseUrl}/bookings/${bookingId}`, {
+      withCredentials: true
+    }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.map)(response => this.normalizeBooking(response?.booking || response)));
+  }
+  getBookingsFromFirebase(email) {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const raw = yield _this2.readBookingsRaw();
+      const bookings = _this2.normalizeBookings(raw).filter(booking => booking.bookingStatus !== 'deleted').sort((a, b) => String(b.outingDate || '').localeCompare(String(a.outingDate || '')) || String(b.departureTime || '').localeCompare(String(a.departureTime || '')));
+      if (!email) return bookings;
+      const expected = String(email).trim().toLowerCase();
+      return bookings.filter(booking => String(booking.email || '').trim().toLowerCase() === expected);
+    })();
+  }
+  getBookingFromFirebase(bookingId) {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const bookings = yield _this3.getBookingsFromFirebase();
+      return bookings.find(booking => booking.bookingId === bookingId);
+    })();
+  }
+  readBookingsRaw() {
+    var _this4 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const store = _this4.storeDb;
+      const util = _this4.utilsSvc;
+      // Current Firebase structure from your export:
+      // /bnBookings/{bookingId}
+      // Example: /bnBookings/202606071
+      const restValue = yield _this4.readBookingsViaRest();
+      const extractedRest = _this4.extractBookings(restValue);
+      if (_this4.hasBookings(extractedRest)) return extractedRest;
+      for (const db of _this4.getRealtimeDatabaseCandidates(store, util)) {
+        const rootValue = yield _this4.readDatabasePath(db, _this4.collectionName);
+        const extractedRoot = _this4.extractBookings(rootValue);
+        if (_this4.hasBookings(extractedRoot)) return extractedRoot;
+        if (util.backendFBstoreId) {
+          const scopedValue = yield _this4.readDatabasePath(db, `${util.backendFBstoreId}/${_this4.collectionName}`);
+          const extractedScoped = _this4.extractBookings(scopedValue);
+          if (_this4.hasBookings(extractedScoped)) return extractedScoped;
+        }
+      }
+      const candidates = [];
+      if (typeof store.getObject === 'function') {
+        candidates.push(() => store.getObject(_this4.collectionName));
+        candidates.push(() => store.getObject(`/${_this4.collectionName}`));
+        candidates.push(() => store.getObject(_this4.collectionName, -1));
+        candidates.push(() => store.getObject(undefined, util.mdb, _this4.collectionName, -1));
+        candidates.push(() => store.getObject(null, util.mdb, _this4.collectionName, -1));
+        candidates.push(() => store.getObject(util.backendFBstoreId, util.mdb, _this4.collectionName, -1));
+        candidates.push(() => store.getObject(util.backendFBstoreId, util.mdb, _this4.collectionName));
+        candidates.push(() => store.getObject(`${util.backendFBstoreId}/${_this4.collectionName}`));
+        candidates.push(() => store.getObject('1000', util.mdb, _this4.collectionName, -1));
+        candidates.push(() => store.getObject('1000', util.mdb, _this4.collectionName));
+      }
+      for (const candidate of candidates) {
+        try {
+          const value = yield candidate();
+          const extracted = _this4.extractBookings(value);
+          if (_this4.hasBookings(extracted)) return extracted;
+        } catch {}
+      }
+      const memoryCandidates = [store.firebaseBSSdata?.[_this4.collectionName], store.firebaseBSSdata?.['1000']?.[_this4.collectionName], store.firebaseBSSdata?.[util.backendFBstoreId]?.[_this4.collectionName], store.firebaseBSSdata?.[util.backendFBstoreId], store.firebaseBSSdata, store[_this4.collectionName], store?.data?.[_this4.collectionName], store?.data?.['1000']?.[_this4.collectionName]];
+      for (const value of memoryCandidates) {
+        const extracted = _this4.extractBookings(value);
+        if (_this4.hasBookings(extracted)) return extracted;
+      }
+      return [];
+    })();
+  }
+  readBookingsViaRest() {
+    var _this5 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const paths = [_this5.collectionName, `1000/${_this5.collectionName}`];
+      for (const baseUrl of _this5.restDatabaseUrls) {
+        for (const path of paths) {
+          try {
+            const value = yield _this5.http.get(`${baseUrl.replace(/\/+$/, '')}/${path}.json`).toPromise();
+            const extracted = _this5.extractBookings(value);
+            if (_this5.hasBookings(extracted)) return extracted;
+          } catch {}
+        }
+      }
+      // Last chance: fetch root export and extract /bnBookings from it.
+      for (const baseUrl of _this5.restDatabaseUrls) {
+        try {
+          const value = yield _this5.http.get(`${baseUrl.replace(/\/+$/, '')}/.json`).toPromise();
+          const extracted = _this5.extractBookings(value);
+          if (_this5.hasBookings(extracted)) return extracted;
+        } catch {}
+      }
+      return null;
+    })();
+  }
+  getRealtimeDatabaseCandidates(store, util) {
+    const candidates = [util?.mdb, store?.backendFbRef?.database, store?.backendFbRef?.['database'], store?.firebaseBSSdata?.database];
+    return candidates.filter((db, index, array) => db && typeof db.ref === 'function' && array.indexOf(db) === index);
+  }
+  readDatabasePath(db, path) {
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      try {
+        const cleanPath = path.replace(/^\/+/, '');
+        const snapshot = yield db.ref(cleanPath).once('value');
+        return snapshot && typeof snapshot.val === 'function' ? snapshot.val() : null;
+      } catch {
+        return null;
+      }
+    })();
+  }
+  hasBookings(value) {
+    if (!value) return false;
+    if (Array.isArray(value)) return value.filter(Boolean).length > 0;
+    if (typeof value === 'object') return Object.keys(value).length > 0;
+    return false;
+  }
+  extractBookings(value) {
+    if (!value) return null;
+    if (Array.isArray(value)) {
+      return value.filter(item => !!item);
+    }
+    if (typeof value !== 'object') return null;
+    // Direct root export: { bnBookings: { bookingId: {...} } }
+    if (value[this.collectionName]) return value[this.collectionName];
+    // Store-scoped export: { 1000: { bnBookings: {...} } }
+    const storeId = this.utilsSvc?.backendFBstoreId || '1000';
+    if (value[storeId]?.[this.collectionName]) return value[storeId][this.collectionName];
+    if (value['1000']?.[this.collectionName]) return value['1000'][this.collectionName];
+    // Already inside the collection: { 202606071: { bookingId: '202606071', ... } }
+    const keys = Object.keys(value);
+    if (keys.some(key => value[key]?.bookingId || value[key]?.customerName || value[key]?.customer?.email || value[key]?.email || value[key]?.outingType)) {
+      return value;
+    }
+    // Last resort: recursively search for a bnBookings object inside a bigger Firebase export.
+    for (const key of keys) {
+      const child = value[key];
+      if (child && typeof child === 'object') {
+        if (child[this.collectionName]) return child[this.collectionName];
+        if (child['1000']?.[this.collectionName]) return child['1000'][this.collectionName];
+      }
+    }
+    return null;
+  }
+  normalizeBookings(response) {
+    const raw = Array.isArray(response) ? response : Array.isArray(response?.bookings) ? response.bookings : response && typeof response === 'object' ? Object.keys(response).map(key => ({
+      ...response[key],
+      bookingId: response[key]?.bookingId || key
+    })) : [];
+    return raw.map(item => this.normalizeBooking(item)).filter(booking => !!booking.bookingId);
+  }
+  normalizeBooking(item) {
+    if (!item) {
+      return {
+        bookingId: '',
+        customerName: '',
+        email: '',
+        outingType: '',
+        outingDate: '',
+        totalPrice: 0
+      };
+    }
+    const customer = item?.customer || {};
+    const time = item?.time || {};
+    const party = item?.party || {};
+    const start = time.startAt || item.startAt || item.departureAt || '';
+    const end = time.endAt || item.endAt || item.arrivalAt || '';
+    const totalPrice = Number(item.totalPrice ?? item.total ?? item.amount ?? item.price ?? 0);
+    const depositAmount = Number(item.depositAmount ?? item.deposit ?? (totalPrice ? Math.round(totalPrice * 0.3 * 100) / 100 : 0));
+    const warrantyAmount = Number(item.warrantyAmount ?? item.warranty ?? item.cautionAmount ?? item.securityDepositAmount ?? 0);
+    return {
+      bookingId: item.bookingId || item.id || item.reference || '',
+      customerName: item.customerName || customer.fullName || item.name || `${customer.firstname || ''} ${customer.lastname || ''}`.trim() || '',
+      email: item.email || customer.email || '',
+      phone: item.phone || customer.phone || '',
+      outingType: item.outingType || item.outing || item.type || item.category || '',
+      outingDate: item.outingDate || item.date || (start ? String(start).slice(0, 10) : ''),
+      departureTime: item.departureTime || (start ? String(start).slice(11, 16) : ''),
+      arrivalTime: item.arrivalTime || (end ? String(end).slice(11, 16) : ''),
+      passengers: Number(item.passengers || party.total || item.guests || 0) || undefined,
+      totalPrice,
+      depositAmount,
+      warrantyAmount,
+      depositStatus: item.depositStatus ?? item.depositPaid ?? false,
+      warrantyStatus: item.warrantyStatus ?? item.warrantyRegistered ?? false,
+      bookingStatus: item.bookingStatus || item.status || 'requested',
+      comments: item.comments || item.notes?.customerNote || item.comment || '',
+      raw: item
+    };
+  }
+  static ctorParameters = () => [{
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__.HttpClient
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.UtilsService
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.StoreDbService
+  }];
+};
+BookingApiService = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.Injectable)({
+  providedIn: 'root'
+})], BookingApiService);
+
 
 /***/ }),
 
@@ -7793,6 +9127,70 @@ p {
 }`, "",{"version":3,"sources":["webpack://./src/app/home/account-summary/account-summary.component.scss"],"names":[],"mappings":"AAAA;EACE,eAAA;EACA,6DAAA;AACF;;AAEA;EACE,8BAAA;EACA,cAAA;AACF;;AAEA;EACE,mBAAA;EACA,mBAAA;EACA,iCAAA;EACA,6CAAA;EACA,uCAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;EACA,yCAAA;EACA,yBAAA;EACA,sBAAA;EACA,kBAAA;EACA,gBAAA;EACA,qBAAA;AACF;;AAEA;EACE,+CAAA;EACA,cAAA;EACA,gBAAA;EACA,mCAAA;AACF;;AAEA;EACE,sCAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,gBAAA;EACA,gBAAA;EACA,mBAAA;EACA,mBAAA;AACF;;AAEA;EACE,oBAAA;EACA,kBAAA;EACA,mBAAA;EACA,uBAAA;EACA,qBAAA;EACA,oBAAA;EACA,sBAAA;EACA,yCAAA;EACA,gBAAA;AACF;;AAEA;EACE,mBAAA;EACA,WAAA;AACF","sourcesContent":[".account-page {\n  padding: 72px 0;\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.container {\n  width: min(960px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.account-card {\n  background: #ffffff;\n  border-radius: 28px;\n  padding: clamp(1.5rem, 4vw, 3rem);\n  box-shadow: 0 22px 60px rgba(8, 38, 58, 0.12);\n  border: 1px solid rgba(8, 38, 58, 0.08);\n}\n\n.eyebrow {\n  display: inline-block;\n  color: #0b6e8f;\n  font-family: 'Raleway', Arial, sans-serif;\n  text-transform: uppercase;\n  letter-spacing: 0.14em;\n  font-size: 0.75rem;\n  font-weight: 700;\n  margin-bottom: 0.8rem;\n}\n\nh1 {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: #08263a;\n  margin: 0 0 1rem;\n  font-size: clamp(2rem, 5vw, 3.2rem);\n}\n\np {\n  font-family: 'Lato', Arial, sans-serif;\n  color: #2f3a45;\n  line-height: 1.7;\n}\n\n.account-empty {\n  margin-top: 2rem;\n  padding: 1.25rem;\n  border-radius: 20px;\n  background: #e8f4f7;\n}\n\n.btn {\n  display: inline-flex;\n  margin-top: 0.8rem;\n  align-items: center;\n  justify-content: center;\n  text-decoration: none;\n  border-radius: 999px;\n  padding: 0.9rem 1.2rem;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 700;\n}\n\n.btn-primary {\n  background: #f28c28;\n  color: #fff;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
+/***/ 82474:
+/*!*****************************************************************!*\
+  !*** ./src/app/home/booking-detail/booking-detail.component.ts ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BookingDetailComponent: () => (/* binding */ BookingDetailComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _booking_detail_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./booking-detail.component.html?ngResource */ 29118);
+/* harmony import */ var _booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./booking-detail.component.scss?ngResource */ 64662);
+/* harmony import */ var _booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../bookings/booking-api.service */ 74854);
+
+
+
+
+
+
+let BookingDetailComponent = class BookingDetailComponent {
+  route;
+  router;
+  bookingApi;
+  booking;
+  loading = true;
+  constructor(route, router, bookingApi) {
+    this.route = route;
+    this.router = router;
+    this.bookingApi = bookingApi;
+  }
+  ngOnInit() {
+    const bookingId = this.route.snapshot.paramMap.get('bookingId') || '';
+    this.bookingApi.getBooking(bookingId).subscribe(booking => {
+      this.booking = booking;
+      this.loading = false;
+    });
+  }
+  goToPayment() {
+    if (this.booking?.bookingId) {
+      this.router.navigate(['/payment', this.booking.bookingId]);
+    }
+  }
+  static ctorParameters = () => [{
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_3__.ActivatedRoute
+  }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_3__.Router
+  }, {
+    type: _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_2__.BookingApiService
+  }];
+};
+BookingDetailComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
+  selector: 'app-booking-detail',
+  template: _booking_detail_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], BookingDetailComponent);
 
 
 /***/ }),
@@ -8716,7 +10114,53 @@ button.detail-link {
   .outing-actions .detail-link {
     align-self: flex-start;
   }
-}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-outings/admin-outings.component.scss"],"names":[],"mappings":"AAAA;EACE,gBAAA;EACA,eAAA;EACA,4DAAA;AACF;;AAEA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,mBAAA;AACF;;AAEA;EACE,qBAAA;EACA,mBAAA;EACA,yCAAA;EACA,kBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,+CAAA;EACA,cAAA;EACA,SAAA;AACF;;AAEA;EACE,mCAAA;EACA,iBAAA;EACA,mBAAA;AACF;;AAEA;EACE,sCAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;;;EAGE,gBAAA;EACA,mBAAA;EACA,aAAA;EACA,6CAAA;EACA,uCAAA;AACF;;AAEA;EACE,cAAA;EACA,oCAAA;EACA,gBAAA;AACF;;AAEA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AACF;;AAEA;EACE,aAAA;EACA,QAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;EACE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,wBAAA;EACA,eAAA;EACA,cAAA;EACA,gBAAA;EACA,aAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,qBAAA;EACA,8CAAA;AACF;;AAEA;EACE,gBAAA;EACA,iBAAA;EACA,0CAAA;AACF;;AAEA;;EAEE,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,SAAA;EACA,mBAAA;AACF;;AAEA;EACE,oBAAA;EACA,mBAAA;EACA,uBAAA;EACA,eAAA;EACA,uBAAA;EACA,oBAAA;EACA,mCAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,oCAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AACF;;AAEA;EACE,0BAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,+BAAA;EACA,SAAA;EACA,aAAA;EACA,uCAAA;EACA,mBAAA;EACA,eAAA;EACA,gBAAA;EACA,qBAAA;AACF;;AAEA;EACE,oCAAA;AACF;;AAEA;EACE,sCAAA;EACA,oCAAA;AACF;;AAEA;EACE,aAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,kBAAA;EACA,yBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,WAAA;EACA,kBAAA;EACA,UAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE,gBAAA;EACA,aAAA;EACA,yBAAA;AACF;;AAEA;EACE,SAAA;EACA,oBAAA;EACA,uBAAA;EACA,yCAAA;EACA,gBAAA;EACA,eAAA;AACF;;AAEA;EACE,mBAAA;EACA,WAAA;EACA,gDAAA;AACF;;AAEA;EACE,mBAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;AACF;;AAEA;EACE,gBAAA;EACA,kBAAA;EACA,mBAAA;EACA,gBAAA;AACF;;AAEA;EACE,cAAA;EACA,oCAAA;AACF;;AAEA;EACE,cAAA;EACA,kCAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,aAAA;EACA,sCAAA;EACA,mBAAA;AACF;;AAEA;EACE,kBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,cAAA;AACF;;AAEA;EACE,uBAAA;EACA,oBAAA;EACA,oCAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,oCAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,iBAAA;EACA,4CAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE;IACE,eAAA;EACF;EAEA;;IAEE,aAAA;IACA,mBAAA;EAAF;EAGA;;IAEE,0BAAA;EADF;EAIA;IACE,mBAAA;EAFF;EAKA;;IAEE,uBAAA;IACA,sBAAA;EAHF;EAMA;;IAEE,WAAA;EAJF;AACF;AAOA;EACE,gBAAA;EACA,aAAA;EACA,uCAAA;EACA,mBAAA;EACA,qCAAA;AALF;;AAQA;EACE,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,SAAA;EACA,mBAAA;AALF;;AAQA;EACE,kBAAA;AALF;;AAQA;EACE,oBAAA;EACA,mBAAA;EACA,uBAAA;EACA,eAAA;EACA,uBAAA;EACA,oBAAA;EACA,mCAAA;EACA,cAAA;EACA,gBAAA;AALF;;AAQA;EACE,oCAAA;EACA,cAAA;AALF;;AAQA;EACE;IACE,uBAAA;IACA,sBAAA;EALF;EAQA;IACE,aAAA;EANF;AACF;AASA;EAAkB,aAAA;EAAe,mBAAA;EAAqB,SAAA;EAAW,eAAA;EAAiB,yBAAA;AAFlF;;AAGA;EAAe,iCAAA;EAAmC,kCAAA;EAAoC,gBAAA;EAAkB,qBAAA;AAIxG;;AAHA;EAAqB,0BAAA;AAOrB;;AANA;EAAc,cAAA;EAAe,eAAA;EAAgB,cAAA;EAAe,kBAAA;EAAkB,+BAAA;AAc9E;;AAZA;EAAsB,YAAA;EAAc,uBAAA;EAAyB,cAAA;EAAgB,eAAA;EAAiB,UAAA;AAoB9F;;AAnBA;EAA4B,0BAAA;AAuB5B;;AAtBA;EAAwB,SAAA;EAAW,kBAAA;EAAoB,cAAA;AA4BvD;;AA1BA;;;EAGE,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,SAAA;EACA,mBAAA;EACA,eAAA;AA6BF;;AA1BA;EACE,2BAAA;AA6BF;;AA1BA;EACE,2CAAA;AA6BF;;AA1BA;EACE,gBAAA;AA6BF;;AA1BA;EACE,eAAA;EACA,cAAA;AA6BF;;AA1BA;EACE,SAAA;EACA,eAAA;AA6BF;;AA1BA;EACE,gBAAA;AA6BF;;AA1BA;EACE,YAAA;EACA,uBAAA;EACA,eAAA;EACA,UAAA;AA6BF;;AA1BA;EACE;;;;IAIE,oBAAA;IACA,sBAAA;EA6BF;EA1BA;;IAEE,sBAAA;EA4BF;AACF","sourcesContent":[".admin-outings-page {\n  min-height: 70vh;\n  padding: 72px 0;\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 58%);\n}\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.page-head {\n  max-width: 820px;\n  margin-bottom: 32px;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 10px;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-size: 0.78rem;\n  letter-spacing: 0.14em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n  font-weight: 700;\n}\n\nh1, h2, h3 {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: #08263a;\n  margin: 0;\n}\n\nh1 {\n  font-size: clamp(2rem, 5vw, 3.4rem);\n  line-height: 1.05;\n  margin-bottom: 14px;\n}\n\np, label, input, select, textarea, button, span {\n  font-family: 'Lato', Arial, sans-serif;\n}\n\n.page-head p {\n  color: #475569;\n  line-height: 1.8;\n  font-size: 1.05rem;\n}\n\n.admin-warning,\n.outing-form-card,\n.outings-list-card {\n  background: #fff;\n  border-radius: 28px;\n  padding: 28px;\n  box-shadow: 0 22px 55px rgba(8, 38, 58, 0.12);\n  border: 1px solid rgba(8, 38, 58, 0.08);\n}\n\n.admin-warning {\n  color: #9a4d08;\n  background: rgba(242, 140, 40, 0.12);\n  font-weight: 700;\n}\n\n.form-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 18px;\n}\n\nlabel {\n  display: grid;\n  gap: 8px;\n  color: #08263a;\n  font-weight: 700;\n}\n\nlabel.wide {\n  grid-column: span 3;\n}\n\ninput, select, textarea {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.16);\n  border-radius: 14px;\n  padding: 0.85rem 0.95rem;\n  font-size: 1rem;\n  color: #08263a;\n  background: #fff;\n  outline: none;\n}\n\ntextarea {\n  resize: vertical;\n}\n\ninput:focus, select:focus, textarea:focus {\n  border-color: #0b6e8f;\n  box-shadow: 0 0 0 4px rgba(11, 110, 143, 0.12);\n}\n\n.checklist-block {\n  margin-top: 28px;\n  padding-top: 24px;\n  border-top: 1px solid rgba(8, 38, 58, 0.1);\n}\n\n.checklist-head,\n.outing-summary {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 16px;\n  margin-bottom: 18px;\n}\n\n.checklist-head span {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 72px;\n  padding: 0.45rem 0.8rem;\n  border-radius: 999px;\n  background: rgba(11, 110, 143, 0.1);\n  color: #0b6e8f;\n  font-weight: 800;\n}\n\n.checklist-head span.complete {\n  background: rgba(16, 185, 129, 0.14);\n  color: #047857;\n}\n\n.checklist-grid {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 12px;\n}\n\n.checklist-grid.compact {\n  grid-template-columns: 1fr;\n}\n\n.check-item {\n  display: flex;\n  align-items: center;\n  grid-template-columns: auto 1fr;\n  gap: 12px;\n  padding: 14px;\n  border: 1px solid rgba(8, 38, 58, 0.12);\n  border-radius: 16px;\n  cursor: pointer;\n  background: #fff;\n  transition: 0.2s ease;\n}\n\n.check-item:hover {\n  background: rgba(11, 110, 143, 0.05);\n}\n\n.check-item.done {\n  border-color: rgba(16, 185, 129, 0.35);\n  background: rgba(16, 185, 129, 0.06);\n}\n\n.check-item input {\n  display: none;\n}\n\n.fake-radio {\n  width: 22px;\n  height: 22px;\n  border-radius: 50%;\n  border: 2px solid #0b6e8f;\n  position: relative;\n  flex: 0 0 auto;\n}\n\n.check-item input:checked + .fake-radio::after {\n  content: '';\n  position: absolute;\n  inset: 4px;\n  border-radius: 50%;\n  background: #f28c28;\n}\n\n.form-actions {\n  margin-top: 26px;\n  display: flex;\n  justify-content: flex-end;\n}\n\n.btn {\n  border: 0;\n  border-radius: 999px;\n  padding: 0.9rem 1.25rem;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 800;\n  cursor: pointer;\n}\n\n.btn-primary {\n  background: #f28c28;\n  color: #fff;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary {\n  background: #e8f4f7;\n  color: #08263a;\n}\n\n.btn:disabled {\n  opacity: 0.45;\n  cursor: not-allowed;\n}\n\n.notice {\n  margin-top: 18px;\n  padding: 14px 16px;\n  border-radius: 14px;\n  font-weight: 700;\n}\n\n.notice.success {\n  color: #047857;\n  background: rgba(16, 185, 129, 0.12);\n}\n\n.notice.error {\n  color: #b42318;\n  background: rgba(244, 63, 94, 0.1);\n}\n\n.outings-list-card {\n  margin-top: 28px;\n}\n\n.empty {\n  color: #64748b;\n}\n\n.outing-row {\n  margin-top: 18px;\n  padding: 20px;\n  border: 1px solid rgba(8, 38, 58, 0.1);\n  border-radius: 22px;\n}\n\n.outing-summary h3 {\n  font-size: 1.35rem;\n  margin-bottom: 6px;\n}\n\n.outing-summary p {\n  margin: 2px 0;\n  color: #64748b;\n}\n\n.status {\n  padding: 0.45rem 0.8rem;\n  border-radius: 999px;\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  font-weight: 800;\n}\n\n.status.closed {\n  background: rgba(16, 185, 129, 0.12);\n  color: #047857;\n}\n\n.closure {\n  margin-top: 18px;\n  padding-top: 18px;\n  border-top: 1px dashed rgba(8, 38, 58, 0.18);\n}\n\n.closure-comments {\n  margin: 18px 0;\n}\n\n@media (max-width: 820px) {\n  .admin-outings-page {\n    padding: 44px 0;\n  }\n\n  .outing-form-card,\n  .outings-list-card {\n    padding: 20px;\n    border-radius: 22px;\n  }\n\n  .form-grid,\n  .checklist-grid {\n    grid-template-columns: 1fr;\n  }\n\n  label.wide {\n    grid-column: span 1;\n  }\n\n  .checklist-head,\n  .outing-summary {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n\n  .form-actions,\n  .btn {\n    width: 100%;\n  }\n}\n\n.checklist-group {\n  margin-top: 22px;\n  padding: 18px;\n  border: 1px solid rgba(8, 38, 58, 0.08);\n  border-radius: 22px;\n  background: rgba(251, 248, 242, 0.65);\n}\n\n.checklist-subhead {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 14px;\n  margin-bottom: 14px;\n}\n\n.checklist-subhead h3 {\n  font-size: 1.18rem;\n}\n\n.checklist-subhead span {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 62px;\n  padding: 0.35rem 0.7rem;\n  border-radius: 999px;\n  background: rgba(11, 110, 143, 0.1);\n  color: #0b6e8f;\n  font-weight: 800;\n}\n\n.checklist-subhead span.complete {\n  background: rgba(16, 185, 129, 0.14);\n  color: #047857;\n}\n\n@media (max-width: 768px) {\n  .checklist-subhead {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n\n  .checklist-group {\n    padding: 14px;\n  }\n}\n\n.outing-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }\n.detail-link { color: var(--sun-orange, #f59e0b); font-family: 'Raleway', sans-serif; font-weight: 800; text-decoration: none; }\n.detail-link:hover { text-decoration: underline; }\n.check-meta { display:block; margin-top:4px; color:#64748b; font-size:.78rem; font-family:'Lato', sans-serif; }\n\n.detail-link.danger { border: none; background: transparent; color: #b91c1c; cursor: pointer; padding: 0; }\n.detail-link.danger:hover { text-decoration: underline; }\n.checklist-subhead h4 { margin: 0; font-size: 1.02rem; color: #08263a; }\n\n.mode-toolbar,\n.list-head,\n.form-title-row {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 14px;\n  margin-bottom: 22px;\n  flex-wrap: wrap;\n}\n\n.mode-toolbar {\n  justify-content: flex-start;\n}\n\n.mode-toolbar .active {\n  outline: 3px solid rgba(242, 140, 40, 0.22);\n}\n\n.outing-form-card {\n  margin-top: 28px;\n}\n\n.form-title-row p {\n  margin: 6px 0 0;\n  color: #64748b;\n}\n\n.form-actions {\n  gap: 12px;\n  flex-wrap: wrap;\n}\n\n.compact-row .outing-summary {\n  margin-bottom: 0;\n}\n\nbutton.detail-link {\n  border: none;\n  background: transparent;\n  cursor: pointer;\n  padding: 0;\n}\n\n@media (max-width: 820px) {\n  .mode-toolbar,\n  .list-head,\n  .form-title-row,\n  .outing-actions {\n    align-items: stretch;\n    flex-direction: column;\n  }\n\n  .outing-actions .status,\n  .outing-actions .detail-link {\n    align-self: flex-start;\n  }\n}\n"],"sourceRoot":""}]);
+}
+.anchorages-block {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(20, 54, 79, 0.12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.anchorage-form-grid {
+  margin-top: 1rem;
+}
+
+.mini-actions {
+  margin-top: 0.75rem;
+  justify-content: flex-start;
+}
+
+.anchorage-card {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(20, 54, 79, 0.1);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.anchorage-card-head {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.anchorage-card-head h3 {
+  margin: 0 0 0.25rem;
+}
+
+.anchorage-card-head p {
+  margin: 0.1rem 0;
+}
+
+@media (max-width: 760px) {
+  .anchorage-card-head {
+    flex-direction: column;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-outings/admin-outings.component.scss"],"names":[],"mappings":"AAAA;EACE,gBAAA;EACA,eAAA;EACA,4DAAA;AACF;;AAEA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,mBAAA;AACF;;AAEA;EACE,qBAAA;EACA,mBAAA;EACA,yCAAA;EACA,kBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,+CAAA;EACA,cAAA;EACA,SAAA;AACF;;AAEA;EACE,mCAAA;EACA,iBAAA;EACA,mBAAA;AACF;;AAEA;EACE,sCAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;;;EAGE,gBAAA;EACA,mBAAA;EACA,aAAA;EACA,6CAAA;EACA,uCAAA;AACF;;AAEA;EACE,cAAA;EACA,oCAAA;EACA,gBAAA;AACF;;AAEA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AACF;;AAEA;EACE,aAAA;EACA,QAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;EACE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,wBAAA;EACA,eAAA;EACA,cAAA;EACA,gBAAA;EACA,aAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,qBAAA;EACA,8CAAA;AACF;;AAEA;EACE,gBAAA;EACA,iBAAA;EACA,0CAAA;AACF;;AAEA;;EAEE,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,SAAA;EACA,mBAAA;AACF;;AAEA;EACE,oBAAA;EACA,mBAAA;EACA,uBAAA;EACA,eAAA;EACA,uBAAA;EACA,oBAAA;EACA,mCAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,oCAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AACF;;AAEA;EACE,0BAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;EACA,+BAAA;EACA,SAAA;EACA,aAAA;EACA,uCAAA;EACA,mBAAA;EACA,eAAA;EACA,gBAAA;EACA,qBAAA;AACF;;AAEA;EACE,oCAAA;AACF;;AAEA;EACE,sCAAA;EACA,oCAAA;AACF;;AAEA;EACE,aAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,kBAAA;EACA,yBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,WAAA;EACA,kBAAA;EACA,UAAA;EACA,kBAAA;EACA,mBAAA;AACF;;AAEA;EACE,gBAAA;EACA,aAAA;EACA,yBAAA;AACF;;AAEA;EACE,SAAA;EACA,oBAAA;EACA,uBAAA;EACA,yCAAA;EACA,gBAAA;EACA,eAAA;AACF;;AAEA;EACE,mBAAA;EACA,WAAA;EACA,gDAAA;AACF;;AAEA;EACE,mBAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,mBAAA;AACF;;AAEA;EACE,gBAAA;EACA,kBAAA;EACA,mBAAA;EACA,gBAAA;AACF;;AAEA;EACE,cAAA;EACA,oCAAA;AACF;;AAEA;EACE,cAAA;EACA,kCAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,aAAA;EACA,sCAAA;EACA,mBAAA;AACF;;AAEA;EACE,kBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,cAAA;AACF;;AAEA;EACE,uBAAA;EACA,oBAAA;EACA,oCAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,oCAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;EACA,iBAAA;EACA,4CAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE;IACE,eAAA;EACF;EAEA;;IAEE,aAAA;IACA,mBAAA;EAAF;EAGA;;IAEE,0BAAA;EADF;EAIA;IACE,mBAAA;EAFF;EAKA;;IAEE,uBAAA;IACA,sBAAA;EAHF;EAMA;;IAEE,WAAA;EAJF;AACF;AAOA;EACE,gBAAA;EACA,aAAA;EACA,uCAAA;EACA,mBAAA;EACA,qCAAA;AALF;;AAQA;EACE,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,SAAA;EACA,mBAAA;AALF;;AAQA;EACE,kBAAA;AALF;;AAQA;EACE,oBAAA;EACA,mBAAA;EACA,uBAAA;EACA,eAAA;EACA,uBAAA;EACA,oBAAA;EACA,mCAAA;EACA,cAAA;EACA,gBAAA;AALF;;AAQA;EACE,oCAAA;EACA,cAAA;AALF;;AAQA;EACE;IACE,uBAAA;IACA,sBAAA;EALF;EAQA;IACE,aAAA;EANF;AACF;AASA;EAAkB,aAAA;EAAe,mBAAA;EAAqB,SAAA;EAAW,eAAA;EAAiB,yBAAA;AAFlF;;AAGA;EAAe,iCAAA;EAAmC,kCAAA;EAAoC,gBAAA;EAAkB,qBAAA;AAIxG;;AAHA;EAAqB,0BAAA;AAOrB;;AANA;EAAc,cAAA;EAAe,eAAA;EAAgB,cAAA;EAAe,kBAAA;EAAkB,+BAAA;AAc9E;;AAZA;EAAsB,YAAA;EAAc,uBAAA;EAAyB,cAAA;EAAgB,eAAA;EAAiB,UAAA;AAoB9F;;AAnBA;EAA4B,0BAAA;AAuB5B;;AAtBA;EAAwB,SAAA;EAAW,kBAAA;EAAoB,cAAA;AA4BvD;;AA1BA;;;EAGE,aAAA;EACA,mBAAA;EACA,8BAAA;EACA,SAAA;EACA,mBAAA;EACA,eAAA;AA6BF;;AA1BA;EACE,2BAAA;AA6BF;;AA1BA;EACE,2CAAA;AA6BF;;AA1BA;EACE,gBAAA;AA6BF;;AA1BA;EACE,eAAA;EACA,cAAA;AA6BF;;AA1BA;EACE,SAAA;EACA,eAAA;AA6BF;;AA1BA;EACE,gBAAA;AA6BF;;AA1BA;EACE,YAAA;EACA,uBAAA;EACA,eAAA;EACA,UAAA;AA6BF;;AA1BA;EACE;;;;IAIE,oBAAA;IACA,sBAAA;EA6BF;EA1BA;;IAEE,sBAAA;EA4BF;AACF;AAzBA;EACE,kBAAA;EACA,gBAAA;EACA,wCAAA;EACA,mBAAA;EACA,qCAAA;AA2BF;;AAxBA;EACE,gBAAA;AA2BF;;AAxBA;EACE,mBAAA;EACA,2BAAA;AA2BF;;AAxBA;EACE,gBAAA;EACA,aAAA;EACA,uCAAA;EACA,mBAAA;EACA,gBAAA;AA2BF;;AAxBA;EACE,aAAA;EACA,SAAA;EACA,uBAAA;EACA,8BAAA;EACA,mBAAA;AA2BF;;AAxBA;EACE,mBAAA;AA2BF;;AAxBA;EACE,gBAAA;AA2BF;;AAxBA;EACE;IACE,sBAAA;EA2BF;AACF","sourcesContent":[".admin-outings-page {\n  min-height: 70vh;\n  padding: 72px 0;\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 58%);\n}\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.page-head {\n  max-width: 820px;\n  margin-bottom: 32px;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 10px;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-size: 0.78rem;\n  letter-spacing: 0.14em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n  font-weight: 700;\n}\n\nh1, h2, h3 {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: #08263a;\n  margin: 0;\n}\n\nh1 {\n  font-size: clamp(2rem, 5vw, 3.4rem);\n  line-height: 1.05;\n  margin-bottom: 14px;\n}\n\np, label, input, select, textarea, button, span {\n  font-family: 'Lato', Arial, sans-serif;\n}\n\n.page-head p {\n  color: #475569;\n  line-height: 1.8;\n  font-size: 1.05rem;\n}\n\n.admin-warning,\n.outing-form-card,\n.outings-list-card {\n  background: #fff;\n  border-radius: 28px;\n  padding: 28px;\n  box-shadow: 0 22px 55px rgba(8, 38, 58, 0.12);\n  border: 1px solid rgba(8, 38, 58, 0.08);\n}\n\n.admin-warning {\n  color: #9a4d08;\n  background: rgba(242, 140, 40, 0.12);\n  font-weight: 700;\n}\n\n.form-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 18px;\n}\n\nlabel {\n  display: grid;\n  gap: 8px;\n  color: #08263a;\n  font-weight: 700;\n}\n\nlabel.wide {\n  grid-column: span 3;\n}\n\ninput, select, textarea {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.16);\n  border-radius: 14px;\n  padding: 0.85rem 0.95rem;\n  font-size: 1rem;\n  color: #08263a;\n  background: #fff;\n  outline: none;\n}\n\ntextarea {\n  resize: vertical;\n}\n\ninput:focus, select:focus, textarea:focus {\n  border-color: #0b6e8f;\n  box-shadow: 0 0 0 4px rgba(11, 110, 143, 0.12);\n}\n\n.checklist-block {\n  margin-top: 28px;\n  padding-top: 24px;\n  border-top: 1px solid rgba(8, 38, 58, 0.1);\n}\n\n.checklist-head,\n.outing-summary {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 16px;\n  margin-bottom: 18px;\n}\n\n.checklist-head span {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 72px;\n  padding: 0.45rem 0.8rem;\n  border-radius: 999px;\n  background: rgba(11, 110, 143, 0.1);\n  color: #0b6e8f;\n  font-weight: 800;\n}\n\n.checklist-head span.complete {\n  background: rgba(16, 185, 129, 0.14);\n  color: #047857;\n}\n\n.checklist-grid {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 12px;\n}\n\n.checklist-grid.compact {\n  grid-template-columns: 1fr;\n}\n\n.check-item {\n  display: flex;\n  align-items: center;\n  grid-template-columns: auto 1fr;\n  gap: 12px;\n  padding: 14px;\n  border: 1px solid rgba(8, 38, 58, 0.12);\n  border-radius: 16px;\n  cursor: pointer;\n  background: #fff;\n  transition: 0.2s ease;\n}\n\n.check-item:hover {\n  background: rgba(11, 110, 143, 0.05);\n}\n\n.check-item.done {\n  border-color: rgba(16, 185, 129, 0.35);\n  background: rgba(16, 185, 129, 0.06);\n}\n\n.check-item input {\n  display: none;\n}\n\n.fake-radio {\n  width: 22px;\n  height: 22px;\n  border-radius: 50%;\n  border: 2px solid #0b6e8f;\n  position: relative;\n  flex: 0 0 auto;\n}\n\n.check-item input:checked + .fake-radio::after {\n  content: '';\n  position: absolute;\n  inset: 4px;\n  border-radius: 50%;\n  background: #f28c28;\n}\n\n.form-actions {\n  margin-top: 26px;\n  display: flex;\n  justify-content: flex-end;\n}\n\n.btn {\n  border: 0;\n  border-radius: 999px;\n  padding: 0.9rem 1.25rem;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 800;\n  cursor: pointer;\n}\n\n.btn-primary {\n  background: #f28c28;\n  color: #fff;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary {\n  background: #e8f4f7;\n  color: #08263a;\n}\n\n.btn:disabled {\n  opacity: 0.45;\n  cursor: not-allowed;\n}\n\n.notice {\n  margin-top: 18px;\n  padding: 14px 16px;\n  border-radius: 14px;\n  font-weight: 700;\n}\n\n.notice.success {\n  color: #047857;\n  background: rgba(16, 185, 129, 0.12);\n}\n\n.notice.error {\n  color: #b42318;\n  background: rgba(244, 63, 94, 0.1);\n}\n\n.outings-list-card {\n  margin-top: 28px;\n}\n\n.empty {\n  color: #64748b;\n}\n\n.outing-row {\n  margin-top: 18px;\n  padding: 20px;\n  border: 1px solid rgba(8, 38, 58, 0.1);\n  border-radius: 22px;\n}\n\n.outing-summary h3 {\n  font-size: 1.35rem;\n  margin-bottom: 6px;\n}\n\n.outing-summary p {\n  margin: 2px 0;\n  color: #64748b;\n}\n\n.status {\n  padding: 0.45rem 0.8rem;\n  border-radius: 999px;\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  font-weight: 800;\n}\n\n.status.closed {\n  background: rgba(16, 185, 129, 0.12);\n  color: #047857;\n}\n\n.closure {\n  margin-top: 18px;\n  padding-top: 18px;\n  border-top: 1px dashed rgba(8, 38, 58, 0.18);\n}\n\n.closure-comments {\n  margin: 18px 0;\n}\n\n@media (max-width: 820px) {\n  .admin-outings-page {\n    padding: 44px 0;\n  }\n\n  .outing-form-card,\n  .outings-list-card {\n    padding: 20px;\n    border-radius: 22px;\n  }\n\n  .form-grid,\n  .checklist-grid {\n    grid-template-columns: 1fr;\n  }\n\n  label.wide {\n    grid-column: span 1;\n  }\n\n  .checklist-head,\n  .outing-summary {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n\n  .form-actions,\n  .btn {\n    width: 100%;\n  }\n}\n\n.checklist-group {\n  margin-top: 22px;\n  padding: 18px;\n  border: 1px solid rgba(8, 38, 58, 0.08);\n  border-radius: 22px;\n  background: rgba(251, 248, 242, 0.65);\n}\n\n.checklist-subhead {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 14px;\n  margin-bottom: 14px;\n}\n\n.checklist-subhead h3 {\n  font-size: 1.18rem;\n}\n\n.checklist-subhead span {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 62px;\n  padding: 0.35rem 0.7rem;\n  border-radius: 999px;\n  background: rgba(11, 110, 143, 0.1);\n  color: #0b6e8f;\n  font-weight: 800;\n}\n\n.checklist-subhead span.complete {\n  background: rgba(16, 185, 129, 0.14);\n  color: #047857;\n}\n\n@media (max-width: 768px) {\n  .checklist-subhead {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n\n  .checklist-group {\n    padding: 14px;\n  }\n}\n\n.outing-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }\n.detail-link { color: var(--sun-orange, #f59e0b); font-family: 'Raleway', sans-serif; font-weight: 800; text-decoration: none; }\n.detail-link:hover { text-decoration: underline; }\n.check-meta { display:block; margin-top:4px; color:#64748b; font-size:.78rem; font-family:'Lato', sans-serif; }\n\n.detail-link.danger { border: none; background: transparent; color: #b91c1c; cursor: pointer; padding: 0; }\n.detail-link.danger:hover { text-decoration: underline; }\n.checklist-subhead h4 { margin: 0; font-size: 1.02rem; color: #08263a; }\n\n.mode-toolbar,\n.list-head,\n.form-title-row {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 14px;\n  margin-bottom: 22px;\n  flex-wrap: wrap;\n}\n\n.mode-toolbar {\n  justify-content: flex-start;\n}\n\n.mode-toolbar .active {\n  outline: 3px solid rgba(242, 140, 40, 0.22);\n}\n\n.outing-form-card {\n  margin-top: 28px;\n}\n\n.form-title-row p {\n  margin: 6px 0 0;\n  color: #64748b;\n}\n\n.form-actions {\n  gap: 12px;\n  flex-wrap: wrap;\n}\n\n.compact-row .outing-summary {\n  margin-bottom: 0;\n}\n\nbutton.detail-link {\n  border: none;\n  background: transparent;\n  cursor: pointer;\n  padding: 0;\n}\n\n@media (max-width: 820px) {\n  .mode-toolbar,\n  .list-head,\n  .form-title-row,\n  .outing-actions {\n    align-items: stretch;\n    flex-direction: column;\n  }\n\n  .outing-actions .status,\n  .outing-actions .detail-link {\n    align-self: flex-start;\n  }\n}\n\n.anchorages-block {\n  margin-top: 1.5rem;\n  padding: 1.25rem;\n  border: 1px solid rgba(20, 54, 79, 0.12);\n  border-radius: 18px;\n  background: rgba(255, 255, 255, 0.72);\n}\n\n.anchorage-form-grid {\n  margin-top: 1rem;\n}\n\n.mini-actions {\n  margin-top: 0.75rem;\n  justify-content: flex-start;\n}\n\n.anchorage-card {\n  margin-top: 1rem;\n  padding: 1rem;\n  border: 1px solid rgba(20, 54, 79, 0.1);\n  border-radius: 16px;\n  background: #fff;\n}\n\n.anchorage-card-head {\n  display: flex;\n  gap: 1rem;\n  align-items: flex-start;\n  justify-content: space-between;\n  margin-bottom: 1rem;\n}\n\n.anchorage-card-head h3 {\n  margin: 0 0 0.25rem;\n}\n\n.anchorage-card-head p {\n  margin: 0.1rem 0;\n}\n\n@media (max-width: 760px) {\n  .anchorage-card-head {\n    flex-direction: column;\n  }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -9500,6 +10944,118 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 /***/ }),
 
+/***/ 88636:
+/*!*****************************************************!*\
+  !*** ./src/app/home/bookings/bookings.component.ts ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BookingsComponent: () => (/* binding */ BookingsComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bookings.component.html?ngResource */ 26456);
+/* harmony import */ var _bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bookings.component.scss?ngResource */ 62992);
+/* harmony import */ var _bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _booking_api_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./booking-api.service */ 74854);
+
+
+
+
+
+
+let BookingsComponent = class BookingsComponent {
+  bookingApi;
+  router;
+  bookings = [];
+  loading = true;
+  errorMessage = '';
+  constructor(bookingApi, router) {
+    this.bookingApi = bookingApi;
+    this.router = router;
+  }
+  ngOnInit() {
+    this.loadBookings();
+  }
+  loadBookings() {
+    this.loading = true;
+    this.errorMessage = '';
+    this.bookingApi.getBookings().subscribe({
+      next: bookings => {
+        this.bookings = (bookings || []).map(booking => ({
+          ...booking,
+          displayFields: this.buildBookingFields(booking)
+        }));
+        this.loading = false;
+      },
+      error: () => {
+        this.bookings = [];
+        this.loading = false;
+        this.errorMessage = 'Unable to load bookings from Firebase.';
+      }
+    });
+  }
+  openBooking(booking) {
+    this.router.navigate(['/admin/bookings', booking.bookingId]);
+  }
+  payment(booking) {
+    this.router.navigate(['/payment', booking.bookingId]);
+  }
+  trackByBookingId(index, booking) {
+    return booking.bookingId || String(index);
+  }
+  trackByFieldKey(index, field) {
+    return field.key || String(index);
+  }
+  buildBookingFields(booking) {
+    const raw = booking.raw && typeof booking.raw === 'object' ? {
+      ...booking.raw
+    } : {
+      ...booking
+    };
+    delete raw.raw;
+    delete raw.displayFields;
+    if (booking.bookingId && !raw.bookingId) {
+      raw.bookingId = booking.bookingId;
+    }
+    const priority = ['bookingId', 'bookingStatus', 'customerName', 'email', 'phone', 'outingType', 'outingDate', 'departureTime', 'arrivalTime', 'passengers', 'totalPrice', 'depositAmount', 'depositStatus', 'warrantyAmount', 'warrantyStatus', 'comments'];
+    const keys = Object.keys(raw || {});
+    const orderedKeys = [...priority.filter(key => keys.includes(key)), ...keys.filter(key => !priority.includes(key)).sort((a, b) => a.localeCompare(b))];
+    return orderedKeys.map(key => ({
+      key,
+      value: this.formatFieldValue(raw[key])
+    }));
+  }
+  formatFieldValue(value) {
+    if (value === null || value === undefined || value === '') return '-';
+    if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+    if (typeof value === 'number') return String(value);
+    if (typeof value === 'string') return value;
+    try {
+      return JSON.stringify(value, null, 2);
+    } catch {
+      return String(value);
+    }
+  }
+  static ctorParameters = () => [{
+    type: _booking_api_service__WEBPACK_IMPORTED_MODULE_2__.BookingApiService
+  }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_3__.Router
+  }];
+};
+BookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
+  selector: 'app-bookings',
+  template: _bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], BookingsComponent);
+
+
+/***/ }),
+
 /***/ 90578:
 /*!****************************************************************!*\
   !*** ./src/app/home/gallery/gallery.component.html?ngResource ***!
@@ -9859,13 +11415,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AdminOutingsComponent: () => (/* binding */ AdminOutingsComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _admin_outings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin-outings.component.html?ngResource */ 28738);
 /* harmony import */ var _admin_outings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./admin-outings.component.scss?ngResource */ 85206);
 /* harmony import */ var _admin_outings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_admin_outings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ 93262);
 /* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+
 
 
 
@@ -9878,12 +11436,14 @@ let AdminOutingsComponent = class AdminOutingsComponent {
   mainSvc;
   storeDb;
   utilSvc;
+  http;
   currentLanguage = 'fr';
   loggedUser = null;
   outings = [];
   loading = false;
   saving = false;
   closingId = '';
+  restDatabaseUrls = ['https://adn-dev-4d05d-default-rtdb.europe-west1.firebasedatabase.app', 'https://adn-dev-4d05d-default-rtdb.firebaseio.com', 'https://adn-dev-4d05d.firebaseio.com'];
   saved = false;
   error = '';
   closeError = '';
@@ -9898,15 +11458,20 @@ let AdminOutingsComponent = class AdminOutingsComponent {
   selectedOuting = null;
   editingOutingId = '';
   departureChecklistGroups = [];
+  currentAnchorages = [];
+  anchorageForm = this.emptyAnchorageForm();
+  editingAnchorageId = '';
   arrivalChecklistByOuting = {};
   arrivalChecklistGroupsByOuting = {};
+  checklistSaveTimer = null;
   languageSub;
   userSub;
-  constructor(languageService, mainSvc, storeDb, utilSvc) {
+  constructor(languageService, mainSvc, storeDb, utilSvc, http) {
     this.languageService = languageService;
     this.mainSvc = mainSvc;
     this.storeDb = storeDb;
     this.utilSvc = utilSvc;
+    this.http = http;
   }
   ngOnInit() {
     this.departureChecklistGroups = this.buildDepartureChecklistGroups();
@@ -9981,6 +11546,9 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     this.form = this.emptyForm();
     this.form.outingType = this.outingTypes[this.currentLanguage][0];
     this.departureChecklistGroups = this.buildDepartureChecklistGroups();
+    this.currentAnchorages = [];
+    this.anchorageForm = this.emptyAnchorageForm();
+    this.editingAnchorageId = '';
     this.error = '';
     this.saved = false;
   }
@@ -10002,6 +11570,9 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       comments: outing.comments || ''
     };
     this.departureChecklistGroups = this.departureGroupsFromOuting(outing);
+    this.currentAnchorages = this.anchoragesFromOuting(outing);
+    this.anchorageForm = this.emptyAnchorageForm();
+    this.editingAnchorageId = '';
     this.error = '';
     this.saved = false;
   }
@@ -10028,6 +11599,16 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       destination: '',
       comments: ''
     };
+  }
+  emptyAnchorageForm() {
+    return {
+      location: '',
+      comments: ''
+    };
+  }
+  currentTimeForInput() {
+    const d = new Date();
+    return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
   }
   buildDepartureChecklistGroups() {
     return [{
@@ -10066,7 +11647,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         done: false,
         label: {
           fr: 'Préparer le journal de bord avec la page de signature passagers',
-          en: 'Start log book including the page for guests to sign in',
+          en: 'Start the logbook including the page for guests to sign in',
           es: 'Preparar el libro de navegación con la página de firma de pasajeros'
         }
       }, {
@@ -10110,11 +11691,11 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           es: 'Preparar el desayuno'
         }
       }, {
-        id: 'install_passerelle',
+        id: 'install_foot_bridge',
         done: false,
         label: {
           fr: 'Installer la passerelle',
-          en: 'Install passerelle',
+          en: 'Install foot bridge',
           es: 'Instalar la pasarela'
         }
       }, {
@@ -10124,6 +11705,22 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           fr: 'Débrancher la connexion électrique',
           en: 'Remove electric connection',
           es: 'Desconectar la conexión eléctrica'
+        }
+      }, {
+        id: 'invertor_on',
+        done: false,
+        label: {
+          fr: 'Allumer l’inverter',
+          en: 'Turn on the invertor',
+          es: 'Encender el inversor'
+        }
+      }, {
+        id: 'prep_stern_lines_no_wind',
+        done: false,
+        label: {
+          fr: 'S’il n’y a pas de vent, préparer les amarres arrière',
+          en: 'If there is no wind, prep the stern lines',
+          es: 'Si no hay viento, preparar las amarras de popa'
         }
       }]
     }, {
@@ -10138,7 +11735,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         done: false,
         label: {
           fr: 'Accueillir les passagers à bord',
-          en: 'Welcome aboard',
+          en: 'Welcome the clients aboard',
           es: 'Dar la bienvenida a bordo'
         }
       }, {
@@ -10238,11 +11835,11 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           es: 'Motor encendido'
         }
       }, {
-        id: 'passerelle_in',
+        id: 'foot_bridge_in',
         done: false,
         label: {
           fr: 'Rentrer la passerelle',
-          en: 'Passerelle brought in',
+          en: 'Foot bridge brought in',
           es: 'Recoger la pasarela'
         }
       }]
@@ -10254,20 +11851,20 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         es: 'Salida'
       },
       items: [{
-        id: 'permission_leave',
+        id: 'permission_leave_vhf09',
         done: false,
         label: {
-          fr: 'Le capitaine demande l’autorisation de quitter le port',
-          en: 'Captain requests permission to leave',
-          es: 'El capitán solicita permiso para salir'
+          fr: 'Le capitaine demande l’autorisation de quitter le port – VHF 09',
+          en: 'Captain requests permission to leave – VHF 09',
+          es: 'El capitán solicita permiso para salir – VHF 09'
         }
       }, {
         id: 'gear_stern_lines',
         done: false,
         label: {
-          fr: 'Bateau en marche arrière, préparation des amarres arrière',
-          en: 'Boat in gear backwards, prepare stern lines',
-          es: 'Barco en marcha atrás, preparar amarras de popa'
+          fr: 'Bateau en marche arrière, préparation des amarres arrière sauf si déjà préparées',
+          en: 'Boat in gear backwards, prepare stern lines unless already prepped',
+          es: 'Barco en marcha atrás, preparar amarras de popa salvo si ya están preparadas'
         }
       }, {
         id: 'lines_off',
@@ -10294,19 +11891,35 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           es: 'Fuera del puerto, mostrar el recorrido de seguridad al responsable'
         }
       }, {
+        id: 'switch_vhf16',
+        done: false,
+        label: {
+          fr: 'Passer sur le canal VHF 16',
+          en: 'Switch to VHF channel 16',
+          es: 'Cambiar al canal VHF 16'
+        }
+      }, {
         id: 'fenders_up',
         done: false,
         label: {
           fr: 'Remonter les pare-battages',
-          en: 'Bring up fenders',
+          en: 'Bring up the fenders',
           es: 'Subir defensas'
+        }
+      }, {
+        id: 'fasten_security_lines',
+        done: false,
+        label: {
+          fr: 'Fixer les lignes de sécurité',
+          en: 'Fasten the security lines',
+          es: 'Fijar las líneas de seguridad'
         }
       }, {
         id: 'breakfast_cleanup',
         done: false,
         label: {
           fr: 'Ranger le petit-déjeuner',
-          en: 'Breakfast clean up',
+          en: 'Breakfast clean-up',
           es: 'Recoger el desayuno'
         }
       }]
@@ -10322,21 +11935,256 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       items: this.serializeChecklist(group.items)
     }));
   }
-  buildArrivalChecklistGroups() {
+  buildAnchorageArrivalChecklistGroups() {
     return [{
-      id: 'return_entrance_to_port',
+      id: 'anchorage_arrival',
       title: {
-        fr: '1.1. Entrée au port',
-        en: '1.1. Entrance to the port',
-        es: '1.1. Entrada al puerto'
+        fr: 'Mouillage — arrivée',
+        en: 'Anchoring — arrival',
+        es: 'Fondeo — llegada'
       },
       items: [{
-        id: 'return_permission_enter',
+        id: 'choose_spot',
         done: false,
         label: {
-          fr: 'À 1/2 mille nautique du port, demander l’autorisation d’entrer',
-          en: 'At 1/2 NM from harbour request permission to enter',
-          es: 'A 1/2 milla náutica del puerto, solicitar permiso para entrar'
+          fr: 'Choisir un spot : fond sableux entre 5 m et 10 m',
+          en: 'Choose a spot: sandy bottom with 5m to 10m depth',
+          es: 'Elegir un lugar: fondo arenoso entre 5 m y 10 m'
+        }
+      }, {
+        id: 'face_wind_anchor',
+        done: false,
+        label: {
+          fr: 'Se mettre face au vent et mouiller l’ancre',
+          en: 'Face into the wind and set the anchor',
+          es: 'Ponerse proa al viento y fondear'
+        }
+      }, {
+        id: 'anchor_bridle',
+        done: false,
+        label: {
+          fr: 'Une fois l’ancre prise, installer la bride de mouillage',
+          en: 'Once set, attach the anchor bridle',
+          es: 'Una vez fijada, colocar la brida del ancla'
+        }
+      }, {
+        id: 'check_anchor_not_dragging',
+        done: false,
+        label: {
+          fr: 'Vérifier que l’ancre ne chasse pas avant d’éteindre le moteur',
+          en: 'Check that the anchor is not dragging before turning off the engine',
+          es: 'Comprobar que el ancla no garrea antes de apagar el motor'
+        }
+      }, {
+        id: 'release_security_lines',
+        done: false,
+        label: {
+          fr: 'Relâcher les lignes de sécurité',
+          en: 'Release the security lines',
+          es: 'Soltar las líneas de seguridad'
+        }
+      }, {
+        id: 'swimming_ladder_down',
+        done: false,
+        label: {
+          fr: 'Descendre l’échelle de bain',
+          en: 'Put down the swimming ladder',
+          es: 'Bajar la escalera de baño'
+        }
+      }, {
+        id: 'toys_setup',
+        done: false,
+        label: {
+          fr: 'Installer les jouets nautiques',
+          en: 'Set up the toys',
+          es: 'Preparar los juguetes acuáticos'
+        }
+      }]
+    }];
+  }
+  buildAnchorageDepartureChecklistGroups() {
+    return [{
+      id: 'anchorage_departure',
+      title: {
+        fr: 'Mouillage — départ',
+        en: 'Anchoring — departure',
+        es: 'Fondeo — salida'
+      },
+      items: [{
+        id: 'everyone_aboard',
+        done: false,
+        label: {
+          fr: 'Vérifier que tout le monde est à bord',
+          en: 'Make sure everyone is aboard',
+          es: 'Comprobar que todos están a bordo'
+        }
+      }, {
+        id: 'equipment_aboard',
+        done: false,
+        label: {
+          fr: 'Vérifier que tout le matériel est à bord',
+          en: 'Make sure all equipment is aboard',
+          es: 'Comprobar que todo el equipo está a bordo'
+        }
+      }, {
+        id: 'swimming_ladder_up',
+        done: false,
+        label: {
+          fr: 'Remonter l’échelle de bain',
+          en: 'Bring up the swimming ladder',
+          es: 'Subir la escalera de baño'
+        }
+      }, {
+        id: 'attach_security_lines',
+        done: false,
+        label: {
+          fr: 'Attacher les lignes de sécurité',
+          en: 'Attach security lines',
+          es: 'Fijar las líneas de seguridad'
+        }
+      }, {
+        id: 'anchoring_engine_on',
+        done: false,
+        label: {
+          fr: 'Démarrer le moteur',
+          en: 'Engine on',
+          es: 'Encender motor'
+        }
+      }, {
+        id: 'anchor_up',
+        done: false,
+        label: {
+          fr: 'Remonter l’ancre',
+          en: 'Bring the anchor up',
+          es: 'Subir el ancla'
+        }
+      }, {
+        id: 'remove_anchor_bridle',
+        done: false,
+        label: {
+          fr: 'Retirer la bride de mouillage',
+          en: 'Remove the anchor bridle',
+          es: 'Retirar la brida del ancla'
+        }
+      }, {
+        id: 'confirm_anchor_in_place',
+        done: false,
+        label: {
+          fr: 'Confirmer que l’ancre est en place avant de repartir',
+          en: 'Confirm the anchor is in place before moving off',
+          es: 'Confirmar que el ancla está en su sitio antes de avanzar'
+        }
+      }]
+    }];
+  }
+  anchorageChecklistComplete(anchorage) {
+    const groups = [...(anchorage.arrivalChecklistGroups || []), ...(anchorage.departureChecklistGroups || [])];
+    return groups.length > 0 && groups.every(group => group.items.every(item => item.done));
+  }
+  addOrUpdateAnchorage() {
+    if (!this.anchorageForm.location) return;
+    if (this.editingAnchorageId) {
+      this.currentAnchorages = this.currentAnchorages.map(anchorage => anchorage.anchorageId === this.editingAnchorageId ? {
+        ...anchorage,
+        location: this.anchorageForm.location,
+        comments: this.anchorageForm.comments || ''
+      } : anchorage);
+    } else {
+      const now = Date.now();
+      this.currentAnchorages = [...this.currentAnchorages, {
+        anchorageId: `anchorage_${now}_${Math.random().toString(36).slice(2, 8)}`,
+        location: this.anchorageForm.location,
+        comments: this.anchorageForm.comments || '',
+        arrivalTime: this.currentTimeForInput(),
+        departureTime: '',
+        status: 'open',
+        anchorDroppedAt: now,
+        anchorLiftedAt: null,
+        arrivalChecklistGroups: this.buildAnchorageArrivalChecklistGroups(),
+        departureChecklistGroups: this.buildAnchorageDepartureChecklistGroups()
+      }];
+    }
+    this.anchorageForm = this.emptyAnchorageForm();
+    this.editingAnchorageId = '';
+  }
+  closeAnchorage(anchorage) {
+    const now = Date.now();
+    anchorage.status = 'closed';
+    anchorage.anchorLiftedAt = now;
+    anchorage.departureTime = anchorage.departureTime || this.currentTimeForInput();
+    const anchorUp = (anchorage.departureChecklistGroups || []).flatMap(group => group.items || []).find(item => item.id === 'anchor_up');
+    if (anchorUp && !anchorUp.done) {
+      anchorUp.done = true;
+      anchorUp.doneBy = this.getLoggedUserName();
+      anchorUp.doneByUid = this.loggedUser?.userId || this.loggedUser?.uid || '';
+      anchorUp.doneAt = now;
+    }
+  }
+  editAnchorage(anchorage) {
+    this.editingAnchorageId = anchorage.anchorageId;
+    this.anchorageForm = {
+      location: anchorage.location || '',
+      comments: anchorage.comments || ''
+    };
+  }
+  cancelAnchorageEdit() {
+    this.editingAnchorageId = '';
+    this.anchorageForm = this.emptyAnchorageForm();
+  }
+  removeAnchorage(anchorage) {
+    this.currentAnchorages = this.currentAnchorages.filter(item => item.anchorageId !== anchorage.anchorageId);
+    if (this.editingAnchorageId === anchorage.anchorageId) this.cancelAnchorageEdit();
+  }
+  serializeAnchorages(anchorages) {
+    return (anchorages || []).map(anchorage => ({
+      anchorageId: anchorage.anchorageId,
+      location: anchorage.location || '',
+      comments: anchorage.comments || '',
+      status: anchorage.status || (anchorage.departureTime ? 'closed' : 'open'),
+      anchorDroppedAt: anchorage.anchorDroppedAt || null,
+      anchorLiftedAt: anchorage.anchorLiftedAt || null,
+      arrivalChecklist: this.serializeChecklist(this.flattenChecklistGroups(anchorage.arrivalChecklistGroups || [])),
+      arrivalChecklistGroups: this.serializeChecklistGroups(anchorage.arrivalChecklistGroups || []),
+      departureChecklist: this.serializeChecklist(this.flattenChecklistGroups(anchorage.departureChecklistGroups || [])),
+      departureChecklistGroups: this.serializeChecklistGroups(anchorage.departureChecklistGroups || [])
+    }));
+  }
+  anchoragesFromOuting(outing) {
+    const raw = Array.isArray(outing.anchorages) ? outing.anchorages : [];
+    return raw.map(anchorage => ({
+      anchorageId: anchorage.anchorageId || `anchorage_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+      location: anchorage.location || '',
+      comments: anchorage.comments || '',
+      status: anchorage.status || (anchorage.departureTime ? 'closed' : 'open'),
+      anchorDroppedAt: anchorage.anchorDroppedAt || null,
+      anchorLiftedAt: anchorage.anchorLiftedAt || null,
+      arrivalChecklistGroups: this.fromStoredGroups(anchorage.arrivalChecklistGroups, this.buildAnchorageArrivalChecklistGroups()),
+      departureChecklistGroups: this.fromStoredGroups(anchorage.departureChecklistGroups, this.buildAnchorageDepartureChecklistGroups())
+    }));
+  }
+  buildArrivalChecklistGroups() {
+    return [{
+      id: 'return',
+      title: {
+        fr: 'Retour au port',
+        en: 'Return',
+        es: 'Regreso al puerto'
+      },
+      items: [{
+        id: 'return_permission_enter_vhf09',
+        done: false,
+        label: {
+          fr: 'À 1/2 mille nautique du port, demander l’autorisation d’entrer – VHF 09',
+          en: 'At 1/2 NM from harbour request permission to enter – VHF 09',
+          es: 'A 1/2 milla náutica del puerto, solicitar permiso para entrar – VHF 09'
+        }
+      }, {
+        id: 'return_security_lines_off',
+        done: false,
+        label: {
+          fr: 'Retirer les lignes de sécurité',
+          en: 'Security lines off',
+          es: 'Quitar las líneas de seguridad'
         }
       }, {
         id: 'return_fenders_down',
@@ -10379,11 +12227,11 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           es: 'Apagar motores'
         }
       }, {
-        id: 'return_install_passerelle',
+        id: 'return_install_foot_bridge',
         done: false,
         label: {
           fr: 'Installer la passerelle',
-          en: 'Install passerelle',
+          en: 'Install foot bridge',
           es: 'Instalar la pasarela'
         }
       }, {
@@ -10404,11 +12252,11 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         }
       }]
     }, {
-      id: 'return_tidy_up',
+      id: 'tidy_up',
       title: {
-        fr: '1.2. Rangement',
-        en: '1.2. Tidy up',
-        es: '1.2. Ordenar'
+        fr: 'Rangement',
+        en: 'Tidy up',
+        es: 'Ordenar'
       },
       items: [{
         id: 'tidy_remove_front_cushions',
@@ -10422,9 +12270,9 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         id: 'tidy_attach_bow_ropes',
         done: false,
         label: {
-          fr: 'Attacher les amarres avant / pendilles',
-          en: 'Attach bow ropes (pendi)',
-          es: 'Amarrar cabos de proa / pendille'
+          fr: 'Attacher les amarres avant / lazy lines',
+          en: 'Attach bow ropes (lazy lines)',
+          es: 'Amarrar cabos de proa / lazy lines'
         }
       }, {
         id: 'tidy_review_lines',
@@ -10443,28 +12291,36 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           es: 'Conectar electricidad'
         }
       }, {
-        id: 'tidy_clean_galley_bins_fridge',
+        id: 'tidy_invertor_off',
         done: false,
         label: {
-          fr: 'Nettoyer la cuisine, trier les poubelles et le réfrigérateur',
-          en: 'Clean up galley, sort out bins and fridge',
-          es: 'Limpiar cocina, ordenar basura y nevera'
+          fr: 'Éteindre l’inverter',
+          en: 'Turn off invertor',
+          es: 'Apagar el inversor'
         }
       }, {
-        id: 'tidy_replace_security_bars',
+        id: 'tidy_galley_bins_fridge',
+        done: false,
+        label: {
+          fr: 'Nettoyer la cuisine, trier les poubelles et le frigo',
+          en: 'Clean up galley, sort out bins and fridge',
+          es: 'Limpiar la cocina, ordenar papeleras y nevera'
+        }
+      }, {
+        id: 'tidy_security_bars',
         done: false,
         label: {
           fr: 'Remettre les barres de sécurité',
           en: 'Replace security bars',
-          es: 'Volver a colocar barras de seguridad'
+          es: 'Volver a colocar las barras de seguridad'
         }
       }]
     }, {
-      id: 'return_leave_boat',
+      id: 'leave_boat',
       title: {
-        fr: '1.3. Quitter le bateau',
-        en: '1.3. Leave boat',
-        es: '1.3. Salir del barco'
+        fr: 'Quitter le bateau',
+        en: 'Leave boat',
+        es: 'Dejar el barco'
       },
       items: [{
         id: 'leave_close_hatches',
@@ -10539,6 +12395,54 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       item.doneByUid = '';
       item.doneAt = null;
     }
+    this.scheduleChecklistAutosave();
+  }
+  scheduleChecklistAutosave() {
+    if (this.mode === 'create' || !this.selectedOuting || !this.selectedOuting.outingId) return;
+    if (this.checklistSaveTimer) {
+      clearTimeout(this.checklistSaveTimer);
+    }
+    this.checklistSaveTimer = setTimeout(() => {
+      this.persistCurrentChecklistState().catch(() => undefined);
+    }, 300);
+  }
+  persistCurrentChecklistState() {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this.selectedOuting?.outingId) return;
+      const base = {
+        ..._this.selectedOuting
+      };
+      let updated;
+      if (_this.mode === 'close') {
+        const groups = _this.arrivalChecklistGroupsByOuting[base.outingId] || _this.arrivalGroupsFromOuting(base);
+        updated = {
+          ...base,
+          arrivalChecklist: _this.serializeChecklist(_this.flattenChecklistGroups(groups)),
+          arrivalChecklistGroups: _this.serializeChecklistGroups(groups),
+          closureComments: _this.closureComments[base.outingId] || base.closureComments || '',
+          modifiedBy: _this.loggedUser?.userId || _this.loggedUser?.uid || '',
+          modifiedTS: Date.now()
+        };
+      } else {
+        updated = {
+          ...base,
+          ..._this.form,
+          passengers: _this.form.passengers === null || _this.form.passengers === '' ? null : Number(_this.form.passengers),
+          portEngineHoursDeparture: _this.form.portEngineHoursDeparture === null || _this.form.portEngineHoursDeparture === '' ? null : Number(_this.form.portEngineHoursDeparture),
+          starboardEngineHoursDeparture: _this.form.starboardEngineHoursDeparture === null || _this.form.starboardEngineHoursDeparture === '' ? null : Number(_this.form.starboardEngineHoursDeparture),
+          actualWindSpeed: _this.form.actualWindSpeed === null || _this.form.actualWindSpeed === '' ? null : Number(_this.form.actualWindSpeed),
+          departureChecklist: _this.serializeChecklist(_this.flattenChecklistGroups(_this.departureChecklistGroups)),
+          departureChecklistGroups: _this.serializeChecklistGroups(_this.departureChecklistGroups),
+          anchorages: _this.serializeAnchorages(_this.currentAnchorages),
+          modifiedBy: _this.loggedUser?.userId || _this.loggedUser?.uid || '',
+          modifiedTS: Date.now()
+        };
+      }
+      yield _this.saveToFirebase(updated.outingId, updated);
+      _this.selectedOuting = updated;
+      _this.outings = _this.outings.map(item => item.outingId === updated.outingId ? updated : item);
+    })();
   }
   getLoggedUserName() {
     const first = this.loggedUser?.firstname || this.loggedUser?.firstName || '';
@@ -10548,51 +12452,124 @@ let AdminOutingsComponent = class AdminOutingsComponent {
   }
   formatChecklistMeta(item) {
     if (!item.done || !item.doneAt) return '';
-    return `${this.t('validatedBy')} ${item.doneBy || 'Admin'} · ${new Date(item.doneAt).toLocaleString()}`;
+    const locale = this.currentLanguage === 'fr' ? 'fr-FR' : this.currentLanguage === 'es' ? 'es-ES' : 'en-GB';
+    return `${this.t('validatedBy')} ${item.doneBy || 'Admin'} · ${new Date(item.doneAt).toLocaleString(locale)}`;
   }
   validateForm() {
     if (!this.isAdmin) return this.t('adminOnly');
     if (!this.form.outingType || !this.form.passengers || !this.form.departureDate || !this.form.departureTime || !this.form.arrivalDate || !this.form.arrivalTime || !this.form.destination) {
       return this.t('required');
     }
-    if (!this.departureChecklistComplete) {
-      return this.t('departureChecklistRequired');
-    }
     return '';
   }
   loadOutings() {
-    var _this = this;
+    var _this2 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this.loading = true;
-      _this.error = '';
+      _this2.loading = true;
+      _this2.error = '';
       try {
-        const collectionName = _this.outingsCollectionName;
+        const collectionName = _this2.outingsCollectionName;
         let raw = null;
-        const store = _this.storeDb;
-        const util = _this.utilSvc;
-        if (typeof store.getObject === 'function') {
-          try {
-            raw = yield store.getObject(util.backendFBstoreId, util.mdb, collectionName, -1);
-          } catch {
-            try {
-              raw = yield store.getObject(collectionName);
-            } catch {
-              raw = null;
-            }
-          }
-        }
-        const list = raw ? Object.keys(raw).map(key => raw[key]).filter(item => !item.deleted) : [];
-        _this.outings = list.sort((a, b) => (b.createdTS || 0) - (a.createdTS || 0));
-        _this.outings.forEach(outing => {
-          const groups = _this.arrivalGroupsFromOuting(outing);
-          _this.arrivalChecklistGroupsByOuting[outing.outingId] = groups;
-          _this.arrivalChecklistByOuting[outing.outingId] = _this.flattenChecklistGroups(groups);
+        const store = _this2.storeDb;
+        const util = _this2.utilSvc;
+        raw = yield _this2.readRootAdminOutings();
+        const list = raw ? Object.keys(raw).map(key => ({
+          ...raw[key],
+          outingId: raw[key]?.outingId || key
+        })).filter(item => !item.deleted) : [];
+        _this2.outings = list.sort((a, b) => (b.createdTS || 0) - (a.createdTS || 0));
+        _this2.outings.forEach(outing => {
+          const groups = _this2.arrivalGroupsFromOuting(outing);
+          _this2.arrivalChecklistGroupsByOuting[outing.outingId] = groups;
+          _this2.arrivalChecklistByOuting[outing.outingId] = _this2.flattenChecklistGroups(groups);
         });
       } catch (e) {
-        _this.error = e?.message || _this.t('loadError');
+        _this2.error = e?.message || _this2.t('loadError');
       } finally {
-        _this.loading = false;
+        _this2.loading = false;
       }
+    })();
+  }
+  readRootAdminOutings() {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const collectionName = _this3.outingsCollectionName;
+      const store = _this3.storeDb;
+      const util = _this3.utilSvc;
+      // 1) Read directly through the underlying Firebase Realtime Database SDK when available.
+      const dbCandidates = [util?.mdb, store?.backendFbRef?.database, store?.backendFbRef?.['database'], store?.firebaseBSSdata?.database].filter((db, index, array) => db && typeof db.ref === 'function' && array.indexOf(db) === index);
+      for (const db of dbCandidates) {
+        const direct = yield _this3.readDatabasePath(db, collectionName);
+        const extracted = _this3.extractAdminOutings(direct);
+        if (extracted) return extracted;
+      }
+      // 2) Try godigital-lib signatures. The current data lives at ROOT /bnAdminOutings.
+      if (typeof store.getObject === 'function') {
+        const candidates = [() => store.getObject(collectionName), () => store.getObject(`/${collectionName}`), () => store.getObject(collectionName, -1), () => store.getObject(undefined, util.mdb, collectionName, -1), () => store.getObject(null, util.mdb, collectionName, -1), () => store.getObject(util.backendFBstoreId, util.mdb, collectionName, -1), () => store.getObject(util.backendFBstoreId, util.mdb, collectionName), () => store.getObject(`${util.backendFBstoreId}/${collectionName}`), () => store.getObject('1000', util.mdb, collectionName, -1), () => store.getObject('1000', util.mdb, collectionName)];
+        for (const candidate of candidates) {
+          try {
+            const value = yield candidate();
+            const extracted = _this3.extractAdminOutings(value);
+            if (extracted) return extracted;
+          } catch {}
+        }
+      }
+      // 3) Check already-loaded in-memory snapshots.
+      const memoryCandidates = [store.firebaseBSSdata?.[collectionName], store.firebaseBSSdata?.['1000']?.[collectionName], store.firebaseBSSdata?.[util.backendFBstoreId]?.[collectionName], store.firebaseBSSdata, store?.data?.[collectionName], store?.data?.['1000']?.[collectionName], store?.[collectionName]];
+      for (const value of memoryCandidates) {
+        const extracted = _this3.extractAdminOutings(value);
+        if (extracted) return extracted;
+      }
+      // 4) Last resort REST read. Useful when godigital-lib has not hydrated its cache yet.
+      return yield _this3.readAdminOutingsViaRest();
+    })();
+  }
+  readDatabasePath(db, path) {
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      try {
+        const cleanPath = path.replace(/^\/+/, '');
+        const snapshot = yield db.ref(cleanPath).once('value');
+        return snapshot && typeof snapshot.val === 'function' ? snapshot.val() : null;
+      } catch {
+        return null;
+      }
+    })();
+  }
+  extractAdminOutings(value) {
+    const collectionName = this.outingsCollectionName;
+    if (!value) return null;
+    if (value[collectionName]) return this.extractAdminOutings(value[collectionName]);
+    if (value['1000']?.[collectionName]) return this.extractAdminOutings(value['1000'][collectionName]);
+    if (typeof value === 'object') {
+      const keys = Object.keys(value).filter(key => !!value[key]);
+      const looksLikeMap = keys.some(key => key.startsWith('outing_') || value[key]?.outingId || value[key]?.departureDate || value[key]?.outingType);
+      return looksLikeMap && keys.length ? value : null;
+    }
+    return null;
+  }
+  readAdminOutingsViaRest() {
+    var _this4 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const paths = [_this4.outingsCollectionName, `1000/${_this4.outingsCollectionName}`];
+      for (const baseUrl of _this4.restDatabaseUrls) {
+        for (const path of paths) {
+          try {
+            const url = `${baseUrl.replace(/\/+$/, '')}/${path}.json`;
+            const value = yield _this4.http.get(url).toPromise();
+            const extracted = _this4.extractAdminOutings(value);
+            if (extracted) return extracted;
+          } catch {}
+        }
+      }
+      for (const baseUrl of _this4.restDatabaseUrls) {
+        try {
+          const url = `${baseUrl.replace(/\/+$/, '')}/.json`;
+          const value = yield _this4.http.get(url).toPromise();
+          const extracted = _this4.extractAdminOutings(value);
+          if (extracted) return extracted;
+        } catch {}
+      }
+      return null;
     })();
   }
   fromStoredChecklist(stored, template) {
@@ -10647,107 +12624,108 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     return '';
   }
   updateOuting() {
-    var _this2 = this;
+    var _this5 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this2.saved = false;
-      _this2.error = _this2.validateEditForm();
-      if (_this2.error || !_this2.selectedOuting) return;
-      _this2.saving = true;
+      _this5.saved = false;
+      _this5.error = _this5.validateEditForm();
+      if (_this5.error || !_this5.selectedOuting) return;
+      _this5.saving = true;
       try {
         const updated = {
-          ..._this2.selectedOuting,
-          ..._this2.form,
-          passengers: Number(_this2.form.passengers),
-          portEngineHoursDeparture: _this2.form.portEngineHoursDeparture === null || _this2.form.portEngineHoursDeparture === '' ? null : Number(_this2.form.portEngineHoursDeparture),
-          starboardEngineHoursDeparture: _this2.form.starboardEngineHoursDeparture === null || _this2.form.starboardEngineHoursDeparture === '' ? null : Number(_this2.form.starboardEngineHoursDeparture),
-          actualWindSpeed: _this2.form.actualWindSpeed === null || _this2.form.actualWindSpeed === '' ? null : Number(_this2.form.actualWindSpeed),
-          departureChecklist: _this2.serializeChecklist(_this2.flattenChecklistGroups(_this2.departureChecklistGroups)),
-          departureChecklistGroups: _this2.serializeChecklistGroups(_this2.departureChecklistGroups),
-          modifiedBy: _this2.loggedUser?.userId || _this2.loggedUser?.uid || '',
+          ..._this5.selectedOuting,
+          ..._this5.form,
+          passengers: Number(_this5.form.passengers),
+          portEngineHoursDeparture: _this5.form.portEngineHoursDeparture === null || _this5.form.portEngineHoursDeparture === '' ? null : Number(_this5.form.portEngineHoursDeparture),
+          starboardEngineHoursDeparture: _this5.form.starboardEngineHoursDeparture === null || _this5.form.starboardEngineHoursDeparture === '' ? null : Number(_this5.form.starboardEngineHoursDeparture),
+          actualWindSpeed: _this5.form.actualWindSpeed === null || _this5.form.actualWindSpeed === '' ? null : Number(_this5.form.actualWindSpeed),
+          departureChecklist: _this5.serializeChecklist(_this5.flattenChecklistGroups(_this5.departureChecklistGroups)),
+          departureChecklistGroups: _this5.serializeChecklistGroups(_this5.departureChecklistGroups),
+          anchorages: _this5.serializeAnchorages(_this5.currentAnchorages),
+          modifiedBy: _this5.loggedUser?.userId || _this5.loggedUser?.uid || '',
           modifiedTS: Date.now()
         };
-        yield _this2.saveToFirebase(updated.outingId, updated);
-        _this2.outings = _this2.outings.map(item => item.outingId === updated.outingId ? updated : item);
-        _this2.selectedOuting = updated;
-        _this2.saved = true;
-        _this2.showList();
+        yield _this5.saveToFirebase(updated.outingId, updated);
+        _this5.outings = _this5.outings.map(item => item.outingId === updated.outingId ? updated : item);
+        _this5.selectedOuting = updated;
+        _this5.saved = true;
+        _this5.showList();
       } catch (e) {
-        _this2.error = e?.message || _this2.t('saveError');
+        _this5.error = e?.message || _this5.t('saveError');
       } finally {
-        _this2.saving = false;
+        _this5.saving = false;
       }
     })();
   }
   createOuting() {
-    var _this3 = this;
+    var _this6 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this3.saved = false;
-      _this3.error = _this3.validateForm();
-      if (_this3.error) return;
-      _this3.saving = true;
+      _this6.saved = false;
+      _this6.error = _this6.validateForm();
+      if (_this6.error) return;
+      _this6.saving = true;
       try {
         const id = `outing_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
         const payload = {
           outingId: id,
-          ..._this3.form,
-          passengers: Number(_this3.form.passengers),
-          portEngineHoursDeparture: _this3.form.portEngineHoursDeparture === null || _this3.form.portEngineHoursDeparture === '' ? null : Number(_this3.form.portEngineHoursDeparture),
-          starboardEngineHoursDeparture: _this3.form.starboardEngineHoursDeparture === null || _this3.form.starboardEngineHoursDeparture === '' ? null : Number(_this3.form.starboardEngineHoursDeparture),
-          actualWindSpeed: _this3.form.actualWindSpeed === null || _this3.form.actualWindSpeed === '' ? null : Number(_this3.form.actualWindSpeed),
-          departureChecklist: _this3.serializeChecklist(_this3.flattenChecklistGroups(_this3.departureChecklistGroups)),
-          departureChecklistGroups: _this3.serializeChecklistGroups(_this3.departureChecklistGroups),
-          arrivalChecklist: _this3.serializeChecklist(_this3.buildArrivalChecklist()),
-          arrivalChecklistGroups: _this3.serializeChecklistGroups(_this3.buildArrivalChecklistGroups()),
+          ..._this6.form,
+          passengers: Number(_this6.form.passengers),
+          portEngineHoursDeparture: _this6.form.portEngineHoursDeparture === null || _this6.form.portEngineHoursDeparture === '' ? null : Number(_this6.form.portEngineHoursDeparture),
+          starboardEngineHoursDeparture: _this6.form.starboardEngineHoursDeparture === null || _this6.form.starboardEngineHoursDeparture === '' ? null : Number(_this6.form.starboardEngineHoursDeparture),
+          actualWindSpeed: _this6.form.actualWindSpeed === null || _this6.form.actualWindSpeed === '' ? null : Number(_this6.form.actualWindSpeed),
+          departureChecklist: _this6.serializeChecklist(_this6.flattenChecklistGroups(_this6.departureChecklistGroups)),
+          departureChecklistGroups: _this6.serializeChecklistGroups(_this6.departureChecklistGroups),
+          arrivalChecklist: _this6.serializeChecklist(_this6.buildArrivalChecklist()),
+          arrivalChecklistGroups: _this6.serializeChecklistGroups(_this6.buildArrivalChecklistGroups()),
+          anchorages: _this6.serializeAnchorages(_this6.currentAnchorages),
           status: 'open',
-          createdBy: _this3.loggedUser?.userId || _this3.loggedUser?.uid || '',
+          createdBy: _this6.loggedUser?.userId || _this6.loggedUser?.uid || '',
           createdTS: Date.now()
         };
-        yield _this3.saveToFirebase(payload.outingId, payload);
-        _this3.outings = [payload, ..._this3.outings];
-        const arrivalGroups = _this3.buildArrivalChecklistGroups();
-        _this3.arrivalChecklistGroupsByOuting[payload.outingId] = arrivalGroups;
-        _this3.arrivalChecklistByOuting[payload.outingId] = _this3.flattenChecklistGroups(arrivalGroups);
-        _this3.form = _this3.emptyForm();
-        _this3.form.outingType = _this3.outingTypes[_this3.currentLanguage][0];
-        _this3.departureChecklistGroups = _this3.buildDepartureChecklistGroups();
-        _this3.saved = true;
-        _this3.showList();
+        yield _this6.saveToFirebase(payload.outingId, payload);
+        _this6.outings = [payload, ..._this6.outings];
+        const arrivalGroups = _this6.buildArrivalChecklistGroups();
+        _this6.arrivalChecklistGroupsByOuting[payload.outingId] = arrivalGroups;
+        _this6.arrivalChecklistByOuting[payload.outingId] = _this6.flattenChecklistGroups(arrivalGroups);
+        _this6.form = _this6.emptyForm();
+        _this6.form.outingType = _this6.outingTypes[_this6.currentLanguage][0];
+        _this6.departureChecklistGroups = _this6.buildDepartureChecklistGroups();
+        _this6.currentAnchorages = [];
+        _this6.anchorageForm = _this6.emptyAnchorageForm();
+        _this6.editingAnchorageId = '';
+        _this6.saved = true;
+        _this6.showList();
       } catch (e) {
-        _this3.error = e?.message || _this3.t('saveError');
+        _this6.error = e?.message || _this6.t('saveError');
       } finally {
-        _this3.saving = false;
+        _this6.saving = false;
       }
     })();
   }
   closeOuting(outing) {
-    var _this4 = this;
+    var _this7 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this4.closeError = '';
-      if (!_this4.isAdmin) {
-        _this4.closeError = _this4.t('adminOnly');
+      _this7.closeError = '';
+      if (!_this7.isAdmin) {
+        _this7.closeError = _this7.t('adminOnly');
         return;
       }
-      if (!_this4.arrivalChecklistComplete(outing.outingId)) {
-        _this4.closeError = _this4.t('arrivalChecklistRequired');
-        return;
-      }
-      _this4.closingId = outing.outingId;
+      _this7.closingId = outing.outingId;
       try {
         const updated = {
           ...outing,
-          arrivalChecklist: _this4.serializeChecklist(_this4.flattenChecklistGroups(_this4.arrivalChecklistGroupsByOuting[outing.outingId] || [])),
-          arrivalChecklistGroups: _this4.serializeChecklistGroups(_this4.arrivalChecklistGroupsByOuting[outing.outingId] || []),
-          closureComments: _this4.closureComments[outing.outingId] || '',
+          arrivalChecklist: _this7.serializeChecklist(_this7.flattenChecklistGroups(_this7.arrivalChecklistGroupsByOuting[outing.outingId] || [])),
+          arrivalChecklistGroups: _this7.serializeChecklistGroups(_this7.arrivalChecklistGroupsByOuting[outing.outingId] || []),
+          closureComments: _this7.closureComments[outing.outingId] || '',
           status: 'closed',
           closedTS: Date.now()
         };
-        yield _this4.saveToFirebase(updated.outingId, updated);
-        _this4.outings = _this4.outings.map(item => item.outingId === updated.outingId ? updated : item);
-        _this4.showList();
+        yield _this7.saveToFirebase(updated.outingId, updated);
+        _this7.outings = _this7.outings.map(item => item.outingId === updated.outingId ? updated : item);
+        _this7.showList();
       } catch (e) {
-        _this4.closeError = e?.message || _this4.t('closeError');
+        _this7.closeError = e?.message || _this7.t('closeError');
       } finally {
-        _this4.closingId = '';
+        _this7.closingId = '';
       }
     })();
   }
@@ -10762,49 +12740,49 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     }));
   }
   deleteOuting(outing) {
-    var _this5 = this;
+    var _this8 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this5.closeError = '';
-      if (!_this5.isAdmin) {
-        _this5.closeError = _this5.t('adminOnly');
+      _this8.closeError = '';
+      if (!_this8.isAdmin) {
+        _this8.closeError = _this8.t('adminOnly');
         return;
       }
-      const ok = window.confirm(`${_this5.t('deleteConfirm')} ${outing.outingType || ''} ?`);
+      const ok = window.confirm(`${_this8.t('deleteConfirm')} ${outing.outingType || ''} ?`);
       if (!ok) return;
       try {
-        yield _this5.deleteFromFirebase(outing.outingId, outing);
-        _this5.outings = _this5.outings.filter(item => item.outingId !== outing.outingId);
-        delete _this5.arrivalChecklistByOuting[outing.outingId];
-        delete _this5.arrivalChecklistGroupsByOuting[outing.outingId];
+        yield _this8.deleteFromFirebase(outing.outingId, outing);
+        _this8.outings = _this8.outings.filter(item => item.outingId !== outing.outingId);
+        delete _this8.arrivalChecklistByOuting[outing.outingId];
+        delete _this8.arrivalChecklistGroupsByOuting[outing.outingId];
       } catch (e) {
-        _this5.closeError = e?.message || _this5.t('deleteError');
+        _this8.closeError = e?.message || _this8.t('deleteError');
       }
     })();
   }
   deleteFromFirebase(id, outing) {
-    var _this6 = this;
+    var _this9 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const store = _this6.storeDb;
-      const util = _this6.utilSvc;
+      const store = _this9.storeDb;
+      const util = _this9.utilSvc;
       if (typeof store.deleteObject === 'function') {
         try {
-          yield store.deleteObject(util.backendFBstoreId, util.mdb, _this6.outingsCollectionName, id);
+          yield store.deleteObject(util.backendFBstoreId, util.mdb, _this9.outingsCollectionName, id);
           return;
         } catch {
-          yield store.deleteObject(_this6.outingsCollectionName, id);
+          yield store.deleteObject(_this9.outingsCollectionName, id);
           return;
         }
       }
       if (typeof store.removeObject === 'function') {
         try {
-          yield store.removeObject(util.backendFBstoreId, util.mdb, _this6.outingsCollectionName, id);
+          yield store.removeObject(util.backendFBstoreId, util.mdb, _this9.outingsCollectionName, id);
           return;
         } catch {
-          yield store.removeObject(_this6.outingsCollectionName, id);
+          yield store.removeObject(_this9.outingsCollectionName, id);
           return;
         }
       }
-      yield _this6.saveToFirebase(id, {
+      yield _this9.saveToFirebase(id, {
         ...outing,
         status: 'closed',
         deleted: true,
@@ -10812,19 +12790,55 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       });
     })();
   }
-  saveToFirebase(id, payload) {
-    var _this7 = this;
+  writeRootAdminOutingViaSdk(id, payload) {
+    var _this10 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const store = _this7.storeDb;
-      const util = _this7.utilSvc;
-      if (typeof store.updateObject !== 'function') {
-        throw new Error('Firebase updateObject is not available.');
+      const store = _this10.storeDb;
+      const util = _this10.utilSvc;
+      const dbCandidates = [util?.mdb, store?.backendFbRef?.database, store?.backendFbRef?.['database'], store?.firebaseBSSdata?.database].filter((db, index, array) => db && typeof db.ref === 'function' && array.indexOf(db) === index);
+      for (const db of dbCandidates) {
+        try {
+          yield db.ref(`${_this10.outingsCollectionName}/${id}`).update(payload);
+          return true;
+        } catch {}
       }
-      try {
-        yield store.updateObject(util.backendFBstoreId, util.mdb, _this7.outingsCollectionName, payload, id);
-      } catch {
-        yield store.updateObject(_this7.outingsCollectionName, id, payload);
+      return false;
+    })();
+  }
+  writeRootAdminOutingViaRest(id, payload) {
+    var _this11 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      for (const baseUrl of _this11.restDatabaseUrls) {
+        try {
+          const url = `${baseUrl.replace(/\/+$/, '')}/${_this11.outingsCollectionName}/${id}.json`;
+          yield _this11.http.patch(url, payload).toPromise();
+          return true;
+        } catch {}
       }
+      return false;
+    })();
+  }
+  saveToFirebase(id, payload) {
+    var _this12 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const store = _this12.storeDb;
+      const util = _this12.utilSvc;
+      // Current Firebase structure uses root /bnAdminOutings.
+      // Prefer direct root writes so checklist done/doneBy/doneAt are effectively persisted.
+      if (yield _this12.writeRootAdminOutingViaSdk(id, payload)) return;
+      if (typeof store.updateObject === 'function') {
+        const candidates = [() => store.updateObject(_this12.outingsCollectionName, payload, id), () => store.updateObject(_this12.outingsCollectionName, id, payload), () => store.updateObject(`/${_this12.outingsCollectionName}`, payload, id), () => store.updateObject(util.backendFBstoreId, util.mdb, _this12.outingsCollectionName, payload, id), () => store.updateObject('1000', util.mdb, _this12.outingsCollectionName, payload, id)];
+        for (const candidate of candidates) {
+          try {
+            yield candidate();
+            // Also try root REST afterwards; if it fails silently, the library write still succeeded.
+            yield _this12.writeRootAdminOutingViaRest(id, payload);
+            return;
+          } catch {}
+        }
+      }
+      if (yield _this12.writeRootAdminOutingViaRest(id, payload)) return;
+      throw new Error('Firebase updateObject is not available.');
     })();
   }
   get outingsCollectionName() {
@@ -10838,7 +12852,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       fr: {
         eyebrow: 'Administration',
         title: 'Boat Log Manager',
-        intro: 'Enregistrez les informations opérationnelles d’une sortie. La création exige les 4 checklists de départ complètes : arrivée équipage, arrivée passagers, tout le monde à bord et départ. La clôture exige une checklist arrivée complète.',
+        intro: 'Enregistrez les informations opérationnelles d’une sortie. Les checklists restent visibles pour le suivi opérationnel, mais le log peut être sauvegardé ou clôturé même si elles ne sont pas complètes.',
         adminOnly: 'Cette page est réservée aux comptes administrateur.',
         outingType: 'Type de sortie',
         passengers: 'Passagers',
@@ -10857,8 +12871,8 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         creating: 'Création...',
         saved: 'Sortie créée.',
         required: 'Merci de renseigner les champs obligatoires.',
-        departureChecklistRequired: 'La sortie ne peut être créée que si les 4 checklists de départ sont complètes.',
-        arrivalChecklistRequired: 'La sortie ne peut être clôturée que si la checklist arrivée est complète.',
+        departureChecklistRequired: 'La checklist peut être complétée progressivement. Le log reste sauvegardable.',
+        arrivalChecklistRequired: 'La checklist d’arrivée peut être complétée progressivement. Le log reste clôturable.',
         openOutings: 'Sorties ouvertes',
         listOutings: 'Liste des sorties',
         allOutings: 'Liste des sorties',
@@ -10886,12 +12900,25 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         validatedBy: 'Validé par',
         delete: 'Supprimer',
         deleteConfirm: 'Supprimer cette sortie',
-        deleteError: 'Impossible de supprimer la sortie.'
+        deleteError: 'Impossible de supprimer la sortie.',
+        anchorages: 'Mouillages',
+        anchorageLocation: 'Lieu du mouillage',
+        anchorageArrivalTime: 'Heure d’arrivée au mouillage',
+        anchorageDepartureTime: 'Heure de départ du mouillage',
+        addAnchorage: 'Ajouter un mouillage',
+        updateAnchorage: 'Modifier le mouillage',
+        noAnchorages: 'Aucun mouillage enregistré pour cette sortie.',
+        anchorageArrival: 'Checklist ancre jetée',
+        anchorageDeparture: 'Checklist ancre levée',
+        dropAnchor: 'Jeter l’ancre / créer le mouillage',
+        liftAnchor: 'Lever l’ancre / fermer le mouillage',
+        anchorageOpen: 'Mouillage ouvert',
+        anchorageClosed: 'Mouillage fermé'
       },
       en: {
         eyebrow: 'Administration',
         title: 'Boat Log Manager',
-        intro: 'Record operational details for an outing. Creation requires the 4 departure checklists to be complete: crew arrival, client arrival, when all aboard and departure. Closure requires a complete arrival checklist.',
+        intro: 'Record operational details for an outing. Checklists remain visible for operational tracking, but the log can be saved or closed even when they are not complete.',
         adminOnly: 'This page is restricted to administrator accounts.',
         outingType: 'Outing type',
         passengers: 'Passengers',
@@ -10910,8 +12937,8 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         creating: 'Creating...',
         saved: 'Outing created.',
         required: 'Please fill in the required fields.',
-        departureChecklistRequired: 'The outing can only be created once the 4 departure checklists are complete.',
-        arrivalChecklistRequired: 'The outing can only be closed once the arrival checklist is complete.',
+        departureChecklistRequired: 'The checklist can be completed progressively. The log can still be saved.',
+        arrivalChecklistRequired: 'The arrival checklist can be completed progressively. The log can still be closed.',
         openOutings: 'Open outings',
         listOutings: 'Outings list',
         allOutings: 'Outings list',
@@ -10939,12 +12966,25 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         validatedBy: 'Validated by',
         delete: 'Delete',
         deleteConfirm: 'Delete this outing',
-        deleteError: 'Unable to delete outing.'
+        deleteError: 'Unable to delete outing.',
+        anchorages: 'Anchorages',
+        anchorageLocation: 'Anchorage location',
+        anchorageArrivalTime: 'Anchoring arrival time',
+        anchorageDepartureTime: 'Anchoring departure time',
+        addAnchorage: 'Add anchorage',
+        updateAnchorage: 'Update anchorage',
+        noAnchorages: 'No anchorage recorded for this outing.',
+        anchorageArrival: 'Anchor dropped checklist',
+        anchorageDeparture: 'Anchor lifted checklist',
+        dropAnchor: 'Drop anchor / create anchorage',
+        liftAnchor: 'Lift anchor / close anchorage',
+        anchorageOpen: 'Anchorage open',
+        anchorageClosed: 'Anchorage closed'
       },
       es: {
         eyebrow: 'Administración',
         title: 'Boat Log Manager',
-        intro: 'Registre los datos operativos de una salida. La creación requiere las 4 checklists de salida completas: llegada de tripulación, llegada de pasajeros, todos a bordo y salida. El cierre requiere una checklist de llegada completa.',
+        intro: 'Registre los datos operativos de una salida. Las checklists siguen visibles para el seguimiento operativo, pero el log puede guardarse o cerrarse aunque no estén completas.',
         adminOnly: 'Esta página está reservada a cuentas administradoras.',
         outingType: 'Tipo de salida',
         passengers: 'Pasajeros',
@@ -10963,8 +13003,8 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         creating: 'Creando...',
         saved: 'Salida creada.',
         required: 'Por favor complete los campos obligatorios.',
-        departureChecklistRequired: 'La salida solo puede crearse cuando las 4 checklists de salida están completas.',
-        arrivalChecklistRequired: 'La salida solo puede cerrarse cuando la checklist de llegada está completa.',
+        departureChecklistRequired: 'La checklist puede completarse progresivamente. El log se puede guardar igualmente.',
+        arrivalChecklistRequired: 'La checklist de llegada puede completarse progresivamente. El log se puede cerrar igualmente.',
         openOutings: 'Salidas abiertas',
         listOutings: 'Lista de salidas',
         allOutings: 'Lista de salidas',
@@ -10992,7 +13032,20 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         validatedBy: 'Validado por',
         delete: 'Eliminar',
         deleteConfirm: 'Eliminar esta salida',
-        deleteError: 'No se puede eliminar la salida.'
+        deleteError: 'No se puede eliminar la salida.',
+        anchorages: 'Fondeos',
+        anchorageLocation: 'Lugar de fondeo',
+        anchorageArrivalTime: 'Hora de llegada al fondeo',
+        anchorageDepartureTime: 'Hora de salida del fondeo',
+        addAnchorage: 'Añadir fondeo',
+        updateAnchorage: 'Actualizar fondeo',
+        noAnchorages: 'No hay fondeos registrados para esta salida.',
+        anchorageArrival: 'Checklist ancla echada',
+        anchorageDeparture: 'Checklist ancla levantada',
+        dropAnchor: 'Echar el ancla / crear fondeo',
+        liftAnchor: 'Levantar el ancla / cerrar fondeo',
+        anchorageOpen: 'Fondeo abierto',
+        anchorageClosed: 'Fondeo cerrado'
       }
     };
     return labels[this.currentLanguage]?.[key] || labels.en[key] || key;
@@ -11005,9 +13058,11 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.StoreDbService
   }, {
     type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.UtilsService
+  }, {
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_5__.HttpClient
   }];
 };
-AdminOutingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+AdminOutingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
   selector: 'app-admin-outings',
   template: _admin_outings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_admin_outings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
@@ -11502,6 +13557,152 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 /***/ }),
 
+/***/ 95938:
+/*!************************************************************************!*\
+  !*** ./src/app/home/my-bookings/my-bookings.component.scss?ngResource ***!
+  \************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.booking-page {
+  padding: 80px 0;
+  background: #f6f2ea;
+  min-height: 70vh;
+}
+
+.booking-shell {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.section-head {
+  margin-bottom: 28px;
+  max-width: 760px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: #b58b4a;
+  font-weight: 700;
+}
+
+h1 {
+  color: #08263a;
+  margin: 8px 0;
+}
+
+.booking-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.booking-card, .booking-detail-card, .empty-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 18px 45px rgba(8, 38, 58, 0.08);
+  border: 1px solid rgba(8, 38, 58, 0.08);
+}
+
+.booking-card h2 {
+  margin: 12px 0 8px;
+  color: #08263a;
+  font-size: 1.25rem;
+}
+
+.booking-card p {
+  margin: 4px 0;
+  color: #516070;
+}
+
+.status-pill {
+  display: inline-flex;
+  border-radius: 999px;
+  background: rgba(181, 139, 74, 0.12);
+  color: #8a652d;
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.booking-meta {
+  display: grid;
+  gap: 6px;
+  margin: 18px 0;
+  color: #08263a;
+}
+
+.booking-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: #08263a;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #efe7da;
+  color: #08263a;
+}
+
+.muted {
+  color: #667;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin: 24px 0;
+}
+
+.detail-grid div {
+  background: #f8f5ef;
+  border-radius: 16px;
+  padding: 14px;
+  display: grid;
+  gap: 4px;
+}
+
+.detail-grid strong {
+  color: #08263a;
+}
+
+.detail-grid span {
+  color: #516070;
+}
+
+.comments {
+  background: #f8f5ef;
+  padding: 16px;
+  border-radius: 16px;
+  color: #516070;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/my-bookings/my-bookings.component.scss"],"names":[],"mappings":"AAAA;EAAgB,eAAA;EAAiB,mBAAA;EAAqB,gBAAA;AAItD;;AAHA;EAAiB,iBAAA;EAAmB,cAAA;AAQpC;;AAPA;EAAgB,mBAAA;EAAqB,gBAAA;AAYrC;;AAXA;EAAW,yBAAA;EAA2B,sBAAA;EAAuB,kBAAA;EAAmB,cAAA;EAAgB,gBAAA;AAmBhG;;AAlBA;EAAK,cAAA;EAAgB,aAAA;AAuBrB;;AAtBA;EAAgB,aAAA;EAAe,2DAAA;EAA6D,SAAA;AA4B5F;;AA3BA;EAAmD,gBAAA;EAAkB,mBAAA;EAAqB,aAAA;EAAe,6CAAA;EAA2C,uCAAA;AAmCpJ;;AAlCA;EAAmB,kBAAA;EAAoB,cAAA;EAAgB,kBAAA;AAwCvD;;AAvCA;EAAkB,aAAA;EAAe,cAAA;AA4CjC;;AA3CA;EAAe,oBAAA;EAAsB,oBAAA;EAAsB,oCAAA;EAAkC,cAAA;EAAgB,iBAAA;EAAmB,kBAAA;EAAmB,gBAAA;AAqDnJ;;AApDA;EAAgB,aAAA;EAAe,QAAA;EAAU,cAAA;EAAgB,cAAA;AA2DzD;;AA1DA;EAAmB,aAAA;EAAe,SAAA;EAAW,eAAA;AAgE7C;;AA/DA;EAAO,SAAA;EAAW,oBAAA;EAAsB,kBAAA;EAAoB,gBAAA;EAAkB,eAAA;EAAiB,qBAAA;AAwE/F;;AAvEA;EAAe,mBAAA;EAAqB,WAAA;AA4EpC;;AA3EA;EAAiB,mBAAA;EAAqB,cAAA;AAgFtC;;AA/EA;EAAS,WAAA;AAmFT;;AAlFA;EAAe,aAAA;EAAe,2DAAA;EAA6D,SAAA;EAAW,cAAA;AAyFtG;;AAxFA;EAAmB,mBAAA;EAAqB,mBAAA;EAAqB,aAAA;EAAe,aAAA;EAAe,QAAA;AAgG3F;;AA/FA;EAAsB,cAAA;AAmGtB;;AAlGA;EAAoB,cAAA;AAsGpB;;AArGA;EAAY,mBAAA;EAAqB,aAAA;EAAe,mBAAA;EAAqB,cAAA;AA4GrE","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
 /***/ 96678:
 /*!****************************************************************************************!*\
   !*** ./src/app/home/admin-outing-detail/admin-outing-detail.component.html?ngResource ***!
@@ -11509,7 +13710,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"admin-outing-detail-page\">\n  <div class=\"container\">\n    <button type=\"button\" class=\"back-link\" (click)=\"back()\">← {{ t('back') }}</button>\n\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n\n    <div class=\"notice error\" *ngIf=\"!isAdmin\">{{ t('adminOnly') }}</div>\n    <div class=\"notice error\" *ngIf=\"error\">{{ error }}</div>\n    <div class=\"notice success\" *ngIf=\"saved\">{{ t('saved') }}</div>\n\n    <ng-container *ngIf=\"isAdmin && outing\">\n      <div class=\"detail-card\">\n        <div class=\"status-row\">\n          <span class=\"status\" [class.closed]=\"outing.status === 'closed'\">\n            {{ outing.status === 'closed' ? t('closed') : t('open') }}\n          </span>\n        </div>\n\n        <div class=\"form-grid\">\n          <label>\n            {{ t('outingType') }}\n            <select [(ngModel)]=\"outing.outingType\">\n              <option *ngFor=\"let type of outingTypes[currentLanguage]\" [value]=\"type\">{{ type }}</option>\n            </select>\n          </label>\n\n          <label>\n            {{ t('passengers') }}\n            <input type=\"number\" min=\"1\" [(ngModel)]=\"outing.passengers\" />\n          </label>\n\n          <label>\n            {{ t('departureDate') }}\n            <input type=\"date\" [(ngModel)]=\"outing.departureDate\" />\n          </label>\n\n          <label>\n            {{ t('departureTime') }}\n            <input type=\"time\" [(ngModel)]=\"outing.departureTime\" />\n          </label>\n\n          <label>\n            {{ t('arrivalDate') }}\n            <input type=\"date\" [(ngModel)]=\"outing.arrivalDate\" />\n          </label>\n\n          <label>\n            {{ t('arrivalTime') }}\n            <input type=\"time\" [(ngModel)]=\"outing.arrivalTime\" />\n          </label>\n\n          <label>\n            {{ t('portEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"outing.portEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('starboardEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"outing.starboardEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('wind') }} ({{ t('knots') }})\n            <input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"outing.actualWindSpeed\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('destination') }}\n            <input type=\"text\" [(ngModel)]=\"outing.destination\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('comments') }}\n            <textarea rows=\"4\" [(ngModel)]=\"outing.comments\"></textarea>\n          </label>\n\n          <label class=\"wide\">\n            {{ t('closureComments') }}\n            <textarea rows=\"3\" [(ngModel)]=\"outing.closureComments\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"saving\" (click)=\"saveDetails()\">\n            {{ saving ? t('saving') : t('save') }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"outing.status !== 'closed'\" [disabled]=\"saving || !arrivalComplete\" (click)=\"closeOuting()\">\n            {{ t('close') }}\n          </button>\n        </div>\n      </div>\n\n      <div class=\"checklist-card\">\n        <div class=\"checklist-head\">\n          <h2>{{ t('departureChecklist') }}</h2>\n          <span [class.complete]=\"departureComplete\">{{ countDoneDepartureItems() }} / {{ countDepartureItems() }}</span>\n        </div>\n\n        <div class=\"checklist-group\" *ngFor=\"let group of departureChecklistGroups\">\n          <div class=\"checklist-subhead\">\n            <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n            <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n          </div>\n          <div class=\"checklist-grid\">\n            <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n              <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n              <span class=\"fake-radio\"></span>\n              <span>\n                {{ item.label[currentLanguage] || item.label.fr }}\n                <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n              </span>\n            </label>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"checklist-card\">\n        <div class=\"checklist-head\">\n          <h2>{{ t('arrivalChecklist') }}</h2>\n          <span [class.complete]=\"arrivalComplete\">{{ countDoneArrivalItems() }} / {{ countArrivalItems() }}</span>\n        </div>\n\n        <div class=\"checklist-group\" *ngFor=\"let group of arrivalChecklistGroups\">\n          <div class=\"checklist-subhead\">\n            <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n            <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n          </div>\n          <div class=\"checklist-grid\">\n            <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n              <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n              <span class=\"fake-radio\"></span>\n              <span>\n                {{ item.label[currentLanguage] || item.label.fr }}\n                <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n              </span>\n            </label>\n          </div>\n        </div>\n      </div>\n    </ng-container>\n  </div>\n</section>\n";
+module.exports = "<section class=\"admin-outing-detail-page\">\n  <div class=\"container\">\n    <button type=\"button\" class=\"back-link\" (click)=\"back()\">← {{ t('back') }}</button>\n\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n\n    <div class=\"notice error\" *ngIf=\"!isAdmin\">{{ t('adminOnly') }}</div>\n    <div class=\"notice error\" *ngIf=\"error\">{{ error }}</div>\n    <div class=\"notice success\" *ngIf=\"saved\">{{ t('saved') }}</div>\n\n    <ng-container *ngIf=\"isAdmin && outing\">\n      <div class=\"detail-card\">\n        <div class=\"status-row\">\n          <span class=\"status\" [class.closed]=\"outing.status === 'closed'\">\n            {{ outing.status === 'closed' ? t('closed') : t('open') }}\n          </span>\n        </div>\n\n        <div class=\"form-grid\">\n          <label>\n            {{ t('outingType') }}\n            <select [(ngModel)]=\"outing.outingType\">\n              <option *ngFor=\"let type of outingTypes[currentLanguage]\" [value]=\"type\">{{ type }}</option>\n            </select>\n          </label>\n\n          <label>\n            {{ t('passengers') }}\n            <input type=\"number\" min=\"1\" [(ngModel)]=\"outing.passengers\" />\n          </label>\n\n          <label>\n            {{ t('departureDate') }}\n            <input type=\"date\" [(ngModel)]=\"outing.departureDate\" />\n          </label>\n\n          <label>\n            {{ t('departureTime') }}\n            <input type=\"time\" [(ngModel)]=\"outing.departureTime\" />\n          </label>\n\n          <label>\n            {{ t('arrivalDate') }}\n            <input type=\"date\" [(ngModel)]=\"outing.arrivalDate\" />\n          </label>\n\n          <label>\n            {{ t('arrivalTime') }}\n            <input type=\"time\" [(ngModel)]=\"outing.arrivalTime\" />\n          </label>\n\n          <label>\n            {{ t('portEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"outing.portEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('starboardEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"outing.starboardEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('wind') }} ({{ t('knots') }})\n            <input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"outing.actualWindSpeed\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('destination') }}\n            <input type=\"text\" [(ngModel)]=\"outing.destination\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('comments') }}\n            <textarea rows=\"4\" [(ngModel)]=\"outing.comments\"></textarea>\n          </label>\n\n          <label class=\"wide\">\n            {{ t('closureComments') }}\n            <textarea rows=\"3\" [(ngModel)]=\"outing.closureComments\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"saving\" (click)=\"saveDetails()\">\n            {{ saving ? t('saving') : t('save') }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"outing.status !== 'closed'\" [disabled]=\"saving\" (click)=\"closeOuting()\">\n            {{ t('close') }}\n          </button>\n        </div>\n      </div>\n\n      <div class=\"checklist-card\">\n        <div class=\"checklist-head\">\n          <h2>{{ t('departureChecklist') }}</h2>\n          <span [class.complete]=\"departureComplete\">{{ countDoneDepartureItems() }} / {{ countDepartureItems() }}</span>\n        </div>\n\n        <div class=\"checklist-group\" *ngFor=\"let group of departureChecklistGroups\">\n          <div class=\"checklist-subhead\">\n            <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n            <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n          </div>\n          <div class=\"checklist-grid\">\n            <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n              <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n              <span class=\"fake-radio\"></span>\n              <span>\n                {{ item.label[currentLanguage] || item.label.fr }}\n                <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n              </span>\n            </label>\n          </div>\n        </div>\n      </div>\n\n\n      <div class=\"checklist-card\">\n        <div class=\"checklist-head\">\n          <h2>{{ t('anchorages') }}</h2>\n          <span>{{ currentAnchorages.length }}</span>\n        </div>\n\n        <div class=\"form-grid\">\n          <label class=\"wide\">\n            {{ t('anchorageLocation') }}\n            <input type=\"text\" [(ngModel)]=\"anchorageForm.location\" placeholder=\"Lérins, Baie des Milliardaires, Cap d’Antibes...\" />\n          </label>\n          <label class=\"wide\">\n            {{ t('comments') }}\n            <textarea rows=\"2\" [(ngModel)]=\"anchorageForm.comments\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"actions\">\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"addOrUpdateAnchorage()\">\n            {{ editingAnchorageId ? t('updateAnchorage') : t('dropAnchor') }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"editingAnchorageId\" (click)=\"cancelAnchorageEdit()\">\n            {{ t('cancel') }}\n          </button>\n        </div>\n\n        <p class=\"empty\" *ngIf=\"currentAnchorages.length === 0\">—</p>\n\n        <div class=\"checklist-group\" *ngFor=\"let anchorage of currentAnchorages\">\n          <div class=\"checklist-subhead\">\n            <h3>{{ anchorage.location }}</h3>\n            <span [class.complete]=\"anchorage.status === 'closed'\">\n              {{ anchorage.status === 'closed' ? t('anchorageClosed') : t('anchorageOpen') }}\n            </span>\n          </div>\n          <p *ngIf=\"anchorage.arrivalTime || anchorage.departureTime\">{{ anchorage.arrivalTime || '—' }} → {{ anchorage.departureTime || '—' }}</p>\n          <p *ngIf=\"anchorage.comments\">{{ anchorage.comments }}</p>\n          <div class=\"actions\">\n            <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"anchorage.status !== 'closed'\" (click)=\"closeAnchorage(anchorage)\">{{ t('liftAnchor') }}</button>\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"editAnchorage(anchorage)\">{{ t('edit') }}</button>\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"removeAnchorage(anchorage)\">{{ t('delete') }}</button>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of anchorage.arrivalChecklistGroups\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ t('anchorageArrival') }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>{{ item.label[currentLanguage] || item.label.fr }}<small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small></span>\n              </label>\n            </div>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of anchorage.departureChecklistGroups\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ t('anchorageDeparture') }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>{{ item.label[currentLanguage] || item.label.fr }}<small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small></span>\n              </label>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"checklist-card\">\n        <div class=\"checklist-head\">\n          <h2>{{ t('arrivalChecklist') }}</h2>\n          <span [class.complete]=\"arrivalComplete\">{{ countDoneArrivalItems() }} / {{ countArrivalItems() }}</span>\n        </div>\n\n        <div class=\"checklist-group\" *ngFor=\"let group of arrivalChecklistGroups\">\n          <div class=\"checklist-subhead\">\n            <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n            <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n          </div>\n          <div class=\"checklist-grid\">\n            <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n              <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n              <span class=\"fake-radio\"></span>\n              <span>\n                {{ item.label[currentLanguage] || item.label.fr }}\n                <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n              </span>\n            </label>\n          </div>\n        </div>\n      </div>\n    </ng-container>\n  </div>\n</section>\n";
 
 /***/ }),
 

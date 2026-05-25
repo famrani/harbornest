@@ -69,6 +69,7 @@
           <a routerLink="/my-payments" routerLinkActive="active" (click)="closeMenu()">{{ myPaymentsLabel }}</a>
           <a routerLink="/my-profile" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
           <a *ngIf="!isAdmin" routerLink="/my-feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ myFeedbacksLabel }}</a>
+          <a *ngIf="isAdmin" routerLink="/admin/bookings" routerLinkActive="active" (click)="closeMenu()">{{ adminBookingsLabel }}</a>
           <a *ngIf="isAdmin" routerLink="/admin/feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ adminFeedbacksLabel }}</a>
           <a *ngIf="isAdmin" routerLink="/admin/outings" routerLinkActive="active" (click)="closeMenu()">{{ adminOutingsLabel }}</a>
           <button class="dropdown-action" type="button" (click)="logout()">{{ logoutLabel }}</button>

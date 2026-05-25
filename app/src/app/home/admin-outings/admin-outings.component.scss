@@ -428,3 +428,50 @@ button.detail-link {
     align-self: flex-start;
   }
 }
+
+.anchorages-block {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(20, 54, 79, 0.12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.anchorage-form-grid {
+  margin-top: 1rem;
+}
+
+.mini-actions {
+  margin-top: 0.75rem;
+  justify-content: flex-start;
+}
+
+.anchorage-card {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(20, 54, 79, 0.1);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.anchorage-card-head {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.anchorage-card-head h3 {
+  margin: 0 0 0.25rem;
+}
+
+.anchorage-card-head p {
+  margin: 0.1rem 0;
+}
+
+@media (max-width: 760px) {
+  .anchorage-card-head {
+    flex-direction: column;
+  }
+}

@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { StoreDbService, ServicesService, UtilsService } from 'godigital-lib';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
@@ -18,6 +19,19 @@ interface ChecklistGroup {
   items: ChecklistItem[];
 }
 
+interface AnchorageLog {
+  anchorageId: string;
+  location: string;
+  arrivalTime?: string;
+  departureTime?: string;
+  comments?: string;
+  status?: 'open' | 'closed';
+  anchorDroppedAt?: number | null;
+  anchorLiftedAt?: number | null;
+  arrivalChecklistGroups: ChecklistGroup[];
+  departureChecklistGroups: ChecklistGroup[];
+}
+
 interface AdminOuting {
   outingId: string;
   outingType: string;
@@ -35,6 +49,7 @@ interface AdminOuting {
   departureChecklistGroups?: { id: string; title: string; items: { id: string; done: boolean; label: string; doneBy?: string; doneByUid?: string; doneAt?: number | null }[] }[];
   arrivalChecklist?: { id: string; done: boolean; label: string; doneBy?: string; doneByUid?: string; doneAt?: number | null }[];
   arrivalChecklistGroups?: { id: string; title: string; items: { id: string; done: boolean; label: string; doneBy?: string; doneByUid?: string; doneAt?: number | null }[] }[];
+  anchorages?: any[];
   status: 'open' | 'closed';
   createdBy?: string;
   createdTS: number;
@@ -54,6 +69,11 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
   loading = false;
   saving = false;
   closingId = '';
+  private readonly restDatabaseUrls = [
+    'https://adn-dev-4d05d-default-rtdb.europe-west1.firebasedatabase.app',
+    'https://adn-dev-4d05d-default-rtdb.firebaseio.com',
+    'https://adn-dev-4d05d.firebaseio.com',
+  ];
   saved = false;
   error = '';
   closeError = '';
@@ -71,8 +91,12 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
   editingOutingId = '';
 
   departureChecklistGroups: ChecklistGroup[] = [];
+  currentAnchorages: AnchorageLog[] = [];
+  anchorageForm = this.emptyAnchorageForm();
+  editingAnchorageId = '';
   arrivalChecklistByOuting: Record<string, ChecklistItem[]> = {};
   arrivalChecklistGroupsByOuting: Record<string, ChecklistGroup[]> = {};
+  private checklistSaveTimer: any = null;
 
   private languageSub?: Subscription;
   private userSub?: Subscription;
@@ -81,7 +105,8 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
     private languageService: LanguageService,
     private mainSvc: ServicesService,
     private storeDb: StoreDbService,
-    private utilSvc: UtilsService
+    private utilSvc: UtilsService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -177,6 +202,9 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
     this.form = this.emptyForm();
     this.form.outingType = this.outingTypes[this.currentLanguage][0];
     this.departureChecklistGroups = this.buildDepartureChecklistGroups();
+    this.currentAnchorages = [];
+    this.anchorageForm = this.emptyAnchorageForm();
+    this.editingAnchorageId = '';
     this.error = '';
     this.saved = false;
   }
@@ -199,6 +227,9 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
       comments: outing.comments || '',
     };
     this.departureChecklistGroups = this.departureGroupsFromOuting(outing);
+    this.currentAnchorages = this.anchoragesFromOuting(outing);
+    this.anchorageForm = this.emptyAnchorageForm();
+    this.editingAnchorageId = '';
     this.error = '';
     this.saved = false;
   }
@@ -229,38 +260,41 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
     };
   }
 
+  emptyAnchorageForm(): any {
+    return { location: '', comments: '' };
+  }
+
+  currentTimeForInput(): string {
+    const d = new Date();
+    return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  }
+
   buildDepartureChecklistGroups(): ChecklistGroup[] {
     return [
       {
         id: 'crew_arrival',
-        title: {
-          fr: 'Arrivée de l’équipage',
-          en: 'Crew arrival',
-          es: 'Llegada de la tripulación',
-        },
+        title: { fr: 'Arrivée de l’équipage', en: 'Crew arrival', es: 'Llegada de la tripulación' },
         items: [
           { id: 'unlock', done: false, label: { fr: 'Déverrouiller le bateau', en: 'Unlock', es: 'Desbloquear el barco' } },
           { id: 'initial_prep', done: false, label: { fr: 'Préparation initiale : housses retirées, électricité ON, gaz ON, niveau d’eau OK', en: 'Initial boat preparation: covers off, electrics on, gas on, water level ok', es: 'Preparación inicial: fundas retiradas, electricidad ON, gas ON, nivel de agua OK' } },
           { id: 'engine_check', done: false, label: { fr: 'Contrôle moteurs : liquide de refroidissement, carburant, courroie, filtres', en: 'Engine check: coolant, fuel, fan belt, filters', es: 'Control de motores: refrigerante, combustible, correa, filtros' } },
-          { id: 'logbook_start', done: false, label: { fr: 'Préparer le journal de bord avec la page de signature passagers', en: 'Start log book including the page for guests to sign in', es: 'Preparar el libro de navegación con la página de firma de pasajeros' } },
+          { id: 'logbook_start', done: false, label: { fr: 'Préparer le journal de bord avec la page de signature passagers', en: 'Start the logbook including the page for guests to sign in', es: 'Preparar el libro de navegación con la página de firma de pasajeros' } },
           { id: 'open_boat', done: false, label: { fr: 'Ouvrir le bateau : hublots, coussins, musique', en: 'Open up the boat: hatches, cushions, music', es: 'Abrir el barco: escotillas, cojines, música' } },
           { id: 'bins_fridge_toilets', done: false, label: { fr: 'Vérifier poubelles vides, frigo propre et toilettes propres', en: 'Check bins are empty, fridge is clear and toilets are clean', es: 'Comprobar papeleras vacías, nevera limpia y baños limpios' } },
           { id: 'security_bars_removed', done: false, label: { fr: 'Retirer les barres de sécurité', en: 'Remove security bars', es: 'Retirar las barras de seguridad' } },
           { id: 'stock_ice', done: false, label: { fr: 'Mettre la glace à bord', en: 'Stock ice', es: 'Cargar hielo' } },
           { id: 'prepare_breakfast', done: false, label: { fr: 'Préparer le petit-déjeuner', en: 'Prepare breakfast', es: 'Preparar el desayuno' } },
-          { id: 'install_passerelle', done: false, label: { fr: 'Installer la passerelle', en: 'Install passerelle', es: 'Instalar la pasarela' } },
+          { id: 'install_foot_bridge', done: false, label: { fr: 'Installer la passerelle', en: 'Install foot bridge', es: 'Instalar la pasarela' } },
           { id: 'remove_electric', done: false, label: { fr: 'Débrancher la connexion électrique', en: 'Remove electric connection', es: 'Desconectar la conexión eléctrica' } },
+          { id: 'invertor_on', done: false, label: { fr: 'Allumer l’inverter', en: 'Turn on the invertor', es: 'Encender el inversor' } },
+          { id: 'prep_stern_lines_no_wind', done: false, label: { fr: 'S’il n’y a pas de vent, préparer les amarres arrière', en: 'If there is no wind, prep the stern lines', es: 'Si no hay viento, preparar las amarras de popa' } },
         ],
       },
       {
         id: 'client_arrival',
-        title: {
-          fr: 'Arrivée des passagers',
-          en: 'Client arrival',
-          es: 'Llegada de los pasajeros',
-        },
+        title: { fr: 'Arrivée des passagers', en: 'Client arrival', es: 'Llegada de los pasajeros' },
         items: [
-          { id: 'welcome_aboard', done: false, label: { fr: 'Accueillir les passagers à bord', en: 'Welcome aboard', es: 'Dar la bienvenida a bordo' } },
+          { id: 'welcome_aboard', done: false, label: { fr: 'Accueillir les passagers à bord', en: 'Welcome the clients aboard', es: 'Dar la bienvenida a bordo' } },
           { id: 'shoes_off', done: false, label: { fr: 'Chaussures retirées', en: 'Shoes off', es: 'Zapatos fuera' } },
           { id: 'remaining_fees', done: false, label: { fr: 'Encaisser les sommes restantes : bateau, skipper et caution', en: 'Get the remaining fees due: boat, skipper and caution', es: 'Cobrar importes pendientes: barco, patrón y fianza' } },
           { id: 'client_sign_in', done: false, label: { fr: 'Faire signer les passagers', en: 'Client sign in', es: 'Firma de los clientes' } },
@@ -270,11 +304,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
       },
       {
         id: 'all_aboard',
-        title: {
-          fr: 'Tout le monde à bord',
-          en: 'When all aboard',
-          es: 'Todos a bordo',
-        },
+        title: { fr: 'Tout le monde à bord', en: 'When all aboard', es: 'Todos a bordo' },
         items: [
           { id: 'formal_intros', done: false, label: { fr: 'Présentations formelles', en: 'Formal introductions', es: 'Presentaciones formales' } },
           { id: 'security_champion', done: false, label: { fr: 'Choisir un référent sécurité', en: 'Choose security champion', es: 'Elegir responsable de seguridad' } },
@@ -282,24 +312,22 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
           { id: 'day_plan', done: false, label: { fr: 'Présenter le programme de la journée', en: 'Overview of day’s plan', es: 'Presentar el plan del día' } },
           { id: 'clients_clear', done: false, label: { fr: 'Demander aux clients de rester à l’écart pendant les manœuvres', en: 'Clients stay out of the way as we get going', es: 'Clientes apartados durante las maniobras' } },
           { id: 'engine_on', done: false, label: { fr: 'Moteurs démarrés', en: 'Engine on', es: 'Motor encendido' } },
-          { id: 'passerelle_in', done: false, label: { fr: 'Rentrer la passerelle', en: 'Passerelle brought in', es: 'Recoger la pasarela' } },
+          { id: 'foot_bridge_in', done: false, label: { fr: 'Rentrer la passerelle', en: 'Foot bridge brought in', es: 'Recoger la pasarela' } },
         ],
       },
       {
         id: 'departure',
-        title: {
-          fr: 'Départ',
-          en: 'Departure',
-          es: 'Salida',
-        },
+        title: { fr: 'Départ', en: 'Departure', es: 'Salida' },
         items: [
-          { id: 'permission_leave', done: false, label: { fr: 'Le capitaine demande l’autorisation de quitter le port', en: 'Captain requests permission to leave', es: 'El capitán solicita permiso para salir' } },
-          { id: 'gear_stern_lines', done: false, label: { fr: 'Bateau en marche arrière, préparation des amarres arrière', en: 'Boat in gear backwards, prepare stern lines', es: 'Barco en marcha atrás, preparar amarras de popa' } },
+          { id: 'permission_leave_vhf09', done: false, label: { fr: 'Le capitaine demande l’autorisation de quitter le port – VHF 09', en: 'Captain requests permission to leave – VHF 09', es: 'El capitán solicita permiso para salir – VHF 09' } },
+          { id: 'gear_stern_lines', done: false, label: { fr: 'Bateau en marche arrière, préparation des amarres arrière sauf si déjà préparées', en: 'Boat in gear backwards, prepare stern lines unless already prepped', es: 'Barco en marcha atrás, preparar amarras de popa salvo si ya están preparadas' } },
           { id: 'lines_off', done: false, label: { fr: 'Retirer les gardes, amarres avant puis amarres arrière', en: 'Cross lines off, bow lines off, stern lines off', es: 'Soltar traveses, amarras de proa y amarras de popa' } },
           { id: 'depart', done: false, label: { fr: 'Départ effectif', en: 'Depart', es: 'Salida' } },
           { id: 'security_champion_tour', done: false, label: { fr: 'Une fois sorti du port, faire le tour sécurité avec le référent', en: 'Once out of harbour, show the security champion around', es: 'Fuera del puerto, mostrar el recorrido de seguridad al responsable' } },
-          { id: 'fenders_up', done: false, label: { fr: 'Remonter les pare-battages', en: 'Bring up fenders', es: 'Subir defensas' } },
-          { id: 'breakfast_cleanup', done: false, label: { fr: 'Ranger le petit-déjeuner', en: 'Breakfast clean up', es: 'Recoger el desayuno' } },
+          { id: 'switch_vhf16', done: false, label: { fr: 'Passer sur le canal VHF 16', en: 'Switch to VHF channel 16', es: 'Cambiar al canal VHF 16' } },
+          { id: 'fenders_up', done: false, label: { fr: 'Remonter les pare-battages', en: 'Bring up the fenders', es: 'Subir defensas' } },
+          { id: 'fasten_security_lines', done: false, label: { fr: 'Fixer les lignes de sécurité', en: 'Fasten the security lines', es: 'Fijar las líneas de seguridad' } },
+          { id: 'breakfast_cleanup', done: false, label: { fr: 'Ranger le petit-déjeuner', en: 'Breakfast clean-up', es: 'Recoger el desayuno' } },
         ],
       },
     ];
@@ -317,50 +345,176 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
     }));
   }
 
+
+  buildAnchorageArrivalChecklistGroups(): ChecklistGroup[] {
+    return [
+      {
+        id: 'anchorage_arrival',
+        title: { fr: 'Mouillage — arrivée', en: 'Anchoring — arrival', es: 'Fondeo — llegada' },
+        items: [
+          { id: 'choose_spot', done: false, label: { fr: 'Choisir un spot : fond sableux entre 5 m et 10 m', en: 'Choose a spot: sandy bottom with 5m to 10m depth', es: 'Elegir un lugar: fondo arenoso entre 5 m y 10 m' } },
+          { id: 'face_wind_anchor', done: false, label: { fr: 'Se mettre face au vent et mouiller l’ancre', en: 'Face into the wind and set the anchor', es: 'Ponerse proa al viento y fondear' } },
+          { id: 'anchor_bridle', done: false, label: { fr: 'Une fois l’ancre prise, installer la bride de mouillage', en: 'Once set, attach the anchor bridle', es: 'Una vez fijada, colocar la brida del ancla' } },
+          { id: 'check_anchor_not_dragging', done: false, label: { fr: 'Vérifier que l’ancre ne chasse pas avant d’éteindre le moteur', en: 'Check that the anchor is not dragging before turning off the engine', es: 'Comprobar que el ancla no garrea antes de apagar el motor' } },
+          { id: 'release_security_lines', done: false, label: { fr: 'Relâcher les lignes de sécurité', en: 'Release the security lines', es: 'Soltar las líneas de seguridad' } },
+          { id: 'swimming_ladder_down', done: false, label: { fr: 'Descendre l’échelle de bain', en: 'Put down the swimming ladder', es: 'Bajar la escalera de baño' } },
+          { id: 'toys_setup', done: false, label: { fr: 'Installer les jouets nautiques', en: 'Set up the toys', es: 'Preparar los juguetes acuáticos' } },
+        ],
+      },
+    ];
+  }
+
+  buildAnchorageDepartureChecklistGroups(): ChecklistGroup[] {
+    return [
+      {
+        id: 'anchorage_departure',
+        title: { fr: 'Mouillage — départ', en: 'Anchoring — departure', es: 'Fondeo — salida' },
+        items: [
+          { id: 'everyone_aboard', done: false, label: { fr: 'Vérifier que tout le monde est à bord', en: 'Make sure everyone is aboard', es: 'Comprobar que todos están a bordo' } },
+          { id: 'equipment_aboard', done: false, label: { fr: 'Vérifier que tout le matériel est à bord', en: 'Make sure all equipment is aboard', es: 'Comprobar que todo el equipo está a bordo' } },
+          { id: 'swimming_ladder_up', done: false, label: { fr: 'Remonter l’échelle de bain', en: 'Bring up the swimming ladder', es: 'Subir la escalera de baño' } },
+          { id: 'attach_security_lines', done: false, label: { fr: 'Attacher les lignes de sécurité', en: 'Attach security lines', es: 'Fijar las líneas de seguridad' } },
+          { id: 'anchoring_engine_on', done: false, label: { fr: 'Démarrer le moteur', en: 'Engine on', es: 'Encender motor' } },
+          { id: 'anchor_up', done: false, label: { fr: 'Remonter l’ancre', en: 'Bring the anchor up', es: 'Subir el ancla' } },
+          { id: 'remove_anchor_bridle', done: false, label: { fr: 'Retirer la bride de mouillage', en: 'Remove the anchor bridle', es: 'Retirar la brida del ancla' } },
+          { id: 'confirm_anchor_in_place', done: false, label: { fr: 'Confirmer que l’ancre est en place avant de repartir', en: 'Confirm the anchor is in place before moving off', es: 'Confirmar que el ancla está en su sitio antes de avanzar' } },
+        ],
+      },
+    ];
+  }
+
+  anchorageChecklistComplete(anchorage: AnchorageLog): boolean {
+    const groups = [...(anchorage.arrivalChecklistGroups || []), ...(anchorage.departureChecklistGroups || [])];
+    return groups.length > 0 && groups.every((group) => group.items.every((item) => item.done));
+  }
+
+  addOrUpdateAnchorage(): void {
+    if (!this.anchorageForm.location) return;
+    if (this.editingAnchorageId) {
+      this.currentAnchorages = this.currentAnchorages.map((anchorage) =>
+        anchorage.anchorageId === this.editingAnchorageId
+          ? { ...anchorage, location: this.anchorageForm.location, comments: this.anchorageForm.comments || '' }
+          : anchorage
+      );
+    } else {
+      const now = Date.now();
+      this.currentAnchorages = [
+        ...this.currentAnchorages,
+        {
+          anchorageId: `anchorage_${now}_${Math.random().toString(36).slice(2, 8)}`,
+          location: this.anchorageForm.location,
+          comments: this.anchorageForm.comments || '',
+          arrivalTime: this.currentTimeForInput(),
+          departureTime: '',
+          status: 'open',
+          anchorDroppedAt: now,
+          anchorLiftedAt: null,
+          arrivalChecklistGroups: this.buildAnchorageArrivalChecklistGroups(),
+          departureChecklistGroups: this.buildAnchorageDepartureChecklistGroups(),
+        },
+      ];
+    }
+    this.anchorageForm = this.emptyAnchorageForm();
+    this.editingAnchorageId = '';
+  }
+
+  closeAnchorage(anchorage: AnchorageLog): void {
+    const now = Date.now();
+    anchorage.status = 'closed';
+    anchorage.anchorLiftedAt = now;
+    anchorage.departureTime = anchorage.departureTime || this.currentTimeForInput();
+    const anchorUp = (anchorage.departureChecklistGroups || [])
+      .flatMap((group) => group.items || [])
+      .find((item) => item.id === 'anchor_up');
+    if (anchorUp && !anchorUp.done) {
+      anchorUp.done = true;
+      anchorUp.doneBy = this.getLoggedUserName();
+      anchorUp.doneByUid = this.loggedUser?.userId || this.loggedUser?.uid || '';
+      anchorUp.doneAt = now;
+    }
+  }
+
+  editAnchorage(anchorage: AnchorageLog): void {
+    this.editingAnchorageId = anchorage.anchorageId;
+    this.anchorageForm = {
+      location: anchorage.location || '',
+      comments: anchorage.comments || '',
+    };
+  }
+
+  cancelAnchorageEdit(): void {
+    this.editingAnchorageId = '';
+    this.anchorageForm = this.emptyAnchorageForm();
+  }
+
+  removeAnchorage(anchorage: AnchorageLog): void {
+    this.currentAnchorages = this.currentAnchorages.filter((item) => item.anchorageId !== anchorage.anchorageId);
+    if (this.editingAnchorageId === anchorage.anchorageId) this.cancelAnchorageEdit();
+  }
+
+  serializeAnchorages(anchorages: AnchorageLog[]): any[] {
+    return (anchorages || []).map((anchorage) => ({
+      anchorageId: anchorage.anchorageId,
+      location: anchorage.location || '',
+      comments: anchorage.comments || '',
+      status: anchorage.status || (anchorage.departureTime ? 'closed' : 'open'),
+      anchorDroppedAt: anchorage.anchorDroppedAt || null,
+      anchorLiftedAt: anchorage.anchorLiftedAt || null,
+      arrivalChecklist: this.serializeChecklist(this.flattenChecklistGroups(anchorage.arrivalChecklistGroups || [])),
+      arrivalChecklistGroups: this.serializeChecklistGroups(anchorage.arrivalChecklistGroups || []),
+      departureChecklist: this.serializeChecklist(this.flattenChecklistGroups(anchorage.departureChecklistGroups || [])),
+      departureChecklistGroups: this.serializeChecklistGroups(anchorage.departureChecklistGroups || []),
+    }));
+  }
+
+  anchoragesFromOuting(outing: AdminOuting): AnchorageLog[] {
+    const raw = Array.isArray(outing.anchorages) ? outing.anchorages : [];
+    return raw.map((anchorage: any) => ({
+      anchorageId: anchorage.anchorageId || `anchorage_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+      location: anchorage.location || '',
+      comments: anchorage.comments || '',
+      status: anchorage.status || (anchorage.departureTime ? 'closed' : 'open'),
+      anchorDroppedAt: anchorage.anchorDroppedAt || null,
+      anchorLiftedAt: anchorage.anchorLiftedAt || null,
+      arrivalChecklistGroups: this.fromStoredGroups(anchorage.arrivalChecklistGroups, this.buildAnchorageArrivalChecklistGroups()),
+      departureChecklistGroups: this.fromStoredGroups(anchorage.departureChecklistGroups, this.buildAnchorageDepartureChecklistGroups()),
+    }));
+  }
+
   buildArrivalChecklistGroups(): ChecklistGroup[] {
     return [
       {
-        id: 'return_entrance_to_port',
-        title: {
-          fr: '1.1. Entrée au port',
-          en: '1.1. Entrance to the port',
-          es: '1.1. Entrada al puerto',
-        },
+        id: 'return',
+        title: { fr: 'Retour au port', en: 'Return', es: 'Regreso al puerto' },
         items: [
-          { id: 'return_permission_enter', done: false, label: { fr: 'À 1/2 mille nautique du port, demander l’autorisation d’entrer', en: 'At 1/2 NM from harbour request permission to enter', es: 'A 1/2 milla náutica del puerto, solicitar permiso para entrar' } },
+          { id: 'return_permission_enter_vhf09', done: false, label: { fr: 'À 1/2 mille nautique du port, demander l’autorisation d’entrer – VHF 09', en: 'At 1/2 NM from harbour request permission to enter – VHF 09', es: 'A 1/2 milla náutica del puerto, solicitar permiso para entrar – VHF 09' } },
+          { id: 'return_security_lines_off', done: false, label: { fr: 'Retirer les lignes de sécurité', en: 'Security lines off', es: 'Quitar las líneas de seguridad' } },
           { id: 'return_fenders_down', done: false, label: { fr: 'Descendre les pare-battages', en: 'Fenders down', es: 'Bajar defensas' } },
           { id: 'return_ready_ropes', done: false, label: { fr: 'Préparer les amarres', en: 'Ready ropes', es: 'Preparar cabos' } },
           { id: 'return_protect_boat', done: false, label: { fr: 'L’équipage protège le bateau pendant l’amarrage', en: 'Crew protect boat as we moor', es: 'La tripulación protege el barco durante el amarre' } },
           { id: 'return_attach_stern_cross_lines', done: false, label: { fr: 'Attacher les amarres arrière puis les gardes', en: 'Attach stern lines, then cross lines', es: 'Amarrar cabos de popa y luego traveses' } },
           { id: 'return_engine_off', done: false, label: { fr: 'Arrêter les moteurs', en: 'Engine off', es: 'Apagar motores' } },
-          { id: 'return_install_passerelle', done: false, label: { fr: 'Installer la passerelle', en: 'Install passerelle', es: 'Instalar la pasarela' } },
+          { id: 'return_install_foot_bridge', done: false, label: { fr: 'Installer la passerelle', en: 'Install foot bridge', es: 'Instalar la pasarela' } },
           { id: 'return_guest_log_comments', done: false, label: { fr: 'Encourager les clients à ajouter des commentaires dans le livre d’or', en: 'Encourage clients to add comments in guest log', es: 'Animar a los clientes a añadir comentarios en el libro de visitas' } },
           { id: 'return_au_revoir', done: false, label: { fr: 'Dire au revoir aux clients', en: 'Au revoir to clients', es: 'Despedir a los clientes' } },
         ],
       },
       {
-        id: 'return_tidy_up',
-        title: {
-          fr: '1.2. Rangement',
-          en: '1.2. Tidy up',
-          es: '1.2. Ordenar',
-        },
+        id: 'tidy_up',
+        title: { fr: 'Rangement', en: 'Tidy up', es: 'Ordenar' },
         items: [
           { id: 'tidy_remove_front_cushions', done: false, label: { fr: 'Retirer les coussins avant', en: 'Remove front cushions', es: 'Retirar cojines delanteros' } },
-          { id: 'tidy_attach_bow_ropes', done: false, label: { fr: 'Attacher les amarres avant / pendilles', en: 'Attach bow ropes (pendi)', es: 'Amarrar cabos de proa / pendille' } },
+          { id: 'tidy_attach_bow_ropes', done: false, label: { fr: 'Attacher les amarres avant / lazy lines', en: 'Attach bow ropes (lazy lines)', es: 'Amarrar cabos de proa / lazy lines' } },
           { id: 'tidy_review_lines', done: false, label: { fr: 'Contrôler les autres amarres', en: 'Review other lines', es: 'Revisar los demás cabos' } },
           { id: 'tidy_attach_electricity', done: false, label: { fr: 'Brancher l’électricité', en: 'Attach electricity', es: 'Conectar electricidad' } },
-          { id: 'tidy_clean_galley_bins_fridge', done: false, label: { fr: 'Nettoyer la cuisine, trier les poubelles et le réfrigérateur', en: 'Clean up galley, sort out bins and fridge', es: 'Limpiar cocina, ordenar basura y nevera' } },
-          { id: 'tidy_replace_security_bars', done: false, label: { fr: 'Remettre les barres de sécurité', en: 'Replace security bars', es: 'Volver a colocar barras de seguridad' } },
+          { id: 'tidy_invertor_off', done: false, label: { fr: 'Éteindre l’inverter', en: 'Turn off invertor', es: 'Apagar el inversor' } },
+          { id: 'tidy_galley_bins_fridge', done: false, label: { fr: 'Nettoyer la cuisine, trier les poubelles et le frigo', en: 'Clean up galley, sort out bins and fridge', es: 'Limpiar la cocina, ordenar papeleras y nevera' } },
+          { id: 'tidy_security_bars', done: false, label: { fr: 'Remettre les barres de sécurité', en: 'Replace security bars', es: 'Volver a colocar las barras de seguridad' } },
         ],
       },
       {
-        id: 'return_leave_boat',
-        title: {
-          fr: '1.3. Quitter le bateau',
-          en: '1.3. Leave boat',
-          es: '1.3. Salir del barco',
-        },
+        id: 'leave_boat',
+        title: { fr: 'Quitter le bateau', en: 'Leave boat', es: 'Dejar el barco' },
         items: [
           { id: 'leave_close_hatches', done: false, label: { fr: 'Fermer les hublots et capots', en: 'Close hatches', es: 'Cerrar escotillas' } },
           { id: 'leave_cleaning', done: false, label: { fr: 'Nettoyage', en: 'Cleaning', es: 'Limpieza' } },
@@ -389,6 +543,53 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
       item.doneByUid = '';
       item.doneAt = null;
     }
+    this.scheduleChecklistAutosave();
+  }
+
+  scheduleChecklistAutosave(): void {
+    if (this.mode === 'create' || !this.selectedOuting || !this.selectedOuting.outingId) return;
+    if (this.checklistSaveTimer) {
+      clearTimeout(this.checklistSaveTimer);
+    }
+    this.checklistSaveTimer = setTimeout(() => {
+      this.persistCurrentChecklistState().catch(() => undefined);
+    }, 300);
+  }
+
+  private async persistCurrentChecklistState(): Promise<void> {
+    if (!this.selectedOuting?.outingId) return;
+    const base: AdminOuting = { ...this.selectedOuting } as AdminOuting;
+    let updated: AdminOuting;
+
+    if (this.mode === 'close') {
+      const groups = this.arrivalChecklistGroupsByOuting[base.outingId] || this.arrivalGroupsFromOuting(base);
+      updated = {
+        ...base,
+        arrivalChecklist: this.serializeChecklist(this.flattenChecklistGroups(groups)),
+        arrivalChecklistGroups: this.serializeChecklistGroups(groups),
+        closureComments: this.closureComments[base.outingId] || base.closureComments || '',
+        modifiedBy: this.loggedUser?.userId || this.loggedUser?.uid || '',
+        modifiedTS: Date.now(),
+      } as any;
+    } else {
+      updated = {
+        ...base,
+        ...this.form,
+        passengers: this.form.passengers === null || this.form.passengers === '' ? null : Number(this.form.passengers),
+        portEngineHoursDeparture: this.form.portEngineHoursDeparture === null || this.form.portEngineHoursDeparture === '' ? null : Number(this.form.portEngineHoursDeparture),
+        starboardEngineHoursDeparture: this.form.starboardEngineHoursDeparture === null || this.form.starboardEngineHoursDeparture === '' ? null : Number(this.form.starboardEngineHoursDeparture),
+        actualWindSpeed: this.form.actualWindSpeed === null || this.form.actualWindSpeed === '' ? null : Number(this.form.actualWindSpeed),
+        departureChecklist: this.serializeChecklist(this.flattenChecklistGroups(this.departureChecklistGroups)),
+        departureChecklistGroups: this.serializeChecklistGroups(this.departureChecklistGroups),
+        anchorages: this.serializeAnchorages(this.currentAnchorages),
+        modifiedBy: this.loggedUser?.userId || this.loggedUser?.uid || '',
+        modifiedTS: Date.now(),
+      } as any;
+    }
+
+    await this.saveToFirebase(updated.outingId, updated);
+    this.selectedOuting = updated;
+    this.outings = this.outings.map((item) => item.outingId === updated.outingId ? updated : item);
   }
 
   getLoggedUserName(): string {
@@ -400,16 +601,14 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
 
   formatChecklistMeta(item: ChecklistItem): string {
     if (!item.done || !item.doneAt) return '';
-    return `${this.t('validatedBy')} ${item.doneBy || 'Admin'} · ${new Date(item.doneAt).toLocaleString()}`;
+    const locale = this.currentLanguage === 'fr' ? 'fr-FR' : this.currentLanguage === 'es' ? 'es-ES' : 'en-GB';
+    return `${this.t('validatedBy')} ${item.doneBy || 'Admin'} · ${new Date(item.doneAt).toLocaleString(locale)}`;
   }
 
   validateForm(): string {
     if (!this.isAdmin) return this.t('adminOnly');
     if (!this.form.outingType || !this.form.passengers || !this.form.departureDate || !this.form.departureTime || !this.form.arrivalDate || !this.form.arrivalTime || !this.form.destination) {
       return this.t('required');
-    }
-    if (!this.departureChecklistComplete) {
-      return this.t('departureChecklistRequired');
     }
     return '';
   }
@@ -423,15 +622,9 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
       const store: any = this.storeDb as any;
       const util: any = this.utilSvc as any;
 
-      if (typeof store.getObject === 'function') {
-        try {
-          raw = await store.getObject(util.backendFBstoreId, util.mdb, collectionName, -1);
-        } catch {
-          try { raw = await store.getObject(collectionName); } catch { raw = null; }
-        }
-      }
+      raw = await this.readRootAdminOutings();
 
-      const list = raw ? Object.keys(raw).map((key) => raw[key]).filter((item: any) => !item.deleted) : [];
+      const list = raw ? Object.keys(raw).map((key) => ({ ...raw[key], outingId: raw[key]?.outingId || key })).filter((item: any) => !item.deleted) : [];
       this.outings = list.sort((a: AdminOuting, b: AdminOuting) => (b.createdTS || 0) - (a.createdTS || 0));
       this.outings.forEach((outing) => {
         const groups = this.arrivalGroupsFromOuting(outing);
@@ -443,6 +636,114 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
     } finally {
       this.loading = false;
     }
+  }
+
+
+  private async readRootAdminOutings(): Promise<any> {
+    const collectionName = this.outingsCollectionName;
+    const store: any = this.storeDb as any;
+    const util: any = this.utilSvc as any;
+
+    // 1) Read directly through the underlying Firebase Realtime Database SDK when available.
+    const dbCandidates = [
+      util?.mdb,
+      store?.backendFbRef?.database,
+      store?.backendFbRef?.['database'],
+      store?.firebaseBSSdata?.database,
+    ].filter((db, index, array) => db && typeof db.ref === 'function' && array.indexOf(db) === index);
+
+    for (const db of dbCandidates) {
+      const direct = await this.readDatabasePath(db, collectionName);
+      const extracted = this.extractAdminOutings(direct);
+      if (extracted) return extracted;
+    }
+
+    // 2) Try godigital-lib signatures. The current data lives at ROOT /bnAdminOutings.
+    if (typeof store.getObject === 'function') {
+      const candidates = [
+        () => store.getObject(collectionName),
+        () => store.getObject(`/${collectionName}`),
+        () => store.getObject(collectionName, -1),
+        () => store.getObject(undefined, util.mdb, collectionName, -1),
+        () => store.getObject(null, util.mdb, collectionName, -1),
+        () => store.getObject(util.backendFBstoreId, util.mdb, collectionName, -1),
+        () => store.getObject(util.backendFBstoreId, util.mdb, collectionName),
+        () => store.getObject(`${util.backendFBstoreId}/${collectionName}`),
+        () => store.getObject('1000', util.mdb, collectionName, -1),
+        () => store.getObject('1000', util.mdb, collectionName),
+      ];
+      for (const candidate of candidates) {
+        try {
+          const value = await candidate();
+          const extracted = this.extractAdminOutings(value);
+          if (extracted) return extracted;
+        } catch {}
+      }
+    }
+
+    // 3) Check already-loaded in-memory snapshots.
+    const memoryCandidates = [
+      store.firebaseBSSdata?.[collectionName],
+      store.firebaseBSSdata?.['1000']?.[collectionName],
+      store.firebaseBSSdata?.[util.backendFBstoreId]?.[collectionName],
+      store.firebaseBSSdata,
+      store?.data?.[collectionName],
+      store?.data?.['1000']?.[collectionName],
+      store?.[collectionName],
+    ];
+    for (const value of memoryCandidates) {
+      const extracted = this.extractAdminOutings(value);
+      if (extracted) return extracted;
+    }
+
+    // 4) Last resort REST read. Useful when godigital-lib has not hydrated its cache yet.
+    return await this.readAdminOutingsViaRest();
+  }
+
+  private async readDatabasePath(db: any, path: string): Promise<any> {
+    try {
+      const cleanPath = path.replace(/^\/+/, '');
+      const snapshot = await db.ref(cleanPath).once('value');
+      return snapshot && typeof snapshot.val === 'function' ? snapshot.val() : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private extractAdminOutings(value: any): any {
+    const collectionName = this.outingsCollectionName;
+    if (!value) return null;
+    if (value[collectionName]) return this.extractAdminOutings(value[collectionName]);
+    if (value['1000']?.[collectionName]) return this.extractAdminOutings(value['1000'][collectionName]);
+    if (typeof value === 'object') {
+      const keys = Object.keys(value).filter((key) => !!value[key]);
+      const looksLikeMap = keys.some((key) => key.startsWith('outing_') || value[key]?.outingId || value[key]?.departureDate || value[key]?.outingType);
+      return looksLikeMap && keys.length ? value : null;
+    }
+    return null;
+  }
+
+  private async readAdminOutingsViaRest(): Promise<any> {
+    const paths = [this.outingsCollectionName, `1000/${this.outingsCollectionName}`];
+    for (const baseUrl of this.restDatabaseUrls) {
+      for (const path of paths) {
+        try {
+          const url = `${baseUrl.replace(/\/+$/, '')}/${path}.json`;
+          const value = await this.http.get<any>(url).toPromise();
+          const extracted = this.extractAdminOutings(value);
+          if (extracted) return extracted;
+        } catch {}
+      }
+    }
+    for (const baseUrl of this.restDatabaseUrls) {
+      try {
+        const url = `${baseUrl.replace(/\/+$/, '')}/.json`;
+        const value = await this.http.get<any>(url).toPromise();
+        const extracted = this.extractAdminOutings(value);
+        if (extracted) return extracted;
+      } catch {}
+    }
+    return null;
   }
 
   fromStoredChecklist(stored: any[] | undefined, template: ChecklistItem[]): ChecklistItem[] {
@@ -509,6 +810,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
         actualWindSpeed: this.form.actualWindSpeed === null || this.form.actualWindSpeed === '' ? null : Number(this.form.actualWindSpeed),
         departureChecklist: this.serializeChecklist(this.flattenChecklistGroups(this.departureChecklistGroups)),
         departureChecklistGroups: this.serializeChecklistGroups(this.departureChecklistGroups),
+        anchorages: this.serializeAnchorages(this.currentAnchorages),
         modifiedBy: this.loggedUser?.userId || this.loggedUser?.uid || '',
         modifiedTS: Date.now(),
       } as any;
@@ -543,6 +845,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
         departureChecklistGroups: this.serializeChecklistGroups(this.departureChecklistGroups),
         arrivalChecklist: this.serializeChecklist(this.buildArrivalChecklist()),
         arrivalChecklistGroups: this.serializeChecklistGroups(this.buildArrivalChecklistGroups()),
+        anchorages: this.serializeAnchorages(this.currentAnchorages),
         status: 'open',
         createdBy: this.loggedUser?.userId || this.loggedUser?.uid || '',
         createdTS: Date.now(),
@@ -556,6 +859,9 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
       this.form = this.emptyForm();
       this.form.outingType = this.outingTypes[this.currentLanguage][0];
       this.departureChecklistGroups = this.buildDepartureChecklistGroups();
+      this.currentAnchorages = [];
+      this.anchorageForm = this.emptyAnchorageForm();
+      this.editingAnchorageId = '';
       this.saved = true;
       this.showList();
     } catch (e: any) {
@@ -571,11 +877,6 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
       this.closeError = this.t('adminOnly');
       return;
     }
-    if (!this.arrivalChecklistComplete(outing.outingId)) {
-      this.closeError = this.t('arrivalChecklistRequired');
-      return;
-    }
-
     this.closingId = outing.outingId;
     try {
       const updated: AdminOuting = {
@@ -640,17 +941,65 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
     await this.saveToFirebase(id, { ...outing, status: 'closed', deleted: true, deletedTS: Date.now() } as any);
   }
 
+  private async writeRootAdminOutingViaSdk(id: string, payload: AdminOuting): Promise<boolean> {
+    const store: any = this.storeDb as any;
+    const util: any = this.utilSvc as any;
+    const dbCandidates = [
+      util?.mdb,
+      store?.backendFbRef?.database,
+      store?.backendFbRef?.['database'],
+      store?.firebaseBSSdata?.database,
+    ].filter((db, index, array) => db && typeof db.ref === 'function' && array.indexOf(db) === index);
+
+    for (const db of dbCandidates) {
+      try {
+        await db.ref(`${this.outingsCollectionName}/${id}`).update(payload);
+        return true;
+      } catch {}
+    }
+    return false;
+  }
+
+  private async writeRootAdminOutingViaRest(id: string, payload: AdminOuting): Promise<boolean> {
+    for (const baseUrl of this.restDatabaseUrls) {
+      try {
+        const url = `${baseUrl.replace(/\/+$/, '')}/${this.outingsCollectionName}/${id}.json`;
+        await this.http.patch<any>(url, payload).toPromise();
+        return true;
+      } catch {}
+    }
+    return false;
+  }
+
   async saveToFirebase(id: string, payload: AdminOuting): Promise<void> {
     const store: any = this.storeDb as any;
     const util: any = this.utilSvc as any;
-    if (typeof store.updateObject !== 'function') {
-      throw new Error('Firebase updateObject is not available.');
+
+    // Current Firebase structure uses root /bnAdminOutings.
+    // Prefer direct root writes so checklist done/doneBy/doneAt are effectively persisted.
+    if (await this.writeRootAdminOutingViaSdk(id, payload)) return;
+
+    if (typeof store.updateObject === 'function') {
+      const candidates = [
+        () => store.updateObject(this.outingsCollectionName, payload, id),
+        () => store.updateObject(this.outingsCollectionName, id, payload),
+        () => store.updateObject(`/${this.outingsCollectionName}`, payload, id),
+        () => store.updateObject(util.backendFBstoreId, util.mdb, this.outingsCollectionName, payload, id),
+        () => store.updateObject('1000', util.mdb, this.outingsCollectionName, payload, id),
+      ];
+      for (const candidate of candidates) {
+        try {
+          await candidate();
+          // Also try root REST afterwards; if it fails silently, the library write still succeeded.
+          await this.writeRootAdminOutingViaRest(id, payload);
+          return;
+        } catch {}
+      }
     }
-    try {
-      await store.updateObject(util.backendFBstoreId, util.mdb, this.outingsCollectionName, payload, id);
-    } catch {
-      await store.updateObject(this.outingsCollectionName, id, payload);
-    }
+
+    if (await this.writeRootAdminOutingViaRest(id, payload)) return;
+
+    throw new Error('Firebase updateObject is not available.');
   }
 
   get outingsCollectionName(): string {
@@ -666,24 +1015,24 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
       fr: {
         eyebrow: 'Administration',
         title: 'Boat Log Manager',
-        intro: 'Enregistrez les informations opérationnelles d’une sortie. La création exige les 4 checklists de départ complètes : arrivée équipage, arrivée passagers, tout le monde à bord et départ. La clôture exige une checklist arrivée complète.',
+        intro: 'Enregistrez les informations opérationnelles d’une sortie. Les checklists restent visibles pour le suivi opérationnel, mais le log peut être sauvegardé ou clôturé même si elles ne sont pas complètes.',
         adminOnly: 'Cette page est réservée aux comptes administrateur.',
         outingType: 'Type de sortie', passengers: 'Passagers', departureDate: 'Jour de départ', departureTime: 'Heure de départ', arrivalDate: 'Jour d’arrivée', arrivalTime: 'Heure d’arrivée',
         portEngine: 'Heures moteur bâbord au départ', starboardEngine: 'Heures moteur tribord au départ', wind: 'Vent réel actuel', destination: 'Destination', comments: 'Commentaires',
         departureChecklist: 'Checklists de départ', arrivalChecklist: 'Checklist arrivée au port', create: 'Créer la sortie', creating: 'Création...', saved: 'Sortie créée.', required: 'Merci de renseigner les champs obligatoires.',
-        departureChecklistRequired: 'La sortie ne peut être créée que si les 4 checklists de départ sont complètes.', arrivalChecklistRequired: 'La sortie ne peut être clôturée que si la checklist arrivée est complète.',
+        departureChecklistRequired: 'La checklist peut être complétée progressivement. Le log reste sauvegardable.', arrivalChecklistRequired: 'La checklist d’arrivée peut être complétée progressivement. Le log reste clôturable.',
         openOutings: 'Sorties ouvertes', listOutings: 'Liste des sorties', allOutings: 'Liste des sorties', newOuting: 'Créer une sortie', createTitle: 'Créer une sortie', editTitle: 'Modifier la sortie', closeTitle: 'Clôturer la sortie', backToList: 'Retour à la liste', edit: 'Modifier', saveChanges: 'Enregistrer les modifications', saving: 'Enregistrement...', cancel: 'Annuler', loading: 'Chargement...', closed: 'Clôturée', open: 'Ouverte', close: 'Clôturer la sortie', closing: 'Clôture...', closureComments: 'Commentaires de clôture', empty: 'Aucune sortie enregistrée.',
-        loadError: 'Impossible de charger les sorties.', saveError: 'Impossible d’enregistrer la sortie.', closeError: 'Impossible de clôturer la sortie.', knots: 'nœuds', detail: 'Détail / modifier', validatedBy: 'Validé par', delete: 'Supprimer', deleteConfirm: 'Supprimer cette sortie', deleteError: 'Impossible de supprimer la sortie.',
+        loadError: 'Impossible de charger les sorties.', saveError: 'Impossible d’enregistrer la sortie.', closeError: 'Impossible de clôturer la sortie.', knots: 'nœuds', detail: 'Détail / modifier', validatedBy: 'Validé par', delete: 'Supprimer', deleteConfirm: 'Supprimer cette sortie', deleteError: 'Impossible de supprimer la sortie.', anchorages: 'Mouillages', anchorageLocation: 'Lieu du mouillage', anchorageArrivalTime: 'Heure d’arrivée au mouillage', anchorageDepartureTime: 'Heure de départ du mouillage', addAnchorage: 'Ajouter un mouillage', updateAnchorage: 'Modifier le mouillage', noAnchorages: 'Aucun mouillage enregistré pour cette sortie.', anchorageArrival: 'Checklist ancre jetée', anchorageDeparture: 'Checklist ancre levée', dropAnchor: 'Jeter l’ancre / créer le mouillage', liftAnchor: 'Lever l’ancre / fermer le mouillage', anchorageOpen: 'Mouillage ouvert', anchorageClosed: 'Mouillage fermé',
       },
       en: {
-        eyebrow: 'Administration', title: 'Boat Log Manager', intro: 'Record operational details for an outing. Creation requires the 4 departure checklists to be complete: crew arrival, client arrival, when all aboard and departure. Closure requires a complete arrival checklist.',
+        eyebrow: 'Administration', title: 'Boat Log Manager', intro: 'Record operational details for an outing. Checklists remain visible for operational tracking, but the log can be saved or closed even when they are not complete.',
         adminOnly: 'This page is restricted to administrator accounts.', outingType: 'Outing type', passengers: 'Passengers', departureDate: 'Departure date', departureTime: 'Departure time', arrivalDate: 'Arrival date', arrivalTime: 'Arrival time',
         portEngine: 'Port engine hours at departure', starboardEngine: 'Starboard engine hours at departure', wind: 'Actual wind speed', destination: 'Outing destination', comments: 'Comments', departureChecklist: 'Departure checklists', arrivalChecklist: 'Arrival in port checklist', create: 'Create outing', creating: 'Creating...', saved: 'Outing created.', required: 'Please fill in the required fields.',
-        departureChecklistRequired: 'The outing can only be created once the 4 departure checklists are complete.', arrivalChecklistRequired: 'The outing can only be closed once the arrival checklist is complete.', openOutings: 'Open outings', listOutings: 'Outings list', allOutings: 'Outings list', newOuting: 'Create outing', createTitle: 'Create outing', editTitle: 'Edit outing', closeTitle: 'Close outing', backToList: 'Back to list', edit: 'Edit', saveChanges: 'Save changes', saving: 'Saving...', cancel: 'Cancel', loading: 'Loading...', closed: 'Closed', open: 'Open', close: 'Close outing', closing: 'Closing...', closureComments: 'Closure comments', empty: 'No outings recorded yet.', loadError: 'Unable to load outings.', saveError: 'Unable to save outing.', closeError: 'Unable to close outing.', knots: 'knots', detail: 'Details / edit', validatedBy: 'Validated by', delete: 'Delete', deleteConfirm: 'Delete this outing', deleteError: 'Unable to delete outing.',
+        departureChecklistRequired: 'The checklist can be completed progressively. The log can still be saved.', arrivalChecklistRequired: 'The arrival checklist can be completed progressively. The log can still be closed.', openOutings: 'Open outings', listOutings: 'Outings list', allOutings: 'Outings list', newOuting: 'Create outing', createTitle: 'Create outing', editTitle: 'Edit outing', closeTitle: 'Close outing', backToList: 'Back to list', edit: 'Edit', saveChanges: 'Save changes', saving: 'Saving...', cancel: 'Cancel', loading: 'Loading...', closed: 'Closed', open: 'Open', close: 'Close outing', closing: 'Closing...', closureComments: 'Closure comments', empty: 'No outings recorded yet.', loadError: 'Unable to load outings.', saveError: 'Unable to save outing.', closeError: 'Unable to close outing.', knots: 'knots', detail: 'Details / edit', validatedBy: 'Validated by', delete: 'Delete', deleteConfirm: 'Delete this outing', deleteError: 'Unable to delete outing.', anchorages: 'Anchorages', anchorageLocation: 'Anchorage location', anchorageArrivalTime: 'Anchoring arrival time', anchorageDepartureTime: 'Anchoring departure time', addAnchorage: 'Add anchorage', updateAnchorage: 'Update anchorage', noAnchorages: 'No anchorage recorded for this outing.', anchorageArrival: 'Anchor dropped checklist', anchorageDeparture: 'Anchor lifted checklist', dropAnchor: 'Drop anchor / create anchorage', liftAnchor: 'Lift anchor / close anchorage', anchorageOpen: 'Anchorage open', anchorageClosed: 'Anchorage closed',
       },
       es: {
-        eyebrow: 'Administración', title: 'Boat Log Manager', intro: 'Registre los datos operativos de una salida. La creación requiere las 4 checklists de salida completas: llegada de tripulación, llegada de pasajeros, todos a bordo y salida. El cierre requiere una checklist de llegada completa.',
-        adminOnly: 'Esta página está reservada a cuentas administradoras.', outingType: 'Tipo de salida', passengers: 'Pasajeros', departureDate: 'Fecha de salida', departureTime: 'Hora de salida', arrivalDate: 'Fecha de llegada', arrivalTime: 'Hora de llegada', portEngine: 'Horas motor babor al salir', starboardEngine: 'Horas motor estribor al salir', wind: 'Velocidad real del viento', destination: 'Destino de la salida', comments: 'Comentarios', departureChecklist: 'Checklists de salida', arrivalChecklist: 'Checklist de llegada a puerto', create: 'Crear salida', creating: 'Creando...', saved: 'Salida creada.', required: 'Por favor complete los campos obligatorios.', departureChecklistRequired: 'La salida solo puede crearse cuando las 4 checklists de salida están completas.', arrivalChecklistRequired: 'La salida solo puede cerrarse cuando la checklist de llegada está completa.', openOutings: 'Salidas abiertas', listOutings: 'Lista de salidas', allOutings: 'Lista de salidas', newOuting: 'Crear salida', createTitle: 'Crear salida', editTitle: 'Modificar salida', closeTitle: 'Cerrar salida', backToList: 'Volver a la lista', edit: 'Modificar', saveChanges: 'Guardar cambios', saving: 'Guardando...', cancel: 'Cancelar', loading: 'Cargando...', closed: 'Cerrada', open: 'Abierta', close: 'Cerrar salida', closing: 'Cerrando...', closureComments: 'Comentarios de cierre', empty: 'Aún no hay salidas registradas.', loadError: 'No se pueden cargar las salidas.', saveError: 'No se puede guardar la salida.', closeError: 'No se puede cerrar la salida.', knots: 'nudos', detail: 'Detalle / editar', validatedBy: 'Validado por', delete: 'Eliminar', deleteConfirm: 'Eliminar esta salida', deleteError: 'No se puede eliminar la salida.',
+        eyebrow: 'Administración', title: 'Boat Log Manager', intro: 'Registre los datos operativos de una salida. Las checklists siguen visibles para el seguimiento operativo, pero el log puede guardarse o cerrarse aunque no estén completas.',
+        adminOnly: 'Esta página está reservada a cuentas administradoras.', outingType: 'Tipo de salida', passengers: 'Pasajeros', departureDate: 'Fecha de salida', departureTime: 'Hora de salida', arrivalDate: 'Fecha de llegada', arrivalTime: 'Hora de llegada', portEngine: 'Horas motor babor al salir', starboardEngine: 'Horas motor estribor al salir', wind: 'Velocidad real del viento', destination: 'Destino de la salida', comments: 'Comentarios', departureChecklist: 'Checklists de salida', arrivalChecklist: 'Checklist de llegada a puerto', create: 'Crear salida', creating: 'Creando...', saved: 'Salida creada.', required: 'Por favor complete los campos obligatorios.', departureChecklistRequired: 'La checklist puede completarse progresivamente. El log se puede guardar igualmente.', arrivalChecklistRequired: 'La checklist de llegada puede completarse progresivamente. El log se puede cerrar igualmente.', openOutings: 'Salidas abiertas', listOutings: 'Lista de salidas', allOutings: 'Lista de salidas', newOuting: 'Crear salida', createTitle: 'Crear salida', editTitle: 'Modificar salida', closeTitle: 'Cerrar salida', backToList: 'Volver a la lista', edit: 'Modificar', saveChanges: 'Guardar cambios', saving: 'Guardando...', cancel: 'Cancelar', loading: 'Cargando...', closed: 'Cerrada', open: 'Abierta', close: 'Cerrar salida', closing: 'Cerrando...', closureComments: 'Comentarios de cierre', empty: 'Aún no hay salidas registradas.', loadError: 'No se pueden cargar las salidas.', saveError: 'No se puede guardar la salida.', closeError: 'No se puede cerrar la salida.', knots: 'nudos', detail: 'Detalle / editar', validatedBy: 'Validado por', delete: 'Eliminar', deleteConfirm: 'Eliminar esta salida', deleteError: 'No se puede eliminar la salida.', anchorages: 'Fondeos', anchorageLocation: 'Lugar de fondeo', anchorageArrivalTime: 'Hora de llegada al fondeo', anchorageDepartureTime: 'Hora de salida del fondeo', addAnchorage: 'Añadir fondeo', updateAnchorage: 'Actualizar fondeo', noAnchorages: 'No hay fondeos registrados para esta salida.', anchorageArrival: 'Checklist ancla echada', anchorageDeparture: 'Checklist ancla levantada', dropAnchor: 'Echar el ancla / crear fondeo', liftAnchor: 'Levantar el ancla / cerrar fondeo', anchorageOpen: 'Fondeo abierto', anchorageClosed: 'Fondeo cerrado',
       },
     };
     return labels[this.currentLanguage]?.[key] || labels.en[key] || key;

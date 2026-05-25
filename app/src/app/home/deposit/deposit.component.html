@@ -53,5 +53,34 @@
 
       <p class="secure">{{ copy.securePayment }}</p>
     </form>
+
+    <section class="deposit-card admin-warranty-card" *ngIf="isAdmin && booking">
+      <span class="eyebrow">Admin</span>
+      <h2>Warranty / damage charge</h2>
+      <p class="note">This admin area is only for charging the warranty if damage has been confirmed. Clients should use the deposit payment flow.</p>
+
+      <div class="deposit-total">
+        <span>Warranty status</span>
+        <strong>{{ warrantyStatusLabel }}</strong>
+      </div>
+
+      <label>
+        <span>Amount to charge</span>
+        <input type="number" name="warrantyChargeAmount" [(ngModel)]="warrantyChargeAmount" min="1" step="0.01" />
+      </label>
+
+      <label>
+        <span>Reason / damage note</span>
+        <textarea name="warrantyReason" rows="4" [(ngModel)]="warrantyReason" placeholder="Describe the damage or reason for charging the warranty"></textarea>
+      </label>
+
+      <p class="error" *ngIf="warrantyError">{{ warrantyError }}</p>
+      <p class="success" *ngIf="warrantyMessage">{{ warrantyMessage }}</p>
+
+      <button type="button" class="btn btn-primary danger" [disabled]="isChargingWarranty" (click)="chargeWarranty()">
+        {{ isChargingWarranty ? 'Charging...' : 'Charge warranty' }}
+      </button>
+    </section>
+
   </div>
 </section>

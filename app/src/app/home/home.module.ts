@@ -28,6 +28,9 @@ import { AdminOutingDetailComponent } from './admin-outing-detail/admin-outing-d
 import { AdminManageOutingsComponent } from './admin-manage-outings/admin-manage-outings.component';
 import { GuestFaqComponent } from './guest-faq/guest-faq.component';
 import { GuestJourneyComponent } from './guest-journey/guest-journey.component';
+import { BookingsComponent } from './bookings/bookings.component';
+import { MyBookingsComponent } from './my-bookings/my-bookings.component';
+import { BookingDetailComponent } from './booking-detail/booking-detail.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +57,9 @@ import { GuestJourneyComponent } from './guest-journey/guest-journey.component';
     AdminManageOutingsComponent,
     GuestFaqComponent,
     GuestJourneyComponent,
+    BookingsComponent,
+    MyBookingsComponent,
+    BookingDetailComponent,
   ],
   imports: [
     CommonModule,

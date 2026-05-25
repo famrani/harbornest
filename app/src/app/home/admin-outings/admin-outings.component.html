@@ -143,8 +143,95 @@
           </div>
         </div>
 
+        <div class="anchorages-block">
+          <div class="checklist-head">
+            <h2>{{ t('anchorages') }}</h2>
+            <span>{{ currentAnchorages.length }}</span>
+          </div>
+
+          <div class="form-grid anchorage-form-grid">
+            <label class="wide">
+              {{ t('anchorageLocation') }}
+              <input type="text" [(ngModel)]="anchorageForm.location" placeholder="Lérins, Baie des Milliardaires, Cap d’Antibes..." />
+            </label>
+            <label class="wide">
+              {{ t('comments') }}
+              <textarea rows="2" [(ngModel)]="anchorageForm.comments"></textarea>
+            </label>
+          </div>
+
+          <div class="form-actions mini-actions">
+            <button type="button" class="btn btn-secondary" (click)="addOrUpdateAnchorage()">
+              {{ editingAnchorageId ? t('updateAnchorage') : t('dropAnchor') }}
+            </button>
+            <button type="button" class="btn btn-secondary" *ngIf="editingAnchorageId" (click)="cancelAnchorageEdit()">
+              {{ t('cancel') }}
+            </button>
+          </div>
+
+          <p class="empty" *ngIf="currentAnchorages.length === 0">{{ t('noAnchorages') }}</p>
+
+          <article class="anchorage-card" *ngFor="let anchorage of currentAnchorages">
+            <div class="anchorage-card-head">
+              <div>
+                <h3>{{ anchorage.location }}</h3>
+                <p *ngIf="anchorage.arrivalTime || anchorage.departureTime">
+                  {{ anchorage.arrivalTime || '—' }} → {{ anchorage.departureTime || '—' }}
+                </p>
+                <p *ngIf="anchorage.comments">{{ anchorage.comments }}</p>
+              </div>
+              <div class="outing-actions">
+                <span class="status" [class.closed]="anchorage.status === 'closed'">
+                  {{ anchorage.status === 'closed' ? t('anchorageClosed') : t('anchorageOpen') }}
+                </span>
+                <span class="status" [class.closed]="anchorageChecklistComplete(anchorage)">
+                  {{ countDone(anchorage.arrivalChecklistGroups[0]?.items) + countDone(anchorage.departureChecklistGroups[0]?.items) }} /
+                  {{ (anchorage.arrivalChecklistGroups[0]?.items.length || 0) + (anchorage.departureChecklistGroups[0]?.items.length || 0) }}
+                </span>
+                <button type="button" class="detail-link" *ngIf="anchorage.status !== 'closed'" (click)="closeAnchorage(anchorage)">{{ t('liftAnchor') }}</button>
+                <button type="button" class="detail-link" (click)="editAnchorage(anchorage)">{{ t('edit') }}</button>
+                <button type="button" class="detail-link danger" (click)="removeAnchorage(anchorage)">{{ t('delete') }}</button>
+              </div>
+            </div>
+
+            <div class="checklist-group" *ngFor="let group of anchorage.arrivalChecklistGroups">
+              <div class="checklist-subhead">
+                <h3>{{ t('anchorageArrival') }}</h3>
+                <span [class.complete]="countDoneGroup(group) === group.items.length">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>
+              </div>
+              <div class="checklist-grid">
+                <label class="check-item" *ngFor="let item of group.items" [class.done]="item.done">
+                  <input type="checkbox" [checked]="item.done" (change)="toggleChecklist(item)" />
+                  <span class="fake-radio"></span>
+                  <span>
+                    {{ item.label[currentLanguage] || item.label.fr }}
+                    <small class="check-meta" *ngIf="item.doneAt">{{ formatChecklistMeta(item) }}</small>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <div class="checklist-group" *ngFor="let group of anchorage.departureChecklistGroups">
+              <div class="checklist-subhead">
+                <h3>{{ t('anchorageDeparture') }}</h3>
+                <span [class.complete]="countDoneGroup(group) === group.items.length">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>
+              </div>
+              <div class="checklist-grid">
+                <label class="check-item" *ngFor="let item of group.items" [class.done]="item.done">
+                  <input type="checkbox" [checked]="item.done" (change)="toggleChecklist(item)" />
+                  <span class="fake-radio"></span>
+                  <span>
+                    {{ item.label[currentLanguage] || item.label.fr }}
+                    <small class="check-meta" *ngIf="item.doneAt">{{ formatChecklistMeta(item) }}</small>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </article>
+        </div>
+
         <div class="form-actions">
-          <button type="button" class="btn btn-primary" [disabled]="saving || !departureChecklistComplete" (click)="mode === 'create' ? createOuting() : updateOuting()">
+          <button type="button" class="btn btn-primary" [disabled]="saving" (click)="mode === 'create' ? createOuting() : updateOuting()">
             {{ saving ? t('saving') : (mode === 'create' ? t('create') : t('saveChanges')) }}
           </button>
           <button type="button" class="btn btn-secondary" (click)="showList()">{{ t('cancel') }}</button>
@@ -197,7 +284,7 @@
         </label>
 
         <div class="form-actions">
-          <button type="button" class="btn btn-primary" [disabled]="closingId === selectedOuting.outingId || !arrivalChecklistComplete(selectedOuting.outingId)" (click)="closeOuting(selectedOuting)">
+          <button type="button" class="btn btn-primary" [disabled]="closingId === selectedOuting.outingId" (click)="closeOuting(selectedOuting)">
             {{ closingId === selectedOuting.outingId ? t('closing') : t('close') }}
           </button>
           <button type="button" class="btn btn-secondary" (click)="showList()">{{ t('cancel') }}</button>

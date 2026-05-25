@@ -1,0 +1,52 @@
+<section class="booking-page">
+  <div class="container booking-shell">
+    <div class="section-head">
+      <span class="eyebrow">Admin</span>
+      <h1>Bookings</h1>
+      <p>Bookings loaded from Firebase Realtime Database <strong>/bnBookings</strong>.</p>
+    </div>
+
+    <div class="booking-toolbar">
+      <button class="btn btn-secondary" type="button" (click)="loadBookings()">Refresh</button>
+    </div>
+
+    <p *ngIf="loading" class="muted">Loading bookings...</p>
+    <p *ngIf="!loading && errorMessage" class="error-message">{{ errorMessage }}</p>
+    <p *ngIf="!loading && !errorMessage && bookings.length === 0" class="muted">
+      No bookings found in Firebase under <strong>/bnBookings</strong>.
+    </p>
+
+    <div class="booking-grid" *ngIf="!loading && bookings.length > 0">
+      <article class="booking-card" *ngFor="let booking of bookings; trackBy: trackByBookingId">
+        <div class="booking-card-main">
+          <span class="status-pill">{{ booking.bookingStatus || 'requested' }}</span>
+          <h2>{{ booking.outingType || 'Outing' }}</h2>
+          <p>
+            {{ booking.outingDate || 'Date not set' }}
+            <span *ngIf="booking.departureTime">• {{ booking.departureTime }}</span>
+          </p>
+          <p>{{ booking.customerName || 'Customer not set' }} <span *ngIf="booking.email">• {{ booking.email }}</span></p>
+        </div>
+
+        <div class="booking-meta">
+          <span>Total: €{{ booking.totalPrice || 0 }}</span>
+          <span>Deposit: {{ booking.depositStatus }}</span>
+          <span>Warranty: {{ booking.warrantyStatus }}</span>
+        </div>
+
+        <div class="firebase-fields" *ngIf="booking.displayFields.length > 0">
+          <h3>Firebase fields</h3>
+          <div class="firebase-field" *ngFor="let field of booking.displayFields; trackBy: trackByFieldKey">
+            <strong>{{ field.key }}</strong>
+            <pre>{{ field.value }}</pre>
+          </div>
+        </div>
+
+        <div class="booking-actions">
+          <button class="btn btn-secondary" type="button" (click)="openBooking(booking)">Open</button>
+          <button class="btn btn-primary" type="button" (click)="payment(booking)">Payment</button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

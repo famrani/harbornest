@@ -58,6 +58,12 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
 
   closeMenu(): void {
     this.menuOpen = false;
+
+    if (typeof document !== 'undefined') {
+      document.querySelectorAll('details.nav-dropdown').forEach((dropdown: any) => {
+        dropdown.removeAttribute('open');
+      });
+    }
   }
 
   changeLanguage(language: string): void {
@@ -187,6 +193,10 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
 
   get myFeedbacksLabel(): string {
     return this.currentLanguage === 'fr' ? 'Mes avis' : this.currentLanguage === 'es' ? 'Mis comentarios' : 'My feedbacks';
+  }
+
+  get adminBookingsLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Réservations (admin)' : this.currentLanguage === 'es' ? 'Reservas (admin)' : 'Bookings (admin)';
   }
 
   get adminFeedbacksLabel(): string {
