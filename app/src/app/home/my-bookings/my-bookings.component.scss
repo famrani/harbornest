@@ -19,3 +19,17 @@ h1 { color: #08263a; margin: 8px 0; }
 .detail-grid strong { color: #08263a; }
 .detail-grid span { color: #516070; }
 .comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }
+
+.paid-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.55rem 0.9rem;
+  background: #047857;
+  color: #fff;
+  font-weight: 700;
+}
+
+.booking-meta span {
+  line-height: 1.4;
+}

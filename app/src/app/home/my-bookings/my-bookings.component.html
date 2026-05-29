@@ -23,13 +23,15 @@
 
         <div class="booking-meta">
           <span>Total: €{{ booking.totalPrice || 0 }}</span>
-          <span>Deposit: {{ booking.depositStatus || 'pending' }}</span>
+          <span>Deposit 10%: €{{ getDepositAmount(booking) }} · {{ getDepositLabel(booking) }}</span>
+          <span>Remaining 90% onboard: €{{ getBalanceAmount(booking) }}</span>
           <span>Warranty: {{ booking.warrantyStatus || 'not_registered' }}</span>
         </div>
 
         <div class="booking-actions">
           <button type="button" class="btn btn-secondary" (click)="openBooking(booking)">Details</button>
-          <button type="button" class="btn btn-primary" (click)="payBooking(booking)">Payment</button>
+          <button type="button" class="btn btn-primary" *ngIf="!isDepositPaid(booking)" (click)="payBooking(booking)">Pay 10% deposit</button>
+          <span class="paid-badge" *ngIf="isDepositPaid(booking)">Deposit paid</span>
         </div>
       </article>
     </div>

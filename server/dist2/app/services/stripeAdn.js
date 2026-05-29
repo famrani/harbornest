@@ -181,7 +181,7 @@ class StripeService {
             const { ownerId, email, name, phone, metadata } = req.body;
             if (!ownerId)
                 return res.status(400).json({ error: 'ownerId required' });
-            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const stripe = await this.getStripeForOwner(ownerId);
             const customer = await stripe.customers.create({ email, name, phone, metadata });
             res.json(customer);
         }
@@ -196,7 +196,7 @@ class StripeService {
             if (!ownerId || !customerId) {
                 return res.status(400).json({ error: 'ownerId & customerId required' });
             }
-            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const stripe = await this.getStripeForOwner(ownerId);
             const customer = await stripe.customers.retrieve(customerId);
             res.json(customer);
         }
@@ -211,7 +211,7 @@ class StripeService {
             if (!ownerId || !customerId) {
                 return res.status(400).json({ error: 'ownerId & customerId required' });
             }
-            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const stripe = await this.getStripeForOwner(ownerId);
             const customer = await stripe.customers.update(customerId, updateFields || {});
             res.json(customer);
         }
@@ -226,7 +226,7 @@ class StripeService {
             if (!ownerId || !customerId) {
                 return res.status(400).json({ error: 'ownerId & customerId required' });
             }
-            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const stripe = await this.getStripeForOwner(ownerId);
             const deleted = await stripe.customers.del(customerId);
             res.json(deleted);
         }
@@ -243,7 +243,7 @@ class StripeService {
             const { ownerId, bookingId, customerEmail, successUrl, cancelUrl } = req.body;
             if (!ownerId || !bookingId)
                 return res.status(400).json({ error: 'ownerId & bookingId required' });
-            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const stripe = await this.getStripeForOwner(ownerId);
             // Optional: anchor PM on a Customer you create now
             const customer = customerEmail
                 ? await stripe.customers.create({ email: customerEmail }).catch(() => null)
@@ -252,8 +252,8 @@ class StripeService {
                 mode: 'setup',
                 payment_method_types: ['card'],
                 customer: customer?.id,
-                success_url: `${successUrl}?session_id={CHECKOUT_SESSION_ID}&bookingId=${bookingId}`,
-                cancel_url: `${cancelUrl}?bookingId=${bookingId}`,
+                success_url: this.appendCheckoutParams(successUrl, { session_id: '{CHECKOUT_SESSION_ID}', bookingId }),
+                cancel_url: this.appendCheckoutParams(cancelUrl, { bookingId }),
                 metadata: { bookingId },
             });
             await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payment`).update({
@@ -291,7 +291,7 @@ class StripeService {
                 status: 'confirmed',
                 updatedAt: Date.now(),
             });
-            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const stripe = await this.getStripeForOwner(ownerId);
             const pi = await stripe.paymentIntents.create({
                 amount,
                 currency,
@@ -326,13 +326,343 @@ class StripeService {
             res.status(400).json({ error: e?.message || 'Charge failed' });
         }
     }
+    // ---------------------------------------------------------------------------
+    // 2.b) Alegria outing payments: deposit + warranty / damage deposit
+    // ---------------------------------------------------------------------------
+    normalizeAmountToCents(value) {
+        const n = Number(value || 0);
+        if (!Number.isFinite(n) || n <= 0)
+            return 0;
+        // Frontend may send euros (999) or cents (99900). Treat values < 10000 as euros.
+        return Math.round(n < 10000 ? n * 100 : n);
+    }
+    buildBookingPaymentPath(bookingId, child) {
+        return child
+            ? `/backendbookings/${bookingId}/payments/${child}`
+            : `/backendbookings/${bookingId}/payments`;
+    }
+    appendCheckoutParams(url, params) {
+        const separator = url.includes('?') ? '&' : '?';
+        const query = Object.entries(params)
+            .map(([key, value]) => {
+            if (value === '{CHECKOUT_SESSION_ID}') {
+                return `${encodeURIComponent(key)}={CHECKOUT_SESSION_ID}`;
+            }
+            return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+        })
+            .join('&');
+        return `${url}${separator}${query}`;
+    }
+    /**
+     * Create a Stripe Checkout Session to pay the outing deposit.
+     *
+     * body: {
+     *   ownerId, bookingId,
+     *   depositAmount, currency='eur',
+     *   customerEmail?, customerName?, customerPhone?,
+     *   outingType?, outingDate?, successUrl, cancelUrl
+     * }
+     */
+    async getStripeForOwner(ownerId) {
+        if (ownerId === 'alegria' || ownerId === 'platform') {
+            return PLATFORM;
+        }
+        return getOwnerStripe(this.stbDbSvc.db, ownerId);
+    }
+    async createOutingDepositCheckout(req, res) {
+        try {
+            const { ownerId, bookingId, depositAmount, currency = 'eur', customerEmail, customerName, customerPhone, outingType, outingDate, successUrl, cancelUrl, } = req.body || {};
+            if (!ownerId || !bookingId) {
+                return res.status(400).json({ error: 'ownerId and bookingId are required' });
+            }
+            const amount = this.normalizeAmountToCents(depositAmount);
+            if (!amount)
+                return res.status(400).json({ error: 'depositAmount must be greater than 0' });
+            if (!successUrl || !cancelUrl)
+                return res.status(400).json({ error: 'successUrl and cancelUrl are required' });
+            const stripe = await this.getStripeForOwner(ownerId);
+            const customer = customerEmail
+                ? await stripe.customers.create({
+                    email: customerEmail,
+                    name: customerName,
+                    phone: customerPhone,
+                    metadata: {
+                        bookingId,
+                        ownerId,
+                        source: 'alegria-deposit',
+                    },
+                }).catch(() => null)
+                : null;
+            const paymentRef = this.stbDbSvc.db.ref('/backendpayments').push();
+            const paymentId = paymentRef.key;
+            const session = await stripe.checkout.sessions.create({
+                mode: 'payment',
+                payment_method_types: ['card'],
+                customer: customer?.id,
+                customer_email: customer ? undefined : customerEmail,
+                line_items: [
+                    {
+                        quantity: 1,
+                        price_data: {
+                            currency,
+                            unit_amount: amount,
+                            product_data: {
+                                name: 'Alegria outing deposit',
+                                description: outingType || 'Boat outing deposit',
+                            },
+                        },
+                    },
+                ],
+                success_url: this.appendCheckoutParams(successUrl, { session_id: '{CHECKOUT_SESSION_ID}', bookingId, paymentType: 'deposit', payment: 'success' }),
+                cancel_url: this.appendCheckoutParams(cancelUrl, { bookingId, paymentType: 'deposit', payment: 'cancelled' }),
+                payment_intent_data: {
+                    setup_future_usage: 'off_session',
+                    metadata: {
+                        paymentId,
+                        bookingId,
+                        ownerId,
+                        paymentType: 'deposit',
+                        outingType: outingType || '',
+                        outingDate: outingDate || '',
+                    },
+                },
+                metadata: {
+                    paymentId,
+                    bookingId,
+                    ownerId,
+                    paymentType: 'deposit',
+                    outingType: outingType || '',
+                    outingDate: outingDate || '',
+                },
+            });
+            const now = Date.now();
+            const payload = {
+                paymentId,
+                ownerId,
+                bookingId,
+                paymentType: 'deposit',
+                amount,
+                currency,
+                status: 'checkout_created',
+                stripeCheckoutSessionId: session.id,
+                stripeCustomerId: customer?.id || null,
+                customerEmail: customerEmail || null,
+                customerName: customerName || null,
+                customerPhone: customerPhone || null,
+                outingType: outingType || null,
+                outingDate: outingDate || null,
+                createdTS: now,
+                modifiedTS: now,
+            };
+            await paymentRef.set(payload);
+            await this.stbDbSvc.db.ref(this.buildBookingPaymentPath(bookingId, 'deposit')).set(payload);
+            return res.json({ ok: true, url: session.url, id: session.id, paymentId });
+        }
+        catch (e) {
+            console.error('[createOutingDepositCheckout] error:', e);
+            return res.status(400).json({ error: e?.message || 'Failed to create deposit checkout session' });
+        }
+    }
+    /**
+     * Create a Stripe Checkout Session to register a card for the warranty / damage deposit.
+     * This does NOT charge the customer immediately. It stores a payment method that can be
+     * charged later if damage is confirmed.
+     *
+     * body: {
+     *   ownerId, bookingId, warrantyAmount, currency='eur',
+     *   customerEmail?, customerName?, customerPhone?,
+     *   outingType?, outingDate?, successUrl, cancelUrl
+     * }
+     */
+    async createOutingWarrantySetupCheckout(req, res) {
+        try {
+            const { ownerId, bookingId, warrantyAmount, currency = 'eur', customerEmail, customerName, customerPhone, outingType, outingDate, successUrl, cancelUrl, } = req.body || {};
+            if (!ownerId || !bookingId) {
+                return res.status(400).json({ error: 'ownerId and bookingId are required' });
+            }
+            const amount = this.normalizeAmountToCents(warrantyAmount);
+            if (!amount)
+                return res.status(400).json({ error: 'warrantyAmount must be greater than 0' });
+            if (!successUrl || !cancelUrl)
+                return res.status(400).json({ error: 'successUrl and cancelUrl are required' });
+            const stripe = await this.getStripeForOwner(ownerId);
+            const customer = customerEmail
+                ? await stripe.customers.create({
+                    email: customerEmail,
+                    name: customerName,
+                    phone: customerPhone,
+                    metadata: {
+                        bookingId,
+                        ownerId,
+                        source: 'alegria-warranty',
+                    },
+                }).catch(() => null)
+                : null;
+            const paymentRef = this.stbDbSvc.db.ref('/backendpayments').push();
+            const paymentId = paymentRef.key;
+            const session = await stripe.checkout.sessions.create({
+                mode: 'setup',
+                payment_method_types: ['card'],
+                customer: customer?.id,
+                customer_email: customer ? undefined : customerEmail,
+                success_url: this.appendCheckoutParams(successUrl, { session_id: '{CHECKOUT_SESSION_ID}', bookingId, paymentType: 'warranty', payment: 'success' }),
+                cancel_url: this.appendCheckoutParams(cancelUrl, { bookingId, paymentType: 'warranty', payment: 'cancelled' }),
+                setup_intent_data: {
+                    metadata: {
+                        paymentId,
+                        bookingId,
+                        ownerId,
+                        paymentType: 'warranty',
+                        warrantyAmount: String(amount),
+                        currency,
+                        outingType: outingType || '',
+                        outingDate: outingDate || '',
+                    },
+                },
+                metadata: {
+                    paymentId,
+                    bookingId,
+                    ownerId,
+                    paymentType: 'warranty',
+                    warrantyAmount: String(amount),
+                    currency,
+                    outingType: outingType || '',
+                    outingDate: outingDate || '',
+                },
+            });
+            const now = Date.now();
+            const payload = {
+                paymentId,
+                ownerId,
+                bookingId,
+                paymentType: 'warranty',
+                amount,
+                currency,
+                status: 'setup_checkout_created',
+                stripeCheckoutSessionId: session.id,
+                stripeCustomerId: customer?.id || null,
+                customerEmail: customerEmail || null,
+                customerName: customerName || null,
+                customerPhone: customerPhone || null,
+                outingType: outingType || null,
+                outingDate: outingDate || null,
+                createdTS: now,
+                modifiedTS: now,
+            };
+            await paymentRef.set(payload);
+            await this.stbDbSvc.db.ref(this.buildBookingPaymentPath(bookingId, 'warranty')).set(payload);
+            return res.json({ ok: true, url: session.url, id: session.id, paymentId });
+        }
+        catch (e) {
+            console.error('[createOutingWarrantySetupCheckout] error:', e);
+            return res.status(400).json({ error: e?.message || 'Failed to create warranty setup session' });
+        }
+    }
+    /**
+     * Charge all or part of the stored warranty if damage is confirmed.
+     * This endpoint must be protected on your frontend/backend side for admins/owners only.
+     *
+     * body: { ownerId, bookingId, amount, reason?, currency='eur' }
+     */
+    async chargeOutingWarranty(req, res) {
+        try {
+            let { ownerId, bookingId, amount, reason, currency = 'eur' } = req.body || {};
+            if (!bookingId) {
+                return res.status(400).json({ error: 'bookingId is required' });
+            }
+            const amountCents = this.normalizeAmountToCents(amount);
+            if (!amountCents)
+                return res.status(400).json({ error: 'amount must be greater than 0' });
+            const warrantySnap = await this.stbDbSvc.db.ref(this.buildBookingPaymentPath(bookingId, 'warranty')).once('value');
+            const warranty = warrantySnap.val();
+            ownerId = ownerId || warranty?.ownerId;
+            if (!ownerId)
+                return res.status(400).json({ error: 'ownerId is required' });
+            if (!warranty?.paymentMethodId || !warranty?.stripeCustomerId) {
+                return res.status(400).json({ error: 'No warranty payment method saved for this booking' });
+            }
+            const maxWarranty = Number(warranty.amount || 0);
+            if (maxWarranty && amountCents > maxWarranty) {
+                return res.status(400).json({ error: 'Requested charge exceeds recorded warranty amount' });
+            }
+            const stripe = await this.getStripeForOwner(ownerId);
+            const pi = await stripe.paymentIntents.create({
+                amount: amountCents,
+                currency,
+                customer: warranty.stripeCustomerId,
+                payment_method: warranty.paymentMethodId,
+                off_session: true,
+                confirm: true,
+                description: `Alegria warranty charge for booking ${bookingId}`,
+                metadata: {
+                    bookingId,
+                    ownerId,
+                    paymentType: 'warranty_charge',
+                    reason: reason || '',
+                },
+            });
+            const now = Date.now();
+            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/warrantyCharge`).update({
+                status: 'warranty_charged',
+                warrantyChargeAmount: amountCents,
+                warrantyChargeReason: reason || null,
+                modifiedTS: Date.now(),
+            });
+            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
+                warrantyStatus: 'charged',
+                warrantyChargedAmount: amountCents,
+                warrantyChargeReason: reason || null,
+                modifiedTS: Date.now(),
+            });
+            await this.stbDbSvc.db.ref(this.buildBookingPaymentPath(bookingId, 'warranty')).update({
+                status: 'warranty_charged',
+                warrantyChargeAmount: amountCents,
+                warrantyChargeReason: reason || null,
+                warrantyChargePaymentIntentId: pi.id,
+                modifiedTS: now,
+            });
+            await this.stbDbSvc.db.ref('/backendpayments').push().set({
+                ownerId,
+                bookingId,
+                paymentType: 'warranty_charge',
+                amount: amountCents,
+                currency,
+                status: pi.status,
+                reason: reason || null,
+                stripePaymentIntentId: pi.id,
+                createdTS: now,
+                modifiedTS: now,
+            });
+            return res.json({ ok: true, paymentIntent: pi });
+        }
+        catch (e) {
+            console.error('[chargeOutingWarranty] error:', e);
+            return res.status(400).json({ error: e?.message || 'Failed to charge warranty' });
+        }
+    }
+    /**
+     * Read payment status for a booking.
+     * query: ownerId?, bookingId
+     */
+    async outingPaymentStatus(req, res) {
+        try {
+            const { bookingId } = req.query;
+            if (!bookingId)
+                return res.status(400).json({ error: 'bookingId is required' });
+            const snap = await this.stbDbSvc.db.ref(this.buildBookingPaymentPath(bookingId)).once('value');
+            return res.json({ ok: true, bookingId, payments: snap.val() || {} });
+        }
+        catch (e) {
+            return res.status(400).json({ error: e?.message || 'Failed to read payment status' });
+        }
+    }
     // ---------------------- PaymentIntent helpers (owner) -----------------------
     async createPaymentIntent(req, res) {
         try {
             const { ownerId, amount, currency, customerId, description, metadata } = req.body;
             if (!ownerId)
                 return res.status(400).json({ error: 'ownerId required' });
-            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const stripe = await this.getStripeForOwner(ownerId);
             const params = {
                 amount,
                 currency,
@@ -353,7 +683,7 @@ class StripeService {
             const { ownerId, paymentIntentId } = req.body;
             if (!ownerId || !paymentIntentId)
                 return res.status(400).json({ error: 'ownerId & paymentIntentId required' });
-            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const stripe = await this.getStripeForOwner(ownerId);
             const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId);
             res.json(paymentIntent);
         }
@@ -366,7 +696,7 @@ class StripeService {
             const { ownerId, paymentIntentId } = req.body;
             if (!ownerId || !paymentIntentId)
                 return res.status(400).json({ error: 'ownerId & paymentIntentId required' });
-            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const stripe = await this.getStripeForOwner(ownerId);
             const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId);
             res.json(paymentIntent);
         }
@@ -380,7 +710,7 @@ class StripeService {
             const { ownerId, paymentIntentId, amount } = req.body;
             if (!ownerId || !paymentIntentId)
                 return res.status(400).json({ error: 'ownerId & paymentIntentId required' });
-            const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
+            const stripe = await this.getStripeForOwner(ownerId);
             const refund = await stripe.refunds.create({ payment_intent: paymentIntentId, amount });
             res.json(refund);
         }
@@ -399,13 +729,97 @@ class StripeService {
      *  - payment_intent.succeeded
      *  - payment_intent.payment_failed
      */
+    async markDepositPaidFromStripe(params) {
+        const now = Date.now();
+        const updatePayload = {
+            status: 'paid',
+            depositStatus: 'paid',
+            depositPaid: true,
+            paid: true,
+            amount: params.amount || null,
+            currency: params.currency || 'eur',
+            ownerId: params.ownerId,
+            stripeCheckoutSessionId: params.stripeCheckoutSessionId || null,
+            stripePaymentIntentId: params.stripePaymentIntentId || null,
+            stripeCustomerId: params.stripeCustomerId || null,
+            modifiedTS: now,
+            updatedAt: now,
+        };
+        await Promise.all([
+            this.stbDbSvc.db.ref(`/backendbookings/${params.bookingId}/payments/deposit`).update(updatePayload),
+            this.stbDbSvc.db.ref(`/backendbookings/${params.bookingId}/payment`).update(updatePayload),
+            this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}/payments/deposit`).update(updatePayload),
+            this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}`).update({
+                depositStatus: 'paid',
+                depositPaid: true,
+                paymentStatus: 'paid',
+                stripePaymentIntentId: params.stripePaymentIntentId || null,
+                stripeCheckoutSessionId: params.stripeCheckoutSessionId || null,
+                modifiedTS: now,
+                updatedAt: now,
+            }),
+            this.stbDbSvc.db.ref(`/bnProposals/${params.bookingId}`).update({
+                depositStatus: 'paid',
+                depositPaid: true,
+                paymentStatus: 'paid',
+                status: 'accepted',
+                stripePaymentIntentId: params.stripePaymentIntentId || null,
+                stripeCheckoutSessionId: params.stripeCheckoutSessionId || null,
+                modifiedTS: now,
+                updatedAt: now,
+            }),
+        ]);
+        if (params.paymentId) {
+            await this.stbDbSvc.db.ref(`/backendpayments/${params.paymentId}`).update(updatePayload);
+        }
+    }
+    async markWarrantySavedFromStripe(params) {
+        const now = Date.now();
+        const updatePayload = {
+            status: 'warranty_card_saved',
+            warrantyStatus: 'card_registered',
+            warrantyRegistered: true,
+            amount: params.amount || null,
+            currency: params.currency || 'eur',
+            ownerId: params.ownerId,
+            setupIntentId: params.setupIntentId || null,
+            paymentMethodId: params.paymentMethodId || null,
+            stripeCustomerId: params.stripeCustomerId || null,
+            modifiedTS: now,
+            updatedAt: now,
+        };
+        await Promise.all([
+            this.stbDbSvc.db.ref(`/backendbookings/${params.bookingId}/payments/warranty`).update(updatePayload),
+            this.stbDbSvc.db.ref(`/backendbookings/${params.bookingId}/payment`).update(updatePayload),
+            this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}/payments/warranty`).update(updatePayload),
+            this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}`).update({
+                warrantyStatus: 'card_registered',
+                warrantyRegistered: true,
+                warrantyPaymentMethodId: params.paymentMethodId || null,
+                warrantySetupIntentId: params.setupIntentId || null,
+                modifiedTS: now,
+                updatedAt: now,
+            }),
+            this.stbDbSvc.db.ref(`/bnProposals/${params.bookingId}`).update({
+                warrantyStatus: 'card_registered',
+                warrantyRegistered: true,
+                warrantyPaymentMethodId: params.paymentMethodId || null,
+                warrantySetupIntentId: params.setupIntentId || null,
+                modifiedTS: now,
+                updatedAt: now,
+            }),
+        ]);
+        if (params.paymentId) {
+            await this.stbDbSvc.db.ref(`/backendpayments/${params.paymentId}`).update(updatePayload);
+        }
+    }
     async handleOwnerWebhook(req, res) {
         const ownerId = req.params.ownerId;
         if (!ownerId)
             return res.status(400).send('ownerId missing in URL');
         let event;
         try {
-            const secret = await getOwnerWebhookSecret(this.stbDbSvc.db, ownerId);
+            const secret = (ownerId === 'alegria' || ownerId === 'platform') ? (process.env.STRIPE_WEBHOOK_SECRET || '') : await getOwnerWebhookSecret(this.stbDbSvc.db, ownerId);
             const signature = req.headers['stripe-signature'];
             // req.body must be a Buffer (bodyParser.raw in bootstrap)
             event = PLATFORM.webhooks.constructEvent(req.body, signature, secret);
@@ -415,25 +829,113 @@ class StripeService {
             return res.status(400).send(`Webhook signature verification failed: ${err.message}`);
         }
         try {
+            console.log('[Owner Webhook] event', event.type, event.id);
             switch (event.type) {
+                case 'setup_intent.succeeded': {
+                    const si = event.data.object;
+                    const bookingId = (si.metadata && si.metadata['bookingId']) || null;
+                    const paymentType = (si.metadata && si.metadata['paymentType']) || null;
+                    const paymentId = (si.metadata && si.metadata['paymentId']) || null;
+                    if (bookingId && paymentType === 'warranty') {
+                        await this.markWarrantySavedFromStripe({
+                            bookingId,
+                            paymentId,
+                            ownerId,
+                            amount: Number((si.metadata && si.metadata['warrantyAmount']) || 0) || null,
+                            currency: (si.metadata && si.metadata['currency']) || 'eur',
+                            setupIntentId: si.id,
+                            paymentMethodId: si.payment_method || null,
+                            stripeCustomerId: si.customer || null,
+                        });
+                    }
+                    break;
+                }
                 case 'checkout.session.completed': {
                     const session = event.data.object;
-                    if (session.mode !== 'setup' || !session.setup_intent)
-                        break;
                     const bookingId = (session.metadata && session.metadata['bookingId']) || null;
+                    const paymentType = (session.metadata && session.metadata['paymentType']) || null;
+                    const paymentId = (session.metadata && session.metadata['paymentId']) || null;
                     if (!bookingId)
                         break;
-                    const stripe = await getOwnerStripe(this.stbDbSvc.db, ownerId);
-                    const si = await stripe.setupIntents.retrieve(session.setup_intent);
-                    const paymentMethodId = si.payment_method || null;
-                    const customerId = si.customer || null;
-                    await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payment`).update({
-                        status: 'pm_saved',
-                        setupIntentId: si.id,
-                        paymentMethodId,
-                        customerId,
-                        updatedAt: Date.now(),
-                    });
+                    const now = Date.now();
+                    if (paymentType === 'deposit') {
+                        await this.markDepositPaidFromStripe({
+                            bookingId,
+                            paymentId,
+                            ownerId,
+                            amount: session.amount_total || null,
+                            currency: session.currency || 'eur',
+                            stripeCheckoutSessionId: session.id,
+                            stripePaymentIntentId: session.payment_intent || null,
+                            stripeCustomerId: session.customer || null,
+                        });
+                    }
+                    if (session.mode === 'setup' && session.setup_intent) {
+                        const stripe = await this.getStripeForOwner(ownerId);
+                        const si = await stripe.setupIntents.retrieve(session.setup_intent);
+                        const paymentMethodId = si.payment_method || null;
+                        const customerId = si.customer || null;
+                        const warrantyAmount = Number((session.metadata && session.metadata['warrantyAmount']) || 0);
+                        await this.markWarrantySavedFromStripe({
+                            bookingId,
+                            paymentId,
+                            ownerId,
+                            amount: warrantyAmount || null,
+                            currency: (session.metadata && session.metadata['currency']) || 'eur',
+                            setupIntentId: si.id,
+                            paymentMethodId,
+                            stripeCustomerId: customerId,
+                        });
+                        const updatePayload = {
+                            status: 'warranty_card_saved',
+                            setupIntentId: si.id,
+                            paymentMethodId,
+                            stripeCustomerId: customerId,
+                            amount: warrantyAmount || null,
+                            modifiedTS: now,
+                            updatedAt: now,
+                        };
+                        await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payments/warranty`).update(updatePayload);
+                        await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/warranty`).update(updatePayload);
+                        await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
+                            warrantyStatus: 'card_registered',
+                            warrantyRegistered: true,
+                            modifiedTS: now,
+                        });
+                        if (paymentId) {
+                            await this.stbDbSvc.db.ref(`/backendpayments/${paymentId}`).update(updatePayload);
+                        }
+                        // Keep backward compatibility with older booking.payment shape.
+                        await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payment`).update({
+                            status: 'pm_saved',
+                            setupIntentId: si.id,
+                            paymentMethodId,
+                            customerId,
+                            updatedAt: now,
+                        });
+                    }
+                    if (session.mode === 'payment' && session.payment_intent) {
+                        const updatePayload = {
+                            status: 'deposit_paid',
+                            checkoutSessionId: session.id,
+                            paymentIntentId: session.payment_intent,
+                            stripeCustomerId: session.customer || null,
+                            amount_total: session.amount_total || null,
+                            currency: session.currency || null,
+                            modifiedTS: now,
+                            updatedAt: now,
+                        };
+                        await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payments/deposit`).update(updatePayload);
+                        await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/deposit`).update(updatePayload);
+                        await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
+                            depositStatus: 'paid',
+                            depositPaid: true,
+                            modifiedTS: now,
+                        });
+                        if (paymentId) {
+                            await this.stbDbSvc.db.ref(`/backendpayments/${paymentId}`).update(updatePayload);
+                        }
+                    }
                     break;
                 }
                 case 'payment_intent.succeeded': {
@@ -443,8 +945,8 @@ class StripeService {
                         await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}`).update({
                             status: 'confirmed',
                             updatedAt: Date.now(),
-                            'payment.status': 'charge_succeeded',
-                            'payment.paymentIntentId': pi.id,
+                            paymentStatus: 'charge_succeeded',
+                            paymentPaymentIntentId: pi.id,
                         });
                     }
                     break;
@@ -584,6 +1086,21 @@ class StripeService {
         // Checkout setup + accept & charge
         stripeRouter.post('/pay/checkout-setup', (req, res) => this.checkoutSetup(req, res));
         stripeRouter.post('/pay/accept-and-charge', (req, res) => this.acceptAndCharge(req, res));
+        // Alegria outing deposit + warranty
+        stripeRouter.post('/pay/outing-deposit-checkout', (req, res) => this.createOutingDepositCheckout(req, res));
+        stripeRouter.post('/pay/outing-warranty-checkout', (req, res) => this.createOutingWarrantySetupCheckout(req, res));
+        stripeRouter.post('/pay/outing-warranty-charge', (req, res) => this.chargeOutingWarranty(req, res));
+        stripeRouter.get('/pay/outing-payment-status', (req, res) => this.outingPaymentStatus(req, res));
+        // Frontend-friendly aliases
+        stripeRouter.post('/api/payments/create-deposit-checkout-session', (req, res) => this.createOutingDepositCheckout(req, res));
+        stripeRouter.post('/api/payments/create-warranty-checkout-session', (req, res) => this.createOutingWarrantySetupCheckout(req, res));
+        stripeRouter.post('/api/payments/create-warranty-setup-session', (req, res) => this.createOutingWarrantySetupCheckout(req, res));
+        stripeRouter.post('/api/payments/charge-warranty', (req, res) => this.chargeOutingWarranty(req, res));
+        stripeRouter.get('/api/payments/status', (req, res) => this.outingPaymentStatus(req, res));
+        // Older aliases used by the Angular BookingApiService
+        stripeRouter.post('/stripe/deposit-checkout', (req, res) => this.createOutingDepositCheckout(req, res));
+        stripeRouter.post('/stripe/warranty-setup', (req, res) => this.createOutingWarrantySetupCheckout(req, res));
+        stripeRouter.post('/stripe/warranty-charge', (req, res) => this.chargeOutingWarranty(req, res));
         // PaymentIntent helpers
         stripeRouter.post('/stripe/payment-intent', (req, res) => this.createPaymentIntent(req, res));
         stripeRouter.post('/stripe/payment-intent/confirm', (req, res) => this.confirmPaymentIntent(req, res));

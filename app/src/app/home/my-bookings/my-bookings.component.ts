@@ -62,6 +62,40 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
     });
   }
 
+  getDepositAmount(booking: AlegriaBooking): number {
+    const total = Number(booking.totalPrice || 0);
+    return Number(booking.depositAmount || (total ? Math.round(total * 0.1 * 100) / 100 : 0));
+  }
+
+  getBalanceAmount(booking: AlegriaBooking): number {
+    const total = Number(booking.totalPrice || 0);
+    return Number((booking as any).balanceAmount || Math.max(0, Math.round((total - this.getDepositAmount(booking)) * 100) / 100));
+  }
+
+  isDepositPaid(booking: AlegriaBooking): boolean {
+    const anyBooking: any = booking;
+    const depositPayment = anyBooking?.payments?.deposit || {};
+    const legacyPayment = anyBooking?.payment || {};
+
+    return anyBooking.depositPaid === true ||
+      anyBooking.depositStatus === 'paid' ||
+      anyBooking.depositStatus === 'deposit_paid' ||
+      anyBooking.paymentStatus === 'paid' ||
+      anyBooking.paymentStatus === 'charge_succeeded' ||
+      legacyPayment.depositPaid === true ||
+      legacyPayment.paid === true ||
+      legacyPayment.status === 'paid' ||
+      legacyPayment.status === 'deposit_paid' ||
+      depositPayment.depositPaid === true ||
+      depositPayment.paid === true ||
+      depositPayment.status === 'paid' ||
+      depositPayment.status === 'deposit_paid';
+  }
+
+  getDepositLabel(booking: AlegriaBooking): string {
+    return this.isDepositPaid(booking) ? 'Acompte payé' : 'Acompte à payer';
+  }
+
   openBooking(booking: AlegriaBooking): void {
     this.router.navigate(['/bookings', booking.bookingId]);
   }

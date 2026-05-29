@@ -19,3 +19,116 @@ h1 { color: #08263a; margin: 8px 0; }
 .detail-grid strong { color: #08263a; }
 .detail-grid span { color: #516070; }
 .comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }
+
+.payment-admin-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  margin: 24px 0;
+  box-shadow: 0 18px 45px rgba(8,38,58,.08);
+  border: 1px solid rgba(8,38,58,.08);
+}
+
+.payment-admin-card h2 {
+  margin-top: 0;
+  color: #08263a;
+}
+
+.payment-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.payment-summary div {
+  background: #f8f5ef;
+  border-radius: 16px;
+  padding: 14px;
+  display: grid;
+  gap: 4px;
+}
+
+.collect-balance {
+  display: grid;
+  gap: 12px;
+}
+
+.collect-balance label {
+  display: grid;
+  gap: 0.4rem;
+  color: #08263a;
+  font-weight: 700;
+}
+
+.collect-balance select,
+.collect-balance textarea {
+  border: 1px solid rgba(8,38,58,.16);
+  border-radius: 14px;
+  padding: 0.75rem;
+  font: inherit;
+}
+
+.paid-badge {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.55rem 0.9rem;
+  background: #047857;
+  color: #fff;
+  font-weight: 700;
+}
+
+.success { color: #047857; font-weight: 700; }
+.error-message { color: #9f1d1d; font-weight: 700; }
+
+.blocked-note {
+  background: rgba(181,139,74,.12);
+  color: #8a652d;
+  border: 1px solid rgba(181,139,74,.25);
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  font-weight: 700;
+}
+
+.warranty-actions {
+  background: #f8f5ef;
+  border: 1px solid rgba(8,38,58,.08);
+  border-radius: 16px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.warranty-actions p {
+  margin-top: 0;
+  color: #516070;
+}
+
+.cash-damage-card {
+  background: #fff7ed;
+  border: 1px solid rgba(242, 140, 40, 0.25);
+  border-radius: 16px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.cash-damage-card h3 {
+  margin-top: 0;
+  color: #08263a;
+}
+
+.cash-damage-card label {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.85rem 0;
+  color: #08263a;
+  font-weight: 700;
+}
+
+.cash-damage-card input,
+.cash-damage-card textarea {
+  border: 1px solid rgba(8,38,58,.16);
+  border-radius: 14px;
+  padding: 0.75rem;
+  font: inherit;
+  background: #fff;
+}

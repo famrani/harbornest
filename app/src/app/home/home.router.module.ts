@@ -26,6 +26,10 @@ import { GuestJourneyComponent } from './guest-journey/guest-journey.component';
 import { BookingsComponent } from './bookings/bookings.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 import { BookingDetailComponent } from './booking-detail/booking-detail.component';
+import { AdminWarrantyChargeComponent } from './admin-warranty-charge/admin-warranty-charge.component';
+import { AdminProposalsComponent } from './admin-proposals/admin-proposals.component';
+import { ProposalConfirmationComponent } from './proposal-confirmation/proposal-confirmation.component';
+import { AdminExternalBookingsComponent } from './admin-external-bookings/admin-external-bookings.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -57,6 +61,10 @@ const routes: Routes = [
   { path: 'admin/outings', component: AdminOutingsComponent },
   { path: 'admin/outings/:outingId', component: AdminOutingDetailComponent },
   { path: 'admin/manage-outings', component: AdminManageOutingsComponent },
+  { path: 'admin/proposals', component: AdminProposalsComponent },
+  { path: 'proposal/:proposalId', component: ProposalConfirmationComponent },
+  { path: 'admin/external-bookings', component: AdminExternalBookingsComponent },
+  { path: 'admin/warranty-charge', component: AdminWarrantyChargeComponent },
 ];
 
 @NgModule({

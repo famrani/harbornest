@@ -1,134 +1,341 @@
 <section class="terms-page">
-  <div class="container terms-container">
+  <div class="container terms-shell">
 
-    <ng-container [ngSwitch]="language">
+    <!-- ENGLISH -->
+    <ng-container *ngIf="language === 'en'">
+      <span class="eyebrow">Legal</span>
+      <h1>Catamaran Experience Terms & Conditions</h1>
 
-      <ng-container *ngSwitchCase="'fr'">
-        <span class="eyebrow">Conditions</span>
-        <h1>Conditions générales de location de catamaran</h1>
-        <p class="terms-intro">
-          Ces conditions définissent le cadre général applicable aux expériences privées à bord d’Alegria.
-          Elles sont fournies à titre informatif et peuvent être complétées par des conditions particulières de réservation.
+      <p class="intro">
+        These Terms & Conditions apply to direct bookings made with Alegria Boat for private catamaran experiences aboard Alegria.
+        Bookings made through third-party platforms such as Click&Boat or SamBoat remain subject to the applicable platform terms and payment rules.
+      </p>
+
+      <article class="terms-card">
+        <h2>1. The 3-step booking and payment process</h2>
+
+        <div class="process-step">
+          <h3>Step 1 — Confirm the booking online</h3>
+          <p>
+            For direct bookings, the customer confirms the outing on <strong>alegriaboat.eu</strong> by accepting these Terms & Conditions
+            and paying a <strong>10% booking confirmation deposit</strong>.
+          </p>
+          <p>The booking is confirmed only once this 10% deposit has been successfully paid.</p>
+        </div>
+
+        <div class="process-step">
+          <h3>Step 2 — Register the security / damage deposit</h3>
+          <p>
+            Before the outing, the customer may be required to register a <strong>500€ security / damage deposit</strong>
+            on <strong>alegriaboat.eu</strong> using Stripe.
+          </p>
+          <p>
+            This online registration is normally completed approximately one day before the outing and requires a valid debit or credit card.
+            Unless otherwise stated, the Stripe registration does not immediately charge the customer.
+          </p>
+          <p>
+            As an alternative, Alegria Boat may exceptionally accept a <strong>500€ cash damage deposit</strong> before departure.
+            This amount will be returned at the end of the excursion if no damage, missing equipment, unpaid amount or abnormal cleaning requirement is observed.
+          </p>
+        </div>
+
+        <div class="process-step">
+          <h3>Step 3 — Pay the remaining 90% onboard before departure</h3>
+          <p>
+            The remaining <strong>90% balance</strong> is paid onboard <strong>before departure</strong>, using SumUp, credit/debit card,
+            Apple Pay, Google Pay or cash.
+          </p>
+          <p>Alegria Boat may refuse departure if the remaining balance has not been fully paid before leaving the dock.</p>
+        </div>
+
+        <h2>2. Cancellation and refund policy</h2>
+        <p>For direct bookings, the 10% booking confirmation deposit is fully refundable if the customer cancels at least <strong>10 calendar days before the outing</strong>.</p>
+        <p>If the customer cancels less than 10 calendar days before the outing, the 10% deposit is non-refundable.</p>
+        <p>If Alegria Boat cancels the outing for any reason, including weather, safety, technical or operational reasons, the amounts paid directly to Alegria Boat will be refunded.</p>
+
+        <h2>3. Bookings through Click&Boat, SamBoat or other platforms</h2>
+        <p>Bookings made through third-party platforms are governed by the relevant platform’s payment, cancellation and refund rules.</p>
+        <p>Alegria Boat may still ask the customer to provide practical information, complete safety forms or register a security deposit when required for the outing.</p>
+
+        <h2>4. Punctuality and departure time</h2>
+        <p>Customers must arrive on time at the agreed meeting point and be fully ready for boarding and departure at the scheduled time.</p>
+        <p>Customer delays may shorten the outing duration and do not entitle the customer to a refund, extension or compensation.</p>
+
+        <h2>5. Skipper authority and safety</h2>
+        <p>The skipper has full authority over the vessel and all safety-related decisions. Guests must comply with the skipper’s instructions at all times.</p>
+        <p>Alegria Boat may refuse boarding or interrupt the outing without refund in case of dangerous behavior, intoxication, drug use, aggression or refusal to follow safety instructions.</p>
+
+        <h2>6. Swimming and water activities</h2>
+        <p>Swimming, snorkeling and any water-related activity are undertaken entirely at the participant’s own risk.</p>
+        <p>Participants are responsible for assessing their own swimming ability and for supervising minors under their responsibility. The skipper may prohibit swimming or water activities at any time for safety reasons.</p>
+
+        <h2>7. Damage, security deposit and liability</h2>
+        <p>The customer is financially responsible for damage caused by themselves or members of their group through negligence, misuse of equipment, failure to follow instructions or breach of onboard rules.</p>
+        <p>Alegria Boat may charge all or part of the registered security deposit for damage, missing equipment, extraordinary cleaning, unpaid onboard amounts or other justified costs.</p>
+
+        
+        <h2>8. Common damages and chargeable incidents</h2>
+        <p>
+          Certain onboard damages occur frequently and may generate significant repair or maintenance costs.
         </p>
-      </ng-container>
 
-      <ng-container *ngSwitchCase="'es'">
-        <span class="eyebrow">Condiciones</span>
-        <h1>Condiciones generales de alquiler de catamarán</h1>
-        <p class="terms-intro">
-          Estas condiciones definen el marco general aplicable a las experiencias privadas a bordo de Alegria.
-          Se proporcionan con carácter informativo y pueden completarse con condiciones particulares de reserva.
-        </p>
-      </ng-container>
+        <ul>
+          <li>
+            <strong>Marine toilets:</strong> onboard toilets are extremely sensitive and are not comparable to household toilets.
+            Toilet paper, wipes, sanitary products or any foreign object must never be thrown into the toilets.
+            Marine toilets clog very quickly and unclogging or repair operations may be charged to the customer.
+          </li>
 
-      <ng-container *ngSwitchDefault>
-        <span class="eyebrow">Legal</span>
-        <h1>Catamaran Charter Terms and Conditions</h1>
-        <p class="terms-intro">
-          These terms define the general conditions applicable to private catamaran experiences aboard Alegria.
-          They are provided for information and may be completed by specific booking conditions depending on the platform or agreement used.
-        </p>
-      </ng-container>
+          <li>
+            <strong>Cigarette burns:</strong> cushion covers and upholstery are highly sensitive to cigarette burns.
+            Burn marks on cushions, seating or fabrics may require expensive replacement or repair and may be charged to the customer.
+          </li>
+        </ul>
 
+        <h2>9. Personal belongings</h2>
+        <p>Guests remain responsible for their personal belongings, including phones, bags, jewellery, sunglasses, cameras and other valuables.</p>
+
+        <h2>10. Environment and conduct</h2>
+        <p>Guests must respect marine life, coastal areas and environmental rules. Throwing waste into the sea is strictly prohibited.</p>
+
+        <h2>11. Force majeure and weather</h2>
+        <p>Alegria Boat shall not be liable for delays, changes or cancellations caused by weather, sea conditions, port authority decisions, technical issues, force majeure or any event beyond reasonable control.</p>
+        <p>The skipper alone decides whether sea and weather conditions are safe for departure, continuation or return.</p>
+
+        <h2>12. Payment providers and privacy</h2>
+        <p>Payments and card registrations may be processed by third-party providers such as Stripe and SumUp. Alegria Boat does not store full credit or debit card details.</p>
+
+        <h2>13. Governing law</h2>
+        <p>These Terms & Conditions are governed by French law, subject to any mandatory consumer protection rules that may apply.</p>
+
+        <h2>14. Acceptance</h2>
+        <p>By confirming a booking, making a payment, registering a security deposit, boarding the vessel or participating in an outing, the customer acknowledges having read, understood and accepted these Terms & Conditions.</p>
+      </article>
     </ng-container>
 
-    <div class="terms-content">
+    <!-- FRENCH -->
+    <ng-container *ngIf="language === 'fr'">
+      <span class="eyebrow">Mentions légales</span>
+      <h1>Conditions Générales des Expériences Catamaran</h1>
 
-      <article class="term-section">
-        <h2>1. {{ language === 'fr' ? 'Réservation et paiement' : (language === 'es' ? 'Reserva y pago' : 'Booking and Payment') }}</h2>
+      <p class="intro">
+        Ces Conditions Générales s’appliquent aux réservations directes effectuées avec Alegria Boat pour des expériences privées à bord du catamaran Alegria.
+        Les réservations effectuées via des plateformes tierces telles que Click&Boat ou SamBoat restent soumises aux conditions de paiement et d’annulation de ces plateformes.
+      </p>
+
+      <article class="terms-card">
+        <h2>1. Processus de réservation et de paiement en 3 étapes</h2>
+
+        <div class="process-step">
+          <h3>Étape 1 — Confirmation de la réservation en ligne</h3>
+          <p>
+            Pour les réservations directes, le client confirme la sortie sur <strong>alegriaboat.eu</strong> en acceptant les présentes Conditions Générales
+            et en réglant un <strong>acompte de confirmation de 10%</strong>.
+          </p>
+          <p>La réservation n’est confirmée qu’après paiement effectif de cet acompte de 10%.</p>
+        </div>
+
+        <div class="process-step">
+          <h3>Étape 2 — Enregistrement de la caution / dépôt de garantie</h3>
+          <p>
+            Avant la sortie, le client peut être invité à enregistrer une <strong>caution / dépôt de garantie de 500€</strong>
+            sur <strong>alegriaboat.eu</strong> via Stripe.
+          </p>
+          <p>
+            Cet enregistrement en ligne est généralement effectué environ un jour avant la sortie et nécessite une carte bancaire valide.
+            Sauf indication contraire, l’enregistrement Stripe ne débite pas immédiatement le client.
+          </p>
+          <p>
+            À défaut, Alegria Boat pourra exceptionnellement accepter une <strong>caution de 500€ en espèces</strong> avant le départ.
+            Cette somme sera restituée à la fin de l’excursion si aucun dommage, matériel manquant, impayé ou nettoyage anormal n’est constaté.
+          </p>
+        </div>
+
+        <div class="process-step">
+          <h3>Étape 3 — Paiement des 90% restants à bord avant le départ</h3>
+          <p>
+            Le <strong>solde de 90%</strong> est réglé à bord <strong>avant le départ</strong>, via SumUp, carte bancaire,
+            Apple Pay, Google Pay ou espèces.
+          </p>
+          <p>Alegria Boat peut refuser le départ si le solde n’a pas été intégralement réglé avant de quitter le quai.</p>
+        </div>
+
+        <h2>2. Politique d’annulation et de remboursement</h2>
+        <p>Pour les réservations directes, l’acompte de 10% est intégralement remboursable si le client annule au moins <strong>10 jours calendaires avant la sortie</strong>.</p>
+        <p>Si le client annule moins de 10 jours calendaires avant la sortie, l’acompte de 10% n’est pas remboursable.</p>
+        <p>Si Alegria Boat annule la sortie, notamment pour météo, sécurité, problème technique ou opérationnel, les sommes payées directement à Alegria Boat sont remboursées.</p>
+
+        <h2>3. Réservations via Click&Boat, SamBoat ou autres plateformes</h2>
+        <p>Les réservations réalisées via des plateformes tierces sont régies par les règles de paiement, d’annulation et de remboursement de ces plateformes.</p>
+        <p>Alegria Boat peut néanmoins demander au client des informations pratiques, des formulaires de sécurité ou l’enregistrement d’une caution lorsque cela est nécessaire.</p>
+
+        <h2>4. Ponctualité et heure de départ</h2>
+        <p>Les clients doivent arriver à l’heure au point de rendez-vous convenu et être prêts pour l’embarquement et le départ à l’heure prévue.</p>
+        <p>Tout retard du client peut réduire la durée de la sortie et ne donne droit à aucun remboursement, prolongation ou compensation.</p>
+
+        <h2>5. Autorité du skipper et sécurité</h2>
+        <p>Le skipper dispose de l’autorité complète sur le navire et sur toutes les décisions relatives à la sécurité. Les passagers doivent respecter ses instructions à tout moment.</p>
+        <p>Alegria Boat peut refuser l’embarquement ou interrompre la sortie sans remboursement en cas de comportement dangereux, état d’ébriété, usage de stupéfiants, agressivité ou refus de respecter les consignes.</p>
+
+        <h2>6. Baignade et activités nautiques</h2>
+        <p>La baignade, le snorkeling et toute activité nautique sont pratiqués sous l’entière responsabilité des participants.</p>
+        <p>Chaque participant est responsable de l’évaluation de ses capacités de nage et de la surveillance des mineurs sous sa responsabilité. Le skipper peut interdire la baignade ou toute activité nautique pour raisons de sécurité.</p>
+
+        <h2>7. Dommages, caution et responsabilité</h2>
+        <p>Le client est financièrement responsable des dommages causés par lui-même ou les membres de son groupe par négligence, mauvaise utilisation du matériel, non-respect des consignes ou violation des règles à bord.</p>
+        <p>Alegria Boat peut prélever tout ou partie de la caution enregistrée en cas de dommage, matériel manquant, nettoyage exceptionnel, somme impayée ou frais justifiés.</p>
+
+        
+        <h2>8. Dommages courants et frais facturables</h2>
+        <p>
+          Certains dommages à bord sont fréquents et peuvent engendrer des frais importants de réparation ou de maintenance.
+        </p>
+
         <ul>
-          <li *ngIf="language==='fr'">Un acompte de 50 % est requis pour confirmer la réservation.</li>
-          <li *ngIf="language==='es'">Se requiere un depósito del 50 % para confirmar la reserva.</li>
-          <li *ngIf="language==='en'">A deposit of 50% of the total charter fee is required to confirm the booking.</li>
+          <li>
+            <strong>Toilettes marines :</strong> les toilettes à bord sont extrêmement sensibles et ne fonctionnent pas comme les toilettes d’une maison.
+            Il est strictement interdit d’y jeter du papier toilette, lingettes, protections hygiéniques ou tout autre objet.
+            Les toilettes marines se bouchent très rapidement et les frais de débouchage ou de réparation pourront être facturés au client.
+          </li>
 
-          <li *ngIf="language==='fr'">Le solde doit être réglé au plus tard 30 jours avant le départ.</li>
-          <li *ngIf="language==='es'">El saldo debe abonarse a más tardar 30 días antes de la salida.</li>
-          <li *ngIf="language==='en'">The remaining balance must be paid no later than 30 days before the charter start date.</li>
-
-          <li *ngIf="language==='fr'">Les réservations effectuées moins de 30 jours avant le départ doivent être réglées intégralement.</li>
-          <li *ngIf="language==='es'">Las reservas realizadas con menos de 30 días deben pagarse en su totalidad.</li>
-          <li *ngIf="language==='en'">Bookings made less than 30 days before departure must be paid in full at the time of reservation.</li>
-
-          <li *ngIf="language==='fr'">Les prix incluent l’utilisation du catamaran, l’équipement standard, l’assurance et le nettoyage sauf mention contraire.</li>
-          <li *ngIf="language==='es'">Los precios incluyen el uso del catamarán, equipamiento estándar, seguro y limpieza salvo indicación contraria.</li>
-          <li *ngIf="language==='en'">Prices include the use of the catamaran, standard equipment, insurance, and cleaning unless otherwise specified.</li>
+          <li>
+            <strong>Brûlures de cigarettes :</strong> les housses de coussins et tissus du bateau sont très sensibles aux brûlures de cigarettes.
+            Toute brûlure sur les coussins, banquettes ou tissus pourra nécessiter un remplacement coûteux et être facturée au client.
+          </li>
         </ul>
-      </article>
 
-      <article class="term-section">
-        <h2>2. {{ language === 'fr' ? 'Annulations' : (language === 'es' ? 'Cancelaciones' : 'Cancellations') }}</h2>
+        <h2>9. Effets personnels</h2>
+        <p>Les passagers restent responsables de leurs effets personnels, notamment téléphones, sacs, bijoux, lunettes, appareils photo et objets de valeur.</p>
+
+        <h2>10. Environnement et conduite</h2>
+        <p>Les passagers doivent respecter la faune marine, le littoral et les règles environnementales. Il est strictement interdit de jeter des déchets en mer.</p>
+
+        <h2>11. Force majeure et météo</h2>
+        <p>Alegria Boat ne saurait être tenue responsable des retards, changements ou annulations dus à la météo, l’état de la mer, les décisions des autorités portuaires, un problème technique, un cas de force majeure ou tout événement échappant à son contrôle raisonnable.</p>
+        <p>Le skipper décide seul si les conditions météo et maritimes permettent le départ, la poursuite ou le retour.</p>
+
+        <h2>12. Prestataires de paiement et confidentialité</h2>
+        <p>Les paiements et enregistrements de carte peuvent être traités par des prestataires tiers tels que Stripe et SumUp. Alegria Boat ne conserve pas les informations complètes de carte bancaire.</p>
+
+        <h2>13. Loi applicable</h2>
+        <p>Les présentes Conditions Générales sont régies par le droit français, sous réserve des règles impératives de protection du consommateur applicables.</p>
+
+        <h2>14. Acceptation</h2>
+        <p>En confirmant une réservation, en effectuant un paiement, en enregistrant une caution, en embarquant ou en participant à une sortie, le client reconnaît avoir lu, compris et accepté les présentes Conditions Générales.</p>
+      </article>
+    </ng-container>
+
+    <!-- SPANISH -->
+    <ng-container *ngIf="language === 'es'">
+      <span class="eyebrow">Legal</span>
+      <h1>Términos y Condiciones de Experiencias en Catamarán</h1>
+
+      <p class="intro">
+        Estos Términos y Condiciones se aplican a las reservas directas realizadas con Alegria Boat para experiencias privadas a bordo del catamarán Alegria.
+        Las reservas realizadas a través de plataformas como Click&Boat o SamBoat quedan sujetas a las condiciones de pago y cancelación de dichas plataformas.
+      </p>
+
+      <article class="terms-card">
+        <h2>1. Proceso de reserva y pago en 3 pasos</h2>
+
+        <div class="process-step">
+          <h3>Paso 1 — Confirmación online de la reserva</h3>
+          <p>
+            Para las reservas directas, el cliente confirma la salida en <strong>alegriaboat.eu</strong> aceptando estos Términos y Condiciones
+            y pagando un <strong>depósito de confirmación del 10%</strong>.
+          </p>
+          <p>La reserva queda confirmada únicamente cuando se ha pagado correctamente este depósito del 10%.</p>
+        </div>
+
+        <div class="process-step">
+          <h3>Paso 2 — Registro del depósito de garantía</h3>
+          <p>
+            Antes de la salida, se podrá solicitar al cliente registrar un <strong>depósito de garantía de 500€</strong>
+            en <strong>alegriaboat.eu</strong> mediante Stripe.
+          </p>
+          <p>
+            Este registro online normalmente se realiza aproximadamente un día antes de la salida y requiere una tarjeta válida de débito o crédito.
+            Salvo indicación contraria, el registro mediante Stripe no supone un cargo inmediato.
+          </p>
+          <p>
+            Como alternativa, Alegria Boat podrá aceptar excepcionalmente un <strong>depósito en efectivo de 500€</strong> antes de la salida.
+            Esta cantidad será devuelta al final de la excursión si no se observa ningún daño, material perdido, importe impagado o limpieza extraordinaria.
+          </p>
+        </div>
+
+        <div class="process-step">
+          <h3>Paso 3 — Pago del 90% restante a bordo antes de la salida</h3>
+          <p>
+            El <strong>90% restante</strong> se paga a bordo <strong>antes de la salida</strong>, mediante SumUp, tarjeta,
+            Apple Pay, Google Pay o efectivo.
+          </p>
+          <p>Alegria Boat podrá rechazar la salida si el saldo restante no ha sido abonado íntegramente antes de abandonar el muelle.</p>
+        </div>
+
+        <h2>2. Política de cancelación y reembolso</h2>
+        <p>Para las reservas directas, el depósito del 10% es totalmente reembolsable si el cliente cancela al menos <strong>10 días naturales antes de la salida</strong>.</p>
+        <p>Si el cliente cancela con menos de 10 días naturales de antelación, el depósito del 10% no será reembolsable.</p>
+        <p>Si Alegria Boat cancela la salida por cualquier motivo, incluidos meteorología, seguridad, problemas técnicos u operativos, se reembolsarán los importes pagados directamente a Alegria Boat.</p>
+
+        <h2>3. Reservas mediante Click&Boat, SamBoat u otras plataformas</h2>
+        <p>Las reservas realizadas a través de plataformas de terceros se rigen por las normas de pago, cancelación y reembolso de dichas plataformas.</p>
+        <p>Alegria Boat podrá solicitar información práctica, formularios de seguridad o el registro de un depósito de garantía cuando sea necesario para la salida.</p>
+
+        <h2>4. Puntualidad y hora de salida</h2>
+        <p>Los clientes deben llegar puntualmente al punto de encuentro acordado y estar listos para embarcar y salir a la hora prevista.</p>
+        <p>Los retrasos del cliente pueden reducir la duración de la salida y no dan derecho a reembolso, ampliación ni compensación.</p>
+
+        <h2>5. Autoridad del patrón y seguridad</h2>
+        <p>El patrón tiene plena autoridad sobre la embarcación y sobre todas las decisiones relacionadas con la seguridad. Los pasajeros deben cumplir sus instrucciones en todo momento.</p>
+        <p>Alegria Boat podrá denegar el embarque o interrumpir la salida sin reembolso en caso de comportamiento peligroso, embriaguez, consumo de drogas, agresividad o negativa a seguir las instrucciones.</p>
+
+        <h2>6. Natación y actividades acuáticas</h2>
+        <p>La natación, el snorkel y cualquier actividad acuática se realizan bajo la exclusiva responsabilidad del participante.</p>
+        <p>Cada participante es responsable de evaluar su propia capacidad de natación y de supervisar a los menores a su cargo. El patrón puede prohibir la natación o cualquier actividad acuática por motivos de seguridad.</p>
+
+        <h2>7. Daños, depósito de garantía y responsabilidad</h2>
+        <p>El cliente es económicamente responsable de los daños causados por él o por miembros de su grupo por negligencia, mal uso del equipo, incumplimiento de instrucciones o infracción de las normas de a bordo.</p>
+        <p>Alegria Boat podrá cobrar todo o parte del depósito registrado por daños, material perdido, limpieza extraordinaria, importes impagados u otros costes justificados.</p>
+
+        
+        <h2>8. Daños frecuentes y gastos facturables</h2>
+        <p>
+          Algunos daños a bordo ocurren con frecuencia y pueden generar costes importantes de reparación o mantenimiento.
+        </p>
+
         <ul>
-          <li *ngIf="language==='fr'">Toute annulation doit être faite par écrit.</li>
-          <li *ngIf="language==='es'">Toda cancelación debe realizarse por escrito.</li>
-          <li *ngIf="language==='en'">Cancellation must be made in writing.</li>
+          <li>
+            <strong>Baños marinos:</strong> los baños a bordo son extremadamente sensibles y no funcionan como los baños de una vivienda.
+            Está estrictamente prohibido tirar papel higiénico, toallitas, productos sanitarios u otros objetos.
+            Los baños marinos se obstruyen muy rápidamente y los costes de desatasco o reparación podrán ser facturados al cliente.
+          </li>
 
-          <li *ngIf="language==='fr'">Plus de 60 jours : remboursement intégral hors frais administratifs.</li>
-          <li *ngIf="language==='es'">Más de 60 días: reembolso completo menos gastos administrativos.</li>
-          <li *ngIf="language==='en'">More than 60 days before departure: full refund minus administrative fee.</li>
-
-          <li *ngIf="language==='fr'">Entre 30 et 60 jours : remboursement de 50 %.</li>
-          <li *ngIf="language==='es'">Entre 30 y 60 días: reembolso del 50 %.</li>
-          <li *ngIf="language==='en'">30–60 days before departure: 50% refund.</li>
-
-          <li *ngIf="language==='fr'">Moins de 30 jours : aucun remboursement.</li>
-          <li *ngIf="language==='es'">Menos de 30 días: sin reembolso.</li>
-          <li *ngIf="language==='en'">Less than 30 days before departure: no refund.</li>
-
-          <li *ngIf="language==='fr'">En cas d’annulation par la société pour raison technique ou météo, un remboursement ou report sera proposé.</li>
-          <li *ngIf="language==='es'">Si la empresa cancela por motivos técnicos o meteorológicos, se ofrecerá reembolso o cambio de fecha.</li>
-          <li *ngIf="language==='en'">If the charter company cancels due to technical issues or unsafe weather, a full refund or rescheduling option will be offered.</li>
+          <li>
+            <strong>Quemaduras de cigarrillos:</strong> las fundas de cojines y tapicerías son muy sensibles a las quemaduras de cigarrillos.
+            Cualquier quemadura en cojines, asientos o tejidos podrá requerir una sustitución costosa y ser facturada al cliente.
+          </li>
         </ul>
-      </article>
 
-      <article class="term-section">
-        <h2>3. {{ language === 'fr' ? 'Skipper et équipage' : (language === 'es' ? 'Patrón y tripulación' : 'Skipper and Crew') }}</h2>
-        <p *ngIf="language==='fr'">Le skipper a pleine autorité pour assurer la sécurité des passagers et du navire. Ses consignes doivent être respectées à tout moment.</p>
-        <p *ngIf="language==='es'">El patrón tiene plena autoridad para garantizar la seguridad de los pasajeros y de la embarcación. Sus instrucciones deben respetarse en todo momento.</p>
-        <p *ngIf="language==='en'">The skipper has full authority to make decisions for the safety of passengers and vessel. Passengers must comply with the skipper’s instructions at all times.</p>
-      </article>
+        <h2>9. Objetos personales</h2>
+        <p>Los pasajeros siguen siendo responsables de sus objetos personales, incluidos teléfonos, bolsos, joyas, gafas, cámaras y otros objetos de valor.</p>
 
-      <article class="term-section">
-        <h2>4. {{ language === 'fr' ? 'Sécurité et comportement' : (language === 'es' ? 'Seguridad y conducta' : 'Safety and Conduct') }}</h2>
-        <p *ngIf="language==='fr'">Les invités doivent respecter les règles maritimes, la consommation de drogues est interdite, et les enfants doivent rester sous surveillance.</p>
-        <p *ngIf="language==='es'">Los invitados deben respetar las normas marítimas, el consumo de drogas está prohibido y los niños deben estar supervisados.</p>
-        <p *ngIf="language==='en'">All guests must act responsibly, drug use is prohibited, and children must be supervised by adults at all times.</p>
-      </article>
+        <h2>10. Medio ambiente y conducta</h2>
+        <p>Los pasajeros deben respetar la vida marina, las zonas costeras y las normas medioambientales. Está estrictamente prohibido tirar residuos al mar.</p>
 
-      <article class="term-section">
-        <h2>5. {{ language === 'fr' ? 'Dommages et responsabilité' : (language === 'es' ? 'Daños y responsabilidad' : 'Damage and Liability') }}</h2>
-        <p *ngIf="language==='fr'">Le locataire est responsable des dommages causés par négligence. Les effets personnels restent sous la responsabilité des invités.</p>
-        <p *ngIf="language==='es'">El cliente es responsable de los daños causados por negligencia. Los efectos personales quedan bajo responsabilidad de los invitados.</p>
-        <p *ngIf="language==='en'">The charterer is financially responsible for any damage caused by guests through negligence. Personal belongings remain the responsibility of guests.</p>
-      </article>
+        <h2>11. Fuerza mayor y meteorología</h2>
+        <p>Alegria Boat no será responsable de retrasos, cambios o cancelaciones causados por meteorología, estado del mar, decisiones de autoridades portuarias, problemas técnicos, fuerza mayor o cualquier evento fuera de su control razonable.</p>
+        <p>El patrón decide en exclusiva si las condiciones marítimas y meteorológicas permiten la salida, continuación o regreso.</p>
 
-      <article class="term-section">
-        <h2>6. {{ language === 'fr' ? 'Utilisation du navire' : (language === 'es' ? 'Uso de la embarcación' : 'Use of the Vessel') }}</h2>
-        <p *ngIf="language==='fr'">Le navire doit être utilisé uniquement dans la zone autorisée et pour des usages légaux.</p>
-        <p *ngIf="language==='es'">La embarcación solo puede utilizarse dentro de la zona autorizada y para fines legales.</p>
-        <p *ngIf="language==='en'">The vessel must be used only within the designated cruising area and for lawful purposes.</p>
-      </article>
+        <h2>12. Proveedores de pago y privacidad</h2>
+        <p>Los pagos y registros de tarjeta pueden ser procesados por proveedores externos como Stripe y SumUp. Alegria Boat no almacena los datos completos de tarjetas bancarias.</p>
 
-      <article class="term-section">
-        <h2>7. {{ language === 'fr' ? 'Environnement et respect' : (language === 'es' ? 'Medio ambiente y respeto' : 'Environment and Respect') }}</h2>
-        <p *ngIf="language==='fr'">Les invités sont invités à respecter la vie marine et à éviter tout déchet en mer.</p>
-        <p *ngIf="language==='es'">Se espera que los invitados respeten la vida marina y eviten residuos en el mar.</p>
-        <p *ngIf="language==='en'">Guests are expected to respect marine life and local environmental regulations.</p>
-      </article>
+        <h2>13. Ley aplicable</h2>
+        <p>Estos Términos y Condiciones se rigen por la ley francesa, sin perjuicio de las normas obligatorias de protección al consumidor que puedan aplicarse.</p>
 
-      <article class="term-section">
-        <h2>8. Force Majeure</h2>
-        <p *ngIf="language==='fr'">Aucune des parties ne pourra être tenue responsable en cas d’événements hors de son contrôle.</p>
-        <p *ngIf="language==='es'">Ninguna de las partes será responsable por eventos fuera de su control.</p>
-        <p *ngIf="language==='en'">Neither party shall be liable for delays or cancellations caused by events beyond their control.</p>
+        <h2>14. Aceptación</h2>
+        <p>Al confirmar una reserva, realizar un pago, registrar un depósito de garantía, embarcar o participar en una salida, el cliente reconoce haber leído, entendido y aceptado estos Términos y Condiciones.</p>
       </article>
+    </ng-container>
 
-      <article class="term-section">
-        <h2>9. {{ language === 'fr' ? 'Droit applicable' : (language === 'es' ? 'Ley aplicable' : 'Governing Law') }}</h2>
-        <p *ngIf="language==='fr'">Le présent accord est soumis au droit du pays où la prestation a lieu.</p>
-        <p *ngIf="language==='es'">Este acuerdo se rige por las leyes del país donde se realiza la actividad.</p>
-        <p *ngIf="language==='en'">This agreement is governed by the laws of the country in which the charter takes place.</p>
-      </article>
-
-    </div>
   </div>
 </section>

@@ -154,7 +154,7 @@ export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
     phoneDisplay: '+33 6 85 26 65 10',
     phoneRaw: '+33685266510',
     email: 'contact@alldigitalnetwork.com',
-    departureArea: 'Quais d’honneur : Marina Baie des Anges, Antibes, Cannes',
+    departureArea: 'Possible meeting points: official visitors’ quays at Villeneuve, Antibes Port Vauban or Cannes Port Canto',
     heroImage: sharedImages.hero,
     boatHeroImage: sharedImages.boatHero,
     brandTagline: 'Location de catamaran sur la Côte d’Azur',
@@ -180,7 +180,7 @@ export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
       departurePort: 'Port de départ',
       bookOnClickAndBoat: 'Réserver sur Click & Boat',
       legalAsterisk: '* Location en coque nue. Skipper professionnel indépendant obligatoire.',
-      boardingPorts: '* Embarquement : quais d’honneur Marina Baie des Anges, Antibes ou Cannes.',
+      boardingPorts: '* Embarquement : quais d’honneur Villeneuve, Antibes ou Cannes.',
     },
     home: {
       eyebrow: 'Catamaran sur la Côte d’Azur',
@@ -288,7 +288,7 @@ export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
     phoneDisplay: '+33 6 85 26 65 10',
     phoneRaw: '+33685266510',
     email: 'contact@alldigitalnetwork.com',
-    departureArea: 'Marina Baie des Anges, Antibes, Cannes',
+    departureArea: 'Puntos de encuentro posibles: muelles de honor en Villeneuve, Antibes Port Vauban o Cannes Port Canto',
     heroImage: sharedImages.hero,
     boatHeroImage: sharedImages.boatHero,
     nav: {
@@ -312,7 +312,7 @@ export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
       departurePort: 'Departure port',
       bookOnClickAndBoat: 'Book on Click & Boat',
       legalAsterisk: '* Bareboat rental. Independent professional skipper required.',
-      boardingPorts: '* Boarding: Marina Baie des Anges, Antibes or Cannes.',
+      boardingPorts: '* Boarding: Villeneuve, Antibes or Cannes.',
     },
     home: {
       eyebrow: 'Catamaran on the French Riviera',
@@ -386,7 +386,7 @@ export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
       'Spacious and stable Bali 4.1 catamaran',
       'Up to 12 guests',
       'Comfortable cruising and elegant atmosphere',
-      'Departure: Marina Baie des Anges, Antibes or Cannes'],
+      'Departure: Villeneuve, Antibes or Cannes'],
   },
   es: {
     brandTagline: 'Experiencias en catamarán en la Costa Azul',
@@ -396,7 +396,7 @@ export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
     phoneDisplay: '+33 6 85 26 65 10',
     phoneRaw: '+33685266510',
     email: 'contact@alldigitalnetwork.com',
-    departureArea: 'Marina Baie des Anges, Antibes, Cannes',
+    departureArea: 'Villeneuve, Antibes, Cannes',
     heroImage: sharedImages.hero,
     boatHeroImage: sharedImages.boatHero,
     nav: {
@@ -420,7 +420,7 @@ export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
       departurePort: 'Puerto de salida',
       bookOnClickAndBoat: 'Reservar en Click & Boat',
       legalAsterisk: '* Alquiler en casco desnudo. Patrón independiente obligatorio.',
-      boardingPorts: '* Embarque: Marina Baie des Anges, Antibes o Cannes.',
+      boardingPorts: '* Embarque: Villeneuve, Antibes o Cannes.',
     },
     home: {
       eyebrow: 'Catamarán en la Costa Azul',
@@ -494,6 +494,6 @@ export const SITE_CONTENT: Record<SiteLanguage, SiteContent> = {
       'Catamarán Bali 4.1 amplio y estable',
       'Hasta 12 pasajeros',
       'Navegación cómoda y ambiente elegante',
-      'Salida: Marina Baie des Anges, Antibes o Cannes'],
+      'Salida: Villeneuve, Antibes o Cannes'],
   },
 };

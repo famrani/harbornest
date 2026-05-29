@@ -114,6 +114,7 @@ export class DepositComponent implements OnInit, OnDestroy {
   outingType = 'Journée en mer';
   totalPrice: number | null = null;
   currency = 'eur';
+  paymentMode = 'deposit';
 
   bookingId = '';
   ownerId = '';
@@ -127,7 +128,11 @@ export class DepositComponent implements OnInit, OnDestroy {
   warrantyError = '';
 
   isLoading = false;
+  isWarrantyLoading = false;
   errorMessage = '';
+  warrantySetupMessage = '';
+  paymentReturnMessage = '';
+  paymentStatus: any = null;
 
   private languageSub?: Subscription;
   private userSub?: Subscription;
@@ -173,7 +178,10 @@ export class DepositComponent implements OnInit, OnDestroy {
           this.outingDate = booking.outingDate || this.outingDate;
           this.outingType = booking.outingType || this.outingType;
           this.totalPrice = booking.totalPrice || this.totalPrice;
+          this.ownerId = booking.ownerId || (booking.raw && (booking.raw.ownerId || booking.raw.owner || booking.raw.hostId)) || this.ownerId;
           this.warrantyChargeAmount = booking.warrantyAmount || this.warrantyChargeAmount;
+          this.paymentStatus = booking.payments || booking.paymentStatus || null;
+          this.loadPaymentStatus();
         }
       });
     }
@@ -185,11 +193,25 @@ export class DepositComponent implements OnInit, OnDestroy {
       this.outingType = params.get('outing') || params.get('outingType') || this.outingType;
       this.bookingId = params.get('bookingId') || this.bookingId;
       this.ownerId = params.get('ownerId') || this.ownerId;
+      this.paymentMode = params.get('mode') || this.paymentMode;
 
       const total = params.get('total') || params.get('totalPrice') || params.get('amount');
       if (total !== null && total !== '') {
         const parsed = Number(total);
         this.totalPrice = Number.isFinite(parsed) ? parsed : this.totalPrice;
+      }
+
+      const payment = params.get('payment');
+      const paymentType = params.get('paymentType');
+      if (payment === 'success') {
+        this.paymentReturnMessage = paymentType === 'warranty'
+          ? 'Warranty card registration completed successfully.'
+          : 'Deposit payment completed successfully.';
+        this.loadPaymentStatus();
+      } else if (payment === 'cancelled') {
+        this.paymentReturnMessage = paymentType === 'warranty'
+          ? 'Warranty card registration was cancelled.'
+          : 'Deposit payment was cancelled.';
       }
     });
   }
@@ -203,6 +225,23 @@ export class DepositComponent implements OnInit, OnDestroy {
     const role = String(this.loggedUser?.role || '').toLowerCase();
     return role === 'admin' || this.loggedUser?.isAdmin === true;
   }
+
+  get isWarrantyAdminMode(): boolean {
+    return this.isAdmin && this.paymentMode === 'warranty';
+  }
+
+  get showDepositPayment(): boolean {
+    return !this.isWarrantyAdminMode;
+  }
+
+  get showWarrantyRegistration(): boolean {
+    return !this.isWarrantyAdminMode && !!this.booking && this.warrantyAmount > 0;
+  }
+
+  get chargeableWarrantyAmount(): number {
+    return Number(this.booking?.warrantyAmount || this.warrantyChargeAmount || 0);
+  }
+
 
   get warrantyAmount(): number {
     return Number(this.booking?.warrantyAmount || this.warrantyChargeAmount || 0);
@@ -237,6 +276,69 @@ export class DepositComponent implements OnInit, OnDestroy {
     }).format(value);
   }
 
+  get canRegisterWarranty(): boolean {
+    return Boolean(
+      this.customerName.trim() &&
+      this.customerEmail.trim() &&
+      this.outingDate &&
+      this.warrantyAmount &&
+      this.warrantyAmount > 0 &&
+      this.bookingId &&
+      this.ownerId
+    );
+  }
+
+  loadPaymentStatus(): void {
+    if (!this.bookingId) return;
+    this.bookingApi.getPaymentStatus(this.bookingId).subscribe({
+      next: (status) => {
+        this.paymentStatus = status?.payments || status || this.paymentStatus;
+      },
+      error: () => {}
+    });
+  }
+
+  registerWarrantyCard(): void {
+    this.errorMessage = '';
+    this.warrantySetupMessage = '';
+
+    if (!this.canRegisterWarranty) {
+      this.warrantySetupMessage = 'Missing booking, owner, customer or warranty amount information.';
+      return;
+    }
+
+    this.isWarrantyLoading = true;
+    const baseReturnUrl = `${window.location.origin}/payment/${this.bookingId}`;
+
+    this.bookingApi.createWarrantySetup({
+      bookingId: this.bookingId,
+      ownerId: this.ownerId,
+      warrantyAmount: this.warrantyAmount,
+      currency: this.currency,
+      customerName: this.customerName.trim(),
+      customerEmail: this.customerEmail.trim(),
+      customerPhone: this.booking?.customerPhone || this.booking?.phone || '',
+      outingDate: this.outingDate,
+      outingType: this.outingType,
+      successUrl: baseReturnUrl,
+      cancelUrl: baseReturnUrl,
+    }).subscribe({
+      next: (response) => {
+        const checkoutUrl = response.url || response.checkoutUrl || response.sessionUrl;
+        if (checkoutUrl) {
+          window.location.href = checkoutUrl;
+        } else {
+          this.isWarrantyLoading = false;
+          this.warrantySetupMessage = 'Warranty registration could not be initialized.';
+        }
+      },
+      error: () => {
+        this.isWarrantyLoading = false;
+        this.warrantySetupMessage = 'Warranty registration could not be initialized.';
+      }
+    });
+  }
+
   chargeWarranty(): void {
     this.warrantyError = '';
     this.warrantyMessage = '';
@@ -258,9 +360,13 @@ export class DepositComponent implements OnInit, OnDestroy {
       this.warrantyError = 'Please enter the reason for charging the warranty.';
       return;
     }
+    if (this.chargeableWarrantyAmount && amount > this.chargeableWarrantyAmount) {
+      this.warrantyError = 'The amount exceeds the registered warranty amount.';
+      return;
+    }
 
     this.isChargingWarranty = true;
-    this.bookingApi.chargeWarranty(this.bookingId, amount, this.warrantyReason.trim()).subscribe({
+    this.bookingApi.chargeWarranty(this.bookingId, amount, this.warrantyReason.trim(), this.ownerId).subscribe({
       next: async () => {
         try {
           await this.bookingApi.updateBooking(this.bookingId, {
@@ -289,47 +395,40 @@ export class DepositComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isLoading = true;
+    if (!this.bookingId || !this.ownerId) {
+      this.errorMessage = 'Missing booking id or owner id for Stripe payment.';
+      return;
+    }
 
-    const payload = {
+    this.isLoading = true;
+    const baseReturnUrl = `${window.location.origin}/payment/${this.bookingId}`;
+
+    this.bookingApi.createDepositCheckout({
       customerName: this.customerName.trim(),
       customerEmail: this.customerEmail.trim(),
+      customerPhone: this.booking?.customerPhone || this.booking?.phone || '',
       outingDate: this.outingDate,
       outingType: this.outingType,
-      totalPrice: this.totalPrice,
-      totalAmount: this.totalPrice,
       depositAmount: this.depositAmount,
-      depositRate: 0.5,
       currency: this.currency,
-      bookingId: this.bookingId || undefined,
-      ownerId: this.ownerId || undefined,
-      successUrl: `${window.location.origin}/payment/${this.bookingId || ''}?payment=success`,
-      cancelUrl: `${window.location.origin}/payment/${this.bookingId || ''}?payment=cancelled`,
-      metadata: {
-        source: 'alegria-deposit-page',
-        outingType: this.outingType,
-        outingDate: this.outingDate
-      }
-    };
-
-    const baseUrl = this.utilsSvc?.backendURL || '';
-    const endpoint = `${baseUrl}/api/payments/create-deposit-checkout-session`;
-
-    this.http.post<{ url?: string; checkoutUrl?: string; sessionUrl?: string }>(endpoint, payload, { withCredentials: true })
-      .subscribe({
-        next: (response) => {
-          const checkoutUrl = response.url || response.checkoutUrl || response.sessionUrl;
-          if (checkoutUrl) {
-            window.location.href = checkoutUrl;
-          } else {
-            this.isLoading = false;
-            this.errorMessage = this.copy.error;
-          }
-        },
-        error: () => {
+      bookingId: this.bookingId,
+      ownerId: this.ownerId,
+      successUrl: baseReturnUrl,
+      cancelUrl: baseReturnUrl,
+    }).subscribe({
+      next: (response) => {
+        const checkoutUrl = response.url || response.checkoutUrl || response.sessionUrl;
+        if (checkoutUrl) {
+          window.location.href = checkoutUrl;
+        } else {
           this.isLoading = false;
           this.errorMessage = this.copy.error;
         }
-      });
+      },
+      error: () => {
+        this.isLoading = false;
+        this.errorMessage = this.copy.error;
+      }
+    });
   }
 }

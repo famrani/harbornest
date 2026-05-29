@@ -2,7 +2,7 @@
   "application": {
     "name": "Worknest back-end",
     "platform": "test",
-    "release": "1.3"
+    "release": "1.6"
   },
   "dev": {
     "firebaseMasterConfig": {
@@ -49,13 +49,13 @@
       "messagingSenderId": "804337583879",
       "appId": "1:804337583879:web:f1494f38760981a7"
     },
-    "backendUrl": "https://46853c17720e.ngrok-free.app",
+    "backendUrl": "https://localhost:2000",
     "serverPort": 2000,
     "stripeConfig": {
       "platformApiPublicKey": "pk_test_ksDl8VQ7yCT2HDpDGN0hBUXe",
       "CLIENT_ID": "ca_BOgDuYqXT3ftJlghZ7mty5JmGYGMfNHu"
     },
-    "serviceAccount": "worknest-ca1e4-firebase-adminsdk-fbsvc-b2c22eac3a.json"
+    "serviceAccount": "adn-dev-4d05d-firebase-adminsdk-gzmds-d6e5cce533.json"
   },
   "prod": {
     "firebaseMasterConfig": {
@@ -76,12 +76,12 @@
       "messagingSenderId": "13561609265",
       "appId": "1:13561609265:web:dfb331e7d5f5a0040e2910"
     },
-    "backendUrl": "https://46853c17720e.ngrok-free.app",
+    "backendUrl": "https://localhost:2000",
     "serverPort": 2000,
     "stripeConfig": {
       "platformApiPublicKey": "pk_test_ksDl8VQ7yCT2HDpDGN0hBUXe",
       "CLIENT_ID": "ca_BOgDuYqXT3ftJlghZ7mty5JmGYGMfNHu"
     },
-    "serviceAccount": "worknest-ca1e4-firebase-adminsdk-fbsvc-b2c22eac3a.json"
+    "serviceAccount": "adn-dev-4d05d-firebase-adminsdk-gzmds-d6e5cce533.json"
   }
 }

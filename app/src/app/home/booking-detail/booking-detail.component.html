@@ -13,14 +13,88 @@
         <div><strong>Phone</strong><span>{{ booking.phone || '-' }}</span></div>
         <div><strong>Passengers</strong><span>{{ booking.passengers || '-' }}</span></div>
         <div><strong>Total price</strong><span>€{{ booking.totalPrice || 0 }}</span></div>
-        <div><strong>Deposit</strong><span>{{ booking.depositStatus || 'pending' }}</span></div>
+        <div><strong>Deposit 10%</strong><span>€{{ getDepositAmount() }} · {{ isDepositPaid() ? 'paid' : 'pending' }}</span></div>
+        <div><strong>Remaining 90%</strong><span>€{{ getBalanceAmount() }} · {{ isBalancePaid() ? 'paid' : 'to collect onboard' }}</span></div>
         <div><strong>Warranty</strong><span>{{ booking.warrantyStatus || 'not_registered' }}</span></div>
         <div><strong>Status</strong><span>{{ booking.bookingStatus || 'requested' }}</span></div>
+        <div><strong>Owner</strong><span>{{ booking.ownerId || '-' }}</span></div>
       </div>
 
       <p class="comments" *ngIf="booking.comments">{{ booking.comments }}</p>
 
-      <button class="btn btn-primary" type="button" (click)="goToPayment()">{{ paymentButtonLabel }}</button>
+      <section class="payment-admin-card" *ngIf="isAdmin">
+        <h2>Payments</h2>
+
+        <div class="payment-summary">
+          <div><strong>Deposit 10%</strong><span>{{ isDepositPaid() ? 'Paid' : 'Pending' }}</span></div>
+          <div><strong>Warranty</strong><span>{{ isWarrantySecured() ? (isWarrantyCardRegistered() ? 'Card registered' : 'Cash received') : 'Not secured' }}</span></div>
+          <div><strong>Remaining 90%</strong><span>€{{ getBalanceAmount() }}</span></div>
+          <div><strong>Status</strong><span>{{ isBalancePaid() ? 'Paid onboard' : (canRecordBalancePayment() ? 'To collect before departure' : 'Locked') }}</span></div>
+        </div>
+
+        <div class="warranty-actions" *ngIf="!isWarrantySecured()">
+          <p>Use this when the customer gives the €500 cash warranty before departure.</p>
+          <button class="btn btn-secondary" type="button" (click)="markCashWarrantyReceived()">
+            Mark €500 cash warranty received
+          </button>
+        </div>
+
+        <div class="cash-damage-card" *ngIf="isCashWarranty()">
+          <h3>Cash warranty envelope</h3>
+          <p>
+            Initial envelope: <strong>€{{ getCashWarrantyAmount() }}</strong><br />
+            Already taken for damages: <strong>€{{ getCashWarrantyDamagesTaken() }}</strong><br />
+            Remaining cash to return: <strong>€{{ getCashWarrantyRemaining() }}</strong>
+          </p>
+
+          <label>
+            Amount taken from envelope (€)
+            <input type="number" min="1" step="0.01" [(ngModel)]="cashDamageAmount" />
+          </label>
+
+          <label>
+            Damage / cost reason
+            <textarea rows="3" [(ngModel)]="cashDamageReason" placeholder="Example: blocked marine toilet, cigarette burn, broken equipment..."></textarea>
+          </label>
+
+          <button class="btn btn-primary" type="button" [disabled]="savingCashDamage" (click)="recordCashWarrantyDamage()">
+            {{ savingCashDamage ? 'Saving...' : 'Record cash taken for damage' }}
+          </button>
+
+          <p class="success" *ngIf="cashDamageMessage">{{ cashDamageMessage }}</p>
+          <p class="error-message" *ngIf="cashDamageError">{{ cashDamageError }}</p>
+        </div>
+
+        <p class="blocked-note" *ngIf="!canRecordBalancePayment() && !isBalancePaid()">
+          {{ getBalanceBlockedReason() }}
+        </p>
+
+        <div class="collect-balance" *ngIf="canRecordBalancePayment()">
+          <label>
+            Payment method
+            <select [(ngModel)]="balancePaymentMethod">
+              <option value="sumup">SumUp / card</option>
+              <option value="cash">Cash</option>
+              <option value="mixed">Mixed</option>
+            </select>
+          </label>
+
+          <label>
+            Notes
+            <textarea rows="3" [(ngModel)]="balancePaymentNotes" placeholder="Optional note, SumUp receipt, cash, mixed payment..."></textarea>
+          </label>
+
+          <button class="btn btn-primary" type="button" [disabled]="savingBalancePayment" (click)="recordBalancePayment()">
+            {{ savingBalancePayment ? 'Saving...' : 'Record remaining 90% payment' }}
+          </button>
+        </div>
+
+        <p class="paid-badge" *ngIf="isBalancePaid()">Remaining 90% paid</p>
+        <p class="success" *ngIf="balancePaymentMessage">{{ balancePaymentMessage }}</p>
+        <p class="error-message" *ngIf="balancePaymentError">{{ balancePaymentError }}</p>
+      </section>
+
+      <button class="btn btn-secondary" type="button" (click)="goToPayment()">{{ paymentButtonLabel }}</button>
     </article>
   </div>
 </section>

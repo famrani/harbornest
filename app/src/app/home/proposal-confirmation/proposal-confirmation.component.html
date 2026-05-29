@@ -1,0 +1,77 @@
+
+<section class="proposal-confirmation-page">
+  <div class="container proposal-shell">
+    <p class="muted" *ngIf="loading">Loading proposal...</p>
+    <p class="error" *ngIf="error">{{ error }}</p>
+
+    <article class="proposal-card" *ngIf="!loading && proposal">
+      <span class="eyebrow">Alegria Boat proposal</span>
+      <h1>{{ proposal.outingType }}</h1>
+      <p class="muted" *ngIf="proposal.proposalMessage">{{ proposal.proposalMessage }}</p>
+
+      <div class="summary-grid">
+        <div><strong>Customer</strong><span>{{ proposal.customerName }}</span></div>
+        <div><strong>Date</strong><span>{{ proposal.outingDate }}</span></div>
+        <div><strong>Time</strong><span>{{ proposal.departureTime }} → {{ proposal.arrivalTime }}</span></div>
+        <div><strong>Passengers</strong><span>{{ proposal.passengers || '-' }}</span></div>
+        <div><strong>Total price</strong><span>€{{ proposal.totalAmount }}</span></div>
+        <div><strong>Deposit 10%</strong><span>€{{ proposal.depositAmount }}</span></div>
+        <div><strong>Remaining onboard</strong><span>€{{ proposal.balanceAmount }}</span></div>
+        <div><strong>Warranty</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>
+      </div>
+
+      <div class="expired" *ngIf="expired">This proposal is no longer valid. Please contact Alegria Boat for a new proposal.</div>
+
+      <section class="choice-block" *ngIf="!expired && proposal.status !== 'accepted'">
+        <h2>Accept the proposal</h2>
+        <label class="terms-check">
+          <input type="checkbox" [(ngModel)]="acceptedTerms" />
+          <span>I accept the Terms & Conditions and understand the cancellation, punctuality, swimming and damage deposit rules.</span>
+        </label>
+
+        <h3>Choose your warranty method</h3>
+        <label class="radio-card"><input type="radio" name="warrantyChoice" value="stripe_card" [(ngModel)]="warrantyChoice" /><span>Register my debit/credit card online via Stripe, maximum one day before the outing.</span></label>
+        <label class="radio-card"><input type="radio" name="warrantyChoice" value="cash_on_board" [(ngModel)]="warrantyChoice" /><span>Bring €500 cash before departure. It will be returned at the end if no damage/issues are noticed.</span></label>
+
+        <button class="btn btn-primary" type="button" [disabled]="!canAccept || accepting" (click)="acceptProposal()">{{ accepting ? 'Accepting...' : 'Accept proposal' }}</button>
+      </section>
+
+      <section class="payment-block" *ngIf="!expired && proposal.status === 'accepted'">
+        <h2>Next steps</h2>
+        <div class="step-card" [class.paid]="depositPaid">
+          <h3>1. Pay the 10% deposit</h3>
+          <p>{{ depositMessage }}</p>
+
+          <div class="paid-badge" *ngIf="depositPaid">
+            Deposit paid
+          </div>
+
+          <button class="btn btn-primary" type="button" *ngIf="!depositPaid" [disabled]="payingDeposit" (click)="payDeposit()">
+            {{ payingDeposit ? 'Redirecting...' : 'Pay 10% deposit' }}
+          </button>
+        </div>
+        <div class="step-card" *ngIf="proposal.warrantyPaymentChoice === 'stripe_card'" [class.paid]="warrantyRegistered">
+          <h3>2. Register warranty card</h3>
+          <p>{{ warrantyMessage }}</p>
+          <p class="muted">Maximum warranty amount: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>
+
+          <div class="paid-badge" *ngIf="warrantyRegistered">
+            Warranty card registered
+          </div>
+
+          <button class="btn btn-secondary" type="button" *ngIf="!warrantyRegistered" [disabled]="payingWarranty" (click)="registerWarrantyCard()">
+            {{ payingWarranty ? 'Redirecting...' : 'Register warranty card' }}
+          </button>
+        </div>
+        <div class="step-card" *ngIf="proposal.warrantyPaymentChoice === 'cash_on_board'">
+          <h3>2. Cash warranty</h3>
+          <p>{{ warrantyMessage }}</p>
+          <p class="muted">Amount: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>
+        </div>
+        <div class="step-card"><h3>3. Day of outing</h3><p>The remaining 90% balance and extras are paid onboard before departure by SumUp/card or cash.</p></div>
+      </section>
+
+      <p class="success" *ngIf="message">{{ message }}</p>
+    </article>
+  </div>
+</section>

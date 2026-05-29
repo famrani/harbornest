@@ -30,6 +30,10 @@ import { GuestJourneyComponent } from './guest-journey/guest-journey.component';
 import { BookingsComponent } from './bookings/bookings.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 import { BookingDetailComponent } from './booking-detail/booking-detail.component';
+import { AdminWarrantyChargeComponent } from './admin-warranty-charge/admin-warranty-charge.component';
+import { AdminProposalsComponent } from './admin-proposals/admin-proposals.component';
+import { ProposalConfirmationComponent } from './proposal-confirmation/proposal-confirmation.component';
+import { AdminExternalBookingsComponent } from './admin-external-bookings/admin-external-bookings.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +62,10 @@ import { BookingDetailComponent } from './booking-detail/booking-detail.componen
     BookingsComponent,
     MyBookingsComponent,
     BookingDetailComponent,
+    AdminWarrantyChargeComponent,
+    AdminProposalsComponent,
+    ProposalConfirmationComponent,
+    AdminExternalBookingsComponent,
   ],
   imports: [
     CommonModule,

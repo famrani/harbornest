@@ -81,7 +81,13 @@
             {{ t('outingType') }} *
             <select [(ngModel)]="form.outingType">
               <option *ngFor="let option of outingTypes[currentLanguage]" [value]="option">{{ option }}</option>
+              <option value="__custom__">{{ customTypeLabel() }}</option>
             </select>
+          </label>
+
+          <label *ngIf="form.outingType === '__custom__'">
+            {{ customTypeLabel() }} *
+            <input type="text" [(ngModel)]="form.customOutingType" [placeholder]="customTypePlaceholder()" />
           </label>
 
           <label>

@@ -123,6 +123,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
     });
 
     this.form.outingType = this.outingTypes[this.currentLanguage][0];
+    this.form.customOutingType = '';
 
     const svc = this.mainSvc as any;
     const userObservable = typeof svc.getLoggedUser === 'function'
@@ -198,6 +199,53 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
     this.saved = false;
   }
 
+
+  isKnownOutingType(value: string | undefined | null): boolean {
+    if (!value) return false;
+    return Object.values(this.outingTypes).some((types) => types.includes(value));
+  }
+
+  customTypeLabel(): string {
+    const labels: Record<SiteLanguage, string> = {
+      fr: 'Autre / texte libre',
+      en: 'Other / free text',
+      es: 'Otro / texto libre',
+    };
+    return labels[this.currentLanguage] || labels.fr;
+  }
+
+  customTypePlaceholder(): string {
+    const labels: Record<SiteLanguage, string> = {
+      fr: 'Ex. Sortie presse, EVJF, shooting photo...',
+      en: 'E.g. press outing, bachelor party, photo shoot...',
+      es: 'Ej. salida de prensa, despedida, sesión de fotos...',
+    };
+    return labels[this.currentLanguage] || labels.fr;
+  }
+
+  prepareOutingTypeForSave(): string {
+    const rawType = String(this.form.outingType || '').trim();
+
+    if (rawType === '__custom__') {
+      return String(this.form.customOutingType || '').trim();
+    }
+
+    return rawType;
+  }
+
+  applyOutingTypeForEdit(outingType: string | undefined | null): void {
+    const value = String(outingType || '').trim();
+
+    if (value && !this.isKnownOutingType(value)) {
+      this.form.outingType = '__custom__';
+      this.form.customOutingType = value;
+      return;
+    }
+
+    this.form.outingType = value || this.outingTypes[this.currentLanguage][0];
+    this.form.customOutingType = '';
+  }
+
   startCreate(): void {
     this.mode = 'create';
     this.selectedOuting = null;
@@ -217,7 +265,8 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
     this.selectedOuting = outing;
     this.editingOutingId = outing.outingId;
     this.form = {
-      outingType: outing.outingType || this.outingTypes[this.currentLanguage][0],
+      outingType: '',
+      customOutingType: '',
       passengers: outing.passengers,
       departureDate: outing.departureDate || '',
       departureTime: outing.departureTime || '',
@@ -231,6 +280,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
       destination: outing.destination || '',
       comments: outing.comments || '',
     };
+    this.applyOutingTypeForEdit(outing.outingType);
     this.departureChecklistGroups = this.departureGroupsFromOuting(outing);
     this.currentAnchorages = this.anchoragesFromOuting(outing);
     this.anchorageForm = this.emptyAnchorageForm();
@@ -259,6 +309,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
   emptyForm(): any {
     return {
       outingType: '',
+      customOutingType: '',
       passengers: null,
       departureDate: '',
       departureTime: '',
@@ -837,9 +888,11 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
 
     this.saving = true;
     try {
+      const finalOutingType = this.prepareOutingTypeForSave();
       const updated: AdminOuting = {
         ...this.selectedOuting,
         ...this.form,
+        outingType: finalOutingType,
         passengers: Number(this.form.passengers),
         portEngineHoursDeparture: this.form.portEngineHoursDeparture === null || this.form.portEngineHoursDeparture === '' ? null : Number(this.form.portEngineHoursDeparture),
         starboardEngineHoursDeparture: this.form.starboardEngineHoursDeparture === null || this.form.starboardEngineHoursDeparture === '' ? null : Number(this.form.starboardEngineHoursDeparture),
@@ -852,6 +905,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
         modifiedBy: this.loggedUser?.userId || this.loggedUser?.uid || '',
         modifiedTS: Date.now(),
       } as any;
+      delete (updated as any).customOutingType;
       await this.saveToFirebase(updated.outingId, updated);
       this.outings = this.outings.map((item) => item.outingId === updated.outingId ? updated : item);
       this.selectedOuting = updated;
@@ -871,10 +925,12 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
 
     this.saving = true;
     try {
+      const finalOutingType = this.prepareOutingTypeForSave();
       const id = `outing_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
       const payload: AdminOuting = {
         outingId: id,
         ...this.form,
+        outingType: finalOutingType,
         passengers: Number(this.form.passengers),
         portEngineHoursDeparture: this.form.portEngineHoursDeparture === null || this.form.portEngineHoursDeparture === '' ? null : Number(this.form.portEngineHoursDeparture),
         starboardEngineHoursDeparture: this.form.starboardEngineHoursDeparture === null || this.form.starboardEngineHoursDeparture === '' ? null : Number(this.form.starboardEngineHoursDeparture),
@@ -889,6 +945,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
         createdTS: Date.now(),
       };
 
+      delete (payload as any).customOutingType;
       await this.saveToFirebase(payload.outingId, payload);
       this.outings = [payload, ...this.outings];
       const arrivalGroups = this.buildArrivalChecklistGroups();

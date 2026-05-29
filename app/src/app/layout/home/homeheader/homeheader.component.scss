@@ -376,3 +376,23 @@ p, li, input, textarea, select, .card-body, .term-section {
   background: #e8f4f7;
   color: #0b6e8f !important;
 }
+
+.account-admin-panel {
+  min-width: 280px;
+}
+
+.dropdown-section-title {
+  display: block;
+  padding: 0.65rem 0.9rem 0.3rem;
+  color: #8a652d;
+  font-family: 'Raleway', Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.dropdown-section-title:not(:first-child) {
+  border-top: 1px solid rgba(8, 38, 58, 0.08);
+  margin-top: 0.35rem;
+}

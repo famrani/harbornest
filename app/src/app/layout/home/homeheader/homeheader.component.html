@@ -63,11 +63,20 @@
           <a routerLink="/deposit" [queryParams]="{ guest: 'true' }" (click)="closeMenu()">{{ guestLabel }}</a>
         </div>
 
-        <div class="dropdown-panel dropdown-panel-right" *ngIf="isLoggedIn && isAdmin">
-          <a routerLink="/admin/bookings" routerLinkActive="active" (click)="closeMenu()">{{ adminBookingsLabel }}</a>
-          <a routerLink="/admin/outings" routerLinkActive="active" (click)="closeMenu()">{{ adminOutingsLabel }}</a>
+        <div class="dropdown-panel dropdown-panel-right account-admin-panel" *ngIf="isLoggedIn && isAdmin">
+          <span class="dropdown-section-title">Reservations</span>
+          <a routerLink="/admin/bookings" routerLinkActive="active" (click)="closeMenu()">Confirmed bookings</a>
+          <a routerLink="/admin/proposals" routerLinkActive="active" (click)="closeMenu()">Proposals</a>
+          <a routerLink="/admin/external-bookings" routerLinkActive="active" (click)="closeMenu()">External bookings</a>
+
+          <span class="dropdown-section-title">Boat logs</span>
+          <a routerLink="/admin/outings" routerLinkActive="active" (click)="closeMenu()">Boat log manager</a>
+
+          <span class="dropdown-section-title">Public outing information</span>
+          <a routerLink="/admin/manage-outings" routerLinkActive="active" (click)="closeMenu()">Manage public outings</a>
           <a routerLink="/admin/feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ adminFeedbacksLabel }}</a>
-          <a routerLink="/admin/manage-outings" routerLinkActive="active" (click)="closeMenu()">{{ adminPublicOutingsLabel }}</a>
+
+          <span class="dropdown-section-title">Account</span>
           <a routerLink="/my-profile" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
           <button class="dropdown-action" type="button" (click)="logout()">{{ logoutLabel }}</button>
         </div>
@@ -83,3 +92,4 @@
     </nav>
   </div>
 </header>
+

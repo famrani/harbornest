@@ -1,0 +1,33 @@
+<section class="warranty-charge-page">
+  <div class="container warranty-shell">
+    <span class="eyebrow">Admin</span>
+    <h1>Charge warranty for damage</h1>
+    <p class="intro">
+      Use this only when damage, blocked toilets, missing equipment, extra cleaning or unpaid costs must be charged.
+    </p>
+
+    <article class="warranty-card">
+      <label>
+        Booking / proposal ID
+        <input type="text" [(ngModel)]="bookingId" placeholder="proposal_xxxxx" />
+      </label>
+
+      <label>
+        Amount to charge (€)
+        <input type="number" min="1" step="0.01" [(ngModel)]="amount" />
+      </label>
+
+      <label>
+        Damage / charge reason
+        <textarea rows="5" [(ngModel)]="reason" placeholder="Example: blocked marine toilet, cigarette burn on cushion cover, broken paddle..."></textarea>
+      </label>
+
+      <button class="btn btn-danger" type="button" [disabled]="charging" (click)="chargeWarranty()">
+        {{ charging ? 'Charging...' : 'Charge warranty' }}
+      </button>
+
+      <p class="success" *ngIf="message">{{ message }}</p>
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </article>
+  </div>
+</section>

@@ -777,6 +777,262 @@ const DEFAULT_BN_OUTINGS = [{
 
 /***/ }),
 
+/***/ 8590:
+/*!********************************************************************************!*\
+  !*** ./src/app/home/admin-proposals/admin-proposals.component.scss?ngResource ***!
+  \********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.admin-proposals-page, .proposal-confirmation-page, .external-bookings-page {
+  padding: 80px 0;
+  background: #f6f2ea;
+  min-height: 70vh;
+}
+
+.proposals-shell, .proposal-shell, .external-shell {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.section-head {
+  margin-bottom: 28px;
+  max-width: 780px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: #b58b4a;
+  font-weight: 700;
+}
+
+h1, h2, h3 {
+  color: #08263a;
+}
+
+.card, .proposal-card, .external-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 18px 45px rgba(8, 38, 58, 0.08);
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  margin-bottom: 24px;
+}
+
+.form-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  color: #08263a;
+  font-weight: 700;
+}
+
+input, textarea, select {
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 14px;
+  padding: 11px 13px;
+  font: inherit;
+  background: #fff;
+}
+
+.wide {
+  grid-column: 1/-1;
+}
+
+.calculation, .actions, .toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 18px 0;
+  align-items: end;
+}
+
+.calculation span {
+  background: #f8f5ef;
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: #516070;
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #08263a;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #efe7da;
+  color: #08263a;
+}
+
+.client-link {
+  background: #f8f5ef;
+  padding: 12px;
+  border-radius: 12px;
+  word-break: break-all;
+  color: #516070;
+}
+
+.success {
+  color: #047857;
+  font-weight: 700;
+}
+
+.error, .expired {
+  color: #9f1d1d;
+  font-weight: 700;
+}
+
+.muted {
+  color: #667;
+}
+
+.search-box {
+  flex: 1 1 320px;
+}
+
+.proposal-list {
+  display: grid;
+  gap: 12px;
+}
+
+.proposal-row {
+  display: grid;
+  grid-template-columns: auto 1.2fr 1.2fr 0.8fr auto;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  border-radius: 18px;
+  padding: 16px;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(8, 38, 58, 0.06);
+}
+
+.proposal-row strong, .proposal-row small {
+  display: block;
+}
+
+.proposal-row small {
+  color: #516070;
+}
+
+.status {
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(181, 139, 74, 0.12);
+  color: #8a652d;
+  font-weight: 700;
+}
+
+.mini-link {
+  border: 0;
+  background: transparent;
+  color: #08263a;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.summary-grid div, .step-card, .choice-block {
+  background: #f8f5ef;
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.summary-grid strong, .summary-grid span {
+  display: block;
+}
+
+.summary-grid span {
+  color: #516070;
+  margin-top: 4px;
+}
+
+.terms-check, .radio-card {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: #fff;
+  border: 1px solid rgba(8, 38, 58, 0.1);
+  padding: 14px;
+  border-radius: 14px;
+  margin: 10px 0;
+  color: #516070;
+}
+
+@media (max-width: 800px) {
+  .proposal-row {
+    grid-template-columns: 1fr;
+  }
+}
+.row-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-danger {
+  background: #9f1d1d;
+  color: #fff;
+}
+
+.validity {
+  background: #eef6f0;
+  color: #047857;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.validity.expired,
+.expired {
+  color: #9f1d1d;
+}
+
+.mini-link.danger {
+  color: #9f1d1d;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-proposals/admin-proposals.component.scss"],"names":[],"mappings":"AACA;EAA0E,eAAA;EAAe,mBAAA;EAAmB,gBAAA;AAG5G;;AAFA;EAAiD,iBAAA;EAAiB,cAAA;AAOlE;;AANA;EAAc,mBAAA;EAAmB,gBAAA;AAWjC;;AAXiD;EAAS,yBAAA;EAAyB,sBAAA;EAAqB,kBAAA;EAAiB,cAAA;EAAc,gBAAA;AAmBvI;;AAlBA;EAAS,cAAA;AAsBT;;AAtBuB;EAAoC,gBAAA;EAAgB,mBAAA;EAAmB,aAAA;EAAa,6CAAA;EAAyC,uCAAA;EAAmC,mBAAA;AA+BvL;;AA9BA;EAAY,aAAA;EAAa,8BAAA;EAA8B,SAAA;EAAS,mBAAA;AAqChE;;AArCmF;EAAW,aAAA;EAAa,2DAAA;EAAyD,SAAA;AA2CpK;;AA1CA;EAAM,aAAA;EAAa,QAAA;EAAQ,cAAA;EAAc,gBAAA;AAiDzC;;AAjDyD;EAAsB,uCAAA;EAAmC,mBAAA;EAAmB,kBAAA;EAAkB,aAAA;EAAa,gBAAA;AAyDpK;;AAzDoL;EAAM,iBAAA;AA6D1L;;AA5DA;EAA+B,aAAA;EAAa,eAAA;EAAe,SAAA;EAAS,cAAA;EAAc,gBAAA;AAoElF;;AApEkG;EAAkB,mBAAA;EAAmB,kBAAA;EAAkB,oBAAA;EAAoB,cAAA;AA2E7K;;AA1EA;EAAK,SAAA;EAAS,oBAAA;EAAoB,kBAAA;EAAkB,gBAAA;EAAgB,eAAA;AAkFpE;;AAlFmF;EAAa,mBAAA;EAAmB,WAAA;AAuFnH;;AAvF8H;EAAe,mBAAA;EAAmB,cAAA;AA4FhK;;AA3FA;EAAa,mBAAA;EAAmB,aAAA;EAAa,mBAAA;EAAmB,qBAAA;EAAqB,cAAA;AAmGrF;;AAnGmG;EAAS,cAAA;EAAc,gBAAA;AAwG1H;;AAxG0I;EAAgB,cAAA;EAAc,gBAAA;AA6GxK;;AA7GwL;EAAO,WAAA;AAiH/L;;AAjH0M;EAAY,eAAA;AAqHtN;;AApHA;EAAe,aAAA;EAAa,SAAA;AAyH5B;;AAzHqC;EAAc,aAAA;EAAa,kDAAA;EAAiD,SAAA;EAAS,mBAAA;EAAmB,WAAA;EAAW,gBAAA;EAAgB,gBAAA;EAAgB,uCAAA;EAAmC,mBAAA;EAAmB,aAAA;EAAa,eAAA;EAAe,6CAAA;AAwI1Q;;AAvIA;EAAyC,cAAA;AA2IzC;;AA3IuD;EAAoB,cAAA;AA+I3E;;AA/IyF;EAAQ,oBAAA;EAAoB,iBAAA;EAAiB,oCAAA;EAAgC,cAAA;EAAc,gBAAA;AAuJpL;;AAvJoM;EAAW,SAAA;EAAS,uBAAA;EAAuB,cAAA;EAAc,0BAAA;EAA0B,eAAA;EAAe,gBAAA;AAgKtS;;AA/JA;EAAc,aAAA;EAAa,2DAAA;EAAyD,SAAA;EAAS,cAAA;AAsK7F;;AAtK2G;EAA2C,mBAAA;EAAmB,mBAAA;EAAmB,aAAA;AA4K5L;;AA5KyM;EAAwC,cAAA;AAgLjP;;AAhL+P;EAAmB,cAAA;EAAc,eAAA;AAqLhS;;AApLA;EAAyB,aAAA;EAAa,SAAA;EAAS,uBAAA;EAAuB,gBAAA;EAAgB,sCAAA;EAAkC,aAAA;EAAa,mBAAA;EAAmB,cAAA;EAAc,cAAA;AAgMtK;;AA/LA;EAAwB;IAAc,0BAAA;EAoMpC;AACF;AAnMA;EACE,aAAA;EACA,YAAA;EACA,eAAA;AAqMF;;AAlMA;EACE,mBAAA;EACA,WAAA;AAqMF;;AAlMA;EACE,mBAAA;EACA,cAAA;EACA,qBAAA;EACA,mBAAA;EACA,gBAAA;AAqMF;;AAlMA;;EAEE,cAAA;AAqMF;;AAlMA;EACE,cAAA;AAqMF","sourcesContent":["\n.admin-proposals-page,.proposal-confirmation-page,.external-bookings-page{padding:80px 0;background:#f6f2ea;min-height:70vh}\n.proposals-shell,.proposal-shell,.external-shell{max-width:1120px;margin:0 auto}\n.section-head{margin-bottom:28px;max-width:780px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;color:#b58b4a;font-weight:700}\nh1,h2,h3{color:#08263a}.card,.proposal-card,.external-card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 18px 45px rgba(8,38,58,.08);border:1px solid rgba(8,38,58,.08);margin-bottom:24px}\n.form-title{display:flex;justify-content:space-between;gap:1rem;align-items:center}.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}\nlabel{display:grid;gap:6px;color:#08263a;font-weight:700}input,textarea,select{border:1px solid rgba(8,38,58,.16);border-radius:14px;padding:11px 13px;font:inherit;background:#fff}.wide{grid-column:1/-1}\n.calculation,.actions,.toolbar{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0;align-items:end}.calculation span{background:#f8f5ef;padding:10px 14px;border-radius:999px;color:#516070}\n.btn{border:0;border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer}.btn-primary{background:#08263a;color:#fff}.btn-secondary{background:#efe7da;color:#08263a}\n.client-link{background:#f8f5ef;padding:12px;border-radius:12px;word-break:break-all;color:#516070}.success{color:#047857;font-weight:700}.error,.expired{color:#9f1d1d;font-weight:700}.muted{color:#667}.search-box{flex:1 1 320px}\n.proposal-list{display:grid;gap:12px}.proposal-row{display:grid;grid-template-columns:auto 1.2fr 1.2fr .8fr auto;gap:16px;align-items:center;width:100%;text-align:left;background:#fff;border:1px solid rgba(8,38,58,.08);border-radius:18px;padding:16px;cursor:pointer;box-shadow:0 10px 28px rgba(8,38,58,.06)}\n.proposal-row strong,.proposal-row small{display:block}.proposal-row small{color:#516070}.status{border-radius:999px;padding:6px 10px;background:rgba(181,139,74,.12);color:#8a652d;font-weight:700}.mini-link{border:0;background:transparent;color:#08263a;text-decoration:underline;cursor:pointer;font-weight:700}\n.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:20px 0}.summary-grid div,.step-card,.choice-block{background:#f8f5ef;border-radius:18px;padding:16px}.summary-grid strong,.summary-grid span{display:block}.summary-grid span{color:#516070;margin-top:4px}\n.terms-check,.radio-card{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid rgba(8,38,58,.1);padding:14px;border-radius:14px;margin:10px 0;color:#516070}\n@media(max-width:800px){.proposal-row{grid-template-columns:1fr}}\n\n.row-actions {\n  display: flex;\n  gap: 0.75rem;\n  flex-wrap: wrap;\n}\n\n.btn-danger {\n  background: #9f1d1d;\n  color: #fff;\n}\n\n.validity {\n  background: #eef6f0;\n  color: #047857;\n  padding: 0.75rem 1rem;\n  border-radius: 12px;\n  font-weight: 700;\n}\n\n.validity.expired,\n.expired {\n  color: #9f1d1d;\n}\n\n.mini-link.danger {\n  color: #9f1d1d;\n}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
 /***/ 9178:
 /*!**************************************************************************************!*\
   !*** ./src/app/home/tours/business-outing/business-outing.component.html?ngResource ***!
@@ -1177,7 +1433,7 @@ AdminFeedbacksComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"deposit-page\">\n  <div class=\"container deposit-layout\">\n    <div class=\"deposit-copy\">\n      <span class=\"eyebrow\">{{ copy.eyebrow }}</span>\n      <h1>{{ copy.title }}</h1>\n      <p>{{ copy.intro }}</p>\n\n      <div class=\"summary-card\">\n        <h2>{{ copy.includedTitle }}</h2>\n        <ul>\n          <li *ngFor=\"let item of copy.included\">{{ item }}</li>\n        </ul>\n        <p class=\"note\">{{ copy.note }}</p>\n      </div>\n    </div>\n\n    <form class=\"deposit-card\" (ngSubmit)=\"payDeposit()\">\n      <label>\n        <span>{{ copy.customerName }}</span>\n        <input type=\"text\" name=\"customerName\" [(ngModel)]=\"customerName\" autocomplete=\"name\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.customerEmail }}</span>\n        <input type=\"email\" name=\"customerEmail\" [(ngModel)]=\"customerEmail\" autocomplete=\"email\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.outingDate }}</span>\n        <input type=\"date\" name=\"outingDate\" [(ngModel)]=\"outingDate\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.outingType }}</span>\n        <input type=\"text\" name=\"outingType\" [(ngModel)]=\"outingType\" />\n      </label>\n\n      <label>\n        <span>{{ copy.totalPrice }}</span>\n        <input type=\"number\" name=\"totalPrice\" [(ngModel)]=\"totalPrice\" min=\"1\" step=\"0.01\" required />\n      </label>\n\n      <div class=\"deposit-total\">\n        <span>{{ copy.deposit }}</span>\n        <strong>{{ formatAmount(depositAmount) }}</strong>\n      </div>\n\n      <p class=\"error\" *ngIf=\"errorMessage\">{{ errorMessage }}</p>\n\n      <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"isLoading\">\n        {{ isLoading ? copy.loading : copy.payDeposit }}\n      </button>\n\n      <p class=\"secure\">{{ copy.securePayment }}</p>\n    </form>\n\n    <section class=\"deposit-card admin-warranty-card\" *ngIf=\"isAdmin && booking\">\n      <span class=\"eyebrow\">Admin</span>\n      <h2>Warranty / damage charge</h2>\n      <p class=\"note\">This admin area is only for charging the warranty if damage has been confirmed. Clients should use the deposit payment flow.</p>\n\n      <div class=\"deposit-total\">\n        <span>Warranty status</span>\n        <strong>{{ warrantyStatusLabel }}</strong>\n      </div>\n\n      <label>\n        <span>Amount to charge</span>\n        <input type=\"number\" name=\"warrantyChargeAmount\" [(ngModel)]=\"warrantyChargeAmount\" min=\"1\" step=\"0.01\" />\n      </label>\n\n      <label>\n        <span>Reason / damage note</span>\n        <textarea name=\"warrantyReason\" rows=\"4\" [(ngModel)]=\"warrantyReason\" placeholder=\"Describe the damage or reason for charging the warranty\"></textarea>\n      </label>\n\n      <p class=\"error\" *ngIf=\"warrantyError\">{{ warrantyError }}</p>\n      <p class=\"success\" *ngIf=\"warrantyMessage\">{{ warrantyMessage }}</p>\n\n      <button type=\"button\" class=\"btn btn-primary danger\" [disabled]=\"isChargingWarranty\" (click)=\"chargeWarranty()\">\n        {{ isChargingWarranty ? 'Charging...' : 'Charge warranty' }}\n      </button>\n    </section>\n\n  </div>\n</section>\n";
+module.exports = "<section class=\"deposit-page\">\n  <div class=\"container deposit-layout\">\n    <div class=\"deposit-copy\">\n      <span class=\"eyebrow\">{{ isWarrantyAdminMode ? 'Admin warranty' : copy.eyebrow }}</span>\n      <h1>{{ isWarrantyAdminMode ? 'Charge warranty for damage' : copy.title }}</h1>\n      <p *ngIf=\"!isWarrantyAdminMode\">{{ copy.intro }}</p>\n      <p *ngIf=\"isWarrantyAdminMode\">\n        This admin page is only for charging an amount from the registered warranty after confirmed damage.\n      </p>\n\n      <p class=\"success\" *ngIf=\"paymentReturnMessage\">{{ paymentReturnMessage }}</p>\n\n      <div class=\"summary-card\">\n        <h2>{{ isWarrantyAdminMode ? 'Booking summary' : copy.includedTitle }}</h2>\n\n        <ng-container *ngIf=\"!isWarrantyAdminMode\">\n          <ul>\n            <li *ngFor=\"let item of copy.included\">{{ item }}</li>\n          </ul>\n          <p class=\"note\">{{ copy.note }}</p>\n        </ng-container>\n\n        <ng-container *ngIf=\"isWarrantyAdminMode && booking\">\n          <div class=\"summary-lines\">\n            <div><strong>Customer</strong><span>{{ customerName || '-' }}</span></div>\n            <div><strong>Email</strong><span>{{ customerEmail || '-' }}</span></div>\n            <div><strong>Outing</strong><span>{{ outingType || '-' }}</span></div>\n            <div><strong>Date</strong><span>{{ outingDate || '-' }}</span></div>\n            <div><strong>Warranty amount</strong><span>{{ formatAmount(chargeableWarrantyAmount) }}</span></div>\n            <div><strong>Warranty status</strong><span>{{ warrantyStatusLabel }}</span></div>\n          </div>\n        </ng-container>\n      </div>\n    </div>\n\n    <form class=\"deposit-card\" *ngIf=\"showDepositPayment\" (ngSubmit)=\"payDeposit()\">\n      <label>\n        <span>{{ copy.customerName }}</span>\n        <input type=\"text\" name=\"customerName\" [(ngModel)]=\"customerName\" autocomplete=\"name\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.customerEmail }}</span>\n        <input type=\"email\" name=\"customerEmail\" [(ngModel)]=\"customerEmail\" autocomplete=\"email\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.outingDate }}</span>\n        <input type=\"date\" name=\"outingDate\" [(ngModel)]=\"outingDate\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.outingType }}</span>\n        <input type=\"text\" name=\"outingType\" [(ngModel)]=\"outingType\" />\n      </label>\n\n      <label>\n        <span>{{ copy.totalPrice }}</span>\n        <input type=\"number\" name=\"totalPrice\" [(ngModel)]=\"totalPrice\" min=\"1\" step=\"0.01\" required />\n      </label>\n\n      <div class=\"deposit-total\">\n        <span>{{ copy.deposit }}</span>\n        <strong>{{ formatAmount(depositAmount) }}</strong>\n      </div>\n\n      <p class=\"error\" *ngIf=\"errorMessage\">{{ errorMessage }}</p>\n\n      <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"isLoading\">\n        {{ isLoading ? copy.loading : copy.payDeposit }}\n      </button>\n\n      <p class=\"secure\">{{ copy.securePayment }}</p>\n    </form>\n\n    <section class=\"deposit-card warranty-setup-card\" *ngIf=\"showWarrantyRegistration\">\n      <span class=\"eyebrow\">Warranty</span>\n      <h2>Register warranty card</h2>\n      <p class=\"note\">This securely registers a card with Stripe for the damage deposit. It does not charge the customer now.</p>\n\n      <div class=\"deposit-total\">\n        <span>Warranty amount</span>\n        <strong>{{ formatAmount(warrantyAmount) }}</strong>\n      </div>\n\n      <p class=\"success\" *ngIf=\"warrantySetupMessage\">{{ warrantySetupMessage }}</p>\n\n      <button type=\"button\" class=\"btn btn-secondary\" [disabled]=\"isWarrantyLoading || !canRegisterWarranty\" (click)=\"registerWarrantyCard()\">\n        {{ isWarrantyLoading ? 'Redirecting to Stripe...' : 'Register warranty card' }}\n      </button>\n\n      <p class=\"secure\">Secure card registration by Stripe</p>\n    </section>\n\n    <section class=\"deposit-card admin-warranty-card\" *ngIf=\"isWarrantyAdminMode && booking\">\n      <span class=\"eyebrow\">Admin</span>\n      <h2>Charge damage amount</h2>\n      <p class=\"note\">\n        Enter the amount to charge within the registered warranty and describe the damage.\n      </p>\n\n      <div class=\"deposit-total\">\n        <span>Maximum warranty</span>\n        <strong>{{ formatAmount(chargeableWarrantyAmount) }}</strong>\n      </div>\n\n      <label>\n        <span>Amount to charge</span>\n        <input type=\"number\" name=\"warrantyChargeAmount\" [(ngModel)]=\"warrantyChargeAmount\" min=\"1\" [max]=\"chargeableWarrantyAmount || null\" step=\"0.01\" />\n      </label>\n\n      <label>\n        <span>Damage details / reason</span>\n        <textarea name=\"warrantyReason\" rows=\"5\" [(ngModel)]=\"warrantyReason\" placeholder=\"Example: damaged cushion, missing equipment, repair invoice reference...\"></textarea>\n      </label>\n\n      <p class=\"error\" *ngIf=\"warrantyError\">{{ warrantyError }}</p>\n      <p class=\"success\" *ngIf=\"warrantyMessage\">{{ warrantyMessage }}</p>\n\n      <button type=\"button\" class=\"btn btn-primary danger\" [disabled]=\"isChargingWarranty\" (click)=\"chargeWarranty()\">\n        {{ isChargingWarranty ? 'Charging...' : 'Charge warranty amount' }}\n      </button>\n    </section>\n\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -1982,6 +2238,23 @@ let MyBookingsComponent = class MyBookingsComponent {
       this.loading = false;
     });
   }
+  getDepositAmount(booking) {
+    const total = Number(booking.totalPrice || 0);
+    return Number(booking.depositAmount || (total ? Math.round(total * 0.1 * 100) / 100 : 0));
+  }
+  getBalanceAmount(booking) {
+    const total = Number(booking.totalPrice || 0);
+    return Number(booking.balanceAmount || Math.max(0, Math.round((total - this.getDepositAmount(booking)) * 100) / 100));
+  }
+  isDepositPaid(booking) {
+    const anyBooking = booking;
+    const depositPayment = anyBooking?.payments?.deposit || {};
+    const legacyPayment = anyBooking?.payment || {};
+    return anyBooking.depositPaid === true || anyBooking.depositStatus === 'paid' || anyBooking.depositStatus === 'deposit_paid' || anyBooking.paymentStatus === 'paid' || anyBooking.paymentStatus === 'charge_succeeded' || legacyPayment.depositPaid === true || legacyPayment.paid === true || legacyPayment.status === 'paid' || legacyPayment.status === 'deposit_paid' || depositPayment.depositPaid === true || depositPayment.paid === true || depositPayment.status === 'paid' || depositPayment.status === 'deposit_paid';
+  }
+  getDepositLabel(booking) {
+    return this.isDepositPaid(booking) ? 'Acompte payé' : 'Acompte à payer';
+  }
   openBooking(booking) {
     this.router.navigate(['/bookings', booking.bookingId]);
   }
@@ -2013,6 +2286,250 @@ MyBookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_ang
 
 "use strict";
 module.exports = "<section class=\"admin-page\">\n  <div class=\"container\">\n    <div class=\"admin-head\">\n      <span class=\"eyebrow\">Admin</span>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n\n    <p class=\"alert error\" *ngIf=\"error\">{{ error }}</p>\n    <p class=\"alert success\" *ngIf=\"message\">{{ message }}</p>\n\n    <div class=\"admin-grid\" *ngIf=\"!loading\">\n      <aside class=\"outing-list\">\n        <button type=\"button\" *ngFor=\"let outing of outings\" [class.active]=\"selected?.slug === outing.slug\" (click)=\"select(outing)\">\n          <strong>{{ outing[currentLanguage]?.title || outing.fr.title }}</strong>\n          <small>{{ outing.slug }}</small>\n        </button>\n      </aside>\n\n      <form class=\"editor\" *ngIf=\"selected\" (ngSubmit)=\"save()\">\n        <div class=\"editor-row compact\">\n          <label><input type=\"checkbox\" [(ngModel)]=\"selected.active\" name=\"active\" /> {{ t('active') }}</label>\n        </div>\n\n        <div class=\"editor-row\">\n          <label>{{ t('image') }}</label>\n          <input type=\"text\" [(ngModel)]=\"selected.image\" name=\"image\" />\n        </div>\n\n        <div class=\"editor-row\">\n          <label>{{ t('price') }}</label>\n          <input type=\"number\" [(ngModel)]=\"selected.priceFrom\" name=\"priceFrom\" />\n        </div>\n\n        <div class=\"lang-block\" *ngFor=\"let lang of ['fr', 'en', 'es']\">\n          <h2>{{ lang | uppercase }}</h2>\n          <div class=\"editor-row\"><label>Title</label><input type=\"text\" [(ngModel)]=\"selected[lang].title\" name=\"title-{{lang}}\" /></div>\n          <div class=\"editor-row\"><label>{{ t('duration') }}</label><input type=\"text\" [(ngModel)]=\"selected[lang].duration\" name=\"duration-{{lang}}\" /></div>\n          <div class=\"editor-row\"><label>{{ t('guests') }}</label><input type=\"text\" [(ngModel)]=\"selected[lang].guests\" name=\"guests-{{lang}}\" /></div>\n          <div class=\"editor-row\"><label>Price label</label><input type=\"text\" [(ngModel)]=\"selected[lang].priceLabel\" name=\"priceLabel-{{lang}}\" /></div>\n          <div class=\"editor-row\"><label>{{ t('description') }}</label><textarea rows=\"4\" [(ngModel)]=\"selected[lang].description\" name=\"description-{{lang}}\"></textarea></div>\n\n          <div class=\"editor-row\">\n            <label>{{ t('highlights') }}</label>\n            <div class=\"highlight-row\" *ngFor=\"let item of selected[lang].highlights; let i = index\">\n              <input type=\"text\" [(ngModel)]=\"selected[lang].highlights![i]\" name=\"highlight-{{lang}}-{{i}}\" />\n              <button type=\"button\" class=\"small-danger\" (click)=\"removeHighlight(lang, i)\">×</button>\n            </div>\n            <button type=\"button\" class=\"secondary\" (click)=\"addHighlight(lang)\">+ Add</button>\n          </div>\n        </div>\n\n        <button type=\"submit\" class=\"primary\" [disabled]=\"saving\">{{ saving ? t('saving') : t('save') }}</button>\n      </form>\n    </div>\n  </div>\n</section>\n";
+
+/***/ }),
+
+/***/ 19182:
+/*!********************************************************************************************!*\
+  !*** ./src/app/home/proposal-confirmation/proposal-confirmation.component.scss?ngResource ***!
+  \********************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.admin-proposals-page, .proposal-confirmation-page, .external-bookings-page {
+  padding: 80px 0;
+  background: #f6f2ea;
+  min-height: 70vh;
+}
+
+.proposals-shell, .proposal-shell, .external-shell {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.section-head {
+  margin-bottom: 28px;
+  max-width: 780px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: #b58b4a;
+  font-weight: 700;
+}
+
+h1, h2, h3 {
+  color: #08263a;
+}
+
+.card, .proposal-card, .external-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 18px 45px rgba(8, 38, 58, 0.08);
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  margin-bottom: 24px;
+}
+
+.form-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  color: #08263a;
+  font-weight: 700;
+}
+
+input, textarea, select {
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 14px;
+  padding: 11px 13px;
+  font: inherit;
+  background: #fff;
+}
+
+.wide {
+  grid-column: 1/-1;
+}
+
+.calculation, .actions, .toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 18px 0;
+  align-items: end;
+}
+
+.calculation span {
+  background: #f8f5ef;
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: #516070;
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #08263a;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #efe7da;
+  color: #08263a;
+}
+
+.client-link {
+  background: #f8f5ef;
+  padding: 12px;
+  border-radius: 12px;
+  word-break: break-all;
+  color: #516070;
+}
+
+.success {
+  color: #047857;
+  font-weight: 700;
+}
+
+.error, .expired {
+  color: #9f1d1d;
+  font-weight: 700;
+}
+
+.muted {
+  color: #667;
+}
+
+.search-box {
+  flex: 1 1 320px;
+}
+
+.proposal-list {
+  display: grid;
+  gap: 12px;
+}
+
+.proposal-row {
+  display: grid;
+  grid-template-columns: auto 1.2fr 1.2fr 0.8fr auto;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  border-radius: 18px;
+  padding: 16px;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(8, 38, 58, 0.06);
+}
+
+.proposal-row strong, .proposal-row small {
+  display: block;
+}
+
+.proposal-row small {
+  color: #516070;
+}
+
+.status {
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(181, 139, 74, 0.12);
+  color: #8a652d;
+  font-weight: 700;
+}
+
+.mini-link {
+  border: 0;
+  background: transparent;
+  color: #08263a;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.summary-grid div, .step-card, .choice-block {
+  background: #f8f5ef;
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.summary-grid strong, .summary-grid span {
+  display: block;
+}
+
+.summary-grid span {
+  color: #516070;
+  margin-top: 4px;
+}
+
+.terms-check, .radio-card {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: #fff;
+  border: 1px solid rgba(8, 38, 58, 0.1);
+  padding: 14px;
+  border-radius: 14px;
+  margin: 10px 0;
+  color: #516070;
+}
+
+@media (max-width: 800px) {
+  .proposal-row {
+    grid-template-columns: 1fr;
+  }
+}
+.step-card.paid {
+  border: 1px solid rgba(4, 120, 87, 0.22);
+  background: #eef6f0;
+}
+
+.paid-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  background: #047857;
+  color: #fff;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/proposal-confirmation/proposal-confirmation.component.scss"],"names":[],"mappings":"AACA;EAA0E,eAAA;EAAe,mBAAA;EAAmB,gBAAA;AAG5G;;AAFA;EAAiD,iBAAA;EAAiB,cAAA;AAOlE;;AANA;EAAc,mBAAA;EAAmB,gBAAA;AAWjC;;AAXiD;EAAS,yBAAA;EAAyB,sBAAA;EAAqB,kBAAA;EAAiB,cAAA;EAAc,gBAAA;AAmBvI;;AAlBA;EAAS,cAAA;AAsBT;;AAtBuB;EAAoC,gBAAA;EAAgB,mBAAA;EAAmB,aAAA;EAAa,6CAAA;EAAyC,uCAAA;EAAmC,mBAAA;AA+BvL;;AA9BA;EAAY,aAAA;EAAa,8BAAA;EAA8B,SAAA;EAAS,mBAAA;AAqChE;;AArCmF;EAAW,aAAA;EAAa,2DAAA;EAAyD,SAAA;AA2CpK;;AA1CA;EAAM,aAAA;EAAa,QAAA;EAAQ,cAAA;EAAc,gBAAA;AAiDzC;;AAjDyD;EAAsB,uCAAA;EAAmC,mBAAA;EAAmB,kBAAA;EAAkB,aAAA;EAAa,gBAAA;AAyDpK;;AAzDoL;EAAM,iBAAA;AA6D1L;;AA5DA;EAA+B,aAAA;EAAa,eAAA;EAAe,SAAA;EAAS,cAAA;EAAc,gBAAA;AAoElF;;AApEkG;EAAkB,mBAAA;EAAmB,kBAAA;EAAkB,oBAAA;EAAoB,cAAA;AA2E7K;;AA1EA;EAAK,SAAA;EAAS,oBAAA;EAAoB,kBAAA;EAAkB,gBAAA;EAAgB,eAAA;AAkFpE;;AAlFmF;EAAa,mBAAA;EAAmB,WAAA;AAuFnH;;AAvF8H;EAAe,mBAAA;EAAmB,cAAA;AA4FhK;;AA3FA;EAAa,mBAAA;EAAmB,aAAA;EAAa,mBAAA;EAAmB,qBAAA;EAAqB,cAAA;AAmGrF;;AAnGmG;EAAS,cAAA;EAAc,gBAAA;AAwG1H;;AAxG0I;EAAgB,cAAA;EAAc,gBAAA;AA6GxK;;AA7GwL;EAAO,WAAA;AAiH/L;;AAjH0M;EAAY,eAAA;AAqHtN;;AApHA;EAAe,aAAA;EAAa,SAAA;AAyH5B;;AAzHqC;EAAc,aAAA;EAAa,kDAAA;EAAiD,SAAA;EAAS,mBAAA;EAAmB,WAAA;EAAW,gBAAA;EAAgB,gBAAA;EAAgB,uCAAA;EAAmC,mBAAA;EAAmB,aAAA;EAAa,eAAA;EAAe,6CAAA;AAwI1Q;;AAvIA;EAAyC,cAAA;AA2IzC;;AA3IuD;EAAoB,cAAA;AA+I3E;;AA/IyF;EAAQ,oBAAA;EAAoB,iBAAA;EAAiB,oCAAA;EAAgC,cAAA;EAAc,gBAAA;AAuJpL;;AAvJoM;EAAW,SAAA;EAAS,uBAAA;EAAuB,cAAA;EAAc,0BAAA;EAA0B,eAAA;EAAe,gBAAA;AAgKtS;;AA/JA;EAAc,aAAA;EAAa,2DAAA;EAAyD,SAAA;EAAS,cAAA;AAsK7F;;AAtK2G;EAA2C,mBAAA;EAAmB,mBAAA;EAAmB,aAAA;AA4K5L;;AA5KyM;EAAwC,cAAA;AAgLjP;;AAhL+P;EAAmB,cAAA;EAAc,eAAA;AAqLhS;;AApLA;EAAyB,aAAA;EAAa,SAAA;EAAS,uBAAA;EAAuB,gBAAA;EAAgB,sCAAA;EAAkC,aAAA;EAAa,mBAAA;EAAmB,cAAA;EAAc,cAAA;AAgMtK;;AA/LA;EAAwB;IAAc,0BAAA;EAoMpC;AACF;AAnMA;EACE,wCAAA;EACA,mBAAA;AAqMF;;AAlMA;EACE,oBAAA;EACA,mBAAA;EACA,oBAAA;EACA,uBAAA;EACA,mBAAA;EACA,WAAA;EACA,gBAAA;EACA,kBAAA;AAqMF","sourcesContent":["\n.admin-proposals-page,.proposal-confirmation-page,.external-bookings-page{padding:80px 0;background:#f6f2ea;min-height:70vh}\n.proposals-shell,.proposal-shell,.external-shell{max-width:1120px;margin:0 auto}\n.section-head{margin-bottom:28px;max-width:780px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;color:#b58b4a;font-weight:700}\nh1,h2,h3{color:#08263a}.card,.proposal-card,.external-card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 18px 45px rgba(8,38,58,.08);border:1px solid rgba(8,38,58,.08);margin-bottom:24px}\n.form-title{display:flex;justify-content:space-between;gap:1rem;align-items:center}.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}\nlabel{display:grid;gap:6px;color:#08263a;font-weight:700}input,textarea,select{border:1px solid rgba(8,38,58,.16);border-radius:14px;padding:11px 13px;font:inherit;background:#fff}.wide{grid-column:1/-1}\n.calculation,.actions,.toolbar{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0;align-items:end}.calculation span{background:#f8f5ef;padding:10px 14px;border-radius:999px;color:#516070}\n.btn{border:0;border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer}.btn-primary{background:#08263a;color:#fff}.btn-secondary{background:#efe7da;color:#08263a}\n.client-link{background:#f8f5ef;padding:12px;border-radius:12px;word-break:break-all;color:#516070}.success{color:#047857;font-weight:700}.error,.expired{color:#9f1d1d;font-weight:700}.muted{color:#667}.search-box{flex:1 1 320px}\n.proposal-list{display:grid;gap:12px}.proposal-row{display:grid;grid-template-columns:auto 1.2fr 1.2fr .8fr auto;gap:16px;align-items:center;width:100%;text-align:left;background:#fff;border:1px solid rgba(8,38,58,.08);border-radius:18px;padding:16px;cursor:pointer;box-shadow:0 10px 28px rgba(8,38,58,.06)}\n.proposal-row strong,.proposal-row small{display:block}.proposal-row small{color:#516070}.status{border-radius:999px;padding:6px 10px;background:rgba(181,139,74,.12);color:#8a652d;font-weight:700}.mini-link{border:0;background:transparent;color:#08263a;text-decoration:underline;cursor:pointer;font-weight:700}\n.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:20px 0}.summary-grid div,.step-card,.choice-block{background:#f8f5ef;border-radius:18px;padding:16px}.summary-grid strong,.summary-grid span{display:block}.summary-grid span{color:#516070;margin-top:4px}\n.terms-check,.radio-card{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid rgba(8,38,58,.1);padding:14px;border-radius:14px;margin:10px 0;color:#516070}\n@media(max-width:800px){.proposal-row{grid-template-columns:1fr}}\n\n.step-card.paid {\n  border: 1px solid rgba(4, 120, 87, 0.22);\n  background: #eef6f0;\n}\n\n.paid-badge {\n  display: inline-flex;\n  align-items: center;\n  border-radius: 999px;\n  padding: 0.45rem 0.8rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n  margin-top: 0.5rem;\n}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
 
 /***/ }),
 
@@ -2133,6 +2650,7 @@ let DepositComponent = class DepositComponent {
   outingType = 'Journée en mer';
   totalPrice = null;
   currency = 'eur';
+  paymentMode = 'deposit';
   bookingId = '';
   ownerId = '';
   booking;
@@ -2143,7 +2661,11 @@ let DepositComponent = class DepositComponent {
   warrantyMessage = '';
   warrantyError = '';
   isLoading = false;
+  isWarrantyLoading = false;
   errorMessage = '';
+  warrantySetupMessage = '';
+  paymentReturnMessage = '';
+  paymentStatus = null;
   languageSub;
   userSub;
   constructor(http, route, languageService, utilsSvc, bookingApi, mainSvc) {
@@ -2178,7 +2700,10 @@ let DepositComponent = class DepositComponent {
           this.outingDate = booking.outingDate || this.outingDate;
           this.outingType = booking.outingType || this.outingType;
           this.totalPrice = booking.totalPrice || this.totalPrice;
+          this.ownerId = booking.ownerId || booking.raw && (booking.raw.ownerId || booking.raw.owner || booking.raw.hostId) || this.ownerId;
           this.warrantyChargeAmount = booking.warrantyAmount || this.warrantyChargeAmount;
+          this.paymentStatus = booking.payments || booking.paymentStatus || null;
+          this.loadPaymentStatus();
         }
       });
     }
@@ -2189,10 +2714,19 @@ let DepositComponent = class DepositComponent {
       this.outingType = params.get('outing') || params.get('outingType') || this.outingType;
       this.bookingId = params.get('bookingId') || this.bookingId;
       this.ownerId = params.get('ownerId') || this.ownerId;
+      this.paymentMode = params.get('mode') || this.paymentMode;
       const total = params.get('total') || params.get('totalPrice') || params.get('amount');
       if (total !== null && total !== '') {
         const parsed = Number(total);
         this.totalPrice = Number.isFinite(parsed) ? parsed : this.totalPrice;
+      }
+      const payment = params.get('payment');
+      const paymentType = params.get('paymentType');
+      if (payment === 'success') {
+        this.paymentReturnMessage = paymentType === 'warranty' ? 'Warranty card registration completed successfully.' : 'Deposit payment completed successfully.';
+        this.loadPaymentStatus();
+      } else if (payment === 'cancelled') {
+        this.paymentReturnMessage = paymentType === 'warranty' ? 'Warranty card registration was cancelled.' : 'Deposit payment was cancelled.';
       }
     });
   }
@@ -2203,6 +2737,18 @@ let DepositComponent = class DepositComponent {
   get isAdmin() {
     const role = String(this.loggedUser?.role || '').toLowerCase();
     return role === 'admin' || this.loggedUser?.isAdmin === true;
+  }
+  get isWarrantyAdminMode() {
+    return this.isAdmin && this.paymentMode === 'warranty';
+  }
+  get showDepositPayment() {
+    return !this.isWarrantyAdminMode;
+  }
+  get showWarrantyRegistration() {
+    return !this.isWarrantyAdminMode && !!this.booking && this.warrantyAmount > 0;
+  }
+  get chargeableWarrantyAmount() {
+    return Number(this.booking?.warrantyAmount || this.warrantyChargeAmount || 0);
   }
   get warrantyAmount() {
     return Number(this.booking?.warrantyAmount || this.warrantyChargeAmount || 0);
@@ -2226,6 +2772,55 @@ let DepositComponent = class DepositComponent {
       currency: 'EUR'
     }).format(value);
   }
+  get canRegisterWarranty() {
+    return Boolean(this.customerName.trim() && this.customerEmail.trim() && this.outingDate && this.warrantyAmount && this.warrantyAmount > 0 && this.bookingId && this.ownerId);
+  }
+  loadPaymentStatus() {
+    if (!this.bookingId) return;
+    this.bookingApi.getPaymentStatus(this.bookingId).subscribe({
+      next: status => {
+        this.paymentStatus = status?.payments || status || this.paymentStatus;
+      },
+      error: () => {}
+    });
+  }
+  registerWarrantyCard() {
+    this.errorMessage = '';
+    this.warrantySetupMessage = '';
+    if (!this.canRegisterWarranty) {
+      this.warrantySetupMessage = 'Missing booking, owner, customer or warranty amount information.';
+      return;
+    }
+    this.isWarrantyLoading = true;
+    const baseReturnUrl = `${window.location.origin}/payment/${this.bookingId}`;
+    this.bookingApi.createWarrantySetup({
+      bookingId: this.bookingId,
+      ownerId: this.ownerId,
+      warrantyAmount: this.warrantyAmount,
+      currency: this.currency,
+      customerName: this.customerName.trim(),
+      customerEmail: this.customerEmail.trim(),
+      customerPhone: this.booking?.customerPhone || this.booking?.phone || '',
+      outingDate: this.outingDate,
+      outingType: this.outingType,
+      successUrl: baseReturnUrl,
+      cancelUrl: baseReturnUrl
+    }).subscribe({
+      next: response => {
+        const checkoutUrl = response.url || response.checkoutUrl || response.sessionUrl;
+        if (checkoutUrl) {
+          window.location.href = checkoutUrl;
+        } else {
+          this.isWarrantyLoading = false;
+          this.warrantySetupMessage = 'Warranty registration could not be initialized.';
+        }
+      },
+      error: () => {
+        this.isWarrantyLoading = false;
+        this.warrantySetupMessage = 'Warranty registration could not be initialized.';
+      }
+    });
+  }
   chargeWarranty() {
     var _this = this;
     this.warrantyError = '';
@@ -2247,8 +2842,12 @@ let DepositComponent = class DepositComponent {
       this.warrantyError = 'Please enter the reason for charging the warranty.';
       return;
     }
+    if (this.chargeableWarrantyAmount && amount > this.chargeableWarrantyAmount) {
+      this.warrantyError = 'The amount exceeds the registered warranty amount.';
+      return;
+    }
     this.isChargingWarranty = true;
-    this.bookingApi.chargeWarranty(this.bookingId, amount, this.warrantyReason.trim()).subscribe({
+    this.bookingApi.chargeWarranty(this.bookingId, amount, this.warrantyReason.trim(), this.ownerId).subscribe({
       next: function () {
         var _ref = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
           try {
@@ -2279,31 +2878,24 @@ let DepositComponent = class DepositComponent {
       this.errorMessage = this.copy.requiredNotice;
       return;
     }
+    if (!this.bookingId || !this.ownerId) {
+      this.errorMessage = 'Missing booking id or owner id for Stripe payment.';
+      return;
+    }
     this.isLoading = true;
-    const payload = {
+    const baseReturnUrl = `${window.location.origin}/payment/${this.bookingId}`;
+    this.bookingApi.createDepositCheckout({
       customerName: this.customerName.trim(),
       customerEmail: this.customerEmail.trim(),
+      customerPhone: this.booking?.customerPhone || this.booking?.phone || '',
       outingDate: this.outingDate,
       outingType: this.outingType,
-      totalPrice: this.totalPrice,
-      totalAmount: this.totalPrice,
       depositAmount: this.depositAmount,
-      depositRate: 0.5,
       currency: this.currency,
-      bookingId: this.bookingId || undefined,
-      ownerId: this.ownerId || undefined,
-      successUrl: `${window.location.origin}/payment/${this.bookingId || ''}?payment=success`,
-      cancelUrl: `${window.location.origin}/payment/${this.bookingId || ''}?payment=cancelled`,
-      metadata: {
-        source: 'alegria-deposit-page',
-        outingType: this.outingType,
-        outingDate: this.outingDate
-      }
-    };
-    const baseUrl = this.utilsSvc?.backendURL || '';
-    const endpoint = `${baseUrl}/api/payments/create-deposit-checkout-session`;
-    this.http.post(endpoint, payload, {
-      withCredentials: true
+      bookingId: this.bookingId,
+      ownerId: this.ownerId,
+      successUrl: baseReturnUrl,
+      cancelUrl: baseReturnUrl
     }).subscribe({
       next: response => {
         const checkoutUrl = response.url || response.checkoutUrl || response.sessionUrl;
@@ -2351,6 +2943,17 @@ DepositComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,_angula
 
 "use strict";
 module.exports = "<section class=\"guest-page\">\n  <div class=\"container guest-container\">\n    <div class=\"guest-head\">\n      <span class=\"eyebrow\">{{ content.eyebrow }}</span>\n      <h1>{{ content.title }}</h1>\n      <p>{{ content.intro }}</p>\n    </div>\n\n    <div class=\"faq-list\" *ngIf=\"!loading\">\n      <article class=\"faq-card\" *ngFor=\"let item of content.items; let i = index\" [class.open]=\"openIndex === i\">\n        <button type=\"button\" class=\"faq-question\" (click)=\"toggle(i)\" [attr.aria-expanded]=\"openIndex === i\">\n          <span>{{ item.question }}</span>\n          <strong>{{ openIndex === i ? '−' : '+' }}</strong>\n        </button>\n        <div class=\"faq-answer\" *ngIf=\"openIndex === i\">\n          <p>{{ item.answer }}</p>\n        </div>\n      </article>\n    </div>\n  </div>\n</section>\n";
+
+/***/ }),
+
+/***/ 26090:
+/*!********************************************************************************************!*\
+  !*** ./src/app/home/proposal-confirmation/proposal-confirmation.component.html?ngResource ***!
+  \********************************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "\n<section class=\"proposal-confirmation-page\">\n  <div class=\"container proposal-shell\">\n    <p class=\"muted\" *ngIf=\"loading\">Loading proposal...</p>\n    <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n\n    <article class=\"proposal-card\" *ngIf=\"!loading && proposal\">\n      <span class=\"eyebrow\">Alegria Boat proposal</span>\n      <h1>{{ proposal.outingType }}</h1>\n      <p class=\"muted\" *ngIf=\"proposal.proposalMessage\">{{ proposal.proposalMessage }}</p>\n\n      <div class=\"summary-grid\">\n        <div><strong>Customer</strong><span>{{ proposal.customerName }}</span></div>\n        <div><strong>Date</strong><span>{{ proposal.outingDate }}</span></div>\n        <div><strong>Time</strong><span>{{ proposal.departureTime }} → {{ proposal.arrivalTime }}</span></div>\n        <div><strong>Passengers</strong><span>{{ proposal.passengers || '-' }}</span></div>\n        <div><strong>Total price</strong><span>€{{ proposal.totalAmount }}</span></div>\n        <div><strong>Deposit 10%</strong><span>€{{ proposal.depositAmount }}</span></div>\n        <div><strong>Remaining onboard</strong><span>€{{ proposal.balanceAmount }}</span></div>\n        <div><strong>Warranty</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>\n      </div>\n\n      <div class=\"expired\" *ngIf=\"expired\">This proposal is no longer valid. Please contact Alegria Boat for a new proposal.</div>\n\n      <section class=\"choice-block\" *ngIf=\"!expired && proposal.status !== 'accepted'\">\n        <h2>Accept the proposal</h2>\n        <label class=\"terms-check\">\n          <input type=\"checkbox\" [(ngModel)]=\"acceptedTerms\" />\n          <span>I accept the Terms & Conditions and understand the cancellation, punctuality, swimming and damage deposit rules.</span>\n        </label>\n\n        <h3>Choose your warranty method</h3>\n        <label class=\"radio-card\"><input type=\"radio\" name=\"warrantyChoice\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" /><span>Register my debit/credit card online via Stripe, maximum one day before the outing.</span></label>\n        <label class=\"radio-card\"><input type=\"radio\" name=\"warrantyChoice\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" /><span>Bring €500 cash before departure. It will be returned at the end if no damage/issues are noticed.</span></label>\n\n        <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"!canAccept || accepting\" (click)=\"acceptProposal()\">{{ accepting ? 'Accepting...' : 'Accept proposal' }}</button>\n      </section>\n\n      <section class=\"payment-block\" *ngIf=\"!expired && proposal.status === 'accepted'\">\n        <h2>Next steps</h2>\n        <div class=\"step-card\" [class.paid]=\"depositPaid\">\n          <h3>1. Pay the 10% deposit</h3>\n          <p>{{ depositMessage }}</p>\n\n          <div class=\"paid-badge\" *ngIf=\"depositPaid\">\n            Deposit paid\n          </div>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!depositPaid\" [disabled]=\"payingDeposit\" (click)=\"payDeposit()\">\n            {{ payingDeposit ? 'Redirecting...' : 'Pay 10% deposit' }}\n          </button>\n        </div>\n        <div class=\"step-card\" *ngIf=\"proposal.warrantyPaymentChoice === 'stripe_card'\" [class.paid]=\"warrantyRegistered\">\n          <h3>2. Register warranty card</h3>\n          <p>{{ warrantyMessage }}</p>\n          <p class=\"muted\">Maximum warranty amount: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>\n\n          <div class=\"paid-badge\" *ngIf=\"warrantyRegistered\">\n            Warranty card registered\n          </div>\n\n          <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"!warrantyRegistered\" [disabled]=\"payingWarranty\" (click)=\"registerWarrantyCard()\">\n            {{ payingWarranty ? 'Redirecting...' : 'Register warranty card' }}\n          </button>\n        </div>\n        <div class=\"step-card\" *ngIf=\"proposal.warrantyPaymentChoice === 'cash_on_board'\">\n          <h3>2. Cash warranty</h3>\n          <p>{{ warrantyMessage }}</p>\n          <p class=\"muted\">Amount: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>\n        </div>\n        <div class=\"step-card\"><h3>3. Day of outing</h3><p>The remaining 90% balance and extras are paid onboard before departure by SumUp/card or cash.</p></div>\n      </section>\n\n      <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -2529,7 +3132,31 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.deposit-page {
 .btn.danger {
   background: #b42318;
   border-color: #b42318;
-}`, "",{"version":3,"sources":["webpack://./src/app/home/deposit/deposit.component.scss"],"names":[],"mappings":"AAAA;EACE,iCAAA;EACA,6FACE;AAAJ;;AAIA;EACE,aAAA;EACA,2CAAA;EACA,2BAAA;EACA,kBAAA;AADF;;AAIA;EACE,gBAAA;AADF;;AAIA;EACE,gBAAA;AADF;;AAIA;;EAEE,mBAAA;EACA,uCAAA;EACA,6CAAA;EACA,mBAAA;AADF;;AAIA;EACE,gBAAA;EACA,+BAAA;AADF;;AAIA;EACE,aAAA;EACA,mBAAA;AADF;;AAIA;EACE,SAAA;EACA,kBAAA;AADF;;AAIA;EACE,mBAAA;AADF;;AAIA;EACE,gBAAA;EACA,kBAAA;EACA,aAAA;AADF;;AAIA;EACE,+BAAA;EACA,aAAA;EACA,SAAA;AADF;;AAIA;EACE,aAAA;EACA,QAAA;EACA,qDAAA;EACA,gBAAA;EACA,sCAAA;AADF;;AAIA;EACE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,kBAAA;EACA,aAAA;EACA,gBAAA;AADF;;AAIA;EACE,2CAAA;EACA,sCAAA;AADF;;AAIA;EACE,aAAA;EACA,8BAAA;EACA,mBAAA;EACA,SAAA;EACA,aAAA;EACA,mBAAA;EACA,oCAAA;EACA,sCAAA;AADF;;AAIA;EACE,qDAAA;EACA,gBAAA;AADF;;AAIA;EACE,mCAAA;EACA,uCAAA;AADF;;AAIA;EACE,WAAA;AADF;;AAIA;EACE,aAAA;EACA,mBAAA;AADF;;AAIA;EACE,SAAA;EACA,cAAA;EACA,gBAAA;AADF;;AAIA;EACE,SAAA;EACA,kBAAA;EACA,iBAAA;EACA,YAAA;AADF;;AAIA;EACE;IACE,0BAAA;EADF;AACF;AAIA;EACE;IACE,eAAA;EAFF;EAKA;;IAEE,mBAAA;EAHF;EAMA;IACE,uBAAA;IACA,sBAAA;EAJF;AACF;AAQA;EACE,iBAAA;AANF;;AASA;EACE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,kBAAA;EACA,aAAA;EACA,gBAAA;AANF;;AASA;EACE,SAAA;EACA,cAAA;EACA,gBAAA;AANF;;AASA;EACE,mBAAA;EACA,qBAAA;AANF","sourcesContent":[".deposit-page {\n  padding: clamp(48px, 8vw, 96px) 0;\n  background:\n    linear-gradient(135deg, rgba(6, 38, 58, 0.06), rgba(16, 110, 138, 0.08)),\n    #ffffff;\n}\n\n.deposit-layout {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) 420px;\n  gap: clamp(28px, 6vw, 72px);\n  align-items: start;\n}\n\n.deposit-copy h1 {\n  max-width: 720px;\n}\n\n.deposit-copy p {\n  max-width: 680px;\n}\n\n.summary-card,\n.deposit-card {\n  background: #ffffff;\n  border: 1px solid rgba(8, 38, 58, 0.12);\n  box-shadow: 0 20px 50px rgba(8, 38, 58, 0.08);\n  border-radius: 24px;\n}\n\n.summary-card {\n  margin-top: 32px;\n  padding: clamp(20px, 4vw, 32px);\n}\n\n.summary-card h2 {\n  margin-top: 0;\n  margin-bottom: 16px;\n}\n\n.summary-card ul {\n  margin: 0;\n  padding-left: 20px;\n}\n\n.summary-card li {\n  margin-bottom: 10px;\n}\n\n.note {\n  margin-top: 18px;\n  font-size: 0.95rem;\n  opacity: 0.75;\n}\n\n.deposit-card {\n  padding: clamp(20px, 4vw, 32px);\n  display: grid;\n  gap: 18px;\n}\n\n.deposit-card label {\n  display: grid;\n  gap: 8px;\n  font-family: var(--font-label, 'Raleway', sans-serif);\n  font-weight: 600;\n  color: var(--color-deep-blue, #08263a);\n}\n\n.deposit-card input {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.18);\n  border-radius: 14px;\n  padding: 13px 14px;\n  font: inherit;\n  background: #fff;\n}\n\n.deposit-card input:focus {\n  outline: 2px solid rgba(236, 126, 48, 0.35);\n  border-color: rgba(236, 126, 48, 0.65);\n}\n\n.deposit-total {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 12px;\n  padding: 18px;\n  border-radius: 18px;\n  background: rgba(236, 126, 48, 0.12);\n  color: var(--color-deep-blue, #08263a);\n}\n\n.deposit-total span {\n  font-family: var(--font-label, 'Raleway', sans-serif);\n  font-weight: 700;\n}\n\n.deposit-total strong {\n  font-size: clamp(1.4rem, 4vw, 2rem);\n  color: var(--color-sun-orange, #ec7e30);\n}\n\n.deposit-card button {\n  width: 100%;\n}\n\n.deposit-card button:disabled {\n  opacity: 0.65;\n  cursor: not-allowed;\n}\n\n.error {\n  margin: 0;\n  color: #b42318;\n  font-weight: 700;\n}\n\n.secure {\n  margin: 0;\n  text-align: center;\n  font-size: 0.9rem;\n  opacity: 0.7;\n}\n\n@media (max-width: 900px) {\n  .deposit-layout {\n    grid-template-columns: 1fr;\n  }\n}\n\n@media (max-width: 560px) {\n  .deposit-page {\n    padding: 36px 0;\n  }\n\n  .summary-card,\n  .deposit-card {\n    border-radius: 18px;\n  }\n\n  .deposit-total {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n}\n\n\n.admin-warranty-card {\n  grid-column: 1 / -1;\n}\n\n.admin-warranty-card textarea {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.18);\n  border-radius: 14px;\n  padding: 13px 14px;\n  font: inherit;\n  resize: vertical;\n}\n\n.success {\n  margin: 0;\n  color: #067647;\n  font-weight: 700;\n}\n\n.btn.danger {\n  background: #b42318;\n  border-color: #b42318;\n}\n"],"sourceRoot":""}]);
+}
+
+.summary-lines {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.summary-lines div {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(8, 38, 58, 0.08);
+}
+
+.summary-lines strong {
+  color: #08263a;
+}
+
+.summary-lines span {
+  color: #516070;
+}
+
+.admin-warranty-card .danger {
+  background: #9f1d1d;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/deposit/deposit.component.scss"],"names":[],"mappings":"AAAA;EACE,iCAAA;EACA,6FACE;AAAJ;;AAIA;EACE,aAAA;EACA,2CAAA;EACA,2BAAA;EACA,kBAAA;AADF;;AAIA;EACE,gBAAA;AADF;;AAIA;EACE,gBAAA;AADF;;AAIA;;EAEE,mBAAA;EACA,uCAAA;EACA,6CAAA;EACA,mBAAA;AADF;;AAIA;EACE,gBAAA;EACA,+BAAA;AADF;;AAIA;EACE,aAAA;EACA,mBAAA;AADF;;AAIA;EACE,SAAA;EACA,kBAAA;AADF;;AAIA;EACE,mBAAA;AADF;;AAIA;EACE,gBAAA;EACA,kBAAA;EACA,aAAA;AADF;;AAIA;EACE,+BAAA;EACA,aAAA;EACA,SAAA;AADF;;AAIA;EACE,aAAA;EACA,QAAA;EACA,qDAAA;EACA,gBAAA;EACA,sCAAA;AADF;;AAIA;EACE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,kBAAA;EACA,aAAA;EACA,gBAAA;AADF;;AAIA;EACE,2CAAA;EACA,sCAAA;AADF;;AAIA;EACE,aAAA;EACA,8BAAA;EACA,mBAAA;EACA,SAAA;EACA,aAAA;EACA,mBAAA;EACA,oCAAA;EACA,sCAAA;AADF;;AAIA;EACE,qDAAA;EACA,gBAAA;AADF;;AAIA;EACE,mCAAA;EACA,uCAAA;AADF;;AAIA;EACE,WAAA;AADF;;AAIA;EACE,aAAA;EACA,mBAAA;AADF;;AAIA;EACE,SAAA;EACA,cAAA;EACA,gBAAA;AADF;;AAIA;EACE,SAAA;EACA,kBAAA;EACA,iBAAA;EACA,YAAA;AADF;;AAIA;EACE;IACE,0BAAA;EADF;AACF;AAIA;EACE;IACE,eAAA;EAFF;EAKA;;IAEE,mBAAA;EAHF;EAMA;IACE,uBAAA;IACA,sBAAA;EAJF;AACF;AAQA;EACE,iBAAA;AANF;;AASA;EACE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,kBAAA;EACA,aAAA;EACA,gBAAA;AANF;;AASA;EACE,SAAA;EACA,cAAA;EACA,gBAAA;AANF;;AASA;EACE,mBAAA;EACA,qBAAA;AANF;;AAUA;EACE,aAAA;EACA,YAAA;AAPF;;AAUA;EACE,aAAA;EACA,WAAA;EACA,kBAAA;EACA,8CAAA;AAPF;;AAUA;EACE,cAAA;AAPF;;AAUA;EACE,cAAA;AAPF;;AAUA;EACE,mBAAA;AAPF","sourcesContent":[".deposit-page {\n  padding: clamp(48px, 8vw, 96px) 0;\n  background:\n    linear-gradient(135deg, rgba(6, 38, 58, 0.06), rgba(16, 110, 138, 0.08)),\n    #ffffff;\n}\n\n.deposit-layout {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) 420px;\n  gap: clamp(28px, 6vw, 72px);\n  align-items: start;\n}\n\n.deposit-copy h1 {\n  max-width: 720px;\n}\n\n.deposit-copy p {\n  max-width: 680px;\n}\n\n.summary-card,\n.deposit-card {\n  background: #ffffff;\n  border: 1px solid rgba(8, 38, 58, 0.12);\n  box-shadow: 0 20px 50px rgba(8, 38, 58, 0.08);\n  border-radius: 24px;\n}\n\n.summary-card {\n  margin-top: 32px;\n  padding: clamp(20px, 4vw, 32px);\n}\n\n.summary-card h2 {\n  margin-top: 0;\n  margin-bottom: 16px;\n}\n\n.summary-card ul {\n  margin: 0;\n  padding-left: 20px;\n}\n\n.summary-card li {\n  margin-bottom: 10px;\n}\n\n.note {\n  margin-top: 18px;\n  font-size: 0.95rem;\n  opacity: 0.75;\n}\n\n.deposit-card {\n  padding: clamp(20px, 4vw, 32px);\n  display: grid;\n  gap: 18px;\n}\n\n.deposit-card label {\n  display: grid;\n  gap: 8px;\n  font-family: var(--font-label, 'Raleway', sans-serif);\n  font-weight: 600;\n  color: var(--color-deep-blue, #08263a);\n}\n\n.deposit-card input {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.18);\n  border-radius: 14px;\n  padding: 13px 14px;\n  font: inherit;\n  background: #fff;\n}\n\n.deposit-card input:focus {\n  outline: 2px solid rgba(236, 126, 48, 0.35);\n  border-color: rgba(236, 126, 48, 0.65);\n}\n\n.deposit-total {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 12px;\n  padding: 18px;\n  border-radius: 18px;\n  background: rgba(236, 126, 48, 0.12);\n  color: var(--color-deep-blue, #08263a);\n}\n\n.deposit-total span {\n  font-family: var(--font-label, 'Raleway', sans-serif);\n  font-weight: 700;\n}\n\n.deposit-total strong {\n  font-size: clamp(1.4rem, 4vw, 2rem);\n  color: var(--color-sun-orange, #ec7e30);\n}\n\n.deposit-card button {\n  width: 100%;\n}\n\n.deposit-card button:disabled {\n  opacity: 0.65;\n  cursor: not-allowed;\n}\n\n.error {\n  margin: 0;\n  color: #b42318;\n  font-weight: 700;\n}\n\n.secure {\n  margin: 0;\n  text-align: center;\n  font-size: 0.9rem;\n  opacity: 0.7;\n}\n\n@media (max-width: 900px) {\n  .deposit-layout {\n    grid-template-columns: 1fr;\n  }\n}\n\n@media (max-width: 560px) {\n  .deposit-page {\n    padding: 36px 0;\n  }\n\n  .summary-card,\n  .deposit-card {\n    border-radius: 18px;\n  }\n\n  .deposit-total {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n}\n\n\n.admin-warranty-card {\n  grid-column: 1 / -1;\n}\n\n.admin-warranty-card textarea {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.18);\n  border-radius: 14px;\n  padding: 13px 14px;\n  font: inherit;\n  resize: vertical;\n}\n\n.success {\n  margin: 0;\n  color: #067647;\n  font-weight: 700;\n}\n\n.btn.danger {\n  background: #b42318;\n  border-color: #b42318;\n}\n\n\n.summary-lines {\n  display: grid;\n  gap: 0.75rem;\n}\n\n.summary-lines div {\n  display: grid;\n  gap: 0.2rem;\n  padding: 0.75rem 0;\n  border-bottom: 1px solid rgba(8, 38, 58, 0.08);\n}\n\n.summary-lines strong {\n  color: #08263a;\n}\n\n.summary-lines span {\n  color: #516070;\n}\n\n.admin-warranty-card .danger {\n  background: #9f1d1d;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -2543,7 +3170,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">Admin</span>\n      <h1>Bookings</h1>\n      <p>Bookings loaded from Firebase Realtime Database <strong>/bnBookings</strong>.</p>\n    </div>\n\n    <div class=\"booking-toolbar\">\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadBookings()\">Refresh</button>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n    <p *ngIf=\"!loading && errorMessage\" class=\"error-message\">{{ errorMessage }}</p>\n    <p *ngIf=\"!loading && !errorMessage && bookings.length === 0\" class=\"muted\">\n      No bookings found in Firebase under <strong>/bnBookings</strong>.\n    </p>\n\n    <div class=\"booking-grid\" *ngIf=\"!loading && bookings.length > 0\">\n      <article class=\"booking-card\" *ngFor=\"let booking of bookings; trackBy: trackByBookingId\">\n        <div class=\"booking-card-main\">\n          <span class=\"status-pill\">{{ booking.bookingStatus || 'requested' }}</span>\n          <h2>{{ booking.outingType || 'Outing' }}</h2>\n          <p>\n            {{ booking.outingDate || 'Date not set' }}\n            <span *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</span>\n          </p>\n          <p>{{ booking.customerName || 'Customer not set' }} <span *ngIf=\"booking.email\">• {{ booking.email }}</span></p>\n        </div>\n\n        <div class=\"booking-meta\">\n          <span>Total: €{{ booking.totalPrice || 0 }}</span>\n          <span>Deposit: {{ booking.depositStatus }}</span>\n          <span>Warranty: {{ booking.warrantyStatus }}</span>\n        </div>\n\n        <div class=\"firebase-fields\" *ngIf=\"booking.displayFields.length > 0\">\n          <h3>Firebase fields</h3>\n          <div class=\"firebase-field\" *ngFor=\"let field of booking.displayFields; trackBy: trackByFieldKey\">\n            <strong>{{ field.key }}</strong>\n            <pre>{{ field.value }}</pre>\n          </div>\n        </div>\n\n        <div class=\"booking-actions\">\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"openBooking(booking)\">Open</button>\n          <button class=\"btn btn-primary\" type=\"button\" (click)=\"payment(booking)\">Payment</button>\n        </div>\n      </article>\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">Admin</span>\n      <h1>Reservations</h1>\n      <p>Manage confirmed bookings, deposits, remaining 90% onboard payments, warranties and damage charges.</p>\n    </div>\n\n    <div class=\"booking-toolbar\">\n      <label class=\"search-box\">\n        <span>Search by customer name</span>\n        <input\n          type=\"search\"\n          name=\"bookingSearch\"\n          [(ngModel)]=\"searchTerm\"\n          placeholder=\"Type a customer name...\"\n          autocomplete=\"off\"\n        />\n      </label>\n\n      <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"searchTerm\" (click)=\"clearSearch()\">Clear</button>\n      <a class=\"btn btn-primary\" routerLink=\"/admin/proposals\">Proposals</a>\n      <a class=\"btn btn-secondary\" routerLink=\"/admin/external-bookings\">External bookings</a>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadBookings()\">Refresh</button>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n    <p *ngIf=\"!loading && errorMessage\" class=\"error-message\">{{ errorMessage }}</p>\n    <p *ngIf=\"!loading && !errorMessage && bookings.length === 0\" class=\"muted\">\n      No bookings found in Firebase under <strong>/bnBookings</strong>.\n    </p>\n\n    <div class=\"list-summary\" *ngIf=\"!loading && bookings.length > 0\">\n      Showing <strong>{{ filteredBookings.length }}</strong> of <strong>{{ bookings.length }}</strong> bookings\n    </div>\n\n    <div class=\"bookings-list\" *ngIf=\"!loading && filteredBookings.length > 0\">\n      <button\n        class=\"booking-list-row\"\n        type=\"button\"\n        *ngFor=\"let booking of filteredBookings; trackBy: trackByBookingId\"\n        (click)=\"openBooking(booking)\"\n      >\n        <span class=\"status-pill\">{{ booking.bookingStatus || 'requested' }}</span>\n\n        <span class=\"booking-main\">\n          <strong>{{ booking.customerName || 'Customer not set' }}</strong>\n          <small>{{ booking.email || 'No email' }}</small>\n        </span>\n\n        <span class=\"booking-trip\">\n          <strong>{{ booking.outingType || 'Outing' }}</strong>\n          <small>\n            {{ booking.outingDate || 'Date not set' }}\n            <ng-container *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</ng-container>\n          </small>\n        </span>\n\n        <span class=\"booking-price\">\n          <strong>€{{ booking.totalPrice || 0 }}</strong>\n          <small>Deposit 10%: €{{ getDepositAmount(booking) }} · {{ isDepositPaid(booking) ? 'paid' : 'pending' }}</small>\n          <small>Remaining 90%: €{{ getBalanceAmount(booking) }} · {{ isBalancePaid(booking) ? 'paid' : 'to collect onboard' }}</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <button class=\"mini-btn\" type=\"button\" *ngIf=\"canRecordBalancePayment(booking)\" (click)=\"openBalancePayment(booking, $event)\">Record 90%</button>\n          <span class=\"blocked-badge\" *ngIf=\"!canRecordBalancePayment(booking) && !isBalancePaid(booking)\" [title]=\"getBalanceBlockedReason(booking)\">90% locked</span>\n          <span class=\"paid-badge\" *ngIf=\"isBalancePaid(booking)\">90% paid</span>\n          <span class=\"row-chevron\">›</span>\n        </span>\n      </button>\n    </div>\n\n    <p *ngIf=\"!loading && bookings.length > 0 && filteredBookings.length === 0\" class=\"muted\">\n      No booking matches this customer search.\n    </p>\n    <div class=\"balance-modal-backdrop\" *ngIf=\"selectedBalanceBooking\">\n      <div class=\"balance-modal\">\n        <h2>Record remaining 90% payment</h2>\n        <p>\n          <strong>{{ selectedBalanceBooking.customerName }}</strong><br />\n          Total: €{{ selectedBalanceBooking.totalPrice || 0 }}<br />\n          Deposit 10%: €{{ getDepositAmount(selectedBalanceBooking) }} · {{ isDepositPaid(selectedBalanceBooking) ? 'paid' : 'pending' }}<br />\n          Warranty card: {{ isWarrantyCardRegistered(selectedBalanceBooking) ? 'registered' : 'not registered' }}<br />\n          Booking status: {{ selectedBalanceBooking.bookingStatus || 'requested' }}<br />\n          Remaining 90% to collect onboard: <strong>€{{ getBalanceAmount(selectedBalanceBooking) }}</strong>\n        </p>\n\n        <label>\n          Payment method\n          <select [(ngModel)]=\"balancePaymentMethod\">\n            <option value=\"sumup\">SumUp / card</option>\n            <option value=\"cash\">Cash</option>\n            <option value=\"mixed\">Mixed</option>\n          </select>\n        </label>\n\n        <label>\n          Notes\n          <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" placeholder=\"Optional note, reference, split cash/SumUp...\"></textarea>\n        </label>\n\n        <div class=\"modal-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n            {{ savingBalancePayment ? 'Saving...' : 'Confirm 90% payment' }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeBalancePayment()\">Cancel</button>\n        </div>\n\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n      </div>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -2633,7 +3260,7 @@ EvjfEvgComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angula
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"admin-outings-page\">\n  <div class=\"container\">\n    <div class=\"page-head\">\n      <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n\n    <div class=\"admin-warning\" *ngIf=\"!isAdmin\">\n      {{ t('adminOnly') }}\n    </div>\n\n    <ng-container *ngIf=\"isAdmin\">\n      <div class=\"mode-toolbar\">\n        <button type=\"button\" class=\"btn btn-secondary\" [class.active]=\"mode === 'list'\" (click)=\"showList()\">\n          {{ t('listOutings') }}\n        </button>\n        <button type=\"button\" class=\"btn btn-primary\" (click)=\"startCreate()\">\n          {{ t('newOuting') }}\n        </button>\n      </div>\n\n      <div class=\"outings-list-card\" *ngIf=\"mode === 'list'\">\n        <div class=\"list-head\">\n          <h2>{{ t('allOutings') }}</h2>\n          <button type=\"button\" class=\"btn btn-primary\" (click)=\"startCreate()\">{{ t('newOuting') }}</button>\n        </div>\n\n        <p class=\"empty\" *ngIf=\"loading\">{{ t('loading') }}</p>\n        <p class=\"empty\" *ngIf=\"!loading && outings.length === 0\">{{ t('empty') }}</p>\n        <div class=\"notice error\" *ngIf=\"closeError\">{{ closeError }}</div>\n\n        <article class=\"outing-row compact-row\" *ngFor=\"let outing of outings\">\n          <div class=\"outing-summary\">\n            <div>\n              <h3>{{ outing.outingType }}</h3>\n              <p>{{ formatOutingDate(outing) }}</p>\n              <p>{{ outing.destination }} · {{ outing.passengers }} {{ t('passengers') }}</p>\n            </div>\n            <div class=\"outing-actions\">\n              <span class=\"status\" [class.closed]=\"outing.status === 'closed'\">\n                {{ outing.status === 'closed' ? t('closed') : t('open') }}\n              </span>\n              <button type=\"button\" class=\"detail-link\" (click)=\"startEdit(outing)\">{{ t('edit') }}</button>\n              <button type=\"button\" class=\"detail-link\" *ngIf=\"outing.status !== 'closed'\" (click)=\"startClose(outing)\">{{ t('close') }}</button>\n              <button type=\"button\" class=\"detail-link danger\" (click)=\"deleteOuting(outing)\">{{ t('delete') }}</button>\n            </div>\n          </div>\n        </article>\n      </div>\n\n      <div class=\"outing-form-card\" *ngIf=\"mode === 'create' || mode === 'edit'\">\n        <div class=\"form-title-row\">\n          <h2>{{ mode === 'create' ? t('createTitle') : t('editTitle') }}</h2>\n          <div class=\"form-title-actions\">\n            <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"mode === 'edit' && selectedOuting && selectedOuting.status !== 'closed'\" (click)=\"startClose(selectedOuting)\">\n              {{ t('arrivalChecklist') }}\n            </button>\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('backToList') }}</button>\n          </div>\n        </div>\n\n        \n        <div class=\"outing-tabs\">\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'details'\" (click)=\"activeTab = 'details'\">\n            Details\n          </button>\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'departure'\" (click)=\"activeTab = 'departure'\">\n            Departure\n          </button>\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'anchoring'\" (click)=\"activeTab = 'anchoring'\">\n            Anchoring\n          </button>\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'return'\" (click)=\"activeTab = 'return'\">\n            Return\n          </button>\n        </div>\n\n        <div class=\"form-grid\" *ngIf=\"activeTab === 'details'\">\n          <label>\n            {{ t('outingType') }} *\n            <select [(ngModel)]=\"form.outingType\">\n              <option *ngFor=\"let option of outingTypes[currentLanguage]\" [value]=\"option\">{{ option }}</option>\n            </select>\n          </label>\n\n          <label>\n            {{ t('passengers') }} *\n            <input type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"form.passengers\" />\n          </label>\n\n          <label>\n            {{ t('departureDate') }} *\n            <input type=\"date\" [(ngModel)]=\"form.departureDate\" />\n          </label>\n\n          <label>\n            {{ t('departureTime') }} *\n            <input type=\"time\" [(ngModel)]=\"form.departureTime\" />\n          </label>\n\n\n          <label>\n            {{ t('portEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.portEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('starboardEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.starboardEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('wind') }} ({{ t('knots') }})\n            <input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"form.actualWindSpeed\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('destination') }} *\n            <input type=\"text\" [(ngModel)]=\"form.destination\" placeholder=\"Lérins, Baie des Milliardaires, Cap d’Antibes...\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('comments') }}\n            <textarea rows=\"4\" [(ngModel)]=\"form.comments\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"checklist-block\" *ngIf=\"activeTab === 'departure'\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('departureChecklist') }}</h2>\n            <span [class.complete]=\"departureChecklistComplete\">\n              {{ countDoneDepartureItems() }} / {{ countAllDepartureItems() }}\n            </span>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of departureChecklistGroups\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">\n                {{ countDoneGroup(group) }} / {{ group.items.length }}\n              </span>\n            </div>\n\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>\n                  {{ item.label[currentLanguage] || item.label.fr }}\n                  <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                </span>\n              </label>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"anchorages-block\" *ngIf=\"activeTab === 'anchoring'\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('anchorages') }}</h2>\n            <span>{{ currentAnchorages.length }}</span>\n          </div>\n\n          <div class=\"form-grid anchorage-form-grid\">\n            <label class=\"wide\">\n              {{ t('anchorageLocation') }}\n              <input type=\"text\" [(ngModel)]=\"anchorageForm.location\" placeholder=\"Lérins, Baie des Milliardaires, Cap d’Antibes...\" />\n            </label>\n            <label class=\"wide\">\n              {{ t('comments') }}\n              <textarea rows=\"2\" [(ngModel)]=\"anchorageForm.comments\"></textarea>\n            </label>\n          </div>\n\n          <div class=\"form-actions mini-actions\">\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"addOrUpdateAnchorage()\">\n              {{ editingAnchorageId ? t('updateAnchorage') : t('dropAnchor') }}\n            </button>\n            <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"editingAnchorageId\" (click)=\"cancelAnchorageEdit()\">\n              {{ t('cancel') }}\n            </button>\n          </div>\n\n          <p class=\"empty\" *ngIf=\"currentAnchorages.length === 0\">{{ t('noAnchorages') }}</p>\n\n          <article class=\"anchorage-card\" *ngFor=\"let anchorage of currentAnchorages\">\n            <div class=\"anchorage-card-head\">\n              <div>\n                <h3>{{ anchorage.location }}</h3>\n                <p *ngIf=\"anchorage.arrivalTime || anchorage.departureTime\">\n                  {{ anchorage.arrivalTime || '—' }} → {{ anchorage.departureTime || '—' }}\n                </p>\n                <p *ngIf=\"anchorage.comments\">{{ anchorage.comments }}</p>\n              </div>\n              <div class=\"outing-actions\">\n                <span class=\"status\" [class.closed]=\"anchorage.status === 'closed'\">\n                  {{ anchorage.status === 'closed' ? t('anchorageClosed') : t('anchorageOpen') }}\n                </span>\n                <span class=\"status\" [class.closed]=\"anchorageChecklistComplete(anchorage)\">\n                  {{ countDone(anchorage.arrivalChecklistGroups[0]?.items) + countDone(anchorage.departureChecklistGroups[0]?.items) }} /\n                  {{ (anchorage.arrivalChecklistGroups[0]?.items.length || 0) + (anchorage.departureChecklistGroups[0]?.items.length || 0) }}\n                </span>\n                <button type=\"button\" class=\"detail-link\" *ngIf=\"anchorage.status !== 'closed'\" (click)=\"closeAnchorage(anchorage)\">{{ t('liftAnchor') }}</button>\n                <button type=\"button\" class=\"detail-link\" (click)=\"editAnchorage(anchorage)\">{{ t('edit') }}</button>\n                <button type=\"button\" class=\"detail-link danger\" (click)=\"removeAnchorage(anchorage)\">{{ t('delete') }}</button>\n              </div>\n            </div>\n\n            <div class=\"checklist-group\" *ngFor=\"let group of anchorage.arrivalChecklistGroups\">\n              <div class=\"checklist-subhead\">\n                <h3>{{ t('anchorageArrival') }}</h3>\n                <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n              </div>\n              <div class=\"checklist-grid\">\n                <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                  <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                  <span class=\"fake-radio\"></span>\n                  <span>\n                    {{ item.label[currentLanguage] || item.label.fr }}\n                    <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                  </span>\n                </label>\n              </div>\n            </div>\n\n            <div class=\"checklist-group\" *ngFor=\"let group of anchorage.departureChecklistGroups\">\n              <div class=\"checklist-subhead\">\n                <h3>{{ t('anchorageDeparture') }}</h3>\n                <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n              </div>\n              <div class=\"checklist-grid\">\n                <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                  <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                  <span class=\"fake-radio\"></span>\n                  <span>\n                    {{ item.label[currentLanguage] || item.label.fr }}\n                    <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                  </span>\n                </label>\n              </div>\n            </div>\n          </article>\n        </div>\n\n        <div class=\"checklist-block\" *ngIf=\"mode === 'edit' && selectedOuting && activeTab === 'return'\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('arrivalChecklist') }}</h2>\n            <span [class.complete]=\"arrivalChecklistComplete(selectedOuting.outingId)\">\n              {{ countDoneArrivalItems(selectedOuting.outingId) }} / {{ countArrivalItems(selectedOuting.outingId) }}\n            </span>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of arrivalChecklistGroupsByOuting[selectedOuting.outingId]\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">\n                {{ countDoneGroup(group) }} / {{ group.items.length }}\n              </span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>\n                  {{ item.label[currentLanguage] || item.label.fr }}\n                  <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                </span>\n              </label>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"form-actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"saving\" (click)=\"mode === 'create' ? createOuting() : updateOuting()\">\n            {{ saving ? t('saving') : (mode === 'create' ? t('create') : t('saveChanges')) }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('cancel') }}</button>\n        </div>\n\n        <div class=\"notice success\" *ngIf=\"saved\">{{ t('saved') }}</div>\n        <div class=\"notice error\" *ngIf=\"error\">{{ error }}</div>\n      </div>\n\n      <div class=\"outing-form-card\" *ngIf=\"mode === 'close' && selectedOuting\">\n        <div class=\"form-title-row\">\n          <div>\n            <h2>{{ t('closeTitle') }}</h2>\n            <p>{{ selectedOuting.outingType }} · {{ formatOutingDate(selectedOuting) }}</p>\n          </div>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('backToList') }}</button>\n        </div>\n\n\n        <div class=\"form-grid\">\n          <label>\n            {{ t('arrivalDate') }} *\n            <input type=\"date\" [(ngModel)]=\"form.arrivalDate\" />\n          </label>\n\n          <label>\n            {{ t('arrivalTime') }} *\n            <input type=\"time\" [(ngModel)]=\"form.arrivalTime\" />\n          </label>\n\n          <label>\n            {{ t('portEngineArrival') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.portEngineHoursArrival\" />\n          </label>\n\n          <label>\n            {{ t('starboardEngineArrival') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.starboardEngineHoursArrival\" />\n          </label>\n        </div>\n\n        <div class=\"checklist-block\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('arrivalChecklist') }}</h2>\n            <span [class.complete]=\"arrivalChecklistComplete(selectedOuting.outingId)\">\n              {{ countDoneArrivalItems(selectedOuting.outingId) }} / {{ countArrivalItems(selectedOuting.outingId) }}\n            </span>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of arrivalChecklistGroupsByOuting[selectedOuting.outingId]\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">\n                {{ countDoneGroup(group) }} / {{ group.items.length }}\n              </span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>\n                  {{ item.label[currentLanguage] || item.label.fr }}\n                  <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                </span>\n              </label>\n            </div>\n          </div>\n        </div>\n\n        <label class=\"closure-comments\">\n          {{ t('closureComments') }}\n          <textarea rows=\"3\" [(ngModel)]=\"closureComments[selectedOuting.outingId]\"></textarea>\n        </label>\n\n        <div class=\"form-actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"closingId === selectedOuting.outingId\" (click)=\"closeOuting(selectedOuting)\">\n            {{ closingId === selectedOuting.outingId ? t('closing') : t('close') }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('cancel') }}</button>\n        </div>\n        <div class=\"notice error\" *ngIf=\"closeError\">{{ closeError }}</div>\n      </div>\n    </ng-container>\n  </div>\n</section>\n";
+module.exports = "<section class=\"admin-outings-page\">\n  <div class=\"container\">\n    <div class=\"page-head\">\n      <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n\n    <div class=\"admin-warning\" *ngIf=\"!isAdmin\">\n      {{ t('adminOnly') }}\n    </div>\n\n    <ng-container *ngIf=\"isAdmin\">\n      <div class=\"mode-toolbar\">\n        <button type=\"button\" class=\"btn btn-secondary\" [class.active]=\"mode === 'list'\" (click)=\"showList()\">\n          {{ t('listOutings') }}\n        </button>\n        <button type=\"button\" class=\"btn btn-primary\" (click)=\"startCreate()\">\n          {{ t('newOuting') }}\n        </button>\n      </div>\n\n      <div class=\"outings-list-card\" *ngIf=\"mode === 'list'\">\n        <div class=\"list-head\">\n          <h2>{{ t('allOutings') }}</h2>\n          <button type=\"button\" class=\"btn btn-primary\" (click)=\"startCreate()\">{{ t('newOuting') }}</button>\n        </div>\n\n        <p class=\"empty\" *ngIf=\"loading\">{{ t('loading') }}</p>\n        <p class=\"empty\" *ngIf=\"!loading && outings.length === 0\">{{ t('empty') }}</p>\n        <div class=\"notice error\" *ngIf=\"closeError\">{{ closeError }}</div>\n\n        <article class=\"outing-row compact-row\" *ngFor=\"let outing of outings\">\n          <div class=\"outing-summary\">\n            <div>\n              <h3>{{ outing.outingType }}</h3>\n              <p>{{ formatOutingDate(outing) }}</p>\n              <p>{{ outing.destination }} · {{ outing.passengers }} {{ t('passengers') }}</p>\n            </div>\n            <div class=\"outing-actions\">\n              <span class=\"status\" [class.closed]=\"outing.status === 'closed'\">\n                {{ outing.status === 'closed' ? t('closed') : t('open') }}\n              </span>\n              <button type=\"button\" class=\"detail-link\" (click)=\"startEdit(outing)\">{{ t('edit') }}</button>\n              <button type=\"button\" class=\"detail-link\" *ngIf=\"outing.status !== 'closed'\" (click)=\"startClose(outing)\">{{ t('close') }}</button>\n              <button type=\"button\" class=\"detail-link danger\" (click)=\"deleteOuting(outing)\">{{ t('delete') }}</button>\n            </div>\n          </div>\n        </article>\n      </div>\n\n      <div class=\"outing-form-card\" *ngIf=\"mode === 'create' || mode === 'edit'\">\n        <div class=\"form-title-row\">\n          <h2>{{ mode === 'create' ? t('createTitle') : t('editTitle') }}</h2>\n          <div class=\"form-title-actions\">\n            <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"mode === 'edit' && selectedOuting && selectedOuting.status !== 'closed'\" (click)=\"startClose(selectedOuting)\">\n              {{ t('arrivalChecklist') }}\n            </button>\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('backToList') }}</button>\n          </div>\n        </div>\n\n        \n        <div class=\"outing-tabs\">\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'details'\" (click)=\"activeTab = 'details'\">\n            Details\n          </button>\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'departure'\" (click)=\"activeTab = 'departure'\">\n            Departure\n          </button>\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'anchoring'\" (click)=\"activeTab = 'anchoring'\">\n            Anchoring\n          </button>\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'return'\" (click)=\"activeTab = 'return'\">\n            Return\n          </button>\n        </div>\n\n        <div class=\"form-grid\" *ngIf=\"activeTab === 'details'\">\n          <label>\n            {{ t('outingType') }} *\n            <select [(ngModel)]=\"form.outingType\">\n              <option *ngFor=\"let option of outingTypes[currentLanguage]\" [value]=\"option\">{{ option }}</option>\n              <option value=\"__custom__\">{{ customTypeLabel() }}</option>\n            </select>\n          </label>\n\n          <label *ngIf=\"form.outingType === '__custom__'\">\n            {{ customTypeLabel() }} *\n            <input type=\"text\" [(ngModel)]=\"form.customOutingType\" [placeholder]=\"customTypePlaceholder()\" />\n          </label>\n\n          <label>\n            {{ t('passengers') }} *\n            <input type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"form.passengers\" />\n          </label>\n\n          <label>\n            {{ t('departureDate') }} *\n            <input type=\"date\" [(ngModel)]=\"form.departureDate\" />\n          </label>\n\n          <label>\n            {{ t('departureTime') }} *\n            <input type=\"time\" [(ngModel)]=\"form.departureTime\" />\n          </label>\n\n\n          <label>\n            {{ t('portEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.portEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('starboardEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.starboardEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('wind') }} ({{ t('knots') }})\n            <input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"form.actualWindSpeed\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('destination') }} *\n            <input type=\"text\" [(ngModel)]=\"form.destination\" placeholder=\"Lérins, Baie des Milliardaires, Cap d’Antibes...\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('comments') }}\n            <textarea rows=\"4\" [(ngModel)]=\"form.comments\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"checklist-block\" *ngIf=\"activeTab === 'departure'\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('departureChecklist') }}</h2>\n            <span [class.complete]=\"departureChecklistComplete\">\n              {{ countDoneDepartureItems() }} / {{ countAllDepartureItems() }}\n            </span>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of departureChecklistGroups\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">\n                {{ countDoneGroup(group) }} / {{ group.items.length }}\n              </span>\n            </div>\n\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>\n                  {{ item.label[currentLanguage] || item.label.fr }}\n                  <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                </span>\n              </label>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"anchorages-block\" *ngIf=\"activeTab === 'anchoring'\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('anchorages') }}</h2>\n            <span>{{ currentAnchorages.length }}</span>\n          </div>\n\n          <div class=\"form-grid anchorage-form-grid\">\n            <label class=\"wide\">\n              {{ t('anchorageLocation') }}\n              <input type=\"text\" [(ngModel)]=\"anchorageForm.location\" placeholder=\"Lérins, Baie des Milliardaires, Cap d’Antibes...\" />\n            </label>\n            <label class=\"wide\">\n              {{ t('comments') }}\n              <textarea rows=\"2\" [(ngModel)]=\"anchorageForm.comments\"></textarea>\n            </label>\n          </div>\n\n          <div class=\"form-actions mini-actions\">\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"addOrUpdateAnchorage()\">\n              {{ editingAnchorageId ? t('updateAnchorage') : t('dropAnchor') }}\n            </button>\n            <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"editingAnchorageId\" (click)=\"cancelAnchorageEdit()\">\n              {{ t('cancel') }}\n            </button>\n          </div>\n\n          <p class=\"empty\" *ngIf=\"currentAnchorages.length === 0\">{{ t('noAnchorages') }}</p>\n\n          <article class=\"anchorage-card\" *ngFor=\"let anchorage of currentAnchorages\">\n            <div class=\"anchorage-card-head\">\n              <div>\n                <h3>{{ anchorage.location }}</h3>\n                <p *ngIf=\"anchorage.arrivalTime || anchorage.departureTime\">\n                  {{ anchorage.arrivalTime || '—' }} → {{ anchorage.departureTime || '—' }}\n                </p>\n                <p *ngIf=\"anchorage.comments\">{{ anchorage.comments }}</p>\n              </div>\n              <div class=\"outing-actions\">\n                <span class=\"status\" [class.closed]=\"anchorage.status === 'closed'\">\n                  {{ anchorage.status === 'closed' ? t('anchorageClosed') : t('anchorageOpen') }}\n                </span>\n                <span class=\"status\" [class.closed]=\"anchorageChecklistComplete(anchorage)\">\n                  {{ countDone(anchorage.arrivalChecklistGroups[0]?.items) + countDone(anchorage.departureChecklistGroups[0]?.items) }} /\n                  {{ (anchorage.arrivalChecklistGroups[0]?.items.length || 0) + (anchorage.departureChecklistGroups[0]?.items.length || 0) }}\n                </span>\n                <button type=\"button\" class=\"detail-link\" *ngIf=\"anchorage.status !== 'closed'\" (click)=\"closeAnchorage(anchorage)\">{{ t('liftAnchor') }}</button>\n                <button type=\"button\" class=\"detail-link\" (click)=\"editAnchorage(anchorage)\">{{ t('edit') }}</button>\n                <button type=\"button\" class=\"detail-link danger\" (click)=\"removeAnchorage(anchorage)\">{{ t('delete') }}</button>\n              </div>\n            </div>\n\n            <div class=\"checklist-group\" *ngFor=\"let group of anchorage.arrivalChecklistGroups\">\n              <div class=\"checklist-subhead\">\n                <h3>{{ t('anchorageArrival') }}</h3>\n                <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n              </div>\n              <div class=\"checklist-grid\">\n                <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                  <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                  <span class=\"fake-radio\"></span>\n                  <span>\n                    {{ item.label[currentLanguage] || item.label.fr }}\n                    <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                  </span>\n                </label>\n              </div>\n            </div>\n\n            <div class=\"checklist-group\" *ngFor=\"let group of anchorage.departureChecklistGroups\">\n              <div class=\"checklist-subhead\">\n                <h3>{{ t('anchorageDeparture') }}</h3>\n                <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n              </div>\n              <div class=\"checklist-grid\">\n                <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                  <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                  <span class=\"fake-radio\"></span>\n                  <span>\n                    {{ item.label[currentLanguage] || item.label.fr }}\n                    <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                  </span>\n                </label>\n              </div>\n            </div>\n          </article>\n        </div>\n\n        <div class=\"checklist-block\" *ngIf=\"mode === 'edit' && selectedOuting && activeTab === 'return'\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('arrivalChecklist') }}</h2>\n            <span [class.complete]=\"arrivalChecklistComplete(selectedOuting.outingId)\">\n              {{ countDoneArrivalItems(selectedOuting.outingId) }} / {{ countArrivalItems(selectedOuting.outingId) }}\n            </span>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of arrivalChecklistGroupsByOuting[selectedOuting.outingId]\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">\n                {{ countDoneGroup(group) }} / {{ group.items.length }}\n              </span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>\n                  {{ item.label[currentLanguage] || item.label.fr }}\n                  <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                </span>\n              </label>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"form-actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"saving\" (click)=\"mode === 'create' ? createOuting() : updateOuting()\">\n            {{ saving ? t('saving') : (mode === 'create' ? t('create') : t('saveChanges')) }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('cancel') }}</button>\n        </div>\n\n        <div class=\"notice success\" *ngIf=\"saved\">{{ t('saved') }}</div>\n        <div class=\"notice error\" *ngIf=\"error\">{{ error }}</div>\n      </div>\n\n      <div class=\"outing-form-card\" *ngIf=\"mode === 'close' && selectedOuting\">\n        <div class=\"form-title-row\">\n          <div>\n            <h2>{{ t('closeTitle') }}</h2>\n            <p>{{ selectedOuting.outingType }} · {{ formatOutingDate(selectedOuting) }}</p>\n          </div>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('backToList') }}</button>\n        </div>\n\n\n        <div class=\"form-grid\">\n          <label>\n            {{ t('arrivalDate') }} *\n            <input type=\"date\" [(ngModel)]=\"form.arrivalDate\" />\n          </label>\n\n          <label>\n            {{ t('arrivalTime') }} *\n            <input type=\"time\" [(ngModel)]=\"form.arrivalTime\" />\n          </label>\n\n          <label>\n            {{ t('portEngineArrival') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.portEngineHoursArrival\" />\n          </label>\n\n          <label>\n            {{ t('starboardEngineArrival') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"form.starboardEngineHoursArrival\" />\n          </label>\n        </div>\n\n        <div class=\"checklist-block\">\n          <div class=\"checklist-head\">\n            <h2>{{ t('arrivalChecklist') }}</h2>\n            <span [class.complete]=\"arrivalChecklistComplete(selectedOuting.outingId)\">\n              {{ countDoneArrivalItems(selectedOuting.outingId) }} / {{ countArrivalItems(selectedOuting.outingId) }}\n            </span>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of arrivalChecklistGroupsByOuting[selectedOuting.outingId]\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">\n                {{ countDoneGroup(group) }} / {{ group.items.length }}\n              </span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>\n                  {{ item.label[currentLanguage] || item.label.fr }}\n                  <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n                </span>\n              </label>\n            </div>\n          </div>\n        </div>\n\n        <label class=\"closure-comments\">\n          {{ t('closureComments') }}\n          <textarea rows=\"3\" [(ngModel)]=\"closureComments[selectedOuting.outingId]\"></textarea>\n        </label>\n\n        <div class=\"form-actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"closingId === selectedOuting.outingId\" (click)=\"closeOuting(selectedOuting)\">\n            {{ closingId === selectedOuting.outingId ? t('closing') : t('close') }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"showList()\">{{ t('cancel') }}</button>\n        </div>\n        <div class=\"notice error\" *ngIf=\"closeError\">{{ closeError }}</div>\n      </div>\n    </ng-container>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -2758,7 +3385,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <p *ngIf=\"loading\" class=\"muted\">Loading booking...</p>\n\n    <article class=\"booking-detail-card\" *ngIf=\"!loading && booking\">\n      <span class=\"eyebrow\">Booking detail</span>\n      <h1>{{ booking.outingType }}</h1>\n      <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>\n\n      <div class=\"detail-grid\">\n        <div><strong>Customer</strong><span>{{ booking.customerName }}</span></div>\n        <div><strong>Email</strong><span>{{ booking.email }}</span></div>\n        <div><strong>Phone</strong><span>{{ booking.phone || '-' }}</span></div>\n        <div><strong>Passengers</strong><span>{{ booking.passengers || '-' }}</span></div>\n        <div><strong>Total price</strong><span>€{{ booking.totalPrice || 0 }}</span></div>\n        <div><strong>Deposit</strong><span>{{ booking.depositStatus || 'pending' }}</span></div>\n        <div><strong>Warranty</strong><span>{{ booking.warrantyStatus || 'not_registered' }}</span></div>\n        <div><strong>Status</strong><span>{{ booking.bookingStatus || 'requested' }}</span></div>\n      </div>\n\n      <p class=\"comments\" *ngIf=\"booking.comments\">{{ booking.comments }}</p>\n\n      <button class=\"btn btn-primary\" type=\"button\" (click)=\"goToPayment()\">{{ paymentButtonLabel }}</button>\n    </article>\n  </div>\n</section>\n";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <p *ngIf=\"loading\" class=\"muted\">Loading booking...</p>\n\n    <article class=\"booking-detail-card\" *ngIf=\"!loading && booking\">\n      <span class=\"eyebrow\">Booking detail</span>\n      <h1>{{ booking.outingType }}</h1>\n      <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>\n\n      <div class=\"detail-grid\">\n        <div><strong>Customer</strong><span>{{ booking.customerName }}</span></div>\n        <div><strong>Email</strong><span>{{ booking.email }}</span></div>\n        <div><strong>Phone</strong><span>{{ booking.phone || '-' }}</span></div>\n        <div><strong>Passengers</strong><span>{{ booking.passengers || '-' }}</span></div>\n        <div><strong>Total price</strong><span>€{{ booking.totalPrice || 0 }}</span></div>\n        <div><strong>Deposit 10%</strong><span>€{{ getDepositAmount() }} · {{ isDepositPaid() ? 'paid' : 'pending' }}</span></div>\n        <div><strong>Remaining 90%</strong><span>€{{ getBalanceAmount() }} · {{ isBalancePaid() ? 'paid' : 'to collect onboard' }}</span></div>\n        <div><strong>Warranty</strong><span>{{ booking.warrantyStatus || 'not_registered' }}</span></div>\n        <div><strong>Status</strong><span>{{ booking.bookingStatus || 'requested' }}</span></div>\n        <div><strong>Owner</strong><span>{{ booking.ownerId || '-' }}</span></div>\n      </div>\n\n      <p class=\"comments\" *ngIf=\"booking.comments\">{{ booking.comments }}</p>\n\n      <section class=\"payment-admin-card\" *ngIf=\"isAdmin\">\n        <h2>Payments</h2>\n\n        <div class=\"payment-summary\">\n          <div><strong>Deposit 10%</strong><span>{{ isDepositPaid() ? 'Paid' : 'Pending' }}</span></div>\n          <div><strong>Warranty</strong><span>{{ isWarrantySecured() ? (isWarrantyCardRegistered() ? 'Card registered' : 'Cash received') : 'Not secured' }}</span></div>\n          <div><strong>Remaining 90%</strong><span>€{{ getBalanceAmount() }}</span></div>\n          <div><strong>Status</strong><span>{{ isBalancePaid() ? 'Paid onboard' : (canRecordBalancePayment() ? 'To collect before departure' : 'Locked') }}</span></div>\n        </div>\n\n        <div class=\"warranty-actions\" *ngIf=\"!isWarrantySecured()\">\n          <p>Use this when the customer gives the €500 cash warranty before departure.</p>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"markCashWarrantyReceived()\">\n            Mark €500 cash warranty received\n          </button>\n        </div>\n\n        <div class=\"cash-damage-card\" *ngIf=\"isCashWarranty()\">\n          <h3>Cash warranty envelope</h3>\n          <p>\n            Initial envelope: <strong>€{{ getCashWarrantyAmount() }}</strong><br />\n            Already taken for damages: <strong>€{{ getCashWarrantyDamagesTaken() }}</strong><br />\n            Remaining cash to return: <strong>€{{ getCashWarrantyRemaining() }}</strong>\n          </p>\n\n          <label>\n            Amount taken from envelope (€)\n            <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cashDamageAmount\" />\n          </label>\n\n          <label>\n            Damage / cost reason\n            <textarea rows=\"3\" [(ngModel)]=\"cashDamageReason\" placeholder=\"Example: blocked marine toilet, cigarette burn, broken equipment...\"></textarea>\n          </label>\n\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCashDamage\" (click)=\"recordCashWarrantyDamage()\">\n            {{ savingCashDamage ? 'Saving...' : 'Record cash taken for damage' }}\n          </button>\n\n          <p class=\"success\" *ngIf=\"cashDamageMessage\">{{ cashDamageMessage }}</p>\n          <p class=\"error-message\" *ngIf=\"cashDamageError\">{{ cashDamageError }}</p>\n        </div>\n\n        <p class=\"blocked-note\" *ngIf=\"!canRecordBalancePayment() && !isBalancePaid()\">\n          {{ getBalanceBlockedReason() }}\n        </p>\n\n        <div class=\"collect-balance\" *ngIf=\"canRecordBalancePayment()\">\n          <label>\n            Payment method\n            <select [(ngModel)]=\"balancePaymentMethod\">\n              <option value=\"sumup\">SumUp / card</option>\n              <option value=\"cash\">Cash</option>\n              <option value=\"mixed\">Mixed</option>\n            </select>\n          </label>\n\n          <label>\n            Notes\n            <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" placeholder=\"Optional note, SumUp receipt, cash, mixed payment...\"></textarea>\n          </label>\n\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n            {{ savingBalancePayment ? 'Saving...' : 'Record remaining 90% payment' }}\n          </button>\n        </div>\n\n        <p class=\"paid-badge\" *ngIf=\"isBalancePaid()\">Remaining 90% paid</p>\n        <p class=\"success\" *ngIf=\"balancePaymentMessage\">{{ balancePaymentMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n      </section>\n\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"goToPayment()\">{{ paymentButtonLabel }}</button>\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -3024,6 +3651,86 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 /***/ }),
 
+/***/ 32134:
+/*!*******************************************************************************!*\
+  !*** ./src/app/home/admin-warranty-charge/admin-warranty-charge.component.ts ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AdminWarrantyChargeComponent: () => (/* binding */ AdminWarrantyChargeComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _admin_warranty_charge_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./admin-warranty-charge.component.html?ngResource */ 64114);
+/* harmony import */ var _admin_warranty_charge_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin-warranty-charge.component.scss?ngResource */ 85222);
+/* harmony import */ var _admin_warranty_charge_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_admin_warranty_charge_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../bookings/proposal-api.service */ 79439);
+
+
+
+
+
+let AdminWarrantyChargeComponent = class AdminWarrantyChargeComponent {
+  proposalApi;
+  bookingId = '';
+  amount = null;
+  reason = '';
+  charging = false;
+  message = '';
+  error = '';
+  constructor(proposalApi) {
+    this.proposalApi = proposalApi;
+  }
+  chargeWarranty() {
+    const amount = Number(this.amount || 0);
+    const bookingId = this.bookingId.trim();
+    const reason = this.reason.trim();
+    this.message = '';
+    this.error = '';
+    if (!bookingId) {
+      this.error = 'Booking / proposal id is required.';
+      return;
+    }
+    if (!amount || amount <= 0) {
+      this.error = 'Please enter a valid amount.';
+      return;
+    }
+    if (!reason) {
+      this.error = 'Please describe the damage or unpaid cost.';
+      return;
+    }
+    this.charging = true;
+    const proposal = {
+      proposalId: bookingId,
+      warrantyAmount: 500
+    };
+    this.proposalApi.chargeWarranty(proposal, amount, reason).subscribe({
+      next: () => {
+        this.message = 'Warranty charged successfully.';
+        this.charging = false;
+      },
+      error: error => {
+        this.error = error?.error?.error || error?.error?.message || error?.message || 'Unable to charge warranty.';
+        this.charging = false;
+      }
+    });
+  }
+  static ctorParameters = () => [{
+    type: _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_2__.ProposalApiService
+  }];
+};
+AdminWarrantyChargeComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
+  selector: 'app-admin-warranty-charge',
+  template: _admin_warranty_charge_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_admin_warranty_charge_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], AdminWarrantyChargeComponent);
+
+
+/***/ }),
+
 /***/ 35822:
 /*!***************************************************************!*\
   !*** ./src/app/home/guest-journey/guest-journey.component.ts ***!
@@ -3221,6 +3928,17 @@ BoatComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_c
   styles: [(_boat_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
 })], BoatComponent);
 
+
+/***/ }),
+
+/***/ 38794:
+/*!********************************************************************************!*\
+  !*** ./src/app/home/admin-proposals/admin-proposals.component.html?ngResource ***!
+  \********************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "\n<section class=\"admin-proposals-page\">\n  <div class=\"container proposals-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">Admin</span>\n      <h1>Customer proposals</h1>\n      <p>Create direct proposals. Once sent, a proposal is valid for one full day.</p>\n    </div>\n\n    <article class=\"card\">\n      <div class=\"form-title\">\n        <h2>{{ form.proposalId ? 'Edit proposal' : 'New proposal' }}</h2>\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"reset()\">New</button>\n      </div>\n\n      <div class=\"form-grid\">\n        <label>Customer name<input type=\"text\" [(ngModel)]=\"form.customerName\" /></label>\n        <label>Customer email<input type=\"email\" [(ngModel)]=\"form.customerEmail\" /></label>\n        <label>Phone<input type=\"tel\" [(ngModel)]=\"form.customerPhone\" /></label>\n        <label>Outing type<input type=\"text\" [(ngModel)]=\"form.outingType\" /></label>\n        <label>Outing date<input type=\"date\" [(ngModel)]=\"form.outingDate\" /></label>\n        <label>Departure time<input type=\"time\" [(ngModel)]=\"form.departureTime\" /></label>\n        <label>Return time<input type=\"time\" [(ngModel)]=\"form.arrivalTime\" /></label>\n        <label>Passengers<input type=\"number\" min=\"1\" [(ngModel)]=\"form.passengers\" /></label>\n        <label>Total amount (€)<input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"form.totalAmount\" /></label>\n        <label>Warranty amount (€)<input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"form.warrantyAmount\" /></label>\n        <label class=\"wide\">Proposal message<textarea rows=\"3\" [(ngModel)]=\"form.proposalMessage\"></textarea></label>\n        <label class=\"wide\">Internal comments<textarea rows=\"3\" [(ngModel)]=\"form.comments\"></textarea></label>\n      </div>\n\n      <div class=\"calculation\">\n        <span>Deposit 10%: <strong>€{{ ((form.totalAmount || 0) * 0.1) | number:'1.2-2' }}</strong></span>\n        <span>Remaining 90% onboard: <strong>€{{ ((form.totalAmount || 0) * 0.9) | number:'1.2-2' }}</strong></span>\n        <span>Validity after sent: <strong>24 hours</strong></span>\n      </div>\n\n      <div class=\"actions\">\n        <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"saving\" (click)=\"saveProposal()\">{{ saving ? 'Saving...' : 'Save proposal' }}</button>\n        <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"markSent()\">Mark sent / renew 24h</button>\n        <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"copyLink()\">Copy client link</button>\n        <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"sendCurrentProposalByEmail()\">Send by email</button>\n        <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"renewProposal(form)\">Renew 24h</button>\n        <button class=\"btn btn-danger\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"deleteProposal(form)\">Delete</button>\n      </div>\n\n      <p class=\"validity\" *ngIf=\"form.proposalId\" [class.expired]=\"isExpired(form)\">\n        {{ formatValidity(form) }}\n      </p>\n      <p class=\"client-link\" *ngIf=\"form.proposalId\">{{ proposalLink }}</p>\n      <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n      <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n    </article>\n\n    <div class=\"toolbar\">\n      <label class=\"search-box\">Search proposals<input type=\"search\" [(ngModel)]=\"searchTerm\" placeholder=\"Customer name, email or outing...\" /></label>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"load()\">Refresh</button>\n    </div>\n\n    <p class=\"muted\" *ngIf=\"loading\">Loading proposals...</p>\n\n    <div class=\"proposal-list\" *ngIf=\"!loading\">\n      <button class=\"proposal-row\" type=\"button\" *ngFor=\"let p of filteredProposals\" (click)=\"edit(p)\">\n        <span class=\"status\">{{ p.status }}</span>\n        <span><strong>{{ p.customerName || 'Unnamed customer' }}</strong><small>{{ p.customerEmail }}</small></span>\n        <span><strong>{{ p.outingType }}</strong><small>{{ p.outingDate }} · {{ p.departureTime }}</small><small [class.expired]=\"isExpired(p)\">{{ formatValidity(p) }}</small></span>\n        <span><strong>€{{ p.totalAmount }}</strong><small>Deposit €{{ p.depositAmount }}</small></span>\n        <span class=\"row-actions\">\n          <button class=\"mini-link\" type=\"button\" (click)=\"openClientLink(p); $event.stopPropagation()\">Open link</button>\n          <button class=\"mini-link\" type=\"button\" (click)=\"sendProposalByEmail(p); $event.stopPropagation()\">Email</button>\n          <button class=\"mini-link\" type=\"button\" (click)=\"renewProposal(p, $event)\">Renew</button>\n          <button class=\"mini-link danger\" type=\"button\" (click)=\"deleteProposal(p, $event)\">Delete</button>\n        </span>\n      </button>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -5052,6 +5770,211 @@ AdminOutingDetailComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([
 
 /***/ }),
 
+/***/ 43758:
+/*!*******************************************************************!*\
+  !*** ./src/app/home/admin-proposals/admin-proposals.component.ts ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AdminProposalsComponent: () => (/* binding */ AdminProposalsComponent)
+/* harmony export */ });
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _admin_proposals_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin-proposals.component.html?ngResource */ 38794);
+/* harmony import */ var _admin_proposals_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./admin-proposals.component.scss?ngResource */ 8590);
+/* harmony import */ var _admin_proposals_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_admin_proposals_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../bookings/proposal-api.service */ 79439);
+
+
+
+
+
+
+let AdminProposalsComponent = class AdminProposalsComponent {
+  proposalApi;
+  proposals = [];
+  loading = true;
+  saving = false;
+  searchTerm = '';
+  message = '';
+  error = '';
+  form = this.emptyForm();
+  constructor(proposalApi) {
+    this.proposalApi = proposalApi;
+  }
+  ngOnInit() {
+    this.load();
+  }
+  get filteredProposals() {
+    const term = this.normalize(this.searchTerm);
+    if (!term) return this.proposals;
+    return this.proposals.filter(p => this.normalize(p.customerName).includes(term) || this.normalize(p.customerEmail).includes(term) || this.normalize(p.outingType).includes(term));
+  }
+  isExpired(proposal) {
+    return !!proposal.validUntil && Date.now() > proposal.validUntil;
+  }
+  formatValidity(proposal) {
+    if (!proposal.validUntil) return 'No validity date';
+    const date = new Date(proposal.validUntil);
+    return this.isExpired(proposal) ? `Expired ${date.toLocaleString()}` : `Valid until ${date.toLocaleString()}`;
+  }
+  get proposalLink() {
+    return this.form.proposalId ? `${window.location.origin}/proposal/${this.form.proposalId}` : '';
+  }
+  load() {
+    this.loading = true;
+    this.proposalApi.getProposals().subscribe({
+      next: proposals => {
+        this.proposals = proposals.sort((a, b) => (b.createdTS || 0) - (a.createdTS || 0));
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'Unable to load proposals.';
+        this.loading = false;
+      }
+    });
+  }
+  saveProposal() {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this.saving = true;
+      _this.error = '';
+      _this.message = '';
+      try {
+        const saved = yield _this.proposalApi.saveProposal(_this.form);
+        _this.form = {
+          ...saved
+        };
+        _this.message = 'Proposal saved.';
+        _this.load();
+      } catch (e) {
+        _this.error = e?.message || 'Unable to save proposal.';
+      }
+      _this.saving = false;
+    })();
+  }
+  markSent() {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this2.form.proposalId) return;
+      yield _this2.proposalApi.markSent(_this2.form);
+      _this2.message = 'Proposal marked as sent and valid for 24 hours.';
+      _this2.load();
+    })();
+  }
+  renewProposal(proposal, event) {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      event?.stopPropagation();
+      if (!proposal.proposalId) return;
+      _this3.error = '';
+      _this3.message = '';
+      try {
+        const renewed = yield _this3.proposalApi.renewProposal(proposal.proposalId);
+        _this3.message = 'Proposal renewed and valid for another 24 hours.';
+        if (_this3.form.proposalId === proposal.proposalId) {
+          _this3.form = {
+            ...renewed
+          };
+        }
+        _this3.load();
+      } catch (e) {
+        _this3.error = e?.message || 'Unable to renew proposal.';
+      }
+    })();
+  }
+  deleteProposal(proposal, event) {
+    var _this4 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      event?.stopPropagation();
+      if (!proposal.proposalId) return;
+      const customer = proposal.customerName || proposal.customerEmail || proposal.proposalId;
+      const confirmed = window.confirm(`Delete proposal for ${customer}? This cannot be undone.`);
+      if (!confirmed) return;
+      _this4.error = '';
+      _this4.message = '';
+      try {
+        yield _this4.proposalApi.deleteProposal(proposal.proposalId);
+        _this4.message = 'Proposal deleted.';
+        if (_this4.form.proposalId === proposal.proposalId) {
+          _this4.reset();
+        }
+        _this4.load();
+      } catch (e) {
+        _this4.error = e?.message || 'Unable to delete proposal.';
+      }
+    })();
+  }
+  edit(p) {
+    this.form = {
+      ...p
+    };
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+  openClientLink(p) {
+    window.open(`/proposal/${p.proposalId}`, '_blank');
+  }
+  copyLink() {
+    if (this.proposalLink) navigator.clipboard?.writeText(this.proposalLink);
+    this.message = 'Client link copied.';
+  }
+  sendCurrentProposalByEmail() {
+    if (!this.form.proposalId) return;
+    this.sendProposalByEmail(this.form);
+  }
+  sendProposalByEmail(proposal) {
+    const link = `${window.location.origin}/proposal/${proposal.proposalId}`;
+    const subject = `Alegria Boat proposal - ${proposal.outingType || 'Your outing'}`;
+    const body = [`Hello ${proposal.customerName || ''},`, '', 'Thank you for your request.', '', 'Please find below your Alegria Boat proposal:', '', `Outing: ${proposal.outingType || ''}`, `Date: ${proposal.outingDate || ''}`, `Time: ${proposal.departureTime || ''} - ${proposal.arrivalTime || ''}`, `Total price: €${proposal.totalAmount || 0}`, `10% booking deposit: €${proposal.depositAmount || 0}`, `Remaining balance to pay onboard: €${proposal.balanceAmount || 0}`, `Security deposit: €${proposal.warrantyAmount || 500}`, '', 'To accept the proposal, sign the Terms & Conditions, choose your warranty method, and pay the 10% deposit, please use this secure link:', link, '', 'This proposal is valid for one full day.', '', 'Best regards,', 'Alegria Boat'].join('\n');
+    const mailto = `mailto:${encodeURIComponent(proposal.customerEmail || '')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
+  }
+  reset() {
+    this.form = this.emptyForm();
+    this.message = '';
+    this.error = '';
+  }
+  emptyForm() {
+    return {
+      source: 'direct',
+      status: 'draft',
+      customerName: '',
+      customerEmail: '',
+      customerPhone: '',
+      outingType: 'Journée en mer',
+      outingDate: new Date(Date.now() + 86400000).toISOString().slice(0, 10),
+      departureTime: '10:00',
+      arrivalTime: '18:00',
+      passengers: 2,
+      totalAmount: 1000,
+      warrantyAmount: 500,
+      proposalMessage: '',
+      comments: ''
+    };
+  }
+  normalize(value) {
+    return String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  }
+  static ctorParameters = () => [{
+    type: _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_3__.ProposalApiService
+  }];
+};
+AdminProposalsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
+  selector: 'app-admin-proposals',
+  template: _admin_proposals_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
+  styles: [(_admin_proposals_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
+})], AdminProposalsComponent);
+
+
+/***/ }),
+
 /***/ 44878:
 /*!********************************************************************************!*\
   !*** ./src/app/home/account-summary/account-summary.component.html?ngResource ***!
@@ -5074,12 +5997,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeModule: () => (/* binding */ HomeModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @angular/router */ 99585);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! @ionic/angular */ 21507);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! @ionic/angular */ 21507);
 /* harmony import */ var _home_router_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home.router.module */ 61506);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
@@ -5106,6 +6029,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./bookings/bookings.component */ 88636);
 /* harmony import */ var _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./my-bookings/my-bookings.component */ 18170);
 /* harmony import */ var _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./booking-detail/booking-detail.component */ 82474);
+/* harmony import */ var _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./admin-warranty-charge/admin-warranty-charge.component */ 32134);
+/* harmony import */ var _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./admin-proposals/admin-proposals.component */ 43758);
+/* harmony import */ var _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./proposal-confirmation/proposal-confirmation.component */ 96894);
+/* harmony import */ var _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./admin-external-bookings/admin-external-bookings.component */ 65726);
+
+
+
+
 
 
 
@@ -5139,9 +6070,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let HomeModule = class HomeModule {};
-HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_26__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_27__.NgModule)({
-  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent, _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__.SafetyInstructionsComponent, _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_13__.DepositComponent, _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__.AccountSummaryComponent, _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_15__.MyProfileComponent, _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__.MyFeedbacksComponent, _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.AdminFeedbacksComponent, _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingsComponent, _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_19__.AdminOutingDetailComponent, _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__.AdminManageOutingsComponent, _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_21__.GuestFaqComponent, _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__.GuestJourneyComponent, _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__.BookingsComponent, _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__.MyBookingsComponent, _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__.BookingDetailComponent],
-  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_28__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_29__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_30__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_31__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule]
+HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_30__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_31__.NgModule)({
+  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent, _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__.SafetyInstructionsComponent, _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_13__.DepositComponent, _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__.AccountSummaryComponent, _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_15__.MyProfileComponent, _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__.MyFeedbacksComponent, _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.AdminFeedbacksComponent, _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingsComponent, _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_19__.AdminOutingDetailComponent, _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__.AdminManageOutingsComponent, _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_21__.GuestFaqComponent, _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__.GuestJourneyComponent, _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__.BookingsComponent, _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__.MyBookingsComponent, _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__.BookingDetailComponent, _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_26__.AdminWarrantyChargeComponent, _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_27__.AdminProposalsComponent, _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_28__.ProposalConfirmationComponent, _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_29__.AdminExternalBookingsComponent],
+  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_32__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_33__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_34__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_35__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule]
 })], HomeModule);
 
 
@@ -5549,7 +6480,7 @@ const DEFAULT_GUEST_INFO_CONTENT = {
       intro: 'Les réponses aux questions les plus fréquentes avant votre sortie en mer à bord d’Alegria.',
       items: [{
         question: 'Où devons-nous nous présenter ?',
-        answer: 'Le rendez-vous se fait à l’anneau 16, Port Marina Baie des Anges, Villeneuve-Loubet. Nous vous conseillons d’arriver 15 à 20 minutes avant l’heure prévue.'
+        answer: 'Le point de rendez-vous exact est confirmé avant la sortie. Selon l’organisation et les autorisations disponibles, il peut s’agir d’un quai d’honneur autorisé à Villeneuve, Antibes Port Vauban ou Cannes Port Canto. Merci d’arriver 15 à 20 minutes avant l’heure prévue.'
       }, {
         question: 'Le petit-déjeuner est-il inclus ?',
         answer: 'Oui, un petit-déjeuner simple et convivial peut être prévu à bord : café, thé, croissants et pains au chocolat selon la formule confirmée.'
@@ -5591,7 +6522,7 @@ const DEFAULT_GUEST_INFO_CONTENT = {
       intro: 'Answers to the most common questions before your sea outing aboard Alegria.',
       items: [{
         question: 'Where do we meet?',
-        answer: 'The meeting point is berth 16, Port Marina Baie des Anges, Villeneuve-Loubet. Please arrive 15 to 20 minutes before the scheduled time.'
+        answer: 'The exact meeting point is confirmed before the outing. Depending on organization and available authorizations, it may be an authorized visitors’ quay in Villeneuve, Antibes Port Vauban or Cannes Port Canto. Please arrive 15 to 20 minutes before the scheduled time.'
       }, {
         question: 'Is breakfast included?',
         answer: 'Yes, a simple friendly breakfast can be arranged on board: coffee, tea, croissants and pains au chocolat depending on the confirmed package.'
@@ -5633,7 +6564,7 @@ const DEFAULT_GUEST_INFO_CONTENT = {
       intro: 'Respuestas a las preguntas más frecuentes antes de su salida al mar a bordo de Alegria.',
       items: [{
         question: '¿Dónde es el punto de encuentro?',
-        answer: 'El punto de encuentro es el amarre 16, Port Marina Baie des Anges, Villeneuve-Loubet. Recomendamos llegar 15 a 20 minutos antes de la hora prevista.'
+        answer: 'El punto de encuentro exacto se confirma antes de la salida. Según la organización y las autorizaciones disponibles, puede ser un muelle de honor autorizado en Villeneuve, Antibes Port Vauban o Cannes Port Canto. Por favor llegue entre 15 y 20 minutos antes de la hora prevista. Recomendamos llegar 15 a 20 minutos antes de la hora prevista.'
       }, {
         question: '¿El desayuno está incluido?',
         answer: 'Sí, se puede preparar un desayuno sencillo y agradable a bordo: café, té, croissants y pains au chocolat según la fórmula confirmada.'
@@ -5676,12 +6607,12 @@ const DEFAULT_GUEST_INFO_CONTENT = {
       title: 'Comment se déroule votre sortie en mer',
       intro: 'Voici le déroulé type d’une sortie à bord d’Alegria, depuis votre arrivée au port jusqu’au retour à la marina.',
       addressLabel: 'Adresse exacte du rendez-vous',
-      address: 'Anneau 16, Port Marina Baie des Anges, Villeneuve-Loubet',
+      address: 'Point de rendez-vous confirmé avant la sortie',
       mapNote: 'Prévoyez d’arriver 15 à 20 minutes avant l’heure de départ afin de monter à bord sereinement.',
       steps: [{
         icon: '📍',
         title: 'Arrivée au bateau',
-        text: 'Nous vous accueillons directement à l’anneau 16, Port Marina Baie des Anges à Villeneuve-Loubet.',
+        text: 'Nous vous accueillons au Point de rendez-vous confirmé avant la sortie sur un quai d’honneur autorisé lorsque cela est applicable.',
         bullets: ['Arrivée conseillée 15 à 20 minutes avant le départ', 'Accueil par l’équipage', 'Premières consignes simples pour monter à bord']
       }, {
         icon: '👋',
@@ -5721,7 +6652,7 @@ const DEFAULT_GUEST_INFO_CONTENT = {
       }, {
         icon: '⛵',
         title: 'Retour vers la marina',
-        text: 'Nous repartons tranquillement vers Marina Baie des Anges en profitant des derniers instants en mer.',
+        text: 'Nous repartons tranquillement vers Villeneuve en profitant des derniers instants en mer.',
         bullets: ['Navigation retour', 'Rangement progressif du matériel', 'Arrivée préparée par l’équipage']
       }, {
         icon: '🏁',
@@ -5736,12 +6667,12 @@ const DEFAULT_GUEST_INFO_CONTENT = {
       title: 'How your day at sea works',
       intro: 'Here is the typical flow of an outing aboard Alegria, from your arrival at the marina to the return to port.',
       addressLabel: 'Exact meeting address',
-      address: 'Berth 16, Port Marina Baie des Anges, Villeneuve-Loubet',
+      address: 'un point de rendez-vous confirmé avant la sortie',
       mapNote: 'Please arrive 15 to 20 minutes before departure so boarding can be relaxed and smooth.',
       steps: [{
         icon: '📍',
         title: 'Arrival at the boat',
-        text: 'We welcome you directly at berth 16, Port Marina Baie des Anges in Villeneuve-Loubet.',
+        text: 'We welcome you at the Meeting point confirmed before the outing on an authorized visitors’ quay when applicable.',
         bullets: ['Arrive 15 to 20 minutes before departure', 'Crew welcome', 'Simple boarding instructions']
       }, {
         icon: '👋',
@@ -5781,7 +6712,7 @@ const DEFAULT_GUEST_INFO_CONTENT = {
       }, {
         icon: '⛵',
         title: 'Return to the marina',
-        text: 'We cruise calmly back to Marina Baie des Anges while enjoying the last moments at sea.',
+        text: 'We cruise calmly back to Villeneuve while enjoying the last moments at sea.',
         bullets: ['Return cruise', 'Equipment tidying', 'Arrival prepared by the crew']
       }, {
         icon: '🏁',
@@ -5796,12 +6727,12 @@ const DEFAULT_GUEST_INFO_CONTENT = {
       title: 'Cómo se desarrolla su salida al mar',
       intro: 'Este es el desarrollo típico de una salida a bordo de Alegria, desde la llegada a la marina hasta el regreso al puerto.',
       addressLabel: 'Dirección exacta del encuentro',
-      address: 'Amarre 16, Port Marina Baie des Anges, Villeneuve-Loubet',
+      address: 'un point de rendez-vous confirmé avant la sortie',
       mapNote: 'Lleguen 15 a 20 minutos antes de la salida para embarcar con tranquilidad.',
       steps: [{
         icon: '📍',
         title: 'Llegada al barco',
-        text: 'Les recibimos directamente en el amarre 16, Port Marina Baie des Anges en Villeneuve-Loubet.',
+        text: 'Les recibimos directamente en el Villeneuve Villeneuve en Villeneuve-Loubet.',
         bullets: ['Llegada recomendada 15 a 20 minutos antes', 'Bienvenida de la tripulación', 'Instrucciones sencillas para embarcar']
       }, {
         icon: '👋',
@@ -5841,7 +6772,7 @@ const DEFAULT_GUEST_INFO_CONTENT = {
       }, {
         icon: '⛵',
         title: 'Regreso a la marina',
-        text: 'Volvemos tranquilamente a Marina Baie des Anges disfrutando de los últimos momentos en el mar.',
+        text: 'Volvemos tranquilamente a Villeneuve disfrutando de los últimos momentos en el mar.',
         bullets: ['Navegación de regreso', 'Orden del material', 'Llegada preparada por la tripulación']
       }, {
         icon: '🏁',
@@ -5926,141 +6857,82 @@ module.exports = "<section class=\"hero\">\n  <div class=\"container hero-grid\"
 var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
-___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap);"]);
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.terms-page {
-  background: #f7fbfd;
-  padding: 72px 0;
+  padding: 80px 0;
+  background: #f6f2ea;
+  min-height: 70vh;
 }
 
-.terms-container {
+.terms-shell {
   max-width: 980px;
+  margin: 0 auto;
 }
 
 .eyebrow {
-  color: var(--color-ocean-blue, #0f6f8f);
-  font-family: "Raleway", sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
   text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: #b58b4a;
+  font-weight: 700;
 }
 
 h1 {
-  color: var(--color-deep-blue, #06283d);
-  font-family: "Playfair Display", serif;
-  font-size: clamp(2rem, 4vw, 3.4rem);
-  line-height: 1.08;
-  margin: 16px 0 18px;
+  color: #08263a;
+  margin: 8px 0 16px;
 }
 
-.terms-intro {
-  color: #52616b;
-  font-family: "Lato", sans-serif;
-  font-size: 1.02rem;
+.intro {
+  color: #516070;
+  max-width: 820px;
   line-height: 1.7;
-  max-width: 780px;
-  margin-bottom: 34px;
 }
 
-.terms-content {
-  background: #ffffff;
-  border: 1px solid rgba(6, 40, 61, 0.08);
+.terms-card {
+  background: #fff;
   border-radius: 24px;
-  box-shadow: 0 18px 50px rgba(6, 40, 61, 0.08);
-  padding: 34px;
-}
-
-.term-section + .term-section {
-  border-top: 1px solid rgba(6, 40, 61, 0.08);
+  padding: 32px;
   margin-top: 28px;
-  padding-top: 28px;
+  box-shadow: 0 18px 45px rgba(8, 38, 58, 0.08);
+  border: 1px solid rgba(8, 38, 58, 0.08);
 }
 
-h2 {
-  color: var(--color-ocean-blue, #0f6f8f);
-  font-family: "Raleway", sans-serif;
-  font-size: 1.1rem;
-  font-weight: 800;
-  margin: 0 0 14px;
+.terms-card h2 {
+  color: #08263a;
+  margin-top: 2rem;
 }
 
-p,
-li {
-  color: #2d3740;
-  font-family: "Lato", sans-serif;
-  font-size: 0.98rem;
-  line-height: 1.75;
+.terms-card h2:first-child {
+  margin-top: 0;
 }
 
-ul {
-  margin: 0;
-  padding-left: 1.2rem;
+.terms-card p,
+.terms-card li {
+  color: #516070;
+  line-height: 1.7;
 }
 
-@media (max-width: 768px) {
+.process-step {
+  background: #f8f5ef;
+  border-radius: 18px;
+  padding: 1.25rem;
+  margin: 1rem 0;
+  border: 1px solid rgba(8, 38, 58, 0.06);
+}
+
+.process-step h3 {
+  margin-top: 0;
+  color: #08263a;
+}
+
+@media (max-width: 720px) {
   .terms-page {
-    padding: 46px 0;
+    padding: 48px 0;
   }
-  .terms-content {
-    border-radius: 18px;
+  .terms-card {
     padding: 22px;
   }
-}
-/* Charte graphique Alegria */
-:host {
-  --alegria-deep: #08263a;
-  --alegria-ocean: #0b6e8f;
-  --alegria-ocean-light: #e8f4f7;
-  --alegria-orange: #f28c28;
-  --alegria-sand: #fbf8f2;
-  --alegria-text: #2f3a45;
-  --alegria-muted: #667085;
-}
-
-h1, h2, h3, .brand-text strong, .title, .page-title {
-  font-family: "Playfair Display", Georgia, serif;
-  color: var(--alegria-deep);
-  letter-spacing: -0.015em;
-}
-
-.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {
-  font-family: "Raleway", Arial, sans-serif;
-}
-
-p, li, input, textarea, select, .card-body, .term-section {
-  font-family: "Lato", Arial, sans-serif;
-  color: var(--alegria-text);
-}
-
-.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {
-  color: var(--alegria-ocean);
-}
-
-.btn-primary, .cta-link, .btn-book {
-  background: var(--alegria-orange) !important;
-  color: #fff !important;
-  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);
-}
-
-.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {
-  background: var(--alegria-ocean-light);
-  color: var(--alegria-deep);
-}
-
-.price-pill {
-  background: rgba(242, 140, 40, 0.13);
-  color: #9a4d08;
-  border: 1px solid rgba(242, 140, 40, 0.28);
-}
-
-.page-hero {
-  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);
-}
-
-.section-light {
-  background: var(--alegria-sand);
-}`, "",{"version":3,"sources":["webpack://./src/app/home/terms/terms.component.scss"],"names":[],"mappings":"AACA;EACE,mBAAA;EACA,eAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,uCAAA;EACA,kCAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;AACF;;AAEA;EACE,sCAAA;EACA,sCAAA;EACA,mCAAA;EACA,iBAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;EACA,+BAAA;EACA,kBAAA;EACA,gBAAA;EACA,gBAAA;EACA,mBAAA;AACF;;AAEA;EACE,mBAAA;EACA,uCAAA;EACA,mBAAA;EACA,6CAAA;EACA,aAAA;AACF;;AAEA;EACE,2CAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE,uCAAA;EACA,kCAAA;EACA,iBAAA;EACA,gBAAA;EACA,gBAAA;AACF;;AAEA;;EAEE,cAAA;EACA,+BAAA;EACA,kBAAA;EACA,iBAAA;AACF;;AAEA;EACE,SAAA;EACA,oBAAA;AACF;;AAEA;EACE;IACE,eAAA;EACF;EAEA;IACE,mBAAA;IACA,aAAA;EAAF;AACF;AAIA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAFF;;AAKA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAFF;;AAKA;EACE,yCAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,2BAAA;AAFF;;AAKA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAFF;;AAKA;EACE,6DAAA;AAFF;;AAKA;EACE,+BAAA;AAFF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.terms-page {\n  background: #f7fbfd;\n  padding: 72px 0;\n}\n\n.terms-container {\n  max-width: 980px;\n}\n\n.eyebrow {\n  color: var(--color-ocean-blue, #0f6f8f);\n  font-family: 'Raleway', sans-serif;\n  font-size: 0.78rem;\n  font-weight: 700;\n  letter-spacing: 0.14em;\n  text-transform: uppercase;\n}\n\nh1 {\n  color: var(--color-deep-blue, #06283d);\n  font-family: 'Playfair Display', serif;\n  font-size: clamp(2rem, 4vw, 3.4rem);\n  line-height: 1.08;\n  margin: 16px 0 18px;\n}\n\n.terms-intro {\n  color: #52616b;\n  font-family: 'Lato', sans-serif;\n  font-size: 1.02rem;\n  line-height: 1.7;\n  max-width: 780px;\n  margin-bottom: 34px;\n}\n\n.terms-content {\n  background: #ffffff;\n  border: 1px solid rgba(6, 40, 61, 0.08);\n  border-radius: 24px;\n  box-shadow: 0 18px 50px rgba(6, 40, 61, 0.08);\n  padding: 34px;\n}\n\n.term-section + .term-section {\n  border-top: 1px solid rgba(6, 40, 61, 0.08);\n  margin-top: 28px;\n  padding-top: 28px;\n}\n\nh2 {\n  color: var(--color-ocean-blue, #0f6f8f);\n  font-family: 'Raleway', sans-serif;\n  font-size: 1.1rem;\n  font-weight: 800;\n  margin: 0 0 14px;\n}\n\np,\nli {\n  color: #2d3740;\n  font-family: 'Lato', sans-serif;\n  font-size: 0.98rem;\n  line-height: 1.75;\n}\n\nul {\n  margin: 0;\n  padding-left: 1.2rem;\n}\n\n@media (max-width: 768px) {\n  .terms-page {\n    padding: 46px 0;\n  }\n\n  .terms-content {\n    border-radius: 18px;\n    padding: 22px;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/app/home/terms/terms.component.scss"],"names":[],"mappings":"AAAA;EACE,eAAA;EACA,mBAAA;EACA,gBAAA;AACF;;AAEA;EACE,gBAAA;EACA,cAAA;AACF;;AAEA;EACE,yBAAA;EACA,sBAAA;EACA,kBAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,cAAA;EACA,kBAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,gBAAA;AACF;;AAEA;EACE,gBAAA;EACA,mBAAA;EACA,aAAA;EACA,gBAAA;EACA,6CAAA;EACA,uCAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,aAAA;AACF;;AAEA;;EAEE,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,mBAAA;EACA,mBAAA;EACA,gBAAA;EACA,cAAA;EACA,uCAAA;AACF;;AAEA;EACE,aAAA;EACA,cAAA;AACF;;AAEA;EACE;IACE,eAAA;EACF;EAEA;IACE,aAAA;EAAF;AACF","sourcesContent":[".terms-page {\n  padding: 80px 0;\n  background: #f6f2ea;\n  min-height: 70vh;\n}\n\n.terms-shell {\n  max-width: 980px;\n  margin: 0 auto;\n}\n\n.eyebrow {\n  text-transform: uppercase;\n  letter-spacing: .14em;\n  font-size: .78rem;\n  color: #b58b4a;\n  font-weight: 700;\n}\n\nh1 {\n  color: #08263a;\n  margin: 8px 0 16px;\n}\n\n.intro {\n  color: #516070;\n  max-width: 820px;\n  line-height: 1.7;\n}\n\n.terms-card {\n  background: #fff;\n  border-radius: 24px;\n  padding: 32px;\n  margin-top: 28px;\n  box-shadow: 0 18px 45px rgba(8,38,58,.08);\n  border: 1px solid rgba(8,38,58,.08);\n}\n\n.terms-card h2 {\n  color: #08263a;\n  margin-top: 2rem;\n}\n\n.terms-card h2:first-child {\n  margin-top: 0;\n}\n\n.terms-card p,\n.terms-card li {\n  color: #516070;\n  line-height: 1.7;\n}\n\n.process-step {\n  background: #f8f5ef;\n  border-radius: 18px;\n  padding: 1.25rem;\n  margin: 1rem 0;\n  border: 1px solid rgba(8,38,58,.06);\n}\n\n.process-step h3 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n@media (max-width: 720px) {\n  .terms-page {\n    padding: 48px 0;\n  }\n\n  .terms-card {\n    padding: 22px;\n  }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -6562,6 +7434,235 @@ function firstValueFrom(source, config) {
 
 /***/ }),
 
+/***/ 56598:
+/*!************************************************************************************************!*\
+  !*** ./src/app/home/admin-external-bookings/admin-external-bookings.component.scss?ngResource ***!
+  \************************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.admin-proposals-page, .proposal-confirmation-page, .external-bookings-page {
+  padding: 80px 0;
+  background: #f6f2ea;
+  min-height: 70vh;
+}
+
+.proposals-shell, .proposal-shell, .external-shell {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.section-head {
+  margin-bottom: 28px;
+  max-width: 780px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: #b58b4a;
+  font-weight: 700;
+}
+
+h1, h2, h3 {
+  color: #08263a;
+}
+
+.card, .proposal-card, .external-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 18px 45px rgba(8, 38, 58, 0.08);
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  margin-bottom: 24px;
+}
+
+.form-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  color: #08263a;
+  font-weight: 700;
+}
+
+input, textarea, select {
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 14px;
+  padding: 11px 13px;
+  font: inherit;
+  background: #fff;
+}
+
+.wide {
+  grid-column: 1/-1;
+}
+
+.calculation, .actions, .toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 18px 0;
+  align-items: end;
+}
+
+.calculation span {
+  background: #f8f5ef;
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: #516070;
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #08263a;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #efe7da;
+  color: #08263a;
+}
+
+.client-link {
+  background: #f8f5ef;
+  padding: 12px;
+  border-radius: 12px;
+  word-break: break-all;
+  color: #516070;
+}
+
+.success {
+  color: #047857;
+  font-weight: 700;
+}
+
+.error, .expired {
+  color: #9f1d1d;
+  font-weight: 700;
+}
+
+.muted {
+  color: #667;
+}
+
+.search-box {
+  flex: 1 1 320px;
+}
+
+.proposal-list {
+  display: grid;
+  gap: 12px;
+}
+
+.proposal-row {
+  display: grid;
+  grid-template-columns: auto 1.2fr 1.2fr 0.8fr auto;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  border-radius: 18px;
+  padding: 16px;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(8, 38, 58, 0.06);
+}
+
+.proposal-row strong, .proposal-row small {
+  display: block;
+}
+
+.proposal-row small {
+  color: #516070;
+}
+
+.status {
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(181, 139, 74, 0.12);
+  color: #8a652d;
+  font-weight: 700;
+}
+
+.mini-link {
+  border: 0;
+  background: transparent;
+  color: #08263a;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.summary-grid div, .step-card, .choice-block {
+  background: #f8f5ef;
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.summary-grid strong, .summary-grid span {
+  display: block;
+}
+
+.summary-grid span {
+  color: #516070;
+  margin-top: 4px;
+}
+
+.terms-check, .radio-card {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: #fff;
+  border: 1px solid rgba(8, 38, 58, 0.1);
+  padding: 14px;
+  border-radius: 14px;
+  margin: 10px 0;
+  color: #516070;
+}
+
+@media (max-width: 800px) {
+  .proposal-row {
+    grid-template-columns: 1fr;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-external-bookings/admin-external-bookings.component.scss"],"names":[],"mappings":"AACA;EAA0E,eAAA;EAAe,mBAAA;EAAmB,gBAAA;AAG5G;;AAFA;EAAiD,iBAAA;EAAiB,cAAA;AAOlE;;AANA;EAAc,mBAAA;EAAmB,gBAAA;AAWjC;;AAXiD;EAAS,yBAAA;EAAyB,sBAAA;EAAqB,kBAAA;EAAiB,cAAA;EAAc,gBAAA;AAmBvI;;AAlBA;EAAS,cAAA;AAsBT;;AAtBuB;EAAoC,gBAAA;EAAgB,mBAAA;EAAmB,aAAA;EAAa,6CAAA;EAAyC,uCAAA;EAAmC,mBAAA;AA+BvL;;AA9BA;EAAY,aAAA;EAAa,8BAAA;EAA8B,SAAA;EAAS,mBAAA;AAqChE;;AArCmF;EAAW,aAAA;EAAa,2DAAA;EAAyD,SAAA;AA2CpK;;AA1CA;EAAM,aAAA;EAAa,QAAA;EAAQ,cAAA;EAAc,gBAAA;AAiDzC;;AAjDyD;EAAsB,uCAAA;EAAmC,mBAAA;EAAmB,kBAAA;EAAkB,aAAA;EAAa,gBAAA;AAyDpK;;AAzDoL;EAAM,iBAAA;AA6D1L;;AA5DA;EAA+B,aAAA;EAAa,eAAA;EAAe,SAAA;EAAS,cAAA;EAAc,gBAAA;AAoElF;;AApEkG;EAAkB,mBAAA;EAAmB,kBAAA;EAAkB,oBAAA;EAAoB,cAAA;AA2E7K;;AA1EA;EAAK,SAAA;EAAS,oBAAA;EAAoB,kBAAA;EAAkB,gBAAA;EAAgB,eAAA;AAkFpE;;AAlFmF;EAAa,mBAAA;EAAmB,WAAA;AAuFnH;;AAvF8H;EAAe,mBAAA;EAAmB,cAAA;AA4FhK;;AA3FA;EAAa,mBAAA;EAAmB,aAAA;EAAa,mBAAA;EAAmB,qBAAA;EAAqB,cAAA;AAmGrF;;AAnGmG;EAAS,cAAA;EAAc,gBAAA;AAwG1H;;AAxG0I;EAAgB,cAAA;EAAc,gBAAA;AA6GxK;;AA7GwL;EAAO,WAAA;AAiH/L;;AAjH0M;EAAY,eAAA;AAqHtN;;AApHA;EAAe,aAAA;EAAa,SAAA;AAyH5B;;AAzHqC;EAAc,aAAA;EAAa,kDAAA;EAAiD,SAAA;EAAS,mBAAA;EAAmB,WAAA;EAAW,gBAAA;EAAgB,gBAAA;EAAgB,uCAAA;EAAmC,mBAAA;EAAmB,aAAA;EAAa,eAAA;EAAe,6CAAA;AAwI1Q;;AAvIA;EAAyC,cAAA;AA2IzC;;AA3IuD;EAAoB,cAAA;AA+I3E;;AA/IyF;EAAQ,oBAAA;EAAoB,iBAAA;EAAiB,oCAAA;EAAgC,cAAA;EAAc,gBAAA;AAuJpL;;AAvJoM;EAAW,SAAA;EAAS,uBAAA;EAAuB,cAAA;EAAc,0BAAA;EAA0B,eAAA;EAAe,gBAAA;AAgKtS;;AA/JA;EAAc,aAAA;EAAa,2DAAA;EAAyD,SAAA;EAAS,cAAA;AAsK7F;;AAtK2G;EAA2C,mBAAA;EAAmB,mBAAA;EAAmB,aAAA;AA4K5L;;AA5KyM;EAAwC,cAAA;AAgLjP;;AAhL+P;EAAmB,cAAA;EAAc,eAAA;AAqLhS;;AApLA;EAAyB,aAAA;EAAa,SAAA;EAAS,uBAAA;EAAuB,gBAAA;EAAgB,sCAAA;EAAkC,aAAA;EAAa,mBAAA;EAAmB,cAAA;EAAc,cAAA;AAgMtK;;AA/LA;EAAwB;IAAc,0BAAA;EAoMpC;AACF","sourcesContent":["\n.admin-proposals-page,.proposal-confirmation-page,.external-bookings-page{padding:80px 0;background:#f6f2ea;min-height:70vh}\n.proposals-shell,.proposal-shell,.external-shell{max-width:1120px;margin:0 auto}\n.section-head{margin-bottom:28px;max-width:780px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;color:#b58b4a;font-weight:700}\nh1,h2,h3{color:#08263a}.card,.proposal-card,.external-card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 18px 45px rgba(8,38,58,.08);border:1px solid rgba(8,38,58,.08);margin-bottom:24px}\n.form-title{display:flex;justify-content:space-between;gap:1rem;align-items:center}.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}\nlabel{display:grid;gap:6px;color:#08263a;font-weight:700}input,textarea,select{border:1px solid rgba(8,38,58,.16);border-radius:14px;padding:11px 13px;font:inherit;background:#fff}.wide{grid-column:1/-1}\n.calculation,.actions,.toolbar{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0;align-items:end}.calculation span{background:#f8f5ef;padding:10px 14px;border-radius:999px;color:#516070}\n.btn{border:0;border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer}.btn-primary{background:#08263a;color:#fff}.btn-secondary{background:#efe7da;color:#08263a}\n.client-link{background:#f8f5ef;padding:12px;border-radius:12px;word-break:break-all;color:#516070}.success{color:#047857;font-weight:700}.error,.expired{color:#9f1d1d;font-weight:700}.muted{color:#667}.search-box{flex:1 1 320px}\n.proposal-list{display:grid;gap:12px}.proposal-row{display:grid;grid-template-columns:auto 1.2fr 1.2fr .8fr auto;gap:16px;align-items:center;width:100%;text-align:left;background:#fff;border:1px solid rgba(8,38,58,.08);border-radius:18px;padding:16px;cursor:pointer;box-shadow:0 10px 28px rgba(8,38,58,.06)}\n.proposal-row strong,.proposal-row small{display:block}.proposal-row small{color:#516070}.status{border-radius:999px;padding:6px 10px;background:rgba(181,139,74,.12);color:#8a652d;font-weight:700}.mini-link{border:0;background:transparent;color:#08263a;text-decoration:underline;cursor:pointer;font-weight:700}\n.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:20px 0}.summary-grid div,.step-card,.choice-block{background:#f8f5ef;border-radius:18px;padding:16px}.summary-grid strong,.summary-grid span{display:block}.summary-grid span{color:#516070;margin-top:4px}\n.terms-check,.radio-card{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid rgba(8,38,58,.1);padding:14px;border-radius:14px;margin:10px 0;color:#516070}\n@media(max-width:800px){.proposal-row{grid-template-columns:1fr}}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
 /***/ 58009:
 /*!**********************************************************!*\
   !*** ./src/app/home/home/home.component.scss?ngResource ***!
@@ -6988,9 +8089,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeRoutingModule: () => (/* binding */ HomeRoutingModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! @angular/router */ 99585);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
 /* harmony import */ var _boat_boat_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./boat/boat.component */ 36424);
@@ -7016,6 +8117,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./bookings/bookings.component */ 88636);
 /* harmony import */ var _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./my-bookings/my-bookings.component */ 18170);
 /* harmony import */ var _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./booking-detail/booking-detail.component */ 82474);
+/* harmony import */ var _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./admin-warranty-charge/admin-warranty-charge.component */ 32134);
+/* harmony import */ var _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./admin-proposals/admin-proposals.component */ 43758);
+/* harmony import */ var _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./proposal-confirmation/proposal-confirmation.component */ 96894);
+/* harmony import */ var _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./admin-external-bookings/admin-external-bookings.component */ 65726);
+
+
+
+
 
 
 
@@ -7136,11 +8245,23 @@ const routes = [{
 }, {
   path: 'admin/manage-outings',
   component: _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_19__.AdminManageOutingsComponent
+}, {
+  path: 'admin/proposals',
+  component: _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_26__.AdminProposalsComponent
+}, {
+  path: 'proposal/:proposalId',
+  component: _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_27__.ProposalConfirmationComponent
+}, {
+  path: 'admin/external-bookings',
+  component: _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_28__.AdminExternalBookingsComponent
+}, {
+  path: 'admin/warranty-charge',
+  component: _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_25__.AdminWarrantyChargeComponent
 }];
 let HomeRoutingModule = class HomeRoutingModule {};
-HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_25__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_26__.NgModule)({
-  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_27__.RouterModule.forChild(routes)],
-  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_27__.RouterModule]
+HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_29__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_30__.NgModule)({
+  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_31__.RouterModule.forChild(routes)],
+  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_31__.RouterModule]
 })], HomeRoutingModule);
 
 
@@ -7186,52 +8307,35 @@ h1 {
   margin: 8px 0;
 }
 
-.booking-grid {
+.booking-toolbar {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.search-box {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 18px;
-}
-
-.booking-card, .booking-detail-card, .empty-card {
-  background: #fff;
-  border-radius: 24px;
-  padding: 24px;
-  box-shadow: 0 18px 45px rgba(8, 38, 58, 0.08);
-  border: 1px solid rgba(8, 38, 58, 0.08);
-}
-
-.booking-card h2 {
-  margin: 12px 0 8px;
+  gap: 6px;
+  flex: 1 1 320px;
   color: #08263a;
-  font-size: 1.25rem;
-}
-
-.booking-card p {
-  margin: 4px 0;
-  color: #516070;
-}
-
-.status-pill {
-  display: inline-flex;
-  border-radius: 999px;
-  background: rgba(181, 139, 74, 0.12);
-  color: #8a652d;
-  padding: 6px 10px;
-  font-size: 0.78rem;
   font-weight: 700;
 }
 
-.booking-meta {
-  display: grid;
-  gap: 6px;
-  margin: 18px 0;
+.search-box input {
+  width: 100%;
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 999px;
+  padding: 12px 16px;
+  background: #fff;
   color: #08263a;
+  outline: none;
+  box-shadow: 0 10px 25px rgba(8, 38, 58, 0.05);
 }
 
-.booking-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+.search-box input:focus {
+  border-color: #b58b4a;
 }
 
 .btn {
@@ -7257,42 +8361,6 @@ h1 {
   color: #667;
 }
 
-.detail-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 14px;
-  margin: 24px 0;
-}
-
-.detail-grid div {
-  background: #f8f5ef;
-  border-radius: 16px;
-  padding: 14px;
-  display: grid;
-  gap: 4px;
-}
-
-.detail-grid strong {
-  color: #08263a;
-}
-
-.detail-grid span {
-  color: #516070;
-}
-
-.comments {
-  background: #f8f5ef;
-  padding: 16px;
-  border-radius: 16px;
-  color: #516070;
-}
-
-.booking-toolbar {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-}
-
 .error-message {
   color: #9f1d1d;
   background: rgba(159, 29, 29, 0.08);
@@ -7301,47 +8369,200 @@ h1 {
   padding: 0.85rem 1rem;
 }
 
-.firebase-fields {
-  margin-top: 1rem;
-  border-top: 1px solid rgba(10, 43, 61, 0.12);
-  padding-top: 1rem;
+.list-summary {
+  color: #516070;
+  margin: 12px 0;
 }
 
-.firebase-fields h3 {
-  margin: 0 0 0.75rem;
-  font-size: 1rem;
-}
-
-.firebase-field {
+.bookings-list {
   display: grid;
-  grid-template-columns: minmax(120px, 180px) 1fr;
-  gap: 0.75rem;
-  padding: 0.55rem 0;
-  border-bottom: 1px solid rgba(10, 43, 61, 0.08);
+  gap: 12px;
 }
 
-.firebase-field strong {
-  color: #0a2b3d;
-  font-size: 0.9rem;
+.booking-list-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto minmax(180px, 1.4fr) minmax(180px, 1.2fr) minmax(130px, 0.8fr) auto;
+  gap: 16px;
+  align-items: center;
+  text-align: left;
+  background: #fff;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  border-radius: 20px;
+  padding: 18px 20px;
+  cursor: pointer;
+  box-shadow: 0 14px 35px rgba(8, 38, 58, 0.07);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
 }
 
-.firebase-field pre {
-  margin: 0;
-  white-space: pre-wrap;
-  word-break: break-word;
-  font-family: inherit;
-  color: #435a66;
+.booking-list-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 45px rgba(8, 38, 58, 0.11);
+  border-color: rgba(181, 139, 74, 0.38);
 }
 
-@media (max-width: 640px) {
-  .firebase-field {
-    grid-template-columns: 1fr;
-    gap: 0.25rem;
+.status-pill {
+  display: inline-flex;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(181, 139, 74, 0.12);
+  color: #8a652d;
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.booking-main,
+.booking-trip,
+.booking-price {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.booking-main strong,
+.booking-trip strong,
+.booking-price strong {
+  color: #08263a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.booking-main small,
+.booking-trip small,
+.booking-price small {
+  color: #516070;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.row-chevron {
+  color: #b58b4a;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+@media (max-width: 820px) {
+  .booking-list-row {
+    grid-template-columns: 1fr auto;
   }
-}`, "",{"version":3,"sources":["webpack://./src/app/home/bookings/bookings.component.scss"],"names":[],"mappings":"AAAA;EAAgB,eAAA;EAAiB,mBAAA;EAAqB,gBAAA;AAItD;;AAHA;EAAiB,iBAAA;EAAmB,cAAA;AAQpC;;AAPA;EAAgB,mBAAA;EAAqB,gBAAA;AAYrC;;AAXA;EAAW,yBAAA;EAA2B,sBAAA;EAAuB,kBAAA;EAAmB,cAAA;EAAgB,gBAAA;AAmBhG;;AAlBA;EAAK,cAAA;EAAgB,aAAA;AAuBrB;;AAtBA;EAAgB,aAAA;EAAe,2DAAA;EAA6D,SAAA;AA4B5F;;AA3BA;EAAmD,gBAAA;EAAkB,mBAAA;EAAqB,aAAA;EAAe,6CAAA;EAA2C,uCAAA;AAmCpJ;;AAlCA;EAAmB,kBAAA;EAAoB,cAAA;EAAgB,kBAAA;AAwCvD;;AAvCA;EAAkB,aAAA;EAAe,cAAA;AA4CjC;;AA3CA;EAAe,oBAAA;EAAsB,oBAAA;EAAsB,oCAAA;EAAkC,cAAA;EAAgB,iBAAA;EAAmB,kBAAA;EAAmB,gBAAA;AAqDnJ;;AApDA;EAAgB,aAAA;EAAe,QAAA;EAAU,cAAA;EAAgB,cAAA;AA2DzD;;AA1DA;EAAmB,aAAA;EAAe,SAAA;EAAW,eAAA;AAgE7C;;AA/DA;EAAO,SAAA;EAAW,oBAAA;EAAsB,kBAAA;EAAoB,gBAAA;EAAkB,eAAA;EAAiB,qBAAA;AAwE/F;;AAvEA;EAAe,mBAAA;EAAqB,WAAA;AA4EpC;;AA3EA;EAAiB,mBAAA;EAAqB,cAAA;AAgFtC;;AA/EA;EAAS,WAAA;AAmFT;;AAlFA;EAAe,aAAA;EAAe,2DAAA;EAA6D,SAAA;EAAW,cAAA;AAyFtG;;AAxFA;EAAmB,mBAAA;EAAqB,mBAAA;EAAqB,aAAA;EAAe,aAAA;EAAe,QAAA;AAgG3F;;AA/FA;EAAsB,cAAA;AAmGtB;;AAlGA;EAAoB,cAAA;AAsGpB;;AArGA;EAAY,mBAAA;EAAqB,aAAA;EAAe,mBAAA;EAAqB,cAAA;AA4GrE;;AA1GA;EACE,aAAA;EACA,yBAAA;EACA,mBAAA;AA6GF;;AA1GA;EACE,cAAA;EACA,mCAAA;EACA,yCAAA;EACA,mBAAA;EACA,qBAAA;AA6GF;;AA1GA;EACE,gBAAA;EACA,4CAAA;EACA,iBAAA;AA6GF;;AA1GA;EACE,mBAAA;EACA,eAAA;AA6GF;;AA1GA;EACE,aAAA;EACA,+CAAA;EACA,YAAA;EACA,kBAAA;EACA,+CAAA;AA6GF;;AA1GA;EACE,cAAA;EACA,iBAAA;AA6GF;;AA1GA;EACE,SAAA;EACA,qBAAA;EACA,sBAAA;EACA,oBAAA;EACA,cAAA;AA6GF;;AA1GA;EACE;IACE,0BAAA;IACA,YAAA;EA6GF;AACF","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n\n.booking-toolbar {\n  display: flex;\n  justify-content: flex-end;\n  margin-bottom: 1rem;\n}\n\n.error-message {\n  color: #9f1d1d;\n  background: rgba(159, 29, 29, 0.08);\n  border: 1px solid rgba(159, 29, 29, 0.18);\n  border-radius: 14px;\n  padding: 0.85rem 1rem;\n}\n\n.firebase-fields {\n  margin-top: 1rem;\n  border-top: 1px solid rgba(10, 43, 61, 0.12);\n  padding-top: 1rem;\n}\n\n.firebase-fields h3 {\n  margin: 0 0 0.75rem;\n  font-size: 1rem;\n}\n\n.firebase-field {\n  display: grid;\n  grid-template-columns: minmax(120px, 180px) 1fr;\n  gap: 0.75rem;\n  padding: 0.55rem 0;\n  border-bottom: 1px solid rgba(10, 43, 61, 0.08);\n}\n\n.firebase-field strong {\n  color: #0a2b3d;\n  font-size: 0.9rem;\n}\n\n.firebase-field pre {\n  margin: 0;\n  white-space: pre-wrap;\n  word-break: break-word;\n  font-family: inherit;\n  color: #435a66;\n}\n\n@media (max-width: 640px) {\n  .firebase-field {\n    grid-template-columns: 1fr;\n    gap: 0.25rem;\n  }\n}\n"],"sourceRoot":""}]);
+  .status-pill,
+  .booking-main,
+  .booking-trip,
+  .booking-price {
+    grid-column: 1/2;
+  }
+  .row-chevron {
+    grid-column: 2/3;
+    grid-row: 1/span 4;
+  }
+}
+.row-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+}
+
+.mini-btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.55rem 0.8rem;
+  background: #08263a;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.paid-badge {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.45rem 0.75rem;
+  background: #047857;
+  color: #fff;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.balance-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(8, 38, 58, 0.45);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.balance-modal {
+  width: min(560px, 100%);
+  background: #fff;
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+}
+
+.balance-modal h2 {
+  margin-top: 0;
+  color: #08263a;
+}
+
+.balance-modal label {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.85rem 0;
+  color: #08263a;
+  font-weight: 700;
+}
+
+.balance-modal select,
+.balance-modal textarea {
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 14px;
+  padding: 0.75rem;
+  font: inherit;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+@media (max-width: 820px) {
+  .row-actions {
+    grid-column: 1/3;
+    justify-content: flex-start;
+  }
+}
+.blocked-badge {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.45rem 0.75rem;
+  background: #efe7da;
+  color: #8a652d;
+  font-weight: 700;
+  white-space: nowrap;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/bookings/bookings.component.scss"],"names":[],"mappings":"AAAA;EACE,eAAA;EACA,mBAAA;EACA,gBAAA;AACF;;AAEA;EACE,iBAAA;EACA,cAAA;AACF;;AAEA;EACE,mBAAA;EACA,gBAAA;AACF;;AAEA;EACE,yBAAA;EACA,sBAAA;EACA,kBAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,cAAA;EACA,aAAA;AACF;;AAEA;EACE,aAAA;EACA,gBAAA;EACA,SAAA;EACA,mBAAA;EACA,eAAA;AACF;;AAEA;EACE,aAAA;EACA,QAAA;EACA,eAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,WAAA;EACA,uCAAA;EACA,oBAAA;EACA,kBAAA;EACA,gBAAA;EACA,cAAA;EACA,aAAA;EACA,6CAAA;AACF;;AAEA;EACE,qBAAA;AACF;;AAEA;EACE,SAAA;EACA,oBAAA;EACA,kBAAA;EACA,gBAAA;EACA,eAAA;EACA,qBAAA;AACF;;AAEA;EACE,mBAAA;EACA,WAAA;AACF;;AAEA;EACE,mBAAA;EACA,cAAA;AACF;;AAEA;EACE,WAAA;AACF;;AAEA;EACE,cAAA;EACA,mCAAA;EACA,yCAAA;EACA,mBAAA;EACA,qBAAA;AACF;;AAEA;EACE,cAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,SAAA;AACF;;AAEA;EACE,WAAA;EACA,aAAA;EACA,+FAAA;EACA,SAAA;EACA,mBAAA;EACA,gBAAA;EACA,gBAAA;EACA,uCAAA;EACA,mBAAA;EACA,kBAAA;EACA,eAAA;EACA,6CAAA;EACA,gFAAA;AACF;;AAEA;EACE,2BAAA;EACA,6CAAA;EACA,sCAAA;AACF;;AAEA;EACE,oBAAA;EACA,uBAAA;EACA,oBAAA;EACA,oCAAA;EACA,cAAA;EACA,iBAAA;EACA,kBAAA;EACA,gBAAA;EACA,mBAAA;AACF;;AAEA;;;EAGE,aAAA;EACA,QAAA;EACA,YAAA;AACF;;AAEA;;;EAGE,cAAA;EACA,gBAAA;EACA,uBAAA;EACA,mBAAA;AACF;;AAEA;;;EAGE,cAAA;EACA,gBAAA;EACA,uBAAA;EACA,mBAAA;AACF;;AAEA;EACE,cAAA;EACA,eAAA;EACA,cAAA;AACF;;AAEA;EACE;IACE,+BAAA;EACF;EAEA;;;;IAIE,gBAAA;EAAF;EAGA;IACE,gBAAA;IACA,kBAAA;EADF;AACF;AAIA;EACE,oBAAA;EACA,mBAAA;EACA,yBAAA;EACA,YAAA;AAFF;;AAKA;EACE,SAAA;EACA,oBAAA;EACA,uBAAA;EACA,mBAAA;EACA,WAAA;EACA,gBAAA;EACA,eAAA;EACA,mBAAA;AAFF;;AAKA;EACE,oBAAA;EACA,oBAAA;EACA,wBAAA;EACA,mBAAA;EACA,WAAA;EACA,gBAAA;EACA,mBAAA;AAFF;;AAKA;EACE,eAAA;EACA,QAAA;EACA,aAAA;EACA,iCAAA;EACA,aAAA;EACA,mBAAA;EACA,aAAA;AAFF;;AAKA;EACE,uBAAA;EACA,gBAAA;EACA,mBAAA;EACA,eAAA;EACA,2CAAA;AAFF;;AAKA;EACE,aAAA;EACA,cAAA;AAFF;;AAKA;EACE,aAAA;EACA,WAAA;EACA,iBAAA;EACA,cAAA;EACA,gBAAA;AAFF;;AAKA;;EAEE,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;AAFF;;AAKA;EACE,aAAA;EACA,YAAA;EACA,eAAA;EACA,gBAAA;AAFF;;AAKA;EACE;IACE,gBAAA;IACA,2BAAA;EAFF;AACF;AAKA;EACE,oBAAA;EACA,oBAAA;EACA,wBAAA;EACA,mBAAA;EACA,cAAA;EACA,gBAAA;EACA,mBAAA;AAHF","sourcesContent":[".booking-page {\n  padding: 80px 0;\n  background: #f6f2ea;\n  min-height: 70vh;\n}\n\n.booking-shell {\n  max-width: 1120px;\n  margin: 0 auto;\n}\n\n.section-head {\n  margin-bottom: 28px;\n  max-width: 760px;\n}\n\n.eyebrow {\n  text-transform: uppercase;\n  letter-spacing: .14em;\n  font-size: .78rem;\n  color: #b58b4a;\n  font-weight: 700;\n}\n\nh1 {\n  color: #08263a;\n  margin: 8px 0;\n}\n\n.booking-toolbar {\n  display: flex;\n  align-items: end;\n  gap: 12px;\n  margin-bottom: 1rem;\n  flex-wrap: wrap;\n}\n\n.search-box {\n  display: grid;\n  gap: 6px;\n  flex: 1 1 320px;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.search-box input {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.16);\n  border-radius: 999px;\n  padding: 12px 16px;\n  background: #fff;\n  color: #08263a;\n  outline: none;\n  box-shadow: 0 10px 25px rgba(8, 38, 58, 0.05);\n}\n\n.search-box input:focus {\n  border-color: #b58b4a;\n}\n\n.btn {\n  border: 0;\n  border-radius: 999px;\n  padding: 10px 16px;\n  font-weight: 700;\n  cursor: pointer;\n  text-decoration: none;\n}\n\n.btn-primary {\n  background: #08263a;\n  color: #fff;\n}\n\n.btn-secondary {\n  background: #efe7da;\n  color: #08263a;\n}\n\n.muted {\n  color: #667;\n}\n\n.error-message {\n  color: #9f1d1d;\n  background: rgba(159, 29, 29, 0.08);\n  border: 1px solid rgba(159, 29, 29, 0.18);\n  border-radius: 14px;\n  padding: 0.85rem 1rem;\n}\n\n.list-summary {\n  color: #516070;\n  margin: 12px 0;\n}\n\n.bookings-list {\n  display: grid;\n  gap: 12px;\n}\n\n.booking-list-row {\n  width: 100%;\n  display: grid;\n  grid-template-columns: auto minmax(180px, 1.4fr) minmax(180px, 1.2fr) minmax(130px, .8fr) auto;\n  gap: 16px;\n  align-items: center;\n  text-align: left;\n  background: #fff;\n  border: 1px solid rgba(8, 38, 58, .08);\n  border-radius: 20px;\n  padding: 18px 20px;\n  cursor: pointer;\n  box-shadow: 0 14px 35px rgba(8,38,58,.07);\n  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;\n}\n\n.booking-list-row:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 18px 45px rgba(8,38,58,.11);\n  border-color: rgba(181,139,74,.38);\n}\n\n.status-pill {\n  display: inline-flex;\n  justify-content: center;\n  border-radius: 999px;\n  background: rgba(181,139,74,.12);\n  color: #8a652d;\n  padding: 6px 10px;\n  font-size: .78rem;\n  font-weight: 700;\n  white-space: nowrap;\n}\n\n.booking-main,\n.booking-trip,\n.booking-price {\n  display: grid;\n  gap: 4px;\n  min-width: 0;\n}\n\n.booking-main strong,\n.booking-trip strong,\n.booking-price strong {\n  color: #08263a;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.booking-main small,\n.booking-trip small,\n.booking-price small {\n  color: #516070;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.row-chevron {\n  color: #b58b4a;\n  font-size: 2rem;\n  line-height: 1;\n}\n\n@media (max-width: 820px) {\n  .booking-list-row {\n    grid-template-columns: 1fr auto;\n  }\n\n  .status-pill,\n  .booking-main,\n  .booking-trip,\n  .booking-price {\n    grid-column: 1 / 2;\n  }\n\n  .row-chevron {\n    grid-column: 2 / 3;\n    grid-row: 1 / span 4;\n  }\n}\n\n.row-actions {\n  display: inline-flex;\n  align-items: center;\n  justify-content: flex-end;\n  gap: 0.65rem;\n}\n\n.mini-btn {\n  border: 0;\n  border-radius: 999px;\n  padding: 0.55rem 0.8rem;\n  background: #08263a;\n  color: #fff;\n  font-weight: 700;\n  cursor: pointer;\n  white-space: nowrap;\n}\n\n.paid-badge {\n  display: inline-flex;\n  border-radius: 999px;\n  padding: 0.45rem 0.75rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n  white-space: nowrap;\n}\n\n.balance-modal-backdrop {\n  position: fixed;\n  inset: 0;\n  z-index: 1000;\n  background: rgba(8, 38, 58, 0.45);\n  display: grid;\n  place-items: center;\n  padding: 1rem;\n}\n\n.balance-modal {\n  width: min(560px, 100%);\n  background: #fff;\n  border-radius: 24px;\n  padding: 1.5rem;\n  box-shadow: 0 24px 60px rgba(0,0,0,.22);\n}\n\n.balance-modal h2 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.balance-modal label {\n  display: grid;\n  gap: 0.4rem;\n  margin: 0.85rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.balance-modal select,\n.balance-modal textarea {\n  border: 1px solid rgba(8, 38, 58, 0.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n}\n\n.modal-actions {\n  display: flex;\n  gap: 0.75rem;\n  flex-wrap: wrap;\n  margin-top: 1rem;\n}\n\n@media (max-width: 820px) {\n  .row-actions {\n    grid-column: 1 / 3;\n    justify-content: flex-start;\n  }\n}\n\n.blocked-badge {\n  display: inline-flex;\n  border-radius: 999px;\n  padding: 0.45rem 0.75rem;\n  background: #efe7da;\n  color: #8a652d;\n  font-weight: 700;\n  white-space: nowrap;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
+
+/***/ }),
+
+/***/ 64114:
+/*!********************************************************************************************!*\
+  !*** ./src/app/home/admin-warranty-charge/admin-warranty-charge.component.html?ngResource ***!
+  \********************************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<section class=\"warranty-charge-page\">\n  <div class=\"container warranty-shell\">\n    <span class=\"eyebrow\">Admin</span>\n    <h1>Charge warranty for damage</h1>\n    <p class=\"intro\">\n      Use this only when damage, blocked toilets, missing equipment, extra cleaning or unpaid costs must be charged.\n    </p>\n\n    <article class=\"warranty-card\">\n      <label>\n        Booking / proposal ID\n        <input type=\"text\" [(ngModel)]=\"bookingId\" placeholder=\"proposal_xxxxx\" />\n      </label>\n\n      <label>\n        Amount to charge (€)\n        <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"amount\" />\n      </label>\n\n      <label>\n        Damage / charge reason\n        <textarea rows=\"5\" [(ngModel)]=\"reason\" placeholder=\"Example: blocked marine toilet, cigarette burn on cushion cover, broken paddle...\"></textarea>\n      </label>\n\n      <button class=\"btn btn-danger\" type=\"button\" [disabled]=\"charging\" (click)=\"chargeWarranty()\">\n        {{ charging ? 'Charging...' : 'Charge warranty' }}\n      </button>\n\n      <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n      <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -7495,7 +8716,127 @@ h1 {
   padding: 16px;
   border-radius: 16px;
   color: #516070;
-}`, "",{"version":3,"sources":["webpack://./src/app/home/booking-detail/booking-detail.component.scss"],"names":[],"mappings":"AAAA;EAAgB,eAAA;EAAiB,mBAAA;EAAqB,gBAAA;AAItD;;AAHA;EAAiB,iBAAA;EAAmB,cAAA;AAQpC;;AAPA;EAAgB,mBAAA;EAAqB,gBAAA;AAYrC;;AAXA;EAAW,yBAAA;EAA2B,sBAAA;EAAuB,kBAAA;EAAmB,cAAA;EAAgB,gBAAA;AAmBhG;;AAlBA;EAAK,cAAA;EAAgB,aAAA;AAuBrB;;AAtBA;EAAgB,aAAA;EAAe,2DAAA;EAA6D,SAAA;AA4B5F;;AA3BA;EAAmD,gBAAA;EAAkB,mBAAA;EAAqB,aAAA;EAAe,6CAAA;EAA2C,uCAAA;AAmCpJ;;AAlCA;EAAmB,kBAAA;EAAoB,cAAA;EAAgB,kBAAA;AAwCvD;;AAvCA;EAAkB,aAAA;EAAe,cAAA;AA4CjC;;AA3CA;EAAe,oBAAA;EAAsB,oBAAA;EAAsB,oCAAA;EAAkC,cAAA;EAAgB,iBAAA;EAAmB,kBAAA;EAAmB,gBAAA;AAqDnJ;;AApDA;EAAgB,aAAA;EAAe,QAAA;EAAU,cAAA;EAAgB,cAAA;AA2DzD;;AA1DA;EAAmB,aAAA;EAAe,SAAA;EAAW,eAAA;AAgE7C;;AA/DA;EAAO,SAAA;EAAW,oBAAA;EAAsB,kBAAA;EAAoB,gBAAA;EAAkB,eAAA;EAAiB,qBAAA;AAwE/F;;AAvEA;EAAe,mBAAA;EAAqB,WAAA;AA4EpC;;AA3EA;EAAiB,mBAAA;EAAqB,cAAA;AAgFtC;;AA/EA;EAAS,WAAA;AAmFT;;AAlFA;EAAe,aAAA;EAAe,2DAAA;EAA6D,SAAA;EAAW,cAAA;AAyFtG;;AAxFA;EAAmB,mBAAA;EAAqB,mBAAA;EAAqB,aAAA;EAAe,aAAA;EAAe,QAAA;AAgG3F;;AA/FA;EAAsB,cAAA;AAmGtB;;AAlGA;EAAoB,cAAA;AAsGpB;;AArGA;EAAY,mBAAA;EAAqB,aAAA;EAAe,mBAAA;EAAqB,cAAA;AA4GrE","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n"],"sourceRoot":""}]);
+}
+
+.payment-admin-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  margin: 24px 0;
+  box-shadow: 0 18px 45px rgba(8, 38, 58, 0.08);
+  border: 1px solid rgba(8, 38, 58, 0.08);
+}
+
+.payment-admin-card h2 {
+  margin-top: 0;
+  color: #08263a;
+}
+
+.payment-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.payment-summary div {
+  background: #f8f5ef;
+  border-radius: 16px;
+  padding: 14px;
+  display: grid;
+  gap: 4px;
+}
+
+.collect-balance {
+  display: grid;
+  gap: 12px;
+}
+
+.collect-balance label {
+  display: grid;
+  gap: 0.4rem;
+  color: #08263a;
+  font-weight: 700;
+}
+
+.collect-balance select,
+.collect-balance textarea {
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 14px;
+  padding: 0.75rem;
+  font: inherit;
+}
+
+.paid-badge {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.55rem 0.9rem;
+  background: #047857;
+  color: #fff;
+  font-weight: 700;
+}
+
+.success {
+  color: #047857;
+  font-weight: 700;
+}
+
+.error-message {
+  color: #9f1d1d;
+  font-weight: 700;
+}
+
+.blocked-note {
+  background: rgba(181, 139, 74, 0.12);
+  color: #8a652d;
+  border: 1px solid rgba(181, 139, 74, 0.25);
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  font-weight: 700;
+}
+
+.warranty-actions {
+  background: #f8f5ef;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  border-radius: 16px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.warranty-actions p {
+  margin-top: 0;
+  color: #516070;
+}
+
+.cash-damage-card {
+  background: #fff7ed;
+  border: 1px solid rgba(242, 140, 40, 0.25);
+  border-radius: 16px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.cash-damage-card h3 {
+  margin-top: 0;
+  color: #08263a;
+}
+
+.cash-damage-card label {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.85rem 0;
+  color: #08263a;
+  font-weight: 700;
+}
+
+.cash-damage-card input,
+.cash-damage-card textarea {
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 14px;
+  padding: 0.75rem;
+  font: inherit;
+  background: #fff;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/booking-detail/booking-detail.component.scss"],"names":[],"mappings":"AAAA;EAAgB,eAAA;EAAiB,mBAAA;EAAqB,gBAAA;AAItD;;AAHA;EAAiB,iBAAA;EAAmB,cAAA;AAQpC;;AAPA;EAAgB,mBAAA;EAAqB,gBAAA;AAYrC;;AAXA;EAAW,yBAAA;EAA2B,sBAAA;EAAuB,kBAAA;EAAmB,cAAA;EAAgB,gBAAA;AAmBhG;;AAlBA;EAAK,cAAA;EAAgB,aAAA;AAuBrB;;AAtBA;EAAgB,aAAA;EAAe,2DAAA;EAA6D,SAAA;AA4B5F;;AA3BA;EAAmD,gBAAA;EAAkB,mBAAA;EAAqB,aAAA;EAAe,6CAAA;EAA2C,uCAAA;AAmCpJ;;AAlCA;EAAmB,kBAAA;EAAoB,cAAA;EAAgB,kBAAA;AAwCvD;;AAvCA;EAAkB,aAAA;EAAe,cAAA;AA4CjC;;AA3CA;EAAe,oBAAA;EAAsB,oBAAA;EAAsB,oCAAA;EAAkC,cAAA;EAAgB,iBAAA;EAAmB,kBAAA;EAAmB,gBAAA;AAqDnJ;;AApDA;EAAgB,aAAA;EAAe,QAAA;EAAU,cAAA;EAAgB,cAAA;AA2DzD;;AA1DA;EAAmB,aAAA;EAAe,SAAA;EAAW,eAAA;AAgE7C;;AA/DA;EAAO,SAAA;EAAW,oBAAA;EAAsB,kBAAA;EAAoB,gBAAA;EAAkB,eAAA;EAAiB,qBAAA;AAwE/F;;AAvEA;EAAe,mBAAA;EAAqB,WAAA;AA4EpC;;AA3EA;EAAiB,mBAAA;EAAqB,cAAA;AAgFtC;;AA/EA;EAAS,WAAA;AAmFT;;AAlFA;EAAe,aAAA;EAAe,2DAAA;EAA6D,SAAA;EAAW,cAAA;AAyFtG;;AAxFA;EAAmB,mBAAA;EAAqB,mBAAA;EAAqB,aAAA;EAAe,aAAA;EAAe,QAAA;AAgG3F;;AA/FA;EAAsB,cAAA;AAmGtB;;AAlGA;EAAoB,cAAA;AAsGpB;;AArGA;EAAY,mBAAA;EAAqB,aAAA;EAAe,mBAAA;EAAqB,cAAA;AA4GrE;;AA1GA;EACE,gBAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;EACA,6CAAA;EACA,uCAAA;AA6GF;;AA1GA;EACE,aAAA;EACA,cAAA;AA6GF;;AA1GA;EACE,aAAA;EACA,2DAAA;EACA,SAAA;EACA,cAAA;AA6GF;;AA1GA;EACE,mBAAA;EACA,mBAAA;EACA,aAAA;EACA,aAAA;EACA,QAAA;AA6GF;;AA1GA;EACE,aAAA;EACA,SAAA;AA6GF;;AA1GA;EACE,aAAA;EACA,WAAA;EACA,cAAA;EACA,gBAAA;AA6GF;;AA1GA;;EAEE,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;AA6GF;;AA1GA;EACE,oBAAA;EACA,oBAAA;EACA,uBAAA;EACA,mBAAA;EACA,WAAA;EACA,gBAAA;AA6GF;;AA1GA;EAAW,cAAA;EAAgB,gBAAA;AA+G3B;;AA9GA;EAAiB,cAAA;EAAgB,gBAAA;AAmHjC;;AAjHA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;EACA,mBAAA;EACA,qBAAA;EACA,gBAAA;AAoHF;;AAjHA;EACE,mBAAA;EACA,uCAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;AAoHF;;AAjHA;EACE,aAAA;EACA,cAAA;AAoHF;;AAjHA;EACE,mBAAA;EACA,0CAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;AAoHF;;AAjHA;EACE,aAAA;EACA,cAAA;AAoHF;;AAjHA;EACE,aAAA;EACA,WAAA;EACA,iBAAA;EACA,cAAA;EACA,gBAAA;AAoHF;;AAjHA;;EAEE,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,gBAAA;AAoHF","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n\n.payment-admin-card {\n  background: #fff;\n  border-radius: 24px;\n  padding: 24px;\n  margin: 24px 0;\n  box-shadow: 0 18px 45px rgba(8,38,58,.08);\n  border: 1px solid rgba(8,38,58,.08);\n}\n\n.payment-admin-card h2 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.payment-summary {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\n  gap: 12px;\n  margin: 16px 0;\n}\n\n.payment-summary div {\n  background: #f8f5ef;\n  border-radius: 16px;\n  padding: 14px;\n  display: grid;\n  gap: 4px;\n}\n\n.collect-balance {\n  display: grid;\n  gap: 12px;\n}\n\n.collect-balance label {\n  display: grid;\n  gap: 0.4rem;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.collect-balance select,\n.collect-balance textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n}\n\n.paid-badge {\n  display: inline-flex;\n  border-radius: 999px;\n  padding: 0.55rem 0.9rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n}\n\n.success { color: #047857; font-weight: 700; }\n.error-message { color: #9f1d1d; font-weight: 700; }\n\n.blocked-note {\n  background: rgba(181,139,74,.12);\n  color: #8a652d;\n  border: 1px solid rgba(181,139,74,.25);\n  border-radius: 14px;\n  padding: 0.85rem 1rem;\n  font-weight: 700;\n}\n\n.warranty-actions {\n  background: #f8f5ef;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.warranty-actions p {\n  margin-top: 0;\n  color: #516070;\n}\n\n.cash-damage-card {\n  background: #fff7ed;\n  border: 1px solid rgba(242, 140, 40, 0.25);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.cash-damage-card h3 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.cash-damage-card label {\n  display: grid;\n  gap: 0.4rem;\n  margin: 0.85rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.cash-damage-card input,\n.cash-damage-card textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n  background: #fff;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -7760,6 +9101,86 @@ SafetyInstructionsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)(
 
 /***/ }),
 
+/***/ 65726:
+/*!***********************************************************************************!*\
+  !*** ./src/app/home/admin-external-bookings/admin-external-bookings.component.ts ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AdminExternalBookingsComponent: () => (/* binding */ AdminExternalBookingsComponent)
+/* harmony export */ });
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _admin_external_bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin-external-bookings.component.html?ngResource */ 71010);
+/* harmony import */ var _admin_external_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./admin-external-bookings.component.scss?ngResource */ 56598);
+/* harmony import */ var _admin_external_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_admin_external_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../bookings/proposal-api.service */ 79439);
+
+
+
+
+
+
+let AdminExternalBookingsComponent = class AdminExternalBookingsComponent {
+  proposalApi;
+  saving = false;
+  message = '';
+  error = '';
+  form = {
+    source: 'samboat',
+    status: 'accepted',
+    customerName: '',
+    customerEmail: '',
+    customerPhone: '',
+    outingType: 'Journée en mer',
+    outingDate: new Date(Date.now() + 86400000).toISOString().slice(0, 10),
+    departureTime: '10:00',
+    arrivalTime: '18:00',
+    totalAmount: 0,
+    warrantyAmount: 500,
+    warrantyPaymentChoice: 'stripe_card'
+  };
+  constructor(proposalApi) {
+    this.proposalApi = proposalApi;
+  }
+  saveExternalBooking() {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this.saving = true;
+      _this.error = '';
+      _this.message = '';
+      try {
+        const saved = yield _this.proposalApi.createExternalBooking(_this.form);
+        _this.form = {
+          ...saved
+        };
+        _this.message = `External booking saved. Warranty link: ${window.location.origin}/proposal/${saved.proposalId}`;
+      } catch (e) {
+        _this.error = e?.message || 'Unable to save external booking.';
+      }
+      _this.saving = false;
+    })();
+  }
+  get warrantyLink() {
+    return this.form.proposalId ? `${window.location.origin}/proposal/${this.form.proposalId}` : '';
+  }
+  static ctorParameters = () => [{
+    type: _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_3__.ProposalApiService
+  }];
+};
+AdminExternalBookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
+  selector: 'app-admin-external-bookings',
+  template: _admin_external_bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
+  styles: [(_admin_external_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
+})], AdminExternalBookingsComponent);
+
+
+/***/ }),
+
 /***/ 67010:
 /*!**************************************************************************************!*\
   !*** ./src/app/home/tours/business-outing/business-outing.component.scss?ngResource ***!
@@ -8016,7 +9437,18 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">My bookings</span>\n      <h1>Upcoming and confirmed bookings</h1>\n      <p>View your confirmed outings, payment status and warranty registration.</p>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n\n    <div *ngIf=\"!loading && bookings.length === 0\" class=\"empty-card\">\n      No booking is linked to your account yet.\n    </div>\n\n    <div class=\"booking-grid\" *ngIf=\"!loading && bookings.length\">\n      <article class=\"booking-card\" *ngFor=\"let booking of bookings\">\n        <div>\n          <span class=\"status-pill\">{{ booking.bookingStatus || 'requested' }}</span>\n          <h2>{{ booking.outingType || 'Outing' }}</h2>\n          <p>{{ booking.outingDate }} <span *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</span></p>\n          <p>{{ booking.customerName }} • {{ booking.email }}</p>\n        </div>\n\n        <div class=\"booking-meta\">\n          <span>Total: €{{ booking.totalPrice || 0 }}</span>\n          <span>Deposit: {{ booking.depositStatus || 'pending' }}</span>\n          <span>Warranty: {{ booking.warrantyStatus || 'not_registered' }}</span>\n        </div>\n\n        <div class=\"booking-actions\">\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"openBooking(booking)\">Details</button>\n          <button type=\"button\" class=\"btn btn-primary\" (click)=\"payBooking(booking)\">Payment</button>\n        </div>\n      </article>\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">My bookings</span>\n      <h1>Upcoming and confirmed bookings</h1>\n      <p>View your confirmed outings, payment status and warranty registration.</p>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n\n    <div *ngIf=\"!loading && bookings.length === 0\" class=\"empty-card\">\n      No booking is linked to your account yet.\n    </div>\n\n    <div class=\"booking-grid\" *ngIf=\"!loading && bookings.length\">\n      <article class=\"booking-card\" *ngFor=\"let booking of bookings\">\n        <div>\n          <span class=\"status-pill\">{{ booking.bookingStatus || 'requested' }}</span>\n          <h2>{{ booking.outingType || 'Outing' }}</h2>\n          <p>{{ booking.outingDate }} <span *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</span></p>\n          <p>{{ booking.customerName }} • {{ booking.email }}</p>\n        </div>\n\n        <div class=\"booking-meta\">\n          <span>Total: €{{ booking.totalPrice || 0 }}</span>\n          <span>Deposit 10%: €{{ getDepositAmount(booking) }} · {{ getDepositLabel(booking) }}</span>\n          <span>Remaining 90% onboard: €{{ getBalanceAmount(booking) }}</span>\n          <span>Warranty: {{ booking.warrantyStatus || 'not_registered' }}</span>\n        </div>\n\n        <div class=\"booking-actions\">\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"openBooking(booking)\">Details</button>\n          <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"!isDepositPaid(booking)\" (click)=\"payBooking(booking)\">Pay 10% deposit</button>\n          <span class=\"paid-badge\" *ngIf=\"isDepositPaid(booking)\">Deposit paid</span>\n        </div>\n      </article>\n    </div>\n  </div>\n</section>\n";
+
+/***/ }),
+
+/***/ 71010:
+/*!************************************************************************************************!*\
+  !*** ./src/app/home/admin-external-bookings/admin-external-bookings.component.html?ngResource ***!
+  \************************************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "\n<section class=\"external-bookings-page\">\n  <div class=\"container external-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">Admin</span>\n      <h1>SamBoat / Click&Boat bookings</h1>\n      <p>For platform bookings, the only Alegria flow needed is the security / damage deposit.</p>\n    </div>\n\n    <article class=\"external-card\">\n      <div class=\"form-grid\">\n        <label>Platform<select [(ngModel)]=\"form.source\"><option value=\"samboat\">SamBoat</option><option value=\"clickandboat\">Click&Boat</option><option value=\"other\">Other</option></select></label>\n        <label>Customer name<input type=\"text\" [(ngModel)]=\"form.customerName\" /></label>\n        <label>Customer email<input type=\"email\" [(ngModel)]=\"form.customerEmail\" /></label>\n        <label>Phone<input type=\"tel\" [(ngModel)]=\"form.customerPhone\" /></label>\n        <label>Outing type<input type=\"text\" [(ngModel)]=\"form.outingType\" /></label>\n        <label>Outing date<input type=\"date\" [(ngModel)]=\"form.outingDate\" /></label>\n        <label>Departure time<input type=\"time\" [(ngModel)]=\"form.departureTime\" /></label>\n        <label>Return time<input type=\"time\" [(ngModel)]=\"form.arrivalTime\" /></label>\n        <label>Warranty amount (€)<input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"form.warrantyAmount\" /></label>\n        <label>Warranty method<select [(ngModel)]=\"form.warrantyPaymentChoice\"><option value=\"stripe_card\">Stripe card registration</option><option value=\"cash_on_board\">€500 cash before departure</option></select></label>\n      </div>\n\n      <div class=\"actions\"><button class=\"btn btn-primary\" type=\"button\" [disabled]=\"saving\" (click)=\"saveExternalBooking()\">{{ saving ? 'Saving...' : 'Save external booking' }}</button></div>\n      <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n      <p class=\"client-link\" *ngIf=\"warrantyLink\">{{ warrantyLink }}</p>\n      <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -8248,7 +9680,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"terms-page\">\n  <div class=\"container terms-container\">\n\n    <ng-container [ngSwitch]=\"language\">\n\n      <ng-container *ngSwitchCase=\"'fr'\">\n        <span class=\"eyebrow\">Conditions</span>\n        <h1>Conditions générales de location de catamaran</h1>\n        <p class=\"terms-intro\">\n          Ces conditions définissent le cadre général applicable aux expériences privées à bord d’Alegria.\n          Elles sont fournies à titre informatif et peuvent être complétées par des conditions particulières de réservation.\n        </p>\n      </ng-container>\n\n      <ng-container *ngSwitchCase=\"'es'\">\n        <span class=\"eyebrow\">Condiciones</span>\n        <h1>Condiciones generales de alquiler de catamarán</h1>\n        <p class=\"terms-intro\">\n          Estas condiciones definen el marco general aplicable a las experiencias privadas a bordo de Alegria.\n          Se proporcionan con carácter informativo y pueden completarse con condiciones particulares de reserva.\n        </p>\n      </ng-container>\n\n      <ng-container *ngSwitchDefault>\n        <span class=\"eyebrow\">Legal</span>\n        <h1>Catamaran Charter Terms and Conditions</h1>\n        <p class=\"terms-intro\">\n          These terms define the general conditions applicable to private catamaran experiences aboard Alegria.\n          They are provided for information and may be completed by specific booking conditions depending on the platform or agreement used.\n        </p>\n      </ng-container>\n\n    </ng-container>\n\n    <div class=\"terms-content\">\n\n      <article class=\"term-section\">\n        <h2>1. {{ language === 'fr' ? 'Réservation et paiement' : (language === 'es' ? 'Reserva y pago' : 'Booking and Payment') }}</h2>\n        <ul>\n          <li *ngIf=\"language==='fr'\">Un acompte de 50 % est requis pour confirmer la réservation.</li>\n          <li *ngIf=\"language==='es'\">Se requiere un depósito del 50 % para confirmar la reserva.</li>\n          <li *ngIf=\"language==='en'\">A deposit of 50% of the total charter fee is required to confirm the booking.</li>\n\n          <li *ngIf=\"language==='fr'\">Le solde doit être réglé au plus tard 30 jours avant le départ.</li>\n          <li *ngIf=\"language==='es'\">El saldo debe abonarse a más tardar 30 días antes de la salida.</li>\n          <li *ngIf=\"language==='en'\">The remaining balance must be paid no later than 30 days before the charter start date.</li>\n\n          <li *ngIf=\"language==='fr'\">Les réservations effectuées moins de 30 jours avant le départ doivent être réglées intégralement.</li>\n          <li *ngIf=\"language==='es'\">Las reservas realizadas con menos de 30 días deben pagarse en su totalidad.</li>\n          <li *ngIf=\"language==='en'\">Bookings made less than 30 days before departure must be paid in full at the time of reservation.</li>\n\n          <li *ngIf=\"language==='fr'\">Les prix incluent l’utilisation du catamaran, l’équipement standard, l’assurance et le nettoyage sauf mention contraire.</li>\n          <li *ngIf=\"language==='es'\">Los precios incluyen el uso del catamarán, equipamiento estándar, seguro y limpieza salvo indicación contraria.</li>\n          <li *ngIf=\"language==='en'\">Prices include the use of the catamaran, standard equipment, insurance, and cleaning unless otherwise specified.</li>\n        </ul>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>2. {{ language === 'fr' ? 'Annulations' : (language === 'es' ? 'Cancelaciones' : 'Cancellations') }}</h2>\n        <ul>\n          <li *ngIf=\"language==='fr'\">Toute annulation doit être faite par écrit.</li>\n          <li *ngIf=\"language==='es'\">Toda cancelación debe realizarse por escrito.</li>\n          <li *ngIf=\"language==='en'\">Cancellation must be made in writing.</li>\n\n          <li *ngIf=\"language==='fr'\">Plus de 60 jours : remboursement intégral hors frais administratifs.</li>\n          <li *ngIf=\"language==='es'\">Más de 60 días: reembolso completo menos gastos administrativos.</li>\n          <li *ngIf=\"language==='en'\">More than 60 days before departure: full refund minus administrative fee.</li>\n\n          <li *ngIf=\"language==='fr'\">Entre 30 et 60 jours : remboursement de 50 %.</li>\n          <li *ngIf=\"language==='es'\">Entre 30 y 60 días: reembolso del 50 %.</li>\n          <li *ngIf=\"language==='en'\">30–60 days before departure: 50% refund.</li>\n\n          <li *ngIf=\"language==='fr'\">Moins de 30 jours : aucun remboursement.</li>\n          <li *ngIf=\"language==='es'\">Menos de 30 días: sin reembolso.</li>\n          <li *ngIf=\"language==='en'\">Less than 30 days before departure: no refund.</li>\n\n          <li *ngIf=\"language==='fr'\">En cas d’annulation par la société pour raison technique ou météo, un remboursement ou report sera proposé.</li>\n          <li *ngIf=\"language==='es'\">Si la empresa cancela por motivos técnicos o meteorológicos, se ofrecerá reembolso o cambio de fecha.</li>\n          <li *ngIf=\"language==='en'\">If the charter company cancels due to technical issues or unsafe weather, a full refund or rescheduling option will be offered.</li>\n        </ul>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>3. {{ language === 'fr' ? 'Skipper et équipage' : (language === 'es' ? 'Patrón y tripulación' : 'Skipper and Crew') }}</h2>\n        <p *ngIf=\"language==='fr'\">Le skipper a pleine autorité pour assurer la sécurité des passagers et du navire. Ses consignes doivent être respectées à tout moment.</p>\n        <p *ngIf=\"language==='es'\">El patrón tiene plena autoridad para garantizar la seguridad de los pasajeros y de la embarcación. Sus instrucciones deben respetarse en todo momento.</p>\n        <p *ngIf=\"language==='en'\">The skipper has full authority to make decisions for the safety of passengers and vessel. Passengers must comply with the skipper’s instructions at all times.</p>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>4. {{ language === 'fr' ? 'Sécurité et comportement' : (language === 'es' ? 'Seguridad y conducta' : 'Safety and Conduct') }}</h2>\n        <p *ngIf=\"language==='fr'\">Les invités doivent respecter les règles maritimes, la consommation de drogues est interdite, et les enfants doivent rester sous surveillance.</p>\n        <p *ngIf=\"language==='es'\">Los invitados deben respetar las normas marítimas, el consumo de drogas está prohibido y los niños deben estar supervisados.</p>\n        <p *ngIf=\"language==='en'\">All guests must act responsibly, drug use is prohibited, and children must be supervised by adults at all times.</p>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>5. {{ language === 'fr' ? 'Dommages et responsabilité' : (language === 'es' ? 'Daños y responsabilidad' : 'Damage and Liability') }}</h2>\n        <p *ngIf=\"language==='fr'\">Le locataire est responsable des dommages causés par négligence. Les effets personnels restent sous la responsabilité des invités.</p>\n        <p *ngIf=\"language==='es'\">El cliente es responsable de los daños causados por negligencia. Los efectos personales quedan bajo responsabilidad de los invitados.</p>\n        <p *ngIf=\"language==='en'\">The charterer is financially responsible for any damage caused by guests through negligence. Personal belongings remain the responsibility of guests.</p>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>6. {{ language === 'fr' ? 'Utilisation du navire' : (language === 'es' ? 'Uso de la embarcación' : 'Use of the Vessel') }}</h2>\n        <p *ngIf=\"language==='fr'\">Le navire doit être utilisé uniquement dans la zone autorisée et pour des usages légaux.</p>\n        <p *ngIf=\"language==='es'\">La embarcación solo puede utilizarse dentro de la zona autorizada y para fines legales.</p>\n        <p *ngIf=\"language==='en'\">The vessel must be used only within the designated cruising area and for lawful purposes.</p>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>7. {{ language === 'fr' ? 'Environnement et respect' : (language === 'es' ? 'Medio ambiente y respeto' : 'Environment and Respect') }}</h2>\n        <p *ngIf=\"language==='fr'\">Les invités sont invités à respecter la vie marine et à éviter tout déchet en mer.</p>\n        <p *ngIf=\"language==='es'\">Se espera que los invitados respeten la vida marina y eviten residuos en el mar.</p>\n        <p *ngIf=\"language==='en'\">Guests are expected to respect marine life and local environmental regulations.</p>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>8. Force Majeure</h2>\n        <p *ngIf=\"language==='fr'\">Aucune des parties ne pourra être tenue responsable en cas d’événements hors de son contrôle.</p>\n        <p *ngIf=\"language==='es'\">Ninguna de las partes será responsable por eventos fuera de su control.</p>\n        <p *ngIf=\"language==='en'\">Neither party shall be liable for delays or cancellations caused by events beyond their control.</p>\n      </article>\n\n      <article class=\"term-section\">\n        <h2>9. {{ language === 'fr' ? 'Droit applicable' : (language === 'es' ? 'Ley aplicable' : 'Governing Law') }}</h2>\n        <p *ngIf=\"language==='fr'\">Le présent accord est soumis au droit du pays où la prestation a lieu.</p>\n        <p *ngIf=\"language==='es'\">Este acuerdo se rige por las leyes del país donde se realiza la actividad.</p>\n        <p *ngIf=\"language==='en'\">This agreement is governed by the laws of the country in which the charter takes place.</p>\n      </article>\n\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"terms-page\">\n  <div class=\"container terms-shell\">\n\n    <!-- ENGLISH -->\n    <ng-container *ngIf=\"language === 'en'\">\n      <span class=\"eyebrow\">Legal</span>\n      <h1>Catamaran Experience Terms & Conditions</h1>\n\n      <p class=\"intro\">\n        These Terms & Conditions apply to direct bookings made with Alegria Boat for private catamaran experiences aboard Alegria.\n        Bookings made through third-party platforms such as Click&Boat or SamBoat remain subject to the applicable platform terms and payment rules.\n      </p>\n\n      <article class=\"terms-card\">\n        <h2>1. The 3-step booking and payment process</h2>\n\n        <div class=\"process-step\">\n          <h3>Step 1 — Confirm the booking online</h3>\n          <p>\n            For direct bookings, the customer confirms the outing on <strong>alegriaboat.eu</strong> by accepting these Terms & Conditions\n            and paying a <strong>10% booking confirmation deposit</strong>.\n          </p>\n          <p>The booking is confirmed only once this 10% deposit has been successfully paid.</p>\n        </div>\n\n        <div class=\"process-step\">\n          <h3>Step 2 — Register the security / damage deposit</h3>\n          <p>\n            Before the outing, the customer may be required to register a <strong>500€ security / damage deposit</strong>\n            on <strong>alegriaboat.eu</strong> using Stripe.\n          </p>\n          <p>\n            This online registration is normally completed approximately one day before the outing and requires a valid debit or credit card.\n            Unless otherwise stated, the Stripe registration does not immediately charge the customer.\n          </p>\n          <p>\n            As an alternative, Alegria Boat may exceptionally accept a <strong>500€ cash damage deposit</strong> before departure.\n            This amount will be returned at the end of the excursion if no damage, missing equipment, unpaid amount or abnormal cleaning requirement is observed.\n          </p>\n        </div>\n\n        <div class=\"process-step\">\n          <h3>Step 3 — Pay the remaining 90% onboard before departure</h3>\n          <p>\n            The remaining <strong>90% balance</strong> is paid onboard <strong>before departure</strong>, using SumUp, credit/debit card,\n            Apple Pay, Google Pay or cash.\n          </p>\n          <p>Alegria Boat may refuse departure if the remaining balance has not been fully paid before leaving the dock.</p>\n        </div>\n\n        <h2>2. Cancellation and refund policy</h2>\n        <p>For direct bookings, the 10% booking confirmation deposit is fully refundable if the customer cancels at least <strong>10 calendar days before the outing</strong>.</p>\n        <p>If the customer cancels less than 10 calendar days before the outing, the 10% deposit is non-refundable.</p>\n        <p>If Alegria Boat cancels the outing for any reason, including weather, safety, technical or operational reasons, the amounts paid directly to Alegria Boat will be refunded.</p>\n\n        <h2>3. Bookings through Click&Boat, SamBoat or other platforms</h2>\n        <p>Bookings made through third-party platforms are governed by the relevant platform’s payment, cancellation and refund rules.</p>\n        <p>Alegria Boat may still ask the customer to provide practical information, complete safety forms or register a security deposit when required for the outing.</p>\n\n        <h2>4. Punctuality and departure time</h2>\n        <p>Customers must arrive on time at the agreed meeting point and be fully ready for boarding and departure at the scheduled time.</p>\n        <p>Customer delays may shorten the outing duration and do not entitle the customer to a refund, extension or compensation.</p>\n\n        <h2>5. Skipper authority and safety</h2>\n        <p>The skipper has full authority over the vessel and all safety-related decisions. Guests must comply with the skipper’s instructions at all times.</p>\n        <p>Alegria Boat may refuse boarding or interrupt the outing without refund in case of dangerous behavior, intoxication, drug use, aggression or refusal to follow safety instructions.</p>\n\n        <h2>6. Swimming and water activities</h2>\n        <p>Swimming, snorkeling and any water-related activity are undertaken entirely at the participant’s own risk.</p>\n        <p>Participants are responsible for assessing their own swimming ability and for supervising minors under their responsibility. The skipper may prohibit swimming or water activities at any time for safety reasons.</p>\n\n        <h2>7. Damage, security deposit and liability</h2>\n        <p>The customer is financially responsible for damage caused by themselves or members of their group through negligence, misuse of equipment, failure to follow instructions or breach of onboard rules.</p>\n        <p>Alegria Boat may charge all or part of the registered security deposit for damage, missing equipment, extraordinary cleaning, unpaid onboard amounts or other justified costs.</p>\n\n        \n        <h2>8. Common damages and chargeable incidents</h2>\n        <p>\n          Certain onboard damages occur frequently and may generate significant repair or maintenance costs.\n        </p>\n\n        <ul>\n          <li>\n            <strong>Marine toilets:</strong> onboard toilets are extremely sensitive and are not comparable to household toilets.\n            Toilet paper, wipes, sanitary products or any foreign object must never be thrown into the toilets.\n            Marine toilets clog very quickly and unclogging or repair operations may be charged to the customer.\n          </li>\n\n          <li>\n            <strong>Cigarette burns:</strong> cushion covers and upholstery are highly sensitive to cigarette burns.\n            Burn marks on cushions, seating or fabrics may require expensive replacement or repair and may be charged to the customer.\n          </li>\n        </ul>\n\n        <h2>9. Personal belongings</h2>\n        <p>Guests remain responsible for their personal belongings, including phones, bags, jewellery, sunglasses, cameras and other valuables.</p>\n\n        <h2>10. Environment and conduct</h2>\n        <p>Guests must respect marine life, coastal areas and environmental rules. Throwing waste into the sea is strictly prohibited.</p>\n\n        <h2>11. Force majeure and weather</h2>\n        <p>Alegria Boat shall not be liable for delays, changes or cancellations caused by weather, sea conditions, port authority decisions, technical issues, force majeure or any event beyond reasonable control.</p>\n        <p>The skipper alone decides whether sea and weather conditions are safe for departure, continuation or return.</p>\n\n        <h2>12. Payment providers and privacy</h2>\n        <p>Payments and card registrations may be processed by third-party providers such as Stripe and SumUp. Alegria Boat does not store full credit or debit card details.</p>\n\n        <h2>13. Governing law</h2>\n        <p>These Terms & Conditions are governed by French law, subject to any mandatory consumer protection rules that may apply.</p>\n\n        <h2>14. Acceptance</h2>\n        <p>By confirming a booking, making a payment, registering a security deposit, boarding the vessel or participating in an outing, the customer acknowledges having read, understood and accepted these Terms & Conditions.</p>\n      </article>\n    </ng-container>\n\n    <!-- FRENCH -->\n    <ng-container *ngIf=\"language === 'fr'\">\n      <span class=\"eyebrow\">Mentions légales</span>\n      <h1>Conditions Générales des Expériences Catamaran</h1>\n\n      <p class=\"intro\">\n        Ces Conditions Générales s’appliquent aux réservations directes effectuées avec Alegria Boat pour des expériences privées à bord du catamaran Alegria.\n        Les réservations effectuées via des plateformes tierces telles que Click&Boat ou SamBoat restent soumises aux conditions de paiement et d’annulation de ces plateformes.\n      </p>\n\n      <article class=\"terms-card\">\n        <h2>1. Processus de réservation et de paiement en 3 étapes</h2>\n\n        <div class=\"process-step\">\n          <h3>Étape 1 — Confirmation de la réservation en ligne</h3>\n          <p>\n            Pour les réservations directes, le client confirme la sortie sur <strong>alegriaboat.eu</strong> en acceptant les présentes Conditions Générales\n            et en réglant un <strong>acompte de confirmation de 10%</strong>.\n          </p>\n          <p>La réservation n’est confirmée qu’après paiement effectif de cet acompte de 10%.</p>\n        </div>\n\n        <div class=\"process-step\">\n          <h3>Étape 2 — Enregistrement de la caution / dépôt de garantie</h3>\n          <p>\n            Avant la sortie, le client peut être invité à enregistrer une <strong>caution / dépôt de garantie de 500€</strong>\n            sur <strong>alegriaboat.eu</strong> via Stripe.\n          </p>\n          <p>\n            Cet enregistrement en ligne est généralement effectué environ un jour avant la sortie et nécessite une carte bancaire valide.\n            Sauf indication contraire, l’enregistrement Stripe ne débite pas immédiatement le client.\n          </p>\n          <p>\n            À défaut, Alegria Boat pourra exceptionnellement accepter une <strong>caution de 500€ en espèces</strong> avant le départ.\n            Cette somme sera restituée à la fin de l’excursion si aucun dommage, matériel manquant, impayé ou nettoyage anormal n’est constaté.\n          </p>\n        </div>\n\n        <div class=\"process-step\">\n          <h3>Étape 3 — Paiement des 90% restants à bord avant le départ</h3>\n          <p>\n            Le <strong>solde de 90%</strong> est réglé à bord <strong>avant le départ</strong>, via SumUp, carte bancaire,\n            Apple Pay, Google Pay ou espèces.\n          </p>\n          <p>Alegria Boat peut refuser le départ si le solde n’a pas été intégralement réglé avant de quitter le quai.</p>\n        </div>\n\n        <h2>2. Politique d’annulation et de remboursement</h2>\n        <p>Pour les réservations directes, l’acompte de 10% est intégralement remboursable si le client annule au moins <strong>10 jours calendaires avant la sortie</strong>.</p>\n        <p>Si le client annule moins de 10 jours calendaires avant la sortie, l’acompte de 10% n’est pas remboursable.</p>\n        <p>Si Alegria Boat annule la sortie, notamment pour météo, sécurité, problème technique ou opérationnel, les sommes payées directement à Alegria Boat sont remboursées.</p>\n\n        <h2>3. Réservations via Click&Boat, SamBoat ou autres plateformes</h2>\n        <p>Les réservations réalisées via des plateformes tierces sont régies par les règles de paiement, d’annulation et de remboursement de ces plateformes.</p>\n        <p>Alegria Boat peut néanmoins demander au client des informations pratiques, des formulaires de sécurité ou l’enregistrement d’une caution lorsque cela est nécessaire.</p>\n\n        <h2>4. Ponctualité et heure de départ</h2>\n        <p>Les clients doivent arriver à l’heure au point de rendez-vous convenu et être prêts pour l’embarquement et le départ à l’heure prévue.</p>\n        <p>Tout retard du client peut réduire la durée de la sortie et ne donne droit à aucun remboursement, prolongation ou compensation.</p>\n\n        <h2>5. Autorité du skipper et sécurité</h2>\n        <p>Le skipper dispose de l’autorité complète sur le navire et sur toutes les décisions relatives à la sécurité. Les passagers doivent respecter ses instructions à tout moment.</p>\n        <p>Alegria Boat peut refuser l’embarquement ou interrompre la sortie sans remboursement en cas de comportement dangereux, état d’ébriété, usage de stupéfiants, agressivité ou refus de respecter les consignes.</p>\n\n        <h2>6. Baignade et activités nautiques</h2>\n        <p>La baignade, le snorkeling et toute activité nautique sont pratiqués sous l’entière responsabilité des participants.</p>\n        <p>Chaque participant est responsable de l’évaluation de ses capacités de nage et de la surveillance des mineurs sous sa responsabilité. Le skipper peut interdire la baignade ou toute activité nautique pour raisons de sécurité.</p>\n\n        <h2>7. Dommages, caution et responsabilité</h2>\n        <p>Le client est financièrement responsable des dommages causés par lui-même ou les membres de son groupe par négligence, mauvaise utilisation du matériel, non-respect des consignes ou violation des règles à bord.</p>\n        <p>Alegria Boat peut prélever tout ou partie de la caution enregistrée en cas de dommage, matériel manquant, nettoyage exceptionnel, somme impayée ou frais justifiés.</p>\n\n        \n        <h2>8. Dommages courants et frais facturables</h2>\n        <p>\n          Certains dommages à bord sont fréquents et peuvent engendrer des frais importants de réparation ou de maintenance.\n        </p>\n\n        <ul>\n          <li>\n            <strong>Toilettes marines :</strong> les toilettes à bord sont extrêmement sensibles et ne fonctionnent pas comme les toilettes d’une maison.\n            Il est strictement interdit d’y jeter du papier toilette, lingettes, protections hygiéniques ou tout autre objet.\n            Les toilettes marines se bouchent très rapidement et les frais de débouchage ou de réparation pourront être facturés au client.\n          </li>\n\n          <li>\n            <strong>Brûlures de cigarettes :</strong> les housses de coussins et tissus du bateau sont très sensibles aux brûlures de cigarettes.\n            Toute brûlure sur les coussins, banquettes ou tissus pourra nécessiter un remplacement coûteux et être facturée au client.\n          </li>\n        </ul>\n\n        <h2>9. Effets personnels</h2>\n        <p>Les passagers restent responsables de leurs effets personnels, notamment téléphones, sacs, bijoux, lunettes, appareils photo et objets de valeur.</p>\n\n        <h2>10. Environnement et conduite</h2>\n        <p>Les passagers doivent respecter la faune marine, le littoral et les règles environnementales. Il est strictement interdit de jeter des déchets en mer.</p>\n\n        <h2>11. Force majeure et météo</h2>\n        <p>Alegria Boat ne saurait être tenue responsable des retards, changements ou annulations dus à la météo, l’état de la mer, les décisions des autorités portuaires, un problème technique, un cas de force majeure ou tout événement échappant à son contrôle raisonnable.</p>\n        <p>Le skipper décide seul si les conditions météo et maritimes permettent le départ, la poursuite ou le retour.</p>\n\n        <h2>12. Prestataires de paiement et confidentialité</h2>\n        <p>Les paiements et enregistrements de carte peuvent être traités par des prestataires tiers tels que Stripe et SumUp. Alegria Boat ne conserve pas les informations complètes de carte bancaire.</p>\n\n        <h2>13. Loi applicable</h2>\n        <p>Les présentes Conditions Générales sont régies par le droit français, sous réserve des règles impératives de protection du consommateur applicables.</p>\n\n        <h2>14. Acceptation</h2>\n        <p>En confirmant une réservation, en effectuant un paiement, en enregistrant une caution, en embarquant ou en participant à une sortie, le client reconnaît avoir lu, compris et accepté les présentes Conditions Générales.</p>\n      </article>\n    </ng-container>\n\n    <!-- SPANISH -->\n    <ng-container *ngIf=\"language === 'es'\">\n      <span class=\"eyebrow\">Legal</span>\n      <h1>Términos y Condiciones de Experiencias en Catamarán</h1>\n\n      <p class=\"intro\">\n        Estos Términos y Condiciones se aplican a las reservas directas realizadas con Alegria Boat para experiencias privadas a bordo del catamarán Alegria.\n        Las reservas realizadas a través de plataformas como Click&Boat o SamBoat quedan sujetas a las condiciones de pago y cancelación de dichas plataformas.\n      </p>\n\n      <article class=\"terms-card\">\n        <h2>1. Proceso de reserva y pago en 3 pasos</h2>\n\n        <div class=\"process-step\">\n          <h3>Paso 1 — Confirmación online de la reserva</h3>\n          <p>\n            Para las reservas directas, el cliente confirma la salida en <strong>alegriaboat.eu</strong> aceptando estos Términos y Condiciones\n            y pagando un <strong>depósito de confirmación del 10%</strong>.\n          </p>\n          <p>La reserva queda confirmada únicamente cuando se ha pagado correctamente este depósito del 10%.</p>\n        </div>\n\n        <div class=\"process-step\">\n          <h3>Paso 2 — Registro del depósito de garantía</h3>\n          <p>\n            Antes de la salida, se podrá solicitar al cliente registrar un <strong>depósito de garantía de 500€</strong>\n            en <strong>alegriaboat.eu</strong> mediante Stripe.\n          </p>\n          <p>\n            Este registro online normalmente se realiza aproximadamente un día antes de la salida y requiere una tarjeta válida de débito o crédito.\n            Salvo indicación contraria, el registro mediante Stripe no supone un cargo inmediato.\n          </p>\n          <p>\n            Como alternativa, Alegria Boat podrá aceptar excepcionalmente un <strong>depósito en efectivo de 500€</strong> antes de la salida.\n            Esta cantidad será devuelta al final de la excursión si no se observa ningún daño, material perdido, importe impagado o limpieza extraordinaria.\n          </p>\n        </div>\n\n        <div class=\"process-step\">\n          <h3>Paso 3 — Pago del 90% restante a bordo antes de la salida</h3>\n          <p>\n            El <strong>90% restante</strong> se paga a bordo <strong>antes de la salida</strong>, mediante SumUp, tarjeta,\n            Apple Pay, Google Pay o efectivo.\n          </p>\n          <p>Alegria Boat podrá rechazar la salida si el saldo restante no ha sido abonado íntegramente antes de abandonar el muelle.</p>\n        </div>\n\n        <h2>2. Política de cancelación y reembolso</h2>\n        <p>Para las reservas directas, el depósito del 10% es totalmente reembolsable si el cliente cancela al menos <strong>10 días naturales antes de la salida</strong>.</p>\n        <p>Si el cliente cancela con menos de 10 días naturales de antelación, el depósito del 10% no será reembolsable.</p>\n        <p>Si Alegria Boat cancela la salida por cualquier motivo, incluidos meteorología, seguridad, problemas técnicos u operativos, se reembolsarán los importes pagados directamente a Alegria Boat.</p>\n\n        <h2>3. Reservas mediante Click&Boat, SamBoat u otras plataformas</h2>\n        <p>Las reservas realizadas a través de plataformas de terceros se rigen por las normas de pago, cancelación y reembolso de dichas plataformas.</p>\n        <p>Alegria Boat podrá solicitar información práctica, formularios de seguridad o el registro de un depósito de garantía cuando sea necesario para la salida.</p>\n\n        <h2>4. Puntualidad y hora de salida</h2>\n        <p>Los clientes deben llegar puntualmente al punto de encuentro acordado y estar listos para embarcar y salir a la hora prevista.</p>\n        <p>Los retrasos del cliente pueden reducir la duración de la salida y no dan derecho a reembolso, ampliación ni compensación.</p>\n\n        <h2>5. Autoridad del patrón y seguridad</h2>\n        <p>El patrón tiene plena autoridad sobre la embarcación y sobre todas las decisiones relacionadas con la seguridad. Los pasajeros deben cumplir sus instrucciones en todo momento.</p>\n        <p>Alegria Boat podrá denegar el embarque o interrumpir la salida sin reembolso en caso de comportamiento peligroso, embriaguez, consumo de drogas, agresividad o negativa a seguir las instrucciones.</p>\n\n        <h2>6. Natación y actividades acuáticas</h2>\n        <p>La natación, el snorkel y cualquier actividad acuática se realizan bajo la exclusiva responsabilidad del participante.</p>\n        <p>Cada participante es responsable de evaluar su propia capacidad de natación y de supervisar a los menores a su cargo. El patrón puede prohibir la natación o cualquier actividad acuática por motivos de seguridad.</p>\n\n        <h2>7. Daños, depósito de garantía y responsabilidad</h2>\n        <p>El cliente es económicamente responsable de los daños causados por él o por miembros de su grupo por negligencia, mal uso del equipo, incumplimiento de instrucciones o infracción de las normas de a bordo.</p>\n        <p>Alegria Boat podrá cobrar todo o parte del depósito registrado por daños, material perdido, limpieza extraordinaria, importes impagados u otros costes justificados.</p>\n\n        \n        <h2>8. Daños frecuentes y gastos facturables</h2>\n        <p>\n          Algunos daños a bordo ocurren con frecuencia y pueden generar costes importantes de reparación o mantenimiento.\n        </p>\n\n        <ul>\n          <li>\n            <strong>Baños marinos:</strong> los baños a bordo son extremadamente sensibles y no funcionan como los baños de una vivienda.\n            Está estrictamente prohibido tirar papel higiénico, toallitas, productos sanitarios u otros objetos.\n            Los baños marinos se obstruyen muy rápidamente y los costes de desatasco o reparación podrán ser facturados al cliente.\n          </li>\n\n          <li>\n            <strong>Quemaduras de cigarrillos:</strong> las fundas de cojines y tapicerías son muy sensibles a las quemaduras de cigarrillos.\n            Cualquier quemadura en cojines, asientos o tejidos podrá requerir una sustitución costosa y ser facturada al cliente.\n          </li>\n        </ul>\n\n        <h2>9. Objetos personales</h2>\n        <p>Los pasajeros siguen siendo responsables de sus objetos personales, incluidos teléfonos, bolsos, joyas, gafas, cámaras y otros objetos de valor.</p>\n\n        <h2>10. Medio ambiente y conducta</h2>\n        <p>Los pasajeros deben respetar la vida marina, las zonas costeras y las normas medioambientales. Está estrictamente prohibido tirar residuos al mar.</p>\n\n        <h2>11. Fuerza mayor y meteorología</h2>\n        <p>Alegria Boat no será responsable de retrasos, cambios o cancelaciones causados por meteorología, estado del mar, decisiones de autoridades portuarias, problemas técnicos, fuerza mayor o cualquier evento fuera de su control razonable.</p>\n        <p>El patrón decide en exclusiva si las condiciones marítimas y meteorológicas permiten la salida, continuación o regreso.</p>\n\n        <h2>12. Proveedores de pago y privacidad</h2>\n        <p>Los pagos y registros de tarjeta pueden ser procesados por proveedores externos como Stripe y SumUp. Alegria Boat no almacena los datos completos de tarjetas bancarias.</p>\n\n        <h2>13. Ley aplicable</h2>\n        <p>Estos Términos y Condiciones se rigen por la ley francesa, sin perjuicio de las normas obligatorias de protección al consumidor que puedan aplicarse.</p>\n\n        <h2>14. Aceptación</h2>\n        <p>Al confirmar una reserva, realizar un pago, registrar un depósito de garantía, embarcar o participar en una salida, el cliente reconoce haber leído, entendido y aceptado estos Términos y Condiciones.</p>\n      </article>\n    </ng-container>\n\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -8298,33 +9730,50 @@ let BookingApiService = class BookingApiService {
   getBooking(bookingId) {
     return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.getBookingFromFirebase(bookingId)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => this.getBookingFromBackend(bookingId)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)(undefined)));
   }
-  createDepositCheckout(bookingId) {
-    return this.http.post(`${this.baseUrl}/stripe/deposit-checkout`, {
-      bookingId
-    }, {
-      withCredentials: true
-    });
+  createDepositCheckout(payload) {
+    return this.postFirstAvailable([`${this.baseUrl}/pay/outing-deposit-checkout`, `${this.baseUrl}/api/payments/create-deposit-checkout-session`, `${this.baseUrl}/stripe/deposit-checkout`], payload);
   }
-  createWarrantySetup(bookingId) {
-    return this.http.post(`${this.baseUrl}/stripe/warranty-setup`, {
-      bookingId
-    }, {
-      withCredentials: true
-    });
+  createWarrantySetup(payload) {
+    return this.postFirstAvailable([`${this.baseUrl}/pay/outing-warranty-checkout`, `${this.baseUrl}/api/payments/create-warranty-checkout-session`, `${this.baseUrl}/api/payments/create-warranty-setup-session`, `${this.baseUrl}/stripe/warranty-setup`], payload);
   }
-  chargeWarranty(bookingId, amount, reason) {
-    const payload = {
-      bookingId,
-      amount,
-      warrantyAmount: amount,
-      reason
-    };
-    const endpoints = [`${this.baseUrl}/stripe/warranty-charge`, `${this.baseUrl}/api/payments/charge-warranty`, `${this.baseUrl}/api/stripe/warranty-charge`];
+  getPaymentStatus(bookingId) {
+    const endpoints = [`${this.baseUrl}/pay/outing-payment-status?bookingId=${encodeURIComponent(bookingId)}`, `${this.baseUrl}/api/payments/status?bookingId=${encodeURIComponent(bookingId)}`];
     return new rxjs__WEBPACK_IMPORTED_MODULE_4__.Observable(observer => {
       let index = 0;
       const tryNext = () => {
         if (index >= endpoints.length) {
-          observer.error(new Error('Unable to charge warranty.'));
+          observer.error(new Error('Unable to read payment status.'));
+          return;
+        }
+        this.http.get(endpoints[index++], {
+          withCredentials: true
+        }).subscribe({
+          next: response => {
+            observer.next(response);
+            observer.complete();
+          },
+          error: () => tryNext()
+        });
+      };
+      tryNext();
+    });
+  }
+  chargeWarranty(bookingId, amount, reason, ownerId) {
+    const payload = {
+      bookingId,
+      ownerId,
+      amount,
+      warrantyAmount: amount,
+      reason
+    };
+    return this.postFirstAvailable([`${this.baseUrl}/pay/outing-warranty-charge`, `${this.baseUrl}/api/payments/charge-warranty`, `${this.baseUrl}/stripe/warranty-charge`], payload);
+  }
+  postFirstAvailable(endpoints, payload) {
+    return new rxjs__WEBPACK_IMPORTED_MODULE_4__.Observable(observer => {
+      let index = 0;
+      const tryNext = () => {
+        if (index >= endpoints.length) {
+          observer.error(new Error('No payment endpoint is available.'));
           return;
         }
         this.http.post(endpoints[index++], payload, {
@@ -8556,13 +10005,23 @@ let BookingApiService = class BookingApiService {
     const start = time.startAt || item.startAt || item.departureAt || '';
     const end = time.endAt || item.endAt || item.arrivalAt || '';
     const totalPrice = Number(item.totalPrice ?? item.total ?? item.amount ?? item.price ?? 0);
-    const depositAmount = Number(item.depositAmount ?? item.deposit ?? (totalPrice ? Math.round(totalPrice * 0.3 * 100) / 100 : 0));
+    const depositAmount = Number(item.depositAmount ?? item.deposit ?? (totalPrice ? Math.round(totalPrice * 0.1 * 100) / 100 : 0));
+    const balanceAmount = Number(item.balanceAmount ?? (totalPrice && depositAmount ? Math.round((totalPrice - depositAmount) * 100) / 100 : 0));
     const warrantyAmount = Number(item.warrantyAmount ?? item.warranty ?? item.cautionAmount ?? item.securityDepositAmount ?? 0);
+    const payments = item.payments || item.paymentStatus || {};
+    const depositPayment = payments.deposit || item.depositPayment || {};
+    const warrantyPayment = payments.warranty || item.warrantyPayment || {};
+    const balancePayment = payments.balance || item.balancePayment || {};
+    const legacyPayment = item.payment || {};
+    const depositPaid = item.depositPaid === true || item.depositStatus === 'paid' || item.depositStatus === 'deposit_paid' || item.paymentStatus === 'paid' || item.paymentStatus === 'charge_succeeded' || legacyPayment.depositPaid === true || legacyPayment.paid === true || legacyPayment.status === 'paid' || legacyPayment.status === 'deposit_paid' || depositPayment.depositPaid === true || depositPayment.paid === true || depositPayment.status === 'paid' || depositPayment.status === 'deposit_paid';
+    const balancePaid = item.balancePaid === true || item.balanceStatus === 'paid' || item.balancePaymentStatus === 'paid' || balancePayment.paid === true || balancePayment.status === 'paid';
     return {
       bookingId: item.bookingId || item.id || item.reference || '',
+      ownerId: item.ownerId || item.owner || item.hostId || '',
       customerName: item.customerName || customer.fullName || item.name || `${customer.firstname || ''} ${customer.lastname || ''}`.trim() || '',
       email: item.email || customer.email || '',
       phone: item.phone || customer.phone || '',
+      customerPhone: item.customerPhone || item.phone || customer.phone || '',
       outingType: item.outingType || item.outing || item.type || item.category || '',
       outingDate: item.outingDate || item.date || (start ? String(start).slice(0, 10) : ''),
       departureTime: item.departureTime || (start ? String(start).slice(11, 16) : ''),
@@ -8570,9 +10029,17 @@ let BookingApiService = class BookingApiService {
       passengers: Number(item.passengers || party.total || item.guests || 0) || undefined,
       totalPrice,
       depositAmount,
+      balanceAmount,
       warrantyAmount,
-      depositStatus: item.depositStatus ?? item.depositPaid ?? false,
-      warrantyStatus: item.warrantyStatus ?? item.warrantyRegistered ?? false,
+      balancePaid,
+      balancePaymentMethod: item.balancePaymentMethod || balancePayment.method || '',
+      balancePaidAt: item.balancePaidAt || balancePayment.paidAt || null,
+      extrasAmount: Number(item.extrasAmount || payments?.extras?.amount || 0),
+      depositStatus: depositPaid ? 'paid' : item.depositStatus ?? depositPayment.status ?? item.depositPaid ?? false,
+      depositPaid,
+      warrantyStatus: item.warrantyStatus ?? warrantyPayment.status ?? item.warrantyRegistered ?? false,
+      payments,
+      paymentStatus: payments,
       bookingStatus: item.bookingStatus || item.status || 'requested',
       comments: item.comments || item.notes?.customerNote || item.comment || '',
       raw: item
@@ -8862,6 +10329,349 @@ module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narr
 
 /***/ }),
 
+/***/ 79439:
+/*!*******************************************************!*\
+  !*** ./src/app/home/bookings/proposal-api.service.ts ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ProposalApiService: () => (/* binding */ ProposalApiService)
+/* harmony export */ });
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ 95429);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 59452);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 43942);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ 61318);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! godigital-lib */ 83);
+
+
+
+
+
+
+
+let ProposalApiService = class ProposalApiService {
+  http;
+  utilsSvc;
+  proposalsCollection = 'bnProposals';
+  bookingsCollection = 'bnBookings';
+  firebaseUrl = 'https://adn-dev-4d05d.firebaseio.com';
+  constructor(http, utilsSvc) {
+    this.http = http;
+    this.utilsSvc = utilsSvc;
+  }
+  getProposals() {
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.readCollection(this.proposalsCollection)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)([])));
+  }
+  getProposal(id) {
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.readProposalWithPaymentState(id)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)(undefined)));
+  }
+  saveProposal(input) {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const now = Date.now();
+      const proposalId = input.proposalId || `proposal_${now}_${Math.random().toString(36).slice(2, 8)}`;
+      const totalAmount = Number(input.totalAmount || 0);
+      const depositRate = 0.10;
+      const depositAmount = Math.round(totalAmount * depositRate * 100) / 100;
+      const balanceAmount = Math.round((totalAmount - depositAmount) * 100) / 100;
+      const proposal = {
+        proposalId,
+        source: input.source || 'direct',
+        status: input.status || 'draft',
+        customerName: input.customerName || '',
+        customerEmail: input.customerEmail || '',
+        customerPhone: input.customerPhone || '',
+        outingType: input.outingType || '',
+        outingDate: input.outingDate || '',
+        departureTime: input.departureTime || '',
+        arrivalTime: input.arrivalTime || '',
+        passengers: Number(input.passengers || 0) || undefined,
+        totalAmount,
+        depositRate,
+        depositAmount,
+        balanceAmount,
+        warrantyAmount: Number(input.warrantyAmount || 500),
+        warrantyPaymentChoice: input.warrantyPaymentChoice,
+        tncAccepted: !!input.tncAccepted,
+        tncAcceptedAt: input.tncAcceptedAt || null,
+        validUntil: input.validUntil || now + 24 * 60 * 60 * 1000,
+        proposalMessage: input.proposalMessage || '',
+        comments: input.comments || '',
+        depositStatus: input.depositStatus || 'pending',
+        warrantyStatus: input.warrantyStatus || 'not_selected',
+        createdTS: input.createdTS || now,
+        modifiedTS: now,
+        acceptedTS: input.acceptedTS,
+        raw: input.raw || input
+      };
+      yield _this.writeItem(_this.proposalsCollection, proposalId, proposal);
+      return proposal;
+    })();
+  }
+  markSent(proposal) {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      yield _this2.patchProposal(proposal.proposalId, {
+        status: 'sent',
+        validUntil: Date.now() + 24 * 60 * 60 * 1000
+      });
+    })();
+  }
+  acceptProposal(proposalId, warrantyPaymentChoice) {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const current = yield _this3.readItem(_this3.proposalsCollection, proposalId);
+      if (!current) throw new Error('Proposal not found');
+      if (current.validUntil && Date.now() > current.validUntil) {
+        yield _this3.patchProposal(proposalId, {
+          status: 'expired'
+        });
+        throw new Error('Proposal expired');
+      }
+      const accepted = {
+        ...current,
+        status: 'accepted',
+        warrantyPaymentChoice,
+        warrantyStatus: warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : 'not_selected',
+        tncAccepted: true,
+        tncAcceptedAt: Date.now(),
+        acceptedTS: Date.now(),
+        modifiedTS: Date.now()
+      };
+      yield _this3.writeItem(_this3.proposalsCollection, proposalId, accepted);
+      yield _this3.createBookingFromProposal(accepted);
+      return accepted;
+    })();
+  }
+  renewProposal(proposalId) {
+    var _this4 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const current = yield _this4.readItem(_this4.proposalsCollection, proposalId);
+      if (!current) throw new Error('Proposal not found');
+      const renewed = {
+        ...current,
+        status: 'sent',
+        validUntil: Date.now() + 24 * 60 * 60 * 1000,
+        modifiedTS: Date.now()
+      };
+      yield _this4.writeItem(_this4.proposalsCollection, proposalId, renewed);
+      return renewed;
+    })();
+  }
+  deleteProposal(proposalId) {
+    var _this5 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      yield _this5.deleteItem(_this5.proposalsCollection, proposalId);
+    })();
+  }
+  createExternalBooking(input) {
+    var _this6 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const saved = yield _this6.saveProposal({
+        ...input,
+        source: input.source || 'samboat',
+        status: 'accepted',
+        depositStatus: 'platform',
+        warrantyStatus: input.warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : 'not_selected',
+        tncAccepted: true,
+        tncAcceptedAt: Date.now(),
+        acceptedTS: Date.now()
+      });
+      yield _this6.createBookingFromProposal(saved);
+      return saved;
+    })();
+  }
+  patchProposal(id, patch) {
+    var _this7 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const current = yield _this7.readItem(_this7.proposalsCollection, id);
+      if (!current) throw new Error('Proposal not found');
+      yield _this7.writeItem(_this7.proposalsCollection, id, {
+        ...current,
+        ...patch,
+        modifiedTS: Date.now()
+      });
+    })();
+  }
+  createDepositCheckout(proposal) {
+    return this.http.post(`${this.baseUrl}/pay/outing-deposit-checkout`, {
+      bookingId: proposal.proposalId,
+      ownerId: 'alegria',
+      customerName: proposal.customerName,
+      customerEmail: proposal.customerEmail,
+      customerPhone: proposal.customerPhone,
+      outingDate: proposal.outingDate,
+      outingType: proposal.outingType,
+      depositAmount: proposal.depositAmount,
+      currency: 'eur',
+      successUrl: `${window.location.origin}/proposal/${proposal.proposalId}?payment=success`,
+      cancelUrl: `${window.location.origin}/proposal/${proposal.proposalId}?payment=cancelled`
+    }, {
+      withCredentials: true
+    });
+  }
+  createWarrantySetup(proposal) {
+    return this.http.post(`${this.baseUrl}/pay/outing-warranty-checkout`, {
+      bookingId: proposal.proposalId,
+      ownerId: 'alegria',
+      customerName: proposal.customerName,
+      customerEmail: proposal.customerEmail,
+      customerPhone: proposal.customerPhone,
+      outingDate: proposal.outingDate,
+      outingType: proposal.outingType,
+      warrantyAmount: proposal.warrantyAmount || 500,
+      currency: 'eur',
+      successUrl: `${window.location.origin}/proposal/${proposal.proposalId}?warranty=success`,
+      cancelUrl: `${window.location.origin}/proposal/${proposal.proposalId}?warranty=cancelled`
+    }, {
+      withCredentials: true
+    });
+  }
+  chargeWarranty(proposal, amount, reason) {
+    const payload = {
+      bookingId: proposal.proposalId,
+      ownerId: 'alegria',
+      amount,
+      reason,
+      currency: 'eur'
+    };
+    return this.postFirstAvailable([`${this.baseUrl}/pay/outing-warranty-charge`, `${this.baseUrl}/api/payments/charge-warranty`, `${this.baseUrl}/stripe/warranty-charge`], payload);
+  }
+  createBookingFromProposal(p) {
+    var _this8 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      yield _this8.writeItem(_this8.bookingsCollection, p.proposalId, {
+        bookingId: p.proposalId,
+        source: p.source,
+        customerName: p.customerName,
+        email: p.customerEmail,
+        phone: p.customerPhone || '',
+        outingType: p.outingType,
+        outingDate: p.outingDate,
+        departureTime: p.departureTime || '',
+        arrivalTime: p.arrivalTime || '',
+        passengers: p.passengers || null,
+        totalPrice: p.totalAmount,
+        depositAmount: p.depositAmount,
+        balanceAmount: p.balanceAmount,
+        warrantyAmount: p.warrantyAmount || 500,
+        depositStatus: p.depositStatus || 'pending',
+        warrantyStatus: p.warrantyStatus || 'not_selected',
+        warrantyPaymentChoice: p.warrantyPaymentChoice || null,
+        bookingStatus: 'confirmed',
+        tncAccepted: p.tncAccepted,
+        tncAcceptedAt: p.tncAcceptedAt,
+        comments: p.comments || '',
+        createdTS: p.createdTS,
+        modifiedTS: Date.now(),
+        raw: p
+      });
+    })();
+  }
+  postFirstAvailable(endpoints, payload) {
+    return new rxjs__WEBPACK_IMPORTED_MODULE_4__.Observable(observer => {
+      let index = 0;
+      const tryNext = lastError => {
+        if (index >= endpoints.length) {
+          observer.error(lastError || new Error('No payment endpoint is available.'));
+          return;
+        }
+        this.http.post(endpoints[index++], payload, {
+          withCredentials: true
+        }).subscribe({
+          next: response => {
+            observer.next(response);
+            observer.complete();
+          },
+          error: error => tryNext(error)
+        });
+      };
+      tryNext();
+    });
+  }
+  get baseUrl() {
+    return this.utilsSvc?.backendURL || '';
+  }
+  readProposalWithPaymentState(id) {
+    var _this9 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const proposal = yield _this9.readItem(_this9.proposalsCollection, id);
+      if (!proposal) return undefined;
+      const backendBooking = yield _this9.readItem('backendbookings', id).catch(() => undefined);
+      const depositPayment = backendBooking?.payments?.deposit || backendBooking?.payment || null;
+      const warrantyPayment = backendBooking?.payments?.warranty || null;
+      const warrantyCharge = backendBooking?.payments?.warrantyCharge || null;
+      const depositPaid = proposal.depositPaid === true || proposal.depositStatus === 'paid' || proposal.paymentStatus === 'paid' || backendBooking?.depositPaid === true || backendBooking?.depositStatus === 'paid' || backendBooking?.paymentStatus === 'paid' || backendBooking?.paymentStatus === 'charge_succeeded' || depositPayment?.depositPaid === true || depositPayment?.paid === true || depositPayment?.status === 'paid' || depositPayment?.status === 'deposit_paid';
+      return {
+        ...proposal,
+        depositPaid,
+        depositStatus: depositPaid ? 'paid' : proposal.depositStatus || depositPayment?.status || 'pending',
+        paymentStatus: depositPaid ? 'paid' : proposal.paymentStatus || backendBooking?.paymentStatus || depositPayment?.status || '',
+        stripeCheckoutSessionId: proposal.stripeCheckoutSessionId || backendBooking?.stripeCheckoutSessionId || depositPayment?.stripeCheckoutSessionId || depositPayment?.checkoutSessionId || '',
+        stripePaymentIntentId: proposal.stripePaymentIntentId || backendBooking?.stripePaymentIntentId || depositPayment?.stripePaymentIntentId || depositPayment?.paymentIntentId || '',
+        warrantyStatus: proposal.warrantyStatus || backendBooking?.warrantyStatus || warrantyPayment?.warrantyStatus || warrantyPayment?.status || 'not_selected',
+        warrantyRegistered: proposal.warrantyRegistered === true || backendBooking?.warrantyRegistered === true || warrantyPayment?.warrantyRegistered === true || warrantyPayment?.status === 'warranty_card_saved' || warrantyPayment?.status === 'card_registered',
+        warrantyPaymentMethodId: proposal.warrantyPaymentMethodId || backendBooking?.warrantyPaymentMethodId || warrantyPayment?.paymentMethodId || '',
+        warrantySetupIntentId: proposal.warrantySetupIntentId || backendBooking?.warrantySetupIntentId || warrantyPayment?.setupIntentId || '',
+        warrantyChargeAmount: proposal.warrantyChargeAmount || backendBooking?.warrantyChargedAmount || warrantyCharge?.warrantyChargeAmount || 0,
+        warrantyChargeReason: proposal.warrantyChargeReason || backendBooking?.warrantyChargeReason || warrantyCharge?.warrantyChargeReason || '',
+        warrantyChargeStatus: proposal.warrantyChargeStatus || backendBooking?.warrantyStatus || warrantyCharge?.status || ''
+      };
+    })();
+  }
+  readCollection(collection) {
+    var _this10 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const value = yield _this10.http.get(`${_this10.firebaseUrl}/${collection}.json`).toPromise();
+      if (!value) return [];
+      return Object.keys(value).map(key => ({
+        ...value[key],
+        proposalId: value[key]?.proposalId || key
+      }));
+    })();
+  }
+  readItem(collection, id) {
+    var _this11 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const value = yield _this11.http.get(`${_this11.firebaseUrl}/${collection}/${id}.json`).toPromise();
+      return value ? {
+        ...value,
+        proposalId: value.proposalId || id
+      } : undefined;
+    })();
+  }
+  deleteItem(collection, id) {
+    var _this12 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      yield _this12.http.delete(`${_this12.firebaseUrl}/${collection}/${id}.json`).toPromise();
+    })();
+  }
+  writeItem(collection, id, value) {
+    var _this13 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      yield _this13.http.put(`${_this13.firebaseUrl}/${collection}/${id}.json`, value).toPromise();
+    })();
+  }
+  static ctorParameters = () => [{
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_5__.HttpClient
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_6__.UtilsService
+  }];
+};
+ProposalApiService = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Injectable)({
+  providedIn: 'root'
+})], ProposalApiService);
+
+
+/***/ }),
+
 /***/ 79542:
 /*!***********************************************!*\
   !*** ./src/app/home/terms/terms.component.ts ***!
@@ -9005,14 +10815,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   BookingDetailComponent: () => (/* binding */ BookingDetailComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _booking_detail_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./booking-detail.component.html?ngResource */ 29118);
-/* harmony import */ var _booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./booking-detail.component.scss?ngResource */ 64662);
-/* harmony import */ var _booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! godigital-lib */ 83);
-/* harmony import */ var _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../bookings/booking-api.service */ 74854);
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _booking_detail_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./booking-detail.component.html?ngResource */ 29118);
+/* harmony import */ var _booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./booking-detail.component.scss?ngResource */ 64662);
+/* harmony import */ var _booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../bookings/booking-api.service */ 74854);
+
 
 
 
@@ -9028,6 +10840,16 @@ let BookingDetailComponent = class BookingDetailComponent {
   booking;
   loading = true;
   loggedUser = null;
+  balancePaymentMethod = 'sumup';
+  balancePaymentNotes = '';
+  savingBalancePayment = false;
+  balancePaymentMessage = '';
+  balancePaymentError = '';
+  cashDamageAmount = null;
+  cashDamageReason = '';
+  cashDamageMessage = '';
+  cashDamageError = '';
+  savingCashDamage = false;
   constructor(route, router, bookingApi, mainSvc) {
     this.route = route;
     this.router = router;
@@ -9047,8 +10869,277 @@ let BookingDetailComponent = class BookingDetailComponent {
     const role = String(this.loggedUser?.role || '').toLowerCase();
     return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
   }
+  getDepositAmount() {
+    const total = Number(this.booking?.totalPrice || 0);
+    return Number(this.booking?.depositAmount || (total ? Math.round(total * 0.1 * 100) / 100 : 0));
+  }
+  getBalanceAmount() {
+    const total = Number(this.booking?.totalPrice || 0);
+    const deposit = this.getDepositAmount();
+    return Number(this.booking?.balanceAmount || Math.max(0, Math.round((total - deposit) * 100) / 100));
+  }
+  isDepositPaid() {
+    const anyBooking = this.booking || {};
+    const depositPayment = anyBooking?.payments?.deposit || {};
+    const legacyPayment = anyBooking?.payment || {};
+    return anyBooking.depositPaid === true || anyBooking.depositStatus === 'paid' || anyBooking.depositStatus === 'deposit_paid' || anyBooking.paymentStatus === 'paid' || anyBooking.paymentStatus === 'charge_succeeded' || legacyPayment.depositPaid === true || legacyPayment.paid === true || legacyPayment.status === 'paid' || legacyPayment.status === 'deposit_paid' || depositPayment.depositPaid === true || depositPayment.paid === true || depositPayment.status === 'paid' || depositPayment.status === 'deposit_paid';
+  }
+  isBookingConfirmed() {
+    const status = String(this.booking?.bookingStatus || this.booking?.status || '').toLowerCase();
+    return status === 'confirmed' || status === 'accepted' || status === 'paid';
+  }
+  isWarrantyCardRegistered() {
+    const anyBooking = this.booking || {};
+    const warrantyPayment = anyBooking?.payments?.warranty || {};
+    return anyBooking.warrantyRegistered === true || anyBooking.warrantyStatus === 'card_registered' || anyBooking.warrantyStatus === 'warranty_card_saved' || warrantyPayment.warrantyRegistered === true || warrantyPayment.status === 'card_registered' || warrantyPayment.status === 'warranty_card_saved';
+  }
+  isCashWarranty() {
+    const anyBooking = this.booking || {};
+    const warrantyPayment = anyBooking?.payments?.warranty || {};
+    return anyBooking.warrantyMethod === 'cash' || anyBooking.warrantyStatus === 'cash_received' || anyBooking.warrantyCashReceived === true || warrantyPayment.method === 'cash' || warrantyPayment.cashReceived === true || warrantyPayment.status === 'cash_received';
+  }
+  getCashWarrantyAmount() {
+    const anyBooking = this.booking || {};
+    const warrantyPayment = anyBooking?.payments?.warranty || {};
+    return Number(anyBooking.warrantyCashAmount || warrantyPayment.amount || anyBooking.warrantyAmount || 500);
+  }
+  getCashWarrantyDamagesTaken() {
+    const anyBooking = this.booking || {};
+    const cashDamage = anyBooking?.payments?.warrantyCashDamage || {};
+    return Number(anyBooking.warrantyCashDamageAmount || cashDamage.amount || 0);
+  }
+  getCashWarrantyRemaining() {
+    return Math.max(0, this.getCashWarrantyAmount() - this.getCashWarrantyDamagesTaken());
+  }
+  isWarrantySecured() {
+    const anyBooking = this.booking || {};
+    const warrantyPayment = anyBooking?.payments?.warranty || {};
+    return this.isWarrantyCardRegistered() || anyBooking.warrantyMethod === 'cash' || anyBooking.warrantyStatus === 'cash_received' || anyBooking.warrantyCashReceived === true || warrantyPayment.cashReceived === true;
+  }
+  canRecordBalancePayment() {
+    return this.isBookingConfirmed() && this.isDepositPaid() && this.isWarrantySecured() && !this.isBalancePaid();
+  }
+  getBalanceBlockedReason() {
+    if (this.isBalancePaid()) return 'Remaining 90% already paid.';
+    if (!this.isBookingConfirmed()) return 'Booking must be confirmed first.';
+    if (!this.isDepositPaid()) return '10% deposit must be paid first.';
+    if (!this.isWarrantySecured()) return 'Warranty must be secured first (Stripe card or €500 cash deposit).';
+    return '';
+  }
+  isBalancePaid() {
+    const anyBooking = this.booking || {};
+    return anyBooking.balancePaid === true || anyBooking.balanceStatus === 'paid' || anyBooking.balancePaymentStatus === 'paid' || anyBooking?.payments?.balance?.paid === true || anyBooking?.payments?.balance?.status === 'paid';
+  }
+  recordCashWarrantyDamage() {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this.booking?.bookingId) return;
+      const amount = Number(_this.cashDamageAmount || 0);
+      const reason = String(_this.cashDamageReason || '').trim();
+      _this.cashDamageError = '';
+      _this.cashDamageMessage = '';
+      if (!_this.isCashWarranty()) {
+        _this.cashDamageError = 'Cash warranty is not registered for this booking.';
+        return;
+      }
+      if (!amount || amount <= 0) {
+        _this.cashDamageError = 'Please enter a valid damage amount.';
+        return;
+      }
+      if (amount > _this.getCashWarrantyRemaining()) {
+        _this.cashDamageError = `Amount cannot exceed remaining cash warranty (€${_this.getCashWarrantyRemaining()}).`;
+        return;
+      }
+      if (!reason) {
+        _this.cashDamageError = 'Please describe the damage or cost.';
+        return;
+      }
+      _this.savingCashDamage = true;
+      const now = Date.now();
+      const existingPayments = _this.booking.payments || {};
+      const previousDamage = _this.getCashWarrantyDamagesTaken();
+      const totalDamageTaken = Math.round((previousDamage + amount) * 100) / 100;
+      const warrantyAmount = _this.getCashWarrantyAmount();
+      const remaining = Math.max(0, Math.round((warrantyAmount - totalDamageTaken) * 100) / 100);
+      try {
+        yield _this.bookingApi.updateBooking(_this.booking.bookingId, {
+          warrantyMethod: 'cash',
+          warrantyStatus: remaining > 0 ? 'cash_partially_used' : 'cash_fully_used',
+          warrantyCashReceived: true,
+          warrantyCashAmount: warrantyAmount,
+          warrantyCashDamageAmount: totalDamageTaken,
+          warrantyCashRemainingAmount: remaining,
+          warrantyCashDamageReason: reason,
+          warrantyCashDamageRecordedAt: now,
+          payments: {
+            ...existingPayments,
+            warranty: {
+              ...(existingPayments.warranty || {}),
+              method: 'cash',
+              cashReceived: true,
+              amount: warrantyAmount,
+              status: remaining > 0 ? 'cash_partially_used' : 'cash_fully_used'
+            },
+            warrantyCashDamage: {
+              amount: totalDamageTaken,
+              lastAmount: amount,
+              reason,
+              remaining,
+              recordedAt: now,
+              status: 'recorded'
+            }
+          }
+        });
+        _this.booking = {
+          ..._this.booking,
+          warrantyMethod: 'cash',
+          warrantyStatus: remaining > 0 ? 'cash_partially_used' : 'cash_fully_used',
+          warrantyCashReceived: true,
+          warrantyCashAmount: warrantyAmount,
+          warrantyCashDamageAmount: totalDamageTaken,
+          warrantyCashRemainingAmount: remaining,
+          warrantyCashDamageReason: reason,
+          warrantyCashDamageRecordedAt: now,
+          payments: {
+            ...existingPayments,
+            warranty: {
+              ...(existingPayments.warranty || {}),
+              method: 'cash',
+              cashReceived: true,
+              amount: warrantyAmount,
+              status: remaining > 0 ? 'cash_partially_used' : 'cash_fully_used'
+            },
+            warrantyCashDamage: {
+              amount: totalDamageTaken,
+              lastAmount: amount,
+              reason,
+              remaining,
+              recordedAt: now,
+              status: 'recorded'
+            }
+          }
+        };
+        _this.cashDamageAmount = null;
+        _this.cashDamageReason = '';
+        _this.cashDamageMessage = `Cash warranty damage recorded. Remaining cash to return: €${remaining}.`;
+      } catch (e) {
+        _this.cashDamageError = e?.message || 'Unable to record cash warranty damage.';
+      } finally {
+        _this.savingCashDamage = false;
+      }
+    })();
+  }
+  markCashWarrantyReceived() {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this2.booking?.bookingId) return;
+      _this2.balancePaymentError = '';
+      _this2.balancePaymentMessage = '';
+      const now = Date.now();
+      const existingPayments = _this2.booking.payments || {};
+      try {
+        yield _this2.bookingApi.updateBooking(_this2.booking.bookingId, {
+          warrantyMethod: 'cash',
+          warrantyStatus: 'cash_received',
+          warrantyCashReceived: true,
+          warrantyCashAmount: 500,
+          warrantyCashReceivedAt: now,
+          payments: {
+            ...existingPayments,
+            warranty: {
+              ...(existingPayments.warranty || {}),
+              method: 'cash',
+              status: 'cash_received',
+              cashReceived: true,
+              amount: 500,
+              receivedAt: now
+            }
+          }
+        });
+        _this2.booking = {
+          ..._this2.booking,
+          warrantyMethod: 'cash',
+          warrantyStatus: 'cash_received',
+          warrantyCashReceived: true,
+          warrantyCashAmount: 500,
+          warrantyCashReceivedAt: now,
+          payments: {
+            ...existingPayments,
+            warranty: {
+              ...(existingPayments.warranty || {}),
+              method: 'cash',
+              status: 'cash_received',
+              cashReceived: true,
+              amount: 500,
+              receivedAt: now
+            }
+          }
+        };
+        _this2.balancePaymentMessage = 'Cash warranty received and recorded.';
+      } catch (e) {
+        _this2.balancePaymentError = e?.message || 'Unable to record cash warranty.';
+      }
+    })();
+  }
+  recordBalancePayment() {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this3.booking?.bookingId) return;
+      if (!_this3.canRecordBalancePayment()) {
+        _this3.balancePaymentError = _this3.getBalanceBlockedReason();
+        return;
+      }
+      _this3.savingBalancePayment = true;
+      _this3.balancePaymentError = '';
+      _this3.balancePaymentMessage = '';
+      const now = Date.now();
+      const balanceAmount = _this3.getBalanceAmount();
+      const existingPayments = _this3.booking.payments || {};
+      try {
+        yield _this3.bookingApi.updateBooking(_this3.booking.bookingId, {
+          balancePaid: true,
+          balanceAmount,
+          balancePaymentMethod: _this3.balancePaymentMethod,
+          balancePaidAt: now,
+          payments: {
+            ...existingPayments,
+            balance: {
+              paid: true,
+              status: 'paid',
+              amount: balanceAmount,
+              method: _this3.balancePaymentMethod,
+              notes: _this3.balancePaymentNotes || '',
+              paidAt: now
+            }
+          }
+        });
+        _this3.balancePaymentMessage = 'Remaining 90% payment recorded.';
+        _this3.booking = {
+          ..._this3.booking,
+          balancePaid: true,
+          balanceAmount,
+          balancePaymentMethod: _this3.balancePaymentMethod,
+          balancePaidAt: now,
+          payments: {
+            ...existingPayments,
+            balance: {
+              paid: true,
+              status: 'paid',
+              amount: balanceAmount,
+              method: _this3.balancePaymentMethod,
+              notes: _this3.balancePaymentNotes || '',
+              paidAt: now
+            }
+          }
+        };
+      } catch (e) {
+        _this3.balancePaymentError = e?.message || 'Unable to record remaining balance payment.';
+      }
+      _this3.savingBalancePayment = false;
+    })();
+  }
   get paymentButtonLabel() {
-    return this.isAdmin ? 'Open warranty page' : 'Open payment page';
+    return this.isAdmin ? 'Open warranty / damage page' : 'Open payment page';
   }
   goToPayment() {
     if (this.booking?.bookingId) {
@@ -9060,19 +11151,19 @@ let BookingDetailComponent = class BookingDetailComponent {
     }
   }
   static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_3__.ActivatedRoute
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.ActivatedRoute
   }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_3__.Router
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
   }, {
-    type: _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_2__.BookingApiService
+    type: _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_3__.BookingApiService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.ServicesService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.ServicesService
   }];
 };
-BookingDetailComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+BookingDetailComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
   selector: 'app-booking-detail',
-  template: _booking_detail_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  styles: [(_booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+  template: _booking_detail_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
+  styles: [(_booking_detail_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
 })], BookingDetailComponent);
 
 
@@ -10077,6 +12168,98 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 /***/ }),
 
+/***/ 85222:
+/*!********************************************************************************************!*\
+  !*** ./src/app/home/admin-warranty-charge/admin-warranty-charge.component.scss?ngResource ***!
+  \********************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.warranty-charge-page {
+  padding: 80px 0;
+  background: #f6f2ea;
+  min-height: 70vh;
+}
+
+.warranty-shell {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: #b58b4a;
+  font-weight: 700;
+}
+
+h1 {
+  color: #08263a;
+}
+
+.intro {
+  color: #516070;
+  line-height: 1.7;
+}
+
+.warranty-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 28px;
+  margin-top: 24px;
+  box-shadow: 0 18px 45px rgba(8, 38, 58, 0.08);
+  border: 1px solid rgba(8, 38, 58, 0.08);
+}
+
+label {
+  display: grid;
+  gap: 0.4rem;
+  color: #08263a;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+input,
+textarea {
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 14px;
+  padding: 0.75rem;
+  font: inherit;
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.75rem 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-danger {
+  background: #9f1d1d;
+  color: #fff;
+}
+
+.success {
+  color: #047857;
+  font-weight: 700;
+}
+
+.error {
+  color: #9f1d1d;
+  font-weight: 700;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-warranty-charge/admin-warranty-charge.component.scss"],"names":[],"mappings":"AAAA;EACE,eAAA;EACA,mBAAA;EACA,gBAAA;AACF;;AAEA;EACE,gBAAA;EACA,cAAA;AACF;;AAEA;EACE,yBAAA;EACA,sBAAA;EACA,kBAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,gBAAA;EACA,mBAAA;EACA,aAAA;EACA,gBAAA;EACA,6CAAA;EACA,uCAAA;AACF;;AAEA;EACE,aAAA;EACA,WAAA;EACA,cAAA;EACA,gBAAA;EACA,mBAAA;AACF;;AAEA;;EAEE,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;AACF;;AAEA;EACE,SAAA;EACA,oBAAA;EACA,uBAAA;EACA,gBAAA;EACA,eAAA;AACF;;AAEA;EACE,mBAAA;EACA,WAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;AACF","sourcesContent":[".warranty-charge-page {\n  padding: 80px 0;\n  background: #f6f2ea;\n  min-height: 70vh;\n}\n\n.warranty-shell {\n  max-width: 760px;\n  margin: 0 auto;\n}\n\n.eyebrow {\n  text-transform: uppercase;\n  letter-spacing: .14em;\n  font-size: .78rem;\n  color: #b58b4a;\n  font-weight: 700;\n}\n\nh1 {\n  color: #08263a;\n}\n\n.intro {\n  color: #516070;\n  line-height: 1.7;\n}\n\n.warranty-card {\n  background: #fff;\n  border-radius: 24px;\n  padding: 28px;\n  margin-top: 24px;\n  box-shadow: 0 18px 45px rgba(8,38,58,.08);\n  border: 1px solid rgba(8,38,58,.08);\n}\n\nlabel {\n  display: grid;\n  gap: 0.4rem;\n  color: #08263a;\n  font-weight: 700;\n  margin-bottom: 1rem;\n}\n\ninput,\ntextarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n}\n\n.btn {\n  border: 0;\n  border-radius: 999px;\n  padding: 0.75rem 1.1rem;\n  font-weight: 700;\n  cursor: pointer;\n}\n\n.btn-danger {\n  background: #9f1d1d;\n  color: #fff;\n}\n\n.success {\n  color: #047857;\n  font-weight: 700;\n}\n\n.error {\n  color: #9f1d1d;\n  font-weight: 700;\n}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
 /***/ 86566:
 /*!****************************************************************!*\
   !*** ./src/app/home/gallery/gallery.component.scss?ngResource ***!
@@ -10684,14 +12867,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   BookingsComponent: () => (/* binding */ BookingsComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bookings.component.html?ngResource */ 26456);
-/* harmony import */ var _bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bookings.component.scss?ngResource */ 62992);
-/* harmony import */ var _bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! godigital-lib */ 83);
-/* harmony import */ var _booking_api_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./booking-api.service */ 74854);
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bookings.component.html?ngResource */ 26456);
+/* harmony import */ var _bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./bookings.component.scss?ngResource */ 62992);
+/* harmony import */ var _bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _booking_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./booking-api.service */ 74854);
+
 
 
 
@@ -10706,6 +12891,13 @@ let BookingsComponent = class BookingsComponent {
   bookings = [];
   loading = true;
   errorMessage = '';
+  searchTerm = '';
+  selectedBalanceBooking;
+  balancePaymentMethod = 'sumup';
+  balancePaymentNotes = '';
+  savingBalancePayment = false;
+  balancePaymentMessage = '';
+  balancePaymentError = '';
   loggedUser = null;
   constructor(bookingApi, router, mainSvc) {
     this.bookingApi = bookingApi;
@@ -10724,6 +12916,19 @@ let BookingsComponent = class BookingsComponent {
   get isAdmin() {
     const role = String(this.loggedUser?.role || '').toLowerCase();
     return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
+  }
+  get filteredBookings() {
+    const term = this.normalizeSearch(this.searchTerm);
+    if (!term) return this.bookings;
+    return this.bookings.filter(booking => {
+      const customerName = this.normalizeSearch(booking.customerName);
+      const email = this.normalizeSearch(booking.email);
+      const phone = this.normalizeSearch(booking.phone);
+      return customerName.includes(term) || email.includes(term) || phone.includes(term);
+    });
+  }
+  clearSearch() {
+    this.searchTerm = '';
   }
   loadBookings() {
     this.loading = true;
@@ -10746,6 +12951,103 @@ let BookingsComponent = class BookingsComponent {
   openBooking(booking) {
     this.router.navigate(['/admin/bookings', booking.bookingId]);
   }
+  getDepositAmount(booking) {
+    const total = Number(booking.totalPrice || 0);
+    return Number(booking.depositAmount || (total ? Math.round(total * 0.1 * 100) / 100 : 0));
+  }
+  getBalanceAmount(booking) {
+    const total = Number(booking.totalPrice || 0);
+    const deposit = this.getDepositAmount(booking);
+    return Number(booking.balanceAmount || Math.max(0, Math.round((total - deposit) * 100) / 100));
+  }
+  isDepositPaid(booking) {
+    const anyBooking = booking;
+    const depositPayment = anyBooking?.payments?.deposit || {};
+    const legacyPayment = anyBooking?.payment || {};
+    return anyBooking.depositPaid === true || anyBooking.depositStatus === 'paid' || anyBooking.depositStatus === 'deposit_paid' || anyBooking.paymentStatus === 'paid' || anyBooking.paymentStatus === 'charge_succeeded' || legacyPayment.depositPaid === true || legacyPayment.paid === true || legacyPayment.status === 'paid' || legacyPayment.status === 'deposit_paid' || depositPayment.depositPaid === true || depositPayment.paid === true || depositPayment.status === 'paid' || depositPayment.status === 'deposit_paid';
+  }
+  isBookingConfirmed(booking) {
+    const status = String(booking.bookingStatus || booking.status || '').toLowerCase();
+    return status === 'confirmed' || status === 'accepted' || status === 'paid';
+  }
+  isWarrantyCardRegistered(booking) {
+    const anyBooking = booking;
+    const warrantyPayment = anyBooking?.payments?.warranty || {};
+    return anyBooking.warrantyRegistered === true || anyBooking.warrantyStatus === 'card_registered' || anyBooking.warrantyStatus === 'warranty_card_saved' || warrantyPayment.warrantyRegistered === true || warrantyPayment.status === 'card_registered' || warrantyPayment.status === 'warranty_card_saved';
+  }
+  isWarrantySecured(booking) {
+    const anyBooking = booking;
+    const warrantyPayment = anyBooking?.payments?.warranty || {};
+    return this.isWarrantyCardRegistered(booking) || anyBooking.warrantyMethod === 'cash' || anyBooking.warrantyStatus === 'cash_received' || anyBooking.warrantyCashReceived === true || warrantyPayment.cashReceived === true;
+  }
+  canRecordBalancePayment(booking) {
+    return this.isBookingConfirmed(booking) && this.isDepositPaid(booking) && this.isWarrantySecured(booking) && !this.isBalancePaid(booking);
+  }
+  getBalanceBlockedReason(booking) {
+    if (this.isBalancePaid(booking)) return 'Remaining 90% already paid.';
+    if (!this.isBookingConfirmed(booking)) return 'Booking must be confirmed first.';
+    if (!this.isDepositPaid(booking)) return '10% deposit must be paid first.';
+    if (!this.isWarrantySecured(booking)) return 'Warranty must be secured first (Stripe card or €500 cash deposit).';
+    return '';
+  }
+  isBalancePaid(booking) {
+    const anyBooking = booking;
+    return anyBooking.balancePaid === true || anyBooking.balanceStatus === 'paid' || anyBooking.balancePaymentStatus === 'paid' || anyBooking?.payments?.balance?.paid === true || anyBooking?.payments?.balance?.status === 'paid';
+  }
+  openBalancePayment(booking, event) {
+    event?.stopPropagation();
+    this.selectedBalanceBooking = booking;
+    this.balancePaymentMethod = 'sumup';
+    this.balancePaymentNotes = '';
+    this.balancePaymentMessage = '';
+    this.balancePaymentError = '';
+  }
+  closeBalancePayment() {
+    this.selectedBalanceBooking = undefined;
+    this.balancePaymentNotes = '';
+  }
+  recordBalancePayment() {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this.selectedBalanceBooking?.bookingId) return;
+      if (!_this.canRecordBalancePayment(_this.selectedBalanceBooking)) {
+        _this.balancePaymentError = _this.getBalanceBlockedReason(_this.selectedBalanceBooking);
+        return;
+      }
+      _this.savingBalancePayment = true;
+      _this.balancePaymentError = '';
+      _this.balancePaymentMessage = '';
+      const now = Date.now();
+      const balanceAmount = _this.getBalanceAmount(_this.selectedBalanceBooking);
+      const existingPayments = _this.selectedBalanceBooking.payments || {};
+      try {
+        yield _this.bookingApi.updateBooking(_this.selectedBalanceBooking.bookingId, {
+          balancePaid: true,
+          balanceAmount,
+          balancePaymentMethod: _this.balancePaymentMethod,
+          balancePaidAt: now,
+          payments: {
+            ...existingPayments,
+            balance: {
+              paid: true,
+              status: 'paid',
+              amount: balanceAmount,
+              method: _this.balancePaymentMethod,
+              notes: _this.balancePaymentNotes || '',
+              paidAt: now
+            }
+          }
+        });
+        _this.balancePaymentMessage = 'Remaining 90% payment recorded.';
+        _this.savingBalancePayment = false;
+        _this.closeBalancePayment();
+        _this.loadBookings();
+      } catch (e) {
+        _this.balancePaymentError = e?.message || 'Unable to record remaining balance payment.';
+        _this.savingBalancePayment = false;
+      }
+    })();
+  }
   payment(booking) {
     this.router.navigate(['/payment', booking.bookingId], {
       queryParams: {
@@ -10758,6 +13060,9 @@ let BookingsComponent = class BookingsComponent {
   }
   trackByFieldKey(index, field) {
     return field.key || String(index);
+  }
+  normalizeSearch(value) {
+    return String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
   }
   buildBookingFields(booking) {
     const raw = booking.raw && typeof booking.raw === 'object' ? {
@@ -10790,17 +13095,17 @@ let BookingsComponent = class BookingsComponent {
     }
   }
   static ctorParameters = () => [{
-    type: _booking_api_service__WEBPACK_IMPORTED_MODULE_2__.BookingApiService
+    type: _booking_api_service__WEBPACK_IMPORTED_MODULE_3__.BookingApiService
   }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_3__.Router
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.ServicesService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.ServicesService
   }];
 };
-BookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+BookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
   selector: 'app-bookings',
-  template: _bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  styles: [(_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+  template: _bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
+  styles: [(_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
 })], BookingsComponent);
 
 
@@ -11254,6 +13559,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       }
     });
     this.form.outingType = this.outingTypes[this.currentLanguage][0];
+    this.form.customOutingType = '';
     const svc = this.mainSvc;
     const userObservable = typeof svc.getLoggedUser === 'function' ? svc.getLoggedUser() : typeof svc.getUser === 'function' ? svc.getUser() : svc.bnUserO;
     if (userObservable && typeof userObservable.subscribe === 'function') {
@@ -11311,6 +13617,43 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     this.closeError = '';
     this.saved = false;
   }
+  isKnownOutingType(value) {
+    if (!value) return false;
+    return Object.values(this.outingTypes).some(types => types.includes(value));
+  }
+  customTypeLabel() {
+    const labels = {
+      fr: 'Autre / texte libre',
+      en: 'Other / free text',
+      es: 'Otro / texto libre'
+    };
+    return labels[this.currentLanguage] || labels.fr;
+  }
+  customTypePlaceholder() {
+    const labels = {
+      fr: 'Ex. Sortie presse, EVJF, shooting photo...',
+      en: 'E.g. press outing, bachelor party, photo shoot...',
+      es: 'Ej. salida de prensa, despedida, sesión de fotos...'
+    };
+    return labels[this.currentLanguage] || labels.fr;
+  }
+  prepareOutingTypeForSave() {
+    const rawType = String(this.form.outingType || '').trim();
+    if (rawType === '__custom__') {
+      return String(this.form.customOutingType || '').trim();
+    }
+    return rawType;
+  }
+  applyOutingTypeForEdit(outingType) {
+    const value = String(outingType || '').trim();
+    if (value && !this.isKnownOutingType(value)) {
+      this.form.outingType = '__custom__';
+      this.form.customOutingType = value;
+      return;
+    }
+    this.form.outingType = value || this.outingTypes[this.currentLanguage][0];
+    this.form.customOutingType = '';
+  }
   startCreate() {
     this.mode = 'create';
     this.selectedOuting = null;
@@ -11329,7 +13672,8 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     this.selectedOuting = outing;
     this.editingOutingId = outing.outingId;
     this.form = {
-      outingType: outing.outingType || this.outingTypes[this.currentLanguage][0],
+      outingType: '',
+      customOutingType: '',
       passengers: outing.passengers,
       departureDate: outing.departureDate || '',
       departureTime: outing.departureTime || '',
@@ -11343,6 +13687,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       destination: outing.destination || '',
       comments: outing.comments || ''
     };
+    this.applyOutingTypeForEdit(outing.outingType);
     this.departureChecklistGroups = this.departureGroupsFromOuting(outing);
     this.currentAnchorages = this.anchoragesFromOuting(outing);
     this.anchorageForm = this.emptyAnchorageForm();
@@ -11369,6 +13714,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
   emptyForm() {
     return {
       outingType: '',
+      customOutingType: '',
       passengers: null,
       departureDate: '',
       departureTime: '',
@@ -12405,9 +14751,11 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       if (_this7.error || !_this7.selectedOuting) return;
       _this7.saving = true;
       try {
+        const finalOutingType = _this7.prepareOutingTypeForSave();
         const updated = {
           ..._this7.selectedOuting,
           ..._this7.form,
+          outingType: finalOutingType,
           passengers: Number(_this7.form.passengers),
           portEngineHoursDeparture: _this7.form.portEngineHoursDeparture === null || _this7.form.portEngineHoursDeparture === '' ? null : Number(_this7.form.portEngineHoursDeparture),
           starboardEngineHoursDeparture: _this7.form.starboardEngineHoursDeparture === null || _this7.form.starboardEngineHoursDeparture === '' ? null : Number(_this7.form.starboardEngineHoursDeparture),
@@ -12420,6 +14768,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           modifiedBy: _this7.loggedUser?.userId || _this7.loggedUser?.uid || '',
           modifiedTS: Date.now()
         };
+        delete updated.customOutingType;
         yield _this7.saveToFirebase(updated.outingId, updated);
         _this7.outings = _this7.outings.map(item => item.outingId === updated.outingId ? updated : item);
         _this7.selectedOuting = updated;
@@ -12440,10 +14789,12 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       if (_this8.error) return;
       _this8.saving = true;
       try {
+        const finalOutingType = _this8.prepareOutingTypeForSave();
         const id = `outing_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
         const payload = {
           outingId: id,
           ..._this8.form,
+          outingType: finalOutingType,
           passengers: Number(_this8.form.passengers),
           portEngineHoursDeparture: _this8.form.portEngineHoursDeparture === null || _this8.form.portEngineHoursDeparture === '' ? null : Number(_this8.form.portEngineHoursDeparture),
           starboardEngineHoursDeparture: _this8.form.starboardEngineHoursDeparture === null || _this8.form.starboardEngineHoursDeparture === '' ? null : Number(_this8.form.starboardEngineHoursDeparture),
@@ -12457,6 +14808,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
           createdBy: _this8.loggedUser?.userId || _this8.loggedUser?.uid || '',
           createdTS: Date.now()
         };
+        delete payload.customOutingType;
         yield _this8.saveToFirebase(payload.outingId, payload);
         _this8.outings = [payload, ..._this8.outings];
         const arrivalGroups = _this8.buildArrivalChecklistGroups();
@@ -13484,7 +15836,21 @@ h1 {
   padding: 16px;
   border-radius: 16px;
   color: #516070;
-}`, "",{"version":3,"sources":["webpack://./src/app/home/my-bookings/my-bookings.component.scss"],"names":[],"mappings":"AAAA;EAAgB,eAAA;EAAiB,mBAAA;EAAqB,gBAAA;AAItD;;AAHA;EAAiB,iBAAA;EAAmB,cAAA;AAQpC;;AAPA;EAAgB,mBAAA;EAAqB,gBAAA;AAYrC;;AAXA;EAAW,yBAAA;EAA2B,sBAAA;EAAuB,kBAAA;EAAmB,cAAA;EAAgB,gBAAA;AAmBhG;;AAlBA;EAAK,cAAA;EAAgB,aAAA;AAuBrB;;AAtBA;EAAgB,aAAA;EAAe,2DAAA;EAA6D,SAAA;AA4B5F;;AA3BA;EAAmD,gBAAA;EAAkB,mBAAA;EAAqB,aAAA;EAAe,6CAAA;EAA2C,uCAAA;AAmCpJ;;AAlCA;EAAmB,kBAAA;EAAoB,cAAA;EAAgB,kBAAA;AAwCvD;;AAvCA;EAAkB,aAAA;EAAe,cAAA;AA4CjC;;AA3CA;EAAe,oBAAA;EAAsB,oBAAA;EAAsB,oCAAA;EAAkC,cAAA;EAAgB,iBAAA;EAAmB,kBAAA;EAAmB,gBAAA;AAqDnJ;;AApDA;EAAgB,aAAA;EAAe,QAAA;EAAU,cAAA;EAAgB,cAAA;AA2DzD;;AA1DA;EAAmB,aAAA;EAAe,SAAA;EAAW,eAAA;AAgE7C;;AA/DA;EAAO,SAAA;EAAW,oBAAA;EAAsB,kBAAA;EAAoB,gBAAA;EAAkB,eAAA;EAAiB,qBAAA;AAwE/F;;AAvEA;EAAe,mBAAA;EAAqB,WAAA;AA4EpC;;AA3EA;EAAiB,mBAAA;EAAqB,cAAA;AAgFtC;;AA/EA;EAAS,WAAA;AAmFT;;AAlFA;EAAe,aAAA;EAAe,2DAAA;EAA6D,SAAA;EAAW,cAAA;AAyFtG;;AAxFA;EAAmB,mBAAA;EAAqB,mBAAA;EAAqB,aAAA;EAAe,aAAA;EAAe,QAAA;AAgG3F;;AA/FA;EAAsB,cAAA;AAmGtB;;AAlGA;EAAoB,cAAA;AAsGpB;;AArGA;EAAY,mBAAA;EAAqB,aAAA;EAAe,mBAAA;EAAqB,cAAA;AA4GrE","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n"],"sourceRoot":""}]);
+}
+
+.paid-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.55rem 0.9rem;
+  background: #047857;
+  color: #fff;
+  font-weight: 700;
+}
+
+.booking-meta span {
+  line-height: 1.4;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/my-bookings/my-bookings.component.scss"],"names":[],"mappings":"AAAA;EAAgB,eAAA;EAAiB,mBAAA;EAAqB,gBAAA;AAItD;;AAHA;EAAiB,iBAAA;EAAmB,cAAA;AAQpC;;AAPA;EAAgB,mBAAA;EAAqB,gBAAA;AAYrC;;AAXA;EAAW,yBAAA;EAA2B,sBAAA;EAAuB,kBAAA;EAAmB,cAAA;EAAgB,gBAAA;AAmBhG;;AAlBA;EAAK,cAAA;EAAgB,aAAA;AAuBrB;;AAtBA;EAAgB,aAAA;EAAe,2DAAA;EAA6D,SAAA;AA4B5F;;AA3BA;EAAmD,gBAAA;EAAkB,mBAAA;EAAqB,aAAA;EAAe,6CAAA;EAA2C,uCAAA;AAmCpJ;;AAlCA;EAAmB,kBAAA;EAAoB,cAAA;EAAgB,kBAAA;AAwCvD;;AAvCA;EAAkB,aAAA;EAAe,cAAA;AA4CjC;;AA3CA;EAAe,oBAAA;EAAsB,oBAAA;EAAsB,oCAAA;EAAkC,cAAA;EAAgB,iBAAA;EAAmB,kBAAA;EAAmB,gBAAA;AAqDnJ;;AApDA;EAAgB,aAAA;EAAe,QAAA;EAAU,cAAA;EAAgB,cAAA;AA2DzD;;AA1DA;EAAmB,aAAA;EAAe,SAAA;EAAW,eAAA;AAgE7C;;AA/DA;EAAO,SAAA;EAAW,oBAAA;EAAsB,kBAAA;EAAoB,gBAAA;EAAkB,eAAA;EAAiB,qBAAA;AAwE/F;;AAvEA;EAAe,mBAAA;EAAqB,WAAA;AA4EpC;;AA3EA;EAAiB,mBAAA;EAAqB,cAAA;AAgFtC;;AA/EA;EAAS,WAAA;AAmFT;;AAlFA;EAAe,aAAA;EAAe,2DAAA;EAA6D,SAAA;EAAW,cAAA;AAyFtG;;AAxFA;EAAmB,mBAAA;EAAqB,mBAAA;EAAqB,aAAA;EAAe,aAAA;EAAe,QAAA;AAgG3F;;AA/FA;EAAsB,cAAA;AAmGtB;;AAlGA;EAAoB,cAAA;AAsGpB;;AArGA;EAAY,mBAAA;EAAqB,aAAA;EAAe,mBAAA;EAAqB,cAAA;AA4GrE;;AA1GA;EACE,oBAAA;EACA,mBAAA;EACA,oBAAA;EACA,uBAAA;EACA,mBAAA;EACA,WAAA;EACA,gBAAA;AA6GF;;AA1GA;EACE,gBAAA;AA6GF","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n\n.paid-badge {\n  display: inline-flex;\n  align-items: center;\n  border-radius: 999px;\n  padding: 0.55rem 0.9rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n}\n\n.booking-meta span {\n  line-height: 1.4;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -13499,6 +15865,172 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 "use strict";
 module.exports = "<section class=\"admin-outing-detail-page\">\n  <div class=\"container\">\n    <button type=\"button\" class=\"back-link\" (click)=\"back()\">← {{ t('back') }}</button>\n\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n\n    <div class=\"notice error\" *ngIf=\"!isAdmin\">{{ t('adminOnly') }}</div>\n    <div class=\"notice error\" *ngIf=\"error\">{{ error }}</div>\n    <div class=\"notice success\" *ngIf=\"saved\">{{ t('saved') }}</div>\n\n    <ng-container *ngIf=\"isAdmin && outing\">\n      <div class=\"detail-card\">\n        <div class=\"status-row\">\n          <span class=\"status\" [class.closed]=\"outing.status === 'closed'\">\n            {{ outing.status === 'closed' ? t('closed') : t('open') }}\n          </span>\n        </div>\n\n        \n        <div class=\"outing-tabs\">\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'details'\" (click)=\"activeTab = 'details'\">\n            Outing Details\n          </button>\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'departure'\" (click)=\"activeTab = 'departure'\">\n            Departure\n          </button>\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'anchoring'\" (click)=\"activeTab = 'anchoring'\">\n            Anchoring\n          </button>\n          <button type=\"button\" class=\"outing-tab\" [class.active]=\"activeTab === 'return'\" (click)=\"activeTab = 'return'\">\n            Return\n          </button>\n        </div>\n\n        <div class=\"form-grid\" *ngIf=\"activeTab === 'details'\">\n          <label>\n            {{ t('outingType') }}\n            <select [(ngModel)]=\"outing.outingType\">\n              <option *ngFor=\"let type of outingTypes[currentLanguage]\" [value]=\"type\">{{ type }}</option>\n            </select>\n          </label>\n\n          <label>\n            {{ t('passengers') }}\n            <input type=\"number\" min=\"1\" [(ngModel)]=\"outing.passengers\" />\n          </label>\n\n          <label>\n            {{ t('departureDate') }}\n            <input type=\"date\" [(ngModel)]=\"outing.departureDate\" />\n          </label>\n\n          <label>\n            {{ t('departureTime') }}\n            <input type=\"time\" [(ngModel)]=\"outing.departureTime\" />\n          </label>\n\n          <label>\n            {{ t('arrivalDate') }}\n            <input type=\"date\" [(ngModel)]=\"outing.arrivalDate\" />\n          </label>\n\n          <label>\n            {{ t('arrivalTime') }}\n            <input type=\"time\" [(ngModel)]=\"outing.arrivalTime\" />\n          </label>\n\n          <label>\n            {{ t('portEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"outing.portEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('starboardEngine') }}\n            <input type=\"number\" min=\"0\" step=\"0.1\" [(ngModel)]=\"outing.starboardEngineHoursDeparture\" />\n          </label>\n\n          <label>\n            {{ t('wind') }} ({{ t('knots') }})\n            <input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"outing.actualWindSpeed\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('destination') }}\n            <input type=\"text\" [(ngModel)]=\"outing.destination\" />\n          </label>\n\n          <label class=\"wide\">\n            {{ t('comments') }}\n            <textarea rows=\"4\" [(ngModel)]=\"outing.comments\"></textarea>\n          </label>\n\n          <label class=\"wide\">\n            {{ t('closureComments') }}\n            <textarea rows=\"3\" [(ngModel)]=\"outing.closureComments\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"actions\">\n          <button type=\"button\" class=\"btn btn-primary\" [disabled]=\"saving\" (click)=\"saveDetails()\">\n            {{ saving ? t('saving') : t('save') }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"outing.status !== 'closed'\" [disabled]=\"saving\" (click)=\"closeOuting()\">\n            {{ t('close') }}\n          </button>\n        </div>\n      </div>\n\n      <div class=\"checklist-card\">\n        <div class=\"checklist-head\">\n          <h2>{{ t('departureChecklist') }}</h2>\n          <span [class.complete]=\"departureComplete\">{{ countDoneDepartureItems() }} / {{ countDepartureItems() }}</span>\n        </div>\n\n        <div class=\"checklist-group\" *ngFor=\"let group of departureChecklistGroups\">\n          <div class=\"checklist-subhead\">\n            <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n            <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n          </div>\n          <div class=\"checklist-grid\">\n            <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n              <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n              <span class=\"fake-radio\"></span>\n              <span>\n                {{ item.label[currentLanguage] || item.label.fr }}\n                <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n              </span>\n            </label>\n          </div>\n        </div>\n      </div>\n\n\n      <div class=\"checklist-card\">\n        <div class=\"checklist-head\">\n          <h2>{{ t('anchorages') }}</h2>\n          <span>{{ currentAnchorages.length }}</span>\n        </div>\n\n        <div class=\"form-grid\">\n          <label class=\"wide\">\n            {{ t('anchorageLocation') }}\n            <input type=\"text\" [(ngModel)]=\"anchorageForm.location\" placeholder=\"Lérins, Baie des Milliardaires, Cap d’Antibes...\" />\n          </label>\n          <label class=\"wide\">\n            {{ t('comments') }}\n            <textarea rows=\"2\" [(ngModel)]=\"anchorageForm.comments\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"actions\">\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"addOrUpdateAnchorage()\">\n            {{ editingAnchorageId ? t('updateAnchorage') : t('dropAnchor') }}\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"editingAnchorageId\" (click)=\"cancelAnchorageEdit()\">\n            {{ t('cancel') }}\n          </button>\n        </div>\n\n        <p class=\"empty\" *ngIf=\"currentAnchorages.length === 0\">—</p>\n\n        <div class=\"checklist-group\" *ngFor=\"let anchorage of currentAnchorages\">\n          <div class=\"checklist-subhead\">\n            <h3>{{ anchorage.location }}</h3>\n            <span [class.complete]=\"anchorage.status === 'closed'\">\n              {{ anchorage.status === 'closed' ? t('anchorageClosed') : t('anchorageOpen') }}\n            </span>\n          </div>\n          <p *ngIf=\"anchorage.arrivalTime || anchorage.departureTime\">{{ anchorage.arrivalTime || '—' }} → {{ anchorage.departureTime || '—' }}</p>\n          <p *ngIf=\"anchorage.comments\">{{ anchorage.comments }}</p>\n          <div class=\"actions\">\n            <button type=\"button\" class=\"btn btn-secondary\" *ngIf=\"anchorage.status !== 'closed'\" (click)=\"closeAnchorage(anchorage)\">{{ t('liftAnchor') }}</button>\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"editAnchorage(anchorage)\">{{ t('edit') }}</button>\n            <button type=\"button\" class=\"btn btn-secondary\" (click)=\"removeAnchorage(anchorage)\">{{ t('delete') }}</button>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of anchorage.arrivalChecklistGroups\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ t('anchorageArrival') }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>{{ item.label[currentLanguage] || item.label.fr }}<small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small></span>\n              </label>\n            </div>\n          </div>\n\n          <div class=\"checklist-group\" *ngFor=\"let group of anchorage.departureChecklistGroups\">\n            <div class=\"checklist-subhead\">\n              <h3>{{ t('anchorageDeparture') }}</h3>\n              <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n            </div>\n            <div class=\"checklist-grid\">\n              <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n                <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n                <span class=\"fake-radio\"></span>\n                <span>{{ item.label[currentLanguage] || item.label.fr }}<small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small></span>\n              </label>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"checklist-card\">\n        <div class=\"checklist-head\">\n          <h2>{{ t('arrivalChecklist') }}</h2>\n          <span [class.complete]=\"arrivalComplete\">{{ countDoneArrivalItems() }} / {{ countArrivalItems() }}</span>\n        </div>\n\n        <div class=\"checklist-group\" *ngFor=\"let group of arrivalChecklistGroups\">\n          <div class=\"checklist-subhead\">\n            <h3>{{ group.title[currentLanguage] || group.title.fr }}</h3>\n            <span [class.complete]=\"countDoneGroup(group) === group.items.length\">{{ countDoneGroup(group) }} / {{ group.items.length }}</span>\n          </div>\n          <div class=\"checklist-grid\">\n            <label class=\"check-item\" *ngFor=\"let item of group.items\" [class.done]=\"item.done\">\n              <input type=\"checkbox\" [checked]=\"item.done\" (change)=\"toggleChecklist(item)\" />\n              <span class=\"fake-radio\"></span>\n              <span>\n                {{ item.label[currentLanguage] || item.label.fr }}\n                <small class=\"check-meta\" *ngIf=\"item.doneAt\">{{ formatChecklistMeta(item) }}</small>\n              </span>\n            </label>\n          </div>\n        </div>\n      </div>\n    </ng-container>\n  </div>\n</section>\n";
+
+/***/ }),
+
+/***/ 96894:
+/*!*******************************************************************************!*\
+  !*** ./src/app/home/proposal-confirmation/proposal-confirmation.component.ts ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ProposalConfirmationComponent: () => (/* binding */ ProposalConfirmationComponent)
+/* harmony export */ });
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _proposal_confirmation_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./proposal-confirmation.component.html?ngResource */ 26090);
+/* harmony import */ var _proposal_confirmation_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./proposal-confirmation.component.scss?ngResource */ 19182);
+/* harmony import */ var _proposal_confirmation_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_proposal_confirmation_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../bookings/proposal-api.service */ 79439);
+
+
+
+
+
+
+
+let ProposalConfirmationComponent = class ProposalConfirmationComponent {
+  route;
+  proposalApi;
+  proposal;
+  loading = true;
+  accepting = false;
+  payingDeposit = false;
+  payingWarranty = false;
+  error = '';
+  message = '';
+  warrantyChoice = 'stripe_card';
+  acceptedTerms = false;
+  constructor(route, proposalApi) {
+    this.route = route;
+    this.proposalApi = proposalApi;
+  }
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('proposalId') || '';
+    this.proposalApi.getProposal(id).subscribe({
+      next: p => {
+        this.proposal = p;
+        this.warrantyChoice = p?.warrantyPaymentChoice || 'stripe_card';
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'Proposal not found.';
+        this.loading = false;
+      }
+    });
+    this.route.queryParamMap.subscribe(params => {
+      if (params.get('payment') === 'success') {
+        this.message = 'Deposit payment completed. Thank you.';
+        setTimeout(() => this.reloadProposal(), 1500);
+      }
+      if (params.get('warranty') === 'success') {
+        this.message = 'Warranty card registration completed. Thank you.';
+        setTimeout(() => this.reloadProposal(), 1500);
+      }
+    });
+  }
+  get warrantyRegistered() {
+    return !!this.proposal && (this.proposal.warrantyRegistered === true || this.proposal.warrantyStatus === 'card_registered' || this.proposal.warrantyStatus === 'warranty_card_saved');
+  }
+  get warrantyCashSelected() {
+    return this.proposal?.warrantyPaymentChoice === 'cash_on_board';
+  }
+  get warrantyMessage() {
+    if (this.warrantyRegistered) {
+      return 'Your warranty card has been registered. No amount is charged unless damage or unpaid costs are confirmed.';
+    }
+    if (this.warrantyCashSelected) {
+      return 'Please bring €500 cash before departure. It will be returned at the end if no damage or issue is noticed.';
+    }
+    return 'Register your debit/credit card online for the security deposit. No immediate charge is made.';
+  }
+  get depositPaid() {
+    return !!this.proposal && (this.proposal.depositPaid === true || this.proposal.depositStatus === 'paid' || this.proposal.paymentStatus === 'paid');
+  }
+  get depositMessage() {
+    return this.depositPaid ? 'The 10% deposit has been paid. Your booking is confirmed.' : 'Your booking is confirmed after the deposit payment.';
+  }
+  get expired() {
+    return !!this.proposal?.validUntil && Date.now() > this.proposal.validUntil;
+  }
+  get canAccept() {
+    return !!this.proposal && !this.expired && this.acceptedTerms && !!this.warrantyChoice;
+  }
+  acceptProposal() {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this.proposal || !_this.canAccept) return;
+      _this.accepting = true;
+      _this.error = '';
+      try {
+        _this.proposal = yield _this.proposalApi.acceptProposal(_this.proposal.proposalId, _this.warrantyChoice);
+        _this.message = 'Proposal accepted. You can now pay the 10% deposit.';
+      } catch (e) {
+        _this.error = e?.message || 'Unable to accept proposal.';
+      }
+      _this.accepting = false;
+    })();
+  }
+  reloadProposal() {
+    const id = this.route.snapshot.paramMap.get('proposalId') || '';
+    if (!id) return;
+    this.proposalApi.getProposal(id).subscribe({
+      next: proposal => {
+        if (proposal) this.proposal = proposal;
+      }
+    });
+  }
+  payDeposit() {
+    if (!this.proposal) return;
+    this.payingDeposit = true;
+    this.proposalApi.createDepositCheckout(this.proposal).subscribe({
+      next: r => {
+        const url = r.url || r.checkoutUrl || r.sessionUrl;
+        if (url) window.location.href = url;else {
+          this.payingDeposit = false;
+          this.error = 'Unable to initialize deposit payment.';
+        }
+      },
+      error: () => {
+        this.payingDeposit = false;
+        this.error = 'Unable to initialize deposit payment.';
+      }
+    });
+  }
+  registerWarrantyCard() {
+    if (!this.proposal) return;
+    this.payingWarranty = true;
+    this.proposalApi.createWarrantySetup(this.proposal).subscribe({
+      next: r => {
+        const url = r.url || r.checkoutUrl || r.sessionUrl;
+        if (url) window.location.href = url;else {
+          this.payingWarranty = false;
+          this.error = 'Unable to initialize warranty registration.';
+        }
+      },
+      error: () => {
+        this.payingWarranty = false;
+        this.error = 'Unable to initialize warranty registration.';
+      }
+    });
+  }
+  static ctorParameters = () => [{
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.ActivatedRoute
+  }, {
+    type: _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_3__.ProposalApiService
+  }];
+};
+ProposalConfirmationComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+  selector: 'app-proposal-confirmation',
+  template: _proposal_confirmation_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
+  styles: [(_proposal_confirmation_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
+})], ProposalConfirmationComponent);
+
 
 /***/ }),
 

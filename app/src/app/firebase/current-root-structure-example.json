@@ -846,7 +846,7 @@
         "intro": "Answers to the most common questions before your sea outing aboard Alegria.",
         "items": [
           {
-            "answer": "The meeting point is berth 16, Port Marina Baie des Anges, Villeneuve-Loubet. Please arrive 15 to 20 minutes before the scheduled time.",
+            "answer": "The exact meeting point is confirmed before the outing. Depending on organization and available authorizations, it may be an authorized visitors’ quay in Villeneuve, Antibes Port Vauban or Cannes Port Canto. Please arrive 15 to 20 minutes before the scheduled time.",
             "question": "Where do we meet?"
           },
           {
@@ -881,7 +881,7 @@
         "intro": "Respuestas a las preguntas más frecuentes antes de su salida al mar a bordo de Alegria.",
         "items": [
           {
-            "answer": "El punto de encuentro es el amarre 16, Port Marina Baie des Anges, Villeneuve-Loubet. Recomendamos llegar 15 a 20 minutos antes de la hora prevista.",
+            "answer": "El punto de encuentro exacto se confirma antes de la salida. Según la organización y las autorizaciones disponibles, puede ser un muelle de honor autorizado en Villeneuve, Antibes Port Vauban o Cannes Port Canto. Por favor llegue entre 15 y 20 minutos antes de la hora prevista. Recomendamos llegar 15 a 20 minutos antes de la hora prevista.",
             "question": "¿Dónde es el punto de encuentro?"
           },
           {
@@ -916,7 +916,7 @@
         "intro": "Les réponses aux questions les plus fréquentes avant votre sortie en mer à bord d’Alegria.",
         "items": [
           {
-            "answer": "Le rendez-vous se fait à l’anneau 16, Port Marina Baie des Anges, Villeneuve-Loubet. Nous vous conseillons d’arriver 15 à 20 minutes avant l’heure prévue.",
+            "answer": "Le point de rendez-vous exact est confirmé avant la sortie. Selon l’organisation et les autorisations disponibles, il peut s’agir d’un quai d’honneur autorisé à Villeneuve, Antibes Port Vauban ou Cannes Port Canto. Merci d’arriver 15 à 20 minutes avant l’heure prévue.",
             "question": "Où devons-nous nous présenter ?"
           },
           {
@@ -949,7 +949,7 @@
     },
     "guestJourney": {
       "en": {
-        "address": "Berth 16, Port Marina Baie des Anges, Villeneuve-Loubet",
+        "address": "un point de rendez-vous confirmé avant la sortie",
         "addressLabel": "Exact meeting address",
         "eyebrow": "Your outing step by step",
         "finalNote": "The exact program is always adapted by the captain according to weather, safety and group comfort.",
@@ -963,7 +963,7 @@
               "Simple boarding instructions"
             ],
             "icon": "📍",
-            "text": "We welcome you directly at berth 16, Port Marina Baie des Anges in Villeneuve-Loubet.",
+            "text": "We welcome you at the Meeting point confirmed before the outing on an authorized visitors’ quay when applicable.",
             "title": "Arrival at the boat"
           },
           {
@@ -1045,7 +1045,7 @@
               "Arrival prepared by the crew"
             ],
             "icon": "⛵",
-            "text": "We cruise calmly back to Marina Baie des Anges while enjoying the last moments at sea.",
+            "text": "We cruise calmly back to Villeneuve while enjoying the last moments at sea.",
             "title": "Return to the marina"
           },
           {
@@ -1062,7 +1062,7 @@
         "title": "How your day at sea works"
       },
       "es": {
-        "address": "Amarre 16, Port Marina Baie des Anges, Villeneuve-Loubet",
+        "address": "un point de rendez-vous confirmé avant la sortie",
         "addressLabel": "Dirección exacta del encuentro",
         "eyebrow": "Su salida paso a paso",
         "finalNote": "El programa exacto siempre es adaptado por el capitán según la meteorología, la seguridad y la comodidad del grupo.",
@@ -1076,7 +1076,7 @@
               "Instrucciones sencillas para embarcar"
             ],
             "icon": "📍",
-            "text": "Les recibimos directamente en el amarre 16, Port Marina Baie des Anges en Villeneuve-Loubet.",
+            "text": "Les recibimos directamente en el Villeneuve Villeneuve en Villeneuve-Loubet.",
             "title": "Llegada al barco"
           },
           {
@@ -1158,7 +1158,7 @@
               "Llegada preparada por la tripulación"
             ],
             "icon": "⛵",
-            "text": "Volvemos tranquilamente a Marina Baie des Anges disfrutando de los últimos momentos en el mar.",
+            "text": "Volvemos tranquilamente a Villeneuve disfrutando de los últimos momentos en el mar.",
             "title": "Regreso a la marina"
           },
           {
@@ -1175,7 +1175,7 @@
         "title": "Cómo se desarrolla su salida al mar"
       },
       "fr": {
-        "address": "Anneau 16, Port Marina Baie des Anges, Villeneuve-Loubet",
+        "address": "Point de rendez-vous confirmé avant la sortie",
         "addressLabel": "Adresse exacte du rendez-vous",
         "eyebrow": "Votre sortie pas à pas",
         "finalNote": "Le programme exact reste toujours adapté par le capitaine selon la météo, la sécurité et le confort du groupe.",
@@ -1189,7 +1189,7 @@
               "Premières consignes simples pour monter à bord"
             ],
             "icon": "📍",
-            "text": "Nous vous accueillons directement à l’anneau 16, Port Marina Baie des Anges à Villeneuve-Loubet.",
+            "text": "Nous vous accueillons au Point de rendez-vous confirmé avant la sortie sur un quai d’honneur autorisé lorsque cela est applicable.",
             "title": "Arrivée au bateau"
           },
           {
@@ -1271,7 +1271,7 @@
               "Arrivée préparée par l’équipage"
             ],
             "icon": "⛵",
-            "text": "Nous repartons tranquillement vers Marina Baie des Anges en profitant des derniers instants en mer.",
+            "text": "Nous repartons tranquillement vers Villeneuve en profitant des derniers instants en mer.",
             "title": "Retour vers la marina"
           },
           {

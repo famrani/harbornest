@@ -2,11 +2,25 @@
   <div class="container booking-shell">
     <div class="section-head">
       <span class="eyebrow">Admin</span>
-      <h1>Bookings</h1>
-      <p>Bookings loaded from Firebase Realtime Database <strong>/bnBookings</strong>.</p>
+      <h1>Reservations</h1>
+      <p>Manage confirmed bookings, deposits, remaining 90% onboard payments, warranties and damage charges.</p>
     </div>
 
     <div class="booking-toolbar">
+      <label class="search-box">
+        <span>Search by customer name</span>
+        <input
+          type="search"
+          name="bookingSearch"
+          [(ngModel)]="searchTerm"
+          placeholder="Type a customer name..."
+          autocomplete="off"
+        />
+      </label>
+
+      <button class="btn btn-secondary" type="button" *ngIf="searchTerm" (click)="clearSearch()">Clear</button>
+      <a class="btn btn-primary" routerLink="/admin/proposals">Proposals</a>
+      <a class="btn btn-secondary" routerLink="/admin/external-bookings">External bookings</a>
       <button class="btn btn-secondary" type="button" (click)="loadBookings()">Refresh</button>
     </div>
 
@@ -16,37 +30,85 @@
       No bookings found in Firebase under <strong>/bnBookings</strong>.
     </p>
 
-    <div class="booking-grid" *ngIf="!loading && bookings.length > 0">
-      <article class="booking-card" *ngFor="let booking of bookings; trackBy: trackByBookingId">
-        <div class="booking-card-main">
-          <span class="status-pill">{{ booking.bookingStatus || 'requested' }}</span>
-          <h2>{{ booking.outingType || 'Outing' }}</h2>
-          <p>
+    <div class="list-summary" *ngIf="!loading && bookings.length > 0">
+      Showing <strong>{{ filteredBookings.length }}</strong> of <strong>{{ bookings.length }}</strong> bookings
+    </div>
+
+    <div class="bookings-list" *ngIf="!loading && filteredBookings.length > 0">
+      <button
+        class="booking-list-row"
+        type="button"
+        *ngFor="let booking of filteredBookings; trackBy: trackByBookingId"
+        (click)="openBooking(booking)"
+      >
+        <span class="status-pill">{{ booking.bookingStatus || 'requested' }}</span>
+
+        <span class="booking-main">
+          <strong>{{ booking.customerName || 'Customer not set' }}</strong>
+          <small>{{ booking.email || 'No email' }}</small>
+        </span>
+
+        <span class="booking-trip">
+          <strong>{{ booking.outingType || 'Outing' }}</strong>
+          <small>
             {{ booking.outingDate || 'Date not set' }}
-            <span *ngIf="booking.departureTime">• {{ booking.departureTime }}</span>
-          </p>
-          <p>{{ booking.customerName || 'Customer not set' }} <span *ngIf="booking.email">• {{ booking.email }}</span></p>
+            <ng-container *ngIf="booking.departureTime">• {{ booking.departureTime }}</ng-container>
+          </small>
+        </span>
+
+        <span class="booking-price">
+          <strong>€{{ booking.totalPrice || 0 }}</strong>
+          <small>Deposit 10%: €{{ getDepositAmount(booking) }} · {{ isDepositPaid(booking) ? 'paid' : 'pending' }}</small>
+          <small>Remaining 90%: €{{ getBalanceAmount(booking) }} · {{ isBalancePaid(booking) ? 'paid' : 'to collect onboard' }}</small>
+        </span>
+
+        <span class="row-actions" (click)="$event.stopPropagation()">
+          <button class="mini-btn" type="button" *ngIf="canRecordBalancePayment(booking)" (click)="openBalancePayment(booking, $event)">Record 90%</button>
+          <span class="blocked-badge" *ngIf="!canRecordBalancePayment(booking) && !isBalancePaid(booking)" [title]="getBalanceBlockedReason(booking)">90% locked</span>
+          <span class="paid-badge" *ngIf="isBalancePaid(booking)">90% paid</span>
+          <span class="row-chevron">›</span>
+        </span>
+      </button>
+    </div>
+
+    <p *ngIf="!loading && bookings.length > 0 && filteredBookings.length === 0" class="muted">
+      No booking matches this customer search.
+    </p>
+    <div class="balance-modal-backdrop" *ngIf="selectedBalanceBooking">
+      <div class="balance-modal">
+        <h2>Record remaining 90% payment</h2>
+        <p>
+          <strong>{{ selectedBalanceBooking.customerName }}</strong><br />
+          Total: €{{ selectedBalanceBooking.totalPrice || 0 }}<br />
+          Deposit 10%: €{{ getDepositAmount(selectedBalanceBooking) }} · {{ isDepositPaid(selectedBalanceBooking) ? 'paid' : 'pending' }}<br />
+          Warranty card: {{ isWarrantyCardRegistered(selectedBalanceBooking) ? 'registered' : 'not registered' }}<br />
+          Booking status: {{ selectedBalanceBooking.bookingStatus || 'requested' }}<br />
+          Remaining 90% to collect onboard: <strong>€{{ getBalanceAmount(selectedBalanceBooking) }}</strong>
+        </p>
+
+        <label>
+          Payment method
+          <select [(ngModel)]="balancePaymentMethod">
+            <option value="sumup">SumUp / card</option>
+            <option value="cash">Cash</option>
+            <option value="mixed">Mixed</option>
+          </select>
+        </label>
+
+        <label>
+          Notes
+          <textarea rows="3" [(ngModel)]="balancePaymentNotes" placeholder="Optional note, reference, split cash/SumUp..."></textarea>
+        </label>
+
+        <div class="modal-actions">
+          <button class="btn btn-primary" type="button" [disabled]="savingBalancePayment" (click)="recordBalancePayment()">
+            {{ savingBalancePayment ? 'Saving...' : 'Confirm 90% payment' }}
+          </button>
+          <button class="btn btn-secondary" type="button" (click)="closeBalancePayment()">Cancel</button>
         </div>
 
-        <div class="booking-meta">
-          <span>Total: €{{ booking.totalPrice || 0 }}</span>
-          <span>Deposit: {{ booking.depositStatus }}</span>
-          <span>Warranty: {{ booking.warrantyStatus }}</span>
-        </div>
-
-        <div class="firebase-fields" *ngIf="booking.displayFields.length > 0">
-          <h3>Firebase fields</h3>
-          <div class="firebase-field" *ngFor="let field of booking.displayFields; trackBy: trackByFieldKey">
-            <strong>{{ field.key }}</strong>
-            <pre>{{ field.value }}</pre>
-          </div>
-        </div>
-
-        <div class="booking-actions">
-          <button class="btn btn-secondary" type="button" (click)="openBooking(booking)">Open</button>
-          <button class="btn btn-primary" type="button" (click)="payment(booking)">Payment</button>
-        </div>
-      </article>
+        <p class="error-message" *ngIf="balancePaymentError">{{ balancePaymentError }}</p>
+      </div>
     </div>
   </div>
 </section>

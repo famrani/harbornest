@@ -1,0 +1,76 @@
+
+<section class="admin-proposals-page">
+  <div class="container proposals-shell">
+    <div class="section-head">
+      <span class="eyebrow">Admin</span>
+      <h1>Customer proposals</h1>
+      <p>Create direct proposals. Once sent, a proposal is valid for one full day.</p>
+    </div>
+
+    <article class="card">
+      <div class="form-title">
+        <h2>{{ form.proposalId ? 'Edit proposal' : 'New proposal' }}</h2>
+        <button class="btn btn-secondary" type="button" (click)="reset()">New</button>
+      </div>
+
+      <div class="form-grid">
+        <label>Customer name<input type="text" [(ngModel)]="form.customerName" /></label>
+        <label>Customer email<input type="email" [(ngModel)]="form.customerEmail" /></label>
+        <label>Phone<input type="tel" [(ngModel)]="form.customerPhone" /></label>
+        <label>Outing type<input type="text" [(ngModel)]="form.outingType" /></label>
+        <label>Outing date<input type="date" [(ngModel)]="form.outingDate" /></label>
+        <label>Departure time<input type="time" [(ngModel)]="form.departureTime" /></label>
+        <label>Return time<input type="time" [(ngModel)]="form.arrivalTime" /></label>
+        <label>Passengers<input type="number" min="1" [(ngModel)]="form.passengers" /></label>
+        <label>Total amount (€)<input type="number" min="1" step="0.01" [(ngModel)]="form.totalAmount" /></label>
+        <label>Warranty amount (€)<input type="number" min="0" step="0.01" [(ngModel)]="form.warrantyAmount" /></label>
+        <label class="wide">Proposal message<textarea rows="3" [(ngModel)]="form.proposalMessage"></textarea></label>
+        <label class="wide">Internal comments<textarea rows="3" [(ngModel)]="form.comments"></textarea></label>
+      </div>
+
+      <div class="calculation">
+        <span>Deposit 10%: <strong>€{{ ((form.totalAmount || 0) * 0.1) | number:'1.2-2' }}</strong></span>
+        <span>Remaining 90% onboard: <strong>€{{ ((form.totalAmount || 0) * 0.9) | number:'1.2-2' }}</strong></span>
+        <span>Validity after sent: <strong>24 hours</strong></span>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" type="button" [disabled]="saving" (click)="saveProposal()">{{ saving ? 'Saving...' : 'Save proposal' }}</button>
+        <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" (click)="markSent()">Mark sent / renew 24h</button>
+        <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" (click)="copyLink()">Copy client link</button>
+        <button class="btn btn-primary" type="button" *ngIf="form.proposalId" (click)="sendCurrentProposalByEmail()">Send by email</button>
+        <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" (click)="renewProposal(form)">Renew 24h</button>
+        <button class="btn btn-danger" type="button" *ngIf="form.proposalId" (click)="deleteProposal(form)">Delete</button>
+      </div>
+
+      <p class="validity" *ngIf="form.proposalId" [class.expired]="isExpired(form)">
+        {{ formatValidity(form) }}
+      </p>
+      <p class="client-link" *ngIf="form.proposalId">{{ proposalLink }}</p>
+      <p class="success" *ngIf="message">{{ message }}</p>
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </article>
+
+    <div class="toolbar">
+      <label class="search-box">Search proposals<input type="search" [(ngModel)]="searchTerm" placeholder="Customer name, email or outing..." /></label>
+      <button class="btn btn-secondary" type="button" (click)="load()">Refresh</button>
+    </div>
+
+    <p class="muted" *ngIf="loading">Loading proposals...</p>
+
+    <div class="proposal-list" *ngIf="!loading">
+      <button class="proposal-row" type="button" *ngFor="let p of filteredProposals" (click)="edit(p)">
+        <span class="status">{{ p.status }}</span>
+        <span><strong>{{ p.customerName || 'Unnamed customer' }}</strong><small>{{ p.customerEmail }}</small></span>
+        <span><strong>{{ p.outingType }}</strong><small>{{ p.outingDate }} · {{ p.departureTime }}</small><small [class.expired]="isExpired(p)">{{ formatValidity(p) }}</small></span>
+        <span><strong>€{{ p.totalAmount }}</strong><small>Deposit €{{ p.depositAmount }}</small></span>
+        <span class="row-actions">
+          <button class="mini-link" type="button" (click)="openClientLink(p); $event.stopPropagation()">Open link</button>
+          <button class="mini-link" type="button" (click)="sendProposalByEmail(p); $event.stopPropagation()">Email</button>
+          <button class="mini-link" type="button" (click)="renewProposal(p, $event)">Renew</button>
+          <button class="mini-link danger" type="button" (click)="deleteProposal(p, $event)">Delete</button>
+        </span>
+      </button>
+    </div>
+  </div>
+</section>

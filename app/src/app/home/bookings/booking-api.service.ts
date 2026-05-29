@@ -17,9 +17,22 @@ export interface AlegriaBooking {
   totalPrice: number;
   depositAmount?: number;
   warrantyAmount?: number;
+  balanceAmount?: number;
+  balancePaid?: boolean;
+  balancePaymentMethod?: string;
+  balancePaidAt?: number;
+  extrasAmount?: number;
   depositStatus?: string | boolean;
+  depositPaid?: boolean;
+  paymentStripeCheckoutSessionId?: string;
+  stripeCheckoutSessionId?: string;
+  stripePaymentIntentId?: string;
   warrantyStatus?: string | boolean;
   bookingStatus?: string;
+  ownerId?: string;
+  customerPhone?: string;
+  payments?: any;
+  paymentStatus?: any;
   comments?: string;
   raw?: any;
 }
@@ -56,27 +69,84 @@ export class BookingApiService {
     );
   }
 
-  createDepositCheckout(bookingId: string): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/stripe/deposit-checkout`, { bookingId }, { withCredentials: true });
+  createDepositCheckout(payload: {
+    bookingId: string;
+    ownerId: string;
+    depositAmount: number;
+    currency?: string;
+    customerEmail?: string;
+    customerName?: string;
+    customerPhone?: string;
+    outingType?: string;
+    outingDate?: string;
+    successUrl: string;
+    cancelUrl: string;
+  }): Observable<any> {
+    return this.postFirstAvailable([
+      `${this.baseUrl}/pay/outing-deposit-checkout`,
+      `${this.baseUrl}/api/payments/create-deposit-checkout-session`,
+      `${this.baseUrl}/stripe/deposit-checkout`,
+    ], payload);
   }
 
-  createWarrantySetup(bookingId: string): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/stripe/warranty-setup`, { bookingId }, { withCredentials: true });
+  createWarrantySetup(payload: {
+    bookingId: string;
+    ownerId: string;
+    warrantyAmount: number;
+    currency?: string;
+    customerEmail?: string;
+    customerName?: string;
+    customerPhone?: string;
+    outingType?: string;
+    outingDate?: string;
+    successUrl: string;
+    cancelUrl: string;
+  }): Observable<any> {
+    return this.postFirstAvailable([
+      `${this.baseUrl}/pay/outing-warranty-checkout`,
+      `${this.baseUrl}/api/payments/create-warranty-checkout-session`,
+      `${this.baseUrl}/api/payments/create-warranty-setup-session`,
+      `${this.baseUrl}/stripe/warranty-setup`,
+    ], payload);
   }
 
-  chargeWarranty(bookingId: string, amount: number, reason: string): Observable<any> {
-    const payload = { bookingId, amount, warrantyAmount: amount, reason };
+  getPaymentStatus(bookingId: string): Observable<any> {
     const endpoints = [
-      `${this.baseUrl}/stripe/warranty-charge`,
-      `${this.baseUrl}/api/payments/charge-warranty`,
-      `${this.baseUrl}/api/stripe/warranty-charge`,
+      `${this.baseUrl}/pay/outing-payment-status?bookingId=${encodeURIComponent(bookingId)}`,
+      `${this.baseUrl}/api/payments/status?bookingId=${encodeURIComponent(bookingId)}`,
     ];
 
     return new Observable((observer) => {
       let index = 0;
       const tryNext = () => {
         if (index >= endpoints.length) {
-          observer.error(new Error('Unable to charge warranty.'));
+          observer.error(new Error('Unable to read payment status.'));
+          return;
+        }
+        this.http.get<any>(endpoints[index++], { withCredentials: true }).subscribe({
+          next: (response) => { observer.next(response); observer.complete(); },
+          error: () => tryNext(),
+        });
+      };
+      tryNext();
+    });
+  }
+
+  chargeWarranty(bookingId: string, amount: number, reason: string, ownerId?: string): Observable<any> {
+    const payload = { bookingId, ownerId, amount, warrantyAmount: amount, reason };
+    return this.postFirstAvailable([
+      `${this.baseUrl}/pay/outing-warranty-charge`,
+      `${this.baseUrl}/api/payments/charge-warranty`,
+      `${this.baseUrl}/stripe/warranty-charge`,
+    ], payload);
+  }
+
+  private postFirstAvailable(endpoints: string[], payload: any): Observable<any> {
+    return new Observable((observer) => {
+      let index = 0;
+      const tryNext = () => {
+        if (index >= endpoints.length) {
+          observer.error(new Error('No payment endpoint is available.'));
           return;
         }
         this.http.post<any>(endpoints[index++], payload, { withCredentials: true }).subscribe({
@@ -339,15 +409,54 @@ export class BookingApiService {
     const party = item?.party || {};
     const start = time.startAt || item.startAt || item.departureAt || '';
     const end = time.endAt || item.endAt || item.arrivalAt || '';
+
     const totalPrice = Number(item.totalPrice ?? item.total ?? item.amount ?? item.price ?? 0);
-    const depositAmount = Number(item.depositAmount ?? item.deposit ?? (totalPrice ? Math.round(totalPrice * 0.3 * 100) / 100 : 0));
+    const depositAmount = Number(
+      item.depositAmount ??
+      item.deposit ??
+      (totalPrice ? Math.round(totalPrice * 0.1 * 100) / 100 : 0)
+    );
+    const balanceAmount = Number(
+      item.balanceAmount ??
+      (totalPrice && depositAmount ? Math.round((totalPrice - depositAmount) * 100) / 100 : 0)
+    );
     const warrantyAmount = Number(item.warrantyAmount ?? item.warranty ?? item.cautionAmount ?? item.securityDepositAmount ?? 0);
+
+    const payments = item.payments || item.paymentStatus || {};
+    const depositPayment = payments.deposit || item.depositPayment || {};
+    const warrantyPayment = payments.warranty || item.warrantyPayment || {};
+    const balancePayment = payments.balance || item.balancePayment || {};
+    const legacyPayment = item.payment || {};
+
+    const depositPaid =
+      item.depositPaid === true ||
+      item.depositStatus === 'paid' ||
+      item.depositStatus === 'deposit_paid' ||
+      item.paymentStatus === 'paid' ||
+      item.paymentStatus === 'charge_succeeded' ||
+      legacyPayment.depositPaid === true ||
+      legacyPayment.paid === true ||
+      legacyPayment.status === 'paid' ||
+      legacyPayment.status === 'deposit_paid' ||
+      depositPayment.depositPaid === true ||
+      depositPayment.paid === true ||
+      depositPayment.status === 'paid' ||
+      depositPayment.status === 'deposit_paid';
+
+    const balancePaid =
+      item.balancePaid === true ||
+      item.balanceStatus === 'paid' ||
+      item.balancePaymentStatus === 'paid' ||
+      balancePayment.paid === true ||
+      balancePayment.status === 'paid';
 
     return {
       bookingId: item.bookingId || item.id || item.reference || '',
+      ownerId: item.ownerId || item.owner || item.hostId || '',
       customerName: item.customerName || customer.fullName || item.name || `${customer.firstname || ''} ${customer.lastname || ''}`.trim() || '',
       email: item.email || customer.email || '',
       phone: item.phone || customer.phone || '',
+      customerPhone: item.customerPhone || item.phone || customer.phone || '',
       outingType: item.outingType || item.outing || item.type || item.category || '',
       outingDate: item.outingDate || item.date || (start ? String(start).slice(0, 10) : ''),
       departureTime: item.departureTime || (start ? String(start).slice(11, 16) : ''),
@@ -355,12 +464,19 @@ export class BookingApiService {
       passengers: Number(item.passengers || party.total || item.guests || 0) || undefined,
       totalPrice,
       depositAmount,
+      balanceAmount,
       warrantyAmount,
-      depositStatus: item.depositStatus ?? item.depositPaid ?? false,
-      warrantyStatus: item.warrantyStatus ?? item.warrantyRegistered ?? false,
+      balancePaid,
+      balancePaymentMethod: item.balancePaymentMethod || balancePayment.method || '',
+      balancePaidAt: item.balancePaidAt || balancePayment.paidAt || null,
+      extrasAmount: Number(item.extrasAmount || payments?.extras?.amount || 0),
+      depositStatus: depositPaid ? 'paid' : (item.depositStatus ?? depositPayment.status ?? item.depositPaid ?? false),
+      depositPaid,
+      warrantyStatus: item.warrantyStatus ?? warrantyPayment.status ?? item.warrantyRegistered ?? false,
+      payments,
+      paymentStatus: payments,
       bookingStatus: item.bookingStatus || item.status || 'requested',
       comments: item.comments || item.notes?.customerNote || item.comment || '',
       raw: item,
     };
-  }
-}
+  }}

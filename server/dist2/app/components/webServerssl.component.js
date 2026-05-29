@@ -11,10 +11,12 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const http_1 = __importDefault(require("http"));
 const https_1 = __importDefault(require("https"));
 class WebServerComponent {
-    constructor(utilsSvc, stripeSvc, bookingsSvc) {
+    constructor(utilsSvc, stripeSvc, bookingsSvc, usersSvc, boatownersSvc) {
         this.utilsSvc = utilsSvc;
         this.stripeSvc = stripeSvc;
         this.bookingsSvc = bookingsSvc;
+        this.usersSvc = usersSvc;
+        this.boatownersSvc = boatownersSvc;
         this.app = (0, express_1.default)();
         this.appHttp = (0, express_1.default)();
         this.router = express_1.default.Router();
@@ -43,8 +45,8 @@ class WebServerComponent {
         });
         // SSL options
         const sslOptions = {
-            key: fs_1.default.readFileSync('./sslKeys/kamli.net/_.kamli.net.key'),
-            cert: fs_1.default.readFileSync('./sslKeys/kamli.net/_.kamli.net.crt'),
+            key: fs_1.default.readFileSync('./sslKeys/kamli.net/alldigitalnetwork.com.key'),
+            cert: fs_1.default.readFileSync('./sslKeys/kamli.net/alldigitalnetwork.com.crt'),
             ca: [fs_1.default.readFileSync('./sslKeys/kamli.net/GandiCert.pem')],
         };
         // Start HTTPS server
@@ -65,6 +67,12 @@ class WebServerComponent {
             res.setHeader('Access-Control-Allow-Credentials', 'true');
             next();
         });
+        // Stripe webhooks must be registered BEFORE JSON body parsers.
+        this.app.post('/stripe/owner/:ownerId/webhook', body_parser_1.default.raw({ type: 'application/json' }), (req, res) => this.stripeSvc.handleOwnerWebhook(req, res));
+        this.app.post('/stripe/webhook', body_parser_1.default.raw({ type: 'application/json' }), (req, res) => this.stripeSvc.handlePlatformWebhook(req, res, process.env.STRIPE_WEBHOOK_SECRET || ''));
+        // Stripe webhooks must be registered BEFORE JSON body parsers.
+        this.app.post('/stripe/owner/:ownerId/webhook', body_parser_1.default.raw({ type: 'application/json' }), (req, res) => this.stripeSvc.handleOwnerWebhook(req, res));
+        this.app.post('/stripe/webhook', body_parser_1.default.raw({ type: 'application/json' }), (req, res) => this.stripeSvc.handlePlatformWebhook(req, res, process.env.STRIPE_WEBHOOK_SECRET || ''));
         // Body parsers
         this.app.use(body_parser_1.default.json());
         this.app.use(body_parser_1.default.urlencoded({ extended: true }));
@@ -73,6 +81,8 @@ class WebServerComponent {
         this.utilsSvc.setRoutes(this.router);
         this.stripeSvc.setRoutes(this.router);
         this.bookingsSvc.setRoutes(this.router);
+        this.usersSvc.setRoutes(this.router);
+        this.boatownersSvc.setRoutes(this.router);
     }
 }
 exports.WebServerComponent = WebServerComponent;
