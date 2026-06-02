@@ -41,7 +41,7 @@ export class LoginService {
       const params = new HttpParams()
         .set('placeId', gmid);
       // tslint:disable-next-line: deprecation
-      this.http.get(this.utilsSvc.backendURL + 'utils/getGoogleMetadata', { params }).subscribe(
+      this.http.get(`${this.resolvedBackendUrl}/utils/getGoogleMetadata`, { params }).subscribe(
         data => {
           resolve(data);
         },
@@ -97,4 +97,15 @@ export class LoginService {
   set version(value) {
     this.mainSvc.version = value;
   }
+  private get resolvedBackendUrl(): string {
+    const hostname = window.location.hostname;
+
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
+      return 'https://localhost:2000';
+    }
+
+    return window.location.origin;
+  }
+
+
 }

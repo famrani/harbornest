@@ -175,11 +175,11 @@ export class LocalUtilsService {
   }
 
   createExpressAccount(email: string, country = 'FR') {
-    return this.http.post<any>(`${this.utilsSvc.backendURL}/stripe/expressaccount`, { email, country }, { withCredentials: true });
+    return this.http.post<any>(`${this.resolvedBackendUrl}/stripe/expressaccount`, { email, country }, { withCredentials: true });
   }
 
   createExpressAccountLink(accountId: string, refreshUrl: string, returnUrl: string) {
-    return this.http.post<any>(`${this.utilsSvc.backendURL}/stripe/expressaccount-link`, { accountId, refreshUrl, returnUrl }, { withCredentials: true });
+    return this.http.post<any>(`${this.resolvedBackendUrl}/stripe/expressaccount-link`, { accountId, refreshUrl, returnUrl }, { withCredentials: true });
   }
 
   async sendEmail(
@@ -206,5 +206,16 @@ export class LocalUtilsService {
     }
 
   }
+
+  private get resolvedBackendUrl(): string {
+    const hostname = window.location.hostname;
+
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
+      return 'https://localhost:2000';
+    }
+
+    return window.location.origin;
+  }
+
 
 }

@@ -396,3 +396,29 @@ p, li, input, textarea, select, .card-body, .term-section {
   border-top: 1px solid rgba(8, 38, 58, 0.08);
   margin-top: 0.35rem;
 }
+
+.account-customer-panel {
+  min-width: 260px;
+}
+
+.account-customer-panel .dropdown-section-title,
+.account-admin-panel .dropdown-section-title {
+  display: block;
+  margin: 0.55rem 0 0.25rem;
+  padding: 0.25rem 0.75rem;
+  color: #b58b4a;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.account-customer-panel .dropdown-section-title:first-child,
+.account-admin-panel .dropdown-section-title:first-child {
+  margin-top: 0;
+}
+
+.account-customer-panel a,
+.account-admin-panel a {
+  white-space: nowrap;
+}

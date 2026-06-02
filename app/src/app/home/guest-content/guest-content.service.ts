@@ -168,8 +168,6 @@ export const DEFAULT_GUEST_INFO_CONTENT: GuestInfoFirebaseContent = {
 @Injectable({ providedIn: 'root' })
 export class GuestContentService {
   private readonly restDatabaseUrls = [
-    'https://adn-dev-4d05d-default-rtdb.europe-west1.firebasedatabase.app',
-    'https://adn-dev-4d05d-default-rtdb.firebaseio.com',
     'https://adn-dev-4d05d.firebaseio.com',
   ];
 

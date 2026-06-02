@@ -3,6 +3,10 @@
     <span class="eyebrow">{{ t('eyebrow') }}</span>
     <h1>{{ t('title') }}</h1>
     <p class="intro">{{ t('intro') }}</p>
+    <div class="state-card">
+      <p>Feedback can only be left for an outing that has already happened and has been fully paid.</p>
+      <a routerLink="/my-feedbacks" class="btn btn-primary">Go to My feedback</a>
+    </div>
 
     <form class="feedback-form" (ngSubmit)="saveFeedback()">
       <label>

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { StoreDbService, OBJECTNAME, ServicesService, UtilsService } from 'godigital-lib';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
+import { BookingApiService, AlegriaBooking } from '../bookings/booking-api.service';
 
 interface CustomerFeedback {
   feedbackId?: string;
@@ -20,6 +21,7 @@ interface CustomerFeedback {
   createdTS?: number;
   modifiedTS?: number;
   status?: string;
+  bookingId?: string;
 }
 
 @Component({
@@ -31,6 +33,7 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
   currentLanguage: SiteLanguage = 'fr';
   loggedUser: any = null;
   feedbacks: CustomerFeedback[] = [];
+  eligibleBookings: AlegriaBooking[] = [];
   loading = true;
   saving = false;
   saved = false;
@@ -43,6 +46,7 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
   deletingFeedbackId: string | null = null;
 
   feedback = {
+    bookingId: '',
     date: '',
     time: '',
     outingType: '',
@@ -72,7 +76,8 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
     private languageService: LanguageService,
     private mainSvc: ServicesService,
     private storeDb: StoreDbService,
-    private utilSvc: UtilsService
+    private utilSvc: UtilsService,
+    private bookingApi: BookingApiService
   ) {}
 
   ngOnInit(): void {
@@ -100,10 +105,12 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
       this.userSub = userObservable.subscribe((user: any) => {
         this.loggedUser = user || null;
         this.cancelEdit();
+        this.loadEligibleBookings();
         this.loadFeedbacks();
       });
     } else {
       this.loggedUser = svc.bnUser || null;
+      this.loadEligibleBookings();
       this.loadFeedbacks();
     }
   }
@@ -112,6 +119,73 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
     this.languageSub?.unsubscribe();
     this.userSub?.unsubscribe();
     this.feedbacksSub?.unsubscribe();
+  }
+
+  loadEligibleBookings(): void {
+    const email = this.loggedUser?.email || '';
+    if (!email) {
+      this.eligibleBookings = [];
+      return;
+    }
+
+    this.bookingApi.getBookings(email).subscribe({
+      next: (bookings) => {
+        this.eligibleBookings = (bookings || []).filter((booking) => this.isFeedbackEligibleBooking(booking));
+        if (this.eligibleBookings.length && !this.feedback.bookingId) {
+          this.selectFeedbackBooking(this.eligibleBookings[0].bookingId);
+        }
+      },
+      error: () => {
+        this.eligibleBookings = [];
+      }
+    });
+  }
+
+  isFeedbackEligibleBooking(booking: AlegriaBooking): boolean {
+    return this.hasOutingOccurred(booking) && this.isBookingFullyPaid(booking);
+  }
+
+  hasOutingOccurred(booking: AlegriaBooking): boolean {
+    const time = this.getBookingTime(booking);
+    if (!time) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return time < today.getTime();
+  }
+
+  isBookingFullyPaid(booking: AlegriaBooking): boolean {
+    const anyBooking: any = booking;
+    return anyBooking.bookingStatus === 'payment_done' ||
+      anyBooking.paymentStatus === 'full_payment_done' ||
+      anyBooking.balancePaid === true ||
+      anyBooking.balanceStatus === 'paid' ||
+      anyBooking.balancePaymentStatus === 'paid' ||
+      anyBooking?.payments?.balance?.paid === true ||
+      anyBooking?.payments?.balance?.status === 'paid';
+  }
+
+  getBookingTime(booking: AlegriaBooking): number {
+    const rawDate = String((booking as any).outingDate || (booking as any).date || (booking as any).bookingDate || '').trim();
+    if (!rawDate) return 0;
+
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+
+    const departureTime = String((booking as any).departureTime || '').trim();
+    const timestamp = Date.parse(departureTime ? `${normalized}T${departureTime}` : normalized);
+    return Number.isNaN(timestamp) ? 0 : timestamp;
+  }
+
+  feedbackBookingLabel(booking: AlegriaBooking): string {
+    const date = booking.outingDate || '-';
+    const time = booking.departureTime ? ` · ${booking.departureTime}` : '';
+    return `${date}${time} · ${booking.outingType || 'Outing'} · ${booking.customerName || booking.email || ''}`;
   }
 
   loadFeedbacks(): void {
@@ -137,6 +211,16 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
 
     this.feedbacks = this.filterMine((svc.bnFeedbacks || []) as CustomerFeedback[]);
     this.loading = false;
+  }
+
+  selectFeedbackBooking(bookingId: string): void {
+    const booking = this.eligibleBookings.find((item) => item.bookingId === bookingId);
+    if (!booking) return;
+
+    this.feedback.bookingId = booking.bookingId;
+    this.feedback.date = booking.outingDate || '';
+    this.feedback.time = booking.departureTime || '';
+    this.feedback.outingType = booking.outingType || this.outingOptions[this.currentLanguage][0];
   }
 
   filterMine(items: CustomerFeedback[]): CustomerFeedback[] {
@@ -170,8 +254,14 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (!this.feedback.date || !this.feedback.time || !this.feedback.outingType || !this.feedback.comments || !this.feedback.rating) {
+    if (!this.feedback.bookingId || !this.feedback.date || !this.feedback.time || !this.feedback.outingType || !this.feedback.comments || !this.feedback.rating) {
       this.saveError = this.t('required');
+      return;
+    }
+
+    const selectedBooking = this.eligibleBookings.find((booking) => booking.bookingId === this.feedback.bookingId);
+    if (!selectedBooking || !this.isFeedbackEligibleBooking(selectedBooking)) {
+      this.saveError = this.t('notEligible');
       return;
     }
 
@@ -193,7 +283,7 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
         rating: Number(this.feedback.rating),
         rate: Number(this.feedback.rating),
         description: this.feedback.comments,
-        bookingId: '',
+        bookingId: this.feedback.bookingId,
         createdTS: Date.now(),
         modifiedTS: Date.now(),
         status: 'submitted',
@@ -203,12 +293,16 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
 
       this.saved = true;
       this.feedback = {
+        bookingId: '',
         date: '',
         time: '',
         outingType: this.outingOptions[this.currentLanguage][0],
         comments: '',
         rating: 5,
       };
+      if (this.eligibleBookings.length) {
+        this.selectFeedbackBooking(this.eligibleBookings[0].bookingId);
+      }
       this.feedbacks = [payload, ...this.feedbacks];
     } catch (e: any) {
       this.saveError = e?.message || this.t('saveError');
@@ -375,7 +469,9 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
         title: 'Mes avis',
         intro: 'Laissez un avis après votre sortie, puis retrouvez ici tous les avis associés à votre compte.',
         formTitle: 'Laisser un avis',
-        formIntro: 'Partagez votre expérience à bord d’Alegria. Votre avis nous aide à améliorer l’expérience.',
+        formIntro: 'Partagez votre expérience à bord d’Alegria. Seules les sorties passées et entièrement payées peuvent recevoir un avis.',
+        noEligibleBookings: 'Aucune sortie passée et entièrement payée n’est disponible pour laisser un avis.',
+        notEligible: 'Vous pouvez laisser un avis uniquement pour une sortie passée et entièrement payée.',
         loading: 'Chargement de vos avis...',
         empty: 'Vous n’avez pas encore laissé d’avis.',
         date: 'Date',
@@ -410,7 +506,9 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
         title: 'My feedback',
         intro: 'Leave feedback after your outing and view all feedback linked to your account here.',
         formTitle: 'Leave feedback',
-        formIntro: 'Share your experience aboard Alegria. Your feedback helps us improve the experience.',
+        formIntro: 'Share your experience aboard Alegria. Feedback is only available for outings that have already happened and have been fully paid.',
+        noEligibleBookings: 'No past and fully paid outing is available for feedback yet.',
+        notEligible: 'You can only leave feedback for an outing that has already happened and has been fully paid.',
         loading: 'Loading your feedback...',
         empty: 'You have not left any feedback yet.',
         date: 'Date',
@@ -445,7 +543,9 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
         title: 'Mis comentarios',
         intro: 'Deje un comentario después de su salida y consulte aquí los comentarios asociados a su cuenta.',
         formTitle: 'Dejar un comentario',
-        formIntro: 'Comparta su experiencia a bordo de Alegria. Su opinión nos ayuda a mejorar.',
+        formIntro: 'Comparta su experiencia a bordo de Alegria. Solo se puede dejar comentario para salidas ya realizadas y totalmente pagadas.',
+        noEligibleBookings: 'Aún no hay ninguna salida pasada y totalmente pagada disponible para dejar un comentario.',
+        notEligible: 'Solo puede dejar un comentario para una salida ya realizada y totalmente pagada.',
         loading: 'Cargando sus comentarios...',
         empty: 'Aún no ha dejado ningún comentario.',
         date: 'Fecha',

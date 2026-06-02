@@ -29,6 +29,7 @@ import { GuestFaqComponent } from './guest-faq/guest-faq.component';
 import { GuestJourneyComponent } from './guest-journey/guest-journey.component';
 import { BookingsComponent } from './bookings/bookings.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
+import { MyProposalsComponent } from './my-proposals/my-proposals.component';
 import { BookingDetailComponent } from './booking-detail/booking-detail.component';
 import { AdminWarrantyChargeComponent } from './admin-warranty-charge/admin-warranty-charge.component';
 import { AdminProposalsComponent } from './admin-proposals/admin-proposals.component';
@@ -61,6 +62,7 @@ import { AdminExternalBookingsComponent } from './admin-external-bookings/admin-
     GuestJourneyComponent,
     BookingsComponent,
     MyBookingsComponent,
+    MyProposalsComponent,
     BookingDetailComponent,
     AdminWarrantyChargeComponent,
     AdminProposalsComponent,

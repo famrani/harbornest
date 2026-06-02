@@ -17,6 +17,20 @@ export interface AlegriaBooking {
   totalPrice: number;
   depositAmount?: number;
   warrantyAmount?: number;
+  termsAccepted?: boolean;
+  tcAccepted?: boolean;
+  tAndCAccepted?: boolean;
+  termsAndConditionsAccepted?: boolean;
+  acceptedTerms?: boolean;
+  termsAcceptedAt?: number;
+  warrantyPaymentChoice?: string;
+  warrantyMethod?: string;
+  warrantySelected?: boolean;
+  warrantySelectedAt?: number;
+  warrantyRegistered?: boolean;
+  warrantyCashSelected?: boolean;
+  damageReported?: boolean;
+  damageCharged?: boolean;
   balanceAmount?: number;
   balancePaid?: boolean;
   balancePaymentMethod?: string;
@@ -41,10 +55,7 @@ export interface AlegriaBooking {
 export class BookingApiService {
   private readonly collectionName = 'bnBookings';
 
-  private readonly restDatabaseUrls = [
-    'https://adn-dev-4d05d-default-rtdb.europe-west1.firebasedatabase.app',
-    'https://adn-dev-4d05d-default-rtdb.firebaseio.com',
-    'https://adn-dev-4d05d.firebaseio.com',
+  private readonly restDatabaseUrls = [    'https://adn-dev-4d05d.firebaseio.com',
   ];
 
   private fallbackBookings: AlegriaBooking[] = [];
@@ -71,9 +82,13 @@ export class BookingApiService {
 
   createDepositCheckout(payload: {
     bookingId: string;
+    proposalId?: string;
     ownerId: string;
+    amount?: number;
     depositAmount: number;
+    totalAmount?: number;
     currency?: string;
+    paymentType?: string;
     customerEmail?: string;
     customerName?: string;
     customerPhone?: string;
@@ -82,11 +97,20 @@ export class BookingApiService {
     successUrl: string;
     cancelUrl: string;
   }): Observable<any> {
+    const enrichedPayload = {
+      ...payload,
+      proposalId: payload.proposalId || payload.bookingId,
+      amount: Number(payload.amount || payload.depositAmount || 0),
+      depositAmount: Number(payload.depositAmount || payload.amount || 0),
+      currency: payload.currency || 'eur',
+      paymentType: payload.paymentType || 'deposit',
+    };
+
     return this.postFirstAvailable([
       `${this.baseUrl}/pay/outing-deposit-checkout`,
       `${this.baseUrl}/api/payments/create-deposit-checkout-session`,
       `${this.baseUrl}/stripe/deposit-checkout`,
-    ], payload);
+    ], enrichedPayload);
   }
 
   createWarrantySetup(payload: {
@@ -198,7 +222,17 @@ export class BookingApiService {
   }
 
   private get baseUrl(): string {
-    return (this.utilsSvc as any)?.backendURL || '';
+    return this.resolvedBackendUrl;
+  }
+
+  private get resolvedBackendUrl(): string {
+    const hostname = window.location.hostname;
+
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
+      return 'https://localhost:2000';
+    }
+
+    return window.location.origin;
   }
 
   private getBookingsFromBackend(email?: string): Observable<AlegriaBooking[]> {
@@ -477,6 +511,16 @@ export class BookingApiService {
       paymentStatus: payments,
       bookingStatus: item.bookingStatus || item.status || 'requested',
       comments: item.comments || item.notes?.customerNote || item.comment || '',
+      termsAccepted: item.termsAccepted === true || item.termsStatus === 'accepted',
+      termsAcceptedAt: item.termsAcceptedAt || null,
+      warrantyPaymentChoice: item.warrantyPaymentChoice || item.warrantyMethod || item.warrantyChoice || '',
+      warrantyMethod: item.warrantyMethod || item.warrantyPaymentChoice || '',
+      warrantySelected: item.warrantySelected === true || !!item.warrantyPaymentChoice || !!item.warrantyMethod,
+      warrantySelectedAt: item.warrantySelectedAt || null,
+      warrantyRegistered: item.warrantyRegistered === true || item.warrantyStatus === 'card_registered' || item.warrantyStatus === 'warranty_card_saved',
+      warrantyCashSelected: item.warrantyPaymentChoice === 'cash_on_board' || item.warrantyMethod === 'cash' || item.warrantyStatus === 'cash_selected',
+      damageReported: item.damageReported === true || item.warrantyStatus === 'charged' || item.warrantyCashDamageAmount > 0,
+      damageCharged: item.damageCharged === true || item.warrantyStatus === 'charged' || item.warrantyCashDamageAmount > 0,
       raw: item,
     };
   }}

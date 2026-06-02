@@ -290,3 +290,14 @@ textarea:focus {
     width: 100%;
   }
 }
+
+.feedback-form input[readonly],
+.feedback-form textarea[readonly] {
+  background: #f8f5ef;
+  color: #516070;
+  cursor: not-allowed;
+}
+
+.state-card.full {
+  grid-column: 1 / -1;
+}

@@ -280,7 +280,17 @@ export class ProposalApiService {
   }
 
   private get baseUrl(): string {
-    return (this.utilsSvc as any)?.backendURL || '';
+    return this.resolvedBackendUrl;
+  }
+
+  private get resolvedBackendUrl(): string {
+    const hostname = window.location.hostname;
+
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
+      return 'https://localhost:2000';
+    }
+
+    return window.location.origin;
   }
 
 

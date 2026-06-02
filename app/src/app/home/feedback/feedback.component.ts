@@ -14,6 +14,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   private userSub?: Subscription;
 
   loading = false;
+  feedbackEligibilityNotice = true;
   saved = false;
   error = '';
   loggedUser: any = null;
@@ -76,7 +77,8 @@ export class FeedbackComponent implements OnInit, OnDestroy {
 
   async saveFeedback(): Promise<void> {
     this.saved = false;
-    this.error = '';
+    this.error = 'Feedback must be left from My feedback, and only for a past and fully paid outing.';
+    return;
 
     if (!this.feedback.date || !this.feedback.time || !this.feedback.outingType || !this.feedback.comments || !this.feedback.rating) {
       this.error = this.t('required');

@@ -12,10 +12,72 @@
       No booking is linked to your account yet.
     </div>
 
-    <div class="booking-grid" *ngIf="!loading && bookings.length">
-      <article class="booking-card" *ngFor="let booking of bookings">
+    <div class="booking-tabs" *ngIf="!loading && bookings.length">
+      <button type="button" [class.active]="activeDateTab === 'upcoming'" (click)="setDateTab('upcoming')">
+        Upcoming <span>{{ upcomingBookingsCount }}</span>
+      </button>
+      <button type="button" [class.active]="activeDateTab === 'past'" (click)="setDateTab('past')">
+        Past <span>{{ pastBookingsCount }}</span>
+      </button>
+    </div>
+
+    <div class="booking-toolbar-grid" *ngIf="!loading && bookings.length">
+      <label>
+        <span>Search</span>
+        <input type="search" [(ngModel)]="searchTerm" placeholder="Search bookings..." />
+      </label>
+
+      <label>
+        <span>Status</span>
+        <select [(ngModel)]="statusFilter">
+          <option value="all">All statuses</option>
+          <option value="not_confirmed">Not confirmed</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="payment_done">Payment done</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Warranty</span>
+        <select [(ngModel)]="warrantyFilter">
+          <option value="all">All warranties</option>
+          <option value="not_selected">Not selected</option>
+          <option value="cash">Cash selected</option>
+          <option value="card_selected">Card selected</option>
+          <option value="card_registered">Card registered</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Order by</span>
+        <select [(ngModel)]="sortField">
+          <option value="date">Date</option>
+          <option value="customer">Customer</option>
+          <option value="status">Status</option>
+          <option value="total">Total price</option>
+          <option value="balance">Remaining 90%</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Direction</span>
+        <select [(ngModel)]="sortDirection">
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
+      </label>
+
+      <button class="btn btn-secondary" type="button" (click)="resetFilters()">Reset</button>
+    </div>
+
+    <p class="muted" *ngIf="!loading && bookings.length">
+      Showing <strong>{{ filteredBookings.length }}</strong> {{ activeDateTab }} bookings out of <strong>{{ bookings.length }}</strong>.
+    </p>
+
+    <div class="booking-grid" *ngIf="!loading && filteredBookings.length">
+      <article class="booking-card" *ngFor="let booking of filteredBookings">
         <div>
-          <span class="status-pill">{{ booking.bookingStatus || 'requested' }}</span>
+          <span class="status-pill">{{ getStatusLabel(booking) }}</span>
           <h2>{{ booking.outingType || 'Outing' }}</h2>
           <p>{{ booking.outingDate }} <span *ngIf="booking.departureTime">• {{ booking.departureTime }}</span></p>
           <p>{{ booking.customerName }} • {{ booking.email }}</p>
@@ -24,16 +86,25 @@
         <div class="booking-meta">
           <span>Total: €{{ booking.totalPrice || 0 }}</span>
           <span>Deposit 10%: €{{ getDepositAmount(booking) }} · {{ getDepositLabel(booking) }}</span>
-          <span>Remaining 90% onboard: €{{ getBalanceAmount(booking) }}</span>
-          <span>Warranty: {{ booking.warrantyStatus || 'not_registered' }}</span>
+          <span>T&C: {{ isTermsAccepted(booking) ? 'accepted' : 'not accepted' }}</span>
+          <span>Warranty mode: {{ getWarrantyModeLabel(booking) }}</span>
+          <span>Stripe card: {{ getWarrantyCardLabel(booking) }}</span>
+          <span>Remaining 90%: €{{ getBalanceAmount(booking) }} · {{ isBalancePaid(booking) ? 'paid' : 'pending' }}</span>
         </div>
 
         <div class="booking-actions">
           <button type="button" class="btn btn-secondary" (click)="openBooking(booking)">Details</button>
-          <button type="button" class="btn btn-primary" *ngIf="!isDepositPaid(booking)" (click)="payBooking(booking)">Pay 10% deposit</button>
-          <span class="paid-badge" *ngIf="isDepositPaid(booking)">Deposit paid</span>
+          <button type="button" class="btn btn-primary" *ngIf="shouldShowPaymentButton(booking)" (click)="payBooking(booking)">
+            {{ getPaymentButtonLabel(booking) }}
+          </button>
+          <span class="paid-badge" *ngIf="isDepositPaid(booking) && !canPayBalance(booking)">Deposit paid</span>
+          <span class="paid-badge" *ngIf="isBalancePaid(booking)">Full payment done</span>
         </div>
       </article>
+    </div>
+
+    <div class="empty-card" *ngIf="!loading && bookings.length && filteredBookings.length === 0">
+      No booking matches the selected tab, filters and search.
     </div>
   </div>
 </section>

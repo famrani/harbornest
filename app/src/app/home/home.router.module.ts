@@ -25,6 +25,7 @@ import { GuestFaqComponent } from './guest-faq/guest-faq.component';
 import { GuestJourneyComponent } from './guest-journey/guest-journey.component';
 import { BookingsComponent } from './bookings/bookings.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
+import { MyProposalsComponent } from './my-proposals/my-proposals.component';
 import { BookingDetailComponent } from './booking-detail/booking-detail.component';
 import { AdminWarrantyChargeComponent } from './admin-warranty-charge/admin-warranty-charge.component';
 import { AdminProposalsComponent } from './admin-proposals/admin-proposals.component';
@@ -49,6 +50,7 @@ const routes: Routes = [
   { path: 'faq', component: GuestFaqComponent },
   { path: 'how-it-works', component: GuestJourneyComponent },
   { path: 'my-bookings', component: MyBookingsComponent },
+  { path: 'my-proposals', component: MyProposalsComponent },
   { path: 'my-payments', component: AccountSummaryComponent, data: { section: 'payments' } },
   { path: 'bookings/:bookingId', component: BookingDetailComponent },
   { path: 'payment/:bookingId', component: DepositComponent },

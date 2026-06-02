@@ -73,8 +73,6 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
   saving = false;
   closingId = '';
   private readonly restDatabaseUrls = [
-    'https://adn-dev-4d05d-default-rtdb.europe-west1.firebasedatabase.app',
-    'https://adn-dev-4d05d-default-rtdb.firebaseio.com',
     'https://adn-dev-4d05d.firebaseio.com',
   ];
   saved = false;

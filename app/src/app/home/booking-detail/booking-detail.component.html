@@ -16,85 +16,235 @@
         <div><strong>Deposit 10%</strong><span>€{{ getDepositAmount() }} · {{ isDepositPaid() ? 'paid' : 'pending' }}</span></div>
         <div><strong>Remaining 90%</strong><span>€{{ getBalanceAmount() }} · {{ isBalancePaid() ? 'paid' : 'to collect onboard' }}</span></div>
         <div><strong>Warranty</strong><span>{{ booking.warrantyStatus || 'not_registered' }}</span></div>
-        <div><strong>Status</strong><span>{{ booking.bookingStatus || 'requested' }}</span></div>
+        <div><strong>Status</strong><span>{{ getStatusLabel() }}</span></div>
         <div><strong>Owner</strong><span>{{ booking.ownerId || '-' }}</span></div>
       </div>
 
       <p class="comments" *ngIf="booking.comments">{{ booking.comments }}</p>
 
-      <section class="payment-admin-card" *ngIf="isAdmin">
-        <h2>Payments</h2>
 
-        <div class="payment-summary">
-          <div><strong>Deposit 10%</strong><span>{{ isDepositPaid() ? 'Paid' : 'Pending' }}</span></div>
-          <div><strong>Warranty</strong><span>{{ isWarrantySecured() ? (isWarrantyCardRegistered() ? 'Card registered' : 'Cash received') : 'Not secured' }}</span></div>
-          <div><strong>Remaining 90%</strong><span>€{{ getBalanceAmount() }}</span></div>
-          <div><strong>Status</strong><span>{{ isBalancePaid() ? 'Paid onboard' : (canRecordBalancePayment() ? 'To collect before departure' : 'Locked') }}</span></div>
-        </div>
+      <section class="customer-edit-card" *ngIf="!isAdmin && editMode">
+        <h2>Update booking information</h2>
 
-        <div class="warranty-actions" *ngIf="!isWarrantySecured()">
-          <p>Use this when the customer gives the €500 cash warranty before departure.</p>
-          <button class="btn btn-secondary" type="button" (click)="markCashWarrantyReceived()">
-            Mark €500 cash warranty received
+        <label>
+          Customer name
+          <input type="text" [(ngModel)]="booking.customerName" />
+        </label>
+
+        <label>
+          Email
+          <input type="email" [(ngModel)]="booking.email" />
+        </label>
+
+        <label>
+          Phone
+          <input type="tel" [(ngModel)]="booking.phone" />
+        </label>
+
+        <label>
+          Number of guests
+          <input type="number" min="1" [(ngModel)]="booking.passengers" />
+        </label>
+
+        <label>
+          Pickup / meeting point
+          <input type="text" [(ngModel)]="booking.pickupLocation" />
+        </label>
+
+        <label>
+          Comments
+          <textarea rows="3" [(ngModel)]="booking.comments"></textarea>
+        </label>
+
+        <div class="customer-edit-actions">
+          <button class="btn btn-primary" type="button" [disabled]="savingCustomerUpdate" (click)="saveCustomerUpdate()">
+            {{ savingCustomerUpdate ? 'Saving...' : 'Save update' }}
+          </button>
+          <button class="btn btn-secondary" type="button" [disabled]="savingCustomerUpdate" (click)="cancelCustomerUpdate()">
+            Cancel
           </button>
         </div>
 
-        <div class="cash-damage-card" *ngIf="isCashWarranty()">
-          <h3>Cash warranty envelope</h3>
-          <p>
-            Initial envelope: <strong>€{{ getCashWarrantyAmount() }}</strong><br />
-            Already taken for damages: <strong>€{{ getCashWarrantyDamagesTaken() }}</strong><br />
-            Remaining cash to return: <strong>€{{ getCashWarrantyRemaining() }}</strong>
-          </p>
-
-          <label>
-            Amount taken from envelope (€)
-            <input type="number" min="1" step="0.01" [(ngModel)]="cashDamageAmount" />
-          </label>
-
-          <label>
-            Damage / cost reason
-            <textarea rows="3" [(ngModel)]="cashDamageReason" placeholder="Example: blocked marine toilet, cigarette burn, broken equipment..."></textarea>
-          </label>
-
-          <button class="btn btn-primary" type="button" [disabled]="savingCashDamage" (click)="recordCashWarrantyDamage()">
-            {{ savingCashDamage ? 'Saving...' : 'Record cash taken for damage' }}
-          </button>
-
-          <p class="success" *ngIf="cashDamageMessage">{{ cashDamageMessage }}</p>
-          <p class="error-message" *ngIf="cashDamageError">{{ cashDamageError }}</p>
-        </div>
-
-        <p class="blocked-note" *ngIf="!canRecordBalancePayment() && !isBalancePaid()">
-          {{ getBalanceBlockedReason() }}
-        </p>
-
-        <div class="collect-balance" *ngIf="canRecordBalancePayment()">
-          <label>
-            Payment method
-            <select [(ngModel)]="balancePaymentMethod">
-              <option value="sumup">SumUp / card</option>
-              <option value="cash">Cash</option>
-              <option value="mixed">Mixed</option>
-            </select>
-          </label>
-
-          <label>
-            Notes
-            <textarea rows="3" [(ngModel)]="balancePaymentNotes" placeholder="Optional note, SumUp receipt, cash, mixed payment..."></textarea>
-          </label>
-
-          <button class="btn btn-primary" type="button" [disabled]="savingBalancePayment" (click)="recordBalancePayment()">
-            {{ savingBalancePayment ? 'Saving...' : 'Record remaining 90% payment' }}
-          </button>
-        </div>
-
-        <p class="paid-badge" *ngIf="isBalancePaid()">Remaining 90% paid</p>
-        <p class="success" *ngIf="balancePaymentMessage">{{ balancePaymentMessage }}</p>
-        <p class="error-message" *ngIf="balancePaymentError">{{ balancePaymentError }}</p>
+        <p class="success" *ngIf="customerUpdateMessage">{{ customerUpdateMessage }}</p>
+        <p class="error-message" *ngIf="customerUpdateError">{{ customerUpdateError }}</p>
       </section>
 
-      <button class="btn btn-secondary" type="button" (click)="goToPayment()">{{ paymentButtonLabel }}</button>
+      <section class="payment-admin-card">
+        <h2>{{ getWorkflowTitle() }}</h2>
+
+        <div class="payment-summary workflow-summary clarity-grid">
+          <div><strong>Booking status</strong><span>{{ getStatusLabel() }}</span></div>
+          <div><strong>Deposit 10%</strong><span>{{ getDepositStatusLabel() }}</span></div>
+          <div><strong>T&C</strong><span>{{ getTermsStatusLabel() }}</span></div>
+          <div><strong>Warranty mode</strong><span>{{ getWarrantyModeLabel() }}</span></div>
+          <div><strong>Stripe warranty card</strong><span>{{ getWarrantyCardLabel() }}</span></div>
+          <div><strong>Remaining 90%</strong><span>{{ getBalanceStatusLabel() }}</span></div>
+          <div><strong>Damage</strong><span>{{ getDamageStatusLabel() }}</span></div>
+        </div>
+
+        <div class="customer-action-bar" *ngIf="!isAdmin">
+          <button class="btn btn-secondary" type="button" *ngIf="canCustomerUpdateBooking() && !editMode" (click)="updateCustomerBooking()">
+            Update booking information
+          </button>
+
+          <button class="btn btn-primary" type="button" *ngIf="shouldShowCustomerPaymentButton()" (click)="customerPayment()">
+            {{ customerPaymentButtonLabel }}
+          </button>
+        </div>
+
+        <div class="customer-action-bar" *ngIf="canAdminOpenDamagePage()">
+          <button class="btn btn-secondary" type="button" (click)="openAdminDamagePage()">
+            Open warranty / damage page
+          </button>
+        </div>
+
+        <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'deposit_required'">
+          <h3>Read and accept Terms & Conditions</h3>
+          <div class="terms-scroll-box" (scroll)="onTermsScroll($event)">
+            <h4>Alegria Boat — Terms & Conditions Summary</h4>
+            <p><strong>Booking confirmation.</strong> The booking is confirmed only after acceptance of these Terms & Conditions, selection of the warranty method and payment of the 10% deposit.</p>
+            <p><strong>Deposit.</strong> A 10% deposit is required to confirm the outing. It is refundable if the customer cancels at least 10 calendar days before the outing, or if Alegria Boat cancels the outing.</p>
+            <p><strong>Remaining balance.</strong> The remaining 90% is payable on the day of the outing before departure, by cash or card/SumUp, together with any extras.</p>
+            <p><strong>Warranty.</strong> A warranty is required either by registering a debit/credit card through Stripe or by selecting a €500 cash warranty to be handled before departure.</p>
+            <p><strong>Punctuality.</strong> Guests must arrive on time and be ready for departure at the scheduled time. Delays may reduce outing duration without compensation.</p>
+            <p><strong>Swimming and water activities.</strong> Swimming and water activities are done at the participant’s own risk and only with the skipper’s approval.</p>
+            <p><strong>Marine toilets.</strong> Marine toilets are not like household toilets. No paper, wipes, sanitary products, food, cigarette butts or foreign objects may be placed in the toilet. Misuse may be charged.</p>
+            <p><strong>Common damage charged.</strong> Cigarette burns on cushions, blocked marine toilets, lost or damaged equipment, exceptional cleaning and damage caused by negligence may be deducted from the warranty or charged to the registered card.</p>
+            <p><strong>Safety.</strong> Guests agree to follow the skipper’s instructions at all times. The skipper may cancel or interrupt the outing for safety reasons.</p>
+            <p><strong>End of terms.</strong> By ticking the checkbox below, the customer confirms having read and accepted the full rules applicable to the outing.</p>
+          </div>
+
+          <p class="muted" *ngIf="!termsRead">Please scroll to the end of the Terms & Conditions to continue.</p>
+
+          <label class="terms-check">
+            <input type="checkbox" [(ngModel)]="termsAccepted" [disabled]="!termsRead" />
+            <span>I have read and accept the Terms & Conditions.</span>
+          </label>
+
+          <h3>Select warranty method</h3>
+          <label class="radio-card">
+            <input type="radio" name="warrantyChoice" value="stripe_card" [(ngModel)]="warrantyChoice" />
+            <span>Register debit/credit card via Stripe for the warranty.</span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="warrantyChoice" value="cash_on_board" [(ngModel)]="warrantyChoice" />
+            <span>Select €500 cash warranty before departure.</span>
+          </label>
+
+          <p class="blocked-note" *ngIf="getDepositBlockedReason()">{{ getDepositBlockedReason() }}</p>
+
+          <button class="btn btn-primary" type="button" *ngIf="!isDepositPaid()" [disabled]="!canPayDeposit()" (click)="payDeposit()">
+            Pay 10% deposit and confirm booking
+          </button>
+
+          <p class="paid-badge" *ngIf="isDepositPaid()">10% deposit already paid</p>
+        </div>
+
+        <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'warranty_choice_required'">
+          <h3>Choose warranty method</h3>
+          <p>The booking is confirmed. Please select how the warranty will be handled.</p>
+          <label class="radio-card">
+            <input type="radio" name="warrantyChoiceConfirmed" value="stripe_card" [(ngModel)]="warrantyChoice" />
+            <span>Register debit/credit card via Stripe</span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="warrantyChoiceConfirmed" value="cash_on_board" [(ngModel)]="warrantyChoice" />
+            <span>€500 cash warranty before departure</span>
+          </label>
+          <button class="btn btn-secondary" type="button" [disabled]="warrantySaving || !warrantyChoice" (click)="warrantyChoice === 'cash_on_board' ? selectWarrantyCash() : selectWarrantyCard()">
+            Save warranty choice
+          </button>
+        </div>
+
+        <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'warranty_card_required'">
+          <h3>Register warranty card</h3>
+          <p>The booking is confirmed. The customer selected card warranty and must register a card with Stripe.</p>
+          <button class="btn btn-primary" type="button" (click)="registerWarrantyCard()">Register warranty card</button>
+        </div>
+
+        <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'balance_required'">
+          <h3>Collect remaining 90%</h3>
+          <p>Amount due before departure: <strong>€{{ getBalanceAmount() }}</strong></p>
+
+          <div class="collect-balance" *ngIf="isAdmin">
+            <label>
+              Payment method
+              <select [(ngModel)]="balancePaymentMethod">
+                <option value="sumup">SumUp / card</option>
+                <option value="cash">Cash</option>
+                <option value="mixed">Mixed</option>
+              </select>
+            </label>
+
+            <label>
+              Notes
+              <textarea rows="3" [(ngModel)]="balancePaymentNotes" placeholder="Optional note, SumUp receipt, cash, mixed payment..."></textarea>
+            </label>
+
+            <button class="btn btn-primary" type="button" [disabled]="savingBalancePayment" (click)="recordBalancePayment()">
+              {{ savingBalancePayment ? 'Saving...' : 'Record remaining 90% payment' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'payment_done' && isAdmin">
+          <h3>Damage management</h3>
+          <p>The booking is confirmed, warranty is selected/registered, and the full outing payment is recorded.</p>
+
+          <div class="cash-damage-card" *ngIf="isCashWarranty()">
+            <h3>Cash warranty envelope</h3>
+            <p>
+              Initial envelope: <strong>€{{ getCashWarrantyAmount() }}</strong><br />
+              Already taken for damages: <strong>€{{ getCashWarrantyDamagesTaken() }}</strong><br />
+              Remaining cash to return: <strong>€{{ getCashWarrantyRemaining() }}</strong>
+            </p>
+
+            <label>
+              Amount taken from envelope (€)
+              <input type="number" min="1" step="0.01" [(ngModel)]="cashDamageAmount" />
+            </label>
+
+            <label>
+              Damage / cost reason
+              <textarea rows="3" [(ngModel)]="cashDamageReason" placeholder="Example: blocked marine toilet, cigarette burn, broken equipment..."></textarea>
+            </label>
+
+            <button class="btn btn-primary" type="button" [disabled]="savingCashDamage" (click)="recordCashWarrantyDamage()">
+              {{ savingCashDamage ? 'Saving...' : 'Record cash taken for damage' }}
+            </button>
+
+            <p class="success" *ngIf="cashDamageMessage">{{ cashDamageMessage }}</p>
+            <p class="error-message" *ngIf="cashDamageError">{{ cashDamageError }}</p>
+          </div>
+
+          <div class="cash-damage-card" *ngIf="isWarrantyCardRegistered()">
+            <h3>Charge card warranty</h3>
+            <p>Maximum warranty: <strong>€{{ booking.warrantyAmount || 500 }}</strong></p>
+
+            <label>
+              Damage amount (€)
+              <input type="number" min="1" step="0.01" [(ngModel)]="cardDamageAmount" />
+            </label>
+
+            <label>
+              Damage reason
+              <textarea rows="3" [(ngModel)]="cardDamageReason" placeholder="Example: blocked marine toilet, cigarette burn, broken equipment..."></textarea>
+            </label>
+
+            <button class="btn btn-primary" type="button" [disabled]="savingCardDamage" (click)="recordCardWarrantyDamage()">
+              {{ savingCardDamage ? 'Charging...' : 'Charge damage to warranty card' }}
+            </button>
+
+            <p class="success" *ngIf="cardDamageMessage">{{ cardDamageMessage }}</p>
+            <p class="error-message" *ngIf="cardDamageError">{{ cardDamageError }}</p>
+          </div>
+        </div>
+
+        <p class="success" *ngIf="balancePaymentMessage">{{ balancePaymentMessage }}</p>
+        <p class="error-message" *ngIf="balancePaymentError">{{ balancePaymentError }}</p>
+        <p class="success" *ngIf="warrantyMessage">{{ warrantyMessage }}</p>
+        <p class="error-message" *ngIf="warrantyError">{{ warrantyError }}</p>
+      </section>
     </article>
   </div>
 </section>

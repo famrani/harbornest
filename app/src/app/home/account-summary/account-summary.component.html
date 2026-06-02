@@ -4,9 +4,88 @@
     <h1>{{ title }}</h1>
     <p>{{ intro }}</p>
 
-    <div class="account-empty">
-      <p>{{ emptyText }}</p>
-      <a routerLink="/contact" class="btn btn-primary">{{ content.nav.contact }}</a>
-    </div>
+    <ng-container *ngIf="section === 'payments'; else defaultAccountSection">
+      <div class="payment-toolbar">
+        <label>
+          <span>Type</span>
+          <select [(ngModel)]="paymentTypeFilter">
+            <option value="all">All payment types</option>
+            <option value="deposit">10% deposit</option>
+            <option value="balance">Remaining 90%</option>
+            <option value="warranty_card">Warranty card</option>
+            <option value="warranty_cash">Cash warranty</option>
+            <option value="warranty_charge">Card damage charge</option>
+            <option value="cash_damage">Cash damage</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Status</span>
+          <select [(ngModel)]="paymentStatusFilter">
+            <option value="all">All statuses</option>
+            <option value="paid">Paid</option>
+            <option value="registered">Registered</option>
+            <option value="selected">Selected</option>
+            <option value="received">Received</option>
+            <option value="charged">Charged</option>
+            <option value="recorded">Recorded</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Order</span>
+          <select [(ngModel)]="paymentSortDirection">
+            <option value="desc">Newest first</option>
+            <option value="asc">Oldest first</option>
+          </select>
+        </label>
+
+        <button class="btn btn-secondary" type="button" (click)="resetPaymentFilters()">Reset</button>
+      </div>
+
+      <p *ngIf="loading" class="muted">Loading payments...</p>
+
+      <div class="account-empty" *ngIf="!loading && payments.length === 0">
+        <p>No payment is linked to your account yet.</p>
+        <a routerLink="/my-bookings" class="btn btn-primary">Go to my bookings</a>
+      </div>
+
+      <div class="payment-summary" *ngIf="!loading && payments.length > 0">
+        Showing <strong>{{ filteredPayments.length }}</strong> of <strong>{{ payments.length }}</strong> payment records.
+      </div>
+
+      <div class="payments-list" *ngIf="!loading && filteredPayments.length > 0">
+        <button class="payment-row" type="button" *ngFor="let payment of filteredPayments" (click)="openPaymentBooking(payment)">
+          <span class="payment-type" [ngClass]="getPaymentTypeClass(payment)">
+            {{ payment.label }}
+          </span>
+
+          <span class="payment-main">
+            <strong>{{ payment.description }}</strong>
+            <small>Booking: {{ payment.bookingId }}</small>
+            <small>{{ formatPaymentDate(payment.date) }} · {{ payment.method }}</small>
+          </span>
+
+          <span class="payment-amount">
+            <strong>{{ formatPaymentAmount(payment.amount) }}</strong>
+            <small>{{ payment.status }}</small>
+          </span>
+
+          <span class="payment-open">Open booking ›</span>
+        </button>
+      </div>
+
+      <div class="account-empty" *ngIf="!loading && payments.length > 0 && filteredPayments.length === 0">
+        <p>No payment matches the selected filters.</p>
+        <button class="btn btn-secondary" type="button" (click)="resetPaymentFilters()">Reset filters</button>
+      </div>
+    </ng-container>
+
+    <ng-template #defaultAccountSection>
+      <div class="account-empty">
+        <p>{{ emptyText }}</p>
+        <a routerLink="/contact" class="btn btn-primary">{{ content.nav.contact }}</a>
+      </div>
+    </ng-template>
   </div>
 </section>

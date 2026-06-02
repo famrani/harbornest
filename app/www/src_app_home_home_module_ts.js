@@ -328,7 +328,7 @@ let OutingsDataService = class OutingsDataService {
   utilSvc;
   http;
   collectionName = 'bnOutings';
-  restDatabaseUrls = ['https://adn-dev-4d05d-default-rtdb.europe-west1.firebasedatabase.app', 'https://adn-dev-4d05d-default-rtdb.firebaseio.com', 'https://adn-dev-4d05d.firebaseio.com'];
+  restDatabaseUrls = ['https://adn-dev-4d05d.firebaseio.com'];
   constructor(storeDb, utilSvc, http) {
     this.storeDb = storeDb;
     this.utilSvc = utilSvc;
@@ -1029,6 +1029,171 @@ input, textarea, select {
 }`, "",{"version":3,"sources":["webpack://./src/app/home/admin-proposals/admin-proposals.component.scss"],"names":[],"mappings":"AACA;EAA0E,eAAA;EAAe,mBAAA;EAAmB,gBAAA;AAG5G;;AAFA;EAAiD,iBAAA;EAAiB,cAAA;AAOlE;;AANA;EAAc,mBAAA;EAAmB,gBAAA;AAWjC;;AAXiD;EAAS,yBAAA;EAAyB,sBAAA;EAAqB,kBAAA;EAAiB,cAAA;EAAc,gBAAA;AAmBvI;;AAlBA;EAAS,cAAA;AAsBT;;AAtBuB;EAAoC,gBAAA;EAAgB,mBAAA;EAAmB,aAAA;EAAa,6CAAA;EAAyC,uCAAA;EAAmC,mBAAA;AA+BvL;;AA9BA;EAAY,aAAA;EAAa,8BAAA;EAA8B,SAAA;EAAS,mBAAA;AAqChE;;AArCmF;EAAW,aAAA;EAAa,2DAAA;EAAyD,SAAA;AA2CpK;;AA1CA;EAAM,aAAA;EAAa,QAAA;EAAQ,cAAA;EAAc,gBAAA;AAiDzC;;AAjDyD;EAAsB,uCAAA;EAAmC,mBAAA;EAAmB,kBAAA;EAAkB,aAAA;EAAa,gBAAA;AAyDpK;;AAzDoL;EAAM,iBAAA;AA6D1L;;AA5DA;EAA+B,aAAA;EAAa,eAAA;EAAe,SAAA;EAAS,cAAA;EAAc,gBAAA;AAoElF;;AApEkG;EAAkB,mBAAA;EAAmB,kBAAA;EAAkB,oBAAA;EAAoB,cAAA;AA2E7K;;AA1EA;EAAK,SAAA;EAAS,oBAAA;EAAoB,kBAAA;EAAkB,gBAAA;EAAgB,eAAA;AAkFpE;;AAlFmF;EAAa,mBAAA;EAAmB,WAAA;AAuFnH;;AAvF8H;EAAe,mBAAA;EAAmB,cAAA;AA4FhK;;AA3FA;EAAa,mBAAA;EAAmB,aAAA;EAAa,mBAAA;EAAmB,qBAAA;EAAqB,cAAA;AAmGrF;;AAnGmG;EAAS,cAAA;EAAc,gBAAA;AAwG1H;;AAxG0I;EAAgB,cAAA;EAAc,gBAAA;AA6GxK;;AA7GwL;EAAO,WAAA;AAiH/L;;AAjH0M;EAAY,eAAA;AAqHtN;;AApHA;EAAe,aAAA;EAAa,SAAA;AAyH5B;;AAzHqC;EAAc,aAAA;EAAa,kDAAA;EAAiD,SAAA;EAAS,mBAAA;EAAmB,WAAA;EAAW,gBAAA;EAAgB,gBAAA;EAAgB,uCAAA;EAAmC,mBAAA;EAAmB,aAAA;EAAa,eAAA;EAAe,6CAAA;AAwI1Q;;AAvIA;EAAyC,cAAA;AA2IzC;;AA3IuD;EAAoB,cAAA;AA+I3E;;AA/IyF;EAAQ,oBAAA;EAAoB,iBAAA;EAAiB,oCAAA;EAAgC,cAAA;EAAc,gBAAA;AAuJpL;;AAvJoM;EAAW,SAAA;EAAS,uBAAA;EAAuB,cAAA;EAAc,0BAAA;EAA0B,eAAA;EAAe,gBAAA;AAgKtS;;AA/JA;EAAc,aAAA;EAAa,2DAAA;EAAyD,SAAA;EAAS,cAAA;AAsK7F;;AAtK2G;EAA2C,mBAAA;EAAmB,mBAAA;EAAmB,aAAA;AA4K5L;;AA5KyM;EAAwC,cAAA;AAgLjP;;AAhL+P;EAAmB,cAAA;EAAc,eAAA;AAqLhS;;AApLA;EAAyB,aAAA;EAAa,SAAA;EAAS,uBAAA;EAAuB,gBAAA;EAAgB,sCAAA;EAAkC,aAAA;EAAa,mBAAA;EAAmB,cAAA;EAAc,cAAA;AAgMtK;;AA/LA;EAAwB;IAAc,0BAAA;EAoMpC;AACF;AAnMA;EACE,aAAA;EACA,YAAA;EACA,eAAA;AAqMF;;AAlMA;EACE,mBAAA;EACA,WAAA;AAqMF;;AAlMA;EACE,mBAAA;EACA,cAAA;EACA,qBAAA;EACA,mBAAA;EACA,gBAAA;AAqMF;;AAlMA;;EAEE,cAAA;AAqMF;;AAlMA;EACE,cAAA;AAqMF","sourcesContent":["\n.admin-proposals-page,.proposal-confirmation-page,.external-bookings-page{padding:80px 0;background:#f6f2ea;min-height:70vh}\n.proposals-shell,.proposal-shell,.external-shell{max-width:1120px;margin:0 auto}\n.section-head{margin-bottom:28px;max-width:780px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;color:#b58b4a;font-weight:700}\nh1,h2,h3{color:#08263a}.card,.proposal-card,.external-card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 18px 45px rgba(8,38,58,.08);border:1px solid rgba(8,38,58,.08);margin-bottom:24px}\n.form-title{display:flex;justify-content:space-between;gap:1rem;align-items:center}.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}\nlabel{display:grid;gap:6px;color:#08263a;font-weight:700}input,textarea,select{border:1px solid rgba(8,38,58,.16);border-radius:14px;padding:11px 13px;font:inherit;background:#fff}.wide{grid-column:1/-1}\n.calculation,.actions,.toolbar{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0;align-items:end}.calculation span{background:#f8f5ef;padding:10px 14px;border-radius:999px;color:#516070}\n.btn{border:0;border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer}.btn-primary{background:#08263a;color:#fff}.btn-secondary{background:#efe7da;color:#08263a}\n.client-link{background:#f8f5ef;padding:12px;border-radius:12px;word-break:break-all;color:#516070}.success{color:#047857;font-weight:700}.error,.expired{color:#9f1d1d;font-weight:700}.muted{color:#667}.search-box{flex:1 1 320px}\n.proposal-list{display:grid;gap:12px}.proposal-row{display:grid;grid-template-columns:auto 1.2fr 1.2fr .8fr auto;gap:16px;align-items:center;width:100%;text-align:left;background:#fff;border:1px solid rgba(8,38,58,.08);border-radius:18px;padding:16px;cursor:pointer;box-shadow:0 10px 28px rgba(8,38,58,.06)}\n.proposal-row strong,.proposal-row small{display:block}.proposal-row small{color:#516070}.status{border-radius:999px;padding:6px 10px;background:rgba(181,139,74,.12);color:#8a652d;font-weight:700}.mini-link{border:0;background:transparent;color:#08263a;text-decoration:underline;cursor:pointer;font-weight:700}\n.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:20px 0}.summary-grid div,.step-card,.choice-block{background:#f8f5ef;border-radius:18px;padding:16px}.summary-grid strong,.summary-grid span{display:block}.summary-grid span{color:#516070;margin-top:4px}\n.terms-check,.radio-card{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid rgba(8,38,58,.1);padding:14px;border-radius:14px;margin:10px 0;color:#516070}\n@media(max-width:800px){.proposal-row{grid-template-columns:1fr}}\n\n.row-actions {\n  display: flex;\n  gap: 0.75rem;\n  flex-wrap: wrap;\n}\n\n.btn-danger {\n  background: #9f1d1d;\n  color: #fff;\n}\n\n.validity {\n  background: #eef6f0;\n  color: #047857;\n  padding: 0.75rem 1rem;\n  border-radius: 12px;\n  font-weight: 700;\n}\n\n.validity.expired,\n.expired {\n  color: #9f1d1d;\n}\n\n.mini-link.danger {\n  color: #9f1d1d;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
+/***/ 8968:
+/*!*************************************************************!*\
+  !*** ./src/app/home/my-proposals/my-proposals.component.ts ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   MyProposalsComponent: () => (/* binding */ MyProposalsComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _my_proposals_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./my-proposals.component.html?ngResource */ 26332);
+/* harmony import */ var _my_proposals_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./my-proposals.component.scss?ngResource */ 31660);
+/* harmony import */ var _my_proposals_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_my_proposals_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../bookings/proposal-api.service */ 79439);
+
+
+
+
+
+
+
+let MyProposalsComponent = class MyProposalsComponent {
+  proposalApi;
+  mainSvc;
+  router;
+  proposals = [];
+  loading = true;
+  error = '';
+  loggedUser = null;
+  activeTab = 'pending';
+  searchTerm = '';
+  userSub;
+  constructor(proposalApi, mainSvc, router) {
+    this.proposalApi = proposalApi;
+    this.mainSvc = mainSvc;
+    this.router = router;
+  }
+  ngOnInit() {
+    const svc = this.mainSvc;
+    const userObservable = typeof svc.getLoggedUser === 'function' ? svc.getLoggedUser() : typeof svc.getUser === 'function' ? svc.getUser() : svc.bnUserO;
+    if (userObservable && typeof userObservable.subscribe === 'function') {
+      this.userSub = userObservable.subscribe(user => {
+        this.loggedUser = user || svc.bnUser || svc.currentUser || null;
+        this.loadProposals();
+      });
+    } else {
+      this.loggedUser = svc.bnUser || svc.currentUser || null;
+      this.loadProposals();
+    }
+  }
+  ngOnDestroy() {
+    this.userSub?.unsubscribe();
+  }
+  loadProposals() {
+    const email = String(this.loggedUser?.email || '').trim().toLowerCase();
+    if (!email) {
+      this.proposals = [];
+      this.loading = false;
+      return;
+    }
+    this.loading = true;
+    this.error = '';
+    this.proposalApi.getProposals().subscribe({
+      next: items => {
+        this.proposals = (items || []).filter(proposal => String(proposal.customerEmail || '').trim().toLowerCase() === email).sort((a, b) => (b.modifiedTS || b.createdTS || 0) - (a.modifiedTS || a.createdTS || 0));
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'Unable to load your proposals.';
+        this.proposals = [];
+        this.loading = false;
+      }
+    });
+  }
+  get filteredProposals() {
+    const term = this.normalize(this.searchTerm);
+    return this.proposals.filter(proposal => {
+      if (this.getProposalTab(proposal) !== this.activeTab) return false;
+      if (!term) return true;
+      const haystack = [proposal.proposalId, proposal.outingType, proposal.outingDate, proposal.customerName, proposal.customerEmail, proposal.status, this.getStatusLabel(proposal)].map(value => this.normalize(value)).join(' ');
+      return haystack.includes(term);
+    });
+  }
+  get pendingCount() {
+    return this.proposals.filter(proposal => this.getProposalTab(proposal) === 'pending').length;
+  }
+  get acceptedCount() {
+    return this.proposals.filter(proposal => this.getProposalTab(proposal) === 'accepted').length;
+  }
+  get declinedCount() {
+    return this.proposals.filter(proposal => this.getProposalTab(proposal) === 'declined').length;
+  }
+  get expiredCount() {
+    return this.proposals.filter(proposal => this.getProposalTab(proposal) === 'expired').length;
+  }
+  setTab(tab) {
+    this.activeTab = tab;
+  }
+  openProposal(proposal) {
+    this.router.navigate(['/proposal', proposal.proposalId]);
+  }
+  openRelatedBooking(proposal, event) {
+    event?.stopPropagation();
+    this.router.navigate(['/bookings', proposal.proposalId]);
+  }
+  getProposalTab(proposal) {
+    const status = String(proposal.status || '').toLowerCase();
+    if (status === 'accepted') return 'accepted';
+    if (status === 'cancelled' || status === 'declined' || status === 'rejected') return 'declined';
+    if (status === 'expired' || this.isExpired(proposal)) return 'expired';
+    return 'pending';
+  }
+  isExpired(proposal) {
+    return !!proposal.validUntil && Date.now() > proposal.validUntil && proposal.status !== 'accepted';
+  }
+  getStatusLabel(proposal) {
+    const tab = this.getProposalTab(proposal);
+    if (tab === 'accepted') return 'Accepted';
+    if (tab === 'declined') return 'Declined';
+    if (tab === 'expired') return 'Expired';
+    return 'Pending';
+  }
+  getStatusClass(proposal) {
+    return `status-${this.getProposalTab(proposal)}`;
+  }
+  getValidityLabel(proposal) {
+    if (!proposal.validUntil) return 'No validity date';
+    const date = new Date(proposal.validUntil);
+    if (Number.isNaN(date.getTime())) return 'No validity date';
+    return this.isExpired(proposal) ? `Expired on ${date.toLocaleDateString()}` : `Valid until ${date.toLocaleDateString()}`;
+  }
+  getDepositAmount(proposal) {
+    return Number(proposal.depositAmount || Math.round(Number(proposal.totalAmount || 0) * 0.1 * 100) / 100);
+  }
+  getBalanceAmount(proposal) {
+    return Number(proposal.balanceAmount || Math.max(0, Math.round((Number(proposal.totalAmount || 0) - this.getDepositAmount(proposal)) * 100) / 100));
+  }
+  hasRelatedBooking(proposal) {
+    return proposal.status === 'accepted' || proposal.depositPaid === true || proposal.depositStatus === 'paid';
+  }
+  normalize(value) {
+    return String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  }
+  static ctorParameters = () => [{
+    type: _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_2__.ProposalApiService
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_3__.ServicesService
+  }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
+  }];
+};
+MyProposalsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+  selector: 'app-my-proposals',
+  template: _my_proposals_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_my_proposals_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], MyProposalsComponent);
 
 
 /***/ }),
@@ -2047,15 +2212,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AccountSummaryComponent: () => (/* binding */ AccountSummaryComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _account_summary_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./account-summary.component.html?ngResource */ 44878);
 /* harmony import */ var _account_summary_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./account-summary.component.scss?ngResource */ 80458);
 /* harmony import */ var _account_summary_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_account_summary_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../site-content */ 14009);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+/* harmony import */ var _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../bookings/booking-api.service */ 74854);
+
 
 
 
@@ -2069,21 +2236,30 @@ let AccountSummaryComponent = class AccountSummaryComponent {
   languageService;
   router;
   mainSvc;
+  bookingApi;
   content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr;
   currentLanguage = 'fr';
   section = 'bookings';
-  constructor(route, languageService, router, mainSvc) {
+  loading = false;
+  loggedUser = null;
+  bookings = [];
+  payments = [];
+  paymentTypeFilter = 'all';
+  paymentStatusFilter = 'all';
+  paymentSortDirection = 'desc';
+  constructor(route, languageService, router, mainSvc, bookingApi) {
     this.route = route;
     this.languageService = languageService;
     this.router = router;
     this.mainSvc = mainSvc;
+    this.bookingApi = bookingApi;
   }
   ngOnInit() {
     this.section = this.route.snapshot.data['section'] || 'bookings';
     const svc = this.mainSvc;
-    const user = svc.bnUser || svc.currentUser || null;
-    const role = String(user?.role || '').toLowerCase();
-    const isAdmin = role === 'admin' || role === 'owner' || user?.isAdmin === true;
+    this.loggedUser = svc.bnUser || svc.currentUser || null;
+    const role = String(this.loggedUser?.role || '').toLowerCase();
+    const isAdmin = role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
     if (isAdmin && (this.section === 'bookings' || this.section === 'payments' || this.section === 'feedbacks')) {
       this.router.navigate(['/admin/bookings']);
       return;
@@ -2092,6 +2268,196 @@ let AccountSummaryComponent = class AccountSummaryComponent {
       this.currentLanguage = language;
       this.content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT[language];
     });
+    if (this.section === 'payments') {
+      this.loadCustomerPayments();
+    }
+  }
+  loadCustomerPayments() {
+    const email = this.loggedUser?.email || '';
+    this.loading = true;
+    this.bookingApi.getBookings(email).subscribe({
+      next: bookings => {
+        this.bookings = bookings || [];
+        this.payments = this.buildPayments(this.bookings);
+        this.loading = false;
+      },
+      error: () => {
+        this.bookings = [];
+        this.payments = [];
+        this.loading = false;
+      }
+    });
+  }
+  get filteredPayments() {
+    const filtered = this.payments.filter(payment => {
+      if (this.paymentTypeFilter !== 'all' && payment.type !== this.paymentTypeFilter) return false;
+      if (this.paymentStatusFilter !== 'all' && payment.status !== this.paymentStatusFilter) return false;
+      return true;
+    });
+    return filtered.sort((a, b) => {
+      const left = this.getPaymentTime(a);
+      const right = this.getPaymentTime(b);
+      return (left - right) * (this.paymentSortDirection === 'asc' ? 1 : -1);
+    });
+  }
+  buildPayments(bookings) {
+    const rows = [];
+    for (const booking of bookings || []) {
+      const anyBooking = booking || {};
+      const bookingId = booking.bookingId;
+      const payments = anyBooking.payments || {};
+      const depositAmount = this.getDepositAmount(booking);
+      const balanceAmount = this.getBalanceAmount(booking);
+      const warrantyAmount = Number(anyBooking.warrantyAmount || payments?.warranty?.amount || 500);
+      if (this.isDepositPaid(booking)) {
+        rows.push({
+          id: `${bookingId}-deposit`,
+          bookingId,
+          booking,
+          type: 'deposit',
+          label: '10% deposit',
+          amount: depositAmount,
+          status: 'paid',
+          method: payments?.deposit?.method || anyBooking.depositPaymentMethod || 'Stripe',
+          date: payments?.deposit?.paidAt || anyBooking.depositPaidAt || anyBooking.confirmedAt || anyBooking.modifiedTS,
+          description: this.bookingDescription(booking)
+        });
+      }
+      if (this.isBalancePaid(booking)) {
+        rows.push({
+          id: `${bookingId}-balance`,
+          bookingId,
+          booking,
+          type: 'balance',
+          label: 'Remaining 90%',
+          amount: balanceAmount,
+          status: 'paid',
+          method: anyBooking.balancePaymentMethod || payments?.balance?.method || 'Onboard',
+          date: payments?.balance?.paidAt || anyBooking.balancePaidAt || anyBooking.paidAt || anyBooking.modifiedTS,
+          description: this.bookingDescription(booking)
+        });
+      }
+      if (this.isWarrantyCardRegistered(booking)) {
+        rows.push({
+          id: `${bookingId}-warranty-card`,
+          bookingId,
+          booking,
+          type: 'warranty_card',
+          label: 'Warranty card registration',
+          amount: warrantyAmount,
+          status: 'registered',
+          method: 'Stripe card',
+          date: payments?.warranty?.updatedAt || payments?.warranty?.modifiedTS || anyBooking.warrantyRegisteredAt || anyBooking.updatedAt,
+          description: this.bookingDescription(booking)
+        });
+      }
+      if (this.isCashWarrantySelected(booking)) {
+        rows.push({
+          id: `${bookingId}-warranty-cash`,
+          bookingId,
+          booking,
+          type: 'warranty_cash',
+          label: 'Cash warranty',
+          amount: warrantyAmount,
+          status: anyBooking.warrantyCashReceived === true || anyBooking.warrantyStatus === 'cash_received' ? 'received' : 'selected',
+          method: 'Cash',
+          date: anyBooking.warrantyCashReceivedAt || payments?.warranty?.receivedAt || anyBooking.warrantySelectedAt,
+          description: this.bookingDescription(booking)
+        });
+      }
+      const warrantyChargeAmount = Number(anyBooking.warrantyChargedAmount || payments?.warrantyCharge?.warrantyChargeAmount || payments?.warrantyCharge?.amount || 0);
+      if (warrantyChargeAmount > 0) {
+        rows.push({
+          id: `${bookingId}-warranty-charge`,
+          bookingId,
+          booking,
+          type: 'warranty_charge',
+          label: 'Damage charged to warranty card',
+          amount: this.normalizePaymentAmount(warrantyChargeAmount),
+          status: 'charged',
+          method: 'Stripe card',
+          date: anyBooking.warrantyChargeRecordedAt || payments?.warrantyCharge?.recordedAt || payments?.warrantyCharge?.modifiedTS,
+          description: anyBooking.warrantyChargeReason || payments?.warrantyCharge?.warrantyChargeReason || this.bookingDescription(booking)
+        });
+      }
+      const cashDamageAmount = Number(anyBooking.warrantyCashDamageAmount || payments?.warrantyCashDamage?.amount || 0);
+      if (cashDamageAmount > 0) {
+        rows.push({
+          id: `${bookingId}-cash-damage`,
+          bookingId,
+          booking,
+          type: 'cash_damage',
+          label: 'Damage taken from cash warranty',
+          amount: cashDamageAmount,
+          status: 'recorded',
+          method: 'Cash warranty',
+          date: anyBooking.warrantyCashDamageRecordedAt || payments?.warrantyCashDamage?.recordedAt,
+          description: anyBooking.warrantyCashDamageReason || payments?.warrantyCashDamage?.reason || this.bookingDescription(booking)
+        });
+      }
+    }
+    return rows;
+  }
+  openPaymentBooking(payment) {
+    if (!payment?.bookingId) return;
+    this.router.navigate(['/bookings', payment.bookingId]);
+  }
+  resetPaymentFilters() {
+    this.paymentTypeFilter = 'all';
+    this.paymentStatusFilter = 'all';
+    this.paymentSortDirection = 'desc';
+  }
+  getDepositAmount(booking) {
+    const total = Number(booking.totalPrice || 0);
+    return Number(booking.depositAmount || (total ? Math.round(total * 0.1 * 100) / 100 : 0));
+  }
+  getBalanceAmount(booking) {
+    const total = Number(booking.totalPrice || 0);
+    const deposit = this.getDepositAmount(booking);
+    return Number(booking.balanceAmount || Math.max(0, Math.round((total - deposit) * 100) / 100));
+  }
+  isDepositPaid(booking) {
+    const anyBooking = booking;
+    const depositPayment = anyBooking?.payments?.deposit || {};
+    const legacyPayment = anyBooking?.payment || {};
+    return anyBooking.depositPaid === true || anyBooking.depositStatus === 'paid' || anyBooking.depositStatus === 'deposit_paid' || anyBooking.paymentStatus === 'paid' || anyBooking.paymentStatus === 'deposit_paid' || anyBooking.paymentStatus === 'charge_succeeded' || legacyPayment.depositPaid === true || legacyPayment.paid === true || legacyPayment.status === 'paid' || legacyPayment.status === 'deposit_paid' || depositPayment.depositPaid === true || depositPayment.paid === true || depositPayment.status === 'paid' || depositPayment.status === 'deposit_paid';
+  }
+  isBalancePaid(booking) {
+    const anyBooking = booking;
+    return anyBooking.balancePaid === true || anyBooking.balanceStatus === 'paid' || anyBooking.balancePaymentStatus === 'paid' || anyBooking.paymentStatus === 'full_payment_done' || anyBooking?.payments?.balance?.paid === true || anyBooking?.payments?.balance?.status === 'paid';
+  }
+  isWarrantyCardRegistered(booking) {
+    const anyBooking = booking;
+    const warrantyPayment = anyBooking?.payments?.warranty || {};
+    return anyBooking.warrantyRegistered === true || anyBooking.warrantyStatus === 'card_registered' || anyBooking.warrantyStatus === 'warranty_card_saved' || warrantyPayment.warrantyRegistered === true || warrantyPayment.status === 'card_registered' || warrantyPayment.status === 'warranty_card_saved';
+  }
+  isCashWarrantySelected(booking) {
+    const anyBooking = booking;
+    const warrantyPayment = anyBooking?.payments?.warranty || {};
+    return anyBooking.warrantyPaymentChoice === 'cash_on_board' || anyBooking.warrantyMethod === 'cash' || anyBooking.warrantyStatus === 'cash_selected' || anyBooking.warrantyStatus === 'cash_received' || anyBooking.warrantyCashSelected === true || anyBooking.warrantyCashReceived === true || warrantyPayment.method === 'cash' || warrantyPayment.status === 'cash_selected' || warrantyPayment.status === 'cash_received';
+  }
+  formatPaymentAmount(amount) {
+    return `€${Number(amount || 0).toFixed(2)}`;
+  }
+  formatPaymentDate(value) {
+    if (!value) return '-';
+    const date = typeof value === 'number' ? new Date(value) : new Date(value);
+    if (Number.isNaN(date.getTime())) return '-';
+    return date.toLocaleDateString();
+  }
+  getPaymentTypeClass(payment) {
+    return `type-${payment.type}`;
+  }
+  getPaymentTime(payment) {
+    if (!payment.date) return 0;
+    const date = typeof payment.date === 'number' ? new Date(payment.date) : new Date(payment.date);
+    return Number.isNaN(date.getTime()) ? 0 : date.getTime();
+  }
+  normalizePaymentAmount(amount) {
+    return amount > 999 ? Math.round(amount) / 100 : amount;
+  }
+  bookingDescription(booking) {
+    return `${booking.outingType || 'Outing'}${booking.outingDate ? ' · ' + booking.outingDate : ''}`;
   }
   get eyebrow() {
     return this.currentLanguage === 'fr' ? 'Espace client' : this.currentLanguage === 'es' ? 'Área cliente' : 'Customer area';
@@ -2150,16 +2516,18 @@ let AccountSummaryComponent = class AccountSummaryComponent {
     return this.currentLanguage === 'fr' ? 'Cette section sera connectée à votre compte dès que vos données seront disponibles.' : this.currentLanguage === 'es' ? 'Esta sección se conectará a su cuenta cuando sus datos estén disponibles.' : 'This section will be connected to your account as soon as your data is available.';
   }
   static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.ActivatedRoute
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_5__.ActivatedRoute
   }, {
     type: _services_language_service__WEBPACK_IMPORTED_MODULE_3__.LanguageService
   }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_5__.Router
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.ServicesService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_6__.ServicesService
+  }, {
+    type: _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_4__.BookingApiService
   }];
 };
-AccountSummaryComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
+AccountSummaryComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
   selector: 'app-account-summary',
   template: _account_summary_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
   styles: [(_account_summary_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
@@ -2200,6 +2568,12 @@ let MyBookingsComponent = class MyBookingsComponent {
   router;
   bookings = [];
   loading = true;
+  searchTerm = '';
+  activeDateTab = 'upcoming';
+  statusFilter = 'all';
+  warrantyFilter = 'all';
+  sortField = 'date';
+  sortDirection = 'asc';
   loggedUser = null;
   userSub;
   constructor(bookingApi, mainSvc, router) {
@@ -2238,6 +2612,153 @@ let MyBookingsComponent = class MyBookingsComponent {
       this.loading = false;
     });
   }
+  get filteredBookings() {
+    const term = this.normalizeSearch(this.searchTerm);
+    const filtered = this.bookings.filter(booking => {
+      if (this.activeDateTab === 'upcoming' && !this.isUpcomingBooking(booking)) return false;
+      if (this.activeDateTab === 'past' && !this.isPastBooking(booking)) return false;
+      if (this.statusFilter !== 'all' && this.getDerivedBookingStatus(booking) !== this.statusFilter) return false;
+      if (this.warrantyFilter === 'not_selected' && this.getWarrantyChoice(booking)) return false;
+      if (this.warrantyFilter === 'cash' && this.getWarrantyChoice(booking) !== 'cash_on_board') return false;
+      if (this.warrantyFilter === 'card_selected' && this.getWarrantyChoice(booking) !== 'stripe_card') return false;
+      if (this.warrantyFilter === 'card_registered' && !this.isWarrantyCardRegistered(booking)) return false;
+      if (term) {
+        const haystack = [booking.customerName, booking.email, booking.phone, booking.outingType, booking.outingDate, booking.bookingId, this.getStatusLabel(booking), this.getWarrantyModeLabel(booking)].map(value => this.normalizeSearch(value)).join(' ');
+        if (!haystack.includes(term)) return false;
+      }
+      return true;
+    });
+    return this.sortBookings(filtered);
+  }
+  get upcomingBookingsCount() {
+    return this.bookings.filter(booking => this.isUpcomingBooking(booking)).length;
+  }
+  get pastBookingsCount() {
+    return this.bookings.filter(booking => this.isPastBooking(booking)).length;
+  }
+  setDateTab(tab) {
+    this.activeDateTab = tab;
+    if (this.sortField === 'date') {
+      this.sortDirection = tab === 'past' ? 'desc' : 'asc';
+    }
+  }
+  resetFilters() {
+    this.searchTerm = '';
+    this.statusFilter = 'all';
+    this.warrantyFilter = 'all';
+    this.sortField = 'date';
+    this.sortDirection = this.activeDateTab === 'past' ? 'desc' : 'asc';
+  }
+  normalizeSearch(value) {
+    return String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  }
+  getBookingTime(booking) {
+    const rawDate = String(booking.outingDate || booking.date || booking.bookingDate || '').trim();
+    if (!rawDate) return 0;
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+    const departureTime = String(booking.departureTime || '').trim();
+    const timestamp = Date.parse(departureTime ? `${normalized}T${departureTime}` : normalized);
+    return Number.isNaN(timestamp) ? 0 : timestamp;
+  }
+  isUpcomingBooking(booking) {
+    const time = this.getBookingTime(booking);
+    if (!time) return true;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return time >= today.getTime();
+  }
+  isPastBooking(booking) {
+    const time = this.getBookingTime(booking);
+    if (!time) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return time < today.getTime();
+  }
+  sortBookings(bookings) {
+    const direction = this.sortDirection === 'asc' ? 1 : -1;
+    return [...bookings].sort((a, b) => {
+      let left;
+      let right;
+      switch (this.sortField) {
+        case 'customer':
+          left = String(a.customerName || '').toLowerCase();
+          right = String(b.customerName || '').toLowerCase();
+          break;
+        case 'status':
+          left = this.getStatusLabel(a);
+          right = this.getStatusLabel(b);
+          break;
+        case 'total':
+          left = Number(a.totalPrice || 0);
+          right = Number(b.totalPrice || 0);
+          break;
+        case 'balance':
+          left = this.getBalanceAmount(a);
+          right = this.getBalanceAmount(b);
+          break;
+        case 'date':
+        default:
+          left = this.getBookingTime(a);
+          right = this.getBookingTime(b);
+          break;
+      }
+      if (typeof left === 'number' && typeof right === 'number') {
+        return (left - right) * direction;
+      }
+      return String(left || '').localeCompare(String(right || '')) * direction;
+    });
+  }
+  isTermsAccepted(booking) {
+    const anyBooking = booking;
+    return anyBooking.termsAccepted === true || anyBooking.tcAccepted === true || anyBooking.tAndCAccepted === true || anyBooking.termsAndConditionsAccepted === true || anyBooking.acceptedTerms === true || anyBooking.termsStatus === 'accepted' || anyBooking.tcStatus === 'accepted' || anyBooking?.documents?.termsAccepted === true || anyBooking?.terms?.accepted === true;
+  }
+  getDerivedBookingStatus(booking) {
+    if (this.isBalancePaid(booking)) return 'payment_done';
+    if (this.isDepositPaid(booking) && this.isTermsAccepted(booking)) return 'confirmed';
+    return 'not_confirmed';
+  }
+  getStatusLabel(booking) {
+    const status = this.getDerivedBookingStatus(booking);
+    if (status === 'payment_done') return 'Payment done';
+    if (status === 'confirmed') return 'Confirmed';
+    return 'Not confirmed';
+  }
+  getWarrantyChoice(booking) {
+    const anyBooking = booking;
+    const warrantyPayment = anyBooking?.payments?.warranty || {};
+    if (anyBooking.warrantyPaymentChoice) return anyBooking.warrantyPaymentChoice;
+    if (anyBooking.warrantyMethod === 'cash' || anyBooking.warrantyStatus === 'cash_selected' || anyBooking.warrantyCashSelected === true || warrantyPayment.method === 'cash') return 'cash_on_board';
+    if (anyBooking.warrantyMethod === 'card' || anyBooking.warrantyMethod === 'stripe_card' || this.isWarrantyCardRegistered(booking) || warrantyPayment.method === 'card') return 'stripe_card';
+    return '';
+  }
+  getWarrantyModeLabel(booking) {
+    const choice = this.getWarrantyChoice(booking);
+    if (choice === 'cash_on_board') return 'Cash selected';
+    if (choice === 'stripe_card') return 'Card selected';
+    return 'Not selected';
+  }
+  isWarrantyCardRegistered(booking) {
+    const anyBooking = booking;
+    const warrantyPayment = anyBooking?.payments?.warranty || {};
+    return anyBooking.warrantyRegistered === true || anyBooking.warrantyStatus === 'card_registered' || anyBooking.warrantyStatus === 'warranty_card_saved' || warrantyPayment.warrantyRegistered === true || warrantyPayment.status === 'card_registered' || warrantyPayment.status === 'warranty_card_saved';
+  }
+  getWarrantyCardLabel(booking) {
+    if (this.isWarrantyCardRegistered(booking)) return 'Stripe card registered';
+    if (this.getWarrantyChoice(booking) === 'stripe_card') return 'Card selected, not registered';
+    if (this.getWarrantyChoice(booking) === 'cash_on_board') return 'Not required';
+    return 'Not registered';
+  }
+  isBalancePaid(booking) {
+    const anyBooking = booking;
+    return anyBooking.balancePaid === true || anyBooking.balanceStatus === 'paid' || anyBooking.balancePaymentStatus === 'paid' || anyBooking?.payments?.balance?.paid === true || anyBooking?.payments?.balance?.status === 'paid';
+  }
   getDepositAmount(booking) {
     const total = Number(booking.totalPrice || 0);
     return Number(booking.depositAmount || (total ? Math.round(total * 0.1 * 100) / 100 : 0));
@@ -2255,11 +2776,34 @@ let MyBookingsComponent = class MyBookingsComponent {
   getDepositLabel(booking) {
     return this.isDepositPaid(booking) ? 'Acompte payé' : 'Acompte à payer';
   }
+  isWarrantySecured(booking) {
+    return this.isWarrantyCardRegistered(booking) || this.getWarrantyChoice(booking) === 'cash_on_board';
+  }
+  canPayDeposit(booking) {
+    return !this.isDepositPaid(booking);
+  }
+  canPayBalance(booking) {
+    return this.isDepositPaid(booking) && this.isTermsAccepted(booking) && this.isWarrantySecured(booking) && !this.isBalancePaid(booking);
+  }
+  shouldShowPaymentButton(booking) {
+    return this.canPayDeposit(booking) || this.canPayBalance(booking);
+  }
+  getPaymentButtonLabel(booking) {
+    if (this.canPayDeposit(booking)) return 'Pay 10% deposit';
+    if (this.canPayBalance(booking)) return `Pay remaining 90% (€${this.getBalanceAmount(booking)})`;
+    return 'Payment';
+  }
   openBooking(booking) {
     this.router.navigate(['/bookings', booking.bookingId]);
   }
   payBooking(booking) {
-    this.router.navigate(['/payment', booking.bookingId]);
+    if (!this.shouldShowPaymentButton(booking)) return;
+    const mode = this.canPayDeposit(booking) ? 'deposit' : 'balance';
+    this.router.navigate(['/payment', booking.bookingId], {
+      queryParams: {
+        mode
+      }
+    });
   }
   static ctorParameters = () => [{
     type: _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_2__.BookingApiService
@@ -3163,6 +3707,17 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 /***/ }),
 
+/***/ 26332:
+/*!**************************************************************************!*\
+  !*** ./src/app/home/my-proposals/my-proposals.component.html?ngResource ***!
+  \**************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<section class=\"proposal-page\">\n  <div class=\"container proposal-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">Customer area</span>\n      <h1>My proposals</h1>\n      <p>Review proposals sent by Alegria, accept a proposal, or open the related booking once accepted.</p>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading proposals...</p>\n    <p *ngIf=\"!loading && error\" class=\"error-message\">{{ error }}</p>\n\n    <div class=\"proposal-tabs\" *ngIf=\"!loading && proposals.length > 0\">\n      <button type=\"button\" [class.active]=\"activeTab === 'pending'\" (click)=\"setTab('pending')\">Pending <span>{{ pendingCount }}</span></button>\n      <button type=\"button\" [class.active]=\"activeTab === 'accepted'\" (click)=\"setTab('accepted')\">Accepted <span>{{ acceptedCount }}</span></button>\n      <button type=\"button\" [class.active]=\"activeTab === 'declined'\" (click)=\"setTab('declined')\">Declined <span>{{ declinedCount }}</span></button>\n      <button type=\"button\" [class.active]=\"activeTab === 'expired'\" (click)=\"setTab('expired')\">Expired <span>{{ expiredCount }}</span></button>\n    </div>\n\n    <div class=\"proposal-toolbar\" *ngIf=\"!loading && proposals.length > 0\">\n      <label>\n        <span>Search</span>\n        <input type=\"search\" [(ngModel)]=\"searchTerm\" placeholder=\"Date, outing, status...\" />\n      </label>\n      <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"searchTerm\" (click)=\"searchTerm = ''\">Clear</button>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadProposals()\">Refresh</button>\n    </div>\n\n    <div class=\"empty-card\" *ngIf=\"!loading && proposals.length === 0\">\n      No proposal has been sent to your account yet.\n    </div>\n\n    <div class=\"empty-card\" *ngIf=\"!loading && proposals.length > 0 && filteredProposals.length === 0\">\n      No proposal matches this tab or search.\n    </div>\n\n    <div class=\"proposal-list\" *ngIf=\"!loading && filteredProposals.length > 0\">\n      <article class=\"proposal-card\" *ngFor=\"let proposal of filteredProposals\" (click)=\"openProposal(proposal)\">\n        <div class=\"proposal-top\">\n          <span class=\"status-pill\" [ngClass]=\"getStatusClass(proposal)\">{{ getStatusLabel(proposal) }}</span>\n          <span class=\"validity\">{{ getValidityLabel(proposal) }}</span>\n        </div>\n\n        <h2>{{ proposal.outingType || 'Outing proposal' }}</h2>\n        <p class=\"proposal-date\">\n          {{ proposal.outingDate || 'Date not set' }}\n          <ng-container *ngIf=\"proposal.departureTime\"> · {{ proposal.departureTime }}</ng-container>\n          <ng-container *ngIf=\"proposal.arrivalTime\">–{{ proposal.arrivalTime }}</ng-container>\n        </p>\n\n        <div class=\"proposal-grid\">\n          <div><strong>Total</strong><span>€{{ proposal.totalAmount || 0 }}</span></div>\n          <div><strong>Deposit 10%</strong><span>€{{ getDepositAmount(proposal) }}</span></div>\n          <div><strong>Remaining 90%</strong><span>€{{ getBalanceAmount(proposal) }}</span></div>\n          <div><strong>Warranty</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>\n        </div>\n\n        <p class=\"proposal-message\" *ngIf=\"proposal.proposalMessage\">{{ proposal.proposalMessage }}</p>\n\n        <div class=\"proposal-actions\" (click)=\"$event.stopPropagation()\">\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"getProposalTab(proposal) === 'pending'\" (click)=\"openProposal(proposal)\">\n            View / accept proposal\n          </button>\n\n          <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"hasRelatedBooking(proposal)\" (click)=\"openRelatedBooking(proposal, $event)\">\n            Open related booking\n          </button>\n\n          <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"getProposalTab(proposal) !== 'pending'\" (click)=\"openProposal(proposal)\">\n            View details\n          </button>\n        </div>\n      </article>\n    </div>\n  </div>\n</section>\n";
+
+/***/ }),
+
 /***/ 26456:
 /*!******************************************************************!*\
   !*** ./src/app/home/bookings/bookings.component.html?ngResource ***!
@@ -3170,7 +3725,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">Admin</span>\n      <h1>Reservations</h1>\n      <p>Manage confirmed bookings, deposits, remaining 90% onboard payments, warranties and damage charges.</p>\n    </div>\n\n    <div class=\"booking-toolbar\">\n      <label class=\"search-box\">\n        <span>Search by customer name</span>\n        <input\n          type=\"search\"\n          name=\"bookingSearch\"\n          [(ngModel)]=\"searchTerm\"\n          placeholder=\"Type a customer name...\"\n          autocomplete=\"off\"\n        />\n      </label>\n\n      <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"searchTerm\" (click)=\"clearSearch()\">Clear</button>\n      <a class=\"btn btn-primary\" routerLink=\"/admin/proposals\">Proposals</a>\n      <a class=\"btn btn-secondary\" routerLink=\"/admin/external-bookings\">External bookings</a>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadBookings()\">Refresh</button>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n    <p *ngIf=\"!loading && errorMessage\" class=\"error-message\">{{ errorMessage }}</p>\n    <p *ngIf=\"!loading && !errorMessage && bookings.length === 0\" class=\"muted\">\n      No bookings found in Firebase under <strong>/bnBookings</strong>.\n    </p>\n\n    <div class=\"list-summary\" *ngIf=\"!loading && bookings.length > 0\">\n      Showing <strong>{{ filteredBookings.length }}</strong> of <strong>{{ bookings.length }}</strong> bookings\n    </div>\n\n    <div class=\"bookings-list\" *ngIf=\"!loading && filteredBookings.length > 0\">\n      <button\n        class=\"booking-list-row\"\n        type=\"button\"\n        *ngFor=\"let booking of filteredBookings; trackBy: trackByBookingId\"\n        (click)=\"openBooking(booking)\"\n      >\n        <span class=\"status-pill\">{{ booking.bookingStatus || 'requested' }}</span>\n\n        <span class=\"booking-main\">\n          <strong>{{ booking.customerName || 'Customer not set' }}</strong>\n          <small>{{ booking.email || 'No email' }}</small>\n        </span>\n\n        <span class=\"booking-trip\">\n          <strong>{{ booking.outingType || 'Outing' }}</strong>\n          <small>\n            {{ booking.outingDate || 'Date not set' }}\n            <ng-container *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</ng-container>\n          </small>\n        </span>\n\n        <span class=\"booking-price\">\n          <strong>€{{ booking.totalPrice || 0 }}</strong>\n          <small>Deposit 10%: €{{ getDepositAmount(booking) }} · {{ isDepositPaid(booking) ? 'paid' : 'pending' }}</small>\n          <small>Remaining 90%: €{{ getBalanceAmount(booking) }} · {{ isBalancePaid(booking) ? 'paid' : 'to collect onboard' }}</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <button class=\"mini-btn\" type=\"button\" *ngIf=\"canRecordBalancePayment(booking)\" (click)=\"openBalancePayment(booking, $event)\">Record 90%</button>\n          <span class=\"blocked-badge\" *ngIf=\"!canRecordBalancePayment(booking) && !isBalancePaid(booking)\" [title]=\"getBalanceBlockedReason(booking)\">90% locked</span>\n          <span class=\"paid-badge\" *ngIf=\"isBalancePaid(booking)\">90% paid</span>\n          <span class=\"row-chevron\">›</span>\n        </span>\n      </button>\n    </div>\n\n    <p *ngIf=\"!loading && bookings.length > 0 && filteredBookings.length === 0\" class=\"muted\">\n      No booking matches this customer search.\n    </p>\n    <div class=\"balance-modal-backdrop\" *ngIf=\"selectedBalanceBooking\">\n      <div class=\"balance-modal\">\n        <h2>Record remaining 90% payment</h2>\n        <p>\n          <strong>{{ selectedBalanceBooking.customerName }}</strong><br />\n          Total: €{{ selectedBalanceBooking.totalPrice || 0 }}<br />\n          Deposit 10%: €{{ getDepositAmount(selectedBalanceBooking) }} · {{ isDepositPaid(selectedBalanceBooking) ? 'paid' : 'pending' }}<br />\n          Warranty card: {{ isWarrantyCardRegistered(selectedBalanceBooking) ? 'registered' : 'not registered' }}<br />\n          Booking status: {{ selectedBalanceBooking.bookingStatus || 'requested' }}<br />\n          Remaining 90% to collect onboard: <strong>€{{ getBalanceAmount(selectedBalanceBooking) }}</strong>\n        </p>\n\n        <label>\n          Payment method\n          <select [(ngModel)]=\"balancePaymentMethod\">\n            <option value=\"sumup\">SumUp / card</option>\n            <option value=\"cash\">Cash</option>\n            <option value=\"mixed\">Mixed</option>\n          </select>\n        </label>\n\n        <label>\n          Notes\n          <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" placeholder=\"Optional note, reference, split cash/SumUp...\"></textarea>\n        </label>\n\n        <div class=\"modal-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n            {{ savingBalancePayment ? 'Saving...' : 'Confirm 90% payment' }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeBalancePayment()\">Cancel</button>\n        </div>\n\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n      </div>\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">Admin</span>\n      <h1>Reservations</h1>\n      <p>Manage confirmed bookings, deposits, remaining 90% onboard payments, warranties and damage charges.</p>\n    </div>\n\n    <div class=\"booking-tabs\" *ngIf=\"!loading && bookings.length > 0\">\n      <button type=\"button\" [class.active]=\"activeDateTab === 'upcoming'\" (click)=\"setDateTab('upcoming')\">\n        Upcoming <span>{{ upcomingBookingsCount }}</span>\n      </button>\n      <button type=\"button\" [class.active]=\"activeDateTab === 'past'\" (click)=\"setDateTab('past')\">\n        Past <span>{{ pastBookingsCount }}</span>\n      </button>\n    </div>\n\n    <div class=\"booking-toolbar booking-toolbar-grid\">\n      <label class=\"search-box\">\n        <span>Search</span>\n        <input\n          type=\"search\"\n          name=\"bookingSearch\"\n          [(ngModel)]=\"searchTerm\"\n          placeholder=\"Customer, email, phone, date, status...\"\n          autocomplete=\"off\"\n        />\n      </label>\n\n      <label>\n        <span>Status</span>\n        <select [(ngModel)]=\"statusFilter\">\n          <option value=\"all\">All statuses</option>\n          <option value=\"not_confirmed\">Not confirmed</option>\n          <option value=\"confirmed\">Confirmed</option>\n          <option value=\"payment_done\">Payment done</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Warranty</span>\n        <select [(ngModel)]=\"warrantyFilter\">\n          <option value=\"all\">All warranties</option>\n          <option value=\"not_selected\">Not selected</option>\n          <option value=\"cash\">Cash selected</option>\n          <option value=\"card_selected\">Card selected</option>\n          <option value=\"card_registered\">Card registered</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Order by</span>\n        <select [(ngModel)]=\"sortField\">\n          <option value=\"date\">Date</option>\n          <option value=\"customer\">Customer</option>\n          <option value=\"status\">Status</option>\n          <option value=\"total\">Total price</option>\n          <option value=\"balance\">Remaining 90%</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Direction</span>\n        <select [(ngModel)]=\"sortDirection\">\n          <option value=\"asc\">Ascending</option>\n          <option value=\"desc\">Descending</option>\n        </select>\n      </label>\n\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetFilters()\">Reset filters</button>\n      <a class=\"btn btn-primary\" routerLink=\"/admin/proposals\">Proposals</a>\n      <a class=\"btn btn-secondary\" routerLink=\"/admin/external-bookings\">External bookings</a>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadBookings()\">Refresh</button>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n    <p *ngIf=\"!loading && errorMessage\" class=\"error-message\">{{ errorMessage }}</p>\n    <p *ngIf=\"!loading && !errorMessage && bookings.length === 0\" class=\"muted\">\n      No bookings found in Firebase under <strong>/bnBookings</strong>.\n    </p>\n\n    <div class=\"list-summary\" *ngIf=\"!loading && bookings.length > 0\">\n      Showing <strong>{{ activeTabBookingsCount }}</strong> {{ activeDateTab }} bookings out of <strong>{{ bookings.length }}</strong> total\n    </div>\n\n    <div class=\"bookings-list\" *ngIf=\"!loading && filteredBookings.length > 0\">\n      <button\n        class=\"booking-list-row\"\n        type=\"button\"\n        *ngFor=\"let booking of filteredBookings; trackBy: trackByBookingId\"\n        (click)=\"openBooking(booking)\"\n      >\n        <span class=\"status-pill\">{{ getStatusLabel(booking) }}</span>\n\n        <span class=\"booking-main\">\n          <strong>{{ booking.customerName || 'Customer not set' }}</strong>\n          <small>{{ booking.email || 'No email' }}</small>\n        </span>\n\n        <span class=\"booking-trip\">\n          <strong>{{ booking.outingType || 'Outing' }}</strong>\n          <small>\n            {{ booking.outingDate || 'Date not set' }}\n            <ng-container *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</ng-container>\n          </small>\n        </span>\n\n        <span class=\"booking-price booking-clarity\">\n          <strong>€{{ booking.totalPrice || 0 }}</strong>\n          <small>Deposit: €{{ getDepositAmount(booking) }} · {{ isDepositPaid(booking) ? 'paid' : 'pending' }}</small>\n          <small>T&C: {{ isTermsAccepted(booking) ? 'accepted' : 'not accepted' }}</small>\n          <small>Warranty mode: {{ getWarrantyModeLabel(booking) }}</small>\n          <small>Stripe card: {{ getWarrantyCardLabel(booking) }}</small>\n          <small>Remaining 90%: €{{ getBalanceAmount(booking) }} · {{ isBalancePaid(booking) ? 'paid' : 'pending' }}</small>\n          <small>Damage: {{ getDamageStatusLabel(booking) }}</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <button class=\"mini-btn deposit-btn\" type=\"button\" *ngIf=\"!isDepositPaid(booking)\" (click)=\"payDeposit(booking, $event)\">Pay 10% deposit</button>\n          <button class=\"mini-btn\" type=\"button\" *ngIf=\"canRecordBalancePayment(booking) && !isBalancePaid(booking)\" (click)=\"openBalancePayment(booking, $event)\">Record 90%</button>\n          <span class=\"blocked-badge\" *ngIf=\"!canRecordBalancePayment(booking) && !isBalancePaid(booking)\" [title]=\"getBalanceBlockedReason(booking)\">90% locked</span>\n          <span class=\"paid-badge\" *ngIf=\"isBalancePaid(booking)\">90% paid</span>\n          <span class=\"row-chevron\">›</span>\n        </span>\n      </button>\n    </div>\n\n    <p *ngIf=\"!loading && bookings.length > 0 && filteredBookings.length === 0\" class=\"muted\">\n      No booking matches the selected tab, filters, search and sorting options.\n    </p>\n    <div class=\"balance-modal-backdrop\" *ngIf=\"selectedBalanceBooking\">\n      <div class=\"balance-modal\">\n        <h2>Record remaining 90% payment</h2>\n        <p>\n          <strong>{{ selectedBalanceBooking.customerName }}</strong><br />\n          Total: €{{ selectedBalanceBooking.totalPrice || 0 }}<br />\n          Deposit 10%: €{{ getDepositAmount(selectedBalanceBooking) }} · {{ isDepositPaid(selectedBalanceBooking) ? 'paid' : 'pending' }}<br />\n          Warranty mode: {{ getWarrantyModeLabel(selectedBalanceBooking) }}<br />\n          Stripe warranty card: {{ getWarrantyCardLabel(selectedBalanceBooking) }}<br />\n          T&C: {{ isTermsAccepted(selectedBalanceBooking) ? 'accepted' : 'not accepted' }}<br />\n          Booking status: {{ getStatusLabel(selectedBalanceBooking) }}<br />\n          Remaining 90% to collect onboard: <strong>€{{ getBalanceAmount(selectedBalanceBooking) }}</strong>\n        </p>\n\n        <label>\n          Payment method\n          <select [(ngModel)]=\"balancePaymentMethod\">\n            <option value=\"sumup\">SumUp / card</option>\n            <option value=\"cash\">Cash</option>\n            <option value=\"mixed\">Mixed</option>\n          </select>\n        </label>\n\n        <label>\n          Notes\n          <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" placeholder=\"Optional note, reference, split cash/SumUp...\"></textarea>\n        </label>\n\n        <div class=\"modal-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n            {{ savingBalancePayment ? 'Saving...' : 'Confirm 90% payment' }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeBalancePayment()\">Cancel</button>\n        </div>\n\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n      </div>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -3385,7 +3940,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <p *ngIf=\"loading\" class=\"muted\">Loading booking...</p>\n\n    <article class=\"booking-detail-card\" *ngIf=\"!loading && booking\">\n      <span class=\"eyebrow\">Booking detail</span>\n      <h1>{{ booking.outingType }}</h1>\n      <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>\n\n      <div class=\"detail-grid\">\n        <div><strong>Customer</strong><span>{{ booking.customerName }}</span></div>\n        <div><strong>Email</strong><span>{{ booking.email }}</span></div>\n        <div><strong>Phone</strong><span>{{ booking.phone || '-' }}</span></div>\n        <div><strong>Passengers</strong><span>{{ booking.passengers || '-' }}</span></div>\n        <div><strong>Total price</strong><span>€{{ booking.totalPrice || 0 }}</span></div>\n        <div><strong>Deposit 10%</strong><span>€{{ getDepositAmount() }} · {{ isDepositPaid() ? 'paid' : 'pending' }}</span></div>\n        <div><strong>Remaining 90%</strong><span>€{{ getBalanceAmount() }} · {{ isBalancePaid() ? 'paid' : 'to collect onboard' }}</span></div>\n        <div><strong>Warranty</strong><span>{{ booking.warrantyStatus || 'not_registered' }}</span></div>\n        <div><strong>Status</strong><span>{{ booking.bookingStatus || 'requested' }}</span></div>\n        <div><strong>Owner</strong><span>{{ booking.ownerId || '-' }}</span></div>\n      </div>\n\n      <p class=\"comments\" *ngIf=\"booking.comments\">{{ booking.comments }}</p>\n\n      <section class=\"payment-admin-card\" *ngIf=\"isAdmin\">\n        <h2>Payments</h2>\n\n        <div class=\"payment-summary\">\n          <div><strong>Deposit 10%</strong><span>{{ isDepositPaid() ? 'Paid' : 'Pending' }}</span></div>\n          <div><strong>Warranty</strong><span>{{ isWarrantySecured() ? (isWarrantyCardRegistered() ? 'Card registered' : 'Cash received') : 'Not secured' }}</span></div>\n          <div><strong>Remaining 90%</strong><span>€{{ getBalanceAmount() }}</span></div>\n          <div><strong>Status</strong><span>{{ isBalancePaid() ? 'Paid onboard' : (canRecordBalancePayment() ? 'To collect before departure' : 'Locked') }}</span></div>\n        </div>\n\n        <div class=\"warranty-actions\" *ngIf=\"!isWarrantySecured()\">\n          <p>Use this when the customer gives the €500 cash warranty before departure.</p>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"markCashWarrantyReceived()\">\n            Mark €500 cash warranty received\n          </button>\n        </div>\n\n        <div class=\"cash-damage-card\" *ngIf=\"isCashWarranty()\">\n          <h3>Cash warranty envelope</h3>\n          <p>\n            Initial envelope: <strong>€{{ getCashWarrantyAmount() }}</strong><br />\n            Already taken for damages: <strong>€{{ getCashWarrantyDamagesTaken() }}</strong><br />\n            Remaining cash to return: <strong>€{{ getCashWarrantyRemaining() }}</strong>\n          </p>\n\n          <label>\n            Amount taken from envelope (€)\n            <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cashDamageAmount\" />\n          </label>\n\n          <label>\n            Damage / cost reason\n            <textarea rows=\"3\" [(ngModel)]=\"cashDamageReason\" placeholder=\"Example: blocked marine toilet, cigarette burn, broken equipment...\"></textarea>\n          </label>\n\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCashDamage\" (click)=\"recordCashWarrantyDamage()\">\n            {{ savingCashDamage ? 'Saving...' : 'Record cash taken for damage' }}\n          </button>\n\n          <p class=\"success\" *ngIf=\"cashDamageMessage\">{{ cashDamageMessage }}</p>\n          <p class=\"error-message\" *ngIf=\"cashDamageError\">{{ cashDamageError }}</p>\n        </div>\n\n        <p class=\"blocked-note\" *ngIf=\"!canRecordBalancePayment() && !isBalancePaid()\">\n          {{ getBalanceBlockedReason() }}\n        </p>\n\n        <div class=\"collect-balance\" *ngIf=\"canRecordBalancePayment()\">\n          <label>\n            Payment method\n            <select [(ngModel)]=\"balancePaymentMethod\">\n              <option value=\"sumup\">SumUp / card</option>\n              <option value=\"cash\">Cash</option>\n              <option value=\"mixed\">Mixed</option>\n            </select>\n          </label>\n\n          <label>\n            Notes\n            <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" placeholder=\"Optional note, SumUp receipt, cash, mixed payment...\"></textarea>\n          </label>\n\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n            {{ savingBalancePayment ? 'Saving...' : 'Record remaining 90% payment' }}\n          </button>\n        </div>\n\n        <p class=\"paid-badge\" *ngIf=\"isBalancePaid()\">Remaining 90% paid</p>\n        <p class=\"success\" *ngIf=\"balancePaymentMessage\">{{ balancePaymentMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n      </section>\n\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"goToPayment()\">{{ paymentButtonLabel }}</button>\n    </article>\n  </div>\n</section>\n";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <p *ngIf=\"loading\" class=\"muted\">Loading booking...</p>\n\n    <article class=\"booking-detail-card\" *ngIf=\"!loading && booking\">\n      <span class=\"eyebrow\">Booking detail</span>\n      <h1>{{ booking.outingType }}</h1>\n      <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>\n\n      <div class=\"detail-grid\">\n        <div><strong>Customer</strong><span>{{ booking.customerName }}</span></div>\n        <div><strong>Email</strong><span>{{ booking.email }}</span></div>\n        <div><strong>Phone</strong><span>{{ booking.phone || '-' }}</span></div>\n        <div><strong>Passengers</strong><span>{{ booking.passengers || '-' }}</span></div>\n        <div><strong>Total price</strong><span>€{{ booking.totalPrice || 0 }}</span></div>\n        <div><strong>Deposit 10%</strong><span>€{{ getDepositAmount() }} · {{ isDepositPaid() ? 'paid' : 'pending' }}</span></div>\n        <div><strong>Remaining 90%</strong><span>€{{ getBalanceAmount() }} · {{ isBalancePaid() ? 'paid' : 'to collect onboard' }}</span></div>\n        <div><strong>Warranty</strong><span>{{ booking.warrantyStatus || 'not_registered' }}</span></div>\n        <div><strong>Status</strong><span>{{ getStatusLabel() }}</span></div>\n        <div><strong>Owner</strong><span>{{ booking.ownerId || '-' }}</span></div>\n      </div>\n\n      <p class=\"comments\" *ngIf=\"booking.comments\">{{ booking.comments }}</p>\n\n\n      <section class=\"customer-edit-card\" *ngIf=\"!isAdmin && editMode\">\n        <h2>Update booking information</h2>\n\n        <label>\n          Customer name\n          <input type=\"text\" [(ngModel)]=\"booking.customerName\" />\n        </label>\n\n        <label>\n          Email\n          <input type=\"email\" [(ngModel)]=\"booking.email\" />\n        </label>\n\n        <label>\n          Phone\n          <input type=\"tel\" [(ngModel)]=\"booking.phone\" />\n        </label>\n\n        <label>\n          Number of guests\n          <input type=\"number\" min=\"1\" [(ngModel)]=\"booking.passengers\" />\n        </label>\n\n        <label>\n          Pickup / meeting point\n          <input type=\"text\" [(ngModel)]=\"booking.pickupLocation\" />\n        </label>\n\n        <label>\n          Comments\n          <textarea rows=\"3\" [(ngModel)]=\"booking.comments\"></textarea>\n        </label>\n\n        <div class=\"customer-edit-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCustomerUpdate\" (click)=\"saveCustomerUpdate()\">\n            {{ savingCustomerUpdate ? 'Saving...' : 'Save update' }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"savingCustomerUpdate\" (click)=\"cancelCustomerUpdate()\">\n            Cancel\n          </button>\n        </div>\n\n        <p class=\"success\" *ngIf=\"customerUpdateMessage\">{{ customerUpdateMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"customerUpdateError\">{{ customerUpdateError }}</p>\n      </section>\n\n      <section class=\"payment-admin-card\">\n        <h2>{{ getWorkflowTitle() }}</h2>\n\n        <div class=\"payment-summary workflow-summary clarity-grid\">\n          <div><strong>Booking status</strong><span>{{ getStatusLabel() }}</span></div>\n          <div><strong>Deposit 10%</strong><span>{{ getDepositStatusLabel() }}</span></div>\n          <div><strong>T&C</strong><span>{{ getTermsStatusLabel() }}</span></div>\n          <div><strong>Warranty mode</strong><span>{{ getWarrantyModeLabel() }}</span></div>\n          <div><strong>Stripe warranty card</strong><span>{{ getWarrantyCardLabel() }}</span></div>\n          <div><strong>Remaining 90%</strong><span>{{ getBalanceStatusLabel() }}</span></div>\n          <div><strong>Damage</strong><span>{{ getDamageStatusLabel() }}</span></div>\n        </div>\n\n        <div class=\"customer-action-bar\" *ngIf=\"!isAdmin\">\n          <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"canCustomerUpdateBooking() && !editMode\" (click)=\"updateCustomerBooking()\">\n            Update booking information\n          </button>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"shouldShowCustomerPaymentButton()\" (click)=\"customerPayment()\">\n            {{ customerPaymentButtonLabel }}\n          </button>\n        </div>\n\n        <div class=\"customer-action-bar\" *ngIf=\"canAdminOpenDamagePage()\">\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"openAdminDamagePage()\">\n            Open warranty / damage page\n          </button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"getBookingWorkflowState() === 'deposit_required'\">\n          <h3>Read and accept Terms & Conditions</h3>\n          <div class=\"terms-scroll-box\" (scroll)=\"onTermsScroll($event)\">\n            <h4>Alegria Boat — Terms & Conditions Summary</h4>\n            <p><strong>Booking confirmation.</strong> The booking is confirmed only after acceptance of these Terms & Conditions, selection of the warranty method and payment of the 10% deposit.</p>\n            <p><strong>Deposit.</strong> A 10% deposit is required to confirm the outing. It is refundable if the customer cancels at least 10 calendar days before the outing, or if Alegria Boat cancels the outing.</p>\n            <p><strong>Remaining balance.</strong> The remaining 90% is payable on the day of the outing before departure, by cash or card/SumUp, together with any extras.</p>\n            <p><strong>Warranty.</strong> A warranty is required either by registering a debit/credit card through Stripe or by selecting a €500 cash warranty to be handled before departure.</p>\n            <p><strong>Punctuality.</strong> Guests must arrive on time and be ready for departure at the scheduled time. Delays may reduce outing duration without compensation.</p>\n            <p><strong>Swimming and water activities.</strong> Swimming and water activities are done at the participant’s own risk and only with the skipper’s approval.</p>\n            <p><strong>Marine toilets.</strong> Marine toilets are not like household toilets. No paper, wipes, sanitary products, food, cigarette butts or foreign objects may be placed in the toilet. Misuse may be charged.</p>\n            <p><strong>Common damage charged.</strong> Cigarette burns on cushions, blocked marine toilets, lost or damaged equipment, exceptional cleaning and damage caused by negligence may be deducted from the warranty or charged to the registered card.</p>\n            <p><strong>Safety.</strong> Guests agree to follow the skipper’s instructions at all times. The skipper may cancel or interrupt the outing for safety reasons.</p>\n            <p><strong>End of terms.</strong> By ticking the checkbox below, the customer confirms having read and accepted the full rules applicable to the outing.</p>\n          </div>\n\n          <p class=\"muted\" *ngIf=\"!termsRead\">Please scroll to the end of the Terms & Conditions to continue.</p>\n\n          <label class=\"terms-check\">\n            <input type=\"checkbox\" [(ngModel)]=\"termsAccepted\" [disabled]=\"!termsRead\" />\n            <span>I have read and accept the Terms & Conditions.</span>\n          </label>\n\n          <h3>Select warranty method</h3>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoice\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n            <span>Register debit/credit card via Stripe for the warranty.</span>\n          </label>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoice\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n            <span>Select €500 cash warranty before departure.</span>\n          </label>\n\n          <p class=\"blocked-note\" *ngIf=\"getDepositBlockedReason()\">{{ getDepositBlockedReason() }}</p>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!isDepositPaid()\" [disabled]=\"!canPayDeposit()\" (click)=\"payDeposit()\">\n            Pay 10% deposit and confirm booking\n          </button>\n\n          <p class=\"paid-badge\" *ngIf=\"isDepositPaid()\">10% deposit already paid</p>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"getBookingWorkflowState() === 'warranty_choice_required'\">\n          <h3>Choose warranty method</h3>\n          <p>The booking is confirmed. Please select how the warranty will be handled.</p>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoiceConfirmed\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n            <span>Register debit/credit card via Stripe</span>\n          </label>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoiceConfirmed\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n            <span>€500 cash warranty before departure</span>\n          </label>\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"warrantySaving || !warrantyChoice\" (click)=\"warrantyChoice === 'cash_on_board' ? selectWarrantyCash() : selectWarrantyCard()\">\n            Save warranty choice\n          </button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"getBookingWorkflowState() === 'warranty_card_required'\">\n          <h3>Register warranty card</h3>\n          <p>The booking is confirmed. The customer selected card warranty and must register a card with Stripe.</p>\n          <button class=\"btn btn-primary\" type=\"button\" (click)=\"registerWarrantyCard()\">Register warranty card</button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"getBookingWorkflowState() === 'balance_required'\">\n          <h3>Collect remaining 90%</h3>\n          <p>Amount due before departure: <strong>€{{ getBalanceAmount() }}</strong></p>\n\n          <div class=\"collect-balance\" *ngIf=\"isAdmin\">\n            <label>\n              Payment method\n              <select [(ngModel)]=\"balancePaymentMethod\">\n                <option value=\"sumup\">SumUp / card</option>\n                <option value=\"cash\">Cash</option>\n                <option value=\"mixed\">Mixed</option>\n              </select>\n            </label>\n\n            <label>\n              Notes\n              <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" placeholder=\"Optional note, SumUp receipt, cash, mixed payment...\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n              {{ savingBalancePayment ? 'Saving...' : 'Record remaining 90% payment' }}\n            </button>\n          </div>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"getBookingWorkflowState() === 'payment_done' && isAdmin\">\n          <h3>Damage management</h3>\n          <p>The booking is confirmed, warranty is selected/registered, and the full outing payment is recorded.</p>\n\n          <div class=\"cash-damage-card\" *ngIf=\"isCashWarranty()\">\n            <h3>Cash warranty envelope</h3>\n            <p>\n              Initial envelope: <strong>€{{ getCashWarrantyAmount() }}</strong><br />\n              Already taken for damages: <strong>€{{ getCashWarrantyDamagesTaken() }}</strong><br />\n              Remaining cash to return: <strong>€{{ getCashWarrantyRemaining() }}</strong>\n            </p>\n\n            <label>\n              Amount taken from envelope (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cashDamageAmount\" />\n            </label>\n\n            <label>\n              Damage / cost reason\n              <textarea rows=\"3\" [(ngModel)]=\"cashDamageReason\" placeholder=\"Example: blocked marine toilet, cigarette burn, broken equipment...\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCashDamage\" (click)=\"recordCashWarrantyDamage()\">\n              {{ savingCashDamage ? 'Saving...' : 'Record cash taken for damage' }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"cashDamageMessage\">{{ cashDamageMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"cashDamageError\">{{ cashDamageError }}</p>\n          </div>\n\n          <div class=\"cash-damage-card\" *ngIf=\"isWarrantyCardRegistered()\">\n            <h3>Charge card warranty</h3>\n            <p>Maximum warranty: <strong>€{{ booking.warrantyAmount || 500 }}</strong></p>\n\n            <label>\n              Damage amount (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cardDamageAmount\" />\n            </label>\n\n            <label>\n              Damage reason\n              <textarea rows=\"3\" [(ngModel)]=\"cardDamageReason\" placeholder=\"Example: blocked marine toilet, cigarette burn, broken equipment...\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCardDamage\" (click)=\"recordCardWarrantyDamage()\">\n              {{ savingCardDamage ? 'Charging...' : 'Charge damage to warranty card' }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"cardDamageMessage\">{{ cardDamageMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"cardDamageError\">{{ cardDamageError }}</p>\n          </div>\n        </div>\n\n        <p class=\"success\" *ngIf=\"balancePaymentMessage\">{{ balancePaymentMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n        <p class=\"success\" *ngIf=\"warrantyMessage\">{{ warrantyMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"warrantyError\">{{ warrantyError }}</p>\n      </section>\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -3651,6 +4206,250 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 /***/ }),
 
+/***/ 31660:
+/*!**************************************************************************!*\
+  !*** ./src/app/home/my-proposals/my-proposals.component.scss?ngResource ***!
+  \**************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.proposal-page {
+  padding: 80px 0;
+  background: #f6f2ea;
+  min-height: 70vh;
+}
+
+.proposal-shell {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.section-head {
+  margin-bottom: 28px;
+  max-width: 780px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: #b58b4a;
+  font-weight: 700;
+}
+
+h1 {
+  color: #08263a;
+  margin: 8px 0;
+}
+
+.section-head p,
+.muted {
+  color: #516070;
+  line-height: 1.6;
+}
+
+.proposal-tabs {
+  display: inline-flex;
+  gap: 0.5rem;
+  background: rgba(8, 38, 58, 0.06);
+  border-radius: 999px;
+  padding: 0.35rem;
+  margin: 1rem 0;
+}
+
+.proposal-tabs button {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  padding: 0.7rem 1.1rem;
+  color: #08263a;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.proposal-tabs button.active {
+  background: #fff;
+  box-shadow: 0 8px 22px rgba(8, 38, 58, 0.08);
+}
+
+.proposal-tabs span {
+  display: inline-flex;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(181, 139, 74, 0.16);
+  color: #b58b4a;
+  margin-left: 0.35rem;
+}
+
+.proposal-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  align-items: end;
+  margin: 1rem 0 1.4rem;
+}
+
+.proposal-toolbar label {
+  display: grid;
+  gap: 0.35rem;
+  color: #08263a;
+  font-weight: 700;
+  min-width: 260px;
+}
+
+.proposal-toolbar input {
+  min-height: 42px;
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 14px;
+  padding: 0.65rem 0.75rem;
+  background: #fff;
+  font: inherit;
+}
+
+.proposal-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.proposal-card,
+.empty-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 1.25rem;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  box-shadow: 0 18px 45px rgba(8, 38, 58, 0.08);
+}
+
+.proposal-card {
+  cursor: pointer;
+}
+
+.proposal-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 22px 55px rgba(8, 38, 58, 0.12);
+}
+
+.proposal-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.status-pill {
+  display: inline-flex;
+  border-radius: 999px;
+  background: rgba(181, 139, 74, 0.12);
+  color: #8a652d;
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.status-accepted {
+  background: rgba(4, 120, 87, 0.12);
+  color: #047857;
+}
+
+.status-declined,
+.status-expired {
+  background: rgba(185, 28, 28, 0.1);
+  color: #b91c1c;
+}
+
+.validity {
+  color: #516070;
+  font-size: 0.9rem;
+}
+
+.proposal-card h2 {
+  margin: 1rem 0 0.35rem;
+  color: #08263a;
+}
+
+.proposal-date,
+.proposal-message {
+  color: #516070;
+  line-height: 1.5;
+}
+
+.proposal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.proposal-grid div {
+  display: grid;
+  gap: 0.25rem;
+  background: #f8f5ef;
+  border-radius: 16px;
+  padding: 0.9rem;
+}
+
+.proposal-grid strong {
+  color: #08263a;
+}
+
+.proposal-grid span {
+  color: #516070;
+  font-weight: 700;
+}
+
+.proposal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: #08263a;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #efe7da;
+  color: #08263a;
+}
+
+.error-message {
+  color: #b91c1c;
+}
+
+@media (max-width: 640px) {
+  .proposal-tabs {
+    width: 100%;
+    overflow: auto;
+  }
+  .proposal-toolbar label {
+    min-width: 100%;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/my-proposals/my-proposals.component.scss"],"names":[],"mappings":"AAAA;EACE,eAAA;EACA,mBAAA;EACA,gBAAA;AACF;;AAEA;EACE,iBAAA;EACA,cAAA;AACF;;AAEA;EACE,mBAAA;EACA,gBAAA;AACF;;AAEA;EACE,yBAAA;EACA,sBAAA;EACA,kBAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,cAAA;EACA,aAAA;AACF;;AAEA;;EAEE,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,oBAAA;EACA,WAAA;EACA,iCAAA;EACA,oBAAA;EACA,gBAAA;EACA,cAAA;AACF;;AAEA;EACE,SAAA;EACA,oBAAA;EACA,uBAAA;EACA,sBAAA;EACA,cAAA;EACA,gBAAA;EACA,eAAA;AACF;;AAEA;EACE,gBAAA;EACA,4CAAA;AACF;;AAEA;EACE,oBAAA;EACA,iBAAA;EACA,cAAA;EACA,mBAAA;EACA,uBAAA;EACA,oBAAA;EACA,oCAAA;EACA,cAAA;EACA,oBAAA;AACF;;AAEA;EACE,aAAA;EACA,eAAA;EACA,YAAA;EACA,gBAAA;EACA,qBAAA;AACF;;AAEA;EACE,aAAA;EACA,YAAA;EACA,cAAA;EACA,gBAAA;EACA,gBAAA;AACF;;AAEA;EACE,gBAAA;EACA,uCAAA;EACA,mBAAA;EACA,wBAAA;EACA,gBAAA;EACA,aAAA;AACF;;AAEA;EACE,aAAA;EACA,SAAA;AACF;;AAEA;;EAEE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,uCAAA;EACA,6CAAA;AACF;;AAEA;EACE,eAAA;AACF;;AAEA;EACE,2BAAA;EACA,6CAAA;AACF;;AAEA;EACE,aAAA;EACA,eAAA;EACA,8BAAA;EACA,YAAA;EACA,mBAAA;AACF;;AAEA;EACE,oBAAA;EACA,oBAAA;EACA,oCAAA;EACA,cAAA;EACA,iBAAA;EACA,kBAAA;EACA,gBAAA;AACF;;AAEA;EACE,kCAAA;EACA,cAAA;AACF;;AAEA;;EAEE,kCAAA;EACA,cAAA;AACF;;AAEA;EACE,cAAA;EACA,iBAAA;AACF;;AAEA;EACE,sBAAA;EACA,cAAA;AACF;;AAEA;;EAEE,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,aAAA;EACA,2DAAA;EACA,YAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,YAAA;EACA,mBAAA;EACA,mBAAA;EACA,eAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,aAAA;EACA,eAAA;EACA,YAAA;EACA,gBAAA;AACF;;AAEA;EACE,SAAA;EACA,oBAAA;EACA,oBAAA;EACA,gBAAA;EACA,eAAA;EACA,qBAAA;AACF;;AAEA;EACE,mBAAA;EACA,WAAA;AACF;;AAEA;EACE,mBAAA;EACA,cAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE;IACE,WAAA;IACA,cAAA;EACF;EAEA;IACE,eAAA;EAAF;AACF","sourcesContent":[".proposal-page {\n  padding: 80px 0;\n  background: #f6f2ea;\n  min-height: 70vh;\n}\n\n.proposal-shell {\n  max-width: 1120px;\n  margin: 0 auto;\n}\n\n.section-head {\n  margin-bottom: 28px;\n  max-width: 780px;\n}\n\n.eyebrow {\n  text-transform: uppercase;\n  letter-spacing: .14em;\n  font-size: .78rem;\n  color: #b58b4a;\n  font-weight: 700;\n}\n\nh1 {\n  color: #08263a;\n  margin: 8px 0;\n}\n\n.section-head p,\n.muted {\n  color: #516070;\n  line-height: 1.6;\n}\n\n.proposal-tabs {\n  display: inline-flex;\n  gap: 0.5rem;\n  background: rgba(8,38,58,.06);\n  border-radius: 999px;\n  padding: 0.35rem;\n  margin: 1rem 0;\n}\n\n.proposal-tabs button {\n  border: 0;\n  border-radius: 999px;\n  background: transparent;\n  padding: 0.7rem 1.1rem;\n  color: #08263a;\n  font-weight: 800;\n  cursor: pointer;\n}\n\n.proposal-tabs button.active {\n  background: #fff;\n  box-shadow: 0 8px 22px rgba(8,38,58,.08);\n}\n\n.proposal-tabs span {\n  display: inline-flex;\n  min-width: 1.6rem;\n  height: 1.6rem;\n  align-items: center;\n  justify-content: center;\n  border-radius: 999px;\n  background: rgba(181,139,74,.16);\n  color: #b58b4a;\n  margin-left: 0.35rem;\n}\n\n.proposal-toolbar {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.85rem;\n  align-items: end;\n  margin: 1rem 0 1.4rem;\n}\n\n.proposal-toolbar label {\n  display: grid;\n  gap: 0.35rem;\n  color: #08263a;\n  font-weight: 700;\n  min-width: 260px;\n}\n\n.proposal-toolbar input {\n  min-height: 42px;\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.65rem 0.75rem;\n  background: #fff;\n  font: inherit;\n}\n\n.proposal-list {\n  display: grid;\n  gap: 1rem;\n}\n\n.proposal-card,\n.empty-card {\n  background: #fff;\n  border-radius: 24px;\n  padding: 1.25rem;\n  border: 1px solid rgba(8,38,58,.08);\n  box-shadow: 0 18px 45px rgba(8,38,58,.08);\n}\n\n.proposal-card {\n  cursor: pointer;\n}\n\n.proposal-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 22px 55px rgba(8,38,58,.12);\n}\n\n.proposal-top {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: space-between;\n  gap: 0.75rem;\n  align-items: center;\n}\n\n.status-pill {\n  display: inline-flex;\n  border-radius: 999px;\n  background: rgba(181,139,74,.12);\n  color: #8a652d;\n  padding: 6px 10px;\n  font-size: .78rem;\n  font-weight: 800;\n}\n\n.status-accepted {\n  background: rgba(4,120,87,.12);\n  color: #047857;\n}\n\n.status-declined,\n.status-expired {\n  background: rgba(185,28,28,.1);\n  color: #b91c1c;\n}\n\n.validity {\n  color: #516070;\n  font-size: .9rem;\n}\n\n.proposal-card h2 {\n  margin: 1rem 0 0.35rem;\n  color: #08263a;\n}\n\n.proposal-date,\n.proposal-message {\n  color: #516070;\n  line-height: 1.5;\n}\n\n.proposal-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));\n  gap: 0.75rem;\n  margin: 1rem 0;\n}\n\n.proposal-grid div {\n  display: grid;\n  gap: 0.25rem;\n  background: #f8f5ef;\n  border-radius: 16px;\n  padding: 0.9rem;\n}\n\n.proposal-grid strong {\n  color: #08263a;\n}\n\n.proposal-grid span {\n  color: #516070;\n  font-weight: 700;\n}\n\n.proposal-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.75rem;\n  margin-top: 1rem;\n}\n\n.btn {\n  border: 0;\n  border-radius: 999px;\n  padding: 0.7rem 1rem;\n  font-weight: 800;\n  cursor: pointer;\n  text-decoration: none;\n}\n\n.btn-primary {\n  background: #08263a;\n  color: #fff;\n}\n\n.btn-secondary {\n  background: #efe7da;\n  color: #08263a;\n}\n\n.error-message {\n  color: #b91c1c;\n}\n\n@media (max-width: 640px) {\n  .proposal-tabs {\n    width: 100%;\n    overflow: auto;\n  }\n\n  .proposal-toolbar label {\n    min-width: 100%;\n  }\n}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
 /***/ 32134:
 /*!*******************************************************************************!*\
   !*** ./src/app/home/admin-warranty-charge/admin-warranty-charge.component.ts ***!
@@ -3814,7 +4613,7 @@ GuestJourneyComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_a
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"feedback-page\">\n  <div class=\"container feedback-card\">\n    <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n    <h1>{{ t('title') }}</h1>\n    <p class=\"intro\">{{ t('intro') }}</p>\n\n    <div class=\"state-card\" *ngIf=\"!loggedUser\">\n      <p>{{ t('loginRequired') }}</p>\n      <a routerLink=\"/login\" class=\"btn btn-primary\">{{ t('login') }}</a>\n    </div>\n\n    <form class=\"feedback-form\" *ngIf=\"loggedUser\" (ngSubmit)=\"saveFeedback()\">\n      <div class=\"form-head full\">\n        <h2>{{ t('formTitle') }}</h2>\n        <p>{{ t('formIntro') }}</p>\n      </div>\n\n      <label>\n        <span>{{ t('formDate') }}</span>\n        <input type=\"date\" name=\"date\" [(ngModel)]=\"feedback.date\" required />\n      </label>\n\n      <label>\n        <span>{{ t('time') }}</span>\n        <input type=\"time\" name=\"time\" [(ngModel)]=\"feedback.time\" required />\n      </label>\n\n      <label class=\"full\">\n        <span>{{ t('outingType') }}</span>\n        <select name=\"outingType\" [(ngModel)]=\"feedback.outingType\" required>\n          <option *ngFor=\"let option of outingOptions[currentLanguage]\" [value]=\"option\">\n            {{ option }}\n          </option>\n        </select>\n      </label>\n\n      <label class=\"full\">\n        <span>{{ t('rating') }}</span>\n        <div class=\"rating-buttons\" role=\"radiogroup\" [attr.aria-label]=\"t('rating')\">\n          <button\n            type=\"button\"\n            *ngFor=\"let value of [1,2,3,4,5]\"\n            [class.active]=\"feedback.rating === value\"\n            (click)=\"setRating(value)\"\n            [attr.aria-pressed]=\"feedback.rating === value\">\n            {{ value }} ★\n          </button>\n        </div>\n      </label>\n\n      <label class=\"full\">\n        <span>{{ t('comments') }}</span>\n        <textarea name=\"comments\" rows=\"5\" [(ngModel)]=\"feedback.comments\" required></textarea>\n      </label>\n\n      <div class=\"form-actions full\">\n        <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"saving\">\n          {{ saving ? t('saving') : t('save') }}\n        </button>\n      </div>\n\n      <p class=\"success full\" *ngIf=\"saved\">{{ t('saved') }}</p>\n      <p class=\"error full\" *ngIf=\"saveError\">{{ saveError }}</p>\n    </form>\n\n    <div class=\"feedback-list\" *ngIf=\"loggedUser\">\n      <h2>{{ t('listTitle') }}</h2>\n\n      <div class=\"state-card\" *ngIf=\"loading\">\n        <p>{{ t('loading') }}</p>\n      </div>\n\n      <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n      <p class=\"success\" *ngIf=\"editSaved\">{{ editSaved }}</p>\n      <p class=\"error\" *ngIf=\"editError\">{{ editError }}</p>\n\n      <div class=\"state-card\" *ngIf=\"!loading && !error && feedbacks.length === 0\">\n        <p>{{ t('empty') }}</p>\n      </div>\n\n      <div class=\"feedback-grid\" *ngIf=\"!loading && feedbacks.length > 0\">\n        <article class=\"feedback-item\" *ngFor=\"let item of feedbacks\">\n          <ng-container *ngIf=\"editingFeedbackId !== feedbackId(item); else editBlock\">\n            <div class=\"feedback-topline\">\n              <strong>{{ item.outingType || '-' }}</strong>\n              <span class=\"stars\">{{ stars(item.rating || item.rate) }}</span>\n            </div>\n\n            <div class=\"feedback-meta\">\n              <span>{{ t('date') }}: {{ item.date || '-' }}</span>\n              <span>{{ t('time') }}: {{ item.time || '-' }}</span>\n            </div>\n\n            <p class=\"feedback-comment\">{{ displayComment(item) }}</p>\n\n            <div class=\"feedback-actions\">\n              <button type=\"button\" class=\"btn btn-secondary\" (click)=\"startEdit(item)\">\n                {{ t('edit') }}\n              </button>\n\n              <button\n                type=\"button\"\n                class=\"btn btn-danger\"\n                (click)=\"deleteFeedback(item)\"\n                [disabled]=\"deletingFeedbackId === feedbackId(item)\">\n                {{ t('delete') }}\n              </button>\n            </div>\n          </ng-container>\n\n          <ng-template #editBlock>\n            <form class=\"feedback-form edit-form\" (ngSubmit)=\"updateExistingFeedback(item)\">\n              <label>\n                <span>{{ t('formDate') }}</span>\n                <input type=\"date\" name=\"editDate{{ feedbackId(item) }}\" [(ngModel)]=\"editFeedback.date\" required />\n              </label>\n\n              <label>\n                <span>{{ t('time') }}</span>\n                <input type=\"time\" name=\"editTime{{ feedbackId(item) }}\" [(ngModel)]=\"editFeedback.time\" required />\n              </label>\n\n              <label class=\"full\">\n                <span>{{ t('outingType') }}</span>\n                <select name=\"editOutingType{{ feedbackId(item) }}\" [(ngModel)]=\"editFeedback.outingType\" required>\n                  <option *ngFor=\"let option of outingOptions[currentLanguage]\" [value]=\"option\">\n                    {{ option }}\n                  </option>\n                </select>\n              </label>\n\n              <label class=\"full\">\n                <span>{{ t('rating') }}</span>\n                <div class=\"rating-buttons\" role=\"radiogroup\" [attr.aria-label]=\"t('rating')\">\n                  <button\n                    type=\"button\"\n                    *ngFor=\"let value of [1,2,3,4,5]\"\n                    [class.active]=\"editFeedback.rating === value\"\n                    (click)=\"setEditRating(value)\"\n                    [attr.aria-pressed]=\"editFeedback.rating === value\">\n                    {{ value }} ★\n                  </button>\n                </div>\n              </label>\n\n              <label class=\"full\">\n                <span>{{ t('comments') }}</span>\n                <textarea name=\"editComments{{ feedbackId(item) }}\" rows=\"4\" [(ngModel)]=\"editFeedback.comments\" required></textarea>\n              </label>\n\n              <div class=\"form-actions full edit-actions\">\n                <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"saving\">\n                  {{ saving ? t('saving') : t('update') }}\n                </button>\n                <button class=\"btn btn-secondary\" type=\"button\" (click)=\"cancelEdit()\">\n                  {{ t('cancel') }}\n                </button>\n              </div>\n            </form>\n          </ng-template>\n        </article>\n      </div>\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"feedback-page\">\n  <div class=\"container feedback-card\">\n    <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n    <h1>{{ t('title') }}</h1>\n    <p class=\"intro\">{{ t('intro') }}</p>\n\n    <div class=\"state-card\" *ngIf=\"!loggedUser\">\n      <p>{{ t('loginRequired') }}</p>\n      <a routerLink=\"/login\" class=\"btn btn-primary\">{{ t('login') }}</a>\n    </div>\n\n    <form class=\"feedback-form\" *ngIf=\"loggedUser\" (ngSubmit)=\"saveFeedback()\">\n      <div class=\"form-head full\">\n        <h2>{{ t('formTitle') }}</h2>\n        <p>{{ t('formIntro') }}</p>\n      </div>\n\n      <div class=\"state-card full\" *ngIf=\"eligibleBookings.length === 0\">\n        <p>{{ t('noEligibleBookings') }}</p>\n      </div>\n\n      <label class=\"full\" *ngIf=\"eligibleBookings.length > 0\">\n        <span>{{ t('outing') }}</span>\n        <select name=\"bookingId\" [(ngModel)]=\"feedback.bookingId\" (ngModelChange)=\"selectFeedbackBooking($event)\" required>\n          <option value=\"\" disabled>Select an outing</option>\n          <option *ngFor=\"let booking of eligibleBookings\" [value]=\"booking.bookingId\">\n            {{ feedbackBookingLabel(booking) }}\n          </option>\n        </select>\n      </label>\n\n      <label>\n        <span>{{ t('formDate') }}</span>\n        <input type=\"date\" name=\"date\" [(ngModel)]=\"feedback.date\" readonly required />\n      </label>\n\n      <label>\n        <span>{{ t('time') }}</span>\n        <input type=\"time\" name=\"time\" [(ngModel)]=\"feedback.time\" readonly required />\n      </label>\n\n      <label class=\"full\">\n        <span>{{ t('outingType') }}</span>\n        <input type=\"text\" name=\"outingType\" [(ngModel)]=\"feedback.outingType\" readonly required />\n      </label>\n\n      <label class=\"full\">\n        <span>{{ t('rating') }}</span>\n        <div class=\"rating-buttons\" role=\"radiogroup\" [attr.aria-label]=\"t('rating')\">\n          <button\n            type=\"button\"\n            *ngFor=\"let value of [1,2,3,4,5]\"\n            [class.active]=\"feedback.rating === value\"\n            (click)=\"setRating(value)\"\n            [attr.aria-pressed]=\"feedback.rating === value\">\n            {{ value }} ★\n          </button>\n        </div>\n      </label>\n\n      <label class=\"full\">\n        <span>{{ t('comments') }}</span>\n        <textarea name=\"comments\" rows=\"5\" [(ngModel)]=\"feedback.comments\" required></textarea>\n      </label>\n\n      <div class=\"form-actions full\">\n        <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"saving || eligibleBookings.length === 0\">\n          {{ saving ? t('saving') : t('save') }}\n        </button>\n      </div>\n\n      <p class=\"success full\" *ngIf=\"saved\">{{ t('saved') }}</p>\n      <p class=\"error full\" *ngIf=\"saveError\">{{ saveError }}</p>\n    </form>\n\n    <div class=\"feedback-list\" *ngIf=\"loggedUser\">\n      <h2>{{ t('listTitle') }}</h2>\n\n      <div class=\"state-card\" *ngIf=\"loading\">\n        <p>{{ t('loading') }}</p>\n      </div>\n\n      <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n      <p class=\"success\" *ngIf=\"editSaved\">{{ editSaved }}</p>\n      <p class=\"error\" *ngIf=\"editError\">{{ editError }}</p>\n\n      <div class=\"state-card\" *ngIf=\"!loading && !error && feedbacks.length === 0\">\n        <p>{{ t('empty') }}</p>\n      </div>\n\n      <div class=\"feedback-grid\" *ngIf=\"!loading && feedbacks.length > 0\">\n        <article class=\"feedback-item\" *ngFor=\"let item of feedbacks\">\n          <ng-container *ngIf=\"editingFeedbackId !== feedbackId(item); else editBlock\">\n            <div class=\"feedback-topline\">\n              <strong>{{ item.outingType || '-' }}</strong>\n              <span class=\"stars\">{{ stars(item.rating || item.rate) }}</span>\n            </div>\n\n            <div class=\"feedback-meta\">\n              <span>{{ t('date') }}: {{ item.date || '-' }}</span>\n              <span>{{ t('time') }}: {{ item.time || '-' }}</span>\n            </div>\n\n            <p class=\"feedback-comment\">{{ displayComment(item) }}</p>\n\n            <div class=\"feedback-actions\">\n              <button type=\"button\" class=\"btn btn-secondary\" (click)=\"startEdit(item)\">\n                {{ t('edit') }}\n              </button>\n\n              <button\n                type=\"button\"\n                class=\"btn btn-danger\"\n                (click)=\"deleteFeedback(item)\"\n                [disabled]=\"deletingFeedbackId === feedbackId(item)\">\n                {{ t('delete') }}\n              </button>\n            </div>\n          </ng-container>\n\n          <ng-template #editBlock>\n            <form class=\"feedback-form edit-form\" (ngSubmit)=\"updateExistingFeedback(item)\">\n              <label>\n                <span>{{ t('formDate') }}</span>\n                <input type=\"date\" name=\"editDate{{ feedbackId(item) }}\" [(ngModel)]=\"editFeedback.date\" readonly required />\n              </label>\n\n              <label>\n                <span>{{ t('time') }}</span>\n                <input type=\"time\" name=\"editTime{{ feedbackId(item) }}\" [(ngModel)]=\"editFeedback.time\" readonly required />\n              </label>\n\n              <label class=\"full\">\n                <span>{{ t('outingType') }}</span>\n                <input type=\"text\" name=\"editOutingType{{ feedbackId(item) }}\" [(ngModel)]=\"editFeedback.outingType\" readonly required />\n              </label>\n\n              <label class=\"full\">\n                <span>{{ t('rating') }}</span>\n                <div class=\"rating-buttons\" role=\"radiogroup\" [attr.aria-label]=\"t('rating')\">\n                  <button\n                    type=\"button\"\n                    *ngFor=\"let value of [1,2,3,4,5]\"\n                    [class.active]=\"editFeedback.rating === value\"\n                    (click)=\"setEditRating(value)\"\n                    [attr.aria-pressed]=\"editFeedback.rating === value\">\n                    {{ value }} ★\n                  </button>\n                </div>\n              </label>\n\n              <label class=\"full\">\n                <span>{{ t('comments') }}</span>\n                <textarea name=\"editComments{{ feedbackId(item) }}\" rows=\"4\" [(ngModel)]=\"editFeedback.comments\" required></textarea>\n              </label>\n\n              <div class=\"form-actions full edit-actions\">\n                <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"saving\">\n                  {{ saving ? t('saving') : t('update') }}\n                </button>\n                <button class=\"btn btn-secondary\" type=\"button\" (click)=\"cancelEdit()\">\n                  {{ t('cancel') }}\n                </button>\n              </div>\n            </form>\n          </ng-template>\n        </article>\n      </div>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -4583,7 +5382,7 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
   };
   editingAnchorageId = '';
   loading = false;
-  restDatabaseUrls = ['https://adn-dev-4d05d-default-rtdb.europe-west1.firebasedatabase.app', 'https://adn-dev-4d05d-default-rtdb.firebaseio.com', 'https://adn-dev-4d05d.firebaseio.com'];
+  restDatabaseUrls = ['https://adn-dev-4d05d.firebaseio.com'];
   saving = false;
   saved = false;
   error = '';
@@ -5982,7 +6781,7 @@ AdminProposalsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"account-page\">\n  <div class=\"container account-card\">\n    <span class=\"eyebrow\">{{ eyebrow }}</span>\n    <h1>{{ title }}</h1>\n    <p>{{ intro }}</p>\n\n    <div class=\"account-empty\">\n      <p>{{ emptyText }}</p>\n      <a routerLink=\"/contact\" class=\"btn btn-primary\">{{ content.nav.contact }}</a>\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"account-page\">\n  <div class=\"container account-card\">\n    <span class=\"eyebrow\">{{ eyebrow }}</span>\n    <h1>{{ title }}</h1>\n    <p>{{ intro }}</p>\n\n    <ng-container *ngIf=\"section === 'payments'; else defaultAccountSection\">\n      <div class=\"payment-toolbar\">\n        <label>\n          <span>Type</span>\n          <select [(ngModel)]=\"paymentTypeFilter\">\n            <option value=\"all\">All payment types</option>\n            <option value=\"deposit\">10% deposit</option>\n            <option value=\"balance\">Remaining 90%</option>\n            <option value=\"warranty_card\">Warranty card</option>\n            <option value=\"warranty_cash\">Cash warranty</option>\n            <option value=\"warranty_charge\">Card damage charge</option>\n            <option value=\"cash_damage\">Cash damage</option>\n          </select>\n        </label>\n\n        <label>\n          <span>Status</span>\n          <select [(ngModel)]=\"paymentStatusFilter\">\n            <option value=\"all\">All statuses</option>\n            <option value=\"paid\">Paid</option>\n            <option value=\"registered\">Registered</option>\n            <option value=\"selected\">Selected</option>\n            <option value=\"received\">Received</option>\n            <option value=\"charged\">Charged</option>\n            <option value=\"recorded\">Recorded</option>\n          </select>\n        </label>\n\n        <label>\n          <span>Order</span>\n          <select [(ngModel)]=\"paymentSortDirection\">\n            <option value=\"desc\">Newest first</option>\n            <option value=\"asc\">Oldest first</option>\n          </select>\n        </label>\n\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetPaymentFilters()\">Reset</button>\n      </div>\n\n      <p *ngIf=\"loading\" class=\"muted\">Loading payments...</p>\n\n      <div class=\"account-empty\" *ngIf=\"!loading && payments.length === 0\">\n        <p>No payment is linked to your account yet.</p>\n        <a routerLink=\"/my-bookings\" class=\"btn btn-primary\">Go to my bookings</a>\n      </div>\n\n      <div class=\"payment-summary\" *ngIf=\"!loading && payments.length > 0\">\n        Showing <strong>{{ filteredPayments.length }}</strong> of <strong>{{ payments.length }}</strong> payment records.\n      </div>\n\n      <div class=\"payments-list\" *ngIf=\"!loading && filteredPayments.length > 0\">\n        <button class=\"payment-row\" type=\"button\" *ngFor=\"let payment of filteredPayments\" (click)=\"openPaymentBooking(payment)\">\n          <span class=\"payment-type\" [ngClass]=\"getPaymentTypeClass(payment)\">\n            {{ payment.label }}\n          </span>\n\n          <span class=\"payment-main\">\n            <strong>{{ payment.description }}</strong>\n            <small>Booking: {{ payment.bookingId }}</small>\n            <small>{{ formatPaymentDate(payment.date) }} · {{ payment.method }}</small>\n          </span>\n\n          <span class=\"payment-amount\">\n            <strong>{{ formatPaymentAmount(payment.amount) }}</strong>\n            <small>{{ payment.status }}</small>\n          </span>\n\n          <span class=\"payment-open\">Open booking ›</span>\n        </button>\n      </div>\n\n      <div class=\"account-empty\" *ngIf=\"!loading && payments.length > 0 && filteredPayments.length === 0\">\n        <p>No payment matches the selected filters.</p>\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetPaymentFilters()\">Reset filters</button>\n      </div>\n    </ng-container>\n\n    <ng-template #defaultAccountSection>\n      <div class=\"account-empty\">\n        <p>{{ emptyText }}</p>\n        <a routerLink=\"/contact\" class=\"btn btn-primary\">{{ content.nav.contact }}</a>\n      </div>\n    </ng-template>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -5997,12 +6796,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeModule: () => (/* binding */ HomeModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! @angular/router */ 99585);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! @ionic/angular */ 21507);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! @ionic/angular */ 21507);
 /* harmony import */ var _home_router_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home.router.module */ 61506);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
@@ -6028,11 +6827,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./guest-journey/guest-journey.component */ 35822);
 /* harmony import */ var _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./bookings/bookings.component */ 88636);
 /* harmony import */ var _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./my-bookings/my-bookings.component */ 18170);
-/* harmony import */ var _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./booking-detail/booking-detail.component */ 82474);
-/* harmony import */ var _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./admin-warranty-charge/admin-warranty-charge.component */ 32134);
-/* harmony import */ var _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./admin-proposals/admin-proposals.component */ 43758);
-/* harmony import */ var _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./proposal-confirmation/proposal-confirmation.component */ 96894);
-/* harmony import */ var _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./admin-external-bookings/admin-external-bookings.component */ 65726);
+/* harmony import */ var _my_proposals_my_proposals_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./my-proposals/my-proposals.component */ 8968);
+/* harmony import */ var _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./booking-detail/booking-detail.component */ 82474);
+/* harmony import */ var _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./admin-warranty-charge/admin-warranty-charge.component */ 32134);
+/* harmony import */ var _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./admin-proposals/admin-proposals.component */ 43758);
+/* harmony import */ var _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./proposal-confirmation/proposal-confirmation.component */ 96894);
+/* harmony import */ var _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./admin-external-bookings/admin-external-bookings.component */ 65726);
+
 
 
 
@@ -6070,9 +6871,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let HomeModule = class HomeModule {};
-HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_30__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_31__.NgModule)({
-  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent, _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__.SafetyInstructionsComponent, _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_13__.DepositComponent, _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__.AccountSummaryComponent, _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_15__.MyProfileComponent, _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__.MyFeedbacksComponent, _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.AdminFeedbacksComponent, _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingsComponent, _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_19__.AdminOutingDetailComponent, _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__.AdminManageOutingsComponent, _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_21__.GuestFaqComponent, _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__.GuestJourneyComponent, _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__.BookingsComponent, _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__.MyBookingsComponent, _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__.BookingDetailComponent, _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_26__.AdminWarrantyChargeComponent, _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_27__.AdminProposalsComponent, _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_28__.ProposalConfirmationComponent, _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_29__.AdminExternalBookingsComponent],
-  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_32__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_33__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_34__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_35__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule]
+HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_31__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_32__.NgModule)({
+  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent, _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__.SafetyInstructionsComponent, _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_13__.DepositComponent, _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__.AccountSummaryComponent, _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_15__.MyProfileComponent, _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__.MyFeedbacksComponent, _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.AdminFeedbacksComponent, _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingsComponent, _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_19__.AdminOutingDetailComponent, _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__.AdminManageOutingsComponent, _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_21__.GuestFaqComponent, _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__.GuestJourneyComponent, _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__.BookingsComponent, _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__.MyBookingsComponent, _my_proposals_my_proposals_component__WEBPACK_IMPORTED_MODULE_25__.MyProposalsComponent, _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_26__.BookingDetailComponent, _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_27__.AdminWarrantyChargeComponent, _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_28__.AdminProposalsComponent, _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_29__.ProposalConfirmationComponent, _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_30__.AdminExternalBookingsComponent],
+  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_33__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_34__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_35__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_36__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule]
 })], HomeModule);
 
 
@@ -6786,7 +7587,7 @@ const DEFAULT_GUEST_INFO_CONTENT = {
 };
 let GuestContentService = class GuestContentService {
   http;
-  restDatabaseUrls = ['https://adn-dev-4d05d-default-rtdb.europe-west1.firebasedatabase.app', 'https://adn-dev-4d05d-default-rtdb.firebaseio.com', 'https://adn-dev-4d05d.firebaseio.com'];
+  restDatabaseUrls = ['https://adn-dev-4d05d.firebaseio.com'];
   cached;
   constructor(http) {
     this.http = http;
@@ -8089,9 +8890,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeRoutingModule: () => (/* binding */ HomeRoutingModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! @angular/router */ 99585);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
 /* harmony import */ var _boat_boat_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./boat/boat.component */ 36424);
@@ -8116,11 +8917,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./guest-journey/guest-journey.component */ 35822);
 /* harmony import */ var _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./bookings/bookings.component */ 88636);
 /* harmony import */ var _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./my-bookings/my-bookings.component */ 18170);
-/* harmony import */ var _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./booking-detail/booking-detail.component */ 82474);
-/* harmony import */ var _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./admin-warranty-charge/admin-warranty-charge.component */ 32134);
-/* harmony import */ var _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./admin-proposals/admin-proposals.component */ 43758);
-/* harmony import */ var _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./proposal-confirmation/proposal-confirmation.component */ 96894);
-/* harmony import */ var _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./admin-external-bookings/admin-external-bookings.component */ 65726);
+/* harmony import */ var _my_proposals_my_proposals_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./my-proposals/my-proposals.component */ 8968);
+/* harmony import */ var _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./booking-detail/booking-detail.component */ 82474);
+/* harmony import */ var _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./admin-warranty-charge/admin-warranty-charge.component */ 32134);
+/* harmony import */ var _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./admin-proposals/admin-proposals.component */ 43758);
+/* harmony import */ var _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./proposal-confirmation/proposal-confirmation.component */ 96894);
+/* harmony import */ var _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./admin-external-bookings/admin-external-bookings.component */ 65726);
+
 
 
 
@@ -8206,6 +9009,9 @@ const routes = [{
   path: 'my-bookings',
   component: _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_23__.MyBookingsComponent
 }, {
+  path: 'my-proposals',
+  component: _my_proposals_my_proposals_component__WEBPACK_IMPORTED_MODULE_24__.MyProposalsComponent
+}, {
   path: 'my-payments',
   component: _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_13__.AccountSummaryComponent,
   data: {
@@ -8213,7 +9019,7 @@ const routes = [{
   }
 }, {
   path: 'bookings/:bookingId',
-  component: _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_24__.BookingDetailComponent
+  component: _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__.BookingDetailComponent
 }, {
   path: 'payment/:bookingId',
   component: _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_12__.DepositComponent
@@ -8235,7 +9041,7 @@ const routes = [{
   component: _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_22__.BookingsComponent
 }, {
   path: 'admin/bookings/:bookingId',
-  component: _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_24__.BookingDetailComponent
+  component: _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__.BookingDetailComponent
 }, {
   path: 'admin/outings',
   component: _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_17__.AdminOutingsComponent
@@ -8247,21 +9053,21 @@ const routes = [{
   component: _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_19__.AdminManageOutingsComponent
 }, {
   path: 'admin/proposals',
-  component: _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_26__.AdminProposalsComponent
+  component: _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_27__.AdminProposalsComponent
 }, {
   path: 'proposal/:proposalId',
-  component: _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_27__.ProposalConfirmationComponent
+  component: _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_28__.ProposalConfirmationComponent
 }, {
   path: 'admin/external-bookings',
-  component: _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_28__.AdminExternalBookingsComponent
+  component: _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_29__.AdminExternalBookingsComponent
 }, {
   path: 'admin/warranty-charge',
-  component: _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_25__.AdminWarrantyChargeComponent
+  component: _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_26__.AdminWarrantyChargeComponent
 }];
 let HomeRoutingModule = class HomeRoutingModule {};
-HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_29__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_30__.NgModule)({
-  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_31__.RouterModule.forChild(routes)],
-  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_31__.RouterModule]
+HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_30__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_31__.NgModule)({
+  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_32__.RouterModule.forChild(routes)],
+  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_32__.RouterModule]
 })], HomeRoutingModule);
 
 
@@ -8548,7 +9354,97 @@ h1 {
   color: #8a652d;
   font-weight: 700;
   white-space: nowrap;
-}`, "",{"version":3,"sources":["webpack://./src/app/home/bookings/bookings.component.scss"],"names":[],"mappings":"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","sourcesContent":[".booking-page {\n  padding: 80px 0;\n  background: #f6f2ea;\n  min-height: 70vh;\n}\n\n.booking-shell {\n  max-width: 1120px;\n  margin: 0 auto;\n}\n\n.section-head {\n  margin-bottom: 28px;\n  max-width: 760px;\n}\n\n.eyebrow {\n  text-transform: uppercase;\n  letter-spacing: .14em;\n  font-size: .78rem;\n  color: #b58b4a;\n  font-weight: 700;\n}\n\nh1 {\n  color: #08263a;\n  margin: 8px 0;\n}\n\n.booking-toolbar {\n  display: flex;\n  align-items: end;\n  gap: 12px;\n  margin-bottom: 1rem;\n  flex-wrap: wrap;\n}\n\n.search-box {\n  display: grid;\n  gap: 6px;\n  flex: 1 1 320px;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.search-box input {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.16);\n  border-radius: 999px;\n  padding: 12px 16px;\n  background: #fff;\n  color: #08263a;\n  outline: none;\n  box-shadow: 0 10px 25px rgba(8, 38, 58, 0.05);\n}\n\n.search-box input:focus {\n  border-color: #b58b4a;\n}\n\n.btn {\n  border: 0;\n  border-radius: 999px;\n  padding: 10px 16px;\n  font-weight: 700;\n  cursor: pointer;\n  text-decoration: none;\n}\n\n.btn-primary {\n  background: #08263a;\n  color: #fff;\n}\n\n.btn-secondary {\n  background: #efe7da;\n  color: #08263a;\n}\n\n.muted {\n  color: #667;\n}\n\n.error-message {\n  color: #9f1d1d;\n  background: rgba(159, 29, 29, 0.08);\n  border: 1px solid rgba(159, 29, 29, 0.18);\n  border-radius: 14px;\n  padding: 0.85rem 1rem;\n}\n\n.list-summary {\n  color: #516070;\n  margin: 12px 0;\n}\n\n.bookings-list {\n  display: grid;\n  gap: 12px;\n}\n\n.booking-list-row {\n  width: 100%;\n  display: grid;\n  grid-template-columns: auto minmax(180px, 1.4fr) minmax(180px, 1.2fr) minmax(130px, .8fr) auto;\n  gap: 16px;\n  align-items: center;\n  text-align: left;\n  background: #fff;\n  border: 1px solid rgba(8, 38, 58, .08);\n  border-radius: 20px;\n  padding: 18px 20px;\n  cursor: pointer;\n  box-shadow: 0 14px 35px rgba(8,38,58,.07);\n  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;\n}\n\n.booking-list-row:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 18px 45px rgba(8,38,58,.11);\n  border-color: rgba(181,139,74,.38);\n}\n\n.status-pill {\n  display: inline-flex;\n  justify-content: center;\n  border-radius: 999px;\n  background: rgba(181,139,74,.12);\n  color: #8a652d;\n  padding: 6px 10px;\n  font-size: .78rem;\n  font-weight: 700;\n  white-space: nowrap;\n}\n\n.booking-main,\n.booking-trip,\n.booking-price {\n  display: grid;\n  gap: 4px;\n  min-width: 0;\n}\n\n.booking-main strong,\n.booking-trip strong,\n.booking-price strong {\n  color: #08263a;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.booking-main small,\n.booking-trip small,\n.booking-price small {\n  color: #516070;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.row-chevron {\n  color: #b58b4a;\n  font-size: 2rem;\n  line-height: 1;\n}\n\n@media (max-width: 820px) {\n  .booking-list-row {\n    grid-template-columns: 1fr auto;\n  }\n\n  .status-pill,\n  .booking-main,\n  .booking-trip,\n  .booking-price {\n    grid-column: 1 / 2;\n  }\n\n  .row-chevron {\n    grid-column: 2 / 3;\n    grid-row: 1 / span 4;\n  }\n}\n\n.row-actions {\n  display: inline-flex;\n  align-items: center;\n  justify-content: flex-end;\n  gap: 0.65rem;\n}\n\n.mini-btn {\n  border: 0;\n  border-radius: 999px;\n  padding: 0.55rem 0.8rem;\n  background: #08263a;\n  color: #fff;\n  font-weight: 700;\n  cursor: pointer;\n  white-space: nowrap;\n}\n\n.paid-badge {\n  display: inline-flex;\n  border-radius: 999px;\n  padding: 0.45rem 0.75rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n  white-space: nowrap;\n}\n\n.balance-modal-backdrop {\n  position: fixed;\n  inset: 0;\n  z-index: 1000;\n  background: rgba(8, 38, 58, 0.45);\n  display: grid;\n  place-items: center;\n  padding: 1rem;\n}\n\n.balance-modal {\n  width: min(560px, 100%);\n  background: #fff;\n  border-radius: 24px;\n  padding: 1.5rem;\n  box-shadow: 0 24px 60px rgba(0,0,0,.22);\n}\n\n.balance-modal h2 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.balance-modal label {\n  display: grid;\n  gap: 0.4rem;\n  margin: 0.85rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.balance-modal select,\n.balance-modal textarea {\n  border: 1px solid rgba(8, 38, 58, 0.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n}\n\n.modal-actions {\n  display: flex;\n  gap: 0.75rem;\n  flex-wrap: wrap;\n  margin-top: 1rem;\n}\n\n@media (max-width: 820px) {\n  .row-actions {\n    grid-column: 1 / 3;\n    justify-content: flex-start;\n  }\n}\n\n.blocked-badge {\n  display: inline-flex;\n  border-radius: 999px;\n  padding: 0.45rem 0.75rem;\n  background: #efe7da;\n  color: #8a652d;\n  font-weight: 700;\n  white-space: nowrap;\n}\n"],"sourceRoot":""}]);
+}
+
+.deposit-btn {
+  background: #047857;
+}
+
+.booking-clarity {
+  min-width: 260px;
+}
+
+.booking-clarity small {
+  display: block;
+  line-height: 1.35;
+}
+
+.booking-tabs {
+  display: inline-flex;
+  gap: 0.5rem;
+  background: rgba(8, 38, 58, 0.06);
+  border-radius: 999px;
+  padding: 0.35rem;
+  margin: 1rem 0;
+}
+
+.booking-tabs button {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  padding: 0.7rem 1.1rem;
+  color: #08263a;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.booking-tabs button.active {
+  background: #fff;
+  box-shadow: 0 8px 22px rgba(8, 38, 58, 0.08);
+}
+
+.booking-tabs span {
+  display: inline-flex;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(181, 139, 74, 0.16);
+  color: #b58b4a;
+  margin-left: 0.35rem;
+}
+
+.booking-toolbar-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.4fr) repeat(4, minmax(150px, 1fr));
+  gap: 0.85rem;
+  align-items: end;
+}
+
+.booking-toolbar-grid label {
+  display: grid;
+  gap: 0.35rem;
+  color: #08263a;
+  font-weight: 700;
+}
+
+.booking-toolbar-grid select,
+.booking-toolbar-grid input {
+  min-height: 42px;
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 14px;
+  padding: 0.65rem 0.75rem;
+  background: #fff;
+  font: inherit;
+}
+
+@media (max-width: 980px) {
+  .booking-toolbar-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .booking-tabs {
+    width: 100%;
+  }
+  .booking-tabs button {
+    flex: 1;
+  }
+  .booking-toolbar-grid {
+    grid-template-columns: 1fr;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/bookings/bookings.component.scss"],"names":[],"mappings":"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","sourcesContent":[".booking-page {\n  padding: 80px 0;\n  background: #f6f2ea;\n  min-height: 70vh;\n}\n\n.booking-shell {\n  max-width: 1120px;\n  margin: 0 auto;\n}\n\n.section-head {\n  margin-bottom: 28px;\n  max-width: 760px;\n}\n\n.eyebrow {\n  text-transform: uppercase;\n  letter-spacing: .14em;\n  font-size: .78rem;\n  color: #b58b4a;\n  font-weight: 700;\n}\n\nh1 {\n  color: #08263a;\n  margin: 8px 0;\n}\n\n.booking-toolbar {\n  display: flex;\n  align-items: end;\n  gap: 12px;\n  margin-bottom: 1rem;\n  flex-wrap: wrap;\n}\n\n.search-box {\n  display: grid;\n  gap: 6px;\n  flex: 1 1 320px;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.search-box input {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.16);\n  border-radius: 999px;\n  padding: 12px 16px;\n  background: #fff;\n  color: #08263a;\n  outline: none;\n  box-shadow: 0 10px 25px rgba(8, 38, 58, 0.05);\n}\n\n.search-box input:focus {\n  border-color: #b58b4a;\n}\n\n.btn {\n  border: 0;\n  border-radius: 999px;\n  padding: 10px 16px;\n  font-weight: 700;\n  cursor: pointer;\n  text-decoration: none;\n}\n\n.btn-primary {\n  background: #08263a;\n  color: #fff;\n}\n\n.btn-secondary {\n  background: #efe7da;\n  color: #08263a;\n}\n\n.muted {\n  color: #667;\n}\n\n.error-message {\n  color: #9f1d1d;\n  background: rgba(159, 29, 29, 0.08);\n  border: 1px solid rgba(159, 29, 29, 0.18);\n  border-radius: 14px;\n  padding: 0.85rem 1rem;\n}\n\n.list-summary {\n  color: #516070;\n  margin: 12px 0;\n}\n\n.bookings-list {\n  display: grid;\n  gap: 12px;\n}\n\n.booking-list-row {\n  width: 100%;\n  display: grid;\n  grid-template-columns: auto minmax(180px, 1.4fr) minmax(180px, 1.2fr) minmax(130px, .8fr) auto;\n  gap: 16px;\n  align-items: center;\n  text-align: left;\n  background: #fff;\n  border: 1px solid rgba(8, 38, 58, .08);\n  border-radius: 20px;\n  padding: 18px 20px;\n  cursor: pointer;\n  box-shadow: 0 14px 35px rgba(8,38,58,.07);\n  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;\n}\n\n.booking-list-row:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 18px 45px rgba(8,38,58,.11);\n  border-color: rgba(181,139,74,.38);\n}\n\n.status-pill {\n  display: inline-flex;\n  justify-content: center;\n  border-radius: 999px;\n  background: rgba(181,139,74,.12);\n  color: #8a652d;\n  padding: 6px 10px;\n  font-size: .78rem;\n  font-weight: 700;\n  white-space: nowrap;\n}\n\n.booking-main,\n.booking-trip,\n.booking-price {\n  display: grid;\n  gap: 4px;\n  min-width: 0;\n}\n\n.booking-main strong,\n.booking-trip strong,\n.booking-price strong {\n  color: #08263a;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.booking-main small,\n.booking-trip small,\n.booking-price small {\n  color: #516070;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.row-chevron {\n  color: #b58b4a;\n  font-size: 2rem;\n  line-height: 1;\n}\n\n@media (max-width: 820px) {\n  .booking-list-row {\n    grid-template-columns: 1fr auto;\n  }\n\n  .status-pill,\n  .booking-main,\n  .booking-trip,\n  .booking-price {\n    grid-column: 1 / 2;\n  }\n\n  .row-chevron {\n    grid-column: 2 / 3;\n    grid-row: 1 / span 4;\n  }\n}\n\n.row-actions {\n  display: inline-flex;\n  align-items: center;\n  justify-content: flex-end;\n  gap: 0.65rem;\n}\n\n.mini-btn {\n  border: 0;\n  border-radius: 999px;\n  padding: 0.55rem 0.8rem;\n  background: #08263a;\n  color: #fff;\n  font-weight: 700;\n  cursor: pointer;\n  white-space: nowrap;\n}\n\n.paid-badge {\n  display: inline-flex;\n  border-radius: 999px;\n  padding: 0.45rem 0.75rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n  white-space: nowrap;\n}\n\n.balance-modal-backdrop {\n  position: fixed;\n  inset: 0;\n  z-index: 1000;\n  background: rgba(8, 38, 58, 0.45);\n  display: grid;\n  place-items: center;\n  padding: 1rem;\n}\n\n.balance-modal {\n  width: min(560px, 100%);\n  background: #fff;\n  border-radius: 24px;\n  padding: 1.5rem;\n  box-shadow: 0 24px 60px rgba(0,0,0,.22);\n}\n\n.balance-modal h2 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.balance-modal label {\n  display: grid;\n  gap: 0.4rem;\n  margin: 0.85rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.balance-modal select,\n.balance-modal textarea {\n  border: 1px solid rgba(8, 38, 58, 0.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n}\n\n.modal-actions {\n  display: flex;\n  gap: 0.75rem;\n  flex-wrap: wrap;\n  margin-top: 1rem;\n}\n\n@media (max-width: 820px) {\n  .row-actions {\n    grid-column: 1 / 3;\n    justify-content: flex-start;\n  }\n}\n\n.blocked-badge {\n  display: inline-flex;\n  border-radius: 999px;\n  padding: 0.45rem 0.75rem;\n  background: #efe7da;\n  color: #8a652d;\n  font-weight: 700;\n  white-space: nowrap;\n}\n\n.deposit-btn {\n  background: #047857;\n}\n\n.booking-clarity {\n  min-width: 260px;\n}\n\n.booking-clarity small {\n  display: block;\n  line-height: 1.35;\n}\n\n.booking-tabs {\n  display: inline-flex;\n  gap: 0.5rem;\n  background: rgba(8,38,58,.06);\n  border-radius: 999px;\n  padding: 0.35rem;\n  margin: 1rem 0;\n}\n\n.booking-tabs button {\n  border: 0;\n  border-radius: 999px;\n  background: transparent;\n  padding: 0.7rem 1.1rem;\n  color: #08263a;\n  font-weight: 800;\n  cursor: pointer;\n}\n\n.booking-tabs button.active {\n  background: #fff;\n  box-shadow: 0 8px 22px rgba(8,38,58,.08);\n}\n\n.booking-tabs span {\n  display: inline-flex;\n  min-width: 1.6rem;\n  height: 1.6rem;\n  align-items: center;\n  justify-content: center;\n  border-radius: 999px;\n  background: rgba(181,139,74,.16);\n  color: #b58b4a;\n  margin-left: 0.35rem;\n}\n\n.booking-toolbar-grid {\n  display: grid;\n  grid-template-columns: minmax(220px, 1.4fr) repeat(4, minmax(150px, 1fr));\n  gap: 0.85rem;\n  align-items: end;\n}\n\n.booking-toolbar-grid label {\n  display: grid;\n  gap: 0.35rem;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.booking-toolbar-grid select,\n.booking-toolbar-grid input {\n  min-height: 42px;\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.65rem 0.75rem;\n  background: #fff;\n  font: inherit;\n}\n\n@media (max-width: 980px) {\n  .booking-toolbar-grid {\n    grid-template-columns: 1fr 1fr;\n  }\n}\n\n@media (max-width: 640px) {\n  .booking-tabs {\n    width: 100%;\n  }\n\n  .booking-tabs button {\n    flex: 1;\n  }\n\n  .booking-toolbar-grid {\n    grid-template-columns: 1fr;\n  }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -8836,7 +9732,137 @@ h1 {
   padding: 0.75rem;
   font: inherit;
   background: #fff;
-}`, "",{"version":3,"sources":["webpack://./src/app/home/booking-detail/booking-detail.component.scss"],"names":[],"mappings":"AAAA;EAAgB,eAAA;EAAiB,mBAAA;EAAqB,gBAAA;AAItD;;AAHA;EAAiB,iBAAA;EAAmB,cAAA;AAQpC;;AAPA;EAAgB,mBAAA;EAAqB,gBAAA;AAYrC;;AAXA;EAAW,yBAAA;EAA2B,sBAAA;EAAuB,kBAAA;EAAmB,cAAA;EAAgB,gBAAA;AAmBhG;;AAlBA;EAAK,cAAA;EAAgB,aAAA;AAuBrB;;AAtBA;EAAgB,aAAA;EAAe,2DAAA;EAA6D,SAAA;AA4B5F;;AA3BA;EAAmD,gBAAA;EAAkB,mBAAA;EAAqB,aAAA;EAAe,6CAAA;EAA2C,uCAAA;AAmCpJ;;AAlCA;EAAmB,kBAAA;EAAoB,cAAA;EAAgB,kBAAA;AAwCvD;;AAvCA;EAAkB,aAAA;EAAe,cAAA;AA4CjC;;AA3CA;EAAe,oBAAA;EAAsB,oBAAA;EAAsB,oCAAA;EAAkC,cAAA;EAAgB,iBAAA;EAAmB,kBAAA;EAAmB,gBAAA;AAqDnJ;;AApDA;EAAgB,aAAA;EAAe,QAAA;EAAU,cAAA;EAAgB,cAAA;AA2DzD;;AA1DA;EAAmB,aAAA;EAAe,SAAA;EAAW,eAAA;AAgE7C;;AA/DA;EAAO,SAAA;EAAW,oBAAA;EAAsB,kBAAA;EAAoB,gBAAA;EAAkB,eAAA;EAAiB,qBAAA;AAwE/F;;AAvEA;EAAe,mBAAA;EAAqB,WAAA;AA4EpC;;AA3EA;EAAiB,mBAAA;EAAqB,cAAA;AAgFtC;;AA/EA;EAAS,WAAA;AAmFT;;AAlFA;EAAe,aAAA;EAAe,2DAAA;EAA6D,SAAA;EAAW,cAAA;AAyFtG;;AAxFA;EAAmB,mBAAA;EAAqB,mBAAA;EAAqB,aAAA;EAAe,aAAA;EAAe,QAAA;AAgG3F;;AA/FA;EAAsB,cAAA;AAmGtB;;AAlGA;EAAoB,cAAA;AAsGpB;;AArGA;EAAY,mBAAA;EAAqB,aAAA;EAAe,mBAAA;EAAqB,cAAA;AA4GrE;;AA1GA;EACE,gBAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;EACA,6CAAA;EACA,uCAAA;AA6GF;;AA1GA;EACE,aAAA;EACA,cAAA;AA6GF;;AA1GA;EACE,aAAA;EACA,2DAAA;EACA,SAAA;EACA,cAAA;AA6GF;;AA1GA;EACE,mBAAA;EACA,mBAAA;EACA,aAAA;EACA,aAAA;EACA,QAAA;AA6GF;;AA1GA;EACE,aAAA;EACA,SAAA;AA6GF;;AA1GA;EACE,aAAA;EACA,WAAA;EACA,cAAA;EACA,gBAAA;AA6GF;;AA1GA;;EAEE,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;AA6GF;;AA1GA;EACE,oBAAA;EACA,oBAAA;EACA,uBAAA;EACA,mBAAA;EACA,WAAA;EACA,gBAAA;AA6GF;;AA1GA;EAAW,cAAA;EAAgB,gBAAA;AA+G3B;;AA9GA;EAAiB,cAAA;EAAgB,gBAAA;AAmHjC;;AAjHA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;EACA,mBAAA;EACA,qBAAA;EACA,gBAAA;AAoHF;;AAjHA;EACE,mBAAA;EACA,uCAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;AAoHF;;AAjHA;EACE,aAAA;EACA,cAAA;AAoHF;;AAjHA;EACE,mBAAA;EACA,0CAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;AAoHF;;AAjHA;EACE,aAAA;EACA,cAAA;AAoHF;;AAjHA;EACE,aAAA;EACA,WAAA;EACA,iBAAA;EACA,cAAA;EACA,gBAAA;AAoHF;;AAjHA;;EAEE,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,gBAAA;AAoHF","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n\n.payment-admin-card {\n  background: #fff;\n  border-radius: 24px;\n  padding: 24px;\n  margin: 24px 0;\n  box-shadow: 0 18px 45px rgba(8,38,58,.08);\n  border: 1px solid rgba(8,38,58,.08);\n}\n\n.payment-admin-card h2 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.payment-summary {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\n  gap: 12px;\n  margin: 16px 0;\n}\n\n.payment-summary div {\n  background: #f8f5ef;\n  border-radius: 16px;\n  padding: 14px;\n  display: grid;\n  gap: 4px;\n}\n\n.collect-balance {\n  display: grid;\n  gap: 12px;\n}\n\n.collect-balance label {\n  display: grid;\n  gap: 0.4rem;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.collect-balance select,\n.collect-balance textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n}\n\n.paid-badge {\n  display: inline-flex;\n  border-radius: 999px;\n  padding: 0.55rem 0.9rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n}\n\n.success { color: #047857; font-weight: 700; }\n.error-message { color: #9f1d1d; font-weight: 700; }\n\n.blocked-note {\n  background: rgba(181,139,74,.12);\n  color: #8a652d;\n  border: 1px solid rgba(181,139,74,.25);\n  border-radius: 14px;\n  padding: 0.85rem 1rem;\n  font-weight: 700;\n}\n\n.warranty-actions {\n  background: #f8f5ef;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.warranty-actions p {\n  margin-top: 0;\n  color: #516070;\n}\n\n.cash-damage-card {\n  background: #fff7ed;\n  border: 1px solid rgba(242, 140, 40, 0.25);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.cash-damage-card h3 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.cash-damage-card label {\n  display: grid;\n  gap: 0.4rem;\n  margin: 0.85rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.cash-damage-card input,\n.cash-damage-card textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n  background: #fff;\n}\n"],"sourceRoot":""}]);
+}
+
+.deposit-actions {
+  background: #eef6f0;
+  border: 1px solid rgba(4, 120, 87, 0.18);
+  border-radius: 16px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.deposit-actions p {
+  margin-top: 0;
+  color: #047857;
+  font-weight: 700;
+}
+
+.workflow-summary div {
+  min-height: 74px;
+}
+
+.workflow-panel {
+  background: #fff;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  border-radius: 18px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.workflow-panel h3 {
+  margin-top: 0;
+  color: #08263a;
+}
+
+.terms-scroll-box {
+  max-height: 260px;
+  overflow: auto;
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 16px;
+  padding: 1rem;
+  background: #f8f5ef;
+  color: #516070;
+  line-height: 1.6;
+}
+
+.terms-check {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  margin: 1rem 0;
+  color: #08263a;
+  font-weight: 700;
+}
+
+.radio-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(8, 38, 58, 0.12);
+  border-radius: 16px;
+  margin: 0.7rem 0;
+  background: #f8f5ef;
+  color: #08263a;
+  font-weight: 700;
+}
+
+.radio-card input {
+  margin-top: 0.2rem;
+}
+
+.clarity-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.clarity-grid div {
+  min-height: 82px;
+}
+
+.clarity-grid span {
+  font-weight: 700;
+}
+
+.customer-action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  align-items: center;
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  border-radius: 16px;
+  background: #f8f5ef;
+}
+
+.customer-edit-card {
+  background: #fff;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  border-radius: 20px;
+  padding: 1.25rem;
+  margin: 1.25rem 0;
+  box-shadow: 0 14px 35px rgba(8, 38, 58, 0.06);
+}
+
+.customer-edit-card h2 {
+  margin-top: 0;
+  color: #08263a;
+}
+
+.customer-edit-card label {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.8rem 0;
+  color: #08263a;
+  font-weight: 700;
+}
+
+.customer-edit-card input,
+.customer-edit-card textarea {
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 14px;
+  padding: 0.75rem;
+  font: inherit;
+  background: #fff;
+}
+
+.customer-edit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/booking-detail/booking-detail.component.scss"],"names":[],"mappings":"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","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n\n.payment-admin-card {\n  background: #fff;\n  border-radius: 24px;\n  padding: 24px;\n  margin: 24px 0;\n  box-shadow: 0 18px 45px rgba(8,38,58,.08);\n  border: 1px solid rgba(8,38,58,.08);\n}\n\n.payment-admin-card h2 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.payment-summary {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\n  gap: 12px;\n  margin: 16px 0;\n}\n\n.payment-summary div {\n  background: #f8f5ef;\n  border-radius: 16px;\n  padding: 14px;\n  display: grid;\n  gap: 4px;\n}\n\n.collect-balance {\n  display: grid;\n  gap: 12px;\n}\n\n.collect-balance label {\n  display: grid;\n  gap: 0.4rem;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.collect-balance select,\n.collect-balance textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n}\n\n.paid-badge {\n  display: inline-flex;\n  border-radius: 999px;\n  padding: 0.55rem 0.9rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n}\n\n.success { color: #047857; font-weight: 700; }\n.error-message { color: #9f1d1d; font-weight: 700; }\n\n.blocked-note {\n  background: rgba(181,139,74,.12);\n  color: #8a652d;\n  border: 1px solid rgba(181,139,74,.25);\n  border-radius: 14px;\n  padding: 0.85rem 1rem;\n  font-weight: 700;\n}\n\n.warranty-actions {\n  background: #f8f5ef;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.warranty-actions p {\n  margin-top: 0;\n  color: #516070;\n}\n\n.cash-damage-card {\n  background: #fff7ed;\n  border: 1px solid rgba(242, 140, 40, 0.25);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.cash-damage-card h3 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.cash-damage-card label {\n  display: grid;\n  gap: 0.4rem;\n  margin: 0.85rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.cash-damage-card input,\n.cash-damage-card textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n  background: #fff;\n}\n\n.deposit-actions {\n  background: #eef6f0;\n  border: 1px solid rgba(4,120,87,.18);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.deposit-actions p {\n  margin-top: 0;\n  color: #047857;\n  font-weight: 700;\n}\n\n.workflow-summary div {\n  min-height: 74px;\n}\n\n.workflow-panel {\n  background: #fff;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 18px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.workflow-panel h3 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.terms-scroll-box {\n  max-height: 260px;\n  overflow: auto;\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 16px;\n  padding: 1rem;\n  background: #f8f5ef;\n  color: #516070;\n  line-height: 1.6;\n}\n\n.terms-check {\n  display: flex;\n  gap: 0.6rem;\n  align-items: flex-start;\n  margin: 1rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.radio-card {\n  display: flex;\n  align-items: flex-start;\n  gap: 0.7rem;\n  padding: 0.9rem;\n  border: 1px solid rgba(8,38,58,.12);\n  border-radius: 16px;\n  margin: 0.7rem 0;\n  background: #f8f5ef;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.radio-card input {\n  margin-top: 0.2rem;\n}\n\n.clarity-grid {\n  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\n}\n\n.clarity-grid div {\n  min-height: 82px;\n}\n\n.clarity-grid span {\n  font-weight: 700;\n}\n\n.customer-action-bar {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.85rem;\n  align-items: center;\n  margin: 1rem 0;\n  padding: 1rem;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 16px;\n  background: #f8f5ef;\n}\n\n.customer-edit-card {\n  background: #fff;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 20px;\n  padding: 1.25rem;\n  margin: 1.25rem 0;\n  box-shadow: 0 14px 35px rgba(8,38,58,.06);\n}\n\n.customer-edit-card h2 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.customer-edit-card label {\n  display: grid;\n  gap: 0.4rem;\n  margin: 0.8rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.customer-edit-card input,\n.customer-edit-card textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n  background: #fff;\n}\n\n.customer-edit-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.85rem;\n  margin-top: 1rem;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -9437,7 +10463,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">My bookings</span>\n      <h1>Upcoming and confirmed bookings</h1>\n      <p>View your confirmed outings, payment status and warranty registration.</p>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n\n    <div *ngIf=\"!loading && bookings.length === 0\" class=\"empty-card\">\n      No booking is linked to your account yet.\n    </div>\n\n    <div class=\"booking-grid\" *ngIf=\"!loading && bookings.length\">\n      <article class=\"booking-card\" *ngFor=\"let booking of bookings\">\n        <div>\n          <span class=\"status-pill\">{{ booking.bookingStatus || 'requested' }}</span>\n          <h2>{{ booking.outingType || 'Outing' }}</h2>\n          <p>{{ booking.outingDate }} <span *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</span></p>\n          <p>{{ booking.customerName }} • {{ booking.email }}</p>\n        </div>\n\n        <div class=\"booking-meta\">\n          <span>Total: €{{ booking.totalPrice || 0 }}</span>\n          <span>Deposit 10%: €{{ getDepositAmount(booking) }} · {{ getDepositLabel(booking) }}</span>\n          <span>Remaining 90% onboard: €{{ getBalanceAmount(booking) }}</span>\n          <span>Warranty: {{ booking.warrantyStatus || 'not_registered' }}</span>\n        </div>\n\n        <div class=\"booking-actions\">\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"openBooking(booking)\">Details</button>\n          <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"!isDepositPaid(booking)\" (click)=\"payBooking(booking)\">Pay 10% deposit</button>\n          <span class=\"paid-badge\" *ngIf=\"isDepositPaid(booking)\">Deposit paid</span>\n        </div>\n      </article>\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">My bookings</span>\n      <h1>Upcoming and confirmed bookings</h1>\n      <p>View your confirmed outings, payment status and warranty registration.</p>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n\n    <div *ngIf=\"!loading && bookings.length === 0\" class=\"empty-card\">\n      No booking is linked to your account yet.\n    </div>\n\n    <div class=\"booking-tabs\" *ngIf=\"!loading && bookings.length\">\n      <button type=\"button\" [class.active]=\"activeDateTab === 'upcoming'\" (click)=\"setDateTab('upcoming')\">\n        Upcoming <span>{{ upcomingBookingsCount }}</span>\n      </button>\n      <button type=\"button\" [class.active]=\"activeDateTab === 'past'\" (click)=\"setDateTab('past')\">\n        Past <span>{{ pastBookingsCount }}</span>\n      </button>\n    </div>\n\n    <div class=\"booking-toolbar-grid\" *ngIf=\"!loading && bookings.length\">\n      <label>\n        <span>Search</span>\n        <input type=\"search\" [(ngModel)]=\"searchTerm\" placeholder=\"Search bookings...\" />\n      </label>\n\n      <label>\n        <span>Status</span>\n        <select [(ngModel)]=\"statusFilter\">\n          <option value=\"all\">All statuses</option>\n          <option value=\"not_confirmed\">Not confirmed</option>\n          <option value=\"confirmed\">Confirmed</option>\n          <option value=\"payment_done\">Payment done</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Warranty</span>\n        <select [(ngModel)]=\"warrantyFilter\">\n          <option value=\"all\">All warranties</option>\n          <option value=\"not_selected\">Not selected</option>\n          <option value=\"cash\">Cash selected</option>\n          <option value=\"card_selected\">Card selected</option>\n          <option value=\"card_registered\">Card registered</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Order by</span>\n        <select [(ngModel)]=\"sortField\">\n          <option value=\"date\">Date</option>\n          <option value=\"customer\">Customer</option>\n          <option value=\"status\">Status</option>\n          <option value=\"total\">Total price</option>\n          <option value=\"balance\">Remaining 90%</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Direction</span>\n        <select [(ngModel)]=\"sortDirection\">\n          <option value=\"asc\">Ascending</option>\n          <option value=\"desc\">Descending</option>\n        </select>\n      </label>\n\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetFilters()\">Reset</button>\n    </div>\n\n    <p class=\"muted\" *ngIf=\"!loading && bookings.length\">\n      Showing <strong>{{ filteredBookings.length }}</strong> {{ activeDateTab }} bookings out of <strong>{{ bookings.length }}</strong>.\n    </p>\n\n    <div class=\"booking-grid\" *ngIf=\"!loading && filteredBookings.length\">\n      <article class=\"booking-card\" *ngFor=\"let booking of filteredBookings\">\n        <div>\n          <span class=\"status-pill\">{{ getStatusLabel(booking) }}</span>\n          <h2>{{ booking.outingType || 'Outing' }}</h2>\n          <p>{{ booking.outingDate }} <span *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</span></p>\n          <p>{{ booking.customerName }} • {{ booking.email }}</p>\n        </div>\n\n        <div class=\"booking-meta\">\n          <span>Total: €{{ booking.totalPrice || 0 }}</span>\n          <span>Deposit 10%: €{{ getDepositAmount(booking) }} · {{ getDepositLabel(booking) }}</span>\n          <span>T&C: {{ isTermsAccepted(booking) ? 'accepted' : 'not accepted' }}</span>\n          <span>Warranty mode: {{ getWarrantyModeLabel(booking) }}</span>\n          <span>Stripe card: {{ getWarrantyCardLabel(booking) }}</span>\n          <span>Remaining 90%: €{{ getBalanceAmount(booking) }} · {{ isBalancePaid(booking) ? 'paid' : 'pending' }}</span>\n        </div>\n\n        <div class=\"booking-actions\">\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"openBooking(booking)\">Details</button>\n          <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"shouldShowPaymentButton(booking)\" (click)=\"payBooking(booking)\">\n            {{ getPaymentButtonLabel(booking) }}\n          </button>\n          <span class=\"paid-badge\" *ngIf=\"isDepositPaid(booking) && !canPayBalance(booking)\">Deposit paid</span>\n          <span class=\"paid-badge\" *ngIf=\"isBalancePaid(booking)\">Full payment done</span>\n        </div>\n      </article>\n    </div>\n\n    <div class=\"empty-card\" *ngIf=\"!loading && bookings.length && filteredBookings.length === 0\">\n      No booking matches the selected tab, filters and search.\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -9717,7 +10743,7 @@ let BookingApiService = class BookingApiService {
   utilsSvc;
   storeDb;
   collectionName = 'bnBookings';
-  restDatabaseUrls = ['https://adn-dev-4d05d-default-rtdb.europe-west1.firebasedatabase.app', 'https://adn-dev-4d05d-default-rtdb.firebaseio.com', 'https://adn-dev-4d05d.firebaseio.com'];
+  restDatabaseUrls = ['https://adn-dev-4d05d.firebaseio.com'];
   fallbackBookings = [];
   constructor(http, utilsSvc, storeDb) {
     this.http = http;
@@ -9731,7 +10757,15 @@ let BookingApiService = class BookingApiService {
     return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.getBookingFromFirebase(bookingId)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => this.getBookingFromBackend(bookingId)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)(undefined)));
   }
   createDepositCheckout(payload) {
-    return this.postFirstAvailable([`${this.baseUrl}/pay/outing-deposit-checkout`, `${this.baseUrl}/api/payments/create-deposit-checkout-session`, `${this.baseUrl}/stripe/deposit-checkout`], payload);
+    const enrichedPayload = {
+      ...payload,
+      proposalId: payload.proposalId || payload.bookingId,
+      amount: Number(payload.amount || payload.depositAmount || 0),
+      depositAmount: Number(payload.depositAmount || payload.amount || 0),
+      currency: payload.currency || 'eur',
+      paymentType: payload.paymentType || 'deposit'
+    };
+    return this.postFirstAvailable([`${this.baseUrl}/pay/outing-deposit-checkout`, `${this.baseUrl}/api/payments/create-deposit-checkout-session`, `${this.baseUrl}/stripe/deposit-checkout`], enrichedPayload);
   }
   createWarrantySetup(payload) {
     return this.postFirstAvailable([`${this.baseUrl}/pay/outing-warranty-checkout`, `${this.baseUrl}/api/payments/create-warranty-checkout-session`, `${this.baseUrl}/api/payments/create-warranty-setup-session`, `${this.baseUrl}/stripe/warranty-setup`], payload);
@@ -9830,7 +10864,14 @@ let BookingApiService = class BookingApiService {
     })();
   }
   get baseUrl() {
-    return this.utilsSvc?.backendURL || '';
+    return this.resolvedBackendUrl;
+  }
+  get resolvedBackendUrl() {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
+      return 'https://localhost:2000';
+    }
+    return window.location.origin;
   }
   getBookingsFromBackend(email) {
     const suffix = email ? `?email=${encodeURIComponent(email)}` : '';
@@ -10042,6 +11083,16 @@ let BookingApiService = class BookingApiService {
       paymentStatus: payments,
       bookingStatus: item.bookingStatus || item.status || 'requested',
       comments: item.comments || item.notes?.customerNote || item.comment || '',
+      termsAccepted: item.termsAccepted === true || item.termsStatus === 'accepted',
+      termsAcceptedAt: item.termsAcceptedAt || null,
+      warrantyPaymentChoice: item.warrantyPaymentChoice || item.warrantyMethod || item.warrantyChoice || '',
+      warrantyMethod: item.warrantyMethod || item.warrantyPaymentChoice || '',
+      warrantySelected: item.warrantySelected === true || !!item.warrantyPaymentChoice || !!item.warrantyMethod,
+      warrantySelectedAt: item.warrantySelectedAt || null,
+      warrantyRegistered: item.warrantyRegistered === true || item.warrantyStatus === 'card_registered' || item.warrantyStatus === 'warranty_card_saved',
+      warrantyCashSelected: item.warrantyPaymentChoice === 'cash_on_board' || item.warrantyMethod === 'cash' || item.warrantyStatus === 'cash_selected',
+      damageReported: item.damageReported === true || item.warrantyStatus === 'charged' || item.warrantyCashDamageAmount > 0,
+      damageCharged: item.damageCharged === true || item.warrantyStatus === 'charged' || item.warrantyCashDamageAmount > 0,
       raw: item
     };
   }
@@ -10597,7 +11648,14 @@ let ProposalApiService = class ProposalApiService {
     });
   }
   get baseUrl() {
-    return this.utilsSvc?.backendURL || '';
+    return this.resolvedBackendUrl;
+  }
+  get resolvedBackendUrl() {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
+      return 'https://localhost:2000';
+    }
+    return window.location.origin;
   }
   readProposalWithPaymentState(id) {
     var _this9 = this;
@@ -10797,7 +11855,154 @@ p {
 .btn-primary {
   background: #f28c28;
   color: #fff;
-}`, "",{"version":3,"sources":["webpack://./src/app/home/account-summary/account-summary.component.scss"],"names":[],"mappings":"AAAA;EACE,eAAA;EACA,6DAAA;AACF;;AAEA;EACE,8BAAA;EACA,cAAA;AACF;;AAEA;EACE,mBAAA;EACA,mBAAA;EACA,iCAAA;EACA,6CAAA;EACA,uCAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;EACA,yCAAA;EACA,yBAAA;EACA,sBAAA;EACA,kBAAA;EACA,gBAAA;EACA,qBAAA;AACF;;AAEA;EACE,+CAAA;EACA,cAAA;EACA,gBAAA;EACA,mCAAA;AACF;;AAEA;EACE,sCAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,gBAAA;EACA,gBAAA;EACA,mBAAA;EACA,mBAAA;AACF;;AAEA;EACE,oBAAA;EACA,kBAAA;EACA,mBAAA;EACA,uBAAA;EACA,qBAAA;EACA,oBAAA;EACA,sBAAA;EACA,yCAAA;EACA,gBAAA;AACF;;AAEA;EACE,mBAAA;EACA,WAAA;AACF","sourcesContent":[".account-page {\n  padding: 72px 0;\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.container {\n  width: min(960px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.account-card {\n  background: #ffffff;\n  border-radius: 28px;\n  padding: clamp(1.5rem, 4vw, 3rem);\n  box-shadow: 0 22px 60px rgba(8, 38, 58, 0.12);\n  border: 1px solid rgba(8, 38, 58, 0.08);\n}\n\n.eyebrow {\n  display: inline-block;\n  color: #0b6e8f;\n  font-family: 'Raleway', Arial, sans-serif;\n  text-transform: uppercase;\n  letter-spacing: 0.14em;\n  font-size: 0.75rem;\n  font-weight: 700;\n  margin-bottom: 0.8rem;\n}\n\nh1 {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: #08263a;\n  margin: 0 0 1rem;\n  font-size: clamp(2rem, 5vw, 3.2rem);\n}\n\np {\n  font-family: 'Lato', Arial, sans-serif;\n  color: #2f3a45;\n  line-height: 1.7;\n}\n\n.account-empty {\n  margin-top: 2rem;\n  padding: 1.25rem;\n  border-radius: 20px;\n  background: #e8f4f7;\n}\n\n.btn {\n  display: inline-flex;\n  margin-top: 0.8rem;\n  align-items: center;\n  justify-content: center;\n  text-decoration: none;\n  border-radius: 999px;\n  padding: 0.9rem 1.2rem;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 700;\n}\n\n.btn-primary {\n  background: #f28c28;\n  color: #fff;\n}\n"],"sourceRoot":""}]);
+}
+
+.payment-toolbar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(160px, 1fr)) auto;
+  gap: 0.85rem;
+  align-items: end;
+  margin: 2rem 0 1rem;
+}
+
+.payment-toolbar label {
+  display: grid;
+  gap: 0.35rem;
+  color: #08263a;
+  font-family: "Raleway", Arial, sans-serif;
+  font-weight: 700;
+}
+
+.payment-toolbar select {
+  min-height: 42px;
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 14px;
+  padding: 0.65rem 0.75rem;
+  background: #fff;
+  font: inherit;
+}
+
+.payment-summary {
+  margin: 1rem 0;
+  color: #516070;
+}
+
+.payments-list {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.payment-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 140px 130px;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  border-radius: 20px;
+  background: #fff;
+  padding: 1rem;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(8, 38, 58, 0.06);
+}
+
+.payment-row:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 34px rgba(8, 38, 58, 0.1);
+}
+
+.payment-type {
+  display: inline-flex;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.55rem 0.8rem;
+  background: rgba(8, 38, 58, 0.08);
+  color: #08263a;
+  font-weight: 800;
+  font-size: 0.82rem;
+}
+
+.payment-type.type-deposit {
+  background: rgba(4, 120, 87, 0.12);
+  color: #047857;
+}
+
+.payment-type.type-balance {
+  background: rgba(11, 110, 143, 0.12);
+  color: #0b6e8f;
+}
+
+.payment-type.type-warranty_card,
+.payment-type.type-warranty_cash {
+  background: rgba(181, 139, 74, 0.16);
+  color: #8a652d;
+}
+
+.payment-type.type-warranty_charge,
+.payment-type.type-cash_damage {
+  background: rgba(185, 28, 28, 0.1);
+  color: #b91c1c;
+}
+
+.payment-main {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.payment-main strong {
+  color: #08263a;
+}
+
+.payment-main small,
+.payment-amount small {
+  color: #516070;
+}
+
+.payment-amount {
+  display: grid;
+  gap: 0.2rem;
+  text-align: right;
+}
+
+.payment-amount strong {
+  color: #08263a;
+  font-size: 1.1rem;
+}
+
+.payment-open {
+  color: #b58b4a;
+  font-weight: 800;
+  text-align: right;
+}
+
+.btn-secondary {
+  background: #efe7da;
+  color: #08263a;
+}
+
+.muted {
+  color: #667;
+}
+
+@media (max-width: 900px) {
+  .payment-toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+  .payment-row {
+    grid-template-columns: 1fr;
+  }
+  .payment-amount,
+  .payment-open {
+    text-align: left;
+  }
+}
+@media (max-width: 560px) {
+  .payment-toolbar {
+    grid-template-columns: 1fr;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/account-summary/account-summary.component.scss"],"names":[],"mappings":"AAAA;EACE,eAAA;EACA,6DAAA;AACF;;AAEA;EACE,8BAAA;EACA,cAAA;AACF;;AAEA;EACE,mBAAA;EACA,mBAAA;EACA,iCAAA;EACA,6CAAA;EACA,uCAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;EACA,yCAAA;EACA,yBAAA;EACA,sBAAA;EACA,kBAAA;EACA,gBAAA;EACA,qBAAA;AACF;;AAEA;EACE,+CAAA;EACA,cAAA;EACA,gBAAA;EACA,mCAAA;AACF;;AAEA;EACE,sCAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,gBAAA;EACA,gBAAA;EACA,mBAAA;EACA,mBAAA;AACF;;AAEA;EACE,oBAAA;EACA,kBAAA;EACA,mBAAA;EACA,uBAAA;EACA,qBAAA;EACA,oBAAA;EACA,sBAAA;EACA,yCAAA;EACA,gBAAA;AACF;;AAEA;EACE,mBAAA;EACA,WAAA;AACF;;AAEA;EACE,aAAA;EACA,yDAAA;EACA,YAAA;EACA,gBAAA;EACA,mBAAA;AACF;;AAEA;EACE,aAAA;EACA,YAAA;EACA,cAAA;EACA,yCAAA;EACA,gBAAA;AACF;;AAEA;EACE,gBAAA;EACA,uCAAA;EACA,mBAAA;EACA,wBAAA;EACA,gBAAA;EACA,aAAA;AACF;;AAEA;EACE,cAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,YAAA;EACA,gBAAA;AACF;;AAEA;EACE,aAAA;EACA,4CAAA;EACA,SAAA;EACA,mBAAA;EACA,WAAA;EACA,gBAAA;EACA,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,eAAA;EACA,6CAAA;AACF;;AAEA;EACE,2BAAA;EACA,4CAAA;AACF;;AAEA;EACE,oBAAA;EACA,uBAAA;EACA,oBAAA;EACA,uBAAA;EACA,iCAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,kCAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,cAAA;AACF;;AAEA;;EAEE,oCAAA;EACA,cAAA;AACF;;AAEA;;EAEE,kCAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,WAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;;EAEE,cAAA;AACF;;AAEA;EACE,aAAA;EACA,WAAA;EACA,iBAAA;AACF;;AAEA;EACE,cAAA;EACA,iBAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE,mBAAA;EACA,cAAA;AACF;;AAEA;EACE,WAAA;AACF;;AAEA;EACE;IACE,8BAAA;EACF;EAEA;IACE,0BAAA;EAAF;EAGA;;IAEE,gBAAA;EADF;AACF;AAIA;EACE;IACE,0BAAA;EAFF;AACF","sourcesContent":[".account-page {\n  padding: 72px 0;\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.container {\n  width: min(960px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.account-card {\n  background: #ffffff;\n  border-radius: 28px;\n  padding: clamp(1.5rem, 4vw, 3rem);\n  box-shadow: 0 22px 60px rgba(8, 38, 58, 0.12);\n  border: 1px solid rgba(8, 38, 58, 0.08);\n}\n\n.eyebrow {\n  display: inline-block;\n  color: #0b6e8f;\n  font-family: 'Raleway', Arial, sans-serif;\n  text-transform: uppercase;\n  letter-spacing: 0.14em;\n  font-size: 0.75rem;\n  font-weight: 700;\n  margin-bottom: 0.8rem;\n}\n\nh1 {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: #08263a;\n  margin: 0 0 1rem;\n  font-size: clamp(2rem, 5vw, 3.2rem);\n}\n\np {\n  font-family: 'Lato', Arial, sans-serif;\n  color: #2f3a45;\n  line-height: 1.7;\n}\n\n.account-empty {\n  margin-top: 2rem;\n  padding: 1.25rem;\n  border-radius: 20px;\n  background: #e8f4f7;\n}\n\n.btn {\n  display: inline-flex;\n  margin-top: 0.8rem;\n  align-items: center;\n  justify-content: center;\n  text-decoration: none;\n  border-radius: 999px;\n  padding: 0.9rem 1.2rem;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 700;\n}\n\n.btn-primary {\n  background: #f28c28;\n  color: #fff;\n}\n\n.payment-toolbar {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(160px, 1fr)) auto;\n  gap: 0.85rem;\n  align-items: end;\n  margin: 2rem 0 1rem;\n}\n\n.payment-toolbar label {\n  display: grid;\n  gap: 0.35rem;\n  color: #08263a;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 700;\n}\n\n.payment-toolbar select {\n  min-height: 42px;\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.65rem 0.75rem;\n  background: #fff;\n  font: inherit;\n}\n\n.payment-summary {\n  margin: 1rem 0;\n  color: #516070;\n}\n\n.payments-list {\n  display: grid;\n  gap: 0.85rem;\n  margin-top: 1rem;\n}\n\n.payment-row {\n  display: grid;\n  grid-template-columns: 180px 1fr 140px 130px;\n  gap: 1rem;\n  align-items: center;\n  width: 100%;\n  text-align: left;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 20px;\n  background: #fff;\n  padding: 1rem;\n  cursor: pointer;\n  box-shadow: 0 12px 28px rgba(8,38,58,.06);\n}\n\n.payment-row:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 16px 34px rgba(8,38,58,.1);\n}\n\n.payment-type {\n  display: inline-flex;\n  justify-content: center;\n  border-radius: 999px;\n  padding: 0.55rem 0.8rem;\n  background: rgba(8,38,58,.08);\n  color: #08263a;\n  font-weight: 800;\n  font-size: 0.82rem;\n}\n\n.payment-type.type-deposit {\n  background: rgba(4,120,87,.12);\n  color: #047857;\n}\n\n.payment-type.type-balance {\n  background: rgba(11,110,143,.12);\n  color: #0b6e8f;\n}\n\n.payment-type.type-warranty_card,\n.payment-type.type-warranty_cash {\n  background: rgba(181,139,74,.16);\n  color: #8a652d;\n}\n\n.payment-type.type-warranty_charge,\n.payment-type.type-cash_damage {\n  background: rgba(185,28,28,.1);\n  color: #b91c1c;\n}\n\n.payment-main {\n  display: grid;\n  gap: 0.2rem;\n}\n\n.payment-main strong {\n  color: #08263a;\n}\n\n.payment-main small,\n.payment-amount small {\n  color: #516070;\n}\n\n.payment-amount {\n  display: grid;\n  gap: 0.2rem;\n  text-align: right;\n}\n\n.payment-amount strong {\n  color: #08263a;\n  font-size: 1.1rem;\n}\n\n.payment-open {\n  color: #b58b4a;\n  font-weight: 800;\n  text-align: right;\n}\n\n.btn-secondary {\n  background: #efe7da;\n  color: #08263a;\n}\n\n.muted {\n  color: #667;\n}\n\n@media (max-width: 900px) {\n  .payment-toolbar {\n    grid-template-columns: 1fr 1fr;\n  }\n\n  .payment-row {\n    grid-template-columns: 1fr;\n  }\n\n  .payment-amount,\n  .payment-open {\n    text-align: left;\n  }\n}\n\n@media (max-width: 560px) {\n  .payment-toolbar {\n    grid-template-columns: 1fr;\n  }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -10850,6 +12055,21 @@ let BookingDetailComponent = class BookingDetailComponent {
   cashDamageMessage = '';
   cashDamageError = '';
   savingCashDamage = false;
+  termsRead = false;
+  termsAccepted = false;
+  warrantyChoice = '';
+  warrantySaving = false;
+  warrantyMessage = '';
+  warrantyError = '';
+  cardDamageAmount = null;
+  cardDamageReason = '';
+  cardDamageMessage = '';
+  cardDamageError = '';
+  savingCardDamage = false;
+  editMode = false;
+  savingCustomerUpdate = false;
+  customerUpdateMessage = '';
+  customerUpdateError = '';
   constructor(route, router, bookingApi, mainSvc) {
     this.route = route;
     this.router = router;
@@ -10860,14 +12080,217 @@ let BookingDetailComponent = class BookingDetailComponent {
     const svc = this.mainSvc;
     this.loggedUser = svc.bnUser || svc.currentUser || null;
     const bookingId = this.route.snapshot.paramMap.get('bookingId') || '';
+    this.editMode = this.route.snapshot.queryParamMap.get('edit') === 'true';
     this.bookingApi.getBooking(bookingId).subscribe(booking => {
       this.booking = booking;
+      this.termsAccepted = this.isTermsAccepted();
+      this.warrantyChoice = this.getWarrantyChoice();
       this.loading = false;
+      this.syncConfirmedStatusIfReady();
     });
   }
   get isAdmin() {
     const role = String(this.loggedUser?.role || '').toLowerCase();
     return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
+  }
+  getDerivedBookingStatus() {
+    if (this.isBalancePaid()) return 'payment_done';
+    if (this.isDepositPaid() && this.isTermsAccepted()) return 'confirmed';
+    return 'not_confirmed';
+  }
+  getStatusLabel() {
+    const status = this.getDerivedBookingStatus();
+    if (status === 'payment_done') return 'Payment done';
+    if (status === 'confirmed') return 'Confirmed';
+    return 'Not confirmed';
+  }
+  getDepositStatusLabel() {
+    return this.isDepositPaid() ? `Paid (€${this.getDepositAmount()})` : `Pending (€${this.getDepositAmount()})`;
+  }
+  getTermsStatusLabel() {
+    const b = this.booking || {};
+    if (this.isTermsAccepted()) {
+      return b.termsAcceptedAt ? `Accepted (${new Date(Number(b.termsAcceptedAt)).toLocaleString()})` : 'Accepted';
+    }
+    return 'Not accepted';
+  }
+  getWarrantyModeLabel() {
+    const choice = this.getWarrantyChoice();
+    if (choice === 'cash_on_board') return 'Cash €500 selected';
+    if (choice === 'stripe_card') return 'Stripe card selected';
+    return 'Not selected';
+  }
+  getWarrantyCardLabel() {
+    if (this.isWarrantyCardRegistered()) return 'Registered in Stripe';
+    if (this.getWarrantyChoice() === 'stripe_card') return 'Selected, card not registered yet';
+    if (this.getWarrantyChoice() === 'cash_on_board') return 'Not required — cash warranty selected';
+    return 'Not registered';
+  }
+  getBalanceStatusLabel() {
+    return this.isBalancePaid() ? `Paid (€${this.getBalanceAmount()})` : `Pending (€${this.getBalanceAmount()})`;
+  }
+  getDamageStatusLabel() {
+    const b = this.booking || {};
+    const amount = b.warrantyChargedAmount || b.warrantyCashDamageAmount || b?.payments?.warrantyCharge?.warrantyChargeAmount || b?.payments?.warrantyCashDamage?.amount || 0;
+    if (b.damageReported === true || b.damageCharged === true || amount) {
+      const euros = Number(amount) > 999 ? Math.round(Number(amount)) / 100 : Number(amount);
+      return `Damage recorded${euros ? ` (€${euros})` : ''}`;
+    }
+    return this.isBalancePaid() ? 'No damage recorded yet' : 'Available after full payment';
+  }
+  canOpenDamageManagement() {
+    return this.getDerivedBookingStatus() === 'payment_done';
+  }
+  getBookingWorkflowState() {
+    if (!this.isDepositPaid() || !this.isTermsAccepted()) return 'deposit_required';
+    if (!this.isWarrantySelected()) return 'warranty_choice_required';
+    if (this.getWarrantyChoice() === 'stripe_card' && !this.isWarrantyCardRegistered()) return 'warranty_card_required';
+    if (!this.isBalancePaid()) return 'balance_required';
+    return 'payment_done';
+  }
+  getWorkflowTitle() {
+    const state = this.getBookingWorkflowState();
+    if (state === 'deposit_required') return '1. Confirm booking: T&C, warranty choice and 10% deposit';
+    if (state === 'warranty_choice_required') return '2. Select warranty method';
+    if (state === 'warranty_card_required') return '2. Register warranty card';
+    if (state === 'balance_required') return '3. Pay remaining 90%';
+    return '4. Payment done — damage management';
+  }
+  isTermsAccepted() {
+    const b = this.booking || {};
+    return this.termsAccepted === true || b.termsAccepted === true || b.tcAccepted === true || b.tAndCAccepted === true || b.termsAndConditionsAccepted === true || b.acceptedTerms === true || b.termsStatus === 'accepted' || b.tcStatus === 'accepted' || b?.documents?.termsAccepted === true || b?.terms?.accepted === true;
+  }
+  getWarrantyChoice() {
+    const b = this.booking || {};
+    const w = b?.payments?.warranty || {};
+    if (b.warrantyPaymentChoice) return b.warrantyPaymentChoice;
+    if (b.warrantyMethod === 'cash' || b.warrantyStatus === 'cash_selected' || b.warrantyCashSelected === true) return 'cash_on_board';
+    if (b.warrantyMethod === 'card' || b.warrantyMethod === 'stripe_card' || this.isWarrantyCardRegistered() || w.method === 'card') return 'stripe_card';
+    return '';
+  }
+  isWarrantySelected() {
+    return this.getWarrantyChoice() === 'cash_on_board' || this.getWarrantyChoice() === 'stripe_card' || this.isWarrantyCardRegistered();
+  }
+  canPayDeposit() {
+    return !!this.booking?.bookingId && !this.isDepositPaid() && this.termsRead && this.termsAccepted && !!this.warrantyChoice;
+  }
+  getDepositBlockedReason() {
+    if (this.isDepositPaid()) return 'Deposit already paid.';
+    if (!this.termsRead) return 'Please read the Terms & Conditions to the end first.';
+    if (!this.termsAccepted) return 'Please accept the Terms & Conditions first.';
+    if (!this.warrantyChoice) return 'Please select a warranty method first.';
+    return '';
+  }
+  onTermsScroll(event) {
+    const el = event.target;
+    if (!el) return;
+    const reachedBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 12;
+    if (reachedBottom) this.termsRead = true;
+  }
+  saveTermsAndWarrantyChoice(status = 'awaiting_deposit') {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this.booking?.bookingId) return;
+      const now = Date.now();
+      const existingPayments = _this.booking.payments || {};
+      const warrantyChoice = _this.warrantyChoice || _this.getWarrantyChoice();
+      const payload = {
+        termsAccepted: _this.termsAccepted,
+        tcAccepted: _this.termsAccepted,
+        tAndCAccepted: _this.termsAccepted,
+        termsAndConditionsAccepted: _this.termsAccepted,
+        acceptedTerms: _this.termsAccepted,
+        termsAcceptedAt: _this.termsAccepted ? now : null,
+        termsStatus: _this.termsAccepted ? 'accepted' : 'pending',
+        tcStatus: _this.termsAccepted ? 'accepted' : 'pending',
+        warrantyPaymentChoice: warrantyChoice,
+        warrantySelected: !!warrantyChoice,
+        warrantySelectedAt: warrantyChoice ? now : null,
+        bookingStatus: _this.isBookingConfirmed() ? _this.booking.bookingStatus || 'confirmed' : status,
+        payments: {
+          ...existingPayments,
+          warranty: {
+            ...(existingPayments.warranty || {}),
+            method: warrantyChoice === 'cash_on_board' ? 'cash' : warrantyChoice === 'stripe_card' ? 'card' : '',
+            status: warrantyChoice === 'cash_on_board' ? 'cash_selected' : warrantyChoice === 'stripe_card' ? 'card_selected' : 'not_selected',
+            selectedAt: warrantyChoice ? now : null
+          }
+        }
+      };
+      if (warrantyChoice === 'cash_on_board') {
+        payload.warrantyMethod = 'cash';
+        payload.warrantyStatus = 'cash_selected';
+        payload.warrantyCashSelected = true;
+        payload.warrantyAmount = _this.booking.warrantyAmount || 500;
+      }
+      if (warrantyChoice === 'stripe_card') {
+        payload.warrantyMethod = 'card';
+        payload.warrantyStatus = _this.isWarrantyCardRegistered() ? 'card_registered' : 'card_selected';
+      }
+      yield _this.bookingApi.updateBooking(_this.booking.bookingId, payload);
+      _this.booking = {
+        ..._this.booking,
+        ...payload
+      };
+      yield _this.syncConfirmedStatusIfReady();
+    })();
+  }
+  selectWarrantyCash() {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this2.warrantyChoice = 'cash_on_board';
+      _this2.warrantySaving = true;
+      _this2.warrantyError = '';
+      _this2.warrantyMessage = '';
+      try {
+        yield _this2.saveTermsAndWarrantyChoice(_this2.isBookingConfirmed() ? 'confirmed' : 'awaiting_deposit');
+        _this2.warrantyMessage = 'Cash warranty selected. The €500 cash envelope will be handled before departure.';
+      } catch (e) {
+        _this2.warrantyError = e?.message || 'Unable to save warranty choice.';
+      }
+      _this2.warrantySaving = false;
+    })();
+  }
+  selectWarrantyCard() {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this3.warrantyChoice = 'stripe_card';
+      _this3.warrantySaving = true;
+      _this3.warrantyError = '';
+      _this3.warrantyMessage = '';
+      try {
+        yield _this3.saveTermsAndWarrantyChoice(_this3.isBookingConfirmed() ? 'confirmed' : 'awaiting_deposit');
+        _this3.warrantyMessage = 'Card warranty selected. You can now register the card with Stripe.';
+      } catch (e) {
+        _this3.warrantyError = e?.message || 'Unable to save warranty choice.';
+      }
+      _this3.warrantySaving = false;
+    })();
+  }
+  syncConfirmedStatusIfReady() {
+    var _this4 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this4.booking?.bookingId) return;
+      if (!_this4.isDepositPaid() || !_this4.isTermsAccepted()) return;
+      const currentStatus = String(_this4.booking.bookingStatus || '').toLowerCase();
+      if (currentStatus === 'confirmed' || currentStatus === 'payment_done') return;
+      const now = Date.now();
+      const payload = {
+        bookingStatus: 'confirmed',
+        paymentStatus: 'deposit_paid',
+        confirmedAt: _this4.booking.confirmedAt || now,
+        modifiedTS: now
+      };
+      try {
+        yield _this4.bookingApi.updateBooking(_this4.booking.bookingId, payload);
+        _this4.booking = {
+          ..._this4.booking,
+          ...payload
+        };
+      } catch {
+        // UI still derives the correct status from deposit + T&C even if Firebase update is delayed.
+      }
+    })();
   }
   getDepositAmount() {
     const total = Number(this.booking?.totalPrice || 0);
@@ -10885,8 +12308,7 @@ let BookingDetailComponent = class BookingDetailComponent {
     return anyBooking.depositPaid === true || anyBooking.depositStatus === 'paid' || anyBooking.depositStatus === 'deposit_paid' || anyBooking.paymentStatus === 'paid' || anyBooking.paymentStatus === 'charge_succeeded' || legacyPayment.depositPaid === true || legacyPayment.paid === true || legacyPayment.status === 'paid' || legacyPayment.status === 'deposit_paid' || depositPayment.depositPaid === true || depositPayment.paid === true || depositPayment.status === 'paid' || depositPayment.status === 'deposit_paid';
   }
   isBookingConfirmed() {
-    const status = String(this.booking?.bookingStatus || this.booking?.status || '').toLowerCase();
-    return status === 'confirmed' || status === 'accepted' || status === 'paid';
+    return this.isDepositPaid() && this.isTermsAccepted();
   }
   isWarrantyCardRegistered() {
     const anyBooking = this.booking || {};
@@ -10912,9 +12334,7 @@ let BookingDetailComponent = class BookingDetailComponent {
     return Math.max(0, this.getCashWarrantyAmount() - this.getCashWarrantyDamagesTaken());
   }
   isWarrantySecured() {
-    const anyBooking = this.booking || {};
-    const warrantyPayment = anyBooking?.payments?.warranty || {};
-    return this.isWarrantyCardRegistered() || anyBooking.warrantyMethod === 'cash' || anyBooking.warrantyStatus === 'cash_received' || anyBooking.warrantyCashReceived === true || warrantyPayment.cashReceived === true;
+    return this.isWarrantyCardRegistered() || this.getWarrantyChoice() === 'cash_on_board';
   }
   canRecordBalancePayment() {
     return this.isBookingConfirmed() && this.isDepositPaid() && this.isWarrantySecured() && !this.isBalancePaid();
@@ -10923,7 +12343,7 @@ let BookingDetailComponent = class BookingDetailComponent {
     if (this.isBalancePaid()) return 'Remaining 90% already paid.';
     if (!this.isBookingConfirmed()) return 'Booking must be confirmed first.';
     if (!this.isDepositPaid()) return '10% deposit must be paid first.';
-    if (!this.isWarrantySecured()) return 'Warranty must be secured first (Stripe card or €500 cash deposit).';
+    if (!this.isWarrantySecured()) return 'Warranty must be selected first (cash) or card must be registered.';
     return '';
   }
   isBalancePaid() {
@@ -10931,38 +12351,38 @@ let BookingDetailComponent = class BookingDetailComponent {
     return anyBooking.balancePaid === true || anyBooking.balanceStatus === 'paid' || anyBooking.balancePaymentStatus === 'paid' || anyBooking?.payments?.balance?.paid === true || anyBooking?.payments?.balance?.status === 'paid';
   }
   recordCashWarrantyDamage() {
-    var _this = this;
+    var _this5 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this.booking?.bookingId) return;
-      const amount = Number(_this.cashDamageAmount || 0);
-      const reason = String(_this.cashDamageReason || '').trim();
-      _this.cashDamageError = '';
-      _this.cashDamageMessage = '';
-      if (!_this.isCashWarranty()) {
-        _this.cashDamageError = 'Cash warranty is not registered for this booking.';
+      if (!_this5.booking?.bookingId) return;
+      const amount = Number(_this5.cashDamageAmount || 0);
+      const reason = String(_this5.cashDamageReason || '').trim();
+      _this5.cashDamageError = '';
+      _this5.cashDamageMessage = '';
+      if (!_this5.isCashWarranty()) {
+        _this5.cashDamageError = 'Cash warranty is not registered for this booking.';
         return;
       }
       if (!amount || amount <= 0) {
-        _this.cashDamageError = 'Please enter a valid damage amount.';
+        _this5.cashDamageError = 'Please enter a valid damage amount.';
         return;
       }
-      if (amount > _this.getCashWarrantyRemaining()) {
-        _this.cashDamageError = `Amount cannot exceed remaining cash warranty (€${_this.getCashWarrantyRemaining()}).`;
+      if (amount > _this5.getCashWarrantyRemaining()) {
+        _this5.cashDamageError = `Amount cannot exceed remaining cash warranty (€${_this5.getCashWarrantyRemaining()}).`;
         return;
       }
       if (!reason) {
-        _this.cashDamageError = 'Please describe the damage or cost.';
+        _this5.cashDamageError = 'Please describe the damage or cost.';
         return;
       }
-      _this.savingCashDamage = true;
+      _this5.savingCashDamage = true;
       const now = Date.now();
-      const existingPayments = _this.booking.payments || {};
-      const previousDamage = _this.getCashWarrantyDamagesTaken();
+      const existingPayments = _this5.booking.payments || {};
+      const previousDamage = _this5.getCashWarrantyDamagesTaken();
       const totalDamageTaken = Math.round((previousDamage + amount) * 100) / 100;
-      const warrantyAmount = _this.getCashWarrantyAmount();
+      const warrantyAmount = _this5.getCashWarrantyAmount();
       const remaining = Math.max(0, Math.round((warrantyAmount - totalDamageTaken) * 100) / 100);
       try {
-        yield _this.bookingApi.updateBooking(_this.booking.bookingId, {
+        yield _this5.bookingApi.updateBooking(_this5.booking.bookingId, {
           warrantyMethod: 'cash',
           warrantyStatus: remaining > 0 ? 'cash_partially_used' : 'cash_fully_used',
           warrantyCashReceived: true,
@@ -10990,8 +12410,8 @@ let BookingDetailComponent = class BookingDetailComponent {
             }
           }
         });
-        _this.booking = {
-          ..._this.booking,
+        _this5.booking = {
+          ..._this5.booking,
           warrantyMethod: 'cash',
           warrantyStatus: remaining > 0 ? 'cash_partially_used' : 'cash_fully_used',
           warrantyCashReceived: true,
@@ -11019,26 +12439,108 @@ let BookingDetailComponent = class BookingDetailComponent {
             }
           }
         };
-        _this.cashDamageAmount = null;
-        _this.cashDamageReason = '';
-        _this.cashDamageMessage = `Cash warranty damage recorded. Remaining cash to return: €${remaining}.`;
+        _this5.cashDamageAmount = null;
+        _this5.cashDamageReason = '';
+        _this5.cashDamageMessage = `Cash warranty damage recorded. Remaining cash to return: €${remaining}.`;
       } catch (e) {
-        _this.cashDamageError = e?.message || 'Unable to record cash warranty damage.';
+        _this5.cashDamageError = e?.message || 'Unable to record cash warranty damage.';
       } finally {
-        _this.savingCashDamage = false;
+        _this5.savingCashDamage = false;
       }
+    })();
+  }
+  payDeposit() {
+    var _this6 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this6.booking?.bookingId || _this6.isDepositPaid()) return;
+      if (!_this6.canPayDeposit()) {
+        _this6.balancePaymentError = _this6.getDepositBlockedReason();
+        return;
+      }
+      yield _this6.saveTermsAndWarrantyChoice('awaiting_deposit');
+      const currentUrl = window.location.href;
+      const depositAmount = _this6.getDepositAmount();
+      const payload = {
+        bookingId: _this6.booking.bookingId,
+        proposalId: _this6.booking.bookingId,
+        ownerId: _this6.booking.ownerId || 'alegria',
+        amount: depositAmount,
+        depositAmount,
+        totalAmount: Number(_this6.booking.totalPrice || 0),
+        currency: 'eur',
+        paymentType: 'deposit',
+        customerEmail: _this6.booking.email || '',
+        customerName: _this6.booking.customerName || '',
+        customerPhone: _this6.booking.customerPhone || _this6.booking.phone || '',
+        outingType: _this6.booking.outingType || '',
+        outingDate: _this6.booking.outingDate || '',
+        successUrl: currentUrl.includes('?') ? `${currentUrl}&payment=success&bookingId=${encodeURIComponent(_this6.booking.bookingId)}&paymentType=deposit` : `${currentUrl}?payment=success&bookingId=${encodeURIComponent(_this6.booking.bookingId)}&paymentType=deposit`,
+        cancelUrl: currentUrl.includes('?') ? `${currentUrl}&payment=cancelled&bookingId=${encodeURIComponent(_this6.booking.bookingId)}&paymentType=deposit` : `${currentUrl}?payment=cancelled&bookingId=${encodeURIComponent(_this6.booking.bookingId)}&paymentType=deposit`
+      };
+      _this6.bookingApi.createDepositCheckout(payload).subscribe({
+        next: response => {
+          const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
+          if (url) {
+            window.location.href = url;
+            return;
+          }
+          _this6.balancePaymentError = 'Unable to open Stripe deposit checkout.';
+        },
+        error: error => {
+          _this6.balancePaymentError = error?.error?.error || error?.error?.message || error?.message || 'Unable to create deposit checkout.';
+        }
+      });
+    })();
+  }
+  registerWarrantyCard() {
+    var _this7 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this7.booking?.bookingId) return;
+      _this7.balancePaymentError = '';
+      _this7.balancePaymentMessage = '';
+      if (_this7.getWarrantyChoice() !== 'stripe_card') {
+        yield _this7.selectWarrantyCard();
+      }
+      const currentUrl = window.location.href;
+      const warrantyAmount = Number(_this7.booking.warrantyAmount || 500);
+      const payload = {
+        bookingId: _this7.booking.bookingId,
+        ownerId: _this7.booking.ownerId || 'alegria',
+        warrantyAmount,
+        currency: 'eur',
+        customerEmail: _this7.booking.email || '',
+        customerName: _this7.booking.customerName || '',
+        customerPhone: _this7.booking.customerPhone || _this7.booking.phone || '',
+        outingType: _this7.booking.outingType || '',
+        outingDate: _this7.booking.outingDate || '',
+        successUrl: currentUrl.includes('?') ? `${currentUrl}&payment=success&bookingId=${encodeURIComponent(_this7.booking.bookingId)}&paymentType=warranty` : `${currentUrl}?payment=success&bookingId=${encodeURIComponent(_this7.booking.bookingId)}&paymentType=warranty`,
+        cancelUrl: currentUrl.includes('?') ? `${currentUrl}&payment=cancelled&bookingId=${encodeURIComponent(_this7.booking.bookingId)}&paymentType=warranty` : `${currentUrl}?payment=cancelled&bookingId=${encodeURIComponent(_this7.booking.bookingId)}&paymentType=warranty`
+      };
+      _this7.bookingApi.createWarrantySetup(payload).subscribe({
+        next: response => {
+          const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
+          if (url) {
+            window.location.href = url;
+            return;
+          }
+          _this7.balancePaymentError = 'Unable to open Stripe warranty setup.';
+        },
+        error: error => {
+          _this7.balancePaymentError = error?.error?.error || error?.error?.message || error?.message || 'Unable to create warranty setup.';
+        }
+      });
     })();
   }
   markCashWarrantyReceived() {
-    var _this2 = this;
+    var _this8 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this2.booking?.bookingId) return;
-      _this2.balancePaymentError = '';
-      _this2.balancePaymentMessage = '';
+      if (!_this8.booking?.bookingId) return;
+      _this8.balancePaymentError = '';
+      _this8.balancePaymentMessage = '';
       const now = Date.now();
-      const existingPayments = _this2.booking.payments || {};
+      const existingPayments = _this8.booking.payments || {};
       try {
-        yield _this2.bookingApi.updateBooking(_this2.booking.bookingId, {
+        yield _this8.bookingApi.updateBooking(_this8.booking.bookingId, {
           warrantyMethod: 'cash',
           warrantyStatus: 'cash_received',
           warrantyCashReceived: true,
@@ -11056,8 +12558,8 @@ let BookingDetailComponent = class BookingDetailComponent {
             }
           }
         });
-        _this2.booking = {
-          ..._this2.booking,
+        _this8.booking = {
+          ..._this8.booking,
           warrantyMethod: 'cash',
           warrantyStatus: 'cash_received',
           warrantyCashReceived: true,
@@ -11075,80 +12577,211 @@ let BookingDetailComponent = class BookingDetailComponent {
             }
           }
         };
-        _this2.balancePaymentMessage = 'Cash warranty received and recorded.';
+        _this8.balancePaymentMessage = 'Cash warranty received and recorded.';
       } catch (e) {
-        _this2.balancePaymentError = e?.message || 'Unable to record cash warranty.';
+        _this8.balancePaymentError = e?.message || 'Unable to record cash warranty.';
       }
+    })();
+  }
+  recordCardWarrantyDamage() {
+    var _this9 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this9.booking?.bookingId) return;
+      const amount = Number(_this9.cardDamageAmount || 0);
+      const reason = String(_this9.cardDamageReason || '').trim();
+      _this9.cardDamageError = '';
+      _this9.cardDamageMessage = '';
+      if (!_this9.isWarrantyCardRegistered()) {
+        _this9.cardDamageError = 'No registered warranty card for this booking.';
+        return;
+      }
+      if (!amount || amount <= 0) {
+        _this9.cardDamageError = 'Please enter a valid damage amount.';
+        return;
+      }
+      const maxWarranty = Number(_this9.booking.warrantyAmount || 500);
+      if (amount > maxWarranty) {
+        _this9.cardDamageError = `Amount cannot exceed warranty maximum (€${maxWarranty}).`;
+        return;
+      }
+      if (!reason) {
+        _this9.cardDamageError = 'Please describe the damage.';
+        return;
+      }
+      _this9.savingCardDamage = true;
+      _this9.bookingApi.chargeWarranty(_this9.booking.bookingId, amount, reason, _this9.booking.ownerId || 'alegria').subscribe({
+        next: function () {
+          var _ref = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+            _this9.cardDamageMessage = 'Damage charged successfully to the registered card.';
+            _this9.cardDamageAmount = null;
+            _this9.cardDamageReason = '';
+            _this9.savingCardDamage = false;
+            const now = Date.now();
+            _this9.booking = {
+              ..._this9.booking,
+              damageReported: true,
+              damageCharged: true,
+              warrantyStatus: 'charged',
+              warrantyChargedAmount: amount,
+              warrantyChargeReason: reason,
+              warrantyChargeRecordedAt: now
+            };
+          });
+          return function next() {
+            return _ref.apply(this, arguments);
+          };
+        }(),
+        error: error => {
+          _this9.cardDamageError = error?.error?.error || error?.error?.message || error?.message || 'Unable to charge warranty card.';
+          _this9.savingCardDamage = false;
+        }
+      });
     })();
   }
   recordBalancePayment() {
-    var _this3 = this;
+    var _this10 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this3.booking?.bookingId) return;
-      if (!_this3.canRecordBalancePayment()) {
-        _this3.balancePaymentError = _this3.getBalanceBlockedReason();
+      if (!_this10.booking?.bookingId) return;
+      if (!_this10.canRecordBalancePayment()) {
+        _this10.balancePaymentError = _this10.getBalanceBlockedReason();
         return;
       }
-      _this3.savingBalancePayment = true;
-      _this3.balancePaymentError = '';
-      _this3.balancePaymentMessage = '';
+      _this10.savingBalancePayment = true;
+      _this10.balancePaymentError = '';
+      _this10.balancePaymentMessage = '';
       const now = Date.now();
-      const balanceAmount = _this3.getBalanceAmount();
-      const existingPayments = _this3.booking.payments || {};
+      const balanceAmount = _this10.getBalanceAmount();
+      const existingPayments = _this10.booking.payments || {};
       try {
-        yield _this3.bookingApi.updateBooking(_this3.booking.bookingId, {
+        yield _this10.bookingApi.updateBooking(_this10.booking.bookingId, {
           balancePaid: true,
           balanceAmount,
-          balancePaymentMethod: _this3.balancePaymentMethod,
+          balancePaymentMethod: _this10.balancePaymentMethod,
           balancePaidAt: now,
+          bookingStatus: 'payment_done',
+          paymentStatus: 'full_payment_done',
+          paidAt: now,
           payments: {
             ...existingPayments,
             balance: {
               paid: true,
               status: 'paid',
               amount: balanceAmount,
-              method: _this3.balancePaymentMethod,
-              notes: _this3.balancePaymentNotes || '',
+              method: _this10.balancePaymentMethod,
+              notes: _this10.balancePaymentNotes || '',
               paidAt: now
             }
           }
         });
-        _this3.balancePaymentMessage = 'Remaining 90% payment recorded.';
-        _this3.booking = {
-          ..._this3.booking,
+        _this10.balancePaymentMessage = 'Remaining 90% payment recorded.';
+        _this10.booking = {
+          ..._this10.booking,
           balancePaid: true,
           balanceAmount,
-          balancePaymentMethod: _this3.balancePaymentMethod,
+          balancePaymentMethod: _this10.balancePaymentMethod,
           balancePaidAt: now,
+          bookingStatus: 'payment_done',
+          paymentStatus: 'full_payment_done',
+          paidAt: now,
           payments: {
             ...existingPayments,
             balance: {
               paid: true,
               status: 'paid',
               amount: balanceAmount,
-              method: _this3.balancePaymentMethod,
-              notes: _this3.balancePaymentNotes || '',
+              method: _this10.balancePaymentMethod,
+              notes: _this10.balancePaymentNotes || '',
               paidAt: now
             }
           }
         };
       } catch (e) {
-        _this3.balancePaymentError = e?.message || 'Unable to record remaining balance payment.';
+        _this10.balancePaymentError = e?.message || 'Unable to record remaining balance payment.';
       }
-      _this3.savingBalancePayment = false;
+      _this10.savingBalancePayment = false;
     })();
   }
-  get paymentButtonLabel() {
-    return this.isAdmin ? 'Open warranty / damage page' : 'Open payment page';
+  canCustomerUpdateBooking() {
+    return !this.isAdmin && !!this.booking?.bookingId && this.getDerivedBookingStatus() !== 'payment_done';
   }
-  goToPayment() {
-    if (this.booking?.bookingId) {
+  canCustomerPayDeposit() {
+    return !this.isAdmin && this.getBookingWorkflowState() === 'deposit_required' && !this.isDepositPaid();
+  }
+  canCustomerPayBalance() {
+    return !this.isAdmin && this.getBookingWorkflowState() === 'balance_required';
+  }
+  shouldShowCustomerPaymentButton() {
+    return this.canCustomerPayDeposit() || this.canCustomerPayBalance();
+  }
+  get customerPaymentButtonLabel() {
+    if (this.canCustomerPayDeposit()) return 'Pay 10% deposit';
+    if (this.canCustomerPayBalance()) return `Pay remaining 90% (€${this.getBalanceAmount()})`;
+    return 'Payment';
+  }
+  updateCustomerBooking() {
+    this.editMode = true;
+    this.customerUpdateMessage = '';
+    this.customerUpdateError = '';
+  }
+  cancelCustomerUpdate() {
+    this.editMode = false;
+    this.customerUpdateMessage = '';
+    this.customerUpdateError = '';
+  }
+  saveCustomerUpdate() {
+    var _this11 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this11.booking?.bookingId) return;
+      _this11.savingCustomerUpdate = true;
+      _this11.customerUpdateMessage = '';
+      _this11.customerUpdateError = '';
+      try {
+        const payload = {
+          customerName: _this11.booking.customerName || '',
+          email: _this11.booking.email || '',
+          phone: _this11.booking.phone || '',
+          passengers: _this11.booking.passengers || null,
+          pickupLocation: _this11.booking.pickupLocation || '',
+          comments: _this11.booking.comments || '',
+          modifiedTS: Date.now()
+        };
+        yield _this11.bookingApi.updateBooking(_this11.booking.bookingId, payload);
+        _this11.booking = {
+          ..._this11.booking,
+          ...payload
+        };
+        _this11.customerUpdateMessage = 'Booking information updated.';
+        _this11.editMode = false;
+      } catch (e) {
+        _this11.customerUpdateError = e?.message || 'Unable to update booking information.';
+      }
+      _this11.savingCustomerUpdate = false;
+    })();
+  }
+  customerPayment() {
+    if (!this.booking?.bookingId) return;
+    if (this.canCustomerPayDeposit()) {
+      this.payDeposit();
+      return;
+    }
+    if (this.canCustomerPayBalance()) {
       this.router.navigate(['/payment', this.booking.bookingId], {
-        queryParams: this.isAdmin ? {
-          mode: 'warranty'
-        } : {}
+        queryParams: {
+          mode: 'balance'
+        }
       });
     }
+  }
+  canAdminOpenDamagePage() {
+    return this.isAdmin && this.getDerivedBookingStatus() === 'payment_done';
+  }
+  openAdminDamagePage() {
+    if (!this.booking?.bookingId) return;
+    this.router.navigate(['/payment', this.booking.bookingId], {
+      queryParams: {
+        mode: 'warranty'
+      }
+    });
   }
   static ctorParameters = () => [{
     type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.ActivatedRoute
@@ -11181,13 +12814,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   MyFeedbacksComponent: () => (/* binding */ MyFeedbacksComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _my_feedbacks_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./my-feedbacks.component.html?ngResource */ 36050);
 /* harmony import */ var _my_feedbacks_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./my-feedbacks.component.scss?ngResource */ 95790);
 /* harmony import */ var _my_feedbacks_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_my_feedbacks_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+/* harmony import */ var _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../bookings/booking-api.service */ 74854);
+
 
 
 
@@ -11200,9 +12835,11 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
   mainSvc;
   storeDb;
   utilSvc;
+  bookingApi;
   currentLanguage = 'fr';
   loggedUser = null;
   feedbacks = [];
+  eligibleBookings = [];
   loading = true;
   saving = false;
   saved = false;
@@ -11213,6 +12850,7 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
   editSaved = '';
   deletingFeedbackId = null;
   feedback = {
+    bookingId: '',
     date: '',
     time: '',
     outingType: '',
@@ -11234,11 +12872,12 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
   languageSub;
   userSub;
   feedbacksSub;
-  constructor(languageService, mainSvc, storeDb, utilSvc) {
+  constructor(languageService, mainSvc, storeDb, utilSvc, bookingApi) {
     this.languageService = languageService;
     this.mainSvc = mainSvc;
     this.storeDb = storeDb;
     this.utilSvc = utilSvc;
+    this.bookingApi = bookingApi;
   }
   ngOnInit() {
     this.languageSub = this.languageService.language$.subscribe(language => {
@@ -11258,10 +12897,12 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
       this.userSub = userObservable.subscribe(user => {
         this.loggedUser = user || null;
         this.cancelEdit();
+        this.loadEligibleBookings();
         this.loadFeedbacks();
       });
     } else {
       this.loggedUser = svc.bnUser || null;
+      this.loadEligibleBookings();
       this.loadFeedbacks();
     }
   }
@@ -11269,6 +12910,58 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
     this.languageSub?.unsubscribe();
     this.userSub?.unsubscribe();
     this.feedbacksSub?.unsubscribe();
+  }
+  loadEligibleBookings() {
+    const email = this.loggedUser?.email || '';
+    if (!email) {
+      this.eligibleBookings = [];
+      return;
+    }
+    this.bookingApi.getBookings(email).subscribe({
+      next: bookings => {
+        this.eligibleBookings = (bookings || []).filter(booking => this.isFeedbackEligibleBooking(booking));
+        if (this.eligibleBookings.length && !this.feedback.bookingId) {
+          this.selectFeedbackBooking(this.eligibleBookings[0].bookingId);
+        }
+      },
+      error: () => {
+        this.eligibleBookings = [];
+      }
+    });
+  }
+  isFeedbackEligibleBooking(booking) {
+    return this.hasOutingOccurred(booking) && this.isBookingFullyPaid(booking);
+  }
+  hasOutingOccurred(booking) {
+    const time = this.getBookingTime(booking);
+    if (!time) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return time < today.getTime();
+  }
+  isBookingFullyPaid(booking) {
+    const anyBooking = booking;
+    return anyBooking.bookingStatus === 'payment_done' || anyBooking.paymentStatus === 'full_payment_done' || anyBooking.balancePaid === true || anyBooking.balanceStatus === 'paid' || anyBooking.balancePaymentStatus === 'paid' || anyBooking?.payments?.balance?.paid === true || anyBooking?.payments?.balance?.status === 'paid';
+  }
+  getBookingTime(booking) {
+    const rawDate = String(booking.outingDate || booking.date || booking.bookingDate || '').trim();
+    if (!rawDate) return 0;
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+    const departureTime = String(booking.departureTime || '').trim();
+    const timestamp = Date.parse(departureTime ? `${normalized}T${departureTime}` : normalized);
+    return Number.isNaN(timestamp) ? 0 : timestamp;
+  }
+  feedbackBookingLabel(booking) {
+    const date = booking.outingDate || '-';
+    const time = booking.departureTime ? ` · ${booking.departureTime}` : '';
+    return `${date}${time} · ${booking.outingType || 'Outing'} · ${booking.customerName || booking.email || ''}`;
   }
   loadFeedbacks() {
     this.loading = true;
@@ -11288,6 +12981,14 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
     }
     this.feedbacks = this.filterMine(svc.bnFeedbacks || []);
     this.loading = false;
+  }
+  selectFeedbackBooking(bookingId) {
+    const booking = this.eligibleBookings.find(item => item.bookingId === bookingId);
+    if (!booking) return;
+    this.feedback.bookingId = booking.bookingId;
+    this.feedback.date = booking.outingDate || '';
+    this.feedback.time = booking.departureTime || '';
+    this.feedback.outingType = booking.outingType || this.outingOptions[this.currentLanguage][0];
   }
   filterMine(items) {
     const uid = this.loggedUser?.userId || this.loggedUser?.uid;
@@ -11312,8 +13013,13 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
         _this.saveError = _this.t('loginRequired');
         return;
       }
-      if (!_this.feedback.date || !_this.feedback.time || !_this.feedback.outingType || !_this.feedback.comments || !_this.feedback.rating) {
+      if (!_this.feedback.bookingId || !_this.feedback.date || !_this.feedback.time || !_this.feedback.outingType || !_this.feedback.comments || !_this.feedback.rating) {
         _this.saveError = _this.t('required');
+        return;
+      }
+      const selectedBooking = _this.eligibleBookings.find(booking => booking.bookingId === _this.feedback.bookingId);
+      if (!selectedBooking || !_this.isFeedbackEligibleBooking(selectedBooking)) {
+        _this.saveError = _this.t('notEligible');
         return;
       }
       _this.saving = true;
@@ -11334,7 +13040,7 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
           rating: Number(_this.feedback.rating),
           rate: Number(_this.feedback.rating),
           description: _this.feedback.comments,
-          bookingId: '',
+          bookingId: _this.feedback.bookingId,
           createdTS: Date.now(),
           modifiedTS: Date.now(),
           status: 'submitted'
@@ -11342,12 +13048,16 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
         yield _this.updateFeedbackObject(id, payload);
         _this.saved = true;
         _this.feedback = {
+          bookingId: '',
           date: '',
           time: '',
           outingType: _this.outingOptions[_this.currentLanguage][0],
           comments: '',
           rating: 5
         };
+        if (_this.eligibleBookings.length) {
+          _this.selectFeedbackBooking(_this.eligibleBookings[0].bookingId);
+        }
         _this.feedbacks = [payload, ..._this.feedbacks];
       } catch (e) {
         _this.saveError = e?.message || _this.t('saveError');
@@ -11459,7 +13169,7 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
   updateFeedbackObject(id, payload) {
     var _this4 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      yield _this4.storeDb.updateObject(_this4.utilSvc.backendFBstoreId, _this4.utilSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_4__.OBJECTNAME.bnFeedbacks, payload, id);
+      yield _this4.storeDb.updateObject(_this4.utilSvc.backendFBstoreId, _this4.utilSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_5__.OBJECTNAME.bnFeedbacks, payload, id);
     })();
   }
   deleteFeedbackObject(id, item) {
@@ -11469,11 +13179,11 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
       const storeId = _this5.utilSvc.backendFBstoreId;
       const mdb = _this5.utilSvc.mdb;
       if (typeof store.deleteObject === 'function') {
-        yield store.deleteObject(storeId, mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_4__.OBJECTNAME.bnFeedbacks, id);
+        yield store.deleteObject(storeId, mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_5__.OBJECTNAME.bnFeedbacks, id);
         return;
       }
       if (typeof store.removeObject === 'function') {
-        yield store.removeObject(storeId, mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_4__.OBJECTNAME.bnFeedbacks, id);
+        yield store.removeObject(storeId, mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_5__.OBJECTNAME.bnFeedbacks, id);
         return;
       }
       yield _this5.updateFeedbackObject(id, {
@@ -11499,7 +13209,9 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
         title: 'Mes avis',
         intro: 'Laissez un avis après votre sortie, puis retrouvez ici tous les avis associés à votre compte.',
         formTitle: 'Laisser un avis',
-        formIntro: 'Partagez votre expérience à bord d’Alegria. Votre avis nous aide à améliorer l’expérience.',
+        formIntro: 'Partagez votre expérience à bord d’Alegria. Seules les sorties passées et entièrement payées peuvent recevoir un avis.',
+        noEligibleBookings: 'Aucune sortie passée et entièrement payée n’est disponible pour laisser un avis.',
+        notEligible: 'Vous pouvez laisser un avis uniquement pour une sortie passée et entièrement payée.',
         loading: 'Chargement de vos avis...',
         empty: 'Vous n’avez pas encore laissé d’avis.',
         date: 'Date',
@@ -11534,7 +13246,9 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
         title: 'My feedback',
         intro: 'Leave feedback after your outing and view all feedback linked to your account here.',
         formTitle: 'Leave feedback',
-        formIntro: 'Share your experience aboard Alegria. Your feedback helps us improve the experience.',
+        formIntro: 'Share your experience aboard Alegria. Feedback is only available for outings that have already happened and have been fully paid.',
+        noEligibleBookings: 'No past and fully paid outing is available for feedback yet.',
+        notEligible: 'You can only leave feedback for an outing that has already happened and has been fully paid.',
         loading: 'Loading your feedback...',
         empty: 'You have not left any feedback yet.',
         date: 'Date',
@@ -11569,7 +13283,9 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
         title: 'Mis comentarios',
         intro: 'Deje un comentario después de su salida y consulte aquí los comentarios asociados a su cuenta.',
         formTitle: 'Dejar un comentario',
-        formIntro: 'Comparta su experiencia a bordo de Alegria. Su opinión nos ayuda a mejorar.',
+        formIntro: 'Comparta su experiencia a bordo de Alegria. Solo se puede dejar comentario para salidas ya realizadas y totalmente pagadas.',
+        noEligibleBookings: 'Aún no hay ninguna salida pasada y totalmente pagada disponible para dejar un comentario.',
+        notEligible: 'Solo puede dejar un comentario para una salida ya realizada y totalmente pagada.',
         loading: 'Cargando sus comentarios...',
         empty: 'Aún no ha dejado ningún comentario.',
         date: 'Fecha',
@@ -11605,14 +13321,16 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
   static ctorParameters = () => [{
     type: _services_language_service__WEBPACK_IMPORTED_MODULE_3__.LanguageService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.ServicesService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.ServicesService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.StoreDbService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.StoreDbService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.UtilsService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_5__.UtilsService
+  }, {
+    type: _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_4__.BookingApiService
   }];
 };
-MyFeedbacksComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+MyFeedbacksComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
   selector: 'app-my-feedbacks',
   template: _my_feedbacks_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_my_feedbacks_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
@@ -12892,6 +14610,11 @@ let BookingsComponent = class BookingsComponent {
   loading = true;
   errorMessage = '';
   searchTerm = '';
+  activeDateTab = 'upcoming';
+  statusFilter = 'all';
+  warrantyFilter = 'all';
+  sortField = 'date';
+  sortDirection = 'asc';
   selectedBalanceBooking;
   balancePaymentMethod = 'sumup';
   balancePaymentNotes = '';
@@ -12919,13 +14642,142 @@ let BookingsComponent = class BookingsComponent {
   }
   get filteredBookings() {
     const term = this.normalizeSearch(this.searchTerm);
-    if (!term) return this.bookings;
-    return this.bookings.filter(booking => {
-      const customerName = this.normalizeSearch(booking.customerName);
-      const email = this.normalizeSearch(booking.email);
-      const phone = this.normalizeSearch(booking.phone);
-      return customerName.includes(term) || email.includes(term) || phone.includes(term);
+    const filtered = this.bookings.filter(booking => {
+      if (this.activeDateTab === 'upcoming' && !this.isUpcomingBooking(booking)) return false;
+      if (this.activeDateTab === 'past' && !this.isPastBooking(booking)) return false;
+      if (this.statusFilter !== 'all' && this.getDerivedBookingStatus(booking) !== this.statusFilter) return false;
+      if (this.warrantyFilter === 'not_selected' && this.getWarrantyChoice(booking)) return false;
+      if (this.warrantyFilter === 'cash' && this.getWarrantyChoice(booking) !== 'cash_on_board') return false;
+      if (this.warrantyFilter === 'card_selected' && this.getWarrantyChoice(booking) !== 'stripe_card') return false;
+      if (this.warrantyFilter === 'card_registered' && !this.isWarrantyCardRegistered(booking)) return false;
+      if (term) {
+        const haystack = [booking.customerName, booking.email, booking.phone, booking.outingType, booking.outingDate, booking.bookingId, this.getStatusLabel(booking), this.getWarrantyModeLabel(booking)].map(value => this.normalizeSearch(value)).join(' ');
+        if (!haystack.includes(term)) return false;
+      }
+      return true;
     });
+    return this.sortBookings(filtered);
+  }
+  get upcomingBookingsCount() {
+    return this.bookings.filter(booking => this.isUpcomingBooking(booking)).length;
+  }
+  get pastBookingsCount() {
+    return this.bookings.filter(booking => this.isPastBooking(booking)).length;
+  }
+  get activeTabBookingsCount() {
+    return this.filteredBookings.length;
+  }
+  setDateTab(tab) {
+    this.activeDateTab = tab;
+    if (this.sortField === 'date') {
+      this.sortDirection = tab === 'past' ? 'desc' : 'asc';
+    }
+  }
+  isUpcomingBooking(booking) {
+    const time = this.getBookingTime(booking);
+    if (!time) return true;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return time >= today.getTime();
+  }
+  isPastBooking(booking) {
+    const time = this.getBookingTime(booking);
+    if (!time) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return time < today.getTime();
+  }
+  getBookingTime(booking) {
+    const rawDate = String(booking.outingDate || booking.date || booking.bookingDate || '').trim();
+    if (!rawDate) return 0;
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+    const departureTime = String(booking.departureTime || '').trim();
+    const timestamp = Date.parse(departureTime ? `${normalized}T${departureTime}` : normalized);
+    return Number.isNaN(timestamp) ? 0 : timestamp;
+  }
+  sortBookings(bookings) {
+    const direction = this.sortDirection === 'asc' ? 1 : -1;
+    return [...bookings].sort((a, b) => {
+      let left;
+      let right;
+      switch (this.sortField) {
+        case 'customer':
+          left = String(a.customerName || '').toLowerCase();
+          right = String(b.customerName || '').toLowerCase();
+          break;
+        case 'status':
+          left = this.getStatusLabel(a);
+          right = this.getStatusLabel(b);
+          break;
+        case 'total':
+          left = Number(a.totalPrice || 0);
+          right = Number(b.totalPrice || 0);
+          break;
+        case 'balance':
+          left = this.getBalanceAmount(a);
+          right = this.getBalanceAmount(b);
+          break;
+        case 'date':
+        default:
+          left = this.getBookingTime(a);
+          right = this.getBookingTime(b);
+          break;
+      }
+      if (typeof left === 'number' && typeof right === 'number') {
+        return (left - right) * direction;
+      }
+      return String(left || '').localeCompare(String(right || '')) * direction;
+    });
+  }
+  resetFilters() {
+    this.searchTerm = '';
+    this.statusFilter = 'all';
+    this.warrantyFilter = 'all';
+    this.sortField = 'date';
+    this.sortDirection = this.activeDateTab === 'past' ? 'desc' : 'asc';
+  }
+  isTermsAccepted(booking) {
+    const anyBooking = booking;
+    return anyBooking.termsAccepted === true || anyBooking.tcAccepted === true || anyBooking.tAndCAccepted === true || anyBooking.termsAndConditionsAccepted === true || anyBooking.acceptedTerms === true || anyBooking.termsStatus === 'accepted' || anyBooking.tcStatus === 'accepted' || anyBooking?.documents?.termsAccepted === true || anyBooking?.terms?.accepted === true;
+  }
+  getDerivedBookingStatus(booking) {
+    if (this.isBalancePaid(booking)) return 'payment_done';
+    if (this.isDepositPaid(booking) && this.isTermsAccepted(booking)) return 'confirmed';
+    return 'not_confirmed';
+  }
+  getStatusLabel(booking) {
+    const status = this.getDerivedBookingStatus(booking);
+    if (status === 'payment_done') return 'Payment done';
+    if (status === 'confirmed') return 'Confirmed';
+    return 'Not confirmed';
+  }
+  getWarrantyModeLabel(booking) {
+    const choice = this.getWarrantyChoice(booking);
+    if (choice === 'cash_on_board') return 'Cash selected';
+    if (choice === 'stripe_card') return 'Card selected';
+    return 'Not selected';
+  }
+  getWarrantyCardLabel(booking) {
+    if (this.isWarrantyCardRegistered(booking)) return 'Stripe card registered';
+    if (this.getWarrantyChoice(booking) === 'stripe_card') return 'Card selected, not registered';
+    if (this.getWarrantyChoice(booking) === 'cash_on_board') return 'Not required';
+    return 'Not registered';
+  }
+  getDamageStatusLabel(booking) {
+    const anyBooking = booking;
+    const amount = anyBooking.warrantyChargedAmount || anyBooking.warrantyCashDamageAmount || anyBooking?.payments?.warrantyCharge?.warrantyChargeAmount || anyBooking?.payments?.warrantyCashDamage?.amount || 0;
+    if (anyBooking.damageReported === true || anyBooking.damageCharged === true || amount) {
+      const euros = Number(amount) > 999 ? Math.round(Number(amount)) / 100 : Number(amount);
+      return `Damage recorded${euros ? ` (€${euros})` : ''}`;
+    }
+    return this.isBalancePaid(booking) ? 'No damage recorded' : 'After full payment';
   }
   clearSearch() {
     this.searchTerm = '';
@@ -12967,8 +14819,7 @@ let BookingsComponent = class BookingsComponent {
     return anyBooking.depositPaid === true || anyBooking.depositStatus === 'paid' || anyBooking.depositStatus === 'deposit_paid' || anyBooking.paymentStatus === 'paid' || anyBooking.paymentStatus === 'charge_succeeded' || legacyPayment.depositPaid === true || legacyPayment.paid === true || legacyPayment.status === 'paid' || legacyPayment.status === 'deposit_paid' || depositPayment.depositPaid === true || depositPayment.paid === true || depositPayment.status === 'paid' || depositPayment.status === 'deposit_paid';
   }
   isBookingConfirmed(booking) {
-    const status = String(booking.bookingStatus || booking.status || '').toLowerCase();
-    return status === 'confirmed' || status === 'accepted' || status === 'paid';
+    return this.isDepositPaid(booking) && this.isTermsAccepted(booking);
   }
   isWarrantyCardRegistered(booking) {
     const anyBooking = booking;
@@ -12976,9 +14827,15 @@ let BookingsComponent = class BookingsComponent {
     return anyBooking.warrantyRegistered === true || anyBooking.warrantyStatus === 'card_registered' || anyBooking.warrantyStatus === 'warranty_card_saved' || warrantyPayment.warrantyRegistered === true || warrantyPayment.status === 'card_registered' || warrantyPayment.status === 'warranty_card_saved';
   }
   isWarrantySecured(booking) {
+    return this.isWarrantyCardRegistered(booking) || this.getWarrantyChoice(booking) === 'cash_on_board';
+  }
+  getWarrantyChoice(booking) {
     const anyBooking = booking;
     const warrantyPayment = anyBooking?.payments?.warranty || {};
-    return this.isWarrantyCardRegistered(booking) || anyBooking.warrantyMethod === 'cash' || anyBooking.warrantyStatus === 'cash_received' || anyBooking.warrantyCashReceived === true || warrantyPayment.cashReceived === true;
+    if (anyBooking.warrantyPaymentChoice) return anyBooking.warrantyPaymentChoice;
+    if (anyBooking.warrantyMethod === 'cash' || anyBooking.warrantyStatus === 'cash_selected' || anyBooking.warrantyCashSelected === true || warrantyPayment.method === 'cash') return 'cash_on_board';
+    if (anyBooking.warrantyMethod === 'card' || this.isWarrantyCardRegistered(booking)) return 'stripe_card';
+    return '';
   }
   canRecordBalancePayment(booking) {
     return this.isBookingConfirmed(booking) && this.isDepositPaid(booking) && this.isWarrantySecured(booking) && !this.isBalancePaid(booking);
@@ -12987,7 +14844,7 @@ let BookingsComponent = class BookingsComponent {
     if (this.isBalancePaid(booking)) return 'Remaining 90% already paid.';
     if (!this.isBookingConfirmed(booking)) return 'Booking must be confirmed first.';
     if (!this.isDepositPaid(booking)) return '10% deposit must be paid first.';
-    if (!this.isWarrantySecured(booking)) return 'Warranty must be secured first (Stripe card or €500 cash deposit).';
+    if (!this.isWarrantySecured(booking)) return 'Warranty must be selected first (cash) or card must be registered.';
     return '';
   }
   isBalancePaid(booking) {
@@ -13026,6 +14883,9 @@ let BookingsComponent = class BookingsComponent {
           balanceAmount,
           balancePaymentMethod: _this.balancePaymentMethod,
           balancePaidAt: now,
+          bookingStatus: 'payment_done',
+          paymentStatus: 'full_payment_done',
+          paidAt: now,
           payments: {
             ...existingPayments,
             balance: {
@@ -13047,6 +14907,37 @@ let BookingsComponent = class BookingsComponent {
         _this.savingBalancePayment = false;
       }
     })();
+  }
+  payDeposit(booking, event) {
+    event?.stopPropagation();
+    if (!booking?.bookingId || this.isDepositPaid(booking)) return;
+    const currentUrl = window.location.href;
+    const payload = {
+      bookingId: booking.bookingId,
+      ownerId: booking.ownerId || 'alegria',
+      depositAmount: this.getDepositAmount(booking),
+      currency: 'eur',
+      customerEmail: booking.email || '',
+      customerName: booking.customerName || '',
+      customerPhone: booking.customerPhone || booking.phone || '',
+      outingType: booking.outingType || '',
+      outingDate: booking.outingDate || '',
+      successUrl: currentUrl.includes('?') ? `${currentUrl}&payment=success` : `${currentUrl}?payment=success`,
+      cancelUrl: currentUrl.includes('?') ? `${currentUrl}&payment=cancelled` : `${currentUrl}?payment=cancelled`
+    };
+    this.bookingApi.createDepositCheckout(payload).subscribe({
+      next: response => {
+        const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
+        if (url) {
+          window.location.href = url;
+          return;
+        }
+        this.errorMessage = 'Unable to open Stripe deposit checkout.';
+      },
+      error: error => {
+        this.errorMessage = error?.error?.error || error?.error?.message || error?.message || 'Unable to create deposit checkout.';
+      }
+    });
   }
   payment(booking) {
     this.router.navigate(['/payment', booking.bookingId], {
@@ -13520,7 +15411,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
   loading = false;
   saving = false;
   closingId = '';
-  restDatabaseUrls = ['https://adn-dev-4d05d-default-rtdb.europe-west1.firebasedatabase.app', 'https://adn-dev-4d05d-default-rtdb.firebaseio.com', 'https://adn-dev-4d05d.firebaseio.com'];
+  restDatabaseUrls = ['https://adn-dev-4d05d.firebaseio.com'];
   saved = false;
   error = '';
   closeError = '';
@@ -15690,7 +17581,17 @@ textarea:focus {
   .edit-actions .btn {
     width: 100%;
   }
-}`, "",{"version":3,"sources":["webpack://./src/app/home/my-feedbacks/my-feedbacks.component.scss"],"names":[],"mappings":"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","sourcesContent":[":host {\n  display: block;\n}\n\n.feedback-page {\n  padding: 72px 0;\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.container {\n  width: min(1040px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.feedback-card {\n  background: #ffffff;\n  border-radius: 28px;\n  padding: clamp(1.5rem, 4vw, 3rem);\n  box-shadow: 0 22px 60px rgba(8, 38, 58, 0.12);\n  border: 1px solid rgba(8, 38, 58, 0.08);\n}\n\n.eyebrow {\n  display: inline-block;\n  color: #0b6e8f;\n  font-family: 'Raleway', Arial, sans-serif;\n  text-transform: uppercase;\n  letter-spacing: 0.14em;\n  font-size: 0.75rem;\n  font-weight: 700;\n  margin-bottom: 0.8rem;\n}\n\nh1,\nh2 {\n  color: #08263a;\n  margin: 0;\n}\n\nh1 {\n  font-family: 'Playfair Display', Georgia, serif;\n  margin-bottom: 1rem;\n  font-size: clamp(2rem, 5vw, 3.2rem);\n}\n\nh2 {\n  font-family: 'Playfair Display', Georgia, serif;\n  font-size: clamp(1.45rem, 3vw, 2rem);\n  margin-bottom: 0.75rem;\n}\n\n.intro,\np,\nspan {\n  font-family: 'Lato', Arial, sans-serif;\n  color: #2f3a45;\n  line-height: 1.65;\n}\n\n.feedback-form {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 1.1rem;\n  margin-top: 2rem;\n  padding: clamp(1rem, 3vw, 1.5rem);\n  border-radius: 24px;\n  background: #fbf8f2;\n  border: 1px solid rgba(8, 38, 58, 0.08);\n}\n\n.form-head p {\n  margin: 0;\n}\n\nlabel {\n  display: grid;\n  gap: 0.45rem;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 700;\n  color: #08263a;\n}\n\n.full {\n  grid-column: 1 / -1;\n}\n\ninput,\nselect,\ntextarea {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.16);\n  border-radius: 16px;\n  padding: 0.95rem 1rem;\n  font-family: 'Lato', Arial, sans-serif;\n  font-size: 1rem;\n  color: #08263a;\n  background: #ffffff;\n  outline: none;\n  transition: border-color 0.2s ease, box-shadow 0.2s ease;\n}\n\ninput:focus,\nselect:focus,\ntextarea:focus {\n  border-color: #0b6e8f;\n  box-shadow: 0 0 0 4px rgba(11, 110, 143, 0.12);\n}\n\n.rating-buttons {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.5rem;\n}\n\n.rating-buttons button {\n  border: 1px solid rgba(8, 38, 58, 0.16);\n  background: #ffffff;\n  color: #0b6e8f;\n  border-radius: 999px;\n  padding: 0.65rem 0.95rem;\n  cursor: pointer;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 800;\n}\n\n.rating-buttons button.active {\n  background: #f28c28;\n  color: #ffffff;\n  border-color: #f28c28;\n}\n\n.form-actions {\n  display: flex;\n  justify-content: flex-end;\n  margin-top: 0.5rem;\n}\n\n.btn {\n  border: 0;\n  cursor: pointer;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  text-decoration: none;\n  border-radius: 999px;\n  padding: 0.95rem 1.35rem;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 800;\n  transition: transform 0.2s ease, opacity 0.2s ease;\n}\n\n.btn:hover {\n  transform: translateY(-1px);\n}\n\n.btn:disabled {\n  opacity: 0.65;\n  cursor: not-allowed;\n  transform: none;\n}\n\n.btn-primary {\n  background: #f28c28;\n  color: #ffffff;\n}\n\n.success,\n.error {\n  margin: 0;\n  padding: 1rem;\n  border-radius: 16px;\n  font-weight: 700;\n}\n\n.success {\n  background: rgba(16, 185, 129, 0.12);\n  color: #047857;\n}\n\n.error {\n  background: rgba(239, 68, 68, 0.1);\n  color: #b91c1c;\n}\n\n.feedback-list {\n  margin-top: 2rem;\n}\n\n.feedback-grid {\n  display: grid;\n  gap: 1rem;\n  margin-top: 1.25rem;\n}\n\n.feedback-item,\n.state-card {\n  border-radius: 20px;\n  padding: 1.15rem;\n  background: #fbf8f2;\n  border: 1px solid rgba(8, 38, 58, 0.08);\n}\n\n.feedback-topline {\n  display: flex;\n  align-items: flex-start;\n  justify-content: space-between;\n  gap: 1rem;\n  margin-bottom: 0.7rem;\n}\n\n.feedback-topline strong {\n  font-family: 'Raleway', Arial, sans-serif;\n  color: #08263a;\n}\n\n.stars {\n  color: #f28c28;\n  white-space: nowrap;\n  font-weight: 700;\n}\n\n.feedback-meta {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.8rem;\n  margin-bottom: 0.6rem;\n  color: #667085;\n}\n\n.feedback-comment {\n  margin: 0;\n}\n\n@media (max-width: 760px) {\n  .feedback-page {\n    padding: 42px 0;\n  }\n\n  .feedback-form {\n    grid-template-columns: 1fr;\n  }\n\n  .form-actions {\n    justify-content: stretch;\n  }\n\n  .btn {\n    width: 100%;\n  }\n\n  .feedback-topline {\n    flex-direction: column;\n  }\n}\n\n\n.feedback-actions,\n.edit-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.75rem;\n  margin-top: 1rem;\n}\n\n.btn-secondary {\n  background: #e8f4f7;\n  color: #08263a;\n  border: 1px solid rgba(8, 38, 58, 0.12);\n}\n\n.btn-danger {\n  background: #fff1f2;\n  color: #b91c1c;\n  border: 1px solid rgba(185, 28, 28, 0.18);\n}\n\n.edit-form {\n  margin-top: 0;\n  box-shadow: none;\n}\n\n@media (max-width: 760px) {\n  .feedback-actions,\n  .edit-actions {\n    flex-direction: column;\n  }\n\n  .feedback-actions .btn,\n  .edit-actions .btn {\n    width: 100%;\n  }\n}\n"],"sourceRoot":""}]);
+}
+.feedback-form input[readonly],
+.feedback-form textarea[readonly] {
+  background: #f8f5ef;
+  color: #516070;
+  cursor: not-allowed;
+}
+
+.state-card.full {
+  grid-column: 1/-1;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/my-feedbacks/my-feedbacks.component.scss"],"names":[],"mappings":"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","sourcesContent":[":host {\n  display: block;\n}\n\n.feedback-page {\n  padding: 72px 0;\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.container {\n  width: min(1040px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.feedback-card {\n  background: #ffffff;\n  border-radius: 28px;\n  padding: clamp(1.5rem, 4vw, 3rem);\n  box-shadow: 0 22px 60px rgba(8, 38, 58, 0.12);\n  border: 1px solid rgba(8, 38, 58, 0.08);\n}\n\n.eyebrow {\n  display: inline-block;\n  color: #0b6e8f;\n  font-family: 'Raleway', Arial, sans-serif;\n  text-transform: uppercase;\n  letter-spacing: 0.14em;\n  font-size: 0.75rem;\n  font-weight: 700;\n  margin-bottom: 0.8rem;\n}\n\nh1,\nh2 {\n  color: #08263a;\n  margin: 0;\n}\n\nh1 {\n  font-family: 'Playfair Display', Georgia, serif;\n  margin-bottom: 1rem;\n  font-size: clamp(2rem, 5vw, 3.2rem);\n}\n\nh2 {\n  font-family: 'Playfair Display', Georgia, serif;\n  font-size: clamp(1.45rem, 3vw, 2rem);\n  margin-bottom: 0.75rem;\n}\n\n.intro,\np,\nspan {\n  font-family: 'Lato', Arial, sans-serif;\n  color: #2f3a45;\n  line-height: 1.65;\n}\n\n.feedback-form {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 1.1rem;\n  margin-top: 2rem;\n  padding: clamp(1rem, 3vw, 1.5rem);\n  border-radius: 24px;\n  background: #fbf8f2;\n  border: 1px solid rgba(8, 38, 58, 0.08);\n}\n\n.form-head p {\n  margin: 0;\n}\n\nlabel {\n  display: grid;\n  gap: 0.45rem;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 700;\n  color: #08263a;\n}\n\n.full {\n  grid-column: 1 / -1;\n}\n\ninput,\nselect,\ntextarea {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, 0.16);\n  border-radius: 16px;\n  padding: 0.95rem 1rem;\n  font-family: 'Lato', Arial, sans-serif;\n  font-size: 1rem;\n  color: #08263a;\n  background: #ffffff;\n  outline: none;\n  transition: border-color 0.2s ease, box-shadow 0.2s ease;\n}\n\ninput:focus,\nselect:focus,\ntextarea:focus {\n  border-color: #0b6e8f;\n  box-shadow: 0 0 0 4px rgba(11, 110, 143, 0.12);\n}\n\n.rating-buttons {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.5rem;\n}\n\n.rating-buttons button {\n  border: 1px solid rgba(8, 38, 58, 0.16);\n  background: #ffffff;\n  color: #0b6e8f;\n  border-radius: 999px;\n  padding: 0.65rem 0.95rem;\n  cursor: pointer;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 800;\n}\n\n.rating-buttons button.active {\n  background: #f28c28;\n  color: #ffffff;\n  border-color: #f28c28;\n}\n\n.form-actions {\n  display: flex;\n  justify-content: flex-end;\n  margin-top: 0.5rem;\n}\n\n.btn {\n  border: 0;\n  cursor: pointer;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  text-decoration: none;\n  border-radius: 999px;\n  padding: 0.95rem 1.35rem;\n  font-family: 'Raleway', Arial, sans-serif;\n  font-weight: 800;\n  transition: transform 0.2s ease, opacity 0.2s ease;\n}\n\n.btn:hover {\n  transform: translateY(-1px);\n}\n\n.btn:disabled {\n  opacity: 0.65;\n  cursor: not-allowed;\n  transform: none;\n}\n\n.btn-primary {\n  background: #f28c28;\n  color: #ffffff;\n}\n\n.success,\n.error {\n  margin: 0;\n  padding: 1rem;\n  border-radius: 16px;\n  font-weight: 700;\n}\n\n.success {\n  background: rgba(16, 185, 129, 0.12);\n  color: #047857;\n}\n\n.error {\n  background: rgba(239, 68, 68, 0.1);\n  color: #b91c1c;\n}\n\n.feedback-list {\n  margin-top: 2rem;\n}\n\n.feedback-grid {\n  display: grid;\n  gap: 1rem;\n  margin-top: 1.25rem;\n}\n\n.feedback-item,\n.state-card {\n  border-radius: 20px;\n  padding: 1.15rem;\n  background: #fbf8f2;\n  border: 1px solid rgba(8, 38, 58, 0.08);\n}\n\n.feedback-topline {\n  display: flex;\n  align-items: flex-start;\n  justify-content: space-between;\n  gap: 1rem;\n  margin-bottom: 0.7rem;\n}\n\n.feedback-topline strong {\n  font-family: 'Raleway', Arial, sans-serif;\n  color: #08263a;\n}\n\n.stars {\n  color: #f28c28;\n  white-space: nowrap;\n  font-weight: 700;\n}\n\n.feedback-meta {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.8rem;\n  margin-bottom: 0.6rem;\n  color: #667085;\n}\n\n.feedback-comment {\n  margin: 0;\n}\n\n@media (max-width: 760px) {\n  .feedback-page {\n    padding: 42px 0;\n  }\n\n  .feedback-form {\n    grid-template-columns: 1fr;\n  }\n\n  .form-actions {\n    justify-content: stretch;\n  }\n\n  .btn {\n    width: 100%;\n  }\n\n  .feedback-topline {\n    flex-direction: column;\n  }\n}\n\n\n.feedback-actions,\n.edit-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.75rem;\n  margin-top: 1rem;\n}\n\n.btn-secondary {\n  background: #e8f4f7;\n  color: #08263a;\n  border: 1px solid rgba(8, 38, 58, 0.12);\n}\n\n.btn-danger {\n  background: #fff1f2;\n  color: #b91c1c;\n  border: 1px solid rgba(185, 28, 28, 0.18);\n}\n\n.edit-form {\n  margin-top: 0;\n  box-shadow: none;\n}\n\n@media (max-width: 760px) {\n  .feedback-actions,\n  .edit-actions {\n    flex-direction: column;\n  }\n\n  .feedback-actions .btn,\n  .edit-actions .btn {\n    width: 100%;\n  }\n}\n\n.feedback-form input[readonly],\n.feedback-form textarea[readonly] {\n  background: #f8f5ef;\n  color: #516070;\n  cursor: not-allowed;\n}\n\n.state-card.full {\n  grid-column: 1 / -1;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -15850,7 +17751,85 @@ h1 {
 
 .booking-meta span {
   line-height: 1.4;
-}`, "",{"version":3,"sources":["webpack://./src/app/home/my-bookings/my-bookings.component.scss"],"names":[],"mappings":"AAAA;EAAgB,eAAA;EAAiB,mBAAA;EAAqB,gBAAA;AAItD;;AAHA;EAAiB,iBAAA;EAAmB,cAAA;AAQpC;;AAPA;EAAgB,mBAAA;EAAqB,gBAAA;AAYrC;;AAXA;EAAW,yBAAA;EAA2B,sBAAA;EAAuB,kBAAA;EAAmB,cAAA;EAAgB,gBAAA;AAmBhG;;AAlBA;EAAK,cAAA;EAAgB,aAAA;AAuBrB;;AAtBA;EAAgB,aAAA;EAAe,2DAAA;EAA6D,SAAA;AA4B5F;;AA3BA;EAAmD,gBAAA;EAAkB,mBAAA;EAAqB,aAAA;EAAe,6CAAA;EAA2C,uCAAA;AAmCpJ;;AAlCA;EAAmB,kBAAA;EAAoB,cAAA;EAAgB,kBAAA;AAwCvD;;AAvCA;EAAkB,aAAA;EAAe,cAAA;AA4CjC;;AA3CA;EAAe,oBAAA;EAAsB,oBAAA;EAAsB,oCAAA;EAAkC,cAAA;EAAgB,iBAAA;EAAmB,kBAAA;EAAmB,gBAAA;AAqDnJ;;AApDA;EAAgB,aAAA;EAAe,QAAA;EAAU,cAAA;EAAgB,cAAA;AA2DzD;;AA1DA;EAAmB,aAAA;EAAe,SAAA;EAAW,eAAA;AAgE7C;;AA/DA;EAAO,SAAA;EAAW,oBAAA;EAAsB,kBAAA;EAAoB,gBAAA;EAAkB,eAAA;EAAiB,qBAAA;AAwE/F;;AAvEA;EAAe,mBAAA;EAAqB,WAAA;AA4EpC;;AA3EA;EAAiB,mBAAA;EAAqB,cAAA;AAgFtC;;AA/EA;EAAS,WAAA;AAmFT;;AAlFA;EAAe,aAAA;EAAe,2DAAA;EAA6D,SAAA;EAAW,cAAA;AAyFtG;;AAxFA;EAAmB,mBAAA;EAAqB,mBAAA;EAAqB,aAAA;EAAe,aAAA;EAAe,QAAA;AAgG3F;;AA/FA;EAAsB,cAAA;AAmGtB;;AAlGA;EAAoB,cAAA;AAsGpB;;AArGA;EAAY,mBAAA;EAAqB,aAAA;EAAe,mBAAA;EAAqB,cAAA;AA4GrE;;AA1GA;EACE,oBAAA;EACA,mBAAA;EACA,oBAAA;EACA,uBAAA;EACA,mBAAA;EACA,WAAA;EACA,gBAAA;AA6GF;;AA1GA;EACE,gBAAA;AA6GF","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n\n.paid-badge {\n  display: inline-flex;\n  align-items: center;\n  border-radius: 999px;\n  padding: 0.55rem 0.9rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n}\n\n.booking-meta span {\n  line-height: 1.4;\n}\n"],"sourceRoot":""}]);
+}
+
+.booking-tabs {
+  display: inline-flex;
+  gap: 0.5rem;
+  background: rgba(8, 38, 58, 0.06);
+  border-radius: 999px;
+  padding: 0.35rem;
+  margin: 1rem 0;
+}
+
+.booking-tabs button {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  padding: 0.7rem 1.1rem;
+  color: #08263a;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.booking-tabs button.active {
+  background: #fff;
+  box-shadow: 0 8px 22px rgba(8, 38, 58, 0.08);
+}
+
+.booking-tabs span {
+  display: inline-flex;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(181, 139, 74, 0.16);
+  color: #b58b4a;
+  margin-left: 0.35rem;
+}
+
+.booking-toolbar-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.4fr) repeat(4, minmax(140px, 1fr)) auto;
+  gap: 0.85rem;
+  align-items: end;
+  margin: 1rem 0;
+}
+
+.booking-toolbar-grid label {
+  display: grid;
+  gap: 0.35rem;
+  color: #08263a;
+  font-weight: 700;
+}
+
+.booking-toolbar-grid select,
+.booking-toolbar-grid input {
+  min-height: 42px;
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 14px;
+  padding: 0.65rem 0.75rem;
+  background: #fff;
+  font: inherit;
+}
+
+@media (max-width: 980px) {
+  .booking-toolbar-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .booking-tabs {
+    width: 100%;
+  }
+  .booking-tabs button {
+    flex: 1;
+  }
+  .booking-toolbar-grid {
+    grid-template-columns: 1fr;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/my-bookings/my-bookings.component.scss"],"names":[],"mappings":"AAAA;EAAgB,eAAA;EAAiB,mBAAA;EAAqB,gBAAA;AAItD;;AAHA;EAAiB,iBAAA;EAAmB,cAAA;AAQpC;;AAPA;EAAgB,mBAAA;EAAqB,gBAAA;AAYrC;;AAXA;EAAW,yBAAA;EAA2B,sBAAA;EAAuB,kBAAA;EAAmB,cAAA;EAAgB,gBAAA;AAmBhG;;AAlBA;EAAK,cAAA;EAAgB,aAAA;AAuBrB;;AAtBA;EAAgB,aAAA;EAAe,2DAAA;EAA6D,SAAA;AA4B5F;;AA3BA;EAAmD,gBAAA;EAAkB,mBAAA;EAAqB,aAAA;EAAe,6CAAA;EAA2C,uCAAA;AAmCpJ;;AAlCA;EAAmB,kBAAA;EAAoB,cAAA;EAAgB,kBAAA;AAwCvD;;AAvCA;EAAkB,aAAA;EAAe,cAAA;AA4CjC;;AA3CA;EAAe,oBAAA;EAAsB,oBAAA;EAAsB,oCAAA;EAAkC,cAAA;EAAgB,iBAAA;EAAmB,kBAAA;EAAmB,gBAAA;AAqDnJ;;AApDA;EAAgB,aAAA;EAAe,QAAA;EAAU,cAAA;EAAgB,cAAA;AA2DzD;;AA1DA;EAAmB,aAAA;EAAe,SAAA;EAAW,eAAA;AAgE7C;;AA/DA;EAAO,SAAA;EAAW,oBAAA;EAAsB,kBAAA;EAAoB,gBAAA;EAAkB,eAAA;EAAiB,qBAAA;AAwE/F;;AAvEA;EAAe,mBAAA;EAAqB,WAAA;AA4EpC;;AA3EA;EAAiB,mBAAA;EAAqB,cAAA;AAgFtC;;AA/EA;EAAS,WAAA;AAmFT;;AAlFA;EAAe,aAAA;EAAe,2DAAA;EAA6D,SAAA;EAAW,cAAA;AAyFtG;;AAxFA;EAAmB,mBAAA;EAAqB,mBAAA;EAAqB,aAAA;EAAe,aAAA;EAAe,QAAA;AAgG3F;;AA/FA;EAAsB,cAAA;AAmGtB;;AAlGA;EAAoB,cAAA;AAsGpB;;AArGA;EAAY,mBAAA;EAAqB,aAAA;EAAe,mBAAA;EAAqB,cAAA;AA4GrE;;AA1GA;EACE,oBAAA;EACA,mBAAA;EACA,oBAAA;EACA,uBAAA;EACA,mBAAA;EACA,WAAA;EACA,gBAAA;AA6GF;;AA1GA;EACE,gBAAA;AA6GF;;AA1GA;EACE,oBAAA;EACA,WAAA;EACA,iCAAA;EACA,oBAAA;EACA,gBAAA;EACA,cAAA;AA6GF;;AA1GA;EACE,SAAA;EACA,oBAAA;EACA,uBAAA;EACA,sBAAA;EACA,cAAA;EACA,gBAAA;EACA,eAAA;AA6GF;;AA1GA;EACE,gBAAA;EACA,4CAAA;AA6GF;;AA1GA;EACE,oBAAA;EACA,iBAAA;EACA,cAAA;EACA,mBAAA;EACA,uBAAA;EACA,oBAAA;EACA,oCAAA;EACA,cAAA;EACA,oBAAA;AA6GF;;AA1GA;EACE,aAAA;EACA,8EAAA;EACA,YAAA;EACA,gBAAA;EACA,cAAA;AA6GF;;AA1GA;EACE,aAAA;EACA,YAAA;EACA,cAAA;EACA,gBAAA;AA6GF;;AA1GA;;EAEE,gBAAA;EACA,uCAAA;EACA,mBAAA;EACA,wBAAA;EACA,gBAAA;EACA,aAAA;AA6GF;;AA1GA;EACE;IACE,8BAAA;EA6GF;AACF;AA1GA;EACE;IACE,WAAA;EA4GF;EAzGA;IACE,OAAA;EA2GF;EAxGA;IACE,0BAAA;EA0GF;AACF","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n\n.paid-badge {\n  display: inline-flex;\n  align-items: center;\n  border-radius: 999px;\n  padding: 0.55rem 0.9rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n}\n\n.booking-meta span {\n  line-height: 1.4;\n}\n\n.booking-tabs {\n  display: inline-flex;\n  gap: 0.5rem;\n  background: rgba(8,38,58,.06);\n  border-radius: 999px;\n  padding: 0.35rem;\n  margin: 1rem 0;\n}\n\n.booking-tabs button {\n  border: 0;\n  border-radius: 999px;\n  background: transparent;\n  padding: 0.7rem 1.1rem;\n  color: #08263a;\n  font-weight: 800;\n  cursor: pointer;\n}\n\n.booking-tabs button.active {\n  background: #fff;\n  box-shadow: 0 8px 22px rgba(8,38,58,.08);\n}\n\n.booking-tabs span {\n  display: inline-flex;\n  min-width: 1.6rem;\n  height: 1.6rem;\n  align-items: center;\n  justify-content: center;\n  border-radius: 999px;\n  background: rgba(181,139,74,.16);\n  color: #b58b4a;\n  margin-left: 0.35rem;\n}\n\n.booking-toolbar-grid {\n  display: grid;\n  grid-template-columns: minmax(220px, 1.4fr) repeat(4, minmax(140px, 1fr)) auto;\n  gap: 0.85rem;\n  align-items: end;\n  margin: 1rem 0;\n}\n\n.booking-toolbar-grid label {\n  display: grid;\n  gap: 0.35rem;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.booking-toolbar-grid select,\n.booking-toolbar-grid input {\n  min-height: 42px;\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.65rem 0.75rem;\n  background: #fff;\n  font: inherit;\n}\n\n@media (max-width: 980px) {\n  .booking-toolbar-grid {\n    grid-template-columns: 1fr 1fr;\n  }\n}\n\n@media (max-width: 640px) {\n  .booking-tabs {\n    width: 100%;\n  }\n\n  .booking-tabs button {\n    flex: 1;\n  }\n\n  .booking-toolbar-grid {\n    grid-template-columns: 1fr;\n  }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 

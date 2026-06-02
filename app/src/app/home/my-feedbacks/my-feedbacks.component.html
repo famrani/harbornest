@@ -15,23 +15,33 @@
         <p>{{ t('formIntro') }}</p>
       </div>
 
+      <div class="state-card full" *ngIf="eligibleBookings.length === 0">
+        <p>{{ t('noEligibleBookings') }}</p>
+      </div>
+
+      <label class="full" *ngIf="eligibleBookings.length > 0">
+        <span>{{ t('outing') }}</span>
+        <select name="bookingId" [(ngModel)]="feedback.bookingId" (ngModelChange)="selectFeedbackBooking($event)" required>
+          <option value="" disabled>Select an outing</option>
+          <option *ngFor="let booking of eligibleBookings" [value]="booking.bookingId">
+            {{ feedbackBookingLabel(booking) }}
+          </option>
+        </select>
+      </label>
+
       <label>
         <span>{{ t('formDate') }}</span>
-        <input type="date" name="date" [(ngModel)]="feedback.date" required />
+        <input type="date" name="date" [(ngModel)]="feedback.date" readonly required />
       </label>
 
       <label>
         <span>{{ t('time') }}</span>
-        <input type="time" name="time" [(ngModel)]="feedback.time" required />
+        <input type="time" name="time" [(ngModel)]="feedback.time" readonly required />
       </label>
 
       <label class="full">
         <span>{{ t('outingType') }}</span>
-        <select name="outingType" [(ngModel)]="feedback.outingType" required>
-          <option *ngFor="let option of outingOptions[currentLanguage]" [value]="option">
-            {{ option }}
-          </option>
-        </select>
+        <input type="text" name="outingType" [(ngModel)]="feedback.outingType" readonly required />
       </label>
 
       <label class="full">
@@ -54,7 +64,7 @@
       </label>
 
       <div class="form-actions full">
-        <button class="btn btn-primary" type="submit" [disabled]="saving">
+        <button class="btn btn-primary" type="submit" [disabled]="saving || eligibleBookings.length === 0">
           {{ saving ? t('saving') : t('save') }}
         </button>
       </div>
@@ -112,21 +122,17 @@
             <form class="feedback-form edit-form" (ngSubmit)="updateExistingFeedback(item)">
               <label>
                 <span>{{ t('formDate') }}</span>
-                <input type="date" name="editDate{{ feedbackId(item) }}" [(ngModel)]="editFeedback.date" required />
+                <input type="date" name="editDate{{ feedbackId(item) }}" [(ngModel)]="editFeedback.date" readonly required />
               </label>
 
               <label>
                 <span>{{ t('time') }}</span>
-                <input type="time" name="editTime{{ feedbackId(item) }}" [(ngModel)]="editFeedback.time" required />
+                <input type="time" name="editTime{{ feedbackId(item) }}" [(ngModel)]="editFeedback.time" readonly required />
               </label>
 
               <label class="full">
                 <span>{{ t('outingType') }}</span>
-                <select name="editOutingType{{ feedbackId(item) }}" [(ngModel)]="editFeedback.outingType" required>
-                  <option *ngFor="let option of outingOptions[currentLanguage]" [value]="option">
-                    {{ option }}
-                  </option>
-                </select>
+                <input type="text" name="editOutingType{{ feedbackId(item) }}" [(ngModel)]="editFeedback.outingType" readonly required />
               </label>
 
               <label class="full">

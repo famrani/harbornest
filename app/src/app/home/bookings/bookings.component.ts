@@ -20,6 +20,11 @@ export class BookingsComponent implements OnInit {
   loading = true;
   errorMessage = '';
   searchTerm = '';
+  activeDateTab: 'upcoming' | 'past' = 'upcoming';
+  statusFilter = 'all';
+  warrantyFilter = 'all';
+  sortField: 'date' | 'customer' | 'status' | 'total' | 'balance' = 'date';
+  sortDirection: 'asc' | 'desc' = 'asc';
   selectedBalanceBooking?: BookingView;
   balancePaymentMethod = 'sumup';
   balancePaymentNotes = '';
@@ -52,14 +57,187 @@ export class BookingsComponent implements OnInit {
 
   get filteredBookings(): BookingView[] {
     const term = this.normalizeSearch(this.searchTerm);
-    if (!term) return this.bookings;
 
-    return this.bookings.filter((booking) => {
-      const customerName = this.normalizeSearch(booking.customerName);
-      const email = this.normalizeSearch(booking.email);
-      const phone = this.normalizeSearch(booking.phone);
-      return customerName.includes(term) || email.includes(term) || phone.includes(term);
+    const filtered = this.bookings.filter((booking) => {
+      if (this.activeDateTab === 'upcoming' && !this.isUpcomingBooking(booking)) return false;
+      if (this.activeDateTab === 'past' && !this.isPastBooking(booking)) return false;
+
+      if (this.statusFilter !== 'all' && this.getDerivedBookingStatus(booking) !== this.statusFilter) return false;
+
+      if (this.warrantyFilter === 'not_selected' && this.getWarrantyChoice(booking)) return false;
+      if (this.warrantyFilter === 'cash' && this.getWarrantyChoice(booking) !== 'cash_on_board') return false;
+      if (this.warrantyFilter === 'card_selected' && this.getWarrantyChoice(booking) !== 'stripe_card') return false;
+      if (this.warrantyFilter === 'card_registered' && !this.isWarrantyCardRegistered(booking)) return false;
+
+      if (term) {
+        const haystack = [
+          booking.customerName,
+          booking.email,
+          booking.phone,
+          booking.outingType,
+          booking.outingDate,
+          (booking as any).bookingId,
+          this.getStatusLabel(booking),
+          this.getWarrantyModeLabel(booking),
+        ].map((value) => this.normalizeSearch(value)).join(' ');
+
+        if (!haystack.includes(term)) return false;
+      }
+
+      return true;
     });
+
+    return this.sortBookings(filtered);
+  }
+
+  get upcomingBookingsCount(): number {
+    return this.bookings.filter((booking) => this.isUpcomingBooking(booking)).length;
+  }
+
+  get pastBookingsCount(): number {
+    return this.bookings.filter((booking) => this.isPastBooking(booking)).length;
+  }
+
+  get activeTabBookingsCount(): number {
+    return this.filteredBookings.length;
+  }
+
+  setDateTab(tab: 'upcoming' | 'past'): void {
+    this.activeDateTab = tab;
+    if (this.sortField === 'date') {
+      this.sortDirection = tab === 'past' ? 'desc' : 'asc';
+    }
+  }
+
+  isUpcomingBooking(booking: AlegriaBooking): boolean {
+    const time = this.getBookingTime(booking);
+    if (!time) return true;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return time >= today.getTime();
+  }
+
+  isPastBooking(booking: AlegriaBooking): boolean {
+    const time = this.getBookingTime(booking);
+    if (!time) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return time < today.getTime();
+  }
+
+  getBookingTime(booking: AlegriaBooking): number {
+    const rawDate = String((booking as any).outingDate || (booking as any).date || (booking as any).bookingDate || '').trim();
+    if (!rawDate) return 0;
+
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+
+    const departureTime = String((booking as any).departureTime || '').trim();
+    const timestamp = Date.parse(departureTime ? `${normalized}T${departureTime}` : normalized);
+    return Number.isNaN(timestamp) ? 0 : timestamp;
+  }
+
+  sortBookings(bookings: BookingView[]): BookingView[] {
+    const direction = this.sortDirection === 'asc' ? 1 : -1;
+
+    return [...bookings].sort((a, b) => {
+      let left: any;
+      let right: any;
+
+      switch (this.sortField) {
+        case 'customer':
+          left = String(a.customerName || '').toLowerCase();
+          right = String(b.customerName || '').toLowerCase();
+          break;
+        case 'status':
+          left = this.getStatusLabel(a);
+          right = this.getStatusLabel(b);
+          break;
+        case 'total':
+          left = Number(a.totalPrice || 0);
+          right = Number(b.totalPrice || 0);
+          break;
+        case 'balance':
+          left = this.getBalanceAmount(a);
+          right = this.getBalanceAmount(b);
+          break;
+        case 'date':
+        default:
+          left = this.getBookingTime(a);
+          right = this.getBookingTime(b);
+          break;
+      }
+
+      if (typeof left === 'number' && typeof right === 'number') {
+        return (left - right) * direction;
+      }
+
+      return String(left || '').localeCompare(String(right || '')) * direction;
+    });
+  }
+
+  resetFilters(): void {
+    this.searchTerm = '';
+    this.statusFilter = 'all';
+    this.warrantyFilter = 'all';
+    this.sortField = 'date';
+    this.sortDirection = this.activeDateTab === 'past' ? 'desc' : 'asc';
+  }
+
+  isTermsAccepted(booking: AlegriaBooking): boolean {
+    const anyBooking: any = booking;
+    return anyBooking.termsAccepted === true ||
+      anyBooking.tcAccepted === true ||
+      anyBooking.tAndCAccepted === true ||
+      anyBooking.termsAndConditionsAccepted === true ||
+      anyBooking.acceptedTerms === true ||
+      anyBooking.termsStatus === 'accepted' ||
+      anyBooking.tcStatus === 'accepted' ||
+      anyBooking?.documents?.termsAccepted === true ||
+      anyBooking?.terms?.accepted === true;
+  }
+
+  getDerivedBookingStatus(booking: AlegriaBooking): string {
+    if (this.isBalancePaid(booking)) return 'payment_done';
+    if (this.isDepositPaid(booking) && this.isTermsAccepted(booking)) return 'confirmed';
+    return 'not_confirmed';
+  }
+
+  getStatusLabel(booking: AlegriaBooking): string {
+    const status = this.getDerivedBookingStatus(booking);
+    if (status === 'payment_done') return 'Payment done';
+    if (status === 'confirmed') return 'Confirmed';
+    return 'Not confirmed';
+  }
+
+  getWarrantyModeLabel(booking: AlegriaBooking): string {
+    const choice = this.getWarrantyChoice(booking);
+    if (choice === 'cash_on_board') return 'Cash selected';
+    if (choice === 'stripe_card') return 'Card selected';
+    return 'Not selected';
+  }
+
+  getWarrantyCardLabel(booking: AlegriaBooking): string {
+    if (this.isWarrantyCardRegistered(booking)) return 'Stripe card registered';
+    if (this.getWarrantyChoice(booking) === 'stripe_card') return 'Card selected, not registered';
+    if (this.getWarrantyChoice(booking) === 'cash_on_board') return 'Not required';
+    return 'Not registered';
+  }
+
+  getDamageStatusLabel(booking: AlegriaBooking): string {
+    const anyBooking: any = booking;
+    const amount = anyBooking.warrantyChargedAmount || anyBooking.warrantyCashDamageAmount || anyBooking?.payments?.warrantyCharge?.warrantyChargeAmount || anyBooking?.payments?.warrantyCashDamage?.amount || 0;
+    if (anyBooking.damageReported === true || anyBooking.damageCharged === true || amount) {
+      const euros = Number(amount) > 999 ? Math.round(Number(amount)) / 100 : Number(amount);
+      return `Damage recorded${euros ? ` (€${euros})` : ''}`;
+    }
+    return this.isBalancePaid(booking) ? 'No damage recorded' : 'After full payment';
   }
 
   clearSearch(): void {
@@ -123,8 +301,7 @@ export class BookingsComponent implements OnInit {
   }
 
   isBookingConfirmed(booking: AlegriaBooking): boolean {
-    const status = String((booking as any).bookingStatus || (booking as any).status || '').toLowerCase();
-    return status === 'confirmed' || status === 'accepted' || status === 'paid';
+    return this.isDepositPaid(booking) && this.isTermsAccepted(booking);
   }
 
   isWarrantyCardRegistered(booking: AlegriaBooking): boolean {
@@ -141,14 +318,16 @@ export class BookingsComponent implements OnInit {
 
 
   isWarrantySecured(booking: AlegriaBooking): boolean {
+    return this.isWarrantyCardRegistered(booking) || this.getWarrantyChoice(booking) === 'cash_on_board';
+  }
+
+  getWarrantyChoice(booking: AlegriaBooking): string {
     const anyBooking: any = booking;
     const warrantyPayment = anyBooking?.payments?.warranty || {};
-
-    return this.isWarrantyCardRegistered(booking) ||
-      anyBooking.warrantyMethod === 'cash' ||
-      anyBooking.warrantyStatus === 'cash_received' ||
-      anyBooking.warrantyCashReceived === true ||
-      warrantyPayment.cashReceived === true;
+    if (anyBooking.warrantyPaymentChoice) return anyBooking.warrantyPaymentChoice;
+    if (anyBooking.warrantyMethod === 'cash' || anyBooking.warrantyStatus === 'cash_selected' || anyBooking.warrantyCashSelected === true || warrantyPayment.method === 'cash') return 'cash_on_board';
+    if (anyBooking.warrantyMethod === 'card' || this.isWarrantyCardRegistered(booking)) return 'stripe_card';
+    return '';
   }
 
   canRecordBalancePayment(booking: AlegriaBooking): boolean {
@@ -162,7 +341,7 @@ export class BookingsComponent implements OnInit {
     if (this.isBalancePaid(booking)) return 'Remaining 90% already paid.';
     if (!this.isBookingConfirmed(booking)) return 'Booking must be confirmed first.';
     if (!this.isDepositPaid(booking)) return '10% deposit must be paid first.';
-    if (!this.isWarrantySecured(booking)) return 'Warranty must be secured first (Stripe card or €500 cash deposit).';
+    if (!this.isWarrantySecured(booking)) return 'Warranty must be selected first (cash) or card must be registered.';
     return '';
   }
 
@@ -211,6 +390,9 @@ export class BookingsComponent implements OnInit {
         balanceAmount,
         balancePaymentMethod: this.balancePaymentMethod,
         balancePaidAt: now,
+        bookingStatus: 'payment_done',
+        paymentStatus: 'full_payment_done',
+        paidAt: now,
         payments: {
           ...existingPayments,
           balance: {
@@ -232,6 +414,41 @@ export class BookingsComponent implements OnInit {
       this.balancePaymentError = e?.message || 'Unable to record remaining balance payment.';
       this.savingBalancePayment = false;
     }
+  }
+
+  payDeposit(booking: AlegriaBooking, event?: Event): void {
+    event?.stopPropagation();
+
+    if (!booking?.bookingId || this.isDepositPaid(booking)) return;
+
+    const currentUrl = window.location.href;
+    const payload = {
+      bookingId: booking.bookingId,
+      ownerId: booking.ownerId || 'alegria',
+      depositAmount: this.getDepositAmount(booking),
+      currency: 'eur',
+      customerEmail: booking.email || '',
+      customerName: booking.customerName || '',
+      customerPhone: (booking as any).customerPhone || booking.phone || '',
+      outingType: booking.outingType || '',
+      outingDate: booking.outingDate || '',
+      successUrl: currentUrl.includes('?') ? `${currentUrl}&payment=success` : `${currentUrl}?payment=success`,
+      cancelUrl: currentUrl.includes('?') ? `${currentUrl}&payment=cancelled` : `${currentUrl}?payment=cancelled`,
+    };
+
+    this.bookingApi.createDepositCheckout(payload).subscribe({
+      next: (response: any) => {
+        const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
+        if (url) {
+          window.location.href = url;
+          return;
+        }
+        this.errorMessage = 'Unable to open Stripe deposit checkout.';
+      },
+      error: (error: any) => {
+        this.errorMessage = error?.error?.error || error?.error?.message || error?.message || 'Unable to create deposit checkout.';
+      }
+    });
   }
 
   payment(booking: AlegriaBooking): void {

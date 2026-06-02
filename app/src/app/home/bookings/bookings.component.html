@@ -6,19 +6,68 @@
       <p>Manage confirmed bookings, deposits, remaining 90% onboard payments, warranties and damage charges.</p>
     </div>
 
-    <div class="booking-toolbar">
+    <div class="booking-tabs" *ngIf="!loading && bookings.length > 0">
+      <button type="button" [class.active]="activeDateTab === 'upcoming'" (click)="setDateTab('upcoming')">
+        Upcoming <span>{{ upcomingBookingsCount }}</span>
+      </button>
+      <button type="button" [class.active]="activeDateTab === 'past'" (click)="setDateTab('past')">
+        Past <span>{{ pastBookingsCount }}</span>
+      </button>
+    </div>
+
+    <div class="booking-toolbar booking-toolbar-grid">
       <label class="search-box">
-        <span>Search by customer name</span>
+        <span>Search</span>
         <input
           type="search"
           name="bookingSearch"
           [(ngModel)]="searchTerm"
-          placeholder="Type a customer name..."
+          placeholder="Customer, email, phone, date, status..."
           autocomplete="off"
         />
       </label>
 
-      <button class="btn btn-secondary" type="button" *ngIf="searchTerm" (click)="clearSearch()">Clear</button>
+      <label>
+        <span>Status</span>
+        <select [(ngModel)]="statusFilter">
+          <option value="all">All statuses</option>
+          <option value="not_confirmed">Not confirmed</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="payment_done">Payment done</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Warranty</span>
+        <select [(ngModel)]="warrantyFilter">
+          <option value="all">All warranties</option>
+          <option value="not_selected">Not selected</option>
+          <option value="cash">Cash selected</option>
+          <option value="card_selected">Card selected</option>
+          <option value="card_registered">Card registered</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Order by</span>
+        <select [(ngModel)]="sortField">
+          <option value="date">Date</option>
+          <option value="customer">Customer</option>
+          <option value="status">Status</option>
+          <option value="total">Total price</option>
+          <option value="balance">Remaining 90%</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Direction</span>
+        <select [(ngModel)]="sortDirection">
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
+      </label>
+
+      <button class="btn btn-secondary" type="button" (click)="resetFilters()">Reset filters</button>
       <a class="btn btn-primary" routerLink="/admin/proposals">Proposals</a>
       <a class="btn btn-secondary" routerLink="/admin/external-bookings">External bookings</a>
       <button class="btn btn-secondary" type="button" (click)="loadBookings()">Refresh</button>
@@ -31,7 +80,7 @@
     </p>
 
     <div class="list-summary" *ngIf="!loading && bookings.length > 0">
-      Showing <strong>{{ filteredBookings.length }}</strong> of <strong>{{ bookings.length }}</strong> bookings
+      Showing <strong>{{ activeTabBookingsCount }}</strong> {{ activeDateTab }} bookings out of <strong>{{ bookings.length }}</strong> total
     </div>
 
     <div class="bookings-list" *ngIf="!loading && filteredBookings.length > 0">
@@ -41,7 +90,7 @@
         *ngFor="let booking of filteredBookings; trackBy: trackByBookingId"
         (click)="openBooking(booking)"
       >
-        <span class="status-pill">{{ booking.bookingStatus || 'requested' }}</span>
+        <span class="status-pill">{{ getStatusLabel(booking) }}</span>
 
         <span class="booking-main">
           <strong>{{ booking.customerName || 'Customer not set' }}</strong>
@@ -56,14 +105,19 @@
           </small>
         </span>
 
-        <span class="booking-price">
+        <span class="booking-price booking-clarity">
           <strong>€{{ booking.totalPrice || 0 }}</strong>
-          <small>Deposit 10%: €{{ getDepositAmount(booking) }} · {{ isDepositPaid(booking) ? 'paid' : 'pending' }}</small>
-          <small>Remaining 90%: €{{ getBalanceAmount(booking) }} · {{ isBalancePaid(booking) ? 'paid' : 'to collect onboard' }}</small>
+          <small>Deposit: €{{ getDepositAmount(booking) }} · {{ isDepositPaid(booking) ? 'paid' : 'pending' }}</small>
+          <small>T&C: {{ isTermsAccepted(booking) ? 'accepted' : 'not accepted' }}</small>
+          <small>Warranty mode: {{ getWarrantyModeLabel(booking) }}</small>
+          <small>Stripe card: {{ getWarrantyCardLabel(booking) }}</small>
+          <small>Remaining 90%: €{{ getBalanceAmount(booking) }} · {{ isBalancePaid(booking) ? 'paid' : 'pending' }}</small>
+          <small>Damage: {{ getDamageStatusLabel(booking) }}</small>
         </span>
 
         <span class="row-actions" (click)="$event.stopPropagation()">
-          <button class="mini-btn" type="button" *ngIf="canRecordBalancePayment(booking)" (click)="openBalancePayment(booking, $event)">Record 90%</button>
+          <button class="mini-btn deposit-btn" type="button" *ngIf="!isDepositPaid(booking)" (click)="payDeposit(booking, $event)">Pay 10% deposit</button>
+          <button class="mini-btn" type="button" *ngIf="canRecordBalancePayment(booking) && !isBalancePaid(booking)" (click)="openBalancePayment(booking, $event)">Record 90%</button>
           <span class="blocked-badge" *ngIf="!canRecordBalancePayment(booking) && !isBalancePaid(booking)" [title]="getBalanceBlockedReason(booking)">90% locked</span>
           <span class="paid-badge" *ngIf="isBalancePaid(booking)">90% paid</span>
           <span class="row-chevron">›</span>
@@ -72,7 +126,7 @@
     </div>
 
     <p *ngIf="!loading && bookings.length > 0 && filteredBookings.length === 0" class="muted">
-      No booking matches this customer search.
+      No booking matches the selected tab, filters, search and sorting options.
     </p>
     <div class="balance-modal-backdrop" *ngIf="selectedBalanceBooking">
       <div class="balance-modal">
@@ -81,8 +135,10 @@
           <strong>{{ selectedBalanceBooking.customerName }}</strong><br />
           Total: €{{ selectedBalanceBooking.totalPrice || 0 }}<br />
           Deposit 10%: €{{ getDepositAmount(selectedBalanceBooking) }} · {{ isDepositPaid(selectedBalanceBooking) ? 'paid' : 'pending' }}<br />
-          Warranty card: {{ isWarrantyCardRegistered(selectedBalanceBooking) ? 'registered' : 'not registered' }}<br />
-          Booking status: {{ selectedBalanceBooking.bookingStatus || 'requested' }}<br />
+          Warranty mode: {{ getWarrantyModeLabel(selectedBalanceBooking) }}<br />
+          Stripe warranty card: {{ getWarrantyCardLabel(selectedBalanceBooking) }}<br />
+          T&C: {{ isTermsAccepted(selectedBalanceBooking) ? 'accepted' : 'not accepted' }}<br />
+          Booking status: {{ getStatusLabel(selectedBalanceBooking) }}<br />
           Remaining 90% to collect onboard: <strong>€{{ getBalanceAmount(selectedBalanceBooking) }}</strong>
         </p>
 

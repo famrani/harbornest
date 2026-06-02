@@ -1251,7 +1251,7 @@ let LoginService = class LoginService {
     return new Promise((resolve, reject) => {
       const params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__.HttpParams().set('placeId', gmid);
       // tslint:disable-next-line: deprecation
-      this.http.get(this.utilsSvc.backendURL + 'utils/getGoogleMetadata', {
+      this.http.get(`${this.resolvedBackendUrl}/utils/getGoogleMetadata`, {
         params
       }).subscribe(data => {
         resolve(data);
@@ -1292,6 +1292,13 @@ let LoginService = class LoginService {
   }
   set version(value) {
     this.mainSvc.version = value;
+  }
+  get resolvedBackendUrl() {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
+      return 'https://localhost:2000';
+    }
+    return window.location.origin;
   }
   static ctorParameters = () => [{
     type: _angular_router__WEBPACK_IMPORTED_MODULE_2__.Router
