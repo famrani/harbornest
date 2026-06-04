@@ -111,7 +111,7 @@ let StoreDbService = (() => {
         }
         initFirebase() {
             let currentDir = process.cwd();
-            const serviceAccount = JSON.parse(fs.readFileSync(currentDir + '/dist2/config/adn-dev-4d05d-firebase-adminsdk-gzmds-0ca5bbef1f.json', 'utf8'));
+            const serviceAccount = JSON.parse(fs.readFileSync(currentDir + '/dist2/config/adn-dev-4d05d-firebase-adminsdk-gzmds-4706a80f96.json', 'utf8'));
             admin.initializeApp({
                 credential: admin.credential.cert(serviceAccount),
                 databaseURL: this.utilSvc.databaseURL,

@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SITE_CONTENT, SiteContent } from '../site-content';
 import { LocalUtilsService } from '../../services/services.service';
-import { LanguageService } from '../../services/language.service';
+import { SiteContentService } from '../site-content-service/site-content.service';
+import { LanguageService, SiteLanguage } from '../../services/language.service';
 
 interface ContactFormModel {
   name: string;
@@ -21,6 +22,8 @@ interface ContactFormModel {
 })
 export class ContactComponent implements OnInit, OnDestroy {
   content: SiteContent = SITE_CONTENT.fr;
+  currentLanguage: SiteLanguage = 'fr';
+  private allSiteContent = SITE_CONTENT;
   submitted = false;
   private languageSub?: Subscription;
 
@@ -37,12 +40,24 @@ export class ContactComponent implements OnInit, OnDestroy {
   constructor(
     public localutilsSvc: LocalUtilsService,
     private languageService: LanguageService,
+    private siteContentService: SiteContentService,
   ) {}
 
   ngOnInit(): void {
+    this.loadSiteContent();
     this.languageSub = this.languageService.language$.subscribe((language) => {
-      this.content = SITE_CONTENT[language];
+      this.currentLanguage = language;
+      this.content = this.allSiteContent[language] || SITE_CONTENT[language];
     });
+  }
+
+  private async loadSiteContent(): Promise<void> {
+    try {
+      this.allSiteContent = await this.siteContentService.getContent();
+      this.content = this.allSiteContent[this.currentLanguage] || SITE_CONTENT[this.currentLanguage] || SITE_CONTENT.fr;
+    } catch {
+      this.allSiteContent = SITE_CONTENT;
+    }
   }
 
   ngOnDestroy(): void {

@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SITE_CONTENT, SiteContent } from '../site-content';
-import { LanguageService } from '../../services/language.service';
+import { LanguageService, SiteLanguage } from '../../services/language.service';
+import { SiteContentService } from '../site-content-service/site-content.service';
 
 @Component({
   selector: 'app-boat',
@@ -10,6 +11,8 @@ import { LanguageService } from '../../services/language.service';
 })
 export class BoatComponent implements OnInit, OnDestroy {
   content: SiteContent = SITE_CONTENT.fr;
+  currentLanguage: SiteLanguage = 'fr';
+  private allSiteContent = SITE_CONTENT;
   images = SITE_CONTENT.fr.galleryImages.slice(0, 13);
   private languageSub?: Subscription;
 
@@ -63,11 +66,13 @@ export class BoatComponent implements OnInit, OnDestroy {
     }
   } as const;
 
-  constructor(private languageService: LanguageService) {}
+  constructor(private languageService: LanguageService, private siteContentService: SiteContentService) {}
 
   ngOnInit(): void {
+    this.loadSiteContent();
     this.languageSub = this.languageService.language$.subscribe((language) => {
-      this.content = SITE_CONTENT[language];
+      this.currentLanguage = language;
+      this.content = this.allSiteContent[language] || SITE_CONTENT[language];
       this.images = this.content.galleryImages.slice(0, 13);
       const localized = this.localizedData[language];
       this.specsTitle = localized.specsTitle;
@@ -81,6 +86,16 @@ export class BoatComponent implements OnInit, OnDestroy {
       this.guestSuggestions = [...localized.suggestions];
       this.crewCta = localized.crewCta;
     });
+  }
+
+  private async loadSiteContent(): Promise<void> {
+    try {
+      this.allSiteContent = await this.siteContentService.getContent();
+      this.content = this.allSiteContent[this.currentLanguage] || SITE_CONTENT[this.currentLanguage];
+      this.images = this.content.galleryImages.slice(0, 13);
+    } catch {
+      this.allSiteContent = SITE_CONTENT;
+    }
   }
 
   ngOnDestroy(): void {

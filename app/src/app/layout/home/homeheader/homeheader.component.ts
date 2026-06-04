@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { ServicesService } from 'godigital-lib';
 import { SITE_CONTENT, SiteContent } from '../../../home/site-content';
 import { LanguageService, SiteLanguage } from '../../../services/language.service';
+import { SiteContentService } from '../../../home/site-content-service/site-content.service';
 
 @Component({
   selector: 'app-homeheader',
@@ -14,6 +15,7 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
   menuOpen = false;
   currentLanguage: SiteLanguage = 'fr';
   content: SiteContent = SITE_CONTENT.fr;
+  private allSiteContent = SITE_CONTENT;
   loggedUser: any = null;
 
   private languageSub?: Subscription;
@@ -22,13 +24,15 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
   constructor(
     private languageService: LanguageService,
     private router: Router,
-    private mainSvc: ServicesService
+    private mainSvc: ServicesService,
+    private siteContentService: SiteContentService
   ) {}
 
   ngOnInit(): void {
+    this.loadSiteContent();
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.currentLanguage = language;
-      this.content = SITE_CONTENT[language];
+      this.content = this.allSiteContent[language] || SITE_CONTENT[language];
     });
 
     const svc = this.mainSvc as any;
@@ -44,6 +48,16 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
       });
     } else if (svc.bnUser) {
       this.loggedUser = svc.bnUser;
+    }
+  }
+
+  private async loadSiteContent(): Promise<void> {
+    try {
+      this.allSiteContent = await this.siteContentService.getContent();
+      this.content = this.allSiteContent[this.currentLanguage] || SITE_CONTENT[this.currentLanguage];
+    } catch {
+      this.allSiteContent = SITE_CONTENT;
+      this.content = SITE_CONTENT[this.currentLanguage] || SITE_CONTENT.fr;
     }
   }
 

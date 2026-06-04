@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { SITE_CONTENT, SiteContent } from '../../../home/site-content';
 import { LanguageService, SiteLanguage } from '../../../services/language.service';
 import { ServicesService } from 'godigital-lib';
+import { SiteContentService } from '../../../home/site-content-service/site-content.service';
 
 @Component({
   selector: 'app-homefooter',
@@ -12,16 +13,28 @@ import { ServicesService } from 'godigital-lib';
 export class HomefooterComponent implements OnInit, OnDestroy {
   year = new Date().getFullYear();
   content: SiteContent = SITE_CONTENT.fr;
+  private allSiteContent = SITE_CONTENT;
   currentLanguage: SiteLanguage = 'fr';
   private languageSub?: Subscription;
 
-  constructor(private languageService: LanguageService, public mainSvc: ServicesService) {}
+  constructor(private languageService: LanguageService, public mainSvc: ServicesService, private siteContentService: SiteContentService) {}
 
   ngOnInit(): void {
+    this.loadSiteContent();
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.currentLanguage = language;
-      this.content = SITE_CONTENT[language];
+      this.content = this.allSiteContent[language] || SITE_CONTENT[language];
     });
+  }
+
+  private async loadSiteContent(): Promise<void> {
+    try {
+      this.allSiteContent = await this.siteContentService.getContent();
+      this.content = this.allSiteContent[this.currentLanguage] || SITE_CONTENT[this.currentLanguage];
+    } catch {
+      this.allSiteContent = SITE_CONTENT;
+      this.content = SITE_CONTENT[this.currentLanguage] || SITE_CONTENT.fr;
+    }
   }
 
   get termsLabel(): string {

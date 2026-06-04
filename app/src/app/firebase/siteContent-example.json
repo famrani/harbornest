@@ -1,0 +1,367 @@
+{
+  "siteContent": {
+    "fr": {
+      "brand": "Alegria",
+      "brandTagline": "Votre catamaran privé sur la Côte d’Azur",
+      "priceFrom": "À partir de 999 €",
+      "departureArea": "Départs possibles depuis Villeneuve-Loubet, Antibes ou Cannes",
+      "nav": {
+        "home": "Accueil",
+        "outings": "Nos sorties",
+        "boat": "Le bateau",
+        "gallery": "Galerie",
+        "contact": "Contact",
+        "crew": "Équipage",
+        "quote": "Voir la disponibilité"
+      },
+      "common": {
+        "from": "À partir de",
+        "requestQuote": "Demander une proposition",
+        "bookOnClickAndBoat": "Réserver sur Click & Boat",
+        "contactUs": "Nous contacter",
+        "whatsapp": "WhatsApp",
+        "call": "Appeler",
+        "emailUs": "Envoyer un email",
+        "legalAsterisk": "* Location en coque nue. Skipper professionnel indépendant obligatoire.",
+        "boardingPorts": "* Embarquement selon autorisation : Villeneuve-Loubet, Antibes ou Cannes."
+      },
+      "home": {
+        "eyebrow": "Catamaran privé sur la Côte d’Azur",
+        "title": "Offrez-vous une journée en mer inoubliable à bord d’Alegria",
+        "intro": "Privatisez un catamaran spacieux et élégant pour vivre la Côte d’Azur autrement : baignade dans les eaux turquoise, déjeuner au mouillage, coucher de soleil, fête privée ou sortie d’entreprise.",
+        "primaryCta": "Découvrir les sorties",
+        "secondaryCta": "Recevoir une proposition",
+        "points": [
+          "Catamaran privé jusqu’à 12 passagers",
+          "Itinéraire adapté à la météo et à vos envies",
+          "Départs Villeneuve-Loubet, Antibes ou Cannes"
+        ],
+        "sectionEyebrow": "Expériences en mer",
+        "sectionTitle": "Choisissez l’ambiance de votre sortie",
+        "sectionText": "Journée complète, coucher de soleil, anniversaire, EVJF/EVG ou événement professionnel : chaque sortie est pensée pour être simple à organiser, premium à vivre et facile à personnaliser.",
+        "boatEyebrow": "Le bateau",
+        "boatTitle": "Un Bali 4.1 stable, spacieux et confortable",
+        "boatText": "Alegria offre de grands espaces de vie, un carré lumineux, des zones de détente à l’avant et à l’arrière, et tout le confort nécessaire pour profiter pleinement d’une journée en mer.",
+        "boatCta": "Découvrir le bateau",
+        "contactEyebrow": "Sortie sur mesure",
+        "contactTitle": "Dites-nous votre date, votre groupe et l’ambiance souhaitée.",
+        "contactText": "Nous vous préparons une proposition claire avec le programme, le prix, les conditions et les prochaines étapes pour confirmer votre réservation."
+      },
+      "outingsPage": {
+        "eyebrow": "Nos sorties",
+        "title": "Des expériences privées pour profiter de la mer sans contrainte",
+        "intro": "Sélectionnez la formule qui vous correspond. Nous ajustons ensuite le parcours, les horaires et les options selon votre groupe, la météo et l’ambiance recherchée.",
+        "cta": "Voir le détail"
+      },
+      "boatPage": {
+        "eyebrow": "Alegria",
+        "title": "Un catamaran pensé pour les moments qui comptent",
+        "intro": "Alegria est un Bali 4.1 idéal pour partager une journée en mer entre amis, en famille ou avec vos équipes, dans une atmosphère élégante, détendue et conviviale.",
+        "reasonsTitle": "Pourquoi choisir Alegria ?",
+        "reasonsText": "Parce qu’une belle sortie en mer doit être simple à organiser, sûre, confortable et mémorable.",
+        "reasons": [
+          "De grands espaces pour circuler et se détendre",
+          "Une navigation stable et confortable",
+          "Un cadre premium pour vos moments privés",
+          "Un programme adaptable selon vos envies"
+        ],
+        "comfortTitle": "Confort et ambiance à bord",
+        "comfortText": "Déjeuner, apéritif, baignade, musique, farniente ou navigation côtière : Alegria s’adapte à votre rythme.",
+        "occasionsTitle": "Parfait pour",
+        "occasions": [
+          "une journée en famille",
+          "une sortie entre amis",
+          "un anniversaire ou EVJF/EVG",
+          "un coucher de soleil romantique",
+          "un événement d’entreprise"
+        ],
+        "cta": "Vérifier la disponibilité"
+      },
+      "galleryPage": {
+        "eyebrow": "Galerie",
+        "title": "Imaginez déjà votre journée à bord",
+        "intro": "Découvrez l’ambiance d’Alegria, ses espaces de détente et les paysages qui rendent chaque sortie unique."
+      },
+      "contactPage": {
+        "eyebrow": "Contact / disponibilité",
+        "title": "Votre sortie commence par quelques informations",
+        "intro": "Indiquez-nous la date souhaitée, le nombre de participants et le type d’expérience. Nous revenons rapidement vers vous avec une proposition adaptée.",
+        "formTitle": "Demande de proposition",
+        "name": "Nom",
+        "email": "Email",
+        "phone": "Téléphone",
+        "outingType": "Type de sortie",
+        "outingPlaceholder": "Sélectionner",
+        "preferredDate": "Date souhaitée",
+        "guests": "Nombre de personnes",
+        "message": "Votre message",
+        "sendEmail": "Envoyer par email",
+        "prepareWhatsapp": "Préparer un message WhatsApp",
+        "directTitle": "Besoin d’un échange rapide ?",
+        "directText": "Contactez-nous directement par WhatsApp ou email pour vérifier une date, affiner une formule ou organiser une surprise.",
+        "sentNotice": "Votre message a bien été préparé. Nous vous répondrons rapidement.",
+        "outingOptions": [
+          "Journée en mer",
+          "Coucher de soleil",
+          "Fête privée",
+          "Sortie entreprise"
+        ],
+        "emailSubjectPrefix": "Demande de proposition Alegria",
+        "whatsappIntro": "Bonjour, je souhaite recevoir une proposition pour une sortie en mer à bord d’Alegria."
+      },
+      "footer": {
+        "description": "Alegria vous accueille pour des sorties privées en catamaran sur la Côte d’Azur : moments en famille, événements entre amis, couchers de soleil et expériences professionnelles.",
+        "navigation": "Navigation",
+        "contact": "Contact",
+        "quickReply": "Réponse rapide par WhatsApp ou email"
+      },
+      "notFound": {
+        "title": "Page introuvable",
+        "text": "Cette page n’existe pas ou a été déplacée.",
+        "cta": "Retour à l’accueil"
+      }
+    },
+    "en": {
+      "brand": "Alegria",
+      "brandTagline": "Your private catamaran on the French Riviera",
+      "priceFrom": "From €999",
+      "departureArea": "Departures available from Villeneuve-Loubet, Antibes or Cannes",
+      "nav": {
+        "home": "Home",
+        "outings": "Outings",
+        "boat": "The boat",
+        "gallery": "Gallery",
+        "contact": "Contact",
+        "crew": "Crew",
+        "quote": "Check availability"
+      },
+      "common": {
+        "from": "From",
+        "requestQuote": "Request a proposal",
+        "bookOnClickAndBoat": "Book on Click & Boat",
+        "contactUs": "Contact us",
+        "whatsapp": "WhatsApp",
+        "call": "Call",
+        "emailUs": "Send an email",
+        "legalAsterisk": "* Bareboat rental. Independent professional skipper required.",
+        "boardingPorts": "* Boarding subject to authorization: Villeneuve-Loubet, Antibes or Cannes."
+      },
+      "home": {
+        "eyebrow": "Private catamaran on the French Riviera",
+        "title": "Enjoy an unforgettable day at sea aboard Alegria",
+        "intro": "Privatize a spacious and elegant catamaran to experience the French Riviera differently: turquoise water, lunch at anchor, sunset cruise, private celebration or corporate outing.",
+        "primaryCta": "Discover outings",
+        "secondaryCta": "Request a proposal",
+        "points": [
+          "Private catamaran for up to 12 guests",
+          "Itinerary adapted to weather and your wishes",
+          "Departures from Villeneuve-Loubet, Antibes or Cannes"
+        ],
+        "sectionEyebrow": "Sea experiences",
+        "sectionTitle": "Choose the mood of your outing",
+        "sectionText": "Full day, sunset, birthday, bachelor/bachelorette party or corporate event: each outing is designed to be easy to organize, premium to experience and simple to personalize.",
+        "boatEyebrow": "The boat",
+        "boatTitle": "A stable, spacious and comfortable Bali 4.1",
+        "boatText": "Alegria offers generous living spaces, a bright saloon, relaxing areas at the front and back, and the comfort you need to fully enjoy a day at sea.",
+        "boatCta": "Discover the boat",
+        "contactEyebrow": "Tailor-made outing",
+        "contactTitle": "Tell us your date, group size and preferred atmosphere.",
+        "contactText": "We prepare a clear proposal with the program, price, conditions and next steps to confirm your booking."
+      },
+      "outingsPage": {
+        "eyebrow": "Our outings",
+        "title": "Private sea experiences, easy to organize",
+        "intro": "Choose the format that suits you. We then adjust the route, timing and options according to your group, the weather and the atmosphere you want.",
+        "cta": "View details"
+      },
+      "boatPage": {
+        "eyebrow": "Alegria",
+        "title": "A catamaran made for meaningful moments",
+        "intro": "Alegria is a Bali 4.1, ideal for sharing a day at sea with friends, family or your team in an elegant, relaxed and friendly atmosphere.",
+        "reasonsTitle": "Why choose Alegria?",
+        "reasonsText": "Because a great day at sea should be easy to organize, safe, comfortable and memorable.",
+        "reasons": [
+          "Large spaces to move around and relax",
+          "Stable and comfortable navigation",
+          "A premium setting for private moments",
+          "A flexible program tailored to your wishes"
+        ],
+        "comfortTitle": "Comfort and atmosphere on board",
+        "comfortText": "Lunch, aperitif, swimming, music, relaxation or coastal cruising: Alegria adapts to your pace.",
+        "occasionsTitle": "Perfect for",
+        "occasions": [
+          "a family day out",
+          "a day with friends",
+          "a birthday or bachelor/bachelorette party",
+          "a romantic sunset",
+          "a corporate event"
+        ],
+        "cta": "Check availability"
+      },
+      "galleryPage": {
+        "eyebrow": "Gallery",
+        "title": "Picture your day on board",
+        "intro": "Discover Alegria’s atmosphere, relaxing spaces and the landscapes that make each outing unique."
+      },
+      "contactPage": {
+        "eyebrow": "Contact / availability",
+        "title": "Your outing starts with a few details",
+        "intro": "Tell us your preferred date, number of guests and type of experience. We will quickly come back with a tailored proposal.",
+        "formTitle": "Request a proposal",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "outingType": "Outing type",
+        "outingPlaceholder": "Select",
+        "preferredDate": "Preferred date",
+        "guests": "Number of guests",
+        "message": "Your message",
+        "sendEmail": "Send by email",
+        "prepareWhatsapp": "Prepare WhatsApp message",
+        "directTitle": "Need a quick exchange?",
+        "directText": "Contact us directly by WhatsApp or email to check a date, refine a package or organize a surprise.",
+        "sentNotice": "Your message has been prepared. We will reply shortly.",
+        "outingOptions": [
+          "Day at sea",
+          "Sunset cruise",
+          "Private party",
+          "Corporate outing"
+        ],
+        "emailSubjectPrefix": "Alegria proposal request",
+        "whatsappIntro": "Hello, I would like to receive a proposal for a sea outing aboard Alegria."
+      },
+      "footer": {
+        "description": "Alegria welcomes you for private catamaran outings on the French Riviera: family moments, celebrations with friends, sunset cruises and corporate experiences.",
+        "navigation": "Navigation",
+        "contact": "Contact",
+        "quickReply": "Quick reply by WhatsApp or email"
+      },
+      "notFound": {
+        "title": "Page not found",
+        "text": "This page does not exist or has been moved.",
+        "cta": "Back to home"
+      }
+    },
+    "es": {
+      "brand": "Alegria",
+      "brandTagline": "Su catamarán privado en la Costa Azul",
+      "priceFrom": "Desde 999 €",
+      "departureArea": "Salidas posibles desde Villeneuve-Loubet, Antibes o Cannes",
+      "nav": {
+        "home": "Inicio",
+        "outings": "Salidas",
+        "boat": "El barco",
+        "gallery": "Galería",
+        "contact": "Contacto",
+        "crew": "Tripulación",
+        "quote": "Ver disponibilidad"
+      },
+      "common": {
+        "from": "Desde",
+        "requestQuote": "Solicitar propuesta",
+        "bookOnClickAndBoat": "Reservar en Click & Boat",
+        "contactUs": "Contactar",
+        "whatsapp": "WhatsApp",
+        "call": "Llamar",
+        "emailUs": "Enviar email",
+        "legalAsterisk": "* Alquiler sin patrón. Patrón profesional independiente obligatorio.",
+        "boardingPorts": "* Embarque sujeto a autorización: Villeneuve-Loubet, Antibes o Cannes."
+      },
+      "home": {
+        "eyebrow": "Catamarán privado en la Costa Azul",
+        "title": "Disfrute de un día inolvidable en el mar a bordo de Alegria",
+        "intro": "Privatice un catamarán espacioso y elegante para vivir la Costa Azul de otra manera: aguas turquesas, almuerzo fondeados, puesta de sol, celebración privada o salida de empresa.",
+        "primaryCta": "Descubrir salidas",
+        "secondaryCta": "Solicitar propuesta",
+        "points": [
+          "Catamarán privado hasta 12 pasajeros",
+          "Itinerario adaptado al clima y a sus deseos",
+          "Salidas desde Villeneuve-Loubet, Antibes o Cannes"
+        ],
+        "sectionEyebrow": "Experiencias en el mar",
+        "sectionTitle": "Elija el ambiente de su salida",
+        "sectionText": "Día completo, puesta de sol, cumpleaños, despedida o evento de empresa: cada salida está pensada para ser fácil de organizar, premium de vivir y sencilla de personalizar.",
+        "boatEyebrow": "El barco",
+        "boatTitle": "Un Bali 4.1 estable, espacioso y cómodo",
+        "boatText": "Alegria ofrece grandes espacios, un salón luminoso, zonas de relax delante y detrás, y el confort necesario para disfrutar plenamente de un día en el mar.",
+        "boatCta": "Descubrir el barco",
+        "contactEyebrow": "Salida a medida",
+        "contactTitle": "Indíquenos la fecha, el grupo y el ambiente deseado.",
+        "contactText": "Preparamos una propuesta clara con el programa, precio, condiciones y próximos pasos para confirmar la reserva."
+      },
+      "outingsPage": {
+        "eyebrow": "Nuestras salidas",
+        "title": "Experiencias privadas en el mar, fáciles de organizar",
+        "intro": "Elija la fórmula que le corresponde. Ajustamos después la ruta, horarios y opciones según su grupo, el clima y el ambiente deseado.",
+        "cta": "Ver detalles"
+      },
+      "boatPage": {
+        "eyebrow": "Alegria",
+        "title": "Un catamarán pensado para momentos importantes",
+        "intro": "Alegria es un Bali 4.1 ideal para compartir un día en el mar con amigos, familia o equipo, en un ambiente elegante, relajado y agradable.",
+        "reasonsTitle": "¿Por qué elegir Alegria?",
+        "reasonsText": "Porque una gran salida en el mar debe ser fácil de organizar, segura, cómoda y memorable.",
+        "reasons": [
+          "Grandes espacios para circular y relajarse",
+          "Navegación estable y cómoda",
+          "Un entorno premium para momentos privados",
+          "Un programa flexible adaptado a sus deseos"
+        ],
+        "comfortTitle": "Confort y ambiente a bordo",
+        "comfortText": "Almuerzo, aperitivo, baño, música, relax o navegación costera: Alegria se adapta a su ritmo.",
+        "occasionsTitle": "Perfecto para",
+        "occasions": [
+          "un día en familia",
+          "una salida con amigos",
+          "un cumpleaños o despedida",
+          "una puesta de sol romántica",
+          "un evento de empresa"
+        ],
+        "cta": "Ver disponibilidad"
+      },
+      "galleryPage": {
+        "eyebrow": "Galería",
+        "title": "Imagine ya su día a bordo",
+        "intro": "Descubra el ambiente de Alegria, sus espacios de relax y los paisajes que hacen única cada salida."
+      },
+      "contactPage": {
+        "eyebrow": "Contacto / disponibilidad",
+        "title": "Su salida empieza con algunos detalles",
+        "intro": "Indíquenos la fecha deseada, número de pasajeros y tipo de experiencia. Volveremos rápidamente con una propuesta adaptada.",
+        "formTitle": "Solicitar propuesta",
+        "name": "Nombre",
+        "email": "Email",
+        "phone": "Teléfono",
+        "outingType": "Tipo de salida",
+        "outingPlaceholder": "Seleccionar",
+        "preferredDate": "Fecha deseada",
+        "guests": "Número de personas",
+        "message": "Su mensaje",
+        "sendEmail": "Enviar por email",
+        "prepareWhatsapp": "Preparar mensaje WhatsApp",
+        "directTitle": "¿Necesita una respuesta rápida?",
+        "directText": "Contáctenos directamente por WhatsApp o email para verificar una fecha, ajustar una fórmula u organizar una sorpresa.",
+        "sentNotice": "Su mensaje ha sido preparado. Le responderemos rápidamente.",
+        "outingOptions": [
+          "Día en el mar",
+          "Puesta de sol",
+          "Fiesta privada",
+          "Salida de empresa"
+        ],
+        "emailSubjectPrefix": "Solicitud de propuesta Alegria",
+        "whatsappIntro": "Hola, quisiera recibir una propuesta para una salida al mar a bordo de Alegria."
+      },
+      "footer": {
+        "description": "Alegria le recibe para salidas privadas en catamarán en la Costa Azul: momentos en familia, celebraciones con amigos, puestas de sol y experiencias profesionales.",
+        "navigation": "Navegación",
+        "contact": "Contacto",
+        "quickReply": "Respuesta rápida por WhatsApp o email"
+      },
+      "notFound": {
+        "title": "Página no encontrada",
+        "text": "Esta página no existe o ha sido movida.",
+        "cta": "Volver al inicio"
+      }
+    }
+  }
+}

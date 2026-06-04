@@ -2,7 +2,7 @@
   "application": {
     "name": "Worknest back-end",
     "platform": "test",
-    "release": "1.8"
+    "release": "1.9"
   },
   "dev": {
     "firebaseMasterConfig": {

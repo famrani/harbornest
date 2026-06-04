@@ -222,14 +222,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ContactComponent: () => (/* binding */ ContactComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _contact_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./contact.component.html?ngResource */ 11650);
-/* harmony import */ var _contact_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./contact.component.scss?ngResource */ 73110);
-/* harmony import */ var _contact_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_contact_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../site-content */ 14009);
-/* harmony import */ var _services_services_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/services.service */ 92030);
-/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _contact_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./contact.component.html?ngResource */ 11650);
+/* harmony import */ var _contact_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./contact.component.scss?ngResource */ 73110);
+/* harmony import */ var _contact_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_contact_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../site-content */ 14009);
+/* harmony import */ var _services_services_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/services.service */ 92030);
+/* harmony import */ var _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../site-content-service/site-content.service */ 73196);
+/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+
+
 
 
 
@@ -240,7 +244,10 @@ __webpack_require__.r(__webpack_exports__);
 let ContactComponent = class ContactComponent {
   localutilsSvc;
   languageService;
-  content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr;
+  siteContentService;
+  content = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
+  currentLanguage = 'fr';
+  allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
   submitted = false;
   languageSub;
   form = {
@@ -252,14 +259,28 @@ let ContactComponent = class ContactComponent {
     guests: '',
     message: ''
   };
-  constructor(localutilsSvc, languageService) {
+  constructor(localutilsSvc, languageService, siteContentService) {
     this.localutilsSvc = localutilsSvc;
     this.languageService = languageService;
+    this.siteContentService = siteContentService;
   }
   ngOnInit() {
+    this.loadSiteContent();
     this.languageSub = this.languageService.language$.subscribe(language => {
-      this.content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT[language];
+      this.currentLanguage = language;
+      this.content = this.allSiteContent[language] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[language];
     });
+  }
+  loadSiteContent() {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      try {
+        _this.allSiteContent = yield _this.siteContentService.getContent();
+        _this.content = _this.allSiteContent[_this.currentLanguage] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[_this.currentLanguage] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
+      } catch {
+        _this.allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
+      }
+    })();
   }
   ngOnDestroy() {
     this.languageSub?.unsubscribe();
@@ -274,15 +295,17 @@ let ContactComponent = class ContactComponent {
     this.localutilsSvc.sendEmail(subject, this.form.message, this.form.name, this.form.email, this.form.phone);
   }
   static ctorParameters = () => [{
-    type: _services_services_service__WEBPACK_IMPORTED_MODULE_3__.LocalUtilsService
+    type: _services_services_service__WEBPACK_IMPORTED_MODULE_4__.LocalUtilsService
   }, {
-    type: _services_language_service__WEBPACK_IMPORTED_MODULE_4__.LanguageService
+    type: _services_language_service__WEBPACK_IMPORTED_MODULE_6__.LanguageService
+  }, {
+    type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__.SiteContentService
   }];
 };
-ContactComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+ContactComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
   selector: 'app-contact',
-  template: _contact_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  styles: [(_contact_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+  template: _contact_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
+  styles: [(_contact_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
 })], ContactComponent);
 
 
@@ -5059,13 +5082,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   BoatComponent: () => (/* binding */ BoatComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _boat_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boat.component.html?ngResource */ 65100);
-/* harmony import */ var _boat_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./boat.component.scss?ngResource */ 99192);
-/* harmony import */ var _boat_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_boat_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../site-content */ 14009);
-/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _boat_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./boat.component.html?ngResource */ 65100);
+/* harmony import */ var _boat_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./boat.component.scss?ngResource */ 99192);
+/* harmony import */ var _boat_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_boat_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../site-content */ 14009);
+/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+/* harmony import */ var _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../site-content-service/site-content.service */ 73196);
+
+
 
 
 
@@ -5074,8 +5101,11 @@ __webpack_require__.r(__webpack_exports__);
 
 let BoatComponent = class BoatComponent {
   languageService;
-  content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr;
-  images = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr.galleryImages.slice(0, 13);
+  siteContentService;
+  content = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
+  currentLanguage = 'fr';
+  allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
+  images = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr.galleryImages.slice(0, 13);
   languageSub;
   specs = [];
   coreOffering = [];
@@ -5125,12 +5155,15 @@ let BoatComponent = class BoatComponent {
       crewCta: 'Conocer la tripulación'
     }
   };
-  constructor(languageService) {
+  constructor(languageService, siteContentService) {
     this.languageService = languageService;
+    this.siteContentService = siteContentService;
   }
   ngOnInit() {
+    this.loadSiteContent();
     this.languageSub = this.languageService.language$.subscribe(language => {
-      this.content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT[language];
+      this.currentLanguage = language;
+      this.content = this.allSiteContent[language] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[language];
       this.images = this.content.galleryImages.slice(0, 13);
       const localized = this.localizedData[language];
       this.specsTitle = localized.specsTitle;
@@ -5145,17 +5178,31 @@ let BoatComponent = class BoatComponent {
       this.crewCta = localized.crewCta;
     });
   }
+  loadSiteContent() {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      try {
+        _this.allSiteContent = yield _this.siteContentService.getContent();
+        _this.content = _this.allSiteContent[_this.currentLanguage] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[_this.currentLanguage];
+        _this.images = _this.content.galleryImages.slice(0, 13);
+      } catch {
+        _this.allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
+      }
+    })();
+  }
   ngOnDestroy() {
     this.languageSub?.unsubscribe();
   }
   static ctorParameters = () => [{
-    type: _services_language_service__WEBPACK_IMPORTED_MODULE_3__.LanguageService
+    type: _services_language_service__WEBPACK_IMPORTED_MODULE_4__.LanguageService
+  }, {
+    type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__.SiteContentService
   }];
 };
-BoatComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
+BoatComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
   selector: 'app-boat',
-  template: _boat_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  styles: [(_boat_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+  template: _boat_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
+  styles: [(_boat_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
 })], BoatComponent);
 
 
@@ -8245,14 +8292,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   HomeComponent: () => (/* binding */ HomeComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _home_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home.component.html?ngResource */ 51770);
 /* harmony import */ var _home_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./home.component.scss?ngResource */ 58009);
 /* harmony import */ var _home_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_home_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
 /* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../site-content */ 14009);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/language.service */ 48756);
 /* harmony import */ var _outings_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../outings-data.service */ 7127);
+/* harmony import */ var _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../site-content-service/site-content.service */ 73196);
+
 
 
 
@@ -8264,21 +8313,25 @@ __webpack_require__.r(__webpack_exports__);
 let HomeComponent = class HomeComponent {
   languageService;
   outingsData;
+  siteContentService;
   content = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
+  allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
   featuredOutings = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr.outings;
   highlights = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr.boatHighlights;
   publicPriceFrom = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr.priceFrom;
   currentLanguage = 'fr';
   dynamicOutings = [];
   languageSub;
-  constructor(languageService, outingsData) {
+  constructor(languageService, outingsData, siteContentService) {
     this.languageService = languageService;
     this.outingsData = outingsData;
+    this.siteContentService = siteContentService;
   }
   ngOnInit() {
+    this.loadSiteContent();
     this.languageSub = this.languageService.language$.subscribe(language => {
       this.currentLanguage = language;
-      this.content = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[language];
+      this.content = this.allSiteContent[language] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[language];
       this.highlights = this.content.boatHighlights;
       this.applyOutings();
     });
@@ -8287,15 +8340,28 @@ let HomeComponent = class HomeComponent {
   ngOnDestroy() {
     this.languageSub?.unsubscribe();
   }
-  loadDynamicOutings() {
+  loadSiteContent() {
     var _this = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       try {
-        _this.dynamicOutings = yield _this.outingsData.getOutings();
+        _this.allSiteContent = yield _this.siteContentService.getContent();
+        _this.content = _this.allSiteContent[_this.currentLanguage] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[_this.currentLanguage];
+        _this.highlights = _this.content.boatHighlights;
+        _this.applyOutings();
       } catch {
-        _this.dynamicOutings = [];
+        _this.allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
       }
-      _this.applyOutings();
+    })();
+  }
+  loadDynamicOutings() {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      try {
+        _this2.dynamicOutings = yield _this2.outingsData.getOutings();
+      } catch {
+        _this2.dynamicOutings = [];
+      }
+      _this2.applyOutings();
     })();
   }
   applyOutings() {
@@ -8311,9 +8377,11 @@ let HomeComponent = class HomeComponent {
     type: _services_language_service__WEBPACK_IMPORTED_MODULE_4__.LanguageService
   }, {
     type: _outings_data_service__WEBPACK_IMPORTED_MODULE_5__.OutingsDataService
+  }, {
+    type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_6__.SiteContentService
   }];
 };
-HomeComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
+HomeComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
   selector: 'app-home',
   template: _home_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_home_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
@@ -8693,44 +8761,6 @@ Object.keys(TOUR_CONTENT).forEach(language => {
 });
 function getTourContent(language, key) {
   return TOUR_CONTENT[language][key];
-}
-
-/***/ }),
-
-/***/ 56196:
-/*!***************************************************************!*\
-  !*** ./node_modules/rxjs/dist/esm/internal/firstValueFrom.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   firstValueFrom: () => (/* binding */ firstValueFrom)
-/* harmony export */ });
-/* harmony import */ var _util_EmptyError__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util/EmptyError */ 93335);
-/* harmony import */ var _Subscriber__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Subscriber */ 89285);
-
-
-function firstValueFrom(source, config) {
-  const hasConfig = typeof config === 'object';
-  return new Promise((resolve, reject) => {
-    const subscriber = new _Subscriber__WEBPACK_IMPORTED_MODULE_0__.SafeSubscriber({
-      next: value => {
-        resolve(value);
-        subscriber.unsubscribe();
-      },
-      error: reject,
-      complete: () => {
-        if (hasConfig) {
-          resolve(config.defaultValue);
-        } else {
-          reject(new _util_EmptyError__WEBPACK_IMPORTED_MODULE_1__.EmptyError());
-        }
-      }
-    });
-    source.subscribe(subscriber);
-  });
 }
 
 /***/ }),
@@ -12158,14 +12188,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   OutingsComponent: () => (/* binding */ OutingsComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _outings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./outings.component.html?ngResource */ 64498);
 /* harmony import */ var _outings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./outings.component.scss?ngResource */ 30126);
 /* harmony import */ var _outings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_outings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
 /* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../site-content */ 14009);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/language.service */ 48756);
 /* harmony import */ var _outings_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../outings-data.service */ 7127);
+/* harmony import */ var _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../site-content-service/site-content.service */ 73196);
+
 
 
 
@@ -12177,20 +12209,24 @@ __webpack_require__.r(__webpack_exports__);
 let OutingsComponent = class OutingsComponent {
   languageService;
   outingsData;
+  siteContentService;
   content = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
+  allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
   outings = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr.outings;
   loading = true;
   currentLanguage = 'fr';
   dynamicOutings = [];
   languageSub;
-  constructor(languageService, outingsData) {
+  constructor(languageService, outingsData, siteContentService) {
     this.languageService = languageService;
     this.outingsData = outingsData;
+    this.siteContentService = siteContentService;
   }
   ngOnInit() {
+    this.loadSiteContent();
     this.languageSub = this.languageService.language$.subscribe(language => {
       this.currentLanguage = language;
-      this.content = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[language];
+      this.content = this.allSiteContent[language] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[language];
       this.applyOutings();
     });
     this.loadDynamicOutings();
@@ -12198,17 +12234,29 @@ let OutingsComponent = class OutingsComponent {
   ngOnDestroy() {
     this.languageSub?.unsubscribe();
   }
-  loadDynamicOutings() {
+  loadSiteContent() {
     var _this = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this.loading = true;
       try {
-        _this.dynamicOutings = yield _this.outingsData.getOutings();
+        _this.allSiteContent = yield _this.siteContentService.getContent();
+        _this.content = _this.allSiteContent[_this.currentLanguage] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[_this.currentLanguage];
+        _this.applyOutings();
       } catch {
-        _this.dynamicOutings = [];
+        _this.allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
       }
-      _this.loading = false;
-      _this.applyOutings();
+    })();
+  }
+  loadDynamicOutings() {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this2.loading = true;
+      try {
+        _this2.dynamicOutings = yield _this2.outingsData.getOutings();
+      } catch {
+        _this2.dynamicOutings = [];
+      }
+      _this2.loading = false;
+      _this2.applyOutings();
     })();
   }
   applyOutings() {
@@ -12218,9 +12266,11 @@ let OutingsComponent = class OutingsComponent {
     type: _services_language_service__WEBPACK_IMPORTED_MODULE_4__.LanguageService
   }, {
     type: _outings_data_service__WEBPACK_IMPORTED_MODULE_5__.OutingsDataService
+  }, {
+    type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_6__.SiteContentService
   }];
 };
-OutingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
+OutingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
   selector: 'app-outings',
   template: _outings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_outings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
@@ -16960,13 +17010,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   GalleryComponent: () => (/* binding */ GalleryComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _gallery_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./gallery.component.html?ngResource */ 90578);
-/* harmony import */ var _gallery_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./gallery.component.scss?ngResource */ 86566);
-/* harmony import */ var _gallery_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_gallery_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../site-content */ 14009);
-/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _gallery_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./gallery.component.html?ngResource */ 90578);
+/* harmony import */ var _gallery_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./gallery.component.scss?ngResource */ 86566);
+/* harmony import */ var _gallery_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_gallery_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../site-content */ 14009);
+/* harmony import */ var _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../site-content-service/site-content.service */ 73196);
+/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+
+
 
 
 
@@ -16975,27 +17029,46 @@ __webpack_require__.r(__webpack_exports__);
 
 let GalleryComponent = class GalleryComponent {
   languageService;
-  content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT.fr;
+  siteContentService;
+  content = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
+  currentLanguage = 'fr';
+  allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
   languageSub;
-  constructor(languageService) {
+  constructor(languageService, siteContentService) {
     this.languageService = languageService;
+    this.siteContentService = siteContentService;
   }
   ngOnInit() {
+    this.loadSiteContent();
     this.languageSub = this.languageService.language$.subscribe(language => {
-      this.content = _site_content__WEBPACK_IMPORTED_MODULE_2__.SITE_CONTENT[language];
+      this.currentLanguage = language;
+      this.content = this.allSiteContent[language] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[language];
     });
+  }
+  loadSiteContent() {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      try {
+        _this.allSiteContent = yield _this.siteContentService.getContent();
+        _this.content = _this.allSiteContent[_this.currentLanguage] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[_this.currentLanguage] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
+      } catch {
+        _this.allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
+      }
+    })();
   }
   ngOnDestroy() {
     this.languageSub?.unsubscribe();
   }
   static ctorParameters = () => [{
-    type: _services_language_service__WEBPACK_IMPORTED_MODULE_3__.LanguageService
+    type: _services_language_service__WEBPACK_IMPORTED_MODULE_5__.LanguageService
+  }, {
+    type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_4__.SiteContentService
   }];
 };
-GalleryComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
+GalleryComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
   selector: 'app-gallery',
-  template: _gallery_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  styles: [(_gallery_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+  template: _gallery_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
+  styles: [(_gallery_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
 })], GalleryComponent);
 
 
