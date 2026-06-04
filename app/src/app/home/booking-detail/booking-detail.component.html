@@ -1,67 +1,67 @@
 <section class="booking-page">
   <div class="container booking-shell">
-    <p *ngIf="loading" class="muted">Loading booking...</p>
+    <p *ngIf="loading" class="muted">{{ btext('loadingBooking') }}</p>
 
     <article class="booking-detail-card" *ngIf="!loading && booking">
-      <span class="eyebrow">Booking detail</span>
+      <span class="eyebrow">{{ btext('bookingDetail') }}</span>
       <h1>{{ booking.outingType }}</h1>
       <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>
 
       <div class="detail-grid">
-        <div><strong>Customer</strong><span>{{ booking.customerName }}</span></div>
-        <div><strong>Email</strong><span>{{ booking.email }}</span></div>
-        <div><strong>Phone</strong><span>{{ booking.phone || '-' }}</span></div>
-        <div><strong>Passengers</strong><span>{{ booking.passengers || '-' }}</span></div>
-        <div><strong>Total price</strong><span>€{{ booking.totalPrice || 0 }}</span></div>
-        <div><strong>Deposit 10%</strong><span>€{{ getDepositAmount() }} · {{ isDepositPaid() ? 'paid' : 'pending' }}</span></div>
-        <div><strong>Remaining 90%</strong><span>€{{ getBalanceAmount() }} · {{ isBalancePaid() ? 'paid' : 'to collect onboard' }}</span></div>
-        <div><strong>Warranty</strong><span>{{ booking.warrantyStatus || 'not_registered' }}</span></div>
-        <div><strong>Status</strong><span>{{ getStatusLabel() }}</span></div>
-        <div><strong>Owner</strong><span>{{ booking.ownerId || '-' }}</span></div>
+        <div><strong>{{ btext('customer') }}</strong><span>{{ booking.customerName }}</span></div>
+        <div><strong>{{ btext('email') }}</strong><span>{{ booking.email }}</span></div>
+        <div><strong>{{ btext('phone') }}</strong><span>{{ booking.phone || '-' }}</span></div>
+        <div><strong>{{ btext('passengers') }}</strong><span>{{ booking.passengers || '-' }}</span></div>
+        <div><strong>{{ btext('totalPrice') }}</strong><span>€{{ booking.totalPrice || 0 }}</span></div>
+        <div><strong>{{ btext('deposit') }}</strong><span>€{{ getDepositAmount() }} · {{ isDepositPaid() ? btext('paid') : btext('pending') }}</span></div>
+        <div><strong>{{ btext('remaining') }}</strong><span>€{{ getBalanceAmount() }} · {{ isBalancePaid() ? btext('paid') : btext('toCollectOnboard') }}</span></div>
+        <div><strong>{{ btext('warranty') }}</strong><span>{{ booking.warrantyStatus || btext('notRegistered') }}</span></div>
+        <div><strong>{{ btext('status') }}</strong><button class="status-pill status-clickable" type="button" (click)="openStatusModal()">{{ getStatusLabel() }}</button></div>
+        <div><strong>{{ btext('owner') }}</strong><span>{{ booking.ownerId || '-' }}</span></div>
       </div>
 
       <p class="comments" *ngIf="booking.comments">{{ booking.comments }}</p>
 
 
       <section class="customer-edit-card" *ngIf="!isAdmin && editMode">
-        <h2>Update booking information</h2>
+        <h2>{{ btext('updateBookingInfo') }}</h2>
 
         <label>
-          Customer name
+          {{ btext('customerName') }}
           <input type="text" [(ngModel)]="booking.customerName" />
         </label>
 
         <label>
-          Email
+          {{ btext('email') }}
           <input type="email" [(ngModel)]="booking.email" />
         </label>
 
         <label>
-          Phone
+          {{ btext('phone') }}
           <input type="tel" [(ngModel)]="booking.phone" />
         </label>
 
         <label>
-          Number of guests
+          {{ btext('numberOfGuests') }}
           <input type="number" min="1" [(ngModel)]="booking.passengers" />
         </label>
 
         <label>
-          Pickup / meeting point
+          {{ btext('pickupLocation') }}
           <input type="text" [(ngModel)]="booking.pickupLocation" />
         </label>
 
         <label>
-          Comments
+          {{ btext('comments') }}
           <textarea rows="3" [(ngModel)]="booking.comments"></textarea>
         </label>
 
         <div class="customer-edit-actions">
           <button class="btn btn-primary" type="button" [disabled]="savingCustomerUpdate" (click)="saveCustomerUpdate()">
-            {{ savingCustomerUpdate ? 'Saving...' : 'Save update' }}
+            {{ savingCustomerUpdate ? btext('saving') : btext('saveUpdate') }}
           </button>
           <button class="btn btn-secondary" type="button" [disabled]="savingCustomerUpdate" (click)="cancelCustomerUpdate()">
-            Cancel
+            {{ btext('cancel') }}
           </button>
         </div>
 
@@ -73,18 +73,18 @@
         <h2>{{ getWorkflowTitle() }}</h2>
 
         <div class="payment-summary workflow-summary clarity-grid">
-          <div><strong>Booking status</strong><span>{{ getStatusLabel() }}</span></div>
-          <div><strong>Deposit 10%</strong><span>{{ getDepositStatusLabel() }}</span></div>
-          <div><strong>T&C</strong><span>{{ getTermsStatusLabel() }}</span></div>
-          <div><strong>Warranty mode</strong><span>{{ getWarrantyModeLabel() }}</span></div>
-          <div><strong>Stripe warranty card</strong><span>{{ getWarrantyCardLabel() }}</span></div>
-          <div><strong>Remaining 90%</strong><span>{{ getBalanceStatusLabel() }}</span></div>
-          <div><strong>Damage</strong><span>{{ getDamageStatusLabel() }}</span></div>
+          <div class="status-summary-card"><strong>{{ btext('bookingStatus') }}</strong><button class="status-pill status-clickable" type="button" (click)="openStatusModal()">{{ getStatusLabel() }}</button></div>
+          <div><strong>{{ btext('deposit') }}</strong><span>{{ getDepositStatusLabel() }}</span></div>
+          <div><strong>{{ btext('termsConditions') }}</strong><span>{{ getTermsStatusLabel() }}</span></div>
+          <div><strong>{{ btext('warrantyMode') }}</strong><span>{{ getWarrantyModeLabel() }}</span></div>
+          <div><strong>{{ btext('stripeWarrantyCard') }}</strong><span>{{ getWarrantyCardLabel() }}</span></div>
+          <div><strong>{{ btext('remaining') }}</strong><span>{{ getBalanceStatusLabel() }}</span></div>
+          <div><strong>{{ btext('damage') }}</strong><span>{{ getDamageStatusLabel() }}</span></div>
         </div>
 
         <div class="customer-action-bar" *ngIf="!isAdmin">
           <button class="btn btn-secondary" type="button" *ngIf="canCustomerUpdateBooking() && !editMode" (click)="updateCustomerBooking()">
-            Update booking information
+            {{ btext('updateBookingInfo') }}
           </button>
 
           <button class="btn btn-primary" type="button" *ngIf="shouldShowCustomerPaymentButton()" (click)="customerPayment()">
@@ -94,123 +94,116 @@
 
         <div class="customer-action-bar" *ngIf="canAdminOpenDamagePage()">
           <button class="btn btn-secondary" type="button" (click)="openAdminDamagePage()">
-            Open warranty / damage page
+            {{ btext('openWarrantyDamagePage') }}
           </button>
         </div>
 
         <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'deposit_required'">
-          <h3>Read and accept Terms & Conditions</h3>
-          <div class="terms-scroll-box" (scroll)="onTermsScroll($event)">
-            <h4>Alegria Boat — Terms & Conditions Summary</h4>
-            <p><strong>Booking confirmation.</strong> The booking is confirmed only after acceptance of these Terms & Conditions, selection of the warranty method and payment of the 10% deposit.</p>
-            <p><strong>Deposit.</strong> A 10% deposit is required to confirm the outing. It is refundable if the customer cancels at least 10 calendar days before the outing, or if Alegria Boat cancels the outing.</p>
-            <p><strong>Remaining balance.</strong> The remaining 90% is payable on the day of the outing before departure, by cash or card/SumUp, together with any extras.</p>
-            <p><strong>Warranty.</strong> A warranty is required either by registering a debit/credit card through Stripe or by selecting a €500 cash warranty to be handled before departure.</p>
-            <p><strong>Punctuality.</strong> Guests must arrive on time and be ready for departure at the scheduled time. Delays may reduce outing duration without compensation.</p>
-            <p><strong>Swimming and water activities.</strong> Swimming and water activities are done at the participant’s own risk and only with the skipper’s approval.</p>
-            <p><strong>Marine toilets.</strong> Marine toilets are not like household toilets. No paper, wipes, sanitary products, food, cigarette butts or foreign objects may be placed in the toilet. Misuse may be charged.</p>
-            <p><strong>Common damage charged.</strong> Cigarette burns on cushions, blocked marine toilets, lost or damaged equipment, exceptional cleaning and damage caused by negligence may be deducted from the warranty or charged to the registered card.</p>
-            <p><strong>Safety.</strong> Guests agree to follow the skipper’s instructions at all times. The skipper may cancel or interrupt the outing for safety reasons.</p>
-            <p><strong>End of terms.</strong> By ticking the checkbox below, the customer confirms having read and accepted the full rules applicable to the outing.</p>
+          <h3>{{ text('termsModalTitle') }}</h3>
+          <div class="terms-scroll-box tc-scrollable" tabindex="0" (scroll)="onTermsScroll($event)" (keyup.end)="markTermsRead()">
+            <ng-container *ngFor="let section of termsSections">
+              <h4>{{ section.title }}</h4>
+              <p *ngFor="let paragraph of section.paragraphs">{{ paragraph }}</p>
+            </ng-container>
           </div>
 
-          <p class="muted" *ngIf="!termsRead">Please scroll to the end of the Terms & Conditions to continue.</p>
+          <p class="muted" *ngIf="!termsRead">{{ text('termsLocked') }}</p>
 
           <label class="terms-check">
             <input type="checkbox" [(ngModel)]="termsAccepted" [disabled]="!termsRead" />
-            <span>I have read and accept the Terms & Conditions.</span>
+            <span>{{ text('termsCheckbox') }}</span>
           </label>
 
-          <h3>Select warranty method</h3>
+          <h3>{{ text('warrantyTitle') }}</h3>
           <label class="radio-card">
             <input type="radio" name="warrantyChoice" value="stripe_card" [(ngModel)]="warrantyChoice" />
-            <span>Register debit/credit card via Stripe for the warranty.</span>
+            <span>{{ text('warrantyCard') }}</span>
           </label>
           <label class="radio-card">
             <input type="radio" name="warrantyChoice" value="cash_on_board" [(ngModel)]="warrantyChoice" />
-            <span>Select €500 cash warranty before departure.</span>
+            <span>{{ text('warrantyCash') }}</span>
           </label>
 
           <p class="blocked-note" *ngIf="getDepositBlockedReason()">{{ getDepositBlockedReason() }}</p>
 
           <button class="btn btn-primary" type="button" *ngIf="!isDepositPaid()" [disabled]="!canPayDeposit()" (click)="payDeposit()">
-            Pay 10% deposit and confirm booking
+            {{ text('payDepositButton') }}
           </button>
 
-          <p class="paid-badge" *ngIf="isDepositPaid()">10% deposit already paid</p>
+          <p class="paid-badge" *ngIf="isDepositPaid()">{{ text('depositAlreadyPaid') }}</p>
         </div>
 
         <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'warranty_choice_required'">
-          <h3>Choose warranty method</h3>
-          <p>The booking is confirmed. Please select how the warranty will be handled.</p>
+          <h3>{{ text('warrantyTitle') }}</h3>
+          <p>{{ btext('warrantyChoiceText') }}</p>
           <label class="radio-card">
             <input type="radio" name="warrantyChoiceConfirmed" value="stripe_card" [(ngModel)]="warrantyChoice" />
-            <span>Register debit/credit card via Stripe</span>
+            <span>{{ text('warrantyCard') }}</span>
           </label>
           <label class="radio-card">
             <input type="radio" name="warrantyChoiceConfirmed" value="cash_on_board" [(ngModel)]="warrantyChoice" />
-            <span>€500 cash warranty before departure</span>
+            <span>{{ text('warrantyCash') }}</span>
           </label>
           <button class="btn btn-secondary" type="button" [disabled]="warrantySaving || !warrantyChoice" (click)="warrantyChoice === 'cash_on_board' ? selectWarrantyCash() : selectWarrantyCard()">
-            Save warranty choice
+            {{ btext('saveWarrantyChoice') }}
           </button>
         </div>
 
         <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'warranty_card_required'">
-          <h3>Register warranty card</h3>
-          <p>The booking is confirmed. The customer selected card warranty and must register a card with Stripe.</p>
-          <button class="btn btn-primary" type="button" (click)="registerWarrantyCard()">Register warranty card</button>
+          <h3>{{ btext('registerWarrantyCardTitle') }}</h3>
+          <p>{{ btext('registerWarrantyCardText') }}</p>
+          <button class="btn btn-primary" type="button" (click)="registerWarrantyCard()">{{ btext('registerWarrantyCardButton') }}</button>
         </div>
 
         <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'balance_required'">
-          <h3>Collect remaining 90%</h3>
-          <p>Amount due before departure: <strong>€{{ getBalanceAmount() }}</strong></p>
+          <h3>{{ btext('collectRemainingTitle') }}</h3>
+          <p>{{ btext('amountDueBeforeDeparture') }}: <strong>€{{ getBalanceAmount() }}</strong></p>
 
           <div class="collect-balance" *ngIf="isAdmin">
             <label>
-              Payment method
+              {{ btext('paymentMethod') }}
               <select [(ngModel)]="balancePaymentMethod">
-                <option value="sumup">SumUp / card</option>
-                <option value="cash">Cash</option>
-                <option value="mixed">Mixed</option>
+                <option value="sumup">{{ btext('sumupCard') }}</option>
+                <option value="cash">{{ btext('cash') }}</option>
+                <option value="mixed">{{ btext('mixed') }}</option>
               </select>
             </label>
 
             <label>
-              Notes
-              <textarea rows="3" [(ngModel)]="balancePaymentNotes" placeholder="Optional note, SumUp receipt, cash, mixed payment..."></textarea>
+              {{ btext('notes') }}
+              <textarea rows="3" [(ngModel)]="balancePaymentNotes" placeholder="{{ btext('balanceNotesPlaceholder') }}"></textarea>
             </label>
 
             <button class="btn btn-primary" type="button" [disabled]="savingBalancePayment" (click)="recordBalancePayment()">
-              {{ savingBalancePayment ? 'Saving...' : 'Record remaining 90% payment' }}
+              {{ savingBalancePayment ? btext('saving') : btext('recordRemainingPayment') }}
             </button>
           </div>
         </div>
 
         <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'payment_done' && isAdmin">
-          <h3>Damage management</h3>
-          <p>The booking is confirmed, warranty is selected/registered, and the full outing payment is recorded.</p>
+          <h3>{{ btext('damageManagement') }}</h3>
+          <p>{{ btext('damageManagementText') }}</p>
 
           <div class="cash-damage-card" *ngIf="isCashWarranty()">
-            <h3>Cash warranty envelope</h3>
+            <h3>{{ btext('cashWarrantyEnvelope') }}</h3>
             <p>
-              Initial envelope: <strong>€{{ getCashWarrantyAmount() }}</strong><br />
-              Already taken for damages: <strong>€{{ getCashWarrantyDamagesTaken() }}</strong><br />
-              Remaining cash to return: <strong>€{{ getCashWarrantyRemaining() }}</strong>
+              {{ btext('cashWarrantyInitialEnvelope') }}: <strong>€{{ getCashWarrantyAmount() }}</strong><br />
+              {{ btext('cashWarrantyAlreadyTaken') }}: <strong>€{{ getCashWarrantyDamagesTaken() }}</strong><br />
+              {{ btext('cashWarrantyRemaining') }}: <strong>€{{ getCashWarrantyRemaining() }}</strong>
             </p>
 
             <label>
-              Amount taken from envelope (€)
+              {{ btext('cashDamageAmount') }} (€)
               <input type="number" min="1" step="0.01" [(ngModel)]="cashDamageAmount" />
             </label>
 
             <label>
-              Damage / cost reason
-              <textarea rows="3" [(ngModel)]="cashDamageReason" placeholder="Example: blocked marine toilet, cigarette burn, broken equipment..."></textarea>
+              {{ btext('damageReason') }}
+              <textarea rows="3" [(ngModel)]="cashDamageReason" placeholder="{{ btext('damageReasonPlaceholder') }}"></textarea>
             </label>
 
             <button class="btn btn-primary" type="button" [disabled]="savingCashDamage" (click)="recordCashWarrantyDamage()">
-              {{ savingCashDamage ? 'Saving...' : 'Record cash taken for damage' }}
+              {{ savingCashDamage ? btext('saving') : btext('recordCashDamage') }}
             </button>
 
             <p class="success" *ngIf="cashDamageMessage">{{ cashDamageMessage }}</p>
@@ -218,21 +211,21 @@
           </div>
 
           <div class="cash-damage-card" *ngIf="isWarrantyCardRegistered()">
-            <h3>Charge card warranty</h3>
-            <p>Maximum warranty: <strong>€{{ booking.warrantyAmount || 500 }}</strong></p>
+            <h3>{{ btext('chargeCardWarranty') }}</h3>
+            <p>{{ btext('maximumWarranty') }}: <strong>€{{ booking.warrantyAmount || 500 }}</strong></p>
 
             <label>
-              Damage amount (€)
+              {{ btext('damageAmount') }} (€)
               <input type="number" min="1" step="0.01" [(ngModel)]="cardDamageAmount" />
             </label>
 
             <label>
-              Damage reason
-              <textarea rows="3" [(ngModel)]="cardDamageReason" placeholder="Example: blocked marine toilet, cigarette burn, broken equipment..."></textarea>
+              {{ btext('damageReason') }}
+              <textarea rows="3" [(ngModel)]="cardDamageReason" placeholder="{{ btext('damageReasonPlaceholder') }}"></textarea>
             </label>
 
             <button class="btn btn-primary" type="button" [disabled]="savingCardDamage" (click)="recordCardWarrantyDamage()">
-              {{ savingCardDamage ? 'Charging...' : 'Charge damage to warranty card' }}
+              {{ savingCardDamage ? btext('charging') : btext('chargeDamageToWarrantyCard') }}
             </button>
 
             <p class="success" *ngIf="cardDamageMessage">{{ cardDamageMessage }}</p>
@@ -245,6 +238,43 @@
         <p class="success" *ngIf="warrantyMessage">{{ warrantyMessage }}</p>
         <p class="error-message" *ngIf="warrantyError">{{ warrantyError }}</p>
       </section>
+    
+      <div class="status-modal-backdrop" *ngIf="statusModalOpen" (click)="closeStatusModal()">
+        <section class="status-modal" (click)="$event.stopPropagation()">
+          <button class="modal-close" type="button" (click)="closeStatusModal()">×</button>
+          <span class="eyebrow">{{ btext('bookingStatus') }}</span>
+          <h2>{{ getStatusLabel() }}</h2>
+          <p>{{ getStatusSummaryText() }}</p>
+
+          <div class="status-timeline">
+            <div class="status-step" [ngClass]="getStatusStepClass(isDepositPaid())">
+              <strong>{{ btext('deposit') }}</strong>
+              <span>{{ getDepositStatusLabel() }}</span>
+            </div>
+            <div class="status-step" [ngClass]="getStatusStepClass(isTermsAccepted())">
+              <strong>{{ btext('termsConditions') }}</strong>
+              <span>{{ getTermsStatusLabel() }}</span>
+            </div>
+            <div class="status-step" [ngClass]="getStatusStepClass(isWarrantySecured())">
+              <strong>{{ btext('warranty') }}</strong>
+              <span>{{ getWarrantyModeLabel() }} · {{ getWarrantyCardLabel() }}</span>
+            </div>
+            <div class="status-step" [ngClass]="getStatusStepClass(isBalancePaid())">
+              <strong>{{ btext('remaining') }}</strong>
+              <span>{{ getBalanceStatusLabel() }}</span>
+            </div>
+            <div class="status-step" [ngClass]="getStatusStepClass(getDamageStatusLabel().includes('recorded'))">
+              <strong>{{ btext('damage') }}</strong>
+              <span>{{ getDamageStatusLabel() }}</span>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn btn-secondary" type="button" (click)="closeStatusModal()">{{ btext('close') }}</button>
+          </div>
+        </section>
+      </div>
+
     </article>
   </div>
 </section>

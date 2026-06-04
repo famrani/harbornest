@@ -35,6 +35,7 @@ import { AdminWarrantyChargeComponent } from './admin-warranty-charge/admin-warr
 import { AdminProposalsComponent } from './admin-proposals/admin-proposals.component';
 import { ProposalConfirmationComponent } from './proposal-confirmation/proposal-confirmation.component';
 import { AdminExternalBookingsComponent } from './admin-external-bookings/admin-external-bookings.component';
+import { BookingProcessComponent } from './booking-process/booking-process.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { AdminExternalBookingsComponent } from './admin-external-bookings/admin-
     AdminProposalsComponent,
     ProposalConfirmationComponent,
     AdminExternalBookingsComponent,
+    BookingProcessComponent,
   ],
   imports: [
     CommonModule,

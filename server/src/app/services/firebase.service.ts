@@ -138,7 +138,7 @@ export class StoreDbService {
   initFirebase() {
     let currentDir = process.cwd();
     const serviceAccount = JSON.parse(
-      fs.readFileSync(currentDir + '/dist2/config/adn-dev-4d05d-firebase-adminsdk-gzmds-23c3af4d31.json', 'utf8')
+      fs.readFileSync(currentDir + '/dist2/config/adn-dev-4d05d-firebase-adminsdk-gzmds-0ca5bbef1f.json', 'utf8')
     );
 
     admin.initializeApp({

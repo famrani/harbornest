@@ -1,0 +1,22 @@
+<section class="booking-process-page">
+  <div class="container booking-process-shell">
+    <span class="eyebrow">{{ copy.eyebrow }}</span>
+    <h1>{{ copy.title }}</h1>
+    <p class="intro">{{ copy.intro }}</p>
+
+    <div class="process-timeline">
+      <article class="process-step" *ngFor="let step of copy.steps">
+        <div class="step-marker">{{ step.title.split('.')[0] }}</div>
+        <div class="step-content">
+          <h2>{{ step.title }}</h2>
+          <p>{{ step.text }}</p>
+          <ul *ngIf="step.bullets?.length">
+            <li *ngFor="let bullet of step.bullets">{{ bullet }}</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+    <p class="final-note">{{ copy.finalNote }}</p>
+  </div>
+</section>

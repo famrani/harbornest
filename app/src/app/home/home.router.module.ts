@@ -31,6 +31,7 @@ import { AdminWarrantyChargeComponent } from './admin-warranty-charge/admin-warr
 import { AdminProposalsComponent } from './admin-proposals/admin-proposals.component';
 import { ProposalConfirmationComponent } from './proposal-confirmation/proposal-confirmation.component';
 import { AdminExternalBookingsComponent } from './admin-external-bookings/admin-external-bookings.component';
+import { BookingProcessComponent } from './booking-process/booking-process.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -47,6 +48,7 @@ const routes: Routes = [
   { path: 'terms', component: TermsComponent },
   { path: 'safety', component: SafetyInstructionsComponent },
   { path: 'deposit', component: DepositComponent },
+  { path: 'booking-process', component: BookingProcessComponent },
   { path: 'faq', component: GuestFaqComponent },
   { path: 'how-it-works', component: GuestJourneyComponent },
   { path: 'my-bookings', component: MyBookingsComponent },

@@ -44,6 +44,7 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
   editError = '';
   editSaved = '';
   deletingFeedbackId: string | null = null;
+  noFeedbackModalOpen = false;
 
   feedback = {
     bookingId: '',
@@ -131,9 +132,11 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
     this.bookingApi.getBookings(email).subscribe({
       next: (bookings) => {
         this.eligibleBookings = (bookings || []).filter((booking) => this.isFeedbackEligibleBooking(booking));
-        if (this.eligibleBookings.length && !this.feedback.bookingId) {
-          this.selectFeedbackBooking(this.eligibleBookings[0].bookingId);
+        const available = this.availableFeedbackBookings();
+        if (available.length && !this.feedback.bookingId) {
+          this.selectFeedbackBooking(available[0].bookingId);
         }
+        this.noFeedbackModalOpen = this.shouldBlockNewFeedback();
       },
       error: () => {
         this.eligibleBookings = [];
@@ -182,6 +185,22 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
     return Number.isNaN(timestamp) ? 0 : timestamp;
   }
 
+  availableFeedbackBookings(): AlegriaBooking[] {
+    return this.eligibleBookings.filter((booking) => !this.hasAlreadyLeftFeedbackForBooking(booking.bookingId));
+  }
+
+  shouldBlockNewFeedback(): boolean {
+    return !!this.loggedUser && !this.loading && this.availableFeedbackBookings().length === 0;
+  }
+
+  openNoFeedbackModal(): void {
+    this.noFeedbackModalOpen = true;
+  }
+
+  closeNoFeedbackModal(): void {
+    this.noFeedbackModalOpen = false;
+  }
+
   feedbackBookingLabel(booking: AlegriaBooking): string {
     const date = booking.outingDate || '-';
     const time = booking.departureTime ? ` · ${booking.departureTime}` : '';
@@ -202,6 +221,11 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
       this.feedbacksSub = feedbacksObservable.subscribe((items: CustomerFeedback[] | null) => {
         this.feedbacks = this.filterMine(items || []);
         this.loading = false;
+        const available = this.availableFeedbackBookings();
+        if (available.length && !this.feedback.bookingId) {
+          this.selectFeedbackBooking(available[0].bookingId);
+        }
+        this.noFeedbackModalOpen = this.shouldBlockNewFeedback();
       }, () => {
         this.error = this.t('loadError');
         this.loading = false;
@@ -211,6 +235,11 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
 
     this.feedbacks = this.filterMine((svc.bnFeedbacks || []) as CustomerFeedback[]);
     this.loading = false;
+    const available = this.availableFeedbackBookings();
+    if (available.length && !this.feedback.bookingId) {
+      this.selectFeedbackBooking(available[0].bookingId);
+    }
+    this.noFeedbackModalOpen = this.shouldBlockNewFeedback();
   }
 
   selectFeedbackBooking(bookingId: string): void {
@@ -237,6 +266,10 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
       .sort((a, b) => (b.createdTS || 0) - (a.createdTS || 0));
   }
 
+  hasAlreadyLeftFeedbackForBooking(bookingId: string): boolean {
+    return this.feedbacks.some((item) => item.status !== 'deleted' && item.bookingId === bookingId);
+  }
+
   setRating(value: number): void {
     this.feedback.rating = value;
   }
@@ -259,9 +292,14 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const selectedBooking = this.eligibleBookings.find((booking) => booking.bookingId === this.feedback.bookingId);
+    const selectedBooking = this.availableFeedbackBookings().find((booking) => booking.bookingId === this.feedback.bookingId);
     if (!selectedBooking || !this.isFeedbackEligibleBooking(selectedBooking)) {
       this.saveError = this.t('notEligible');
+      return;
+    }
+
+    if (this.hasAlreadyLeftFeedbackForBooking(this.feedback.bookingId)) {
+      this.saveError = this.t('alreadyFeedback');
       return;
     }
 
@@ -465,6 +503,9 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
   t(key: string): string {
     const labels: any = {
       fr: {
+        noFeedbackModalTitle: 'Aucun avis possible pour le moment',
+        noFeedbackModalText: 'Vous n’avez aucune sortie passée, entièrement payée, et sans avis déjà envoyé. Vous pourrez laisser un avis après une sortie terminée et payée.',
+        noFeedbackModalClose: 'Compris',
         eyebrow: 'Espace client',
         title: 'Mes avis',
         intro: 'Laissez un avis après votre sortie, puis retrouvez ici tous les avis associés à votre compte.',
@@ -500,8 +541,12 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
         updateError: 'Impossible de modifier cet avis pour le moment.',
         deleteError: 'Impossible de supprimer cet avis pour le moment.',
         missingId: 'Identifiant de l’avis introuvable.',
+        alreadyFeedback: 'Vous avez déjà laissé un avis pour cette sortie.',
       },
       en: {
+        noFeedbackModalTitle: 'No outing available for feedback',
+        noFeedbackModalText: 'You have no past, fully paid outing without feedback already submitted. You will be able to leave feedback after a completed and fully paid outing.',
+        noFeedbackModalClose: 'Got it',
         eyebrow: 'Customer area',
         title: 'My feedback',
         intro: 'Leave feedback after your outing and view all feedback linked to your account here.',
@@ -537,8 +582,12 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
         updateError: 'Unable to update this feedback right now.',
         deleteError: 'Unable to delete this feedback right now.',
         missingId: 'Feedback identifier not found.',
+        alreadyFeedback: 'You have already left feedback for this outing.',
       },
       es: {
+        noFeedbackModalTitle: 'No hay salida disponible para comentar',
+        noFeedbackModalText: 'No tiene ninguna salida pasada, totalmente pagada y sin comentario ya enviado. Podrá dejar un comentario después de una salida realizada y pagada por completo.',
+        noFeedbackModalClose: 'Entendido',
         eyebrow: 'Área cliente',
         title: 'Mis comentarios',
         intro: 'Deje un comentario después de su salida y consulte aquí los comentarios asociados a su cuenta.',
@@ -574,6 +623,7 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
         updateError: 'No se puede actualizar este comentario en este momento.',
         deleteError: 'No se puede eliminar este comentario en este momento.',
         missingId: 'Identificador del comentario no encontrado.',
+        alreadyFeedback: 'Ya ha dejado un comentario para esta salida.',
       }
     };
     return labels[this.currentLanguage]?.[key] || labels.en[key] || key;

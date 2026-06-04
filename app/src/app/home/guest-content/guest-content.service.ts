@@ -36,6 +36,8 @@ export interface GuestJourneyContent {
 export interface GuestInfoFirebaseContent {
   guestFaq: Record<SiteLanguage, GuestFaqContent>;
   guestJourney: Record<SiteLanguage, GuestJourneyContent>;
+  proposalInfo?: Record<SiteLanguage, any>;
+  bookingInfo?: Record<SiteLanguage, any>;
 }
 
 export const DEFAULT_GUEST_INFO_CONTENT: GuestInfoFirebaseContent = {
@@ -182,8 +184,8 @@ export class GuestContentService {
       try {
         const url = `${baseUrl}/guestInfo.json`;
         const value = await firstValueFrom(this.http.get<GuestInfoFirebaseContent | null>(url));
-        if (value?.guestFaq && value?.guestJourney) {
-          this.cached = this.mergeWithDefaults(value);
+        if (value?.guestFaq || value?.guestJourney || value?.proposalInfo || value?.bookingInfo) {
+          this.cached = this.mergeWithDefaults(value as GuestInfoFirebaseContent);
           return this.cached;
         }
       } catch {
@@ -207,6 +209,8 @@ export class GuestContentService {
         en: value.guestJourney?.en || DEFAULT_GUEST_INFO_CONTENT.guestJourney.en,
         es: value.guestJourney?.es || DEFAULT_GUEST_INFO_CONTENT.guestJourney.es,
       },
+      proposalInfo: value.proposalInfo,
+      bookingInfo: value.bookingInfo,
     };
   }
 }

@@ -90,7 +90,7 @@
         *ngFor="let booking of filteredBookings; trackBy: trackByBookingId"
         (click)="openBooking(booking)"
       >
-        <span class="status-pill">{{ getStatusLabel(booking) }}</span>
+        <button class="status-pill status-clickable" type="button" (click)="openStatusModal(booking, $event)">{{ getStatusLabel(booking) }}</button>
 
         <span class="booking-main">
           <strong>{{ booking.customerName || 'Customer not set' }}</strong>
@@ -105,21 +105,17 @@
           </small>
         </span>
 
-        <span class="booking-price booking-clarity">
+        <span class="booking-price">
           <strong>€{{ booking.totalPrice || 0 }}</strong>
-          <small>Deposit: €{{ getDepositAmount(booking) }} · {{ isDepositPaid(booking) ? 'paid' : 'pending' }}</small>
-          <small>T&C: {{ isTermsAccepted(booking) ? 'accepted' : 'not accepted' }}</small>
-          <small>Warranty mode: {{ getWarrantyModeLabel(booking) }}</small>
-          <small>Stripe card: {{ getWarrantyCardLabel(booking) }}</small>
-          <small>Remaining 90%: €{{ getBalanceAmount(booking) }} · {{ isBalancePaid(booking) ? 'paid' : 'pending' }}</small>
-          <small>Damage: {{ getDamageStatusLabel(booking) }}</small>
+          <small>Total price</small>
         </span>
 
         <span class="row-actions" (click)="$event.stopPropagation()">
-          <button class="mini-btn deposit-btn" type="button" *ngIf="!isDepositPaid(booking)" (click)="payDeposit(booking, $event)">Pay 10% deposit</button>
-          <button class="mini-btn" type="button" *ngIf="canRecordBalancePayment(booking) && !isBalancePaid(booking)" (click)="openBalancePayment(booking, $event)">Record 90%</button>
-          <span class="blocked-badge" *ngIf="!canRecordBalancePayment(booking) && !isBalancePaid(booking)" [title]="getBalanceBlockedReason(booking)">90% locked</span>
-          <span class="paid-badge" *ngIf="isBalancePaid(booking)">90% paid</span>
+          <button class="mini-btn" type="button"
+            *ngIf="!isBalancePaid(booking) && ( !isDepositPaid(booking) || canRecordBalancePayment(booking) )"
+            (click)="!isDepositPaid(booking) ? payDeposit(booking, $event) : openBalancePayment(booking, $event)">
+            {{ !isDepositPaid(booking) ? 'Pay deposit' : 'Pay remaining 90%' }}
+          </button>
           <span class="row-chevron">›</span>
         </span>
       </button>
@@ -167,4 +163,42 @@
       </div>
     </div>
   </div>
+
+  <div class="status-modal-backdrop" *ngIf="selectedStatusBooking" (click)="closeStatusModal()">
+    <section class="status-modal" (click)="$event.stopPropagation()">
+      <button class="modal-close" type="button" (click)="closeStatusModal()">×</button>
+      <span class="eyebrow">Booking status</span>
+      <h2>{{ getStatusLabel(selectedStatusBooking) }}</h2>
+      <p>{{ getStatusSummaryText(selectedStatusBooking) }}</p>
+
+      <div class="status-timeline">
+        <div class="status-step" [ngClass]="getStatusStepClass(isDepositPaid(selectedStatusBooking))">
+          <strong>10% deposit</strong>
+          <span>{{ isDepositPaid(selectedStatusBooking) ? 'Paid' : 'Pending' }}</span>
+        </div>
+        <div class="status-step" [ngClass]="getStatusStepClass(isTermsAccepted(selectedStatusBooking))">
+          <strong>T&C</strong>
+          <span>{{ isTermsAccepted(selectedStatusBooking) ? 'Accepted' : 'Not accepted' }}</span>
+        </div>
+        <div class="status-step" [ngClass]="getStatusStepClass(isWarrantySecured(selectedStatusBooking))">
+          <strong>Warranty</strong>
+          <span>{{ getWarrantyModeLabel(selectedStatusBooking) }} · {{ getWarrantyCardLabel(selectedStatusBooking) }}</span>
+        </div>
+        <div class="status-step" [ngClass]="getStatusStepClass(isBalancePaid(selectedStatusBooking))">
+          <strong>Remaining 90%</strong>
+          <span>{{ isBalancePaid(selectedStatusBooking) ? 'Paid' : 'Pending' }}</span>
+        </div>
+        <div class="status-step" [ngClass]="getStatusStepClass(getDamageStatusLabel(selectedStatusBooking).includes('recorded'))">
+          <strong>Damage</strong>
+          <span>{{ getDamageStatusLabel(selectedStatusBooking) }}</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" type="button" (click)="closeStatusModal()">Close</button>
+        <button class="btn btn-primary" type="button" (click)="openDetail(selectedStatusBooking)">Open booking</button>
+      </div>
+    </section>
+  </div>
+
 </section>

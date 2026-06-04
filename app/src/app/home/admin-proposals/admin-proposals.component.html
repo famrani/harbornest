@@ -59,18 +59,41 @@
     <p class="muted" *ngIf="loading">Loading proposals...</p>
 
     <div class="proposal-list" *ngIf="!loading">
-      <button class="proposal-row" type="button" *ngFor="let p of filteredProposals" (click)="edit(p)">
-        <span class="status">{{ p.status }}</span>
-        <span><strong>{{ p.customerName || 'Unnamed customer' }}</strong><small>{{ p.customerEmail }}</small></span>
-        <span><strong>{{ p.outingType }}</strong><small>{{ p.outingDate }} · {{ p.departureTime }}</small><small [class.expired]="isExpired(p)">{{ formatValidity(p) }}</small></span>
-        <span><strong>€{{ p.totalAmount }}</strong><small>Deposit €{{ p.depositAmount }}</small></span>
-        <span class="row-actions">
-          <button class="mini-link" type="button" (click)="openClientLink(p); $event.stopPropagation()">Open link</button>
-          <button class="mini-link" type="button" (click)="sendProposalByEmail(p); $event.stopPropagation()">Email</button>
-          <button class="mini-link" type="button" (click)="renewProposal(p, $event)">Renew</button>
-          <button class="mini-link danger" type="button" (click)="deleteProposal(p, $event)">Delete</button>
+      <article class="proposal-row" *ngFor="let p of filteredProposals" (click)="edit(p)" tabindex="0" role="button">
+        <span class="status">{{ p.status || 'draft' }}</span>
+
+        <span class="proposal-customer">
+          <strong>{{ p.customerName || 'Unnamed customer' }}</strong>
+          <small>{{ p.customerEmail || 'No email' }}</small>
+          <small *ngIf="p.customerPhone">{{ p.customerPhone }}</small>
         </span>
-      </button>
+
+        <span class="proposal-outing">
+          <strong>{{ p.outingType || 'Outing' }}</strong>
+          <small>{{ p.outingDate || 'Date not set' }} <ng-container *ngIf="p.departureTime">· {{ p.departureTime }}</ng-container></small>
+          <small [class.expired]="isExpired(p)">{{ formatValidity(p) }}</small>
+        </span>
+
+        <span class="proposal-price">
+          <strong>€{{ p.totalAmount || 0 }}</strong>
+          <small>Deposit €{{ p.depositAmount || ((p.totalAmount || 0) * 0.1) | number:'1.2-2' }}</small>
+        </span>
+
+        <span class="row-actions" (click)="$event.stopPropagation()">
+          <ng-container *ngIf="isAcceptedProposal(p); else proposalActions">
+            <button class="mini-link" type="button" (click)="openRelatedBooking(p, $event)">Open booking</button>
+            <button class="mini-link" type="button" (click)="createSimilarProposal(p, $event)">Create similar proposal</button>
+          </ng-container>
+
+          <ng-template #proposalActions>
+            <button class="mini-link" type="button" (click)="openClientLink(p)">Open link</button>
+            <button class="mini-link" type="button" *ngIf="hasRelatedBooking(p)" (click)="openRelatedBooking(p, $event)">Open booking</button>
+            <button class="mini-link" type="button" (click)="sendProposalByEmail(p)">Email</button>
+            <button class="mini-link" type="button" (click)="renewProposal(p, $event)">Renew</button>
+            <button class="mini-link danger" type="button" (click)="deleteProposal(p, $event)">Delete</button>
+          </ng-template>
+        </span>
+      </article>
     </div>
   </div>
 </section>

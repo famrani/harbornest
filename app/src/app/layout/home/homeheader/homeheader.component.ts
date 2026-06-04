@@ -163,7 +163,7 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
   }
 
   get depositLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Acompte sécurisé' : this.currentLanguage === 'es' ? 'Depósito seguro' : 'Secure deposit';
+    return this.currentLanguage === 'fr' ? 'Comment réserver ?' : this.currentLanguage === 'es' ? '¿Cómo reservar?' : 'How booking works';
   }
 
   get accountLabel(): string {

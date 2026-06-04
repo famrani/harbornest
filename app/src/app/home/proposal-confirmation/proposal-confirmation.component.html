@@ -1,74 +1,113 @@
 
 <section class="proposal-confirmation-page">
   <div class="container proposal-shell">
-    <p class="muted" *ngIf="loading">Loading proposal...</p>
+    <p class="muted" *ngIf="loading">{{ text('loading') }}</p>
     <p class="error" *ngIf="error">{{ error }}</p>
 
     <article class="proposal-card" *ngIf="!loading && proposal">
-      <span class="eyebrow">Alegria Boat proposal</span>
+      <span class="eyebrow">{{ text('proposalEyebrow') }}</span>
       <h1>{{ proposal.outingType }}</h1>
       <p class="muted" *ngIf="proposal.proposalMessage">{{ proposal.proposalMessage }}</p>
 
       <div class="summary-grid">
-        <div><strong>Customer</strong><span>{{ proposal.customerName }}</span></div>
-        <div><strong>Date</strong><span>{{ proposal.outingDate }}</span></div>
-        <div><strong>Time</strong><span>{{ proposal.departureTime }} → {{ proposal.arrivalTime }}</span></div>
-        <div><strong>Passengers</strong><span>{{ proposal.passengers || '-' }}</span></div>
-        <div><strong>Total price</strong><span>€{{ proposal.totalAmount }}</span></div>
-        <div><strong>Deposit 10%</strong><span>€{{ proposal.depositAmount }}</span></div>
-        <div><strong>Remaining onboard</strong><span>€{{ proposal.balanceAmount }}</span></div>
-        <div><strong>Warranty</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>
+        <div><strong>{{ text('customer') }}</strong><span>{{ proposal.customerName }}</span></div>
+        <div><strong>{{ text('date') }}</strong><span>{{ proposal.outingDate }}</span></div>
+        <div><strong>{{ text('time') }}</strong><span>{{ proposal.departureTime }} → {{ proposal.arrivalTime }}</span></div>
+        <div><strong>{{ text('passengers') }}</strong><span>{{ proposal.passengers || '-' }}</span></div>
+        <div><strong>{{ text('totalPrice') }}</strong><span>€{{ proposal.totalAmount }}</span></div>
+        <div><strong>{{ text('deposit') }}</strong><span>€{{ proposal.depositAmount }}</span></div>
+        <div><strong>{{ text('remaining') }}</strong><span>€{{ proposal.balanceAmount }}</span></div>
+        <div><strong>{{ text('warranty') }}</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>
       </div>
 
-      <div class="expired" *ngIf="expired">This proposal is no longer valid. Please contact Alegria Boat for a new proposal.</div>
+      <div class="expired" *ngIf="expired">{{ text('expiredText') }}</div>
 
       <section class="choice-block" *ngIf="!expired && proposal.status !== 'accepted'">
-        <h2>Accept the proposal</h2>
-        <label class="terms-check">
-          <input type="checkbox" [(ngModel)]="acceptedTerms" />
-          <span>I accept the Terms & Conditions and understand the cancellation, punctuality, swimming and damage deposit rules.</span>
-        </label>
+        <h2>{{ text('acceptTitle') }}</h2>
+        <div class="terms-required-card">
+          <p>
+            {{ text('readBeforeAccept') }}
+            <button class="link-button" type="button" (click)="openTermsModal()">{{ text('openTerms') }}</button>
+          </p>
 
-        <h3>Choose your warranty method</h3>
-        <label class="radio-card"><input type="radio" name="warrantyChoice" value="stripe_card" [(ngModel)]="warrantyChoice" /><span>Register my debit/credit card online via Stripe, maximum one day before the outing.</span></label>
-        <label class="radio-card"><input type="radio" name="warrantyChoice" value="cash_on_board" [(ngModel)]="warrantyChoice" /><span>Bring €500 cash before departure. It will be returned at the end if no damage/issues are noticed.</span></label>
+          <label class="terms-check">
+            <input type="checkbox" [(ngModel)]="acceptedTerms" [disabled]="!canAcceptTermsCheckbox" />
+            <span>{{ text('termsCheckbox') }}</span>
+          </label>
 
-        <button class="btn btn-primary" type="button" [disabled]="!canAccept || accepting" (click)="acceptProposal()">{{ accepting ? 'Accepting...' : 'Accept proposal' }}</button>
-      </section>
+          <p class="muted" *ngIf="!canAcceptTermsCheckbox">
+            {{ text('termsLocked') }}
+          </p>
+        </div>
+
+        <h3>{{ text('warrantyTitle') }}</h3>
+        <label class="radio-card"><input type="radio" name="warrantyChoice" value="stripe_card" [(ngModel)]="warrantyChoice" /><span>{{ text('warrantyCard') }}</span></label>
+        <label class="radio-card"><input type="radio" name="warrantyChoice" value="cash_on_board" [(ngModel)]="warrantyChoice" /><span>{{ text('warrantyCash') }}</span></label>
+
+        <button class="btn btn-primary" type="button" [disabled]="!canAccept || accepting" (click)="acceptProposal()">{{ accepting ? text('acceptingButton') : text('acceptButton') }}</button>
+      
+      <div class="terms-modal-backdrop" *ngIf="termsModalOpen" (click)="closeTermsModal()">
+        <section class="terms-modal" (click)="$event.stopPropagation()">
+          <button class="modal-close" type="button" (click)="closeTermsModal()">×</button>
+          <span class="eyebrow">Alegria Boat</span>
+          <h2>{{ text('termsModalTitle') }}</h2>
+
+          <div class="terms-content tc-scrollable" tabindex="0">
+            <ng-container *ngFor="let section of termsSections">
+              <h3>{{ section.title }}</h3>
+              <p *ngFor="let paragraph of section.paragraphs">{{ paragraph }}</p>
+            </ng-container>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn btn-primary" type="button" (click)="closeTermsModal()">{{ text('readTermsButton') }}</button>
+          </div>
+        </section>
+      </div>
+
+</section>
 
       <section class="payment-block" *ngIf="!expired && proposal.status === 'accepted'">
-        <h2>Next steps</h2>
+        <h2>{{ text('nextSteps') }}</h2>
+
+        <div class="related-booking-banner">
+          <div>
+            <strong>{{ text('bookingCreatedTitle') }}</strong>
+            <p>{{ text('bookingCreatedText') }}</p>
+          </div>
+          <button class="btn btn-secondary" type="button" (click)="openRelatedBooking()">{{ text('openBookingButton') }}</button>
+        </div>
         <div class="step-card" [class.paid]="depositPaid">
-          <h3>1. Pay the 10% deposit</h3>
+          <h3>{{ text('payDepositTitle') }}</h3>
           <p>{{ depositMessage }}</p>
 
           <div class="paid-badge" *ngIf="depositPaid">
-            Deposit paid
+            {{ text('depositPaid') }}
           </div>
 
           <button class="btn btn-primary" type="button" *ngIf="!depositPaid" [disabled]="payingDeposit" (click)="payDeposit()">
-            {{ payingDeposit ? 'Redirecting...' : 'Pay 10% deposit' }}
+            {{ payingDeposit ? text('redirecting') : text('payDepositButton') }}
           </button>
         </div>
         <div class="step-card" *ngIf="proposal.warrantyPaymentChoice === 'stripe_card'" [class.paid]="warrantyRegistered">
-          <h3>2. Register warranty card</h3>
+          <h3>{{ text('registerWarrantyTitle') }}</h3>
           <p>{{ warrantyMessage }}</p>
-          <p class="muted">Maximum warranty amount: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>
+          <p class="muted">{{ text('maxWarranty') }}: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>
 
           <div class="paid-badge" *ngIf="warrantyRegistered">
-            Warranty card registered
+            {{ text('warrantyCardRegistered') }}
           </div>
 
           <button class="btn btn-secondary" type="button" *ngIf="!warrantyRegistered" [disabled]="payingWarranty" (click)="registerWarrantyCard()">
-            {{ payingWarranty ? 'Redirecting...' : 'Register warranty card' }}
+            {{ payingWarranty ? text('redirecting') : text('registerWarrantyButton') }}
           </button>
         </div>
         <div class="step-card" *ngIf="proposal.warrantyPaymentChoice === 'cash_on_board'">
-          <h3>2. Cash warranty</h3>
+          <h3>{{ text('cashWarrantyTitle') }}</h3>
           <p>{{ warrantyMessage }}</p>
-          <p class="muted">Amount: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>
+          <p class="muted">{{ text('amount') }}: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>
         </div>
-        <div class="step-card"><h3>3. Day of outing</h3><p>The remaining 90% balance and extras are paid onboard before departure by SumUp/card or cash.</p></div>
+        <div class="step-card"><h3>{{ text('outingDayTitle') }}</h3><p>{{ text('outingDayText') }}</p></div>
       </section>
 
       <p class="success" *ngIf="message">{{ message }}</p>

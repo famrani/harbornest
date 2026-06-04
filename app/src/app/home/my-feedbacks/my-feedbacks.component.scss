@@ -301,3 +301,54 @@ textarea:focus {
 .state-card.full {
   grid-column: 1 / -1;
 }
+
+.feedback-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(8, 38, 58, 0.46);
+  backdrop-filter: blur(4px);
+}
+
+.feedback-modal {
+  width: min(520px, 100%);
+  background: #fff;
+  border-radius: 24px;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  box-shadow: 0 30px 80px rgba(8, 38, 58, 0.24);
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  position: relative;
+}
+
+.feedback-modal h2 {
+  color: #08263a;
+  margin: 0.35rem 0 0.75rem;
+}
+
+.feedback-modal p {
+  color: #516070;
+  line-height: 1.6;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 999px;
+  background: #f8f5ef;
+  color: #08263a;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.25rem;
+}

@@ -19,6 +19,7 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
   sortField: 'date' | 'customer' | 'status' | 'total' | 'balance' = 'date';
   sortDirection: 'asc' | 'desc' = 'asc';
   loggedUser: any = null;
+  selectedStatusBooking: AlegriaBooking | null = null;
   private userSub?: Subscription;
 
   constructor(
@@ -331,6 +332,36 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
     if (this.canPayDeposit(booking)) return 'Pay 10% deposit';
     if (this.canPayBalance(booking)) return `Pay remaining 90% (€${this.getBalanceAmount(booking)})`;
     return 'Payment';
+  }
+
+  openStatusModal(booking: AlegriaBooking, event?: Event): void {
+    event?.stopPropagation();
+    this.selectedStatusBooking = booking;
+  }
+
+  closeStatusModal(): void {
+    this.selectedStatusBooking = null;
+  }
+
+  getStatusStepClass(done: boolean): string {
+    return done ? 'done' : 'pending';
+  }
+
+  getStatusSummaryText(booking: AlegriaBooking): string {
+    const status = this.getDerivedBookingStatus(booking);
+    if (status === 'payment_done') return 'Booking confirmed, warranty secured and full payment recorded.';
+    if (status === 'confirmed') return 'Booking confirmed. Warranty and/or remaining payment may still be pending.';
+    return 'Booking not confirmed yet. Deposit and T&C acceptance are required.';
+  }
+
+  getDamageStatusLabel(booking: AlegriaBooking): string {
+    const anyBooking: any = booking;
+    const amount = anyBooking.warrantyChargedAmount || anyBooking.warrantyCashDamageAmount || anyBooking?.payments?.warrantyCharge?.warrantyChargeAmount || anyBooking?.payments?.warrantyCashDamage?.amount || 0;
+    if (anyBooking.damageReported === true || anyBooking.damageCharged === true || amount) {
+      const euros = Number(amount) > 999 ? Math.round(Number(amount)) / 100 : Number(amount);
+      return `Damage recorded${euros ? ` (€${euros})` : ''}`;
+    }
+    return this.isBalancePaid(booking) ? 'No damage recorded' : 'Available after full payment';
   }
 
   openBooking(booking: AlegriaBooking): void {

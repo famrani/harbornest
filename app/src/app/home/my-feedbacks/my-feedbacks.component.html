@@ -15,15 +15,18 @@
         <p>{{ t('formIntro') }}</p>
       </div>
 
-      <div class="state-card full" *ngIf="eligibleBookings.length === 0">
+      <div class="state-card full" *ngIf="shouldBlockNewFeedback()">
         <p>{{ t('noEligibleBookings') }}</p>
+        <button class="btn btn-secondary" type="button" (click)="openNoFeedbackModal()">
+          {{ t('noFeedbackModalTitle') }}
+        </button>
       </div>
 
-      <label class="full" *ngIf="eligibleBookings.length > 0">
+      <label class="full" *ngIf="availableFeedbackBookings().length > 0">
         <span>{{ t('outing') }}</span>
         <select name="bookingId" [(ngModel)]="feedback.bookingId" (ngModelChange)="selectFeedbackBooking($event)" required>
           <option value="" disabled>Select an outing</option>
-          <option *ngFor="let booking of eligibleBookings" [value]="booking.bookingId">
+          <option *ngFor="let booking of availableFeedbackBookings()" [value]="booking.bookingId">
             {{ feedbackBookingLabel(booking) }}
           </option>
         </select>
@@ -64,7 +67,7 @@
       </label>
 
       <div class="form-actions full">
-        <button class="btn btn-primary" type="submit" [disabled]="saving || eligibleBookings.length === 0">
+        <button class="btn btn-primary" type="submit" [disabled]="saving || availableFeedbackBookings().length === 0">
           {{ saving ? t('saving') : t('save') }}
         </button>
       </div>
@@ -167,5 +170,20 @@
         </article>
       </div>
     </div>
+
+    <div class="feedback-modal-backdrop" *ngIf="noFeedbackModalOpen" (click)="closeNoFeedbackModal()">
+      <section class="feedback-modal" (click)="$event.stopPropagation()">
+        <button class="modal-close" type="button" (click)="closeNoFeedbackModal()">×</button>
+        <span class="eyebrow">{{ t('eyebrow') }}</span>
+        <h2>{{ t('noFeedbackModalTitle') }}</h2>
+        <p>{{ t('noFeedbackModalText') }}</p>
+        <div class="modal-actions">
+          <button class="btn btn-primary" type="button" (click)="closeNoFeedbackModal()">
+            {{ t('noFeedbackModalClose') }}
+          </button>
+        </div>
+      </section>
+    </div>
+
   </div>
 </section>

@@ -40,7 +40,7 @@
           <a routerLink="/how-it-works" routerLinkActive="active" (click)="closeMenu()">{{ guestJourneyLabel }}</a>
           <a routerLink="/faq" routerLinkActive="active" (click)="closeMenu()">{{ faqLabel }}</a>
           <a routerLink="/terms" routerLinkActive="active" (click)="closeMenu()">{{ termsLabel }}</a>
-          <a *ngIf="!isAdmin && isLoggedIn" routerLink="/deposit" routerLinkActive="active" (click)="closeMenu()">{{ depositLabel }}</a>
+          <a routerLink="/booking-process" routerLinkActive="active" (click)="closeMenu()">{{ depositLabel }}</a>
         </div>
       </details>
 

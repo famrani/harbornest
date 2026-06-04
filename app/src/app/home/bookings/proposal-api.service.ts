@@ -11,6 +11,7 @@ export type BookingSource = 'direct' | 'samboat' | 'clickandboat' | 'other';
 
 export interface AlegriaProposal {
   proposalId: string;
+  relatedBookingId?: string;
   source: BookingSource;
   status: ProposalStatus;
   customerName: string;
@@ -124,6 +125,7 @@ export class ProposalApiService {
     const accepted = {
       ...current,
       status: 'accepted' as ProposalStatus,
+      relatedBookingId: proposalId,
       warrantyPaymentChoice,
       warrantyStatus: warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : 'not_selected',
       tncAccepted: true,
@@ -133,7 +135,8 @@ export class ProposalApiService {
     };
     await this.writeItem(this.proposalsCollection, proposalId, accepted);
     await this.createBookingFromProposal(accepted);
-    return accepted;
+    await this.patchProposal(proposalId, { relatedBookingId: proposalId } as any);
+    return { ...accepted, relatedBookingId: proposalId };
   }
 
 
@@ -166,6 +169,7 @@ export class ProposalApiService {
       tncAccepted: true,
       tncAcceptedAt: Date.now(),
       acceptedTS: Date.now(),
+      relatedBookingId: input.relatedBookingId || input.proposalId,
     });
     await this.createBookingFromProposal(saved);
     return saved;
@@ -228,7 +232,9 @@ export class ProposalApiService {
 
   private async createBookingFromProposal(p: AlegriaProposal): Promise<void> {
     await this.writeItem(this.bookingsCollection, p.proposalId, {
-      bookingId: p.proposalId,
+      bookingId: p.relatedBookingId || p.proposalId,
+      proposalId: p.proposalId,
+      relatedBookingId: p.relatedBookingId || p.proposalId,
       source: p.source,
       customerName: p.customerName,
       email: p.customerEmail,
@@ -245,9 +251,12 @@ export class ProposalApiService {
       depositStatus: p.depositStatus || 'pending',
       warrantyStatus: p.warrantyStatus || 'not_selected',
       warrantyPaymentChoice: p.warrantyPaymentChoice || null,
-      bookingStatus: 'confirmed',
+      bookingStatus: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? 'confirmed' : 'not_confirmed',
+      proposalStatus: 'accepted',
       tncAccepted: p.tncAccepted,
+      termsAccepted: p.tncAccepted,
       tncAcceptedAt: p.tncAcceptedAt,
+      termsAcceptedAt: p.tncAcceptedAt,
       comments: p.comments || '',
       createdTS: p.createdTS,
       modifiedTS: Date.now(),
@@ -298,6 +307,14 @@ export class ProposalApiService {
     const proposal = await this.readItem(this.proposalsCollection, id);
     if (!proposal) return undefined;
 
+    if (proposal.status === 'accepted') {
+      const existingBooking = await this.readItem(this.bookingsCollection, proposal.relatedBookingId || proposal.proposalId).catch(() => undefined);
+      if (!existingBooking) {
+        await this.createBookingFromProposal({ ...proposal, relatedBookingId: proposal.relatedBookingId || proposal.proposalId } as AlegriaProposal);
+        await this.patchProposal(proposal.proposalId, { relatedBookingId: proposal.relatedBookingId || proposal.proposalId } as any).catch(() => undefined);
+      }
+    }
+
     const backendBooking = await this.readItem('backendbookings', id).catch(() => undefined);
     const depositPayment = backendBooking?.payments?.deposit || backendBooking?.payment || null;
     const warrantyPayment = backendBooking?.payments?.warranty || null;
@@ -318,6 +335,7 @@ export class ProposalApiService {
 
     return {
       ...proposal,
+      relatedBookingId: proposal.relatedBookingId || proposal.proposalId,
       depositPaid,
       depositStatus: depositPaid ? 'paid' : (proposal.depositStatus || depositPayment?.status || 'pending'),
       paymentStatus: depositPaid ? 'paid' : (proposal.paymentStatus || backendBooking?.paymentStatus || depositPayment?.status || ''),

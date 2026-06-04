@@ -262,3 +262,231 @@ h1 { color: #08263a; margin: 8px 0; }
   gap: 0.85rem;
   margin-top: 1rem;
 }
+
+.status-clickable {
+  border: 0;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+
+.status-clickable:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(8,38,58,.12);
+}
+
+.status-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(8, 38, 58, 0.42);
+  backdrop-filter: blur(4px);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.status-modal {
+  width: min(620px, 100%);
+  max-height: min(760px, 92vh);
+  overflow: auto;
+  background: #fff;
+  border-radius: 28px;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  box-shadow: 0 30px 80px rgba(8,38,58,.24);
+  position: relative;
+  border: 1px solid rgba(8,38,58,.08);
+}
+
+.status-modal h2 {
+  color: #08263a;
+  margin: 0.35rem 0 0.5rem;
+}
+
+.status-modal p {
+  color: #516070;
+  line-height: 1.6;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 999px;
+  background: #f8f5ef;
+  color: #08263a;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.status-timeline {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+
+.status-step {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.95rem;
+  border-radius: 18px;
+  border: 1px solid rgba(8,38,58,.08);
+  background: #f8f5ef;
+}
+
+.status-step strong {
+  color: #08263a;
+}
+
+.status-step span {
+  color: #516070;
+  line-height: 1.45;
+}
+
+.status-step.done {
+  background: rgba(4, 120, 87, .09);
+  border-color: rgba(4, 120, 87, .18);
+}
+
+.status-step.done strong::before {
+  content: "✓ ";
+  color: #047857;
+}
+
+.status-step.pending {
+  background: rgba(181, 139, 74, .09);
+  border-color: rgba(181, 139, 74, .18);
+}
+
+.status-step.pending strong::before {
+  content: "• ";
+  color: #b58b4a;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 560px) {
+  .status-step {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-actions {
+    justify-content: stretch;
+  }
+
+  .modal-actions .btn {
+    flex: 1;
+  }
+}
+
+.status-summary-card {
+  border: 2px solid rgba(181,139,74,.2) !important;
+  background: linear-gradient(135deg, #fff, #f8f5ef) !important;
+}
+
+.status-summary-card .status-pill {
+  justify-self: start;
+  margin-top: 0.25rem;
+}
+
+
+/* Ensure long Firebase T&C text is fully scrollable in every language. */
+.tc-scrollable,
+.terms-scroll-box,
+.terms-content {
+  display: block;
+  max-height: min(62vh, 560px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding-right: 0.75rem;
+  scrollbar-gutter: stable;
+}
+
+.terms-scroll-box p,
+.terms-content p {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  word-break: normal;
+}
+
+.terms-scroll-box h4,
+.terms-content h3 {
+  position: static;
+}
+
+@media (max-width: 720px) {
+  .tc-scrollable,
+  .terms-scroll-box,
+  .terms-content {
+    max-height: 58vh;
+  }
+}
+
+
+/* Hard fix for long multilingual Firebase T&C text. */
+.tc-scrollable,
+.terms-scroll-box.tc-scrollable,
+.terms-content.tc-scrollable {
+  display: block !important;
+  height: clamp(360px, 62vh, 640px) !important;
+  max-height: clamp(360px, 62vh, 640px) !important;
+  min-height: 320px !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+  padding-right: 1rem !important;
+  box-sizing: border-box !important;
+}
+
+.terms-modal {
+  max-height: 94vh !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.terms-modal .terms-content.tc-scrollable {
+  flex: 1 1 auto !important;
+  height: auto !important;
+  min-height: 320px !important;
+  max-height: calc(94vh - 190px) !important;
+}
+
+.terms-scroll-box.tc-scrollable p,
+.terms-content.tc-scrollable p {
+  display: block !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
+  word-break: normal !important;
+}
+
+@media (max-width: 720px) {
+  .tc-scrollable,
+  .terms-scroll-box.tc-scrollable,
+  .terms-content.tc-scrollable {
+    height: 58vh !important;
+    max-height: 58vh !important;
+    min-height: 300px !important;
+  }
+
+  .terms-modal .terms-content.tc-scrollable {
+    max-height: calc(92vh - 170px) !important;
+  }
+}

@@ -3,58 +3,24 @@
     <span class="eyebrow">{{ t('eyebrow') }}</span>
     <h1>{{ t('title') }}</h1>
     <p class="intro">{{ t('intro') }}</p>
-    <div class="state-card">
-      <p>Feedback can only be left for an outing that has already happened and has been fully paid.</p>
-      <a routerLink="/my-feedbacks" class="btn btn-primary">Go to My feedback</a>
+
+    <div class="state-card" *ngIf="loading">
+      <p>{{ t('loading') }}</p>
     </div>
 
-    <form class="feedback-form" (ngSubmit)="saveFeedback()">
-      <label>
-        <span>{{ t('date') }}</span>
-        <input type="date" name="date" [(ngModel)]="feedback.date" required />
-      </label>
+    <div class="state-card" *ngIf="!loading && !loggedUser">
+      <p>{{ t('loginRequired') }}</p>
+      <a routerLink="/login" class="btn btn-primary">{{ t('login') }}</a>
+    </div>
 
-      <label>
-        <span>{{ t('time') }}</span>
-        <input type="time" name="time" [(ngModel)]="feedback.time" required />
-      </label>
+    <div class="state-card" *ngIf="!loading && loggedUser && eligibleBookings.length === 0">
+      <p>{{ t('noEligibleBookings') }}</p>
+      <a routerLink="/my-bookings" class="btn btn-secondary">{{ t('goToBookings') }}</a>
+    </div>
 
-      <label class="full">
-        <span>{{ t('outingType') }}</span>
-        <select name="outingType" [(ngModel)]="feedback.outingType" required>
-          <option *ngFor="let option of outingOptions[currentLanguage]" [value]="option">
-            {{ option }}
-          </option>
-        </select>
-      </label>
-
-      <label class="full">
-        <span>{{ t('rating') }}</span>
-        <div class="rating" role="radiogroup" [attr.aria-label]="t('rating')">
-          <button
-            type="button"
-            *ngFor="let value of [1,2,3,4,5]"
-            [class.active]="feedback.rating === value"
-            (click)="setRating(value)"
-            [attr.aria-pressed]="feedback.rating === value">
-            {{ value }} ★
-          </button>
-        </div>
-      </label>
-
-      <label class="full">
-        <span>{{ t('comments') }}</span>
-        <textarea name="comments" rows="5" [(ngModel)]="feedback.comments" required></textarea>
-      </label>
-
-      <div class="form-actions full">
-        <button class="btn btn-primary" type="submit" [disabled]="loading">
-          {{ loading ? t('saving') : t('save') }}
-        </button>
-      </div>
-
-      <p class="success full" *ngIf="saved">{{ t('saved') }}</p>
-      <p class="error full" *ngIf="error">{{ error }}</p>
-    </form>
+    <div class="state-card" *ngIf="!loading && loggedUser && eligibleBookings.length > 0">
+      <p>{{ eligibleBookings.length === 1 ? t('eligible') : t('eligiblePlural') }}</p>
+      <a routerLink="/my-feedbacks" class="btn btn-primary">{{ t('goToMyFeedbacks') }}</a>
+    </div>
   </div>
 </section>

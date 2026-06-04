@@ -1,0 +1,284 @@
+{
+    "fr": {
+        "acceptTitle": "Accepter la proposition",
+        "openTerms": "Lire les Conditions Générales complètes",
+        "termsCheckbox": "J’ai lu, compris et j’accepte les Conditions Générales complètes.",
+        "termsModalTitle": "Conditions Générales complètes",
+        "readTermsButton": "J’ai lu les Conditions Générales",
+        "acceptButton": "Accepter la proposition",
+        "bookingCreatedTitle": "Réservation créée",
+        "bookingCreatedText": "Cette proposition acceptée a été transformée en réservation.",
+        "openBookingButton": "Ouvrir la réservation",
+        "warrantyTitle": "Choisissez votre mode de caution",
+        "warrantyCard": "Enregistrer une carte bancaire via Stripe",
+        "warrantyCash": "Remettre la caution en espèces avant le départ",
+        "termsSections": [
+            {
+                "title": "1. Confirmation de réservation",
+                "paragraphs": [
+                    "La réservation est confirmée uniquement après acceptation de la proposition, acceptation des Conditions Générales et paiement de l’acompte de 10 %.",
+                    "Tant que ces étapes ne sont pas finalisées, la sortie n’est pas considérée comme confirmée."
+                ]
+            },
+            {
+                "title": "2. Acompte et annulation",
+                "paragraphs": [
+                    "Un acompte de 10 % est requis pour sécuriser la réservation.",
+                    "Les conditions d’annulation dépendent de la date, de la météo, de la sécurité et des éventuels accords spécifiques conclus avec Alegria Boat."
+                ]
+            },
+            {
+                "title": "3. Solde restant",
+                "paragraphs": [
+                    "Le solde restant de 90 % est dû avant le départ ou à bord selon les modalités convenues.",
+                    "Les frais supplémentaires éventuels doivent être réglés avant la fin de la sortie."
+                ]
+            },
+            {
+                "title": "4. Caution / garantie",
+                "paragraphs": [
+                    "Une caution est obligatoire pour couvrir les dommages, frais exceptionnels ou impayés éventuels.",
+                    "La caution peut être enregistrée par carte bancaire via Stripe ou remise en espèces avant le départ.",
+                    "Aucun montant n’est prélevé sur la carte sauf en cas de dommage, frais non réglés ou manquement constaté."
+                ]
+            },
+            {
+                "title": "5. Sécurité à bord",
+                "paragraphs": [
+                    "Les passagers doivent suivre les consignes du skipper à tout moment.",
+                    "Le skipper peut modifier, écourter, reporter ou annuler la sortie si les conditions de sécurité, météo ou comportementales l’exigent."
+                ]
+            },
+            {
+                "title": "6. Ponctualité",
+                "paragraphs": [
+                    "Les passagers doivent se présenter à l’heure convenue au point de rendez-vous.",
+                    "Tout retard peut réduire la durée de la sortie sans compensation."
+                ]
+            },
+            {
+                "title": "7. Baignade et activités nautiques",
+                "paragraphs": [
+                    "La baignade et les activités nautiques se font sous la responsabilité des passagers.",
+                    "Elles ne sont autorisées que lorsque le skipper les juge possibles et sûres.",
+                    "Les enfants et personnes ne sachant pas nager doivent être surveillés par un adulte responsable."
+                ]
+            },
+            {
+                "title": "8. Toilettes marines",
+                "paragraphs": [
+                    "Les toilettes marines sont fragiles.",
+                    "Il est strictement interdit d’y jeter papier, lingettes, protections hygiéniques, nourriture, mégots ou tout autre objet.",
+                    "Tout bouchage causé par une mauvaise utilisation pourra être facturé."
+                ]
+            },
+            {
+                "title": "9. Dommages et nettoyage",
+                "paragraphs": [
+                    "Les passagers sont responsables des dommages causés au bateau, aux coussins, équipements, aménagements et matériels de sécurité.",
+                    "Les brûlures de cigarette, équipements cassés ou perdus, toilettes bouchées et nettoyages exceptionnels pourront être facturés."
+                ]
+            },
+            {
+                "title": "10. Décision du skipper",
+                "paragraphs": [
+                    "La décision du skipper est définitive concernant l’itinéraire, les mouillages, la baignade, le départ, le retour et l’annulation pour raisons de sécurité ou météo."
+                ]
+            },
+            {
+                "title": "11. Acceptation",
+                "paragraphs": [
+                    "En cochant la case d’acceptation, le client confirme avoir lu, compris et accepté l’intégralité des Conditions Générales."
+                ]
+            }
+        ]
+    },
+    "en": {
+        "acceptTitle": "Accept the proposal",
+        "openTerms": "Read the full Terms & Conditions",
+        "termsCheckbox": "I have read, understood and accept the full Terms & Conditions.",
+        "termsModalTitle": "Full Terms & Conditions",
+        "readTermsButton": "I have read the Terms & Conditions",
+        "acceptButton": "Accept proposal",
+        "bookingCreatedTitle": "Booking created",
+        "bookingCreatedText": "This accepted proposal has been converted into a booking.",
+        "openBookingButton": "Open booking",
+        "warrantyTitle": "Choose your warranty method",
+        "warrantyCard": "Register a payment card through Stripe",
+        "warrantyCash": "Provide the warranty deposit in cash before departure",
+        "termsSections": [
+            {
+                "title": "1. Booking confirmation",
+                "paragraphs": [
+                    "The booking is confirmed only after the proposal has been accepted, the Terms & Conditions have been accepted, and the 10% deposit has been paid.",
+                    "Until these steps are completed, the outing is not considered confirmed."
+                ]
+            },
+            {
+                "title": "2. Deposit and cancellation",
+                "paragraphs": [
+                    "A 10% deposit is required to secure the booking.",
+                    "Cancellation conditions depend on timing, weather, safety considerations and any specific agreements made with Alegria Boat."
+                ]
+            },
+            {
+                "title": "3. Remaining balance",
+                "paragraphs": [
+                    "The remaining 90% balance is due before departure or on board according to the agreed payment method.",
+                    "Any additional charges must be settled before the end of the outing."
+                ]
+            },
+            {
+                "title": "4. Warranty / damage deposit",
+                "paragraphs": [
+                    "A warranty deposit is required to cover damages, exceptional costs or unpaid amounts.",
+                    "The warranty may be secured through a Stripe card registration or provided in cash before departure.",
+                    "No amount is charged to the registered card unless damages, unpaid fees or misuse are identified."
+                ]
+            },
+            {
+                "title": "5. Safety on board",
+                "paragraphs": [
+                    "All guests must follow the skipper’s instructions at all times.",
+                    "The skipper may modify, shorten, postpone or cancel the outing whenever safety, weather or guest behaviour requires it."
+                ]
+            },
+            {
+                "title": "6. Punctuality",
+                "paragraphs": [
+                    "Guests must arrive at the agreed meeting point on time.",
+                    "Late arrivals may reduce the duration of the outing without compensation."
+                ]
+            },
+            {
+                "title": "7. Swimming and water activities",
+                "paragraphs": [
+                    "Swimming and water activities are undertaken at the guests’ own risk.",
+                    "They are only permitted when authorised by the skipper.",
+                    "Children and non-swimmers must be supervised by a responsible adult."
+                ]
+            },
+            {
+                "title": "8. Marine toilets",
+                "paragraphs": [
+                    "Marine toilets are fragile.",
+                    "Paper, wipes, sanitary products, food, cigarette butts and any foreign objects must never be flushed.",
+                    "Any blockage resulting from misuse may be charged to the customer."
+                ]
+            },
+            {
+                "title": "9. Damage and cleaning",
+                "paragraphs": [
+                    "Guests are responsible for damage caused to the boat, cushions, fittings, equipment and safety gear.",
+                    "Cigarette burns, broken or missing equipment, blocked toilets and exceptional cleaning may be charged."
+                ]
+            },
+            {
+                "title": "10. Skipper authority",
+                "paragraphs": [
+                    "The skipper’s decision is final regarding itinerary, anchoring, swimming, departure, return and cancellations due to weather or safety concerns."
+                ]
+            },
+            {
+                "title": "11. Acceptance",
+                "paragraphs": [
+                    "By ticking the acceptance box, the customer confirms that they have read, understood and accepted these Terms & Conditions in full."
+                ]
+            }
+        ]
+    },
+    "es": {
+        "acceptTitle": "Aceptar la propuesta",
+        "openTerms": "Leer las Condiciones Generales completas",
+        "termsCheckbox": "He leído, comprendido y acepto las Condiciones Generales completas.",
+        "termsModalTitle": "Condiciones Generales completas",
+        "readTermsButton": "He leído las Condiciones Generales",
+        "acceptButton": "Aceptar propuesta",
+        "bookingCreatedTitle": "Reserva creada",
+        "bookingCreatedText": "Esta propuesta aceptada ha sido convertida en una reserva.",
+        "openBookingButton": "Abrir reserva",
+        "warrantyTitle": "Seleccione el método de garantía",
+        "warrantyCard": "Registrar una tarjeta bancaria mediante Stripe",
+        "warrantyCash": "Entregar la garantía en efectivo antes de la salida",
+        "termsSections": [
+            {
+                "title": "1. Confirmación de reserva",
+                "paragraphs": [
+                    "La reserva queda confirmada únicamente después de aceptar la propuesta, aceptar las Condiciones Generales y pagar el depósito del 10 %.",
+                    "Hasta que estos pasos se completen, la salida no se considera confirmada."
+                ]
+            },
+            {
+                "title": "2. Depósito y cancelación",
+                "paragraphs": [
+                    "Se requiere un depósito del 10 % para asegurar la reserva.",
+                    "Las condiciones de cancelación dependen de la fecha, el clima, la seguridad y cualquier acuerdo específico con Alegria Boat."
+                ]
+            },
+            {
+                "title": "3. Pago restante",
+                "paragraphs": [
+                    "El 90 % restante deberá abonarse antes de la salida o a bordo según el método acordado.",
+                    "Los cargos adicionales deberán liquidarse antes de finalizar la excursión."
+                ]
+            },
+            {
+                "title": "4. Garantía / depósito por daños",
+                "paragraphs": [
+                    "Se requiere una garantía para cubrir daños, costes excepcionales o importes impagados.",
+                    "La garantía puede asegurarse mediante una tarjeta registrada en Stripe o entregarse en efectivo antes de la salida.",
+                    "No se cargará ningún importe a la tarjeta salvo en caso de daños, impagos o uso indebido."
+                ]
+            },
+            {
+                "title": "5. Seguridad a bordo",
+                "paragraphs": [
+                    "Todos los pasajeros deben seguir las instrucciones del patrón en todo momento.",
+                    "El patrón podrá modificar, acortar, aplazar o cancelar la salida cuando la seguridad, el clima o el comportamiento de los pasajeros lo requieran."
+                ]
+            },
+            {
+                "title": "6. Puntualidad",
+                "paragraphs": [
+                    "Los pasajeros deberán presentarse puntualmente en el lugar acordado.",
+                    "Los retrasos podrán reducir la duración de la salida sin compensación."
+                ]
+            },
+            {
+                "title": "7. Baño y actividades acuáticas",
+                "paragraphs": [
+                    "El baño y las actividades acuáticas se realizan bajo la responsabilidad de los pasajeros.",
+                    "Solo estarán permitidos cuando el patrón lo autorice.",
+                    "Los niños y personas que no sepan nadar deberán estar supervisados por un adulto responsable."
+                ]
+            },
+            {
+                "title": "8. Baños marinos",
+                "paragraphs": [
+                    "Los baños marinos son delicados.",
+                    "Está estrictamente prohibido arrojar papel, toallitas, productos higiénicos, comida, colillas o cualquier objeto extraño.",
+                    "Cualquier obstrucción causada por un uso indebido podrá ser facturada."
+                ]
+            },
+            {
+                "title": "9. Daños y limpieza",
+                "paragraphs": [
+                    "Los pasajeros son responsables de los daños causados al barco, cojines, equipos, instalaciones y material de seguridad.",
+                    "Las quemaduras de cigarrillo, equipos rotos o perdidos, baños obstruidos y limpiezas excepcionales podrán ser facturados."
+                ]
+            },
+            {
+                "title": "10. Autoridad del patrón",
+                "paragraphs": [
+                    "La decisión del patrón es definitiva respecto al itinerario, fondeo, baño, salida, regreso y cancelaciones por motivos meteorológicos o de seguridad."
+                ]
+            },
+            {
+                "title": "11. Aceptación",
+                "paragraphs": [
+                    "Al marcar la casilla de aceptación, el cliente confirma que ha leído, comprendido y aceptado íntegramente estas Condiciones Generales."
+                ]
+            }
+        ]
+    }
+}

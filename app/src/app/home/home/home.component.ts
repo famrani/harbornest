@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   content: SiteContent = SITE_CONTENT.fr;
   featuredOutings = SITE_CONTENT.fr.outings;
   highlights = SITE_CONTENT.fr.boatHighlights;
+  publicPriceFrom = SITE_CONTENT.fr.priceFrom;
   private currentLanguage: SiteLanguage = 'fr';
   private dynamicOutings: DynamicOuting[] = [];
   private languageSub?: Subscription;
@@ -52,5 +53,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.currentLanguage,
       this.content.outings,
     );
+
+    const visiblePrices = (this.dynamicOutings || [])
+      .filter((outing) => outing && outing.active !== false && Number(outing.priceFrom) > 0)
+      .map((outing) => Number(outing.priceFrom));
+
+    if (visiblePrices.length) {
+      this.publicPriceFrom = this.outingsData.priceLabel(this.currentLanguage, Math.min(...visiblePrices));
+    } else {
+      this.publicPriceFrom = this.content.priceFrom;
+    }
   }
 }

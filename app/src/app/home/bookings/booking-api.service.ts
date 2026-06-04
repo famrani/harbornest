@@ -113,6 +113,42 @@ export class BookingApiService {
     ], enrichedPayload);
   }
 
+  createBalanceCheckout(payload: {
+    bookingId: string;
+    proposalId?: string;
+    ownerId: string;
+    amount?: number;
+    balanceAmount: number;
+    totalAmount?: number;
+    currency?: string;
+    paymentType?: string;
+    customerEmail?: string;
+    customerName?: string;
+    customerPhone?: string;
+    outingType?: string;
+    outingDate?: string;
+    successUrl: string;
+    cancelUrl: string;
+  }): Observable<any> {
+    const enrichedPayload = {
+      ...payload,
+      proposalId: payload.proposalId || payload.bookingId,
+      amount: Number(payload.amount || payload.balanceAmount || 0),
+      balanceAmount: Number(payload.balanceAmount || payload.amount || 0),
+      currency: payload.currency || 'eur',
+      paymentType: payload.paymentType || 'balance',
+    };
+
+    return this.postFirstAvailable([
+      `${this.baseUrl}/pay/outing-balance-checkout`,
+      `${this.baseUrl}/pay/outing-remaining-checkout`,
+      `${this.baseUrl}/api/payments/create-balance-checkout-session`,
+      `${this.baseUrl}/api/payments/create-remaining-checkout-session`,
+      `${this.baseUrl}/stripe/balance-checkout`,
+      `${this.baseUrl}/stripe/remaining-checkout`,
+    ], enrichedPayload);
+  }
+
   createWarrantySetup(payload: {
     bookingId: string;
     ownerId: string;

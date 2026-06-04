@@ -114,3 +114,230 @@ h1 { color: #08263a; margin: 8px 0; }
     grid-template-columns: 1fr;
   }
 }
+
+.status-clickable {
+  border: 0;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+
+.status-clickable:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(8,38,58,.12);
+}
+
+.status-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(8, 38, 58, 0.42);
+  backdrop-filter: blur(4px);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.status-modal {
+  width: min(620px, 100%);
+  max-height: min(760px, 92vh);
+  overflow: auto;
+  background: #fff;
+  border-radius: 28px;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  box-shadow: 0 30px 80px rgba(8,38,58,.24);
+  position: relative;
+  border: 1px solid rgba(8,38,58,.08);
+}
+
+.status-modal h2 {
+  color: #08263a;
+  margin: 0.35rem 0 0.5rem;
+}
+
+.status-modal p {
+  color: #516070;
+  line-height: 1.6;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 999px;
+  background: #f8f5ef;
+  color: #08263a;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.status-timeline {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+
+.status-step {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.95rem;
+  border-radius: 18px;
+  border: 1px solid rgba(8,38,58,.08);
+  background: #f8f5ef;
+}
+
+.status-step strong {
+  color: #08263a;
+}
+
+.status-step span {
+  color: #516070;
+  line-height: 1.45;
+}
+
+.status-step.done {
+  background: rgba(4, 120, 87, .09);
+  border-color: rgba(4, 120, 87, .18);
+}
+
+.status-step.done strong::before {
+  content: "✓ ";
+  color: #047857;
+}
+
+.status-step.pending {
+  background: rgba(181, 139, 74, .09);
+  border-color: rgba(181, 139, 74, .18);
+}
+
+.status-step.pending strong::before {
+  content: "• ";
+  color: #b58b4a;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 560px) {
+  .status-step {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-actions {
+    justify-content: stretch;
+  }
+
+  .modal-actions .btn {
+    flex: 1;
+  }
+}
+
+/* Cleaner aligned booking list */
+.bookings-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.booking-list-row {
+  display: grid;
+  grid-template-columns: 150px minmax(190px, 1.2fr) minmax(190px, 1.1fr) 120px minmax(170px, auto);
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  border: 1px solid rgba(8,38,58,.08);
+  border-radius: 22px;
+  background: #fff;
+  padding: 1rem;
+  box-shadow: 0 14px 35px rgba(8,38,58,.07);
+  cursor: pointer;
+}
+
+.booking-list-row:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 45px rgba(8,38,58,.11);
+}
+
+.booking-main,
+.booking-customer,
+.booking-price,
+.row-actions {
+  min-width: 0;
+}
+
+.booking-main,
+.booking-customer,
+.booking-price {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.booking-main strong,
+.booking-customer strong,
+.booking-price strong {
+  color: #08263a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.booking-main small,
+.booking-customer small,
+.booking-price small {
+  color: #516070;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.booking-price {
+  text-align: right;
+}
+
+.row-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.mini-btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.55rem 0.85rem;
+  background: #08263a;
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.row-chevron {
+  color: #b58b4a;
+  font-weight: 900;
+  font-size: 1.35rem;
+}
+
+@media (max-width: 980px) {
+  .booking-list-row {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .booking-price {
+    text-align: left;
+  }
+
+  .row-actions {
+    justify-content: flex-start;
+  }
+}

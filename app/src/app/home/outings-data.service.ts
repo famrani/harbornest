@@ -142,7 +142,7 @@ export class OutingsDataService {
         description: localized.description,
         image: outing.image,
         highlights: localized.highlights || [],
-        priceLabel: localized.priceLabel,
+        priceLabel: localized.priceLabel || (outing.priceFrom ? this.priceLabel(language, outing.priceFrom) : undefined),
       } as OutingItem;
     });
   }
@@ -404,7 +404,7 @@ export class OutingsDataService {
     return index === -1 ? 99 : index;
   }
 
-  private priceLabel(language: SiteLanguage, price: number): string {
+  priceLabel(language: SiteLanguage, price: number): string {
     if (language === 'en') return `From €${price}`;
     if (language === 'es') return `Desde ${price} €`;
     return `À partir de ${price} €`;

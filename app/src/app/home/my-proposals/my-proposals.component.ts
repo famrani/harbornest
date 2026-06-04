@@ -121,7 +121,7 @@ export class MyProposalsComponent implements OnInit, OnDestroy {
 
   openRelatedBooking(proposal: AlegriaProposal, event?: Event): void {
     event?.stopPropagation();
-    this.router.navigate(['/bookings', proposal.proposalId]);
+    this.router.navigate(['/bookings', proposal.relatedBookingId || proposal.proposalId]);
   }
 
   getProposalTab(proposal: AlegriaProposal): ProposalTab {
@@ -165,7 +165,7 @@ export class MyProposalsComponent implements OnInit, OnDestroy {
   }
 
   hasRelatedBooking(proposal: AlegriaProposal): boolean {
-    return proposal.status === 'accepted' || proposal.depositPaid === true || proposal.depositStatus === 'paid';
+    return proposal.status === 'accepted' || !!proposal.relatedBookingId || proposal.depositPaid === true || proposal.depositStatus === 'paid';
   }
 
   private normalize(value: any): string {

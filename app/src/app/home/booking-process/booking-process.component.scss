@@ -1,0 +1,96 @@
+.booking-process-page {
+  padding: 4rem 0;
+  background: linear-gradient(180deg, #f8f5ef 0%, #ffffff 100%);
+}
+
+.booking-process-shell {
+  max-width: 980px;
+}
+
+.eyebrow {
+  display: inline-block;
+  color: #b58b4a;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: .75rem;
+}
+
+h1 {
+  color: #08263a;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  margin: 0 0 1rem;
+}
+
+.intro {
+  color: #516070;
+  font-size: 1.1rem;
+  max-width: 720px;
+  line-height: 1.7;
+}
+
+.process-timeline {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.process-step {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 1rem;
+  align-items: start;
+  background: #fff;
+  border: 1px solid rgba(8, 38, 58, .08);
+  border-radius: 22px;
+  padding: 1.25rem;
+  box-shadow: 0 16px 42px rgba(8, 38, 58, .08);
+}
+
+.step-marker {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: #08263a;
+  color: #fff;
+  font-weight: 900;
+}
+
+.step-content h2 {
+  color: #08263a;
+  margin: 0 0 .45rem;
+  font-size: 1.15rem;
+}
+
+.step-content p,
+.step-content li {
+  color: #516070;
+  line-height: 1.6;
+}
+
+.step-content p {
+  margin: 0;
+}
+
+.step-content ul {
+  margin: .65rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.final-note {
+  background: #f8f5ef;
+  border: 1px solid rgba(181, 139, 74, .22);
+  border-radius: 18px;
+  padding: 1rem 1.25rem;
+  color: #08263a;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .process-step {
+    grid-template-columns: 1fr;
+  }
+}

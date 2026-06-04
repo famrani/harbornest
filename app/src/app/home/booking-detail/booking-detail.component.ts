@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServicesService } from 'godigital-lib';
 import { BookingApiService, AlegriaBooking } from '../bookings/booking-api.service';
+import { GuestContentService } from '../guest-content/guest-content.service';
+import { LanguageService, SiteLanguage } from '../../services/language.service';
 
 @Component({
   selector: 'app-booking-detail',
@@ -37,15 +39,26 @@ export class BookingDetailComponent implements OnInit {
   savingCustomerUpdate = false;
   customerUpdateMessage = '';
   customerUpdateError = '';
+  statusModalOpen = false;
+  currentLanguage: SiteLanguage = 'fr';
+  proposalInfo: any = this.defaultProposalInfo('fr');
+  bookingInfo: any = this.defaultBookingInfo('fr');
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private bookingApi: BookingApiService,
-    private mainSvc: ServicesService
+    private mainSvc: ServicesService,
+    private guestContent: GuestContentService,
+    private languageService: LanguageService
   ) {}
 
   ngOnInit(): void {
+    this.languageService.language$.subscribe((language) => {
+      this.currentLanguage = language;
+      this.loadProposalInfo(language);
+    });
+
     const svc = this.mainSvc as any;
     this.loggedUser = svc.bnUser || svc.currentUser || null;
     const bookingId = this.route.snapshot.paramMap.get('bookingId') || '';
@@ -53,6 +66,7 @@ export class BookingDetailComponent implements OnInit {
     this.bookingApi.getBooking(bookingId).subscribe((booking) => {
       this.booking = booking;
       this.termsAccepted = this.isTermsAccepted();
+      this.termsRead = this.termsAccepted || this.termsRead;
       this.warrantyChoice = this.getWarrantyChoice();
       this.loading = false;
       this.syncConfirmedStatusIfReady();
@@ -64,6 +78,383 @@ export class BookingDetailComponent implements OnInit {
     return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
   }
 
+  async loadProposalInfo(language: SiteLanguage): Promise<void> {
+    const defaultProposal = this.defaultProposalInfo(language);
+    const defaultBooking = this.defaultBookingInfo(language);
+
+    try {
+      const content: any = await this.guestContent.getContent();
+      const firebaseProposal =
+        content?.proposalInfo?.[language] ||
+        content?.guestInfo?.proposalInfo?.[language] ||
+        {};
+      const firebaseBooking =
+        content?.bookingInfo?.[language] ||
+        content?.guestInfo?.bookingInfo?.[language] ||
+        {};
+
+      const firebaseSections = firebaseProposal?.termsSections;
+      const completeTermsSections =
+        Array.isArray(firebaseSections) && firebaseSections.length >= 5
+          ? firebaseSections
+          : defaultProposal.termsSections;
+
+      this.proposalInfo = {
+        ...defaultProposal,
+        ...firebaseProposal,
+        termsSections: completeTermsSections,
+      };
+
+      this.bookingInfo = {
+        ...defaultBooking,
+        ...firebaseBooking,
+      };
+    } catch {
+      this.proposalInfo = defaultProposal;
+      this.bookingInfo = defaultBooking;
+    }
+  }
+
+  text(key: string): string {
+    return this.proposalInfo?.[key] || this.defaultProposalInfo(this.currentLanguage)[key] || '';
+  }
+
+  btext(key: string): string {
+    return this.bookingInfo?.[key] || this.defaultBookingInfo(this.currentLanguage)[key] || '';
+  }
+
+  private defaultBookingInfo(language: SiteLanguage): any {
+    const defaults: any = {
+      fr: {
+        cashWarrantyEnvelope: 'Enveloppe de caution espèces',
+        cashDamageAmount: 'Montant prélevé sur l’enveloppe',
+        damageReason: 'Motif du dommage / coût',
+        damageReasonPlaceholder: 'Exemple : toilettes bouchées, brûlure de cigarette, équipement cassé...',
+        chargeCardWarranty: 'Débiter la caution carte',
+        maximumWarranty: 'Caution maximale',
+        damageAmount: 'Montant du dommage',
+        charging: 'Débit en cours...',
+        chargeDamageToWarrantyCard: 'Débiter le dommage sur la carte de caution',
+        close: 'Fermer',
+        cashWarrantyInitialEnvelope: 'Enveloppe initiale',
+        cashWarrantyAlreadyTaken: 'Déjà prélevé pour dommages',
+        cashWarrantyRemaining: 'Espèces restantes à restituer',
+        recordCashDamage: 'Enregistrer le montant prélevé pour dommage',
+        loadingBooking: 'Chargement de la réservation...',
+        bookingDetail: 'Détail de la réservation',
+        customer: 'Client',
+        email: 'Email',
+        phone: 'Téléphone',
+        passengers: 'Passagers',
+        totalPrice: 'Prix total',
+        deposit: 'Acompte 10 %',
+        remaining: 'Solde 90 %',
+        warranty: 'Caution',
+        status: 'Statut',
+        owner: 'Propriétaire',
+        comments: 'Commentaires',
+        paid: 'Payé',
+        pending: 'En attente',
+        notRegistered: 'Non enregistré',
+        toCollectOnboard: 'À encaisser à bord',
+        bookingConfirmed: 'Réservation confirmée',
+        paymentDone: 'Paiement effectué',
+        notConfirmed: 'Non confirmée',
+        updateBookingInfo: 'Modifier les informations de réservation',
+        customerName: 'Nom du client',
+        numberOfGuests: 'Nombre de passagers',
+        pickupLocation: 'Point de rendez-vous',
+        saveUpdate: 'Enregistrer',
+        cancel: 'Annuler',
+        saving: 'Enregistrement...',
+        bookingStatus: 'Statut de réservation',
+        termsConditions: 'Conditions Générales',
+        warrantyMode: 'Mode de caution',
+        stripeWarrantyCard: 'Carte de caution Stripe',
+        damage: 'Dommages',
+        openWarrantyDamagePage: 'Ouvrir la page caution / dommages',
+        warrantyChoiceTitle: 'Choix du mode de caution',
+        warrantyChoiceText: 'La réservation est confirmée. Merci de sélectionner le mode de caution.',
+        saveWarrantyChoice: 'Enregistrer le mode de caution',
+        registerWarrantyCardTitle: 'Enregistrer la carte de caution',
+        registerWarrantyCardText: 'Le client a choisi une caution par carte bancaire. Merci d\'enregistrer la carte via Stripe.',
+        registerWarrantyCardButton: 'Enregistrer la carte de caution',
+        cashWarrantySelected: 'Caution espèces sélectionnée',
+        cardWarrantySelected: 'Caution carte sélectionnée',
+        cardRegistered: 'Carte enregistrée',
+        collectRemainingTitle: 'Encaisser le solde de 90 %',
+        amountDueBeforeDeparture: 'Montant dû avant le départ',
+        paymentMethod: 'Mode de paiement',
+        sumupCard: 'SumUp / Carte',
+        cash: 'Espèces',
+        mixed: 'Mixte',
+        notes: 'Notes',
+        balanceNotesPlaceholder: 'Note optionnelle, reçu SumUp, espèces, paiement mixte...',
+        recordRemainingPayment: 'Enregistrer le paiement du solde',
+        damageManagement: 'Gestion des dommages',
+        damageManagementText: 'La réservation est confirmée, la caution est enregistrée et le paiement complet a été effectué.',
+        openDamagePage: 'Ouvrir la page dommages',
+        workflowDepositRequired: 'Acompte requis',
+        workflowWarrantyRequired: 'Caution requise',
+        workflowBalanceRequired: 'Solde à régler',
+        workflowPaymentDone: 'Paiement terminé',
+        depositPaid: 'Acompte payé',
+        depositPending: 'Acompte en attente',
+        balancePaid: 'Solde payé',
+        balancePending: 'Solde en attente',
+        damageReported: 'Dommages signalés',
+        noDamageReported: 'Aucun dommage signalé'
+      },
+      en: {
+        cashWarrantyEnvelope: 'Cash warranty envelope',
+        cashDamageAmount: 'Amount taken from envelope',
+        damageReason: 'Damage / cost reason',
+        damageReasonPlaceholder: 'Example: blocked marine toilet, cigarette burn, broken equipment...',
+        chargeCardWarranty: 'Charge card warranty',
+        maximumWarranty: 'Maximum warranty',
+        damageAmount: 'Damage amount',
+        charging: 'Charging...',
+        chargeDamageToWarrantyCard: 'Charge damage to warranty card',
+        close: 'Close',
+        cashWarrantyInitialEnvelope: 'Initial envelope',
+        cashWarrantyAlreadyTaken: 'Already taken for damages',
+        cashWarrantyRemaining: 'Remaining cash to return',
+        recordCashDamage: 'Record cash taken for damage',
+        loadingBooking: 'Loading booking...',
+        bookingDetail: 'Booking detail',
+        customer: 'Customer',
+        email: 'Email',
+        phone: 'Phone',
+        passengers: 'Passengers',
+        totalPrice: 'Total price',
+        deposit: '10% deposit',
+        remaining: '90% balance',
+        warranty: 'Warranty',
+        status: 'Status',
+        owner: 'Owner',
+        comments: 'Comments',
+        paid: 'Paid',
+        pending: 'Pending',
+        notRegistered: 'Not registered',
+        toCollectOnboard: 'To collect onboard',
+        bookingConfirmed: 'Booking confirmed',
+        paymentDone: 'Payment completed',
+        notConfirmed: 'Not confirmed',
+        updateBookingInfo: 'Update booking information',
+        customerName: 'Customer name',
+        numberOfGuests: 'Number of guests',
+        pickupLocation: 'Meeting point',
+        saveUpdate: 'Save update',
+        cancel: 'Cancel',
+        saving: 'Saving...',
+        bookingStatus: 'Booking status',
+        termsConditions: 'Terms & Conditions',
+        warrantyMode: 'Warranty method',
+        stripeWarrantyCard: 'Stripe warranty card',
+        damage: 'Damage',
+        openWarrantyDamagePage: 'Open warranty / damage page',
+        warrantyChoiceTitle: 'Warranty selection',
+        warrantyChoiceText: 'The booking is confirmed. Please select the warranty method.',
+        saveWarrantyChoice: 'Save warranty method',
+        registerWarrantyCardTitle: 'Register warranty card',
+        registerWarrantyCardText: 'The customer selected a card warranty. Please register a card through Stripe.',
+        registerWarrantyCardButton: 'Register warranty card',
+        cashWarrantySelected: 'Cash warranty selected',
+        cardWarrantySelected: 'Card warranty selected',
+        cardRegistered: 'Card registered',
+        collectRemainingTitle: 'Collect remaining 90%',
+        amountDueBeforeDeparture: 'Amount due before departure',
+        paymentMethod: 'Payment method',
+        sumupCard: 'SumUp / Card',
+        cash: 'Cash',
+        mixed: 'Mixed',
+        notes: 'Notes',
+        balanceNotesPlaceholder: 'Optional note, SumUp receipt, cash, mixed payment...',
+        recordRemainingPayment: 'Record remaining payment',
+        damageManagement: 'Damage management',
+        damageManagementText: 'The booking is confirmed, the warranty is registered and the full payment has been completed.',
+        openDamagePage: 'Open damage page',
+        workflowDepositRequired: 'Deposit required',
+        workflowWarrantyRequired: 'Warranty required',
+        workflowBalanceRequired: 'Balance required',
+        workflowPaymentDone: 'Payment completed',
+        depositPaid: 'Deposit paid',
+        depositPending: 'Deposit pending',
+        balancePaid: 'Balance paid',
+        balancePending: 'Balance pending',
+        damageReported: 'Damage reported',
+        noDamageReported: 'No damage reported'
+      },
+      es: {
+        cashWarrantyEnvelope: 'Sobre de garantía en efectivo',
+        cashDamageAmount: 'Importe tomado del sobre',
+        damageReason: 'Motivo del daño / coste',
+        damageReasonPlaceholder: 'Ejemplo: baño marino obstruido, quemadura de cigarrillo, equipo roto...',
+        chargeCardWarranty: 'Cargar garantía de tarjeta',
+        maximumWarranty: 'Garantía máxima',
+        damageAmount: 'Importe del daño',
+        charging: 'Cargando...',
+        chargeDamageToWarrantyCard: 'Cargar daño a la tarjeta de garantía',
+        close: 'Cerrar',
+        cashWarrantyInitialEnvelope: 'Sobre inicial',
+        cashWarrantyAlreadyTaken: 'Ya tomado por daños',
+        cashWarrantyRemaining: 'Efectivo restante a devolver',
+        recordCashDamage: 'Registrar efectivo tomado por daños',
+        loadingBooking: 'Cargando reserva...',
+        bookingDetail: 'Detalle de la reserva',
+        customer: 'Cliente',
+        email: 'Correo electrónico',
+        phone: 'Teléfono',
+        passengers: 'Pasajeros',
+        totalPrice: 'Precio total',
+        deposit: 'Depósito 10 %',
+        remaining: 'Saldo 90 %',
+        warranty: 'Garantía',
+        status: 'Estado',
+        owner: 'Propietario',
+        comments: 'Comentarios',
+        paid: 'Pagado',
+        pending: 'Pendiente',
+        notRegistered: 'No registrado',
+        toCollectOnboard: 'Cobrar a bordo',
+        bookingConfirmed: 'Reserva confirmada',
+        paymentDone: 'Pago realizado',
+        notConfirmed: 'No confirmada',
+        updateBookingInfo: 'Actualizar información de la reserva',
+        customerName: 'Nombre del cliente',
+        numberOfGuests: 'Número de pasajeros',
+        pickupLocation: 'Punto de encuentro',
+        saveUpdate: 'Guardar',
+        cancel: 'Cancelar',
+        saving: 'Guardando...',
+        bookingStatus: 'Estado de la reserva',
+        termsConditions: 'Condiciones Generales',
+        warrantyMode: 'Método de garantía',
+        stripeWarrantyCard: 'Tarjeta de garantía Stripe',
+        damage: 'Daños',
+        openWarrantyDamagePage: 'Abrir página de garantía / daños',
+        warrantyChoiceTitle: 'Selección de garantía',
+        warrantyChoiceText: 'La reserva está confirmada. Seleccione el método de garantía.',
+        saveWarrantyChoice: 'Guardar método de garantía',
+        registerWarrantyCardTitle: 'Registrar tarjeta de garantía',
+        registerWarrantyCardText: 'El cliente seleccionó una garantía mediante tarjeta. Registre una tarjeta mediante Stripe.',
+        registerWarrantyCardButton: 'Registrar tarjeta de garantía',
+        cashWarrantySelected: 'Garantía en efectivo seleccionada',
+        cardWarrantySelected: 'Garantía con tarjeta seleccionada',
+        cardRegistered: 'Tarjeta registrada',
+        collectRemainingTitle: 'Cobrar el 90 % restante',
+        amountDueBeforeDeparture: 'Importe debido antes de la salida',
+        paymentMethod: 'Método de pago',
+        sumupCard: 'SumUp / Tarjeta',
+        cash: 'Efectivo',
+        mixed: 'Mixto',
+        notes: 'Notas',
+        balanceNotesPlaceholder: 'Nota opcional, recibo SumUp, efectivo, pago mixto...',
+        recordRemainingPayment: 'Registrar pago restante',
+        damageManagement: 'Gestión de daños',
+        damageManagementText: 'La reserva está confirmada, la garantía registrada y el pago completo realizado.',
+        openDamagePage: 'Abrir página de daños',
+        workflowDepositRequired: 'Depósito requerido',
+        workflowWarrantyRequired: 'Garantía requerida',
+        workflowBalanceRequired: 'Saldo pendiente',
+        workflowPaymentDone: 'Pago completado',
+        depositPaid: 'Depósito pagado',
+        depositPending: 'Depósito pendiente',
+        balancePaid: 'Saldo pagado',
+        balancePending: 'Saldo pendiente',
+        damageReported: 'Daños reportados',
+        noDamageReported: 'Sin daños reportados'
+      }
+    };
+
+    return defaults[language] || defaults.fr;
+  }
+
+  get termsSections(): Array<{ title: string; paragraphs: string[] }> {
+    return this.proposalInfo?.termsSections || this.defaultProposalInfo(this.currentLanguage).termsSections;
+  }
+
+  private defaultProposalInfo(language: SiteLanguage): any {
+    const defaults: any = {
+      fr: {
+        termsModalTitle: 'Conditions Générales complètes',
+        termsCheckbox: 'J’ai lu, compris et j’accepte les Conditions Générales complètes.',
+        termsLocked: 'Merci de lire les Conditions Générales jusqu’à la fin pour continuer.',
+        warrantyTitle: 'Choisissez votre mode de caution',
+        warrantyCard: 'Enregistrer ma carte bancaire via Stripe pour la caution.',
+        warrantyCash: 'Sélectionner une caution de 500 € en espèces avant le départ.',
+        saveTermsButton: 'Enregistrer les conditions et la caution',
+        payDepositButton: 'Payer l’acompte de 10 % et confirmer la réservation',
+        depositAlreadyPaid: 'Acompte de 10 % déjà payé',
+        savingButton: 'Enregistrement...',
+        termsSections: [
+          { title: '1. Confirmation de réservation', paragraphs: ['La réservation est confirmée uniquement après acceptation de la proposition, acceptation des Conditions Générales et paiement de l’acompte de 10 %.', 'Tant que ces étapes ne sont pas finalisées, la sortie n’est pas considérée comme confirmée.'] },
+          { title: '2. Acompte et annulation', paragraphs: ['Un acompte de 10 % est requis pour sécuriser la réservation.', 'Les conditions d’annulation dépendent de la date, de la météo, de la sécurité et des éventuels accords spécifiques conclus avec Alegria Boat.'] },
+          { title: '3. Solde restant', paragraphs: ['Le solde restant de 90 % est dû avant le départ ou à bord selon les modalités convenues.', 'Les frais supplémentaires éventuels doivent être réglés avant la fin de la sortie.'] },
+          { title: '4. Caution / garantie', paragraphs: ['Une caution est obligatoire pour couvrir les dommages, frais exceptionnels ou impayés éventuels.', 'La caution peut être enregistrée par carte bancaire via Stripe ou remise en espèces avant le départ.', 'Aucun montant n’est prélevé sur la carte sauf en cas de dommage, frais non réglés ou manquement constaté.'] },
+          { title: '5. Sécurité à bord', paragraphs: ['Les passagers doivent suivre les consignes du skipper à tout moment.', 'Le skipper peut modifier, écourter, reporter ou annuler la sortie si les conditions de sécurité, météo ou comportementales l’exigent.'] },
+          { title: '6. Ponctualité', paragraphs: ['Les passagers doivent se présenter à l’heure convenue au point de rendez-vous.', 'Tout retard peut réduire la durée de la sortie sans compensation.'] },
+          { title: '7. Baignade et activités nautiques', paragraphs: ['La baignade et les activités nautiques se font sous la responsabilité des passagers.', 'Elles ne sont autorisées que lorsque le skipper les juge possibles et sûres.', 'Les enfants et personnes ne sachant pas nager doivent être surveillés par un adulte responsable.'] },
+          { title: '8. Toilettes marines', paragraphs: ['Les toilettes marines sont fragiles.', 'Il est strictement interdit d’y jeter papier, lingettes, protections hygiéniques, nourriture, mégots ou tout autre objet.', 'Tout bouchage causé par une mauvaise utilisation pourra être facturé.'] },
+          { title: '9. Dommages et nettoyage', paragraphs: ['Les passagers sont responsables des dommages causés au bateau, aux coussins, équipements, aménagements et matériels de sécurité.', 'Les brûlures de cigarette, équipements cassés ou perdus, toilettes bouchées et nettoyages exceptionnels pourront être facturés.'] },
+          { title: '10. Décision du skipper', paragraphs: ['La décision du skipper est définitive concernant l’itinéraire, les mouillages, la baignade, le départ, le retour et l’annulation pour raisons de sécurité ou météo.'] },
+          { title: '11. Acceptation', paragraphs: ['En cochant la case d’acceptation, le client confirme avoir lu, compris et accepté l’intégralité des Conditions Générales.'] }
+        ]
+      },
+      en: {
+        termsModalTitle: 'Full Terms & Conditions',
+        termsCheckbox: 'I have read, understood and accept the full Terms & Conditions.',
+        termsLocked: 'Please read the Terms & Conditions to the end first.',
+        warrantyTitle: 'Select warranty method',
+        warrantyCard: 'Register debit/credit card via Stripe for the warranty.',
+        warrantyCash: 'Select €500 cash warranty before departure.',
+        saveTermsButton: 'Save terms and warranty',
+        payDepositButton: 'Pay 10% deposit and confirm booking',
+        depositAlreadyPaid: '10% deposit already paid',
+        savingButton: 'Saving...',
+        termsSections: [
+          { title: '1. Booking confirmation', paragraphs: ['The booking is confirmed only after the proposal has been accepted, the Terms & Conditions have been accepted, and the 10% deposit has been paid.', 'Until these steps are completed, the outing is not considered confirmed.'] },
+          { title: '2. Deposit and cancellation', paragraphs: ['A 10% deposit is required to secure the booking.', 'Cancellation conditions depend on timing, weather, safety considerations and any specific agreements made with Alegria Boat.'] },
+          { title: '3. Remaining balance', paragraphs: ['The remaining 90% balance is due before departure or on board according to the agreed payment method.', 'Any additional charges must be settled before the end of the outing.'] },
+          { title: '4. Warranty / damage deposit', paragraphs: ['A warranty deposit is required to cover damages, exceptional costs or unpaid amounts.', 'The warranty may be secured through a Stripe card registration or provided in cash before departure.', 'No amount is charged to the registered card unless damages, unpaid fees or misuse are identified.'] },
+          { title: '5. Safety on board', paragraphs: ['All guests must follow the skipper’s instructions at all times.', 'The skipper may modify, shorten, postpone or cancel the outing whenever safety, weather or guest behaviour requires it.'] },
+          { title: '6. Punctuality', paragraphs: ['Guests must arrive at the agreed meeting point on time.', 'Late arrivals may reduce the duration of the outing without compensation.'] },
+          { title: '7. Swimming and water activities', paragraphs: ['Swimming and water activities are undertaken at the guests’ own risk.', 'They are only permitted when authorised by the skipper.', 'Children and non-swimmers must be supervised by a responsible adult.'] },
+          { title: '8. Marine toilets', paragraphs: ['Marine toilets are fragile.', 'Paper, wipes, sanitary products, food, cigarette butts and any foreign objects must never be flushed.', 'Any blockage resulting from misuse may be charged to the customer.'] },
+          { title: '9. Damage and cleaning', paragraphs: ['Guests are responsible for damage caused to the boat, cushions, fittings, equipment and safety gear.', 'Cigarette burns, broken or missing equipment, blocked toilets and exceptional cleaning may be charged.'] },
+          { title: '10. Skipper authority', paragraphs: ['The skipper’s decision is final regarding itinerary, anchoring, swimming, departure, return and cancellations due to weather or safety concerns.'] },
+          { title: '11. Acceptance', paragraphs: ['By ticking the acceptance box, the customer confirms that they have read, understood and accepted these Terms & Conditions in full.'] }
+        ]
+      },
+      es: {
+        termsModalTitle: 'Condiciones Generales completas',
+        termsCheckbox: 'He leído, comprendido y acepto las Condiciones Generales completas.',
+        termsLocked: 'Debe leer las Condiciones Generales hasta el final antes de continuar.',
+        warrantyTitle: 'Seleccione el método de garantía',
+        warrantyCard: 'Registrar tarjeta bancaria mediante Stripe para la garantía.',
+        warrantyCash: 'Seleccionar garantía de 500 € en efectivo antes de la salida.',
+        saveTermsButton: 'Guardar condiciones y garantía',
+        payDepositButton: 'Pagar depósito del 10 % y confirmar reserva',
+        depositAlreadyPaid: 'Depósito del 10 % ya pagado',
+        savingButton: 'Guardando...',
+        termsSections: [
+          { title: '1. Confirmación de reserva', paragraphs: ['La reserva queda confirmada únicamente después de aceptar la propuesta, aceptar las Condiciones Generales y pagar el depósito del 10 %.', 'Hasta que estos pasos se completen, la salida no se considera confirmada.'] },
+          { title: '2. Depósito y cancelación', paragraphs: ['Se requiere un depósito del 10 % para asegurar la reserva.', 'Las condiciones de cancelación dependen de la fecha, el clima, la seguridad y cualquier acuerdo específico con Alegria Boat.'] },
+          { title: '3. Pago restante', paragraphs: ['El 90 % restante deberá abonarse antes de la salida o a bordo según el método acordado.', 'Los cargos adicionales deberán liquidarse antes de finalizar la excursión.'] },
+          { title: '4. Garantía / depósito por daños', paragraphs: ['Se requiere una garantía para cubrir daños, costes excepcionales o importes impagados.', 'La garantía puede asegurarse mediante una tarjeta registrada en Stripe o entregarse en efectivo antes de la salida.', 'No se cargará ningún importe a la tarjeta salvo en caso de daños, impagos o uso indebido.'] },
+          { title: '5. Seguridad a bordo', paragraphs: ['Todos los pasajeros deben seguir las instrucciones del patrón en todo momento.', 'El patrón podrá modificar, acortar, aplazar o cancelar la salida cuando la seguridad, el clima o el comportamiento de los pasajeros lo requieran.'] },
+          { title: '6. Puntualidad', paragraphs: ['Los pasajeros deberán presentarse puntualmente en el lugar acordado.', 'Los retrasos podrán reducir la duración de la salida sin compensación.'] },
+          { title: '7. Baño y actividades acuáticas', paragraphs: ['El baño y las actividades acuáticas se realizan bajo la responsabilidad de los pasajeros.', 'Solo estarán permitidos cuando el patrón lo autorice.', 'Los niños y personas que no sepan nadar deberán estar supervisados por un adulto responsable.'] },
+          { title: '8. Baños marinos', paragraphs: ['Los baños marinos son delicados.', 'Está estrictamente prohibido arrojar papel, toallitas, productos higiénicos, comida, colillas o cualquier objeto extraño.', 'Cualquier obstrucción causada por un uso indebido podrá ser facturada.'] },
+          { title: '9. Daños y limpieza', paragraphs: ['Los pasajeros son responsables de los daños causados al barco, cojines, equipos, instalaciones y material de seguridad.', 'Las quemaduras de cigarrillo, equipos rotos o perdidos, baños obstruidos y limpiezas excepcionales podrán ser facturados.'] },
+          { title: '10. Autoridad del patrón', paragraphs: ['La decisión del patrón es definitiva respecto al itinerario, fondeo, baño, salida, regreso y cancelaciones por motivos meteorológicos o de seguridad.'] },
+          { title: '11. Aceptación', paragraphs: ['Al marcar la casilla de aceptación, el cliente confirma que ha leído, comprendido y aceptado íntegramente estas Condiciones Generales.'] }
+        ]
+      }
+    };
+    return defaults[language] || defaults.fr;
+  }
+
   getDerivedBookingStatus(): string {
     if (this.isBalancePaid()) return 'payment_done';
     if (this.isDepositPaid() && this.isTermsAccepted()) return 'confirmed';
@@ -72,9 +463,9 @@ export class BookingDetailComponent implements OnInit {
 
   getStatusLabel(): string {
     const status = this.getDerivedBookingStatus();
-    if (status === 'payment_done') return 'Payment done';
-    if (status === 'confirmed') return 'Confirmed';
-    return 'Not confirmed';
+    if (status === 'payment_done') return this.btext('paymentDone');
+    if (status === 'confirmed') return this.btext('bookingConfirmed');
+    return this.btext('notConfirmed');
   }
 
   getDepositStatusLabel(): string {
@@ -121,6 +512,25 @@ export class BookingDetailComponent implements OnInit {
     return this.getDerivedBookingStatus() === 'payment_done';
   }
 
+  openStatusModal(): void {
+    this.statusModalOpen = true;
+  }
+
+  closeStatusModal(): void {
+    this.statusModalOpen = false;
+  }
+
+  getStatusStepClass(done: boolean): string {
+    return done ? 'done' : 'pending';
+  }
+
+  getStatusSummaryText(): string {
+    const status = this.getDerivedBookingStatus();
+    if (status === 'payment_done') return 'Booking confirmed, warranty secured and full payment recorded.';
+    if (status === 'confirmed') return 'Booking confirmed. Warranty and/or remaining payment may still be pending.';
+    return 'Booking not confirmed yet. Deposit and T&C acceptance are required.';
+  }
+
   getBookingWorkflowState(): string {
     if (!this.isDepositPaid() || !this.isTermsAccepted()) return 'deposit_required';
     if (!this.isWarrantySelected()) return 'warranty_choice_required';
@@ -131,7 +541,7 @@ export class BookingDetailComponent implements OnInit {
 
   getWorkflowTitle(): string {
     const state = this.getBookingWorkflowState();
-    if (state === 'deposit_required') return '1. Confirm booking: T&C, warranty choice and 10% deposit';
+    if (state === 'deposit_required') return '1. ' + this.btext('workflowDepositRequired') + ': ' + this.btext('termsConditions') + ', ' + this.btext('warrantyChoiceTitle') + ' and ' + this.btext('deposit');
     if (state === 'warranty_choice_required') return '2. Select warranty method';
     if (state === 'warranty_card_required') return '2. Register warranty card';
     if (state === 'balance_required') return '3. Pay remaining 90%';
@@ -166,26 +576,32 @@ export class BookingDetailComponent implements OnInit {
   }
 
   canPayDeposit(): boolean {
+    const termsAlreadyAccepted = this.isTermsAccepted();
+    const warrantyAlreadySelected = this.isWarrantySelected();
     return !!this.booking?.bookingId &&
       !this.isDepositPaid() &&
-      this.termsRead &&
-      this.termsAccepted &&
-      !!this.warrantyChoice;
+      (this.termsRead || termsAlreadyAccepted) &&
+      (this.termsAccepted || termsAlreadyAccepted) &&
+      (!!this.warrantyChoice || warrantyAlreadySelected);
   }
 
   getDepositBlockedReason(): string {
     if (this.isDepositPaid()) return 'Deposit already paid.';
-    if (!this.termsRead) return 'Please read the Terms & Conditions to the end first.';
-    if (!this.termsAccepted) return 'Please accept the Terms & Conditions first.';
-    if (!this.warrantyChoice) return 'Please select a warranty method first.';
+    if (!this.termsRead && !this.isTermsAccepted()) return 'Please read the Terms & Conditions to the end first.';
+    if (!this.termsAccepted && !this.isTermsAccepted()) return 'Please accept the Terms & Conditions first.';
+    if (!this.warrantyChoice && !this.isWarrantySelected()) return 'Please select a warranty method first.';
     return '';
   }
 
   onTermsScroll(event: Event): void {
     const el = event.target as HTMLElement;
     if (!el) return;
-    const reachedBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 12;
+    const reachedBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 48;
     if (reachedBottom) this.termsRead = true;
+  }
+
+  markTermsRead(): void {
+    this.termsRead = true;
   }
 
   async saveTermsAndWarrantyChoice(status = 'awaiting_deposit'): Promise<void> {
@@ -507,7 +923,12 @@ export class BookingDetailComponent implements OnInit {
       return;
     }
 
-    await this.saveTermsAndWarrantyChoice('awaiting_deposit');
+    try {
+      await this.saveTermsAndWarrantyChoice('awaiting_deposit');
+    } catch (e) {
+      // Do not block Stripe checkout if the booking already has T&C/warranty data locally.
+      console.warn('Could not persist T&C/warranty before Stripe checkout, continuing with checkout.', e);
+    }
 
     const currentUrl = window.location.href;
     const depositAmount = this.getDepositAmount();
@@ -828,6 +1249,44 @@ export class BookingDetailComponent implements OnInit {
     this.savingCustomerUpdate = false;
   }
 
+  payBalance(): void {
+    if (!this.booking?.bookingId || this.isBalancePaid()) return;
+
+    const currentUrl = window.location.href;
+    const balanceAmount = this.getBalanceAmount();
+    const payload = {
+      bookingId: this.booking.bookingId,
+      proposalId: this.booking.bookingId,
+      ownerId: this.booking.ownerId || 'alegria',
+      amount: balanceAmount,
+      balanceAmount,
+      totalAmount: Number(this.booking.totalPrice || 0),
+      currency: 'eur',
+      paymentType: 'balance',
+      customerEmail: this.booking.email || '',
+      customerName: this.booking.customerName || '',
+      customerPhone: (this.booking as any).customerPhone || this.booking.phone || '',
+      outingType: this.booking.outingType || '',
+      outingDate: this.booking.outingDate || '',
+      successUrl: currentUrl.includes('?') ? `${currentUrl}&payment=success&bookingId=${encodeURIComponent(this.booking.bookingId)}&paymentType=balance` : `${currentUrl}?payment=success&bookingId=${encodeURIComponent(this.booking.bookingId)}&paymentType=balance`,
+      cancelUrl: currentUrl.includes('?') ? `${currentUrl}&payment=cancelled&bookingId=${encodeURIComponent(this.booking.bookingId)}&paymentType=balance` : `${currentUrl}?payment=cancelled&bookingId=${encodeURIComponent(this.booking.bookingId)}&paymentType=balance`,
+    };
+
+    this.bookingApi.createBalanceCheckout(payload).subscribe({
+      next: (response: any) => {
+        const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
+        if (url) {
+          window.location.href = url;
+          return;
+        }
+        this.balancePaymentError = 'Unable to open Stripe balance checkout.';
+      },
+      error: (error: any) => {
+        this.balancePaymentError = error?.error?.error || error?.error?.message || error?.message || 'Unable to create balance checkout.';
+      }
+    });
+  }
+
   customerPayment(): void {
     if (!this.booking?.bookingId) return;
 
@@ -837,9 +1296,7 @@ export class BookingDetailComponent implements OnInit {
     }
 
     if (this.canCustomerPayBalance()) {
-      this.router.navigate(['/payment', this.booking.bookingId], {
-        queryParams: { mode: 'balance' }
-      });
+      this.payBalance();
     }
   }
 

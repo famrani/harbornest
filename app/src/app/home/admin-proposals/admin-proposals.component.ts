@@ -1,5 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProposalApiService, AlegriaProposal } from '../bookings/proposal-api.service';
 
 @Component({
@@ -16,7 +17,7 @@ export class AdminProposalsComponent implements OnInit {
   error = '';
   form: Partial<AlegriaProposal> = this.emptyForm();
 
-  constructor(private proposalApi: ProposalApiService) {}
+  constructor(private proposalApi: ProposalApiService, private router: Router) {}
 
   ngOnInit(): void { this.load(); }
 
@@ -154,6 +155,54 @@ export class AdminProposalsComponent implements OnInit {
 
     const mailto = `mailto:${encodeURIComponent(proposal.customerEmail || '')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailto;
+  }
+
+  isAcceptedProposal(proposal: AlegriaProposal | Partial<AlegriaProposal>): boolean {
+    return String(proposal?.status || '').toLowerCase() === 'accepted';
+  }
+
+  createSimilarProposal(proposal: AlegriaProposal | Partial<AlegriaProposal>, event?: Event): void {
+    event?.stopPropagation();
+
+    const now = Date.now();
+    this.form = {
+      customerName: proposal.customerName || '',
+      customerEmail: proposal.customerEmail || '',
+      customerPhone: proposal.customerPhone || '',
+      outingType: proposal.outingType || '',
+      outingDate: proposal.outingDate || '',
+      departureTime: proposal.departureTime || '',
+      arrivalTime: proposal.arrivalTime || '',
+      passengers: proposal.passengers || 1,
+      totalAmount: proposal.totalAmount || 0,
+      depositAmount: proposal.depositAmount || Math.round(Number(proposal.totalAmount || 0) * 0.1 * 100) / 100,
+      balanceAmount: proposal.balanceAmount || Math.round(Number(proposal.totalAmount || 0) * 0.9 * 100) / 100,
+      warrantyAmount: proposal.warrantyAmount || 500,
+      proposalMessage: proposal.proposalMessage || '',
+      comments: proposal.comments || '',
+      status: 'draft',
+      source: proposal.source || 'direct',
+      validUntil: now + 24 * 60 * 60 * 1000,
+      createdTS: now,
+      modifiedTS: now,
+    };
+    this.message = 'Similar proposal copied. Review it, update the date if needed, then save/send it.';
+    this.error = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  hasRelatedBooking(proposal: AlegriaProposal | Partial<AlegriaProposal>): boolean {
+    return proposal?.status === 'accepted' ||
+      !!(proposal as any)?.relatedBookingId ||
+      proposal?.depositPaid === true ||
+      proposal?.depositStatus === 'paid';
+  }
+
+  openRelatedBooking(proposal: AlegriaProposal | Partial<AlegriaProposal>, event?: Event): void {
+    event?.stopPropagation();
+    const bookingId = (proposal as any)?.relatedBookingId || proposal?.proposalId;
+    if (!bookingId) return;
+    this.router.navigate(['/admin/bookings', bookingId]);
   }
 
   reset(): void { this.form = this.emptyForm(); this.message = ''; this.error = ''; }

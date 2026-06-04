@@ -26,6 +26,7 @@ export class BookingsComponent implements OnInit {
   sortField: 'date' | 'customer' | 'status' | 'total' | 'balance' = 'date';
   sortDirection: 'asc' | 'desc' = 'asc';
   selectedBalanceBooking?: BookingView;
+  selectedStatusBooking: BookingView | null = null;
   balancePaymentMethod = 'sumup';
   balancePaymentNotes = '';
   savingBalancePayment = false;
@@ -354,6 +355,26 @@ export class BookingsComponent implements OnInit {
       anyBooking?.payments?.balance?.status === 'paid';
   }
 
+  openStatusModal(booking: BookingView, event?: Event): void {
+    event?.stopPropagation();
+    this.selectedStatusBooking = booking;
+  }
+
+  closeStatusModal(): void {
+    this.selectedStatusBooking = null;
+  }
+
+  getStatusStepClass(done: boolean): string {
+    return done ? 'done' : 'pending';
+  }
+
+  getStatusSummaryText(booking: BookingView): string {
+    const status = this.getDerivedBookingStatus(booking);
+    if (status === 'payment_done') return 'Booking confirmed, warranty secured and full payment recorded.';
+    if (status === 'confirmed') return 'Booking confirmed. Warranty and/or remaining payment may still be pending.';
+    return 'Booking not confirmed yet. Deposit and T&C acceptance are required.';
+  }
+
   openBalancePayment(booking: BookingView, event?: Event): void {
     event?.stopPropagation();
     this.selectedBalanceBooking = booking;
@@ -414,6 +435,11 @@ export class BookingsComponent implements OnInit {
       this.balancePaymentError = e?.message || 'Unable to record remaining balance payment.';
       this.savingBalancePayment = false;
     }
+  }
+
+  openDetail(booking: BookingView): void {
+    if (!booking?.bookingId) return;
+    this.router.navigate(['/admin/bookings', booking.bookingId]);
   }
 
   payDeposit(booking: AlegriaBooking, event?: Event): void {
