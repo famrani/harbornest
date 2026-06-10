@@ -42,12 +42,14 @@ export interface AlegriaBooking {
   stripeCheckoutSessionId?: string;
   stripePaymentIntentId?: string;
   warrantyStatus?: string | boolean;
-  bookingStatus?: string;
+  bookingStatus?: string | boolean;
   ownerId?: string;
   customerPhone?: string;
   payments?: any;
   paymentStatus?: any;
   comments?: string;
+  extraServices?: any[];
+  refunds?: any[];
   raw?: any;
 }
 
@@ -199,6 +201,80 @@ export class BookingApiService {
       `${this.baseUrl}/api/payments/charge-warranty`,
       `${this.baseUrl}/stripe/warranty-charge`,
     ], payload);
+  }
+
+
+  getExtraServicesCatalog(): Observable<any[]> {
+    return from(this.readFirebasePath('/bnExtraServices')).pipe(
+      map((raw: any) => this.normalizeArray(raw).filter((item: any) => item && item.active !== false)),
+      catchError(() => of([]))
+    );
+  }
+
+  async createExtraServiceRequest(bookingId: string, extraService: any): Promise<void> {
+    const id = extraService.id || `extra_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const payload = {
+      ...extraService,
+      id,
+      bookingId,
+      paymentType: 'extra_service',
+      status: 'pending',
+      paid: false,
+      createdTS: Date.now(),
+      modifiedTS: Date.now(),
+    };
+
+    const existing = await this.getBookingFromFirebase(bookingId).catch(() => undefined);
+    const raw = existing?.raw || existing || {};
+    const extraServices = Array.isArray((raw as any).extraServices) ? [...(raw as any).extraServices] : [];
+    const index = extraServices.findIndex((item: any) => item.id === id);
+    if (index >= 0) {
+      extraServices[index] = payload;
+    } else {
+      extraServices.push(payload);
+    }
+    await this.updateBooking(bookingId, { ...(raw as any), extraServices } as any);
+  }
+
+  createExtraServiceCheckout(payload: {
+    bookingId: string;
+    extraServiceId: string;
+    ownerId: string;
+    amount: number;
+    description?: string;
+    currency?: string;
+    customerEmail?: string;
+    customerName?: string;
+    successUrl: string;
+    cancelUrl: string;
+  }): Observable<any> {
+    return this.postFirstAvailable([
+      `${this.baseUrl}/pay/outing-extra-service-checkout`,
+      `${this.baseUrl}/api/payments/create-extra-service-checkout-session`,
+      `${this.baseUrl}/stripe/extra-service-checkout`,
+    ], { ...payload, paymentType: 'extra_service', currency: payload.currency || 'eur' });
+  }
+
+  refundBooking(payload: {
+    bookingId: string;
+    ownerId: string;
+    amount: number;
+    reason?: string;
+  }): Observable<any> {
+    return this.postFirstAvailable([
+      `${this.baseUrl}/pay/outing-refund`,
+      `${this.baseUrl}/api/payments/refund`,
+      `${this.baseUrl}/stripe/booking-refund`,
+    ], payload);
+  }
+
+  private async readFirebasePath(path: string): Promise<any> {
+    for (const baseUrl of this.restDatabaseUrls) {
+      try {
+        return await this.http.get<any>(`${baseUrl}${path}.json`).toPromise();
+      } catch {}
+    }
+    throw new Error(`Unable to read ${path}`);
   }
 
   private postFirstAvailable(endpoints: string[], payload: any): Observable<any> {
@@ -469,6 +545,36 @@ export class BookingApiService {
     return raw.map((item: any) => this.normalizeBooking(item)).filter((booking: AlegriaBooking) => !!booking.bookingId);
   }
 
+
+  private normalizeArray(raw: any): any[] {
+    if (!raw) {
+      return [];
+    }
+
+    if (Array.isArray(raw)) {
+      return raw.filter((item) => item !== null && item !== undefined);
+    }
+
+    if (typeof raw === 'object') {
+      return Object.keys(raw).map((key) => {
+        const value = raw[key];
+        if (value && typeof value === 'object') {
+          return {
+            id: value.id || key,
+            ...value,
+          };
+        }
+
+        return {
+          id: key,
+          value,
+        };
+      });
+    }
+
+    return [];
+  }
+
   private normalizeBooking(item: any): AlegriaBooking {
     if (!item) {
       return { bookingId: '', customerName: '', email: '', outingType: '', outingDate: '', totalPrice: 0 };
@@ -557,6 +663,8 @@ export class BookingApiService {
       warrantyCashSelected: item.warrantyPaymentChoice === 'cash_on_board' || item.warrantyMethod === 'cash' || item.warrantyStatus === 'cash_selected',
       damageReported: item.damageReported === true || item.warrantyStatus === 'charged' || item.warrantyCashDamageAmount > 0,
       damageCharged: item.damageCharged === true || item.warrantyStatus === 'charged' || item.warrantyCashDamageAmount > 0,
+      extraServices: Array.isArray(item.extraServices) ? item.extraServices : this.normalizeArray(item.extraServices || item.payments?.extraServices || []),
+      refunds: Array.isArray(item.refunds) ? item.refunds : this.normalizeArray(item.refunds || item.payments?.refunds || []),
       raw: item,
     };
   }}

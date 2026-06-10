@@ -31,6 +31,7 @@ import { BookingsComponent } from './bookings/bookings.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 import { MyProposalsComponent } from './my-proposals/my-proposals.component';
 import { BookingDetailComponent } from './booking-detail/booking-detail.component';
+import { BookingInvoiceComponent } from './booking-invoice/booking-invoice.component';
 import { AdminWarrantyChargeComponent } from './admin-warranty-charge/admin-warranty-charge.component';
 import { AdminProposalsComponent } from './admin-proposals/admin-proposals.component';
 import { ProposalConfirmationComponent } from './proposal-confirmation/proposal-confirmation.component';
@@ -65,6 +66,7 @@ import { BookingProcessComponent } from './booking-process/booking-process.compo
     MyBookingsComponent,
     MyProposalsComponent,
     BookingDetailComponent,
+    BookingInvoiceComponent,
     AdminWarrantyChargeComponent,
     AdminProposalsComponent,
     ProposalConfirmationComponent,

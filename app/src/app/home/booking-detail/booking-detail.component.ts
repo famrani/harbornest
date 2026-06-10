@@ -35,6 +35,18 @@ export class BookingDetailComponent implements OnInit {
   cardDamageMessage = '';
   cardDamageError = '';
   savingCardDamage = false;
+  extraServicesCatalog: any[] = [];
+  selectedExtraServiceId = '';
+  customExtraServiceDescription = '';
+  customExtraServiceAmount: number | null = null;
+  extraServiceMessage = '';
+  extraServiceError = '';
+  savingExtraService = false;
+  refundAmount: number | null = null;
+  refundReason = '';
+  refundMessage = '';
+  refundError = '';
+  refunding = false;
   editMode = false;
   savingCustomerUpdate = false;
   customerUpdateMessage = '';
@@ -76,6 +88,13 @@ export class BookingDetailComponent implements OnInit {
   get isAdmin(): boolean {
     const role = String(this.loggedUser?.role || '').toLowerCase();
     return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
+  }
+
+  loadExtraServicesCatalog(): void {
+    this.bookingApi.getExtraServicesCatalog().subscribe({
+      next: (items: any[]) => this.extraServicesCatalog = items || [],
+      error: () => this.extraServicesCatalog = [],
+    });
   }
 
   async loadProposalInfo(language: SiteLanguage): Promise<void> {
@@ -456,6 +475,28 @@ export class BookingDetailComponent implements OnInit {
   }
 
   getDerivedBookingStatus(): string {
+    const anyBooking: any = this.booking || {};
+    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+
+    if (
+      rawStatus === 'payment_done' ||
+      rawStatus === 'full_payment_done' ||
+      rawStatus === 'paid' ||
+      rawStatus === 'completed'
+    ) {
+      return 'payment_done';
+    }
+
+    if (
+      rawStatus === true ||
+      rawStatus === 'true' ||
+      rawStatus === 'confirmed' ||
+      anyBooking.confirmed === true ||
+      anyBooking.bookingConfirmed === true
+    ) {
+      return 'confirmed';
+    }
+
     if (this.isBalancePaid()) return 'payment_done';
     if (this.isDepositPaid() && this.isTermsAccepted()) return 'confirmed';
     return 'not_confirmed';
@@ -506,6 +547,37 @@ export class BookingDetailComponent implements OnInit {
       return `Damage recorded${euros ? ` (€${euros})` : ''}`;
     }
     return this.isBalancePaid() ? 'No damage recorded yet' : 'Available after full payment';
+  }
+
+  isOutingDone(): boolean {
+    if (!this.booking) return false;
+    const anyBooking: any = this.booking;
+
+    if (
+      anyBooking.outingDone === true ||
+      anyBooking.outingCompleted === true ||
+      anyBooking.status === 'closed' ||
+      anyBooking.outingStatus === 'done' ||
+      anyBooking.outingStatus === 'completed'
+    ) {
+      return true;
+    }
+
+    const rawDate = String(this.booking.outingDate || anyBooking.date || '').trim();
+    if (!rawDate) return false;
+
+    let normalized = rawDate;
+    const frDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frDate) {
+      const day = frDate[1].padStart(2, '0');
+      const month = frDate[2].padStart(2, '0');
+      const year = frDate[3].length === 2 ? `20${frDate[3]}` : frDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+
+    const endTime = String(this.booking.arrivalTime || anyBooking.endTime || '23:59').trim();
+    const endTimestamp = Date.parse(`${normalized}T${endTime || '23:59'}`);
+    return Number.isFinite(endTimestamp) && endTimestamp < Date.now();
   }
 
   canOpenDamageManagement(): boolean {
@@ -576,6 +648,7 @@ export class BookingDetailComponent implements OnInit {
   }
 
   canPayDeposit(): boolean {
+    if (this.isAdmin) return false;
     const termsAlreadyAccepted = this.isTermsAccepted();
     const warrantyAlreadySelected = this.isWarrantySelected();
     return !!this.booking?.bookingId &&
@@ -810,6 +883,7 @@ export class BookingDetailComponent implements OnInit {
   }
 
   async recordCashWarrantyDamage(): Promise<void> {
+    if (!this.isAdmin || !this.isOutingDone()) return;
     if (!this.booking?.bookingId) return;
 
     const amount = Number(this.cashDamageAmount || 0);
@@ -1115,6 +1189,7 @@ export class BookingDetailComponent implements OnInit {
   }
 
   async recordBalancePayment(): Promise<void> {
+    if (this.isAdmin) return;
     if (!this.booking?.bookingId) return;
 
     if (!this.canRecordBalancePayment()) {
@@ -1250,6 +1325,7 @@ export class BookingDetailComponent implements OnInit {
   }
 
   payBalance(): void {
+    if (this.isAdmin) return;
     if (!this.booking?.bookingId || this.isBalancePaid()) return;
 
     const currentUrl = window.location.href;
@@ -1288,6 +1364,7 @@ export class BookingDetailComponent implements OnInit {
   }
 
   customerPayment(): void {
+    if (this.isAdmin) return;
     if (!this.booking?.bookingId) return;
 
     if (this.canCustomerPayDeposit()) {
@@ -1300,8 +1377,138 @@ export class BookingDetailComponent implements OnInit {
     }
   }
 
+
+  get bookingExtraServices(): any[] {
+    return Array.isArray((this.booking as any)?.extraServices) ? (this.booking as any).extraServices : [];
+  }
+
+  get pendingExtraServices(): any[] {
+    return this.bookingExtraServices.filter((item: any) => item && item.status !== 'paid' && item.paid !== true);
+  }
+
+  get paidExtraServices(): any[] {
+    return this.bookingExtraServices.filter((item: any) => item && (item.status === 'paid' || item.paid === true));
+  }
+
+  get totalPaidAmount(): number {
+    const payments: any = this.booking?.payments || {};
+    const centsOrEuros = [
+      payments?.deposit?.amount,
+      payments?.balance?.amount,
+      ...(this.paidExtraServices || []).map((item: any) => item.amount),
+      payments?.warrantyCharge?.warrantyChargeAmount,
+    ].map((value: any) => Number(value || 0));
+
+    return centsOrEuros.reduce((sum, value) => sum + (value > 10000 ? value / 100 : value), 0);
+  }
+
+  get totalRefundedAmount(): number {
+    const refunds = Array.isArray((this.booking as any)?.refunds) ? (this.booking as any).refunds : [];
+    return refunds.reduce((sum: number, item: any) => sum + Number(item.amount || 0), 0);
+  }
+
+  get refundableAmount(): number {
+    return Math.max(0, Math.round((this.totalPaidAmount - this.totalRefundedAmount) * 100) / 100);
+  }
+
+  canAdminCreateExtraService(): boolean {
+    return this.isAdmin && !!this.booking?.bookingId;
+  }
+
+  canCustomerPayExtraService(extra: any): boolean {
+    return !this.isAdmin && !!this.booking?.bookingId && extra && extra.status !== 'paid' && extra.paid !== true;
+  }
+
+  async createExtraServiceRequest(): Promise<void> {
+    if (!this.isAdmin) return;
+    if (!this.booking?.bookingId) return;
+    this.savingExtraService = true;
+    this.extraServiceMessage = '';
+    this.extraServiceError = '';
+
+    try {
+      const selected = this.extraServicesCatalog.find((item: any) => item.id === this.selectedExtraServiceId || item.slug === this.selectedExtraServiceId);
+      const description = this.customExtraServiceDescription || selected?.title || selected?.name || selected?.description || '';
+      const amount = Number(this.customExtraServiceAmount || selected?.amount || selected?.price || 0);
+      if (!description || !amount || amount <= 0) {
+        throw new Error('Please select or enter an extra service with a valid amount.');
+      }
+
+      await this.bookingApi.createExtraServiceRequest(this.booking.bookingId, {
+        extraServiceCatalogId: selected?.id || selected?.slug || null,
+        description,
+        amount,
+        currency: 'eur',
+      });
+      this.extraServiceMessage = 'Extra service payment request created.';
+      this.customExtraServiceDescription = '';
+      this.customExtraServiceAmount = null;
+      this.selectedExtraServiceId = '';
+      this.bookingApi.getBooking(this.booking.bookingId).subscribe((booking) => this.booking = booking);
+    } catch (e: any) {
+      this.extraServiceError = e?.message || 'Unable to create extra service request.';
+    } finally {
+      this.savingExtraService = false;
+    }
+  }
+
+  payExtraService(extra: any): void {
+    if (this.isAdmin) return;
+    if (!this.booking?.bookingId || !this.canCustomerPayExtraService(extra)) return;
+    const currentUrl = window.location.href;
+    this.bookingApi.createExtraServiceCheckout({
+      bookingId: this.booking.bookingId,
+      extraServiceId: extra.id,
+      ownerId: this.booking.ownerId || 'alegria',
+      amount: Number(extra.amount || 0),
+      description: extra.description || extra.title || 'Extra service',
+      customerEmail: this.booking.email || '',
+      customerName: this.booking.customerName || '',
+      successUrl: currentUrl.includes('?') ? `${currentUrl}&payment=success&paymentType=extra_service` : `${currentUrl}?payment=success&paymentType=extra_service`,
+      cancelUrl: currentUrl.includes('?') ? `${currentUrl}&payment=cancelled&paymentType=extra_service` : `${currentUrl}?payment=cancelled&paymentType=extra_service`,
+    }).subscribe({
+      next: (response: any) => {
+        const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
+        if (url) window.location.href = url;
+      },
+      error: (error: any) => this.extraServiceError = error?.error?.error || error?.message || 'Unable to open extra service checkout.',
+    });
+  }
+
+  canAdminRefund(): boolean {
+    return this.isAdmin && !!this.booking?.bookingId && this.refundableAmount > 0;
+  }
+
+  issueRefund(): void {
+    if (!this.booking?.bookingId || !this.canAdminRefund()) return;
+    const amount = Number(this.refundAmount || 0);
+    if (!amount || amount <= 0 || amount > this.refundableAmount) {
+      this.refundError = `Refund amount must be between €1 and €${this.refundableAmount}.`;
+      return;
+    }
+
+    this.refunding = true;
+    this.refundMessage = '';
+    this.refundError = '';
+    this.bookingApi.refundBooking({
+      bookingId: this.booking.bookingId,
+      ownerId: this.booking.ownerId || 'alegria',
+      amount,
+      reason: this.refundReason || '',
+    }).subscribe({
+      next: () => {
+        this.refundMessage = 'Refund issued.';
+        this.refundAmount = null;
+        this.refundReason = '';
+        this.bookingApi.getBooking(this.booking!.bookingId).subscribe((booking) => this.booking = booking);
+      },
+      error: (error: any) => this.refundError = error?.error?.error || error?.message || 'Unable to issue refund.',
+      complete: () => this.refunding = false,
+    });
+  }
+
   canAdminOpenDamagePage(): boolean {
-    return this.isAdmin && this.getDerivedBookingStatus() === 'payment_done';
+    return this.isAdmin && this.isOutingDone() && this.getDerivedBookingStatus() === 'payment_done';
   }
 
   openAdminDamagePage(): void {

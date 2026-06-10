@@ -27,6 +27,7 @@ import { BookingsComponent } from './bookings/bookings.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 import { MyProposalsComponent } from './my-proposals/my-proposals.component';
 import { BookingDetailComponent } from './booking-detail/booking-detail.component';
+import { BookingInvoiceComponent } from './booking-invoice/booking-invoice.component';
 import { AdminWarrantyChargeComponent } from './admin-warranty-charge/admin-warranty-charge.component';
 import { AdminProposalsComponent } from './admin-proposals/admin-proposals.component';
 import { ProposalConfirmationComponent } from './proposal-confirmation/proposal-confirmation.component';
@@ -54,6 +55,7 @@ const routes: Routes = [
   { path: 'my-bookings', component: MyBookingsComponent },
   { path: 'my-proposals', component: MyProposalsComponent },
   { path: 'my-payments', component: AccountSummaryComponent, data: { section: 'payments' } },
+  { path: 'bookings/:bookingId/invoice', component: BookingInvoiceComponent },
   { path: 'bookings/:bookingId', component: BookingDetailComponent },
   { path: 'payment/:bookingId', component: DepositComponent },
   { path: 'my-profile', component: MyProfileComponent },
@@ -61,6 +63,7 @@ const routes: Routes = [
   { path: 'leave-feedback', redirectTo: 'my-feedbacks', pathMatch: 'full' },
   { path: 'admin/feedbacks', component: AdminFeedbacksComponent },
   { path: 'admin/bookings', component: BookingsComponent },
+  { path: 'admin/bookings/:bookingId/invoice', component: BookingInvoiceComponent },
   { path: 'admin/bookings/:bookingId', component: BookingDetailComponent },
   { path: 'admin/outings', component: AdminOutingsComponent },
   { path: 'admin/outings/:outingId', component: AdminOutingDetailComponent },

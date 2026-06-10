@@ -964,23 +964,48 @@ class StripeService {
                         });
                     }
                     if (session.mode === 'payment' && session.payment_intent) {
+                        const stripePaymentIntentId = session.payment_intent;
                         const updatePayload = {
-                            status: 'deposit_paid',
+                            status: 'paid',
                             checkoutSessionId: session.id,
-                            paymentIntentId: session.payment_intent,
+                            stripeCheckoutSessionId: session.id,
+                            paymentIntentId: stripePaymentIntentId,
+                            stripePaymentIntentId,
                             stripeCustomerId: session.customer || null,
+                            amount: session.amount_total || null,
                             amount_total: session.amount_total || null,
                             currency: session.currency || null,
                             modifiedTS: now,
                             updatedAt: now,
                         };
-                        await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payments/deposit`).update(updatePayload);
-                        await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/deposit`).update(updatePayload);
-                        await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
-                            depositStatus: 'paid',
-                            depositPaid: true,
-                            modifiedTS: now,
-                        });
+                        if (paymentType === 'balance') {
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/balance`).update(updatePayload);
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
+                                balanceStatus: 'paid',
+                                balancePaid: true,
+                                bookingStatus: 'payment_done',
+                                paymentStatus: 'full_payment_done',
+                                modifiedTS: now,
+                            });
+                        }
+                        else if (paymentType === 'extra_service') {
+                            const extraServiceId = (session.metadata && session.metadata['extraServiceId']) || null;
+                            const bookingSnap = await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).once('value');
+                            const booking = bookingSnap.val() || {};
+                            const extraServices = Array.isArray(booking.extraServices) ? booking.extraServices : [];
+                            const updatedExtraServices = extraServices.map((item) => item.id === extraServiceId ? { ...item, status: 'paid', paid: true, paidAt: now, stripeCheckoutSessionId: session.id, stripePaymentIntentId, amount: (session.amount_total || item.amount) } : item);
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/extraServices`).set(updatedExtraServices);
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/extraServices/${extraServiceId}`).update(updatePayload);
+                        }
+                        else {
+                            await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payments/deposit`).update({ ...updatePayload, status: 'deposit_paid' });
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/deposit`).update({ ...updatePayload, status: 'deposit_paid' });
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
+                                depositStatus: 'paid',
+                                depositPaid: true,
+                                modifiedTS: now,
+                            });
+                        }
                         if (paymentId) {
                             await this.stbDbSvc.db.ref(`/backendpayments/${paymentId}`).update(updatePayload);
                         }
@@ -1136,6 +1161,12 @@ class StripeService {
         stripeRouter.post('/pay/checkout-setup', (req, res) => this.checkoutSetup(req, res));
         stripeRouter.post('/pay/accept-and-charge', (req, res) => this.acceptAndCharge(req, res));
         // Alegria outing deposit + warranty
+        stripeRouter.post('/pay/outing-balance-checkout', (req, res) => this.createOutingBalanceCheckout(req, res));
+        stripeRouter.post('/pay/outing-remaining-checkout', (req, res) => this.createOutingBalanceCheckout(req, res));
+        stripeRouter.post('/api/payments/create-balance-checkout-session', (req, res) => this.createOutingBalanceCheckout(req, res));
+        stripeRouter.post('/api/payments/create-remaining-checkout-session', (req, res) => this.createOutingBalanceCheckout(req, res));
+        stripeRouter.post('/stripe/balance-checkout', (req, res) => this.createOutingBalanceCheckout(req, res));
+        stripeRouter.post('/stripe/remaining-checkout', (req, res) => this.createOutingBalanceCheckout(req, res));
         stripeRouter.post('/pay/outing-deposit-checkout', (req, res) => this.createOutingDepositCheckout(req, res));
         stripeRouter.post('/pay/outing-warranty-checkout', (req, res) => this.createOutingWarrantySetupCheckout(req, res));
         stripeRouter.post('/pay/outing-warranty-charge', (req, res) => this.chargeOutingWarranty(req, res));
@@ -1150,6 +1181,12 @@ class StripeService {
         stripeRouter.post('/stripe/deposit-checkout', (req, res) => this.createOutingDepositCheckout(req, res));
         stripeRouter.post('/stripe/warranty-setup', (req, res) => this.createOutingWarrantySetupCheckout(req, res));
         stripeRouter.post('/stripe/warranty-charge', (req, res) => this.chargeOutingWarranty(req, res));
+        stripeRouter.post('/pay/outing-extra-service-checkout', (req, res) => this.createOutingExtraServiceCheckout(req, res));
+        stripeRouter.post('/api/payments/create-extra-service-checkout-session', (req, res) => this.createOutingExtraServiceCheckout(req, res));
+        stripeRouter.post('/stripe/extra-service-checkout', (req, res) => this.createOutingExtraServiceCheckout(req, res));
+        stripeRouter.post('/pay/outing-refund', (req, res) => this.refundOutingPayment(req, res));
+        stripeRouter.post('/api/payments/refund', (req, res) => this.refundOutingPayment(req, res));
+        stripeRouter.post('/stripe/booking-refund', (req, res) => this.refundOutingPayment(req, res));
         // PaymentIntent helpers
         stripeRouter.post('/stripe/payment-intent', (req, res) => this.createPaymentIntent(req, res));
         stripeRouter.post('/stripe/payment-intent/confirm', (req, res) => this.confirmPaymentIntent(req, res));
@@ -1167,6 +1204,15 @@ class StripeService {
         //   (req, res) => stripeSvc.handleOwnerWebhook(req as any, res));
         // app.post('/stripe/webhook', bodyParser.raw({ type: 'application/json' }),
         //   (req, res) => stripeSvc.handlePlatformWebhook(req as any, res, process.env.STRIPE_WEBHOOK_SECRET || ''));
+    }
+    async createOutingBalanceCheckout(req, res) {
+        return res.status(501).json({ error: 'createOutingBalanceCheckout not yet implemented' });
+    }
+    async createOutingExtraServiceCheckout(req, res) {
+        return res.status(501).json({ error: 'createOutingExtraServiceCheckout not yet implemented' });
+    }
+    async refundOutingPayment(req, res) {
+        return res.status(501).json({ error: 'refundOutingPayment not yet implemented' });
     }
 }
 exports.StripeService = StripeService;

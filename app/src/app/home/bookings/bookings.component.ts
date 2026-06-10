@@ -205,6 +205,28 @@ export class BookingsComponent implements OnInit {
   }
 
   getDerivedBookingStatus(booking: AlegriaBooking): string {
+    const anyBooking: any = booking || {};
+    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+
+    if (
+      rawStatus === 'payment_done' ||
+      rawStatus === 'full_payment_done' ||
+      rawStatus === 'paid' ||
+      rawStatus === 'completed'
+    ) {
+      return 'payment_done';
+    }
+
+    if (
+      rawStatus === true ||
+      rawStatus === 'true' ||
+      rawStatus === 'confirmed' ||
+      anyBooking.confirmed === true ||
+      anyBooking.bookingConfirmed === true
+    ) {
+      return 'confirmed';
+    }
+
     if (this.isBalancePaid(booking)) return 'payment_done';
     if (this.isDepositPaid(booking) && this.isTermsAccepted(booking)) return 'confirmed';
     return 'not_confirmed';
@@ -332,7 +354,7 @@ export class BookingsComponent implements OnInit {
   }
 
   canRecordBalancePayment(booking: AlegriaBooking): boolean {
-    return this.isBookingConfirmed(booking) &&
+    return false && this.isBookingConfirmed(booking) &&
       this.isDepositPaid(booking) &&
       this.isWarrantySecured(booking) &&
       !this.isBalancePaid(booking);
@@ -377,11 +399,7 @@ export class BookingsComponent implements OnInit {
 
   openBalancePayment(booking: BookingView, event?: Event): void {
     event?.stopPropagation();
-    this.selectedBalanceBooking = booking;
-    this.balancePaymentMethod = 'sumup';
-    this.balancePaymentNotes = '';
-    this.balancePaymentMessage = '';
-    this.balancePaymentError = '';
+    // Admin users do not open a remaining-balance payment modal.
   }
 
   closeBalancePayment(): void {
@@ -390,51 +408,9 @@ export class BookingsComponent implements OnInit {
   }
 
   async recordBalancePayment(): Promise<void> {
-    if (!this.selectedBalanceBooking?.bookingId) return;
-
-    if (!this.canRecordBalancePayment(this.selectedBalanceBooking)) {
-      this.balancePaymentError = this.getBalanceBlockedReason(this.selectedBalanceBooking);
-      return;
-    }
-
-    this.savingBalancePayment = true;
-    this.balancePaymentError = '';
-    this.balancePaymentMessage = '';
-
-    const now = Date.now();
-    const balanceAmount = this.getBalanceAmount(this.selectedBalanceBooking);
-    const existingPayments = (this.selectedBalanceBooking as any).payments || {};
-
-    try {
-      await this.bookingApi.updateBooking(this.selectedBalanceBooking.bookingId, {
-        balancePaid: true,
-        balanceAmount,
-        balancePaymentMethod: this.balancePaymentMethod,
-        balancePaidAt: now,
-        bookingStatus: 'payment_done',
-        paymentStatus: 'full_payment_done',
-        paidAt: now,
-        payments: {
-          ...existingPayments,
-          balance: {
-            paid: true,
-            status: 'paid',
-            amount: balanceAmount,
-            method: this.balancePaymentMethod,
-            notes: this.balancePaymentNotes || '',
-            paidAt: now,
-          }
-        } as any,
-      } as any);
-
-      this.balancePaymentMessage = 'Remaining 90% payment recorded.';
-      this.savingBalancePayment = false;
-      this.closeBalancePayment();
-      this.loadBookings();
-    } catch (e: any) {
-      this.balancePaymentError = e?.message || 'Unable to record remaining balance payment.';
-      this.savingBalancePayment = false;
-    }
+    // Admin users do not pay or record remaining 90% from the booking list.
+    // Remaining balance must be paid by the customer through Stripe.
+    return Promise.resolve();
   }
 
   openDetail(booking: BookingView): void {
@@ -444,6 +420,7 @@ export class BookingsComponent implements OnInit {
 
   payDeposit(booking: AlegriaBooking, event?: Event): void {
     event?.stopPropagation();
+    return;
 
     if (!booking?.bookingId || this.isDepositPaid(booking)) return;
 

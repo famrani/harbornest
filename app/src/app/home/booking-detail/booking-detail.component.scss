@@ -490,3 +490,47 @@ h1 { color: #08263a; margin: 8px 0; }
     max-height: calc(92vh - 170px) !important;
   }
 }
+
+.extra-service-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: .85rem 0;
+  border-top: 1px solid rgba(8, 38, 58, .08);
+}
+
+.extra-service-row span {
+  display: block;
+  color: #64748b;
+  margin-top: .25rem;
+}
+
+.admin-extra-service-form,
+.refund-panel {
+  display: grid;
+  gap: .85rem;
+}
+
+.admin-extra-service-form label,
+.refund-panel label {
+  display: grid;
+  gap: .4rem;
+}
+
+.invoice-actions-card {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  border: 1px solid rgba(8, 38, 58, .08);
+  border-radius: 18px;
+  background: #fffaf2;
+}
+
+.invoice-actions-card h2 {
+  margin: 0 0 .5rem;
+  color: #08263a;
+}
+
+.invoice-actions-card p {
+  color: #516070;
+}

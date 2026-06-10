@@ -23,6 +23,21 @@
       <p class="comments" *ngIf="booking.comments">{{ booking.comments }}</p>
 
 
+      <section class="invoice-actions-card" *ngIf="isAdmin && isOutingDone()">
+        <h2>Facturation</h2>
+        <p>La sortie est passée. Vous pouvez éditer une facture imprimable puis l'enregistrer en PDF depuis le navigateur.</p>
+        <div class="customer-action-bar">
+          <a class="btn btn-secondary" [routerLink]="['/admin/bookings', booking.bookingId, 'invoice']" [queryParams]="{ type: 'booking' }">
+            Facture prestations ALEGRIA
+          </a>
+          <a class="btn btn-primary" [routerLink]="['/admin/bookings', booking.bookingId, 'invoice']" [queryParams]="{ type: 'extras' }">
+            Facture extras / catering
+          </a>
+        </div>
+      </section>
+
+
+
       <section class="customer-edit-card" *ngIf="!isAdmin && editMode">
         <h2>{{ btext('updateBookingInfo') }}</h2>
 
@@ -98,7 +113,7 @@
           </button>
         </div>
 
-        <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'deposit_required'">
+        <div class="workflow-panel" *ngIf="!isAdmin && getBookingWorkflowState() === 'deposit_required'">
           <h3>{{ text('termsModalTitle') }}</h3>
           <div class="terms-scroll-box tc-scrollable" tabindex="0" (scroll)="onTermsScroll($event)" (keyup.end)="markTermsRead()">
             <ng-container *ngFor="let section of termsSections">
@@ -126,14 +141,14 @@
 
           <p class="blocked-note" *ngIf="getDepositBlockedReason()">{{ getDepositBlockedReason() }}</p>
 
-          <button class="btn btn-primary" type="button" *ngIf="!isDepositPaid()" [disabled]="!canPayDeposit()" (click)="payDeposit()">
+          <button class="btn btn-primary" type="button" *ngIf="!isAdmin && !isDepositPaid()" [disabled]="!canPayDeposit()" (click)="payDeposit()">
             {{ text('payDepositButton') }}
           </button>
 
           <p class="paid-badge" *ngIf="isDepositPaid()">{{ text('depositAlreadyPaid') }}</p>
         </div>
 
-        <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'warranty_choice_required'">
+        <div class="workflow-panel" *ngIf="!isAdmin && getBookingWorkflowState() === 'warranty_choice_required'">
           <h3>{{ text('warrantyTitle') }}</h3>
           <p>{{ btext('warrantyChoiceText') }}</p>
           <label class="radio-card">
@@ -149,17 +164,17 @@
           </button>
         </div>
 
-        <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'warranty_card_required'">
+        <div class="workflow-panel" *ngIf="!isAdmin && getBookingWorkflowState() === 'warranty_card_required'">
           <h3>{{ btext('registerWarrantyCardTitle') }}</h3>
           <p>{{ btext('registerWarrantyCardText') }}</p>
           <button class="btn btn-primary" type="button" (click)="registerWarrantyCard()">{{ btext('registerWarrantyCardButton') }}</button>
         </div>
 
-        <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'balance_required'">
+        <div class="workflow-panel" *ngIf="!isAdmin && getBookingWorkflowState() === 'balance_required'">
           <h3>{{ btext('collectRemainingTitle') }}</h3>
           <p>{{ btext('amountDueBeforeDeparture') }}: <strong>€{{ getBalanceAmount() }}</strong></p>
 
-          <div class="collect-balance" *ngIf="isAdmin">
+          <div class="collect-balance" *ngIf="canAdminCreateExtraService()">
             <label>
               {{ btext('paymentMethod') }}
               <select [(ngModel)]="balancePaymentMethod">
@@ -180,7 +195,7 @@
           </div>
         </div>
 
-        <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'payment_done' && isAdmin">
+        <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'payment_done' && isAdmin && isOutingDone()">
           <h3>{{ btext('damageManagement') }}</h3>
           <p>{{ btext('damageManagementText') }}</p>
 
@@ -232,6 +247,79 @@
             <p class="error-message" *ngIf="cardDamageError">{{ cardDamageError }}</p>
           </div>
         </div>
+
+
+        <div class="workflow-panel extra-services-panel" *ngIf="booking">
+          <h3>Extra services</h3>
+
+          <div *ngIf="bookingExtraServices.length === 0" class="muted">
+            No extra service requested for this booking.
+          </div>
+
+          <div class="extra-service-row" *ngFor="let extra of bookingExtraServices">
+            <div>
+              <strong>{{ extra.description || extra.title || extra.name }}</strong>
+              <span>€{{ extra.amount || 0 }} · {{ extra.status === 'paid' || extra.paid ? 'paid' : 'pending' }}</span>
+            </div>
+            <button class="btn btn-primary" type="button" *ngIf="!isAdmin && canCustomerPayExtraService(extra)" (click)="payExtraService(extra)">
+              Pay extra service
+            </button>
+          </div>
+
+          <div class="admin-extra-service-form" *ngIf="canAdminCreateExtraService()">
+            <h4>Propose an extra service to the customer</h4>
+
+            <label>
+              Service from Firebase catalog
+              <select [(ngModel)]="selectedExtraServiceId">
+                <option value="">Custom service</option>
+                <option *ngFor="let service of extraServicesCatalog" [value]="service.id || service.slug">
+                  {{ service.title || service.name || service.description }} — €{{ service.amount || service.price || 0 }}
+                </option>
+              </select>
+            </label>
+
+            <label>
+              Custom description
+              <input type="text" [(ngModel)]="customExtraServiceDescription" placeholder="Drinks, food, catering..." />
+            </label>
+
+            <label>
+              Custom amount (€)
+              <input type="number" min="1" step="0.01" [(ngModel)]="customExtraServiceAmount" />
+            </label>
+
+            <button class="btn btn-secondary" type="button" [disabled]="savingExtraService" (click)="createExtraServiceRequest()">
+              {{ savingExtraService ? 'Saving...' : 'Send extra service payment request' }}
+            </button>
+
+            <p class="success" *ngIf="extraServiceMessage">{{ extraServiceMessage }}</p>
+            <p class="error-message" *ngIf="extraServiceError">{{ extraServiceError }}</p>
+          </div>
+        </div>
+
+        <div class="workflow-panel refund-panel" *ngIf="false">
+          <h3>Refund</h3>
+          <p>Paid: <strong>€{{ totalPaidAmount }}</strong> · Already refunded: <strong>€{{ totalRefundedAmount }}</strong> · Available: <strong>€{{ refundableAmount }}</strong></p>
+
+          <label>
+            Refund amount (€)
+            <input type="number" min="1" step="0.01" [max]="refundableAmount" [(ngModel)]="refundAmount" />
+          </label>
+
+          <label>
+            Reason
+            <textarea rows="3" [(ngModel)]="refundReason" placeholder="Weather compensation, commercial gesture..."></textarea>
+          </label>
+
+          <button class="btn btn-primary" type="button" [disabled]="refunding || !canAdminRefund()" (click)="issueRefund()">
+            {{ refunding ? 'Refunding...' : 'Issue refund' }}
+          </button>
+
+          <p class="success" *ngIf="refundMessage">{{ refundMessage }}</p>
+          <p class="error-message" *ngIf="refundError">{{ refundError }}</p>
+        </div>
+
 
         <p class="success" *ngIf="balancePaymentMessage">{{ balancePaymentMessage }}</p>
         <p class="error-message" *ngIf="balancePaymentError">{{ balancePaymentError }}</p>

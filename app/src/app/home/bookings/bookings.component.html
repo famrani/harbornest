@@ -111,11 +111,7 @@
         </span>
 
         <span class="row-actions" (click)="$event.stopPropagation()">
-          <button class="mini-btn" type="button"
-            *ngIf="!isBalancePaid(booking) && ( !isDepositPaid(booking) || canRecordBalancePayment(booking) )"
-            (click)="!isDepositPaid(booking) ? payDeposit(booking, $event) : openBalancePayment(booking, $event)">
-            {{ !isDepositPaid(booking) ? 'Pay deposit' : 'Pay remaining 90%' }}
-          </button>
+          <!-- Admin cannot pay deposit or remaining balance. Open the detail page for warranty actions. -->
           <span class="row-chevron">›</span>
         </span>
       </button>
@@ -124,7 +120,7 @@
     <p *ngIf="!loading && bookings.length > 0 && filteredBookings.length === 0" class="muted">
       No booking matches the selected tab, filters, search and sorting options.
     </p>
-    <div class="balance-modal-backdrop" *ngIf="selectedBalanceBooking">
+    <div class="balance-modal-backdrop" *ngIf="false">
       <div class="balance-modal">
         <h2>Record remaining 90% payment</h2>
         <p>

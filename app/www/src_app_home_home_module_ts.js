@@ -1,5 +1,146 @@
 (self["webpackChunkapp"] = self["webpackChunkapp"] || []).push([["src_app_home_home_module_ts"],{
 
+/***/ 590:
+/*!*******************************************************************!*\
+  !*** ./src/app/home/booking-invoice/booking-invoice.component.ts ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BookingInvoiceComponent: () => (/* binding */ BookingInvoiceComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _booking_invoice_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./booking-invoice.component.html?ngResource */ 60650);
+/* harmony import */ var _booking_invoice_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./booking-invoice.component.scss?ngResource */ 66270);
+/* harmony import */ var _booking_invoice_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_booking_invoice_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../bookings/booking-api.service */ 74854);
+
+
+
+
+
+
+let BookingInvoiceComponent = class BookingInvoiceComponent {
+  route;
+  bookingApi;
+  booking;
+  loading = true;
+  invoiceType = 'booking';
+  invoiceNumber = '';
+  invoiceDate = new Date().toISOString().slice(0, 10);
+  sellerName = 'ALEGRIA Sea Experience';
+  sellerDetails = 'Prestations nautiques, skipper et services additionnels';
+  sellerAddress = '';
+  sellerSiret = '';
+  customerName = '';
+  customerAddress = '';
+  customerEmail = '';
+  paymentTerms = 'Payable à réception de facture';
+  notes = '';
+  lines = [];
+  constructor(route, bookingApi) {
+    this.route = route;
+    this.bookingApi = bookingApi;
+  }
+  ngOnInit() {
+    this.invoiceType = this.route.snapshot.queryParamMap.get('type') === 'extras' ? 'extras' : 'booking';
+    const bookingId = this.route.snapshot.paramMap.get('bookingId') || '';
+    this.bookingApi.getBooking(bookingId).subscribe(booking => {
+      this.booking = booking;
+      this.loading = false;
+      if (booking) this.initializeInvoice(booking);
+    });
+  }
+  initializeInvoice(booking) {
+    const suffix = this.invoiceType === 'extras' ? 'EXTRAS' : 'PRESTA';
+    this.invoiceNumber = `ALEGRIA-${suffix}-${booking.bookingId || Date.now()}`;
+    this.customerName = booking.customerName || '';
+    this.customerEmail = booking.email || '';
+    this.notes = this.invoiceType === 'extras' ? 'Facture relative aux prestations additionnelles proposées et acceptées pour la sortie.' : 'Facture relative aux prestations fournies par ALEGRIA. Les frais liés à la location du bateau ont été encaissés séparément par Click&Boat.';
+    if (this.invoiceType === 'extras') {
+      const extras = this.getExtraServices(booking);
+      this.lines = extras.length ? extras.map(extra => ({
+        description: extra.description || extra.title || extra.name || 'Prestation additionnelle',
+        quantity: Number(extra.quantity || 1),
+        unitPrice: this.toEuros(extra.amount || extra.price || 0)
+      })) : [{
+        description: 'Catering adulte - apéritif soft, plat, boisson, dessert et service',
+        quantity: 4,
+        unitPrice: 32
+      }, {
+        description: 'Catering moins de 18 ans - apéritif soft, plat, boisson, dessert et service',
+        quantity: 4,
+        unitPrice: 26
+      }];
+    } else {
+      this.lines = [{
+        description: 'Prestation skipper professionnel',
+        quantity: 1,
+        unitPrice: 0
+      }, {
+        description: 'Organisation et coordination de la sortie',
+        quantity: 1,
+        unitPrice: 0
+      }];
+    }
+  }
+  getExtraServices(booking) {
+    const anyBooking = booking;
+    if (Array.isArray(anyBooking.extraServices)) return anyBooking.extraServices;
+    if (Array.isArray(anyBooking.payments?.extraServices)) return anyBooking.payments.extraServices;
+    if (anyBooking.payments?.extraServices && typeof anyBooking.payments.extraServices === 'object') {
+      return Object.keys(anyBooking.payments.extraServices).map(key => ({
+        id: key,
+        ...anyBooking.payments.extraServices[key]
+      }));
+    }
+    return [];
+  }
+  addLine() {
+    this.lines.push({
+      description: 'Nouvelle ligne',
+      quantity: 1,
+      unitPrice: 0
+    });
+  }
+  removeLine(index) {
+    this.lines.splice(index, 1);
+  }
+  getLineTotal(line) {
+    return Number(line.quantity || 0) * Number(line.unitPrice || 0);
+  }
+  get subtotal() {
+    return this.lines.reduce((sum, line) => sum + this.getLineTotal(line), 0);
+  }
+  get total() {
+    return this.subtotal;
+  }
+  toEuros(value) {
+    const amount = Number(value || 0);
+    return amount > 10000 ? Math.round(amount) / 100 : amount;
+  }
+  printPdf() {
+    window.print();
+  }
+  static ctorParameters = () => [{
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_3__.ActivatedRoute
+  }, {
+    type: _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_2__.BookingApiService
+  }];
+};
+BookingInvoiceComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
+  selector: 'app-booking-invoice',
+  template: _booking_invoice_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_booking_invoice_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], BookingInvoiceComponent);
+
+
+/***/ }),
+
 /***/ 962:
 /*!**********************************************************************************!*\
   !*** ./src/app/home/tours/sunset-cruise/sunset-cruise.component.html?ngResource ***!
@@ -4179,7 +4320,7 @@ module.exports = "<section class=\"proposal-page\">\n  <div class=\"container pr
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">Admin</span>\n      <h1>Reservations</h1>\n      <p>Manage confirmed bookings, deposits, remaining 90% onboard payments, warranties and damage charges.</p>\n    </div>\n\n    <div class=\"booking-tabs\" *ngIf=\"!loading && bookings.length > 0\">\n      <button type=\"button\" [class.active]=\"activeDateTab === 'upcoming'\" (click)=\"setDateTab('upcoming')\">\n        Upcoming <span>{{ upcomingBookingsCount }}</span>\n      </button>\n      <button type=\"button\" [class.active]=\"activeDateTab === 'past'\" (click)=\"setDateTab('past')\">\n        Past <span>{{ pastBookingsCount }}</span>\n      </button>\n    </div>\n\n    <div class=\"booking-toolbar booking-toolbar-grid\">\n      <label class=\"search-box\">\n        <span>Search</span>\n        <input\n          type=\"search\"\n          name=\"bookingSearch\"\n          [(ngModel)]=\"searchTerm\"\n          placeholder=\"Customer, email, phone, date, status...\"\n          autocomplete=\"off\"\n        />\n      </label>\n\n      <label>\n        <span>Status</span>\n        <select [(ngModel)]=\"statusFilter\">\n          <option value=\"all\">All statuses</option>\n          <option value=\"not_confirmed\">Not confirmed</option>\n          <option value=\"confirmed\">Confirmed</option>\n          <option value=\"payment_done\">Payment done</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Warranty</span>\n        <select [(ngModel)]=\"warrantyFilter\">\n          <option value=\"all\">All warranties</option>\n          <option value=\"not_selected\">Not selected</option>\n          <option value=\"cash\">Cash selected</option>\n          <option value=\"card_selected\">Card selected</option>\n          <option value=\"card_registered\">Card registered</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Order by</span>\n        <select [(ngModel)]=\"sortField\">\n          <option value=\"date\">Date</option>\n          <option value=\"customer\">Customer</option>\n          <option value=\"status\">Status</option>\n          <option value=\"total\">Total price</option>\n          <option value=\"balance\">Remaining 90%</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Direction</span>\n        <select [(ngModel)]=\"sortDirection\">\n          <option value=\"asc\">Ascending</option>\n          <option value=\"desc\">Descending</option>\n        </select>\n      </label>\n\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetFilters()\">Reset filters</button>\n      <a class=\"btn btn-primary\" routerLink=\"/admin/proposals\">Proposals</a>\n      <a class=\"btn btn-secondary\" routerLink=\"/admin/external-bookings\">External bookings</a>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadBookings()\">Refresh</button>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n    <p *ngIf=\"!loading && errorMessage\" class=\"error-message\">{{ errorMessage }}</p>\n    <p *ngIf=\"!loading && !errorMessage && bookings.length === 0\" class=\"muted\">\n      No bookings found in Firebase under <strong>/bnBookings</strong>.\n    </p>\n\n    <div class=\"list-summary\" *ngIf=\"!loading && bookings.length > 0\">\n      Showing <strong>{{ activeTabBookingsCount }}</strong> {{ activeDateTab }} bookings out of <strong>{{ bookings.length }}</strong> total\n    </div>\n\n    <div class=\"bookings-list\" *ngIf=\"!loading && filteredBookings.length > 0\">\n      <button\n        class=\"booking-list-row\"\n        type=\"button\"\n        *ngFor=\"let booking of filteredBookings; trackBy: trackByBookingId\"\n        (click)=\"openBooking(booking)\"\n      >\n        <button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal(booking, $event)\">{{ getStatusLabel(booking) }}</button>\n\n        <span class=\"booking-main\">\n          <strong>{{ booking.customerName || 'Customer not set' }}</strong>\n          <small>{{ booking.email || 'No email' }}</small>\n        </span>\n\n        <span class=\"booking-trip\">\n          <strong>{{ booking.outingType || 'Outing' }}</strong>\n          <small>\n            {{ booking.outingDate || 'Date not set' }}\n            <ng-container *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</ng-container>\n          </small>\n        </span>\n\n        <span class=\"booking-price\">\n          <strong>€{{ booking.totalPrice || 0 }}</strong>\n          <small>Total price</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <button class=\"mini-btn\" type=\"button\"\n            *ngIf=\"!isBalancePaid(booking) && ( !isDepositPaid(booking) || canRecordBalancePayment(booking) )\"\n            (click)=\"!isDepositPaid(booking) ? payDeposit(booking, $event) : openBalancePayment(booking, $event)\">\n            {{ !isDepositPaid(booking) ? 'Pay deposit' : 'Pay remaining 90%' }}\n          </button>\n          <span class=\"row-chevron\">›</span>\n        </span>\n      </button>\n    </div>\n\n    <p *ngIf=\"!loading && bookings.length > 0 && filteredBookings.length === 0\" class=\"muted\">\n      No booking matches the selected tab, filters, search and sorting options.\n    </p>\n    <div class=\"balance-modal-backdrop\" *ngIf=\"selectedBalanceBooking\">\n      <div class=\"balance-modal\">\n        <h2>Record remaining 90% payment</h2>\n        <p>\n          <strong>{{ selectedBalanceBooking.customerName }}</strong><br />\n          Total: €{{ selectedBalanceBooking.totalPrice || 0 }}<br />\n          Deposit 10%: €{{ getDepositAmount(selectedBalanceBooking) }} · {{ isDepositPaid(selectedBalanceBooking) ? 'paid' : 'pending' }}<br />\n          Warranty mode: {{ getWarrantyModeLabel(selectedBalanceBooking) }}<br />\n          Stripe warranty card: {{ getWarrantyCardLabel(selectedBalanceBooking) }}<br />\n          T&C: {{ isTermsAccepted(selectedBalanceBooking) ? 'accepted' : 'not accepted' }}<br />\n          Booking status: {{ getStatusLabel(selectedBalanceBooking) }}<br />\n          Remaining 90% to collect onboard: <strong>€{{ getBalanceAmount(selectedBalanceBooking) }}</strong>\n        </p>\n\n        <label>\n          Payment method\n          <select [(ngModel)]=\"balancePaymentMethod\">\n            <option value=\"sumup\">SumUp / card</option>\n            <option value=\"cash\">Cash</option>\n            <option value=\"mixed\">Mixed</option>\n          </select>\n        </label>\n\n        <label>\n          Notes\n          <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" placeholder=\"Optional note, reference, split cash/SumUp...\"></textarea>\n        </label>\n\n        <div class=\"modal-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n            {{ savingBalancePayment ? 'Saving...' : 'Confirm 90% payment' }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeBalancePayment()\">Cancel</button>\n        </div>\n\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"status-modal-backdrop\" *ngIf=\"selectedStatusBooking\" (click)=\"closeStatusModal()\">\n    <section class=\"status-modal\" (click)=\"$event.stopPropagation()\">\n      <button class=\"modal-close\" type=\"button\" (click)=\"closeStatusModal()\">×</button>\n      <span class=\"eyebrow\">Booking status</span>\n      <h2>{{ getStatusLabel(selectedStatusBooking) }}</h2>\n      <p>{{ getStatusSummaryText(selectedStatusBooking) }}</p>\n\n      <div class=\"status-timeline\">\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isDepositPaid(selectedStatusBooking))\">\n          <strong>10% deposit</strong>\n          <span>{{ isDepositPaid(selectedStatusBooking) ? 'Paid' : 'Pending' }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isTermsAccepted(selectedStatusBooking))\">\n          <strong>T&C</strong>\n          <span>{{ isTermsAccepted(selectedStatusBooking) ? 'Accepted' : 'Not accepted' }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isWarrantySecured(selectedStatusBooking))\">\n          <strong>Warranty</strong>\n          <span>{{ getWarrantyModeLabel(selectedStatusBooking) }} · {{ getWarrantyCardLabel(selectedStatusBooking) }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isBalancePaid(selectedStatusBooking))\">\n          <strong>Remaining 90%</strong>\n          <span>{{ isBalancePaid(selectedStatusBooking) ? 'Paid' : 'Pending' }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getDamageStatusLabel(selectedStatusBooking).includes('recorded'))\">\n          <strong>Damage</strong>\n          <span>{{ getDamageStatusLabel(selectedStatusBooking) }}</span>\n        </div>\n      </div>\n\n      <div class=\"modal-actions\">\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeStatusModal()\">Close</button>\n        <button class=\"btn btn-primary\" type=\"button\" (click)=\"openDetail(selectedStatusBooking)\">Open booking</button>\n      </div>\n    </section>\n  </div>\n\n</section>\n";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">Admin</span>\n      <h1>Reservations</h1>\n      <p>Manage confirmed bookings, deposits, remaining 90% onboard payments, warranties and damage charges.</p>\n    </div>\n\n    <div class=\"booking-tabs\" *ngIf=\"!loading && bookings.length > 0\">\n      <button type=\"button\" [class.active]=\"activeDateTab === 'upcoming'\" (click)=\"setDateTab('upcoming')\">\n        Upcoming <span>{{ upcomingBookingsCount }}</span>\n      </button>\n      <button type=\"button\" [class.active]=\"activeDateTab === 'past'\" (click)=\"setDateTab('past')\">\n        Past <span>{{ pastBookingsCount }}</span>\n      </button>\n    </div>\n\n    <div class=\"booking-toolbar booking-toolbar-grid\">\n      <label class=\"search-box\">\n        <span>Search</span>\n        <input\n          type=\"search\"\n          name=\"bookingSearch\"\n          [(ngModel)]=\"searchTerm\"\n          placeholder=\"Customer, email, phone, date, status...\"\n          autocomplete=\"off\"\n        />\n      </label>\n\n      <label>\n        <span>Status</span>\n        <select [(ngModel)]=\"statusFilter\">\n          <option value=\"all\">All statuses</option>\n          <option value=\"not_confirmed\">Not confirmed</option>\n          <option value=\"confirmed\">Confirmed</option>\n          <option value=\"payment_done\">Payment done</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Warranty</span>\n        <select [(ngModel)]=\"warrantyFilter\">\n          <option value=\"all\">All warranties</option>\n          <option value=\"not_selected\">Not selected</option>\n          <option value=\"cash\">Cash selected</option>\n          <option value=\"card_selected\">Card selected</option>\n          <option value=\"card_registered\">Card registered</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Order by</span>\n        <select [(ngModel)]=\"sortField\">\n          <option value=\"date\">Date</option>\n          <option value=\"customer\">Customer</option>\n          <option value=\"status\">Status</option>\n          <option value=\"total\">Total price</option>\n          <option value=\"balance\">Remaining 90%</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Direction</span>\n        <select [(ngModel)]=\"sortDirection\">\n          <option value=\"asc\">Ascending</option>\n          <option value=\"desc\">Descending</option>\n        </select>\n      </label>\n\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetFilters()\">Reset filters</button>\n      <a class=\"btn btn-primary\" routerLink=\"/admin/proposals\">Proposals</a>\n      <a class=\"btn btn-secondary\" routerLink=\"/admin/external-bookings\">External bookings</a>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadBookings()\">Refresh</button>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n    <p *ngIf=\"!loading && errorMessage\" class=\"error-message\">{{ errorMessage }}</p>\n    <p *ngIf=\"!loading && !errorMessage && bookings.length === 0\" class=\"muted\">\n      No bookings found in Firebase under <strong>/bnBookings</strong>.\n    </p>\n\n    <div class=\"list-summary\" *ngIf=\"!loading && bookings.length > 0\">\n      Showing <strong>{{ activeTabBookingsCount }}</strong> {{ activeDateTab }} bookings out of <strong>{{ bookings.length }}</strong> total\n    </div>\n\n    <div class=\"bookings-list\" *ngIf=\"!loading && filteredBookings.length > 0\">\n      <button\n        class=\"booking-list-row\"\n        type=\"button\"\n        *ngFor=\"let booking of filteredBookings; trackBy: trackByBookingId\"\n        (click)=\"openBooking(booking)\"\n      >\n        <button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal(booking, $event)\">{{ getStatusLabel(booking) }}</button>\n\n        <span class=\"booking-main\">\n          <strong>{{ booking.customerName || 'Customer not set' }}</strong>\n          <small>{{ booking.email || 'No email' }}</small>\n        </span>\n\n        <span class=\"booking-trip\">\n          <strong>{{ booking.outingType || 'Outing' }}</strong>\n          <small>\n            {{ booking.outingDate || 'Date not set' }}\n            <ng-container *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</ng-container>\n          </small>\n        </span>\n\n        <span class=\"booking-price\">\n          <strong>€{{ booking.totalPrice || 0 }}</strong>\n          <small>Total price</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <!-- Admin cannot pay deposit or remaining balance. Open the detail page for warranty actions. -->\n          <span class=\"row-chevron\">›</span>\n        </span>\n      </button>\n    </div>\n\n    <p *ngIf=\"!loading && bookings.length > 0 && filteredBookings.length === 0\" class=\"muted\">\n      No booking matches the selected tab, filters, search and sorting options.\n    </p>\n    <div class=\"balance-modal-backdrop\" *ngIf=\"false\">\n      <div class=\"balance-modal\">\n        <h2>Record remaining 90% payment</h2>\n        <p>\n          <strong>{{ selectedBalanceBooking.customerName }}</strong><br />\n          Total: €{{ selectedBalanceBooking.totalPrice || 0 }}<br />\n          Deposit 10%: €{{ getDepositAmount(selectedBalanceBooking) }} · {{ isDepositPaid(selectedBalanceBooking) ? 'paid' : 'pending' }}<br />\n          Warranty mode: {{ getWarrantyModeLabel(selectedBalanceBooking) }}<br />\n          Stripe warranty card: {{ getWarrantyCardLabel(selectedBalanceBooking) }}<br />\n          T&C: {{ isTermsAccepted(selectedBalanceBooking) ? 'accepted' : 'not accepted' }}<br />\n          Booking status: {{ getStatusLabel(selectedBalanceBooking) }}<br />\n          Remaining 90% to collect onboard: <strong>€{{ getBalanceAmount(selectedBalanceBooking) }}</strong>\n        </p>\n\n        <label>\n          Payment method\n          <select [(ngModel)]=\"balancePaymentMethod\">\n            <option value=\"sumup\">SumUp / card</option>\n            <option value=\"cash\">Cash</option>\n            <option value=\"mixed\">Mixed</option>\n          </select>\n        </label>\n\n        <label>\n          Notes\n          <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" placeholder=\"Optional note, reference, split cash/SumUp...\"></textarea>\n        </label>\n\n        <div class=\"modal-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n            {{ savingBalancePayment ? 'Saving...' : 'Confirm 90% payment' }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeBalancePayment()\">Cancel</button>\n        </div>\n\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"status-modal-backdrop\" *ngIf=\"selectedStatusBooking\" (click)=\"closeStatusModal()\">\n    <section class=\"status-modal\" (click)=\"$event.stopPropagation()\">\n      <button class=\"modal-close\" type=\"button\" (click)=\"closeStatusModal()\">×</button>\n      <span class=\"eyebrow\">Booking status</span>\n      <h2>{{ getStatusLabel(selectedStatusBooking) }}</h2>\n      <p>{{ getStatusSummaryText(selectedStatusBooking) }}</p>\n\n      <div class=\"status-timeline\">\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isDepositPaid(selectedStatusBooking))\">\n          <strong>10% deposit</strong>\n          <span>{{ isDepositPaid(selectedStatusBooking) ? 'Paid' : 'Pending' }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isTermsAccepted(selectedStatusBooking))\">\n          <strong>T&C</strong>\n          <span>{{ isTermsAccepted(selectedStatusBooking) ? 'Accepted' : 'Not accepted' }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isWarrantySecured(selectedStatusBooking))\">\n          <strong>Warranty</strong>\n          <span>{{ getWarrantyModeLabel(selectedStatusBooking) }} · {{ getWarrantyCardLabel(selectedStatusBooking) }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isBalancePaid(selectedStatusBooking))\">\n          <strong>Remaining 90%</strong>\n          <span>{{ isBalancePaid(selectedStatusBooking) ? 'Paid' : 'Pending' }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getDamageStatusLabel(selectedStatusBooking).includes('recorded'))\">\n          <strong>Damage</strong>\n          <span>{{ getDamageStatusLabel(selectedStatusBooking) }}</span>\n        </div>\n      </div>\n\n      <div class=\"modal-actions\">\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeStatusModal()\">Close</button>\n        <button class=\"btn btn-primary\" type=\"button\" (click)=\"openDetail(selectedStatusBooking)\">Open booking</button>\n      </div>\n    </section>\n  </div>\n\n</section>\n";
 
 /***/ }),
 
@@ -4394,7 +4535,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <p *ngIf=\"loading\" class=\"muted\">{{ btext('loadingBooking') }}</p>\n\n    <article class=\"booking-detail-card\" *ngIf=\"!loading && booking\">\n      <span class=\"eyebrow\">{{ btext('bookingDetail') }}</span>\n      <h1>{{ booking.outingType }}</h1>\n      <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>\n\n      <div class=\"detail-grid\">\n        <div><strong>{{ btext('customer') }}</strong><span>{{ booking.customerName }}</span></div>\n        <div><strong>{{ btext('email') }}</strong><span>{{ booking.email }}</span></div>\n        <div><strong>{{ btext('phone') }}</strong><span>{{ booking.phone || '-' }}</span></div>\n        <div><strong>{{ btext('passengers') }}</strong><span>{{ booking.passengers || '-' }}</span></div>\n        <div><strong>{{ btext('totalPrice') }}</strong><span>€{{ booking.totalPrice || 0 }}</span></div>\n        <div><strong>{{ btext('deposit') }}</strong><span>€{{ getDepositAmount() }} · {{ isDepositPaid() ? btext('paid') : btext('pending') }}</span></div>\n        <div><strong>{{ btext('remaining') }}</strong><span>€{{ getBalanceAmount() }} · {{ isBalancePaid() ? btext('paid') : btext('toCollectOnboard') }}</span></div>\n        <div><strong>{{ btext('warranty') }}</strong><span>{{ booking.warrantyStatus || btext('notRegistered') }}</span></div>\n        <div><strong>{{ btext('status') }}</strong><button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal()\">{{ getStatusLabel() }}</button></div>\n        <div><strong>{{ btext('owner') }}</strong><span>{{ booking.ownerId || '-' }}</span></div>\n      </div>\n\n      <p class=\"comments\" *ngIf=\"booking.comments\">{{ booking.comments }}</p>\n\n\n      <section class=\"customer-edit-card\" *ngIf=\"!isAdmin && editMode\">\n        <h2>{{ btext('updateBookingInfo') }}</h2>\n\n        <label>\n          {{ btext('customerName') }}\n          <input type=\"text\" [(ngModel)]=\"booking.customerName\" />\n        </label>\n\n        <label>\n          {{ btext('email') }}\n          <input type=\"email\" [(ngModel)]=\"booking.email\" />\n        </label>\n\n        <label>\n          {{ btext('phone') }}\n          <input type=\"tel\" [(ngModel)]=\"booking.phone\" />\n        </label>\n\n        <label>\n          {{ btext('numberOfGuests') }}\n          <input type=\"number\" min=\"1\" [(ngModel)]=\"booking.passengers\" />\n        </label>\n\n        <label>\n          {{ btext('pickupLocation') }}\n          <input type=\"text\" [(ngModel)]=\"booking.pickupLocation\" />\n        </label>\n\n        <label>\n          {{ btext('comments') }}\n          <textarea rows=\"3\" [(ngModel)]=\"booking.comments\"></textarea>\n        </label>\n\n        <div class=\"customer-edit-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCustomerUpdate\" (click)=\"saveCustomerUpdate()\">\n            {{ savingCustomerUpdate ? btext('saving') : btext('saveUpdate') }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"savingCustomerUpdate\" (click)=\"cancelCustomerUpdate()\">\n            {{ btext('cancel') }}\n          </button>\n        </div>\n\n        <p class=\"success\" *ngIf=\"customerUpdateMessage\">{{ customerUpdateMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"customerUpdateError\">{{ customerUpdateError }}</p>\n      </section>\n\n      <section class=\"payment-admin-card\">\n        <h2>{{ getWorkflowTitle() }}</h2>\n\n        <div class=\"payment-summary workflow-summary clarity-grid\">\n          <div class=\"status-summary-card\"><strong>{{ btext('bookingStatus') }}</strong><button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal()\">{{ getStatusLabel() }}</button></div>\n          <div><strong>{{ btext('deposit') }}</strong><span>{{ getDepositStatusLabel() }}</span></div>\n          <div><strong>{{ btext('termsConditions') }}</strong><span>{{ getTermsStatusLabel() }}</span></div>\n          <div><strong>{{ btext('warrantyMode') }}</strong><span>{{ getWarrantyModeLabel() }}</span></div>\n          <div><strong>{{ btext('stripeWarrantyCard') }}</strong><span>{{ getWarrantyCardLabel() }}</span></div>\n          <div><strong>{{ btext('remaining') }}</strong><span>{{ getBalanceStatusLabel() }}</span></div>\n          <div><strong>{{ btext('damage') }}</strong><span>{{ getDamageStatusLabel() }}</span></div>\n        </div>\n\n        <div class=\"customer-action-bar\" *ngIf=\"!isAdmin\">\n          <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"canCustomerUpdateBooking() && !editMode\" (click)=\"updateCustomerBooking()\">\n            {{ btext('updateBookingInfo') }}\n          </button>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"shouldShowCustomerPaymentButton()\" (click)=\"customerPayment()\">\n            {{ customerPaymentButtonLabel }}\n          </button>\n        </div>\n\n        <div class=\"customer-action-bar\" *ngIf=\"canAdminOpenDamagePage()\">\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"openAdminDamagePage()\">\n            {{ btext('openWarrantyDamagePage') }}\n          </button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"getBookingWorkflowState() === 'deposit_required'\">\n          <h3>{{ text('termsModalTitle') }}</h3>\n          <div class=\"terms-scroll-box tc-scrollable\" tabindex=\"0\" (scroll)=\"onTermsScroll($event)\" (keyup.end)=\"markTermsRead()\">\n            <ng-container *ngFor=\"let section of termsSections\">\n              <h4>{{ section.title }}</h4>\n              <p *ngFor=\"let paragraph of section.paragraphs\">{{ paragraph }}</p>\n            </ng-container>\n          </div>\n\n          <p class=\"muted\" *ngIf=\"!termsRead\">{{ text('termsLocked') }}</p>\n\n          <label class=\"terms-check\">\n            <input type=\"checkbox\" [(ngModel)]=\"termsAccepted\" [disabled]=\"!termsRead\" />\n            <span>{{ text('termsCheckbox') }}</span>\n          </label>\n\n          <h3>{{ text('warrantyTitle') }}</h3>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoice\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCard') }}</span>\n          </label>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoice\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCash') }}</span>\n          </label>\n\n          <p class=\"blocked-note\" *ngIf=\"getDepositBlockedReason()\">{{ getDepositBlockedReason() }}</p>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!isDepositPaid()\" [disabled]=\"!canPayDeposit()\" (click)=\"payDeposit()\">\n            {{ text('payDepositButton') }}\n          </button>\n\n          <p class=\"paid-badge\" *ngIf=\"isDepositPaid()\">{{ text('depositAlreadyPaid') }}</p>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"getBookingWorkflowState() === 'warranty_choice_required'\">\n          <h3>{{ text('warrantyTitle') }}</h3>\n          <p>{{ btext('warrantyChoiceText') }}</p>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoiceConfirmed\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCard') }}</span>\n          </label>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoiceConfirmed\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCash') }}</span>\n          </label>\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"warrantySaving || !warrantyChoice\" (click)=\"warrantyChoice === 'cash_on_board' ? selectWarrantyCash() : selectWarrantyCard()\">\n            {{ btext('saveWarrantyChoice') }}\n          </button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"getBookingWorkflowState() === 'warranty_card_required'\">\n          <h3>{{ btext('registerWarrantyCardTitle') }}</h3>\n          <p>{{ btext('registerWarrantyCardText') }}</p>\n          <button class=\"btn btn-primary\" type=\"button\" (click)=\"registerWarrantyCard()\">{{ btext('registerWarrantyCardButton') }}</button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"getBookingWorkflowState() === 'balance_required'\">\n          <h3>{{ btext('collectRemainingTitle') }}</h3>\n          <p>{{ btext('amountDueBeforeDeparture') }}: <strong>€{{ getBalanceAmount() }}</strong></p>\n\n          <div class=\"collect-balance\" *ngIf=\"isAdmin\">\n            <label>\n              {{ btext('paymentMethod') }}\n              <select [(ngModel)]=\"balancePaymentMethod\">\n                <option value=\"sumup\">{{ btext('sumupCard') }}</option>\n                <option value=\"cash\">{{ btext('cash') }}</option>\n                <option value=\"mixed\">{{ btext('mixed') }}</option>\n              </select>\n            </label>\n\n            <label>\n              {{ btext('notes') }}\n              <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" placeholder=\"{{ btext('balanceNotesPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n              {{ savingBalancePayment ? btext('saving') : btext('recordRemainingPayment') }}\n            </button>\n          </div>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"getBookingWorkflowState() === 'payment_done' && isAdmin\">\n          <h3>{{ btext('damageManagement') }}</h3>\n          <p>{{ btext('damageManagementText') }}</p>\n\n          <div class=\"cash-damage-card\" *ngIf=\"isCashWarranty()\">\n            <h3>{{ btext('cashWarrantyEnvelope') }}</h3>\n            <p>\n              {{ btext('cashWarrantyInitialEnvelope') }}: <strong>€{{ getCashWarrantyAmount() }}</strong><br />\n              {{ btext('cashWarrantyAlreadyTaken') }}: <strong>€{{ getCashWarrantyDamagesTaken() }}</strong><br />\n              {{ btext('cashWarrantyRemaining') }}: <strong>€{{ getCashWarrantyRemaining() }}</strong>\n            </p>\n\n            <label>\n              {{ btext('cashDamageAmount') }} (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cashDamageAmount\" />\n            </label>\n\n            <label>\n              {{ btext('damageReason') }}\n              <textarea rows=\"3\" [(ngModel)]=\"cashDamageReason\" placeholder=\"{{ btext('damageReasonPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCashDamage\" (click)=\"recordCashWarrantyDamage()\">\n              {{ savingCashDamage ? btext('saving') : btext('recordCashDamage') }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"cashDamageMessage\">{{ cashDamageMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"cashDamageError\">{{ cashDamageError }}</p>\n          </div>\n\n          <div class=\"cash-damage-card\" *ngIf=\"isWarrantyCardRegistered()\">\n            <h3>{{ btext('chargeCardWarranty') }}</h3>\n            <p>{{ btext('maximumWarranty') }}: <strong>€{{ booking.warrantyAmount || 500 }}</strong></p>\n\n            <label>\n              {{ btext('damageAmount') }} (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cardDamageAmount\" />\n            </label>\n\n            <label>\n              {{ btext('damageReason') }}\n              <textarea rows=\"3\" [(ngModel)]=\"cardDamageReason\" placeholder=\"{{ btext('damageReasonPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCardDamage\" (click)=\"recordCardWarrantyDamage()\">\n              {{ savingCardDamage ? btext('charging') : btext('chargeDamageToWarrantyCard') }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"cardDamageMessage\">{{ cardDamageMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"cardDamageError\">{{ cardDamageError }}</p>\n          </div>\n        </div>\n\n        <p class=\"success\" *ngIf=\"balancePaymentMessage\">{{ balancePaymentMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n        <p class=\"success\" *ngIf=\"warrantyMessage\">{{ warrantyMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"warrantyError\">{{ warrantyError }}</p>\n      </section>\n    \n      <div class=\"status-modal-backdrop\" *ngIf=\"statusModalOpen\" (click)=\"closeStatusModal()\">\n        <section class=\"status-modal\" (click)=\"$event.stopPropagation()\">\n          <button class=\"modal-close\" type=\"button\" (click)=\"closeStatusModal()\">×</button>\n          <span class=\"eyebrow\">{{ btext('bookingStatus') }}</span>\n          <h2>{{ getStatusLabel() }}</h2>\n          <p>{{ getStatusSummaryText() }}</p>\n\n          <div class=\"status-timeline\">\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isDepositPaid())\">\n              <strong>{{ btext('deposit') }}</strong>\n              <span>{{ getDepositStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isTermsAccepted())\">\n              <strong>{{ btext('termsConditions') }}</strong>\n              <span>{{ getTermsStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isWarrantySecured())\">\n              <strong>{{ btext('warranty') }}</strong>\n              <span>{{ getWarrantyModeLabel() }} · {{ getWarrantyCardLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isBalancePaid())\">\n              <strong>{{ btext('remaining') }}</strong>\n              <span>{{ getBalanceStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getDamageStatusLabel().includes('recorded'))\">\n              <strong>{{ btext('damage') }}</strong>\n              <span>{{ getDamageStatusLabel() }}</span>\n            </div>\n          </div>\n\n          <div class=\"modal-actions\">\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeStatusModal()\">{{ btext('close') }}</button>\n          </div>\n        </section>\n      </div>\n\n    </article>\n  </div>\n</section>\n";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <p *ngIf=\"loading\" class=\"muted\">{{ btext('loadingBooking') }}</p>\n\n    <article class=\"booking-detail-card\" *ngIf=\"!loading && booking\">\n      <span class=\"eyebrow\">{{ btext('bookingDetail') }}</span>\n      <h1>{{ booking.outingType }}</h1>\n      <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>\n\n      <div class=\"detail-grid\">\n        <div><strong>{{ btext('customer') }}</strong><span>{{ booking.customerName }}</span></div>\n        <div><strong>{{ btext('email') }}</strong><span>{{ booking.email }}</span></div>\n        <div><strong>{{ btext('phone') }}</strong><span>{{ booking.phone || '-' }}</span></div>\n        <div><strong>{{ btext('passengers') }}</strong><span>{{ booking.passengers || '-' }}</span></div>\n        <div><strong>{{ btext('totalPrice') }}</strong><span>€{{ booking.totalPrice || 0 }}</span></div>\n        <div><strong>{{ btext('deposit') }}</strong><span>€{{ getDepositAmount() }} · {{ isDepositPaid() ? btext('paid') : btext('pending') }}</span></div>\n        <div><strong>{{ btext('remaining') }}</strong><span>€{{ getBalanceAmount() }} · {{ isBalancePaid() ? btext('paid') : btext('toCollectOnboard') }}</span></div>\n        <div><strong>{{ btext('warranty') }}</strong><span>{{ booking.warrantyStatus || btext('notRegistered') }}</span></div>\n        <div><strong>{{ btext('status') }}</strong><button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal()\">{{ getStatusLabel() }}</button></div>\n        <div><strong>{{ btext('owner') }}</strong><span>{{ booking.ownerId || '-' }}</span></div>\n      </div>\n\n      <p class=\"comments\" *ngIf=\"booking.comments\">{{ booking.comments }}</p>\n\n\n      <section class=\"invoice-actions-card\" *ngIf=\"isAdmin && isOutingDone()\">\n        <h2>Facturation</h2>\n        <p>La sortie est passée. Vous pouvez éditer une facture imprimable puis l'enregistrer en PDF depuis le navigateur.</p>\n        <div class=\"customer-action-bar\">\n          <a class=\"btn btn-secondary\" [routerLink]=\"['/admin/bookings', booking.bookingId, 'invoice']\" [queryParams]=\"{ type: 'booking' }\">\n            Facture prestations ALEGRIA\n          </a>\n          <a class=\"btn btn-primary\" [routerLink]=\"['/admin/bookings', booking.bookingId, 'invoice']\" [queryParams]=\"{ type: 'extras' }\">\n            Facture extras / catering\n          </a>\n        </div>\n      </section>\n\n\n\n      <section class=\"customer-edit-card\" *ngIf=\"!isAdmin && editMode\">\n        <h2>{{ btext('updateBookingInfo') }}</h2>\n\n        <label>\n          {{ btext('customerName') }}\n          <input type=\"text\" [(ngModel)]=\"booking.customerName\" />\n        </label>\n\n        <label>\n          {{ btext('email') }}\n          <input type=\"email\" [(ngModel)]=\"booking.email\" />\n        </label>\n\n        <label>\n          {{ btext('phone') }}\n          <input type=\"tel\" [(ngModel)]=\"booking.phone\" />\n        </label>\n\n        <label>\n          {{ btext('numberOfGuests') }}\n          <input type=\"number\" min=\"1\" [(ngModel)]=\"booking.passengers\" />\n        </label>\n\n        <label>\n          {{ btext('pickupLocation') }}\n          <input type=\"text\" [(ngModel)]=\"booking.pickupLocation\" />\n        </label>\n\n        <label>\n          {{ btext('comments') }}\n          <textarea rows=\"3\" [(ngModel)]=\"booking.comments\"></textarea>\n        </label>\n\n        <div class=\"customer-edit-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCustomerUpdate\" (click)=\"saveCustomerUpdate()\">\n            {{ savingCustomerUpdate ? btext('saving') : btext('saveUpdate') }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"savingCustomerUpdate\" (click)=\"cancelCustomerUpdate()\">\n            {{ btext('cancel') }}\n          </button>\n        </div>\n\n        <p class=\"success\" *ngIf=\"customerUpdateMessage\">{{ customerUpdateMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"customerUpdateError\">{{ customerUpdateError }}</p>\n      </section>\n\n      <section class=\"payment-admin-card\">\n        <h2>{{ getWorkflowTitle() }}</h2>\n\n        <div class=\"payment-summary workflow-summary clarity-grid\">\n          <div class=\"status-summary-card\"><strong>{{ btext('bookingStatus') }}</strong><button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal()\">{{ getStatusLabel() }}</button></div>\n          <div><strong>{{ btext('deposit') }}</strong><span>{{ getDepositStatusLabel() }}</span></div>\n          <div><strong>{{ btext('termsConditions') }}</strong><span>{{ getTermsStatusLabel() }}</span></div>\n          <div><strong>{{ btext('warrantyMode') }}</strong><span>{{ getWarrantyModeLabel() }}</span></div>\n          <div><strong>{{ btext('stripeWarrantyCard') }}</strong><span>{{ getWarrantyCardLabel() }}</span></div>\n          <div><strong>{{ btext('remaining') }}</strong><span>{{ getBalanceStatusLabel() }}</span></div>\n          <div><strong>{{ btext('damage') }}</strong><span>{{ getDamageStatusLabel() }}</span></div>\n        </div>\n\n        <div class=\"customer-action-bar\" *ngIf=\"!isAdmin\">\n          <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"canCustomerUpdateBooking() && !editMode\" (click)=\"updateCustomerBooking()\">\n            {{ btext('updateBookingInfo') }}\n          </button>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"shouldShowCustomerPaymentButton()\" (click)=\"customerPayment()\">\n            {{ customerPaymentButtonLabel }}\n          </button>\n        </div>\n\n        <div class=\"customer-action-bar\" *ngIf=\"canAdminOpenDamagePage()\">\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"openAdminDamagePage()\">\n            {{ btext('openWarrantyDamagePage') }}\n          </button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'deposit_required'\">\n          <h3>{{ text('termsModalTitle') }}</h3>\n          <div class=\"terms-scroll-box tc-scrollable\" tabindex=\"0\" (scroll)=\"onTermsScroll($event)\" (keyup.end)=\"markTermsRead()\">\n            <ng-container *ngFor=\"let section of termsSections\">\n              <h4>{{ section.title }}</h4>\n              <p *ngFor=\"let paragraph of section.paragraphs\">{{ paragraph }}</p>\n            </ng-container>\n          </div>\n\n          <p class=\"muted\" *ngIf=\"!termsRead\">{{ text('termsLocked') }}</p>\n\n          <label class=\"terms-check\">\n            <input type=\"checkbox\" [(ngModel)]=\"termsAccepted\" [disabled]=\"!termsRead\" />\n            <span>{{ text('termsCheckbox') }}</span>\n          </label>\n\n          <h3>{{ text('warrantyTitle') }}</h3>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoice\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCard') }}</span>\n          </label>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoice\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCash') }}</span>\n          </label>\n\n          <p class=\"blocked-note\" *ngIf=\"getDepositBlockedReason()\">{{ getDepositBlockedReason() }}</p>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!isAdmin && !isDepositPaid()\" [disabled]=\"!canPayDeposit()\" (click)=\"payDeposit()\">\n            {{ text('payDepositButton') }}\n          </button>\n\n          <p class=\"paid-badge\" *ngIf=\"isDepositPaid()\">{{ text('depositAlreadyPaid') }}</p>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'warranty_choice_required'\">\n          <h3>{{ text('warrantyTitle') }}</h3>\n          <p>{{ btext('warrantyChoiceText') }}</p>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoiceConfirmed\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCard') }}</span>\n          </label>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoiceConfirmed\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCash') }}</span>\n          </label>\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"warrantySaving || !warrantyChoice\" (click)=\"warrantyChoice === 'cash_on_board' ? selectWarrantyCash() : selectWarrantyCard()\">\n            {{ btext('saveWarrantyChoice') }}\n          </button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'warranty_card_required'\">\n          <h3>{{ btext('registerWarrantyCardTitle') }}</h3>\n          <p>{{ btext('registerWarrantyCardText') }}</p>\n          <button class=\"btn btn-primary\" type=\"button\" (click)=\"registerWarrantyCard()\">{{ btext('registerWarrantyCardButton') }}</button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'balance_required'\">\n          <h3>{{ btext('collectRemainingTitle') }}</h3>\n          <p>{{ btext('amountDueBeforeDeparture') }}: <strong>€{{ getBalanceAmount() }}</strong></p>\n\n          <div class=\"collect-balance\" *ngIf=\"canAdminCreateExtraService()\">\n            <label>\n              {{ btext('paymentMethod') }}\n              <select [(ngModel)]=\"balancePaymentMethod\">\n                <option value=\"sumup\">{{ btext('sumupCard') }}</option>\n                <option value=\"cash\">{{ btext('cash') }}</option>\n                <option value=\"mixed\">{{ btext('mixed') }}</option>\n              </select>\n            </label>\n\n            <label>\n              {{ btext('notes') }}\n              <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" placeholder=\"{{ btext('balanceNotesPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n              {{ savingBalancePayment ? btext('saving') : btext('recordRemainingPayment') }}\n            </button>\n          </div>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"getBookingWorkflowState() === 'payment_done' && isAdmin && isOutingDone()\">\n          <h3>{{ btext('damageManagement') }}</h3>\n          <p>{{ btext('damageManagementText') }}</p>\n\n          <div class=\"cash-damage-card\" *ngIf=\"isCashWarranty()\">\n            <h3>{{ btext('cashWarrantyEnvelope') }}</h3>\n            <p>\n              {{ btext('cashWarrantyInitialEnvelope') }}: <strong>€{{ getCashWarrantyAmount() }}</strong><br />\n              {{ btext('cashWarrantyAlreadyTaken') }}: <strong>€{{ getCashWarrantyDamagesTaken() }}</strong><br />\n              {{ btext('cashWarrantyRemaining') }}: <strong>€{{ getCashWarrantyRemaining() }}</strong>\n            </p>\n\n            <label>\n              {{ btext('cashDamageAmount') }} (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cashDamageAmount\" />\n            </label>\n\n            <label>\n              {{ btext('damageReason') }}\n              <textarea rows=\"3\" [(ngModel)]=\"cashDamageReason\" placeholder=\"{{ btext('damageReasonPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCashDamage\" (click)=\"recordCashWarrantyDamage()\">\n              {{ savingCashDamage ? btext('saving') : btext('recordCashDamage') }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"cashDamageMessage\">{{ cashDamageMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"cashDamageError\">{{ cashDamageError }}</p>\n          </div>\n\n          <div class=\"cash-damage-card\" *ngIf=\"isWarrantyCardRegistered()\">\n            <h3>{{ btext('chargeCardWarranty') }}</h3>\n            <p>{{ btext('maximumWarranty') }}: <strong>€{{ booking.warrantyAmount || 500 }}</strong></p>\n\n            <label>\n              {{ btext('damageAmount') }} (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cardDamageAmount\" />\n            </label>\n\n            <label>\n              {{ btext('damageReason') }}\n              <textarea rows=\"3\" [(ngModel)]=\"cardDamageReason\" placeholder=\"{{ btext('damageReasonPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCardDamage\" (click)=\"recordCardWarrantyDamage()\">\n              {{ savingCardDamage ? btext('charging') : btext('chargeDamageToWarrantyCard') }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"cardDamageMessage\">{{ cardDamageMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"cardDamageError\">{{ cardDamageError }}</p>\n          </div>\n        </div>\n\n\n        <div class=\"workflow-panel extra-services-panel\" *ngIf=\"booking\">\n          <h3>Extra services</h3>\n\n          <div *ngIf=\"bookingExtraServices.length === 0\" class=\"muted\">\n            No extra service requested for this booking.\n          </div>\n\n          <div class=\"extra-service-row\" *ngFor=\"let extra of bookingExtraServices\">\n            <div>\n              <strong>{{ extra.description || extra.title || extra.name }}</strong>\n              <span>€{{ extra.amount || 0 }} · {{ extra.status === 'paid' || extra.paid ? 'paid' : 'pending' }}</span>\n            </div>\n            <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!isAdmin && canCustomerPayExtraService(extra)\" (click)=\"payExtraService(extra)\">\n              Pay extra service\n            </button>\n          </div>\n\n          <div class=\"admin-extra-service-form\" *ngIf=\"canAdminCreateExtraService()\">\n            <h4>Propose an extra service to the customer</h4>\n\n            <label>\n              Service from Firebase catalog\n              <select [(ngModel)]=\"selectedExtraServiceId\">\n                <option value=\"\">Custom service</option>\n                <option *ngFor=\"let service of extraServicesCatalog\" [value]=\"service.id || service.slug\">\n                  {{ service.title || service.name || service.description }} — €{{ service.amount || service.price || 0 }}\n                </option>\n              </select>\n            </label>\n\n            <label>\n              Custom description\n              <input type=\"text\" [(ngModel)]=\"customExtraServiceDescription\" placeholder=\"Drinks, food, catering...\" />\n            </label>\n\n            <label>\n              Custom amount (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"customExtraServiceAmount\" />\n            </label>\n\n            <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"savingExtraService\" (click)=\"createExtraServiceRequest()\">\n              {{ savingExtraService ? 'Saving...' : 'Send extra service payment request' }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"extraServiceMessage\">{{ extraServiceMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"extraServiceError\">{{ extraServiceError }}</p>\n          </div>\n        </div>\n\n        <div class=\"workflow-panel refund-panel\" *ngIf=\"false\">\n          <h3>Refund</h3>\n          <p>Paid: <strong>€{{ totalPaidAmount }}</strong> · Already refunded: <strong>€{{ totalRefundedAmount }}</strong> · Available: <strong>€{{ refundableAmount }}</strong></p>\n\n          <label>\n            Refund amount (€)\n            <input type=\"number\" min=\"1\" step=\"0.01\" [max]=\"refundableAmount\" [(ngModel)]=\"refundAmount\" />\n          </label>\n\n          <label>\n            Reason\n            <textarea rows=\"3\" [(ngModel)]=\"refundReason\" placeholder=\"Weather compensation, commercial gesture...\"></textarea>\n          </label>\n\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"refunding || !canAdminRefund()\" (click)=\"issueRefund()\">\n            {{ refunding ? 'Refunding...' : 'Issue refund' }}\n          </button>\n\n          <p class=\"success\" *ngIf=\"refundMessage\">{{ refundMessage }}</p>\n          <p class=\"error-message\" *ngIf=\"refundError\">{{ refundError }}</p>\n        </div>\n\n\n        <p class=\"success\" *ngIf=\"balancePaymentMessage\">{{ balancePaymentMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n        <p class=\"success\" *ngIf=\"warrantyMessage\">{{ warrantyMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"warrantyError\">{{ warrantyError }}</p>\n      </section>\n    \n      <div class=\"status-modal-backdrop\" *ngIf=\"statusModalOpen\" (click)=\"closeStatusModal()\">\n        <section class=\"status-modal\" (click)=\"$event.stopPropagation()\">\n          <button class=\"modal-close\" type=\"button\" (click)=\"closeStatusModal()\">×</button>\n          <span class=\"eyebrow\">{{ btext('bookingStatus') }}</span>\n          <h2>{{ getStatusLabel() }}</h2>\n          <p>{{ getStatusSummaryText() }}</p>\n\n          <div class=\"status-timeline\">\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isDepositPaid())\">\n              <strong>{{ btext('deposit') }}</strong>\n              <span>{{ getDepositStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isTermsAccepted())\">\n              <strong>{{ btext('termsConditions') }}</strong>\n              <span>{{ getTermsStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isWarrantySecured())\">\n              <strong>{{ btext('warranty') }}</strong>\n              <span>{{ getWarrantyModeLabel() }} · {{ getWarrantyCardLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isBalancePaid())\">\n              <strong>{{ btext('remaining') }}</strong>\n              <span>{{ getBalanceStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getDamageStatusLabel().includes('recorded'))\">\n              <strong>{{ btext('damage') }}</strong>\n              <span>{{ getDamageStatusLabel() }}</span>\n            </div>\n          </div>\n\n          <div class=\"modal-actions\">\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeStatusModal()\">{{ btext('close') }}</button>\n          </div>\n        </section>\n      </div>\n\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -7332,12 +7473,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeModule: () => (/* binding */ HomeModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! @angular/router */ 99585);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! @ionic/angular */ 21507);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! @ionic/angular */ 21507);
 /* harmony import */ var _home_router_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home.router.module */ 61506);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
@@ -7365,11 +7506,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./my-bookings/my-bookings.component */ 18170);
 /* harmony import */ var _my_proposals_my_proposals_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./my-proposals/my-proposals.component */ 8968);
 /* harmony import */ var _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./booking-detail/booking-detail.component */ 82474);
-/* harmony import */ var _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./admin-warranty-charge/admin-warranty-charge.component */ 32134);
-/* harmony import */ var _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./admin-proposals/admin-proposals.component */ 43758);
-/* harmony import */ var _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./proposal-confirmation/proposal-confirmation.component */ 96894);
-/* harmony import */ var _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./admin-external-bookings/admin-external-bookings.component */ 65726);
-/* harmony import */ var _booking_process_booking_process_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./booking-process/booking-process.component */ 18766);
+/* harmony import */ var _booking_invoice_booking_invoice_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./booking-invoice/booking-invoice.component */ 590);
+/* harmony import */ var _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./admin-warranty-charge/admin-warranty-charge.component */ 32134);
+/* harmony import */ var _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./admin-proposals/admin-proposals.component */ 43758);
+/* harmony import */ var _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./proposal-confirmation/proposal-confirmation.component */ 96894);
+/* harmony import */ var _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./admin-external-bookings/admin-external-bookings.component */ 65726);
+/* harmony import */ var _booking_process_booking_process_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./booking-process/booking-process.component */ 18766);
+
 
 
 
@@ -7409,9 +7552,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let HomeModule = class HomeModule {};
-HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_32__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_33__.NgModule)({
-  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent, _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__.SafetyInstructionsComponent, _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_13__.DepositComponent, _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__.AccountSummaryComponent, _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_15__.MyProfileComponent, _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__.MyFeedbacksComponent, _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.AdminFeedbacksComponent, _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingsComponent, _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_19__.AdminOutingDetailComponent, _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__.AdminManageOutingsComponent, _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_21__.GuestFaqComponent, _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__.GuestJourneyComponent, _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__.BookingsComponent, _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__.MyBookingsComponent, _my_proposals_my_proposals_component__WEBPACK_IMPORTED_MODULE_25__.MyProposalsComponent, _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_26__.BookingDetailComponent, _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_27__.AdminWarrantyChargeComponent, _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_28__.AdminProposalsComponent, _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_29__.ProposalConfirmationComponent, _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_30__.AdminExternalBookingsComponent, _booking_process_booking_process_component__WEBPACK_IMPORTED_MODULE_31__.BookingProcessComponent],
-  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_34__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_35__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_36__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_37__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule]
+HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_33__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_34__.NgModule)({
+  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent, _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__.SafetyInstructionsComponent, _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_13__.DepositComponent, _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__.AccountSummaryComponent, _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_15__.MyProfileComponent, _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__.MyFeedbacksComponent, _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.AdminFeedbacksComponent, _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingsComponent, _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_19__.AdminOutingDetailComponent, _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__.AdminManageOutingsComponent, _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_21__.GuestFaqComponent, _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__.GuestJourneyComponent, _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__.BookingsComponent, _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__.MyBookingsComponent, _my_proposals_my_proposals_component__WEBPACK_IMPORTED_MODULE_25__.MyProposalsComponent, _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_26__.BookingDetailComponent, _booking_invoice_booking_invoice_component__WEBPACK_IMPORTED_MODULE_27__.BookingInvoiceComponent, _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_28__.AdminWarrantyChargeComponent, _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_29__.AdminProposalsComponent, _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_30__.ProposalConfirmationComponent, _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_31__.AdminExternalBookingsComponent, _booking_process_booking_process_component__WEBPACK_IMPORTED_MODULE_32__.BookingProcessComponent],
+  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_35__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_36__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_37__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_38__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule]
 })], HomeModule);
 
 
@@ -9522,6 +9665,17 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 /***/ }),
 
+/***/ 60650:
+/*!********************************************************************************!*\
+  !*** ./src/app/home/booking-invoice/booking-invoice.component.html?ngResource ***!
+  \********************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<section class=\"invoice-page\" *ngIf=\"!loading && booking\">\n  <div class=\"invoice-toolbar no-print\">\n    <a class=\"btn btn-secondary\" [routerLink]=\"['/admin/bookings', booking.bookingId]\">Retour réservation</a>\n    <button class=\"btn btn-secondary\" type=\"button\" (click)=\"addLine()\">Ajouter une ligne</button>\n    <button class=\"btn btn-primary\" type=\"button\" (click)=\"printPdf()\">Imprimer / Enregistrer en PDF</button>\n  </div>\n\n  <article class=\"invoice-sheet\">\n    <header class=\"invoice-header\">\n      <div>\n        <h1>FACTURE</h1>\n        <p>{{ invoiceType === 'extras' ? 'Prestations additionnelles / Catering' : 'Prestations ALEGRIA' }}</p>\n      </div>\n      <div class=\"invoice-meta\">\n        <label>N° facture <input [(ngModel)]=\"invoiceNumber\" /></label>\n        <label>Date <input type=\"date\" [(ngModel)]=\"invoiceDate\" /></label>\n      </div>\n    </header>\n\n    <section class=\"invoice-parties\">\n      <div>\n        <h2>Émetteur</h2>\n        <label>Nom <input [(ngModel)]=\"sellerName\" /></label>\n        <label>Détails <textarea rows=\"3\" [(ngModel)]=\"sellerDetails\"></textarea></label>\n        <label>Adresse <textarea rows=\"2\" [(ngModel)]=\"sellerAddress\"></textarea></label>\n        <label>SIRET / TVA <input [(ngModel)]=\"sellerSiret\" /></label>\n      </div>\n\n      <div>\n        <h2>Client</h2>\n        <label>Nom <input [(ngModel)]=\"customerName\" /></label>\n        <label>Email <input [(ngModel)]=\"customerEmail\" /></label>\n        <label>Adresse <textarea rows=\"3\" [(ngModel)]=\"customerAddress\"></textarea></label>\n      </div>\n    </section>\n\n    <section class=\"booking-summary\">\n      <h2>Sortie concernée</h2>\n      <p>\n        <strong>{{ booking.outingType }}</strong><br />\n        Date : {{ booking.outingDate }}<br />\n        Horaires : {{ booking.departureTime || '-' }} - {{ booking.arrivalTime || '-' }}<br />\n        Passagers : {{ booking.passengers || '-' }}<br />\n        Référence réservation : {{ booking.bookingId }}\n      </p>\n    </section>\n\n    <section class=\"invoice-note\" *ngIf=\"invoiceType === 'booking'\">\n      <strong>Note :</strong>\n      Les frais liés à la location du bateau ont été encaissés séparément par Click&Boat. La présente facture concerne uniquement les prestations ALEGRIA indiquées ci-dessous.\n    </section>\n\n    <table class=\"invoice-table\">\n      <thead>\n        <tr>\n          <th>Description</th>\n          <th>Qté</th>\n          <th>Prix unitaire</th>\n          <th>Total</th>\n          <th class=\"no-print\"></th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let line of lines; let i = index\">\n          <td><input [(ngModel)]=\"line.description\" /></td>\n          <td><input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"line.quantity\" /></td>\n          <td><input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"line.unitPrice\" /></td>\n          <td>€{{ getLineTotal(line) | number:'1.2-2' }}</td>\n          <td class=\"no-print\"><button type=\"button\" class=\"mini-btn\" (click)=\"removeLine(i)\">Supprimer</button></td>\n        </tr>\n      </tbody>\n      <tfoot>\n        <tr>\n          <td colspan=\"3\">Total TTC</td>\n          <td>€{{ total | number:'1.2-2' }}</td>\n          <td class=\"no-print\"></td>\n        </tr>\n      </tfoot>\n    </table>\n\n    <section class=\"invoice-bottom\">\n      <label>Conditions de paiement <input [(ngModel)]=\"paymentTerms\" /></label>\n      <label>Notes <textarea rows=\"4\" [(ngModel)]=\"notes\"></textarea></label>\n    </section>\n  </article>\n</section>\n\n<p *ngIf=\"loading\" class=\"muted\">Chargement de la facture...</p>\n";
+
+/***/ }),
+
 /***/ 61506:
 /*!********************************************!*\
   !*** ./src/app/home/home.router.module.ts ***!
@@ -9533,9 +9687,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeRoutingModule: () => (/* binding */ HomeRoutingModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! @angular/router */ 99585);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
 /* harmony import */ var _boat_boat_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./boat/boat.component */ 36424);
@@ -9562,11 +9716,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./my-bookings/my-bookings.component */ 18170);
 /* harmony import */ var _my_proposals_my_proposals_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./my-proposals/my-proposals.component */ 8968);
 /* harmony import */ var _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./booking-detail/booking-detail.component */ 82474);
-/* harmony import */ var _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./admin-warranty-charge/admin-warranty-charge.component */ 32134);
-/* harmony import */ var _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./admin-proposals/admin-proposals.component */ 43758);
-/* harmony import */ var _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./proposal-confirmation/proposal-confirmation.component */ 96894);
-/* harmony import */ var _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./admin-external-bookings/admin-external-bookings.component */ 65726);
-/* harmony import */ var _booking_process_booking_process_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./booking-process/booking-process.component */ 18766);
+/* harmony import */ var _booking_invoice_booking_invoice_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./booking-invoice/booking-invoice.component */ 590);
+/* harmony import */ var _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./admin-warranty-charge/admin-warranty-charge.component */ 32134);
+/* harmony import */ var _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./admin-proposals/admin-proposals.component */ 43758);
+/* harmony import */ var _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./proposal-confirmation/proposal-confirmation.component */ 96894);
+/* harmony import */ var _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./admin-external-bookings/admin-external-bookings.component */ 65726);
+/* harmony import */ var _booking_process_booking_process_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./booking-process/booking-process.component */ 18766);
+
 
 
 
@@ -9646,7 +9802,7 @@ const routes = [{
   component: _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_12__.DepositComponent
 }, {
   path: 'booking-process',
-  component: _booking_process_booking_process_component__WEBPACK_IMPORTED_MODULE_30__.BookingProcessComponent
+  component: _booking_process_booking_process_component__WEBPACK_IMPORTED_MODULE_31__.BookingProcessComponent
 }, {
   path: 'faq',
   component: _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_20__.GuestFaqComponent
@@ -9665,6 +9821,9 @@ const routes = [{
   data: {
     section: 'payments'
   }
+}, {
+  path: 'bookings/:bookingId/invoice',
+  component: _booking_invoice_booking_invoice_component__WEBPACK_IMPORTED_MODULE_26__.BookingInvoiceComponent
 }, {
   path: 'bookings/:bookingId',
   component: _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__.BookingDetailComponent
@@ -9688,6 +9847,9 @@ const routes = [{
   path: 'admin/bookings',
   component: _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_22__.BookingsComponent
 }, {
+  path: 'admin/bookings/:bookingId/invoice',
+  component: _booking_invoice_booking_invoice_component__WEBPACK_IMPORTED_MODULE_26__.BookingInvoiceComponent
+}, {
   path: 'admin/bookings/:bookingId',
   component: _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_25__.BookingDetailComponent
 }, {
@@ -9701,21 +9863,21 @@ const routes = [{
   component: _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_19__.AdminManageOutingsComponent
 }, {
   path: 'admin/proposals',
-  component: _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_27__.AdminProposalsComponent
+  component: _admin_proposals_admin_proposals_component__WEBPACK_IMPORTED_MODULE_28__.AdminProposalsComponent
 }, {
   path: 'proposal/:proposalId',
-  component: _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_28__.ProposalConfirmationComponent
+  component: _proposal_confirmation_proposal_confirmation_component__WEBPACK_IMPORTED_MODULE_29__.ProposalConfirmationComponent
 }, {
   path: 'admin/external-bookings',
-  component: _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_29__.AdminExternalBookingsComponent
+  component: _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_30__.AdminExternalBookingsComponent
 }, {
   path: 'admin/warranty-charge',
-  component: _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_26__.AdminWarrantyChargeComponent
+  component: _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_27__.AdminWarrantyChargeComponent
 }];
 let HomeRoutingModule = class HomeRoutingModule {};
-HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_31__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_32__.NgModule)({
-  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_33__.RouterModule.forChild(routes)],
-  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_33__.RouterModule]
+HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_32__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_33__.NgModule)({
+  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_34__.RouterModule.forChild(routes)],
+  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_34__.RouterModule]
 })], HomeRoutingModule);
 
 
@@ -10916,7 +11078,50 @@ h1 {
   .terms-modal .terms-content.tc-scrollable {
     max-height: calc(92vh - 170px) !important;
   }
-}`, "",{"version":3,"sources":["webpack://./src/app/home/booking-detail/booking-detail.component.scss"],"names":[],"mappings":"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","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n\n.payment-admin-card {\n  background: #fff;\n  border-radius: 24px;\n  padding: 24px;\n  margin: 24px 0;\n  box-shadow: 0 18px 45px rgba(8,38,58,.08);\n  border: 1px solid rgba(8,38,58,.08);\n}\n\n.payment-admin-card h2 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.payment-summary {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\n  gap: 12px;\n  margin: 16px 0;\n}\n\n.payment-summary div {\n  background: #f8f5ef;\n  border-radius: 16px;\n  padding: 14px;\n  display: grid;\n  gap: 4px;\n}\n\n.collect-balance {\n  display: grid;\n  gap: 12px;\n}\n\n.collect-balance label {\n  display: grid;\n  gap: 0.4rem;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.collect-balance select,\n.collect-balance textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n}\n\n.paid-badge {\n  display: inline-flex;\n  border-radius: 999px;\n  padding: 0.55rem 0.9rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n}\n\n.success { color: #047857; font-weight: 700; }\n.error-message { color: #9f1d1d; font-weight: 700; }\n\n.blocked-note {\n  background: rgba(181,139,74,.12);\n  color: #8a652d;\n  border: 1px solid rgba(181,139,74,.25);\n  border-radius: 14px;\n  padding: 0.85rem 1rem;\n  font-weight: 700;\n}\n\n.warranty-actions {\n  background: #f8f5ef;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.warranty-actions p {\n  margin-top: 0;\n  color: #516070;\n}\n\n.cash-damage-card {\n  background: #fff7ed;\n  border: 1px solid rgba(242, 140, 40, 0.25);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.cash-damage-card h3 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.cash-damage-card label {\n  display: grid;\n  gap: 0.4rem;\n  margin: 0.85rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.cash-damage-card input,\n.cash-damage-card textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n  background: #fff;\n}\n\n.deposit-actions {\n  background: #eef6f0;\n  border: 1px solid rgba(4,120,87,.18);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.deposit-actions p {\n  margin-top: 0;\n  color: #047857;\n  font-weight: 700;\n}\n\n.workflow-summary div {\n  min-height: 74px;\n}\n\n.workflow-panel {\n  background: #fff;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 18px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.workflow-panel h3 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.terms-scroll-box {\n  max-height: 260px;\n  overflow: auto;\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 16px;\n  padding: 1rem;\n  background: #f8f5ef;\n  color: #516070;\n  line-height: 1.6;\n}\n\n.terms-check {\n  display: flex;\n  gap: 0.6rem;\n  align-items: flex-start;\n  margin: 1rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.radio-card {\n  display: flex;\n  align-items: flex-start;\n  gap: 0.7rem;\n  padding: 0.9rem;\n  border: 1px solid rgba(8,38,58,.12);\n  border-radius: 16px;\n  margin: 0.7rem 0;\n  background: #f8f5ef;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.radio-card input {\n  margin-top: 0.2rem;\n}\n\n.clarity-grid {\n  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\n}\n\n.clarity-grid div {\n  min-height: 82px;\n}\n\n.clarity-grid span {\n  font-weight: 700;\n}\n\n.customer-action-bar {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.85rem;\n  align-items: center;\n  margin: 1rem 0;\n  padding: 1rem;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 16px;\n  background: #f8f5ef;\n}\n\n.customer-edit-card {\n  background: #fff;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 20px;\n  padding: 1.25rem;\n  margin: 1.25rem 0;\n  box-shadow: 0 14px 35px rgba(8,38,58,.06);\n}\n\n.customer-edit-card h2 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.customer-edit-card label {\n  display: grid;\n  gap: 0.4rem;\n  margin: 0.8rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.customer-edit-card input,\n.customer-edit-card textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n  background: #fff;\n}\n\n.customer-edit-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.85rem;\n  margin-top: 1rem;\n}\n\n.status-clickable {\n  border: 0;\n  cursor: pointer;\n  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;\n}\n\n.status-clickable:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 8px 18px rgba(8,38,58,.12);\n}\n\n.status-modal-backdrop {\n  position: fixed;\n  inset: 0;\n  z-index: 1000;\n  background: rgba(8, 38, 58, 0.42);\n  backdrop-filter: blur(4px);\n  display: grid;\n  place-items: center;\n  padding: 1rem;\n}\n\n.status-modal {\n  width: min(620px, 100%);\n  max-height: min(760px, 92vh);\n  overflow: auto;\n  background: #fff;\n  border-radius: 28px;\n  padding: clamp(1.25rem, 3vw, 2rem);\n  box-shadow: 0 30px 80px rgba(8,38,58,.24);\n  position: relative;\n  border: 1px solid rgba(8,38,58,.08);\n}\n\n.status-modal h2 {\n  color: #08263a;\n  margin: 0.35rem 0 0.5rem;\n}\n\n.status-modal p {\n  color: #516070;\n  line-height: 1.6;\n}\n\n.modal-close {\n  position: absolute;\n  top: 0.9rem;\n  right: 0.9rem;\n  width: 38px;\n  height: 38px;\n  border: 0;\n  border-radius: 999px;\n  background: #f8f5ef;\n  color: #08263a;\n  font-size: 1.4rem;\n  cursor: pointer;\n}\n\n.status-timeline {\n  display: grid;\n  gap: 0.75rem;\n  margin: 1.25rem 0;\n}\n\n.status-step {\n  display: grid;\n  grid-template-columns: 170px 1fr;\n  gap: 0.8rem;\n  align-items: center;\n  padding: 0.95rem;\n  border-radius: 18px;\n  border: 1px solid rgba(8,38,58,.08);\n  background: #f8f5ef;\n}\n\n.status-step strong {\n  color: #08263a;\n}\n\n.status-step span {\n  color: #516070;\n  line-height: 1.45;\n}\n\n.status-step.done {\n  background: rgba(4, 120, 87, .09);\n  border-color: rgba(4, 120, 87, .18);\n}\n\n.status-step.done strong::before {\n  content: \"✓ \";\n  color: #047857;\n}\n\n.status-step.pending {\n  background: rgba(181, 139, 74, .09);\n  border-color: rgba(181, 139, 74, .18);\n}\n\n.status-step.pending strong::before {\n  content: \"• \";\n  color: #b58b4a;\n}\n\n.modal-actions {\n  display: flex;\n  justify-content: flex-end;\n  gap: 0.75rem;\n  margin-top: 1rem;\n}\n\n@media (max-width: 560px) {\n  .status-step {\n    grid-template-columns: 1fr;\n  }\n\n  .modal-actions {\n    justify-content: stretch;\n  }\n\n  .modal-actions .btn {\n    flex: 1;\n  }\n}\n\n.status-summary-card {\n  border: 2px solid rgba(181,139,74,.2) !important;\n  background: linear-gradient(135deg, #fff, #f8f5ef) !important;\n}\n\n.status-summary-card .status-pill {\n  justify-self: start;\n  margin-top: 0.25rem;\n}\n\n\n/* Ensure long Firebase T&C text is fully scrollable in every language. */\n.tc-scrollable,\n.terms-scroll-box,\n.terms-content {\n  display: block;\n  max-height: min(62vh, 560px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  -webkit-overflow-scrolling: touch;\n  overscroll-behavior: contain;\n  padding-right: 0.75rem;\n  scrollbar-gutter: stable;\n}\n\n.terms-scroll-box p,\n.terms-content p {\n  white-space: normal;\n  overflow: visible;\n  text-overflow: unset;\n  word-break: normal;\n}\n\n.terms-scroll-box h4,\n.terms-content h3 {\n  position: static;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box,\n  .terms-content {\n    max-height: 58vh;\n  }\n}\n\n\n/* Hard fix for long multilingual Firebase T&C text. */\n.tc-scrollable,\n.terms-scroll-box.tc-scrollable,\n.terms-content.tc-scrollable {\n  display: block !important;\n  height: clamp(360px, 62vh, 640px) !important;\n  max-height: clamp(360px, 62vh, 640px) !important;\n  min-height: 320px !important;\n  overflow-y: scroll !important;\n  overflow-x: hidden !important;\n  -webkit-overflow-scrolling: touch !important;\n  overscroll-behavior: contain !important;\n  touch-action: pan-y !important;\n  padding-right: 1rem !important;\n  box-sizing: border-box !important;\n}\n\n.terms-modal {\n  max-height: 94vh !important;\n  overflow: hidden !important;\n  display: flex !important;\n  flex-direction: column !important;\n}\n\n.terms-modal .terms-content.tc-scrollable {\n  flex: 1 1 auto !important;\n  height: auto !important;\n  min-height: 320px !important;\n  max-height: calc(94vh - 190px) !important;\n}\n\n.terms-scroll-box.tc-scrollable p,\n.terms-content.tc-scrollable p {\n  display: block !important;\n  white-space: normal !important;\n  overflow: visible !important;\n  text-overflow: unset !important;\n  -webkit-line-clamp: unset !important;\n  line-clamp: unset !important;\n  word-break: normal !important;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box.tc-scrollable,\n  .terms-content.tc-scrollable {\n    height: 58vh !important;\n    max-height: 58vh !important;\n    min-height: 300px !important;\n  }\n\n  .terms-modal .terms-content.tc-scrollable {\n    max-height: calc(92vh - 170px) !important;\n  }\n}\n"],"sourceRoot":""}]);
+}
+.extra-service-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba(8, 38, 58, 0.08);
+}
+
+.extra-service-row span {
+  display: block;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+.admin-extra-service-form,
+.refund-panel {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.admin-extra-service-form label,
+.refund-panel label {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.invoice-actions-card {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  border-radius: 18px;
+  background: #fffaf2;
+}
+
+.invoice-actions-card h2 {
+  margin: 0 0 0.5rem;
+  color: #08263a;
+}
+
+.invoice-actions-card p {
+  color: #516070;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/booking-detail/booking-detail.component.scss"],"names":[],"mappings":"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","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n\n.payment-admin-card {\n  background: #fff;\n  border-radius: 24px;\n  padding: 24px;\n  margin: 24px 0;\n  box-shadow: 0 18px 45px rgba(8,38,58,.08);\n  border: 1px solid rgba(8,38,58,.08);\n}\n\n.payment-admin-card h2 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.payment-summary {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\n  gap: 12px;\n  margin: 16px 0;\n}\n\n.payment-summary div {\n  background: #f8f5ef;\n  border-radius: 16px;\n  padding: 14px;\n  display: grid;\n  gap: 4px;\n}\n\n.collect-balance {\n  display: grid;\n  gap: 12px;\n}\n\n.collect-balance label {\n  display: grid;\n  gap: 0.4rem;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.collect-balance select,\n.collect-balance textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n}\n\n.paid-badge {\n  display: inline-flex;\n  border-radius: 999px;\n  padding: 0.55rem 0.9rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n}\n\n.success { color: #047857; font-weight: 700; }\n.error-message { color: #9f1d1d; font-weight: 700; }\n\n.blocked-note {\n  background: rgba(181,139,74,.12);\n  color: #8a652d;\n  border: 1px solid rgba(181,139,74,.25);\n  border-radius: 14px;\n  padding: 0.85rem 1rem;\n  font-weight: 700;\n}\n\n.warranty-actions {\n  background: #f8f5ef;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.warranty-actions p {\n  margin-top: 0;\n  color: #516070;\n}\n\n.cash-damage-card {\n  background: #fff7ed;\n  border: 1px solid rgba(242, 140, 40, 0.25);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.cash-damage-card h3 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.cash-damage-card label {\n  display: grid;\n  gap: 0.4rem;\n  margin: 0.85rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.cash-damage-card input,\n.cash-damage-card textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n  background: #fff;\n}\n\n.deposit-actions {\n  background: #eef6f0;\n  border: 1px solid rgba(4,120,87,.18);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.deposit-actions p {\n  margin-top: 0;\n  color: #047857;\n  font-weight: 700;\n}\n\n.workflow-summary div {\n  min-height: 74px;\n}\n\n.workflow-panel {\n  background: #fff;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 18px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.workflow-panel h3 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.terms-scroll-box {\n  max-height: 260px;\n  overflow: auto;\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 16px;\n  padding: 1rem;\n  background: #f8f5ef;\n  color: #516070;\n  line-height: 1.6;\n}\n\n.terms-check {\n  display: flex;\n  gap: 0.6rem;\n  align-items: flex-start;\n  margin: 1rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.radio-card {\n  display: flex;\n  align-items: flex-start;\n  gap: 0.7rem;\n  padding: 0.9rem;\n  border: 1px solid rgba(8,38,58,.12);\n  border-radius: 16px;\n  margin: 0.7rem 0;\n  background: #f8f5ef;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.radio-card input {\n  margin-top: 0.2rem;\n}\n\n.clarity-grid {\n  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\n}\n\n.clarity-grid div {\n  min-height: 82px;\n}\n\n.clarity-grid span {\n  font-weight: 700;\n}\n\n.customer-action-bar {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.85rem;\n  align-items: center;\n  margin: 1rem 0;\n  padding: 1rem;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 16px;\n  background: #f8f5ef;\n}\n\n.customer-edit-card {\n  background: #fff;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 20px;\n  padding: 1.25rem;\n  margin: 1.25rem 0;\n  box-shadow: 0 14px 35px rgba(8,38,58,.06);\n}\n\n.customer-edit-card h2 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.customer-edit-card label {\n  display: grid;\n  gap: 0.4rem;\n  margin: 0.8rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.customer-edit-card input,\n.customer-edit-card textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n  background: #fff;\n}\n\n.customer-edit-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.85rem;\n  margin-top: 1rem;\n}\n\n.status-clickable {\n  border: 0;\n  cursor: pointer;\n  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;\n}\n\n.status-clickable:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 8px 18px rgba(8,38,58,.12);\n}\n\n.status-modal-backdrop {\n  position: fixed;\n  inset: 0;\n  z-index: 1000;\n  background: rgba(8, 38, 58, 0.42);\n  backdrop-filter: blur(4px);\n  display: grid;\n  place-items: center;\n  padding: 1rem;\n}\n\n.status-modal {\n  width: min(620px, 100%);\n  max-height: min(760px, 92vh);\n  overflow: auto;\n  background: #fff;\n  border-radius: 28px;\n  padding: clamp(1.25rem, 3vw, 2rem);\n  box-shadow: 0 30px 80px rgba(8,38,58,.24);\n  position: relative;\n  border: 1px solid rgba(8,38,58,.08);\n}\n\n.status-modal h2 {\n  color: #08263a;\n  margin: 0.35rem 0 0.5rem;\n}\n\n.status-modal p {\n  color: #516070;\n  line-height: 1.6;\n}\n\n.modal-close {\n  position: absolute;\n  top: 0.9rem;\n  right: 0.9rem;\n  width: 38px;\n  height: 38px;\n  border: 0;\n  border-radius: 999px;\n  background: #f8f5ef;\n  color: #08263a;\n  font-size: 1.4rem;\n  cursor: pointer;\n}\n\n.status-timeline {\n  display: grid;\n  gap: 0.75rem;\n  margin: 1.25rem 0;\n}\n\n.status-step {\n  display: grid;\n  grid-template-columns: 170px 1fr;\n  gap: 0.8rem;\n  align-items: center;\n  padding: 0.95rem;\n  border-radius: 18px;\n  border: 1px solid rgba(8,38,58,.08);\n  background: #f8f5ef;\n}\n\n.status-step strong {\n  color: #08263a;\n}\n\n.status-step span {\n  color: #516070;\n  line-height: 1.45;\n}\n\n.status-step.done {\n  background: rgba(4, 120, 87, .09);\n  border-color: rgba(4, 120, 87, .18);\n}\n\n.status-step.done strong::before {\n  content: \"✓ \";\n  color: #047857;\n}\n\n.status-step.pending {\n  background: rgba(181, 139, 74, .09);\n  border-color: rgba(181, 139, 74, .18);\n}\n\n.status-step.pending strong::before {\n  content: \"• \";\n  color: #b58b4a;\n}\n\n.modal-actions {\n  display: flex;\n  justify-content: flex-end;\n  gap: 0.75rem;\n  margin-top: 1rem;\n}\n\n@media (max-width: 560px) {\n  .status-step {\n    grid-template-columns: 1fr;\n  }\n\n  .modal-actions {\n    justify-content: stretch;\n  }\n\n  .modal-actions .btn {\n    flex: 1;\n  }\n}\n\n.status-summary-card {\n  border: 2px solid rgba(181,139,74,.2) !important;\n  background: linear-gradient(135deg, #fff, #f8f5ef) !important;\n}\n\n.status-summary-card .status-pill {\n  justify-self: start;\n  margin-top: 0.25rem;\n}\n\n\n/* Ensure long Firebase T&C text is fully scrollable in every language. */\n.tc-scrollable,\n.terms-scroll-box,\n.terms-content {\n  display: block;\n  max-height: min(62vh, 560px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  -webkit-overflow-scrolling: touch;\n  overscroll-behavior: contain;\n  padding-right: 0.75rem;\n  scrollbar-gutter: stable;\n}\n\n.terms-scroll-box p,\n.terms-content p {\n  white-space: normal;\n  overflow: visible;\n  text-overflow: unset;\n  word-break: normal;\n}\n\n.terms-scroll-box h4,\n.terms-content h3 {\n  position: static;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box,\n  .terms-content {\n    max-height: 58vh;\n  }\n}\n\n\n/* Hard fix for long multilingual Firebase T&C text. */\n.tc-scrollable,\n.terms-scroll-box.tc-scrollable,\n.terms-content.tc-scrollable {\n  display: block !important;\n  height: clamp(360px, 62vh, 640px) !important;\n  max-height: clamp(360px, 62vh, 640px) !important;\n  min-height: 320px !important;\n  overflow-y: scroll !important;\n  overflow-x: hidden !important;\n  -webkit-overflow-scrolling: touch !important;\n  overscroll-behavior: contain !important;\n  touch-action: pan-y !important;\n  padding-right: 1rem !important;\n  box-sizing: border-box !important;\n}\n\n.terms-modal {\n  max-height: 94vh !important;\n  overflow: hidden !important;\n  display: flex !important;\n  flex-direction: column !important;\n}\n\n.terms-modal .terms-content.tc-scrollable {\n  flex: 1 1 auto !important;\n  height: auto !important;\n  min-height: 320px !important;\n  max-height: calc(94vh - 190px) !important;\n}\n\n.terms-scroll-box.tc-scrollable p,\n.terms-content.tc-scrollable p {\n  display: block !important;\n  white-space: normal !important;\n  overflow: visible !important;\n  text-overflow: unset !important;\n  -webkit-line-clamp: unset !important;\n  line-clamp: unset !important;\n  word-break: normal !important;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box.tc-scrollable,\n  .terms-content.tc-scrollable {\n    height: 58vh !important;\n    max-height: 58vh !important;\n    min-height: 300px !important;\n  }\n\n  .terms-modal .terms-content.tc-scrollable {\n    max-height: calc(92vh - 170px) !important;\n  }\n}\n\n.extra-service-row {\n  display: flex;\n  justify-content: space-between;\n  gap: 1rem;\n  align-items: center;\n  padding: .85rem 0;\n  border-top: 1px solid rgba(8, 38, 58, .08);\n}\n\n.extra-service-row span {\n  display: block;\n  color: #64748b;\n  margin-top: .25rem;\n}\n\n.admin-extra-service-form,\n.refund-panel {\n  display: grid;\n  gap: .85rem;\n}\n\n.admin-extra-service-form label,\n.refund-panel label {\n  display: grid;\n  gap: .4rem;\n}\n\n.invoice-actions-card {\n  margin: 1.5rem 0;\n  padding: 1.25rem;\n  border: 1px solid rgba(8, 38, 58, .08);\n  border-radius: 18px;\n  background: #fffaf2;\n}\n\n.invoice-actions-card h2 {\n  margin: 0 0 .5rem;\n  color: #08263a;\n}\n\n.invoice-actions-card p {\n  color: #516070;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -11257,6 +11462,151 @@ AdminExternalBookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorat
   template: _admin_external_bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_admin_external_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
 })], AdminExternalBookingsComponent);
+
+
+/***/ }),
+
+/***/ 66270:
+/*!********************************************************************************!*\
+  !*** ./src/app/home/booking-invoice/booking-invoice.component.scss?ngResource ***!
+  \********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.invoice-page {
+  background: #f8f5ef;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.invoice-toolbar {
+  max-width: 1000px;
+  margin: 0 auto 1rem;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.invoice-sheet {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(8, 38, 58, 0.12);
+  color: #08263a;
+}
+
+.invoice-header,
+.invoice-parties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.invoice-header {
+  border-bottom: 2px solid #08263a;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.invoice-header h1 {
+  margin: 0;
+  font-size: 2.4rem;
+}
+
+.invoice-meta,
+.invoice-parties div,
+.invoice-bottom {
+  display: grid;
+  gap: 0.65rem;
+}
+
+label {
+  display: grid;
+  gap: 0.25rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 1px solid rgba(8, 38, 58, 0.18);
+  border-radius: 8px;
+  padding: 0.55rem;
+  font: inherit;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+}
+
+.invoice-table th,
+.invoice-table td {
+  border-bottom: 1px solid rgba(8, 38, 58, 0.12);
+  padding: 0.75rem;
+  vertical-align: top;
+}
+
+.invoice-table th {
+  text-align: left;
+  background: #f8f5ef;
+}
+
+.invoice-table tfoot td {
+  font-weight: 900;
+  font-size: 1.1rem;
+}
+
+.booking-summary,
+.invoice-note,
+.invoice-bottom {
+  margin-top: 1.5rem;
+}
+
+.invoice-note {
+  background: #f8f5ef;
+  border-left: 4px solid #b58b4a;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+@media print {
+  .no-print,
+  app-homeheader,
+  app-homefooter {
+    display: none !important;
+  }
+  .invoice-page {
+    background: #fff;
+    padding: 0;
+  }
+  .invoice-sheet {
+    box-shadow: none;
+    border-radius: 0;
+    max-width: none;
+    padding: 0;
+  }
+  input,
+  textarea {
+    border: 0;
+    padding: 0;
+    resize: none;
+  }
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/booking-invoice/booking-invoice.component.scss"],"names":[],"mappings":"AAAA;EACE,mBAAA;EACA,iBAAA;EACA,aAAA;AACF;;AACA;EACE,iBAAA;EACA,mBAAA;EACA,aAAA;EACA,YAAA;EACA,yBAAA;AAEF;;AAAA;EACE,iBAAA;EACA,cAAA;EACA,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,6CAAA;EACA,cAAA;AAGF;;AADA;;EAEE,aAAA;EACA,8BAAA;EACA,SAAA;AAIF;;AAFA;EACE,gCAAA;EACA,oBAAA;EACA,qBAAA;AAKF;;AAHA;EACE,SAAA;EACA,iBAAA;AAMF;;AAJA;;;EAGE,aAAA;EACA,YAAA;AAOF;;AALA;EACE,aAAA;EACA,YAAA;EACA,gBAAA;EACA,iBAAA;AAQF;;AANA;;EAEE,WAAA;EACA,uCAAA;EACA,kBAAA;EACA,gBAAA;EACA,aAAA;AASF;;AAPA;EACE,WAAA;EACA,yBAAA;EACA,kBAAA;AAUF;;AARA;;EAEE,8CAAA;EACA,gBAAA;EACA,mBAAA;AAWF;;AATA;EACE,gBAAA;EACA,mBAAA;AAYF;;AAVA;EACE,gBAAA;EACA,iBAAA;AAaF;;AAXA;;;EAGE,kBAAA;AAcF;;AAZA;EACE,mBAAA;EACA,8BAAA;EACA,aAAA;EACA,mBAAA;AAeF;;AAbA;EACE;;;IAGE,wBAAA;EAgBF;EAdA;IACE,gBAAA;IACA,UAAA;EAgBF;EAdA;IACE,gBAAA;IACA,gBAAA;IACA,eAAA;IACA,UAAA;EAgBF;EAdA;;IAEE,SAAA;IACA,UAAA;IACA,YAAA;EAgBF;EAdA;IACE,QAAA;IACA,YAAA;EAgBF;AACF","sourcesContent":[".invoice-page {\n  background: #f8f5ef;\n  min-height: 100vh;\n  padding: 2rem;\n}\n.invoice-toolbar {\n  max-width: 1000px;\n  margin: 0 auto 1rem;\n  display: flex;\n  gap: .75rem;\n  justify-content: flex-end;\n}\n.invoice-sheet {\n  max-width: 1000px;\n  margin: 0 auto;\n  background: #fff;\n  padding: 2rem;\n  border-radius: 18px;\n  box-shadow: 0 20px 60px rgba(8, 38, 58, .12);\n  color: #08263a;\n}\n.invoice-header,\n.invoice-parties {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 2rem;\n}\n.invoice-header {\n  border-bottom: 2px solid #08263a;\n  padding-bottom: 1rem;\n  margin-bottom: 1.5rem;\n}\n.invoice-header h1 {\n  margin: 0;\n  font-size: 2.4rem;\n}\n.invoice-meta,\n.invoice-parties div,\n.invoice-bottom {\n  display: grid;\n  gap: .65rem;\n}\nlabel {\n  display: grid;\n  gap: .25rem;\n  font-weight: 700;\n  font-size: .9rem;\n}\ninput,\ntextarea {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, .18);\n  border-radius: 8px;\n  padding: .55rem;\n  font: inherit;\n}\n.invoice-table {\n  width: 100%;\n  border-collapse: collapse;\n  margin-top: 1.5rem;\n}\n.invoice-table th,\n.invoice-table td {\n  border-bottom: 1px solid rgba(8, 38, 58, .12);\n  padding: .75rem;\n  vertical-align: top;\n}\n.invoice-table th {\n  text-align: left;\n  background: #f8f5ef;\n}\n.invoice-table tfoot td {\n  font-weight: 900;\n  font-size: 1.1rem;\n}\n.booking-summary,\n.invoice-note,\n.invoice-bottom {\n  margin-top: 1.5rem;\n}\n.invoice-note {\n  background: #f8f5ef;\n  border-left: 4px solid #b58b4a;\n  padding: 1rem;\n  border-radius: 10px;\n}\n@media print {\n  .no-print,\n  app-homeheader,\n  app-homefooter {\n    display: none !important;\n  }\n  .invoice-page {\n    background: #fff;\n    padding: 0;\n  }\n  .invoice-sheet {\n    box-shadow: none;\n    border-radius: 0;\n    max-width: none;\n    padding: 0;\n  }\n  input,\n  textarea {\n    border: 0;\n    padding: 0;\n    resize: none;\n  }\n  @page {\n    size: A4;\n    margin: 14mm;\n  }\n}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 
 /***/ }),
@@ -11867,6 +12217,59 @@ let BookingApiService = class BookingApiService {
     };
     return this.postFirstAvailable([`${this.baseUrl}/pay/outing-warranty-charge`, `${this.baseUrl}/api/payments/charge-warranty`, `${this.baseUrl}/stripe/warranty-charge`], payload);
   }
+  getExtraServicesCatalog() {
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.readFirebasePath('/bnExtraServices')).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.map)(raw => this.normalizeArray(raw).filter(item => item && item.active !== false)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)([])));
+  }
+  createExtraServiceRequest(bookingId, extraService) {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const id = extraService.id || `extra_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+      const payload = {
+        ...extraService,
+        id,
+        bookingId,
+        paymentType: 'extra_service',
+        status: 'pending',
+        paid: false,
+        createdTS: Date.now(),
+        modifiedTS: Date.now()
+      };
+      const existing = yield _this.getBookingFromFirebase(bookingId).catch(() => undefined);
+      const raw = existing?.raw || existing || {};
+      const extraServices = Array.isArray(raw.extraServices) ? [...raw.extraServices] : [];
+      const index = extraServices.findIndex(item => item.id === id);
+      if (index >= 0) {
+        extraServices[index] = payload;
+      } else {
+        extraServices.push(payload);
+      }
+      yield _this.updateBooking(bookingId, {
+        ...raw,
+        extraServices
+      });
+    })();
+  }
+  createExtraServiceCheckout(payload) {
+    return this.postFirstAvailable([`${this.baseUrl}/pay/outing-extra-service-checkout`, `${this.baseUrl}/api/payments/create-extra-service-checkout-session`, `${this.baseUrl}/stripe/extra-service-checkout`], {
+      ...payload,
+      paymentType: 'extra_service',
+      currency: payload.currency || 'eur'
+    });
+  }
+  refundBooking(payload) {
+    return this.postFirstAvailable([`${this.baseUrl}/pay/outing-refund`, `${this.baseUrl}/api/payments/refund`, `${this.baseUrl}/stripe/booking-refund`], payload);
+  }
+  readFirebasePath(path) {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      for (const baseUrl of _this2.restDatabaseUrls) {
+        try {
+          return yield _this2.http.get(`${baseUrl}${path}.json`).toPromise();
+        } catch {}
+      }
+      throw new Error(`Unable to read ${path}`);
+    })();
+  }
   postFirstAvailable(endpoints, payload) {
     return new rxjs__WEBPACK_IMPORTED_MODULE_4__.Observable(observer => {
       let index = 0;
@@ -11889,11 +12292,11 @@ let BookingApiService = class BookingApiService {
     });
   }
   updateBooking(bookingId, payload) {
-    var _this = this;
+    var _this3 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const store = _this.storeDb;
-      const util = _this.utilsSvc;
-      const existing = yield _this.getBookingFromFirebase(bookingId).catch(() => undefined);
+      const store = _this3.storeDb;
+      const util = _this3.utilsSvc;
+      const existing = yield _this3.getBookingFromFirebase(bookingId).catch(() => undefined);
       const merged = {
         ...(existing?.raw || existing || {}),
         ...payload,
@@ -11901,16 +12304,16 @@ let BookingApiService = class BookingApiService {
         modifiedTS: Date.now()
       };
       // Prefer real RTDB handles when available.
-      for (const db of _this.getRealtimeDatabaseCandidates(store, util)) {
+      for (const db of _this3.getRealtimeDatabaseCandidates(store, util)) {
         try {
-          yield db.ref(`${_this.collectionName}/${bookingId}`).set(merged);
+          yield db.ref(`${_this3.collectionName}/${bookingId}`).set(merged);
           return;
         } catch {}
       }
       // REST fallback to root /bnBookings/{bookingId}.
-      for (const baseUrl of _this.restDatabaseUrls) {
+      for (const baseUrl of _this3.restDatabaseUrls) {
         try {
-          yield _this.http.put(`${baseUrl.replace(/\/+$/, '')}/${_this.collectionName}/${bookingId}.json`, merged).toPromise();
+          yield _this3.http.put(`${baseUrl.replace(/\/+$/, '')}/${_this3.collectionName}/${bookingId}.json`, merged).toPromise();
           return;
         } catch {}
       }
@@ -11918,14 +12321,14 @@ let BookingApiService = class BookingApiService {
         throw new Error('Firebase updateObject is not available.');
       }
       try {
-        yield store.updateObject(_this.collectionName, merged, bookingId);
+        yield store.updateObject(_this3.collectionName, merged, bookingId);
         return;
       } catch {}
       try {
-        yield store.updateObject(_this.collectionName, bookingId, merged);
+        yield store.updateObject(_this3.collectionName, bookingId, merged);
         return;
       } catch {}
-      yield store.updateObject(util.backendFBstoreId, util.mdb, _this.collectionName, merged, bookingId);
+      yield store.updateObject(util.backendFBstoreId, util.mdb, _this3.collectionName, merged, bookingId);
     })();
   }
   get baseUrl() {
@@ -11950,90 +12353,90 @@ let BookingApiService = class BookingApiService {
     }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.map)(response => this.normalizeBooking(response?.booking || response)));
   }
   getBookingsFromFirebase(email) {
-    var _this2 = this;
+    var _this4 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const raw = yield _this2.readBookingsRaw();
-      const bookings = _this2.normalizeBookings(raw).filter(booking => booking.bookingStatus !== 'deleted').sort((a, b) => String(b.outingDate || '').localeCompare(String(a.outingDate || '')) || String(b.departureTime || '').localeCompare(String(a.departureTime || '')));
+      const raw = yield _this4.readBookingsRaw();
+      const bookings = _this4.normalizeBookings(raw).filter(booking => booking.bookingStatus !== 'deleted').sort((a, b) => String(b.outingDate || '').localeCompare(String(a.outingDate || '')) || String(b.departureTime || '').localeCompare(String(a.departureTime || '')));
       if (!email) return bookings;
       const expected = String(email).trim().toLowerCase();
       return bookings.filter(booking => String(booking.email || '').trim().toLowerCase() === expected);
     })();
   }
   getBookingFromFirebase(bookingId) {
-    var _this3 = this;
+    var _this5 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const bookings = yield _this3.getBookingsFromFirebase();
+      const bookings = yield _this5.getBookingsFromFirebase();
       return bookings.find(booking => booking.bookingId === bookingId);
     })();
   }
   readBookingsRaw() {
-    var _this4 = this;
+    var _this6 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const store = _this4.storeDb;
-      const util = _this4.utilsSvc;
+      const store = _this6.storeDb;
+      const util = _this6.utilsSvc;
       // Current Firebase structure from your export:
       // /bnBookings/{bookingId}
       // Example: /bnBookings/202606071
-      const restValue = yield _this4.readBookingsViaRest();
-      const extractedRest = _this4.extractBookings(restValue);
-      if (_this4.hasBookings(extractedRest)) return extractedRest;
-      for (const db of _this4.getRealtimeDatabaseCandidates(store, util)) {
-        const rootValue = yield _this4.readDatabasePath(db, _this4.collectionName);
-        const extractedRoot = _this4.extractBookings(rootValue);
-        if (_this4.hasBookings(extractedRoot)) return extractedRoot;
+      const restValue = yield _this6.readBookingsViaRest();
+      const extractedRest = _this6.extractBookings(restValue);
+      if (_this6.hasBookings(extractedRest)) return extractedRest;
+      for (const db of _this6.getRealtimeDatabaseCandidates(store, util)) {
+        const rootValue = yield _this6.readDatabasePath(db, _this6.collectionName);
+        const extractedRoot = _this6.extractBookings(rootValue);
+        if (_this6.hasBookings(extractedRoot)) return extractedRoot;
         if (util.backendFBstoreId) {
-          const scopedValue = yield _this4.readDatabasePath(db, `${util.backendFBstoreId}/${_this4.collectionName}`);
-          const extractedScoped = _this4.extractBookings(scopedValue);
-          if (_this4.hasBookings(extractedScoped)) return extractedScoped;
+          const scopedValue = yield _this6.readDatabasePath(db, `${util.backendFBstoreId}/${_this6.collectionName}`);
+          const extractedScoped = _this6.extractBookings(scopedValue);
+          if (_this6.hasBookings(extractedScoped)) return extractedScoped;
         }
       }
       const candidates = [];
       if (typeof store.getObject === 'function') {
-        candidates.push(() => store.getObject(_this4.collectionName));
-        candidates.push(() => store.getObject(`/${_this4.collectionName}`));
-        candidates.push(() => store.getObject(_this4.collectionName, -1));
-        candidates.push(() => store.getObject(undefined, util.mdb, _this4.collectionName, -1));
-        candidates.push(() => store.getObject(null, util.mdb, _this4.collectionName, -1));
-        candidates.push(() => store.getObject(util.backendFBstoreId, util.mdb, _this4.collectionName, -1));
-        candidates.push(() => store.getObject(util.backendFBstoreId, util.mdb, _this4.collectionName));
-        candidates.push(() => store.getObject(`${util.backendFBstoreId}/${_this4.collectionName}`));
-        candidates.push(() => store.getObject('1000', util.mdb, _this4.collectionName, -1));
-        candidates.push(() => store.getObject('1000', util.mdb, _this4.collectionName));
+        candidates.push(() => store.getObject(_this6.collectionName));
+        candidates.push(() => store.getObject(`/${_this6.collectionName}`));
+        candidates.push(() => store.getObject(_this6.collectionName, -1));
+        candidates.push(() => store.getObject(undefined, util.mdb, _this6.collectionName, -1));
+        candidates.push(() => store.getObject(null, util.mdb, _this6.collectionName, -1));
+        candidates.push(() => store.getObject(util.backendFBstoreId, util.mdb, _this6.collectionName, -1));
+        candidates.push(() => store.getObject(util.backendFBstoreId, util.mdb, _this6.collectionName));
+        candidates.push(() => store.getObject(`${util.backendFBstoreId}/${_this6.collectionName}`));
+        candidates.push(() => store.getObject('1000', util.mdb, _this6.collectionName, -1));
+        candidates.push(() => store.getObject('1000', util.mdb, _this6.collectionName));
       }
       for (const candidate of candidates) {
         try {
           const value = yield candidate();
-          const extracted = _this4.extractBookings(value);
-          if (_this4.hasBookings(extracted)) return extracted;
+          const extracted = _this6.extractBookings(value);
+          if (_this6.hasBookings(extracted)) return extracted;
         } catch {}
       }
-      const memoryCandidates = [store.firebaseBSSdata?.[_this4.collectionName], store.firebaseBSSdata?.['1000']?.[_this4.collectionName], store.firebaseBSSdata?.[util.backendFBstoreId]?.[_this4.collectionName], store.firebaseBSSdata?.[util.backendFBstoreId], store.firebaseBSSdata, store[_this4.collectionName], store?.data?.[_this4.collectionName], store?.data?.['1000']?.[_this4.collectionName]];
+      const memoryCandidates = [store.firebaseBSSdata?.[_this6.collectionName], store.firebaseBSSdata?.['1000']?.[_this6.collectionName], store.firebaseBSSdata?.[util.backendFBstoreId]?.[_this6.collectionName], store.firebaseBSSdata?.[util.backendFBstoreId], store.firebaseBSSdata, store[_this6.collectionName], store?.data?.[_this6.collectionName], store?.data?.['1000']?.[_this6.collectionName]];
       for (const value of memoryCandidates) {
-        const extracted = _this4.extractBookings(value);
-        if (_this4.hasBookings(extracted)) return extracted;
+        const extracted = _this6.extractBookings(value);
+        if (_this6.hasBookings(extracted)) return extracted;
       }
       return [];
     })();
   }
   readBookingsViaRest() {
-    var _this5 = this;
+    var _this7 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const paths = [_this5.collectionName, `1000/${_this5.collectionName}`];
-      for (const baseUrl of _this5.restDatabaseUrls) {
+      const paths = [_this7.collectionName, `1000/${_this7.collectionName}`];
+      for (const baseUrl of _this7.restDatabaseUrls) {
         for (const path of paths) {
           try {
-            const value = yield _this5.http.get(`${baseUrl.replace(/\/+$/, '')}/${path}.json`).toPromise();
-            const extracted = _this5.extractBookings(value);
-            if (_this5.hasBookings(extracted)) return extracted;
+            const value = yield _this7.http.get(`${baseUrl.replace(/\/+$/, '')}/${path}.json`).toPromise();
+            const extracted = _this7.extractBookings(value);
+            if (_this7.hasBookings(extracted)) return extracted;
           } catch {}
         }
       }
       // Last chance: fetch root export and extract /bnBookings from it.
-      for (const baseUrl of _this5.restDatabaseUrls) {
+      for (const baseUrl of _this7.restDatabaseUrls) {
         try {
-          const value = yield _this5.http.get(`${baseUrl.replace(/\/+$/, '')}/.json`).toPromise();
-          const extracted = _this5.extractBookings(value);
-          if (_this5.hasBookings(extracted)) return extracted;
+          const value = yield _this7.http.get(`${baseUrl.replace(/\/+$/, '')}/.json`).toPromise();
+          const extracted = _this7.extractBookings(value);
+          if (_this7.hasBookings(extracted)) return extracted;
         } catch {}
       }
       return null;
@@ -12093,6 +12496,30 @@ let BookingApiService = class BookingApiService {
       bookingId: response[key]?.bookingId || key
     })) : [];
     return raw.map(item => this.normalizeBooking(item)).filter(booking => !!booking.bookingId);
+  }
+  normalizeArray(raw) {
+    if (!raw) {
+      return [];
+    }
+    if (Array.isArray(raw)) {
+      return raw.filter(item => item !== null && item !== undefined);
+    }
+    if (typeof raw === 'object') {
+      return Object.keys(raw).map(key => {
+        const value = raw[key];
+        if (value && typeof value === 'object') {
+          return {
+            id: value.id || key,
+            ...value
+          };
+        }
+        return {
+          id: key,
+          value
+        };
+      });
+    }
+    return [];
   }
   normalizeBooking(item) {
     if (!item) {
@@ -12158,6 +12585,8 @@ let BookingApiService = class BookingApiService {
       warrantyCashSelected: item.warrantyPaymentChoice === 'cash_on_board' || item.warrantyMethod === 'cash' || item.warrantyStatus === 'cash_selected',
       damageReported: item.damageReported === true || item.warrantyStatus === 'charged' || item.warrantyCashDamageAmount > 0,
       damageCharged: item.damageCharged === true || item.warrantyStatus === 'charged' || item.warrantyCashDamageAmount > 0,
+      extraServices: Array.isArray(item.extraServices) ? item.extraServices : this.normalizeArray(item.extraServices || item.payments?.extraServices || []),
+      refunds: Array.isArray(item.refunds) ? item.refunds : this.normalizeArray(item.refunds || item.payments?.refunds || []),
       raw: item
     };
   }
@@ -13188,6 +13617,18 @@ let BookingDetailComponent = class BookingDetailComponent {
   cardDamageMessage = '';
   cardDamageError = '';
   savingCardDamage = false;
+  extraServicesCatalog = [];
+  selectedExtraServiceId = '';
+  customExtraServiceDescription = '';
+  customExtraServiceAmount = null;
+  extraServiceMessage = '';
+  extraServiceError = '';
+  savingExtraService = false;
+  refundAmount = null;
+  refundReason = '';
+  refundMessage = '';
+  refundError = '';
+  refunding = false;
   editMode = false;
   savingCustomerUpdate = false;
   customerUpdateMessage = '';
@@ -13225,6 +13666,12 @@ let BookingDetailComponent = class BookingDetailComponent {
   get isAdmin() {
     const role = String(this.loggedUser?.role || '').toLowerCase();
     return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
+  }
+  loadExtraServicesCatalog() {
+    this.bookingApi.getExtraServicesCatalog().subscribe({
+      next: items => this.extraServicesCatalog = items || [],
+      error: () => this.extraServicesCatalog = []
+    });
   }
   loadProposalInfo(language) {
     var _this = this;
@@ -13650,6 +14097,14 @@ let BookingDetailComponent = class BookingDetailComponent {
     return defaults[language] || defaults.fr;
   }
   getDerivedBookingStatus() {
+    const anyBooking = this.booking || {};
+    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+    if (rawStatus === 'payment_done' || rawStatus === 'full_payment_done' || rawStatus === 'paid' || rawStatus === 'completed') {
+      return 'payment_done';
+    }
+    if (rawStatus === true || rawStatus === 'true' || rawStatus === 'confirmed' || anyBooking.confirmed === true || anyBooking.bookingConfirmed === true) {
+      return 'confirmed';
+    }
     if (this.isBalancePaid()) return 'payment_done';
     if (this.isDepositPaid() && this.isTermsAccepted()) return 'confirmed';
     return 'not_confirmed';
@@ -13693,6 +14148,26 @@ let BookingDetailComponent = class BookingDetailComponent {
       return `Damage recorded${euros ? ` (€${euros})` : ''}`;
     }
     return this.isBalancePaid() ? 'No damage recorded yet' : 'Available after full payment';
+  }
+  isOutingDone() {
+    if (!this.booking) return false;
+    const anyBooking = this.booking;
+    if (anyBooking.outingDone === true || anyBooking.outingCompleted === true || anyBooking.status === 'closed' || anyBooking.outingStatus === 'done' || anyBooking.outingStatus === 'completed') {
+      return true;
+    }
+    const rawDate = String(this.booking.outingDate || anyBooking.date || '').trim();
+    if (!rawDate) return false;
+    let normalized = rawDate;
+    const frDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frDate) {
+      const day = frDate[1].padStart(2, '0');
+      const month = frDate[2].padStart(2, '0');
+      const year = frDate[3].length === 2 ? `20${frDate[3]}` : frDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+    const endTime = String(this.booking.arrivalTime || anyBooking.endTime || '23:59').trim();
+    const endTimestamp = Date.parse(`${normalized}T${endTime || '23:59'}`);
+    return Number.isFinite(endTimestamp) && endTimestamp < Date.now();
   }
   canOpenDamageManagement() {
     return this.getDerivedBookingStatus() === 'payment_done';
@@ -13743,6 +14218,7 @@ let BookingDetailComponent = class BookingDetailComponent {
     return this.getWarrantyChoice() === 'cash_on_board' || this.getWarrantyChoice() === 'stripe_card' || this.isWarrantyCardRegistered();
   }
   canPayDeposit() {
+    if (this.isAdmin) return false;
     const termsAlreadyAccepted = this.isTermsAccepted();
     const warrantyAlreadySelected = this.isWarrantySelected();
     return !!this.booking?.bookingId && !this.isDepositPaid() && (this.termsRead || termsAlreadyAccepted) && (this.termsAccepted || termsAlreadyAccepted) && (!!this.warrantyChoice || warrantyAlreadySelected);
@@ -13929,6 +14405,7 @@ let BookingDetailComponent = class BookingDetailComponent {
   recordCashWarrantyDamage() {
     var _this6 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this6.isAdmin || !_this6.isOutingDone()) return;
       if (!_this6.booking?.bookingId) return;
       const amount = Number(_this6.cashDamageAmount || 0);
       const reason = String(_this6.cashDamageReason || '').trim();
@@ -14222,6 +14699,7 @@ let BookingDetailComponent = class BookingDetailComponent {
   recordBalancePayment() {
     var _this11 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (_this11.isAdmin) return;
       if (!_this11.booking?.bookingId) return;
       if (!_this11.canRecordBalancePayment()) {
         _this11.balancePaymentError = _this11.getBalanceBlockedReason();
@@ -14340,6 +14818,7 @@ let BookingDetailComponent = class BookingDetailComponent {
     })();
   }
   payBalance() {
+    if (this.isAdmin) return;
     if (!this.booking?.bookingId || this.isBalancePaid()) return;
     const currentUrl = window.location.href;
     const balanceAmount = this.getBalanceAmount();
@@ -14375,6 +14854,7 @@ let BookingDetailComponent = class BookingDetailComponent {
     });
   }
   customerPayment() {
+    if (this.isAdmin) return;
     if (!this.booking?.bookingId) return;
     if (this.canCustomerPayDeposit()) {
       this.payDeposit();
@@ -14384,8 +14864,119 @@ let BookingDetailComponent = class BookingDetailComponent {
       this.payBalance();
     }
   }
+  get bookingExtraServices() {
+    return Array.isArray(this.booking?.extraServices) ? this.booking.extraServices : [];
+  }
+  get pendingExtraServices() {
+    return this.bookingExtraServices.filter(item => item && item.status !== 'paid' && item.paid !== true);
+  }
+  get paidExtraServices() {
+    return this.bookingExtraServices.filter(item => item && (item.status === 'paid' || item.paid === true));
+  }
+  get totalPaidAmount() {
+    const payments = this.booking?.payments || {};
+    const centsOrEuros = [payments?.deposit?.amount, payments?.balance?.amount, ...(this.paidExtraServices || []).map(item => item.amount), payments?.warrantyCharge?.warrantyChargeAmount].map(value => Number(value || 0));
+    return centsOrEuros.reduce((sum, value) => sum + (value > 10000 ? value / 100 : value), 0);
+  }
+  get totalRefundedAmount() {
+    const refunds = Array.isArray(this.booking?.refunds) ? this.booking.refunds : [];
+    return refunds.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  }
+  get refundableAmount() {
+    return Math.max(0, Math.round((this.totalPaidAmount - this.totalRefundedAmount) * 100) / 100);
+  }
+  canAdminCreateExtraService() {
+    return this.isAdmin && !!this.booking?.bookingId;
+  }
+  canCustomerPayExtraService(extra) {
+    return !this.isAdmin && !!this.booking?.bookingId && extra && extra.status !== 'paid' && extra.paid !== true;
+  }
+  createExtraServiceRequest() {
+    var _this13 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this13.isAdmin) return;
+      if (!_this13.booking?.bookingId) return;
+      _this13.savingExtraService = true;
+      _this13.extraServiceMessage = '';
+      _this13.extraServiceError = '';
+      try {
+        const selected = _this13.extraServicesCatalog.find(item => item.id === _this13.selectedExtraServiceId || item.slug === _this13.selectedExtraServiceId);
+        const description = _this13.customExtraServiceDescription || selected?.title || selected?.name || selected?.description || '';
+        const amount = Number(_this13.customExtraServiceAmount || selected?.amount || selected?.price || 0);
+        if (!description || !amount || amount <= 0) {
+          throw new Error('Please select or enter an extra service with a valid amount.');
+        }
+        yield _this13.bookingApi.createExtraServiceRequest(_this13.booking.bookingId, {
+          extraServiceCatalogId: selected?.id || selected?.slug || null,
+          description,
+          amount,
+          currency: 'eur'
+        });
+        _this13.extraServiceMessage = 'Extra service payment request created.';
+        _this13.customExtraServiceDescription = '';
+        _this13.customExtraServiceAmount = null;
+        _this13.selectedExtraServiceId = '';
+        _this13.bookingApi.getBooking(_this13.booking.bookingId).subscribe(booking => _this13.booking = booking);
+      } catch (e) {
+        _this13.extraServiceError = e?.message || 'Unable to create extra service request.';
+      } finally {
+        _this13.savingExtraService = false;
+      }
+    })();
+  }
+  payExtraService(extra) {
+    if (this.isAdmin) return;
+    if (!this.booking?.bookingId || !this.canCustomerPayExtraService(extra)) return;
+    const currentUrl = window.location.href;
+    this.bookingApi.createExtraServiceCheckout({
+      bookingId: this.booking.bookingId,
+      extraServiceId: extra.id,
+      ownerId: this.booking.ownerId || 'alegria',
+      amount: Number(extra.amount || 0),
+      description: extra.description || extra.title || 'Extra service',
+      customerEmail: this.booking.email || '',
+      customerName: this.booking.customerName || '',
+      successUrl: currentUrl.includes('?') ? `${currentUrl}&payment=success&paymentType=extra_service` : `${currentUrl}?payment=success&paymentType=extra_service`,
+      cancelUrl: currentUrl.includes('?') ? `${currentUrl}&payment=cancelled&paymentType=extra_service` : `${currentUrl}?payment=cancelled&paymentType=extra_service`
+    }).subscribe({
+      next: response => {
+        const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
+        if (url) window.location.href = url;
+      },
+      error: error => this.extraServiceError = error?.error?.error || error?.message || 'Unable to open extra service checkout.'
+    });
+  }
+  canAdminRefund() {
+    return this.isAdmin && !!this.booking?.bookingId && this.refundableAmount > 0;
+  }
+  issueRefund() {
+    if (!this.booking?.bookingId || !this.canAdminRefund()) return;
+    const amount = Number(this.refundAmount || 0);
+    if (!amount || amount <= 0 || amount > this.refundableAmount) {
+      this.refundError = `Refund amount must be between €1 and €${this.refundableAmount}.`;
+      return;
+    }
+    this.refunding = true;
+    this.refundMessage = '';
+    this.refundError = '';
+    this.bookingApi.refundBooking({
+      bookingId: this.booking.bookingId,
+      ownerId: this.booking.ownerId || 'alegria',
+      amount,
+      reason: this.refundReason || ''
+    }).subscribe({
+      next: () => {
+        this.refundMessage = 'Refund issued.';
+        this.refundAmount = null;
+        this.refundReason = '';
+        this.bookingApi.getBooking(this.booking.bookingId).subscribe(booking => this.booking = booking);
+      },
+      error: error => this.refundError = error?.error?.error || error?.message || 'Unable to issue refund.',
+      complete: () => this.refunding = false
+    });
+  }
   canAdminOpenDamagePage() {
-    return this.isAdmin && this.getDerivedBookingStatus() === 'payment_done';
+    return this.isAdmin && this.isOutingDone() && this.getDerivedBookingStatus() === 'payment_done';
   }
   openAdminDamagePage() {
     if (!this.booking?.bookingId) return;
@@ -16409,6 +17000,14 @@ let BookingsComponent = class BookingsComponent {
     return anyBooking.termsAccepted === true || anyBooking.tcAccepted === true || anyBooking.tAndCAccepted === true || anyBooking.termsAndConditionsAccepted === true || anyBooking.acceptedTerms === true || anyBooking.termsStatus === 'accepted' || anyBooking.tcStatus === 'accepted' || anyBooking?.documents?.termsAccepted === true || anyBooking?.terms?.accepted === true;
   }
   getDerivedBookingStatus(booking) {
+    const anyBooking = booking || {};
+    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+    if (rawStatus === 'payment_done' || rawStatus === 'full_payment_done' || rawStatus === 'paid' || rawStatus === 'completed') {
+      return 'payment_done';
+    }
+    if (rawStatus === true || rawStatus === 'true' || rawStatus === 'confirmed' || anyBooking.confirmed === true || anyBooking.bookingConfirmed === true) {
+      return 'confirmed';
+    }
     if (this.isBalancePaid(booking)) return 'payment_done';
     if (this.isDepositPaid(booking) && this.isTermsAccepted(booking)) return 'confirmed';
     return 'not_confirmed';
@@ -16499,7 +17098,7 @@ let BookingsComponent = class BookingsComponent {
     return '';
   }
   canRecordBalancePayment(booking) {
-    return this.isBookingConfirmed(booking) && this.isDepositPaid(booking) && this.isWarrantySecured(booking) && !this.isBalancePaid(booking);
+    return  false && 0;
   }
   getBalanceBlockedReason(booking) {
     if (this.isBalancePaid(booking)) return 'Remaining 90% already paid.';
@@ -16530,59 +17129,17 @@ let BookingsComponent = class BookingsComponent {
   }
   openBalancePayment(booking, event) {
     event?.stopPropagation();
-    this.selectedBalanceBooking = booking;
-    this.balancePaymentMethod = 'sumup';
-    this.balancePaymentNotes = '';
-    this.balancePaymentMessage = '';
-    this.balancePaymentError = '';
+    // Admin users do not open a remaining-balance payment modal.
   }
   closeBalancePayment() {
     this.selectedBalanceBooking = undefined;
     this.balancePaymentNotes = '';
   }
   recordBalancePayment() {
-    var _this = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this.selectedBalanceBooking?.bookingId) return;
-      if (!_this.canRecordBalancePayment(_this.selectedBalanceBooking)) {
-        _this.balancePaymentError = _this.getBalanceBlockedReason(_this.selectedBalanceBooking);
-        return;
-      }
-      _this.savingBalancePayment = true;
-      _this.balancePaymentError = '';
-      _this.balancePaymentMessage = '';
-      const now = Date.now();
-      const balanceAmount = _this.getBalanceAmount(_this.selectedBalanceBooking);
-      const existingPayments = _this.selectedBalanceBooking.payments || {};
-      try {
-        yield _this.bookingApi.updateBooking(_this.selectedBalanceBooking.bookingId, {
-          balancePaid: true,
-          balanceAmount,
-          balancePaymentMethod: _this.balancePaymentMethod,
-          balancePaidAt: now,
-          bookingStatus: 'payment_done',
-          paymentStatus: 'full_payment_done',
-          paidAt: now,
-          payments: {
-            ...existingPayments,
-            balance: {
-              paid: true,
-              status: 'paid',
-              amount: balanceAmount,
-              method: _this.balancePaymentMethod,
-              notes: _this.balancePaymentNotes || '',
-              paidAt: now
-            }
-          }
-        });
-        _this.balancePaymentMessage = 'Remaining 90% payment recorded.';
-        _this.savingBalancePayment = false;
-        _this.closeBalancePayment();
-        _this.loadBookings();
-      } catch (e) {
-        _this.balancePaymentError = e?.message || 'Unable to record remaining balance payment.';
-        _this.savingBalancePayment = false;
-      }
+      // Admin users do not pay or record remaining 90% from the booking list.
+      // Remaining balance must be paid by the customer through Stripe.
+      return Promise.resolve();
     })();
   }
   openDetail(booking) {
@@ -16591,6 +17148,7 @@ let BookingsComponent = class BookingsComponent {
   }
   payDeposit(booking, event) {
     event?.stopPropagation();
+    return;
     if (!booking?.bookingId || this.isDepositPaid(booking)) return;
     const currentUrl = window.location.href;
     const payload = {
