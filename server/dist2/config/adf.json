@@ -2,7 +2,7 @@
   "application": {
     "name": "Worknest back-end",
     "platform": "test",
-    "release": "2.0"
+    "release": "2.1"
   },
   "dev": {
     "firebaseMasterConfig": {
@@ -23,7 +23,7 @@
       "messagingSenderId": "627524094448",
       "appId": "1:627524094448:web:0be403126c5497c8173535"
     },
-    "backendUrl": "https://46853c17720e.ngrok-free.app",
+    "backendUrl": "https://alegriaboat.eu",
     "serverPort": 2000,
     "stripeConfig": {
       "platformApiPublicKey": "pk_test_ksDl8VQ7yCT2HDpDGN0hBUXe",
@@ -49,7 +49,7 @@
       "messagingSenderId": "804337583879",
       "appId": "1:804337583879:web:f1494f38760981a7"
     },
-    "backendUrl": "https://localhost:2000",
+    "backendUrl": "https://alegriaboat.eu",
     "serverPort": 2000,
     "stripeConfig": {
       "platformApiPublicKey": "pk_test_ksDl8VQ7yCT2HDpDGN0hBUXe",
@@ -76,7 +76,7 @@
       "messagingSenderId": "13561609265",
       "appId": "1:13561609265:web:dfb331e7d5f5a0040e2910"
     },
-    "backendUrl": "https://localhost:2000",
+    "backendUrl": "https://alegriaboat.eu",
     "serverPort": 2000,
     "stripeConfig": {
       "platformApiPublicKey": "pk_test_ksDl8VQ7yCT2HDpDGN0hBUXe",

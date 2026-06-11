@@ -7,7 +7,7 @@
   </div>
 
   <div *ngIf="success" class="alert alert-success py-2">
-    Account created. Please check your inbox and confirm your email.
+    Account created successfully. Please check your inbox and your Junk/Spam folder for the password setup/reset email, then sign in.
   </div>
 
   <form [formGroup]="form" (ngSubmit)="signupWithEmail()" novalidate>
@@ -168,6 +168,24 @@
       </div>
       <div class="modal-footer py-2">
         <button type="button" class="btn btn-sm btn-secondary" (click)="closeErrorModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Success Modal -->
+<div class="modal-backdrop fade show" *ngIf="showSuccessModal"></div>
+<div class="modal d-block" tabindex="-1" role="dialog" *ngIf="showSuccessModal" (click)="closeSuccessModal()">
+  <div class="modal-dialog modal-dialog-centered" role="document" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h5 class="modal-title">{{ successModalTitle }}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closeSuccessModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-0">{{ successModalMessage }}<br><br><strong>Please also check your Junk/Spam folder.</strong></p>
+      </div>
+      <div class="modal-footer py-2">
+        <button type="button" class="btn btn-sm btn-dark" (click)="closeSuccessModal()">Go to login</button>
       </div>
     </div>
   </div>

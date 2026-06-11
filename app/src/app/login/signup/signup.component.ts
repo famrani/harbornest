@@ -22,6 +22,10 @@ export class SignupComponent {
   errorModalTitle = 'Authentication failed';
   errorModalMessage = 'Something went wrong. Please try again.';
 
+  showSuccessModal = false;
+  successModalTitle = 'Account created successfully';
+  successModalMessage = 'Your account has been created. Please check your inbox and your Junk/Spam folder if a password setup or validation email was sent, then sign in.';
+
   form: FormGroup;
   photoUrls: string[] = [];
 
@@ -81,6 +85,17 @@ export class SignupComponent {
   }
   closeErrorModal() {
     this.showErrorModal = false;
+  }
+
+  openSuccessModal(message?: string, title = 'Account created successfully') {
+    this.successModalTitle = title;
+    this.successModalMessage = message || 'Your account has been created successfully. Please sign in to continue.';
+    this.showSuccessModal = true;
+  }
+
+  closeSuccessModal() {
+    this.showSuccessModal = false;
+    this.router.navigate(['/login'], { queryParams: { created: 'true' } });
   }
 
   // ---------- uploads
@@ -160,9 +175,26 @@ export class SignupComponent {
         return;
       }
 
-      this.success = true;                    // keep banner for email flow
+      // Send a password setup/reset email when available so the user can validate or reset access cleanly.
+      try {
+        await this.users.resetPwdUser(v.email);
+      } catch {
+        // Best effort only: some Firebase configurations may not allow reset immediately after creation.
+      }
+
+      this.success = true;
       this.form.reset({ role: 'guest', acceptTerms: false });
       this.photoUrls = [];
+      this.openSuccessModal(
+        'Account created successfully. Please check your inbox and your Junk/Spam folder for the password setup/reset email before signing in.',
+        'Account created successfully'
+      );
+
+      setTimeout(() => {
+        if (this.showSuccessModal) {
+          this.closeSuccessModal();
+        }
+      }, 2500);
     } catch (e: any) {
       this.openErrorModal(e?.message || 'Sign-up failed.');
     } finally {

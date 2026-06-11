@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProposalApiService, AlegriaProposal, WarrantyPaymentChoice } from '../bookings/proposal-api.service';
+import { StoreDbService, OBJECTNAME, UsersService, ServicesService, UtilsService } from 'godigital-lib';
 import { GuestContentService } from '../guest-content/guest-content.service';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
 
@@ -21,13 +22,26 @@ export class ProposalConfirmationComponent implements OnInit {
   termsModalWasClosed = false;
   currentLanguage: SiteLanguage = 'fr';
   proposalInfo: any = this.defaultProposalInfo('fr');
+  finalizingBooking = false;
+  finalBookingId = '';
+
+  proposalAccessReady = false;
+  proposalAccessLoading = false;
+  proposalAccessError = '';
+  proposalAccessMessage = '';
+  proposalAccessMode: 'google' | 'auto_email' | 'ready' | '' = '';
+  customerAccountCreating = false;
 
   constructor(
     private route: ActivatedRoute,
     private proposalApi: ProposalApiService,
     private router: Router,
     private guestContent: GuestContentService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private users: UsersService,
+    private storeDb: StoreDbService,
+    private utilsSvc: UtilsService,
+    private mainSvc: ServicesService
   ) {}
 
   ngOnInit(): void {
@@ -38,19 +52,265 @@ export class ProposalConfirmationComponent implements OnInit {
 
     const id = this.route.snapshot.paramMap.get('proposalId') || '';
     this.proposalApi.getProposal(id).subscribe({
-      next: (p) => { this.proposal = p; this.warrantyChoice = p?.warrantyPaymentChoice || 'stripe_card'; this.loading = false; },
+      next: async (p) => {
+        this.proposal = p;
+        this.warrantyChoice = p?.warrantyPaymentChoice || 'stripe_card';
+        this.loading = false;
+        await this.prepareProposalAccess();
+      },
       error: () => { this.error = this.text('notFound'); this.loading = false; }
     });
     this.route.queryParamMap.subscribe((params) => {
       if (params.get('payment') === 'success') {
         this.message = this.text('depositPaymentSuccess');
-        setTimeout(() => this.reloadProposal(), 1500);
+        setTimeout(() => this.reloadProposal(true), 1500);
       }
       if (params.get('warranty') === 'success') {
         this.message = this.text('warrantySuccess');
-        setTimeout(() => this.reloadProposal(), 1500);
+        setTimeout(() => this.reloadProposal(true), 1500);
       }
     });
+  }
+
+
+
+  private proposalAccessStorageKey(proposalId?: string): string {
+    return `alegria_proposal_access_${proposalId || this.proposal?.proposalId || ''}`;
+  }
+
+  private rememberProposalAccess(): void {
+    if (!this.proposal || !this.proposalAccessReady) return;
+    const current = this.getCurrentUser();
+    const grant = {
+      proposalId: this.proposal.proposalId,
+      email: this.proposalEmail,
+      customerUid: this.proposal.customerUid || current?.userId || current?.uid || '',
+      provider: this.proposal.customerAuthProvider || '',
+      createdAt: Date.now(),
+    };
+    try {
+      localStorage.setItem(this.proposalAccessStorageKey(this.proposal.proposalId), JSON.stringify(grant));
+    } catch {}
+  }
+
+  private restoreProposalAccessFromStorage(): boolean {
+    if (!this.proposal) return false;
+    try {
+      const raw = localStorage.getItem(this.proposalAccessStorageKey(this.proposal.proposalId));
+      if (!raw) return false;
+      const grant = JSON.parse(raw);
+      const maxAgeMs = 2 * 60 * 60 * 1000;
+      if (grant?.proposalId !== this.proposal.proposalId) return false;
+      if (String(grant?.email || '').toLowerCase() !== this.proposalEmail) return false;
+      if (!grant?.createdAt || Date.now() - Number(grant.createdAt) > maxAgeMs) return false;
+
+      this.proposalAccessReady = true;
+      this.proposalAccessMode = 'ready';
+      this.proposalAccessError = '';
+      this.proposalAccessMessage = '';
+
+      if (grant.customerUid && !this.proposal.customerUid) {
+        this.proposal = {
+          ...this.proposal,
+          customerUid: grant.customerUid,
+          customerAuthProvider: grant.provider || this.proposal.customerAuthProvider || 'auto_email',
+        } as any;
+        const proposalId = this.proposal!.proposalId;
+        this.proposalApi.attachCustomerAccount(proposalId, {
+          customerUid: grant.customerUid,
+          customerAuthProvider: grant.provider || 'auto_email',
+          customerAccountCreated: grant.provider === 'auto_email',
+        }).catch(() => undefined);
+      }
+
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+
+  get proposalEmail(): string {
+    return String(this.proposal?.customerEmail || '').trim().toLowerCase();
+  }
+
+  get isGmailProposal(): boolean {
+    return /@(gmail\.com|googlemail\.com)$/i.test(this.proposalEmail);
+  }
+
+  get canShowProposalContent(): boolean {
+    return !!this.proposal && this.proposalAccessReady;
+  }
+
+  private getCurrentUser(): any {
+    return (this.mainSvc as any).bnUser || (this.mainSvc as any).currentUser || null;
+  }
+
+  private currentUserMatchesProposal(): boolean {
+    const current = this.getCurrentUser();
+    const email = String(current?.email || '').trim().toLowerCase();
+    return !!email && !!this.proposalEmail && email === this.proposalEmail;
+  }
+
+  private generateTemporaryPassword(): string {
+    const random = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    return `Al3gria!${random.slice(0, 10)}`;
+  }
+
+  private splitName(fullName: string): { firstname: string; lastname: string; displayName: string } {
+    const displayName = String(fullName || '').trim() || this.proposalEmail;
+    const parts = displayName.split(/\s+/).filter(Boolean);
+    return {
+      firstname: parts[0] || displayName,
+      lastname: parts.slice(1).join(' '),
+      displayName,
+    };
+  }
+
+  async prepareProposalAccess(): Promise<void> {
+    if (!this.proposal) return;
+
+    this.proposalAccessError = '';
+    this.proposalAccessMessage = '';
+
+    if (!this.proposalEmail) {
+      this.proposalAccessReady = true;
+      this.proposalAccessMode = 'ready';
+      this.rememberProposalAccess();
+      return;
+    }
+
+    if (this.restoreProposalAccessFromStorage()) {
+      return;
+    }
+
+    if (this.currentUserMatchesProposal()) {
+      this.proposalAccessReady = true;
+      this.proposalAccessMode = 'ready';
+      await this.attachCurrentUserToProposal('existing');
+      this.rememberProposalAccess();
+      return;
+    }
+
+    if (this.isGmailProposal) {
+      this.proposalAccessReady = false;
+      this.proposalAccessMode = 'google';
+      this.proposalAccessMessage = 'This proposal was prepared for a Gmail address. Please continue with Google to open it securely.';
+      return;
+    }
+
+    await this.createAndLoginCustomerAccount();
+  }
+
+  async continueWithGoogle(): Promise<void> {
+    if (!this.proposal) return;
+    this.proposalAccessLoading = true;
+    this.proposalAccessError = '';
+
+    try {
+      const user: any = await this.users.signInWithGoogleAndLoadProfile();
+      const signedEmail = String(user?.email || '').trim().toLowerCase();
+
+      if (signedEmail !== this.proposalEmail) {
+        this.proposalAccessReady = false;
+        this.proposalAccessError = `Please sign in with ${this.proposal.customerEmail}. This proposal is linked to that email address.`;
+        return;
+      }
+
+      const uid = user.userId || user.uid;
+      const now = Date.now();
+      const displayName = user.displayName || this.proposal.customerName || this.proposalEmail;
+      const names = this.splitName(displayName);
+      const profile = {
+        userId: uid,
+        firstname: names.firstname,
+        lastname: names.lastname,
+        displayName: names.displayName,
+        email: signedEmail,
+        phone: this.proposal.customerPhone || user.phone || '',
+        role: 'customer',
+        provider: 'google',
+        state: 'active',
+        emailverified: true,
+        photoURL: user.photoURL || '',
+        modifiedTS: now,
+        createdTS: now,
+      };
+
+      await this.storeDb.partialUpdateObject(this.utilsSvc.backendFBstoreId, this.utilsSvc.mdb, OBJECTNAME.bnUsers, profile, uid);
+      (this.mainSvc as any).setLoggedUser?.(profile);
+      await this.proposalApi.attachCustomerAccount(this.proposal.proposalId, { customerUid: uid, customerAuthProvider: 'google' });
+      this.proposal = { ...this.proposal, customerUid: uid, customerAuthProvider: 'google' } as any;
+      this.proposalAccessReady = true;
+      this.proposalAccessMode = 'ready';
+      this.rememberProposalAccess();
+    } catch (e: any) {
+      this.proposalAccessError = e?.message || 'Google sign-in failed.';
+    } finally {
+      this.proposalAccessLoading = false;
+    }
+  }
+
+  async createAndLoginCustomerAccount(): Promise<void> {
+    if (!this.proposal || !this.proposalEmail) return;
+
+    this.customerAccountCreating = true;
+    this.proposalAccessLoading = true;
+    this.proposalAccessError = '';
+    this.proposalAccessMessage = 'Preparing your secure customer access...';
+
+    try {
+      const password = this.generateTemporaryPassword();
+      const names = this.splitName(this.proposal.customerName || this.proposalEmail);
+      const authUser: any = await this.users.registerWithEmail(this.proposalEmail, password, names.displayName);
+      const uid = authUser?.uid || authUser?.userId;
+      const now = Date.now();
+      const profile = {
+        userId: uid,
+        firstname: names.firstname,
+        lastname: names.lastname,
+        displayName: names.displayName,
+        email: this.proposalEmail,
+        phone: this.proposal.customerPhone || '',
+        role: 'customer',
+        provider: 'auto_email',
+        state: 'active',
+        emailverified: false,
+        createdTS: now,
+        modifiedTS: now,
+        proposalId: this.proposal.proposalId,
+        accountCreatedFromProposal: true,
+      };
+
+      await this.storeDb.updateObject(this.utilsSvc.backendFBstoreId, this.utilsSvc.mdb, OBJECTNAME.bnUsers, profile, uid);
+      (this.mainSvc as any).setLoggedUser?.(profile);
+      await this.proposalApi.attachCustomerAccount(this.proposal.proposalId, { customerUid: uid, customerAuthProvider: 'auto_email', customerAccountCreated: true });
+      this.proposal = { ...this.proposal, customerUid: uid, customerAuthProvider: 'auto_email', customerAccountCreated: true } as any;
+      this.proposalAccessReady = true;
+      this.proposalAccessMode = 'ready';
+      this.proposalAccessMessage = '';
+      this.rememberProposalAccess();
+    } catch (e: any) {
+      const msg = String(e?.message || e || '');
+      if (msg.toLowerCase().includes('email') && msg.toLowerCase().includes('use')) {
+        this.proposalAccessError = 'A secure customer account already exists for this email. Please contact Alegria or use the password recovery link to access it.';
+      } else {
+        this.proposalAccessError = msg || 'Unable to prepare the customer account for this proposal.';
+      }
+      this.proposalAccessReady = false;
+    } finally {
+      this.customerAccountCreating = false;
+      this.proposalAccessLoading = false;
+    }
+  }
+
+  private async attachCurrentUserToProposal(provider: string): Promise<void> {
+    if (!this.proposal) return;
+    const current = this.getCurrentUser();
+    const uid = current?.userId || current?.uid;
+    if (!uid || this.proposal.customerUid === uid) return;
+    await this.proposalApi.attachCustomerAccount(this.proposal.proposalId, { customerUid: uid, customerAuthProvider: provider });
+    this.proposal = { ...this.proposal, customerUid: uid, customerAuthProvider: provider } as any;
   }
 
   async loadProposalInfo(language: SiteLanguage): Promise<void> {
@@ -77,6 +337,15 @@ export class ProposalConfirmationComponent implements OnInit {
     const defaults: any = {
       fr: {
         proposalEyebrow: 'Proposition Alegria Boat',
+        wizardStepTerms: 'Accepter les CGV',
+        wizardStepDeposit: 'Payer l’acompte',
+        wizardStepWarranty: 'Caution',
+        wizardAcceptTermsButton: 'Valider les CGV et continuer',
+        termsAcceptedMessage: 'Conditions Générales acceptées. Vous pouvez maintenant payer l’acompte.',
+        warrantyWizardIntro: 'Choisissez comment vous souhaitez sécuriser la caution de la sortie.',
+        acceptCashWarrantyButton: 'Je confirme apporter 500 € en espèces',
+        finalizingBooking: 'Création de la réservation...',
+        finalizeBookingButton: 'Créer ma réservation',
         loading: 'Chargement de la proposition...',
         notFound: 'Proposition introuvable.',
         expiredText: 'Cette proposition n’est plus valide. Merci de contacter Alegria Boat pour recevoir une nouvelle proposition.',
@@ -143,6 +412,15 @@ export class ProposalConfirmationComponent implements OnInit {
       },
       en: {
         proposalEyebrow: 'Alegria Boat proposal',
+        wizardStepTerms: 'Accept T&C',
+        wizardStepDeposit: 'Pay deposit',
+        wizardStepWarranty: 'Warranty',
+        wizardAcceptTermsButton: 'Validate T&C and continue',
+        termsAcceptedMessage: 'Terms accepted. You can now pay the deposit.',
+        warrantyWizardIntro: 'Choose how you want to secure the warranty for the outing.',
+        acceptCashWarrantyButton: 'I confirm I will bring €500 cash',
+        finalizingBooking: 'Creating booking...',
+        finalizeBookingButton: 'Create my booking',
         loading: 'Loading proposal...',
         notFound: 'Proposal not found.',
         expiredText: 'This proposal is no longer valid. Please contact Alegria Boat for a new proposal.',
@@ -199,6 +477,15 @@ export class ProposalConfirmationComponent implements OnInit {
       },
       es: {
         proposalEyebrow: 'Propuesta Alegria Boat',
+        wizardStepTerms: 'Aceptar condiciones',
+        wizardStepDeposit: 'Pagar depósito',
+        wizardStepWarranty: 'Garantía',
+        wizardAcceptTermsButton: 'Validar condiciones y continuar',
+        termsAcceptedMessage: 'Condiciones aceptadas. Ahora puede pagar el depósito.',
+        warrantyWizardIntro: 'Elija cómo desea asegurar la garantía de la salida.',
+        acceptCashWarrantyButton: 'Confirmo que traeré 500 € en efectivo',
+        finalizingBooking: 'Creando reserva...',
+        finalizeBookingButton: 'Crear mi reserva',
         loading: 'Cargando propuesta...',
         notFound: 'Propuesta no encontrada.',
         expiredText: 'Esta propuesta ya no es válida. Contacte con Alegria Boat para recibir una nueva propuesta.',
@@ -277,7 +564,8 @@ export class ProposalConfirmationComponent implements OnInit {
     return !!this.proposal && (
       this.proposal.warrantyRegistered === true ||
       this.proposal.warrantyStatus === 'card_registered' ||
-      this.proposal.warrantyStatus === 'warranty_card_saved'
+      this.proposal.warrantyStatus === 'warranty_card_saved' ||
+      this.proposal.warrantyStatus === 'warranty_card_registered'
     );
   }
 
@@ -301,7 +589,9 @@ export class ProposalConfirmationComponent implements OnInit {
     return !!this.proposal && (
       this.proposal.depositPaid === true ||
       this.proposal.depositStatus === 'paid' ||
-      this.proposal.paymentStatus === 'paid'
+      this.proposal.depositStatus === 'deposit_paid' ||
+      this.proposal.paymentStatus === 'paid' ||
+      this.proposal.paymentStatus === 'charge_succeeded'
     );
   }
 
@@ -311,32 +601,69 @@ export class ProposalConfirmationComponent implements OnInit {
       : this.text('depositPendingMessage');
   }
 
+
+  get tncAccepted(): boolean {
+    return this.proposal?.tncAccepted === true || !!this.proposal?.tncAcceptedAt;
+  }
+
+  get warrantyReady(): boolean {
+    return this.warrantyRegistered || this.warrantyCashSelected;
+  }
+
+  get wizardStep(): 1 | 2 | 3 | 4 {
+    if (!this.tncAccepted) return 1;
+    if (!this.depositPaid) return 2;
+    if (!this.warrantyReady) return 3;
+    return 4;
+  }
+
+  get wizardProgressPercent(): number {
+    if (this.wizardStep === 1) return 33;
+    if (this.wizardStep === 2) return 66;
+    return 100;
+  }
+
+  get canFinalizeProposal(): boolean {
+    return !!this.proposal && this.tncAccepted && this.depositPaid && this.warrantyReady;
+  }
+
   get expired(): boolean { return !!this.proposal?.validUntil && Date.now() > this.proposal.validUntil; }
-  get canAccept(): boolean { return !!this.proposal && !this.expired && this.canAcceptTermsCheckbox && this.acceptedTerms && !!this.warrantyChoice; }
+  get canAccept(): boolean {
+    return !!this.proposal && !this.expired && this.canAcceptTermsCheckbox && this.acceptedTerms;
+  }
 
   async acceptProposal(): Promise<void> {
-    if (!this.proposal || !this.canAccept) return;
-    this.accepting = true; this.error = '';
+    if (!this.proposal || !this.proposalAccessReady || !this.canAccept) return;
+    this.accepting = true;
+    this.error = '';
     try {
-      this.proposal = await this.proposalApi.acceptProposal(this.proposal.proposalId, this.warrantyChoice);
-      this.message = this.text('acceptedMessage');
-    } catch (e: any) { this.error = e?.message || this.text('acceptError'); }
+      this.proposal = await this.proposalApi.markTermsAccepted(this.proposal.proposalId);
+      this.message = this.text('termsAcceptedMessage') || 'Terms and Conditions accepted.';
+    } catch (e: any) {
+      this.error = e?.message || this.text('acceptError');
+    }
     this.accepting = false;
   }
 
-  reloadProposal(): void {
+  reloadProposal(tryFinalize = false): void {
     const id = this.route.snapshot.paramMap.get('proposalId') || '';
     if (!id) return;
 
     this.proposalApi.getProposal(id).subscribe({
-      next: (proposal) => {
-        if (proposal) this.proposal = proposal;
+      next: async (proposal) => {
+        if (proposal) {
+          this.proposal = proposal;
+          if (tryFinalize && this.canFinalizeProposal) {
+            await this.finalizeProposal();
+          }
+        }
       }
     });
   }
 
   payDeposit(): void {
-    if (!this.proposal) return;
+    if (!this.proposal || !this.proposalAccessReady) return;
+    this.rememberProposalAccess();
     this.payingDeposit = true;
     this.proposalApi.createDepositCheckout(this.proposal).subscribe({
       next: (r) => { const url = r.url || r.checkoutUrl || r.sessionUrl; if (url) window.location.href = url; else { this.payingDeposit = false; this.error = this.text('depositError'); } },
@@ -353,9 +680,47 @@ export class ProposalConfirmationComponent implements OnInit {
     this.router.navigate(['/bookings', this.relatedBookingId]);
   }
 
-  registerWarrantyCard(): void {
-    if (!this.proposal) return;
+  async acceptCashWarranty(): Promise<void> {
+    if (!this.proposal || !this.proposalAccessReady || !this.depositPaid) return;
     this.payingWarranty = true;
+    this.error = '';
+    try {
+      this.proposal = await this.proposalApi.setWarrantyChoice(this.proposal.proposalId, 'cash_on_board');
+      await this.finalizeProposal();
+    } catch (e: any) {
+      this.error = e?.message || this.text('warrantyError');
+    }
+    this.payingWarranty = false;
+  }
+
+  async finalizeProposal(): Promise<void> {
+    if (!this.proposal || !this.canFinalizeProposal || this.finalizingBooking) return;
+
+    this.finalizingBooking = true;
+    this.error = '';
+    try {
+      const result = await this.proposalApi.finalizeProposalWizard(
+        this.proposal.proposalId,
+        this.proposal.warrantyPaymentChoice || this.warrantyChoice
+      );
+      this.finalBookingId = result.bookingId;
+      this.message = this.text('bookingCreatedText');
+      this.router.navigate(['/bookings', result.bookingId]);
+    } catch (e: any) {
+      this.error = e?.message || this.text('acceptError');
+    } finally {
+      this.finalizingBooking = false;
+    }
+  }
+
+  async registerWarrantyCard(): Promise<void> {
+    if (!this.proposal || !this.proposalAccessReady || !this.depositPaid) return;
+    this.payingWarranty = true;
+    this.error = '';
+    try {
+      this.proposal = await this.proposalApi.setWarrantyChoice(this.proposal.proposalId, 'stripe_card');
+    } catch {}
+    this.rememberProposalAccess();
     this.proposalApi.createWarrantySetup(this.proposal).subscribe({
       next: (r) => { const url = r.url || r.checkoutUrl || r.sessionUrl; if (url) window.location.href = url; else { this.payingWarranty = false; this.error = this.text('warrantyError'); } },
       error: () => { this.payingWarranty = false; this.error = this.text('warrantyError'); }

@@ -478,6 +478,9 @@ export class BookingDetailComponent implements OnInit {
     const anyBooking: any = this.booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
 
+    // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
+    if (this.isBalancePaid()) return 'payment_done';
+
     if (
       rawStatus === 'payment_done' ||
       rawStatus === 'full_payment_done' ||
@@ -497,7 +500,6 @@ export class BookingDetailComponent implements OnInit {
       return 'confirmed';
     }
 
-    if (this.isBalancePaid()) return 'payment_done';
     if (this.isDepositPaid() && this.isTermsAccepted()) return 'confirmed';
     return 'not_confirmed';
   }
@@ -510,7 +512,7 @@ export class BookingDetailComponent implements OnInit {
   }
 
   getDepositStatusLabel(): string {
-    return this.isDepositPaid() ? `Paid (€${this.getDepositAmount()})` : `Pending (€${this.getDepositAmount()})`;
+    return this.isDepositPaid() ? `Completed (€${this.getDepositAmount()})` : `Pending (€${this.getDepositAmount()})`;
   }
 
   getTermsStatusLabel(): string {
@@ -525,18 +527,19 @@ export class BookingDetailComponent implements OnInit {
     const choice = this.getWarrantyChoice();
     if (choice === 'cash_on_board') return 'Cash €500 selected';
     if (choice === 'stripe_card') return 'Stripe card selected';
+    if (this.isWarrantyCardRegistered()) return 'Stripe card selected';
     return 'Not selected';
   }
 
   getWarrantyCardLabel(): string {
-    if (this.isWarrantyCardRegistered()) return 'Registered in Stripe';
+    if (this.isWarrantyCardRegistered()) return 'Completed';
     if (this.getWarrantyChoice() === 'stripe_card') return 'Selected, card not registered yet';
     if (this.getWarrantyChoice() === 'cash_on_board') return 'Not required — cash warranty selected';
     return 'Not registered';
   }
 
   getBalanceStatusLabel(): string {
-    return this.isBalancePaid() ? `Paid (€${this.getBalanceAmount()})` : `Pending (€${this.getBalanceAmount()})`;
+    return this.isBalancePaid() ? `Completed (€${this.getBalanceAmount()})` : `Pending (€${this.getBalanceAmount()})`;
   }
 
   getDamageStatusLabel(): string {
@@ -763,7 +766,8 @@ export class BookingDetailComponent implements OnInit {
     const now = Date.now();
     const payload: any = {
       bookingStatus: 'confirmed',
-      paymentStatus: 'deposit_paid',
+      depositStatus: 'paid',
+      depositPaid: true,
       confirmedAt: (this.booking as any).confirmedAt || now,
       modifiedTS: now,
     };
@@ -790,23 +794,66 @@ export class BookingDetailComponent implements OnInit {
     return Number((this.booking as any)?.balanceAmount || Math.max(0, Math.round((total - deposit) * 100) / 100));
   }
 
+
+  isCompletedStatusValue(value: any): boolean {
+    if (value === true) return true;
+    const normalized = String(value || '').toLowerCase().trim();
+    return [
+      'true',
+      'paid',
+      'completed',
+      'complete',
+      'done',
+      'confirmed',
+      'charge_succeeded',
+      'deposit_paid',
+      'balance_paid',
+      'payment_done',
+      'full_payment_done',
+      'card_registered',
+      'warranty_card_saved',
+      'warranty_card_registered',
+      'warranty_charged',
+      'cash_received'
+    ].includes(normalized);
+  }
+
+  isBalanceCompletedStatusValue(value: any): boolean {
+    if (value === true) return true;
+    const normalized = String(value || '').toLowerCase().trim();
+    return [
+      'true',
+      'paid',
+      'completed',
+      'complete',
+      'done',
+      'balance_paid',
+      'remaining_paid',
+      'payment_done',
+      'full_payment_done'
+    ].includes(normalized);
+  }
+
+  getCompletedLabel(done: boolean): string {
+    return done ? 'Completed' : 'Pending';
+  }
+
   isDepositPaid(): boolean {
     const anyBooking: any = this.booking || {};
     const depositPayment = anyBooking?.payments?.deposit || {};
     const legacyPayment = anyBooking?.payment || {};
-    return anyBooking.depositPaid === true ||
-      anyBooking.depositStatus === 'paid' ||
-      anyBooking.depositStatus === 'deposit_paid' ||
-      anyBooking.paymentStatus === 'paid' ||
-      anyBooking.paymentStatus === 'charge_succeeded' ||
-      legacyPayment.depositPaid === true ||
-      legacyPayment.paid === true ||
-      legacyPayment.status === 'paid' ||
-      legacyPayment.status === 'deposit_paid' ||
-      depositPayment.depositPaid === true ||
-      depositPayment.paid === true ||
-      depositPayment.status === 'paid' ||
-      depositPayment.status === 'deposit_paid';
+
+    return this.isCompletedStatusValue(anyBooking.depositStatus) ||
+      this.isCompletedStatusValue(anyBooking.depositPaid) ||
+      this.isCompletedStatusValue(anyBooking.paymentStatus) ||
+      this.isCompletedStatusValue(legacyPayment.depositStatus) ||
+      this.isCompletedStatusValue(legacyPayment.depositPaid) ||
+      this.isCompletedStatusValue(legacyPayment.paid) ||
+      this.isCompletedStatusValue(legacyPayment.status) ||
+      this.isCompletedStatusValue(depositPayment.depositStatus) ||
+      this.isCompletedStatusValue(depositPayment.depositPaid) ||
+      this.isCompletedStatusValue(depositPayment.paid) ||
+      this.isCompletedStatusValue(depositPayment.status);
   }
 
   isBookingConfirmed(): boolean {
@@ -816,13 +863,15 @@ export class BookingDetailComponent implements OnInit {
   isWarrantyCardRegistered(): boolean {
     const anyBooking: any = this.booking || {};
     const warrantyPayment = anyBooking?.payments?.warranty || {};
+    const legacyPayment = anyBooking?.payment || {};
 
-    return anyBooking.warrantyRegistered === true ||
-      anyBooking.warrantyStatus === 'card_registered' ||
-      anyBooking.warrantyStatus === 'warranty_card_saved' ||
-      warrantyPayment.warrantyRegistered === true ||
-      warrantyPayment.status === 'card_registered' ||
-      warrantyPayment.status === 'warranty_card_saved';
+    return this.isCompletedStatusValue(anyBooking.warrantyStatus) ||
+      this.isCompletedStatusValue(anyBooking.warrantyRegistered) ||
+      this.isCompletedStatusValue(legacyPayment.warrantyStatus) ||
+      this.isCompletedStatusValue(legacyPayment.warrantyRegistered) ||
+      this.isCompletedStatusValue(warrantyPayment.warrantyStatus) ||
+      this.isCompletedStatusValue(warrantyPayment.warrantyRegistered) ||
+      this.isCompletedStatusValue(warrantyPayment.status);
   }
 
 
@@ -875,11 +924,22 @@ export class BookingDetailComponent implements OnInit {
 
   isBalancePaid(): boolean {
     const anyBooking: any = this.booking || {};
-    return anyBooking.balancePaid === true ||
-      anyBooking.balanceStatus === 'paid' ||
-      anyBooking.balancePaymentStatus === 'paid' ||
-      anyBooking?.payments?.balance?.paid === true ||
-      anyBooking?.payments?.balance?.status === 'paid';
+    const balancePayment = anyBooking?.payments?.balance || {};
+    const remainingPayment = anyBooking?.payments?.remaining || {};
+
+    return this.isBalanceCompletedStatusValue(anyBooking.paymentStatus) ||
+      this.isBalanceCompletedStatusValue(anyBooking.balancePaid) ||
+      this.isBalanceCompletedStatusValue(anyBooking.balanceStatus) ||
+      this.isBalanceCompletedStatusValue(anyBooking.balancePaymentStatus) ||
+      this.isBalanceCompletedStatusValue(anyBooking.remainingPaid) ||
+      this.isBalanceCompletedStatusValue(anyBooking.remainingStatus) ||
+      this.isBalanceCompletedStatusValue(anyBooking.remainingPaymentStatus) ||
+      this.isBalanceCompletedStatusValue(balancePayment.paid) ||
+      this.isBalanceCompletedStatusValue(balancePayment.status) ||
+      this.isBalanceCompletedStatusValue(balancePayment.paymentStatus) ||
+      this.isBalanceCompletedStatusValue(remainingPayment.paid) ||
+      this.isBalanceCompletedStatusValue(remainingPayment.status) ||
+      this.isBalanceCompletedStatusValue(remainingPayment.paymentStatus);
   }
 
   async recordCashWarrantyDamage(): Promise<void> {

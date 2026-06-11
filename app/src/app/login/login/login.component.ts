@@ -28,6 +28,7 @@ export class LoginComponent {
   resetEmail = '';
   resetSending = false;
   resetSent = false;
+  accountCreatedMessage = '';
 
   // redirection
   private redirectTo: string | null = null;
@@ -48,6 +49,9 @@ export class LoginComponent {
     });
 
     this.redirectTo = this.route.snapshot.queryParamMap.get('redirect');
+    if (this.route.snapshot.queryParamMap.get('created') === 'true') {
+      this.accountCreatedMessage = 'Account created successfully. Please check your inbox and your Junk/Spam folder for the password setup/reset email before signing in.';
+    }
   }
 
   get f() { return this.loginForm.controls; }

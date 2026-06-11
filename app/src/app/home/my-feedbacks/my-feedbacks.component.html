@@ -15,7 +15,7 @@
         <p>{{ t('formIntro') }}</p>
       </div>
 
-      <div class="state-card full" *ngIf="shouldBlockNewFeedback()">
+      <div class="state-card full" *ngIf="shouldBlockNewFeedback() && !hasAnyEligibleOuting()">
         <p>{{ t('noEligibleBookings') }}</p>
         <button class="btn btn-secondary" type="button" (click)="openNoFeedbackModal()">
           {{ t('noFeedbackModalTitle') }}

@@ -1,4 +1,3 @@
-
 <section class="proposal-confirmation-page">
   <div class="container proposal-shell">
     <p class="muted" *ngIf="loading">{{ text('loading') }}</p>
@@ -20,97 +19,164 @@
         <div><strong>{{ text('warranty') }}</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>
       </div>
 
-      <div class="expired" *ngIf="expired">{{ text('expiredText') }}</div>
+      <section class="proposal-auth-card" *ngIf="!proposalAccessReady">
+        <span class="eyebrow">Secure proposal access</span>
+        <h2>Access your proposal securely</h2>
 
-      <section class="choice-block" *ngIf="!expired && proposal.status !== 'accepted'">
-        <h2>{{ text('acceptTitle') }}</h2>
-        <div class="terms-required-card">
-          <p>
-            {{ text('readBeforeAccept') }}
-            <button class="link-button" type="button" (click)="openTermsModal()">{{ text('openTerms') }}</button>
-          </p>
+        <p *ngIf="proposalAccessMode === 'google'">
+          This proposal is linked to <strong>{{ proposal.customerEmail }}</strong>.
+          Please continue with Google so we can verify that you own this Gmail address.
+        </p>
 
-          <label class="terms-check">
-            <input type="checkbox" [(ngModel)]="acceptedTerms" [disabled]="!canAcceptTermsCheckbox" />
-            <span>{{ text('termsCheckbox') }}</span>
-          </label>
+        <p *ngIf="proposalAccessMode === 'auto_email' || customerAccountCreating || proposalAccessLoading">
+          We are preparing your secure customer access. You do not need to create an account yourself.
+        </p>
 
-          <p class="muted" *ngIf="!canAcceptTermsCheckbox">
-            {{ text('termsLocked') }}
-          </p>
-        </div>
+        <p class="muted" *ngIf="proposalAccessMessage">{{ proposalAccessMessage }}</p>
+        <p class="error" *ngIf="proposalAccessError">{{ proposalAccessError }}</p>
 
-        <h3>{{ text('warrantyTitle') }}</h3>
-        <label class="radio-card"><input type="radio" name="warrantyChoice" value="stripe_card" [(ngModel)]="warrantyChoice" /><span>{{ text('warrantyCard') }}</span></label>
-        <label class="radio-card"><input type="radio" name="warrantyChoice" value="cash_on_board" [(ngModel)]="warrantyChoice" /><span>{{ text('warrantyCash') }}</span></label>
+        <button
+          class="btn btn-primary"
+          type="button"
+          *ngIf="proposalAccessMode === 'google'"
+          [disabled]="proposalAccessLoading"
+          (click)="continueWithGoogle()">
+          {{ proposalAccessLoading ? 'Opening Google...' : 'Continue with Google' }}
+        </button>
 
-        <button class="btn btn-primary" type="button" [disabled]="!canAccept || accepting" (click)="acceptProposal()">{{ accepting ? text('acceptingButton') : text('acceptButton') }}</button>
-      
-      <div class="terms-modal-backdrop" *ngIf="termsModalOpen" (click)="closeTermsModal()">
-        <section class="terms-modal" (click)="$event.stopPropagation()">
-          <button class="modal-close" type="button" (click)="closeTermsModal()">×</button>
-          <span class="eyebrow">Alegria Boat</span>
-          <h2>{{ text('termsModalTitle') }}</h2>
-
-          <div class="terms-content tc-scrollable" tabindex="0">
-            <ng-container *ngFor="let section of termsSections">
-              <h3>{{ section.title }}</h3>
-              <p *ngFor="let paragraph of section.paragraphs">{{ paragraph }}</p>
-            </ng-container>
-          </div>
-
-          <div class="modal-actions">
-            <button class="btn btn-primary" type="button" (click)="closeTermsModal()">{{ text('readTermsButton') }}</button>
-          </div>
-        </section>
-      </div>
-
-</section>
-
-      <section class="payment-block" *ngIf="!expired && proposal.status === 'accepted'">
-        <h2>{{ text('nextSteps') }}</h2>
-
-        <div class="related-booking-banner">
-          <div>
-            <strong>{{ text('bookingCreatedTitle') }}</strong>
-            <p>{{ text('bookingCreatedText') }}</p>
-          </div>
-          <button class="btn btn-secondary" type="button" (click)="openRelatedBooking()">{{ text('openBookingButton') }}</button>
-        </div>
-        <div class="step-card" [class.paid]="depositPaid">
-          <h3>{{ text('payDepositTitle') }}</h3>
-          <p>{{ depositMessage }}</p>
-
-          <div class="paid-badge" *ngIf="depositPaid">
-            {{ text('depositPaid') }}
-          </div>
-
-          <button class="btn btn-primary" type="button" *ngIf="!depositPaid" [disabled]="payingDeposit" (click)="payDeposit()">
-            {{ payingDeposit ? text('redirecting') : text('payDepositButton') }}
-          </button>
-        </div>
-        <div class="step-card" *ngIf="proposal.warrantyPaymentChoice === 'stripe_card'" [class.paid]="warrantyRegistered">
-          <h3>{{ text('registerWarrantyTitle') }}</h3>
-          <p>{{ warrantyMessage }}</p>
-          <p class="muted">{{ text('maxWarranty') }}: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>
-
-          <div class="paid-badge" *ngIf="warrantyRegistered">
-            {{ text('warrantyCardRegistered') }}
-          </div>
-
-          <button class="btn btn-secondary" type="button" *ngIf="!warrantyRegistered" [disabled]="payingWarranty" (click)="registerWarrantyCard()">
-            {{ payingWarranty ? text('redirecting') : text('registerWarrantyButton') }}
-          </button>
-        </div>
-        <div class="step-card" *ngIf="proposal.warrantyPaymentChoice === 'cash_on_board'">
-          <h3>{{ text('cashWarrantyTitle') }}</h3>
-          <p>{{ warrantyMessage }}</p>
-          <p class="muted">{{ text('amount') }}: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>
-        </div>
-        <div class="step-card"><h3>{{ text('outingDayTitle') }}</h3><p>{{ text('outingDayText') }}</p></div>
+        <button
+          class="btn btn-secondary"
+          type="button"
+          *ngIf="proposalAccessMode !== 'google' && proposalAccessError"
+          [disabled]="proposalAccessLoading"
+          (click)="prepareProposalAccess()">
+          Retry
+        </button>
       </section>
 
-      <p class="success" *ngIf="message">{{ message }}</p>
+      <ng-container *ngIf="proposalAccessReady">
+        <div class="expired" *ngIf="expired">{{ text('expiredText') }}</div>
+
+        <section class="proposal-wizard" *ngIf="!expired">
+          <div class="wizard-progress">
+            <div class="wizard-progress-bar" [style.width.%]="wizardProgressPercent"></div>
+          </div>
+
+          <div class="wizard-steps">
+            <div class="wizard-step" [class.active]="wizardStep === 1" [class.done]="tncAccepted">
+              <span>1</span>
+              <strong>{{ text('wizardStepTerms') || 'Accept T&C' }}</strong>
+            </div>
+            <div class="wizard-step" [class.active]="wizardStep === 2" [class.done]="depositPaid">
+              <span>2</span>
+              <strong>{{ text('wizardStepDeposit') || 'Pay deposit' }}</strong>
+            </div>
+            <div class="wizard-step" [class.active]="wizardStep === 3" [class.done]="warrantyReady">
+              <span>3</span>
+              <strong>{{ text('wizardStepWarranty') || 'Warranty' }}</strong>
+            </div>
+          </div>
+
+          <section class="wizard-panel" *ngIf="wizardStep === 1">
+            <h2>{{ text('acceptTitle') }}</h2>
+            <p>{{ text('readBeforeAccept') }}</p>
+
+            <button class="link-button" type="button" (click)="openTermsModal()">{{ text('openTerms') }}</button>
+
+            <label class="terms-check">
+              <input type="checkbox" [(ngModel)]="acceptedTerms" [disabled]="!canAcceptTermsCheckbox" />
+              <span>{{ text('termsCheckbox') }}</span>
+            </label>
+
+            <p class="muted" *ngIf="!canAcceptTermsCheckbox">{{ text('termsLocked') }}</p>
+
+            <button class="btn btn-primary" type="button" [disabled]="!canAccept || accepting" (click)="acceptProposal()">
+              {{ accepting ? text('acceptingButton') : (text('wizardAcceptTermsButton') || 'Validate T&C and continue') }}
+            </button>
+          </section>
+
+          <section class="wizard-panel" *ngIf="wizardStep === 2">
+            <h2>{{ text('payDepositTitle') }}</h2>
+            <p>{{ depositMessage }}</p>
+            <p class="muted">{{ text('deposit') }}: <strong>€{{ proposal.depositAmount }}</strong></p>
+
+            <button class="btn btn-primary" type="button" [disabled]="payingDeposit" (click)="payDeposit()">
+              {{ payingDeposit ? text('redirecting') : text('payDepositButton') }}
+            </button>
+          </section>
+
+          <section class="wizard-panel" *ngIf="wizardStep === 3">
+            <h2>{{ text('warrantyTitle') }}</h2>
+            <p>{{ text('warrantyWizardIntro') || 'Choose how you want to secure the warranty for the outing.' }}</p>
+
+            <div class="warranty-options">
+              <label class="radio-card">
+                <input type="radio" name="warrantyChoice" value="stripe_card" [(ngModel)]="warrantyChoice" />
+                <span>{{ text('warrantyCard') }}</span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="warrantyChoice" value="cash_on_board" [(ngModel)]="warrantyChoice" />
+                <span>{{ text('warrantyCash') }}</span>
+              </label>
+            </div>
+
+            <div class="step-card" *ngIf="warrantyChoice === 'stripe_card'" [class.paid]="warrantyRegistered">
+              <h3>{{ text('registerWarrantyTitle') }}</h3>
+              <p>{{ warrantyMessage }}</p>
+              <p class="muted">{{ text('maxWarranty') }}: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>
+
+              <div class="paid-badge" *ngIf="warrantyRegistered">{{ text('warrantyCardRegistered') }}</div>
+
+              <button class="btn btn-secondary" type="button" *ngIf="!warrantyRegistered" [disabled]="payingWarranty" (click)="registerWarrantyCard()">
+                {{ payingWarranty ? text('redirecting') : text('registerWarrantyButton') }}
+              </button>
+
+              <button class="btn btn-primary" type="button" *ngIf="warrantyRegistered" [disabled]="finalizingBooking" (click)="finalizeProposal()">
+                {{ finalizingBooking ? text('finalizingBooking') || 'Creating booking...' : text('finalizeBookingButton') || 'Create my booking' }}
+              </button>
+            </div>
+
+            <div class="step-card" *ngIf="warrantyChoice === 'cash_on_board'">
+              <h3>{{ text('cashWarrantyTitle') }}</h3>
+              <p>{{ text('warrantyCashMessage') }}</p>
+              <p class="muted">{{ text('amount') }}: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>
+
+              <button class="btn btn-primary" type="button" [disabled]="payingWarranty || finalizingBooking" (click)="acceptCashWarranty()">
+                {{ finalizingBooking ? text('finalizingBooking') || 'Creating booking...' : text('acceptCashWarrantyButton') || 'I confirm I will bring €500 cash' }}
+              </button>
+            </div>
+          </section>
+
+          <section class="wizard-panel" *ngIf="wizardStep === 4">
+            <h2>{{ text('bookingCreatedTitle') }}</h2>
+            <p>{{ text('bookingCreatedText') }}</p>
+            <button class="btn btn-primary" type="button" [disabled]="finalizingBooking" (click)="finalizeProposal()">
+              {{ finalizingBooking ? text('finalizingBooking') || 'Creating booking...' : text('finalizeBookingButton') || 'Create my booking' }}
+            </button>
+          </section>
+        </section>
+
+        <div class="terms-modal-backdrop" *ngIf="termsModalOpen" (click)="closeTermsModal()">
+          <section class="terms-modal" (click)="$event.stopPropagation()">
+            <button class="modal-close" type="button" (click)="closeTermsModal()">×</button>
+            <span class="eyebrow">Alegria Boat</span>
+            <h2>{{ text('termsModalTitle') }}</h2>
+
+            <div class="terms-content tc-scrollable" tabindex="0">
+              <ng-container *ngFor="let section of termsSections">
+                <h3>{{ section.title }}</h3>
+                <p *ngFor="let paragraph of section.paragraphs">{{ paragraph }}</p>
+              </ng-container>
+            </div>
+
+            <div class="modal-actions">
+              <button class="btn btn-primary" type="button" (click)="closeTermsModal()">{{ text('readTermsButton') }}</button>
+            </div>
+          </section>
+        </div>
+
+        <p class="success" *ngIf="message">{{ message }}</p>
+      </ng-container>
     </article>
   </div>
 </section>

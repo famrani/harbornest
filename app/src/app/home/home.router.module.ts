@@ -36,6 +36,7 @@ import { BookingProcessComponent } from './booking-process/booking-process.compo
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
   { path: 'sorties', component: OutingsComponent },
   { path: 'sorties/journee-en-mer', component: FullDayComponent },
   { path: 'sorties/coucher-de-soleil', component: SunsetCruiseComponent },

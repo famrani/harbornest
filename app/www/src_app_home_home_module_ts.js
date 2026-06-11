@@ -2950,13 +2950,39 @@ let MyBookingsComponent = class MyBookingsComponent {
     const anyBooking = booking;
     return anyBooking.termsAccepted === true || anyBooking.tcAccepted === true || anyBooking.tAndCAccepted === true || anyBooking.termsAndConditionsAccepted === true || anyBooking.acceptedTerms === true || anyBooking.termsStatus === 'accepted' || anyBooking.tcStatus === 'accepted' || anyBooking?.documents?.termsAccepted === true || anyBooking?.terms?.accepted === true;
   }
+  isCompletedStatusValue(value) {
+    if (value === true) return true;
+    const normalized = String(value || '').toLowerCase().trim();
+    return ['true', 'paid', 'completed', 'complete', 'done', 'confirmed', 'charge_succeeded', 'deposit_paid', 'balance_paid', 'payment_done', 'full_payment_done', 'card_registered', 'warranty_card_saved', 'warranty_card_registered', 'warranty_charged', 'cash_received'].includes(normalized);
+  }
+  isBalanceCompletedStatusValue(value) {
+    if (value === true) return true;
+    const normalized = String(value || '').toLowerCase().trim();
+    return ['true', 'paid', 'completed', 'complete', 'done', 'balance_paid', 'remaining_paid', 'payment_done', 'full_payment_done'].includes(normalized);
+  }
+  isCancelledBooking(booking) {
+    const anyBooking = booking || {};
+    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+    return rawStatus === false || rawStatus === 'false' || rawStatus === 'cancelled' || rawStatus === 'canceled' || rawStatus === 'deleted' || anyBooking.cancelled === true || anyBooking.canceled === true;
+  }
   getDerivedBookingStatus(booking) {
+    const anyBooking = booking || {};
+    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+    if (this.isCancelledBooking(booking)) return 'cancelled';
+    // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
     if (this.isBalancePaid(booking)) return 'payment_done';
+    if (rawStatus === 'payment_done' || rawStatus === 'full_payment_done' || rawStatus === 'paid' || rawStatus === 'completed') {
+      return 'payment_done';
+    }
+    if (rawStatus === true || rawStatus === 'true' || rawStatus === 'confirmed' || anyBooking.confirmed === true || anyBooking.bookingConfirmed === true) {
+      return 'confirmed';
+    }
     if (this.isDepositPaid(booking) && this.isTermsAccepted(booking)) return 'confirmed';
     return 'not_confirmed';
   }
   getStatusLabel(booking) {
     const status = this.getDerivedBookingStatus(booking);
+    if (status === 'cancelled') return 'Cancelled';
     if (status === 'payment_done') return 'Payment done';
     if (status === 'confirmed') return 'Confirmed';
     return 'Not confirmed';
@@ -2976,19 +3002,22 @@ let MyBookingsComponent = class MyBookingsComponent {
     return 'Not selected';
   }
   isWarrantyCardRegistered(booking) {
-    const anyBooking = booking;
+    const anyBooking = booking || {};
     const warrantyPayment = anyBooking?.payments?.warranty || {};
-    return anyBooking.warrantyRegistered === true || anyBooking.warrantyStatus === 'card_registered' || anyBooking.warrantyStatus === 'warranty_card_saved' || warrantyPayment.warrantyRegistered === true || warrantyPayment.status === 'card_registered' || warrantyPayment.status === 'warranty_card_saved';
+    const legacyPayment = anyBooking?.payment || {};
+    return this.isCompletedStatusValue(anyBooking.warrantyStatus) || this.isCompletedStatusValue(anyBooking.warrantyRegistered) || this.isCompletedStatusValue(legacyPayment.warrantyStatus) || this.isCompletedStatusValue(legacyPayment.warrantyRegistered) || this.isCompletedStatusValue(warrantyPayment.warrantyStatus) || this.isCompletedStatusValue(warrantyPayment.warrantyRegistered) || this.isCompletedStatusValue(warrantyPayment.status);
   }
   getWarrantyCardLabel(booking) {
-    if (this.isWarrantyCardRegistered(booking)) return 'Stripe card registered';
+    if (this.isWarrantyCardRegistered(booking)) return 'Completed';
     if (this.getWarrantyChoice(booking) === 'stripe_card') return 'Card selected, not registered';
     if (this.getWarrantyChoice(booking) === 'cash_on_board') return 'Not required';
     return 'Not registered';
   }
   isBalancePaid(booking) {
-    const anyBooking = booking;
-    return anyBooking.balancePaid === true || anyBooking.balanceStatus === 'paid' || anyBooking.balancePaymentStatus === 'paid' || anyBooking?.payments?.balance?.paid === true || anyBooking?.payments?.balance?.status === 'paid';
+    const anyBooking = booking || {};
+    const balancePayment = anyBooking?.payments?.balance || {};
+    const remainingPayment = anyBooking?.payments?.remaining || {};
+    return this.isBalanceCompletedStatusValue(anyBooking.paymentStatus) || this.isBalanceCompletedStatusValue(anyBooking.balancePaid) || this.isBalanceCompletedStatusValue(anyBooking.balanceStatus) || this.isBalanceCompletedStatusValue(anyBooking.balancePaymentStatus) || this.isBalanceCompletedStatusValue(anyBooking.remainingPaid) || this.isBalanceCompletedStatusValue(anyBooking.remainingStatus) || this.isBalanceCompletedStatusValue(anyBooking.remainingPaymentStatus) || this.isBalanceCompletedStatusValue(balancePayment.paid) || this.isBalanceCompletedStatusValue(balancePayment.status) || this.isBalanceCompletedStatusValue(balancePayment.paymentStatus) || this.isBalanceCompletedStatusValue(remainingPayment.paid) || this.isBalanceCompletedStatusValue(remainingPayment.status) || this.isBalanceCompletedStatusValue(remainingPayment.paymentStatus);
   }
   getDepositAmount(booking) {
     const total = Number(booking.totalPrice || 0);
@@ -2999,10 +3028,10 @@ let MyBookingsComponent = class MyBookingsComponent {
     return Number(booking.balanceAmount || Math.max(0, Math.round((total - this.getDepositAmount(booking)) * 100) / 100));
   }
   isDepositPaid(booking) {
-    const anyBooking = booking;
+    const anyBooking = booking || {};
     const depositPayment = anyBooking?.payments?.deposit || {};
     const legacyPayment = anyBooking?.payment || {};
-    return anyBooking.depositPaid === true || anyBooking.depositStatus === 'paid' || anyBooking.depositStatus === 'deposit_paid' || anyBooking.paymentStatus === 'paid' || anyBooking.paymentStatus === 'charge_succeeded' || legacyPayment.depositPaid === true || legacyPayment.paid === true || legacyPayment.status === 'paid' || legacyPayment.status === 'deposit_paid' || depositPayment.depositPaid === true || depositPayment.paid === true || depositPayment.status === 'paid' || depositPayment.status === 'deposit_paid';
+    return this.isCompletedStatusValue(anyBooking.depositStatus) || this.isCompletedStatusValue(anyBooking.depositPaid) || this.isCompletedStatusValue(anyBooking.paymentStatus) || this.isCompletedStatusValue(legacyPayment.depositStatus) || this.isCompletedStatusValue(legacyPayment.depositPaid) || this.isCompletedStatusValue(legacyPayment.paid) || this.isCompletedStatusValue(legacyPayment.status) || this.isCompletedStatusValue(depositPayment.depositStatus) || this.isCompletedStatusValue(depositPayment.depositPaid) || this.isCompletedStatusValue(depositPayment.paid) || this.isCompletedStatusValue(depositPayment.status);
   }
   getDepositLabel(booking) {
     return this.isDepositPaid(booking) ? 'Acompte payé' : 'Acompte à payer';
@@ -3654,7 +3683,102 @@ input, textarea, select {
   .terms-modal .terms-content.tc-scrollable {
     max-height: calc(92vh - 170px) !important;
   }
-}`, "",{"version":3,"sources":["webpack://./src/app/home/proposal-confirmation/proposal-confirmation.component.scss"],"names":[],"mappings":"AACA;EAA0E,eAAA;EAAe,mBAAA;EAAmB,gBAAA;AAG5G;;AAFA;EAAiD,iBAAA;EAAiB,cAAA;AAOlE;;AANA;EAAc,mBAAA;EAAmB,gBAAA;AAWjC;;AAXiD;EAAS,yBAAA;EAAyB,sBAAA;EAAqB,kBAAA;EAAiB,cAAA;EAAc,gBAAA;AAmBvI;;AAlBA;EAAS,cAAA;AAsBT;;AAtBuB;EAAoC,gBAAA;EAAgB,mBAAA;EAAmB,aAAA;EAAa,6CAAA;EAAyC,uCAAA;EAAmC,mBAAA;AA+BvL;;AA9BA;EAAY,aAAA;EAAa,8BAAA;EAA8B,SAAA;EAAS,mBAAA;AAqChE;;AArCmF;EAAW,aAAA;EAAa,2DAAA;EAAyD,SAAA;AA2CpK;;AA1CA;EAAM,aAAA;EAAa,QAAA;EAAQ,cAAA;EAAc,gBAAA;AAiDzC;;AAjDyD;EAAsB,uCAAA;EAAmC,mBAAA;EAAmB,kBAAA;EAAkB,aAAA;EAAa,gBAAA;AAyDpK;;AAzDoL;EAAM,iBAAA;AA6D1L;;AA5DA;EAA+B,aAAA;EAAa,eAAA;EAAe,SAAA;EAAS,cAAA;EAAc,gBAAA;AAoElF;;AApEkG;EAAkB,mBAAA;EAAmB,kBAAA;EAAkB,oBAAA;EAAoB,cAAA;AA2E7K;;AA1EA;EAAK,SAAA;EAAS,oBAAA;EAAoB,kBAAA;EAAkB,gBAAA;EAAgB,eAAA;AAkFpE;;AAlFmF;EAAa,mBAAA;EAAmB,WAAA;AAuFnH;;AAvF8H;EAAe,mBAAA;EAAmB,cAAA;AA4FhK;;AA3FA;EAAa,mBAAA;EAAmB,aAAA;EAAa,mBAAA;EAAmB,qBAAA;EAAqB,cAAA;AAmGrF;;AAnGmG;EAAS,cAAA;EAAc,gBAAA;AAwG1H;;AAxG0I;EAAgB,cAAA;EAAc,gBAAA;AA6GxK;;AA7GwL;EAAO,WAAA;AAiH/L;;AAjH0M;EAAY,eAAA;AAqHtN;;AApHA;EAAe,aAAA;EAAa,SAAA;AAyH5B;;AAzHqC;EAAc,aAAA;EAAa,kDAAA;EAAiD,SAAA;EAAS,mBAAA;EAAmB,WAAA;EAAW,gBAAA;EAAgB,gBAAA;EAAgB,uCAAA;EAAmC,mBAAA;EAAmB,aAAA;EAAa,eAAA;EAAe,6CAAA;AAwI1Q;;AAvIA;EAAyC,cAAA;AA2IzC;;AA3IuD;EAAoB,cAAA;AA+I3E;;AA/IyF;EAAQ,oBAAA;EAAoB,iBAAA;EAAiB,oCAAA;EAAgC,cAAA;EAAc,gBAAA;AAuJpL;;AAvJoM;EAAW,SAAA;EAAS,uBAAA;EAAuB,cAAA;EAAc,0BAAA;EAA0B,eAAA;EAAe,gBAAA;AAgKtS;;AA/JA;EAAc,aAAA;EAAa,2DAAA;EAAyD,SAAA;EAAS,cAAA;AAsK7F;;AAtK2G;EAA2C,mBAAA;EAAmB,mBAAA;EAAmB,aAAA;AA4K5L;;AA5KyM;EAAwC,cAAA;AAgLjP;;AAhL+P;EAAmB,cAAA;EAAc,eAAA;AAqLhS;;AApLA;EAAyB,aAAA;EAAa,SAAA;EAAS,uBAAA;EAAuB,gBAAA;EAAgB,sCAAA;EAAkC,aAAA;EAAa,mBAAA;EAAmB,cAAA;EAAc,cAAA;AAgMtK;;AA/LA;EAAwB;IAAc,0BAAA;EAoMpC;AACF;AAnMA;EACE,wCAAA;EACA,mBAAA;AAqMF;;AAlMA;EACE,oBAAA;EACA,mBAAA;EACA,oBAAA;EACA,uBAAA;EACA,mBAAA;EACA,WAAA;EACA,gBAAA;EACA,kBAAA;AAqMF;;AAlMA;EACE,aAAA;EACA,8BAAA;EACA,SAAA;EACA,mBAAA;EACA,uCAAA;EACA,mBAAA;EACA,aAAA;EACA,mBAAA;EACA,cAAA;AAqMF;;AAlMA;EACE,mBAAA;EACA,cAAA;AAqMF;;AAlMA;EACE;IACE,uBAAA;IACA,sBAAA;EAqMF;AACF;AAlMA;EACE,gBAAA;EACA,sCAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;AAoMF;;AAjMA;EACE,SAAA;EACA,uBAAA;EACA,cAAA;EACA,gBAAA;EACA,0BAAA;EACA,eAAA;EACA,UAAA;AAoMF;;AAjMA;EACE,eAAA;EACA,QAAA;EACA,aAAA;EACA,aAAA;EACA,mBAAA;EACA,iCAAA;EACA,kCAAA;UAAA,0BAAA;EACA,aAAA;AAoMF;;AAjMA;EACE,uBAAA;EACA,gBAAA;EACA,cAAA;EACA,gBAAA;EACA,mBAAA;EACA,kCAAA;EACA,6CAAA;EACA,uCAAA;EACA,kBAAA;AAoMF;;AAjMA;;EAEE,cAAA;AAoMF;;AAjMA;EACE,gBAAA;EACA,cAAA;EACA,qBAAA;EACA,cAAA;EACA,iBAAA;AAoMF;;AAjMA;EACE,kBAAA;EACA,WAAA;EACA,aAAA;EACA,WAAA;EACA,YAAA;EACA,SAAA;EACA,oBAAA;EACA,mBAAA;EACA,cAAA;EACA,iBAAA;EACA,eAAA;AAoMF;;AAjMA;EACE,aAAA;EACA,yBAAA;EACA,gBAAA;AAoMF;;AAhMA,yEAAA;AACA;;;EAGE,cAAA;EACA,4BAAA;EACA,gBAAA;EACA,kBAAA;EACA,iCAAA;EACA,4BAAA;EACA,sBAAA;EACA,wBAAA;AAmMF;;AAhMA;;EAEE,mBAAA;EACA,iBAAA;EACA,oBAAA;EACA,kBAAA;AAmMF;;AAhMA;;EAEE,gBAAA;AAmMF;;AAhMA;EACE;;;IAGE,gBAAA;EAmMF;AACF;AA/LA,sDAAA;AACA;;;EAGE,yBAAA;EACA,4CAAA;EACA,gDAAA;EACA,4BAAA;EACA,6BAAA;EACA,6BAAA;EACA,4CAAA;EACA,uCAAA;EACA,8BAAA;EACA,8BAAA;EACA,iCAAA;AAiMF;;AA9LA;EACE,2BAAA;EACA,2BAAA;EACA,wBAAA;EACA,iCAAA;AAiMF;;AA9LA;EACE,yBAAA;EACA,uBAAA;EACA,4BAAA;EACA,yCAAA;AAiMF;;AA9LA;;EAEE,yBAAA;EACA,8BAAA;EACA,4BAAA;EACA,+BAAA;EACA,oCAAA;EACA,4BAAA;EACA,6BAAA;AAiMF;;AA9LA;EACE;;;IAGE,uBAAA;IACA,2BAAA;IACA,4BAAA;EAiMF;EA9LA;IACE,yCAAA;EAgMF;AACF","sourcesContent":["\n.admin-proposals-page,.proposal-confirmation-page,.external-bookings-page{padding:80px 0;background:#f6f2ea;min-height:70vh}\n.proposals-shell,.proposal-shell,.external-shell{max-width:1120px;margin:0 auto}\n.section-head{margin-bottom:28px;max-width:780px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;color:#b58b4a;font-weight:700}\nh1,h2,h3{color:#08263a}.card,.proposal-card,.external-card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 18px 45px rgba(8,38,58,.08);border:1px solid rgba(8,38,58,.08);margin-bottom:24px}\n.form-title{display:flex;justify-content:space-between;gap:1rem;align-items:center}.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}\nlabel{display:grid;gap:6px;color:#08263a;font-weight:700}input,textarea,select{border:1px solid rgba(8,38,58,.16);border-radius:14px;padding:11px 13px;font:inherit;background:#fff}.wide{grid-column:1/-1}\n.calculation,.actions,.toolbar{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0;align-items:end}.calculation span{background:#f8f5ef;padding:10px 14px;border-radius:999px;color:#516070}\n.btn{border:0;border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer}.btn-primary{background:#08263a;color:#fff}.btn-secondary{background:#efe7da;color:#08263a}\n.client-link{background:#f8f5ef;padding:12px;border-radius:12px;word-break:break-all;color:#516070}.success{color:#047857;font-weight:700}.error,.expired{color:#9f1d1d;font-weight:700}.muted{color:#667}.search-box{flex:1 1 320px}\n.proposal-list{display:grid;gap:12px}.proposal-row{display:grid;grid-template-columns:auto 1.2fr 1.2fr .8fr auto;gap:16px;align-items:center;width:100%;text-align:left;background:#fff;border:1px solid rgba(8,38,58,.08);border-radius:18px;padding:16px;cursor:pointer;box-shadow:0 10px 28px rgba(8,38,58,.06)}\n.proposal-row strong,.proposal-row small{display:block}.proposal-row small{color:#516070}.status{border-radius:999px;padding:6px 10px;background:rgba(181,139,74,.12);color:#8a652d;font-weight:700}.mini-link{border:0;background:transparent;color:#08263a;text-decoration:underline;cursor:pointer;font-weight:700}\n.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:20px 0}.summary-grid div,.step-card,.choice-block{background:#f8f5ef;border-radius:18px;padding:16px}.summary-grid strong,.summary-grid span{display:block}.summary-grid span{color:#516070;margin-top:4px}\n.terms-check,.radio-card{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid rgba(8,38,58,.1);padding:14px;border-radius:14px;margin:10px 0;color:#516070}\n@media(max-width:800px){.proposal-row{grid-template-columns:1fr}}\n\n.step-card.paid {\n  border: 1px solid rgba(4, 120, 87, 0.22);\n  background: #eef6f0;\n}\n\n.paid-badge {\n  display: inline-flex;\n  align-items: center;\n  border-radius: 999px;\n  padding: 0.45rem 0.8rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n  margin-top: 0.5rem;\n}\n\n.related-booking-banner {\n  display: flex;\n  justify-content: space-between;\n  gap: 1rem;\n  align-items: center;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 18px;\n  padding: 1rem;\n  background: #f8f5ef;\n  margin: 1rem 0;\n}\n\n.related-booking-banner p {\n  margin: .25rem 0 0;\n  color: #516070;\n}\n\n@media (max-width: 640px) {\n  .related-booking-banner {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n}\n\n.terms-required-card {\n  background: #fff;\n  border: 1px solid rgba(8,38,58,.1);\n  border-radius: 18px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.link-button {\n  border: 0;\n  background: transparent;\n  color: #b58b4a;\n  font-weight: 800;\n  text-decoration: underline;\n  cursor: pointer;\n  padding: 0;\n}\n\n.terms-modal-backdrop {\n  position: fixed;\n  inset: 0;\n  z-index: 1000;\n  display: grid;\n  place-items: center;\n  background: rgba(8,38,58,.45);\n  backdrop-filter: blur(4px);\n  padding: 1rem;\n}\n\n.terms-modal {\n  width: min(760px, 100%);\n  max-height: 90vh;\n  overflow: auto;\n  background: #fff;\n  border-radius: 28px;\n  padding: clamp(1.25rem, 3vw, 2rem);\n  box-shadow: 0 30px 80px rgba(8,38,58,.24);\n  border: 1px solid rgba(8,38,58,.08);\n  position: relative;\n}\n\n.terms-modal h2,\n.terms-modal h3 {\n  color: #08263a;\n}\n\n.terms-content {\n  max-height: 58vh;\n  overflow: auto;\n  padding-right: .5rem;\n  color: #516070;\n  line-height: 1.65;\n}\n\n.modal-close {\n  position: absolute;\n  top: .9rem;\n  right: .9rem;\n  width: 38px;\n  height: 38px;\n  border: 0;\n  border-radius: 999px;\n  background: #f8f5ef;\n  color: #08263a;\n  font-size: 1.4rem;\n  cursor: pointer;\n}\n\n.modal-actions {\n  display: flex;\n  justify-content: flex-end;\n  margin-top: 1rem;\n}\n\n\n/* Ensure long Firebase T&C text is fully scrollable in every language. */\n.tc-scrollable,\n.terms-scroll-box,\n.terms-content {\n  display: block;\n  max-height: min(62vh, 560px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  -webkit-overflow-scrolling: touch;\n  overscroll-behavior: contain;\n  padding-right: 0.75rem;\n  scrollbar-gutter: stable;\n}\n\n.terms-scroll-box p,\n.terms-content p {\n  white-space: normal;\n  overflow: visible;\n  text-overflow: unset;\n  word-break: normal;\n}\n\n.terms-scroll-box h4,\n.terms-content h3 {\n  position: static;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box,\n  .terms-content {\n    max-height: 58vh;\n  }\n}\n\n\n/* Hard fix for long multilingual Firebase T&C text. */\n.tc-scrollable,\n.terms-scroll-box.tc-scrollable,\n.terms-content.tc-scrollable {\n  display: block !important;\n  height: clamp(360px, 62vh, 640px) !important;\n  max-height: clamp(360px, 62vh, 640px) !important;\n  min-height: 320px !important;\n  overflow-y: scroll !important;\n  overflow-x: hidden !important;\n  -webkit-overflow-scrolling: touch !important;\n  overscroll-behavior: contain !important;\n  touch-action: pan-y !important;\n  padding-right: 1rem !important;\n  box-sizing: border-box !important;\n}\n\n.terms-modal {\n  max-height: 94vh !important;\n  overflow: hidden !important;\n  display: flex !important;\n  flex-direction: column !important;\n}\n\n.terms-modal .terms-content.tc-scrollable {\n  flex: 1 1 auto !important;\n  height: auto !important;\n  min-height: 320px !important;\n  max-height: calc(94vh - 190px) !important;\n}\n\n.terms-scroll-box.tc-scrollable p,\n.terms-content.tc-scrollable p {\n  display: block !important;\n  white-space: normal !important;\n  overflow: visible !important;\n  text-overflow: unset !important;\n  -webkit-line-clamp: unset !important;\n  line-clamp: unset !important;\n  word-break: normal !important;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box.tc-scrollable,\n  .terms-content.tc-scrollable {\n    height: 58vh !important;\n    max-height: 58vh !important;\n    min-height: 300px !important;\n  }\n\n  .terms-modal .terms-content.tc-scrollable {\n    max-height: calc(92vh - 170px) !important;\n  }\n}\n"],"sourceRoot":""}]);
+}
+.proposal-auth-card {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  border-radius: 18px;
+  background: #fff8ed;
+  border: 1px solid rgba(181, 139, 74, 0.28);
+  box-shadow: 0 16px 40px rgba(8, 38, 58, 0.08);
+}
+
+.proposal-auth-card h2 {
+  margin: 0.25rem 0 0.75rem;
+}
+
+.proposal-auth-card .btn {
+  margin-top: 0.75rem;
+}
+
+.proposal-wizard {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.wizard-progress {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(8, 38, 58, 0.08);
+  overflow: hidden;
+}
+
+.wizard-progress-bar {
+  height: 100%;
+  border-radius: inherit;
+  background: #08263a;
+  transition: width 0.25s ease;
+}
+
+.wizard-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.wizard-step {
+  background: #f8f5ef;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  border-radius: 16px;
+  padding: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #516070;
+}
+
+.wizard-step span {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: #fff;
+  color: #08263a;
+  font-weight: 800;
+}
+
+.wizard-step.active {
+  border-color: rgba(181, 139, 74, 0.45);
+  box-shadow: 0 12px 30px rgba(181, 139, 74, 0.12);
+  color: #08263a;
+}
+
+.wizard-step.done {
+  background: #eef6f0;
+  color: #047857;
+}
+
+.wizard-panel {
+  background: #fff;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+  border-radius: 22px;
+  padding: 1.25rem;
+  box-shadow: 0 14px 38px rgba(8, 38, 58, 0.06);
+}
+
+.warranty-options {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+@media (max-width: 720px) {
+  .wizard-steps {
+    grid-template-columns: 1fr;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/proposal-confirmation/proposal-confirmation.component.scss"],"names":[],"mappings":"AACA;EAA0E,eAAA;EAAe,mBAAA;EAAmB,gBAAA;AAG5G;;AAFA;EAAiD,iBAAA;EAAiB,cAAA;AAOlE;;AANA;EAAc,mBAAA;EAAmB,gBAAA;AAWjC;;AAXiD;EAAS,yBAAA;EAAyB,sBAAA;EAAqB,kBAAA;EAAiB,cAAA;EAAc,gBAAA;AAmBvI;;AAlBA;EAAS,cAAA;AAsBT;;AAtBuB;EAAoC,gBAAA;EAAgB,mBAAA;EAAmB,aAAA;EAAa,6CAAA;EAAyC,uCAAA;EAAmC,mBAAA;AA+BvL;;AA9BA;EAAY,aAAA;EAAa,8BAAA;EAA8B,SAAA;EAAS,mBAAA;AAqChE;;AArCmF;EAAW,aAAA;EAAa,2DAAA;EAAyD,SAAA;AA2CpK;;AA1CA;EAAM,aAAA;EAAa,QAAA;EAAQ,cAAA;EAAc,gBAAA;AAiDzC;;AAjDyD;EAAsB,uCAAA;EAAmC,mBAAA;EAAmB,kBAAA;EAAkB,aAAA;EAAa,gBAAA;AAyDpK;;AAzDoL;EAAM,iBAAA;AA6D1L;;AA5DA;EAA+B,aAAA;EAAa,eAAA;EAAe,SAAA;EAAS,cAAA;EAAc,gBAAA;AAoElF;;AApEkG;EAAkB,mBAAA;EAAmB,kBAAA;EAAkB,oBAAA;EAAoB,cAAA;AA2E7K;;AA1EA;EAAK,SAAA;EAAS,oBAAA;EAAoB,kBAAA;EAAkB,gBAAA;EAAgB,eAAA;AAkFpE;;AAlFmF;EAAa,mBAAA;EAAmB,WAAA;AAuFnH;;AAvF8H;EAAe,mBAAA;EAAmB,cAAA;AA4FhK;;AA3FA;EAAa,mBAAA;EAAmB,aAAA;EAAa,mBAAA;EAAmB,qBAAA;EAAqB,cAAA;AAmGrF;;AAnGmG;EAAS,cAAA;EAAc,gBAAA;AAwG1H;;AAxG0I;EAAgB,cAAA;EAAc,gBAAA;AA6GxK;;AA7GwL;EAAO,WAAA;AAiH/L;;AAjH0M;EAAY,eAAA;AAqHtN;;AApHA;EAAe,aAAA;EAAa,SAAA;AAyH5B;;AAzHqC;EAAc,aAAA;EAAa,kDAAA;EAAiD,SAAA;EAAS,mBAAA;EAAmB,WAAA;EAAW,gBAAA;EAAgB,gBAAA;EAAgB,uCAAA;EAAmC,mBAAA;EAAmB,aAAA;EAAa,eAAA;EAAe,6CAAA;AAwI1Q;;AAvIA;EAAyC,cAAA;AA2IzC;;AA3IuD;EAAoB,cAAA;AA+I3E;;AA/IyF;EAAQ,oBAAA;EAAoB,iBAAA;EAAiB,oCAAA;EAAgC,cAAA;EAAc,gBAAA;AAuJpL;;AAvJoM;EAAW,SAAA;EAAS,uBAAA;EAAuB,cAAA;EAAc,0BAAA;EAA0B,eAAA;EAAe,gBAAA;AAgKtS;;AA/JA;EAAc,aAAA;EAAa,2DAAA;EAAyD,SAAA;EAAS,cAAA;AAsK7F;;AAtK2G;EAA2C,mBAAA;EAAmB,mBAAA;EAAmB,aAAA;AA4K5L;;AA5KyM;EAAwC,cAAA;AAgLjP;;AAhL+P;EAAmB,cAAA;EAAc,eAAA;AAqLhS;;AApLA;EAAyB,aAAA;EAAa,SAAA;EAAS,uBAAA;EAAuB,gBAAA;EAAgB,sCAAA;EAAkC,aAAA;EAAa,mBAAA;EAAmB,cAAA;EAAc,cAAA;AAgMtK;;AA/LA;EAAwB;IAAc,0BAAA;EAoMpC;AACF;AAnMA;EACE,wCAAA;EACA,mBAAA;AAqMF;;AAlMA;EACE,oBAAA;EACA,mBAAA;EACA,oBAAA;EACA,uBAAA;EACA,mBAAA;EACA,WAAA;EACA,gBAAA;EACA,kBAAA;AAqMF;;AAlMA;EACE,aAAA;EACA,8BAAA;EACA,SAAA;EACA,mBAAA;EACA,uCAAA;EACA,mBAAA;EACA,aAAA;EACA,mBAAA;EACA,cAAA;AAqMF;;AAlMA;EACE,mBAAA;EACA,cAAA;AAqMF;;AAlMA;EACE;IACE,uBAAA;IACA,sBAAA;EAqMF;AACF;AAlMA;EACE,gBAAA;EACA,sCAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;AAoMF;;AAjMA;EACE,SAAA;EACA,uBAAA;EACA,cAAA;EACA,gBAAA;EACA,0BAAA;EACA,eAAA;EACA,UAAA;AAoMF;;AAjMA;EACE,eAAA;EACA,QAAA;EACA,aAAA;EACA,aAAA;EACA,mBAAA;EACA,iCAAA;EACA,kCAAA;UAAA,0BAAA;EACA,aAAA;AAoMF;;AAjMA;EACE,uBAAA;EACA,gBAAA;EACA,cAAA;EACA,gBAAA;EACA,mBAAA;EACA,kCAAA;EACA,6CAAA;EACA,uCAAA;EACA,kBAAA;AAoMF;;AAjMA;;EAEE,cAAA;AAoMF;;AAjMA;EACE,gBAAA;EACA,cAAA;EACA,qBAAA;EACA,cAAA;EACA,iBAAA;AAoMF;;AAjMA;EACE,kBAAA;EACA,WAAA;EACA,aAAA;EACA,WAAA;EACA,YAAA;EACA,SAAA;EACA,oBAAA;EACA,mBAAA;EACA,cAAA;EACA,iBAAA;EACA,eAAA;AAoMF;;AAjMA;EACE,aAAA;EACA,yBAAA;EACA,gBAAA;AAoMF;;AAhMA,yEAAA;AACA;;;EAGE,cAAA;EACA,4BAAA;EACA,gBAAA;EACA,kBAAA;EACA,iCAAA;EACA,4BAAA;EACA,sBAAA;EACA,wBAAA;AAmMF;;AAhMA;;EAEE,mBAAA;EACA,iBAAA;EACA,oBAAA;EACA,kBAAA;AAmMF;;AAhMA;;EAEE,gBAAA;AAmMF;;AAhMA;EACE;;;IAGE,gBAAA;EAmMF;AACF;AA/LA,sDAAA;AACA;;;EAGE,yBAAA;EACA,4CAAA;EACA,gDAAA;EACA,4BAAA;EACA,6BAAA;EACA,6BAAA;EACA,4CAAA;EACA,uCAAA;EACA,8BAAA;EACA,8BAAA;EACA,iCAAA;AAiMF;;AA9LA;EACE,2BAAA;EACA,2BAAA;EACA,wBAAA;EACA,iCAAA;AAiMF;;AA9LA;EACE,yBAAA;EACA,uBAAA;EACA,4BAAA;EACA,yCAAA;AAiMF;;AA9LA;;EAEE,yBAAA;EACA,8BAAA;EACA,4BAAA;EACA,+BAAA;EACA,oCAAA;EACA,4BAAA;EACA,6BAAA;AAiMF;;AA9LA;EACE;;;IAGE,uBAAA;IACA,2BAAA;IACA,4BAAA;EAiMF;EA9LA;IACE,yCAAA;EAgMF;AACF;AA5LA;EACE,gBAAA;EACA,gBAAA;EACA,mBAAA;EACA,mBAAA;EACA,0CAAA;EACA,6CAAA;AA8LF;;AA3LA;EACE,yBAAA;AA8LF;;AA3LA;EACE,mBAAA;AA8LF;;AA1LA;EACE,aAAA;EACA,YAAA;EACA,kBAAA;AA6LF;;AA1LA;EACE,YAAA;EACA,oBAAA;EACA,iCAAA;EACA,gBAAA;AA6LF;;AA1LA;EACE,YAAA;EACA,sBAAA;EACA,mBAAA;EACA,4BAAA;AA6LF;;AA1LA;EACE,aAAA;EACA,gDAAA;EACA,YAAA;AA6LF;;AA1LA;EACE,mBAAA;EACA,uCAAA;EACA,mBAAA;EACA,eAAA;EACA,aAAA;EACA,mBAAA;EACA,YAAA;EACA,cAAA;AA6LF;;AA1LA;EACE,aAAA;EACA,mBAAA;EACA,WAAA;EACA,YAAA;EACA,oBAAA;EACA,gBAAA;EACA,cAAA;EACA,gBAAA;AA6LF;;AA1LA;EACE,sCAAA;EACA,gDAAA;EACA,cAAA;AA6LF;;AA1LA;EACE,mBAAA;EACA,cAAA;AA6LF;;AA1LA;EACE,gBAAA;EACA,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,6CAAA;AA6LF;;AA1LA;EACE,aAAA;EACA,YAAA;EACA,cAAA;AA6LF;;AA1LA;EACE;IACE,0BAAA;EA6LF;AACF","sourcesContent":["\n.admin-proposals-page,.proposal-confirmation-page,.external-bookings-page{padding:80px 0;background:#f6f2ea;min-height:70vh}\n.proposals-shell,.proposal-shell,.external-shell{max-width:1120px;margin:0 auto}\n.section-head{margin-bottom:28px;max-width:780px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;color:#b58b4a;font-weight:700}\nh1,h2,h3{color:#08263a}.card,.proposal-card,.external-card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 18px 45px rgba(8,38,58,.08);border:1px solid rgba(8,38,58,.08);margin-bottom:24px}\n.form-title{display:flex;justify-content:space-between;gap:1rem;align-items:center}.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}\nlabel{display:grid;gap:6px;color:#08263a;font-weight:700}input,textarea,select{border:1px solid rgba(8,38,58,.16);border-radius:14px;padding:11px 13px;font:inherit;background:#fff}.wide{grid-column:1/-1}\n.calculation,.actions,.toolbar{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0;align-items:end}.calculation span{background:#f8f5ef;padding:10px 14px;border-radius:999px;color:#516070}\n.btn{border:0;border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer}.btn-primary{background:#08263a;color:#fff}.btn-secondary{background:#efe7da;color:#08263a}\n.client-link{background:#f8f5ef;padding:12px;border-radius:12px;word-break:break-all;color:#516070}.success{color:#047857;font-weight:700}.error,.expired{color:#9f1d1d;font-weight:700}.muted{color:#667}.search-box{flex:1 1 320px}\n.proposal-list{display:grid;gap:12px}.proposal-row{display:grid;grid-template-columns:auto 1.2fr 1.2fr .8fr auto;gap:16px;align-items:center;width:100%;text-align:left;background:#fff;border:1px solid rgba(8,38,58,.08);border-radius:18px;padding:16px;cursor:pointer;box-shadow:0 10px 28px rgba(8,38,58,.06)}\n.proposal-row strong,.proposal-row small{display:block}.proposal-row small{color:#516070}.status{border-radius:999px;padding:6px 10px;background:rgba(181,139,74,.12);color:#8a652d;font-weight:700}.mini-link{border:0;background:transparent;color:#08263a;text-decoration:underline;cursor:pointer;font-weight:700}\n.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:20px 0}.summary-grid div,.step-card,.choice-block{background:#f8f5ef;border-radius:18px;padding:16px}.summary-grid strong,.summary-grid span{display:block}.summary-grid span{color:#516070;margin-top:4px}\n.terms-check,.radio-card{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid rgba(8,38,58,.1);padding:14px;border-radius:14px;margin:10px 0;color:#516070}\n@media(max-width:800px){.proposal-row{grid-template-columns:1fr}}\n\n.step-card.paid {\n  border: 1px solid rgba(4, 120, 87, 0.22);\n  background: #eef6f0;\n}\n\n.paid-badge {\n  display: inline-flex;\n  align-items: center;\n  border-radius: 999px;\n  padding: 0.45rem 0.8rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n  margin-top: 0.5rem;\n}\n\n.related-booking-banner {\n  display: flex;\n  justify-content: space-between;\n  gap: 1rem;\n  align-items: center;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 18px;\n  padding: 1rem;\n  background: #f8f5ef;\n  margin: 1rem 0;\n}\n\n.related-booking-banner p {\n  margin: .25rem 0 0;\n  color: #516070;\n}\n\n@media (max-width: 640px) {\n  .related-booking-banner {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n}\n\n.terms-required-card {\n  background: #fff;\n  border: 1px solid rgba(8,38,58,.1);\n  border-radius: 18px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.link-button {\n  border: 0;\n  background: transparent;\n  color: #b58b4a;\n  font-weight: 800;\n  text-decoration: underline;\n  cursor: pointer;\n  padding: 0;\n}\n\n.terms-modal-backdrop {\n  position: fixed;\n  inset: 0;\n  z-index: 1000;\n  display: grid;\n  place-items: center;\n  background: rgba(8,38,58,.45);\n  backdrop-filter: blur(4px);\n  padding: 1rem;\n}\n\n.terms-modal {\n  width: min(760px, 100%);\n  max-height: 90vh;\n  overflow: auto;\n  background: #fff;\n  border-radius: 28px;\n  padding: clamp(1.25rem, 3vw, 2rem);\n  box-shadow: 0 30px 80px rgba(8,38,58,.24);\n  border: 1px solid rgba(8,38,58,.08);\n  position: relative;\n}\n\n.terms-modal h2,\n.terms-modal h3 {\n  color: #08263a;\n}\n\n.terms-content {\n  max-height: 58vh;\n  overflow: auto;\n  padding-right: .5rem;\n  color: #516070;\n  line-height: 1.65;\n}\n\n.modal-close {\n  position: absolute;\n  top: .9rem;\n  right: .9rem;\n  width: 38px;\n  height: 38px;\n  border: 0;\n  border-radius: 999px;\n  background: #f8f5ef;\n  color: #08263a;\n  font-size: 1.4rem;\n  cursor: pointer;\n}\n\n.modal-actions {\n  display: flex;\n  justify-content: flex-end;\n  margin-top: 1rem;\n}\n\n\n/* Ensure long Firebase T&C text is fully scrollable in every language. */\n.tc-scrollable,\n.terms-scroll-box,\n.terms-content {\n  display: block;\n  max-height: min(62vh, 560px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  -webkit-overflow-scrolling: touch;\n  overscroll-behavior: contain;\n  padding-right: 0.75rem;\n  scrollbar-gutter: stable;\n}\n\n.terms-scroll-box p,\n.terms-content p {\n  white-space: normal;\n  overflow: visible;\n  text-overflow: unset;\n  word-break: normal;\n}\n\n.terms-scroll-box h4,\n.terms-content h3 {\n  position: static;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box,\n  .terms-content {\n    max-height: 58vh;\n  }\n}\n\n\n/* Hard fix for long multilingual Firebase T&C text. */\n.tc-scrollable,\n.terms-scroll-box.tc-scrollable,\n.terms-content.tc-scrollable {\n  display: block !important;\n  height: clamp(360px, 62vh, 640px) !important;\n  max-height: clamp(360px, 62vh, 640px) !important;\n  min-height: 320px !important;\n  overflow-y: scroll !important;\n  overflow-x: hidden !important;\n  -webkit-overflow-scrolling: touch !important;\n  overscroll-behavior: contain !important;\n  touch-action: pan-y !important;\n  padding-right: 1rem !important;\n  box-sizing: border-box !important;\n}\n\n.terms-modal {\n  max-height: 94vh !important;\n  overflow: hidden !important;\n  display: flex !important;\n  flex-direction: column !important;\n}\n\n.terms-modal .terms-content.tc-scrollable {\n  flex: 1 1 auto !important;\n  height: auto !important;\n  min-height: 320px !important;\n  max-height: calc(94vh - 190px) !important;\n}\n\n.terms-scroll-box.tc-scrollable p,\n.terms-content.tc-scrollable p {\n  display: block !important;\n  white-space: normal !important;\n  overflow: visible !important;\n  text-overflow: unset !important;\n  -webkit-line-clamp: unset !important;\n  line-clamp: unset !important;\n  word-break: normal !important;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box.tc-scrollable,\n  .terms-content.tc-scrollable {\n    height: 58vh !important;\n    max-height: 58vh !important;\n    min-height: 300px !important;\n  }\n\n  .terms-modal .terms-content.tc-scrollable {\n    max-height: calc(92vh - 170px) !important;\n  }\n}\n\n\n.proposal-auth-card {\n  margin: 1.5rem 0;\n  padding: 1.25rem;\n  border-radius: 18px;\n  background: #fff8ed;\n  border: 1px solid rgba(181, 139, 74, .28);\n  box-shadow: 0 16px 40px rgba(8, 38, 58, .08);\n}\n\n.proposal-auth-card h2 {\n  margin: .25rem 0 .75rem;\n}\n\n.proposal-auth-card .btn {\n  margin-top: .75rem;\n}\n\n\n.proposal-wizard {\n  display: grid;\n  gap: 1.25rem;\n  margin-top: 1.5rem;\n}\n\n.wizard-progress {\n  height: 10px;\n  border-radius: 999px;\n  background: rgba(8, 38, 58, .08);\n  overflow: hidden;\n}\n\n.wizard-progress-bar {\n  height: 100%;\n  border-radius: inherit;\n  background: #08263a;\n  transition: width .25s ease;\n}\n\n.wizard-steps {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: .75rem;\n}\n\n.wizard-step {\n  background: #f8f5ef;\n  border: 1px solid rgba(8, 38, 58, .08);\n  border-radius: 16px;\n  padding: .9rem;\n  display: flex;\n  align-items: center;\n  gap: .75rem;\n  color: #516070;\n}\n\n.wizard-step span {\n  display: grid;\n  place-items: center;\n  width: 32px;\n  height: 32px;\n  border-radius: 999px;\n  background: #fff;\n  color: #08263a;\n  font-weight: 800;\n}\n\n.wizard-step.active {\n  border-color: rgba(181, 139, 74, .45);\n  box-shadow: 0 12px 30px rgba(181, 139, 74, .12);\n  color: #08263a;\n}\n\n.wizard-step.done {\n  background: #eef6f0;\n  color: #047857;\n}\n\n.wizard-panel {\n  background: #fff;\n  border: 1px solid rgba(8, 38, 58, .08);\n  border-radius: 22px;\n  padding: 1.25rem;\n  box-shadow: 0 14px 38px rgba(8,38,58,.06);\n}\n\n.warranty-options {\n  display: grid;\n  gap: .75rem;\n  margin: 1rem 0;\n}\n\n@media (max-width: 720px) {\n  .wizard-steps {\n    grid-template-columns: 1fr;\n  }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -4092,7 +4216,7 @@ module.exports = "<section class=\"guest-page\">\n  <div class=\"container guest
 /***/ ((module) => {
 
 "use strict";
-module.exports = "\n<section class=\"proposal-confirmation-page\">\n  <div class=\"container proposal-shell\">\n    <p class=\"muted\" *ngIf=\"loading\">{{ text('loading') }}</p>\n    <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n\n    <article class=\"proposal-card\" *ngIf=\"!loading && proposal\">\n      <span class=\"eyebrow\">{{ text('proposalEyebrow') }}</span>\n      <h1>{{ proposal.outingType }}</h1>\n      <p class=\"muted\" *ngIf=\"proposal.proposalMessage\">{{ proposal.proposalMessage }}</p>\n\n      <div class=\"summary-grid\">\n        <div><strong>{{ text('customer') }}</strong><span>{{ proposal.customerName }}</span></div>\n        <div><strong>{{ text('date') }}</strong><span>{{ proposal.outingDate }}</span></div>\n        <div><strong>{{ text('time') }}</strong><span>{{ proposal.departureTime }} → {{ proposal.arrivalTime }}</span></div>\n        <div><strong>{{ text('passengers') }}</strong><span>{{ proposal.passengers || '-' }}</span></div>\n        <div><strong>{{ text('totalPrice') }}</strong><span>€{{ proposal.totalAmount }}</span></div>\n        <div><strong>{{ text('deposit') }}</strong><span>€{{ proposal.depositAmount }}</span></div>\n        <div><strong>{{ text('remaining') }}</strong><span>€{{ proposal.balanceAmount }}</span></div>\n        <div><strong>{{ text('warranty') }}</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>\n      </div>\n\n      <div class=\"expired\" *ngIf=\"expired\">{{ text('expiredText') }}</div>\n\n      <section class=\"choice-block\" *ngIf=\"!expired && proposal.status !== 'accepted'\">\n        <h2>{{ text('acceptTitle') }}</h2>\n        <div class=\"terms-required-card\">\n          <p>\n            {{ text('readBeforeAccept') }}\n            <button class=\"link-button\" type=\"button\" (click)=\"openTermsModal()\">{{ text('openTerms') }}</button>\n          </p>\n\n          <label class=\"terms-check\">\n            <input type=\"checkbox\" [(ngModel)]=\"acceptedTerms\" [disabled]=\"!canAcceptTermsCheckbox\" />\n            <span>{{ text('termsCheckbox') }}</span>\n          </label>\n\n          <p class=\"muted\" *ngIf=\"!canAcceptTermsCheckbox\">\n            {{ text('termsLocked') }}\n          </p>\n        </div>\n\n        <h3>{{ text('warrantyTitle') }}</h3>\n        <label class=\"radio-card\"><input type=\"radio\" name=\"warrantyChoice\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" /><span>{{ text('warrantyCard') }}</span></label>\n        <label class=\"radio-card\"><input type=\"radio\" name=\"warrantyChoice\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" /><span>{{ text('warrantyCash') }}</span></label>\n\n        <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"!canAccept || accepting\" (click)=\"acceptProposal()\">{{ accepting ? text('acceptingButton') : text('acceptButton') }}</button>\n      \n      <div class=\"terms-modal-backdrop\" *ngIf=\"termsModalOpen\" (click)=\"closeTermsModal()\">\n        <section class=\"terms-modal\" (click)=\"$event.stopPropagation()\">\n          <button class=\"modal-close\" type=\"button\" (click)=\"closeTermsModal()\">×</button>\n          <span class=\"eyebrow\">Alegria Boat</span>\n          <h2>{{ text('termsModalTitle') }}</h2>\n\n          <div class=\"terms-content tc-scrollable\" tabindex=\"0\">\n            <ng-container *ngFor=\"let section of termsSections\">\n              <h3>{{ section.title }}</h3>\n              <p *ngFor=\"let paragraph of section.paragraphs\">{{ paragraph }}</p>\n            </ng-container>\n          </div>\n\n          <div class=\"modal-actions\">\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"closeTermsModal()\">{{ text('readTermsButton') }}</button>\n          </div>\n        </section>\n      </div>\n\n</section>\n\n      <section class=\"payment-block\" *ngIf=\"!expired && proposal.status === 'accepted'\">\n        <h2>{{ text('nextSteps') }}</h2>\n\n        <div class=\"related-booking-banner\">\n          <div>\n            <strong>{{ text('bookingCreatedTitle') }}</strong>\n            <p>{{ text('bookingCreatedText') }}</p>\n          </div>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"openRelatedBooking()\">{{ text('openBookingButton') }}</button>\n        </div>\n        <div class=\"step-card\" [class.paid]=\"depositPaid\">\n          <h3>{{ text('payDepositTitle') }}</h3>\n          <p>{{ depositMessage }}</p>\n\n          <div class=\"paid-badge\" *ngIf=\"depositPaid\">\n            {{ text('depositPaid') }}\n          </div>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!depositPaid\" [disabled]=\"payingDeposit\" (click)=\"payDeposit()\">\n            {{ payingDeposit ? text('redirecting') : text('payDepositButton') }}\n          </button>\n        </div>\n        <div class=\"step-card\" *ngIf=\"proposal.warrantyPaymentChoice === 'stripe_card'\" [class.paid]=\"warrantyRegistered\">\n          <h3>{{ text('registerWarrantyTitle') }}</h3>\n          <p>{{ warrantyMessage }}</p>\n          <p class=\"muted\">{{ text('maxWarranty') }}: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>\n\n          <div class=\"paid-badge\" *ngIf=\"warrantyRegistered\">\n            {{ text('warrantyCardRegistered') }}\n          </div>\n\n          <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"!warrantyRegistered\" [disabled]=\"payingWarranty\" (click)=\"registerWarrantyCard()\">\n            {{ payingWarranty ? text('redirecting') : text('registerWarrantyButton') }}\n          </button>\n        </div>\n        <div class=\"step-card\" *ngIf=\"proposal.warrantyPaymentChoice === 'cash_on_board'\">\n          <h3>{{ text('cashWarrantyTitle') }}</h3>\n          <p>{{ warrantyMessage }}</p>\n          <p class=\"muted\">{{ text('amount') }}: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>\n        </div>\n        <div class=\"step-card\"><h3>{{ text('outingDayTitle') }}</h3><p>{{ text('outingDayText') }}</p></div>\n      </section>\n\n      <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n    </article>\n  </div>\n</section>\n";
+module.exports = "<section class=\"proposal-confirmation-page\">\n  <div class=\"container proposal-shell\">\n    <p class=\"muted\" *ngIf=\"loading\">{{ text('loading') }}</p>\n    <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n\n    <article class=\"proposal-card\" *ngIf=\"!loading && proposal\">\n      <span class=\"eyebrow\">{{ text('proposalEyebrow') }}</span>\n      <h1>{{ proposal.outingType }}</h1>\n      <p class=\"muted\" *ngIf=\"proposal.proposalMessage\">{{ proposal.proposalMessage }}</p>\n\n      <div class=\"summary-grid\">\n        <div><strong>{{ text('customer') }}</strong><span>{{ proposal.customerName }}</span></div>\n        <div><strong>{{ text('date') }}</strong><span>{{ proposal.outingDate }}</span></div>\n        <div><strong>{{ text('time') }}</strong><span>{{ proposal.departureTime }} → {{ proposal.arrivalTime }}</span></div>\n        <div><strong>{{ text('passengers') }}</strong><span>{{ proposal.passengers || '-' }}</span></div>\n        <div><strong>{{ text('totalPrice') }}</strong><span>€{{ proposal.totalAmount }}</span></div>\n        <div><strong>{{ text('deposit') }}</strong><span>€{{ proposal.depositAmount }}</span></div>\n        <div><strong>{{ text('remaining') }}</strong><span>€{{ proposal.balanceAmount }}</span></div>\n        <div><strong>{{ text('warranty') }}</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>\n      </div>\n\n      <section class=\"proposal-auth-card\" *ngIf=\"!proposalAccessReady\">\n        <span class=\"eyebrow\">Secure proposal access</span>\n        <h2>Access your proposal securely</h2>\n\n        <p *ngIf=\"proposalAccessMode === 'google'\">\n          This proposal is linked to <strong>{{ proposal.customerEmail }}</strong>.\n          Please continue with Google so we can verify that you own this Gmail address.\n        </p>\n\n        <p *ngIf=\"proposalAccessMode === 'auto_email' || customerAccountCreating || proposalAccessLoading\">\n          We are preparing your secure customer access. You do not need to create an account yourself.\n        </p>\n\n        <p class=\"muted\" *ngIf=\"proposalAccessMessage\">{{ proposalAccessMessage }}</p>\n        <p class=\"error\" *ngIf=\"proposalAccessError\">{{ proposalAccessError }}</p>\n\n        <button\n          class=\"btn btn-primary\"\n          type=\"button\"\n          *ngIf=\"proposalAccessMode === 'google'\"\n          [disabled]=\"proposalAccessLoading\"\n          (click)=\"continueWithGoogle()\">\n          {{ proposalAccessLoading ? 'Opening Google...' : 'Continue with Google' }}\n        </button>\n\n        <button\n          class=\"btn btn-secondary\"\n          type=\"button\"\n          *ngIf=\"proposalAccessMode !== 'google' && proposalAccessError\"\n          [disabled]=\"proposalAccessLoading\"\n          (click)=\"prepareProposalAccess()\">\n          Retry\n        </button>\n      </section>\n\n      <ng-container *ngIf=\"proposalAccessReady\">\n        <div class=\"expired\" *ngIf=\"expired\">{{ text('expiredText') }}</div>\n\n        <section class=\"proposal-wizard\" *ngIf=\"!expired\">\n          <div class=\"wizard-progress\">\n            <div class=\"wizard-progress-bar\" [style.width.%]=\"wizardProgressPercent\"></div>\n          </div>\n\n          <div class=\"wizard-steps\">\n            <div class=\"wizard-step\" [class.active]=\"wizardStep === 1\" [class.done]=\"tncAccepted\">\n              <span>1</span>\n              <strong>{{ text('wizardStepTerms') || 'Accept T&C' }}</strong>\n            </div>\n            <div class=\"wizard-step\" [class.active]=\"wizardStep === 2\" [class.done]=\"depositPaid\">\n              <span>2</span>\n              <strong>{{ text('wizardStepDeposit') || 'Pay deposit' }}</strong>\n            </div>\n            <div class=\"wizard-step\" [class.active]=\"wizardStep === 3\" [class.done]=\"warrantyReady\">\n              <span>3</span>\n              <strong>{{ text('wizardStepWarranty') || 'Warranty' }}</strong>\n            </div>\n          </div>\n\n          <section class=\"wizard-panel\" *ngIf=\"wizardStep === 1\">\n            <h2>{{ text('acceptTitle') }}</h2>\n            <p>{{ text('readBeforeAccept') }}</p>\n\n            <button class=\"link-button\" type=\"button\" (click)=\"openTermsModal()\">{{ text('openTerms') }}</button>\n\n            <label class=\"terms-check\">\n              <input type=\"checkbox\" [(ngModel)]=\"acceptedTerms\" [disabled]=\"!canAcceptTermsCheckbox\" />\n              <span>{{ text('termsCheckbox') }}</span>\n            </label>\n\n            <p class=\"muted\" *ngIf=\"!canAcceptTermsCheckbox\">{{ text('termsLocked') }}</p>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"!canAccept || accepting\" (click)=\"acceptProposal()\">\n              {{ accepting ? text('acceptingButton') : (text('wizardAcceptTermsButton') || 'Validate T&C and continue') }}\n            </button>\n          </section>\n\n          <section class=\"wizard-panel\" *ngIf=\"wizardStep === 2\">\n            <h2>{{ text('payDepositTitle') }}</h2>\n            <p>{{ depositMessage }}</p>\n            <p class=\"muted\">{{ text('deposit') }}: <strong>€{{ proposal.depositAmount }}</strong></p>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"payingDeposit\" (click)=\"payDeposit()\">\n              {{ payingDeposit ? text('redirecting') : text('payDepositButton') }}\n            </button>\n          </section>\n\n          <section class=\"wizard-panel\" *ngIf=\"wizardStep === 3\">\n            <h2>{{ text('warrantyTitle') }}</h2>\n            <p>{{ text('warrantyWizardIntro') || 'Choose how you want to secure the warranty for the outing.' }}</p>\n\n            <div class=\"warranty-options\">\n              <label class=\"radio-card\">\n                <input type=\"radio\" name=\"warrantyChoice\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n                <span>{{ text('warrantyCard') }}</span>\n              </label>\n              <label class=\"radio-card\">\n                <input type=\"radio\" name=\"warrantyChoice\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n                <span>{{ text('warrantyCash') }}</span>\n              </label>\n            </div>\n\n            <div class=\"step-card\" *ngIf=\"warrantyChoice === 'stripe_card'\" [class.paid]=\"warrantyRegistered\">\n              <h3>{{ text('registerWarrantyTitle') }}</h3>\n              <p>{{ warrantyMessage }}</p>\n              <p class=\"muted\">{{ text('maxWarranty') }}: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>\n\n              <div class=\"paid-badge\" *ngIf=\"warrantyRegistered\">{{ text('warrantyCardRegistered') }}</div>\n\n              <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"!warrantyRegistered\" [disabled]=\"payingWarranty\" (click)=\"registerWarrantyCard()\">\n                {{ payingWarranty ? text('redirecting') : text('registerWarrantyButton') }}\n              </button>\n\n              <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"warrantyRegistered\" [disabled]=\"finalizingBooking\" (click)=\"finalizeProposal()\">\n                {{ finalizingBooking ? text('finalizingBooking') || 'Creating booking...' : text('finalizeBookingButton') || 'Create my booking' }}\n              </button>\n            </div>\n\n            <div class=\"step-card\" *ngIf=\"warrantyChoice === 'cash_on_board'\">\n              <h3>{{ text('cashWarrantyTitle') }}</h3>\n              <p>{{ text('warrantyCashMessage') }}</p>\n              <p class=\"muted\">{{ text('amount') }}: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>\n\n              <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"payingWarranty || finalizingBooking\" (click)=\"acceptCashWarranty()\">\n                {{ finalizingBooking ? text('finalizingBooking') || 'Creating booking...' : text('acceptCashWarrantyButton') || 'I confirm I will bring €500 cash' }}\n              </button>\n            </div>\n          </section>\n\n          <section class=\"wizard-panel\" *ngIf=\"wizardStep === 4\">\n            <h2>{{ text('bookingCreatedTitle') }}</h2>\n            <p>{{ text('bookingCreatedText') }}</p>\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"finalizingBooking\" (click)=\"finalizeProposal()\">\n              {{ finalizingBooking ? text('finalizingBooking') || 'Creating booking...' : text('finalizeBookingButton') || 'Create my booking' }}\n            </button>\n          </section>\n        </section>\n\n        <div class=\"terms-modal-backdrop\" *ngIf=\"termsModalOpen\" (click)=\"closeTermsModal()\">\n          <section class=\"terms-modal\" (click)=\"$event.stopPropagation()\">\n            <button class=\"modal-close\" type=\"button\" (click)=\"closeTermsModal()\">×</button>\n            <span class=\"eyebrow\">Alegria Boat</span>\n            <h2>{{ text('termsModalTitle') }}</h2>\n\n            <div class=\"terms-content tc-scrollable\" tabindex=\"0\">\n              <ng-container *ngFor=\"let section of termsSections\">\n                <h3>{{ section.title }}</h3>\n                <p *ngFor=\"let paragraph of section.paragraphs\">{{ paragraph }}</p>\n              </ng-container>\n            </div>\n\n            <div class=\"modal-actions\">\n              <button class=\"btn btn-primary\" type=\"button\" (click)=\"closeTermsModal()\">{{ text('readTermsButton') }}</button>\n            </div>\n          </section>\n        </div>\n\n        <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n      </ng-container>\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -4320,7 +4444,7 @@ module.exports = "<section class=\"proposal-page\">\n  <div class=\"container pr
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">Admin</span>\n      <h1>Reservations</h1>\n      <p>Manage confirmed bookings, deposits, remaining 90% onboard payments, warranties and damage charges.</p>\n    </div>\n\n    <div class=\"booking-tabs\" *ngIf=\"!loading && bookings.length > 0\">\n      <button type=\"button\" [class.active]=\"activeDateTab === 'upcoming'\" (click)=\"setDateTab('upcoming')\">\n        Upcoming <span>{{ upcomingBookingsCount }}</span>\n      </button>\n      <button type=\"button\" [class.active]=\"activeDateTab === 'past'\" (click)=\"setDateTab('past')\">\n        Past <span>{{ pastBookingsCount }}</span>\n      </button>\n    </div>\n\n    <div class=\"booking-toolbar booking-toolbar-grid\">\n      <label class=\"search-box\">\n        <span>Search</span>\n        <input\n          type=\"search\"\n          name=\"bookingSearch\"\n          [(ngModel)]=\"searchTerm\"\n          placeholder=\"Customer, email, phone, date, status...\"\n          autocomplete=\"off\"\n        />\n      </label>\n\n      <label>\n        <span>Status</span>\n        <select [(ngModel)]=\"statusFilter\">\n          <option value=\"all\">All statuses</option>\n          <option value=\"not_confirmed\">Not confirmed</option>\n          <option value=\"confirmed\">Confirmed</option>\n          <option value=\"payment_done\">Payment done</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Warranty</span>\n        <select [(ngModel)]=\"warrantyFilter\">\n          <option value=\"all\">All warranties</option>\n          <option value=\"not_selected\">Not selected</option>\n          <option value=\"cash\">Cash selected</option>\n          <option value=\"card_selected\">Card selected</option>\n          <option value=\"card_registered\">Card registered</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Order by</span>\n        <select [(ngModel)]=\"sortField\">\n          <option value=\"date\">Date</option>\n          <option value=\"customer\">Customer</option>\n          <option value=\"status\">Status</option>\n          <option value=\"total\">Total price</option>\n          <option value=\"balance\">Remaining 90%</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Direction</span>\n        <select [(ngModel)]=\"sortDirection\">\n          <option value=\"asc\">Ascending</option>\n          <option value=\"desc\">Descending</option>\n        </select>\n      </label>\n\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetFilters()\">Reset filters</button>\n      <a class=\"btn btn-primary\" routerLink=\"/admin/proposals\">Proposals</a>\n      <a class=\"btn btn-secondary\" routerLink=\"/admin/external-bookings\">External bookings</a>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadBookings()\">Refresh</button>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n    <p *ngIf=\"!loading && errorMessage\" class=\"error-message\">{{ errorMessage }}</p>\n    <p *ngIf=\"!loading && !errorMessage && bookings.length === 0\" class=\"muted\">\n      No bookings found in Firebase under <strong>/bnBookings</strong>.\n    </p>\n\n    <div class=\"list-summary\" *ngIf=\"!loading && bookings.length > 0\">\n      Showing <strong>{{ activeTabBookingsCount }}</strong> {{ activeDateTab }} bookings out of <strong>{{ bookings.length }}</strong> total\n    </div>\n\n    <div class=\"bookings-list\" *ngIf=\"!loading && filteredBookings.length > 0\">\n      <button\n        class=\"booking-list-row\"\n        type=\"button\"\n        *ngFor=\"let booking of filteredBookings; trackBy: trackByBookingId\"\n        (click)=\"openBooking(booking)\"\n      >\n        <button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal(booking, $event)\">{{ getStatusLabel(booking) }}</button>\n\n        <span class=\"booking-main\">\n          <strong>{{ booking.customerName || 'Customer not set' }}</strong>\n          <small>{{ booking.email || 'No email' }}</small>\n        </span>\n\n        <span class=\"booking-trip\">\n          <strong>{{ booking.outingType || 'Outing' }}</strong>\n          <small>\n            {{ booking.outingDate || 'Date not set' }}\n            <ng-container *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</ng-container>\n          </small>\n        </span>\n\n        <span class=\"booking-price\">\n          <strong>€{{ booking.totalPrice || 0 }}</strong>\n          <small>Total price</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <!-- Admin cannot pay deposit or remaining balance. Open the detail page for warranty actions. -->\n          <span class=\"row-chevron\">›</span>\n        </span>\n      </button>\n    </div>\n\n    <p *ngIf=\"!loading && bookings.length > 0 && filteredBookings.length === 0\" class=\"muted\">\n      No booking matches the selected tab, filters, search and sorting options.\n    </p>\n    <div class=\"balance-modal-backdrop\" *ngIf=\"false\">\n      <div class=\"balance-modal\">\n        <h2>Record remaining 90% payment</h2>\n        <p>\n          <strong>{{ selectedBalanceBooking.customerName }}</strong><br />\n          Total: €{{ selectedBalanceBooking.totalPrice || 0 }}<br />\n          Deposit 10%: €{{ getDepositAmount(selectedBalanceBooking) }} · {{ isDepositPaid(selectedBalanceBooking) ? 'paid' : 'pending' }}<br />\n          Warranty mode: {{ getWarrantyModeLabel(selectedBalanceBooking) }}<br />\n          Stripe warranty card: {{ getWarrantyCardLabel(selectedBalanceBooking) }}<br />\n          T&C: {{ isTermsAccepted(selectedBalanceBooking) ? 'accepted' : 'not accepted' }}<br />\n          Booking status: {{ getStatusLabel(selectedBalanceBooking) }}<br />\n          Remaining 90% to collect onboard: <strong>€{{ getBalanceAmount(selectedBalanceBooking) }}</strong>\n        </p>\n\n        <label>\n          Payment method\n          <select [(ngModel)]=\"balancePaymentMethod\">\n            <option value=\"sumup\">SumUp / card</option>\n            <option value=\"cash\">Cash</option>\n            <option value=\"mixed\">Mixed</option>\n          </select>\n        </label>\n\n        <label>\n          Notes\n          <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" placeholder=\"Optional note, reference, split cash/SumUp...\"></textarea>\n        </label>\n\n        <div class=\"modal-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n            {{ savingBalancePayment ? 'Saving...' : 'Confirm 90% payment' }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeBalancePayment()\">Cancel</button>\n        </div>\n\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"status-modal-backdrop\" *ngIf=\"selectedStatusBooking\" (click)=\"closeStatusModal()\">\n    <section class=\"status-modal\" (click)=\"$event.stopPropagation()\">\n      <button class=\"modal-close\" type=\"button\" (click)=\"closeStatusModal()\">×</button>\n      <span class=\"eyebrow\">Booking status</span>\n      <h2>{{ getStatusLabel(selectedStatusBooking) }}</h2>\n      <p>{{ getStatusSummaryText(selectedStatusBooking) }}</p>\n\n      <div class=\"status-timeline\">\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isDepositPaid(selectedStatusBooking))\">\n          <strong>10% deposit</strong>\n          <span>{{ isDepositPaid(selectedStatusBooking) ? 'Paid' : 'Pending' }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isTermsAccepted(selectedStatusBooking))\">\n          <strong>T&C</strong>\n          <span>{{ isTermsAccepted(selectedStatusBooking) ? 'Accepted' : 'Not accepted' }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isWarrantySecured(selectedStatusBooking))\">\n          <strong>Warranty</strong>\n          <span>{{ getWarrantyModeLabel(selectedStatusBooking) }} · {{ getWarrantyCardLabel(selectedStatusBooking) }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isBalancePaid(selectedStatusBooking))\">\n          <strong>Remaining 90%</strong>\n          <span>{{ isBalancePaid(selectedStatusBooking) ? 'Paid' : 'Pending' }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getDamageStatusLabel(selectedStatusBooking).includes('recorded'))\">\n          <strong>Damage</strong>\n          <span>{{ getDamageStatusLabel(selectedStatusBooking) }}</span>\n        </div>\n      </div>\n\n      <div class=\"modal-actions\">\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeStatusModal()\">Close</button>\n        <button class=\"btn btn-primary\" type=\"button\" (click)=\"openDetail(selectedStatusBooking)\">Open booking</button>\n      </div>\n    </section>\n  </div>\n\n</section>\n";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">Admin</span>\n      <h1>Reservations</h1>\n      <p>Manage confirmed bookings, deposits, remaining 90% onboard payments, warranties and damage charges.</p>\n    </div>\n\n    <div class=\"booking-tabs\" *ngIf=\"!loading && bookings.length > 0\">\n      <button type=\"button\" [class.active]=\"activeDateTab === 'upcoming'\" (click)=\"setDateTab('upcoming')\">\n        Upcoming <span>{{ upcomingBookingsCount }}</span>\n      </button>\n      <button type=\"button\" [class.active]=\"activeDateTab === 'past'\" (click)=\"setDateTab('past')\">\n        Past <span>{{ pastBookingsCount }}</span>\n      </button>\n    </div>\n\n    <div class=\"booking-toolbar booking-toolbar-grid\">\n      <label class=\"search-box\">\n        <span>Search</span>\n        <input\n          type=\"search\"\n          name=\"bookingSearch\"\n          [(ngModel)]=\"searchTerm\"\n          placeholder=\"Customer, email, phone, date, status...\"\n          autocomplete=\"off\"\n        />\n      </label>\n\n      <label>\n        <span>Status</span>\n        <select [(ngModel)]=\"statusFilter\">\n          <option value=\"all\">All statuses</option>\n          <option value=\"not_confirmed\">Not confirmed</option>\n          <option value=\"confirmed\">Confirmed</option>\n          <option value=\"payment_done\">Payment done</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Warranty</span>\n        <select [(ngModel)]=\"warrantyFilter\">\n          <option value=\"all\">All warranties</option>\n          <option value=\"not_selected\">Not selected</option>\n          <option value=\"cash\">Cash selected</option>\n          <option value=\"card_selected\">Card selected</option>\n          <option value=\"card_registered\">Card registered</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Order by</span>\n        <select [(ngModel)]=\"sortField\">\n          <option value=\"date\">Date</option>\n          <option value=\"customer\">Customer</option>\n          <option value=\"status\">Status</option>\n          <option value=\"total\">Total price</option>\n          <option value=\"balance\">Remaining 90%</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Direction</span>\n        <select [(ngModel)]=\"sortDirection\">\n          <option value=\"asc\">Ascending</option>\n          <option value=\"desc\">Descending</option>\n        </select>\n      </label>\n\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetFilters()\">Reset filters</button>\n      <a class=\"btn btn-primary\" routerLink=\"/admin/proposals\">Proposals</a>\n      <a class=\"btn btn-secondary\" routerLink=\"/admin/external-bookings\">External bookings</a>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadBookings()\">Refresh</button>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n    <p *ngIf=\"!loading && errorMessage\" class=\"error-message\">{{ errorMessage }}</p>\n    <p *ngIf=\"!loading && !errorMessage && bookings.length === 0\" class=\"muted\">\n      No bookings found in Firebase under <strong>/bnBookings</strong>.\n    </p>\n\n    <div class=\"list-summary\" *ngIf=\"!loading && bookings.length > 0\">\n      Showing <strong>{{ activeTabBookingsCount }}</strong> {{ activeDateTab }} bookings out of <strong>{{ bookings.length }}</strong> total\n    </div>\n\n    <div class=\"bookings-list\" *ngIf=\"!loading && filteredBookings.length > 0\">\n      <button\n        class=\"booking-list-row\"\n        type=\"button\"\n        *ngFor=\"let booking of filteredBookings; trackBy: trackByBookingId\"\n        (click)=\"openBooking(booking)\"\n      >\n        <button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal(booking, $event)\">{{ getStatusLabel(booking) }}</button>\n\n        <span class=\"booking-main\">\n          <strong>{{ booking.customerName || 'Customer not set' }}</strong>\n          <small>{{ booking.email || 'No email' }}</small>\n        </span>\n\n        <span class=\"booking-trip\">\n          <strong>{{ booking.outingType || 'Outing' }}</strong>\n          <small>\n            {{ booking.outingDate || 'Date not set' }}\n            <ng-container *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</ng-container>\n          </small>\n        </span>\n\n        <span class=\"booking-price\">\n          <strong>€{{ booking.totalPrice || 0 }}</strong>\n          <small>Total price</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <!-- Admin cannot pay deposit or remaining balance. Open the detail page for warranty actions. -->\n          <span class=\"row-chevron\">›</span>\n        </span>\n      </button>\n    </div>\n\n    <p *ngIf=\"!loading && bookings.length > 0 && filteredBookings.length === 0\" class=\"muted\">\n      No booking matches the selected tab, filters, search and sorting options.\n    </p>\n    <div class=\"balance-modal-backdrop\" *ngIf=\"false\">\n      <div class=\"balance-modal\">\n        <h2>Record remaining 90% payment</h2>\n        <p>\n          <strong>{{ selectedBalanceBooking.customerName }}</strong><br />\n          Total: €{{ selectedBalanceBooking.totalPrice || 0 }}<br />\n          Deposit 10%: €{{ getDepositAmount(selectedBalanceBooking) }} · {{ isDepositPaid(selectedBalanceBooking) ? 'paid' : 'pending' }}<br />\n          Warranty mode: {{ getWarrantyModeLabel(selectedBalanceBooking) }}<br />\n          Stripe warranty card: {{ getWarrantyCardLabel(selectedBalanceBooking) }}<br />\n          T&C: {{ isTermsAccepted(selectedBalanceBooking) ? 'accepted' : 'not accepted' }}<br />\n          Booking status: {{ getStatusLabel(selectedBalanceBooking) }}<br />\n          Remaining 90% to collect onboard: <strong>€{{ getBalanceAmount(selectedBalanceBooking) }}</strong>\n        </p>\n\n        <label>\n          Payment method\n          <select [(ngModel)]=\"balancePaymentMethod\">\n            <option value=\"sumup\">SumUp / card</option>\n            <option value=\"cash\">Cash</option>\n            <option value=\"mixed\">Mixed</option>\n          </select>\n        </label>\n\n        <label>\n          Notes\n          <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" placeholder=\"Optional note, reference, split cash/SumUp...\"></textarea>\n        </label>\n\n        <div class=\"modal-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n            {{ savingBalancePayment ? 'Saving...' : 'Confirm 90% payment' }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeBalancePayment()\">Cancel</button>\n        </div>\n\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"status-modal-backdrop\" *ngIf=\"selectedStatusBooking\" (click)=\"closeStatusModal()\">\n    <section class=\"status-modal\" (click)=\"$event.stopPropagation()\">\n      <button class=\"modal-close\" type=\"button\" (click)=\"closeStatusModal()\">×</button>\n      <span class=\"eyebrow\">Booking status</span>\n      <h2>{{ getStatusLabel(selectedStatusBooking) }}</h2>\n      <p>{{ getStatusSummaryText(selectedStatusBooking) }}</p>\n\n      <div class=\"status-timeline\">\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isDepositPaid(selectedStatusBooking))\">\n          <strong>Acompte 10 %</strong>\n          <span>{{ getCompletedLabel(isDepositPaid(selectedStatusBooking)) }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isTermsAccepted(selectedStatusBooking))\">\n          <strong>T&C</strong>\n          <span>{{ isTermsAccepted(selectedStatusBooking) ? 'Accepted' : 'Not accepted' }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isWarrantySecured(selectedStatusBooking))\">\n          <strong>Warranty mode</strong>\n          <span>{{ getWarrantyModeLabel(selectedStatusBooking) }} · {{ getWarrantyCardLabel(selectedStatusBooking) }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isBalancePaid(selectedStatusBooking))\">\n          <strong>Solde 90 %</strong>\n          <span>{{ getCompletedLabel(isBalancePaid(selectedStatusBooking)) }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getDamageStatusLabel(selectedStatusBooking).includes('recorded'))\">\n          <strong>Damage</strong>\n          <span>{{ getDamageStatusLabel(selectedStatusBooking) }}</span>\n        </div>\n      </div>\n\n      <div class=\"modal-actions\">\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeStatusModal()\">Close</button>\n        <button class=\"btn btn-primary\" type=\"button\" (click)=\"openDetail(selectedStatusBooking)\">Open booking</button>\n      </div>\n    </section>\n  </div>\n\n</section>\n";
 
 /***/ }),
 
@@ -4535,7 +4659,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <p *ngIf=\"loading\" class=\"muted\">{{ btext('loadingBooking') }}</p>\n\n    <article class=\"booking-detail-card\" *ngIf=\"!loading && booking\">\n      <span class=\"eyebrow\">{{ btext('bookingDetail') }}</span>\n      <h1>{{ booking.outingType }}</h1>\n      <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>\n\n      <div class=\"detail-grid\">\n        <div><strong>{{ btext('customer') }}</strong><span>{{ booking.customerName }}</span></div>\n        <div><strong>{{ btext('email') }}</strong><span>{{ booking.email }}</span></div>\n        <div><strong>{{ btext('phone') }}</strong><span>{{ booking.phone || '-' }}</span></div>\n        <div><strong>{{ btext('passengers') }}</strong><span>{{ booking.passengers || '-' }}</span></div>\n        <div><strong>{{ btext('totalPrice') }}</strong><span>€{{ booking.totalPrice || 0 }}</span></div>\n        <div><strong>{{ btext('deposit') }}</strong><span>€{{ getDepositAmount() }} · {{ isDepositPaid() ? btext('paid') : btext('pending') }}</span></div>\n        <div><strong>{{ btext('remaining') }}</strong><span>€{{ getBalanceAmount() }} · {{ isBalancePaid() ? btext('paid') : btext('toCollectOnboard') }}</span></div>\n        <div><strong>{{ btext('warranty') }}</strong><span>{{ booking.warrantyStatus || btext('notRegistered') }}</span></div>\n        <div><strong>{{ btext('status') }}</strong><button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal()\">{{ getStatusLabel() }}</button></div>\n        <div><strong>{{ btext('owner') }}</strong><span>{{ booking.ownerId || '-' }}</span></div>\n      </div>\n\n      <p class=\"comments\" *ngIf=\"booking.comments\">{{ booking.comments }}</p>\n\n\n      <section class=\"invoice-actions-card\" *ngIf=\"isAdmin && isOutingDone()\">\n        <h2>Facturation</h2>\n        <p>La sortie est passée. Vous pouvez éditer une facture imprimable puis l'enregistrer en PDF depuis le navigateur.</p>\n        <div class=\"customer-action-bar\">\n          <a class=\"btn btn-secondary\" [routerLink]=\"['/admin/bookings', booking.bookingId, 'invoice']\" [queryParams]=\"{ type: 'booking' }\">\n            Facture prestations ALEGRIA\n          </a>\n          <a class=\"btn btn-primary\" [routerLink]=\"['/admin/bookings', booking.bookingId, 'invoice']\" [queryParams]=\"{ type: 'extras' }\">\n            Facture extras / catering\n          </a>\n        </div>\n      </section>\n\n\n\n      <section class=\"customer-edit-card\" *ngIf=\"!isAdmin && editMode\">\n        <h2>{{ btext('updateBookingInfo') }}</h2>\n\n        <label>\n          {{ btext('customerName') }}\n          <input type=\"text\" [(ngModel)]=\"booking.customerName\" />\n        </label>\n\n        <label>\n          {{ btext('email') }}\n          <input type=\"email\" [(ngModel)]=\"booking.email\" />\n        </label>\n\n        <label>\n          {{ btext('phone') }}\n          <input type=\"tel\" [(ngModel)]=\"booking.phone\" />\n        </label>\n\n        <label>\n          {{ btext('numberOfGuests') }}\n          <input type=\"number\" min=\"1\" [(ngModel)]=\"booking.passengers\" />\n        </label>\n\n        <label>\n          {{ btext('pickupLocation') }}\n          <input type=\"text\" [(ngModel)]=\"booking.pickupLocation\" />\n        </label>\n\n        <label>\n          {{ btext('comments') }}\n          <textarea rows=\"3\" [(ngModel)]=\"booking.comments\"></textarea>\n        </label>\n\n        <div class=\"customer-edit-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCustomerUpdate\" (click)=\"saveCustomerUpdate()\">\n            {{ savingCustomerUpdate ? btext('saving') : btext('saveUpdate') }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"savingCustomerUpdate\" (click)=\"cancelCustomerUpdate()\">\n            {{ btext('cancel') }}\n          </button>\n        </div>\n\n        <p class=\"success\" *ngIf=\"customerUpdateMessage\">{{ customerUpdateMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"customerUpdateError\">{{ customerUpdateError }}</p>\n      </section>\n\n      <section class=\"payment-admin-card\">\n        <h2>{{ getWorkflowTitle() }}</h2>\n\n        <div class=\"payment-summary workflow-summary clarity-grid\">\n          <div class=\"status-summary-card\"><strong>{{ btext('bookingStatus') }}</strong><button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal()\">{{ getStatusLabel() }}</button></div>\n          <div><strong>{{ btext('deposit') }}</strong><span>{{ getDepositStatusLabel() }}</span></div>\n          <div><strong>{{ btext('termsConditions') }}</strong><span>{{ getTermsStatusLabel() }}</span></div>\n          <div><strong>{{ btext('warrantyMode') }}</strong><span>{{ getWarrantyModeLabel() }}</span></div>\n          <div><strong>{{ btext('stripeWarrantyCard') }}</strong><span>{{ getWarrantyCardLabel() }}</span></div>\n          <div><strong>{{ btext('remaining') }}</strong><span>{{ getBalanceStatusLabel() }}</span></div>\n          <div><strong>{{ btext('damage') }}</strong><span>{{ getDamageStatusLabel() }}</span></div>\n        </div>\n\n        <div class=\"customer-action-bar\" *ngIf=\"!isAdmin\">\n          <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"canCustomerUpdateBooking() && !editMode\" (click)=\"updateCustomerBooking()\">\n            {{ btext('updateBookingInfo') }}\n          </button>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"shouldShowCustomerPaymentButton()\" (click)=\"customerPayment()\">\n            {{ customerPaymentButtonLabel }}\n          </button>\n        </div>\n\n        <div class=\"customer-action-bar\" *ngIf=\"canAdminOpenDamagePage()\">\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"openAdminDamagePage()\">\n            {{ btext('openWarrantyDamagePage') }}\n          </button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'deposit_required'\">\n          <h3>{{ text('termsModalTitle') }}</h3>\n          <div class=\"terms-scroll-box tc-scrollable\" tabindex=\"0\" (scroll)=\"onTermsScroll($event)\" (keyup.end)=\"markTermsRead()\">\n            <ng-container *ngFor=\"let section of termsSections\">\n              <h4>{{ section.title }}</h4>\n              <p *ngFor=\"let paragraph of section.paragraphs\">{{ paragraph }}</p>\n            </ng-container>\n          </div>\n\n          <p class=\"muted\" *ngIf=\"!termsRead\">{{ text('termsLocked') }}</p>\n\n          <label class=\"terms-check\">\n            <input type=\"checkbox\" [(ngModel)]=\"termsAccepted\" [disabled]=\"!termsRead\" />\n            <span>{{ text('termsCheckbox') }}</span>\n          </label>\n\n          <h3>{{ text('warrantyTitle') }}</h3>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoice\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCard') }}</span>\n          </label>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoice\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCash') }}</span>\n          </label>\n\n          <p class=\"blocked-note\" *ngIf=\"getDepositBlockedReason()\">{{ getDepositBlockedReason() }}</p>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!isAdmin && !isDepositPaid()\" [disabled]=\"!canPayDeposit()\" (click)=\"payDeposit()\">\n            {{ text('payDepositButton') }}\n          </button>\n\n          <p class=\"paid-badge\" *ngIf=\"isDepositPaid()\">{{ text('depositAlreadyPaid') }}</p>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'warranty_choice_required'\">\n          <h3>{{ text('warrantyTitle') }}</h3>\n          <p>{{ btext('warrantyChoiceText') }}</p>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoiceConfirmed\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCard') }}</span>\n          </label>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoiceConfirmed\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCash') }}</span>\n          </label>\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"warrantySaving || !warrantyChoice\" (click)=\"warrantyChoice === 'cash_on_board' ? selectWarrantyCash() : selectWarrantyCard()\">\n            {{ btext('saveWarrantyChoice') }}\n          </button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'warranty_card_required'\">\n          <h3>{{ btext('registerWarrantyCardTitle') }}</h3>\n          <p>{{ btext('registerWarrantyCardText') }}</p>\n          <button class=\"btn btn-primary\" type=\"button\" (click)=\"registerWarrantyCard()\">{{ btext('registerWarrantyCardButton') }}</button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'balance_required'\">\n          <h3>{{ btext('collectRemainingTitle') }}</h3>\n          <p>{{ btext('amountDueBeforeDeparture') }}: <strong>€{{ getBalanceAmount() }}</strong></p>\n\n          <div class=\"collect-balance\" *ngIf=\"canAdminCreateExtraService()\">\n            <label>\n              {{ btext('paymentMethod') }}\n              <select [(ngModel)]=\"balancePaymentMethod\">\n                <option value=\"sumup\">{{ btext('sumupCard') }}</option>\n                <option value=\"cash\">{{ btext('cash') }}</option>\n                <option value=\"mixed\">{{ btext('mixed') }}</option>\n              </select>\n            </label>\n\n            <label>\n              {{ btext('notes') }}\n              <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" placeholder=\"{{ btext('balanceNotesPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n              {{ savingBalancePayment ? btext('saving') : btext('recordRemainingPayment') }}\n            </button>\n          </div>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"getBookingWorkflowState() === 'payment_done' && isAdmin && isOutingDone()\">\n          <h3>{{ btext('damageManagement') }}</h3>\n          <p>{{ btext('damageManagementText') }}</p>\n\n          <div class=\"cash-damage-card\" *ngIf=\"isCashWarranty()\">\n            <h3>{{ btext('cashWarrantyEnvelope') }}</h3>\n            <p>\n              {{ btext('cashWarrantyInitialEnvelope') }}: <strong>€{{ getCashWarrantyAmount() }}</strong><br />\n              {{ btext('cashWarrantyAlreadyTaken') }}: <strong>€{{ getCashWarrantyDamagesTaken() }}</strong><br />\n              {{ btext('cashWarrantyRemaining') }}: <strong>€{{ getCashWarrantyRemaining() }}</strong>\n            </p>\n\n            <label>\n              {{ btext('cashDamageAmount') }} (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cashDamageAmount\" />\n            </label>\n\n            <label>\n              {{ btext('damageReason') }}\n              <textarea rows=\"3\" [(ngModel)]=\"cashDamageReason\" placeholder=\"{{ btext('damageReasonPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCashDamage\" (click)=\"recordCashWarrantyDamage()\">\n              {{ savingCashDamage ? btext('saving') : btext('recordCashDamage') }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"cashDamageMessage\">{{ cashDamageMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"cashDamageError\">{{ cashDamageError }}</p>\n          </div>\n\n          <div class=\"cash-damage-card\" *ngIf=\"isWarrantyCardRegistered()\">\n            <h3>{{ btext('chargeCardWarranty') }}</h3>\n            <p>{{ btext('maximumWarranty') }}: <strong>€{{ booking.warrantyAmount || 500 }}</strong></p>\n\n            <label>\n              {{ btext('damageAmount') }} (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cardDamageAmount\" />\n            </label>\n\n            <label>\n              {{ btext('damageReason') }}\n              <textarea rows=\"3\" [(ngModel)]=\"cardDamageReason\" placeholder=\"{{ btext('damageReasonPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCardDamage\" (click)=\"recordCardWarrantyDamage()\">\n              {{ savingCardDamage ? btext('charging') : btext('chargeDamageToWarrantyCard') }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"cardDamageMessage\">{{ cardDamageMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"cardDamageError\">{{ cardDamageError }}</p>\n          </div>\n        </div>\n\n\n        <div class=\"workflow-panel extra-services-panel\" *ngIf=\"booking\">\n          <h3>Extra services</h3>\n\n          <div *ngIf=\"bookingExtraServices.length === 0\" class=\"muted\">\n            No extra service requested for this booking.\n          </div>\n\n          <div class=\"extra-service-row\" *ngFor=\"let extra of bookingExtraServices\">\n            <div>\n              <strong>{{ extra.description || extra.title || extra.name }}</strong>\n              <span>€{{ extra.amount || 0 }} · {{ extra.status === 'paid' || extra.paid ? 'paid' : 'pending' }}</span>\n            </div>\n            <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!isAdmin && canCustomerPayExtraService(extra)\" (click)=\"payExtraService(extra)\">\n              Pay extra service\n            </button>\n          </div>\n\n          <div class=\"admin-extra-service-form\" *ngIf=\"canAdminCreateExtraService()\">\n            <h4>Propose an extra service to the customer</h4>\n\n            <label>\n              Service from Firebase catalog\n              <select [(ngModel)]=\"selectedExtraServiceId\">\n                <option value=\"\">Custom service</option>\n                <option *ngFor=\"let service of extraServicesCatalog\" [value]=\"service.id || service.slug\">\n                  {{ service.title || service.name || service.description }} — €{{ service.amount || service.price || 0 }}\n                </option>\n              </select>\n            </label>\n\n            <label>\n              Custom description\n              <input type=\"text\" [(ngModel)]=\"customExtraServiceDescription\" placeholder=\"Drinks, food, catering...\" />\n            </label>\n\n            <label>\n              Custom amount (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"customExtraServiceAmount\" />\n            </label>\n\n            <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"savingExtraService\" (click)=\"createExtraServiceRequest()\">\n              {{ savingExtraService ? 'Saving...' : 'Send extra service payment request' }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"extraServiceMessage\">{{ extraServiceMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"extraServiceError\">{{ extraServiceError }}</p>\n          </div>\n        </div>\n\n        <div class=\"workflow-panel refund-panel\" *ngIf=\"false\">\n          <h3>Refund</h3>\n          <p>Paid: <strong>€{{ totalPaidAmount }}</strong> · Already refunded: <strong>€{{ totalRefundedAmount }}</strong> · Available: <strong>€{{ refundableAmount }}</strong></p>\n\n          <label>\n            Refund amount (€)\n            <input type=\"number\" min=\"1\" step=\"0.01\" [max]=\"refundableAmount\" [(ngModel)]=\"refundAmount\" />\n          </label>\n\n          <label>\n            Reason\n            <textarea rows=\"3\" [(ngModel)]=\"refundReason\" placeholder=\"Weather compensation, commercial gesture...\"></textarea>\n          </label>\n\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"refunding || !canAdminRefund()\" (click)=\"issueRefund()\">\n            {{ refunding ? 'Refunding...' : 'Issue refund' }}\n          </button>\n\n          <p class=\"success\" *ngIf=\"refundMessage\">{{ refundMessage }}</p>\n          <p class=\"error-message\" *ngIf=\"refundError\">{{ refundError }}</p>\n        </div>\n\n\n        <p class=\"success\" *ngIf=\"balancePaymentMessage\">{{ balancePaymentMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n        <p class=\"success\" *ngIf=\"warrantyMessage\">{{ warrantyMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"warrantyError\">{{ warrantyError }}</p>\n      </section>\n    \n      <div class=\"status-modal-backdrop\" *ngIf=\"statusModalOpen\" (click)=\"closeStatusModal()\">\n        <section class=\"status-modal\" (click)=\"$event.stopPropagation()\">\n          <button class=\"modal-close\" type=\"button\" (click)=\"closeStatusModal()\">×</button>\n          <span class=\"eyebrow\">{{ btext('bookingStatus') }}</span>\n          <h2>{{ getStatusLabel() }}</h2>\n          <p>{{ getStatusSummaryText() }}</p>\n\n          <div class=\"status-timeline\">\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isDepositPaid())\">\n              <strong>{{ btext('deposit') }}</strong>\n              <span>{{ getDepositStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isTermsAccepted())\">\n              <strong>{{ btext('termsConditions') }}</strong>\n              <span>{{ getTermsStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isWarrantySecured())\">\n              <strong>{{ btext('warranty') }}</strong>\n              <span>{{ getWarrantyModeLabel() }} · {{ getWarrantyCardLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isBalancePaid())\">\n              <strong>{{ btext('remaining') }}</strong>\n              <span>{{ getBalanceStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getDamageStatusLabel().includes('recorded'))\">\n              <strong>{{ btext('damage') }}</strong>\n              <span>{{ getDamageStatusLabel() }}</span>\n            </div>\n          </div>\n\n          <div class=\"modal-actions\">\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeStatusModal()\">{{ btext('close') }}</button>\n          </div>\n        </section>\n      </div>\n\n    </article>\n  </div>\n</section>\n";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <p *ngIf=\"loading\" class=\"muted\">{{ btext('loadingBooking') }}</p>\n\n    <article class=\"booking-detail-card\" *ngIf=\"!loading && booking\">\n      <span class=\"eyebrow\">{{ btext('bookingDetail') }}</span>\n      <h1>{{ booking.outingType }}</h1>\n      <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>\n\n      <div class=\"detail-grid\">\n        <div><strong>{{ btext('customer') }}</strong><span>{{ booking.customerName }}</span></div>\n        <div><strong>{{ btext('email') }}</strong><span>{{ booking.email }}</span></div>\n        <div><strong>{{ btext('phone') }}</strong><span>{{ booking.phone || '-' }}</span></div>\n        <div><strong>{{ btext('passengers') }}</strong><span>{{ booking.passengers || '-' }}</span></div>\n        <div><strong>{{ btext('totalPrice') }}</strong><span>€{{ booking.totalPrice || 0 }}</span></div>\n        <div><strong>{{ btext('deposit') }}</strong><span>€{{ getDepositAmount() }} · {{ getCompletedLabel(isDepositPaid()) }}</span></div>\n        <div><strong>{{ btext('remaining') }}</strong><span>€{{ getBalanceAmount() }} · {{ getCompletedLabel(isBalancePaid()) }}</span></div>\n        <div><strong>{{ btext('warranty') }}</strong><span>{{ getWarrantyModeLabel() }} · {{ getWarrantyCardLabel() }}</span></div>\n        <div><strong>{{ btext('status') }}</strong><button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal()\">{{ getStatusLabel() }}</button></div>\n        <div><strong>{{ btext('owner') }}</strong><span>{{ booking.ownerId || '-' }}</span></div>\n      </div>\n\n      <p class=\"comments\" *ngIf=\"booking.comments\">{{ booking.comments }}</p>\n\n\n      <section class=\"invoice-actions-card\" *ngIf=\"isAdmin && isOutingDone()\">\n        <h2>Facturation</h2>\n        <p>La sortie est passée. Vous pouvez éditer une facture imprimable puis l'enregistrer en PDF depuis le navigateur.</p>\n        <div class=\"customer-action-bar\">\n          <a class=\"btn btn-secondary\" [routerLink]=\"['/admin/bookings', booking.bookingId, 'invoice']\" [queryParams]=\"{ type: 'booking' }\">\n            Facture prestations ALEGRIA\n          </a>\n          <a class=\"btn btn-primary\" [routerLink]=\"['/admin/bookings', booking.bookingId, 'invoice']\" [queryParams]=\"{ type: 'extras' }\">\n            Facture extras / catering\n          </a>\n        </div>\n      </section>\n\n\n\n      <section class=\"customer-edit-card\" *ngIf=\"!isAdmin && editMode\">\n        <h2>{{ btext('updateBookingInfo') }}</h2>\n\n        <label>\n          {{ btext('customerName') }}\n          <input type=\"text\" [(ngModel)]=\"booking.customerName\" />\n        </label>\n\n        <label>\n          {{ btext('email') }}\n          <input type=\"email\" [(ngModel)]=\"booking.email\" />\n        </label>\n\n        <label>\n          {{ btext('phone') }}\n          <input type=\"tel\" [(ngModel)]=\"booking.phone\" />\n        </label>\n\n        <label>\n          {{ btext('numberOfGuests') }}\n          <input type=\"number\" min=\"1\" [(ngModel)]=\"booking.passengers\" />\n        </label>\n\n        <label>\n          {{ btext('pickupLocation') }}\n          <input type=\"text\" [(ngModel)]=\"booking.pickupLocation\" />\n        </label>\n\n        <label>\n          {{ btext('comments') }}\n          <textarea rows=\"3\" [(ngModel)]=\"booking.comments\"></textarea>\n        </label>\n\n        <div class=\"customer-edit-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCustomerUpdate\" (click)=\"saveCustomerUpdate()\">\n            {{ savingCustomerUpdate ? btext('saving') : btext('saveUpdate') }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"savingCustomerUpdate\" (click)=\"cancelCustomerUpdate()\">\n            {{ btext('cancel') }}\n          </button>\n        </div>\n\n        <p class=\"success\" *ngIf=\"customerUpdateMessage\">{{ customerUpdateMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"customerUpdateError\">{{ customerUpdateError }}</p>\n      </section>\n\n      <section class=\"payment-admin-card\">\n        <h2>{{ getWorkflowTitle() }}</h2>\n\n        <div class=\"payment-summary workflow-summary clarity-grid\">\n          <div class=\"status-summary-card\"><strong>{{ btext('bookingStatus') }}</strong><button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal()\">{{ getStatusLabel() }}</button></div>\n          <div><strong>{{ btext('deposit') }}</strong><span>{{ getDepositStatusLabel() }}</span></div>\n          <div><strong>{{ btext('termsConditions') }}</strong><span>{{ getTermsStatusLabel() }}</span></div>\n          <div><strong>{{ btext('warrantyMode') }}</strong><span>{{ getWarrantyModeLabel() }}</span></div>\n          <div><strong>{{ btext('stripeWarrantyCard') }}</strong><span>{{ getWarrantyCardLabel() }}</span></div>\n          <div><strong>{{ btext('remaining') }}</strong><span>{{ getBalanceStatusLabel() }}</span></div>\n          <div><strong>{{ btext('damage') }}</strong><span>{{ getDamageStatusLabel() }}</span></div>\n        </div>\n\n        <div class=\"customer-action-bar\" *ngIf=\"!isAdmin\">\n          <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"canCustomerUpdateBooking() && !editMode\" (click)=\"updateCustomerBooking()\">\n            {{ btext('updateBookingInfo') }}\n          </button>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"shouldShowCustomerPaymentButton()\" (click)=\"customerPayment()\">\n            {{ customerPaymentButtonLabel }}\n          </button>\n        </div>\n\n        <div class=\"customer-action-bar\" *ngIf=\"canAdminOpenDamagePage()\">\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"openAdminDamagePage()\">\n            {{ btext('openWarrantyDamagePage') }}\n          </button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'deposit_required'\">\n          <h3>{{ text('termsModalTitle') }}</h3>\n          <div class=\"terms-scroll-box tc-scrollable\" tabindex=\"0\" (scroll)=\"onTermsScroll($event)\" (keyup.end)=\"markTermsRead()\">\n            <ng-container *ngFor=\"let section of termsSections\">\n              <h4>{{ section.title }}</h4>\n              <p *ngFor=\"let paragraph of section.paragraphs\">{{ paragraph }}</p>\n            </ng-container>\n          </div>\n\n          <p class=\"muted\" *ngIf=\"!termsRead\">{{ text('termsLocked') }}</p>\n\n          <label class=\"terms-check\">\n            <input type=\"checkbox\" [(ngModel)]=\"termsAccepted\" [disabled]=\"!termsRead\" />\n            <span>{{ text('termsCheckbox') }}</span>\n          </label>\n\n          <h3>{{ text('warrantyTitle') }}</h3>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoice\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCard') }}</span>\n          </label>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoice\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCash') }}</span>\n          </label>\n\n          <p class=\"blocked-note\" *ngIf=\"getDepositBlockedReason()\">{{ getDepositBlockedReason() }}</p>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!isAdmin && !isDepositPaid()\" [disabled]=\"!canPayDeposit()\" (click)=\"payDeposit()\">\n            {{ text('payDepositButton') }}\n          </button>\n\n          <p class=\"paid-badge\" *ngIf=\"isDepositPaid()\">{{ text('depositAlreadyPaid') }}</p>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'warranty_choice_required'\">\n          <h3>{{ text('warrantyTitle') }}</h3>\n          <p>{{ btext('warrantyChoiceText') }}</p>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoiceConfirmed\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCard') }}</span>\n          </label>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoiceConfirmed\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCash') }}</span>\n          </label>\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"warrantySaving || !warrantyChoice\" (click)=\"warrantyChoice === 'cash_on_board' ? selectWarrantyCash() : selectWarrantyCard()\">\n            {{ btext('saveWarrantyChoice') }}\n          </button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'warranty_card_required'\">\n          <h3>{{ btext('registerWarrantyCardTitle') }}</h3>\n          <p>{{ btext('registerWarrantyCardText') }}</p>\n          <button class=\"btn btn-primary\" type=\"button\" (click)=\"registerWarrantyCard()\">{{ btext('registerWarrantyCardButton') }}</button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'balance_required'\">\n          <h3>{{ btext('collectRemainingTitle') }}</h3>\n          <p>{{ btext('amountDueBeforeDeparture') }}: <strong>€{{ getBalanceAmount() }}</strong></p>\n\n          <div class=\"collect-balance\" *ngIf=\"canAdminCreateExtraService()\">\n            <label>\n              {{ btext('paymentMethod') }}\n              <select [(ngModel)]=\"balancePaymentMethod\">\n                <option value=\"sumup\">{{ btext('sumupCard') }}</option>\n                <option value=\"cash\">{{ btext('cash') }}</option>\n                <option value=\"mixed\">{{ btext('mixed') }}</option>\n              </select>\n            </label>\n\n            <label>\n              {{ btext('notes') }}\n              <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" placeholder=\"{{ btext('balanceNotesPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n              {{ savingBalancePayment ? btext('saving') : btext('recordRemainingPayment') }}\n            </button>\n          </div>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"getBookingWorkflowState() === 'payment_done' && isAdmin && isOutingDone()\">\n          <h3>{{ btext('damageManagement') }}</h3>\n          <p>{{ btext('damageManagementText') }}</p>\n\n          <div class=\"cash-damage-card\" *ngIf=\"isCashWarranty()\">\n            <h3>{{ btext('cashWarrantyEnvelope') }}</h3>\n            <p>\n              {{ btext('cashWarrantyInitialEnvelope') }}: <strong>€{{ getCashWarrantyAmount() }}</strong><br />\n              {{ btext('cashWarrantyAlreadyTaken') }}: <strong>€{{ getCashWarrantyDamagesTaken() }}</strong><br />\n              {{ btext('cashWarrantyRemaining') }}: <strong>€{{ getCashWarrantyRemaining() }}</strong>\n            </p>\n\n            <label>\n              {{ btext('cashDamageAmount') }} (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cashDamageAmount\" />\n            </label>\n\n            <label>\n              {{ btext('damageReason') }}\n              <textarea rows=\"3\" [(ngModel)]=\"cashDamageReason\" placeholder=\"{{ btext('damageReasonPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCashDamage\" (click)=\"recordCashWarrantyDamage()\">\n              {{ savingCashDamage ? btext('saving') : btext('recordCashDamage') }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"cashDamageMessage\">{{ cashDamageMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"cashDamageError\">{{ cashDamageError }}</p>\n          </div>\n\n          <div class=\"cash-damage-card\" *ngIf=\"isWarrantyCardRegistered()\">\n            <h3>{{ btext('chargeCardWarranty') }}</h3>\n            <p>{{ btext('maximumWarranty') }}: <strong>€{{ booking.warrantyAmount || 500 }}</strong></p>\n\n            <label>\n              {{ btext('damageAmount') }} (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cardDamageAmount\" />\n            </label>\n\n            <label>\n              {{ btext('damageReason') }}\n              <textarea rows=\"3\" [(ngModel)]=\"cardDamageReason\" placeholder=\"{{ btext('damageReasonPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCardDamage\" (click)=\"recordCardWarrantyDamage()\">\n              {{ savingCardDamage ? btext('charging') : btext('chargeDamageToWarrantyCard') }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"cardDamageMessage\">{{ cardDamageMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"cardDamageError\">{{ cardDamageError }}</p>\n          </div>\n        </div>\n\n\n        <div class=\"workflow-panel extra-services-panel\" *ngIf=\"booking\">\n          <h3>Extra services</h3>\n\n          <div *ngIf=\"bookingExtraServices.length === 0\" class=\"muted\">\n            No extra service requested for this booking.\n          </div>\n\n          <div class=\"extra-service-row\" *ngFor=\"let extra of bookingExtraServices\">\n            <div>\n              <strong>{{ extra.description || extra.title || extra.name }}</strong>\n              <span>€{{ extra.amount || 0 }} · {{ extra.status === 'paid' || extra.paid ? 'paid' : 'pending' }}</span>\n            </div>\n            <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!isAdmin && canCustomerPayExtraService(extra)\" (click)=\"payExtraService(extra)\">\n              Pay extra service\n            </button>\n          </div>\n\n          <div class=\"admin-extra-service-form\" *ngIf=\"canAdminCreateExtraService()\">\n            <h4>Propose an extra service to the customer</h4>\n\n            <label>\n              Service from Firebase catalog\n              <select [(ngModel)]=\"selectedExtraServiceId\">\n                <option value=\"\">Custom service</option>\n                <option *ngFor=\"let service of extraServicesCatalog\" [value]=\"service.id || service.slug\">\n                  {{ service.title || service.name || service.description }} — €{{ service.amount || service.price || 0 }}\n                </option>\n              </select>\n            </label>\n\n            <label>\n              Custom description\n              <input type=\"text\" [(ngModel)]=\"customExtraServiceDescription\" placeholder=\"Drinks, food, catering...\" />\n            </label>\n\n            <label>\n              Custom amount (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"customExtraServiceAmount\" />\n            </label>\n\n            <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"savingExtraService\" (click)=\"createExtraServiceRequest()\">\n              {{ savingExtraService ? 'Saving...' : 'Send extra service payment request' }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"extraServiceMessage\">{{ extraServiceMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"extraServiceError\">{{ extraServiceError }}</p>\n          </div>\n        </div>\n\n        <div class=\"workflow-panel refund-panel\" *ngIf=\"false\">\n          <h3>Refund</h3>\n          <p>Paid: <strong>€{{ totalPaidAmount }}</strong> · Already refunded: <strong>€{{ totalRefundedAmount }}</strong> · Available: <strong>€{{ refundableAmount }}</strong></p>\n\n          <label>\n            Refund amount (€)\n            <input type=\"number\" min=\"1\" step=\"0.01\" [max]=\"refundableAmount\" [(ngModel)]=\"refundAmount\" />\n          </label>\n\n          <label>\n            Reason\n            <textarea rows=\"3\" [(ngModel)]=\"refundReason\" placeholder=\"Weather compensation, commercial gesture...\"></textarea>\n          </label>\n\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"refunding || !canAdminRefund()\" (click)=\"issueRefund()\">\n            {{ refunding ? 'Refunding...' : 'Issue refund' }}\n          </button>\n\n          <p class=\"success\" *ngIf=\"refundMessage\">{{ refundMessage }}</p>\n          <p class=\"error-message\" *ngIf=\"refundError\">{{ refundError }}</p>\n        </div>\n\n\n        <p class=\"success\" *ngIf=\"balancePaymentMessage\">{{ balancePaymentMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n        <p class=\"success\" *ngIf=\"warrantyMessage\">{{ warrantyMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"warrantyError\">{{ warrantyError }}</p>\n      </section>\n    \n      <div class=\"status-modal-backdrop\" *ngIf=\"statusModalOpen\" (click)=\"closeStatusModal()\">\n        <section class=\"status-modal\" (click)=\"$event.stopPropagation()\">\n          <button class=\"modal-close\" type=\"button\" (click)=\"closeStatusModal()\">×</button>\n          <span class=\"eyebrow\">{{ btext('bookingStatus') }}</span>\n          <h2>{{ getStatusLabel() }}</h2>\n          <p>{{ getStatusSummaryText() }}</p>\n\n          <div class=\"status-timeline\">\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isDepositPaid())\">\n              <strong>{{ btext('deposit') }}</strong>\n              <span>{{ getDepositStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isTermsAccepted())\">\n              <strong>{{ btext('termsConditions') }}</strong>\n              <span>{{ getTermsStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isWarrantySecured())\">\n              <strong>{{ btext('warranty') }}</strong>\n              <span>{{ getWarrantyModeLabel() }} · {{ getWarrantyCardLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isBalancePaid())\">\n              <strong>{{ btext('remaining') }}</strong>\n              <span>{{ getBalanceStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getDamageStatusLabel().includes('recorded'))\">\n              <strong>{{ btext('damage') }}</strong>\n              <span>{{ getDamageStatusLabel() }}</span>\n            </div>\n          </div>\n\n          <div class=\"modal-actions\">\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeStatusModal()\">{{ btext('close') }}</button>\n          </div>\n        </section>\n      </div>\n\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -5208,7 +5332,7 @@ GuestJourneyComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_a
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"feedback-page\">\n  <div class=\"container feedback-card\">\n    <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n    <h1>{{ t('title') }}</h1>\n    <p class=\"intro\">{{ t('intro') }}</p>\n\n    <div class=\"state-card\" *ngIf=\"!loggedUser\">\n      <p>{{ t('loginRequired') }}</p>\n      <a routerLink=\"/login\" class=\"btn btn-primary\">{{ t('login') }}</a>\n    </div>\n\n    <form class=\"feedback-form\" *ngIf=\"loggedUser\" (ngSubmit)=\"saveFeedback()\">\n      <div class=\"form-head full\">\n        <h2>{{ t('formTitle') }}</h2>\n        <p>{{ t('formIntro') }}</p>\n      </div>\n\n      <div class=\"state-card full\" *ngIf=\"shouldBlockNewFeedback()\">\n        <p>{{ t('noEligibleBookings') }}</p>\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"openNoFeedbackModal()\">\n          {{ t('noFeedbackModalTitle') }}\n        </button>\n      </div>\n\n      <label class=\"full\" *ngIf=\"availableFeedbackBookings().length > 0\">\n        <span>{{ t('outing') }}</span>\n        <select name=\"bookingId\" [(ngModel)]=\"feedback.bookingId\" (ngModelChange)=\"selectFeedbackBooking($event)\" required>\n          <option value=\"\" disabled>Select an outing</option>\n          <option *ngFor=\"let booking of availableFeedbackBookings()\" [value]=\"booking.bookingId\">\n            {{ feedbackBookingLabel(booking) }}\n          </option>\n        </select>\n      </label>\n\n      <label>\n        <span>{{ t('formDate') }}</span>\n        <input type=\"date\" name=\"date\" [(ngModel)]=\"feedback.date\" readonly required />\n      </label>\n\n      <label>\n        <span>{{ t('time') }}</span>\n        <input type=\"time\" name=\"time\" [(ngModel)]=\"feedback.time\" readonly required />\n      </label>\n\n      <label class=\"full\">\n        <span>{{ t('outingType') }}</span>\n        <input type=\"text\" name=\"outingType\" [(ngModel)]=\"feedback.outingType\" readonly required />\n      </label>\n\n      <label class=\"full\">\n        <span>{{ t('rating') }}</span>\n        <div class=\"rating-buttons\" role=\"radiogroup\" [attr.aria-label]=\"t('rating')\">\n          <button\n            type=\"button\"\n            *ngFor=\"let value of [1,2,3,4,5]\"\n            [class.active]=\"feedback.rating === value\"\n            (click)=\"setRating(value)\"\n            [attr.aria-pressed]=\"feedback.rating === value\">\n            {{ value }} ★\n          </button>\n        </div>\n      </label>\n\n      <label class=\"full\">\n        <span>{{ t('comments') }}</span>\n        <textarea name=\"comments\" rows=\"5\" [(ngModel)]=\"feedback.comments\" required></textarea>\n      </label>\n\n      <div class=\"form-actions full\">\n        <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"saving || availableFeedbackBookings().length === 0\">\n          {{ saving ? t('saving') : t('save') }}\n        </button>\n      </div>\n\n      <p class=\"success full\" *ngIf=\"saved\">{{ t('saved') }}</p>\n      <p class=\"error full\" *ngIf=\"saveError\">{{ saveError }}</p>\n    </form>\n\n    <div class=\"feedback-list\" *ngIf=\"loggedUser\">\n      <h2>{{ t('listTitle') }}</h2>\n\n      <div class=\"state-card\" *ngIf=\"loading\">\n        <p>{{ t('loading') }}</p>\n      </div>\n\n      <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n      <p class=\"success\" *ngIf=\"editSaved\">{{ editSaved }}</p>\n      <p class=\"error\" *ngIf=\"editError\">{{ editError }}</p>\n\n      <div class=\"state-card\" *ngIf=\"!loading && !error && feedbacks.length === 0\">\n        <p>{{ t('empty') }}</p>\n      </div>\n\n      <div class=\"feedback-grid\" *ngIf=\"!loading && feedbacks.length > 0\">\n        <article class=\"feedback-item\" *ngFor=\"let item of feedbacks\">\n          <ng-container *ngIf=\"editingFeedbackId !== feedbackId(item); else editBlock\">\n            <div class=\"feedback-topline\">\n              <strong>{{ item.outingType || '-' }}</strong>\n              <span class=\"stars\">{{ stars(item.rating || item.rate) }}</span>\n            </div>\n\n            <div class=\"feedback-meta\">\n              <span>{{ t('date') }}: {{ item.date || '-' }}</span>\n              <span>{{ t('time') }}: {{ item.time || '-' }}</span>\n            </div>\n\n            <p class=\"feedback-comment\">{{ displayComment(item) }}</p>\n\n            <div class=\"feedback-actions\">\n              <button type=\"button\" class=\"btn btn-secondary\" (click)=\"startEdit(item)\">\n                {{ t('edit') }}\n              </button>\n\n              <button\n                type=\"button\"\n                class=\"btn btn-danger\"\n                (click)=\"deleteFeedback(item)\"\n                [disabled]=\"deletingFeedbackId === feedbackId(item)\">\n                {{ t('delete') }}\n              </button>\n            </div>\n          </ng-container>\n\n          <ng-template #editBlock>\n            <form class=\"feedback-form edit-form\" (ngSubmit)=\"updateExistingFeedback(item)\">\n              <label>\n                <span>{{ t('formDate') }}</span>\n                <input type=\"date\" name=\"editDate{{ feedbackId(item) }}\" [(ngModel)]=\"editFeedback.date\" readonly required />\n              </label>\n\n              <label>\n                <span>{{ t('time') }}</span>\n                <input type=\"time\" name=\"editTime{{ feedbackId(item) }}\" [(ngModel)]=\"editFeedback.time\" readonly required />\n              </label>\n\n              <label class=\"full\">\n                <span>{{ t('outingType') }}</span>\n                <input type=\"text\" name=\"editOutingType{{ feedbackId(item) }}\" [(ngModel)]=\"editFeedback.outingType\" readonly required />\n              </label>\n\n              <label class=\"full\">\n                <span>{{ t('rating') }}</span>\n                <div class=\"rating-buttons\" role=\"radiogroup\" [attr.aria-label]=\"t('rating')\">\n                  <button\n                    type=\"button\"\n                    *ngFor=\"let value of [1,2,3,4,5]\"\n                    [class.active]=\"editFeedback.rating === value\"\n                    (click)=\"setEditRating(value)\"\n                    [attr.aria-pressed]=\"editFeedback.rating === value\">\n                    {{ value }} ★\n                  </button>\n                </div>\n              </label>\n\n              <label class=\"full\">\n                <span>{{ t('comments') }}</span>\n                <textarea name=\"editComments{{ feedbackId(item) }}\" rows=\"4\" [(ngModel)]=\"editFeedback.comments\" required></textarea>\n              </label>\n\n              <div class=\"form-actions full edit-actions\">\n                <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"saving\">\n                  {{ saving ? t('saving') : t('update') }}\n                </button>\n                <button class=\"btn btn-secondary\" type=\"button\" (click)=\"cancelEdit()\">\n                  {{ t('cancel') }}\n                </button>\n              </div>\n            </form>\n          </ng-template>\n        </article>\n      </div>\n    </div>\n\n    <div class=\"feedback-modal-backdrop\" *ngIf=\"noFeedbackModalOpen\" (click)=\"closeNoFeedbackModal()\">\n      <section class=\"feedback-modal\" (click)=\"$event.stopPropagation()\">\n        <button class=\"modal-close\" type=\"button\" (click)=\"closeNoFeedbackModal()\">×</button>\n        <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n        <h2>{{ t('noFeedbackModalTitle') }}</h2>\n        <p>{{ t('noFeedbackModalText') }}</p>\n        <div class=\"modal-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" (click)=\"closeNoFeedbackModal()\">\n            {{ t('noFeedbackModalClose') }}\n          </button>\n        </div>\n      </section>\n    </div>\n\n  </div>\n</section>\n";
+module.exports = "<section class=\"feedback-page\">\n  <div class=\"container feedback-card\">\n    <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n    <h1>{{ t('title') }}</h1>\n    <p class=\"intro\">{{ t('intro') }}</p>\n\n    <div class=\"state-card\" *ngIf=\"!loggedUser\">\n      <p>{{ t('loginRequired') }}</p>\n      <a routerLink=\"/login\" class=\"btn btn-primary\">{{ t('login') }}</a>\n    </div>\n\n    <form class=\"feedback-form\" *ngIf=\"loggedUser\" (ngSubmit)=\"saveFeedback()\">\n      <div class=\"form-head full\">\n        <h2>{{ t('formTitle') }}</h2>\n        <p>{{ t('formIntro') }}</p>\n      </div>\n\n      <div class=\"state-card full\" *ngIf=\"shouldBlockNewFeedback() && !hasAnyEligibleOuting()\">\n        <p>{{ t('noEligibleBookings') }}</p>\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"openNoFeedbackModal()\">\n          {{ t('noFeedbackModalTitle') }}\n        </button>\n      </div>\n\n      <label class=\"full\" *ngIf=\"availableFeedbackBookings().length > 0\">\n        <span>{{ t('outing') }}</span>\n        <select name=\"bookingId\" [(ngModel)]=\"feedback.bookingId\" (ngModelChange)=\"selectFeedbackBooking($event)\" required>\n          <option value=\"\" disabled>Select an outing</option>\n          <option *ngFor=\"let booking of availableFeedbackBookings()\" [value]=\"booking.bookingId\">\n            {{ feedbackBookingLabel(booking) }}\n          </option>\n        </select>\n      </label>\n\n      <label>\n        <span>{{ t('formDate') }}</span>\n        <input type=\"date\" name=\"date\" [(ngModel)]=\"feedback.date\" readonly required />\n      </label>\n\n      <label>\n        <span>{{ t('time') }}</span>\n        <input type=\"time\" name=\"time\" [(ngModel)]=\"feedback.time\" readonly required />\n      </label>\n\n      <label class=\"full\">\n        <span>{{ t('outingType') }}</span>\n        <input type=\"text\" name=\"outingType\" [(ngModel)]=\"feedback.outingType\" readonly required />\n      </label>\n\n      <label class=\"full\">\n        <span>{{ t('rating') }}</span>\n        <div class=\"rating-buttons\" role=\"radiogroup\" [attr.aria-label]=\"t('rating')\">\n          <button\n            type=\"button\"\n            *ngFor=\"let value of [1,2,3,4,5]\"\n            [class.active]=\"feedback.rating === value\"\n            (click)=\"setRating(value)\"\n            [attr.aria-pressed]=\"feedback.rating === value\">\n            {{ value }} ★\n          </button>\n        </div>\n      </label>\n\n      <label class=\"full\">\n        <span>{{ t('comments') }}</span>\n        <textarea name=\"comments\" rows=\"5\" [(ngModel)]=\"feedback.comments\" required></textarea>\n      </label>\n\n      <div class=\"form-actions full\">\n        <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"saving || availableFeedbackBookings().length === 0\">\n          {{ saving ? t('saving') : t('save') }}\n        </button>\n      </div>\n\n      <p class=\"success full\" *ngIf=\"saved\">{{ t('saved') }}</p>\n      <p class=\"error full\" *ngIf=\"saveError\">{{ saveError }}</p>\n    </form>\n\n    <div class=\"feedback-list\" *ngIf=\"loggedUser\">\n      <h2>{{ t('listTitle') }}</h2>\n\n      <div class=\"state-card\" *ngIf=\"loading\">\n        <p>{{ t('loading') }}</p>\n      </div>\n\n      <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n      <p class=\"success\" *ngIf=\"editSaved\">{{ editSaved }}</p>\n      <p class=\"error\" *ngIf=\"editError\">{{ editError }}</p>\n\n      <div class=\"state-card\" *ngIf=\"!loading && !error && feedbacks.length === 0\">\n        <p>{{ t('empty') }}</p>\n      </div>\n\n      <div class=\"feedback-grid\" *ngIf=\"!loading && feedbacks.length > 0\">\n        <article class=\"feedback-item\" *ngFor=\"let item of feedbacks\">\n          <ng-container *ngIf=\"editingFeedbackId !== feedbackId(item); else editBlock\">\n            <div class=\"feedback-topline\">\n              <strong>{{ item.outingType || '-' }}</strong>\n              <span class=\"stars\">{{ stars(item.rating || item.rate) }}</span>\n            </div>\n\n            <div class=\"feedback-meta\">\n              <span>{{ t('date') }}: {{ item.date || '-' }}</span>\n              <span>{{ t('time') }}: {{ item.time || '-' }}</span>\n            </div>\n\n            <p class=\"feedback-comment\">{{ displayComment(item) }}</p>\n\n            <div class=\"feedback-actions\">\n              <button type=\"button\" class=\"btn btn-secondary\" (click)=\"startEdit(item)\">\n                {{ t('edit') }}\n              </button>\n\n              <button\n                type=\"button\"\n                class=\"btn btn-danger\"\n                (click)=\"deleteFeedback(item)\"\n                [disabled]=\"deletingFeedbackId === feedbackId(item)\">\n                {{ t('delete') }}\n              </button>\n            </div>\n          </ng-container>\n\n          <ng-template #editBlock>\n            <form class=\"feedback-form edit-form\" (ngSubmit)=\"updateExistingFeedback(item)\">\n              <label>\n                <span>{{ t('formDate') }}</span>\n                <input type=\"date\" name=\"editDate{{ feedbackId(item) }}\" [(ngModel)]=\"editFeedback.date\" readonly required />\n              </label>\n\n              <label>\n                <span>{{ t('time') }}</span>\n                <input type=\"time\" name=\"editTime{{ feedbackId(item) }}\" [(ngModel)]=\"editFeedback.time\" readonly required />\n              </label>\n\n              <label class=\"full\">\n                <span>{{ t('outingType') }}</span>\n                <input type=\"text\" name=\"editOutingType{{ feedbackId(item) }}\" [(ngModel)]=\"editFeedback.outingType\" readonly required />\n              </label>\n\n              <label class=\"full\">\n                <span>{{ t('rating') }}</span>\n                <div class=\"rating-buttons\" role=\"radiogroup\" [attr.aria-label]=\"t('rating')\">\n                  <button\n                    type=\"button\"\n                    *ngFor=\"let value of [1,2,3,4,5]\"\n                    [class.active]=\"editFeedback.rating === value\"\n                    (click)=\"setEditRating(value)\"\n                    [attr.aria-pressed]=\"editFeedback.rating === value\">\n                    {{ value }} ★\n                  </button>\n                </div>\n              </label>\n\n              <label class=\"full\">\n                <span>{{ t('comments') }}</span>\n                <textarea name=\"editComments{{ feedbackId(item) }}\" rows=\"4\" [(ngModel)]=\"editFeedback.comments\" required></textarea>\n              </label>\n\n              <div class=\"form-actions full edit-actions\">\n                <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"saving\">\n                  {{ saving ? t('saving') : t('update') }}\n                </button>\n                <button class=\"btn btn-secondary\" type=\"button\" (click)=\"cancelEdit()\">\n                  {{ t('cancel') }}\n                </button>\n              </div>\n            </form>\n          </ng-template>\n        </article>\n      </div>\n    </div>\n\n    <div class=\"feedback-modal-backdrop\" *ngIf=\"noFeedbackModalOpen\" (click)=\"closeNoFeedbackModal()\">\n      <section class=\"feedback-modal\" (click)=\"$event.stopPropagation()\">\n        <button class=\"modal-close\" type=\"button\" (click)=\"closeNoFeedbackModal()\">×</button>\n        <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n        <h2>{{ t('noFeedbackModalTitle') }}</h2>\n        <p>{{ t('noFeedbackModalText') }}</p>\n        <div class=\"modal-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" (click)=\"closeNoFeedbackModal()\">\n            {{ t('noFeedbackModalClose') }}\n          </button>\n        </div>\n      </section>\n    </div>\n\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -9761,6 +9885,9 @@ const routes = [{
   path: '',
   component: _home_home_component__WEBPACK_IMPORTED_MODULE_0__.HomeComponent
 }, {
+  path: 'home',
+  component: _home_home_component__WEBPACK_IMPORTED_MODULE_0__.HomeComponent
+}, {
   path: 'sorties',
   component: _outings_outings_component__WEBPACK_IMPORTED_MODULE_1__.OutingsComponent
 }, {
@@ -11867,7 +11994,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">My bookings</span>\n      <h1>Upcoming and confirmed bookings</h1>\n      <p>View your confirmed outings, payment status and warranty registration.</p>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n\n    <div *ngIf=\"!loading && bookings.length === 0\" class=\"empty-card\">\n      No booking is linked to your account yet.\n    </div>\n\n    <div class=\"booking-tabs\" *ngIf=\"!loading && bookings.length\">\n      <button type=\"button\" [class.active]=\"activeDateTab === 'upcoming'\" (click)=\"setDateTab('upcoming')\">\n        Upcoming <span>{{ upcomingBookingsCount }}</span>\n      </button>\n      <button type=\"button\" [class.active]=\"activeDateTab === 'past'\" (click)=\"setDateTab('past')\">\n        Past <span>{{ pastBookingsCount }}</span>\n      </button>\n    </div>\n\n    <div class=\"booking-toolbar-grid\" *ngIf=\"!loading && bookings.length\">\n      <label>\n        <span>Search</span>\n        <input type=\"search\" [(ngModel)]=\"searchTerm\" placeholder=\"Search bookings...\" />\n      </label>\n\n      <label>\n        <span>Status</span>\n        <select [(ngModel)]=\"statusFilter\">\n          <option value=\"all\">All statuses</option>\n          <option value=\"not_confirmed\">Not confirmed</option>\n          <option value=\"confirmed\">Confirmed</option>\n          <option value=\"payment_done\">Payment done</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Warranty</span>\n        <select [(ngModel)]=\"warrantyFilter\">\n          <option value=\"all\">All warranties</option>\n          <option value=\"not_selected\">Not selected</option>\n          <option value=\"cash\">Cash selected</option>\n          <option value=\"card_selected\">Card selected</option>\n          <option value=\"card_registered\">Card registered</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Order by</span>\n        <select [(ngModel)]=\"sortField\">\n          <option value=\"date\">Date</option>\n          <option value=\"customer\">Customer</option>\n          <option value=\"status\">Status</option>\n          <option value=\"total\">Total price</option>\n          <option value=\"balance\">Remaining 90%</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Direction</span>\n        <select [(ngModel)]=\"sortDirection\">\n          <option value=\"asc\">Ascending</option>\n          <option value=\"desc\">Descending</option>\n        </select>\n      </label>\n\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetFilters()\">Reset</button>\n    </div>\n\n    <p class=\"muted\" *ngIf=\"!loading && bookings.length\">\n      Showing <strong>{{ filteredBookings.length }}</strong> {{ activeDateTab }} bookings out of <strong>{{ bookings.length }}</strong>.\n    </p>\n\n    <div class=\"bookings-list\" *ngIf=\"!loading && filteredBookings.length\">\n      <button class=\"booking-list-row\" type=\"button\" *ngFor=\"let booking of filteredBookings\" (click)=\"openBooking(booking)\">\n        <button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal(booking, $event)\">\n          {{ getStatusLabel(booking) }}\n        </button>\n\n        <span class=\"booking-main\">\n          <strong>{{ booking.outingType || 'Outing' }}</strong>\n          <small>{{ booking.outingDate || 'Date not set' }} <ng-container *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</ng-container></small>\n        </span>\n\n        <span class=\"booking-customer\">\n          <strong>{{ booking.customerName || 'Customer' }}</strong>\n          <small>{{ booking.email || 'No email' }}</small>\n        </span>\n\n        <span class=\"booking-price\">\n          <strong>€{{ booking.totalPrice || 0 }}</strong>\n          <small>Total price</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <button type=\"button\" class=\"mini-btn\"\n            *ngIf=\"shouldShowPaymentButton(booking) && !isBalancePaid(booking)\"\n            (click)=\"payBooking(booking)\">\n            {{ getPaymentButtonLabel(booking) }}\n          </button>\n          <span class=\"row-chevron\">›</span>\n        </span>\n      </button>\n    </div>\n\n    <div class=\"empty-card\" *ngIf=\"!loading && bookings.length && filteredBookings.length === 0\">\n      No booking matches the selected tab, filters and search.\n    </div>\n  </div>\n\n    <div class=\"status-modal-backdrop\" *ngIf=\"selectedStatusBooking\" (click)=\"closeStatusModal()\">\n      <section class=\"status-modal\" (click)=\"$event.stopPropagation()\">\n        <button class=\"modal-close\" type=\"button\" (click)=\"closeStatusModal()\">×</button>\n        <span class=\"eyebrow\">Booking status</span>\n        <h2>{{ getStatusLabel(selectedStatusBooking) }}</h2>\n        <p>{{ getStatusSummaryText(selectedStatusBooking) }}</p>\n\n        <div class=\"status-timeline\">\n          <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isDepositPaid(selectedStatusBooking))\">\n            <strong>10% deposit</strong>\n            <span>{{ isDepositPaid(selectedStatusBooking) ? 'Paid' : 'Pending' }}</span>\n          </div>\n          <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isTermsAccepted(selectedStatusBooking))\">\n            <strong>T&C</strong>\n            <span>{{ isTermsAccepted(selectedStatusBooking) ? 'Accepted' : 'Not accepted' }}</span>\n          </div>\n          <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isWarrantySecured(selectedStatusBooking))\">\n            <strong>Warranty</strong>\n            <span>{{ getWarrantyModeLabel(selectedStatusBooking) }} · {{ getWarrantyCardLabel(selectedStatusBooking) }}</span>\n          </div>\n          <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isBalancePaid(selectedStatusBooking))\">\n            <strong>Remaining 90%</strong>\n            <span>{{ isBalancePaid(selectedStatusBooking) ? 'Paid' : 'Pending' }}</span>\n          </div>\n          <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getDamageStatusLabel(selectedStatusBooking).includes('recorded'))\">\n            <strong>Damage</strong>\n            <span>{{ getDamageStatusLabel(selectedStatusBooking) }}</span>\n          </div>\n        </div>\n\n        <div class=\"modal-actions\">\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeStatusModal()\">Close</button>\n          <button class=\"btn btn-primary\" type=\"button\" (click)=\"openBooking(selectedStatusBooking)\">Open booking</button>\n        </div>\n      </section>\n    </div>\n\n</section>\n";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">My bookings</span>\n      <h1>Upcoming and confirmed bookings</h1>\n      <p>View your confirmed outings, payment status and warranty registration.</p>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">Loading bookings...</p>\n\n    <div *ngIf=\"!loading && bookings.length === 0\" class=\"empty-card\">\n      No booking is linked to your account yet.\n    </div>\n\n    <div class=\"booking-tabs\" *ngIf=\"!loading && bookings.length\">\n      <button type=\"button\" [class.active]=\"activeDateTab === 'upcoming'\" (click)=\"setDateTab('upcoming')\">\n        Upcoming <span>{{ upcomingBookingsCount }}</span>\n      </button>\n      <button type=\"button\" [class.active]=\"activeDateTab === 'past'\" (click)=\"setDateTab('past')\">\n        Past <span>{{ pastBookingsCount }}</span>\n      </button>\n    </div>\n\n    <div class=\"booking-toolbar-grid\" *ngIf=\"!loading && bookings.length\">\n      <label>\n        <span>Search</span>\n        <input type=\"search\" [(ngModel)]=\"searchTerm\" placeholder=\"Search bookings...\" />\n      </label>\n\n      <label>\n        <span>Status</span>\n        <select [(ngModel)]=\"statusFilter\">\n          <option value=\"all\">All statuses</option>\n          <option value=\"not_confirmed\">Not confirmed</option>\n          <option value=\"confirmed\">Confirmed</option>\n          <option value=\"payment_done\">Payment done</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Warranty</span>\n        <select [(ngModel)]=\"warrantyFilter\">\n          <option value=\"all\">All warranties</option>\n          <option value=\"not_selected\">Not selected</option>\n          <option value=\"cash\">Cash selected</option>\n          <option value=\"card_selected\">Card selected</option>\n          <option value=\"card_registered\">Card registered</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Order by</span>\n        <select [(ngModel)]=\"sortField\">\n          <option value=\"date\">Date</option>\n          <option value=\"customer\">Customer</option>\n          <option value=\"status\">Status</option>\n          <option value=\"total\">Total price</option>\n          <option value=\"balance\">Remaining 90%</option>\n        </select>\n      </label>\n\n      <label>\n        <span>Direction</span>\n        <select [(ngModel)]=\"sortDirection\">\n          <option value=\"asc\">Ascending</option>\n          <option value=\"desc\">Descending</option>\n        </select>\n      </label>\n\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetFilters()\">Reset</button>\n    </div>\n\n    <p class=\"muted\" *ngIf=\"!loading && bookings.length\">\n      Showing <strong>{{ filteredBookings.length }}</strong> {{ activeDateTab }} bookings out of <strong>{{ bookings.length }}</strong>.\n    </p>\n\n    <div class=\"bookings-list\" *ngIf=\"!loading && filteredBookings.length\">\n      <button class=\"booking-list-row\" type=\"button\" *ngFor=\"let booking of filteredBookings\" (click)=\"openBooking(booking)\">\n        <button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal(booking, $event)\">\n          {{ getStatusLabel(booking) }}\n        </button>\n\n        <span class=\"booking-main\">\n          <strong>{{ booking.outingType || 'Outing' }}</strong>\n          <small>{{ booking.outingDate || 'Date not set' }} <ng-container *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</ng-container></small>\n        </span>\n\n        <span class=\"booking-customer\">\n          <strong>{{ booking.customerName || 'Customer' }}</strong>\n          <small>{{ booking.email || 'No email' }}</small>\n        </span>\n\n        <span class=\"booking-price\">\n          <strong>€{{ booking.totalPrice || 0 }}</strong>\n          <small>Total price</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <button type=\"button\" class=\"mini-btn\"\n            *ngIf=\"shouldShowPaymentButton(booking) && !isBalancePaid(booking)\"\n            (click)=\"payBooking(booking)\">\n            {{ getPaymentButtonLabel(booking) }}\n          </button>\n          <span class=\"row-chevron\">›</span>\n        </span>\n      </button>\n    </div>\n\n    <div class=\"empty-card\" *ngIf=\"!loading && bookings.length && filteredBookings.length === 0\">\n      No booking matches the selected tab, filters and search.\n    </div>\n  </div>\n\n    <div class=\"status-modal-backdrop\" *ngIf=\"selectedStatusBooking\" (click)=\"closeStatusModal()\">\n      <section class=\"status-modal\" (click)=\"$event.stopPropagation()\">\n        <button class=\"modal-close\" type=\"button\" (click)=\"closeStatusModal()\">×</button>\n        <span class=\"eyebrow\">Booking status</span>\n        <h2>{{ getStatusLabel(selectedStatusBooking) }}</h2>\n        <p>{{ getStatusSummaryText(selectedStatusBooking) }}</p>\n\n        <div class=\"status-timeline\">\n          <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isDepositPaid(selectedStatusBooking))\">\n            <strong>Acompte 10 %</strong>\n            <span>{{ isDepositPaid(selectedStatusBooking) ? 'Completed' : 'Pending' }}</span>\n          </div>\n          <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isTermsAccepted(selectedStatusBooking))\">\n            <strong>T&C</strong>\n            <span>{{ isTermsAccepted(selectedStatusBooking) ? 'Accepted' : 'Not accepted' }}</span>\n          </div>\n          <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isWarrantySecured(selectedStatusBooking))\">\n            <strong>Warranty mode</strong>\n            <span>{{ getWarrantyModeLabel(selectedStatusBooking) }} · {{ getWarrantyCardLabel(selectedStatusBooking) }}</span>\n          </div>\n          <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isBalancePaid(selectedStatusBooking))\">\n            <strong>Solde 90 %</strong>\n            <span>{{ isBalancePaid(selectedStatusBooking) ? 'Completed' : 'Pending' }}</span>\n          </div>\n          <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getDamageStatusLabel(selectedStatusBooking).includes('recorded'))\">\n            <strong>Damage</strong>\n            <span>{{ getDamageStatusLabel(selectedStatusBooking) }}</span>\n          </div>\n        </div>\n\n        <div class=\"modal-actions\">\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeStatusModal()\">Close</button>\n          <button class=\"btn btn-primary\" type=\"button\" (click)=\"openBooking(selectedStatusBooking)\">Open booking</button>\n        </div>\n      </section>\n    </div>\n\n</section>\n";
 
 /***/ }),
 
@@ -12979,58 +13106,111 @@ let ProposalApiService = class ProposalApiService {
         createdTS: input.createdTS || now,
         modifiedTS: now,
         acceptedTS: input.acceptedTS,
+        customerUid: input.customerUid || '',
+        customerAuthProvider: input.customerAuthProvider || '',
+        customerAccountCreated: input.customerAccountCreated === true,
+        customerAccountCreatedAt: input.customerAccountCreatedAt,
+        customerLastLoginAt: input.customerLastLoginAt,
         raw: input.raw || input
       };
       yield _this.writeItem(_this.proposalsCollection, proposalId, proposal);
       return proposal;
     })();
   }
-  markSent(proposal) {
+  markTermsAccepted(proposalId) {
     var _this2 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      yield _this2.patchProposal(proposal.proposalId, {
+      const current = yield _this2.readItem(_this2.proposalsCollection, proposalId);
+      if (!current) throw new Error('Proposal not found');
+      if (current.validUntil && Date.now() > current.validUntil) {
+        yield _this2.patchProposal(proposalId, {
+          status: 'expired'
+        });
+        throw new Error('Proposal expired');
+      }
+      const updated = {
+        ...current,
+        tncAccepted: true,
+        tncAcceptedAt: current.tncAcceptedAt || Date.now(),
+        modifiedTS: Date.now()
+      };
+      yield _this2.writeItem(_this2.proposalsCollection, proposalId, updated);
+      return updated;
+    })();
+  }
+  setWarrantyChoice(proposalId, warrantyPaymentChoice) {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const current = yield _this3.readItem(_this3.proposalsCollection, proposalId);
+      if (!current) throw new Error('Proposal not found');
+      const patch = {
+        warrantyPaymentChoice,
+        warrantyStatus: warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : 'not_selected',
+        warrantyRegistered: warrantyPaymentChoice === 'cash_on_board' ? true : current.warrantyRegistered === true,
+        modifiedTS: Date.now()
+      };
+      yield _this3.patchProposal(proposalId, patch);
+      return {
+        ...current,
+        ...patch
+      };
+    })();
+  }
+  finalizeProposalWizard(proposalId, warrantyPaymentChoice) {
+    var _this4 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const hydrated = yield _this4.readProposalWithPaymentState(proposalId);
+      if (!hydrated) throw new Error('Proposal not found');
+      const depositPaid = hydrated.depositPaid === true || hydrated.depositStatus === 'paid' || hydrated.paymentStatus === 'paid' || hydrated.paymentStatus === 'charge_succeeded';
+      const warrantyOk = warrantyPaymentChoice === 'cash_on_board' || hydrated.warrantyRegistered === true || hydrated.warrantyStatus === 'card_registered' || hydrated.warrantyStatus === 'warranty_card_saved';
+      if (!hydrated.tncAccepted) throw new Error('Terms and Conditions must be accepted first.');
+      if (!depositPaid) throw new Error('Deposit must be paid first.');
+      if (!warrantyOk) throw new Error('Warranty card must be registered or cash warranty accepted first.');
+      const bookingId = hydrated.relatedBookingId || hydrated.proposalId;
+      const accepted = {
+        ...hydrated,
+        status: 'accepted',
+        relatedBookingId: bookingId,
+        warrantyPaymentChoice,
+        warrantyStatus: warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : hydrated.warrantyStatus || 'card_registered',
+        warrantyRegistered: warrantyPaymentChoice === 'cash_on_board' ? true : hydrated.warrantyRegistered === true,
+        depositPaid: true,
+        depositStatus: 'paid',
+        paymentStatus: hydrated.paymentStatus || '',
+        acceptedTS: Date.now(),
+        modifiedTS: Date.now()
+      };
+      yield _this4.createBookingFromProposal(accepted);
+      yield _this4.deleteProposal(proposalId);
+      return {
+        bookingId
+      };
+    })();
+  }
+  markSent(proposal) {
+    var _this5 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      yield _this5.patchProposal(proposal.proposalId, {
         status: 'sent',
         validUntil: Date.now() + 24 * 60 * 60 * 1000
       });
     })();
   }
   acceptProposal(proposalId, warrantyPaymentChoice) {
-    var _this3 = this;
+    var _this6 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const current = yield _this3.readItem(_this3.proposalsCollection, proposalId);
-      if (!current) throw new Error('Proposal not found');
-      if (current.validUntil && Date.now() > current.validUntil) {
-        yield _this3.patchProposal(proposalId, {
-          status: 'expired'
-        });
-        throw new Error('Proposal expired');
-      }
-      const accepted = {
-        ...current,
-        status: 'accepted',
-        relatedBookingId: proposalId,
-        warrantyPaymentChoice,
-        warrantyStatus: warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : 'not_selected',
-        tncAccepted: true,
-        tncAcceptedAt: Date.now(),
-        acceptedTS: Date.now(),
-        modifiedTS: Date.now()
-      };
-      yield _this3.writeItem(_this3.proposalsCollection, proposalId, accepted);
-      yield _this3.createBookingFromProposal(accepted);
-      yield _this3.patchProposal(proposalId, {
-        relatedBookingId: proposalId
-      });
-      return {
-        ...accepted,
-        relatedBookingId: proposalId
-      };
+      // Backward-compatible wrapper: in the new wizard, accepting only records T&C + warranty choice.
+      const proposal = yield _this6.markTermsAccepted(proposalId);
+      return _this6.setWarrantyChoice(proposalId, warrantyPaymentChoice).then(updated => ({
+        ...proposal,
+        ...updated
+      }));
     })();
   }
   renewProposal(proposalId) {
-    var _this4 = this;
+    var _this7 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const current = yield _this4.readItem(_this4.proposalsCollection, proposalId);
+      const current = yield _this7.readItem(_this7.proposalsCollection, proposalId);
       if (!current) throw new Error('Proposal not found');
       const renewed = {
         ...current,
@@ -13038,20 +13218,20 @@ let ProposalApiService = class ProposalApiService {
         validUntil: Date.now() + 24 * 60 * 60 * 1000,
         modifiedTS: Date.now()
       };
-      yield _this4.writeItem(_this4.proposalsCollection, proposalId, renewed);
+      yield _this7.writeItem(_this7.proposalsCollection, proposalId, renewed);
       return renewed;
     })();
   }
   deleteProposal(proposalId) {
-    var _this5 = this;
+    var _this8 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      yield _this5.deleteItem(_this5.proposalsCollection, proposalId);
+      yield _this8.deleteItem(_this8.proposalsCollection, proposalId);
     })();
   }
   createExternalBooking(input) {
-    var _this6 = this;
+    var _this9 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const saved = yield _this6.saveProposal({
+      const saved = yield _this9.saveProposal({
         ...input,
         source: input.source || 'samboat',
         status: 'accepted',
@@ -13062,16 +13242,28 @@ let ProposalApiService = class ProposalApiService {
         acceptedTS: Date.now(),
         relatedBookingId: input.relatedBookingId || input.proposalId
       });
-      yield _this6.createBookingFromProposal(saved);
+      yield _this9.createBookingFromProposal(saved);
       return saved;
     })();
   }
-  patchProposal(id, patch) {
-    var _this7 = this;
+  attachCustomerAccount(proposalId, payload) {
+    var _this10 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const current = yield _this7.readItem(_this7.proposalsCollection, id);
+      yield _this10.patchProposal(proposalId, {
+        customerUid: payload.customerUid,
+        customerAuthProvider: payload.customerAuthProvider,
+        customerAccountCreated: payload.customerAccountCreated === true,
+        customerAccountCreatedAt: Date.now(),
+        customerLastLoginAt: Date.now()
+      });
+    })();
+  }
+  patchProposal(id, patch) {
+    var _this11 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const current = yield _this11.readItem(_this11.proposalsCollection, id);
       if (!current) throw new Error('Proposal not found');
-      yield _this7.writeItem(_this7.proposalsCollection, id, {
+      yield _this11.writeItem(_this11.proposalsCollection, id, {
         ...current,
         ...patch,
         modifiedTS: Date.now()
@@ -13123,9 +13315,9 @@ let ProposalApiService = class ProposalApiService {
     return this.postFirstAvailable([`${this.baseUrl}/pay/outing-warranty-charge`, `${this.baseUrl}/api/payments/charge-warranty`, `${this.baseUrl}/stripe/warranty-charge`], payload);
   }
   createBookingFromProposal(p) {
-    var _this8 = this;
+    var _this12 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      yield _this8.writeItem(_this8.bookingsCollection, p.proposalId, {
+      yield _this12.writeItem(_this12.bookingsCollection, p.proposalId, {
         bookingId: p.relatedBookingId || p.proposalId,
         proposalId: p.proposalId,
         relatedBookingId: p.relatedBookingId || p.proposalId,
@@ -13142,10 +13334,16 @@ let ProposalApiService = class ProposalApiService {
         depositAmount: p.depositAmount,
         balanceAmount: p.balanceAmount,
         warrantyAmount: p.warrantyAmount || 500,
-        depositStatus: p.depositStatus || 'pending',
+        depositStatus: p.depositStatus || (p.depositPaid ? 'paid' : 'pending'),
+        depositPaid: p.depositPaid === true || p.depositStatus === 'paid',
+        paymentStatus: '',
         warrantyStatus: p.warrantyStatus || 'not_selected',
+        warrantyRegistered: p.warrantyRegistered === true,
         warrantyPaymentChoice: p.warrantyPaymentChoice || null,
-        bookingStatus: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? 'confirmed' : 'not_confirmed',
+        customerUid: p.customerUid || '',
+        customerAuthProvider: p.customerAuthProvider || '',
+        customerAccountCreated: p.customerAccountCreated === true,
+        bookingStatus: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? true : 'not_confirmed',
         proposalStatus: 'accepted',
         tncAccepted: p.tncAccepted,
         termsAccepted: p.tncAccepted,
@@ -13190,23 +13388,23 @@ let ProposalApiService = class ProposalApiService {
     return window.location.origin;
   }
   readProposalWithPaymentState(id) {
-    var _this9 = this;
+    var _this13 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const proposal = yield _this9.readItem(_this9.proposalsCollection, id);
+      const proposal = yield _this13.readItem(_this13.proposalsCollection, id);
       if (!proposal) return undefined;
       if (proposal.status === 'accepted') {
-        const existingBooking = yield _this9.readItem(_this9.bookingsCollection, proposal.relatedBookingId || proposal.proposalId).catch(() => undefined);
+        const existingBooking = yield _this13.readItem(_this13.bookingsCollection, proposal.relatedBookingId || proposal.proposalId).catch(() => undefined);
         if (!existingBooking) {
-          yield _this9.createBookingFromProposal({
+          yield _this13.createBookingFromProposal({
             ...proposal,
             relatedBookingId: proposal.relatedBookingId || proposal.proposalId
           });
-          yield _this9.patchProposal(proposal.proposalId, {
+          yield _this13.patchProposal(proposal.proposalId, {
             relatedBookingId: proposal.relatedBookingId || proposal.proposalId
           }).catch(() => undefined);
         }
       }
-      const backendBooking = yield _this9.readItem('backendbookings', id).catch(() => undefined);
+      const backendBooking = yield _this13.readItem('backendbookings', id).catch(() => undefined);
       const depositPayment = backendBooking?.payments?.deposit || backendBooking?.payment || null;
       const warrantyPayment = backendBooking?.payments?.warranty || null;
       const warrantyCharge = backendBooking?.payments?.warrantyCharge || null;
@@ -13230,9 +13428,9 @@ let ProposalApiService = class ProposalApiService {
     })();
   }
   readCollection(collection) {
-    var _this10 = this;
+    var _this14 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const value = yield _this10.http.get(`${_this10.firebaseUrl}/${collection}.json`).toPromise();
+      const value = yield _this14.http.get(`${_this14.firebaseUrl}/${collection}.json`).toPromise();
       if (!value) return [];
       return Object.keys(value).map(key => ({
         ...value[key],
@@ -13241,9 +13439,9 @@ let ProposalApiService = class ProposalApiService {
     })();
   }
   readItem(collection, id) {
-    var _this11 = this;
+    var _this15 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const value = yield _this11.http.get(`${_this11.firebaseUrl}/${collection}/${id}.json`).toPromise();
+      const value = yield _this15.http.get(`${_this15.firebaseUrl}/${collection}/${id}.json`).toPromise();
       return value ? {
         ...value,
         proposalId: value.proposalId || id
@@ -13251,15 +13449,15 @@ let ProposalApiService = class ProposalApiService {
     })();
   }
   deleteItem(collection, id) {
-    var _this12 = this;
+    var _this16 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      yield _this12.http.delete(`${_this12.firebaseUrl}/${collection}/${id}.json`).toPromise();
+      yield _this16.http.delete(`${_this16.firebaseUrl}/${collection}/${id}.json`).toPromise();
     })();
   }
   writeItem(collection, id, value) {
-    var _this13 = this;
+    var _this17 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      yield _this13.http.put(`${_this13.firebaseUrl}/${collection}/${id}.json`, value).toPromise();
+      yield _this17.http.put(`${_this17.firebaseUrl}/${collection}/${id}.json`, value).toPromise();
     })();
   }
   static ctorParameters = () => [{
@@ -14099,13 +14297,14 @@ let BookingDetailComponent = class BookingDetailComponent {
   getDerivedBookingStatus() {
     const anyBooking = this.booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+    // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
+    if (this.isBalancePaid()) return 'payment_done';
     if (rawStatus === 'payment_done' || rawStatus === 'full_payment_done' || rawStatus === 'paid' || rawStatus === 'completed') {
       return 'payment_done';
     }
     if (rawStatus === true || rawStatus === 'true' || rawStatus === 'confirmed' || anyBooking.confirmed === true || anyBooking.bookingConfirmed === true) {
       return 'confirmed';
     }
-    if (this.isBalancePaid()) return 'payment_done';
     if (this.isDepositPaid() && this.isTermsAccepted()) return 'confirmed';
     return 'not_confirmed';
   }
@@ -14116,7 +14315,7 @@ let BookingDetailComponent = class BookingDetailComponent {
     return this.btext('notConfirmed');
   }
   getDepositStatusLabel() {
-    return this.isDepositPaid() ? `Paid (€${this.getDepositAmount()})` : `Pending (€${this.getDepositAmount()})`;
+    return this.isDepositPaid() ? `Completed (€${this.getDepositAmount()})` : `Pending (€${this.getDepositAmount()})`;
   }
   getTermsStatusLabel() {
     const b = this.booking || {};
@@ -14129,16 +14328,17 @@ let BookingDetailComponent = class BookingDetailComponent {
     const choice = this.getWarrantyChoice();
     if (choice === 'cash_on_board') return 'Cash €500 selected';
     if (choice === 'stripe_card') return 'Stripe card selected';
+    if (this.isWarrantyCardRegistered()) return 'Stripe card selected';
     return 'Not selected';
   }
   getWarrantyCardLabel() {
-    if (this.isWarrantyCardRegistered()) return 'Registered in Stripe';
+    if (this.isWarrantyCardRegistered()) return 'Completed';
     if (this.getWarrantyChoice() === 'stripe_card') return 'Selected, card not registered yet';
     if (this.getWarrantyChoice() === 'cash_on_board') return 'Not required — cash warranty selected';
     return 'Not registered';
   }
   getBalanceStatusLabel() {
-    return this.isBalancePaid() ? `Paid (€${this.getBalanceAmount()})` : `Pending (€${this.getBalanceAmount()})`;
+    return this.isBalancePaid() ? `Completed (€${this.getBalanceAmount()})` : `Pending (€${this.getBalanceAmount()})`;
   }
   getDamageStatusLabel() {
     const b = this.booking || {};
@@ -14329,7 +14529,8 @@ let BookingDetailComponent = class BookingDetailComponent {
       const now = Date.now();
       const payload = {
         bookingStatus: 'confirmed',
-        paymentStatus: 'deposit_paid',
+        depositStatus: 'paid',
+        depositPaid: true,
         confirmedAt: _this5.booking.confirmedAt || now,
         modifiedTS: now
       };
@@ -14353,11 +14554,24 @@ let BookingDetailComponent = class BookingDetailComponent {
     const deposit = this.getDepositAmount();
     return Number(this.booking?.balanceAmount || Math.max(0, Math.round((total - deposit) * 100) / 100));
   }
+  isCompletedStatusValue(value) {
+    if (value === true) return true;
+    const normalized = String(value || '').toLowerCase().trim();
+    return ['true', 'paid', 'completed', 'complete', 'done', 'confirmed', 'charge_succeeded', 'deposit_paid', 'balance_paid', 'payment_done', 'full_payment_done', 'card_registered', 'warranty_card_saved', 'warranty_card_registered', 'warranty_charged', 'cash_received'].includes(normalized);
+  }
+  isBalanceCompletedStatusValue(value) {
+    if (value === true) return true;
+    const normalized = String(value || '').toLowerCase().trim();
+    return ['true', 'paid', 'completed', 'complete', 'done', 'balance_paid', 'remaining_paid', 'payment_done', 'full_payment_done'].includes(normalized);
+  }
+  getCompletedLabel(done) {
+    return done ? 'Completed' : 'Pending';
+  }
   isDepositPaid() {
     const anyBooking = this.booking || {};
     const depositPayment = anyBooking?.payments?.deposit || {};
     const legacyPayment = anyBooking?.payment || {};
-    return anyBooking.depositPaid === true || anyBooking.depositStatus === 'paid' || anyBooking.depositStatus === 'deposit_paid' || anyBooking.paymentStatus === 'paid' || anyBooking.paymentStatus === 'charge_succeeded' || legacyPayment.depositPaid === true || legacyPayment.paid === true || legacyPayment.status === 'paid' || legacyPayment.status === 'deposit_paid' || depositPayment.depositPaid === true || depositPayment.paid === true || depositPayment.status === 'paid' || depositPayment.status === 'deposit_paid';
+    return this.isCompletedStatusValue(anyBooking.depositStatus) || this.isCompletedStatusValue(anyBooking.depositPaid) || this.isCompletedStatusValue(anyBooking.paymentStatus) || this.isCompletedStatusValue(legacyPayment.depositStatus) || this.isCompletedStatusValue(legacyPayment.depositPaid) || this.isCompletedStatusValue(legacyPayment.paid) || this.isCompletedStatusValue(legacyPayment.status) || this.isCompletedStatusValue(depositPayment.depositStatus) || this.isCompletedStatusValue(depositPayment.depositPaid) || this.isCompletedStatusValue(depositPayment.paid) || this.isCompletedStatusValue(depositPayment.status);
   }
   isBookingConfirmed() {
     return this.isDepositPaid() && this.isTermsAccepted();
@@ -14365,7 +14579,8 @@ let BookingDetailComponent = class BookingDetailComponent {
   isWarrantyCardRegistered() {
     const anyBooking = this.booking || {};
     const warrantyPayment = anyBooking?.payments?.warranty || {};
-    return anyBooking.warrantyRegistered === true || anyBooking.warrantyStatus === 'card_registered' || anyBooking.warrantyStatus === 'warranty_card_saved' || warrantyPayment.warrantyRegistered === true || warrantyPayment.status === 'card_registered' || warrantyPayment.status === 'warranty_card_saved';
+    const legacyPayment = anyBooking?.payment || {};
+    return this.isCompletedStatusValue(anyBooking.warrantyStatus) || this.isCompletedStatusValue(anyBooking.warrantyRegistered) || this.isCompletedStatusValue(legacyPayment.warrantyStatus) || this.isCompletedStatusValue(legacyPayment.warrantyRegistered) || this.isCompletedStatusValue(warrantyPayment.warrantyStatus) || this.isCompletedStatusValue(warrantyPayment.warrantyRegistered) || this.isCompletedStatusValue(warrantyPayment.status);
   }
   isCashWarranty() {
     const anyBooking = this.booking || {};
@@ -14400,7 +14615,9 @@ let BookingDetailComponent = class BookingDetailComponent {
   }
   isBalancePaid() {
     const anyBooking = this.booking || {};
-    return anyBooking.balancePaid === true || anyBooking.balanceStatus === 'paid' || anyBooking.balancePaymentStatus === 'paid' || anyBooking?.payments?.balance?.paid === true || anyBooking?.payments?.balance?.status === 'paid';
+    const balancePayment = anyBooking?.payments?.balance || {};
+    const remainingPayment = anyBooking?.payments?.remaining || {};
+    return this.isBalanceCompletedStatusValue(anyBooking.paymentStatus) || this.isBalanceCompletedStatusValue(anyBooking.balancePaid) || this.isBalanceCompletedStatusValue(anyBooking.balanceStatus) || this.isBalanceCompletedStatusValue(anyBooking.balancePaymentStatus) || this.isBalanceCompletedStatusValue(anyBooking.remainingPaid) || this.isBalanceCompletedStatusValue(anyBooking.remainingStatus) || this.isBalanceCompletedStatusValue(anyBooking.remainingPaymentStatus) || this.isBalanceCompletedStatusValue(balancePayment.paid) || this.isBalanceCompletedStatusValue(balancePayment.status) || this.isBalanceCompletedStatusValue(balancePayment.paymentStatus) || this.isBalanceCompletedStatusValue(remainingPayment.paid) || this.isBalanceCompletedStatusValue(remainingPayment.status) || this.isBalanceCompletedStatusValue(remainingPayment.paymentStatus);
   }
   recordCashWarrantyDamage() {
     var _this6 = this;
@@ -15150,8 +15367,8 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
     return time < today.getTime();
   }
   isBookingFullyPaid(booking) {
-    const anyBooking = booking;
-    return anyBooking.bookingStatus === 'payment_done' || anyBooking.paymentStatus === 'full_payment_done' || anyBooking.balancePaid === true || anyBooking.balanceStatus === 'paid' || anyBooking.balancePaymentStatus === 'paid' || anyBooking?.payments?.balance?.paid === true || anyBooking?.payments?.balance?.status === 'paid';
+    const anyBooking = booking || {};
+    return anyBooking.paymentStatus === true || anyBooking.paymentStatus === 'true' || anyBooking.paymentStatus === 'paid' || anyBooking.paymentStatus === 'completed' || anyBooking.paymentStatus === 'payment_done' || anyBooking.paymentStatus === 'full_payment_done' || anyBooking.balancePaid === true || anyBooking.balanceStatus === true || anyBooking.balanceStatus === 'paid' || anyBooking.balancePaymentStatus === true || anyBooking.balancePaymentStatus === 'paid' || anyBooking?.payments?.balance?.paid === true || anyBooking?.payments?.balance?.status === true || anyBooking?.payments?.balance?.status === 'paid';
   }
   getBookingTime(booking) {
     const rawDate = String(booking.outingDate || booking.date || booking.bookingDate || '').trim();
@@ -15171,10 +15388,20 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
   availableFeedbackBookings() {
     return this.eligibleBookings.filter(booking => !this.hasAlreadyLeftFeedbackForBooking(booking.bookingId));
   }
+  hasAnyEligibleOuting() {
+    return this.eligibleBookings.length > 0;
+  }
   shouldBlockNewFeedback() {
-    return !!this.loggedUser && !this.loading && this.availableFeedbackBookings().length === 0;
+    // Only block automatically when there is no eligible outing at all.
+    // If there is one outing or more, do not show the "no feedback possible" modal,
+    // even if feedback has already been left for all of them.
+    return !!this.loggedUser && !this.loading && !this.hasAnyEligibleOuting();
   }
   openNoFeedbackModal() {
+    if (this.hasAnyEligibleOuting()) {
+      this.noFeedbackModalOpen = false;
+      return;
+    }
     this.noFeedbackModalOpen = true;
   }
   closeNoFeedbackModal() {
@@ -17002,13 +17229,14 @@ let BookingsComponent = class BookingsComponent {
   getDerivedBookingStatus(booking) {
     const anyBooking = booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+    // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
+    if (this.isBalancePaid(booking)) return 'payment_done';
     if (rawStatus === 'payment_done' || rawStatus === 'full_payment_done' || rawStatus === 'paid' || rawStatus === 'completed') {
       return 'payment_done';
     }
     if (rawStatus === true || rawStatus === 'true' || rawStatus === 'confirmed' || anyBooking.confirmed === true || anyBooking.bookingConfirmed === true) {
       return 'confirmed';
     }
-    if (this.isBalancePaid(booking)) return 'payment_done';
     if (this.isDepositPaid(booking) && this.isTermsAccepted(booking)) return 'confirmed';
     return 'not_confirmed';
   }
@@ -17022,10 +17250,11 @@ let BookingsComponent = class BookingsComponent {
     const choice = this.getWarrantyChoice(booking);
     if (choice === 'cash_on_board') return 'Cash selected';
     if (choice === 'stripe_card') return 'Card selected';
+    if (this.isWarrantyCardRegistered(booking)) return 'Card selected';
     return 'Not selected';
   }
   getWarrantyCardLabel(booking) {
-    if (this.isWarrantyCardRegistered(booking)) return 'Stripe card registered';
+    if (this.isWarrantyCardRegistered(booking)) return 'Completed';
     if (this.getWarrantyChoice(booking) === 'stripe_card') return 'Card selected, not registered';
     if (this.getWarrantyChoice(booking) === 'cash_on_board') return 'Not required';
     return 'Not registered';
@@ -17072,19 +17301,33 @@ let BookingsComponent = class BookingsComponent {
     const deposit = this.getDepositAmount(booking);
     return Number(booking.balanceAmount || Math.max(0, Math.round((total - deposit) * 100) / 100));
   }
+  isCompletedStatusValue(value) {
+    if (value === true) return true;
+    const normalized = String(value || '').toLowerCase().trim();
+    return ['true', 'paid', 'completed', 'complete', 'done', 'confirmed', 'charge_succeeded', 'deposit_paid', 'balance_paid', 'payment_done', 'full_payment_done', 'card_registered', 'warranty_card_saved', 'warranty_card_registered', 'warranty_charged', 'cash_received'].includes(normalized);
+  }
+  isBalanceCompletedStatusValue(value) {
+    if (value === true) return true;
+    const normalized = String(value || '').toLowerCase().trim();
+    return ['true', 'paid', 'completed', 'complete', 'done', 'balance_paid', 'remaining_paid', 'payment_done', 'full_payment_done'].includes(normalized);
+  }
+  getCompletedLabel(done) {
+    return done ? 'Completed' : 'Pending';
+  }
   isDepositPaid(booking) {
-    const anyBooking = booking;
+    const anyBooking = booking || {};
     const depositPayment = anyBooking?.payments?.deposit || {};
     const legacyPayment = anyBooking?.payment || {};
-    return anyBooking.depositPaid === true || anyBooking.depositStatus === 'paid' || anyBooking.depositStatus === 'deposit_paid' || anyBooking.paymentStatus === 'paid' || anyBooking.paymentStatus === 'charge_succeeded' || legacyPayment.depositPaid === true || legacyPayment.paid === true || legacyPayment.status === 'paid' || legacyPayment.status === 'deposit_paid' || depositPayment.depositPaid === true || depositPayment.paid === true || depositPayment.status === 'paid' || depositPayment.status === 'deposit_paid';
+    return this.isCompletedStatusValue(anyBooking.depositStatus) || this.isCompletedStatusValue(anyBooking.depositPaid) || this.isCompletedStatusValue(anyBooking.paymentStatus) || this.isCompletedStatusValue(legacyPayment.depositStatus) || this.isCompletedStatusValue(legacyPayment.depositPaid) || this.isCompletedStatusValue(legacyPayment.paid) || this.isCompletedStatusValue(legacyPayment.status) || this.isCompletedStatusValue(depositPayment.depositStatus) || this.isCompletedStatusValue(depositPayment.depositPaid) || this.isCompletedStatusValue(depositPayment.paid) || this.isCompletedStatusValue(depositPayment.status);
   }
   isBookingConfirmed(booking) {
     return this.isDepositPaid(booking) && this.isTermsAccepted(booking);
   }
   isWarrantyCardRegistered(booking) {
-    const anyBooking = booking;
+    const anyBooking = booking || {};
     const warrantyPayment = anyBooking?.payments?.warranty || {};
-    return anyBooking.warrantyRegistered === true || anyBooking.warrantyStatus === 'card_registered' || anyBooking.warrantyStatus === 'warranty_card_saved' || warrantyPayment.warrantyRegistered === true || warrantyPayment.status === 'card_registered' || warrantyPayment.status === 'warranty_card_saved';
+    const legacyPayment = anyBooking?.payment || {};
+    return this.isCompletedStatusValue(anyBooking.warrantyStatus) || this.isCompletedStatusValue(anyBooking.warrantyRegistered) || this.isCompletedStatusValue(legacyPayment.warrantyStatus) || this.isCompletedStatusValue(legacyPayment.warrantyRegistered) || this.isCompletedStatusValue(warrantyPayment.warrantyStatus) || this.isCompletedStatusValue(warrantyPayment.warrantyRegistered) || this.isCompletedStatusValue(warrantyPayment.status);
   }
   isWarrantySecured(booking) {
     return this.isWarrantyCardRegistered(booking) || this.getWarrantyChoice(booking) === 'cash_on_board';
@@ -17108,8 +17351,10 @@ let BookingsComponent = class BookingsComponent {
     return '';
   }
   isBalancePaid(booking) {
-    const anyBooking = booking;
-    return anyBooking.balancePaid === true || anyBooking.balanceStatus === 'paid' || anyBooking.balancePaymentStatus === 'paid' || anyBooking?.payments?.balance?.paid === true || anyBooking?.payments?.balance?.status === 'paid';
+    const anyBooking = booking || {};
+    const balancePayment = anyBooking?.payments?.balance || {};
+    const remainingPayment = anyBooking?.payments?.remaining || {};
+    return this.isBalanceCompletedStatusValue(anyBooking.paymentStatus) || this.isBalanceCompletedStatusValue(anyBooking.balancePaid) || this.isBalanceCompletedStatusValue(anyBooking.balanceStatus) || this.isBalanceCompletedStatusValue(anyBooking.balancePaymentStatus) || this.isBalanceCompletedStatusValue(anyBooking.remainingPaid) || this.isBalanceCompletedStatusValue(anyBooking.remainingStatus) || this.isBalanceCompletedStatusValue(anyBooking.remainingPaymentStatus) || this.isBalanceCompletedStatusValue(balancePayment.paid) || this.isBalanceCompletedStatusValue(balancePayment.status) || this.isBalanceCompletedStatusValue(balancePayment.paymentStatus) || this.isBalanceCompletedStatusValue(remainingPayment.paid) || this.isBalanceCompletedStatusValue(remainingPayment.status) || this.isBalanceCompletedStatusValue(remainingPayment.paymentStatus);
   }
   openStatusModal(booking, event) {
     event?.stopPropagation();
@@ -20396,15 +20641,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ProposalConfirmationComponent: () => (/* binding */ ProposalConfirmationComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _proposal_confirmation_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./proposal-confirmation.component.html?ngResource */ 26090);
 /* harmony import */ var _proposal_confirmation_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./proposal-confirmation.component.scss?ngResource */ 19182);
 /* harmony import */ var _proposal_confirmation_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_proposal_confirmation_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ 50085);
 /* harmony import */ var _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../bookings/proposal-api.service */ 79439);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _guest_content_guest_content_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../guest-content/guest-content.service */ 51038);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+
 
 
 
@@ -20420,6 +20667,10 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
   router;
   guestContent;
   languageService;
+  users;
+  storeDb;
+  utilsSvc;
+  mainSvc;
   proposal;
   loading = true;
   accepting = false;
@@ -20434,25 +20685,44 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
   termsModalWasClosed = false;
   currentLanguage = 'fr';
   proposalInfo = this.defaultProposalInfo('fr');
-  constructor(route, proposalApi, router, guestContent, languageService) {
+  finalizingBooking = false;
+  finalBookingId = '';
+  proposalAccessReady = false;
+  proposalAccessLoading = false;
+  proposalAccessError = '';
+  proposalAccessMessage = '';
+  proposalAccessMode = '';
+  customerAccountCreating = false;
+  constructor(route, proposalApi, router, guestContent, languageService, users, storeDb, utilsSvc, mainSvc) {
     this.route = route;
     this.proposalApi = proposalApi;
     this.router = router;
     this.guestContent = guestContent;
     this.languageService = languageService;
+    this.users = users;
+    this.storeDb = storeDb;
+    this.utilsSvc = utilsSvc;
+    this.mainSvc = mainSvc;
   }
   ngOnInit() {
+    var _this = this;
     this.languageService.language$.subscribe(language => {
       this.currentLanguage = language;
       this.loadProposalInfo(language);
     });
     const id = this.route.snapshot.paramMap.get('proposalId') || '';
     this.proposalApi.getProposal(id).subscribe({
-      next: p => {
-        this.proposal = p;
-        this.warrantyChoice = p?.warrantyPaymentChoice || 'stripe_card';
-        this.loading = false;
-      },
+      next: function () {
+        var _ref = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (p) {
+          _this.proposal = p;
+          _this.warrantyChoice = p?.warrantyPaymentChoice || 'stripe_card';
+          _this.loading = false;
+          yield _this.prepareProposalAccess();
+        });
+        return function next(_x) {
+          return _ref.apply(this, arguments);
+        };
+      }(),
       error: () => {
         this.error = this.text('notFound');
         this.loading = false;
@@ -20461,22 +20731,265 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
     this.route.queryParamMap.subscribe(params => {
       if (params.get('payment') === 'success') {
         this.message = this.text('depositPaymentSuccess');
-        setTimeout(() => this.reloadProposal(), 1500);
+        setTimeout(() => this.reloadProposal(true), 1500);
       }
       if (params.get('warranty') === 'success') {
         this.message = this.text('warrantySuccess');
-        setTimeout(() => this.reloadProposal(), 1500);
+        setTimeout(() => this.reloadProposal(true), 1500);
       }
     });
   }
+  proposalAccessStorageKey(proposalId) {
+    return `alegria_proposal_access_${proposalId || this.proposal?.proposalId || ''}`;
+  }
+  rememberProposalAccess() {
+    if (!this.proposal || !this.proposalAccessReady) return;
+    const current = this.getCurrentUser();
+    const grant = {
+      proposalId: this.proposal.proposalId,
+      email: this.proposalEmail,
+      customerUid: this.proposal.customerUid || current?.userId || current?.uid || '',
+      provider: this.proposal.customerAuthProvider || '',
+      createdAt: Date.now()
+    };
+    try {
+      localStorage.setItem(this.proposalAccessStorageKey(this.proposal.proposalId), JSON.stringify(grant));
+    } catch {}
+  }
+  restoreProposalAccessFromStorage() {
+    if (!this.proposal) return false;
+    try {
+      const raw = localStorage.getItem(this.proposalAccessStorageKey(this.proposal.proposalId));
+      if (!raw) return false;
+      const grant = JSON.parse(raw);
+      const maxAgeMs = 2 * 60 * 60 * 1000;
+      if (grant?.proposalId !== this.proposal.proposalId) return false;
+      if (String(grant?.email || '').toLowerCase() !== this.proposalEmail) return false;
+      if (!grant?.createdAt || Date.now() - Number(grant.createdAt) > maxAgeMs) return false;
+      this.proposalAccessReady = true;
+      this.proposalAccessMode = 'ready';
+      this.proposalAccessError = '';
+      this.proposalAccessMessage = '';
+      if (grant.customerUid && !this.proposal.customerUid) {
+        this.proposal = {
+          ...this.proposal,
+          customerUid: grant.customerUid,
+          customerAuthProvider: grant.provider || this.proposal.customerAuthProvider || 'auto_email'
+        };
+        const proposalId = this.proposal.proposalId;
+        this.proposalApi.attachCustomerAccount(proposalId, {
+          customerUid: grant.customerUid,
+          customerAuthProvider: grant.provider || 'auto_email',
+          customerAccountCreated: grant.provider === 'auto_email'
+        }).catch(() => undefined);
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  get proposalEmail() {
+    return String(this.proposal?.customerEmail || '').trim().toLowerCase();
+  }
+  get isGmailProposal() {
+    return /@(gmail\.com|googlemail\.com)$/i.test(this.proposalEmail);
+  }
+  get canShowProposalContent() {
+    return !!this.proposal && this.proposalAccessReady;
+  }
+  getCurrentUser() {
+    return this.mainSvc.bnUser || this.mainSvc.currentUser || null;
+  }
+  currentUserMatchesProposal() {
+    const current = this.getCurrentUser();
+    const email = String(current?.email || '').trim().toLowerCase();
+    return !!email && !!this.proposalEmail && email === this.proposalEmail;
+  }
+  generateTemporaryPassword() {
+    const random = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    return `Al3gria!${random.slice(0, 10)}`;
+  }
+  splitName(fullName) {
+    const displayName = String(fullName || '').trim() || this.proposalEmail;
+    const parts = displayName.split(/\s+/).filter(Boolean);
+    return {
+      firstname: parts[0] || displayName,
+      lastname: parts.slice(1).join(' '),
+      displayName
+    };
+  }
+  prepareProposalAccess() {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this2.proposal) return;
+      _this2.proposalAccessError = '';
+      _this2.proposalAccessMessage = '';
+      if (!_this2.proposalEmail) {
+        _this2.proposalAccessReady = true;
+        _this2.proposalAccessMode = 'ready';
+        _this2.rememberProposalAccess();
+        return;
+      }
+      if (_this2.restoreProposalAccessFromStorage()) {
+        return;
+      }
+      if (_this2.currentUserMatchesProposal()) {
+        _this2.proposalAccessReady = true;
+        _this2.proposalAccessMode = 'ready';
+        yield _this2.attachCurrentUserToProposal('existing');
+        _this2.rememberProposalAccess();
+        return;
+      }
+      if (_this2.isGmailProposal) {
+        _this2.proposalAccessReady = false;
+        _this2.proposalAccessMode = 'google';
+        _this2.proposalAccessMessage = 'This proposal was prepared for a Gmail address. Please continue with Google to open it securely.';
+        return;
+      }
+      yield _this2.createAndLoginCustomerAccount();
+    })();
+  }
+  continueWithGoogle() {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this3.proposal) return;
+      _this3.proposalAccessLoading = true;
+      _this3.proposalAccessError = '';
+      try {
+        const user = yield _this3.users.signInWithGoogleAndLoadProfile();
+        const signedEmail = String(user?.email || '').trim().toLowerCase();
+        if (signedEmail !== _this3.proposalEmail) {
+          _this3.proposalAccessReady = false;
+          _this3.proposalAccessError = `Please sign in with ${_this3.proposal.customerEmail}. This proposal is linked to that email address.`;
+          return;
+        }
+        const uid = user.userId || user.uid;
+        const now = Date.now();
+        const displayName = user.displayName || _this3.proposal.customerName || _this3.proposalEmail;
+        const names = _this3.splitName(displayName);
+        const profile = {
+          userId: uid,
+          firstname: names.firstname,
+          lastname: names.lastname,
+          displayName: names.displayName,
+          email: signedEmail,
+          phone: _this3.proposal.customerPhone || user.phone || '',
+          role: 'customer',
+          provider: 'google',
+          state: 'active',
+          emailverified: true,
+          photoURL: user.photoURL || '',
+          modifiedTS: now,
+          createdTS: now
+        };
+        yield _this3.storeDb.partialUpdateObject(_this3.utilsSvc.backendFBstoreId, _this3.utilsSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_6__.OBJECTNAME.bnUsers, profile, uid);
+        _this3.mainSvc.setLoggedUser?.(profile);
+        yield _this3.proposalApi.attachCustomerAccount(_this3.proposal.proposalId, {
+          customerUid: uid,
+          customerAuthProvider: 'google'
+        });
+        _this3.proposal = {
+          ..._this3.proposal,
+          customerUid: uid,
+          customerAuthProvider: 'google'
+        };
+        _this3.proposalAccessReady = true;
+        _this3.proposalAccessMode = 'ready';
+        _this3.rememberProposalAccess();
+      } catch (e) {
+        _this3.proposalAccessError = e?.message || 'Google sign-in failed.';
+      } finally {
+        _this3.proposalAccessLoading = false;
+      }
+    })();
+  }
+  createAndLoginCustomerAccount() {
+    var _this4 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this4.proposal || !_this4.proposalEmail) return;
+      _this4.customerAccountCreating = true;
+      _this4.proposalAccessLoading = true;
+      _this4.proposalAccessError = '';
+      _this4.proposalAccessMessage = 'Preparing your secure customer access...';
+      try {
+        const password = _this4.generateTemporaryPassword();
+        const names = _this4.splitName(_this4.proposal.customerName || _this4.proposalEmail);
+        const authUser = yield _this4.users.registerWithEmail(_this4.proposalEmail, password, names.displayName);
+        const uid = authUser?.uid || authUser?.userId;
+        const now = Date.now();
+        const profile = {
+          userId: uid,
+          firstname: names.firstname,
+          lastname: names.lastname,
+          displayName: names.displayName,
+          email: _this4.proposalEmail,
+          phone: _this4.proposal.customerPhone || '',
+          role: 'customer',
+          provider: 'auto_email',
+          state: 'active',
+          emailverified: false,
+          createdTS: now,
+          modifiedTS: now,
+          proposalId: _this4.proposal.proposalId,
+          accountCreatedFromProposal: true
+        };
+        yield _this4.storeDb.updateObject(_this4.utilsSvc.backendFBstoreId, _this4.utilsSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_6__.OBJECTNAME.bnUsers, profile, uid);
+        _this4.mainSvc.setLoggedUser?.(profile);
+        yield _this4.proposalApi.attachCustomerAccount(_this4.proposal.proposalId, {
+          customerUid: uid,
+          customerAuthProvider: 'auto_email',
+          customerAccountCreated: true
+        });
+        _this4.proposal = {
+          ..._this4.proposal,
+          customerUid: uid,
+          customerAuthProvider: 'auto_email',
+          customerAccountCreated: true
+        };
+        _this4.proposalAccessReady = true;
+        _this4.proposalAccessMode = 'ready';
+        _this4.proposalAccessMessage = '';
+        _this4.rememberProposalAccess();
+      } catch (e) {
+        const msg = String(e?.message || e || '');
+        if (msg.toLowerCase().includes('email') && msg.toLowerCase().includes('use')) {
+          _this4.proposalAccessError = 'A secure customer account already exists for this email. Please contact Alegria or use the password recovery link to access it.';
+        } else {
+          _this4.proposalAccessError = msg || 'Unable to prepare the customer account for this proposal.';
+        }
+        _this4.proposalAccessReady = false;
+      } finally {
+        _this4.customerAccountCreating = false;
+        _this4.proposalAccessLoading = false;
+      }
+    })();
+  }
+  attachCurrentUserToProposal(provider) {
+    var _this5 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this5.proposal) return;
+      const current = _this5.getCurrentUser();
+      const uid = current?.userId || current?.uid;
+      if (!uid || _this5.proposal.customerUid === uid) return;
+      yield _this5.proposalApi.attachCustomerAccount(_this5.proposal.proposalId, {
+        customerUid: uid,
+        customerAuthProvider: provider
+      });
+      _this5.proposal = {
+        ..._this5.proposal,
+        customerUid: uid,
+        customerAuthProvider: provider
+      };
+    })();
+  }
   loadProposalInfo(language) {
-    var _this = this;
+    var _this6 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       try {
-        const content = yield _this.guestContent.getContent();
-        _this.proposalInfo = content?.proposalInfo?.[language] || content?.guestInfo?.proposalInfo?.[language] || _this.defaultProposalInfo(language);
+        const content = yield _this6.guestContent.getContent();
+        _this6.proposalInfo = content?.proposalInfo?.[language] || content?.guestInfo?.proposalInfo?.[language] || _this6.defaultProposalInfo(language);
       } catch {
-        _this.proposalInfo = _this.defaultProposalInfo(language);
+        _this6.proposalInfo = _this6.defaultProposalInfo(language);
       }
     })();
   }
@@ -20490,6 +21003,15 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
     const defaults = {
       fr: {
         proposalEyebrow: 'Proposition Alegria Boat',
+        wizardStepTerms: 'Accepter les CGV',
+        wizardStepDeposit: 'Payer l’acompte',
+        wizardStepWarranty: 'Caution',
+        wizardAcceptTermsButton: 'Valider les CGV et continuer',
+        termsAcceptedMessage: 'Conditions Générales acceptées. Vous pouvez maintenant payer l’acompte.',
+        warrantyWizardIntro: 'Choisissez comment vous souhaitez sécuriser la caution de la sortie.',
+        acceptCashWarrantyButton: 'Je confirme apporter 500 € en espèces',
+        finalizingBooking: 'Création de la réservation...',
+        finalizeBookingButton: 'Créer ma réservation',
         loading: 'Chargement de la proposition...',
         notFound: 'Proposition introuvable.',
         expiredText: 'Cette proposition n’est plus valide. Merci de contacter Alegria Boat pour recevoir une nouvelle proposition.',
@@ -20577,6 +21099,15 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
       },
       en: {
         proposalEyebrow: 'Alegria Boat proposal',
+        wizardStepTerms: 'Accept T&C',
+        wizardStepDeposit: 'Pay deposit',
+        wizardStepWarranty: 'Warranty',
+        wizardAcceptTermsButton: 'Validate T&C and continue',
+        termsAcceptedMessage: 'Terms accepted. You can now pay the deposit.',
+        warrantyWizardIntro: 'Choose how you want to secure the warranty for the outing.',
+        acceptCashWarrantyButton: 'I confirm I will bring €500 cash',
+        finalizingBooking: 'Creating booking...',
+        finalizeBookingButton: 'Create my booking',
         loading: 'Loading proposal...',
         notFound: 'Proposal not found.',
         expiredText: 'This proposal is no longer valid. Please contact Alegria Boat for a new proposal.',
@@ -20634,6 +21165,15 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
       },
       es: {
         proposalEyebrow: 'Propuesta Alegria Boat',
+        wizardStepTerms: 'Aceptar condiciones',
+        wizardStepDeposit: 'Pagar depósito',
+        wizardStepWarranty: 'Garantía',
+        wizardAcceptTermsButton: 'Validar condiciones y continuar',
+        termsAcceptedMessage: 'Condiciones aceptadas. Ahora puede pagar el depósito.',
+        warrantyWizardIntro: 'Elija cómo desea asegurar la garantía de la salida.',
+        acceptCashWarrantyButton: 'Confirmo que traeré 500 € en efectivo',
+        finalizingBooking: 'Creando reserva...',
+        finalizeBookingButton: 'Crear mi reserva',
         loading: 'Cargando propuesta...',
         notFound: 'Propuesta no encontrada.',
         expiredText: 'Esta propuesta ya no es válida. Contacte con Alegria Boat para recibir una nueva propuesta.',
@@ -20706,7 +21246,7 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
     return this.termsModalWasOpened && this.termsModalWasClosed;
   }
   get warrantyRegistered() {
-    return !!this.proposal && (this.proposal.warrantyRegistered === true || this.proposal.warrantyStatus === 'card_registered' || this.proposal.warrantyStatus === 'warranty_card_saved');
+    return !!this.proposal && (this.proposal.warrantyRegistered === true || this.proposal.warrantyStatus === 'card_registered' || this.proposal.warrantyStatus === 'warranty_card_saved' || this.proposal.warrantyStatus === 'warranty_card_registered');
   }
   get warrantyCashSelected() {
     return this.proposal?.warrantyPaymentChoice === 'cash_on_board';
@@ -20721,43 +21261,75 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
     return this.text('warrantyCardMessage');
   }
   get depositPaid() {
-    return !!this.proposal && (this.proposal.depositPaid === true || this.proposal.depositStatus === 'paid' || this.proposal.paymentStatus === 'paid');
+    return !!this.proposal && (this.proposal.depositPaid === true || this.proposal.depositStatus === 'paid' || this.proposal.depositStatus === 'deposit_paid' || this.proposal.paymentStatus === 'paid' || this.proposal.paymentStatus === 'charge_succeeded');
   }
   get depositMessage() {
     return this.depositPaid ? this.text('depositPaidMessage') : this.text('depositPendingMessage');
+  }
+  get tncAccepted() {
+    return this.proposal?.tncAccepted === true || !!this.proposal?.tncAcceptedAt;
+  }
+  get warrantyReady() {
+    return this.warrantyRegistered || this.warrantyCashSelected;
+  }
+  get wizardStep() {
+    if (!this.tncAccepted) return 1;
+    if (!this.depositPaid) return 2;
+    if (!this.warrantyReady) return 3;
+    return 4;
+  }
+  get wizardProgressPercent() {
+    if (this.wizardStep === 1) return 33;
+    if (this.wizardStep === 2) return 66;
+    return 100;
+  }
+  get canFinalizeProposal() {
+    return !!this.proposal && this.tncAccepted && this.depositPaid && this.warrantyReady;
   }
   get expired() {
     return !!this.proposal?.validUntil && Date.now() > this.proposal.validUntil;
   }
   get canAccept() {
-    return !!this.proposal && !this.expired && this.canAcceptTermsCheckbox && this.acceptedTerms && !!this.warrantyChoice;
+    return !!this.proposal && !this.expired && this.canAcceptTermsCheckbox && this.acceptedTerms;
   }
   acceptProposal() {
-    var _this2 = this;
+    var _this7 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this2.proposal || !_this2.canAccept) return;
-      _this2.accepting = true;
-      _this2.error = '';
+      if (!_this7.proposal || !_this7.proposalAccessReady || !_this7.canAccept) return;
+      _this7.accepting = true;
+      _this7.error = '';
       try {
-        _this2.proposal = yield _this2.proposalApi.acceptProposal(_this2.proposal.proposalId, _this2.warrantyChoice);
-        _this2.message = _this2.text('acceptedMessage');
+        _this7.proposal = yield _this7.proposalApi.markTermsAccepted(_this7.proposal.proposalId);
+        _this7.message = _this7.text('termsAcceptedMessage') || 'Terms and Conditions accepted.';
       } catch (e) {
-        _this2.error = e?.message || _this2.text('acceptError');
+        _this7.error = e?.message || _this7.text('acceptError');
       }
-      _this2.accepting = false;
+      _this7.accepting = false;
     })();
   }
-  reloadProposal() {
+  reloadProposal(tryFinalize = false) {
+    var _this8 = this;
     const id = this.route.snapshot.paramMap.get('proposalId') || '';
     if (!id) return;
     this.proposalApi.getProposal(id).subscribe({
-      next: proposal => {
-        if (proposal) this.proposal = proposal;
-      }
+      next: function () {
+        var _ref2 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (proposal) {
+          if (proposal) {
+            _this8.proposal = proposal;
+            if (tryFinalize && _this8.canFinalizeProposal) {
+              yield _this8.finalizeProposal();
+            }
+          }
+        });
+        return function next(_x2) {
+          return _ref2.apply(this, arguments);
+        };
+      }()
     });
   }
   payDeposit() {
-    if (!this.proposal) return;
+    if (!this.proposal || !this.proposalAccessReady) return;
+    this.rememberProposalAccess();
     this.payingDeposit = true;
     this.proposalApi.createDepositCheckout(this.proposal).subscribe({
       next: r => {
@@ -20780,36 +21352,85 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
     if (!this.relatedBookingId) return;
     this.router.navigate(['/bookings', this.relatedBookingId]);
   }
-  registerWarrantyCard() {
-    if (!this.proposal) return;
-    this.payingWarranty = true;
-    this.proposalApi.createWarrantySetup(this.proposal).subscribe({
-      next: r => {
-        const url = r.url || r.checkoutUrl || r.sessionUrl;
-        if (url) window.location.href = url;else {
-          this.payingWarranty = false;
-          this.error = this.text('warrantyError');
-        }
-      },
-      error: () => {
-        this.payingWarranty = false;
-        this.error = this.text('warrantyError');
+  acceptCashWarranty() {
+    var _this9 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this9.proposal || !_this9.proposalAccessReady || !_this9.depositPaid) return;
+      _this9.payingWarranty = true;
+      _this9.error = '';
+      try {
+        _this9.proposal = yield _this9.proposalApi.setWarrantyChoice(_this9.proposal.proposalId, 'cash_on_board');
+        yield _this9.finalizeProposal();
+      } catch (e) {
+        _this9.error = e?.message || _this9.text('warrantyError');
       }
-    });
+      _this9.payingWarranty = false;
+    })();
+  }
+  finalizeProposal() {
+    var _this10 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this10.proposal || !_this10.canFinalizeProposal || _this10.finalizingBooking) return;
+      _this10.finalizingBooking = true;
+      _this10.error = '';
+      try {
+        const result = yield _this10.proposalApi.finalizeProposalWizard(_this10.proposal.proposalId, _this10.proposal.warrantyPaymentChoice || _this10.warrantyChoice);
+        _this10.finalBookingId = result.bookingId;
+        _this10.message = _this10.text('bookingCreatedText');
+        _this10.router.navigate(['/bookings', result.bookingId]);
+      } catch (e) {
+        _this10.error = e?.message || _this10.text('acceptError');
+      } finally {
+        _this10.finalizingBooking = false;
+      }
+    })();
+  }
+  registerWarrantyCard() {
+    var _this11 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this11.proposal || !_this11.proposalAccessReady || !_this11.depositPaid) return;
+      _this11.payingWarranty = true;
+      _this11.error = '';
+      try {
+        _this11.proposal = yield _this11.proposalApi.setWarrantyChoice(_this11.proposal.proposalId, 'stripe_card');
+      } catch {}
+      _this11.rememberProposalAccess();
+      _this11.proposalApi.createWarrantySetup(_this11.proposal).subscribe({
+        next: r => {
+          const url = r.url || r.checkoutUrl || r.sessionUrl;
+          if (url) window.location.href = url;else {
+            _this11.payingWarranty = false;
+            _this11.error = _this11.text('warrantyError');
+          }
+        },
+        error: () => {
+          _this11.payingWarranty = false;
+          _this11.error = _this11.text('warrantyError');
+        }
+      });
+    })();
   }
   static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_6__.ActivatedRoute
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_7__.ActivatedRoute
   }, {
     type: _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_3__.ProposalApiService
   }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_6__.Router
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_7__.Router
   }, {
     type: _guest_content_guest_content_service__WEBPACK_IMPORTED_MODULE_4__.GuestContentService
   }, {
     type: _services_language_service__WEBPACK_IMPORTED_MODULE_5__.LanguageService
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_6__.UsersService
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_6__.StoreDbService
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_6__.UtilsService
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_6__.ServicesService
   }];
 };
-ProposalConfirmationComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
+ProposalConfirmationComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.Component)({
   selector: 'app-proposal-confirmation',
   template: _proposal_confirmation_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_proposal_confirmation_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]

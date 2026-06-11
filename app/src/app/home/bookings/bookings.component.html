@@ -169,20 +169,20 @@
 
       <div class="status-timeline">
         <div class="status-step" [ngClass]="getStatusStepClass(isDepositPaid(selectedStatusBooking))">
-          <strong>10% deposit</strong>
-          <span>{{ isDepositPaid(selectedStatusBooking) ? 'Paid' : 'Pending' }}</span>
+          <strong>Acompte 10 %</strong>
+          <span>{{ getCompletedLabel(isDepositPaid(selectedStatusBooking)) }}</span>
         </div>
         <div class="status-step" [ngClass]="getStatusStepClass(isTermsAccepted(selectedStatusBooking))">
           <strong>T&C</strong>
           <span>{{ isTermsAccepted(selectedStatusBooking) ? 'Accepted' : 'Not accepted' }}</span>
         </div>
         <div class="status-step" [ngClass]="getStatusStepClass(isWarrantySecured(selectedStatusBooking))">
-          <strong>Warranty</strong>
+          <strong>Warranty mode</strong>
           <span>{{ getWarrantyModeLabel(selectedStatusBooking) }} · {{ getWarrantyCardLabel(selectedStatusBooking) }}</span>
         </div>
         <div class="status-step" [ngClass]="getStatusStepClass(isBalancePaid(selectedStatusBooking))">
-          <strong>Remaining 90%</strong>
-          <span>{{ isBalancePaid(selectedStatusBooking) ? 'Paid' : 'Pending' }}</span>
+          <strong>Solde 90 %</strong>
+          <span>{{ getCompletedLabel(isBalancePaid(selectedStatusBooking)) }}</span>
         </div>
         <div class="status-step" [ngClass]="getStatusStepClass(getDamageStatusLabel(selectedStatusBooking).includes('recorded'))">
           <strong>Damage</strong>

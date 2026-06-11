@@ -157,14 +157,26 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
   }
 
   isBookingFullyPaid(booking: AlegriaBooking): boolean {
-    const anyBooking: any = booking;
-    return anyBooking.bookingStatus === 'payment_done' ||
+    const anyBooking: any = booking || {};
+
+    return (
+      anyBooking.paymentStatus === true ||
+      anyBooking.paymentStatus === 'true' ||
+      anyBooking.paymentStatus === 'paid' ||
+      anyBooking.paymentStatus === 'completed' ||
+      anyBooking.paymentStatus === 'payment_done' ||
       anyBooking.paymentStatus === 'full_payment_done' ||
+
       anyBooking.balancePaid === true ||
+      anyBooking.balanceStatus === true ||
       anyBooking.balanceStatus === 'paid' ||
+      anyBooking.balancePaymentStatus === true ||
       anyBooking.balancePaymentStatus === 'paid' ||
+
       anyBooking?.payments?.balance?.paid === true ||
-      anyBooking?.payments?.balance?.status === 'paid';
+      anyBooking?.payments?.balance?.status === true ||
+      anyBooking?.payments?.balance?.status === 'paid'
+    );
   }
 
   getBookingTime(booking: AlegriaBooking): number {
@@ -189,11 +201,22 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
     return this.eligibleBookings.filter((booking) => !this.hasAlreadyLeftFeedbackForBooking(booking.bookingId));
   }
 
+  hasAnyEligibleOuting(): boolean {
+    return this.eligibleBookings.length > 0;
+  }
+
   shouldBlockNewFeedback(): boolean {
-    return !!this.loggedUser && !this.loading && this.availableFeedbackBookings().length === 0;
+    // Only block automatically when there is no eligible outing at all.
+    // If there is one outing or more, do not show the "no feedback possible" modal,
+    // even if feedback has already been left for all of them.
+    return !!this.loggedUser && !this.loading && !this.hasAnyEligibleOuting();
   }
 
   openNoFeedbackModal(): void {
+    if (this.hasAnyEligibleOuting()) {
+      this.noFeedbackModalOpen = false;
+      return;
+    }
     this.noFeedbackModalOpen = true;
   }
 

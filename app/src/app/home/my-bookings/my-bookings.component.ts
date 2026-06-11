@@ -219,14 +219,92 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
       anyBooking?.terms?.accepted === true;
   }
 
+  isCompletedStatusValue(value: any): boolean {
+    if (value === true) return true;
+    const normalized = String(value || '').toLowerCase().trim();
+    return [
+      'true',
+      'paid',
+      'completed',
+      'complete',
+      'done',
+      'confirmed',
+      'charge_succeeded',
+      'deposit_paid',
+      'balance_paid',
+      'payment_done',
+      'full_payment_done',
+      'card_registered',
+      'warranty_card_saved',
+      'warranty_card_registered',
+      'warranty_charged',
+      'cash_received'
+    ].includes(normalized);
+  }
+
+  isBalanceCompletedStatusValue(value: any): boolean {
+    if (value === true) return true;
+    const normalized = String(value || '').toLowerCase().trim();
+    return [
+      'true',
+      'paid',
+      'completed',
+      'complete',
+      'done',
+      'balance_paid',
+      'remaining_paid',
+      'payment_done',
+      'full_payment_done'
+    ].includes(normalized);
+  }
+
+  isCancelledBooking(booking: AlegriaBooking): boolean {
+    const anyBooking: any = booking || {};
+    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+    return rawStatus === false ||
+      rawStatus === 'false' ||
+      rawStatus === 'cancelled' ||
+      rawStatus === 'canceled' ||
+      rawStatus === 'deleted' ||
+      anyBooking.cancelled === true ||
+      anyBooking.canceled === true;
+  }
+
   getDerivedBookingStatus(booking: AlegriaBooking): string {
+    const anyBooking: any = booking || {};
+    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+
+    if (this.isCancelledBooking(booking)) return 'cancelled';
+
+    // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
     if (this.isBalancePaid(booking)) return 'payment_done';
+
+    if (
+      rawStatus === 'payment_done' ||
+      rawStatus === 'full_payment_done' ||
+      rawStatus === 'paid' ||
+      rawStatus === 'completed'
+    ) {
+      return 'payment_done';
+    }
+
+    if (
+      rawStatus === true ||
+      rawStatus === 'true' ||
+      rawStatus === 'confirmed' ||
+      anyBooking.confirmed === true ||
+      anyBooking.bookingConfirmed === true
+    ) {
+      return 'confirmed';
+    }
+
     if (this.isDepositPaid(booking) && this.isTermsAccepted(booking)) return 'confirmed';
     return 'not_confirmed';
   }
 
   getStatusLabel(booking: AlegriaBooking): string {
     const status = this.getDerivedBookingStatus(booking);
+    if (status === 'cancelled') return 'Cancelled';
     if (status === 'payment_done') return 'Payment done';
     if (status === 'confirmed') return 'Confirmed';
     return 'Not confirmed';
@@ -249,30 +327,44 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
   }
 
   isWarrantyCardRegistered(booking: AlegriaBooking): boolean {
-    const anyBooking: any = booking;
+    const anyBooking: any = booking || {};
     const warrantyPayment = anyBooking?.payments?.warranty || {};
-    return anyBooking.warrantyRegistered === true ||
-      anyBooking.warrantyStatus === 'card_registered' ||
-      anyBooking.warrantyStatus === 'warranty_card_saved' ||
-      warrantyPayment.warrantyRegistered === true ||
-      warrantyPayment.status === 'card_registered' ||
-      warrantyPayment.status === 'warranty_card_saved';
+    const legacyPayment = anyBooking?.payment || {};
+
+    return this.isCompletedStatusValue(anyBooking.warrantyStatus) ||
+      this.isCompletedStatusValue(anyBooking.warrantyRegistered) ||
+      this.isCompletedStatusValue(legacyPayment.warrantyStatus) ||
+      this.isCompletedStatusValue(legacyPayment.warrantyRegistered) ||
+      this.isCompletedStatusValue(warrantyPayment.warrantyStatus) ||
+      this.isCompletedStatusValue(warrantyPayment.warrantyRegistered) ||
+      this.isCompletedStatusValue(warrantyPayment.status);
   }
 
   getWarrantyCardLabel(booking: AlegriaBooking): string {
-    if (this.isWarrantyCardRegistered(booking)) return 'Stripe card registered';
+    if (this.isWarrantyCardRegistered(booking)) return 'Completed';
     if (this.getWarrantyChoice(booking) === 'stripe_card') return 'Card selected, not registered';
     if (this.getWarrantyChoice(booking) === 'cash_on_board') return 'Not required';
     return 'Not registered';
   }
 
   isBalancePaid(booking: AlegriaBooking): boolean {
-    const anyBooking: any = booking;
-    return anyBooking.balancePaid === true ||
-      anyBooking.balanceStatus === 'paid' ||
-      anyBooking.balancePaymentStatus === 'paid' ||
-      anyBooking?.payments?.balance?.paid === true ||
-      anyBooking?.payments?.balance?.status === 'paid';
+    const anyBooking: any = booking || {};
+    const balancePayment = anyBooking?.payments?.balance || {};
+    const remainingPayment = anyBooking?.payments?.remaining || {};
+
+    return this.isBalanceCompletedStatusValue(anyBooking.paymentStatus) ||
+      this.isBalanceCompletedStatusValue(anyBooking.balancePaid) ||
+      this.isBalanceCompletedStatusValue(anyBooking.balanceStatus) ||
+      this.isBalanceCompletedStatusValue(anyBooking.balancePaymentStatus) ||
+      this.isBalanceCompletedStatusValue(anyBooking.remainingPaid) ||
+      this.isBalanceCompletedStatusValue(anyBooking.remainingStatus) ||
+      this.isBalanceCompletedStatusValue(anyBooking.remainingPaymentStatus) ||
+      this.isBalanceCompletedStatusValue(balancePayment.paid) ||
+      this.isBalanceCompletedStatusValue(balancePayment.status) ||
+      this.isBalanceCompletedStatusValue(balancePayment.paymentStatus) ||
+      this.isBalanceCompletedStatusValue(remainingPayment.paid) ||
+      this.isBalanceCompletedStatusValue(remainingPayment.status) ||
+      this.isBalanceCompletedStatusValue(remainingPayment.paymentStatus);
   }
 
   getDepositAmount(booking: AlegriaBooking): number {
@@ -286,23 +378,21 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
   }
 
   isDepositPaid(booking: AlegriaBooking): boolean {
-    const anyBooking: any = booking;
+    const anyBooking: any = booking || {};
     const depositPayment = anyBooking?.payments?.deposit || {};
     const legacyPayment = anyBooking?.payment || {};
 
-    return anyBooking.depositPaid === true ||
-      anyBooking.depositStatus === 'paid' ||
-      anyBooking.depositStatus === 'deposit_paid' ||
-      anyBooking.paymentStatus === 'paid' ||
-      anyBooking.paymentStatus === 'charge_succeeded' ||
-      legacyPayment.depositPaid === true ||
-      legacyPayment.paid === true ||
-      legacyPayment.status === 'paid' ||
-      legacyPayment.status === 'deposit_paid' ||
-      depositPayment.depositPaid === true ||
-      depositPayment.paid === true ||
-      depositPayment.status === 'paid' ||
-      depositPayment.status === 'deposit_paid';
+    return this.isCompletedStatusValue(anyBooking.depositStatus) ||
+      this.isCompletedStatusValue(anyBooking.depositPaid) ||
+      this.isCompletedStatusValue(anyBooking.paymentStatus) ||
+      this.isCompletedStatusValue(legacyPayment.depositStatus) ||
+      this.isCompletedStatusValue(legacyPayment.depositPaid) ||
+      this.isCompletedStatusValue(legacyPayment.paid) ||
+      this.isCompletedStatusValue(legacyPayment.status) ||
+      this.isCompletedStatusValue(depositPayment.depositStatus) ||
+      this.isCompletedStatusValue(depositPayment.depositPaid) ||
+      this.isCompletedStatusValue(depositPayment.paid) ||
+      this.isCompletedStatusValue(depositPayment.status);
   }
 
   getDepositLabel(booking: AlegriaBooking): string {

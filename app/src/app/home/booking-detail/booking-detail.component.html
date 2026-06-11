@@ -13,9 +13,9 @@
         <div><strong>{{ btext('phone') }}</strong><span>{{ booking.phone || '-' }}</span></div>
         <div><strong>{{ btext('passengers') }}</strong><span>{{ booking.passengers || '-' }}</span></div>
         <div><strong>{{ btext('totalPrice') }}</strong><span>€{{ booking.totalPrice || 0 }}</span></div>
-        <div><strong>{{ btext('deposit') }}</strong><span>€{{ getDepositAmount() }} · {{ isDepositPaid() ? btext('paid') : btext('pending') }}</span></div>
-        <div><strong>{{ btext('remaining') }}</strong><span>€{{ getBalanceAmount() }} · {{ isBalancePaid() ? btext('paid') : btext('toCollectOnboard') }}</span></div>
-        <div><strong>{{ btext('warranty') }}</strong><span>{{ booking.warrantyStatus || btext('notRegistered') }}</span></div>
+        <div><strong>{{ btext('deposit') }}</strong><span>€{{ getDepositAmount() }} · {{ getCompletedLabel(isDepositPaid()) }}</span></div>
+        <div><strong>{{ btext('remaining') }}</strong><span>€{{ getBalanceAmount() }} · {{ getCompletedLabel(isBalancePaid()) }}</span></div>
+        <div><strong>{{ btext('warranty') }}</strong><span>{{ getWarrantyModeLabel() }} · {{ getWarrantyCardLabel() }}</span></div>
         <div><strong>{{ btext('status') }}</strong><button class="status-pill status-clickable" type="button" (click)="openStatusModal()">{{ getStatusLabel() }}</button></div>
         <div><strong>{{ btext('owner') }}</strong><span>{{ booking.ownerId || '-' }}</span></div>
       </div>

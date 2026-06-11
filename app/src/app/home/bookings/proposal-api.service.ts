@@ -48,6 +48,11 @@ export interface AlegriaProposal {
   createdTS: number;
   modifiedTS: number;
   acceptedTS?: number;
+  customerUid?: string;
+  customerAuthProvider?: 'google' | 'auto_email' | string;
+  customerAccountCreated?: boolean;
+  customerAccountCreatedAt?: number;
+  customerLastLoginAt?: number;
   raw?: any;
 }
 
@@ -102,11 +107,94 @@ export class ProposalApiService {
       createdTS: input.createdTS || now,
       modifiedTS: now,
       acceptedTS: input.acceptedTS,
+      customerUid: input.customerUid || '',
+      customerAuthProvider: input.customerAuthProvider || '',
+      customerAccountCreated: input.customerAccountCreated === true,
+      customerAccountCreatedAt: input.customerAccountCreatedAt,
+      customerLastLoginAt: input.customerLastLoginAt,
       raw: input.raw || input,
     };
     await this.writeItem(this.proposalsCollection, proposalId, proposal);
     return proposal;
   }
+
+
+  async markTermsAccepted(proposalId: string): Promise<AlegriaProposal> {
+    const current = await this.readItem(this.proposalsCollection, proposalId);
+    if (!current) throw new Error('Proposal not found');
+    if (current.validUntil && Date.now() > current.validUntil) {
+      await this.patchProposal(proposalId, { status: 'expired' });
+      throw new Error('Proposal expired');
+    }
+
+    const updated: AlegriaProposal = {
+      ...current,
+      tncAccepted: true,
+      tncAcceptedAt: current.tncAcceptedAt || Date.now(),
+      modifiedTS: Date.now(),
+    };
+
+    await this.writeItem(this.proposalsCollection, proposalId, updated);
+    return updated;
+  }
+
+  async setWarrantyChoice(proposalId: string, warrantyPaymentChoice: WarrantyPaymentChoice): Promise<AlegriaProposal> {
+    const current = await this.readItem(this.proposalsCollection, proposalId);
+    if (!current) throw new Error('Proposal not found');
+
+    const patch: Partial<AlegriaProposal> = {
+      warrantyPaymentChoice,
+      warrantyStatus: warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : 'not_selected',
+      warrantyRegistered: warrantyPaymentChoice === 'cash_on_board' ? true : current.warrantyRegistered === true,
+      modifiedTS: Date.now(),
+    };
+
+    await this.patchProposal(proposalId, patch);
+    return { ...current, ...patch } as AlegriaProposal;
+  }
+
+  async finalizeProposalWizard(proposalId: string, warrantyPaymentChoice: WarrantyPaymentChoice): Promise<{ bookingId: string }> {
+    const hydrated = await this.readProposalWithPaymentState(proposalId);
+    if (!hydrated) throw new Error('Proposal not found');
+
+    const depositPaid =
+      hydrated.depositPaid === true ||
+      hydrated.depositStatus === 'paid' ||
+      hydrated.paymentStatus === 'paid' ||
+      hydrated.paymentStatus === 'charge_succeeded';
+
+    const warrantyOk =
+      warrantyPaymentChoice === 'cash_on_board' ||
+      hydrated.warrantyRegistered === true ||
+      hydrated.warrantyStatus === 'card_registered' ||
+      hydrated.warrantyStatus === 'warranty_card_saved';
+
+    if (!hydrated.tncAccepted) throw new Error('Terms and Conditions must be accepted first.');
+    if (!depositPaid) throw new Error('Deposit must be paid first.');
+    if (!warrantyOk) throw new Error('Warranty card must be registered or cash warranty accepted first.');
+
+    const bookingId = hydrated.relatedBookingId || hydrated.proposalId;
+    const accepted: AlegriaProposal = {
+      ...hydrated,
+      status: 'accepted',
+      relatedBookingId: bookingId,
+      warrantyPaymentChoice,
+      warrantyStatus: warrantyPaymentChoice === 'cash_on_board'
+        ? 'cash_selected'
+        : (hydrated.warrantyStatus || 'card_registered'),
+      warrantyRegistered: warrantyPaymentChoice === 'cash_on_board' ? true : hydrated.warrantyRegistered === true,
+      depositPaid: true,
+      depositStatus: 'paid',
+      paymentStatus: hydrated.paymentStatus || '',
+      acceptedTS: Date.now(),
+      modifiedTS: Date.now(),
+    };
+
+    await this.createBookingFromProposal(accepted);
+    await this.deleteProposal(proposalId);
+    return { bookingId };
+  }
+
 
   async markSent(proposal: AlegriaProposal): Promise<void> {
     await this.patchProposal(proposal.proposalId, {
@@ -116,27 +204,9 @@ export class ProposalApiService {
   }
 
   async acceptProposal(proposalId: string, warrantyPaymentChoice: WarrantyPaymentChoice): Promise<AlegriaProposal> {
-    const current = await this.readItem(this.proposalsCollection, proposalId);
-    if (!current) throw new Error('Proposal not found');
-    if (current.validUntil && Date.now() > current.validUntil) {
-      await this.patchProposal(proposalId, { status: 'expired' });
-      throw new Error('Proposal expired');
-    }
-    const accepted = {
-      ...current,
-      status: 'accepted' as ProposalStatus,
-      relatedBookingId: proposalId,
-      warrantyPaymentChoice,
-      warrantyStatus: warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : 'not_selected',
-      tncAccepted: true,
-      tncAcceptedAt: Date.now(),
-      acceptedTS: Date.now(),
-      modifiedTS: Date.now(),
-    };
-    await this.writeItem(this.proposalsCollection, proposalId, accepted);
-    await this.createBookingFromProposal(accepted);
-    await this.patchProposal(proposalId, { relatedBookingId: proposalId } as any);
-    return { ...accepted, relatedBookingId: proposalId };
+    // Backward-compatible wrapper: in the new wizard, accepting only records T&C + warranty choice.
+    const proposal = await this.markTermsAccepted(proposalId);
+    return this.setWarrantyChoice(proposalId, warrantyPaymentChoice).then((updated) => ({ ...proposal, ...updated }));
   }
 
 
@@ -173,6 +243,16 @@ export class ProposalApiService {
     });
     await this.createBookingFromProposal(saved);
     return saved;
+  }
+
+  async attachCustomerAccount(proposalId: string, payload: { customerUid: string; customerAuthProvider: string; customerAccountCreated?: boolean; }): Promise<void> {
+    await this.patchProposal(proposalId, {
+      customerUid: payload.customerUid,
+      customerAuthProvider: payload.customerAuthProvider,
+      customerAccountCreated: payload.customerAccountCreated === true,
+      customerAccountCreatedAt: Date.now(),
+      customerLastLoginAt: Date.now(),
+    } as any);
   }
 
   async patchProposal(id: string, patch: Partial<AlegriaProposal>): Promise<void> {
@@ -248,10 +328,16 @@ export class ProposalApiService {
       depositAmount: p.depositAmount,
       balanceAmount: p.balanceAmount,
       warrantyAmount: p.warrantyAmount || 500,
-      depositStatus: p.depositStatus || 'pending',
+      depositStatus: p.depositStatus || (p.depositPaid ? 'paid' : 'pending'),
+      depositPaid: p.depositPaid === true || p.depositStatus === 'paid',
+      paymentStatus: '',
       warrantyStatus: p.warrantyStatus || 'not_selected',
+      warrantyRegistered: p.warrantyRegistered === true,
       warrantyPaymentChoice: p.warrantyPaymentChoice || null,
-      bookingStatus: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? 'confirmed' : 'not_confirmed',
+      customerUid: p.customerUid || '',
+      customerAuthProvider: p.customerAuthProvider || '',
+      customerAccountCreated: p.customerAccountCreated === true,
+      bookingStatus: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? true : 'not_confirmed',
       proposalStatus: 'accepted',
       tncAccepted: p.tncAccepted,
       termsAccepted: p.tncAccepted,
