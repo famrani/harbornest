@@ -3705,7 +3705,7 @@ class ServicesService {
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<header class=\"site-header\">\n  <div class=\"container header-bar\">\n    <a class=\"brand\" routerLink=\"/\" (click)=\"closeMenu()\">\n      <img class=\"brand-logo\" src=\"assets/img/logo-Alegria.png\" alt=\"Alegria\" />\n      <span class=\"brand-text\">\n        <strong>{{ content.brand }}</strong>\n        <small>{{ content.brandTagline }}</small>\n      </span>\n    </a>\n\n    <button class=\"menu-toggle\" type=\"button\" (click)=\"toggleMenu()\" aria-label=\"Open menu\">\n      ☰\n    </button>\n\n    <nav class=\"main-nav\" [class.open]=\"menuOpen\">\n      <details class=\"nav-dropdown\">\n        <summary>{{ content.nav.outings }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/sorties\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ allOutingsLabel }}</a>\n          <a routerLink=\"/sorties/journee-en-mer\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ dayAtSeaLabel }}</a>\n          <a routerLink=\"/sorties/coucher-de-soleil\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ sunsetLabel }}</a>\n          <a routerLink=\"/sorties/anniversaire\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ partyLabel }}</a>\n          <a routerLink=\"/sorties/sortie-entreprise\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ corporateLabel }}</a>\n        </div>\n      </details>\n\n      <details class=\"nav-dropdown\">\n        <summary>{{ content.nav.boat }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/bateau\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ boatPresentationLabel }}</a>\n          <a routerLink=\"/galerie\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.gallery }}</a>\n          <a routerLink=\"/crew\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.crew }}</a>\n          <a routerLink=\"/safety\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ safetyLabel }}</a>\n        </div>\n      </details>\n\n      <details class=\"nav-dropdown\">\n        <summary>{{ practicalInfoLabel }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/how-it-works\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ guestJourneyLabel }}</a>\n          <a routerLink=\"/faq\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ faqLabel }}</a>\n          <a routerLink=\"/terms\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ termsLabel }}</a>\n          <a routerLink=\"/booking-process\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ depositLabel }}</a>\n        </div>\n      </details>\n\n      <a routerLink=\"/contact\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ content.nav.contact }}</a>\n\n      <div class=\"language-switcher\">\n        <select [value]=\"currentLanguage\" (change)=\"changeLanguage($any($event.target).value)\" aria-label=\"Language selector\">\n          <option value=\"fr\">Français</option>\n          <option value=\"en\">English</option>\n          <option value=\"es\">Español</option>\n        </select>\n      </div>\n\n      <details class=\"nav-dropdown account-dropdown\">\n        <summary>{{ accountSummaryLabel }}</summary>\n\n        <div class=\"dropdown-panel dropdown-panel-right\" *ngIf=\"!isLoggedIn\">\n          <a routerLink=\"/login\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ loginLabel }}</a>\n          <a routerLink=\"/signup\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ signupLabel }}</a>\n</div>\n\n        <div class=\"dropdown-panel dropdown-panel-right account-admin-panel\" *ngIf=\"isLoggedIn && isAdmin\">\n          <span class=\"dropdown-section-title\">Reservations</span>\n          <a routerLink=\"/admin/bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">Confirmed bookings</a>\n          <a routerLink=\"/admin/proposals\" routerLinkActive=\"active\" (click)=\"closeMenu()\">Proposals</a>\n          <a routerLink=\"/admin/external-bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">External bookings</a>\n\n          <span class=\"dropdown-section-title\">Boat logs</span>\n          <a routerLink=\"/admin/outings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">Boat log manager</a>\n\n          <span class=\"dropdown-section-title\">Public outing information</span>\n          <a routerLink=\"/admin/manage-outings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">Manage public outings</a>\n          <a routerLink=\"/admin/feedbacks\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ adminFeedbacksLabel }}</a>\n\n          <span class=\"dropdown-section-title\">Account</span>\n          <a routerLink=\"/my-profile\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProfileLabel }}</a>\n          <button class=\"dropdown-action\" type=\"button\" (click)=\"logout()\">{{ logoutLabel }}</button>\n        </div>\n\n        <div class=\"dropdown-panel dropdown-panel-right account-customer-panel\" *ngIf=\"isLoggedIn && isCustomer\">\n          <span class=\"dropdown-section-title\">My trip requests</span>\n          <a routerLink=\"/my-proposals\" routerLinkActive=\"active\" (click)=\"closeMenu()\">My proposals</a>\n          <a routerLink=\"/my-bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myBookingsLabel }}</a>\n\n          <span class=\"dropdown-section-title\">Payments & warranty</span>\n          <a routerLink=\"/my-payments\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myPaymentsLabel }}</a>\n<span class=\"dropdown-section-title\">After the outing</span>\n          <a routerLink=\"/my-feedbacks\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myFeedbacksLabel }}</a>\n\n          <span class=\"dropdown-section-title\">Account</span>\n          <a routerLink=\"/my-profile\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProfileLabel }}</a>\n          <button class=\"dropdown-action\" type=\"button\" (click)=\"logout()\">{{ logoutLabel }}</button>\n        </div>\n      </details>\n    </nav>\n  </div>\n</header>\n\n";
+module.exports = "<header class=\"site-header\">\n  <div class=\"container header-bar\">\n    <a class=\"brand\" routerLink=\"/\" (click)=\"closeMenu()\">\n      <img class=\"brand-logo\" src=\"assets/img/logo-Alegria.png\" alt=\"Alegria\" />\n      <span class=\"brand-text\">\n        <strong>{{ content.brand }}</strong>\n        <small>{{ content.brandTagline }}</small>\n      </span>\n    </a>\n\n    <button class=\"menu-toggle\" type=\"button\" (click)=\"toggleMenu()\" aria-label=\"Open menu\">\n      ☰\n    </button>\n\n    <nav class=\"main-nav\" [class.open]=\"menuOpen\">\n      <details class=\"nav-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ content.nav.outings }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/sorties\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ allOutingsLabel }}</a>\n          <a routerLink=\"/sorties/journee-en-mer\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ dayAtSeaLabel }}</a>\n          <a routerLink=\"/sorties/coucher-de-soleil\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ sunsetLabel }}</a>\n          <a routerLink=\"/sorties/anniversaire\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ partyLabel }}</a>\n          <a routerLink=\"/sorties/sortie-entreprise\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ corporateLabel }}</a>\n        </div>\n      </details>\n\n      <details class=\"nav-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ content.nav.boat }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/bateau\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ boatPresentationLabel }}</a>\n          <a routerLink=\"/galerie\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ galleryLabel }}</a>\n          <a routerLink=\"/crew\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ crewLabel }}</a>\n          <a routerLink=\"/safety\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ safetyLabel }}</a>\n        </div>\n      </details>\n\n      <details class=\"nav-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ practicalInfoLabel }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/how-it-works\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ guestJourneyLabel }}</a>\n          <a routerLink=\"/faq\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ faqLabel }}</a>\n          <a routerLink=\"/terms\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ termsLabel }}</a>\n          <a routerLink=\"/booking-process\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ depositLabel }}</a>\n        </div>\n      </details>\n\n      <a routerLink=\"/contact\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ contactLabel }}</a>\n\n      <div class=\"language-switcher\">\n        <select [value]=\"currentLanguage\" (change)=\"changeLanguage($any($event.target).value)\" aria-label=\"Language selector\">\n          <option value=\"fr\">Français</option>\n          <option value=\"en\">English</option>\n          <option value=\"es\">Español</option>\n        </select>\n      </div>\n\n      <details class=\"nav-dropdown account-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ accountSummaryLabel }}</summary>\n\n        <div class=\"dropdown-panel dropdown-panel-right\" *ngIf=\"!isLoggedIn\">\n          <a routerLink=\"/login\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ loginLabel }}</a>\n          <a routerLink=\"/signup\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ signupLabel }}</a>\n</div>\n\n        <div class=\"dropdown-panel dropdown-panel-right account-admin-panel\" *ngIf=\"isLoggedIn && isAdmin\">\n          <span class=\"dropdown-section-title\">{{ reservationsSectionLabel }}</span>\n          <a routerLink=\"/admin/bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ confirmedBookingsLabel }}</a>\n          <a routerLink=\"/admin/proposals\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ proposalsLabel }}</a>\n          <a routerLink=\"/admin/external-bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ externalBookingsLabel }}</a>\n\n          <span class=\"dropdown-section-title\">{{ boatLogsSectionLabel }}</span>\n          <a routerLink=\"/admin/outings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ boatLogManagerLabel }}</a>\n\n          <span class=\"dropdown-section-title\">{{ publicOutingInfoSectionLabel }}</span>\n          <a routerLink=\"/admin/manage-outings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ managePublicOutingsLabel }}</a>\n          <a routerLink=\"/admin/feedbacks\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ adminFeedbacksLabel }}</a>\n\n          <span class=\"dropdown-section-title\">{{ accountSectionLabel }}</span>\n          <a routerLink=\"/my-profile\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProfileLabel }}</a>\n          <button class=\"dropdown-action\" type=\"button\" (click)=\"logout()\">{{ logoutLabel }}</button>\n        </div>\n\n        <div class=\"dropdown-panel dropdown-panel-right account-customer-panel\" *ngIf=\"isLoggedIn && isCustomer\">\n          <span class=\"dropdown-section-title\">{{ myTripRequestsSectionLabel }}</span>\n          <a routerLink=\"/my-proposals\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProposalsLabel }}</a>\n          <a routerLink=\"/my-bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myBookingsLabel }}</a>\n\n          <span class=\"dropdown-section-title\">{{ paymentsWarrantySectionLabel }}</span>\n          <a routerLink=\"/my-payments\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myPaymentsLabel }}</a>\n          <span class=\"dropdown-section-title\">{{ afterOutingSectionLabel }}</span>\n          <a routerLink=\"/my-feedbacks\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myFeedbacksLabel }}</a>\n\n          <span class=\"dropdown-section-title\">{{ accountSectionLabel }}</span>\n          <a routerLink=\"/my-profile\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProfileLabel }}</a>\n          <button class=\"dropdown-action\" type=\"button\" (click)=\"logout()\">{{ logoutLabel }}</button>\n        </div>\n      </details>\n    </nav>\n  </div>\n</header>\n\n";
 
 /***/ }),
 
@@ -3761,7 +3761,7 @@ const SITE_CONTENT = {
     brand: 'Alegria',
     phoneDisplay: '+33 6 85 26 65 10',
     phoneRaw: '+33685266510',
-    email: 'contact@alldigitalnetwork.com',
+    email: 'famrani@alldigitalnetwork.com',
     departureArea: 'Possible meeting points: official visitors’ quays at Villeneuve, Antibes Port Vauban or Cannes Port Canto',
     heroImage: sharedImages.hero,
     boatHeroImage: sharedImages.boatHero,
@@ -3907,7 +3907,7 @@ const SITE_CONTENT = {
     brand: 'Alegria',
     phoneDisplay: '+33 6 85 26 65 10',
     phoneRaw: '+33685266510',
-    email: 'contact@alldigitalnetwork.com',
+    email: 'famrani@alldigitalnetwork.com',
     departureArea: 'Puntos de encuentro posibles: muelles de honor en Villeneuve, Antibes Port Vauban o Cannes Port Canto',
     heroImage: sharedImages.hero,
     boatHeroImage: sharedImages.boatHero,
@@ -4051,7 +4051,7 @@ const SITE_CONTENT = {
     brand: 'Alegria',
     phoneDisplay: '+33 6 85 26 65 10',
     phoneRaw: '+33685266510',
-    email: 'contact@alldigitalnetwork.com',
+    email: 'famrani@alldigitalnetwork.com',
     departureArea: 'Villeneuve, Antibes, Cannes',
     heroImage: sharedImages.hero,
     boatHeroImage: sharedImages.boatHero,
@@ -5792,17 +5792,32 @@ let HomeheaderComponent = class HomeheaderComponent {
   }
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
+    if (!this.menuOpen) {
+      this.closeAllDropdowns();
+    }
   }
-  closeMenu() {
-    this.menuOpen = false;
+  closeAllDropdowns(except) {
     if (typeof document !== 'undefined') {
       document.querySelectorAll('details.nav-dropdown').forEach(dropdown => {
-        dropdown.removeAttribute('open');
+        if (!except || dropdown !== except) {
+          dropdown.removeAttribute('open');
+        }
       });
     }
   }
+  onDropdownToggle(event) {
+    const current = event.currentTarget;
+    if (current?.open) {
+      this.closeAllDropdowns(current);
+    }
+  }
+  closeMenu() {
+    this.menuOpen = false;
+    this.closeAllDropdowns();
+  }
   changeLanguage(language) {
     this.languageService.setLanguage(language);
+    this.closeMenu();
   }
   logout() {
     const svc = this.mainSvc;
@@ -5909,13 +5924,61 @@ let HomeheaderComponent = class HomeheaderComponent {
     return this.currentLanguage === 'fr' ? 'Avis clients (admin)' : this.currentLanguage === 'es' ? 'Comentarios clientes (admin)' : 'Customer feedbacks (admin)';
   }
   get adminOutingsLabel() {
-    return 'Boat Log Manager';
+    return this.boatLogManagerLabel;
   }
   get adminPublicOutingsLabel() {
     return this.currentLanguage === 'fr' ? 'Offres sorties' : this.currentLanguage === 'es' ? 'Ofertas de salidas' : 'Public outings';
   }
   get logoutLabel() {
     return this.currentLanguage === 'fr' ? 'Se déconnecter' : this.currentLanguage === 'es' ? 'Cerrar sesión' : 'Logout';
+  }
+  get galleryLabel() {
+    return this.currentLanguage === 'fr' ? 'Galerie' : this.currentLanguage === 'es' ? 'Galería' : 'Gallery';
+  }
+  get crewLabel() {
+    return this.currentLanguage === 'fr' ? 'Équipage' : this.currentLanguage === 'es' ? 'Tripulación' : 'Crew';
+  }
+  get contactLabel() {
+    return this.currentLanguage === 'fr' ? 'Contact' : this.currentLanguage === 'es' ? 'Contacto' : 'Contact';
+  }
+  get reservationsSectionLabel() {
+    return this.currentLanguage === 'fr' ? 'Réservations' : this.currentLanguage === 'es' ? 'Reservas' : 'Reservations';
+  }
+  get confirmedBookingsLabel() {
+    return this.currentLanguage === 'fr' ? 'Réservations confirmées' : this.currentLanguage === 'es' ? 'Reservas confirmadas' : 'Confirmed bookings';
+  }
+  get proposalsLabel() {
+    return this.currentLanguage === 'fr' ? 'Propositions' : this.currentLanguage === 'es' ? 'Propuestas' : 'Proposals';
+  }
+  get externalBookingsLabel() {
+    return this.currentLanguage === 'fr' ? 'Réservations externes' : this.currentLanguage === 'es' ? 'Reservas externas' : 'External bookings';
+  }
+  get boatLogsSectionLabel() {
+    return this.currentLanguage === 'fr' ? 'Journal de bord' : this.currentLanguage === 'es' ? 'Bitácora del barco' : 'Boat logs';
+  }
+  get boatLogManagerLabel() {
+    return this.currentLanguage === 'fr' ? 'Gestion du journal de bord' : this.currentLanguage === 'es' ? 'Gestor de bitácora' : 'Boat log manager';
+  }
+  get publicOutingInfoSectionLabel() {
+    return this.currentLanguage === 'fr' ? 'Informations sorties publiques' : this.currentLanguage === 'es' ? 'Información de salidas públicas' : 'Public outing information';
+  }
+  get managePublicOutingsLabel() {
+    return this.currentLanguage === 'fr' ? 'Gérer les sorties publiques' : this.currentLanguage === 'es' ? 'Gestionar salidas públicas' : 'Manage public outings';
+  }
+  get accountSectionLabel() {
+    return this.currentLanguage === 'fr' ? 'Compte' : this.currentLanguage === 'es' ? 'Cuenta' : 'Account';
+  }
+  get myTripRequestsSectionLabel() {
+    return this.currentLanguage === 'fr' ? 'Mes demandes de sortie' : this.currentLanguage === 'es' ? 'Mis solicitudes de salida' : 'My trip requests';
+  }
+  get myProposalsLabel() {
+    return this.currentLanguage === 'fr' ? 'Mes propositions' : this.currentLanguage === 'es' ? 'Mis propuestas' : 'My proposals';
+  }
+  get paymentsWarrantySectionLabel() {
+    return this.currentLanguage === 'fr' ? 'Paiements & caution' : this.currentLanguage === 'es' ? 'Pagos y garantía' : 'Payments & warranty';
+  }
+  get afterOutingSectionLabel() {
+    return this.currentLanguage === 'fr' ? 'Après la sortie' : this.currentLanguage === 'es' ? 'Después de la salida' : 'After the outing';
   }
   static ctorParameters = () => [{
     type: _services_language_service__WEBPACK_IMPORTED_MODULE_4__.LanguageService

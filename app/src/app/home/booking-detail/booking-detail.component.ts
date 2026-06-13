@@ -474,9 +474,53 @@ export class BookingDetailComponent implements OnInit {
     return defaults[language] || defaults.fr;
   }
 
+
+  getBookingOutingTime(): number {
+    const booking: any = this.booking || {};
+    const rawDate = String(booking.outingDate || booking.date || booking.bookingDate || '').trim();
+    if (!rawDate) return 0;
+
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+
+    const timestamp = Date.parse(normalized);
+    if (Number.isNaN(timestamp)) return 0;
+
+    const date = new Date(timestamp);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  }
+
+  isBookingDatePastOrToday(): boolean {
+    const outingTime = this.getBookingOutingTime();
+    if (!outingTime) return false;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return outingTime <= today.getTime();
+  }
+
+  isCancelledBooking(): boolean {
+    const anyBooking: any = this.booking || {};
+    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+    return rawStatus === false || rawStatus === 'false' || rawStatus === 'cancelled' || rawStatus === 'canceled' || anyBooking.cancelled === true || anyBooking.canceled === true;
+  }
+
+  isBookingCancelledByDate(): boolean {
+    return this.isBookingDatePastOrToday() && !this.isBalancePaid();
+  }
+
   getDerivedBookingStatus(): string {
     const anyBooking: any = this.booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+
+    if (this.isBookingCancelledByDate() || this.isCancelledBooking()) return 'cancelled';
 
     // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
     if (this.isBalancePaid()) return 'payment_done';
@@ -506,6 +550,7 @@ export class BookingDetailComponent implements OnInit {
 
   getStatusLabel(): string {
     const status = this.getDerivedBookingStatus();
+    if (status === 'cancelled') return 'Cancelled';
     if (status === 'payment_done') return this.btext('paymentDone');
     if (status === 'confirmed') return this.btext('bookingConfirmed');
     return this.btext('notConfirmed');
@@ -908,7 +953,8 @@ export class BookingDetailComponent implements OnInit {
   }
 
   canRecordBalancePayment(): boolean {
-    return this.isBookingConfirmed() &&
+    return !this.isBookingDatePastOrToday() &&
+      this.isBookingConfirmed() &&
       this.isDepositPaid() &&
       this.isWarrantySecured() &&
       !this.isBalancePaid();
@@ -916,6 +962,7 @@ export class BookingDetailComponent implements OnInit {
 
   getBalanceBlockedReason(): string {
     if (this.isBalancePaid()) return 'Remaining 90% already paid.';
+    if (this.isBookingDatePastOrToday()) return 'The outing date is today or already past. The remaining 90% cannot be collected and the booking is cancelled.';
     if (!this.isBookingConfirmed()) return 'Booking must be confirmed first.';
     if (!this.isDepositPaid()) return '10% deposit must be paid first.';
     if (!this.isWarrantySecured()) return 'Warranty must be selected first (cash) or card must be registered.';
@@ -1325,11 +1372,14 @@ export class BookingDetailComponent implements OnInit {
   }
 
   canCustomerPayBalance(): boolean {
-    return !this.isAdmin && this.getBookingWorkflowState() === 'balance_required';
+    return !this.isAdmin &&
+      !this.isBookingDatePastOrToday() &&
+      !this.isCancelledBooking() &&
+      this.getBookingWorkflowState() === 'balance_required';
   }
 
   shouldShowCustomerPaymentButton(): boolean {
-    return this.canCustomerPayDeposit() || this.canCustomerPayBalance();
+    return this.getDerivedBookingStatus() !== 'cancelled' && (this.canCustomerPayDeposit() || this.canCustomerPayBalance());
   }
 
   get customerPaymentButtonLabel(): string {
@@ -1387,6 +1437,10 @@ export class BookingDetailComponent implements OnInit {
   payBalance(): void {
     if (this.isAdmin) return;
     if (!this.booking?.bookingId || this.isBalancePaid()) return;
+    if (this.isBookingDatePastOrToday() || this.isCancelledBooking()) {
+      this.balancePaymentError = 'This booking is cancelled or the outing date is today/already past. The remaining balance cannot be paid.';
+      return;
+    }
 
     const currentUrl = window.location.href;
     const balanceAmount = this.getBalanceAmount();

@@ -196,7 +196,44 @@ export class ProposalApiService {
   }
 
 
+  private parseProposalOutingDate(value: any): number {
+    const rawDate = String(value || '').trim();
+    if (!rawDate) return 0;
+
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+
+    const timestamp = Date.parse(normalized);
+    if (Number.isNaN(timestamp)) return 0;
+
+    const date = new Date(timestamp);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  }
+
+  private isOutingDateTodayOrPast(proposal: Partial<AlegriaProposal>): boolean {
+    const outingTime = this.parseProposalOutingDate((proposal as any).outingDate || (proposal as any).date);
+    if (!outingTime) return false;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return outingTime <= today.getTime();
+  }
+
+  private assertProposalCanBeRenewed(proposal: Partial<AlegriaProposal>): void {
+    if (this.isOutingDateTodayOrPast(proposal)) {
+      throw new Error('This proposal cannot be renewed because the outing date is today or already past.');
+    }
+  }
+
   async markSent(proposal: AlegriaProposal): Promise<void> {
+    this.assertProposalCanBeRenewed(proposal);
     await this.patchProposal(proposal.proposalId, {
       status: 'sent',
       validUntil: Date.now() + 24 * 60 * 60 * 1000,
@@ -213,6 +250,7 @@ export class ProposalApiService {
   async renewProposal(proposalId: string): Promise<AlegriaProposal> {
     const current = await this.readItem(this.proposalsCollection, proposalId);
     if (!current) throw new Error('Proposal not found');
+    this.assertProposalCanBeRenewed(current);
 
     const renewed: AlegriaProposal = {
       ...current,

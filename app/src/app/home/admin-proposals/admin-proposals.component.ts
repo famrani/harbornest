@@ -31,6 +31,46 @@ export class AdminProposalsComponent implements OnInit {
     );
   }
 
+  getProposalOutingTime(proposal: AlegriaProposal | Partial<AlegriaProposal>): number {
+    const rawDate = String((proposal as any).outingDate || (proposal as any).date || '').trim();
+    if (!rawDate) return 0;
+
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+
+    const timestamp = Date.parse(normalized);
+    if (Number.isNaN(timestamp)) return 0;
+
+    const date = new Date(timestamp);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  }
+
+  isOutingDateTodayOrPast(proposal: AlegriaProposal | Partial<AlegriaProposal>): boolean {
+    const outingTime = this.getProposalOutingTime(proposal);
+    if (!outingTime) return false;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return outingTime <= today.getTime();
+  }
+
+  canRenewProposal(proposal: AlegriaProposal | Partial<AlegriaProposal>): boolean {
+    return !!proposal?.proposalId && !this.isOutingDateTodayOrPast(proposal);
+  }
+
+  getRenewBlockedReason(proposal: AlegriaProposal | Partial<AlegriaProposal>): string {
+    return this.isOutingDateTodayOrPast(proposal)
+      ? 'Cannot renew: the outing date is today or already past.'
+      : '';
+  }
+
   isExpired(proposal: AlegriaProposal | Partial<AlegriaProposal>): boolean {
     return !!proposal.validUntil && Date.now() > proposal.validUntil;
   }
@@ -69,6 +109,10 @@ export class AdminProposalsComponent implements OnInit {
 
   async markSent(): Promise<void> {
     if (!this.form.proposalId) return;
+    if (!this.canRenewProposal(this.form)) {
+      this.error = this.getRenewBlockedReason(this.form);
+      return;
+    }
     await this.proposalApi.markSent(this.form as AlegriaProposal);
     this.message = 'Proposal marked as sent and valid for 24 hours.';
     this.load();
@@ -81,6 +125,11 @@ export class AdminProposalsComponent implements OnInit {
 
     this.error = '';
     this.message = '';
+
+    if (!this.canRenewProposal(proposal)) {
+      this.error = this.getRenewBlockedReason(proposal);
+      return;
+    }
 
     try {
       const renewed = await this.proposalApi.renewProposal(proposal.proposalId);

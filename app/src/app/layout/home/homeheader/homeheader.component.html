@@ -13,7 +13,7 @@
     </button>
 
     <nav class="main-nav" [class.open]="menuOpen">
-      <details class="nav-dropdown">
+      <details class="nav-dropdown" (toggle)="onDropdownToggle($event)">
         <summary>{{ content.nav.outings }}</summary>
         <div class="dropdown-panel">
           <a routerLink="/sorties" routerLinkActive="active" (click)="closeMenu()">{{ allOutingsLabel }}</a>
@@ -24,17 +24,17 @@
         </div>
       </details>
 
-      <details class="nav-dropdown">
+      <details class="nav-dropdown" (toggle)="onDropdownToggle($event)">
         <summary>{{ content.nav.boat }}</summary>
         <div class="dropdown-panel">
           <a routerLink="/bateau" routerLinkActive="active" (click)="closeMenu()">{{ boatPresentationLabel }}</a>
-          <a routerLink="/galerie" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.gallery }}</a>
-          <a routerLink="/crew" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.crew }}</a>
+          <a routerLink="/galerie" routerLinkActive="active" (click)="closeMenu()">{{ galleryLabel }}</a>
+          <a routerLink="/crew" routerLinkActive="active" (click)="closeMenu()">{{ crewLabel }}</a>
           <a routerLink="/safety" routerLinkActive="active" (click)="closeMenu()">{{ safetyLabel }}</a>
         </div>
       </details>
 
-      <details class="nav-dropdown">
+      <details class="nav-dropdown" (toggle)="onDropdownToggle($event)">
         <summary>{{ practicalInfoLabel }}</summary>
         <div class="dropdown-panel">
           <a routerLink="/how-it-works" routerLinkActive="active" (click)="closeMenu()">{{ guestJourneyLabel }}</a>
@@ -44,7 +44,7 @@
         </div>
       </details>
 
-      <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">{{ content.nav.contact }}</a>
+      <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">{{ contactLabel }}</a>
 
       <div class="language-switcher">
         <select [value]="currentLanguage" (change)="changeLanguage($any($event.target).value)" aria-label="Language selector">
@@ -54,7 +54,7 @@
         </select>
       </div>
 
-      <details class="nav-dropdown account-dropdown">
+      <details class="nav-dropdown account-dropdown" (toggle)="onDropdownToggle($event)">
         <summary>{{ accountSummaryLabel }}</summary>
 
         <div class="dropdown-panel dropdown-panel-right" *ngIf="!isLoggedIn">
@@ -63,34 +63,34 @@
 </div>
 
         <div class="dropdown-panel dropdown-panel-right account-admin-panel" *ngIf="isLoggedIn && isAdmin">
-          <span class="dropdown-section-title">Reservations</span>
-          <a routerLink="/admin/bookings" routerLinkActive="active" (click)="closeMenu()">Confirmed bookings</a>
-          <a routerLink="/admin/proposals" routerLinkActive="active" (click)="closeMenu()">Proposals</a>
-          <a routerLink="/admin/external-bookings" routerLinkActive="active" (click)="closeMenu()">External bookings</a>
+          <span class="dropdown-section-title">{{ reservationsSectionLabel }}</span>
+          <a routerLink="/admin/bookings" routerLinkActive="active" (click)="closeMenu()">{{ confirmedBookingsLabel }}</a>
+          <a routerLink="/admin/proposals" routerLinkActive="active" (click)="closeMenu()">{{ proposalsLabel }}</a>
+          <a routerLink="/admin/external-bookings" routerLinkActive="active" (click)="closeMenu()">{{ externalBookingsLabel }}</a>
 
-          <span class="dropdown-section-title">Boat logs</span>
-          <a routerLink="/admin/outings" routerLinkActive="active" (click)="closeMenu()">Boat log manager</a>
+          <span class="dropdown-section-title">{{ boatLogsSectionLabel }}</span>
+          <a routerLink="/admin/outings" routerLinkActive="active" (click)="closeMenu()">{{ boatLogManagerLabel }}</a>
 
-          <span class="dropdown-section-title">Public outing information</span>
-          <a routerLink="/admin/manage-outings" routerLinkActive="active" (click)="closeMenu()">Manage public outings</a>
+          <span class="dropdown-section-title">{{ publicOutingInfoSectionLabel }}</span>
+          <a routerLink="/admin/manage-outings" routerLinkActive="active" (click)="closeMenu()">{{ managePublicOutingsLabel }}</a>
           <a routerLink="/admin/feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ adminFeedbacksLabel }}</a>
 
-          <span class="dropdown-section-title">Account</span>
+          <span class="dropdown-section-title">{{ accountSectionLabel }}</span>
           <a routerLink="/my-profile" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
           <button class="dropdown-action" type="button" (click)="logout()">{{ logoutLabel }}</button>
         </div>
 
         <div class="dropdown-panel dropdown-panel-right account-customer-panel" *ngIf="isLoggedIn && isCustomer">
-          <span class="dropdown-section-title">My trip requests</span>
-          <a routerLink="/my-proposals" routerLinkActive="active" (click)="closeMenu()">My proposals</a>
+          <span class="dropdown-section-title">{{ myTripRequestsSectionLabel }}</span>
+          <a routerLink="/my-proposals" routerLinkActive="active" (click)="closeMenu()">{{ myProposalsLabel }}</a>
           <a routerLink="/my-bookings" routerLinkActive="active" (click)="closeMenu()">{{ myBookingsLabel }}</a>
 
-          <span class="dropdown-section-title">Payments & warranty</span>
+          <span class="dropdown-section-title">{{ paymentsWarrantySectionLabel }}</span>
           <a routerLink="/my-payments" routerLinkActive="active" (click)="closeMenu()">{{ myPaymentsLabel }}</a>
-<span class="dropdown-section-title">After the outing</span>
+          <span class="dropdown-section-title">{{ afterOutingSectionLabel }}</span>
           <a routerLink="/my-feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ myFeedbacksLabel }}</a>
 
-          <span class="dropdown-section-title">Account</span>
+          <span class="dropdown-section-title">{{ accountSectionLabel }}</span>
           <a routerLink="/my-profile" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
           <button class="dropdown-action" type="button" (click)="logout()">{{ logoutLabel }}</button>
         </div>

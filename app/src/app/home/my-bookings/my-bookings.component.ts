@@ -270,11 +270,46 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
       anyBooking.canceled === true;
   }
 
+
+  getBookingOutingTime(booking: AlegriaBooking): number {
+    const rawDate = String((booking as any)?.outingDate || (booking as any)?.date || (booking as any)?.bookingDate || '').trim();
+    if (!rawDate) return 0;
+
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+
+    const timestamp = Date.parse(normalized);
+    if (Number.isNaN(timestamp)) return 0;
+
+    const date = new Date(timestamp);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  }
+
+  isBookingDatePastOrToday(booking: AlegriaBooking): boolean {
+    const outingTime = this.getBookingOutingTime(booking);
+    if (!outingTime) return false;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return outingTime <= today.getTime();
+  }
+
+  isBookingCancelledByDate(booking: AlegriaBooking): boolean {
+    return this.isBookingDatePastOrToday(booking) && !this.isBalancePaid(booking);
+  }
+
   getDerivedBookingStatus(booking: AlegriaBooking): string {
     const anyBooking: any = booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
 
-    if (this.isCancelledBooking(booking)) return 'cancelled';
+    if (this.isBookingCancelledByDate(booking) || this.isCancelledBooking(booking)) return 'cancelled';
 
     // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
     if (this.isBalancePaid(booking)) return 'payment_done';
@@ -404,11 +439,13 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
   }
 
   canPayDeposit(booking: AlegriaBooking): boolean {
-    return !this.isDepositPaid(booking);
+    return this.getDerivedBookingStatus(booking) !== 'cancelled' && !this.isDepositPaid(booking);
   }
 
   canPayBalance(booking: AlegriaBooking): boolean {
-    return this.isDepositPaid(booking) &&
+    return this.getDerivedBookingStatus(booking) !== 'cancelled' &&
+      !this.isBookingDatePastOrToday(booking) &&
+      this.isDepositPaid(booking) &&
       this.isTermsAccepted(booking) &&
       this.isWarrantySecured(booking) &&
       !this.isBalancePaid(booking);
@@ -439,6 +476,7 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
 
   getStatusSummaryText(booking: AlegriaBooking): string {
     const status = this.getDerivedBookingStatus(booking);
+    if (status === 'cancelled') return 'Booking cancelled because the outing date is today or already past and the remaining 90% was not paid.';
     if (status === 'payment_done') return 'Booking confirmed, warranty secured and full payment recorded.';
     if (status === 'confirmed') return 'Booking confirmed. Warranty and/or remaining payment may still be pending.';
     return 'Booking not confirmed yet. Deposit and T&C acceptance are required.';

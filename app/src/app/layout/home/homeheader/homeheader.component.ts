@@ -68,20 +68,37 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
 
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
+    if (!this.menuOpen) {
+      this.closeAllDropdowns();
+    }
+  }
+
+  closeAllDropdowns(except?: HTMLDetailsElement): void {
+    if (typeof document !== 'undefined') {
+      document.querySelectorAll('details.nav-dropdown').forEach((dropdown: any) => {
+        if (!except || dropdown !== except) {
+          dropdown.removeAttribute('open');
+        }
+      });
+    }
+  }
+
+  onDropdownToggle(event: Event): void {
+    const current = event.currentTarget as HTMLDetailsElement;
+    if (current?.open) {
+      this.closeAllDropdowns(current);
+    }
   }
 
   closeMenu(): void {
     this.menuOpen = false;
 
-    if (typeof document !== 'undefined') {
-      document.querySelectorAll('details.nav-dropdown').forEach((dropdown: any) => {
-        dropdown.removeAttribute('open');
-      });
-    }
+    this.closeAllDropdowns();
   }
 
   changeLanguage(language: string): void {
     this.languageService.setLanguage(language as SiteLanguage);
+    this.closeMenu();
   }
 
   logout(): void {
@@ -223,7 +240,7 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
 
 
   get adminOutingsLabel(): string {
-    return 'Boat Log Manager';
+    return this.boatLogManagerLabel;
   }
 
   get adminPublicOutingsLabel(): string {
@@ -232,6 +249,71 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
 
   get logoutLabel(): string {
     return this.currentLanguage === 'fr' ? 'Se déconnecter' : this.currentLanguage === 'es' ? 'Cerrar sesión' : 'Logout';
+  }
+
+
+  get galleryLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Galerie' : this.currentLanguage === 'es' ? 'Galería' : 'Gallery';
+  }
+
+  get crewLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Équipage' : this.currentLanguage === 'es' ? 'Tripulación' : 'Crew';
+  }
+
+  get contactLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Contact' : this.currentLanguage === 'es' ? 'Contacto' : 'Contact';
+  }
+
+  get reservationsSectionLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Réservations' : this.currentLanguage === 'es' ? 'Reservas' : 'Reservations';
+  }
+
+  get confirmedBookingsLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Réservations confirmées' : this.currentLanguage === 'es' ? 'Reservas confirmadas' : 'Confirmed bookings';
+  }
+
+  get proposalsLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Propositions' : this.currentLanguage === 'es' ? 'Propuestas' : 'Proposals';
+  }
+
+  get externalBookingsLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Réservations externes' : this.currentLanguage === 'es' ? 'Reservas externas' : 'External bookings';
+  }
+
+  get boatLogsSectionLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Journal de bord' : this.currentLanguage === 'es' ? 'Bitácora del barco' : 'Boat logs';
+  }
+
+  get boatLogManagerLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Gestion du journal de bord' : this.currentLanguage === 'es' ? 'Gestor de bitácora' : 'Boat log manager';
+  }
+
+  get publicOutingInfoSectionLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Informations sorties publiques' : this.currentLanguage === 'es' ? 'Información de salidas públicas' : 'Public outing information';
+  }
+
+  get managePublicOutingsLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Gérer les sorties publiques' : this.currentLanguage === 'es' ? 'Gestionar salidas públicas' : 'Manage public outings';
+  }
+
+  get accountSectionLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Compte' : this.currentLanguage === 'es' ? 'Cuenta' : 'Account';
+  }
+
+  get myTripRequestsSectionLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Mes demandes de sortie' : this.currentLanguage === 'es' ? 'Mis solicitudes de salida' : 'My trip requests';
+  }
+
+  get myProposalsLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Mes propositions' : this.currentLanguage === 'es' ? 'Mis propuestas' : 'My proposals';
+  }
+
+  get paymentsWarrantySectionLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Paiements & caution' : this.currentLanguage === 'es' ? 'Pagos y garantía' : 'Payments & warranty';
+  }
+
+  get afterOutingSectionLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Après la sortie' : this.currentLanguage === 'es' ? 'Después de la salida' : 'After the outing';
   }
 
 }

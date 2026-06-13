@@ -2965,10 +2965,37 @@ let MyBookingsComponent = class MyBookingsComponent {
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
     return rawStatus === false || rawStatus === 'false' || rawStatus === 'cancelled' || rawStatus === 'canceled' || rawStatus === 'deleted' || anyBooking.cancelled === true || anyBooking.canceled === true;
   }
+  getBookingOutingTime(booking) {
+    const rawDate = String(booking?.outingDate || booking?.date || booking?.bookingDate || '').trim();
+    if (!rawDate) return 0;
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+    const timestamp = Date.parse(normalized);
+    if (Number.isNaN(timestamp)) return 0;
+    const date = new Date(timestamp);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  }
+  isBookingDatePastOrToday(booking) {
+    const outingTime = this.getBookingOutingTime(booking);
+    if (!outingTime) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return outingTime <= today.getTime();
+  }
+  isBookingCancelledByDate(booking) {
+    return this.isBookingDatePastOrToday(booking) && !this.isBalancePaid(booking);
+  }
   getDerivedBookingStatus(booking) {
     const anyBooking = booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
-    if (this.isCancelledBooking(booking)) return 'cancelled';
+    if (this.isBookingCancelledByDate(booking) || this.isCancelledBooking(booking)) return 'cancelled';
     // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
     if (this.isBalancePaid(booking)) return 'payment_done';
     if (rawStatus === 'payment_done' || rawStatus === 'full_payment_done' || rawStatus === 'paid' || rawStatus === 'completed') {
@@ -3040,10 +3067,10 @@ let MyBookingsComponent = class MyBookingsComponent {
     return this.isWarrantyCardRegistered(booking) || this.getWarrantyChoice(booking) === 'cash_on_board';
   }
   canPayDeposit(booking) {
-    return !this.isDepositPaid(booking);
+    return this.getDerivedBookingStatus(booking) !== 'cancelled' && !this.isDepositPaid(booking);
   }
   canPayBalance(booking) {
-    return this.isDepositPaid(booking) && this.isTermsAccepted(booking) && this.isWarrantySecured(booking) && !this.isBalancePaid(booking);
+    return this.getDerivedBookingStatus(booking) !== 'cancelled' && !this.isBookingDatePastOrToday(booking) && this.isDepositPaid(booking) && this.isTermsAccepted(booking) && this.isWarrantySecured(booking) && !this.isBalancePaid(booking);
   }
   shouldShowPaymentButton(booking) {
     return this.canPayDeposit(booking) || this.canPayBalance(booking);
@@ -3065,6 +3092,7 @@ let MyBookingsComponent = class MyBookingsComponent {
   }
   getStatusSummaryText(booking) {
     const status = this.getDerivedBookingStatus(booking);
+    if (status === 'cancelled') return 'Booking cancelled because the outing date is today or already past and the remaining 90% was not paid.';
     if (status === 'payment_done') return 'Booking confirmed, warranty secured and full payment recorded.';
     if (status === 'confirmed') return 'Booking confirmed. Warranty and/or remaining payment may still be pending.';
     return 'Booking not confirmed yet. Deposit and T&C acceptance are required.';
@@ -3778,7 +3806,37 @@ input, textarea, select {
   .wizard-steps {
     grid-template-columns: 1fr;
   }
-}`, "",{"version":3,"sources":["webpack://./src/app/home/proposal-confirmation/proposal-confirmation.component.scss"],"names":[],"mappings":"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","sourcesContent":["\n.admin-proposals-page,.proposal-confirmation-page,.external-bookings-page{padding:80px 0;background:#f6f2ea;min-height:70vh}\n.proposals-shell,.proposal-shell,.external-shell{max-width:1120px;margin:0 auto}\n.section-head{margin-bottom:28px;max-width:780px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;color:#b58b4a;font-weight:700}\nh1,h2,h3{color:#08263a}.card,.proposal-card,.external-card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 18px 45px rgba(8,38,58,.08);border:1px solid rgba(8,38,58,.08);margin-bottom:24px}\n.form-title{display:flex;justify-content:space-between;gap:1rem;align-items:center}.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}\nlabel{display:grid;gap:6px;color:#08263a;font-weight:700}input,textarea,select{border:1px solid rgba(8,38,58,.16);border-radius:14px;padding:11px 13px;font:inherit;background:#fff}.wide{grid-column:1/-1}\n.calculation,.actions,.toolbar{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0;align-items:end}.calculation span{background:#f8f5ef;padding:10px 14px;border-radius:999px;color:#516070}\n.btn{border:0;border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer}.btn-primary{background:#08263a;color:#fff}.btn-secondary{background:#efe7da;color:#08263a}\n.client-link{background:#f8f5ef;padding:12px;border-radius:12px;word-break:break-all;color:#516070}.success{color:#047857;font-weight:700}.error,.expired{color:#9f1d1d;font-weight:700}.muted{color:#667}.search-box{flex:1 1 320px}\n.proposal-list{display:grid;gap:12px}.proposal-row{display:grid;grid-template-columns:auto 1.2fr 1.2fr .8fr auto;gap:16px;align-items:center;width:100%;text-align:left;background:#fff;border:1px solid rgba(8,38,58,.08);border-radius:18px;padding:16px;cursor:pointer;box-shadow:0 10px 28px rgba(8,38,58,.06)}\n.proposal-row strong,.proposal-row small{display:block}.proposal-row small{color:#516070}.status{border-radius:999px;padding:6px 10px;background:rgba(181,139,74,.12);color:#8a652d;font-weight:700}.mini-link{border:0;background:transparent;color:#08263a;text-decoration:underline;cursor:pointer;font-weight:700}\n.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:20px 0}.summary-grid div,.step-card,.choice-block{background:#f8f5ef;border-radius:18px;padding:16px}.summary-grid strong,.summary-grid span{display:block}.summary-grid span{color:#516070;margin-top:4px}\n.terms-check,.radio-card{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid rgba(8,38,58,.1);padding:14px;border-radius:14px;margin:10px 0;color:#516070}\n@media(max-width:800px){.proposal-row{grid-template-columns:1fr}}\n\n.step-card.paid {\n  border: 1px solid rgba(4, 120, 87, 0.22);\n  background: #eef6f0;\n}\n\n.paid-badge {\n  display: inline-flex;\n  align-items: center;\n  border-radius: 999px;\n  padding: 0.45rem 0.8rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n  margin-top: 0.5rem;\n}\n\n.related-booking-banner {\n  display: flex;\n  justify-content: space-between;\n  gap: 1rem;\n  align-items: center;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 18px;\n  padding: 1rem;\n  background: #f8f5ef;\n  margin: 1rem 0;\n}\n\n.related-booking-banner p {\n  margin: .25rem 0 0;\n  color: #516070;\n}\n\n@media (max-width: 640px) {\n  .related-booking-banner {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n}\n\n.terms-required-card {\n  background: #fff;\n  border: 1px solid rgba(8,38,58,.1);\n  border-radius: 18px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.link-button {\n  border: 0;\n  background: transparent;\n  color: #b58b4a;\n  font-weight: 800;\n  text-decoration: underline;\n  cursor: pointer;\n  padding: 0;\n}\n\n.terms-modal-backdrop {\n  position: fixed;\n  inset: 0;\n  z-index: 1000;\n  display: grid;\n  place-items: center;\n  background: rgba(8,38,58,.45);\n  backdrop-filter: blur(4px);\n  padding: 1rem;\n}\n\n.terms-modal {\n  width: min(760px, 100%);\n  max-height: 90vh;\n  overflow: auto;\n  background: #fff;\n  border-radius: 28px;\n  padding: clamp(1.25rem, 3vw, 2rem);\n  box-shadow: 0 30px 80px rgba(8,38,58,.24);\n  border: 1px solid rgba(8,38,58,.08);\n  position: relative;\n}\n\n.terms-modal h2,\n.terms-modal h3 {\n  color: #08263a;\n}\n\n.terms-content {\n  max-height: 58vh;\n  overflow: auto;\n  padding-right: .5rem;\n  color: #516070;\n  line-height: 1.65;\n}\n\n.modal-close {\n  position: absolute;\n  top: .9rem;\n  right: .9rem;\n  width: 38px;\n  height: 38px;\n  border: 0;\n  border-radius: 999px;\n  background: #f8f5ef;\n  color: #08263a;\n  font-size: 1.4rem;\n  cursor: pointer;\n}\n\n.modal-actions {\n  display: flex;\n  justify-content: flex-end;\n  margin-top: 1rem;\n}\n\n\n/* Ensure long Firebase T&C text is fully scrollable in every language. */\n.tc-scrollable,\n.terms-scroll-box,\n.terms-content {\n  display: block;\n  max-height: min(62vh, 560px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  -webkit-overflow-scrolling: touch;\n  overscroll-behavior: contain;\n  padding-right: 0.75rem;\n  scrollbar-gutter: stable;\n}\n\n.terms-scroll-box p,\n.terms-content p {\n  white-space: normal;\n  overflow: visible;\n  text-overflow: unset;\n  word-break: normal;\n}\n\n.terms-scroll-box h4,\n.terms-content h3 {\n  position: static;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box,\n  .terms-content {\n    max-height: 58vh;\n  }\n}\n\n\n/* Hard fix for long multilingual Firebase T&C text. */\n.tc-scrollable,\n.terms-scroll-box.tc-scrollable,\n.terms-content.tc-scrollable {\n  display: block !important;\n  height: clamp(360px, 62vh, 640px) !important;\n  max-height: clamp(360px, 62vh, 640px) !important;\n  min-height: 320px !important;\n  overflow-y: scroll !important;\n  overflow-x: hidden !important;\n  -webkit-overflow-scrolling: touch !important;\n  overscroll-behavior: contain !important;\n  touch-action: pan-y !important;\n  padding-right: 1rem !important;\n  box-sizing: border-box !important;\n}\n\n.terms-modal {\n  max-height: 94vh !important;\n  overflow: hidden !important;\n  display: flex !important;\n  flex-direction: column !important;\n}\n\n.terms-modal .terms-content.tc-scrollable {\n  flex: 1 1 auto !important;\n  height: auto !important;\n  min-height: 320px !important;\n  max-height: calc(94vh - 190px) !important;\n}\n\n.terms-scroll-box.tc-scrollable p,\n.terms-content.tc-scrollable p {\n  display: block !important;\n  white-space: normal !important;\n  overflow: visible !important;\n  text-overflow: unset !important;\n  -webkit-line-clamp: unset !important;\n  line-clamp: unset !important;\n  word-break: normal !important;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box.tc-scrollable,\n  .terms-content.tc-scrollable {\n    height: 58vh !important;\n    max-height: 58vh !important;\n    min-height: 300px !important;\n  }\n\n  .terms-modal .terms-content.tc-scrollable {\n    max-height: calc(92vh - 170px) !important;\n  }\n}\n\n\n.proposal-auth-card {\n  margin: 1.5rem 0;\n  padding: 1.25rem;\n  border-radius: 18px;\n  background: #fff8ed;\n  border: 1px solid rgba(181, 139, 74, .28);\n  box-shadow: 0 16px 40px rgba(8, 38, 58, .08);\n}\n\n.proposal-auth-card h2 {\n  margin: .25rem 0 .75rem;\n}\n\n.proposal-auth-card .btn {\n  margin-top: .75rem;\n}\n\n\n.proposal-wizard {\n  display: grid;\n  gap: 1.25rem;\n  margin-top: 1.5rem;\n}\n\n.wizard-progress {\n  height: 10px;\n  border-radius: 999px;\n  background: rgba(8, 38, 58, .08);\n  overflow: hidden;\n}\n\n.wizard-progress-bar {\n  height: 100%;\n  border-radius: inherit;\n  background: #08263a;\n  transition: width .25s ease;\n}\n\n.wizard-steps {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: .75rem;\n}\n\n.wizard-step {\n  background: #f8f5ef;\n  border: 1px solid rgba(8, 38, 58, .08);\n  border-radius: 16px;\n  padding: .9rem;\n  display: flex;\n  align-items: center;\n  gap: .75rem;\n  color: #516070;\n}\n\n.wizard-step span {\n  display: grid;\n  place-items: center;\n  width: 32px;\n  height: 32px;\n  border-radius: 999px;\n  background: #fff;\n  color: #08263a;\n  font-weight: 800;\n}\n\n.wizard-step.active {\n  border-color: rgba(181, 139, 74, .45);\n  box-shadow: 0 12px 30px rgba(181, 139, 74, .12);\n  color: #08263a;\n}\n\n.wizard-step.done {\n  background: #eef6f0;\n  color: #047857;\n}\n\n.wizard-panel {\n  background: #fff;\n  border: 1px solid rgba(8, 38, 58, .08);\n  border-radius: 22px;\n  padding: 1.25rem;\n  box-shadow: 0 14px 38px rgba(8,38,58,.06);\n}\n\n.warranty-options {\n  display: grid;\n  gap: .75rem;\n  margin: 1rem 0;\n}\n\n@media (max-width: 720px) {\n  .wizard-steps {\n    grid-template-columns: 1fr;\n  }\n}\n"],"sourceRoot":""}]);
+}
+/* Final proposal T&C full text fix */
+.terms-modal {
+  display: flex !important;
+  flex-direction: column !important;
+  max-height: 94vh !important;
+  overflow: hidden !important;
+}
+
+.terms-content.tc-scrollable {
+  flex: 1 1 auto !important;
+  min-height: 320px !important;
+  max-height: calc(94vh - 190px) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 1rem !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.terms-content.tc-scrollable h3,
+.terms-content.tc-scrollable p {
+  display: block !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.modal-actions {
+  flex: 0 0 auto !important;
+  background: #fff !important;
+  padding-top: 1rem !important;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/proposal-confirmation/proposal-confirmation.component.scss"],"names":[],"mappings":"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","sourcesContent":["\n.admin-proposals-page,.proposal-confirmation-page,.external-bookings-page{padding:80px 0;background:#f6f2ea;min-height:70vh}\n.proposals-shell,.proposal-shell,.external-shell{max-width:1120px;margin:0 auto}\n.section-head{margin-bottom:28px;max-width:780px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;color:#b58b4a;font-weight:700}\nh1,h2,h3{color:#08263a}.card,.proposal-card,.external-card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 18px 45px rgba(8,38,58,.08);border:1px solid rgba(8,38,58,.08);margin-bottom:24px}\n.form-title{display:flex;justify-content:space-between;gap:1rem;align-items:center}.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}\nlabel{display:grid;gap:6px;color:#08263a;font-weight:700}input,textarea,select{border:1px solid rgba(8,38,58,.16);border-radius:14px;padding:11px 13px;font:inherit;background:#fff}.wide{grid-column:1/-1}\n.calculation,.actions,.toolbar{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0;align-items:end}.calculation span{background:#f8f5ef;padding:10px 14px;border-radius:999px;color:#516070}\n.btn{border:0;border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer}.btn-primary{background:#08263a;color:#fff}.btn-secondary{background:#efe7da;color:#08263a}\n.client-link{background:#f8f5ef;padding:12px;border-radius:12px;word-break:break-all;color:#516070}.success{color:#047857;font-weight:700}.error,.expired{color:#9f1d1d;font-weight:700}.muted{color:#667}.search-box{flex:1 1 320px}\n.proposal-list{display:grid;gap:12px}.proposal-row{display:grid;grid-template-columns:auto 1.2fr 1.2fr .8fr auto;gap:16px;align-items:center;width:100%;text-align:left;background:#fff;border:1px solid rgba(8,38,58,.08);border-radius:18px;padding:16px;cursor:pointer;box-shadow:0 10px 28px rgba(8,38,58,.06)}\n.proposal-row strong,.proposal-row small{display:block}.proposal-row small{color:#516070}.status{border-radius:999px;padding:6px 10px;background:rgba(181,139,74,.12);color:#8a652d;font-weight:700}.mini-link{border:0;background:transparent;color:#08263a;text-decoration:underline;cursor:pointer;font-weight:700}\n.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:20px 0}.summary-grid div,.step-card,.choice-block{background:#f8f5ef;border-radius:18px;padding:16px}.summary-grid strong,.summary-grid span{display:block}.summary-grid span{color:#516070;margin-top:4px}\n.terms-check,.radio-card{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid rgba(8,38,58,.1);padding:14px;border-radius:14px;margin:10px 0;color:#516070}\n@media(max-width:800px){.proposal-row{grid-template-columns:1fr}}\n\n.step-card.paid {\n  border: 1px solid rgba(4, 120, 87, 0.22);\n  background: #eef6f0;\n}\n\n.paid-badge {\n  display: inline-flex;\n  align-items: center;\n  border-radius: 999px;\n  padding: 0.45rem 0.8rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n  margin-top: 0.5rem;\n}\n\n.related-booking-banner {\n  display: flex;\n  justify-content: space-between;\n  gap: 1rem;\n  align-items: center;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 18px;\n  padding: 1rem;\n  background: #f8f5ef;\n  margin: 1rem 0;\n}\n\n.related-booking-banner p {\n  margin: .25rem 0 0;\n  color: #516070;\n}\n\n@media (max-width: 640px) {\n  .related-booking-banner {\n    align-items: flex-start;\n    flex-direction: column;\n  }\n}\n\n.terms-required-card {\n  background: #fff;\n  border: 1px solid rgba(8,38,58,.1);\n  border-radius: 18px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.link-button {\n  border: 0;\n  background: transparent;\n  color: #b58b4a;\n  font-weight: 800;\n  text-decoration: underline;\n  cursor: pointer;\n  padding: 0;\n}\n\n.terms-modal-backdrop {\n  position: fixed;\n  inset: 0;\n  z-index: 1000;\n  display: grid;\n  place-items: center;\n  background: rgba(8,38,58,.45);\n  backdrop-filter: blur(4px);\n  padding: 1rem;\n}\n\n.terms-modal {\n  width: min(760px, 100%);\n  max-height: 90vh;\n  overflow: auto;\n  background: #fff;\n  border-radius: 28px;\n  padding: clamp(1.25rem, 3vw, 2rem);\n  box-shadow: 0 30px 80px rgba(8,38,58,.24);\n  border: 1px solid rgba(8,38,58,.08);\n  position: relative;\n}\n\n.terms-modal h2,\n.terms-modal h3 {\n  color: #08263a;\n}\n\n.terms-content {\n  max-height: 58vh;\n  overflow: auto;\n  padding-right: .5rem;\n  color: #516070;\n  line-height: 1.65;\n}\n\n.modal-close {\n  position: absolute;\n  top: .9rem;\n  right: .9rem;\n  width: 38px;\n  height: 38px;\n  border: 0;\n  border-radius: 999px;\n  background: #f8f5ef;\n  color: #08263a;\n  font-size: 1.4rem;\n  cursor: pointer;\n}\n\n.modal-actions {\n  display: flex;\n  justify-content: flex-end;\n  margin-top: 1rem;\n}\n\n\n/* Ensure long Firebase T&C text is fully scrollable in every language. */\n.tc-scrollable,\n.terms-scroll-box,\n.terms-content {\n  display: block;\n  max-height: min(62vh, 560px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  -webkit-overflow-scrolling: touch;\n  overscroll-behavior: contain;\n  padding-right: 0.75rem;\n  scrollbar-gutter: stable;\n}\n\n.terms-scroll-box p,\n.terms-content p {\n  white-space: normal;\n  overflow: visible;\n  text-overflow: unset;\n  word-break: normal;\n}\n\n.terms-scroll-box h4,\n.terms-content h3 {\n  position: static;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box,\n  .terms-content {\n    max-height: 58vh;\n  }\n}\n\n\n/* Hard fix for long multilingual Firebase T&C text. */\n.tc-scrollable,\n.terms-scroll-box.tc-scrollable,\n.terms-content.tc-scrollable {\n  display: block !important;\n  height: clamp(360px, 62vh, 640px) !important;\n  max-height: clamp(360px, 62vh, 640px) !important;\n  min-height: 320px !important;\n  overflow-y: scroll !important;\n  overflow-x: hidden !important;\n  -webkit-overflow-scrolling: touch !important;\n  overscroll-behavior: contain !important;\n  touch-action: pan-y !important;\n  padding-right: 1rem !important;\n  box-sizing: border-box !important;\n}\n\n.terms-modal {\n  max-height: 94vh !important;\n  overflow: hidden !important;\n  display: flex !important;\n  flex-direction: column !important;\n}\n\n.terms-modal .terms-content.tc-scrollable {\n  flex: 1 1 auto !important;\n  height: auto !important;\n  min-height: 320px !important;\n  max-height: calc(94vh - 190px) !important;\n}\n\n.terms-scroll-box.tc-scrollable p,\n.terms-content.tc-scrollable p {\n  display: block !important;\n  white-space: normal !important;\n  overflow: visible !important;\n  text-overflow: unset !important;\n  -webkit-line-clamp: unset !important;\n  line-clamp: unset !important;\n  word-break: normal !important;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box.tc-scrollable,\n  .terms-content.tc-scrollable {\n    height: 58vh !important;\n    max-height: 58vh !important;\n    min-height: 300px !important;\n  }\n\n  .terms-modal .terms-content.tc-scrollable {\n    max-height: calc(92vh - 170px) !important;\n  }\n}\n\n\n.proposal-auth-card {\n  margin: 1.5rem 0;\n  padding: 1.25rem;\n  border-radius: 18px;\n  background: #fff8ed;\n  border: 1px solid rgba(181, 139, 74, .28);\n  box-shadow: 0 16px 40px rgba(8, 38, 58, .08);\n}\n\n.proposal-auth-card h2 {\n  margin: .25rem 0 .75rem;\n}\n\n.proposal-auth-card .btn {\n  margin-top: .75rem;\n}\n\n\n.proposal-wizard {\n  display: grid;\n  gap: 1.25rem;\n  margin-top: 1.5rem;\n}\n\n.wizard-progress {\n  height: 10px;\n  border-radius: 999px;\n  background: rgba(8, 38, 58, .08);\n  overflow: hidden;\n}\n\n.wizard-progress-bar {\n  height: 100%;\n  border-radius: inherit;\n  background: #08263a;\n  transition: width .25s ease;\n}\n\n.wizard-steps {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: .75rem;\n}\n\n.wizard-step {\n  background: #f8f5ef;\n  border: 1px solid rgba(8, 38, 58, .08);\n  border-radius: 16px;\n  padding: .9rem;\n  display: flex;\n  align-items: center;\n  gap: .75rem;\n  color: #516070;\n}\n\n.wizard-step span {\n  display: grid;\n  place-items: center;\n  width: 32px;\n  height: 32px;\n  border-radius: 999px;\n  background: #fff;\n  color: #08263a;\n  font-weight: 800;\n}\n\n.wizard-step.active {\n  border-color: rgba(181, 139, 74, .45);\n  box-shadow: 0 12px 30px rgba(181, 139, 74, .12);\n  color: #08263a;\n}\n\n.wizard-step.done {\n  background: #eef6f0;\n  color: #047857;\n}\n\n.wizard-panel {\n  background: #fff;\n  border: 1px solid rgba(8, 38, 58, .08);\n  border-radius: 22px;\n  padding: 1.25rem;\n  box-shadow: 0 14px 38px rgba(8,38,58,.06);\n}\n\n.warranty-options {\n  display: grid;\n  gap: .75rem;\n  margin: 1rem 0;\n}\n\n@media (max-width: 720px) {\n  .wizard-steps {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Final proposal T&C full text fix */\n.terms-modal {\n  display: flex !important;\n  flex-direction: column !important;\n  max-height: 94vh !important;\n  overflow: hidden !important;\n}\n\n.terms-content.tc-scrollable {\n  flex: 1 1 auto !important;\n  min-height: 320px !important;\n  max-height: calc(94vh - 190px) !important;\n  overflow-y: auto !important;\n  overflow-x: hidden !important;\n  padding-right: 1rem !important;\n  -webkit-overflow-scrolling: touch !important;\n}\n\n.terms-content.tc-scrollable h3,\n.terms-content.tc-scrollable p {\n  display: block !important;\n  max-height: none !important;\n  overflow: visible !important;\n}\n\n.modal-actions {\n  flex: 0 0 auto !important;\n  background: #fff !important;\n  padding-top: 1rem !important;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -5480,7 +5538,7 @@ BoatComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_c
 /***/ ((module) => {
 
 "use strict";
-module.exports = "\n<section class=\"admin-proposals-page\">\n  <div class=\"container proposals-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">Admin</span>\n      <h1>Customer proposals</h1>\n      <p>Create direct proposals. Once sent, a proposal is valid for one full day.</p>\n    </div>\n\n    <article class=\"card\">\n      <div class=\"form-title\">\n        <h2>{{ form.proposalId ? 'Edit proposal' : 'New proposal' }}</h2>\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"reset()\">New</button>\n      </div>\n\n      <div class=\"form-grid\">\n        <label>Customer name<input type=\"text\" [(ngModel)]=\"form.customerName\" /></label>\n        <label>Customer email<input type=\"email\" [(ngModel)]=\"form.customerEmail\" /></label>\n        <label>Phone<input type=\"tel\" [(ngModel)]=\"form.customerPhone\" /></label>\n        <label>Outing type<input type=\"text\" [(ngModel)]=\"form.outingType\" /></label>\n        <label>Outing date<input type=\"date\" [(ngModel)]=\"form.outingDate\" /></label>\n        <label>Departure time<input type=\"time\" [(ngModel)]=\"form.departureTime\" /></label>\n        <label>Return time<input type=\"time\" [(ngModel)]=\"form.arrivalTime\" /></label>\n        <label>Passengers<input type=\"number\" min=\"1\" [(ngModel)]=\"form.passengers\" /></label>\n        <label>Total amount (€)<input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"form.totalAmount\" /></label>\n        <label>Warranty amount (€)<input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"form.warrantyAmount\" /></label>\n        <label class=\"wide\">Proposal message<textarea rows=\"3\" [(ngModel)]=\"form.proposalMessage\"></textarea></label>\n        <label class=\"wide\">Internal comments<textarea rows=\"3\" [(ngModel)]=\"form.comments\"></textarea></label>\n      </div>\n\n      <div class=\"calculation\">\n        <span>Deposit 10%: <strong>€{{ ((form.totalAmount || 0) * 0.1) | number:'1.2-2' }}</strong></span>\n        <span>Remaining 90% onboard: <strong>€{{ ((form.totalAmount || 0) * 0.9) | number:'1.2-2' }}</strong></span>\n        <span>Validity after sent: <strong>24 hours</strong></span>\n      </div>\n\n      <div class=\"actions\">\n        <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"saving\" (click)=\"saveProposal()\">{{ saving ? 'Saving...' : 'Save proposal' }}</button>\n        <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"markSent()\">Mark sent / renew 24h</button>\n        <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"copyLink()\">Copy client link</button>\n        <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"sendCurrentProposalByEmail()\">Send by email</button>\n        <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"renewProposal(form)\">Renew 24h</button>\n        <button class=\"btn btn-danger\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"deleteProposal(form)\">Delete</button>\n      </div>\n\n      <p class=\"validity\" *ngIf=\"form.proposalId\" [class.expired]=\"isExpired(form)\">\n        {{ formatValidity(form) }}\n      </p>\n      <p class=\"client-link\" *ngIf=\"form.proposalId\">{{ proposalLink }}</p>\n      <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n      <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n    </article>\n\n    <div class=\"toolbar\">\n      <label class=\"search-box\">Search proposals<input type=\"search\" [(ngModel)]=\"searchTerm\" placeholder=\"Customer name, email or outing...\" /></label>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"load()\">Refresh</button>\n    </div>\n\n    <p class=\"muted\" *ngIf=\"loading\">Loading proposals...</p>\n\n    <div class=\"proposal-list\" *ngIf=\"!loading\">\n      <article class=\"proposal-row\" *ngFor=\"let p of filteredProposals\" (click)=\"edit(p)\" tabindex=\"0\" role=\"button\">\n        <span class=\"status\">{{ p.status || 'draft' }}</span>\n\n        <span class=\"proposal-customer\">\n          <strong>{{ p.customerName || 'Unnamed customer' }}</strong>\n          <small>{{ p.customerEmail || 'No email' }}</small>\n          <small *ngIf=\"p.customerPhone\">{{ p.customerPhone }}</small>\n        </span>\n\n        <span class=\"proposal-outing\">\n          <strong>{{ p.outingType || 'Outing' }}</strong>\n          <small>{{ p.outingDate || 'Date not set' }} <ng-container *ngIf=\"p.departureTime\">· {{ p.departureTime }}</ng-container></small>\n          <small [class.expired]=\"isExpired(p)\">{{ formatValidity(p) }}</small>\n        </span>\n\n        <span class=\"proposal-price\">\n          <strong>€{{ p.totalAmount || 0 }}</strong>\n          <small>Deposit €{{ p.depositAmount || ((p.totalAmount || 0) * 0.1) | number:'1.2-2' }}</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <ng-container *ngIf=\"isAcceptedProposal(p); else proposalActions\">\n            <button class=\"mini-link\" type=\"button\" (click)=\"openRelatedBooking(p, $event)\">Open booking</button>\n            <button class=\"mini-link\" type=\"button\" (click)=\"createSimilarProposal(p, $event)\">Create similar proposal</button>\n          </ng-container>\n\n          <ng-template #proposalActions>\n            <button class=\"mini-link\" type=\"button\" (click)=\"openClientLink(p)\">Open link</button>\n            <button class=\"mini-link\" type=\"button\" *ngIf=\"hasRelatedBooking(p)\" (click)=\"openRelatedBooking(p, $event)\">Open booking</button>\n            <button class=\"mini-link\" type=\"button\" (click)=\"sendProposalByEmail(p)\">Email</button>\n            <button class=\"mini-link\" type=\"button\" (click)=\"renewProposal(p, $event)\">Renew</button>\n            <button class=\"mini-link danger\" type=\"button\" (click)=\"deleteProposal(p, $event)\">Delete</button>\n          </ng-template>\n        </span>\n      </article>\n    </div>\n  </div>\n</section>\n";
+module.exports = "\n<section class=\"admin-proposals-page\">\n  <div class=\"container proposals-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">Admin</span>\n      <h1>Customer proposals</h1>\n      <p>Create direct proposals. Once sent, a proposal is valid for one full day.</p>\n    </div>\n\n    <article class=\"card\">\n      <div class=\"form-title\">\n        <h2>{{ form.proposalId ? 'Edit proposal' : 'New proposal' }}</h2>\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"reset()\">New</button>\n      </div>\n\n      <div class=\"form-grid\">\n        <label>Customer name<input type=\"text\" [(ngModel)]=\"form.customerName\" /></label>\n        <label>Customer email<input type=\"email\" [(ngModel)]=\"form.customerEmail\" /></label>\n        <label>Phone<input type=\"tel\" [(ngModel)]=\"form.customerPhone\" /></label>\n        <label>Outing type<input type=\"text\" [(ngModel)]=\"form.outingType\" /></label>\n        <label>Outing date<input type=\"date\" [(ngModel)]=\"form.outingDate\" /></label>\n        <label>Departure time<input type=\"time\" [(ngModel)]=\"form.departureTime\" /></label>\n        <label>Return time<input type=\"time\" [(ngModel)]=\"form.arrivalTime\" /></label>\n        <label>Passengers<input type=\"number\" min=\"1\" [(ngModel)]=\"form.passengers\" /></label>\n        <label>Total amount (€)<input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"form.totalAmount\" /></label>\n        <label>Warranty amount (€)<input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"form.warrantyAmount\" /></label>\n        <label class=\"wide\">Proposal message<textarea rows=\"3\" [(ngModel)]=\"form.proposalMessage\"></textarea></label>\n        <label class=\"wide\">Internal comments<textarea rows=\"3\" [(ngModel)]=\"form.comments\"></textarea></label>\n      </div>\n\n      <div class=\"calculation\">\n        <span>Deposit 10%: <strong>€{{ ((form.totalAmount || 0) * 0.1) | number:'1.2-2' }}</strong></span>\n        <span>Remaining 90% onboard: <strong>€{{ ((form.totalAmount || 0) * 0.9) | number:'1.2-2' }}</strong></span>\n        <span>Validity after sent: <strong>24 hours</strong></span>\n      </div>\n\n      <div class=\"actions\">\n        <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"saving\" (click)=\"saveProposal()\">{{ saving ? 'Saving...' : 'Save proposal' }}</button>\n        <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"form.proposalId\" [disabled]=\"!canRenewProposal(form)\" [title]=\"getRenewBlockedReason(form)\" (click)=\"markSent()\">Mark sent / renew 24h</button>\n        <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"copyLink()\">Copy client link</button>\n        <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"sendCurrentProposalByEmail()\">Send by email</button>\n        <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"form.proposalId\" [disabled]=\"!canRenewProposal(form)\" [title]=\"getRenewBlockedReason(form)\" (click)=\"renewProposal(form)\">Renew 24h</button>\n        <button class=\"btn btn-danger\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"deleteProposal(form)\">Delete</button>\n      </div>\n\n      <p class=\"validity\" *ngIf=\"form.proposalId\" [class.expired]=\"isExpired(form)\">\n        {{ formatValidity(form) }}\n      </p>\n      <p class=\"client-link\" *ngIf=\"form.proposalId\">{{ proposalLink }}</p>\n      <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n      <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n    </article>\n\n    <div class=\"toolbar\">\n      <label class=\"search-box\">Search proposals<input type=\"search\" [(ngModel)]=\"searchTerm\" placeholder=\"Customer name, email or outing...\" /></label>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"load()\">Refresh</button>\n    </div>\n\n    <p class=\"muted\" *ngIf=\"loading\">Loading proposals...</p>\n\n    <div class=\"proposal-list\" *ngIf=\"!loading\">\n      <article class=\"proposal-row\" *ngFor=\"let p of filteredProposals\" (click)=\"edit(p)\" tabindex=\"0\" role=\"button\">\n        <span class=\"status\">{{ p.status || 'draft' }}</span>\n\n        <span class=\"proposal-customer\">\n          <strong>{{ p.customerName || 'Unnamed customer' }}</strong>\n          <small>{{ p.customerEmail || 'No email' }}</small>\n          <small *ngIf=\"p.customerPhone\">{{ p.customerPhone }}</small>\n        </span>\n\n        <span class=\"proposal-outing\">\n          <strong>{{ p.outingType || 'Outing' }}</strong>\n          <small>{{ p.outingDate || 'Date not set' }} <ng-container *ngIf=\"p.departureTime\">· {{ p.departureTime }}</ng-container></small>\n          <small [class.expired]=\"isExpired(p)\">{{ formatValidity(p) }}</small>\n        </span>\n\n        <span class=\"proposal-price\">\n          <strong>€{{ p.totalAmount || 0 }}</strong>\n          <small>Deposit €{{ p.depositAmount || ((p.totalAmount || 0) * 0.1) | number:'1.2-2' }}</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <ng-container *ngIf=\"isAcceptedProposal(p); else proposalActions\">\n            <button class=\"mini-link\" type=\"button\" (click)=\"openRelatedBooking(p, $event)\">Open booking</button>\n            <button class=\"mini-link\" type=\"button\" (click)=\"createSimilarProposal(p, $event)\">Create similar proposal</button>\n          </ng-container>\n\n          <ng-template #proposalActions>\n            <button class=\"mini-link\" type=\"button\" (click)=\"openClientLink(p)\">Open link</button>\n            <button class=\"mini-link\" type=\"button\" *ngIf=\"hasRelatedBooking(p)\" (click)=\"openRelatedBooking(p, $event)\">Open booking</button>\n            <button class=\"mini-link\" type=\"button\" (click)=\"sendProposalByEmail(p)\">Email</button>\n            <button class=\"mini-link\" type=\"button\" (click)=\"renewProposal(p, $event)\">Renew</button>\n            <button class=\"mini-link danger\" type=\"button\" (click)=\"deleteProposal(p, $event)\">Delete</button>\n          </ng-template>\n        </span>\n      </article>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -7369,6 +7427,36 @@ let AdminProposalsComponent = class AdminProposalsComponent {
     if (!term) return this.proposals;
     return this.proposals.filter(p => this.normalize(p.customerName).includes(term) || this.normalize(p.customerEmail).includes(term) || this.normalize(p.outingType).includes(term));
   }
+  getProposalOutingTime(proposal) {
+    const rawDate = String(proposal.outingDate || proposal.date || '').trim();
+    if (!rawDate) return 0;
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+    const timestamp = Date.parse(normalized);
+    if (Number.isNaN(timestamp)) return 0;
+    const date = new Date(timestamp);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  }
+  isOutingDateTodayOrPast(proposal) {
+    const outingTime = this.getProposalOutingTime(proposal);
+    if (!outingTime) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return outingTime <= today.getTime();
+  }
+  canRenewProposal(proposal) {
+    return !!proposal?.proposalId && !this.isOutingDateTodayOrPast(proposal);
+  }
+  getRenewBlockedReason(proposal) {
+    return this.isOutingDateTodayOrPast(proposal) ? 'Cannot renew: the outing date is today or already past.' : '';
+  }
   isExpired(proposal) {
     return !!proposal.validUntil && Date.now() > proposal.validUntil;
   }
@@ -7416,6 +7504,10 @@ let AdminProposalsComponent = class AdminProposalsComponent {
     var _this2 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!_this2.form.proposalId) return;
+      if (!_this2.canRenewProposal(_this2.form)) {
+        _this2.error = _this2.getRenewBlockedReason(_this2.form);
+        return;
+      }
       yield _this2.proposalApi.markSent(_this2.form);
       _this2.message = 'Proposal marked as sent and valid for 24 hours.';
       _this2.load();
@@ -7428,6 +7520,10 @@ let AdminProposalsComponent = class AdminProposalsComponent {
       if (!proposal.proposalId) return;
       _this3.error = '';
       _this3.message = '';
+      if (!_this3.canRenewProposal(proposal)) {
+        _this3.error = _this3.getRenewBlockedReason(proposal);
+        return;
+      }
       try {
         const renewed = yield _this3.proposalApi.renewProposal(proposal.proposalId);
         _this3.message = 'Proposal renewed and valid for another 24 hours.';
@@ -13187,9 +13283,39 @@ let ProposalApiService = class ProposalApiService {
       };
     })();
   }
+  parseProposalOutingDate(value) {
+    const rawDate = String(value || '').trim();
+    if (!rawDate) return 0;
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+    const timestamp = Date.parse(normalized);
+    if (Number.isNaN(timestamp)) return 0;
+    const date = new Date(timestamp);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  }
+  isOutingDateTodayOrPast(proposal) {
+    const outingTime = this.parseProposalOutingDate(proposal.outingDate || proposal.date);
+    if (!outingTime) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return outingTime <= today.getTime();
+  }
+  assertProposalCanBeRenewed(proposal) {
+    if (this.isOutingDateTodayOrPast(proposal)) {
+      throw new Error('This proposal cannot be renewed because the outing date is today or already past.');
+    }
+  }
   markSent(proposal) {
     var _this5 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this5.assertProposalCanBeRenewed(proposal);
       yield _this5.patchProposal(proposal.proposalId, {
         status: 'sent',
         validUntil: Date.now() + 24 * 60 * 60 * 1000
@@ -13212,6 +13338,7 @@ let ProposalApiService = class ProposalApiService {
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const current = yield _this7.readItem(_this7.proposalsCollection, proposalId);
       if (!current) throw new Error('Proposal not found');
+      _this7.assertProposalCanBeRenewed(current);
       const renewed = {
         ...current,
         status: 'sent',
@@ -14294,9 +14421,43 @@ let BookingDetailComponent = class BookingDetailComponent {
     };
     return defaults[language] || defaults.fr;
   }
+  getBookingOutingTime() {
+    const booking = this.booking || {};
+    const rawDate = String(booking.outingDate || booking.date || booking.bookingDate || '').trim();
+    if (!rawDate) return 0;
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+    const timestamp = Date.parse(normalized);
+    if (Number.isNaN(timestamp)) return 0;
+    const date = new Date(timestamp);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  }
+  isBookingDatePastOrToday() {
+    const outingTime = this.getBookingOutingTime();
+    if (!outingTime) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return outingTime <= today.getTime();
+  }
+  isCancelledBooking() {
+    const anyBooking = this.booking || {};
+    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+    return rawStatus === false || rawStatus === 'false' || rawStatus === 'cancelled' || rawStatus === 'canceled' || anyBooking.cancelled === true || anyBooking.canceled === true;
+  }
+  isBookingCancelledByDate() {
+    return this.isBookingDatePastOrToday() && !this.isBalancePaid();
+  }
   getDerivedBookingStatus() {
     const anyBooking = this.booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+    if (this.isBookingCancelledByDate() || this.isCancelledBooking()) return 'cancelled';
     // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
     if (this.isBalancePaid()) return 'payment_done';
     if (rawStatus === 'payment_done' || rawStatus === 'full_payment_done' || rawStatus === 'paid' || rawStatus === 'completed') {
@@ -14310,6 +14471,7 @@ let BookingDetailComponent = class BookingDetailComponent {
   }
   getStatusLabel() {
     const status = this.getDerivedBookingStatus();
+    if (status === 'cancelled') return 'Cancelled';
     if (status === 'payment_done') return this.btext('paymentDone');
     if (status === 'confirmed') return this.btext('bookingConfirmed');
     return this.btext('notConfirmed');
@@ -14604,10 +14766,11 @@ let BookingDetailComponent = class BookingDetailComponent {
     return this.isWarrantyCardRegistered() || this.getWarrantyChoice() === 'cash_on_board';
   }
   canRecordBalancePayment() {
-    return this.isBookingConfirmed() && this.isDepositPaid() && this.isWarrantySecured() && !this.isBalancePaid();
+    return !this.isBookingDatePastOrToday() && this.isBookingConfirmed() && this.isDepositPaid() && this.isWarrantySecured() && !this.isBalancePaid();
   }
   getBalanceBlockedReason() {
     if (this.isBalancePaid()) return 'Remaining 90% already paid.';
+    if (this.isBookingDatePastOrToday()) return 'The outing date is today or already past. The remaining 90% cannot be collected and the booking is cancelled.';
     if (!this.isBookingConfirmed()) return 'Booking must be confirmed first.';
     if (!this.isDepositPaid()) return '10% deposit must be paid first.';
     if (!this.isWarrantySecured()) return 'Warranty must be selected first (cash) or card must be registered.';
@@ -14984,10 +15147,10 @@ let BookingDetailComponent = class BookingDetailComponent {
     return !this.isAdmin && this.getBookingWorkflowState() === 'deposit_required' && !this.isDepositPaid();
   }
   canCustomerPayBalance() {
-    return !this.isAdmin && this.getBookingWorkflowState() === 'balance_required';
+    return !this.isAdmin && !this.isBookingDatePastOrToday() && !this.isCancelledBooking() && this.getBookingWorkflowState() === 'balance_required';
   }
   shouldShowCustomerPaymentButton() {
-    return this.canCustomerPayDeposit() || this.canCustomerPayBalance();
+    return this.getDerivedBookingStatus() !== 'cancelled' && (this.canCustomerPayDeposit() || this.canCustomerPayBalance());
   }
   get customerPaymentButtonLabel() {
     if (this.canCustomerPayDeposit()) return 'Pay 10% deposit';
@@ -15037,6 +15200,10 @@ let BookingDetailComponent = class BookingDetailComponent {
   payBalance() {
     if (this.isAdmin) return;
     if (!this.booking?.bookingId || this.isBalancePaid()) return;
+    if (this.isBookingDatePastOrToday() || this.isCancelledBooking()) {
+      this.balancePaymentError = 'This booking is cancelled or the outing date is today/already past. The remaining balance cannot be paid.';
+      return;
+    }
     const currentUrl = window.location.href;
     const balanceAmount = this.getBalanceAmount();
     const payload = {
@@ -17226,9 +17393,42 @@ let BookingsComponent = class BookingsComponent {
     const anyBooking = booking;
     return anyBooking.termsAccepted === true || anyBooking.tcAccepted === true || anyBooking.tAndCAccepted === true || anyBooking.termsAndConditionsAccepted === true || anyBooking.acceptedTerms === true || anyBooking.termsStatus === 'accepted' || anyBooking.tcStatus === 'accepted' || anyBooking?.documents?.termsAccepted === true || anyBooking?.terms?.accepted === true;
   }
+  getBookingOutingTime(booking) {
+    const rawDate = String(booking?.outingDate || booking?.date || booking?.bookingDate || '').trim();
+    if (!rawDate) return 0;
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+    const timestamp = Date.parse(normalized);
+    if (Number.isNaN(timestamp)) return 0;
+    const date = new Date(timestamp);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  }
+  isBookingDatePastOrToday(booking) {
+    const outingTime = this.getBookingOutingTime(booking);
+    if (!outingTime) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return outingTime <= today.getTime();
+  }
+  isBookingCancelledByDate(booking) {
+    return this.isBookingDatePastOrToday(booking) && !this.isBalancePaid(booking);
+  }
+  isCancelledBooking(booking) {
+    const anyBooking = booking || {};
+    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+    return rawStatus === false || rawStatus === 'false' || rawStatus === 'cancelled' || rawStatus === 'canceled' || anyBooking.cancelled === true || anyBooking.canceled === true;
+  }
   getDerivedBookingStatus(booking) {
     const anyBooking = booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+    if (this.isBookingCancelledByDate(booking) || this.isCancelledBooking(booking)) return 'cancelled';
     // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
     if (this.isBalancePaid(booking)) return 'payment_done';
     if (rawStatus === 'payment_done' || rawStatus === 'full_payment_done' || rawStatus === 'paid' || rawStatus === 'completed') {
@@ -17242,6 +17442,7 @@ let BookingsComponent = class BookingsComponent {
   }
   getStatusLabel(booking) {
     const status = this.getDerivedBookingStatus(booking);
+    if (status === 'cancelled') return 'Cancelled';
     if (status === 'payment_done') return 'Payment done';
     if (status === 'confirmed') return 'Confirmed';
     return 'Not confirmed';
@@ -17345,6 +17546,7 @@ let BookingsComponent = class BookingsComponent {
   }
   getBalanceBlockedReason(booking) {
     if (this.isBalancePaid(booking)) return 'Remaining 90% already paid.';
+    if (this.isBookingDatePastOrToday(booking)) return 'The outing date is today or already past. The remaining 90% cannot be collected and the booking is cancelled.';
     if (!this.isBookingConfirmed(booking)) return 'Booking must be confirmed first.';
     if (!this.isDepositPaid(booking)) return '10% deposit must be paid first.';
     if (!this.isWarrantySecured(booking)) return 'Warranty must be selected first (cash) or card must be registered.';
@@ -20997,7 +21199,14 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
     return this.proposalInfo?.[key] || this.defaultProposalInfo(this.currentLanguage)[key] || key;
   }
   get termsSections() {
-    return this.proposalInfo?.termsSections || this.defaultProposalInfo(this.currentLanguage).termsSections;
+    const defaultSections = this.defaultProposalInfo(this.currentLanguage).termsSections || [];
+    const firebaseSections = Array.isArray(this.proposalInfo?.termsSections) ? this.proposalInfo.termsSections : [];
+    // Some older Firebase objects only contain section 1 in English/Spanish.
+    // In that case, do not render the incomplete object: fall back to the full local version.
+    if (firebaseSections.length >= defaultSections.length && firebaseSections.length > 1) {
+      return firebaseSections;
+    }
+    return defaultSections;
   }
   defaultProposalInfo(language) {
     const defaults = {
@@ -21161,6 +21370,36 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
         termsSections: [{
           title: '1. Booking confirmation',
           paragraphs: ['The booking is confirmed only after the proposal has been accepted, the Terms & Conditions have been accepted, and the 10% deposit has been paid.', 'Until these steps are completed, the outing is not considered confirmed.']
+        }, {
+          title: '2. Deposit and cancellation',
+          paragraphs: ['A 10% deposit is required to secure the booking.', 'Cancellation conditions depend on the date, weather, safety requirements and any specific agreement made with Alegria Boat.']
+        }, {
+          title: '3. Remaining balance',
+          paragraphs: ['The remaining 90% balance is due before departure or on board according to the agreed payment terms.', 'Any additional costs or extras must be paid before the end of the outing.']
+        }, {
+          title: '4. Security deposit / warranty',
+          paragraphs: ['A security deposit is mandatory to cover possible damage, exceptional costs or unpaid amounts.', 'The warranty can be registered by card through Stripe or provided in cash before departure.', 'No amount is charged to the card unless damage, unpaid costs or a confirmed breach is identified.']
+        }, {
+          title: '5. Safety on board',
+          paragraphs: ['Passengers must follow the skipper’s instructions at all times.', 'The skipper may modify, shorten, postpone or cancel the outing if safety, weather or passenger behaviour requires it.']
+        }, {
+          title: '6. Punctuality',
+          paragraphs: ['Passengers must arrive at the agreed meeting point on time.', 'Any delay may reduce the duration of the outing without compensation.']
+        }, {
+          title: '7. Swimming and water activities',
+          paragraphs: ['Swimming and water activities are undertaken under the passengers’ responsibility.', 'They are allowed only when the skipper considers them possible and safe.', 'Children and passengers who cannot swim must be supervised by a responsible adult.']
+        }, {
+          title: '8. Marine toilets',
+          paragraphs: ['Marine toilets are fragile.', 'It is strictly forbidden to throw paper, wipes, sanitary products, food, cigarette ends or any other object into them.', 'Any blockage caused by improper use may be charged.']
+        }, {
+          title: '9. Damage and cleaning',
+          paragraphs: ['Passengers are responsible for any damage caused to the boat, cushions, equipment, fittings and safety material.', 'Cigarette burns, broken or lost equipment, blocked toilets and exceptional cleaning may be charged.']
+        }, {
+          title: '10. Skipper’s decision',
+          paragraphs: ['The skipper’s decision is final regarding the itinerary, anchorages, swimming, departure, return and cancellation for safety or weather reasons.']
+        }, {
+          title: '11. Acceptance',
+          paragraphs: ['By ticking the acceptance box, the customer confirms that they have read, understood and accepted the full Terms & Conditions.']
         }]
       },
       es: {
@@ -21227,6 +21466,36 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
         termsSections: [{
           title: '1. Confirmación de reserva',
           paragraphs: ['La reserva queda confirmada únicamente después de aceptar la propuesta, aceptar las Condiciones Generales y pagar el depósito del 10 %.', 'Hasta que estos pasos se completen, la salida no se considera confirmada.']
+        }, {
+          title: '2. Depósito y cancelación',
+          paragraphs: ['Se requiere un depósito del 10 % para asegurar la reserva.', 'Las condiciones de cancelación dependen de la fecha, la meteorología, la seguridad y cualquier acuerdo específico establecido con Alegria Boat.']
+        }, {
+          title: '3. Pago restante',
+          paragraphs: ['El 90 % restante debe pagarse antes de la salida o a bordo según las condiciones acordadas.', 'Cualquier coste adicional o extra debe pagarse antes del final de la salida.']
+        }, {
+          title: '4. Fianza / garantía',
+          paragraphs: ['Es obligatoria una garantía para cubrir posibles daños, costes excepcionales o importes pendientes.', 'La garantía puede registrarse con tarjeta mediante Stripe o entregarse en efectivo antes de la salida.', 'No se cargará ningún importe en la tarjeta salvo en caso de daños, costes impagados o incumplimiento confirmado.']
+        }, {
+          title: '5. Seguridad a bordo',
+          paragraphs: ['Los pasajeros deben seguir las instrucciones del skipper en todo momento.', 'El skipper puede modificar, acortar, aplazar o cancelar la salida si lo exigen la seguridad, la meteorología o el comportamiento de los pasajeros.']
+        }, {
+          title: '6. Puntualidad',
+          paragraphs: ['Los pasajeros deben presentarse a la hora acordada en el punto de encuentro.', 'Cualquier retraso puede reducir la duración de la salida sin compensación.']
+        }, {
+          title: '7. Baño y actividades náuticas',
+          paragraphs: ['El baño y las actividades náuticas se realizan bajo la responsabilidad de los pasajeros.', 'Solo están permitidos cuando el skipper los considere posibles y seguros.', 'Los niños y las personas que no sepan nadar deben estar supervisados por un adulto responsable.']
+        }, {
+          title: '8. Aseos marinos',
+          paragraphs: ['Los aseos marinos son frágiles.', 'Está estrictamente prohibido tirar papel, toallitas, productos higiénicos, comida, colillas o cualquier otro objeto.', 'Cualquier atasco causado por un uso indebido podrá ser facturado.']
+        }, {
+          title: '9. Daños y limpieza',
+          paragraphs: ['Los pasajeros son responsables de los daños causados al barco, cojines, equipos, instalaciones y material de seguridad.', 'Las quemaduras de cigarrillo, equipos rotos o perdidos, aseos obstruidos y limpiezas excepcionales podrán ser facturados.']
+        }, {
+          title: '10. Decisión del skipper',
+          paragraphs: ['La decisión del skipper es definitiva respecto al itinerario, fondeos, baño, salida, regreso y cancelación por razones de seguridad o meteorología.']
+        }, {
+          title: '11. Aceptación',
+          paragraphs: ['Al marcar la casilla de aceptación, el cliente confirma que ha leído, comprendido y aceptado la totalidad de las Condiciones Generales.']
         }]
       }
     };

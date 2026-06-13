@@ -36,10 +36,10 @@
 
       <div class="actions">
         <button class="btn btn-primary" type="button" [disabled]="saving" (click)="saveProposal()">{{ saving ? 'Saving...' : 'Save proposal' }}</button>
-        <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" (click)="markSent()">Mark sent / renew 24h</button>
+        <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" [disabled]="!canRenewProposal(form)" [title]="getRenewBlockedReason(form)" (click)="markSent()">Mark sent / renew 24h</button>
         <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" (click)="copyLink()">Copy client link</button>
         <button class="btn btn-primary" type="button" *ngIf="form.proposalId" (click)="sendCurrentProposalByEmail()">Send by email</button>
-        <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" (click)="renewProposal(form)">Renew 24h</button>
+        <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" [disabled]="!canRenewProposal(form)" [title]="getRenewBlockedReason(form)" (click)="renewProposal(form)">Renew 24h</button>
         <button class="btn btn-danger" type="button" *ngIf="form.proposalId" (click)="deleteProposal(form)">Delete</button>
       </div>
 

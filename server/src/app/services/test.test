@@ -1,0 +1,14 @@
+curl -k -X POST https://localhost:2000/pay/outing-deposit-checkout \
+  -H "Content-Type: application/json" \
+  -d '{
+    "bookingId": "test_123",
+    "ownerId": "alegria",
+    "depositAmount": 100,
+    "currency": "eur",
+    "customerEmail": "test@example.com",
+    "customerName": "Test User",
+    "outingType": "Journée en mer",
+    "outingDate": "2026-06-12",
+    "successUrl": "https://localhost:2000/proposal/test_123?payment=success", 
+    "cancelUrl": "https://localhost:2000/proposal/test_123?payment=cancelled"
+  }'

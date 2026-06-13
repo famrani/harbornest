@@ -204,9 +204,52 @@ export class BookingsComponent implements OnInit {
       anyBooking?.terms?.accepted === true;
   }
 
+
+  getBookingOutingTime(booking: AlegriaBooking): number {
+    const rawDate = String((booking as any)?.outingDate || (booking as any)?.date || (booking as any)?.bookingDate || '').trim();
+    if (!rawDate) return 0;
+
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+
+    const timestamp = Date.parse(normalized);
+    if (Number.isNaN(timestamp)) return 0;
+
+    const date = new Date(timestamp);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  }
+
+  isBookingDatePastOrToday(booking: AlegriaBooking): boolean {
+    const outingTime = this.getBookingOutingTime(booking);
+    if (!outingTime) return false;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return outingTime <= today.getTime();
+  }
+
+  isBookingCancelledByDate(booking: AlegriaBooking): boolean {
+    return this.isBookingDatePastOrToday(booking) && !this.isBalancePaid(booking);
+  }
+
+  isCancelledBooking(booking: AlegriaBooking): boolean {
+    const anyBooking: any = booking || {};
+    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+    return rawStatus === false || rawStatus === 'false' || rawStatus === 'cancelled' || rawStatus === 'canceled' || anyBooking.cancelled === true || anyBooking.canceled === true;
+  }
+
   getDerivedBookingStatus(booking: AlegriaBooking): string {
     const anyBooking: any = booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+
+    if (this.isBookingCancelledByDate(booking) || this.isCancelledBooking(booking)) return 'cancelled';
 
     // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
     if (this.isBalancePaid(booking)) return 'payment_done';
@@ -236,6 +279,7 @@ export class BookingsComponent implements OnInit {
 
   getStatusLabel(booking: AlegriaBooking): string {
     const status = this.getDerivedBookingStatus(booking);
+    if (status === 'cancelled') return 'Cancelled';
     if (status === 'payment_done') return 'Payment done';
     if (status === 'confirmed') return 'Confirmed';
     return 'Not confirmed';
@@ -401,7 +445,8 @@ export class BookingsComponent implements OnInit {
   }
 
   canRecordBalancePayment(booking: AlegriaBooking): boolean {
-    return false && this.isBookingConfirmed(booking) &&
+    return false && !this.isBookingDatePastOrToday(booking) &&
+      this.isBookingConfirmed(booking) &&
       this.isDepositPaid(booking) &&
       this.isWarrantySecured(booking) &&
       !this.isBalancePaid(booking);
@@ -409,6 +454,7 @@ export class BookingsComponent implements OnInit {
 
   getBalanceBlockedReason(booking: AlegriaBooking): string {
     if (this.isBalancePaid(booking)) return 'Remaining 90% already paid.';
+    if (this.isBookingDatePastOrToday(booking)) return 'The outing date is today or already past. The remaining 90% cannot be collected and the booking is cancelled.';
     if (!this.isBookingConfirmed(booking)) return 'Booking must be confirmed first.';
     if (!this.isDepositPaid(booking)) return '10% deposit must be paid first.';
     if (!this.isWarrantySecured(booking)) return 'Warranty must be selected first (cash) or card must be registered.';

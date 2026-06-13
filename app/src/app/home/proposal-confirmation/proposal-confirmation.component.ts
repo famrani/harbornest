@@ -330,7 +330,16 @@ export class ProposalConfirmationComponent implements OnInit {
   }
 
   get termsSections(): Array<{ title: string; paragraphs: string[] }> {
-    return this.proposalInfo?.termsSections || this.defaultProposalInfo(this.currentLanguage).termsSections;
+    const defaultSections = this.defaultProposalInfo(this.currentLanguage).termsSections || [];
+    const firebaseSections = Array.isArray(this.proposalInfo?.termsSections) ? this.proposalInfo.termsSections : [];
+
+    // Some older Firebase objects only contain section 1 in English/Spanish.
+    // In that case, do not render the incomplete object: fall back to the full local version.
+    if (firebaseSections.length >= defaultSections.length && firebaseSections.length > 1) {
+      return firebaseSections;
+    }
+
+    return defaultSections;
   }
 
   private defaultProposalInfo(language: SiteLanguage): any {
@@ -472,7 +481,17 @@ export class ProposalConfirmationComponent implements OnInit {
         depositPaidMessage: 'The 10% deposit has been paid. Your booking is confirmed.',
         depositPendingMessage: 'Your booking is confirmed after the deposit payment.',
         termsSections: [
-          { title: '1. Booking confirmation', paragraphs: ['The booking is confirmed only after the proposal has been accepted, the Terms & Conditions have been accepted, and the 10% deposit has been paid.', 'Until these steps are completed, the outing is not considered confirmed.'] }
+          { title: '1. Booking confirmation', paragraphs: ['The booking is confirmed only after the proposal has been accepted, the Terms & Conditions have been accepted, and the 10% deposit has been paid.', 'Until these steps are completed, the outing is not considered confirmed.'] },
+          { title: '2. Deposit and cancellation', paragraphs: ['A 10% deposit is required to secure the booking.', 'Cancellation conditions depend on the date, weather, safety requirements and any specific agreement made with Alegria Boat.'] },
+          { title: '3. Remaining balance', paragraphs: ['The remaining 90% balance is due before departure or on board according to the agreed payment terms.', 'Any additional costs or extras must be paid before the end of the outing.'] },
+          { title: '4. Security deposit / warranty', paragraphs: ['A security deposit is mandatory to cover possible damage, exceptional costs or unpaid amounts.', 'The warranty can be registered by card through Stripe or provided in cash before departure.', 'No amount is charged to the card unless damage, unpaid costs or a confirmed breach is identified.'] },
+          { title: '5. Safety on board', paragraphs: ['Passengers must follow the skipper’s instructions at all times.', 'The skipper may modify, shorten, postpone or cancel the outing if safety, weather or passenger behaviour requires it.'] },
+          { title: '6. Punctuality', paragraphs: ['Passengers must arrive at the agreed meeting point on time.', 'Any delay may reduce the duration of the outing without compensation.'] },
+          { title: '7. Swimming and water activities', paragraphs: ['Swimming and water activities are undertaken under the passengers’ responsibility.', 'They are allowed only when the skipper considers them possible and safe.', 'Children and passengers who cannot swim must be supervised by a responsible adult.'] },
+          { title: '8. Marine toilets', paragraphs: ['Marine toilets are fragile.', 'It is strictly forbidden to throw paper, wipes, sanitary products, food, cigarette ends or any other object into them.', 'Any blockage caused by improper use may be charged.'] },
+          { title: '9. Damage and cleaning', paragraphs: ['Passengers are responsible for any damage caused to the boat, cushions, equipment, fittings and safety material.', 'Cigarette burns, broken or lost equipment, blocked toilets and exceptional cleaning may be charged.'] },
+          { title: '10. Skipper’s decision', paragraphs: ['The skipper’s decision is final regarding the itinerary, anchorages, swimming, departure, return and cancellation for safety or weather reasons.'] },
+          { title: '11. Acceptance', paragraphs: ['By ticking the acceptance box, the customer confirms that they have read, understood and accepted the full Terms & Conditions.'] }
         ]
       },
       es: {
@@ -537,7 +556,17 @@ export class ProposalConfirmationComponent implements OnInit {
         depositPaidMessage: 'El depósito del 10% ha sido pagado. Su reserva está confirmada.',
         depositPendingMessage: 'Su reserva quedará confirmada después del pago del depósito.',
         termsSections: [
-          { title: '1. Confirmación de reserva', paragraphs: ['La reserva queda confirmada únicamente después de aceptar la propuesta, aceptar las Condiciones Generales y pagar el depósito del 10 %.', 'Hasta que estos pasos se completen, la salida no se considera confirmada.'] }
+          { title: '1. Confirmación de reserva', paragraphs: ['La reserva queda confirmada únicamente después de aceptar la propuesta, aceptar las Condiciones Generales y pagar el depósito del 10 %.', 'Hasta que estos pasos se completen, la salida no se considera confirmada.'] },
+          { title: '2. Depósito y cancelación', paragraphs: ['Se requiere un depósito del 10 % para asegurar la reserva.', 'Las condiciones de cancelación dependen de la fecha, la meteorología, la seguridad y cualquier acuerdo específico establecido con Alegria Boat.'] },
+          { title: '3. Pago restante', paragraphs: ['El 90 % restante debe pagarse antes de la salida o a bordo según las condiciones acordadas.', 'Cualquier coste adicional o extra debe pagarse antes del final de la salida.'] },
+          { title: '4. Fianza / garantía', paragraphs: ['Es obligatoria una garantía para cubrir posibles daños, costes excepcionales o importes pendientes.', 'La garantía puede registrarse con tarjeta mediante Stripe o entregarse en efectivo antes de la salida.', 'No se cargará ningún importe en la tarjeta salvo en caso de daños, costes impagados o incumplimiento confirmado.'] },
+          { title: '5. Seguridad a bordo', paragraphs: ['Los pasajeros deben seguir las instrucciones del skipper en todo momento.', 'El skipper puede modificar, acortar, aplazar o cancelar la salida si lo exigen la seguridad, la meteorología o el comportamiento de los pasajeros.'] },
+          { title: '6. Puntualidad', paragraphs: ['Los pasajeros deben presentarse a la hora acordada en el punto de encuentro.', 'Cualquier retraso puede reducir la duración de la salida sin compensación.'] },
+          { title: '7. Baño y actividades náuticas', paragraphs: ['El baño y las actividades náuticas se realizan bajo la responsabilidad de los pasajeros.', 'Solo están permitidos cuando el skipper los considere posibles y seguros.', 'Los niños y las personas que no sepan nadar deben estar supervisados por un adulto responsable.'] },
+          { title: '8. Aseos marinos', paragraphs: ['Los aseos marinos son frágiles.', 'Está estrictamente prohibido tirar papel, toallitas, productos higiénicos, comida, colillas o cualquier otro objeto.', 'Cualquier atasco causado por un uso indebido podrá ser facturado.'] },
+          { title: '9. Daños y limpieza', paragraphs: ['Los pasajeros son responsables de los daños causados al barco, cojines, equipos, instalaciones y material de seguridad.', 'Las quemaduras de cigarrillo, equipos rotos o perdidos, aseos obstruidos y limpiezas excepcionales podrán ser facturados.'] },
+          { title: '10. Decisión del skipper', paragraphs: ['La decisión del skipper es definitiva respecto al itinerario, fondeos, baño, salida, regreso y cancelación por razones de seguridad o meteorología.'] },
+          { title: '11. Aceptación', paragraphs: ['Al marcar la casilla de aceptación, el cliente confirma que ha leído, comprendido y aceptado la totalidad de las Condiciones Generales.'] }
         ]
       }
     };

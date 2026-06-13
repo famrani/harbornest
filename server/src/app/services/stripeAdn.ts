@@ -336,6 +336,93 @@ export class StripeService {
     // 2.b) Alegria outing payments: deposit + warranty / damage deposit
     // ---------------------------------------------------------------------------
 
+    private parseOutingDateToMidnight(value: any): number {
+        const rawDate = String(value || '').trim();
+        if (!rawDate) return 0;
+
+        let normalized = rawDate;
+        const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+        if (frenchDate) {
+            const day = frenchDate[1].padStart(2, '0');
+            const month = frenchDate[2].padStart(2, '0');
+            const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+            normalized = `${year}-${month}-${day}`;
+        }
+
+        const timestamp = Date.parse(normalized);
+        if (Number.isNaN(timestamp)) return 0;
+
+        const date = new Date(timestamp);
+        date.setHours(0, 0, 0, 0);
+        return date.getTime();
+    }
+
+    private isOutingDateTodayOrPast(value: any): boolean {
+        const outingTime = this.parseOutingDateToMidnight(value);
+        if (!outingTime) return false;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return outingTime <= today.getTime();
+    }
+
+    private isCompletedPaymentValue(value: any): boolean {
+        if (value === true) return true;
+        const normalized = String(value || '').toLowerCase().trim();
+        return [
+            'true',
+            'paid',
+            'completed',
+            'complete',
+            'done',
+            'balance_paid',
+            'remaining_paid',
+            'payment_done',
+            'full_payment_done'
+        ].includes(normalized);
+    }
+
+    private isCancelledStatusValue(value: any): boolean {
+        if (value === false) return true;
+        const normalized = String(value || '').toLowerCase().trim();
+        return ['false', 'cancelled', 'canceled', 'deleted'].includes(normalized);
+    }
+
+    private async assertBalanceCheckoutAllowed(bookingId: string, body: any): Promise<void> {
+        const bookingSnap = await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).once('value');
+        const booking = bookingSnap.val() || {};
+        const outingDate = booking.outingDate || booking.date || booking.bookingDate || body.outingDate || body.date;
+
+        if (this.isCancelledStatusValue(booking.bookingStatus ?? booking.status) || booking.cancelled === true || booking.canceled === true) {
+            throw new Error('This booking is cancelled. The remaining balance cannot be paid.');
+        }
+
+        if (this.isCompletedPaymentValue(booking.paymentStatus) ||
+            this.isCompletedPaymentValue(booking.balancePaid) ||
+            this.isCompletedPaymentValue(booking.balanceStatus) ||
+            this.isCompletedPaymentValue(booking.balancePaymentStatus) ||
+            this.isCompletedPaymentValue(booking.remainingPaid) ||
+            this.isCompletedPaymentValue(booking.remainingStatus) ||
+            this.isCompletedPaymentValue(booking.remainingPaymentStatus) ||
+            this.isCompletedPaymentValue(booking?.payments?.balance?.paid) ||
+            this.isCompletedPaymentValue(booking?.payments?.balance?.status) ||
+            this.isCompletedPaymentValue(booking?.payments?.remaining?.paid) ||
+            this.isCompletedPaymentValue(booking?.payments?.remaining?.status)) {
+            throw new Error('The remaining balance is already paid.');
+        }
+
+        if (this.isOutingDateTodayOrPast(outingDate)) {
+            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
+                bookingStatus: false,
+                status: 'cancelled',
+                cancellationReason: 'Outing date is today or already past and remaining balance was not paid.',
+                modifiedTS: Date.now(),
+                updatedAt: Date.now(),
+            }).catch(() => undefined);
+            throw new Error('The outing date is today or already past. The remaining balance cannot be paid and the booking is cancelled.');
+        }
+    }
+
     private normalizeAmountToCents(value: any): number {
         const n = Number(value || 0);
         if (!Number.isFinite(n) || n <= 0) return 0;
@@ -1410,7 +1497,136 @@ export class StripeService {
     }
 
     async createOutingBalanceCheckout(req: any, res: any) {
-        return res.status(501).json({ error: 'createOutingBalanceCheckout not yet implemented' });
+        try {
+            const body = req.body || {};
+            const ownerId = body.ownerId || 'alegria';
+            const bookingId = body.bookingId || body.proposalId || body.id;
+            const rawBalanceAmount = body.balanceAmount ?? body.remainingAmount ?? body.amount ?? body.balance ?? body.remaining;
+            const currency = String(body.currency || 'eur').toLowerCase();
+            const rawCustomerEmail = body.customerEmail || body.email || body.customer?.email;
+            const customerEmail = this.isValidEmailForStripe(rawCustomerEmail) ? String(rawCustomerEmail).trim() : '';
+            const customerName = body.customerName || body.name || body.customer?.fullName || (!customerEmail ? rawCustomerEmail : '');
+            const customerPhone = body.customerPhone || body.phone || body.customer?.phone;
+            const outingType = body.outingType || body.type || '';
+            const outingDate = body.outingDate || body.date || '';
+            const successUrl = body.successUrl || body.returnUrl;
+            const cancelUrl = body.cancelUrl || body.failureUrl || body.returnUrl;
+
+            if (!bookingId) {
+                return res.status(400).json({
+                    error: 'bookingId is required',
+                    received: { bookingId: body.bookingId, proposalId: body.proposalId, id: body.id }
+                });
+            }
+
+            await this.assertBalanceCheckoutAllowed(bookingId, body);
+
+            const amount = this.normalizeAmountToCents(rawBalanceAmount);
+            if (!amount) {
+                return res.status(400).json({
+                    error: 'balanceAmount, remainingAmount or amount must be greater than 0',
+                    received: { balanceAmount: body.balanceAmount, remainingAmount: body.remainingAmount, amount: body.amount }
+                });
+            }
+
+            if (!successUrl || !cancelUrl) {
+                return res.status(400).json({
+                    error: 'successUrl and cancelUrl are required',
+                    received: { successUrl, cancelUrl, returnUrl: body.returnUrl }
+                });
+            }
+
+            const stripe = await this.getStripeForOwner(ownerId);
+
+            const customer = customerEmail
+                ? await stripe.customers.create({
+                    email: customerEmail,
+                    name: customerName,
+                    phone: customerPhone,
+                    metadata: {
+                        bookingId,
+                        ownerId,
+                        source: 'alegria-balance',
+                    },
+                }).catch(() => null)
+                : null;
+
+            const paymentRef = this.stbDbSvc.db.ref('/backendpayments').push();
+            const paymentId = paymentRef.key as string;
+
+            const session = await stripe.checkout.sessions.create({
+                mode: 'payment',
+                payment_method_types: ['card'],
+                customer: customer?.id,
+                customer_email: customer ? undefined : customerEmail,
+                line_items: [
+                    {
+                        quantity: 1,
+                        price_data: {
+                            currency,
+                            unit_amount: amount,
+                            product_data: {
+                                name: 'Alegria remaining balance',
+                                description: outingType || 'Boat outing remaining balance',
+                            },
+                        },
+                    },
+                ],
+                success_url: this.appendCheckoutParams(successUrl, { session_id: '{CHECKOUT_SESSION_ID}', bookingId, paymentType: 'balance', payment: 'success' }),
+                cancel_url: this.appendCheckoutParams(cancelUrl, { bookingId, paymentType: 'balance', payment: 'cancelled' }),
+                payment_intent_data: {
+                    metadata: {
+                        paymentId,
+                        bookingId,
+                        ownerId,
+                        paymentType: 'balance',
+                        outingType: outingType || '',
+                        outingDate: outingDate || '',
+                    },
+                },
+                metadata: {
+                    paymentId,
+                    bookingId,
+                    ownerId,
+                    paymentType: 'balance',
+                    outingType: outingType || '',
+                    outingDate: outingDate || '',
+                },
+            });
+
+            const now = Date.now();
+            const payload = {
+                paymentId,
+                ownerId,
+                bookingId,
+                paymentType: 'balance',
+                amount,
+                currency,
+                status: 'checkout_created',
+                stripeCheckoutSessionId: session.id,
+                stripeCustomerId: customer?.id || null,
+                customerEmail: customerEmail || null,
+                customerName: customerName || null,
+                customerPhone: customerPhone || null,
+                outingType: outingType || null,
+                outingDate: outingDate || null,
+                createdTS: now,
+                modifiedTS: now,
+            };
+
+            await paymentRef.set(payload);
+            await this.stbDbSvc.db.ref(this.buildBookingPaymentPath(bookingId, 'balance')).set(payload);
+            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/balance`).set(payload);
+
+            return res.json({ ok: true, url: session.url, id: session.id, paymentId });
+        } catch (e: any) {
+            console.error('[createOutingBalanceCheckout] error:', e);
+            return res.status(400).json({
+                error: e?.message || 'Failed to create balance checkout session',
+                code: e?.code || null,
+                type: e?.type || null
+            });
+        }
     }
 
     async createOutingExtraServiceCheckout(req: any, res: any) {

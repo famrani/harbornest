@@ -318,3 +318,35 @@ label{display:grid;gap:6px;color:#08263a;font-weight:700}input,textarea,select{b
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Final proposal T&C full text fix */
+.terms-modal {
+  display: flex !important;
+  flex-direction: column !important;
+  max-height: 94vh !important;
+  overflow: hidden !important;
+}
+
+.terms-content.tc-scrollable {
+  flex: 1 1 auto !important;
+  min-height: 320px !important;
+  max-height: calc(94vh - 190px) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 1rem !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.terms-content.tc-scrollable h3,
+.terms-content.tc-scrollable p {
+  display: block !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.modal-actions {
+  flex: 0 0 auto !important;
+  background: #fff !important;
+  padding-top: 1rem !important;
+}
