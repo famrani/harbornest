@@ -165,3 +165,99 @@ p, li, input, textarea, select, .card-body, .term-section {
   font-family: 'Raleway', sans-serif;
   font-weight: 800;
 }
+
+
+/* Mobile outings layout fix: keep image and text in separate vertical blocks. */
+.outing-card {
+  position: relative;
+}
+
+.outing-card img {
+  display: block;
+}
+
+.content-card {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+}
+
+@media (max-width: 860px) {
+  .section {
+    padding: 2.5rem 0;
+  }
+
+  .grid {
+    gap: 1.5rem;
+  }
+
+  .outing-card {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: none;
+    overflow: hidden;
+    border-radius: 22px;
+  }
+
+  .outing-card img {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    flex: 0 0 auto;
+  }
+
+  .content-card {
+    width: 100%;
+    padding: 1.15rem;
+    margin: 0;
+    background: #fff;
+    border-radius: 0;
+    flex: 0 0 auto;
+  }
+
+  .content-card h2 {
+    font-size: 1.2rem;
+    line-height: 1.2;
+  }
+
+  .content-card p,
+  .content-card li {
+    font-size: 0.94rem;
+    line-height: 1.55;
+  }
+
+  .content-card ul {
+    margin-bottom: 0;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: min(100% - 1.25rem, 1120px);
+  }
+
+  .page-hero,
+  .section {
+    padding: 2rem 0;
+  }
+
+  .outing-card {
+    border-radius: 18px;
+  }
+
+  .outing-card img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .content-card {
+    padding: 1rem;
+  }
+}

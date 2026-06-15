@@ -4976,7 +4976,89 @@ p, li, input, textarea, select, .card-body, .term-section {
   color: var(--sun, #f59e0b);
   font-family: "Raleway", sans-serif;
   font-weight: 800;
-}`, "",{"version":3,"sources":["webpack://./src/app/home/outings/outings.component.scss"],"names":[],"mappings":"AACA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,WAAA;AACF;;AAEA;EACE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,gCAAA;EACA,8CAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,iBAAA;EACA,iBAAA;AACF;;AAEA;EACE,eAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,sBAAA;EACA,kBAAA;AACF;;AAEA;EACE,mBAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,oBAAA;EACA,gBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,wBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE;IACE,0BAAA;EACF;AACF;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AADF;;AAIA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AADF;;AAIA;EACE,yCAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,2BAAA;AADF;;AAIA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AADF;;AAIA;EACE,6DAAA;AADF;;AAIA;EACE,+BAAA;AADF;;AAIA;EACE,yBAAA;EACA,0BAAA;EACA,kCAAA;EACA,gBAAA;AADF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: #ffffff;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.grid {\n  display: grid;\n  gap: 1.3rem;\n}\n\n.outing-card {\n  background: #fff;\n  border-radius: 24px;\n  overflow: hidden;\n  display: grid;\n  grid-template-columns: 320px 1fr;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.outing-card img {\n  width: 100%;\n  height: 100%;\n  min-height: 260px;\n  object-fit: cover;\n}\n\n.content-card {\n  padding: 1.4rem;\n}\n\n.meta-top {\n  color: #64748b;\n  font-weight: 600;\n  margin-bottom: 0.75rem;\n  font-size: 0.88rem;\n}\n\nh2 {\n  margin: 0 0 0.75rem;\n  color: #08263a;\n  font-size: 1.35rem;\n}\n\nul {\n  padding-left: 1.15rem;\n  color: #334155;\n  line-height: 1.7;\n  font-size: 0.94rem;\n}\n\n.btn {\n  display: inline-flex;\n  margin-top: 1rem;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.85rem 1.05rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n@media (max-width: 860px) {\n  .outing-card {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n.price-line {\n  margin: 0.35rem 0 0.75rem;\n  color: var(--sun, #f59e0b);\n  font-family: 'Raleway', sans-serif;\n  font-weight: 800;\n}\n"],"sourceRoot":""}]);
+}
+
+/* Mobile outings layout fix: keep image and text in separate vertical blocks. */
+.outing-card {
+  position: relative;
+}
+
+.outing-card img {
+  display: block;
+}
+
+.content-card {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+}
+
+@media (max-width: 860px) {
+  .section {
+    padding: 2.5rem 0;
+  }
+  .grid {
+    gap: 1.5rem;
+  }
+  .outing-card {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: none;
+    overflow: hidden;
+    border-radius: 22px;
+  }
+  .outing-card img {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16/10;
+    object-fit: cover;
+    flex: 0 0 auto;
+  }
+  .content-card {
+    width: 100%;
+    padding: 1.15rem;
+    margin: 0;
+    background: #fff;
+    border-radius: 0;
+    flex: 0 0 auto;
+  }
+  .content-card h2 {
+    font-size: 1.2rem;
+    line-height: 1.2;
+  }
+  .content-card p,
+  .content-card li {
+    font-size: 0.94rem;
+    line-height: 1.55;
+  }
+  .content-card ul {
+    margin-bottom: 0;
+  }
+  .btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+}
+@media (max-width: 480px) {
+  .container {
+    width: min(100% - 1.25rem, 1120px);
+  }
+  .page-hero,
+  .section {
+    padding: 2rem 0;
+  }
+  .outing-card {
+    border-radius: 18px;
+  }
+  .outing-card img {
+    aspect-ratio: 4/3;
+  }
+  .content-card {
+    padding: 1rem;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/outings/outings.component.scss"],"names":[],"mappings":"AACA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,mBAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,WAAA;AACF;;AAEA;EACE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,gCAAA;EACA,8CAAA;AACF;;AAEA;EACE,WAAA;EACA,YAAA;EACA,iBAAA;EACA,iBAAA;AACF;;AAEA;EACE,eAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,sBAAA;EACA,kBAAA;AACF;;AAEA;EACE,mBAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE,qBAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,oBAAA;EACA,gBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,wBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE;IACE,0BAAA;EACF;AACF;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AADF;;AAIA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AADF;;AAIA;EACE,yCAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,2BAAA;AADF;;AAIA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AADF;;AAIA;EACE,6DAAA;AADF;;AAIA;EACE,+BAAA;AADF;;AAIA;EACE,yBAAA;EACA,0BAAA;EACA,kCAAA;EACA,gBAAA;AADF;;AAKA,gFAAA;AACA;EACE,kBAAA;AAFF;;AAKA;EACE,cAAA;AAFF;;AAKA;EACE,kBAAA;EACA,UAAA;EACA,gBAAA;AAFF;;AAKA;EACE;IACE,iBAAA;EAFF;EAKA;IACE,WAAA;EAHF;EAMA;IACE,aAAA;IACA,sBAAA;IACA,2BAAA;IACA,gBAAA;IACA,mBAAA;EAJF;EAOA;IACE,WAAA;IACA,YAAA;IACA,aAAA;IACA,mBAAA;IACA,iBAAA;IACA,cAAA;EALF;EAQA;IACE,WAAA;IACA,gBAAA;IACA,SAAA;IACA,gBAAA;IACA,gBAAA;IACA,cAAA;EANF;EASA;IACE,iBAAA;IACA,gBAAA;EAPF;EAUA;;IAEE,kBAAA;IACA,iBAAA;EARF;EAWA;IACE,gBAAA;EATF;EAYA;IACE,WAAA;IACA,uBAAA;IACA,kBAAA;EAVF;AACF;AAaA;EACE;IACE,kCAAA;EAXF;EAcA;;IAEE,eAAA;EAZF;EAeA;IACE,mBAAA;EAbF;EAgBA;IACE,iBAAA;EAdF;EAiBA;IACE,aAAA;EAfF;AACF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: #ffffff;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.grid {\n  display: grid;\n  gap: 1.3rem;\n}\n\n.outing-card {\n  background: #fff;\n  border-radius: 24px;\n  overflow: hidden;\n  display: grid;\n  grid-template-columns: 320px 1fr;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.outing-card img {\n  width: 100%;\n  height: 100%;\n  min-height: 260px;\n  object-fit: cover;\n}\n\n.content-card {\n  padding: 1.4rem;\n}\n\n.meta-top {\n  color: #64748b;\n  font-weight: 600;\n  margin-bottom: 0.75rem;\n  font-size: 0.88rem;\n}\n\nh2 {\n  margin: 0 0 0.75rem;\n  color: #08263a;\n  font-size: 1.35rem;\n}\n\nul {\n  padding-left: 1.15rem;\n  color: #334155;\n  line-height: 1.7;\n  font-size: 0.94rem;\n}\n\n.btn {\n  display: inline-flex;\n  margin-top: 1rem;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.85rem 1.05rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n@media (max-width: 860px) {\n  .outing-card {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n\n.price-line {\n  margin: 0.35rem 0 0.75rem;\n  color: var(--sun, #f59e0b);\n  font-family: 'Raleway', sans-serif;\n  font-weight: 800;\n}\n\n\n/* Mobile outings layout fix: keep image and text in separate vertical blocks. */\n.outing-card {\n  position: relative;\n}\n\n.outing-card img {\n  display: block;\n}\n\n.content-card {\n  position: relative;\n  z-index: 1;\n  background: #fff;\n}\n\n@media (max-width: 860px) {\n  .section {\n    padding: 2.5rem 0;\n  }\n\n  .grid {\n    gap: 1.5rem;\n  }\n\n  .outing-card {\n    display: flex;\n    flex-direction: column;\n    grid-template-columns: none;\n    overflow: hidden;\n    border-radius: 22px;\n  }\n\n  .outing-card img {\n    width: 100%;\n    height: auto;\n    min-height: 0;\n    aspect-ratio: 16 / 10;\n    object-fit: cover;\n    flex: 0 0 auto;\n  }\n\n  .content-card {\n    width: 100%;\n    padding: 1.15rem;\n    margin: 0;\n    background: #fff;\n    border-radius: 0;\n    flex: 0 0 auto;\n  }\n\n  .content-card h2 {\n    font-size: 1.2rem;\n    line-height: 1.2;\n  }\n\n  .content-card p,\n  .content-card li {\n    font-size: 0.94rem;\n    line-height: 1.55;\n  }\n\n  .content-card ul {\n    margin-bottom: 0;\n  }\n\n  .btn {\n    width: 100%;\n    justify-content: center;\n    text-align: center;\n  }\n}\n\n@media (max-width: 480px) {\n  .container {\n    width: min(100% - 1.25rem, 1120px);\n  }\n\n  .page-hero,\n  .section {\n    padding: 2rem 0;\n  }\n\n  .outing-card {\n    border-radius: 18px;\n  }\n\n  .outing-card img {\n    aspect-ratio: 4 / 3;\n  }\n\n  .content-card {\n    padding: 1rem;\n  }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
