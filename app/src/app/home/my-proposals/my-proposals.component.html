@@ -1,73 +1,84 @@
 <section class="proposal-page">
   <div class="container proposal-shell">
     <div class="section-head">
-      <span class="eyebrow">Customer area</span>
-      <h1>My proposals</h1>
-      <p>Review proposals sent by Alegria, accept a proposal, or open the related booking once accepted.</p>
+      <span class="eyebrow">{{ t('myEyebrow') }}</span>
+      <h1>{{ t('myTitle') }}</h1>
+      <p>{{ t('myIntro') }}</p>
     </div>
-
-    <p *ngIf="loading" class="muted">Loading proposals...</p>
+    <p *ngIf="loading" class="muted">{{ t('loadingMy') }}</p>
     <p *ngIf="!loading && error" class="error-message">{{ error }}</p>
+    <div class="proposal-tabs" *ngIf="!loading && ((proposals.length > 0 || requests.length > 0) || requests.length > 0)">
+      <button type="button" [class.active]="activeTab === 'requests'" (click)="setTab('requests')">{{ t('requests') }} <span>{{ requestsCount }}</span></button>
+      <button type="button" [class.active]="activeTab === 'pending'" (click)="setTab('pending')">{{ t('pending') }} <span>{{ pendingCount }}</span></button>
+      <button type="button" [class.active]="activeTab === 'accepted'" (click)="setTab('accepted')">{{ t('accepted') }} <span>{{ acceptedCount }}</span></button>
+      <button type="button" [class.active]="activeTab === 'declined'" (click)="setTab('declined')">{{ t('declined') }} <span>{{ declinedCount }}</span></button>
+      <button type="button" [class.active]="activeTab === 'expired'" (click)="setTab('expired')">{{ t('expiredStatus') }} <span>{{ expiredCount }}</span></button>
+    </div>
+    <div class="proposal-toolbar" *ngIf="!loading && (proposals.length > 0 || requests.length > 0)">
+      <label><span>{{ t('search') }}</span><input type="search" [(ngModel)]="searchTerm" [placeholder]="t('mySearchPlaceholder')" /></label>
+      <button class="btn btn-secondary" type="button" *ngIf="searchTerm" (click)="searchTerm = ''">{{ t('clear') }}</button>
+      <button class="btn btn-secondary" type="button" (click)="loadProposals()">{{ t('refresh') }}</button>
+    </div>
+    <div class="empty-card" *ngIf="!loading && proposals.length === 0 && requests.length === 0">{{ t('emptyNoProposal') }}</div>
+    <div class="empty-card" *ngIf="!loading && (proposals.length > 0 || requests.length > 0) && filteredProposals.length === 0">{{ t('emptyNoMatch') }}</div>
 
-    <div class="proposal-tabs" *ngIf="!loading && proposals.length > 0">
-      <button type="button" [class.active]="activeTab === 'pending'" (click)="setTab('pending')">Pending <span>{{ pendingCount }}</span></button>
-      <button type="button" [class.active]="activeTab === 'accepted'" (click)="setTab('accepted')">Accepted <span>{{ acceptedCount }}</span></button>
-      <button type="button" [class.active]="activeTab === 'declined'" (click)="setTab('declined')">Declined <span>{{ declinedCount }}</span></button>
-      <button type="button" [class.active]="activeTab === 'expired'" (click)="setTab('expired')">Expired <span>{{ expiredCount }}</span></button>
+
+    <div class="proposal-list" *ngIf="!loading && filteredProposalRequests.length > 0">
+      <article class="proposal-card request-card" *ngFor="let request of filteredProposalRequests">
+        <div class="proposal-top">
+          <span class="status-pill pending">{{ t('requestSubmittedStatus') }}</span>
+          <span class="validity">{{ t('awaitingAdminProposal') }}</span>
+        </div>
+        <h2>{{ request.outingType || t('outingProposal') }}</h2>
+        <p class="proposal-date">{{ request.outingDate || t('dateNotSet') }}<ng-container *ngIf="request.departureTime"> · {{ request.departureTime }}</ng-container></p>
+        <div class="proposal-grid">
+          <div><strong>{{ t('from') }}</strong><span>{{ request.startMarina || '-' }}</span></div>
+          <div><strong>{{ t('destination') }}</strong><span>{{ request.destination || '-' }}</span></div>
+          <div><strong>{{ t('passengers') }}</strong><span>{{ request.passengers || '-' }}</span></div>
+          <div><strong>{{ t('estimatedPrice') }}</strong><span>€{{ request.estimatedPrice || request.totalAmount || 0 }}</span></div>
+          <div><strong>{{ t('skipperPrice') }}</strong><span>€{{ getEstimatedSkipperPrice(request) }}</span></div>
+          <div><strong>{{ t('cleaningPrice') }}</strong><span>€{{ getEstimatedCleaningPrice(request) }}</span></div>
+          <div><strong>{{ t('optionsPrice') }}</strong><span>€{{ getEstimatedOptionsPrice(request) }}</span></div>
+        </div>
+        <p class="proposal-message">{{ t('requestWaitingText') }}</p>
+      </article>
     </div>
 
-    <div class="proposal-toolbar" *ngIf="!loading && proposals.length > 0">
-      <label>
-        <span>Search</span>
-        <input type="search" [(ngModel)]="searchTerm" placeholder="Date, outing, status..." />
-      </label>
-      <button class="btn btn-secondary" type="button" *ngIf="searchTerm" (click)="searchTerm = ''">Clear</button>
-      <button class="btn btn-secondary" type="button" (click)="loadProposals()">Refresh</button>
-    </div>
-
-    <div class="empty-card" *ngIf="!loading && proposals.length === 0">
-      No proposal has been sent to your account yet.
-    </div>
-
-    <div class="empty-card" *ngIf="!loading && proposals.length > 0 && filteredProposals.length === 0">
-      No proposal matches this tab or search.
+    <div class="proposal-list" *ngIf="!loading && filteredRequests.length > 0">
+      <article class="proposal-card request-card" *ngFor="let request of filteredRequests" (click)="openRequest(request)">
+        <div class="proposal-top">
+          <span class="status-pill pending">{{ getRequestStatusLabel(request) }}</span>
+          <span class="validity">{{ t('awaitingAdminProposal') }}</span>
+        </div>
+        <h2>{{ request.outingType || t('outingProposal') }}</h2>
+        <p class="proposal-date">{{ request.outingDate || t('dateNotSet') }}<ng-container *ngIf="request.departureTime"> · {{ request.departureTime }}</ng-container></p>
+        <div class="proposal-grid">
+          <div><strong>{{ t('from') }}</strong><span>{{ request.startMarina || '-' }}</span></div>
+          <div><strong>{{ t('destination') }}</strong><span>{{ request.destination || '-' }}</span></div>
+          <div><strong>{{ t('passengers') }}</strong><span>{{ request.passengers || '-' }}</span></div>
+          <div><strong>{{ t('requestSource') }}</strong><span>{{ t('createdByCustomer') }}</span></div>
+        </div>
+        <p class="proposal-message">{{ t('requestWaitingText') }}</p>
+      </article>
     </div>
 
     <div class="proposal-list" *ngIf="!loading && filteredProposals.length > 0">
       <article class="proposal-card" *ngFor="let proposal of filteredProposals" (click)="openProposal(proposal)">
-        <div class="proposal-top">
-          <span class="status-pill" [ngClass]="getStatusClass(proposal)">{{ getStatusLabel(proposal) }}</span>
-          <span class="validity">{{ getValidityLabel(proposal) }}</span>
-        </div>
-
-        <h2>{{ proposal.outingType || 'Outing proposal' }}</h2>
-        <p class="proposal-date">
-          {{ proposal.outingDate || 'Date not set' }}
-          <ng-container *ngIf="proposal.departureTime"> · {{ proposal.departureTime }}</ng-container>
-          <ng-container *ngIf="proposal.arrivalTime">–{{ proposal.arrivalTime }}</ng-container>
-        </p>
-
+        <div class="proposal-top"><span class="status-pill" [ngClass]="getStatusClass(proposal)">{{ getStatusLabel(proposal) }}</span><span class="validity">{{ getValidityLabel(proposal) }}</span></div>
+        <p class="proposal-origin">{{ getProposalOriginLabel(proposal) }}</p>
+        <h2>{{ proposal.outingType || t('outingProposal') }}</h2>
+        <p class="proposal-date">{{ proposal.outingDate || t('dateNotSet') }}<ng-container *ngIf="proposal.departureTime"> · {{ proposal.departureTime }}</ng-container><ng-container *ngIf="proposal.arrivalTime">–{{ proposal.arrivalTime }}</ng-container></p>
         <div class="proposal-grid">
-          <div><strong>Total</strong><span>€{{ proposal.totalAmount || 0 }}</span></div>
-          <div><strong>Deposit 10%</strong><span>€{{ getDepositAmount(proposal) }}</span></div>
-          <div><strong>Remaining 90%</strong><span>€{{ getBalanceAmount(proposal) }}</span></div>
-          <div><strong>Warranty</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>
+          <div><strong>{{ t('total') }}</strong><span>€{{ proposal.totalAmount || 0 }}</span></div>
+          <div><strong>{{ t('deposit10') }}</strong><span>€{{ getDepositAmount(proposal) }}</span></div>
+          <div><strong>{{ t('remaining') }}</strong><span>€{{ getBalanceAmount(proposal) }}</span></div>
+          <div><strong>{{ t('warranty') }}</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>
         </div>
-
         <p class="proposal-message" *ngIf="proposal.proposalMessage">{{ proposal.proposalMessage }}</p>
-
         <div class="proposal-actions" (click)="$event.stopPropagation()">
-          <button class="btn btn-primary" type="button" *ngIf="getProposalTab(proposal) === 'pending'" (click)="openProposal(proposal)">
-            View / accept proposal
-          </button>
-
-          <button class="btn btn-secondary" type="button" *ngIf="hasRelatedBooking(proposal)" (click)="openRelatedBooking(proposal, $event)">
-            Open related booking
-          </button>
-
-          <button class="btn btn-secondary" type="button" *ngIf="getProposalTab(proposal) !== 'pending'" (click)="openProposal(proposal)">
-            View details
-          </button>
+          <button class="btn btn-primary" type="button" *ngIf="getProposalTab(proposal) === 'pending'" (click)="openProposal(proposal)">{{ t('viewAcceptProposal') }}</button>
+          <button class="btn btn-secondary" type="button" *ngIf="hasRelatedBooking(proposal)" (click)="openRelatedBooking(proposal, $event)">{{ t('openRelatedBooking') }}</button>
+          <button class="btn btn-secondary" type="button" *ngIf="getProposalTab(proposal) !== 'pending'" (click)="openProposal(proposal)">{{ t('viewDetails') }}</button>
         </div>
       </article>
     </div>

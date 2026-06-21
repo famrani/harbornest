@@ -345,6 +345,14 @@ export class ProposalConfirmationComponent implements OnInit {
   private defaultProposalInfo(language: SiteLanguage): any {
     const defaults: any = {
       fr: {
+        secureProposalAccess: "Accès sécurisé à la proposition",
+        accessProposalSecurely: "Accédez à votre proposition en toute sécurité",
+        proposalLinkedTo: "Cette proposition est liée à",
+        continueGoogleOwnership: "Merci de continuer avec Google afin de vérifier que cette adresse Gmail vous appartient.",
+        preparingSecureAccess: "Nous préparons votre accès client sécurisé. Vous n’avez pas besoin de créer un compte vous-même.",
+        openingGoogle: "Ouverture de Google...",
+        continueWithGoogle: "Continuer avec Google",
+        retry: "Réessayer",
         proposalEyebrow: 'Proposition Alegria Boat',
         wizardStepTerms: 'Accepter les CGV',
         wizardStepDeposit: 'Payer l’acompte',
@@ -420,6 +428,14 @@ export class ProposalConfirmationComponent implements OnInit {
         ]
       },
       en: {
+        secureProposalAccess: "Secure proposal access",
+        accessProposalSecurely: "Access your proposal securely",
+        proposalLinkedTo: "This proposal is linked to",
+        continueGoogleOwnership: "Please continue with Google so we can verify that you own this Gmail address.",
+        preparingSecureAccess: "We are preparing your secure customer access. You do not need to create an account yourself.",
+        openingGoogle: "Opening Google...",
+        continueWithGoogle: "Continue with Google",
+        retry: "Retry",
         proposalEyebrow: 'Alegria Boat proposal',
         wizardStepTerms: 'Accept T&C',
         wizardStepDeposit: 'Pay deposit',
@@ -495,6 +511,14 @@ export class ProposalConfirmationComponent implements OnInit {
         ]
       },
       es: {
+        secureProposalAccess: "Acceso seguro a la propuesta",
+        accessProposalSecurely: "Acceda a su propuesta de forma segura",
+        proposalLinkedTo: "Esta propuesta está vinculada a",
+        continueGoogleOwnership: "Continúe con Google para que podamos verificar que esta dirección Gmail le pertenece.",
+        preparingSecureAccess: "Estamos preparando su acceso seguro de cliente. No necesita crear una cuenta usted mismo.",
+        openingGoogle: "Abriendo Google...",
+        continueWithGoogle: "Continuar con Google",
+        retry: "Reintentar",
         proposalEyebrow: 'Propuesta Alegria Boat',
         wizardStepTerms: 'Aceptar condiciones',
         wizardStepDeposit: 'Pagar depósito',

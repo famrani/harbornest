@@ -4,6 +4,22 @@ import { Observable, from, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { StoreDbService, UtilsService } from 'godigital-lib';
 
+export interface AlegriaPricingModel {
+  day: number;
+  halfDay: number;
+  sunset: number;
+  evening: number;
+  skipperPrice: number;
+  cleaningPrice: number;
+  nominalGuests: number;
+  extraGuestPrice: number;
+  minGuests: number;
+  maxGuests: number;
+  seasonalMultipliers?: Array<{ startDate: string; endDate: string; multiplier: number; label?: string; }>;
+  specialDates?: Array<{ date: string; price?: number; multiplier?: number; label?: string; }>;
+  updatedAt?: number;
+}
+
 export interface AlegriaBooking {
   bookingId: string;
   customerName: string;
@@ -13,8 +29,32 @@ export interface AlegriaBooking {
   outingDate: string;
   departureTime?: string;
   arrivalTime?: string;
+  timePeriod?: string;
+  pricingModelSnapshot?: any;
+  pricingMultiplier?: number;
+  extraGuestPrice?: number;
+  extraGuestCount?: number;
+  basePrice?: number;
+  bookingPricePeriod?: string;
+  selectedOptions?: any[];
+  destination?: string;
+  startMarina?: string;
   passengers?: number;
   totalPrice: number;
+  proposalCleaningPrice?: number;
+  estimatedOptionsPrice?: number;
+  estimatedCleaningPrice?: number;
+  estimatedSkipperPrice?: number;
+  estimatedBoatPrice?: number;
+  durationHours?: number;
+  endTime?: string;
+  startTime?: string;
+  bookingPricePeriodLabel?: string;
+  estimatedExtraGuestCount?: number;
+  estimatedExtraGuestsAmount?: number;
+  estimatedCalendarMultiplier?: number;
+  estimatedBasePrice?: number;
+  estimatedPrice?: number;
   depositAmount?: number;
   warrantyAmount?: number;
   termsAccepted?: boolean;
@@ -50,12 +90,24 @@ export interface AlegriaBooking {
   comments?: string;
   extraServices?: any[];
   refunds?: any[];
+  proposalBoatPrice?: number;
+  proposalSkipperPrice?: number;
+  proposalExtraServicesPrice?: number;
+  proposalNotes?: string;
+  requestNeedsAdminProposal?: boolean;
+  pricingToBeFinalizedByAdmin?: boolean;
+  clientNextStep?: string;
+  requestedOptions?: any[];
+  proposalCreatedAt?: number;
+  proposalCreatedFromRequestId?: string;
+  requestSubmittedAt?: number;
   raw?: any;
 }
 
 @Injectable({ providedIn: 'root' })
 export class BookingApiService {
   private readonly collectionName = 'bnBookings';
+  private readonly pricingModelPath = 'bnPricingModel/alegria';
 
   private readonly restDatabaseUrls = [    'https://adn-dev-4d05d.firebaseio.com',
   ];
@@ -68,11 +120,98 @@ export class BookingApiService {
     private storeDb: StoreDbService
   ) {}
 
+
+  getDefaultPricingModel(): AlegriaPricingModel {
+    return { day: 1200, halfDay: 800, sunset: 600, evening: 900, skipperPrice: 300, cleaningPrice: 150,
+      nominalGuests: 8,
+      extraGuestPrice: 60,
+      minGuests: 1,
+      maxGuests: 12,
+      seasonalMultipliers: [
+        { startDate: '2026-07-01', endDate: '2026-08-31', multiplier: 1.20, label: 'High season' }
+      ],
+      specialDates: [],
+    };
+  }
+
+  async getPricingModel(): Promise<AlegriaPricingModel> {
+    try {
+      const raw = await this.readFirebasePath('/bnPricingModel/alegria');
+      return { ...this.getDefaultPricingModel(), ...(raw || {}) };
+    } catch {
+      return this.getDefaultPricingModel();
+    }
+  }
+
+  async savePricingModel(model: AlegriaPricingModel): Promise<void> {
+    const payload = { ...this.getDefaultPricingModel(), ...(model || {}), updatedAt: Date.now() };
+    const store: any = this.storeDb as any;
+    const util: any = this.utilsSvc as any;
+
+    for (const db of this.getRealtimeDatabaseCandidates(store, util)) {
+      try {
+        await db.ref(this.pricingModelPath).set(payload);
+        return;
+      } catch {}
+    }
+
+    for (const baseUrl of this.restDatabaseUrls) {
+      try {
+        await this.http.put(`${baseUrl.replace(/\/+$/, '')}/${this.pricingModelPath}.json`, payload).toPromise();
+        return;
+      } catch {}
+    }
+
+    if (typeof store.updateObject === 'function') {
+      await store.updateObject('bnPricingModel', payload, 'alegria');
+      return;
+    }
+
+    throw new Error('Unable to save pricing model.');
+  }
+
   getBookings(email?: string): Observable<AlegriaBooking[]> {
     return from(this.getBookingsFromFirebase(email)).pipe(
       catchError(() => this.getBookingsFromBackend(email)),
       catchError(() => of(this.fallbackBookings))
     );
+  }
+
+
+  async createBooking(input: Partial<AlegriaBooking>): Promise<AlegriaBooking> {
+    const now = Date.now();
+    const bookingId = input.bookingId || `booking_${now}_${Math.random().toString(36).slice(2, 8)}`;
+    const totalPrice = Number(input.totalPrice || 0);
+    const depositAmount = Number(input.depositAmount || Math.round(totalPrice * 0.10 * 100) / 100);
+    const balanceAmount = Number(input.balanceAmount || Math.round((totalPrice - depositAmount) * 100) / 100);
+
+    const booking: AlegriaBooking = {
+      ...(input as any),
+      bookingId,
+      customerName: input.customerName || '',
+      email: input.email || '',
+      phone: input.phone || input.customerPhone || '',
+      outingType: input.outingType || 'Online booking',
+      outingDate: input.outingDate || '',
+      departureTime: input.departureTime || (input as any).timePeriod || '',
+      arrivalTime: input.arrivalTime || '',
+      passengers: Number(input.passengers || 0),
+      totalPrice,
+      depositAmount,
+      balanceAmount,
+      warrantyAmount: Number(input.warrantyAmount || 500),
+      bookingStatus: false,
+      depositStatus: false,
+      depositPaid: false,
+      paymentStatus: false,
+      warrantyStatus: input.warrantyStatus || false,
+      ownerId: input.ownerId || 'alegria',
+      createdTS: now,
+      modifiedTS: now,
+    } as any;
+
+    await this.updateBooking(bookingId, booking as any);
+    return booking;
   }
 
   getBooking(bookingId: string): Observable<AlegriaBooking | undefined> {
@@ -91,6 +230,10 @@ export class BookingApiService {
     totalAmount?: number;
     currency?: string;
     paymentType?: string;
+    authorizeOnly?: boolean;
+    captureMethod?: string;
+    capture_method?: string;
+    depositAuthorizationOnly?: boolean;
     customerEmail?: string;
     customerName?: string;
     customerPhone?: string;
@@ -204,6 +347,23 @@ export class BookingApiService {
   }
 
 
+
+  acceptBookingRequest(bookingId: string, ownerId = 'alegria', note = ''): Observable<any> {
+    const payload = { bookingId, ownerId, note };
+    return this.postFirstAvailable([
+      `${this.baseUrl}/pay/outing-booking-accept`,
+      `${this.baseUrl}/api/bookings/accept-request`,
+    ], payload);
+  }
+
+  rejectBookingRequest(bookingId: string, reason: string, ownerId = 'alegria'): Observable<any> {
+    const payload = { bookingId, ownerId, reason };
+    return this.postFirstAvailable([
+      `${this.baseUrl}/pay/outing-booking-reject`,
+      `${this.baseUrl}/api/bookings/reject-request`,
+    ], payload);
+  }
+
   getExtraServicesCatalog(): Observable<any[]> {
     return from(this.readFirebasePath('/bnExtraServices')).pipe(
       map((raw: any) => this.normalizeArray(raw).filter((item: any) => item && item.active !== false)),
@@ -282,7 +442,7 @@ export class BookingApiService {
       let index = 0;
       const tryNext = () => {
         if (index >= endpoints.length) {
-          observer.error(new Error('No payment endpoint is available.'));
+          observer.error(new Error('No payment endpoint is available. Please verify the backend extra service/ad hoc checkout route is deployed.'));
           return;
         }
         this.http.post<any>(endpoints[index++], payload, { withCredentials: true }).subscribe({
@@ -293,6 +453,44 @@ export class BookingApiService {
       tryNext();
     });
   }
+
+
+  isRequestBooking(booking: Partial<AlegriaBooking> | undefined): boolean {
+    const status = String((booking as any)?.bookingRequestStatus || (booking as any)?.status || '').toLowerCase();
+    return status === 'request_submitted' ||
+      status === 'admin_pricing_in_progress' ||
+      (booking as any)?.requestNeedsAdminProposal === true ||
+      (booking as any)?.pricingToBeFinalizedByAdmin === true;
+  }
+
+  async deleteBooking(bookingId: string): Promise<void> {
+    const store: any = this.storeDb as any;
+    const util: any = this.utilsSvc as any;
+
+    for (const db of this.getRealtimeDatabaseCandidates(store, util)) {
+      try {
+        await db.ref(`${this.collectionName}/${bookingId}`).remove();
+        return;
+      } catch {}
+    }
+
+    for (const baseUrl of this.restDatabaseUrls) {
+      try {
+        await this.http.delete(`${baseUrl.replace(/\/+$/, '')}/${this.collectionName}/${bookingId}.json`).toPromise();
+        return;
+      } catch {}
+    }
+
+    if (typeof store.deleteObject === 'function') {
+      try {
+        await store.deleteObject(this.collectionName, bookingId);
+        return;
+      } catch {}
+    }
+
+    await this.updateBooking(bookingId, { status: 'deleted', bookingRequestStatus: 'deleted' } as any);
+  }
+
 
   async updateBooking(bookingId: string, payload: Partial<AlegriaBooking>): Promise<void> {
     const store: any = this.storeDb as any;
@@ -364,6 +562,7 @@ export class BookingApiService {
     const raw = await this.readBookingsRaw();
     const bookings = this.normalizeBookings(raw)
       .filter((booking) => booking.bookingStatus !== 'deleted')
+      .filter((booking) => !this.isRequestBooking(booking))
       .sort((a, b) => String(b.outingDate || '').localeCompare(String(a.outingDate || '')) || String(b.departureTime || '').localeCompare(String(a.departureTime || '')));
 
     if (!email) return bookings;

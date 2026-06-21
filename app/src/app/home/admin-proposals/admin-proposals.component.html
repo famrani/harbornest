@@ -1,96 +1,174 @@
-
 <section class="admin-proposals-page">
   <div class="container proposals-shell">
     <div class="section-head">
-      <span class="eyebrow">Admin</span>
-      <h1>Customer proposals</h1>
-      <p>Create direct proposals. Once sent, a proposal is valid for one full day.</p>
+      <span class="eyebrow">{{ t('adminEyebrow') }}</span>
+      <h1>{{ t('adminTitle') }}</h1>
+      <p>{{ t('adminIntro') }}</p>
     </div>
+
+    <article class="card admin-requests-card">
+      <div class="form-title">
+        <h2>{{ t('proposalRequests') }}</h2>
+        <button class="btn btn-secondary" type="button" (click)="load()">{{ t('refresh') }}</button>
+      </div>
+
+      <p class="muted" *ngIf="!loading && filteredProposalRequests.length === 0">
+        {{ t('noProposalRequests') }}
+      </p>
+
+      <div class="request-list" *ngIf="filteredProposalRequests.length > 0">
+        <article class="request-row" *ngFor="let request of filteredProposalRequests" (click)="editProposalRequest(request)">
+          <div>
+            <strong>{{ request.customerName || '-' }}</strong>
+            <small>{{ request.customerEmail || '-' }}</small>
+          </div>
+
+          <div>
+            <strong>{{ request.outingType || '-' }}</strong>
+            <small>
+              {{ request.outingDate || '-' }}
+              <ng-container *ngIf="request.departureTime || request.startTime">
+                · {{ request.departureTime || request.startTime }} - {{ request.arrivalTime || request.endTime }}
+              </ng-container>
+            </small>
+          </div>
+
+          <div>
+            <strong>€{{ getEstimatedProposalRequestPrice(request) }}</strong>
+            <small>{{ t('estimatedPrice') }}</small>
+            <small>{{ t('skipperPrice') }}: €{{ getEstimatedSkipperPrice(request) }}</small>
+            <small>{{ t('cleaningPrice') }}: €{{ getEstimatedCleaningPrice(request) }}</small>
+            <small>{{ t('optionsPrice') }}: €{{ getEstimatedOptionsPrice(request) }}</small>
+          </div>
+
+          <div>
+            <span class="status-pill pending">{{ t('proposalRequestToFinalize') }}</span>
+            <small>{{ getProposalRequestOriginLabel(request) }}</small>
+          </div>
+        </article>
+      </div>
+    </article>
 
     <article class="card">
       <div class="form-title">
-        <h2>{{ form.proposalId ? 'Edit proposal' : 'New proposal' }}</h2>
-        <button class="btn btn-secondary" type="button" (click)="reset()">New</button>
+        <h2>{{ form.proposalId ? t('editProposal') : t('newProposal') }}</h2>
+        <button class="btn btn-secondary" type="button" (click)="reset()">{{ t('new') }}</button>
       </div>
 
       <div class="form-grid">
-        <label>Customer name<input type="text" [(ngModel)]="form.customerName" /></label>
-        <label>Customer email<input type="email" [(ngModel)]="form.customerEmail" /></label>
-        <label>Phone<input type="tel" [(ngModel)]="form.customerPhone" /></label>
-        <label>Outing type<input type="text" [(ngModel)]="form.outingType" /></label>
-        <label>Outing date<input type="date" [(ngModel)]="form.outingDate" /></label>
-        <label>Departure time<input type="time" [(ngModel)]="form.departureTime" /></label>
-        <label>Return time<input type="time" [(ngModel)]="form.arrivalTime" /></label>
-        <label>Passengers<input type="number" min="1" [(ngModel)]="form.passengers" /></label>
-        <label>Total amount (€)<input type="number" min="1" step="0.01" [(ngModel)]="form.totalAmount" /></label>
-        <label>Warranty amount (€)<input type="number" min="0" step="0.01" [(ngModel)]="form.warrantyAmount" /></label>
-        <label class="wide">Proposal message<textarea rows="3" [(ngModel)]="form.proposalMessage"></textarea></label>
-        <label class="wide">Internal comments<textarea rows="3" [(ngModel)]="form.comments"></textarea></label>
+        <label>{{ t('customerName') }}<input type="text" name="customerName" required [(ngModel)]="form.customerName" /></label>
+        <label>{{ t('customerEmail') }}<input type="email" name="customerEmail" required email [(ngModel)]="form.customerEmail" /></label>
+        <label>{{ t('phone') }}<input type="tel" name="customerPhone" required pattern="^[+()0-9 .-]{8,}$" [(ngModel)]="form.customerPhone" /></label>
+        <label>{{ t('outingType') }}<input type="text" name="outingType" required [(ngModel)]="form.outingType" /></label>
+        <label>{{ t('outingDate') }}<input type="date" name="outingDate" required [(ngModel)]="form.outingDate" /></label>
+        <label>{{ t('departureTime') }}<input type="time" name="departureTime" required [(ngModel)]="form.departureTime" /></label>
+        <label>{{ t('returnTime') }}<input type="time" name="arrivalTime" required [(ngModel)]="form.arrivalTime" /></label>
+        <label>{{ t('passengers') }}<input type="number" min="1" required name="passengers" [(ngModel)]="form.passengers" /></label>
+
+        <label>{{ t('boatPrice') }}<input type="number" min="0" step="0.01" name="proposalBoatPrice" [(ngModel)]="form.proposalBoatPrice" /></label>
+        <label>{{ t('skipperPrice') }}<input type="number" min="0" step="0.01" name="proposalSkipperPrice" [(ngModel)]="form.proposalSkipperPrice" /></label>
+        <label>{{ t('cleaningPrice') }}<input type="number" min="0" step="0.01" name="proposalCleaningPrice" [(ngModel)]="form.proposalCleaningPrice" /></label>
+        <label>{{ t('extraServicesPrice') }}<input type="number" min="0" step="0.01" name="proposalExtraServicesPrice" [(ngModel)]="form.proposalExtraServicesPrice" /></label>
+
+        <label>{{ t('totalAmount') }}<input type="number" min="1" step="0.01" required name="totalAmount" [(ngModel)]="form.totalAmount" /></label>
+        <label>{{ t('warrantyAmount') }}<input type="number" min="0" step="0.01" required name="warrantyAmount" [(ngModel)]="form.warrantyAmount" /></label>
+        <label class="wide">{{ t('proposalMessage') }}<textarea rows="3" required name="proposalMessage" [(ngModel)]="form.proposalMessage"></textarea></label>
+        <label class="wide">{{ t('internalComments') }}<textarea rows="3" name="comments" [(ngModel)]="form.comments"></textarea></label>
+      </div>
+
+      <div class="validation-list" *ngIf="getProposalValidationErrors().length">
+        <strong>{{ t('validationTitle') }}</strong>
+        <ul>
+          <li *ngFor="let validationError of getProposalValidationErrors()">{{ validationError }}</li>
+        </ul>
       </div>
 
       <div class="calculation">
-        <span>Deposit 10%: <strong>€{{ ((form.totalAmount || 0) * 0.1) | number:'1.2-2' }}</strong></span>
-        <span>Remaining 90% onboard: <strong>€{{ ((form.totalAmount || 0) * 0.9) | number:'1.2-2' }}</strong></span>
-        <span>Validity after sent: <strong>24 hours</strong></span>
+        <span>{{ t('computedTotal') || 'Total' }}: <strong>€{{ ((form.proposalBoatPrice || 0) + (form.proposalSkipperPrice || 0) + (form.proposalCleaningPrice || 0) + (form.proposalExtraServicesPrice || 0)) | number:'1.2-2' }}</strong></span>
+        <span>{{ t('deposit10') }}: <strong>€{{ (((form.proposalBoatPrice || 0) + (form.proposalSkipperPrice || 0) + (form.proposalCleaningPrice || 0) + (form.proposalExtraServicesPrice || 0)) * 0.1) | number:'1.2-2' }}</strong></span>
+        <span>{{ t('remaining90') }}: <strong>€{{ ((form.totalAmount || 0) * 0.9) | number:'1.2-2' }}</strong></span>
+        <span>{{ t('validityAfterSent') }}: <strong>{{ t('hours24') }}</strong></span>
       </div>
 
       <div class="actions">
-        <button class="btn btn-primary" type="button" [disabled]="saving" (click)="saveProposal()">{{ saving ? 'Saving...' : 'Save proposal' }}</button>
-        <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" [disabled]="!canRenewProposal(form)" [title]="getRenewBlockedReason(form)" (click)="markSent()">Mark sent / renew 24h</button>
-        <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" (click)="copyLink()">Copy client link</button>
-        <button class="btn btn-primary" type="button" *ngIf="form.proposalId" (click)="sendCurrentProposalByEmail()">Send by email</button>
-        <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" [disabled]="!canRenewProposal(form)" [title]="getRenewBlockedReason(form)" (click)="renewProposal(form)">Renew 24h</button>
-        <button class="btn btn-danger" type="button" *ngIf="form.proposalId" (click)="deleteProposal(form)">Delete</button>
+        <button class="btn btn-primary" type="button" [disabled]="saving || !isProposalFormValid" (click)="saveProposal()">
+          {{ saving ? t('saving') : t('saveProposal') }}
+        </button>
+
+        <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" [disabled]="!isProposalFormValid || !canRenewProposal(form)" [title]="getRenewBlockedReason(form)" (click)="markSent()">
+          {{ t('markSentRenew') }}
+        </button>
+
+        <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" (click)="copyLink()">
+          {{ t('copyClientLink') }}
+        </button>
+
+        <button class="btn btn-primary" type="button" *ngIf="form.proposalId" [disabled]="!isProposalFormValid" (click)="sendCurrentProposalByEmail()">
+          {{ t('sendByEmail') }}
+        </button>
+
+        <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" [disabled]="!canRenewProposal(form)" [title]="getRenewBlockedReason(form)" (click)="renewProposal(form)">
+          {{ t('renew24') }}
+        </button>
+
+        <button class="btn btn-danger" type="button" *ngIf="form.proposalId" (click)="deleteProposal(form)">
+          {{ t('delete') }}
+        </button>
       </div>
 
-      <p class="validity" *ngIf="form.proposalId" [class.expired]="isExpired(form)">
-        {{ formatValidity(form) }}
-      </p>
+      <p class="validity" *ngIf="form.proposalId" [class.expired]="isExpired(form)">{{ formatValidity(form) }}</p>
       <p class="client-link" *ngIf="form.proposalId">{{ proposalLink }}</p>
       <p class="success" *ngIf="message">{{ message }}</p>
       <p class="error" *ngIf="error">{{ error }}</p>
     </article>
 
     <div class="toolbar">
-      <label class="search-box">Search proposals<input type="search" [(ngModel)]="searchTerm" placeholder="Customer name, email or outing..." /></label>
-      <button class="btn btn-secondary" type="button" (click)="load()">Refresh</button>
+      <label class="search-box">
+        {{ t('searchProposals') }}
+        <input type="search" [(ngModel)]="searchTerm" [placeholder]="t('searchPlaceholder')" />
+      </label>
+      <button class="btn btn-secondary" type="button" (click)="load()">{{ t('refresh') }}</button>
     </div>
 
-    <p class="muted" *ngIf="loading">Loading proposals...</p>
+    <p class="muted" *ngIf="loading">{{ t('loading') }}</p>
 
     <div class="proposal-list" *ngIf="!loading">
       <article class="proposal-row" *ngFor="let p of filteredProposals" (click)="edit(p)" tabindex="0" role="button">
-        <span class="status">{{ p.status || 'draft' }}</span>
+        <span class="status">{{ p.status || t('draft') }}</span>
 
         <span class="proposal-customer">
-          <strong>{{ p.customerName || 'Unnamed customer' }}</strong>
-          <small>{{ p.customerEmail || 'No email' }}</small>
+          <strong>{{ p.customerName || t('unnamedCustomer') }}</strong>
+          <small>{{ p.customerEmail || t('noEmail') }}</small>
+          <small>{{ getProposalOriginLabel(p) }}</small>
           <small *ngIf="p.customerPhone">{{ p.customerPhone }}</small>
         </span>
 
         <span class="proposal-outing">
-          <strong>{{ p.outingType || 'Outing' }}</strong>
-          <small>{{ p.outingDate || 'Date not set' }} <ng-container *ngIf="p.departureTime">· {{ p.departureTime }}</ng-container></small>
+          <strong>{{ p.outingType || t('outing') }}</strong>
+          <small>
+            {{ p.outingDate || t('dateNotSet') }}
+            <ng-container *ngIf="p.departureTime">· {{ p.departureTime }}</ng-container>
+          </small>
           <small [class.expired]="isExpired(p)">{{ formatValidity(p) }}</small>
         </span>
 
         <span class="proposal-price">
           <strong>€{{ p.totalAmount || 0 }}</strong>
-          <small>Deposit €{{ p.depositAmount || ((p.totalAmount || 0) * 0.1) | number:'1.2-2' }}</small>
+          <small>{{ t('deposit') }} €{{ p.depositAmount || ((p.totalAmount || 0) * 0.1) | number:'1.2-2' }}</small>
         </span>
 
         <span class="row-actions" (click)="$event.stopPropagation()">
           <ng-container *ngIf="isAcceptedProposal(p); else proposalActions">
-            <button class="mini-link" type="button" (click)="openRelatedBooking(p, $event)">Open booking</button>
-            <button class="mini-link" type="button" (click)="createSimilarProposal(p, $event)">Create similar proposal</button>
+            <button class="mini-link" type="button" (click)="openRelatedBooking(p, $event)">{{ t('openBooking') }}</button>
+            <button class="mini-link" type="button" (click)="createSimilarProposal(p, $event)">{{ t('createSimilarProposal') }}</button>
           </ng-container>
 
           <ng-template #proposalActions>
-            <button class="mini-link" type="button" (click)="openClientLink(p)">Open link</button>
-            <button class="mini-link" type="button" *ngIf="hasRelatedBooking(p)" (click)="openRelatedBooking(p, $event)">Open booking</button>
-            <button class="mini-link" type="button" (click)="sendProposalByEmail(p)">Email</button>
-            <button class="mini-link" type="button" (click)="renewProposal(p, $event)">Renew</button>
-            <button class="mini-link danger" type="button" (click)="deleteProposal(p, $event)">Delete</button>
+            <button class="mini-link" type="button" (click)="openClientLink(p)">{{ t('openLink') }}</button>
+            <button class="mini-link" type="button" *ngIf="hasRelatedBooking(p)" (click)="openRelatedBooking(p, $event)">{{ t('openBooking') }}</button>
+            <button class="mini-link" type="button" (click)="sendProposalByEmail(p)">{{ t('email') }}</button>
+            <button class="mini-link" type="button" (click)="renewProposal(p, $event)">{{ t('renew') }}</button>
+            <button class="mini-link danger" type="button" (click)="deleteProposal(p, $event)">{{ t('delete') }}</button>
           </ng-template>
         </span>
       </article>

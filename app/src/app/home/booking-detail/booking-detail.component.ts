@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServicesService } from 'godigital-lib';
 import { BookingApiService, AlegriaBooking } from '../bookings/booking-api.service';
+import { ProposalApiService } from '../bookings/proposal-api.service';
 import { GuestContentService } from '../guest-content/guest-content.service';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-booking-detail',
   templateUrl: './booking-detail.component.html',
   styleUrls: ['./booking-detail.component.scss']
 })
-export class BookingDetailComponent implements OnInit {
+export class BookingDetailComponent implements OnInit, OnDestroy {
   booking?: AlegriaBooking;
   loading = true;
   loggedUser: any = null;
@@ -42,6 +44,15 @@ export class BookingDetailComponent implements OnInit {
   extraServiceMessage = '';
   extraServiceError = '';
   savingExtraService = false;
+  extraServiceEditId = '';
+  extraServiceEditDescription = '';
+  extraServiceEditAmount: number | null = null;
+  extraServiceEditStatus = 'pending';
+  adhocPaymentDescription = '';
+  adhocPaymentAmount: number | null = null;
+  adhocPaymentMessage = '';
+  adhocPaymentError = '';
+  adhocPaymentLoading = false;
   refundAmount: number | null = null;
   refundReason = '';
   refundMessage = '';
@@ -55,15 +66,82 @@ export class BookingDetailComponent implements OnInit {
   currentLanguage: SiteLanguage = 'fr';
   proposalInfo: any = this.defaultProposalInfo('fr');
   bookingInfo: any = this.defaultBookingInfo('fr');
+  private accountSub?: Subscription;
+  adminAccessHint = false;
+  adminDecisionLoading = false;
+  adminDecisionMessage = '';
+  adminDecisionError = '';
+  rejectionReason = '';
+  proposalBoatPrice: number | null = null;
+  proposalSkipperPrice: number | null = null;
+  proposalExtraServicesPrice: number | null = null;
+  proposalNotes = '';
+  sendingAdminProposal = false;
+  adminProposalMessage = '';
+  adminProposalError = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private bookingApi: BookingApiService,
+    private proposalApi: ProposalApiService,
     private mainSvc: ServicesService,
     private guestContent: GuestContentService,
     private languageService: LanguageService
   ) {}
+
+
+  private readCachedUser(): any {
+    const svc = this.mainSvc as any;
+    const candidates = [
+      svc.bnUser,
+      svc.currentUser,
+      svc.loggedUser,
+    ];
+
+    for (const key of ['bnUser', 'loggedUser', 'currentUser', 'user', 'adnUser', 'wnGuest']) {
+      try {
+        const raw = localStorage.getItem(key) || sessionStorage.getItem(key);
+        if (raw) candidates.push(JSON.parse(raw));
+      } catch {}
+    }
+
+    return candidates.find((user: any) => !!user) || null;
+  }
+
+  private setLoggedUserFromAny(user: any): void {
+    if (!user) return;
+    this.loggedUser = user;
+    try {
+      sessionStorage.setItem('loggedUser', JSON.stringify(user));
+    } catch {}
+  }
+
+  private watchLoggedUser(): void {
+    const svc = this.mainSvc as any;
+    this.setLoggedUserFromAny(this.readCachedUser());
+
+    const userObservable = typeof svc.getLoggedUser === 'function'
+      ? svc.getLoggedUser()
+      : typeof svc.getUser === 'function'
+        ? svc.getUser()
+        : svc.bnUserO;
+
+    if (userObservable && typeof userObservable.subscribe === 'function') {
+      this.accountSub = userObservable.subscribe((user: any) => {
+        if (user) {
+          this.setLoggedUserFromAny(user);
+        } else if (!this.loggedUser) {
+          this.setLoggedUserFromAny(this.readCachedUser());
+        }
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.accountSub?.unsubscribe();
+  }
+
 
   ngOnInit(): void {
     this.languageService.language$.subscribe((language) => {
@@ -71,8 +149,7 @@ export class BookingDetailComponent implements OnInit {
       this.loadProposalInfo(language);
     });
 
-    const svc = this.mainSvc as any;
-    this.loggedUser = svc.bnUser || svc.currentUser || null;
+    this.watchLoggedUser();
     const bookingId = this.route.snapshot.paramMap.get('bookingId') || '';
     this.editMode = this.route.snapshot.queryParamMap.get('edit') === 'true';
     this.bookingApi.getBooking(bookingId).subscribe((booking) => {
@@ -80,14 +157,267 @@ export class BookingDetailComponent implements OnInit {
       this.termsAccepted = this.isTermsAccepted();
       this.termsRead = this.termsAccepted || this.termsRead;
       this.warrantyChoice = this.getWarrantyChoice();
+      this.initializeAdminProposalFields();
+      if (this.isAdmin) this.loadExtraServicesCatalog();
       this.loading = false;
       this.syncConfirmedStatusIfReady();
     });
   }
 
   get isAdmin(): boolean {
-    const role = String(this.loggedUser?.role || '').toLowerCase();
-    return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
+    const user = this.loggedUser || this.readCachedUser() || {};
+    const role = String(user.role || user.userRole || '').toLowerCase();
+    const email = String(user.email || user.userEmail || '').toLowerCase();
+    return role === 'admin' ||
+      role === 'owner' ||
+      user.isAdmin === true ||
+      user.admin === true ||
+      email === 'famrani@alldigitalnetwork.com' ||
+      email === 'contact@alldigitalnetwork.com';
+  }
+
+
+  isPendingAdminConfirmation(): boolean {
+    const anyBooking: any = this.booking || {};
+    const requestStatus = String(anyBooking.bookingRequestStatus || anyBooking.status || '').toLowerCase();
+    const depositStatus = String(anyBooking.depositStatus || anyBooking?.payments?.deposit?.depositStatus || anyBooking?.payments?.deposit?.status || '').toLowerCase();
+
+    return requestStatus === 'pending_admin_confirmation' ||
+      requestStatus === 'pending_skipper_confirmation' ||
+      requestStatus === 'pending_confirmation' ||
+      depositStatus === 'authorized' ||
+      anyBooking.depositAuthorized === true;
+  }
+
+  canAdminAcceptRejectBooking(): boolean {
+    return this.isAdmin && !!this.booking?.bookingId && this.isPendingAdminConfirmation();
+  }
+
+  async acceptBookingRequest(): Promise<void> {
+    if (!this.booking?.bookingId || this.adminDecisionLoading) return;
+
+    this.adminDecisionLoading = true;
+    this.adminDecisionMessage = '';
+    this.adminDecisionError = '';
+
+    this.bookingApi.acceptBookingRequest(this.booking.bookingId, this.booking.ownerId || 'alegria').subscribe({
+      next: async () => {
+        this.adminDecisionMessage = 'Booking accepted. The authorized deposit has been captured.';
+        this.booking = {
+          ...this.booking,
+          bookingStatus: true,
+          status: 'confirmed',
+          bookingRequestStatus: 'confirmed',
+          depositStatus: 'paid',
+          depositPaid: true,
+          paymentStatus: 'deposit_paid',
+        } as any;
+      },
+      error: (error: any) => {
+        this.adminDecisionError = error?.error?.error || error?.error?.message || error?.message || 'Unable to accept booking request.';
+      },
+      complete: () => {
+        this.adminDecisionLoading = false;
+      }
+    });
+  }
+
+  async rejectBookingRequest(): Promise<void> {
+    if (!this.booking?.bookingId || this.adminDecisionLoading) return;
+
+    const reason = String(this.rejectionReason || '').trim();
+    if (!reason) {
+      this.adminDecisionError = 'Please enter a rejection reason.';
+      return;
+    }
+
+    this.adminDecisionLoading = true;
+    this.adminDecisionMessage = '';
+    this.adminDecisionError = '';
+
+    this.bookingApi.rejectBookingRequest(this.booking.bookingId, reason, this.booking.ownerId || 'alegria').subscribe({
+      next: () => {
+        this.adminDecisionMessage = 'Booking rejected. The authorized deposit was not captured.';
+        this.booking = {
+          ...this.booking,
+          bookingStatus: false,
+          status: 'rejected',
+          bookingRequestStatus: 'rejected',
+          depositStatus: 'authorization_cancelled',
+          depositPaid: false,
+          paymentStatus: 'deposit_not_captured',
+          rejectionReason: reason,
+        } as any;
+      },
+      error: (error: any) => {
+        this.adminDecisionError = error?.error?.error || error?.error?.message || error?.message || 'Unable to reject booking request.';
+      },
+      complete: () => {
+        this.adminDecisionLoading = false;
+      }
+    });
+  }
+
+
+
+  initializeAdminProposalFields(): void {
+    const anyBooking: any = this.booking || {};
+    this.proposalBoatPrice = anyBooking.proposalBoatPrice ?? anyBooking.boatPrice ?? anyBooking.estimatedPrice ?? anyBooking.totalPrice ?? null;
+    this.proposalSkipperPrice = anyBooking.proposalSkipperPrice ?? anyBooking.skipperPrice ?? 0;
+    this.proposalExtraServicesPrice = anyBooking.proposalExtraServicesPrice ?? anyBooking.extraServicesPrice ?? this.getRequestedOptionsEstimatedTotal() ?? 0;
+    this.proposalNotes = anyBooking.proposalNotes || '';
+  }
+
+  isRequestAwaitingAdminProposal(): boolean {
+    const anyBooking: any = this.booking || {};
+    const status = String(anyBooking.bookingRequestStatus || anyBooking.status || '').toLowerCase();
+    return this.isAdmin && (
+      status === 'request_submitted' ||
+      status === 'admin_pricing_in_progress' ||
+      anyBooking.requestNeedsAdminProposal === true ||
+      anyBooking.pricingToBeFinalizedByAdmin === true
+    );
+  }
+
+
+  getEstimatedRequestPrice(): number {
+    const anyBooking: any = this.booking || {};
+    return Number(anyBooking.estimatedPrice || anyBooking.totalPrice || 0);
+  }
+
+
+  getRequestedOptionsEstimatedTotal(): number {
+    const booking: any = this.booking || {};
+    const options = booking.selectedOptions || booking.requestedOptions || [];
+
+    if (!Array.isArray(options)) {
+      return 0;
+    }
+
+    return options.reduce(
+      (total: number, option: any) => total + Number(option?.price || option?.amount || 0),
+      0
+    );
+  }
+
+  getAdminProposalTotal(): number {
+    return Number(this.proposalBoatPrice || 0) +
+      Number(this.proposalSkipperPrice || 0) +
+      Number(this.proposalExtraServicesPrice || 0);
+  }
+
+  getAdminProposalDeposit(): number {
+    return Math.round(this.getAdminProposalTotal() * 0.10 * 100) / 100;
+  }
+
+  async saveAdminProposalDraft(): Promise<void> {
+    if (!this.booking?.bookingId || this.sendingAdminProposal) return;
+
+    this.sendingAdminProposal = true;
+    this.adminProposalMessage = '';
+    this.adminProposalError = '';
+
+    try {
+      const total = this.getAdminProposalTotal();
+      const deposit = this.getAdminProposalDeposit();
+
+      await this.bookingApi.updateBooking(this.booking.bookingId, {
+        proposalBoatPrice: Number(this.proposalBoatPrice || 0),
+        proposalSkipperPrice: Number(this.proposalSkipperPrice || 0),
+        proposalExtraServicesPrice: Number(this.proposalExtraServicesPrice || 0),
+        totalPrice: total,
+        depositAmount: deposit,
+        balanceAmount: Math.max(0, Math.round((total - deposit) * 100) / 100),
+        proposalNotes: this.proposalNotes || '',
+        status: 'admin_pricing_in_progress',
+        bookingRequestStatus: 'admin_pricing_in_progress',
+        proposalUpdatedAt: Date.now(),
+      } as any);
+
+      this.adminProposalMessage = 'Proposal draft saved.';
+      this.booking = {
+        ...this.booking,
+        proposalBoatPrice: Number(this.proposalBoatPrice || 0),
+        proposalSkipperPrice: Number(this.proposalSkipperPrice || 0),
+        proposalExtraServicesPrice: Number(this.proposalExtraServicesPrice || 0),
+        totalPrice: total,
+        depositAmount: deposit,
+        balanceAmount: Math.max(0, Math.round((total - deposit) * 100) / 100),
+        bookingRequestStatus: 'admin_pricing_in_progress',
+        status: 'admin_pricing_in_progress',
+      } as any;
+    } catch (e: any) {
+      this.adminProposalError = e?.message || 'Unable to save proposal draft.';
+    } finally {
+      this.sendingAdminProposal = false;
+    }
+  }
+
+  async sendAdminProposalToClient(): Promise<void> {
+    if (!this.booking?.bookingId || this.sendingAdminProposal) return;
+
+    const total = this.getAdminProposalTotal();
+    if (total <= 0) {
+      this.adminProposalError = 'Please enter a valid proposal total before sending.';
+      return;
+    }
+
+    this.sendingAdminProposal = true;
+    this.adminProposalMessage = '';
+    this.adminProposalError = '';
+
+    try {
+      const booking: any = this.booking;
+      const deposit = this.getAdminProposalDeposit();
+      const balance = Math.max(0, Math.round((total - deposit) * 100) / 100);
+      const now = Date.now();
+
+      const proposal = await this.proposalApi.saveProposal({
+        source: 'request' as any,
+        status: 'sent' as any,
+        proposalOrigin: 'customer_request',
+        proposalSentAfter: 'customer_request',
+        requestBookingId: booking.bookingId,
+        relatedBookingId: '',
+        requestSubmittedAt: booking.requestSubmittedAt || booking.createdTS || null,
+        customerName: booking.customerName || '',
+        customerEmail: booking.email || booking.customerEmail || '',
+        customerPhone: booking.phone || booking.customerPhone || '',
+        outingType: booking.outingType || '',
+        outingDate: booking.outingDate || '',
+        departureTime: booking.departureTime || booking.timePeriod || '',
+        arrivalTime: booking.arrivalTime || '',
+        startMarina: booking.startMarina || '',
+        destination: booking.destination || '',
+        selectedOptions: booking.selectedOptions || booking.requestedOptions || [],
+        timePeriod: booking.timePeriod || '',
+        passengers: Number(booking.passengers || 0),
+        totalAmount: total,
+        depositAmount: deposit,
+        balanceAmount: balance,
+        warrantyAmount: Number(booking.warrantyAmount || 500),
+        proposalMessage: this.proposalNotes || 'Proposal created after the customer submitted an online request. Please accept the T&C and pay the deposit to block the date and confirm the booking.',
+        comments: [
+          this.proposalNotes || '',
+          `Created from customer request: ${booking.bookingId}`,
+          booking.comments || '',
+        ].filter(Boolean).join('\n'),
+        validUntil: now + 24 * 60 * 60 * 1000,
+        bookingRequestStatus: 'proposal_sent',
+        proposalBoatPrice: Number(this.proposalBoatPrice || 0),
+        proposalSkipperPrice: Number(this.proposalSkipperPrice || 0),
+        proposalExtraServicesPrice: Number(this.proposalExtraServicesPrice || 0),
+      } as any);
+
+      await this.bookingApi.deleteBooking(booking.bookingId);
+
+      this.adminProposalMessage = 'Proposal sent to client. The original request has been transformed into a proposal and removed from requests.';
+      setTimeout(() => this.router.navigate(['/admin/proposals']), 900);
+    } catch (e: any) {
+      this.adminProposalError = e?.message || 'Unable to send proposal.';
+    } finally {
+      this.sendingAdminProposal = false;
+    }
   }
 
   loadExtraServicesCatalog(): void {
@@ -550,6 +880,8 @@ export class BookingDetailComponent implements OnInit {
 
   getStatusLabel(): string {
     const status = this.getDerivedBookingStatus();
+    if (this.isPendingAdminConfirmation()) return 'Pending admin confirmation';
+    if (String((this.booking as any)?.bookingRequestStatus || '').toLowerCase() === 'rejected') return 'Rejected';
     if (status === 'cancelled') return 'Cancelled';
     if (status === 'payment_done') return this.btext('paymentDone');
     if (status === 'confirmed') return this.btext('bookingConfirmed');
@@ -1566,6 +1898,108 @@ export class BookingDetailComponent implements OnInit {
     }
   }
 
+
+  getExtraServiceId(extra: any, index: number): string {
+    return String(extra?.id || extra?.extraServiceId || extra?.createdTS || index);
+  }
+
+  isEditingExtraService(extra: any, index: number): boolean {
+    return this.extraServiceEditId === this.getExtraServiceId(extra, index);
+  }
+
+  startEditExtraService(extra: any, index: number): void {
+    if (!this.isAdmin || !extra) return;
+    this.extraServiceEditId = this.getExtraServiceId(extra, index);
+    this.extraServiceEditDescription = extra.description || extra.title || extra.name || '';
+    this.extraServiceEditAmount = Number(extra.amount || extra.price || 0);
+    this.extraServiceEditStatus = extra.paid === true ? 'paid' : (extra.status || 'pending');
+    this.extraServiceMessage = '';
+    this.extraServiceError = '';
+  }
+
+  cancelEditExtraService(): void {
+    this.extraServiceEditId = '';
+    this.extraServiceEditDescription = '';
+    this.extraServiceEditAmount = null;
+    this.extraServiceEditStatus = 'pending';
+  }
+
+  async saveExtraServiceEdit(extra: any, index: number): Promise<void> {
+    if (!this.isAdmin || !this.booking?.bookingId) return;
+
+    const description = String(this.extraServiceEditDescription || '').trim();
+    const amount = Number(this.extraServiceEditAmount || 0);
+    if (!description || !amount || amount <= 0) {
+      this.extraServiceError = 'Please enter a valid description and amount.';
+      return;
+    }
+
+    this.savingExtraService = true;
+    this.extraServiceMessage = '';
+    this.extraServiceError = '';
+
+    try {
+      const services = [...this.bookingExtraServices];
+      const current = services[index] || {};
+      services[index] = {
+        ...current,
+        id: current.id || current.extraServiceId || this.getExtraServiceId(current, index),
+        description,
+        amount,
+        currency: current.currency || 'eur',
+        status: this.extraServiceEditStatus || current.status || 'pending',
+        paid: this.extraServiceEditStatus === 'paid' ? true : (this.extraServiceEditStatus === 'pending' ? false : current.paid === true),
+        modifiedTS: Date.now(),
+      };
+
+      await this.bookingApi.updateBooking(this.booking.bookingId, {
+        extraServices: services,
+        modifiedTS: Date.now(),
+      } as any);
+
+      this.booking = { ...this.booking, extraServices: services } as any;
+      this.cancelEditExtraService();
+      this.extraServiceMessage = 'Extra service updated.';
+    } catch (e: any) {
+      this.extraServiceError = e?.message || 'Unable to update extra service.';
+    } finally {
+      this.savingExtraService = false;
+    }
+  }
+
+  async deleteExtraService(extra: any, index: number): Promise<void> {
+    if (!this.isAdmin || !this.booking?.bookingId) return;
+    const label = extra?.description || extra?.title || extra?.name || 'this extra service';
+    const paid = extra?.paid === true || extra?.status === 'paid';
+    const confirmed = window.confirm(paid
+      ? `Delete ${label}? This extra service is marked as paid.`
+      : `Delete ${label}?`);
+    if (!confirmed) return;
+
+    this.savingExtraService = true;
+    this.extraServiceMessage = '';
+    this.extraServiceError = '';
+
+    try {
+      const services = this.bookingExtraServices.filter((_item: any, i: number) => i !== index);
+      await this.bookingApi.updateBooking(this.booking.bookingId, {
+        extraServices: services,
+        modifiedTS: Date.now(),
+      } as any);
+
+      this.booking = { ...this.booking, extraServices: services } as any;
+      this.extraServiceMessage = 'Extra service deleted.';
+      if (this.isEditingExtraService(extra, index)) {
+        this.cancelEditExtraService();
+      }
+    } catch (e: any) {
+      this.extraServiceError = e?.message || 'Unable to delete extra service.';
+    } finally {
+      this.savingExtraService = false;
+    }
+  }
+
+
   payExtraService(extra: any): void {
     if (this.isAdmin) return;
     if (!this.booking?.bookingId || !this.canCustomerPayExtraService(extra)) return;
@@ -1588,6 +2022,59 @@ export class BookingDetailComponent implements OnInit {
       error: (error: any) => this.extraServiceError = error?.error?.error || error?.message || 'Unable to open extra service checkout.',
     });
   }
+
+
+  canCustomerCreateAdhocPayment(): boolean {
+    return !this.isAdmin &&
+      !!this.booking?.bookingId &&
+      this.getDerivedBookingStatus() !== 'cancelled';
+  }
+
+  payAdhocBookingAmount(): void {
+    if (!this.canCustomerCreateAdhocPayment() || !this.booking?.bookingId) return;
+
+    const description = String(this.adhocPaymentDescription || '').trim() || 'Ad hoc payment';
+    const amount = Number(this.adhocPaymentAmount || 0);
+
+    this.adhocPaymentMessage = '';
+    this.adhocPaymentError = '';
+
+    if (!amount || amount <= 0) {
+      this.adhocPaymentError = 'Please enter a valid amount.';
+      return;
+    }
+
+    const currentUrl = window.location.href;
+    this.adhocPaymentLoading = true;
+
+    this.bookingApi.createExtraServiceCheckout({
+      bookingId: this.booking.bookingId,
+      extraServiceId: `adhoc_${Date.now()}`,
+      ownerId: this.booking.ownerId || 'alegria',
+      amount,
+      description,
+      customerEmail: this.booking.email || '',
+      customerName: this.booking.customerName || '',
+      successUrl: currentUrl.includes('?') ? `${currentUrl}&payment=success&paymentType=adhoc` : `${currentUrl}?payment=success&paymentType=adhoc`,
+      cancelUrl: currentUrl.includes('?') ? `${currentUrl}&payment=cancelled&paymentType=adhoc` : `${currentUrl}?payment=cancelled&paymentType=adhoc`,
+    }).subscribe({
+      next: (response: any) => {
+        const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
+        if (url) {
+          window.location.href = url;
+          return;
+        }
+        this.adhocPaymentError = 'Unable to open Stripe checkout.';
+      },
+      error: (error: any) => {
+        this.adhocPaymentError = error?.error?.error || error?.error?.message || error?.message || 'Unable to create ad hoc payment.';
+      },
+      complete: () => {
+        this.adhocPaymentLoading = false;
+      }
+    });
+  }
+
 
   canAdminRefund(): boolean {
     return this.isAdmin && !!this.booking?.bookingId && this.refundableAmount > 0;

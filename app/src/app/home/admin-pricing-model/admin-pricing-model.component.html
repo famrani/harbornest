@@ -1,0 +1,55 @@
+<section class="page-hero">
+  <div class="container narrow">
+    <span class="eyebrow">{{ t('eyebrow') }}</span>
+    <h1>{{ t('title') }}</h1>
+    <p>{{ t('intro') }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container pricing-card">
+    <h2>{{ t('basePricesTitle') }}</h2>
+    <div class="field-grid">
+      <label>{{ t('day') }}<input type="number" [(ngModel)]="model.day" /></label>
+      <label>{{ t('halfDay') }}<input type="number" [(ngModel)]="model.halfDay" /></label>
+      <label>{{ t('sunset') }}<input type="number" [(ngModel)]="model.sunset" /></label>
+      <label>{{ t('evening') }}<input type="number" [(ngModel)]="model.evening" /></label>
+      <label>{{ t('skipperPrice') }}<input type="number" [(ngModel)]="model.skipperPrice" /></label>
+      <label>{{ t('cleaningPrice') }}<input type="number" [(ngModel)]="model.cleaningPrice" /></label>
+      <label>{{ t('nominalGuests') }}<input type="number" [(ngModel)]="model.nominalGuests" /></label>
+      <label>{{ t('extraGuestPrice') }}<input type="number" [(ngModel)]="model.extraGuestPrice" /></label>
+      <label>{{ t('minGuests') }}<input type="number" [(ngModel)]="model.minGuests" /></label>
+      <label>{{ t('maxGuests') }}<input type="number" [(ngModel)]="model.maxGuests" /></label>
+    </div>
+
+    <h2>{{ t('calendarMultipliersTitle') }}</h2>
+    <p>{{ t('calendarMultipliersIntro') }}</p>
+    <div class="repeat-row" *ngFor="let season of model.seasonalMultipliers; let i = index">
+      <input type="text" [placeholder]="t('labelPlaceholder')" [(ngModel)]="season.label" />
+      <input type="date" [placeholder]="t('startDatePlaceholder')" [(ngModel)]="season.startDate" />
+      <input type="date" [placeholder]="t('endDatePlaceholder')" [(ngModel)]="season.endDate" />
+      <input type="number" step="0.01" [placeholder]="t('multiplierPlaceholder')" [(ngModel)]="season.multiplier" />
+      <button class="btn btn-danger" type="button" (click)="removeSeason(i)">{{ t('remove') }}</button>
+    </div>
+    <button class="btn btn-secondary" type="button" (click)="addSeason()">{{ t('addCalendarPeriod') }}</button>
+
+    <h2>{{ t('specialDatesTitle') }}</h2>
+    <p>{{ t('specialDatesIntro') }}</p>
+    <div class="repeat-row" *ngFor="let special of model.specialDates; let i = index">
+      <input type="text" [placeholder]="t('labelPlaceholder')" [(ngModel)]="special.label" />
+      <input type="date" [(ngModel)]="special.date" />
+      <input type="number" [placeholder]="t('fixedPricePlaceholder')" [(ngModel)]="special.price" />
+      <input type="number" step="0.01" [placeholder]="t('multiplierPlaceholder')" [(ngModel)]="special.multiplier" />
+      <button class="btn btn-danger" type="button" (click)="removeSpecialDate(i)">{{ t('remove') }}</button>
+    </div>
+    <button class="btn btn-secondary" type="button" (click)="addSpecialDate()">{{ t('addSpecialDate') }}</button>
+
+    <div class="actions">
+      <button class="btn btn-primary" type="button" [disabled]="saving" (click)="save()">
+        {{ saving ? t('saving') : t('save') }}
+      </button>
+    </div>
+    <p class="success" *ngIf="message">{{ message }}</p>
+    <p class="error-message" *ngIf="error">{{ error }}</p>
+  </div>
+</section>

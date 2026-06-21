@@ -23,6 +23,92 @@
       <p class="comments" *ngIf="booking.comments">{{ booking.comments }}</p>
 
 
+      <section class="admin-proposal-finalization-card" *ngIf="isRequestAwaitingAdminProposal()">
+        <h2>Finalize the offer</h2>
+        <p>
+          The customer has submitted the outing details. No payment has been requested yet.
+          Finalize the boat price, skipper price and extra services, then send the proposal to the client.
+        </p>
+
+        <div class="estimated-request-price">
+          <strong>Estimated request price</strong>
+          <span>€{{ getEstimatedRequestPrice() }}</span>
+          <small>Use this as a basis, then finalize boat, skipper and extra-services pricing before sending the proposal.</small>
+        </div>
+
+        <div class="field-grid">
+          <label>
+            Boat price (€)
+            <input type="number" min="0" step="0.01" [(ngModel)]="proposalBoatPrice" />
+          </label>
+          <label>
+            Skipper price (€)
+            <input type="number" min="0" step="0.01" [(ngModel)]="proposalSkipperPrice" />
+          </label>
+          <label>
+            Extra services / options (€)
+            <input type="number" min="0" step="0.01" [(ngModel)]="proposalExtraServicesPrice" />
+          </label>
+          <label>
+            Proposal notes
+            <textarea rows="3" [(ngModel)]="proposalNotes"></textarea>
+          </label>
+        </div>
+
+        <div class="payment-summary clarity-grid">
+          <div><strong>Total proposal</strong><span>€{{ getAdminProposalTotal() }}</span></div>
+          <div><strong>Deposit 10%</strong><span>€{{ getAdminProposalDeposit() }}</span></div>
+          <div><strong>Client next step</strong><span>Accept T&C · Pay deposit · Select warranty</span></div>
+        </div>
+
+        <div class="customer-action-bar">
+          <button class="btn btn-secondary" type="button" [disabled]="sendingAdminProposal" (click)="saveAdminProposalDraft()">
+            {{ sendingAdminProposal ? 'Saving...' : 'Save draft' }}
+          </button>
+          <button class="btn btn-primary" type="button" [disabled]="sendingAdminProposal || getAdminProposalTotal() <= 0" (click)="sendAdminProposalToClient()">
+            {{ sendingAdminProposal ? 'Sending...' : 'Send proposal to client' }}
+          </button>
+        </div>
+
+        <p class="success" *ngIf="adminProposalMessage">{{ adminProposalMessage }}</p>
+        <p class="error-message" *ngIf="adminProposalError">{{ adminProposalError }}</p>
+      </section>
+
+
+
+      <section class="admin-booking-request-card" *ngIf="canAdminAcceptRejectBooking()">
+        <h2>Booking request pending admin confirmation</h2>
+        <p>
+          The customer has authorized the deposit. Accepting this request will capture the deposit and confirm the booking.
+          Rejecting it will cancel the authorization without capturing the money.
+        </p>
+
+        <div class="payment-summary clarity-grid">
+          <div><strong>Deposit status</strong><span>{{ getDepositStatusLabel() }}</span></div>
+          <div><strong>Booking request status</strong><span>{{ booking.bookingRequestStatus || booking.status || '-' }}</span></div>
+          <div><strong>Stripe PaymentIntent</strong><span>{{ booking.stripePaymentIntentId || booking.payments?.deposit?.stripePaymentIntentId || '-' }}</span></div>
+        </div>
+
+        <label>
+          Rejection reason
+          <textarea rows="3" [(ngModel)]="rejectionReason" placeholder="Required only if you reject the request"></textarea>
+        </label>
+
+        <div class="customer-action-bar">
+          <button class="btn btn-primary" type="button" [disabled]="adminDecisionLoading" (click)="acceptBookingRequest()">
+            {{ adminDecisionLoading ? 'Processing...' : 'Accept and capture deposit' }}
+          </button>
+          <button class="btn btn-danger" type="button" [disabled]="adminDecisionLoading" (click)="rejectBookingRequest()">
+            {{ adminDecisionLoading ? 'Processing...' : 'Reject without capture' }}
+          </button>
+        </div>
+
+        <p class="success" *ngIf="adminDecisionMessage">{{ adminDecisionMessage }}</p>
+        <p class="error-message" *ngIf="adminDecisionError">{{ adminDecisionError }}</p>
+      </section>
+
+
+
       <section class="invoice-actions-card" *ngIf="isAdmin && isOutingDone()">
         <h2>Facturation</h2>
         <p>La sortie est passée. Vous pouvez éditer une facture imprimable puis l'enregistrer en PDF depuis le navigateur.</p>
@@ -256,14 +342,55 @@
             No extra service requested for this booking.
           </div>
 
-          <div class="extra-service-row" *ngFor="let extra of bookingExtraServices">
-            <div>
+          <div class="admin-extra-service-actions-title" *ngIf="isAdmin && bookingExtraServices.length">
+            Admin extra services management
+          </div>
+
+          <div class="extra-service-row" *ngFor="let extra of bookingExtraServices; let i = index">
+            <div class="extra-service-display" *ngIf="!isEditingExtraService(extra, i)">
               <strong>{{ extra.description || extra.title || extra.name }}</strong>
               <span>€{{ extra.amount || 0 }} · {{ extra.status === 'paid' || extra.paid ? 'paid' : 'pending' }}</span>
             </div>
-            <button class="btn btn-primary" type="button" *ngIf="!isAdmin && canCustomerPayExtraService(extra)" (click)="payExtraService(extra)">
-              Pay extra service
-            </button>
+
+            <div class="extra-service-edit" *ngIf="isAdmin && isEditingExtraService(extra, i)">
+              <label>
+                Description
+                <input type="text" [(ngModel)]="extraServiceEditDescription" />
+              </label>
+              <label>
+                Amount (€)
+                <input type="number" min="1" step="0.01" [(ngModel)]="extraServiceEditAmount" />
+              </label>
+              <label>
+                Status
+                <select [(ngModel)]="extraServiceEditStatus">
+                  <option value="pending">Pending</option>
+                  <option value="paid">Paid</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="extra-service-actions">
+              <button class="btn btn-primary" type="button" *ngIf="!isAdmin && canCustomerPayExtraService(extra)" (click)="payExtraService(extra)">
+                Pay extra service
+              </button>
+
+              <ng-container *ngIf="isAdmin">
+                <button class="btn btn-secondary admin-extra-btn" type="button" *ngIf="!isEditingExtraService(extra, i)" (click)="startEditExtraService(extra, i)">
+                  Edit
+                </button>
+                <button class="btn btn-primary admin-extra-btn" type="button" *ngIf="isEditingExtraService(extra, i)" [disabled]="savingExtraService" (click)="saveExtraServiceEdit(extra, i)">
+                  Save
+                </button>
+                <button class="btn btn-secondary" type="button" *ngIf="isEditingExtraService(extra, i)" (click)="cancelEditExtraService()">
+                  Cancel
+                </button>
+                <button class="btn btn-danger admin-extra-btn" type="button" [disabled]="savingExtraService" (click)="deleteExtraService(extra, i)">
+                  Delete
+                </button>
+              </ng-container>
+            </div>
           </div>
 
           <div class="admin-extra-service-form" *ngIf="canAdminCreateExtraService()">
@@ -296,6 +423,29 @@
             <p class="success" *ngIf="extraServiceMessage">{{ extraServiceMessage }}</p>
             <p class="error-message" *ngIf="extraServiceError">{{ extraServiceError }}</p>
           </div>
+        </div>
+
+
+        <div class="workflow-panel adhoc-payment-panel" *ngIf="canCustomerCreateAdhocPayment()">
+          <h3>Ad hoc payment</h3>
+          <p>You can make an additional payment for extra services, tips, catering, drinks or any other agreed cost.</p>
+
+          <label>
+            Description
+            <input type="text" [(ngModel)]="adhocPaymentDescription" placeholder="Tip, catering, drinks, extra service..." />
+          </label>
+
+          <label>
+            Amount (€)
+            <input type="number" min="1" step="0.01" [(ngModel)]="adhocPaymentAmount" />
+          </label>
+
+          <button class="btn btn-primary" type="button" [disabled]="adhocPaymentLoading" (click)="payAdhocBookingAmount()">
+            {{ adhocPaymentLoading ? 'Redirecting...' : 'Pay this amount' }}
+          </button>
+
+          <p class="success" *ngIf="adhocPaymentMessage">{{ adhocPaymentMessage }}</p>
+          <p class="error-message" *ngIf="adhocPaymentError">{{ adhocPaymentError }}</p>
         </div>
 
         <div class="workflow-panel refund-panel" *ngIf="false">

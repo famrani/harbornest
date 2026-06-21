@@ -6,12 +6,16 @@ import { catchError } from 'rxjs/operators';
 import { UtilsService } from 'godigital-lib';
 
 export type WarrantyPaymentChoice = 'stripe_card' | 'cash_on_board';
-export type ProposalStatus = 'draft' | 'sent' | 'accepted' | 'expired' | 'cancelled';
-export type BookingSource = 'direct' | 'samboat' | 'clickandboat' | 'other';
+export type ProposalStatus = 'request' | 'draft' | 'sent' | 'accepted' | 'expired' | 'cancelled';
+export type BookingSource = 'direct' | 'request' | 'samboat' | 'clickandboat' | 'other';
 
 export interface AlegriaProposal {
   proposalId: string;
   relatedBookingId?: string;
+  proposalSentAfter?: string;
+  requestSubmittedAt?: number;
+  requestBookingId?: string;
+  proposalOrigin?: 'admin_direct' | 'customer_request' | 'email_request' | string;
   source: BookingSource;
   status: ProposalStatus;
   customerName: string;
@@ -21,8 +25,35 @@ export interface AlegriaProposal {
   outingDate: string;
   departureTime?: string;
   arrivalTime?: string;
+  bookingRequestStatus?: string;
+  timePeriod?: string;
+  selectedOptions?: any[];
+  destination?: string;
+  startMarina?: string;
   passengers?: number;
   totalAmount: number;
+  proposalCleaningPrice?: number;
+  estimatedOptionsPrice?: number;
+  estimatedBoatPrice?: number;
+  requestOrigin?: string;
+  createdByAdmin?: boolean;
+  pricingToBeFinalizedByAdmin?: boolean;
+  requestNeedsAdminProposal?: boolean;
+  durationHours?: number;
+  endTime?: string;
+  startTime?: string;
+  bookingPricePeriodLabel?: string;
+  bookingPricePeriod?: string;
+  proposalExtraServicesPrice?: number;
+  proposalSkipperPrice?: number;
+  proposalBoatPrice?: number;
+  estimatedExtraGuestCount?: number;
+  estimatedCleaningPrice?: number;
+  estimatedSkipperPrice?: number;
+  estimatedExtraGuestsAmount?: number;
+  estimatedCalendarMultiplier?: number;
+  estimatedBasePrice?: number;
+  estimatedPrice?: number;
   depositRate: number;
   depositAmount: number;
   balanceAmount: number;
@@ -72,7 +103,39 @@ export class ProposalApiService {
     return from(this.readProposalWithPaymentState(id)).pipe(catchError(() => of(undefined)));
   }
 
+
+  private validateProposalInput(input: Partial<AlegriaProposal>): void {
+    const errors: string[] = [];
+    const email = String(input.customerEmail || '').trim();
+    const phone = String(input.customerPhone || '').trim();
+
+    if (!String(input.customerName || '').trim()) errors.push('Customer name is required.');
+    if (!email) errors.push('Customer email is required.');
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email)) errors.push('Customer email is invalid.');
+
+    if (!phone) errors.push('Customer phone is required.');
+    else {
+      const digits = phone.replace(/[^\d]/g, '');
+      if (digits.length < 8 || digits.length > 15 || !/^[+()\d\s.-]+$/.test(phone)) errors.push('Customer phone is invalid.');
+    }
+
+    if (!String(input.outingType || '').trim()) errors.push('Outing type is required.');
+    if (!String(input.outingDate || '').trim()) errors.push('Outing date is required.');
+    else if (Number.isNaN(Date.parse(String(input.outingDate)))) errors.push('Outing date is invalid.');
+
+    if (!String(input.departureTime || '').trim()) errors.push('Departure time is required.');
+    if (!String(input.arrivalTime || '').trim()) errors.push('Return time is required.');
+    if (Number(input.passengers || 0) <= 0) errors.push('Passengers must be greater than zero.');
+    if (Number(input.totalAmount || 0) <= 0) errors.push('Total amount must be greater than zero.');
+    if (Number(input.warrantyAmount || 0) < 0) errors.push('Warranty amount cannot be negative.');
+    if (!String((input as any).proposalMessage || '').trim()) errors.push('Proposal message is required.');
+
+    if (errors.length) throw new Error(errors.join(' '));
+  }
+
+
   async saveProposal(input: Partial<AlegriaProposal>): Promise<AlegriaProposal> {
+    this.validateProposalInput(input);
     const now = Date.now();
     const proposalId = input.proposalId || `proposal_${now}_${Math.random().toString(36).slice(2, 8)}`;
     const totalAmount = Number(input.totalAmount || 0);
@@ -90,8 +153,35 @@ export class ProposalApiService {
       outingDate: input.outingDate || '',
       departureTime: input.departureTime || '',
       arrivalTime: input.arrivalTime || '',
+      startMarina: input.startMarina || (input as any).marina || '',
+      destination: input.destination || '',
+      selectedOptions: Array.isArray((input as any).selectedOptions) ? (input as any).selectedOptions : [],
+      timePeriod: (input as any).timePeriod || '',
+      bookingRequestStatus: (input as any).bookingRequestStatus || 'request_submitted',
       passengers: Number(input.passengers || 0) || undefined,
       totalAmount,
+      proposalCleaningPrice: (input as any).proposalCleaningPrice || null,
+      estimatedOptionsPrice: (input as any).estimatedOptionsPrice || null,
+      estimatedBoatPrice: (input as any).estimatedBoatPrice || null,
+      estimatedPrice: (input as any).estimatedPrice ?? totalAmount,
+      estimatedBasePrice: (input as any).estimatedBasePrice || null,
+      estimatedCalendarMultiplier: (input as any).estimatedCalendarMultiplier || null,
+      estimatedExtraGuestsAmount: (input as any).estimatedExtraGuestsAmount || null,
+      estimatedExtraGuestCount: (input as any).estimatedExtraGuestCount || null,
+      estimatedSkipperPrice: (input as any).estimatedSkipperPrice || null,
+      estimatedCleaningPrice: (input as any).estimatedCleaningPrice || null,
+      proposalBoatPrice: (input as any).proposalBoatPrice || null,
+      proposalSkipperPrice: (input as any).proposalSkipperPrice || null,
+      proposalExtraServicesPrice: (input as any).proposalExtraServicesPrice || null,
+      bookingPricePeriod: (input as any).bookingPricePeriod || '',
+      bookingPricePeriodLabel: (input as any).bookingPricePeriodLabel || '',
+      startTime: (input as any).startTime || input.departureTime || '',
+      endTime: (input as any).endTime || input.arrivalTime || '',
+      durationHours: (input as any).durationHours || null,
+      requestNeedsAdminProposal: (input as any).requestNeedsAdminProposal === true,
+      pricingToBeFinalizedByAdmin: (input as any).pricingToBeFinalizedByAdmin === true,
+      createdByAdmin: (input as any).createdByAdmin === true,
+      requestOrigin: (input as any).requestOrigin || '',
       depositRate,
       depositAmount,
       balanceAmount,

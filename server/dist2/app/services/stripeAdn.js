@@ -468,6 +468,11 @@ class StripeService {
             const outingDate = body.outingDate || body.date || '';
             const successUrl = body.successUrl || body.returnUrl;
             const cancelUrl = body.cancelUrl || body.failureUrl || body.returnUrl;
+            const isDepositAuthorizationOnly = body.authorizeOnly === true ||
+                body.depositAuthorizationOnly === true ||
+                body.captureMethod === 'manual' ||
+                body.capture_method === 'manual' ||
+                body.paymentType === 'deposit_authorization';
             if (!bookingId) {
                 return res.status(400).json({
                     error: 'bookingId is required',
@@ -524,11 +529,12 @@ class StripeService {
                 cancel_url: this.appendCheckoutParams(cancelUrl, { bookingId, paymentType: 'deposit', payment: 'cancelled' }),
                 payment_intent_data: {
                     setup_future_usage: 'off_session',
+                    capture_method: isDepositAuthorizationOnly ? 'manual' : 'automatic',
                     metadata: {
                         paymentId,
                         bookingId,
                         ownerId,
-                        paymentType: 'deposit',
+                        paymentType: isDepositAuthorizationOnly ? 'deposit_authorization' : 'deposit',
                         outingType: outingType || '',
                         outingDate: outingDate || '',
                     },
@@ -537,7 +543,7 @@ class StripeService {
                     paymentId,
                     bookingId,
                     ownerId,
-                    paymentType: 'deposit',
+                    paymentType: isDepositAuthorizationOnly ? 'deposit_authorization' : 'deposit',
                     outingType: outingType || '',
                     outingDate: outingDate || '',
                 },
@@ -547,10 +553,11 @@ class StripeService {
                 paymentId,
                 ownerId,
                 bookingId,
-                paymentType: 'deposit',
+                paymentType: isDepositAuthorizationOnly ? 'deposit_authorization' : 'deposit',
                 amount,
                 currency,
-                status: 'checkout_created',
+                status: isDepositAuthorizationOnly ? 'authorization_checkout_created' : 'checkout_created',
+                captureMethod: isDepositAuthorizationOnly ? 'manual' : 'automatic',
                 stripeCheckoutSessionId: session.id,
                 stripeCustomerId: customer?.id || null,
                 customerEmail: customerEmail || null,
@@ -844,6 +851,47 @@ class StripeService {
      *  - payment_intent.succeeded
      *  - payment_intent.payment_failed
      */
+    async markDepositAuthorizedFromStripe(params) {
+        const now = Date.now();
+        const updatePayload = {
+            status: 'authorized',
+            depositStatus: 'authorized',
+            depositAuthorized: true,
+            depositPaid: false,
+            paid: false,
+            amount: params.amount || null,
+            currency: params.currency || 'eur',
+            ownerId: params.ownerId,
+            captureMethod: 'manual',
+            stripeCheckoutSessionId: params.stripeCheckoutSessionId || null,
+            stripePaymentIntentId: params.stripePaymentIntentId || null,
+            stripeCustomerId: params.stripeCustomerId || null,
+            modifiedTS: now,
+            updatedAt: now,
+        };
+        await Promise.all([
+            this.stbDbSvc.db.ref(`/backendbookings/${params.bookingId}/payments/deposit`).update(updatePayload),
+            this.stbDbSvc.db.ref(`/backendbookings/${params.bookingId}/payment`).update(updatePayload),
+            this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}/payments/deposit`).update(updatePayload),
+            this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}`).update({
+                depositStatus: 'authorized',
+                depositAuthorized: true,
+                depositPaid: false,
+                paymentStatus: 'deposit_authorized',
+                bookingStatus: false,
+                bookingRequestStatus: 'pending_admin_confirmation',
+                status: 'pending_admin_confirmation',
+                stripePaymentIntentId: params.stripePaymentIntentId || null,
+                stripeCheckoutSessionId: params.stripeCheckoutSessionId || null,
+                depositAuthorizedAt: now,
+                modifiedTS: now,
+                updatedAt: now,
+            }),
+        ]);
+        if (params.paymentId) {
+            await this.stbDbSvc.db.ref(`/backendpayments/${params.paymentId}`).update(updatePayload);
+        }
+    }
     async markDepositPaidFromStripe(params) {
         const now = Date.now();
         const bookingSnap = await this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}`).once('value').catch(() => null);
@@ -987,7 +1035,19 @@ class StripeService {
                     if (!bookingId)
                         break;
                     const now = Date.now();
-                    if (paymentType === 'deposit') {
+                    if (paymentType === 'deposit_authorization') {
+                        await this.markDepositAuthorizedFromStripe({
+                            bookingId,
+                            paymentId,
+                            ownerId,
+                            amount: session.amount_total || null,
+                            currency: session.currency || 'eur',
+                            stripeCheckoutSessionId: session.id,
+                            stripePaymentIntentId: session.payment_intent || null,
+                            stripeCustomerId: session.customer || null,
+                        });
+                    }
+                    else if (paymentType === 'deposit') {
                         await this.markDepositPaidFromStripe({
                             bookingId,
                             paymentId,
@@ -1147,6 +1207,128 @@ class StripeService {
             res.status(400).send(`Webhook Error: ${err.message}`);
         }
     }
+    async acceptOutingBookingRequest(req, res) {
+        try {
+            const { bookingId, ownerId = 'alegria', adminId, note } = req.body || {};
+            if (!bookingId)
+                return res.status(400).json({ error: 'bookingId is required' });
+            const snap = await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).once('value');
+            if (!snap.exists())
+                return res.status(404).json({ error: 'Booking not found' });
+            const booking = snap.val() || {};
+            const payment = booking?.payments?.deposit || {};
+            const paymentIntentId = booking.stripePaymentIntentId || payment.stripePaymentIntentId;
+            if (!paymentIntentId) {
+                return res.status(400).json({ error: 'No authorized deposit payment intent found for this booking.' });
+            }
+            const stripe = await this.getStripeForOwner(ownerId || booking.ownerId || 'alegria');
+            const pi = await stripe.paymentIntents.capture(paymentIntentId);
+            const now = Date.now();
+            const updatePayload = {
+                bookingStatus: true,
+                status: 'confirmed',
+                bookingRequestStatus: 'confirmed',
+                depositStatus: 'paid',
+                depositPaid: true,
+                depositCaptured: true,
+                paymentStatus: 'deposit_paid',
+                adminAcceptedAt: now,
+                adminAcceptedBy: adminId || 'admin',
+                adminAcceptanceNote: note || null,
+                modifiedTS: now,
+                updatedAt: now,
+            };
+            await Promise.all([
+                this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update(updatePayload),
+                this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/deposit`).update({
+                    status: 'captured',
+                    depositStatus: 'paid',
+                    depositPaid: true,
+                    stripePaymentIntentId: paymentIntentId,
+                    capturedAt: now,
+                    paymentIntentStatus: pi.status,
+                    modifiedTS: now,
+                    updatedAt: now,
+                }),
+                this.stbDbSvc.db.ref(`/backendbookings/${bookingId}`).update(updatePayload).catch(() => undefined),
+                this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payments/deposit`).update({
+                    status: 'captured',
+                    depositStatus: 'paid',
+                    depositPaid: true,
+                    stripePaymentIntentId: paymentIntentId,
+                    capturedAt: now,
+                    paymentIntentStatus: pi.status,
+                    modifiedTS: now,
+                    updatedAt: now,
+                }).catch(() => undefined),
+            ]);
+            return res.json({ ok: true, bookingId, paymentIntent: { id: pi.id, status: pi.status } });
+        }
+        catch (e) {
+            console.error('[acceptOutingBookingRequest] error:', e);
+            return res.status(400).json({ error: e?.message || 'Unable to accept booking request.' });
+        }
+    }
+    async rejectOutingBookingRequest(req, res) {
+        try {
+            const { bookingId, ownerId = 'alegria', adminId, reason } = req.body || {};
+            if (!bookingId)
+                return res.status(400).json({ error: 'bookingId is required' });
+            if (!reason)
+                return res.status(400).json({ error: 'A rejection reason is required.' });
+            const snap = await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).once('value');
+            if (!snap.exists())
+                return res.status(404).json({ error: 'Booking not found' });
+            const booking = snap.val() || {};
+            const payment = booking?.payments?.deposit || {};
+            const paymentIntentId = booking.stripePaymentIntentId || payment.stripePaymentIntentId;
+            let cancelledPaymentIntent = null;
+            if (paymentIntentId) {
+                try {
+                    const stripe = await this.getStripeForOwner(ownerId || booking.ownerId || 'alegria');
+                    cancelledPaymentIntent = await stripe.paymentIntents.cancel(paymentIntentId);
+                }
+                catch (cancelError) {
+                    console.warn('[rejectOutingBookingRequest] payment intent cancel warning:', cancelError?.message || cancelError);
+                }
+            }
+            const now = Date.now();
+            const updatePayload = {
+                bookingStatus: false,
+                status: 'rejected',
+                bookingRequestStatus: 'rejected',
+                depositStatus: 'authorization_cancelled',
+                depositPaid: false,
+                depositCaptured: false,
+                paymentStatus: 'deposit_not_captured',
+                rejectionReason: reason,
+                adminRejectedAt: now,
+                adminRejectedBy: adminId || 'admin',
+                modifiedTS: now,
+                updatedAt: now,
+            };
+            await Promise.all([
+                this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update(updatePayload),
+                this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/deposit`).update({
+                    status: 'authorization_cancelled',
+                    depositStatus: 'authorization_cancelled',
+                    depositPaid: false,
+                    stripePaymentIntentId: paymentIntentId || null,
+                    cancellationReason: reason,
+                    cancelledAt: now,
+                    paymentIntentStatus: cancelledPaymentIntent?.status || null,
+                    modifiedTS: now,
+                    updatedAt: now,
+                }),
+                this.stbDbSvc.db.ref(`/backendbookings/${bookingId}`).update(updatePayload).catch(() => undefined),
+            ]);
+            return res.json({ ok: true, bookingId, paymentIntent: cancelledPaymentIntent ? { id: cancelledPaymentIntent.id, status: cancelledPaymentIntent.status } : null });
+        }
+        catch (e) {
+            console.error('[rejectOutingBookingRequest] error:', e);
+            return res.status(400).json({ error: e?.message || 'Unable to reject booking request.' });
+        }
+    }
     // ---------------------------------------------------------------------------
     // 4) Admin / misc (platform-scoped)
     // ---------------------------------------------------------------------------
@@ -1251,12 +1433,16 @@ class StripeService {
         stripeRouter.post('/pay/outing-warranty-checkout', (req, res) => this.createOutingWarrantySetupCheckout(req, res));
         stripeRouter.post('/pay/outing-warranty-charge', (req, res) => this.chargeOutingWarranty(req, res));
         stripeRouter.get('/pay/outing-payment-status', (req, res) => this.outingPaymentStatus(req, res));
+        stripeRouter.post('/pay/outing-booking-accept', (req, res) => this.acceptOutingBookingRequest(req, res));
+        stripeRouter.post('/pay/outing-booking-reject', (req, res) => this.rejectOutingBookingRequest(req, res));
         // Frontend-friendly aliases
         stripeRouter.post('/api/payments/create-deposit-checkout-session', (req, res) => this.createOutingDepositCheckout(req, res));
         stripeRouter.post('/api/payments/create-warranty-checkout-session', (req, res) => this.createOutingWarrantySetupCheckout(req, res));
         stripeRouter.post('/api/payments/create-warranty-setup-session', (req, res) => this.createOutingWarrantySetupCheckout(req, res));
         stripeRouter.post('/api/payments/charge-warranty', (req, res) => this.chargeOutingWarranty(req, res));
         stripeRouter.get('/api/payments/status', (req, res) => this.outingPaymentStatus(req, res));
+        stripeRouter.post('/api/bookings/accept-request', (req, res) => this.acceptOutingBookingRequest(req, res));
+        stripeRouter.post('/api/bookings/reject-request', (req, res) => this.rejectOutingBookingRequest(req, res));
         // Older aliases used by the Angular BookingApiService
         stripeRouter.post('/stripe/deposit-checkout', (req, res) => this.createOutingDepositCheckout(req, res));
         stripeRouter.post('/stripe/warranty-setup', (req, res) => this.createOutingWarrantySetupCheckout(req, res));
@@ -1408,7 +1594,157 @@ class StripeService {
         }
     }
     async createOutingExtraServiceCheckout(req, res) {
-        return res.status(501).json({ error: 'createOutingExtraServiceCheckout not yet implemented' });
+        try {
+            const body = req.body || {};
+            const ownerId = body.ownerId || 'alegria';
+            const bookingId = body.bookingId || body.proposalId || body.id;
+            const extraServiceId = body.extraServiceId || body.serviceId || body.id || `extra_${Date.now()}`;
+            const rawAmount = body.amount ?? body.extraAmount ?? body.price;
+            const currency = String(body.currency || 'eur').toLowerCase();
+            const description = body.description || body.title || body.name || 'Extra service / ad hoc payment';
+            const rawCustomerEmail = body.customerEmail || body.email || body.customer?.email;
+            const customerEmail = this.isValidEmailForStripe(rawCustomerEmail) ? String(rawCustomerEmail).trim() : '';
+            const customerName = body.customerName || body.name || body.customer?.fullName || (!customerEmail ? rawCustomerEmail : '');
+            const customerPhone = body.customerPhone || body.phone || body.customer?.phone;
+            const successUrl = body.successUrl || body.returnUrl;
+            const cancelUrl = body.cancelUrl || body.failureUrl || body.returnUrl;
+            if (!bookingId) {
+                return res.status(400).json({ error: 'bookingId is required' });
+            }
+            const amount = this.normalizeAmountToCents(rawAmount);
+            if (!amount) {
+                return res.status(400).json({
+                    error: 'amount must be greater than 0',
+                    received: { amount: body.amount, extraAmount: body.extraAmount, price: body.price }
+                });
+            }
+            if (!successUrl || !cancelUrl) {
+                return res.status(400).json({
+                    error: 'successUrl and cancelUrl are required',
+                    received: { successUrl, cancelUrl, returnUrl: body.returnUrl }
+                });
+            }
+            const stripe = await this.getStripeForOwner(ownerId);
+            const customer = customerEmail
+                ? await stripe.customers.create({
+                    email: customerEmail,
+                    name: customerName,
+                    phone: customerPhone,
+                    metadata: {
+                        bookingId,
+                        ownerId,
+                        source: 'alegria-extra-service',
+                    },
+                }).catch(() => null)
+                : null;
+            const paymentRef = this.stbDbSvc.db.ref('/backendpayments').push();
+            const paymentId = paymentRef.key;
+            const session = await stripe.checkout.sessions.create({
+                mode: 'payment',
+                payment_method_types: ['card'],
+                customer: customer?.id,
+                customer_email: customer ? undefined : customerEmail,
+                line_items: [
+                    {
+                        quantity: 1,
+                        price_data: {
+                            currency,
+                            unit_amount: amount,
+                            product_data: {
+                                name: description,
+                                description: 'Alegria Boat additional payment',
+                            },
+                        },
+                    },
+                ],
+                success_url: this.appendCheckoutParams(successUrl, {
+                    session_id: '{CHECKOUT_SESSION_ID}',
+                    bookingId,
+                    paymentType: 'extra_service',
+                    extraServiceId,
+                    payment: 'success'
+                }),
+                cancel_url: this.appendCheckoutParams(cancelUrl, {
+                    bookingId,
+                    paymentType: 'extra_service',
+                    extraServiceId,
+                    payment: 'cancelled'
+                }),
+                payment_intent_data: {
+                    metadata: {
+                        paymentId,
+                        bookingId,
+                        ownerId,
+                        paymentType: 'extra_service',
+                        extraServiceId,
+                        description,
+                    },
+                },
+                metadata: {
+                    paymentId,
+                    bookingId,
+                    ownerId,
+                    paymentType: 'extra_service',
+                    extraServiceId,
+                    description,
+                },
+            });
+            const now = Date.now();
+            const payload = {
+                paymentId,
+                ownerId,
+                bookingId,
+                paymentType: 'extra_service',
+                extraServiceId,
+                description,
+                amount,
+                currency,
+                status: 'checkout_created',
+                paid: false,
+                stripeCheckoutSessionId: session.id,
+                stripeCustomerId: customer?.id || null,
+                customerEmail: customerEmail || null,
+                customerName: customerName || null,
+                customerPhone: customerPhone || null,
+                createdTS: now,
+                modifiedTS: now,
+            };
+            await paymentRef.set(payload);
+            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/extraServices/${extraServiceId}`).set(payload);
+            const bookingSnap = await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).once('value');
+            const booking = bookingSnap.val() || {};
+            const extraServices = Array.isArray(booking.extraServices) ? [...booking.extraServices] : [];
+            const index = extraServices.findIndex((item) => item.id === extraServiceId || item.extraServiceId === extraServiceId);
+            const extraPayload = {
+                id: extraServiceId,
+                extraServiceId,
+                description,
+                amount: amount > 10000 ? amount / 100 : amount,
+                amountCents: amount,
+                currency,
+                status: 'pending',
+                paid: false,
+                stripeCheckoutSessionId: session.id,
+                createdTS: now,
+                modifiedTS: now,
+            };
+            if (index >= 0) {
+                extraServices[index] = { ...extraServices[index], ...extraPayload };
+            }
+            else {
+                extraServices.push(extraPayload);
+            }
+            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/extraServices`).set(extraServices);
+            return res.json({ ok: true, url: session.url, id: session.id, paymentId, extraServiceId });
+        }
+        catch (e) {
+            console.error('[createOutingExtraServiceCheckout] error:', e);
+            return res.status(400).json({
+                error: e?.message || 'Failed to create extra service checkout session',
+                code: e?.code || null,
+                type: e?.type || null
+            });
+        }
     }
     async refundOutingPayment(req, res) {
         return res.status(501).json({ error: 'refundOutingPayment not yet implemented' });

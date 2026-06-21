@@ -37,6 +37,8 @@ import { AdminProposalsComponent } from './admin-proposals/admin-proposals.compo
 import { ProposalConfirmationComponent } from './proposal-confirmation/proposal-confirmation.component';
 import { AdminExternalBookingsComponent } from './admin-external-bookings/admin-external-bookings.component';
 import { BookingProcessComponent } from './booking-process/booking-process.component';
+import { OnlineBookingComponent } from './online-booking/online-booking.component';
+import { AdminPricingModelComponent } from './admin-pricing-model/admin-pricing-model.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +74,8 @@ import { BookingProcessComponent } from './booking-process/booking-process.compo
     ProposalConfirmationComponent,
     AdminExternalBookingsComponent,
     BookingProcessComponent,
+    OnlineBookingComponent,
+    AdminPricingModelComponent,
   ],
   imports: [
     CommonModule,

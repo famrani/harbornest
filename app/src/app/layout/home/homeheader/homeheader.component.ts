@@ -113,6 +113,10 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
       svc.bnUserO.next(null);
     }
 
+    try {
+      localStorage.removeItem('loggedUser');
+      sessionStorage.removeItem('loggedUser');
+    } catch {}
     this.loggedUser = null;
     this.closeMenu();
     this.router.navigateByUrl('/');
@@ -316,4 +320,12 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
     return this.currentLanguage === 'fr' ? 'Après la sortie' : this.currentLanguage === 'es' ? 'Después de la salida' : 'After the outing';
   }
 
+
+  get onlineBookingLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Réserver en ligne' : this.currentLanguage === 'es' ? 'Reservar en línea' : 'Book online';
+  }
+
+  get pricingModelLabel(): string {
+    return this.currentLanguage === 'fr' ? 'Modèle tarifaire' : this.currentLanguage === 'es' ? 'Modelo de precios' : 'Pricing model';
+  }
 }

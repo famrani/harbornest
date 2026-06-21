@@ -33,6 +33,8 @@ import { AdminProposalsComponent } from './admin-proposals/admin-proposals.compo
 import { ProposalConfirmationComponent } from './proposal-confirmation/proposal-confirmation.component';
 import { AdminExternalBookingsComponent } from './admin-external-bookings/admin-external-bookings.component';
 import { BookingProcessComponent } from './booking-process/booking-process.component';
+import { OnlineBookingComponent } from './online-booking/online-booking.component';
+import { AdminPricingModelComponent } from './admin-pricing-model/admin-pricing-model.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -45,6 +47,8 @@ const routes: Routes = [
   { path: 'sorties/sortie-entreprise', component: BusinessOutingComponent },
   { path: 'bateau', component: BoatComponent },
   { path: 'galerie', component: GalleryComponent },
+  { path: 'reserver', component: OnlineBookingComponent },
+  { path: 'book-online', component: OnlineBookingComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'crew', component: CrewComponent },
   { path: 'terms', component: TermsComponent },
@@ -71,6 +75,7 @@ const routes: Routes = [
   { path: 'admin/manage-outings', component: AdminManageOutingsComponent },
   { path: 'admin/proposals', component: AdminProposalsComponent },
   { path: 'proposal/:proposalId', component: ProposalConfirmationComponent },
+  { path: 'admin/pricing-model', component: AdminPricingModelComponent },
   { path: 'admin/external-bookings', component: AdminExternalBookingsComponent },
   { path: 'admin/warranty-charge', component: AdminWarrantyChargeComponent },
 ];

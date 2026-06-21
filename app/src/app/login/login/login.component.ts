@@ -85,6 +85,14 @@ export class LoginComponent {
       [status, user] = await this.loginSvc.localUtilsSvc.processLogin(v.email, v.password, undefined) as any;
       this.loginSvc.wnGuest = user;
       this.loginSvc.mainSvc.setLoggedUser(user);
+      try {
+        sessionStorage.setItem('loggedUser', JSON.stringify(user));
+        localStorage.setItem('loggedUser', JSON.stringify(user));
+      } catch {}
+      try {
+        sessionStorage.setItem('loggedUser', JSON.stringify(user));
+        localStorage.setItem('loggedUser', JSON.stringify(user));
+      } catch {}
 
 
       // OPTION: you can fetch the user profile here if you need local state

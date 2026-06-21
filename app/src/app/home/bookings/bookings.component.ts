@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServicesService } from 'godigital-lib';
 import { BookingApiService, AlegriaBooking } from './booking-api.service';
+import { SITE_CONTENT } from '../site-content';
+import { SiteContentService } from '../site-content-service/site-content.service';
+import { LanguageService, SiteLanguage } from '../../services/language.service';
+import { Subscription } from 'rxjs';
 
 interface BookingFieldView {
   key: string;
@@ -15,7 +19,7 @@ type BookingView = AlegriaBooking & { displayFields: BookingFieldView[] };
   templateUrl: './bookings.component.html',
   styleUrls: ['./bookings.component.scss']
 })
-export class BookingsComponent implements OnInit {
+export class BookingsComponent implements OnInit, OnDestroy {
   bookings: BookingView[] = [];
   loading = true;
   errorMessage = '';
@@ -34,14 +38,24 @@ export class BookingsComponent implements OnInit {
   balancePaymentError = '';
 
   loggedUser: any = null;
+  currentLanguage: SiteLanguage = 'fr';
+  pageText: any = (SITE_CONTENT as any).fr?.bookingManagement || {};
+  private languageSub?: Subscription;
 
   constructor(
     private bookingApi: BookingApiService,
     private router: Router,
-    private mainSvc: ServicesService
+    private mainSvc: ServicesService,
+    private siteContentService: SiteContentService,
+    private languageService: LanguageService
   ) {}
 
   ngOnInit(): void {
+    this.languageSub = this.languageService.language$.subscribe((language) => {
+      this.currentLanguage = language;
+      this.loadPageText(language);
+    });
+    this.loadPageText(this.currentLanguage);
     const svc = this.mainSvc as any;
     this.loggedUser = svc.bnUser || svc.currentUser || null;
     if (!this.isAdmin) {
@@ -49,6 +63,29 @@ export class BookingsComponent implements OnInit {
       return;
     }
     this.loadBookings();
+  }
+
+
+  async loadPageText(language: SiteLanguage): Promise<void> {
+    const fallback = (SITE_CONTENT as any)[language]?.bookingManagement || (SITE_CONTENT as any).fr?.bookingManagement || {};
+    try {
+      const content: any = await this.siteContentService.getContent();
+      this.pageText = {
+        ...fallback,
+        ...(content?.[language]?.bookingManagement || {}),
+        ...(content?.bookingManagement?.[language] || {}),
+      };
+    } catch {
+      this.pageText = fallback;
+    }
+  }
+
+  t(key: string): string {
+    return this.pageText?.[key] || key;
+  }
+
+  ngOnDestroy(): void {
+    this.languageSub?.unsubscribe();
   }
 
   get isAdmin(): boolean {

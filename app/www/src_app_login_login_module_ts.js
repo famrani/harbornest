@@ -104,6 +104,14 @@ let LoginComponent = class LoginComponent {
         [status, user] = yield _this.loginSvc.localUtilsSvc.processLogin(v.email, v.password, undefined);
         _this.loginSvc.wnGuest = user;
         _this.loginSvc.mainSvc.setLoggedUser(user);
+        try {
+          sessionStorage.setItem('loggedUser', JSON.stringify(user));
+          localStorage.setItem('loggedUser', JSON.stringify(user));
+        } catch {}
+        try {
+          sessionStorage.setItem('loggedUser', JSON.stringify(user));
+          localStorage.setItem('loggedUser', JSON.stringify(user));
+        } catch {}
         // OPTION: you can fetch the user profile here if you need local state
         // const profile = await this.users.loadProfile(); // depends on your lib
         _this.postLoginRedirect();

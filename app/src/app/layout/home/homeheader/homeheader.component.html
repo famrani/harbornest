@@ -43,7 +43,6 @@
           <a routerLink="/booking-process" routerLinkActive="active" (click)="closeMenu()">{{ depositLabel }}</a>
         </div>
       </details>
-
       <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">{{ contactLabel }}</a>
 
       <div class="language-switcher">
@@ -73,6 +72,7 @@
 
           <span class="dropdown-section-title">{{ publicOutingInfoSectionLabel }}</span>
           <a routerLink="/admin/manage-outings" routerLinkActive="active" (click)="closeMenu()">{{ managePublicOutingsLabel }}</a>
+            <a routerLink="/admin/pricing-model" routerLinkActive="active" (click)="closeMenu()">{{ pricingModelLabel }}</a>
           <a routerLink="/admin/feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ adminFeedbacksLabel }}</a>
 
           <span class="dropdown-section-title">{{ accountSectionLabel }}</span>

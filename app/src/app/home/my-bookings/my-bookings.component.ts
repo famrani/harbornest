@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ServicesService } from 'godigital-lib';
 import { BookingApiService, AlegriaBooking } from '../bookings/booking-api.service';
+import { SITE_CONTENT } from '../site-content';
+import { SiteContentService } from '../site-content-service/site-content.service';
+import { LanguageService, SiteLanguage } from '../../services/language.service';
 
 @Component({
   selector: 'app-my-bookings',
@@ -21,14 +24,24 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
   loggedUser: any = null;
   selectedStatusBooking: AlegriaBooking | null = null;
   private userSub?: Subscription;
+  currentLanguage: SiteLanguage = 'fr';
+  pageText: any = (SITE_CONTENT as any).fr?.bookingManagement || {};
+  private languageSub?: Subscription;
 
   constructor(
     private bookingApi: BookingApiService,
     private mainSvc: ServicesService,
-    private router: Router
+    private router: Router,
+    private siteContentService: SiteContentService,
+    private languageService: LanguageService
   ) {}
 
   ngOnInit(): void {
+    this.languageSub = this.languageService.language$.subscribe((language) => {
+      this.currentLanguage = language;
+      this.loadPageText(language);
+    });
+    this.loadPageText(this.currentLanguage);
     const svc = this.mainSvc as any;
     const userObservable = typeof svc.getLoggedUser === 'function'
       ? svc.getLoggedUser()
@@ -49,6 +62,26 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userSub?.unsubscribe();
+    this.languageSub?.unsubscribe();
+  }
+
+
+  async loadPageText(language: SiteLanguage): Promise<void> {
+    const fallback = (SITE_CONTENT as any)[language]?.bookingManagement || (SITE_CONTENT as any).fr?.bookingManagement || {};
+    try {
+      const content: any = await this.siteContentService.getContent();
+      this.pageText = {
+        ...fallback,
+        ...(content?.[language]?.bookingManagement || {}),
+        ...(content?.bookingManagement?.[language] || {}),
+      };
+    } catch {
+      this.pageText = fallback;
+    }
+  }
+
+  t(key: string): string {
+    return this.pageText?.[key] || key;
   }
 
   get isAdmin(): boolean {

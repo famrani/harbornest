@@ -43,6 +43,21 @@ export class SiteContentService {
     return all[language] || all.fr || SITE_CONTENT.fr;
   }
 
+  async getRawContent(forceRefresh = false): Promise<any> {
+    if (!forceRefresh && this.cached) {
+      // This keeps normal page rendering fast, but this method is mainly used by pages that
+      // need to inspect flexible Firebase paths before merging.
+    }
+
+    for (const baseUrl of this.restDatabaseUrls) {
+      try {
+        return await firstValueFrom(this.http.get<any>(`${baseUrl}/siteContent.json`));
+      } catch {}
+    }
+
+    return null;
+  }
+
   private mergeAll(value: Partial<Record<SiteLanguage, Partial<SiteContent>>>): Record<SiteLanguage, SiteContent> {
     return {
       fr: this.deepMerge(SITE_CONTENT.fr, value.fr || {}),

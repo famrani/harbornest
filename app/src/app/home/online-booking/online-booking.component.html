@@ -1,0 +1,223 @@
+<section class="page-hero">
+  <div class="container narrow">
+    <span class="eyebrow">{{ bookingText.eyebrow }}</span>
+    <h1>{{ bookingText.title }}</h1>
+    <p>{{ bookingText.wizardIntro || bookingText.directIntro || bookingText.intro }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container booking-grid">
+    <div class="booking-card">
+      <nav class="wizard-steps">
+        <button
+          type="button"
+          *ngFor="let label of stepLabels; let i = index"
+          [class.active]="currentStep === i + 1"
+          [class.done]="currentStep > i + 1"
+          [disabled]="!canGoToStep(i + 1)"
+          (click)="currentStep = i + 1">
+          <span>{{ i + 1 }}</span>
+          {{ label }}
+        </button>
+      </nav>
+
+      <section class="wizard-panel" *ngIf="currentStep === 1">
+        <h2>{{ bookingText.step1Title }}</h2>
+        <div class="field-grid">
+          <label>
+            <span>{{ bookingText.pricePeriod }}</span>
+            <select name="pricePeriod" [(ngModel)]="form.pricePeriod">
+              <option value="">{{ bookingText.selectPlaceholder }}</option>
+              <option *ngFor="let period of pricePeriods" [value]="period.id">{{ period.label }}</option>
+            </select>
+          </label>
+
+          <label>
+            <span>{{ bookingText.date }}</span>
+            <input type="date" name="outingDate" [min]="minimumBookingDate" [(ngModel)]="form.outingDate" required />
+          </label>
+
+          <label>
+            <span>{{ bookingText.startTime }}</span>
+            <input type="time" name="startTime" [(ngModel)]="form.startTime" required />
+          </label>
+
+          <label>
+            <span>{{ bookingText.endTime }}</span>
+            <input type="time" name="endTime" [(ngModel)]="form.endTime" required />
+          </label>
+
+          <label>
+            <span>{{ bookingText.passengers }}</span>
+            <input type="number" name="passengers" [(ngModel)]="form.passengers" required [min]="pricingModel.minGuests || 1" [max]="pricingModel.maxGuests || null" step="1" />
+          </label>
+
+          <label>
+            <span>{{ bookingText.startMarina }}</span>
+            <select name="startMarina" [(ngModel)]="form.startMarina" required>
+              <option value="">{{ bookingText.selectPlaceholder }}</option>
+              <option *ngFor="let marina of marinas" [value]="marina">{{ marina }}</option>
+            </select>
+          </label>
+
+          <label>
+            <span>{{ bookingText.destination }}</span>
+            <select name="destination" [(ngModel)]="form.destination" required>
+              <option value="">{{ bookingText.selectPlaceholder }}</option>
+              <option *ngFor="let destination of destinations" [value]="destination">{{ destination }}</option>
+            </select>
+          </label>
+
+</div>
+      
+        
+        <div class="price-estimate-card" *ngIf="shouldShowEstimatedPrice">
+          <div class="price-estimate-head">
+            <span>{{ bookingText.estimatedPriceTitle }}</span>
+            <strong>{{ formattedBookingTotal }}</strong>
+          </div>
+
+          <div class="price-estimate-grid">
+            <div>
+              <small>{{ bookingText.selectedPeriod }}</small>
+              <span>{{ selectedPeriodLabel }}</span>
+            </div>
+            <div>
+              <small>{{ bookingText.boatPrice || bookingText.basePrice }}</small>
+              <span>€{{ estimatedBoatPriceAmount }}</span>
+            </div>
+            <div>
+              <small>{{ bookingText.calendarMultiplier }}</small>
+              <span>x{{ calendarMultiplier }}</span>
+            </div>
+            <div>
+              <small>{{ bookingText.extraGuests }}</small>
+              <span>{{ extraGuestCount }} · €{{ extraGuestsAmount }}</span>
+            </div>
+            <div>
+              <small>{{ bookingText.skipperPrice }}</small>
+              <span>€{{ skipperPriceAmount }}</span>
+            </div>
+            <div>
+              <small>{{ bookingText.cleaningPrice }}</small>
+              <span>€{{ cleaningPriceAmount }}</span>
+            </div>
+            <div>
+              <small>{{ bookingText.optionsPrice || 'Options' }}</small>
+              <span>€{{ selectedOptionsTotal }}</span>
+            </div>
+            <div>
+              <small>{{ bookingText.duration }}</small>
+              <span>{{ durationHours }}h / {{ maxDurationHours }}h max</span>
+            </div>
+          </div>
+
+          <p class="price-estimate-note">{{ bookingText.estimatedPriceNote }}</p>
+        </div>
+
+<div class="validation-list" *ngIf="step1ValidationErrors.length">
+          <strong>{{ bookingText.requestValidationTitle }}</strong>
+          <ul>
+            <li *ngFor="let validationError of step1ValidationErrors">{{ validationError }}</li>
+          </ul>
+        </div>
+</section>
+
+      <section class="wizard-panel" *ngIf="currentStep === 2">
+        <h2>{{ bookingText.step2Title }}</h2>
+        <p>{{ bookingText.optionsIntro }}</p>
+        <label class="option-row" *ngFor="let option of options">
+          <input
+            type="checkbox"
+            [checked]="isOptionSelected(option.id)"
+            (change)="toggleOption(option.id, $any($event.target).checked)"
+          />
+          <span>
+            <strong>{{ option.label }}</strong>
+            <small *ngIf="option.description">{{ option.description }}</small>
+            <em *ngIf="option.price">+ €{{ option.price }}</em>
+          </span>
+        </label>
+        <label class="full-width">
+          <span>{{ bookingText.comments }}</span>
+          <textarea rows="4" name="comments" [(ngModel)]="form.comments"></textarea>
+        </label>
+      </section>
+
+      <section class="wizard-panel" *ngIf="currentStep === 3">
+        <h2>{{ bookingText.step3Title }}</h2>
+        <div class="login-required" *ngIf="!isLoggedIn">
+          <p>{{ bookingText.loginText }}</p>
+          <button class="btn btn-primary" type="button" (click)="goToLogin()">
+            {{ bookingText.loginButton }}
+          </button>
+        </div>
+
+        <div class="login-required success-box" *ngIf="isLoggedIn">
+          <p>{{ bookingText.loggedInText }}</p>
+          <div class="field-grid">
+            <label>
+              <span>{{ bookingText.customerName }}</span>
+              <input type="text" name="customerName" [(ngModel)]="form.customerName" required />
+            </label>
+            <label>
+              <span>{{ bookingText.customerEmail }}</span>
+              <input type="email" name="customerEmail" [(ngModel)]="form.customerEmail" required email />
+            </label>
+            <label>
+              <span>{{ bookingText.customerPhone }}</span>
+              <input type="tel" name="customerPhone" [(ngModel)]="form.customerPhone" required pattern="^[+()0-9 .-]{8,}$" />
+            </label>
+          </div>
+        </div>
+      
+        <div class="important-note request-note">
+          {{ bookingText.requestOnlyNotice }}
+        </div>
+
+        <p class="error-message" *ngIf="firstRequestValidationError">
+          {{ firstRequestValidationError }}
+        </p>
+
+        <div class="validation-list" *ngIf="requestValidationErrors.length">
+          <strong>{{ bookingText.requestValidationTitle }}</strong>
+          <ul>
+            <li *ngFor="let validationError of requestValidationErrors">{{ validationError }}</li>
+          </ul>
+        </div>
+
+        <button class="btn btn-primary" type="button" [disabled]="saving" (click)="finalSubmit()">
+          {{ saving ? (bookingText.saving || '...') : (bookingText.submitRequestButton || bookingText.next || 'Send request') }}
+        </button>
+</section>
+
+      <p class="error-message" *ngIf="step1MissingReason">{{ step1MissingReason }}</p>
+
+      <div class="wizard-nav">
+        <button class="btn btn-secondary" type="button" [disabled]="currentStep === 1" (click)="previousStep()">
+          {{ bookingText.previous }}
+        </button>
+        <button class="btn btn-primary" type="button" *ngIf="currentStep < 3" [disabled]="!canGoToStep(currentStep + 1)" (click)="nextStep()">
+          {{ bookingText.next }}
+        </button>
+      </div>
+
+      <p class="success" *ngIf="message">{{ message }}</p>
+      <p class="error-message" *ngIf="error">{{ error }}</p>
+    </div>
+
+    <aside class="summary-card">
+      <h2>{{ bookingText.summaryTitle }}</h2>
+<div class="summary-line"><strong>{{ bookingText.date }}</strong><span>{{ form.outingDate || '-' }}</span></div>
+      <div class="summary-line"><strong>{{ bookingText.timePeriod }}</strong><span>{{ form.timePeriod || '-' }}</span></div>
+      <div class="summary-line"><strong>{{ bookingText.passengers }}</strong><span>{{ form.passengers || '-' }}</span></div>
+      <div class="summary-line"><strong>{{ bookingText.startMarina }}</strong><span>{{ form.startMarina || '-' }}</span></div>
+      <div class="summary-line"><strong>{{ bookingText.destination }}</strong><span>{{ form.destination || '-' }}</span></div>
+      <div class="summary-line"><strong>{{ bookingText.optionsTitle }}</strong><span>{{ optionsSummary }}</span></div>
+      <div class="summary-note">
+        {{ bookingText.requestSummaryNotice }}
+      </div>
+    </aside>
+  </div>
+</section>

@@ -20,16 +20,16 @@
       </div>
 
       <section class="proposal-auth-card" *ngIf="!proposalAccessReady">
-        <span class="eyebrow">Secure proposal access</span>
-        <h2>Access your proposal securely</h2>
+        <span class="eyebrow">{{ text('secureProposalAccess') }}</span>
+        <h2>{{ text('accessProposalSecurely') }}</h2>
 
         <p *ngIf="proposalAccessMode === 'google'">
-          This proposal is linked to <strong>{{ proposal.customerEmail }}</strong>.
-          Please continue with Google so we can verify that you own this Gmail address.
+          {{ text('proposalLinkedTo') }} <strong>{{ proposal.customerEmail }}</strong>.
+          {{ text('continueGoogleOwnership') }}
         </p>
 
         <p *ngIf="proposalAccessMode === 'auto_email' || customerAccountCreating || proposalAccessLoading">
-          We are preparing your secure customer access. You do not need to create an account yourself.
+          {{ text('preparingSecureAccess') }}
         </p>
 
         <p class="muted" *ngIf="proposalAccessMessage">{{ proposalAccessMessage }}</p>
@@ -41,7 +41,7 @@
           *ngIf="proposalAccessMode === 'google'"
           [disabled]="proposalAccessLoading"
           (click)="continueWithGoogle()">
-          {{ proposalAccessLoading ? 'Opening Google...' : 'Continue with Google' }}
+          {{ proposalAccessLoading ? text('openingGoogle') : text('continueWithGoogle') }}
         </button>
 
         <button
@@ -65,15 +65,15 @@
           <div class="wizard-steps">
             <div class="wizard-step" [class.active]="wizardStep === 1" [class.done]="tncAccepted">
               <span>1</span>
-              <strong>{{ text('wizardStepTerms') || 'Accept T&C' }}</strong>
+              <strong>{{ text('wizardStepTerms') }}</strong>
             </div>
             <div class="wizard-step" [class.active]="wizardStep === 2" [class.done]="depositPaid">
               <span>2</span>
-              <strong>{{ text('wizardStepDeposit') || 'Pay deposit' }}</strong>
+              <strong>{{ text('wizardStepDeposit') }}</strong>
             </div>
             <div class="wizard-step" [class.active]="wizardStep === 3" [class.done]="warrantyReady">
               <span>3</span>
-              <strong>{{ text('wizardStepWarranty') || 'Warranty' }}</strong>
+              <strong>{{ text('wizardStepWarranty') }}</strong>
             </div>
           </div>
 
@@ -107,7 +107,7 @@
 
           <section class="wizard-panel" *ngIf="wizardStep === 3">
             <h2>{{ text('warrantyTitle') }}</h2>
-            <p>{{ text('warrantyWizardIntro') || 'Choose how you want to secure the warranty for the outing.' }}</p>
+            <p>{{ text('warrantyWizardIntro') }}</p>
 
             <div class="warranty-options">
               <label class="radio-card">
@@ -132,7 +132,7 @@
               </button>
 
               <button class="btn btn-primary" type="button" *ngIf="warrantyRegistered" [disabled]="finalizingBooking" (click)="finalizeProposal()">
-                {{ finalizingBooking ? text('finalizingBooking') || 'Creating booking...' : text('finalizeBookingButton') || 'Create my booking' }}
+                {{ finalizingBooking ? text('finalizingBooking') : text('finalizeBookingButton') }}
               </button>
             </div>
 
@@ -142,7 +142,7 @@
               <p class="muted">{{ text('amount') }}: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>
 
               <button class="btn btn-primary" type="button" [disabled]="payingWarranty || finalizingBooking" (click)="acceptCashWarranty()">
-                {{ finalizingBooking ? text('finalizingBooking') || 'Creating booking...' : text('acceptCashWarrantyButton') || 'I confirm I will bring €500 cash' }}
+                {{ finalizingBooking ? text('finalizingBooking') : text('acceptCashWarrantyButton') }}
               </button>
             </div>
           </section>
@@ -151,7 +151,7 @@
             <h2>{{ text('bookingCreatedTitle') }}</h2>
             <p>{{ text('bookingCreatedText') }}</p>
             <button class="btn btn-primary" type="button" [disabled]="finalizingBooking" (click)="finalizeProposal()">
-              {{ finalizingBooking ? text('finalizingBooking') || 'Creating booking...' : text('finalizeBookingButton') || 'Create my booking' }}
+              {{ finalizingBooking ? text('finalizingBooking') : text('finalizeBookingButton') }}
             </button>
           </section>
         </section>

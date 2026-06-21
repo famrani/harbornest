@@ -4,6 +4,7 @@ import { SITE_CONTENT, SiteContent } from '../site-content';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
 import { DynamicOuting, OutingsDataService } from '../outings-data.service';
 import { SiteContentService } from '../site-content-service/site-content.service';
+import { ServicesService } from 'godigital-lib';
 
 @Component({
   selector: 'app-home',
@@ -19,33 +20,84 @@ export class HomeComponent implements OnInit, OnDestroy {
   private currentLanguage: SiteLanguage = 'fr';
   private dynamicOutings: DynamicOuting[] = [];
   private languageSub?: Subscription;
+  private accountSub?: Subscription;
+  loggedUser: any = null;
 
   constructor(
     private languageService: LanguageService,
     private outingsData: OutingsDataService,
     private siteContentService: SiteContentService,
+    private mainSvc: ServicesService,
   ) {}
 
   ngOnInit(): void {
     this.loadSiteContent();
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.currentLanguage = language;
-      this.content = this.allSiteContent[language] || SITE_CONTENT[language];
+      this.content = this.normalizeContentForHome(this.allSiteContent[language] || SITE_CONTENT[language], language);
       this.highlights = this.content.boatHighlights;
       this.applyOutings();
     });
 
     this.loadDynamicOutings();
+    this.watchLoggedUser();
   }
 
-  ngOnDestroy(): void {
+
+
+  private watchLoggedUser(): void {
+    const svc: any = this.mainSvc as any;
+    const userObservable = typeof svc.getLoggedUser === 'function'
+      ? svc.getLoggedUser()
+      : typeof svc.getUser === 'function'
+        ? svc.getUser()
+        : svc.bnUserO;
+
+    if (userObservable && typeof userObservable.subscribe === 'function') {
+      this.accountSub = userObservable.subscribe((user: any) => {
+        this.loggedUser = user || null;
+      });
+    } else {
+      this.loggedUser = svc.bnUser || svc.currentUser || svc.loggedUser || svc.user || null;
+    }
+  }
+
+  get isAdmin(): boolean {
+    const role = String(this.loggedUser?.role || '').toLowerCase();
+    return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
+  }
+
+  get canShowOnlineBookingButton(): boolean {
+    return !this.isAdmin;
+  }
+ngOnDestroy(): void {
     this.languageSub?.unsubscribe();
+    this.accountSub?.unsubscribe();
+  }
+
+
+  private normalizeContentForHome(content: SiteContent | any, language: SiteLanguage): SiteContent {
+    const fallback: any = SITE_CONTENT[language] || SITE_CONTENT.fr;
+    const normalized: any = {
+      ...fallback,
+      ...(content || {}),
+      home: {
+        ...(fallback.home || {}),
+        ...((content || {}).home || {}),
+      },
+    };
+
+    if (!normalized.home.bookingProcess && (content as any)?.bookingProcess) {
+      normalized.home.bookingProcess = (content as any).bookingProcess;
+    }
+
+    return normalized as SiteContent;
   }
 
   private async loadSiteContent(): Promise<void> {
     try {
       this.allSiteContent = await this.siteContentService.getContent();
-      this.content = this.allSiteContent[this.currentLanguage] || SITE_CONTENT[this.currentLanguage];
+      this.content = this.normalizeContentForHome(this.allSiteContent[this.currentLanguage] || SITE_CONTENT[this.currentLanguage], this.currentLanguage);
       this.highlights = this.content.boatHighlights;
       this.applyOutings();
     } catch {

@@ -3,8 +3,12 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ServicesService } from 'godigital-lib';
 import { ProposalApiService, AlegriaProposal } from '../bookings/proposal-api.service';
+import { BookingApiService, AlegriaBooking } from '../bookings/booking-api.service';
+import { SITE_CONTENT } from '../site-content';
+import { SiteContentService } from '../site-content-service/site-content.service';
+import { LanguageService, SiteLanguage } from '../../services/language.service';
 
-type ProposalTab = 'pending' | 'accepted' | 'declined' | 'expired';
+type ProposalTab = 'requests' | 'pending' | 'accepted' | 'declined' | 'expired';
 
 @Component({
   selector: 'app-my-proposals',
@@ -13,20 +17,33 @@ type ProposalTab = 'pending' | 'accepted' | 'declined' | 'expired';
 })
 export class MyProposalsComponent implements OnInit, OnDestroy {
   proposals: AlegriaProposal[] = [];
+  requests: AlegriaBooking[] = [];
   loading = true;
   error = '';
   loggedUser: any = null;
-  activeTab: ProposalTab = 'pending';
+  activeTab: ProposalTab = 'requests';
   searchTerm = '';
   private userSub?: Subscription;
+  private languageSub?: Subscription;
+  currentLanguage: SiteLanguage = 'fr';
+  pageText: any = (SITE_CONTENT as any).fr?.proposalManagement || {};
 
   constructor(
     private proposalApi: ProposalApiService,
+    private bookingApi: BookingApiService,
     private mainSvc: ServicesService,
-    private router: Router
+    private router: Router,
+    private siteContentService: SiteContentService,
+    private languageService: LanguageService
   ) {}
 
   ngOnInit(): void {
+    this.languageSub = this.languageService.language$.subscribe((language) => {
+      this.currentLanguage = language;
+      this.loadPageText(language);
+    });
+    this.loadPageText(this.currentLanguage);
+
     const svc = this.mainSvc as any;
     const userObservable = typeof svc.getLoggedUser === 'function'
       ? svc.getLoggedUser()
@@ -47,12 +64,26 @@ export class MyProposalsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userSub?.unsubscribe();
+    this.languageSub?.unsubscribe();
   }
+
+  async loadPageText(language: SiteLanguage): Promise<void> {
+    const fallback = (SITE_CONTENT as any)[language]?.proposalManagement || (SITE_CONTENT as any).fr?.proposalManagement || {};
+    try {
+      const content: any = await this.siteContentService.getContent();
+      this.pageText = { ...fallback, ...(content?.[language]?.proposalManagement || {}), ...(content?.proposalManagement?.[language] || {}) };
+    } catch {
+      this.pageText = fallback;
+    }
+  }
+
+  t(key: string): string { return this.pageText?.[key] || key; }
 
   loadProposals(): void {
     const email = String(this.loggedUser?.email || '').trim().toLowerCase();
     if (!email) {
       this.proposals = [];
+      this.requests = [];
       this.loading = false;
       return;
     }
@@ -65,13 +96,68 @@ export class MyProposalsComponent implements OnInit, OnDestroy {
         this.proposals = (items || [])
           .filter((proposal) => String(proposal.customerEmail || '').trim().toLowerCase() === email)
           .sort((a, b) => (b.modifiedTS || b.createdTS || 0) - (a.modifiedTS || a.createdTS || 0));
-        this.loading = false;
+
+        this.bookingApi.getBookings(email).subscribe({
+          next: (bookings) => {
+            this.requests = (bookings || [])
+              .filter((booking) => this.bookingApi.isRequestBooking(booking))
+              .sort((a: any, b: any) => (b.modifiedTS || b.requestSubmittedAt || b.createdTS || 0) - (a.modifiedTS || a.requestSubmittedAt || a.createdTS || 0));
+            this.loading = false;
+          },
+          error: () => {
+            this.requests = [];
+            this.loading = false;
+          }
+        });
       },
       error: () => {
-        this.error = 'Unable to load your proposals.';
+        this.error = this.t('unableLoadMy');
         this.proposals = [];
+        this.requests = [];
         this.loading = false;
       }
+    });
+  }
+
+
+  get proposalRequests(): AlegriaProposal[] {
+    return this.proposals.filter((proposal: any) => proposal.status === 'request' || proposal.requestNeedsAdminProposal === true);
+  }
+
+  get filteredRequests(): AlegriaBooking[] {
+    const term = this.normalize(this.searchTerm);
+    return this.requests.filter((request) => {
+      if (this.activeTab !== 'requests') return false;
+      if (!term) return true;
+      const haystack = [
+        request.bookingId,
+        request.outingType,
+        request.outingDate,
+        request.customerName,
+        request.email,
+        request.startMarina,
+        request.destination,
+      ].join(' ');
+      return this.normalize(haystack).includes(term);
+    });
+  }
+
+
+  get filteredProposalRequests(): AlegriaProposal[] {
+    const term = this.normalize(this.searchTerm);
+    return this.proposalRequests.filter((proposal: any) => {
+      if (this.activeTab !== 'requests') return false;
+      if (!term) return true;
+      const haystack = [
+        proposal.proposalId,
+        proposal.outingType,
+        proposal.outingDate,
+        proposal.customerName,
+        proposal.customerEmail,
+        proposal.startMarina,
+        proposal.destination,
+      ].join(' ');
+      return this.normalize(haystack).includes(term);
     });
   }
 
@@ -95,6 +181,9 @@ export class MyProposalsComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  get requestsCount(): number { return this.requests.length + this.proposalRequests.length; }
+
   get pendingCount(): number {
     return this.proposals.filter((proposal) => this.getProposalTab(proposal) === 'pending').length;
   }
@@ -114,6 +203,41 @@ export class MyProposalsComponent implements OnInit, OnDestroy {
   setTab(tab: ProposalTab): void {
     this.activeTab = tab;
   }
+
+
+  openRequest(request: AlegriaBooking): void {
+    this.router.navigate(['/bookings', request.bookingId]);
+  }
+
+  getRequestStatusLabel(request: AlegriaBooking): string {
+    return this.t('requestSubmittedStatus');
+  }
+
+
+
+  getEstimatedOptionsPrice(proposal: AlegriaProposal | Partial<AlegriaProposal>): number {
+    const fromField = Number((proposal as any).estimatedOptionsPrice || (proposal as any).proposalExtraServicesPrice || 0);
+    if (fromField) return fromField;
+    const options = (proposal as any).selectedOptions || [];
+    if (!Array.isArray(options)) return 0;
+    return options.reduce((sum: number, option: any) => sum + Number(option.price || option.amount || 0), 0);
+  }
+
+  getEstimatedSkipperPrice(proposal: AlegriaProposal | Partial<AlegriaProposal>): number {
+    return Number((proposal as any).estimatedSkipperPrice || (proposal as any).proposalSkipperPrice || 0);
+  }
+
+  getEstimatedCleaningPrice(proposal: AlegriaProposal | Partial<AlegriaProposal>): number {
+    return Number((proposal as any).estimatedCleaningPrice || 0);
+  }
+
+  getProposalOriginLabel(proposal: AlegriaProposal): string {
+    const origin = String((proposal as any).proposalOrigin || proposal.source || '').toLowerCase();
+    if (origin === 'customer_request' || proposal.source === 'request') return this.t('fromCustomerRequest');
+    if (origin === 'email_request') return this.t('fromEmailRequest');
+    return this.t('fromAdminDirect');
+  }
+
 
   openProposal(proposal: AlegriaProposal): void {
     this.router.navigate(['/proposal', proposal.proposalId]);
@@ -139,10 +263,10 @@ export class MyProposalsComponent implements OnInit, OnDestroy {
 
   getStatusLabel(proposal: AlegriaProposal): string {
     const tab = this.getProposalTab(proposal);
-    if (tab === 'accepted') return 'Accepted';
-    if (tab === 'declined') return 'Declined';
-    if (tab === 'expired') return 'Expired';
-    return 'Pending';
+    if (tab === 'accepted') return this.t('statusAccepted');
+    if (tab === 'declined') return this.t('statusDeclined');
+    if (tab === 'expired') return this.t('statusExpired');
+    return this.t('statusPending');
   }
 
   getStatusClass(proposal: AlegriaProposal): string {
@@ -150,10 +274,10 @@ export class MyProposalsComponent implements OnInit, OnDestroy {
   }
 
   getValidityLabel(proposal: AlegriaProposal): string {
-    if (!proposal.validUntil) return 'No validity date';
+    if (!proposal.validUntil) return this.t('noValidityDate');
     const date = new Date(proposal.validUntil);
-    if (Number.isNaN(date.getTime())) return 'No validity date';
-    return this.isExpired(proposal) ? `Expired on ${date.toLocaleDateString()}` : `Valid until ${date.toLocaleDateString()}`;
+    if (Number.isNaN(date.getTime())) return this.t('noValidityDate');
+    return this.isExpired(proposal) ? `${this.t('expiredOn')} ${date.toLocaleDateString()}` : `${this.t('validUntil')} ${date.toLocaleDateString()}`;
   }
 
   getDepositAmount(proposal: AlegriaProposal): number {

@@ -4,17 +4,15 @@
       <span class="eyebrow">{{ content.home.eyebrow }}</span>
       <h1>{{ content.home.title }}</h1>
       <p>{{ content.home.intro }}</p>
-      <div class="price-pill">{{ publicPriceFrom }}</div>
-
-      <div class="hero-actions">
+<div class="hero-actions">
         <a routerLink="/sorties" class="btn btn-primary btn-equal">
           {{ content.home.primaryCta }}
         </a>
 
-        <a routerLink="/contact" class="btn btn-secondary btn-equal">
-          {{ content.home.secondaryCta }}
+        <a *ngIf="canShowOnlineBookingButton" routerLink="/reserver" class="btn btn-secondary btn-equal">
+          {{ content.home.onlineBookingCta || 'Réserver en ligne' }}
         </a>
-                <a href="https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556"
+<a href="https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556"
           target="_blank" rel="noreferrer" class="btn btn-book">{{ content.common.bookOnClickAndBoat }}</a>
 
       </div>
@@ -28,7 +26,6 @@
     </div>
   </div>
 </section>
-
 
 <section class="section">
   <div class="container">
