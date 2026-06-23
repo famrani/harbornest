@@ -105,8 +105,23 @@ function requireFields(obj: any, fields: string[], res: Response) {
     return true;
 }
 
+function pickContactEmail(siteContent: any, preferredLocale?: string): string {
+    const locales = [preferredLocale, 'fr', 'en', 'es'].filter(Boolean) as string[];
+    for (const locale of locales) {
+        const email = siteContent?.[locale]?.contactInfo?.email;
+        if (isEmail(email)) return String(email).trim();
+    }
+    if (siteContent && typeof siteContent === 'object') {
+        for (const value of Object.values(siteContent) as any[]) {
+            const email = value?.contactInfo?.email;
+            if (isEmail(email)) return String(email).trim();
+        }
+    }
+    return '';
+}
+
 // sendBookingEmail composes and sends notification emails to both the owner and the guest
-export async function sendBookingEmail(mailer: MailerService, booking: any, bookingId: string) {
+export async function sendBookingEmail(mailer: MailerService, booking: any, bookingId: string, ownerEmail?: string) {
     const {
         eventType,
         start,
@@ -156,7 +171,7 @@ export async function sendBookingEmail(mailer: MailerService, booking: any, book
   `;
 
     // ✉️ send both emails (owner first, then guest)
-    await mailer.sendToOwner(subjectOwner, htmlOwner);
+    await mailer.sendToOwner(subjectOwner, htmlOwner, ownerEmail);
     if (customer?.email) {
         await mailer.sendToGuest(customer.email, subjectGuest, htmlGuest);
     }
@@ -334,9 +349,71 @@ export class BookingsService {
 
 
 
+
+    private unwrapFirebaseNamedObject(raw: any, key: string): any {
+        if (!raw || typeof raw !== 'object') return raw;
+        if (raw[key] && typeof raw[key] === 'object') return raw[key];
+        return raw;
+    }
+
+    private normalizeObjectArray(raw: any): any[] {
+        if (!raw) return [];
+        if (Array.isArray(raw)) return raw.filter((item) => item !== null && item !== undefined);
+        if (typeof raw === 'object') {
+            return Object.keys(raw).map((key) => {
+                const value = raw[key];
+                if (value && typeof value === 'object') {
+                    return { id: value.id || key, ...value };
+                }
+                return { id: key, value };
+            });
+        }
+        return [];
+    }
+
+    async getGuestInfo() {
+        const snap = await this.storeDbc.db.ref(OBJECTNAME.guestInfo).once('value');
+        return this.unwrapFirebaseNamedObject(snap.val() || {}, OBJECTNAME.guestInfo);
+    }
+
+    async getExtraServicesCatalog() {
+        const snap = await this.storeDbc.db.ref(OBJECTNAME.bnExtraServices).once('value');
+        const catalog = this.unwrapFirebaseNamedObject(snap.val() || {}, OBJECTNAME.bnExtraServices);
+        return this.normalizeObjectArray(catalog)
+            .filter((item: any) => item && item.active !== false)
+            .sort((a: any, b: any) => Number(a.sortOrder ?? 999) - Number(b.sortOrder ?? 999));
+    }
+
     async setRoutes(router) {
         await this.mailer.verify(); // log SMTP status on boot
         const limiter = rateLimit({ windowMs: 10 * 60 * 1000, max: 20 });
+
+        router.get('/api/guest-info', async (_req, res) => {
+            try {
+                return res.json(await this.getGuestInfo());
+            } catch (e: any) {
+                console.error(e);
+                return res.status(500).json({ ok: false, error: e?.message || String(e) });
+            }
+        });
+
+        router.get('/api/extra-services', async (_req, res) => {
+            try {
+                return res.json(await this.getExtraServicesCatalog());
+            } catch (e: any) {
+                console.error(e);
+                return res.status(500).json({ ok: false, error: e?.message || String(e) });
+            }
+        });
+
+        router.get('/api/bn-extra-services', async (_req, res) => {
+            try {
+                return res.json(await this.getExtraServicesCatalog());
+            } catch (e: any) {
+                console.error(e);
+                return res.status(500).json({ ok: false, error: e?.message || String(e) });
+            }
+        });
 
         // Create booking: guest submits; status=pending
         router.post('/api/bookings', async (req, res) => {
@@ -348,7 +425,9 @@ export class BookingsService {
 
                 // 2) Email notification(s) (owner + guest)
                 try {
-                    await sendBookingEmail(this.mailer, p, bookingId);
+                    const siteContent = await this.storeDbc.getObject('siteContent').catch(() => null);
+                    const ownerEmail = pickContactEmail(siteContent, p?.locale || p?.language || p?.lang);
+                    await sendBookingEmail(this.mailer, p, bookingId, ownerEmail);
                 } catch (e) {
                     // optional: log only; booking remains saved
                     console.error('[MAIL] send failed:', e);

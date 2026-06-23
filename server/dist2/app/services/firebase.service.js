@@ -82,7 +82,7 @@ var OBJECTNAME;
     OBJECTNAME["bnBoats"] = "backendboats";
     OBJECTNAME["bnUsers"] = "backendusers";
     OBJECTNAME["bnMessages"] = "backendmessages";
-    OBJECTNAME["bnBookings"] = "backendbookings";
+    OBJECTNAME["bnBookings"] = "bnBookings";
     OBJECTNAME["bnFeedbacks"] = "backendfeedbacks";
     OBJECTNAME["bnPartners"] = "backendpartners";
     OBJECTNAME["bnEvents"] = "backendevents";
@@ -90,6 +90,8 @@ var OBJECTNAME;
     OBJECTNAME["bnBoatServices"] = "backendservices";
     OBJECTNAME["bnOwners"] = "backendowners";
     OBJECTNAME["backendcalendar"] = "backendcalendar";
+    OBJECTNAME["guestInfo"] = "guestInfo";
+    OBJECTNAME["bnExtraServices"] = "bnExtraServices";
 })(OBJECTNAME || (exports.OBJECTNAME = OBJECTNAME = {}));
 var USERROLE;
 (function (USERROLE) {

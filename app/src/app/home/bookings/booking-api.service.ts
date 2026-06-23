@@ -68,6 +68,11 @@ export interface AlegriaBooking {
   warrantySelected?: boolean;
   warrantySelectedAt?: number;
   warrantyRegistered?: boolean;
+  warrantySetupIntentId?: string;
+  warrantyPaymentMethodId?: string;
+  warrantyCardLast4?: string;
+  setupIntentAmount?: number;
+  warrantySetupIntentAmount?: number;
   warrantyCashSelected?: boolean;
   damageReported?: boolean;
   damageCharged?: boolean;
@@ -275,23 +280,44 @@ export class BookingApiService {
     successUrl: string;
     cancelUrl: string;
   }): Observable<any> {
+    const balanceAmount = Number(payload.balanceAmount || payload.amount || 0);
     const enrichedPayload = {
       ...payload,
       proposalId: payload.proposalId || payload.bookingId,
-      amount: Number(payload.amount || payload.balanceAmount || 0),
-      balanceAmount: Number(payload.balanceAmount || payload.amount || 0),
-      currency: payload.currency || 'eur',
+      amount: balanceAmount,
+      balanceAmount,
+      // Some deployed backends only have the original deposit checkout route.
+      // Keep the balance metadata, but also provide depositAmount so that legacy
+      // checkout handlers can still create a Stripe session for the 90% payment.
+      depositAmount: balanceAmount,
+      remainingAmount: balanceAmount,
       paymentType: payload.paymentType || 'balance',
+      checkoutType: 'balance',
+      description: `Remaining 90% balance for booking ${payload.bookingId}`,
+      currency: payload.currency || 'eur',
     };
 
     return this.postFirstAvailable([
+      // Routes present in the latest backend app(36).zip.
       `${this.baseUrl}/pay/outing-balance-checkout`,
       `${this.baseUrl}/pay/outing-remaining-checkout`,
       `${this.baseUrl}/api/payments/create-balance-checkout-session`,
       `${this.baseUrl}/api/payments/create-remaining-checkout-session`,
       `${this.baseUrl}/stripe/balance-checkout`,
       `${this.baseUrl}/stripe/remaining-checkout`,
-    ], enrichedPayload);
+
+      // Practical fallback: latest backend also has extra-service checkout.
+      // This still redirects to Stripe for the 90% amount; the booking-detail return handler
+      // records balancePaid=true because successUrl keeps paymentType=balance.
+      `${this.baseUrl}/pay/outing-extra-service-checkout`,
+      `${this.baseUrl}/api/payments/create-extra-service-checkout-session`,
+      `${this.baseUrl}/stripe/extra-service-checkout`,
+    ], {
+      ...enrichedPayload,
+      extraServiceId: `balance_${payload.bookingId}`,
+      title: 'Remaining 90% balance',
+      name: 'Remaining 90% balance',
+    });
   }
 
   createWarrantySetup(payload: {
@@ -366,7 +392,12 @@ export class BookingApiService {
 
   getExtraServicesCatalog(): Observable<any[]> {
     return from(this.readFirebasePath('/bnExtraServices')).pipe(
-      map((raw: any) => this.normalizeArray(raw).filter((item: any) => item && item.active !== false)),
+      map((raw: any) => {
+        const catalog = this.unwrapFirebaseNamedObject(raw, 'bnExtraServices');
+        return this.normalizeArray(catalog)
+          .filter((item: any) => item && item.active !== false)
+          .sort((a: any, b: any) => Number(a.sortOrder ?? 999) - Number(b.sortOrder ?? 999));
+      }),
       catchError(() => of([]))
     );
   }
@@ -408,17 +439,61 @@ export class BookingApiService {
     successUrl: string;
     cancelUrl: string;
   }): Observable<any> {
+    const amount = Number(payload.amount || 0);
     return this.postFirstAvailable([
       `${this.baseUrl}/pay/outing-extra-service-checkout`,
       `${this.baseUrl}/api/payments/create-extra-service-checkout-session`,
       `${this.baseUrl}/stripe/extra-service-checkout`,
-    ], { ...payload, paymentType: 'extra_service', currency: payload.currency || 'eur' });
+      // Legacy fallback: create a standard Stripe checkout session with extra-service metadata.
+      `${this.baseUrl}/pay/outing-deposit-checkout`,
+      `${this.baseUrl}/api/payments/create-deposit-checkout-session`,
+      `${this.baseUrl}/stripe/deposit-checkout`,
+    ], {
+      ...payload,
+      amount,
+      depositAmount: amount,
+      paymentType: 'extra_service',
+      checkoutType: 'extra_service',
+      currency: payload.currency || 'eur'
+    });
+  }
+
+  createAdhocCheckout(payload: {
+    bookingId: string;
+    adhocPaymentId?: string;
+    ownerId: string;
+    amount: number;
+    description?: string;
+    currency?: string;
+    customerEmail?: string;
+    customerName?: string;
+    successUrl: string;
+    cancelUrl: string;
+  }): Observable<any> {
+    const adhocPaymentId = payload.adhocPaymentId || `adhoc_${Date.now()}`;
+    return this.postFirstAvailable([
+      // The latest backend app(36).zip does not expose dedicated ad-hoc routes.
+      // Use the deployed generic extra-service checkout for ad-hoc customer payments.
+      `${this.baseUrl}/pay/outing-extra-service-checkout`,
+      `${this.baseUrl}/api/payments/create-extra-service-checkout-session`,
+      `${this.baseUrl}/stripe/extra-service-checkout`,
+    ], {
+      ...payload,
+      adhocPaymentId,
+      extraServiceId: adhocPaymentId,
+      amount: Number(payload.amount || 0),
+      depositAmount: Number(payload.amount || 0),
+      paymentType: 'ad_hoc',
+      checkoutType: 'ad_hoc',
+      currency: payload.currency || 'eur'
+    });
   }
 
   refundBooking(payload: {
     bookingId: string;
     ownerId: string;
     amount: number;
+    paymentType?: 'deposit' | 'balance' | string;
     reason?: string;
   }): Observable<any> {
     return this.postFirstAvailable([
@@ -440,14 +515,21 @@ export class BookingApiService {
   private postFirstAvailable(endpoints: string[], payload: any): Observable<any> {
     return new Observable((observer) => {
       let index = 0;
+      let lastError: any = null;
+
       const tryNext = () => {
         if (index >= endpoints.length) {
-          observer.error(new Error('No payment endpoint is available. Please verify the backend extra service/ad hoc checkout route is deployed.'));
+          const backendMessage = lastError?.error?.error || lastError?.error?.message || lastError?.message;
+          observer.error(new Error(backendMessage || 'No checkout endpoint is available on the deployed backend.'));
           return;
         }
-        this.http.post<any>(endpoints[index++], payload, { withCredentials: true }).subscribe({
+
+        // Do not send cookies for Stripe checkout creation.
+        // The backend sent by the project uses Access-Control-Allow-Origin: *;
+        // withCredentials=true can make browsers reject the call before the route is reached.
+        this.http.post<any>(endpoints[index++], payload).subscribe({
           next: (response) => { observer.next(response); observer.complete(); },
-          error: () => tryNext(),
+          error: (error) => { lastError = error; tryNext(); },
         });
       };
       tryNext();
@@ -745,6 +827,24 @@ export class BookingApiService {
   }
 
 
+
+  private unwrapFirebaseNamedObject(raw: any, key: string): any {
+    if (!raw || typeof raw !== 'object') {
+      return raw;
+    }
+
+    // Firebase exports may contain either:
+    //   /bnExtraServices/{serviceId}
+    // or the imported wrapper:
+    //   /bnExtraServices/bnExtraServices/{serviceId}
+    // Same principle is used for guestInfo.
+    if (raw[key] && typeof raw[key] === 'object') {
+      return raw[key];
+    }
+
+    return raw;
+  }
+
   private normalizeArray(raw: any): any[] {
     if (!raw) {
       return [];
@@ -795,9 +895,11 @@ export class BookingApiService {
       item.balanceAmount ??
       (totalPrice && depositAmount ? Math.round((totalPrice - depositAmount) * 100) / 100 : 0)
     );
-    const warrantyAmount = Number(item.warrantyAmount ?? item.warranty ?? item.cautionAmount ?? item.securityDepositAmount ?? 0);
+    const nestedRaw = item.raw || {};
+    const nestedRawRaw = nestedRaw.raw || {};
+    const warrantyAmount = Number(item.warrantyAmount ?? nestedRaw.warrantyAmount ?? nestedRawRaw.warrantyAmount ?? item.warranty ?? item.cautionAmount ?? item.securityDepositAmount ?? 0);
 
-    const payments = item.payments || item.paymentStatus || {};
+    const payments = item.payments || nestedRaw.payments || nestedRawRaw.payments || item.paymentStatus || {};
     const depositPayment = payments.deposit || item.depositPayment || {};
     const warrantyPayment = payments.warranty || item.warrantyPayment || {};
     const balancePayment = payments.balance || item.balancePayment || {};
@@ -854,12 +956,12 @@ export class BookingApiService {
       comments: item.comments || item.notes?.customerNote || item.comment || '',
       termsAccepted: item.termsAccepted === true || item.termsStatus === 'accepted',
       termsAcceptedAt: item.termsAcceptedAt || null,
-      warrantyPaymentChoice: item.warrantyPaymentChoice || item.warrantyMethod || item.warrantyChoice || '',
-      warrantyMethod: item.warrantyMethod || item.warrantyPaymentChoice || '',
-      warrantySelected: item.warrantySelected === true || !!item.warrantyPaymentChoice || !!item.warrantyMethod,
-      warrantySelectedAt: item.warrantySelectedAt || null,
-      warrantyRegistered: item.warrantyRegistered === true || item.warrantyStatus === 'card_registered' || item.warrantyStatus === 'warranty_card_saved',
-      warrantyCashSelected: item.warrantyPaymentChoice === 'cash_on_board' || item.warrantyMethod === 'cash' || item.warrantyStatus === 'cash_selected',
+      warrantyPaymentChoice: item.warrantyPaymentChoice || nestedRaw.warrantyPaymentChoice || nestedRawRaw.warrantyPaymentChoice || item.warrantyMethod || nestedRaw.warrantyMethod || nestedRawRaw.warrantyMethod || item.warrantyChoice || '',
+      warrantyMethod: item.warrantyMethod || nestedRaw.warrantyMethod || nestedRawRaw.warrantyMethod || item.warrantyPaymentChoice || nestedRaw.warrantyPaymentChoice || nestedRawRaw.warrantyPaymentChoice || '',
+      warrantySelected: item.warrantySelected === true || !!item.warrantyPaymentChoice || !!nestedRaw.warrantyPaymentChoice || !!nestedRawRaw.warrantyPaymentChoice || !!item.warrantyMethod || !!nestedRaw.warrantyMethod || !!nestedRawRaw.warrantyMethod,
+      warrantySelectedAt: item.warrantySelectedAt || nestedRaw.warrantySelectedAt || nestedRawRaw.warrantySelectedAt || null,
+      warrantyRegistered: (item.warrantyPaymentChoice || nestedRaw.warrantyPaymentChoice || nestedRawRaw.warrantyPaymentChoice) === 'cash_on_board' || (item.warrantyStatus || nestedRaw.warrantyStatus || nestedRawRaw.warrantyStatus) === 'cash_selected' ? false : (item.warrantyRegistered === true || nestedRaw.warrantyRegistered === true || nestedRawRaw.warrantyRegistered === true || item.warrantyStatus === 'card_registered' || item.warrantyStatus === 'warranty_card_saved' || nestedRaw.warrantyStatus === 'card_registered' || nestedRaw.warrantyStatus === 'warranty_card_saved'),
+      warrantyCashSelected: item.warrantyPaymentChoice === 'cash_on_board' || nestedRaw.warrantyPaymentChoice === 'cash_on_board' || nestedRawRaw.warrantyPaymentChoice === 'cash_on_board' || item.warrantyMethod === 'cash' || nestedRaw.warrantyMethod === 'cash' || nestedRawRaw.warrantyMethod === 'cash' || item.warrantyStatus === 'cash_selected' || nestedRaw.warrantyStatus === 'cash_selected' || nestedRawRaw.warrantyStatus === 'cash_selected',
       damageReported: item.damageReported === true || item.warrantyStatus === 'charged' || item.warrantyCashDamageAmount > 0,
       damageCharged: item.damageCharged === true || item.warrantyStatus === 'charged' || item.warrantyCashDamageAmount > 0,
       extraServices: Array.isArray(item.extraServices) ? item.extraServices : this.normalizeArray(item.extraServices || item.payments?.extraServices || []),

@@ -342,19 +342,8 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
     const anyBooking: any = booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
 
-    if (this.isBookingCancelledByDate(booking) || this.isCancelledBooking(booking)) return 'cancelled';
-
     // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
     if (this.isBalancePaid(booking)) return 'payment_done';
-
-    if (
-      rawStatus === 'payment_done' ||
-      rawStatus === 'full_payment_done' ||
-      rawStatus === 'paid' ||
-      rawStatus === 'completed'
-    ) {
-      return 'payment_done';
-    }
 
     if (
       rawStatus === true ||
@@ -367,6 +356,18 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
     }
 
     if (this.isDepositPaid(booking) && this.isTermsAccepted(booking)) return 'confirmed';
+
+    if (this.isBookingCancelledByDate(booking) || this.isCancelledBooking(booking)) return 'cancelled';
+
+    if (
+      rawStatus === 'payment_done' ||
+      rawStatus === 'full_payment_done' ||
+      rawStatus === 'paid' ||
+      rawStatus === 'completed'
+    ) {
+      return 'payment_done';
+    }
+
     return 'not_confirmed';
   }
 

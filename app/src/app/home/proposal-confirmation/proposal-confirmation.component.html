@@ -13,10 +13,10 @@
         <div><strong>{{ text('date') }}</strong><span>{{ proposal.outingDate }}</span></div>
         <div><strong>{{ text('time') }}</strong><span>{{ proposal.departureTime }} → {{ proposal.arrivalTime }}</span></div>
         <div><strong>{{ text('passengers') }}</strong><span>{{ proposal.passengers || '-' }}</span></div>
-        <div><strong>{{ text('totalPrice') }}</strong><span>€{{ proposal.totalAmount }}</span></div>
-        <div><strong>{{ text('deposit') }}</strong><span>€{{ proposal.depositAmount }}</span></div>
-        <div><strong>{{ text('remaining') }}</strong><span>€{{ proposal.balanceAmount }}</span></div>
-        <div><strong>{{ text('warranty') }}</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>
+        <div><strong>{{ priceTitle('totalPrice') }}</strong><span>€{{ proposal.totalAmount }}</span></div>
+        <div><strong>{{ priceTitle('deposit') }}</strong><span>€{{ proposal.depositAmount }}</span></div>
+        <div><strong>{{ priceTitle('remaining') }}</strong><span>€{{ proposal.balanceAmount }}</span></div>
+        <div><strong>{{ priceTitle('warranty') }}</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>
       </div>
 
       <section class="proposal-auth-card" *ngIf="!proposalAccessReady">
@@ -98,7 +98,7 @@
           <section class="wizard-panel" *ngIf="wizardStep === 2">
             <h2>{{ text('payDepositTitle') }}</h2>
             <p>{{ depositMessage }}</p>
-            <p class="muted">{{ text('deposit') }}: <strong>€{{ proposal.depositAmount }}</strong></p>
+            <p class="muted">{{ priceTitle('deposit') }}: <strong>€{{ proposal.depositAmount }}</strong></p>
 
             <button class="btn btn-primary" type="button" [disabled]="payingDeposit" (click)="payDeposit()">
               {{ payingDeposit ? text('redirecting') : text('payDepositButton') }}

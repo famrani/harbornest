@@ -12,7 +12,6 @@
       <img [src]="outing.image" [alt]="outing.title" />
       <div class="content-card">
         <div class="meta-top">{{ outing.duration }} • {{ outing.guests }}</div>
-        <div class="price-line" *ngIf="outing.priceLabel">{{ outing.priceLabel }}</div>
         <h2>{{ outing.title }}</h2>
         <p>{{ outing.description }}</p>
         <ul>

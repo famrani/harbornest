@@ -73,23 +73,43 @@
       <p class="secure">{{ copy.securePayment }}</p>
     </form>
 
+
+    <section class="deposit-card warranty-setup-card" *ngIf="cashWarrantySelected && !isWarrantyAdminMode">
+      <span class="eyebrow">Warranty</span>
+      <h2>Cash warranty selected</h2>
+      <p class="note">The warranty for this proposal is handled in cash on board. No credit-card registration is required on this page.</p>
+
+      <div class="deposit-total">
+        <span>Cash warranty amount</span>
+        <strong>{{ formatAmount(warrantyAmount) }}</strong>
+      </div>
+    </section>
+
     <section class="deposit-card warranty-setup-card" *ngIf="showWarrantyRegistration">
       <span class="eyebrow">Warranty</span>
-      <h2>Register warranty card</h2>
-      <p class="note">This securely registers a card with Stripe for the damage deposit. It does not charge the customer now.</p>
+      <h2>Select warranty card mode</h2>
+      <p class="note">Credit-card warranty mode has not been selected yet for this booking.</p>
 
       <div class="deposit-total">
         <span>Warranty amount</span>
         <strong>{{ formatAmount(warrantyAmount) }}</strong>
       </div>
+    </section>
+
+    <section class="deposit-card warranty-setup-card" *ngIf="showWarrantyCardSummary">
+      <span class="eyebrow">Warranty</span>
+      <h2>Credit card warranty selected</h2>
+      <p class="note">The warranty will be handled by credit card. No additional card registration is required on this page.</p>
+
+      <div class="summary-lines">
+        <div><strong>Warranty mode</strong><span>Credit card</span></div>
+        <div><strong>Card</strong><span>{{ warrantyCardLast4 ? ('•••• ' + warrantyCardLast4) : 'Saved card' }}</span></div>
+        <div><strong>Setup intent amount</strong><span>{{ formatAmount(warrantySetupIntentAmount || warrantyAmount) }}</span></div>
+        <div><strong>Setup intent</strong><span>{{ booking?.warrantySetupIntentId || booking?.payments?.warranty?.setupIntentId || '-' }}</span></div>
+      </div>
 
       <p class="success" *ngIf="warrantySetupMessage">{{ warrantySetupMessage }}</p>
-
-      <button type="button" class="btn btn-secondary" [disabled]="isWarrantyLoading || !canRegisterWarranty" (click)="registerWarrantyCard()">
-        {{ isWarrantyLoading ? 'Redirecting to Stripe...' : 'Register warranty card' }}
-      </button>
-
-      <p class="secure">Secure card registration by Stripe</p>
+      <p class="secure">Card details are stored securely by Stripe.</p>
     </section>
 
     <section class="deposit-card admin-warranty-card" *ngIf="isWarrantyAdminMode && booking">

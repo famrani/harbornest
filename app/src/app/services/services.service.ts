@@ -188,7 +188,7 @@ export class LocalUtilsService {
     user_guest: string,
     email_guest: string,
     phone_guest: string
-  ) {
+  ): Promise<boolean> {
     try {
       const response = await emailjs.send("service_7vistjr", "template_bsdvkhk", {
         message_title,
@@ -201,8 +201,10 @@ export class LocalUtilsService {
       });
 
       console.log("✅ Email sent successfully:", response.status, response.text);
+      return true;
     } catch (error) {
       console.error("❌ Failed to send email:", error);
+      return false;
     }
 
   }

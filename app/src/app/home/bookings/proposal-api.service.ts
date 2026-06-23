@@ -17,6 +17,11 @@ export interface AlegriaProposal {
   requestBookingId?: string;
   proposalOrigin?: 'admin_direct' | 'customer_request' | 'email_request' | string;
   source: BookingSource;
+  externalOnboardAmount?: number;
+  externalExtraServicesOnboardAmount?: number;
+  externalRemainingOnboardAmount?: number;
+  externalPlatform?: string;
+  bookingSource?: string;
   status: ProposalStatus;
   customerName: string;
   customerEmail: string;
@@ -106,6 +111,11 @@ export class ProposalApiService {
 
   private validateProposalInput(input: Partial<AlegriaProposal>): void {
     const errors: string[] = [];
+    const source = String((input as any).source || '').toLowerCase();
+    const bookingSource = String((input as any).bookingSource || '').toLowerCase();
+    const isExternalBooking =
+      bookingSource === 'external' ||
+      ['external', 'samboat', 'clickandboat', 'click_and_boat', 'platform', 'airbnb', 'manual_external'].includes(source);
     const email = String(input.customerEmail || '').trim();
     const phone = String(input.customerPhone || '').trim();
 
@@ -125,10 +135,13 @@ export class ProposalApiService {
 
     if (!String(input.departureTime || '').trim()) errors.push('Departure time is required.');
     if (!String(input.arrivalTime || '').trim()) errors.push('Return time is required.');
-    if (Number(input.passengers || 0) <= 0) errors.push('Passengers must be greater than zero.');
-    if (Number(input.totalAmount || 0) <= 0) errors.push('Total amount must be greater than zero.');
+    if (!isExternalBooking && Number(input.passengers || 0) <= 0)
+      errors.push('Passengers must be greater than zero.');
+    if (!isExternalBooking && Number(input.totalAmount || 0) <= 0)
+      errors.push('Total amount must be greater than zero.');
     if (Number(input.warrantyAmount || 0) < 0) errors.push('Warranty amount cannot be negative.');
-    if (!String((input as any).proposalMessage || '').trim()) errors.push('Proposal message is required.');
+    if (!isExternalBooking && !String((input as any).proposalMessage || '').trim())
+      errors.push('Proposal message is required.');
 
     if (errors.length) throw new Error(errors.join(' '));
   }
@@ -275,8 +288,9 @@ export class ProposalApiService {
       warrantyRegistered: warrantyPaymentChoice === 'cash_on_board' ? true : hydrated.warrantyRegistered === true,
       depositPaid: true,
       depositStatus: 'paid',
-      paymentStatus: hydrated.paymentStatus || '',
+      paymentStatus: 'paid',
       acceptedTS: Date.now(),
+      bookingRequestStatus: 'confirmed',
       modifiedTS: Date.now(),
     };
 
@@ -358,18 +372,43 @@ export class ProposalApiService {
   }
 
   async createExternalBooking(input: Partial<AlegriaProposal>): Promise<AlegriaProposal> {
+    const remainingOnboardAmount = Number((input as any).externalRemainingOnboardAmount || (input as any).remainingOnboardAmount || 0);
+    const extraServicesOnboardAmount = Number((input as any).externalExtraServicesOnboardAmount || (input as any).extraServicesOnboardAmount || 0);
+    const onboardAmount = Number((input as any).totalAmount || (remainingOnboardAmount + extraServicesOnboardAmount) || 0);
+    const warrantyAmount = Number((input as any).warrantyAmount ?? 500);
+    const platformSource = String((input as any).source || 'samboat');
+
     const saved = await this.saveProposal({
       ...input,
-      source: input.source || 'samboat',
-      status: 'accepted',
-      depositStatus: 'platform',
-      warrantyStatus: input.warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : 'not_selected',
-      tncAccepted: true,
-      tncAcceptedAt: Date.now(),
-      acceptedTS: Date.now(),
-      relatedBookingId: input.relatedBookingId || input.proposalId,
-    });
-    await this.createBookingFromProposal(saved);
+      source: platformSource as any,
+      bookingSource: 'external',
+      externalPlatform: platformSource,
+      externalOnboardAmount: onboardAmount,
+      externalRemainingOnboardAmount: remainingOnboardAmount,
+      externalExtraServicesOnboardAmount: extraServicesOnboardAmount,
+      proposalExtraServicesPrice: extraServicesOnboardAmount,
+      proposalMessage: (input as any).proposalMessage || 'Please accept the T&C, pay the deposit for the amount due on board, and select your warranty mode.',
+      passengers: Number((input as any).passengers || 0),
+      totalAmount: onboardAmount,
+      warrantyAmount,
+      status: 'sent',
+      depositStatus: 'pending',
+      depositPaid: false,
+      paymentStatus: 'awaiting_deposit',
+      warrantyStatus: 'not_selected',
+      warrantyRegistered: false,
+      tncAccepted: false,
+      tncAcceptedAt: null,
+      acceptedTS: undefined,
+      validUntil: (input as any).validUntil || Date.now() + 30 * 24 * 60 * 60 * 1000,
+      relatedBookingId: (input as any).relatedBookingId || (input as any).proposalId,
+    } as any);
+
+    if (!saved.relatedBookingId) {
+      await this.patchProposal(saved.proposalId, { relatedBookingId: saved.proposalId } as any);
+      return { ...saved, relatedBookingId: saved.proposalId } as any;
+    }
+
     return saved;
   }
 
@@ -389,6 +428,63 @@ export class ProposalApiService {
     await this.writeItem(this.proposalsCollection, id, { ...current, ...patch, modifiedTS: Date.now() });
   }
 
+
+  async markDepositPaidFromStripeReturn(proposalId: string, payload: any = {}): Promise<AlegriaProposal> {
+    const current = await this.readItem(this.proposalsCollection, proposalId);
+    if (!current) {
+      throw new Error('Proposal not found');
+    }
+
+    const patch: Partial<AlegriaProposal> = {
+      depositPaid: true,
+      depositStatus: 'paid',
+      paymentStatus: 'paid',
+      stripeCheckoutSessionId: payload.sessionId || payload.checkoutSessionId || current.stripeCheckoutSessionId || '',
+      stripePaymentIntentId: payload.paymentIntentId || current.stripePaymentIntentId || '',
+      modifiedTS: Date.now(),
+    };
+
+    await this.patchProposal(proposalId, patch);
+    await this.patchBookingDepositState(proposalId, { ...current, ...patch }, payload).catch(() => undefined);
+    return { ...current, ...patch } as AlegriaProposal;
+  }
+
+  private async patchBookingDepositState(proposalId: string, proposal: Partial<AlegriaProposal>, payload: any = {}): Promise<void> {
+    const bookingId = (proposal as any).relatedBookingId || proposalId;
+    const existing = await this.readItem(this.bookingsCollection, bookingId).catch(() => undefined);
+    const payment = {
+      ...(existing?.payments?.deposit || {}),
+      paid: true,
+      depositPaid: true,
+      status: 'paid',
+      depositStatus: 'paid',
+      paymentStatus: 'paid',
+      amount: Number(proposal.depositAmount || 0),
+      checkoutSessionId: payload.sessionId || payload.checkoutSessionId || proposal.stripeCheckoutSessionId || '',
+      stripeCheckoutSessionId: payload.sessionId || payload.checkoutSessionId || proposal.stripeCheckoutSessionId || '',
+      stripePaymentIntentId: payload.paymentIntentId || proposal.stripePaymentIntentId || '',
+      paidAt: existing?.payments?.deposit?.paidAt || Date.now(),
+      source: 'stripe_return',
+    };
+
+    await this.writeItem(this.bookingsCollection, bookingId, {
+      ...(existing || {}),
+      bookingId,
+      proposalId,
+      ownerId: 'alegria',
+      depositPaid: true,
+      depositStatus: 'paid',
+      paymentStatus: 'paid',
+      stripeCheckoutSessionId: payment.stripeCheckoutSessionId,
+      stripePaymentIntentId: payment.stripePaymentIntentId,
+      modifiedTS: Date.now(),
+      payments: {
+        ...(existing?.payments || {}),
+        deposit: payment,
+      },
+    });
+  }
+
   createDepositCheckout(proposal: AlegriaProposal): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/pay/outing-deposit-checkout`, {
       bookingId: proposal.proposalId,
@@ -400,7 +496,7 @@ export class ProposalApiService {
       outingType: proposal.outingType,
       depositAmount: proposal.depositAmount,
       currency: 'eur',
-      successUrl: `${window.location.origin}/proposal/${proposal.proposalId}?payment=success`,
+      successUrl: `${window.location.origin}/proposal/${proposal.proposalId}?payment=success&session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${window.location.origin}/proposal/${proposal.proposalId}?payment=cancelled`,
     }, { withCredentials: true });
   }
@@ -444,6 +540,11 @@ export class ProposalApiService {
       proposalId: p.proposalId,
       relatedBookingId: p.relatedBookingId || p.proposalId,
       source: p.source,
+      bookingSource: (p as any).bookingSource || '',
+      externalPlatform: (p as any).externalPlatform || '',
+      externalOnboardAmount: (p as any).externalOnboardAmount || p.totalAmount || 0,
+      externalRemainingOnboardAmount: (p as any).externalRemainingOnboardAmount || 0,
+      externalExtraServicesOnboardAmount: (p as any).externalExtraServicesOnboardAmount || 0,
       customerName: p.customerName,
       email: p.customerEmail,
       phone: p.customerPhone || '',
@@ -455,17 +556,22 @@ export class ProposalApiService {
       totalPrice: p.totalAmount,
       depositAmount: p.depositAmount,
       balanceAmount: p.balanceAmount,
+      remainingOnboardAmount: (p as any).externalRemainingOnboardAmount || p.balanceAmount,
+      extraServicesOnboardAmount: (p as any).externalExtraServicesOnboardAmount || 0,
+      remainingFeesAmount: p.balanceAmount,
       warrantyAmount: p.warrantyAmount || 500,
       depositStatus: p.depositStatus || (p.depositPaid ? 'paid' : 'pending'),
       depositPaid: p.depositPaid === true || p.depositStatus === 'paid',
-      paymentStatus: '',
-      warrantyStatus: p.warrantyStatus || 'not_selected',
-      warrantyRegistered: p.warrantyRegistered === true,
+      paymentStatus: p.paymentStatus || (p.depositPaid === true || p.depositStatus === 'paid' ? 'paid' : 'pending'),
+      warrantyStatus: p.warrantyStatus || (p.warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : 'card_registered'),
+      warrantyRegistered: p.warrantyRegistered === true || p.warrantyPaymentChoice === 'cash_on_board',
       warrantyPaymentChoice: p.warrantyPaymentChoice || null,
       customerUid: p.customerUid || '',
       customerAuthProvider: p.customerAuthProvider || '',
       customerAccountCreated: p.customerAccountCreated === true,
-      bookingStatus: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? true : 'not_confirmed',
+      bookingStatus: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? 'confirmed' : 'not_confirmed',
+      status: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? 'confirmed' : 'not_confirmed',
+      bookingRequestStatus: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? 'confirmed' : 'not_confirmed',
       proposalStatus: 'accepted',
       tncAccepted: p.tncAccepted,
       termsAccepted: p.tncAccepted,
@@ -529,19 +635,19 @@ export class ProposalApiService {
       }
     }
 
-    const backendBooking = await this.readItem('backendbookings', id).catch(() => undefined);
-    const depositPayment = backendBooking?.payments?.deposit || backendBooking?.payment || null;
-    const warrantyPayment = backendBooking?.payments?.warranty || null;
-    const warrantyCharge = backendBooking?.payments?.warrantyCharge || null;
+    const canonicalBooking = await this.readItem(this.bookingsCollection, proposal.relatedBookingId || proposal.proposalId).catch(() => undefined);
+    const depositPayment = canonicalBooking?.payments?.deposit || canonicalBooking?.payment || null;
+    const warrantyPayment = canonicalBooking?.payments?.warranty || null;
+    const warrantyCharge = canonicalBooking?.payments?.warrantyCharge || null;
 
     const depositPaid =
       proposal.depositPaid === true ||
       proposal.depositStatus === 'paid' ||
       proposal.paymentStatus === 'paid' ||
-      backendBooking?.depositPaid === true ||
-      backendBooking?.depositStatus === 'paid' ||
-      backendBooking?.paymentStatus === 'paid' ||
-      backendBooking?.paymentStatus === 'charge_succeeded' ||
+      canonicalBooking?.depositPaid === true ||
+      canonicalBooking?.depositStatus === 'paid' ||
+      canonicalBooking?.paymentStatus === 'paid' ||
+      canonicalBooking?.paymentStatus === 'charge_succeeded' ||
       depositPayment?.depositPaid === true ||
       depositPayment?.paid === true ||
       depositPayment?.status === 'paid' ||
@@ -552,26 +658,26 @@ export class ProposalApiService {
       relatedBookingId: proposal.relatedBookingId || proposal.proposalId,
       depositPaid,
       depositStatus: depositPaid ? 'paid' : (proposal.depositStatus || depositPayment?.status || 'pending'),
-      paymentStatus: depositPaid ? 'paid' : (proposal.paymentStatus || backendBooking?.paymentStatus || depositPayment?.status || ''),
-      stripeCheckoutSessionId: proposal.stripeCheckoutSessionId || backendBooking?.stripeCheckoutSessionId || depositPayment?.stripeCheckoutSessionId || depositPayment?.checkoutSessionId || '',
-      stripePaymentIntentId: proposal.stripePaymentIntentId || backendBooking?.stripePaymentIntentId || depositPayment?.stripePaymentIntentId || depositPayment?.paymentIntentId || '',
-      warrantyStatus: proposal.warrantyStatus || backendBooking?.warrantyStatus || warrantyPayment?.warrantyStatus || warrantyPayment?.status || 'not_selected',
+      paymentStatus: depositPaid ? 'paid' : (proposal.paymentStatus || canonicalBooking?.paymentStatus || depositPayment?.status || ''),
+      stripeCheckoutSessionId: proposal.stripeCheckoutSessionId || canonicalBooking?.stripeCheckoutSessionId || depositPayment?.stripeCheckoutSessionId || depositPayment?.checkoutSessionId || '',
+      stripePaymentIntentId: proposal.stripePaymentIntentId || canonicalBooking?.stripePaymentIntentId || depositPayment?.stripePaymentIntentId || depositPayment?.paymentIntentId || '',
+      warrantyStatus: proposal.warrantyStatus || canonicalBooking?.warrantyStatus || warrantyPayment?.warrantyStatus || warrantyPayment?.status || 'not_selected',
       warrantyRegistered:
         proposal.warrantyRegistered === true ||
-        backendBooking?.warrantyRegistered === true ||
+        canonicalBooking?.warrantyRegistered === true ||
         warrantyPayment?.warrantyRegistered === true ||
         warrantyPayment?.status === 'warranty_card_saved' ||
         warrantyPayment?.status === 'card_registered',
       warrantyPaymentMethodId:
-        proposal.warrantyPaymentMethodId || backendBooking?.warrantyPaymentMethodId || warrantyPayment?.paymentMethodId || '',
+        proposal.warrantyPaymentMethodId || canonicalBooking?.warrantyPaymentMethodId || warrantyPayment?.paymentMethodId || '',
       warrantySetupIntentId:
-        proposal.warrantySetupIntentId || backendBooking?.warrantySetupIntentId || warrantyPayment?.setupIntentId || '',
+        proposal.warrantySetupIntentId || canonicalBooking?.warrantySetupIntentId || warrantyPayment?.setupIntentId || '',
       warrantyChargeAmount:
-        proposal.warrantyChargeAmount || backendBooking?.warrantyChargedAmount || warrantyCharge?.warrantyChargeAmount || 0,
+        proposal.warrantyChargeAmount || canonicalBooking?.warrantyChargedAmount || warrantyCharge?.warrantyChargeAmount || 0,
       warrantyChargeReason:
-        proposal.warrantyChargeReason || backendBooking?.warrantyChargeReason || warrantyCharge?.warrantyChargeReason || '',
+        proposal.warrantyChargeReason || canonicalBooking?.warrantyChargeReason || warrantyCharge?.warrantyChargeReason || '',
       warrantyChargeStatus:
-        proposal.warrantyChargeStatus || backendBooking?.warrantyStatus || warrantyCharge?.status || '',
+        proposal.warrantyChargeStatus || canonicalBooking?.warrantyStatus || warrantyCharge?.status || '',
     };
   }
 

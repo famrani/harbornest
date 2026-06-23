@@ -22,6 +22,7 @@ export class AdminProposalsComponent implements OnInit, OnDestroy {
   form: Partial<AlegriaProposal> = this.emptyForm();
   currentLanguage: SiteLanguage = 'fr';
   pageText: any = (SITE_CONTENT as any).fr?.proposalManagement || {};
+  priceTitles: any = {};
   private languageSub?: Subscription;
 
   constructor(
@@ -47,9 +48,36 @@ export class AdminProposalsComponent implements OnInit, OnDestroy {
     try {
       const content: any = await this.siteContentService.getContent();
       this.pageText = { ...fallback, ...(content?.[language]?.proposalManagement || {}), ...(content?.proposalManagement?.[language] || {}) };
+      const languageContent = content?.[language] || {};
+      this.priceTitles = {
+        ...this.defaultPriceTitles(language),
+        // Firebase source of truth: /siteContent/{fr|en|es}/proposalPriceTitles
+        ...(languageContent.proposalPriceTitles || {}),
+        // Backward-compatible fallbacks for older exports.
+        ...(languageContent.priceTitles || {}),
+        ...(languageContent.proposalManagement?.priceTitles || {}),
+        ...(content?.proposalPriceTitles?.[language] || {}),
+        ...(content?.priceTitles?.[language] || {}),
+        ...(content?.proposalManagement?.priceTitles?.[language] || {}),
+        ...(content?.proposalManagement?.[language]?.priceTitles || {})
+      };
     } catch {
       this.pageText = fallback;
+      this.priceTitles = this.defaultPriceTitles(language);
     }
+  }
+
+  private defaultPriceTitles(language: SiteLanguage): any {
+    const defaults: any = {
+      fr: { boatPrice: 'Prix bateau', skipperPrice: 'Prix skipper', cleaningPrice: 'Prix carburant', extraServicesPrice: 'Extras / services', totalAmount: 'Montant total', totalPrice: 'Prix total', deposit10: 'Acompte 10 %', deposit: 'Acompte 10 %', remaining90: 'Solde 90 %', remaining: 'Solde 90 %', warrantyAmount: 'Caution', warranty: 'Caution' },
+      en: { boatPrice: 'Boat price', skipperPrice: 'Skipper price', cleaningPrice: 'Fuel price', extraServicesPrice: 'Extras / services', totalAmount: 'Total amount', totalPrice: 'Total price', deposit10: 'Deposit 10%', deposit: 'Deposit 10%', remaining90: 'Balance 90%', remaining: 'Balance 90%', warrantyAmount: 'Warranty', warranty: 'Warranty' },
+      es: { boatPrice: 'Precio barco', skipperPrice: 'Precio skipper', cleaningPrice: 'Precio combustible', extraServicesPrice: 'Extras / servicios', totalAmount: 'Importe total', totalPrice: 'Precio total', deposit10: 'Depósito 10%', deposit: 'Depósito 10%', remaining90: 'Saldo 90%', remaining: 'Saldo 90%', warrantyAmount: 'Garantía', warranty: 'Garantía' }
+    };
+    return defaults[language] || defaults.fr;
+  }
+
+  priceTitle(key: string): string {
+    return this.priceTitles?.[key] || this.t(key) || key;
   }
 
   t(key: string): string { return this.pageText?.[key] || key; }

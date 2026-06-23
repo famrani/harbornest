@@ -3758,6 +3758,45 @@ const sharedImages = {
 };
 const SITE_CONTENT = {
   fr: {
+    contactInfo: {
+      "phone": "+33 6 52 66 51 06",
+      "phoneRaw": "+33652665106",
+      "email": "contact@alegriaboat.eu",
+      "whatsapp": "+33 6 52 66 51 06",
+      "whatsappRaw": "+33652665106",
+      "basePort": "Port Vauban, Antibes"
+    },
+    externalBookings: {
+      "eyebrow": "Admin",
+      "title": "Réservations SamBoat / Click&Boat",
+      "intro": "Pour les réservations de plateformes externes, créez une proposition client avec le reste à payer à bord, les extras éventuels et la caution.",
+      "platform": "Plateforme",
+      "platformSamboat": "SamBoat",
+      "platformClickAndBoat": "Click&Boat",
+      "platformOther": "Autre",
+      "customerName": "Nom du client",
+      "customerEmail": "Email du client",
+      "phone": "Téléphone",
+      "outingType": "Type de sortie",
+      "outingDate": "Date de sortie",
+      "departureTime": "Heure de départ",
+      "returnTime": "Heure de retour",
+      "remainingOnboardAmount": "Reste à payer à bord (€)",
+      "extraServicesOnboardAmount": "Extras/services à payer à bord (€)",
+      "totalForDeposit": "Montant total servant au calcul de l’acompte (€)",
+      "warrantyAmount": "Montant de caution / autorisation carte (€)",
+      "warrantyMethod": "Mode de caution",
+      "warrantyStripeCard": "Enregistrement de carte via Stripe",
+      "warrantyCash": "Caution en espèces avant le départ",
+      "saving": "Enregistrement...",
+      "createClientProposal": "Créer la proposition client",
+      "clientProposalLink": "Lien proposition client",
+      "negativeAmountsError": "Les montants à payer à bord ne peuvent pas être négatifs.",
+      "missingOnboardAmountError": "Veuillez saisir le reste à payer et/ou les extras à payer à bord. Le client paiera un acompte de 10 % sur ce montant.",
+      "negativeWarrantyError": "Le montant de caution ne peut pas être négatif.",
+      "savedMessage": "Proposition externe enregistrée. Lien client :",
+      "saveError": "Impossible d’enregistrer la réservation externe."
+    },
     bookingManagement: {
       "adminEyebrow": "Admin",
       "adminTitle": "Réservations",
@@ -4161,7 +4200,7 @@ const SITE_CONTENT = {
     heroImage: sharedImages.hero,
     boatHeroImage: sharedImages.boatHero,
     brandTagline: 'Location de catamaran sur la Côte d’Azur',
-    priceFrom: 'À partir de 999 € + 300 € skipper',
+    priceFrom: '',
     nav: {
       home: 'Accueil',
       outings: 'Sorties',
@@ -4192,7 +4231,7 @@ const SITE_CONTENT = {
       primaryCta: 'Découvrir les sorties',
       secondaryCta: 'Voir la disponibilité',
       onlineBookingCta: "Réserver en ligne",
-      points: ['À partir de 999 €', 'Skipper indépendant : 300 €', 'Départs Côte d’Azur'],
+      points: ['Expérience privative', 'Skipper indépendant obligatoire', 'Départs Côte d’Azur'],
       sectionEyebrow: 'Nos sorties',
       sectionTitle: '4 formats simples et efficaces',
       sectionText: 'Choisissez parmi nos quatre formats principaux. Chaque expérience peut être adaptée selon la météo, votre groupe et l’ambiance recherchée.',
@@ -4323,6 +4362,45 @@ const SITE_CONTENT = {
     boatHighlights: ['Catamaran Bali 4.1 spacieux et stable', 'Jusqu’à 12 passagers', 'Navigation confortable et ambiance élégante', 'Départ dans le 06: Villeneuve-loubet, Antibes ou Cannes']
   },
   en: {
+    contactInfo: {
+      "phone": "+33 6 52 66 51 06",
+      "phoneRaw": "+33652665106",
+      "email": "contact@alegriaboat.eu",
+      "whatsapp": "+33 6 52 66 51 06",
+      "whatsappRaw": "+33652665106",
+      "basePort": "Port Vauban, Antibes"
+    },
+    externalBookings: {
+      "eyebrow": "Admin",
+      "title": "SamBoat / Click&Boat bookings",
+      "intro": "For external platform bookings, create a client proposal with the remaining amount due on board, optional extras and warranty.",
+      "platform": "Platform",
+      "platformSamboat": "SamBoat",
+      "platformClickAndBoat": "Click&Boat",
+      "platformOther": "Other",
+      "customerName": "Customer name",
+      "customerEmail": "Customer email",
+      "phone": "Phone",
+      "outingType": "Outing type",
+      "outingDate": "Outing date",
+      "departureTime": "Departure time",
+      "returnTime": "Return time",
+      "remainingOnboardAmount": "Remaining amount to pay on board (€)",
+      "extraServicesOnboardAmount": "Extra services to pay on board (€)",
+      "totalForDeposit": "Total amount used for deposit (€)",
+      "warrantyAmount": "Warranty amount / card authorization (€)",
+      "warrantyMethod": "Warranty method",
+      "warrantyStripeCard": "Stripe card registration",
+      "warrantyCash": "Cash warranty before departure",
+      "saving": "Saving...",
+      "createClientProposal": "Create client proposal",
+      "clientProposalLink": "Client proposal link",
+      "negativeAmountsError": "Amounts to pay on board cannot be negative.",
+      "missingOnboardAmountError": "Please enter the remaining amount and/or extra services amount to pay on board. The client will pay a 10% deposit on this amount.",
+      "negativeWarrantyError": "Warranty amount cannot be negative.",
+      "savedMessage": "External booking proposal saved. Client link:",
+      "saveError": "Unable to save external booking."
+    },
     bookingManagement: {
       "adminEyebrow": "Admin",
       "adminTitle": "Bookings",
@@ -4718,7 +4796,7 @@ const SITE_CONTENT = {
       }]
     },
     brandTagline: 'Catamaran experiences on the French Riviera',
-    priceFrom: 'From €999 + €300 skipper',
+    priceFrom: '',
     brand: 'Alegria',
     phoneDisplay: '+33 6 85 26 65 10',
     phoneRaw: '+33685266510',
@@ -4756,7 +4834,7 @@ const SITE_CONTENT = {
       primaryCta: 'Discover the excursions',
       secondaryCta: 'Check availability',
       onlineBookingCta: "Book online",
-      points: ['From €999', 'Independent skipper: €300', 'French Riviera departures'],
+      points: ['Private experience', 'Independent skipper required', 'French Riviera departures'],
       sectionEyebrow: 'Experiences',
       sectionTitle: '4 simple and effective formats',
       sectionText: 'Choose from four core formats. Each experience can be adapted to the weather, your group and the atmosphere you are looking for.',
@@ -4887,6 +4965,45 @@ const SITE_CONTENT = {
     boatHighlights: ['Spacious and stable Bali 4.1 catamaran', 'Up to 12 guests', 'Comfortable cruising and elegant atmosphere', 'Departure: Villeneuve, Antibes or Cannes']
   },
   es: {
+    contactInfo: {
+      "phone": "+33 6 52 66 51 06",
+      "phoneRaw": "+33652665106",
+      "email": "contact@alegriaboat.eu",
+      "whatsapp": "+33 6 52 66 51 06",
+      "whatsappRaw": "+33652665106",
+      "basePort": "Port Vauban, Antibes"
+    },
+    externalBookings: {
+      "eyebrow": "Admin",
+      "title": "Reservas SamBoat / Click&Boat",
+      "intro": "Para reservas de plataformas externas, cree una propuesta cliente con el importe pendiente a bordo, extras opcionales y garantía.",
+      "platform": "Plataforma",
+      "platformSamboat": "SamBoat",
+      "platformClickAndBoat": "Click&Boat",
+      "platformOther": "Otro",
+      "customerName": "Nombre del cliente",
+      "customerEmail": "Email del cliente",
+      "phone": "Teléfono",
+      "outingType": "Tipo de salida",
+      "outingDate": "Fecha de salida",
+      "departureTime": "Hora de salida",
+      "returnTime": "Hora de regreso",
+      "remainingOnboardAmount": "Importe pendiente a pagar a bordo (€)",
+      "extraServicesOnboardAmount": "Servicios extra a pagar a bordo (€)",
+      "totalForDeposit": "Importe total usado para el depósito (€)",
+      "warrantyAmount": "Importe de garantía / autorización tarjeta (€)",
+      "warrantyMethod": "Modo de garantía",
+      "warrantyStripeCard": "Registro de tarjeta vía Stripe",
+      "warrantyCash": "Garantía en efectivo antes de la salida",
+      "saving": "Guardando...",
+      "createClientProposal": "Crear propuesta cliente",
+      "clientProposalLink": "Enlace propuesta cliente",
+      "negativeAmountsError": "Los importes a pagar a bordo no pueden ser negativos.",
+      "missingOnboardAmountError": "Introduzca el importe pendiente y/o los extras a pagar a bordo. El cliente pagará un depósito del 10 % sobre este importe.",
+      "negativeWarrantyError": "El importe de la garantía no puede ser negativo.",
+      "savedMessage": "Propuesta externa guardada. Enlace cliente:",
+      "saveError": "No se puede guardar la reserva externa."
+    },
     bookingManagement: {
       "adminEyebrow": "Admin",
       "adminTitle": "Reservas",
@@ -5283,7 +5400,7 @@ const SITE_CONTENT = {
       }]
     },
     brandTagline: 'Experiencias en catamarán en la Costa Azul',
-    priceFrom: 'Desde 999 € + 300 € patrón',
+    priceFrom: '',
     brand: 'Alegria',
     phoneDisplay: '+33 6 85 26 65 10',
     phoneRaw: '+33685266510',
@@ -5321,7 +5438,7 @@ const SITE_CONTENT = {
       primaryCta: 'Descubrir las salidas',
       secondaryCta: 'Ver disponibilidad',
       onlineBookingCta: "Reservar en línea",
-      points: ['Desde 999 €', 'Patrón independiente: 300 €', 'Salidas Costa Azul'],
+      points: ['Experiencia privada', 'Patrón independiente obligatorio', 'Salidas Costa Azul'],
       sectionEyebrow: 'Experiencias',
       sectionTitle: '4 formatos simples y eficaces',
       sectionText: 'Elija entre cuatro formatos principales. Cada experiencia puede adaptarse al clima, al grupo y al ambiente deseado.',
@@ -8443,8 +8560,10 @@ let LocalUtilsService = class LocalUtilsService {
           publicKey: "fmG0xI5QYxEjMTsRk"
         });
         console.log("✅ Email sent successfully:", response.status, response.text);
+        return true;
       } catch (error) {
         console.error("❌ Failed to send email:", error);
+        return false;
       }
     })();
   }

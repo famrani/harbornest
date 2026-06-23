@@ -148,7 +148,7 @@ BookingInvoiceComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,
 /***/ ((module) => {
 
 "use strict";
-module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n    <div class=\"price-pill\">{{ tour.price }}</div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/contact\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
+module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/contact\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -401,7 +401,11 @@ let ContactComponent = class ContactComponent {
   currentLanguage = 'fr';
   allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
   submitted = false;
+  isSending = false;
+  showSentModal = false;
+  sendError = '';
   languageSub;
+  userSub;
   form = {
     name: '',
     email: '',
@@ -418,9 +422,10 @@ let ContactComponent = class ContactComponent {
   }
   ngOnInit() {
     this.loadSiteContent();
+    this.prefillContactFormFromCurrentUser();
     this.languageSub = this.languageService.language$.subscribe(language => {
       this.currentLanguage = language;
-      this.content = this.allSiteContent[language] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[language];
+      this.content = this.mergeContactInfo(this.allSiteContent[language] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[language]);
     });
   }
   loadSiteContent() {
@@ -428,23 +433,110 @@ let ContactComponent = class ContactComponent {
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       try {
         _this.allSiteContent = yield _this.siteContentService.getContent();
-        _this.content = _this.allSiteContent[_this.currentLanguage] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[_this.currentLanguage] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
+        _this.content = _this.mergeContactInfo(_this.allSiteContent[_this.currentLanguage] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[_this.currentLanguage] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr);
       } catch {
         _this.allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
       }
     })();
   }
+  mergeContactInfo(content) {
+    const base = content;
+    const extra = base.contactInfo || {};
+    return {
+      ...base,
+      phone: extra.phone || base.phone,
+      phoneRaw: extra.phoneRaw || base.phoneRaw,
+      email: extra.email || base.email,
+      whatsapp: extra.whatsapp || base.whatsapp,
+      whatsappRaw: extra.whatsappRaw || base.whatsappRaw || base.phoneRaw,
+      basePort: extra.basePort || base.basePort,
+      contactPage: {
+        ...base.contactPage,
+        ...(extra.contactPage || {})
+      }
+    };
+  }
   ngOnDestroy() {
     this.languageSub?.unsubscribe();
+    this.userSub?.unsubscribe();
+  }
+  prefillContactFormFromCurrentUser() {
+    const svc = this.localutilsSvc?.mainSvc || {};
+    const userObservable = typeof svc.getLoggedUser === 'function' ? svc.getLoggedUser() : typeof svc.getUser === 'function' ? svc.getUser() : svc.bnUserO || svc.currentUser$;
+    if (userObservable && typeof userObservable.subscribe === 'function') {
+      this.userSub = userObservable.subscribe(user => {
+        this.applyUserPrefill(user || this.localutilsSvc?.wnGuest || svc.bnUser || svc.currentUser || null);
+      });
+      return;
+    }
+    this.applyUserPrefill(this.localutilsSvc?.wnGuest || svc.bnUser || svc.currentUser || svc.loggedUser || svc.user || null);
+  }
+  applyUserPrefill(user) {
+    if (!user) {
+      return;
+    }
+    const email = user.email || user.mail || user.emailAddress || '';
+    const phone = user.phone || user.phoneNumber || user.mobile || user.tel || '';
+    const displayName = user.displayName || `${user.firstname || user.firstName || ''} ${user.lastname || user.lastName || ''}`.trim();
+    this.form = {
+      ...this.form,
+      name: this.form.name || displayName || '',
+      email: this.form.email || email || '',
+      phone: this.form.phone || phone || ''
+    };
   }
   get whatsappHref() {
     const lines = [this.content.contactPage.whatsappIntro, this.form.outingType ? `${this.content.contactPage.outingType}: ${this.form.outingType}` : '', this.form.preferredDate ? `${this.content.contactPage.preferredDate}: ${this.form.preferredDate}` : '', this.form.guests ? `${this.content.contactPage.guests}: ${this.form.guests}` : '', this.form.message ? `${this.content.contactPage.message}: ${this.form.message}` : ''].filter(Boolean);
     return `https://wa.me/${this.content.phoneRaw.replace('+', '')}?text=${encodeURIComponent(lines.join('\n'))}`;
   }
+  get sentModalTitle() {
+    if (this.currentLanguage === 'en') {
+      return 'Thank you for your message';
+    }
+    if (this.currentLanguage === 'es') {
+      return 'Gracias por su mensaje';
+    }
+    return 'Merci pour votre message';
+  }
+  get sentModalMessage() {
+    if (this.currentLanguage === 'en') {
+      return 'Your request has been sent successfully. We will get back to you as soon as possible.';
+    }
+    if (this.currentLanguage === 'es') {
+      return 'Su solicitud se ha enviado correctamente. Nos pondremos en contacto con usted lo antes posible.';
+    }
+    return 'Votre demande a bien été envoyée. Nous reviendrons vers vous dans les meilleurs délais.';
+  }
+  get sentModalButton() {
+    if (this.currentLanguage === 'en') {
+      return 'Close';
+    }
+    if (this.currentLanguage === 'es') {
+      return 'Cerrar';
+    }
+    return 'Fermer';
+  }
+  closeSentModal() {
+    this.showSentModal = false;
+  }
   submit() {
-    this.submitted = true;
-    const subject = `${this.content.contactPage.emailSubjectPrefix} - ${this.form.outingType || this.content.brand} - ${this.form.preferredDate || ''}`;
-    this.localutilsSvc.sendEmail(subject, this.form.message, this.form.name, this.form.email, this.form.phone);
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (_this2.isSending) {
+        return;
+      }
+      _this2.isSending = true;
+      _this2.sendError = '';
+      const subject = `${_this2.content.contactPage.emailSubjectPrefix} - ${_this2.form.outingType || _this2.content.brand} - ${_this2.form.preferredDate || ''}`;
+      const sent = yield _this2.localutilsSvc.sendEmail(subject, _this2.form.message, _this2.form.name, _this2.form.email, _this2.form.phone);
+      _this2.isSending = false;
+      if (sent) {
+        _this2.submitted = true;
+        _this2.showSentModal = true;
+        return;
+      }
+      _this2.sendError = _this2.currentLanguage === 'en' ? 'The message could not be sent. Please try again or contact us directly.' : _this2.currentLanguage === 'es' ? 'No se pudo enviar el mensaje. Inténtelo de nuevo o contáctenos directamente.' : 'Le message n’a pas pu être envoyé. Merci de réessayer ou de nous contacter directement.';
+    })();
   }
   static ctorParameters = () => [{
     type: _services_services_service__WEBPACK_IMPORTED_MODULE_4__.LocalUtilsService
@@ -583,7 +675,7 @@ let OutingsDataService = class OutingsDataService {
         description: localized.description,
         image: outing.image,
         highlights: localized.highlights || [],
-        priceLabel: localized.priceLabel || (outing.priceFrom ? this.priceLabel(language, outing.priceFrom) : undefined)
+        priceLabel: undefined
       };
     });
   }
@@ -603,7 +695,7 @@ let OutingsDataService = class OutingsDataService {
       image: outing.image || fallback.image,
       duration: localized.duration || fallback.duration,
       guests: localized.guests || fallback.guests,
-      price: localized.priceLabel || (outing.priceFrom ? this.priceLabel(language, outing.priceFrom) : fallback.price),
+      price: '',
       highlights: localized.highlights || fallback.highlights,
       programTitle: localized.programTitle || fallback.programTitle,
       program: localized.program || fallback.program,
@@ -1400,6 +1492,7 @@ let MyProposalsComponent = class MyProposalsComponent {
   languageSub;
   currentLanguage = 'fr';
   pageText = _site_content__WEBPACK_IMPORTED_MODULE_5__.SITE_CONTENT.fr?.proposalManagement || {};
+  priceTitles = {};
   constructor(proposalApi, bookingApi, mainSvc, router, siteContentService, languageService) {
     this.proposalApi = proposalApi;
     this.bookingApi = bookingApi;
@@ -1441,10 +1534,74 @@ let MyProposalsComponent = class MyProposalsComponent {
           ...(content?.[language]?.proposalManagement || {}),
           ...(content?.proposalManagement?.[language] || {})
         };
+        const languageContent = content?.[language] || {};
+        _this.priceTitles = {
+          ..._this.defaultPriceTitles(language),
+          // Firebase source of truth: /siteContent/{fr|en|es}/proposalPriceTitles
+          ...(languageContent.proposalPriceTitles || {}),
+          // Backward-compatible fallbacks for older exports.
+          ...(languageContent.priceTitles || {}),
+          ...(languageContent.proposalManagement?.priceTitles || {}),
+          ...(content?.proposalPriceTitles?.[language] || {}),
+          ...(content?.priceTitles?.[language] || {}),
+          ...(content?.proposalManagement?.priceTitles?.[language] || {}),
+          ...(content?.proposalManagement?.[language]?.priceTitles || {})
+        };
       } catch {
         _this.pageText = fallback;
+        _this.priceTitles = _this.defaultPriceTitles(language);
       }
     })();
+  }
+  defaultPriceTitles(language) {
+    const defaults = {
+      fr: {
+        boatPrice: 'Prix bateau',
+        skipperPrice: 'Prix skipper',
+        cleaningPrice: 'Prix carburant',
+        extraServicesPrice: 'Extras / services',
+        totalAmount: 'Montant total',
+        totalPrice: 'Prix total',
+        deposit10: 'Acompte 10 %',
+        deposit: 'Acompte 10 %',
+        remaining90: 'Solde 90 %',
+        remaining: 'Solde 90 %',
+        warrantyAmount: 'Caution',
+        warranty: 'Caution'
+      },
+      en: {
+        boatPrice: 'Boat price',
+        skipperPrice: 'Skipper price',
+        cleaningPrice: 'Fuel price',
+        extraServicesPrice: 'Extras / services',
+        totalAmount: 'Total amount',
+        totalPrice: 'Total price',
+        deposit10: 'Deposit 10%',
+        deposit: 'Deposit 10%',
+        remaining90: 'Balance 90%',
+        remaining: 'Balance 90%',
+        warrantyAmount: 'Warranty',
+        warranty: 'Warranty'
+      },
+      es: {
+        boatPrice: 'Precio barco',
+        skipperPrice: 'Precio skipper',
+        cleaningPrice: 'Precio combustible',
+        extraServicesPrice: 'Extras / servicios',
+        totalAmount: 'Importe total',
+        totalPrice: 'Precio total',
+        deposit10: 'Depósito 10%',
+        deposit: 'Depósito 10%',
+        remaining90: 'Saldo 90%',
+        remaining: 'Saldo 90%',
+        warrantyAmount: 'Garantía',
+        warranty: 'Garantía'
+      }
+    };
+    return defaults[language] || defaults.fr;
+  }
+  priceTitle(key) {
+    return this.priceTitles?.[key] || this.t(key) || key;
   }
   t(key) {
     return this.pageText?.[key] || key;
@@ -1629,7 +1786,7 @@ MyProposalsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_10__.__decorate)([(0,_a
 /***/ ((module) => {
 
 "use strict";
-module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n    <div class=\"price-pill\">{{ tour.price }}</div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/contact\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
+module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/contact\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -2022,7 +2179,7 @@ AdminFeedbacksComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"deposit-page\">\n  <div class=\"container deposit-layout\">\n    <div class=\"deposit-copy\">\n      <span class=\"eyebrow\">{{ isWarrantyAdminMode ? 'Admin warranty' : copy.eyebrow }}</span>\n      <h1>{{ isWarrantyAdminMode ? 'Charge warranty for damage' : copy.title }}</h1>\n      <p *ngIf=\"!isWarrantyAdminMode\">{{ copy.intro }}</p>\n      <p *ngIf=\"isWarrantyAdminMode\">\n        This admin page is only for charging an amount from the registered warranty after confirmed damage.\n      </p>\n\n      <p class=\"success\" *ngIf=\"paymentReturnMessage\">{{ paymentReturnMessage }}</p>\n\n      <div class=\"summary-card\">\n        <h2>{{ isWarrantyAdminMode ? 'Booking summary' : copy.includedTitle }}</h2>\n\n        <ng-container *ngIf=\"!isWarrantyAdminMode\">\n          <ul>\n            <li *ngFor=\"let item of copy.included\">{{ item }}</li>\n          </ul>\n          <p class=\"note\">{{ copy.note }}</p>\n        </ng-container>\n\n        <ng-container *ngIf=\"isWarrantyAdminMode && booking\">\n          <div class=\"summary-lines\">\n            <div><strong>Customer</strong><span>{{ customerName || '-' }}</span></div>\n            <div><strong>Email</strong><span>{{ customerEmail || '-' }}</span></div>\n            <div><strong>Outing</strong><span>{{ outingType || '-' }}</span></div>\n            <div><strong>Date</strong><span>{{ outingDate || '-' }}</span></div>\n            <div><strong>Warranty amount</strong><span>{{ formatAmount(chargeableWarrantyAmount) }}</span></div>\n            <div><strong>Warranty status</strong><span>{{ warrantyStatusLabel }}</span></div>\n          </div>\n        </ng-container>\n      </div>\n    </div>\n\n    <form class=\"deposit-card\" *ngIf=\"showDepositPayment\" (ngSubmit)=\"payDeposit()\">\n      <label>\n        <span>{{ copy.customerName }}</span>\n        <input type=\"text\" name=\"customerName\" [(ngModel)]=\"customerName\" autocomplete=\"name\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.customerEmail }}</span>\n        <input type=\"email\" name=\"customerEmail\" [(ngModel)]=\"customerEmail\" autocomplete=\"email\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.outingDate }}</span>\n        <input type=\"date\" name=\"outingDate\" [(ngModel)]=\"outingDate\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.outingType }}</span>\n        <input type=\"text\" name=\"outingType\" [(ngModel)]=\"outingType\" />\n      </label>\n\n      <label>\n        <span>{{ copy.totalPrice }}</span>\n        <input type=\"number\" name=\"totalPrice\" [(ngModel)]=\"totalPrice\" min=\"1\" step=\"0.01\" required />\n      </label>\n\n      <div class=\"deposit-total\">\n        <span>{{ copy.deposit }}</span>\n        <strong>{{ formatAmount(depositAmount) }}</strong>\n      </div>\n\n      <p class=\"error\" *ngIf=\"errorMessage\">{{ errorMessage }}</p>\n\n      <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"isLoading\">\n        {{ isLoading ? copy.loading : copy.payDeposit }}\n      </button>\n\n      <p class=\"secure\">{{ copy.securePayment }}</p>\n    </form>\n\n    <section class=\"deposit-card warranty-setup-card\" *ngIf=\"showWarrantyRegistration\">\n      <span class=\"eyebrow\">Warranty</span>\n      <h2>Register warranty card</h2>\n      <p class=\"note\">This securely registers a card with Stripe for the damage deposit. It does not charge the customer now.</p>\n\n      <div class=\"deposit-total\">\n        <span>Warranty amount</span>\n        <strong>{{ formatAmount(warrantyAmount) }}</strong>\n      </div>\n\n      <p class=\"success\" *ngIf=\"warrantySetupMessage\">{{ warrantySetupMessage }}</p>\n\n      <button type=\"button\" class=\"btn btn-secondary\" [disabled]=\"isWarrantyLoading || !canRegisterWarranty\" (click)=\"registerWarrantyCard()\">\n        {{ isWarrantyLoading ? 'Redirecting to Stripe...' : 'Register warranty card' }}\n      </button>\n\n      <p class=\"secure\">Secure card registration by Stripe</p>\n    </section>\n\n    <section class=\"deposit-card admin-warranty-card\" *ngIf=\"isWarrantyAdminMode && booking\">\n      <span class=\"eyebrow\">Admin</span>\n      <h2>Charge damage amount</h2>\n      <p class=\"note\">\n        Enter the amount to charge within the registered warranty and describe the damage.\n      </p>\n\n      <div class=\"deposit-total\">\n        <span>Maximum warranty</span>\n        <strong>{{ formatAmount(chargeableWarrantyAmount) }}</strong>\n      </div>\n\n      <label>\n        <span>Amount to charge</span>\n        <input type=\"number\" name=\"warrantyChargeAmount\" [(ngModel)]=\"warrantyChargeAmount\" min=\"1\" [max]=\"chargeableWarrantyAmount || null\" step=\"0.01\" />\n      </label>\n\n      <label>\n        <span>Damage details / reason</span>\n        <textarea name=\"warrantyReason\" rows=\"5\" [(ngModel)]=\"warrantyReason\" placeholder=\"Example: damaged cushion, missing equipment, repair invoice reference...\"></textarea>\n      </label>\n\n      <p class=\"error\" *ngIf=\"warrantyError\">{{ warrantyError }}</p>\n      <p class=\"success\" *ngIf=\"warrantyMessage\">{{ warrantyMessage }}</p>\n\n      <button type=\"button\" class=\"btn btn-primary danger\" [disabled]=\"isChargingWarranty\" (click)=\"chargeWarranty()\">\n        {{ isChargingWarranty ? 'Charging...' : 'Charge warranty amount' }}\n      </button>\n    </section>\n\n  </div>\n</section>\n";
+module.exports = "<section class=\"deposit-page\">\n  <div class=\"container deposit-layout\">\n    <div class=\"deposit-copy\">\n      <span class=\"eyebrow\">{{ isWarrantyAdminMode ? 'Admin warranty' : copy.eyebrow }}</span>\n      <h1>{{ isWarrantyAdminMode ? 'Charge warranty for damage' : copy.title }}</h1>\n      <p *ngIf=\"!isWarrantyAdminMode\">{{ copy.intro }}</p>\n      <p *ngIf=\"isWarrantyAdminMode\">\n        This admin page is only for charging an amount from the registered warranty after confirmed damage.\n      </p>\n\n      <p class=\"success\" *ngIf=\"paymentReturnMessage\">{{ paymentReturnMessage }}</p>\n\n      <div class=\"summary-card\">\n        <h2>{{ isWarrantyAdminMode ? 'Booking summary' : copy.includedTitle }}</h2>\n\n        <ng-container *ngIf=\"!isWarrantyAdminMode\">\n          <ul>\n            <li *ngFor=\"let item of copy.included\">{{ item }}</li>\n          </ul>\n          <p class=\"note\">{{ copy.note }}</p>\n        </ng-container>\n\n        <ng-container *ngIf=\"isWarrantyAdminMode && booking\">\n          <div class=\"summary-lines\">\n            <div><strong>Customer</strong><span>{{ customerName || '-' }}</span></div>\n            <div><strong>Email</strong><span>{{ customerEmail || '-' }}</span></div>\n            <div><strong>Outing</strong><span>{{ outingType || '-' }}</span></div>\n            <div><strong>Date</strong><span>{{ outingDate || '-' }}</span></div>\n            <div><strong>Warranty amount</strong><span>{{ formatAmount(chargeableWarrantyAmount) }}</span></div>\n            <div><strong>Warranty status</strong><span>{{ warrantyStatusLabel }}</span></div>\n          </div>\n        </ng-container>\n      </div>\n    </div>\n\n    <form class=\"deposit-card\" *ngIf=\"showDepositPayment\" (ngSubmit)=\"payDeposit()\">\n      <label>\n        <span>{{ copy.customerName }}</span>\n        <input type=\"text\" name=\"customerName\" [(ngModel)]=\"customerName\" autocomplete=\"name\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.customerEmail }}</span>\n        <input type=\"email\" name=\"customerEmail\" [(ngModel)]=\"customerEmail\" autocomplete=\"email\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.outingDate }}</span>\n        <input type=\"date\" name=\"outingDate\" [(ngModel)]=\"outingDate\" required />\n      </label>\n\n      <label>\n        <span>{{ copy.outingType }}</span>\n        <input type=\"text\" name=\"outingType\" [(ngModel)]=\"outingType\" />\n      </label>\n\n      <label>\n        <span>{{ copy.totalPrice }}</span>\n        <input type=\"number\" name=\"totalPrice\" [(ngModel)]=\"totalPrice\" min=\"1\" step=\"0.01\" required />\n      </label>\n\n      <div class=\"deposit-total\">\n        <span>{{ copy.deposit }}</span>\n        <strong>{{ formatAmount(depositAmount) }}</strong>\n      </div>\n\n      <p class=\"error\" *ngIf=\"errorMessage\">{{ errorMessage }}</p>\n\n      <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"isLoading\">\n        {{ isLoading ? copy.loading : copy.payDeposit }}\n      </button>\n\n      <p class=\"secure\">{{ copy.securePayment }}</p>\n    </form>\n\n\n    <section class=\"deposit-card warranty-setup-card\" *ngIf=\"cashWarrantySelected && !isWarrantyAdminMode\">\n      <span class=\"eyebrow\">Warranty</span>\n      <h2>Cash warranty selected</h2>\n      <p class=\"note\">The warranty for this proposal is handled in cash on board. No credit-card registration is required on this page.</p>\n\n      <div class=\"deposit-total\">\n        <span>Cash warranty amount</span>\n        <strong>{{ formatAmount(warrantyAmount) }}</strong>\n      </div>\n    </section>\n\n    <section class=\"deposit-card warranty-setup-card\" *ngIf=\"showWarrantyRegistration\">\n      <span class=\"eyebrow\">Warranty</span>\n      <h2>Select warranty card mode</h2>\n      <p class=\"note\">Credit-card warranty mode has not been selected yet for this booking.</p>\n\n      <div class=\"deposit-total\">\n        <span>Warranty amount</span>\n        <strong>{{ formatAmount(warrantyAmount) }}</strong>\n      </div>\n    </section>\n\n    <section class=\"deposit-card warranty-setup-card\" *ngIf=\"showWarrantyCardSummary\">\n      <span class=\"eyebrow\">Warranty</span>\n      <h2>Credit card warranty selected</h2>\n      <p class=\"note\">The warranty will be handled by credit card. No additional card registration is required on this page.</p>\n\n      <div class=\"summary-lines\">\n        <div><strong>Warranty mode</strong><span>Credit card</span></div>\n        <div><strong>Card</strong><span>{{ warrantyCardLast4 ? ('•••• ' + warrantyCardLast4) : 'Saved card' }}</span></div>\n        <div><strong>Setup intent amount</strong><span>{{ formatAmount(warrantySetupIntentAmount || warrantyAmount) }}</span></div>\n        <div><strong>Setup intent</strong><span>{{ booking?.warrantySetupIntentId || booking?.payments?.warranty?.setupIntentId || '-' }}</span></div>\n      </div>\n\n      <p class=\"success\" *ngIf=\"warrantySetupMessage\">{{ warrantySetupMessage }}</p>\n      <p class=\"secure\">Card details are stored securely by Stripe.</p>\n    </section>\n\n    <section class=\"deposit-card admin-warranty-card\" *ngIf=\"isWarrantyAdminMode && booking\">\n      <span class=\"eyebrow\">Admin</span>\n      <h2>Charge damage amount</h2>\n      <p class=\"note\">\n        Enter the amount to charge within the registered warranty and describe the damage.\n      </p>\n\n      <div class=\"deposit-total\">\n        <span>Maximum warranty</span>\n        <strong>{{ formatAmount(chargeableWarrantyAmount) }}</strong>\n      </div>\n\n      <label>\n        <span>Amount to charge</span>\n        <input type=\"number\" name=\"warrantyChargeAmount\" [(ngModel)]=\"warrantyChargeAmount\" min=\"1\" [max]=\"chargeableWarrantyAmount || null\" step=\"0.01\" />\n      </label>\n\n      <label>\n        <span>Damage details / reason</span>\n        <textarea name=\"warrantyReason\" rows=\"5\" [(ngModel)]=\"warrantyReason\" placeholder=\"Example: damaged cushion, missing equipment, repair invoice reference...\"></textarea>\n      </label>\n\n      <p class=\"error\" *ngIf=\"warrantyError\">{{ warrantyError }}</p>\n      <p class=\"success\" *ngIf=\"warrantyMessage\">{{ warrantyMessage }}</p>\n\n      <button type=\"button\" class=\"btn btn-primary danger\" [disabled]=\"isChargingWarranty\" (click)=\"chargeWarranty()\">\n        {{ isChargingWarranty ? 'Charging...' : 'Charge warranty amount' }}\n      </button>\n    </section>\n\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -2372,7 +2529,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ content.contactPage.eyebrow }}</span>\n    <h1>{{ content.contactPage.title }}</h1>\n    <p>{{ content.contactPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container contact-grid\">\n    <div class=\"contact-card\">\n      <h2>{{ content.contactPage.formTitle }}</h2>\n      <form #contactForm=\"ngForm\" (ngSubmit)=\"submit()\">\n        <div class=\"field-grid\">\n          <label>\n            <span>{{ content.contactPage.name }}</span>\n            <input type=\"text\" name=\"name\" [(ngModel)]=\"form.name\" required />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.email }}</span>\n            <input type=\"email\" name=\"email\" [(ngModel)]=\"form.email\" required />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.phone }}</span>\n            <input type=\"text\" name=\"phone\" [(ngModel)]=\"form.phone\" />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.outingType }}</span>\n            <select name=\"outingType\" [(ngModel)]=\"form.outingType\">\n              <option value=\"\">{{ content.contactPage.outingPlaceholder }}</option>\n              <option *ngFor=\"let option of content.contactPage.outingOptions\">{{ option }}</option>\n            </select>\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.preferredDate }}</span>\n            <input type=\"date\" name=\"preferredDate\" [(ngModel)]=\"form.preferredDate\" />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.guests }}</span>\n            <input type=\"text\" name=\"guests\" [(ngModel)]=\"form.guests\" />\n          </label>\n        </div>\n\n        <label class=\"full-width\">\n          <span>{{ content.contactPage.message }}</span>\n          <textarea name=\"message\" [(ngModel)]=\"form.message\" rows=\"6\"></textarea>\n        </label>\n\n        <div class=\"form-actions\">\n          <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"contactForm.invalid\">{{ content.contactPage.sendEmail }}</button>\n          <a class=\"btn btn-secondary\" [href]=\"whatsappHref\" target=\"_blank\" rel=\"noreferrer\">{{ content.contactPage.prepareWhatsapp }}</a>\n        </div>\n      </form>\n    </div>\n\n    <aside class=\"info-card\">\n      <h2>{{ content.contactPage.directTitle }}</h2>\n      <p>{{ content.contactPage.directText }}</p>\n\n      <div class=\"info-block\">\n        <strong>{{ content.contactPage.phone }}</strong>\n        <a [href]=\"'tel:' + content.phoneRaw\">{{ content.phoneDisplay }}</a>\n      </div>\n\n      <div class=\"info-block\">\n        <strong>{{ content.contactPage.email }}</strong>\n        <a [href]=\"'mailto:' + content.email\">{{ content.email }}</a>\n      </div>\n\n      <div class=\"info-block\">\n        <strong>{{ content.common.departurePort }}</strong>\n        <span>{{ content.departureArea }}</span>\n      </div>\n\n      <div class=\"info-block price-info\">\n        <strong>{{ content.common.requestQuote }}</strong>\n        <span>{{ content.priceFrom }}</span>\n      </div>\n\n            <div class=\"info-block\">\n        <strong>Click & Boat</strong>\n        <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\" target=\"_blank\" rel=\"noreferrer\">{{ content.common.bookOnClickAndBoat }}</a>\n      </div>\n\n      <div class=\"notice\" *ngIf=\"submitted\">\n        {{ content.contactPage.sentNotice }}\n      </div>\n    </aside>\n  </div>\n</section>\n";
+module.exports = "<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ content.contactPage.eyebrow }}</span>\n    <h1>{{ content.contactPage.title }}</h1>\n    <p>{{ content.contactPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container contact-grid\">\n    <div class=\"contact-card\">\n      <h2>{{ content.contactPage.formTitle }}</h2>\n      <form #contactForm=\"ngForm\" (ngSubmit)=\"submit()\">\n        <div class=\"field-grid\">\n          <label>\n            <span>{{ content.contactPage.name }}</span>\n            <input type=\"text\" name=\"name\" [(ngModel)]=\"form.name\" required />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.email }}</span>\n            <input type=\"email\" name=\"email\" [(ngModel)]=\"form.email\" required />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.phone }}</span>\n            <input type=\"text\" name=\"phone\" [(ngModel)]=\"form.phone\" />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.outingType }}</span>\n            <select name=\"outingType\" [(ngModel)]=\"form.outingType\">\n              <option value=\"\">{{ content.contactPage.outingPlaceholder }}</option>\n              <option *ngFor=\"let option of content.contactPage.outingOptions\">{{ option }}</option>\n            </select>\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.preferredDate }}</span>\n            <input type=\"date\" name=\"preferredDate\" [(ngModel)]=\"form.preferredDate\" />\n          </label>\n\n          <label>\n            <span>{{ content.contactPage.guests }}</span>\n            <input type=\"text\" name=\"guests\" [(ngModel)]=\"form.guests\" />\n          </label>\n        </div>\n\n        <label class=\"full-width\">\n          <span>{{ content.contactPage.message }}</span>\n          <textarea name=\"message\" [(ngModel)]=\"form.message\" rows=\"6\"></textarea>\n        </label>\n\n        <div class=\"form-actions\">\n          <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"contactForm.invalid || isSending\">{{ isSending ? 'Envoi...' : content.contactPage.sendEmail }}</button>\n          <a class=\"btn btn-secondary\" [href]=\"whatsappHref\" target=\"_blank\" rel=\"noreferrer\">{{ content.contactPage.prepareWhatsapp }}</a>\n        </div>\n\n        <div class=\"form-error\" *ngIf=\"sendError\">{{ sendError }}</div>\n      </form>\n    </div>\n\n    <aside class=\"info-card\">\n      <h2>{{ content.contactPage.directTitle }}</h2>\n      <p>{{ content.contactPage.directText }}</p>\n\n      <div class=\"info-block\">\n        <strong>{{ content.contactPage.phone }}</strong>\n        <a [href]=\"'tel:' + content.phoneRaw\">{{ content.phoneDisplay }}</a>\n      </div>\n\n      <div class=\"info-block\">\n        <strong>{{ content.contactPage.email }}</strong>\n        <a [href]=\"'mailto:' + content.email\">{{ content.email }}</a>\n      </div>\n\n      <div class=\"info-block\">\n        <strong>{{ content.common.departurePort }}</strong>\n        <span>{{ content.departureArea }}</span>\n      </div>\n\n      <div class=\"info-block price-info\">\n        <strong>{{ content.common.requestQuote }}</strong>\n      </div>\n\n            <div class=\"info-block\">\n        <strong>Click & Boat</strong>\n        <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\" target=\"_blank\" rel=\"noreferrer\">{{ content.common.bookOnClickAndBoat }}</a>\n      </div>\n\n      <div class=\"notice\" *ngIf=\"submitted\">\n        {{ content.contactPage.sentNotice }}\n      </div>\n    </aside>\n  </div>\n</section>\n\n\n<div class=\"sent-modal-backdrop\" *ngIf=\"showSentModal\" (click)=\"closeSentModal()\">\n  <div class=\"sent-modal\" role=\"dialog\" aria-modal=\"true\" [attr.aria-label]=\"sentModalTitle\" (click)=\"$event.stopPropagation()\">\n    <button type=\"button\" class=\"modal-close\" (click)=\"closeSentModal()\" [attr.aria-label]=\"sentModalButton\">×</button>\n    <div class=\"modal-icon\">✓</div>\n    <h2>{{ sentModalTitle }}</h2>\n    <p>{{ sentModalMessage }}</p>\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"closeSentModal()\">{{ sentModalButton }}</button>\n  </div>\n</div>\n";
 
 /***/ }),
 
@@ -2765,14 +2922,28 @@ let AccountSummaryComponent = class AccountSummaryComponent {
           booking,
           type: 'balance',
           label: 'Remaining 90%',
-          amount: balanceAmount,
+          amount: this.normalizePaymentAmount(Number(payments?.balance?.amount ?? payments?.balance?.amount_total ?? payments?.remaining?.amount ?? payments?.remaining?.amount_total ?? balanceAmount), payments?.balance || payments?.remaining),
           status: 'paid',
-          method: anyBooking.balancePaymentMethod || payments?.balance?.method || 'Onboard',
-          date: payments?.balance?.paidAt || anyBooking.balancePaidAt || anyBooking.paidAt || anyBooking.modifiedTS,
+          method: anyBooking.balancePaymentMethod || payments?.balance?.method || payments?.remaining?.method || 'Onboard',
+          date: payments?.balance?.paidAt || payments?.remaining?.paidAt || payments?.balance?.updatedAt || payments?.remaining?.updatedAt || payments?.balance?.modifiedTS || payments?.remaining?.modifiedTS || anyBooking.balancePaidAt || anyBooking.paidAt || anyBooking.modifiedTS,
           description: this.bookingDescription(booking)
         });
       }
-      if (this.isWarrantyCardRegistered(booking)) {
+      const cashWarrantyReceived = anyBooking.warrantyCashReceived === true || anyBooking.warrantyStatus === 'cash_received' || payments?.warranty?.status === 'cash_received';
+      if (this.isCashWarrantySelected(booking)) {
+        rows.push({
+          id: `${bookingId}-warranty-cash`,
+          bookingId,
+          booking,
+          type: 'warranty_cash',
+          label: cashWarrantyReceived ? 'Cash warranty received' : 'Cash warranty selected',
+          amount: warrantyAmount,
+          status: cashWarrantyReceived ? 'received' : 'selected',
+          method: 'Cash on board',
+          date: anyBooking.warrantyCashReceivedAt || payments?.warranty?.receivedAt || anyBooking.warrantySelectedAt || anyBooking.modifiedTS || anyBooking.updatedAt,
+          description: this.bookingDescription(booking)
+        });
+      } else if (this.isWarrantyCardRegistered(booking)) {
         rows.push({
           id: `${bookingId}-warranty-card`,
           bookingId,
@@ -2783,20 +2954,6 @@ let AccountSummaryComponent = class AccountSummaryComponent {
           status: 'registered',
           method: 'Stripe card',
           date: payments?.warranty?.updatedAt || payments?.warranty?.modifiedTS || anyBooking.warrantyRegisteredAt || anyBooking.updatedAt,
-          description: this.bookingDescription(booking)
-        });
-      }
-      if (this.isCashWarrantySelected(booking)) {
-        rows.push({
-          id: `${bookingId}-warranty-cash`,
-          bookingId,
-          booking,
-          type: 'warranty_cash',
-          label: 'Cash warranty',
-          amount: warrantyAmount,
-          status: anyBooking.warrantyCashReceived === true || anyBooking.warrantyStatus === 'cash_received' ? 'received' : 'selected',
-          method: 'Cash',
-          date: anyBooking.warrantyCashReceivedAt || payments?.warranty?.receivedAt || anyBooking.warrantySelectedAt,
           description: this.bookingDescription(booking)
         });
       }
@@ -2823,15 +2980,83 @@ let AccountSummaryComponent = class AccountSummaryComponent {
           booking,
           type: 'cash_damage',
           label: 'Damage taken from cash warranty',
-          amount: cashDamageAmount,
+          amount: this.normalizePaymentAmount(cashDamageAmount, payments?.warrantyCashDamage),
           status: 'recorded',
           method: 'Cash warranty',
           date: anyBooking.warrantyCashDamageRecordedAt || payments?.warrantyCashDamage?.recordedAt,
           description: anyBooking.warrantyCashDamageReason || payments?.warrantyCashDamage?.reason || this.bookingDescription(booking)
         });
       }
+      Object.entries(payments || {}).forEach(([key, rawRecord]) => {
+        const record = rawRecord || {};
+        if (['deposit', 'balance', 'remaining', 'warranty', 'warrantyCharge', 'warrantyCashDamage'].includes(key)) return;
+        const type = this.inferPaymentType(key, record);
+        if (!type) return;
+        rows.push({
+          id: `${bookingId}-${key}`,
+          bookingId,
+          booking,
+          type,
+          label: this.getPaymentTypeLabel(type),
+          amount: this.normalizePaymentAmount(Number(record.amount ?? record.amount_total ?? record.total ?? record.price ?? 0), record),
+          status: record.paid === true ? 'paid' : record.status || record.paymentStatus || 'pending',
+          method: record.method || (record.stripeCheckoutSessionId || record.checkoutSessionId ? 'Stripe' : 'Manual'),
+          date: record.paidAt || record.updatedAt || record.modifiedTS || record.createdTS || anyBooking.modifiedTS,
+          description: record.description || record.title || record.name || this.bookingDescription(booking)
+        });
+      });
+      const extraServices = Array.isArray(anyBooking.extraServices) ? anyBooking.extraServices : [];
+      extraServices.forEach((record, index) => {
+        const type = this.inferPaymentType(`extraService-${index}`, record);
+        if (!type) return;
+        if (record.status !== 'paid' && record.paid !== true && record.paymentStatus !== 'paid') return;
+        rows.push({
+          id: `${bookingId}-extra-${index}`,
+          bookingId,
+          booking,
+          type,
+          label: this.getPaymentTypeLabel(type),
+          amount: this.normalizePaymentAmount(Number(record.amount ?? record.amount_total ?? record.total ?? record.price ?? 0), record),
+          status: 'paid',
+          method: record.method || (record.stripeCheckoutSessionId || record.checkoutSessionId ? 'Stripe' : 'Manual'),
+          date: record.paidAt || record.updatedAt || record.modifiedTS || record.createdTS || anyBooking.modifiedTS,
+          description: record.description || record.title || record.name || this.bookingDescription(booking)
+        });
+      });
     }
-    return rows;
+    return this.dedupeCustomerPayments(rows);
+  }
+  dedupeCustomerPayments(rows) {
+    const map = new Map();
+    for (const row of rows || []) {
+      // The same booking/payment type can be represented twice: once from the
+      // booking summary fields and once from a Stripe payment record. Keep only
+      // one visible row per booking + payment type, preferring a paid Stripe row
+      // over a synthetic onboard/manual summary row.
+      const shouldDedupe = row.type === 'balance' || row.type === 'deposit' || row.type === 'warranty_cash' || row.type === 'warranty_card';
+      const key = shouldDedupe ? `${row.bookingId}-${row.type}` : row.id;
+      const existing = map.get(key);
+      if (!existing) {
+        map.set(key, row);
+        continue;
+      }
+      map.set(key, this.pickBestPaymentRow(existing, row));
+    }
+    return Array.from(map.values());
+  }
+  pickBestPaymentRow(a, b) {
+    const score = row => {
+      const method = String(row.method || '').toLowerCase();
+      const status = String(row.status || '').toLowerCase();
+      const description = String(row.description || '').toLowerCase();
+      let value = 0;
+      if (status === 'paid' || status === 'received' || status === 'registered' || status === 'selected') value += 20;
+      if (method.includes('stripe')) value += 10;
+      if (description.includes('remaining 90') || description.includes('balance')) value += 5;
+      if (row.date) value += 1;
+      return value;
+    };
+    return score(b) >= score(a) ? b : a;
   }
   openPaymentBooking(payment) {
     if (!payment?.bookingId) return;
@@ -2862,17 +3087,29 @@ let AccountSummaryComponent = class AccountSummaryComponent {
     return anyBooking.balancePaid === true || anyBooking.balanceStatus === 'paid' || anyBooking.balancePaymentStatus === 'paid' || anyBooking.paymentStatus === 'full_payment_done' || anyBooking?.payments?.balance?.paid === true || anyBooking?.payments?.balance?.status === 'paid';
   }
   isWarrantyCardRegistered(booking) {
+    // Cash warranty has priority over legacy/old card flags. Some proposals store
+    // warrantyRegistered=true after cash selection, so that boolean alone must not
+    // create a card-warranty row.
+    if (this.isCashWarrantySelected(booking)) return false;
     const anyBooking = booking;
     const warrantyPayment = anyBooking?.payments?.warranty || {};
     return anyBooking.warrantyRegistered === true || anyBooking.warrantyStatus === 'card_registered' || anyBooking.warrantyStatus === 'warranty_card_saved' || warrantyPayment.warrantyRegistered === true || warrantyPayment.status === 'card_registered' || warrantyPayment.status === 'warranty_card_saved';
   }
   isCashWarrantySelected(booking) {
-    const anyBooking = booking;
-    const warrantyPayment = anyBooking?.payments?.warranty || {};
-    return anyBooking.warrantyPaymentChoice === 'cash_on_board' || anyBooking.warrantyMethod === 'cash' || anyBooking.warrantyStatus === 'cash_selected' || anyBooking.warrantyStatus === 'cash_received' || anyBooking.warrantyCashSelected === true || anyBooking.warrantyCashReceived === true || warrantyPayment.method === 'cash' || warrantyPayment.status === 'cash_selected' || warrantyPayment.status === 'cash_received';
+    const anyBooking = booking || {};
+    const raw = anyBooking.raw || {};
+    const rawRaw = raw.raw || {};
+    const warrantyPayment = anyBooking?.payments?.warranty || raw?.payments?.warranty || rawRaw?.payments?.warranty || {};
+    const values = [anyBooking.warrantyPaymentChoice, anyBooking.warrantyMethod, anyBooking.warrantyStatus, anyBooking.warrantyCashSelected, anyBooking.warrantyCashReceived, raw.warrantyPaymentChoice, raw.warrantyMethod, raw.warrantyStatus, raw.warrantyCashSelected, raw.warrantyCashReceived, rawRaw.warrantyPaymentChoice, rawRaw.warrantyMethod, rawRaw.warrantyStatus, rawRaw.warrantyCashSelected, rawRaw.warrantyCashReceived, warrantyPayment.method, warrantyPayment.status, warrantyPayment.paymentMethod, warrantyPayment.paymentChoice].map(value => String(value ?? '').toLowerCase().trim());
+    return values.some(value => value === 'cash_on_board' || value === 'cash' || value === 'cash_selected' || value === 'cash_received' || value === 'cash_warranty' || value === 'warranty_cash' || value.includes('cash_on_board') || value.includes('cash_selected') || value.includes('cash_received') || value.includes('cash_warranty') || value.includes('warranty_cash'));
   }
   formatPaymentAmount(amount) {
-    return `€${Number(amount || 0).toFixed(2)}`;
+    return new Intl.NumberFormat(this.currentLanguage === 'fr' ? 'fr-FR' : this.currentLanguage === 'es' ? 'es-ES' : 'en-US', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: Number(amount || 0) % 1 === 0 ? 0 : 2,
+      maximumFractionDigits: 2
+    }).format(Number(amount || 0));
   }
   formatPaymentDate(value) {
     if (!value) return '-';
@@ -2888,8 +3125,33 @@ let AccountSummaryComponent = class AccountSummaryComponent {
     const date = typeof payment.date === 'number' ? new Date(payment.date) : new Date(payment.date);
     return Number.isNaN(date.getTime()) ? 0 : date.getTime();
   }
-  normalizePaymentAmount(amount) {
-    return amount > 999 ? Math.round(amount) / 100 : amount;
+  normalizePaymentAmount(amount, source) {
+    if (!Number.isFinite(amount)) return 0;
+    const currency = String(source?.currency || source?.currencyCode || '').toLowerCase();
+    const sourceLooksStripe = !!(source?.stripeCheckoutSessionId || source?.checkoutSessionId || source?.stripePaymentIntentId || source?.paymentIntentId || source?.amount_total);
+    if (sourceLooksStripe || currency === 'eur') {
+      return Math.round(amount) / 100;
+    }
+    return amount > 10000 ? Math.round(amount) / 100 : amount;
+  }
+  inferPaymentType(key, record) {
+    const type = String(record?.paymentType || record?.type || key || '').toLowerCase().replace(/[\s-]/g, '_');
+    const description = String(record?.description || record?.title || record?.name || '').toLowerCase();
+    if (type.includes('balance') || type.includes('remaining') || description.includes('remaining 90') || description.includes('90% balance') || description.includes('remaining balance')) return 'balance';
+    if (type.includes('ad_hoc') || type.includes('adhoc')) return 'ad_hoc';
+    if (type.includes('extra')) return 'extra_service';
+    return '';
+  }
+  getPaymentTypeLabel(type) {
+    if (type === 'balance') return 'Remaining 90%';
+    if (type === 'extra_service') return 'Extra services';
+    if (type === 'ad_hoc') return 'Ad hoc payment';
+    if (type === 'deposit') return '10% deposit';
+    if (type === 'warranty_card') return 'Warranty card registration';
+    if (type === 'warranty_cash') return 'Cash warranty';
+    if (type === 'warranty_charge') return 'Damage charged to warranty card';
+    if (type === 'cash_damage') return 'Damage taken from cash warranty';
+    return 'Payment';
   }
   bookingDescription(booking) {
     return `${booking.outingType || 'Outing'}${booking.outingDate ? ' · ' + booking.outingDate : ''}`;
@@ -3240,16 +3502,16 @@ let MyBookingsComponent = class MyBookingsComponent {
   getDerivedBookingStatus(booking) {
     const anyBooking = booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
-    if (this.isBookingCancelledByDate(booking) || this.isCancelledBooking(booking)) return 'cancelled';
     // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
     if (this.isBalancePaid(booking)) return 'payment_done';
-    if (rawStatus === 'payment_done' || rawStatus === 'full_payment_done' || rawStatus === 'paid' || rawStatus === 'completed') {
-      return 'payment_done';
-    }
     if (rawStatus === true || rawStatus === 'true' || rawStatus === 'confirmed' || anyBooking.confirmed === true || anyBooking.bookingConfirmed === true) {
       return 'confirmed';
     }
     if (this.isDepositPaid(booking) && this.isTermsAccepted(booking)) return 'confirmed';
+    if (this.isBookingCancelledByDate(booking) || this.isCancelledBooking(booking)) return 'cancelled';
+    if (rawStatus === 'payment_done' || rawStatus === 'full_payment_done' || rawStatus === 'paid' || rawStatus === 'completed') {
+      return 'payment_done';
+    }
     return 'not_confirmed';
   }
   getStatusLabel(booking) {
@@ -4221,6 +4483,7 @@ let DepositComponent = class DepositComponent {
   totalPrice = null;
   currency = 'eur';
   paymentMode = 'deposit';
+  routeWarrantyMethod = '';
   bookingId = '';
   ownerId = '';
   booking;
@@ -4285,6 +4548,7 @@ let DepositComponent = class DepositComponent {
       this.bookingId = params.get('bookingId') || this.bookingId;
       this.ownerId = params.get('ownerId') || this.ownerId;
       this.paymentMode = params.get('mode') || this.paymentMode;
+      this.routeWarrantyMethod = params.get('warrantyMethod') || params.get('warrantyMode') || params.get('warrantyChoice') || params.get('warrantyPaymentChoice') || this.routeWarrantyMethod;
       const total = params.get('total') || params.get('totalPrice') || params.get('amount');
       if (total !== null && total !== '') {
         const parsed = Number(total);
@@ -4314,8 +4578,67 @@ let DepositComponent = class DepositComponent {
   get showDepositPayment() {
     return !this.isWarrantyAdminMode;
   }
+  get cashWarrantySelected() {
+    return this.isCashWarrantyMethodSelected();
+  }
+  get cardWarrantySelected() {
+    return !this.cashWarrantySelected && this.isWarrantyCardMethodSelected();
+  }
   get showWarrantyRegistration() {
-    return !this.isWarrantyAdminMode && !!this.booking && this.warrantyAmount > 0;
+    // Never show any warranty card/Stripe section when the booking/proposal says cash.
+    // Cash mode is intentionally checked first and has priority over old Stripe fields.
+    return !this.isWarrantyAdminMode && !!this.booking && this.warrantyAmount > 0 && !this.cashWarrantySelected && !this.cardWarrantySelected;
+  }
+  get showWarrantyCardSummary() {
+    // Show the card summary only for an explicit card/Stripe warranty choice.
+    // If cash is present anywhere on the booking/proposal object, hide it.
+    return !this.isWarrantyAdminMode && !!this.booking && this.warrantyAmount > 0 && !this.cashWarrantySelected && this.cardWarrantySelected;
+  }
+  get warrantyCardLast4() {
+    const anyBooking = this.booking || {};
+    const warrantyPayment = anyBooking?.payments?.warranty || {};
+    return String(anyBooking.warrantyCardLast4 || anyBooking.cardLast4 || anyBooking.paymentMethodLast4 || warrantyPayment.cardLast4 || warrantyPayment.last4 || warrantyPayment.paymentMethodLast4 || warrantyPayment.card?.last4 || '');
+  }
+  get warrantySetupIntentAmount() {
+    const anyBooking = this.booking || {};
+    const warrantyPayment = anyBooking?.payments?.warranty || {};
+    const raw = Number(anyBooking.warrantySetupIntentAmount ?? anyBooking.setupIntentAmount ?? warrantyPayment.setupIntentAmount ?? warrantyPayment.amount_total ?? warrantyPayment.amount ?? this.warrantyAmount ?? 0);
+    if (!Number.isFinite(raw) || raw <= 0) return 0;
+    return raw >= 10000 ? raw / 100 : raw;
+  }
+  normalizeWarrantyValue(value) {
+    return String(value ?? '').toLowerCase().trim().replace(/[\s-]+/g, '_');
+  }
+  warrantyFieldValues() {
+    const values = [];
+    const visit = (obj, depth = 0) => {
+      if (!obj || depth > 8) return;
+      if (typeof obj !== 'object') return;
+      Object.keys(obj).forEach(key => {
+        const lowerKey = key.toLowerCase();
+        const value = obj[key];
+        if (lowerKey.includes('warranty') || lowerKey.includes('caution') || lowerKey.includes('securitydeposit') || lowerKey.includes('damagedeposit') || lowerKey === 'method' || lowerKey === 'mode' || lowerKey === 'choice' || lowerKey === 'type' || lowerKey === 'status') {
+          values.push(value);
+        }
+        if (value && typeof value === 'object' && !Array.isArray(value)) {
+          visit(value, depth + 1);
+        }
+      });
+    };
+    values.push(this.routeWarrantyMethod);
+    visit(this.booking || {});
+    return values.filter(value => value !== undefined && value !== null && value !== '').map(value => this.normalizeWarrantyValue(value));
+  }
+  isWarrantyCardMethodSelected() {
+    if (this.isCashWarrantyMethodSelected()) return false;
+    const values = this.warrantyFieldValues();
+    const cardValues = ['stripe_card', 'card', 'credit_card', 'creditcard', 'stripe', 'card_selected', 'card_registered', 'warranty_card_saved', 'warranty_card_registered'];
+    return values.some(value => cardValues.includes(value) || value.includes('stripe_card') || value.includes('credit_card') || value.includes('card_registered') || value.includes('warranty_card'));
+  }
+  isCashWarrantyMethodSelected() {
+    const values = this.warrantyFieldValues();
+    const cashValues = ['cash_on_board', 'cash', 'cash_selected', 'cash_received', 'cash_warranty', 'warranty_cash'];
+    return values.some(value => cashValues.includes(value) || value.startsWith('cash') || value.includes('cash_on_board') || value.includes('cash_warranty') || value.includes('warranty_cash') || value === 'espèces' || value === 'especes');
   }
   get chargeableWarrantyAmount() {
     return Number(this.booking?.warrantyAmount || this.warrantyChargeAmount || 0);
@@ -4324,6 +4647,7 @@ let DepositComponent = class DepositComponent {
     return Number(this.booking?.warrantyAmount || this.warrantyChargeAmount || 0);
   }
   get warrantyStatusLabel() {
+    if (this.cashWarrantySelected) return 'cash selected';
     const value = this.booking?.warrantyStatus;
     if (value === true) return 'registered';
     if (value === false || value === undefined || value === null || value === '') return 'not registered';
@@ -4523,7 +4847,7 @@ module.exports = "<section class=\"guest-page\">\n  <div class=\"container guest
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"proposal-confirmation-page\">\n  <div class=\"container proposal-shell\">\n    <p class=\"muted\" *ngIf=\"loading\">{{ text('loading') }}</p>\n    <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n\n    <article class=\"proposal-card\" *ngIf=\"!loading && proposal\">\n      <span class=\"eyebrow\">{{ text('proposalEyebrow') }}</span>\n      <h1>{{ proposal.outingType }}</h1>\n      <p class=\"muted\" *ngIf=\"proposal.proposalMessage\">{{ proposal.proposalMessage }}</p>\n\n      <div class=\"summary-grid\">\n        <div><strong>{{ text('customer') }}</strong><span>{{ proposal.customerName }}</span></div>\n        <div><strong>{{ text('date') }}</strong><span>{{ proposal.outingDate }}</span></div>\n        <div><strong>{{ text('time') }}</strong><span>{{ proposal.departureTime }} → {{ proposal.arrivalTime }}</span></div>\n        <div><strong>{{ text('passengers') }}</strong><span>{{ proposal.passengers || '-' }}</span></div>\n        <div><strong>{{ text('totalPrice') }}</strong><span>€{{ proposal.totalAmount }}</span></div>\n        <div><strong>{{ text('deposit') }}</strong><span>€{{ proposal.depositAmount }}</span></div>\n        <div><strong>{{ text('remaining') }}</strong><span>€{{ proposal.balanceAmount }}</span></div>\n        <div><strong>{{ text('warranty') }}</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>\n      </div>\n\n      <section class=\"proposal-auth-card\" *ngIf=\"!proposalAccessReady\">\n        <span class=\"eyebrow\">{{ text('secureProposalAccess') }}</span>\n        <h2>{{ text('accessProposalSecurely') }}</h2>\n\n        <p *ngIf=\"proposalAccessMode === 'google'\">\n          {{ text('proposalLinkedTo') }} <strong>{{ proposal.customerEmail }}</strong>.\n          {{ text('continueGoogleOwnership') }}\n        </p>\n\n        <p *ngIf=\"proposalAccessMode === 'auto_email' || customerAccountCreating || proposalAccessLoading\">\n          {{ text('preparingSecureAccess') }}\n        </p>\n\n        <p class=\"muted\" *ngIf=\"proposalAccessMessage\">{{ proposalAccessMessage }}</p>\n        <p class=\"error\" *ngIf=\"proposalAccessError\">{{ proposalAccessError }}</p>\n\n        <button\n          class=\"btn btn-primary\"\n          type=\"button\"\n          *ngIf=\"proposalAccessMode === 'google'\"\n          [disabled]=\"proposalAccessLoading\"\n          (click)=\"continueWithGoogle()\">\n          {{ proposalAccessLoading ? text('openingGoogle') : text('continueWithGoogle') }}\n        </button>\n\n        <button\n          class=\"btn btn-secondary\"\n          type=\"button\"\n          *ngIf=\"proposalAccessMode !== 'google' && proposalAccessError\"\n          [disabled]=\"proposalAccessLoading\"\n          (click)=\"prepareProposalAccess()\">\n          Retry\n        </button>\n      </section>\n\n      <ng-container *ngIf=\"proposalAccessReady\">\n        <div class=\"expired\" *ngIf=\"expired\">{{ text('expiredText') }}</div>\n\n        <section class=\"proposal-wizard\" *ngIf=\"!expired\">\n          <div class=\"wizard-progress\">\n            <div class=\"wizard-progress-bar\" [style.width.%]=\"wizardProgressPercent\"></div>\n          </div>\n\n          <div class=\"wizard-steps\">\n            <div class=\"wizard-step\" [class.active]=\"wizardStep === 1\" [class.done]=\"tncAccepted\">\n              <span>1</span>\n              <strong>{{ text('wizardStepTerms') }}</strong>\n            </div>\n            <div class=\"wizard-step\" [class.active]=\"wizardStep === 2\" [class.done]=\"depositPaid\">\n              <span>2</span>\n              <strong>{{ text('wizardStepDeposit') }}</strong>\n            </div>\n            <div class=\"wizard-step\" [class.active]=\"wizardStep === 3\" [class.done]=\"warrantyReady\">\n              <span>3</span>\n              <strong>{{ text('wizardStepWarranty') }}</strong>\n            </div>\n          </div>\n\n          <section class=\"wizard-panel\" *ngIf=\"wizardStep === 1\">\n            <h2>{{ text('acceptTitle') }}</h2>\n            <p>{{ text('readBeforeAccept') }}</p>\n\n            <button class=\"link-button\" type=\"button\" (click)=\"openTermsModal()\">{{ text('openTerms') }}</button>\n\n            <label class=\"terms-check\">\n              <input type=\"checkbox\" [(ngModel)]=\"acceptedTerms\" [disabled]=\"!canAcceptTermsCheckbox\" />\n              <span>{{ text('termsCheckbox') }}</span>\n            </label>\n\n            <p class=\"muted\" *ngIf=\"!canAcceptTermsCheckbox\">{{ text('termsLocked') }}</p>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"!canAccept || accepting\" (click)=\"acceptProposal()\">\n              {{ accepting ? text('acceptingButton') : (text('wizardAcceptTermsButton') || 'Validate T&C and continue') }}\n            </button>\n          </section>\n\n          <section class=\"wizard-panel\" *ngIf=\"wizardStep === 2\">\n            <h2>{{ text('payDepositTitle') }}</h2>\n            <p>{{ depositMessage }}</p>\n            <p class=\"muted\">{{ text('deposit') }}: <strong>€{{ proposal.depositAmount }}</strong></p>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"payingDeposit\" (click)=\"payDeposit()\">\n              {{ payingDeposit ? text('redirecting') : text('payDepositButton') }}\n            </button>\n          </section>\n\n          <section class=\"wizard-panel\" *ngIf=\"wizardStep === 3\">\n            <h2>{{ text('warrantyTitle') }}</h2>\n            <p>{{ text('warrantyWizardIntro') }}</p>\n\n            <div class=\"warranty-options\">\n              <label class=\"radio-card\">\n                <input type=\"radio\" name=\"warrantyChoice\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n                <span>{{ text('warrantyCard') }}</span>\n              </label>\n              <label class=\"radio-card\">\n                <input type=\"radio\" name=\"warrantyChoice\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n                <span>{{ text('warrantyCash') }}</span>\n              </label>\n            </div>\n\n            <div class=\"step-card\" *ngIf=\"warrantyChoice === 'stripe_card'\" [class.paid]=\"warrantyRegistered\">\n              <h3>{{ text('registerWarrantyTitle') }}</h3>\n              <p>{{ warrantyMessage }}</p>\n              <p class=\"muted\">{{ text('maxWarranty') }}: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>\n\n              <div class=\"paid-badge\" *ngIf=\"warrantyRegistered\">{{ text('warrantyCardRegistered') }}</div>\n\n              <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"!warrantyRegistered\" [disabled]=\"payingWarranty\" (click)=\"registerWarrantyCard()\">\n                {{ payingWarranty ? text('redirecting') : text('registerWarrantyButton') }}\n              </button>\n\n              <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"warrantyRegistered\" [disabled]=\"finalizingBooking\" (click)=\"finalizeProposal()\">\n                {{ finalizingBooking ? text('finalizingBooking') : text('finalizeBookingButton') }}\n              </button>\n            </div>\n\n            <div class=\"step-card\" *ngIf=\"warrantyChoice === 'cash_on_board'\">\n              <h3>{{ text('cashWarrantyTitle') }}</h3>\n              <p>{{ text('warrantyCashMessage') }}</p>\n              <p class=\"muted\">{{ text('amount') }}: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>\n\n              <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"payingWarranty || finalizingBooking\" (click)=\"acceptCashWarranty()\">\n                {{ finalizingBooking ? text('finalizingBooking') : text('acceptCashWarrantyButton') }}\n              </button>\n            </div>\n          </section>\n\n          <section class=\"wizard-panel\" *ngIf=\"wizardStep === 4\">\n            <h2>{{ text('bookingCreatedTitle') }}</h2>\n            <p>{{ text('bookingCreatedText') }}</p>\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"finalizingBooking\" (click)=\"finalizeProposal()\">\n              {{ finalizingBooking ? text('finalizingBooking') : text('finalizeBookingButton') }}\n            </button>\n          </section>\n        </section>\n\n        <div class=\"terms-modal-backdrop\" *ngIf=\"termsModalOpen\" (click)=\"closeTermsModal()\">\n          <section class=\"terms-modal\" (click)=\"$event.stopPropagation()\">\n            <button class=\"modal-close\" type=\"button\" (click)=\"closeTermsModal()\">×</button>\n            <span class=\"eyebrow\">Alegria Boat</span>\n            <h2>{{ text('termsModalTitle') }}</h2>\n\n            <div class=\"terms-content tc-scrollable\" tabindex=\"0\">\n              <ng-container *ngFor=\"let section of termsSections\">\n                <h3>{{ section.title }}</h3>\n                <p *ngFor=\"let paragraph of section.paragraphs\">{{ paragraph }}</p>\n              </ng-container>\n            </div>\n\n            <div class=\"modal-actions\">\n              <button class=\"btn btn-primary\" type=\"button\" (click)=\"closeTermsModal()\">{{ text('readTermsButton') }}</button>\n            </div>\n          </section>\n        </div>\n\n        <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n      </ng-container>\n    </article>\n  </div>\n</section>\n";
+module.exports = "<section class=\"proposal-confirmation-page\">\n  <div class=\"container proposal-shell\">\n    <p class=\"muted\" *ngIf=\"loading\">{{ text('loading') }}</p>\n    <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n\n    <article class=\"proposal-card\" *ngIf=\"!loading && proposal\">\n      <span class=\"eyebrow\">{{ text('proposalEyebrow') }}</span>\n      <h1>{{ proposal.outingType }}</h1>\n      <p class=\"muted\" *ngIf=\"proposal.proposalMessage\">{{ proposal.proposalMessage }}</p>\n\n      <div class=\"summary-grid\">\n        <div><strong>{{ text('customer') }}</strong><span>{{ proposal.customerName }}</span></div>\n        <div><strong>{{ text('date') }}</strong><span>{{ proposal.outingDate }}</span></div>\n        <div><strong>{{ text('time') }}</strong><span>{{ proposal.departureTime }} → {{ proposal.arrivalTime }}</span></div>\n        <div><strong>{{ text('passengers') }}</strong><span>{{ proposal.passengers || '-' }}</span></div>\n        <div><strong>{{ priceTitle('totalPrice') }}</strong><span>€{{ proposal.totalAmount }}</span></div>\n        <div><strong>{{ priceTitle('deposit') }}</strong><span>€{{ proposal.depositAmount }}</span></div>\n        <div><strong>{{ priceTitle('remaining') }}</strong><span>€{{ proposal.balanceAmount }}</span></div>\n        <div><strong>{{ priceTitle('warranty') }}</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>\n      </div>\n\n      <section class=\"proposal-auth-card\" *ngIf=\"!proposalAccessReady\">\n        <span class=\"eyebrow\">{{ text('secureProposalAccess') }}</span>\n        <h2>{{ text('accessProposalSecurely') }}</h2>\n\n        <p *ngIf=\"proposalAccessMode === 'google'\">\n          {{ text('proposalLinkedTo') }} <strong>{{ proposal.customerEmail }}</strong>.\n          {{ text('continueGoogleOwnership') }}\n        </p>\n\n        <p *ngIf=\"proposalAccessMode === 'auto_email' || customerAccountCreating || proposalAccessLoading\">\n          {{ text('preparingSecureAccess') }}\n        </p>\n\n        <p class=\"muted\" *ngIf=\"proposalAccessMessage\">{{ proposalAccessMessage }}</p>\n        <p class=\"error\" *ngIf=\"proposalAccessError\">{{ proposalAccessError }}</p>\n\n        <button\n          class=\"btn btn-primary\"\n          type=\"button\"\n          *ngIf=\"proposalAccessMode === 'google'\"\n          [disabled]=\"proposalAccessLoading\"\n          (click)=\"continueWithGoogle()\">\n          {{ proposalAccessLoading ? text('openingGoogle') : text('continueWithGoogle') }}\n        </button>\n\n        <button\n          class=\"btn btn-secondary\"\n          type=\"button\"\n          *ngIf=\"proposalAccessMode !== 'google' && proposalAccessError\"\n          [disabled]=\"proposalAccessLoading\"\n          (click)=\"prepareProposalAccess()\">\n          Retry\n        </button>\n      </section>\n\n      <ng-container *ngIf=\"proposalAccessReady\">\n        <div class=\"expired\" *ngIf=\"expired\">{{ text('expiredText') }}</div>\n\n        <section class=\"proposal-wizard\" *ngIf=\"!expired\">\n          <div class=\"wizard-progress\">\n            <div class=\"wizard-progress-bar\" [style.width.%]=\"wizardProgressPercent\"></div>\n          </div>\n\n          <div class=\"wizard-steps\">\n            <div class=\"wizard-step\" [class.active]=\"wizardStep === 1\" [class.done]=\"tncAccepted\">\n              <span>1</span>\n              <strong>{{ text('wizardStepTerms') }}</strong>\n            </div>\n            <div class=\"wizard-step\" [class.active]=\"wizardStep === 2\" [class.done]=\"depositPaid\">\n              <span>2</span>\n              <strong>{{ text('wizardStepDeposit') }}</strong>\n            </div>\n            <div class=\"wizard-step\" [class.active]=\"wizardStep === 3\" [class.done]=\"warrantyReady\">\n              <span>3</span>\n              <strong>{{ text('wizardStepWarranty') }}</strong>\n            </div>\n          </div>\n\n          <section class=\"wizard-panel\" *ngIf=\"wizardStep === 1\">\n            <h2>{{ text('acceptTitle') }}</h2>\n            <p>{{ text('readBeforeAccept') }}</p>\n\n            <button class=\"link-button\" type=\"button\" (click)=\"openTermsModal()\">{{ text('openTerms') }}</button>\n\n            <label class=\"terms-check\">\n              <input type=\"checkbox\" [(ngModel)]=\"acceptedTerms\" [disabled]=\"!canAcceptTermsCheckbox\" />\n              <span>{{ text('termsCheckbox') }}</span>\n            </label>\n\n            <p class=\"muted\" *ngIf=\"!canAcceptTermsCheckbox\">{{ text('termsLocked') }}</p>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"!canAccept || accepting\" (click)=\"acceptProposal()\">\n              {{ accepting ? text('acceptingButton') : (text('wizardAcceptTermsButton') || 'Validate T&C and continue') }}\n            </button>\n          </section>\n\n          <section class=\"wizard-panel\" *ngIf=\"wizardStep === 2\">\n            <h2>{{ text('payDepositTitle') }}</h2>\n            <p>{{ depositMessage }}</p>\n            <p class=\"muted\">{{ priceTitle('deposit') }}: <strong>€{{ proposal.depositAmount }}</strong></p>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"payingDeposit\" (click)=\"payDeposit()\">\n              {{ payingDeposit ? text('redirecting') : text('payDepositButton') }}\n            </button>\n          </section>\n\n          <section class=\"wizard-panel\" *ngIf=\"wizardStep === 3\">\n            <h2>{{ text('warrantyTitle') }}</h2>\n            <p>{{ text('warrantyWizardIntro') }}</p>\n\n            <div class=\"warranty-options\">\n              <label class=\"radio-card\">\n                <input type=\"radio\" name=\"warrantyChoice\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n                <span>{{ text('warrantyCard') }}</span>\n              </label>\n              <label class=\"radio-card\">\n                <input type=\"radio\" name=\"warrantyChoice\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n                <span>{{ text('warrantyCash') }}</span>\n              </label>\n            </div>\n\n            <div class=\"step-card\" *ngIf=\"warrantyChoice === 'stripe_card'\" [class.paid]=\"warrantyRegistered\">\n              <h3>{{ text('registerWarrantyTitle') }}</h3>\n              <p>{{ warrantyMessage }}</p>\n              <p class=\"muted\">{{ text('maxWarranty') }}: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>\n\n              <div class=\"paid-badge\" *ngIf=\"warrantyRegistered\">{{ text('warrantyCardRegistered') }}</div>\n\n              <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"!warrantyRegistered\" [disabled]=\"payingWarranty\" (click)=\"registerWarrantyCard()\">\n                {{ payingWarranty ? text('redirecting') : text('registerWarrantyButton') }}\n              </button>\n\n              <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"warrantyRegistered\" [disabled]=\"finalizingBooking\" (click)=\"finalizeProposal()\">\n                {{ finalizingBooking ? text('finalizingBooking') : text('finalizeBookingButton') }}\n              </button>\n            </div>\n\n            <div class=\"step-card\" *ngIf=\"warrantyChoice === 'cash_on_board'\">\n              <h3>{{ text('cashWarrantyTitle') }}</h3>\n              <p>{{ text('warrantyCashMessage') }}</p>\n              <p class=\"muted\">{{ text('amount') }}: <strong>€{{ proposal.warrantyAmount || 500 }}</strong></p>\n\n              <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"payingWarranty || finalizingBooking\" (click)=\"acceptCashWarranty()\">\n                {{ finalizingBooking ? text('finalizingBooking') : text('acceptCashWarrantyButton') }}\n              </button>\n            </div>\n          </section>\n\n          <section class=\"wizard-panel\" *ngIf=\"wizardStep === 4\">\n            <h2>{{ text('bookingCreatedTitle') }}</h2>\n            <p>{{ text('bookingCreatedText') }}</p>\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"finalizingBooking\" (click)=\"finalizeProposal()\">\n              {{ finalizingBooking ? text('finalizingBooking') : text('finalizeBookingButton') }}\n            </button>\n          </section>\n        </section>\n\n        <div class=\"terms-modal-backdrop\" *ngIf=\"termsModalOpen\" (click)=\"closeTermsModal()\">\n          <section class=\"terms-modal\" (click)=\"$event.stopPropagation()\">\n            <button class=\"modal-close\" type=\"button\" (click)=\"closeTermsModal()\">×</button>\n            <span class=\"eyebrow\">Alegria Boat</span>\n            <h2>{{ text('termsModalTitle') }}</h2>\n\n            <div class=\"terms-content tc-scrollable\" tabindex=\"0\">\n              <ng-container *ngFor=\"let section of termsSections\">\n                <h3>{{ section.title }}</h3>\n                <p *ngFor=\"let paragraph of section.paragraphs\">{{ paragraph }}</p>\n              </ng-container>\n            </div>\n\n            <div class=\"modal-actions\">\n              <button class=\"btn btn-primary\" type=\"button\" (click)=\"closeTermsModal()\">{{ text('readTermsButton') }}</button>\n            </div>\n          </section>\n        </div>\n\n        <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n      </ng-container>\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -4740,7 +5064,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"proposal-page\">\n  <div class=\"container proposal-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ t('myEyebrow') }}</span>\n      <h1>{{ t('myTitle') }}</h1>\n      <p>{{ t('myIntro') }}</p>\n    </div>\n    <p *ngIf=\"loading\" class=\"muted\">{{ t('loadingMy') }}</p>\n    <p *ngIf=\"!loading && error\" class=\"error-message\">{{ error }}</p>\n    <div class=\"proposal-tabs\" *ngIf=\"!loading && ((proposals.length > 0 || requests.length > 0) || requests.length > 0)\">\n      <button type=\"button\" [class.active]=\"activeTab === 'requests'\" (click)=\"setTab('requests')\">{{ t('requests') }} <span>{{ requestsCount }}</span></button>\n      <button type=\"button\" [class.active]=\"activeTab === 'pending'\" (click)=\"setTab('pending')\">{{ t('pending') }} <span>{{ pendingCount }}</span></button>\n      <button type=\"button\" [class.active]=\"activeTab === 'accepted'\" (click)=\"setTab('accepted')\">{{ t('accepted') }} <span>{{ acceptedCount }}</span></button>\n      <button type=\"button\" [class.active]=\"activeTab === 'declined'\" (click)=\"setTab('declined')\">{{ t('declined') }} <span>{{ declinedCount }}</span></button>\n      <button type=\"button\" [class.active]=\"activeTab === 'expired'\" (click)=\"setTab('expired')\">{{ t('expiredStatus') }} <span>{{ expiredCount }}</span></button>\n    </div>\n    <div class=\"proposal-toolbar\" *ngIf=\"!loading && (proposals.length > 0 || requests.length > 0)\">\n      <label><span>{{ t('search') }}</span><input type=\"search\" [(ngModel)]=\"searchTerm\" [placeholder]=\"t('mySearchPlaceholder')\" /></label>\n      <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"searchTerm\" (click)=\"searchTerm = ''\">{{ t('clear') }}</button>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadProposals()\">{{ t('refresh') }}</button>\n    </div>\n    <div class=\"empty-card\" *ngIf=\"!loading && proposals.length === 0 && requests.length === 0\">{{ t('emptyNoProposal') }}</div>\n    <div class=\"empty-card\" *ngIf=\"!loading && (proposals.length > 0 || requests.length > 0) && filteredProposals.length === 0\">{{ t('emptyNoMatch') }}</div>\n\n\n    <div class=\"proposal-list\" *ngIf=\"!loading && filteredProposalRequests.length > 0\">\n      <article class=\"proposal-card request-card\" *ngFor=\"let request of filteredProposalRequests\">\n        <div class=\"proposal-top\">\n          <span class=\"status-pill pending\">{{ t('requestSubmittedStatus') }}</span>\n          <span class=\"validity\">{{ t('awaitingAdminProposal') }}</span>\n        </div>\n        <h2>{{ request.outingType || t('outingProposal') }}</h2>\n        <p class=\"proposal-date\">{{ request.outingDate || t('dateNotSet') }}<ng-container *ngIf=\"request.departureTime\"> · {{ request.departureTime }}</ng-container></p>\n        <div class=\"proposal-grid\">\n          <div><strong>{{ t('from') }}</strong><span>{{ request.startMarina || '-' }}</span></div>\n          <div><strong>{{ t('destination') }}</strong><span>{{ request.destination || '-' }}</span></div>\n          <div><strong>{{ t('passengers') }}</strong><span>{{ request.passengers || '-' }}</span></div>\n          <div><strong>{{ t('estimatedPrice') }}</strong><span>€{{ request.estimatedPrice || request.totalAmount || 0 }}</span></div>\n          <div><strong>{{ t('skipperPrice') }}</strong><span>€{{ getEstimatedSkipperPrice(request) }}</span></div>\n          <div><strong>{{ t('cleaningPrice') }}</strong><span>€{{ getEstimatedCleaningPrice(request) }}</span></div>\n          <div><strong>{{ t('optionsPrice') }}</strong><span>€{{ getEstimatedOptionsPrice(request) }}</span></div>\n        </div>\n        <p class=\"proposal-message\">{{ t('requestWaitingText') }}</p>\n      </article>\n    </div>\n\n    <div class=\"proposal-list\" *ngIf=\"!loading && filteredRequests.length > 0\">\n      <article class=\"proposal-card request-card\" *ngFor=\"let request of filteredRequests\" (click)=\"openRequest(request)\">\n        <div class=\"proposal-top\">\n          <span class=\"status-pill pending\">{{ getRequestStatusLabel(request) }}</span>\n          <span class=\"validity\">{{ t('awaitingAdminProposal') }}</span>\n        </div>\n        <h2>{{ request.outingType || t('outingProposal') }}</h2>\n        <p class=\"proposal-date\">{{ request.outingDate || t('dateNotSet') }}<ng-container *ngIf=\"request.departureTime\"> · {{ request.departureTime }}</ng-container></p>\n        <div class=\"proposal-grid\">\n          <div><strong>{{ t('from') }}</strong><span>{{ request.startMarina || '-' }}</span></div>\n          <div><strong>{{ t('destination') }}</strong><span>{{ request.destination || '-' }}</span></div>\n          <div><strong>{{ t('passengers') }}</strong><span>{{ request.passengers || '-' }}</span></div>\n          <div><strong>{{ t('requestSource') }}</strong><span>{{ t('createdByCustomer') }}</span></div>\n        </div>\n        <p class=\"proposal-message\">{{ t('requestWaitingText') }}</p>\n      </article>\n    </div>\n\n    <div class=\"proposal-list\" *ngIf=\"!loading && filteredProposals.length > 0\">\n      <article class=\"proposal-card\" *ngFor=\"let proposal of filteredProposals\" (click)=\"openProposal(proposal)\">\n        <div class=\"proposal-top\"><span class=\"status-pill\" [ngClass]=\"getStatusClass(proposal)\">{{ getStatusLabel(proposal) }}</span><span class=\"validity\">{{ getValidityLabel(proposal) }}</span></div>\n        <p class=\"proposal-origin\">{{ getProposalOriginLabel(proposal) }}</p>\n        <h2>{{ proposal.outingType || t('outingProposal') }}</h2>\n        <p class=\"proposal-date\">{{ proposal.outingDate || t('dateNotSet') }}<ng-container *ngIf=\"proposal.departureTime\"> · {{ proposal.departureTime }}</ng-container><ng-container *ngIf=\"proposal.arrivalTime\">–{{ proposal.arrivalTime }}</ng-container></p>\n        <div class=\"proposal-grid\">\n          <div><strong>{{ t('total') }}</strong><span>€{{ proposal.totalAmount || 0 }}</span></div>\n          <div><strong>{{ t('deposit10') }}</strong><span>€{{ getDepositAmount(proposal) }}</span></div>\n          <div><strong>{{ t('remaining') }}</strong><span>€{{ getBalanceAmount(proposal) }}</span></div>\n          <div><strong>{{ t('warranty') }}</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>\n        </div>\n        <p class=\"proposal-message\" *ngIf=\"proposal.proposalMessage\">{{ proposal.proposalMessage }}</p>\n        <div class=\"proposal-actions\" (click)=\"$event.stopPropagation()\">\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"getProposalTab(proposal) === 'pending'\" (click)=\"openProposal(proposal)\">{{ t('viewAcceptProposal') }}</button>\n          <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"hasRelatedBooking(proposal)\" (click)=\"openRelatedBooking(proposal, $event)\">{{ t('openRelatedBooking') }}</button>\n          <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"getProposalTab(proposal) !== 'pending'\" (click)=\"openProposal(proposal)\">{{ t('viewDetails') }}</button>\n        </div>\n      </article>\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"proposal-page\">\n  <div class=\"container proposal-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ t('myEyebrow') }}</span>\n      <h1>{{ t('myTitle') }}</h1>\n      <p>{{ t('myIntro') }}</p>\n    </div>\n    <p *ngIf=\"loading\" class=\"muted\">{{ t('loadingMy') }}</p>\n    <p *ngIf=\"!loading && error\" class=\"error-message\">{{ error }}</p>\n    <div class=\"proposal-tabs\" *ngIf=\"!loading && ((proposals.length > 0 || requests.length > 0) || requests.length > 0)\">\n      <button type=\"button\" [class.active]=\"activeTab === 'requests'\" (click)=\"setTab('requests')\">{{ t('requests') }} <span>{{ requestsCount }}</span></button>\n      <button type=\"button\" [class.active]=\"activeTab === 'pending'\" (click)=\"setTab('pending')\">{{ t('pending') }} <span>{{ pendingCount }}</span></button>\n      <button type=\"button\" [class.active]=\"activeTab === 'accepted'\" (click)=\"setTab('accepted')\">{{ t('accepted') }} <span>{{ acceptedCount }}</span></button>\n      <button type=\"button\" [class.active]=\"activeTab === 'declined'\" (click)=\"setTab('declined')\">{{ t('declined') }} <span>{{ declinedCount }}</span></button>\n      <button type=\"button\" [class.active]=\"activeTab === 'expired'\" (click)=\"setTab('expired')\">{{ t('expiredStatus') }} <span>{{ expiredCount }}</span></button>\n    </div>\n    <div class=\"proposal-toolbar\" *ngIf=\"!loading && (proposals.length > 0 || requests.length > 0)\">\n      <label><span>{{ t('search') }}</span><input type=\"search\" [(ngModel)]=\"searchTerm\" [placeholder]=\"t('mySearchPlaceholder')\" /></label>\n      <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"searchTerm\" (click)=\"searchTerm = ''\">{{ t('clear') }}</button>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadProposals()\">{{ t('refresh') }}</button>\n    </div>\n    <div class=\"empty-card\" *ngIf=\"!loading && proposals.length === 0 && requests.length === 0\">{{ t('emptyNoProposal') }}</div>\n    <div class=\"empty-card\" *ngIf=\"!loading && (proposals.length > 0 || requests.length > 0) && filteredProposals.length === 0\">{{ t('emptyNoMatch') }}</div>\n\n\n    <div class=\"proposal-list\" *ngIf=\"!loading && filteredProposalRequests.length > 0\">\n      <article class=\"proposal-card request-card\" *ngFor=\"let request of filteredProposalRequests\">\n        <div class=\"proposal-top\">\n          <span class=\"status-pill pending\">{{ t('requestSubmittedStatus') }}</span>\n          <span class=\"validity\">{{ t('awaitingAdminProposal') }}</span>\n        </div>\n        <h2>{{ request.outingType || t('outingProposal') }}</h2>\n        <p class=\"proposal-date\">{{ request.outingDate || t('dateNotSet') }}<ng-container *ngIf=\"request.departureTime\"> · {{ request.departureTime }}</ng-container></p>\n        <div class=\"proposal-grid\">\n          <div><strong>{{ t('from') }}</strong><span>{{ request.startMarina || '-' }}</span></div>\n          <div><strong>{{ t('destination') }}</strong><span>{{ request.destination || '-' }}</span></div>\n          <div><strong>{{ t('passengers') }}</strong><span>{{ request.passengers || '-' }}</span></div>\n          <div><strong>{{ t('estimatedPrice') }}</strong><span>€{{ request.estimatedPrice || request.totalAmount || 0 }}</span></div>\n          <div><strong>{{ priceTitle('skipperPrice') }}</strong><span>€{{ getEstimatedSkipperPrice(request) }}</span></div>\n          <div><strong>{{ priceTitle('cleaningPrice') }}</strong><span>€{{ getEstimatedCleaningPrice(request) }}</span></div>\n          <div><strong>{{ priceTitle('extraServicesPrice') }}</strong><span>€{{ getEstimatedOptionsPrice(request) }}</span></div>\n        </div>\n        <p class=\"proposal-message\">{{ t('requestWaitingText') }}</p>\n      </article>\n    </div>\n\n    <div class=\"proposal-list\" *ngIf=\"!loading && filteredRequests.length > 0\">\n      <article class=\"proposal-card request-card\" *ngFor=\"let request of filteredRequests\" (click)=\"openRequest(request)\">\n        <div class=\"proposal-top\">\n          <span class=\"status-pill pending\">{{ getRequestStatusLabel(request) }}</span>\n          <span class=\"validity\">{{ t('awaitingAdminProposal') }}</span>\n        </div>\n        <h2>{{ request.outingType || t('outingProposal') }}</h2>\n        <p class=\"proposal-date\">{{ request.outingDate || t('dateNotSet') }}<ng-container *ngIf=\"request.departureTime\"> · {{ request.departureTime }}</ng-container></p>\n        <div class=\"proposal-grid\">\n          <div><strong>{{ t('from') }}</strong><span>{{ request.startMarina || '-' }}</span></div>\n          <div><strong>{{ t('destination') }}</strong><span>{{ request.destination || '-' }}</span></div>\n          <div><strong>{{ t('passengers') }}</strong><span>{{ request.passengers || '-' }}</span></div>\n          <div><strong>{{ t('requestSource') }}</strong><span>{{ t('createdByCustomer') }}</span></div>\n        </div>\n        <p class=\"proposal-message\">{{ t('requestWaitingText') }}</p>\n      </article>\n    </div>\n\n    <div class=\"proposal-list\" *ngIf=\"!loading && filteredProposals.length > 0\">\n      <article class=\"proposal-card\" *ngFor=\"let proposal of filteredProposals\" (click)=\"openProposal(proposal)\">\n        <div class=\"proposal-top\"><span class=\"status-pill\" [ngClass]=\"getStatusClass(proposal)\">{{ getStatusLabel(proposal) }}</span><span class=\"validity\">{{ getValidityLabel(proposal) }}</span></div>\n        <p class=\"proposal-origin\">{{ getProposalOriginLabel(proposal) }}</p>\n        <h2>{{ proposal.outingType || t('outingProposal') }}</h2>\n        <p class=\"proposal-date\">{{ proposal.outingDate || t('dateNotSet') }}<ng-container *ngIf=\"proposal.departureTime\"> · {{ proposal.departureTime }}</ng-container><ng-container *ngIf=\"proposal.arrivalTime\">–{{ proposal.arrivalTime }}</ng-container></p>\n        <div class=\"proposal-grid\">\n          <div><strong>{{ priceTitle('totalAmount') }}</strong><span>€{{ proposal.totalAmount || 0 }}</span></div>\n          <div><strong>{{ priceTitle('deposit10') }}</strong><span>€{{ getDepositAmount(proposal) }}</span></div>\n          <div><strong>{{ priceTitle('remaining90') }}</strong><span>€{{ getBalanceAmount(proposal) }}</span></div>\n          <div><strong>{{ priceTitle('warrantyAmount') }}</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>\n        </div>\n        <p class=\"proposal-message\" *ngIf=\"proposal.proposalMessage\">{{ proposal.proposalMessage }}</p>\n        <div class=\"proposal-actions\" (click)=\"$event.stopPropagation()\">\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"getProposalTab(proposal) === 'pending'\" (click)=\"openProposal(proposal)\">{{ t('viewAcceptProposal') }}</button>\n          <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"hasRelatedBooking(proposal)\" (click)=\"openRelatedBooking(proposal, $event)\">{{ t('openRelatedBooking') }}</button>\n          <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"getProposalTab(proposal) !== 'pending'\" (click)=\"openProposal(proposal)\">{{ t('viewDetails') }}</button>\n        </div>\n      </article>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -4966,7 +5290,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <p *ngIf=\"loading\" class=\"muted\">{{ btext('loadingBooking') }}</p>\n\n    <article class=\"booking-detail-card\" *ngIf=\"!loading && booking\">\n      <span class=\"eyebrow\">{{ btext('bookingDetail') }}</span>\n      <h1>{{ booking.outingType }}</h1>\n      <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>\n\n      <div class=\"detail-grid\">\n        <div><strong>{{ btext('customer') }}</strong><span>{{ booking.customerName }}</span></div>\n        <div><strong>{{ btext('email') }}</strong><span>{{ booking.email }}</span></div>\n        <div><strong>{{ btext('phone') }}</strong><span>{{ booking.phone || '-' }}</span></div>\n        <div><strong>{{ btext('passengers') }}</strong><span>{{ booking.passengers || '-' }}</span></div>\n        <div><strong>{{ btext('totalPrice') }}</strong><span>€{{ booking.totalPrice || 0 }}</span></div>\n        <div><strong>{{ btext('deposit') }}</strong><span>€{{ getDepositAmount() }} · {{ getCompletedLabel(isDepositPaid()) }}</span></div>\n        <div><strong>{{ btext('remaining') }}</strong><span>€{{ getBalanceAmount() }} · {{ getCompletedLabel(isBalancePaid()) }}</span></div>\n        <div><strong>{{ btext('warranty') }}</strong><span>{{ getWarrantyModeLabel() }} · {{ getWarrantyCardLabel() }}</span></div>\n        <div><strong>{{ btext('status') }}</strong><button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal()\">{{ getStatusLabel() }}</button></div>\n        <div><strong>{{ btext('owner') }}</strong><span>{{ booking.ownerId || '-' }}</span></div>\n      </div>\n\n      <p class=\"comments\" *ngIf=\"booking.comments\">{{ booking.comments }}</p>\n\n\n      <section class=\"admin-proposal-finalization-card\" *ngIf=\"isRequestAwaitingAdminProposal()\">\n        <h2>Finalize the offer</h2>\n        <p>\n          The customer has submitted the outing details. No payment has been requested yet.\n          Finalize the boat price, skipper price and extra services, then send the proposal to the client.\n        </p>\n\n        <div class=\"estimated-request-price\">\n          <strong>Estimated request price</strong>\n          <span>€{{ getEstimatedRequestPrice() }}</span>\n          <small>Use this as a basis, then finalize boat, skipper and extra-services pricing before sending the proposal.</small>\n        </div>\n\n        <div class=\"field-grid\">\n          <label>\n            Boat price (€)\n            <input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"proposalBoatPrice\" />\n          </label>\n          <label>\n            Skipper price (€)\n            <input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"proposalSkipperPrice\" />\n          </label>\n          <label>\n            Extra services / options (€)\n            <input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"proposalExtraServicesPrice\" />\n          </label>\n          <label>\n            Proposal notes\n            <textarea rows=\"3\" [(ngModel)]=\"proposalNotes\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"payment-summary clarity-grid\">\n          <div><strong>Total proposal</strong><span>€{{ getAdminProposalTotal() }}</span></div>\n          <div><strong>Deposit 10%</strong><span>€{{ getAdminProposalDeposit() }}</span></div>\n          <div><strong>Client next step</strong><span>Accept T&C · Pay deposit · Select warranty</span></div>\n        </div>\n\n        <div class=\"customer-action-bar\">\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"sendingAdminProposal\" (click)=\"saveAdminProposalDraft()\">\n            {{ sendingAdminProposal ? 'Saving...' : 'Save draft' }}\n          </button>\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"sendingAdminProposal || getAdminProposalTotal() <= 0\" (click)=\"sendAdminProposalToClient()\">\n            {{ sendingAdminProposal ? 'Sending...' : 'Send proposal to client' }}\n          </button>\n        </div>\n\n        <p class=\"success\" *ngIf=\"adminProposalMessage\">{{ adminProposalMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"adminProposalError\">{{ adminProposalError }}</p>\n      </section>\n\n\n\n      <section class=\"admin-booking-request-card\" *ngIf=\"canAdminAcceptRejectBooking()\">\n        <h2>Booking request pending admin confirmation</h2>\n        <p>\n          The customer has authorized the deposit. Accepting this request will capture the deposit and confirm the booking.\n          Rejecting it will cancel the authorization without capturing the money.\n        </p>\n\n        <div class=\"payment-summary clarity-grid\">\n          <div><strong>Deposit status</strong><span>{{ getDepositStatusLabel() }}</span></div>\n          <div><strong>Booking request status</strong><span>{{ booking.bookingRequestStatus || booking.status || '-' }}</span></div>\n          <div><strong>Stripe PaymentIntent</strong><span>{{ booking.stripePaymentIntentId || booking.payments?.deposit?.stripePaymentIntentId || '-' }}</span></div>\n        </div>\n\n        <label>\n          Rejection reason\n          <textarea rows=\"3\" [(ngModel)]=\"rejectionReason\" placeholder=\"Required only if you reject the request\"></textarea>\n        </label>\n\n        <div class=\"customer-action-bar\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"adminDecisionLoading\" (click)=\"acceptBookingRequest()\">\n            {{ adminDecisionLoading ? 'Processing...' : 'Accept and capture deposit' }}\n          </button>\n          <button class=\"btn btn-danger\" type=\"button\" [disabled]=\"adminDecisionLoading\" (click)=\"rejectBookingRequest()\">\n            {{ adminDecisionLoading ? 'Processing...' : 'Reject without capture' }}\n          </button>\n        </div>\n\n        <p class=\"success\" *ngIf=\"adminDecisionMessage\">{{ adminDecisionMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"adminDecisionError\">{{ adminDecisionError }}</p>\n      </section>\n\n\n\n      <section class=\"invoice-actions-card\" *ngIf=\"isAdmin && isOutingDone()\">\n        <h2>Facturation</h2>\n        <p>La sortie est passée. Vous pouvez éditer une facture imprimable puis l'enregistrer en PDF depuis le navigateur.</p>\n        <div class=\"customer-action-bar\">\n          <a class=\"btn btn-secondary\" [routerLink]=\"['/admin/bookings', booking.bookingId, 'invoice']\" [queryParams]=\"{ type: 'booking' }\">\n            Facture prestations ALEGRIA\n          </a>\n          <a class=\"btn btn-primary\" [routerLink]=\"['/admin/bookings', booking.bookingId, 'invoice']\" [queryParams]=\"{ type: 'extras' }\">\n            Facture extras / catering\n          </a>\n        </div>\n      </section>\n\n\n\n      <section class=\"customer-edit-card\" *ngIf=\"!isAdmin && editMode\">\n        <h2>{{ btext('updateBookingInfo') }}</h2>\n\n        <label>\n          {{ btext('customerName') }}\n          <input type=\"text\" [(ngModel)]=\"booking.customerName\" />\n        </label>\n\n        <label>\n          {{ btext('email') }}\n          <input type=\"email\" [(ngModel)]=\"booking.email\" />\n        </label>\n\n        <label>\n          {{ btext('phone') }}\n          <input type=\"tel\" [(ngModel)]=\"booking.phone\" />\n        </label>\n\n        <label>\n          {{ btext('numberOfGuests') }}\n          <input type=\"number\" min=\"1\" [(ngModel)]=\"booking.passengers\" />\n        </label>\n\n        <label>\n          {{ btext('pickupLocation') }}\n          <input type=\"text\" [(ngModel)]=\"booking.pickupLocation\" />\n        </label>\n\n        <label>\n          {{ btext('comments') }}\n          <textarea rows=\"3\" [(ngModel)]=\"booking.comments\"></textarea>\n        </label>\n\n        <div class=\"customer-edit-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCustomerUpdate\" (click)=\"saveCustomerUpdate()\">\n            {{ savingCustomerUpdate ? btext('saving') : btext('saveUpdate') }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"savingCustomerUpdate\" (click)=\"cancelCustomerUpdate()\">\n            {{ btext('cancel') }}\n          </button>\n        </div>\n\n        <p class=\"success\" *ngIf=\"customerUpdateMessage\">{{ customerUpdateMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"customerUpdateError\">{{ customerUpdateError }}</p>\n      </section>\n\n      <section class=\"payment-admin-card\">\n        <h2>{{ getWorkflowTitle() }}</h2>\n\n        <div class=\"payment-summary workflow-summary clarity-grid\">\n          <div class=\"status-summary-card\"><strong>{{ btext('bookingStatus') }}</strong><button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal()\">{{ getStatusLabel() }}</button></div>\n          <div><strong>{{ btext('deposit') }}</strong><span>{{ getDepositStatusLabel() }}</span></div>\n          <div><strong>{{ btext('termsConditions') }}</strong><span>{{ getTermsStatusLabel() }}</span></div>\n          <div><strong>{{ btext('warrantyMode') }}</strong><span>{{ getWarrantyModeLabel() }}</span></div>\n          <div><strong>{{ btext('stripeWarrantyCard') }}</strong><span>{{ getWarrantyCardLabel() }}</span></div>\n          <div><strong>{{ btext('remaining') }}</strong><span>{{ getBalanceStatusLabel() }}</span></div>\n          <div><strong>{{ btext('damage') }}</strong><span>{{ getDamageStatusLabel() }}</span></div>\n        </div>\n\n        <div class=\"customer-action-bar\" *ngIf=\"!isAdmin\">\n          <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"canCustomerUpdateBooking() && !editMode\" (click)=\"updateCustomerBooking()\">\n            {{ btext('updateBookingInfo') }}\n          </button>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"shouldShowCustomerPaymentButton()\" (click)=\"customerPayment()\">\n            {{ customerPaymentButtonLabel }}\n          </button>\n        </div>\n\n        <div class=\"customer-action-bar\" *ngIf=\"canAdminOpenDamagePage()\">\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"openAdminDamagePage()\">\n            {{ btext('openWarrantyDamagePage') }}\n          </button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'deposit_required'\">\n          <h3>{{ text('termsModalTitle') }}</h3>\n          <div class=\"terms-scroll-box tc-scrollable\" tabindex=\"0\" (scroll)=\"onTermsScroll($event)\" (keyup.end)=\"markTermsRead()\">\n            <ng-container *ngFor=\"let section of termsSections\">\n              <h4>{{ section.title }}</h4>\n              <p *ngFor=\"let paragraph of section.paragraphs\">{{ paragraph }}</p>\n            </ng-container>\n          </div>\n\n          <p class=\"muted\" *ngIf=\"!termsRead\">{{ text('termsLocked') }}</p>\n\n          <label class=\"terms-check\">\n            <input type=\"checkbox\" [(ngModel)]=\"termsAccepted\" [disabled]=\"!termsRead\" />\n            <span>{{ text('termsCheckbox') }}</span>\n          </label>\n\n          <h3>{{ text('warrantyTitle') }}</h3>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoice\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCard') }}</span>\n          </label>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoice\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCash') }}</span>\n          </label>\n\n          <p class=\"blocked-note\" *ngIf=\"getDepositBlockedReason()\">{{ getDepositBlockedReason() }}</p>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!isAdmin && !isDepositPaid()\" [disabled]=\"!canPayDeposit()\" (click)=\"payDeposit()\">\n            {{ text('payDepositButton') }}\n          </button>\n\n          <p class=\"paid-badge\" *ngIf=\"isDepositPaid()\">{{ text('depositAlreadyPaid') }}</p>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'warranty_choice_required'\">\n          <h3>{{ text('warrantyTitle') }}</h3>\n          <p>{{ btext('warrantyChoiceText') }}</p>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoiceConfirmed\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCard') }}</span>\n          </label>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoiceConfirmed\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCash') }}</span>\n          </label>\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"warrantySaving || !warrantyChoice\" (click)=\"warrantyChoice === 'cash_on_board' ? selectWarrantyCash() : selectWarrantyCard()\">\n            {{ btext('saveWarrantyChoice') }}\n          </button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'warranty_card_required'\">\n          <h3>{{ btext('registerWarrantyCardTitle') }}</h3>\n          <p>{{ btext('registerWarrantyCardText') }}</p>\n          <button class=\"btn btn-primary\" type=\"button\" (click)=\"registerWarrantyCard()\">{{ btext('registerWarrantyCardButton') }}</button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'balance_required'\">\n          <h3>{{ btext('collectRemainingTitle') }}</h3>\n          <p>{{ btext('amountDueBeforeDeparture') }}: <strong>€{{ getBalanceAmount() }}</strong></p>\n\n          <div class=\"collect-balance\" *ngIf=\"canAdminCreateExtraService()\">\n            <label>\n              {{ btext('paymentMethod') }}\n              <select [(ngModel)]=\"balancePaymentMethod\">\n                <option value=\"sumup\">{{ btext('sumupCard') }}</option>\n                <option value=\"cash\">{{ btext('cash') }}</option>\n                <option value=\"mixed\">{{ btext('mixed') }}</option>\n              </select>\n            </label>\n\n            <label>\n              {{ btext('notes') }}\n              <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" placeholder=\"{{ btext('balanceNotesPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n              {{ savingBalancePayment ? btext('saving') : btext('recordRemainingPayment') }}\n            </button>\n          </div>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"getBookingWorkflowState() === 'payment_done' && isAdmin && isOutingDone()\">\n          <h3>{{ btext('damageManagement') }}</h3>\n          <p>{{ btext('damageManagementText') }}</p>\n\n          <div class=\"cash-damage-card\" *ngIf=\"isCashWarranty()\">\n            <h3>{{ btext('cashWarrantyEnvelope') }}</h3>\n            <p>\n              {{ btext('cashWarrantyInitialEnvelope') }}: <strong>€{{ getCashWarrantyAmount() }}</strong><br />\n              {{ btext('cashWarrantyAlreadyTaken') }}: <strong>€{{ getCashWarrantyDamagesTaken() }}</strong><br />\n              {{ btext('cashWarrantyRemaining') }}: <strong>€{{ getCashWarrantyRemaining() }}</strong>\n            </p>\n\n            <label>\n              {{ btext('cashDamageAmount') }} (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cashDamageAmount\" />\n            </label>\n\n            <label>\n              {{ btext('damageReason') }}\n              <textarea rows=\"3\" [(ngModel)]=\"cashDamageReason\" placeholder=\"{{ btext('damageReasonPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCashDamage\" (click)=\"recordCashWarrantyDamage()\">\n              {{ savingCashDamage ? btext('saving') : btext('recordCashDamage') }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"cashDamageMessage\">{{ cashDamageMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"cashDamageError\">{{ cashDamageError }}</p>\n          </div>\n\n          <div class=\"cash-damage-card\" *ngIf=\"isWarrantyCardRegistered()\">\n            <h3>{{ btext('chargeCardWarranty') }}</h3>\n            <p>{{ btext('maximumWarranty') }}: <strong>€{{ booking.warrantyAmount || 500 }}</strong></p>\n\n            <label>\n              {{ btext('damageAmount') }} (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cardDamageAmount\" />\n            </label>\n\n            <label>\n              {{ btext('damageReason') }}\n              <textarea rows=\"3\" [(ngModel)]=\"cardDamageReason\" placeholder=\"{{ btext('damageReasonPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCardDamage\" (click)=\"recordCardWarrantyDamage()\">\n              {{ savingCardDamage ? btext('charging') : btext('chargeDamageToWarrantyCard') }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"cardDamageMessage\">{{ cardDamageMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"cardDamageError\">{{ cardDamageError }}</p>\n          </div>\n        </div>\n\n\n        <div class=\"workflow-panel extra-services-panel\" *ngIf=\"booking\">\n          <h3>Extra services</h3>\n\n          <div *ngIf=\"bookingExtraServices.length === 0\" class=\"muted\">\n            No extra service requested for this booking.\n          </div>\n\n          <div class=\"admin-extra-service-actions-title\" *ngIf=\"isAdmin && bookingExtraServices.length\">\n            Admin extra services management\n          </div>\n\n          <div class=\"extra-service-row\" *ngFor=\"let extra of bookingExtraServices; let i = index\">\n            <div class=\"extra-service-display\" *ngIf=\"!isEditingExtraService(extra, i)\">\n              <strong>{{ extra.description || extra.title || extra.name }}</strong>\n              <span>€{{ extra.amount || 0 }} · {{ extra.status === 'paid' || extra.paid ? 'paid' : 'pending' }}</span>\n            </div>\n\n            <div class=\"extra-service-edit\" *ngIf=\"isAdmin && isEditingExtraService(extra, i)\">\n              <label>\n                Description\n                <input type=\"text\" [(ngModel)]=\"extraServiceEditDescription\" />\n              </label>\n              <label>\n                Amount (€)\n                <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"extraServiceEditAmount\" />\n              </label>\n              <label>\n                Status\n                <select [(ngModel)]=\"extraServiceEditStatus\">\n                  <option value=\"pending\">Pending</option>\n                  <option value=\"paid\">Paid</option>\n                  <option value=\"cancelled\">Cancelled</option>\n                </select>\n              </label>\n            </div>\n\n            <div class=\"extra-service-actions\">\n              <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!isAdmin && canCustomerPayExtraService(extra)\" (click)=\"payExtraService(extra)\">\n                Pay extra service\n              </button>\n\n              <ng-container *ngIf=\"isAdmin\">\n                <button class=\"btn btn-secondary admin-extra-btn\" type=\"button\" *ngIf=\"!isEditingExtraService(extra, i)\" (click)=\"startEditExtraService(extra, i)\">\n                  Edit\n                </button>\n                <button class=\"btn btn-primary admin-extra-btn\" type=\"button\" *ngIf=\"isEditingExtraService(extra, i)\" [disabled]=\"savingExtraService\" (click)=\"saveExtraServiceEdit(extra, i)\">\n                  Save\n                </button>\n                <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"isEditingExtraService(extra, i)\" (click)=\"cancelEditExtraService()\">\n                  Cancel\n                </button>\n                <button class=\"btn btn-danger admin-extra-btn\" type=\"button\" [disabled]=\"savingExtraService\" (click)=\"deleteExtraService(extra, i)\">\n                  Delete\n                </button>\n              </ng-container>\n            </div>\n          </div>\n\n          <div class=\"admin-extra-service-form\" *ngIf=\"canAdminCreateExtraService()\">\n            <h4>Propose an extra service to the customer</h4>\n\n            <label>\n              Service from Firebase catalog\n              <select [(ngModel)]=\"selectedExtraServiceId\">\n                <option value=\"\">Custom service</option>\n                <option *ngFor=\"let service of extraServicesCatalog\" [value]=\"service.id || service.slug\">\n                  {{ service.title || service.name || service.description }} — €{{ service.amount || service.price || 0 }}\n                </option>\n              </select>\n            </label>\n\n            <label>\n              Custom description\n              <input type=\"text\" [(ngModel)]=\"customExtraServiceDescription\" placeholder=\"Drinks, food, catering...\" />\n            </label>\n\n            <label>\n              Custom amount (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"customExtraServiceAmount\" />\n            </label>\n\n            <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"savingExtraService\" (click)=\"createExtraServiceRequest()\">\n              {{ savingExtraService ? 'Saving...' : 'Send extra service payment request' }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"extraServiceMessage\">{{ extraServiceMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"extraServiceError\">{{ extraServiceError }}</p>\n          </div>\n        </div>\n\n\n        <div class=\"workflow-panel adhoc-payment-panel\" *ngIf=\"canCustomerCreateAdhocPayment()\">\n          <h3>Ad hoc payment</h3>\n          <p>You can make an additional payment for extra services, tips, catering, drinks or any other agreed cost.</p>\n\n          <label>\n            Description\n            <input type=\"text\" [(ngModel)]=\"adhocPaymentDescription\" placeholder=\"Tip, catering, drinks, extra service...\" />\n          </label>\n\n          <label>\n            Amount (€)\n            <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"adhocPaymentAmount\" />\n          </label>\n\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"adhocPaymentLoading\" (click)=\"payAdhocBookingAmount()\">\n            {{ adhocPaymentLoading ? 'Redirecting...' : 'Pay this amount' }}\n          </button>\n\n          <p class=\"success\" *ngIf=\"adhocPaymentMessage\">{{ adhocPaymentMessage }}</p>\n          <p class=\"error-message\" *ngIf=\"adhocPaymentError\">{{ adhocPaymentError }}</p>\n        </div>\n\n        <div class=\"workflow-panel refund-panel\" *ngIf=\"false\">\n          <h3>Refund</h3>\n          <p>Paid: <strong>€{{ totalPaidAmount }}</strong> · Already refunded: <strong>€{{ totalRefundedAmount }}</strong> · Available: <strong>€{{ refundableAmount }}</strong></p>\n\n          <label>\n            Refund amount (€)\n            <input type=\"number\" min=\"1\" step=\"0.01\" [max]=\"refundableAmount\" [(ngModel)]=\"refundAmount\" />\n          </label>\n\n          <label>\n            Reason\n            <textarea rows=\"3\" [(ngModel)]=\"refundReason\" placeholder=\"Weather compensation, commercial gesture...\"></textarea>\n          </label>\n\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"refunding || !canAdminRefund()\" (click)=\"issueRefund()\">\n            {{ refunding ? 'Refunding...' : 'Issue refund' }}\n          </button>\n\n          <p class=\"success\" *ngIf=\"refundMessage\">{{ refundMessage }}</p>\n          <p class=\"error-message\" *ngIf=\"refundError\">{{ refundError }}</p>\n        </div>\n\n\n        <p class=\"success\" *ngIf=\"balancePaymentMessage\">{{ balancePaymentMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n        <p class=\"success\" *ngIf=\"warrantyMessage\">{{ warrantyMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"warrantyError\">{{ warrantyError }}</p>\n      </section>\n    \n      <div class=\"status-modal-backdrop\" *ngIf=\"statusModalOpen\" (click)=\"closeStatusModal()\">\n        <section class=\"status-modal\" (click)=\"$event.stopPropagation()\">\n          <button class=\"modal-close\" type=\"button\" (click)=\"closeStatusModal()\">×</button>\n          <span class=\"eyebrow\">{{ btext('bookingStatus') }}</span>\n          <h2>{{ getStatusLabel() }}</h2>\n          <p>{{ getStatusSummaryText() }}</p>\n\n          <div class=\"status-timeline\">\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isDepositPaid())\">\n              <strong>{{ btext('deposit') }}</strong>\n              <span>{{ getDepositStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isTermsAccepted())\">\n              <strong>{{ btext('termsConditions') }}</strong>\n              <span>{{ getTermsStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isWarrantySecured())\">\n              <strong>{{ btext('warranty') }}</strong>\n              <span>{{ getWarrantyModeLabel() }} · {{ getWarrantyCardLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isBalancePaid())\">\n              <strong>{{ btext('remaining') }}</strong>\n              <span>{{ getBalanceStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getDamageStatusLabel().includes('recorded'))\">\n              <strong>{{ btext('damage') }}</strong>\n              <span>{{ getDamageStatusLabel() }}</span>\n            </div>\n          </div>\n\n          <div class=\"modal-actions\">\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeStatusModal()\">{{ btext('close') }}</button>\n          </div>\n        </section>\n      </div>\n\n    </article>\n  </div>\n</section>\n";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <p *ngIf=\"loading\" class=\"muted\">{{ btext('loadingBooking') }}</p>\n\n    <article class=\"booking-detail-card\" *ngIf=\"!loading && booking\">\n      <span class=\"eyebrow\">{{ btext('bookingDetail') }}</span>\n      <h1>{{ booking.outingType }}</h1>\n      <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>\n\n      <div class=\"detail-grid\">\n        <div><strong>{{ btext('customer') }}</strong><span>{{ booking.customerName }}</span></div>\n        <div><strong>{{ btext('email') }}</strong><span>{{ booking.email }}</span></div>\n        <div><strong>{{ btext('phone') }}</strong><span>{{ booking.phone || '-' }}</span></div>\n        <div><strong>{{ btext('passengers') }}</strong><span>{{ booking.passengers || '-' }}</span></div>\n        <div><strong>{{ btext('totalPrice') }}</strong><span>€{{ booking.totalPrice || 0 }}</span></div>\n        <div><strong>{{ btext('deposit') }}</strong><span>€{{ getDepositAmount() }} · {{ getCompletedLabel(isDepositPaid()) }}</span></div>\n        <div><strong>{{ btext('remaining') }}</strong><span>€{{ getBalanceAmount() }} · {{ getCompletedLabel(isBalancePaid()) }}</span></div>\n        <div><strong>{{ btext('warranty') }}</strong><span>{{ getWarrantyModeLabel() }} · {{ getWarrantyCardLabel() }}</span></div>\n        <div><strong>{{ btext('status') }}</strong><button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal()\">{{ getStatusLabel() }}</button></div>\n        <div><strong>{{ btext('owner') }}</strong><span>{{ booking.ownerId || '-' }}</span></div>\n      </div>\n\n      <p class=\"comments\" *ngIf=\"booking.comments\">{{ booking.comments }}</p>\n\n\n      <section class=\"admin-proposal-finalization-card\" *ngIf=\"isRequestAwaitingAdminProposal()\">\n        <h2>Finalize the offer</h2>\n        <p>\n          The customer has submitted the outing details. No payment has been requested yet.\n          Finalize the boat price, skipper price and extra services, then send the proposal to the client.\n        </p>\n\n        <div class=\"estimated-request-price\">\n          <strong>Estimated request price</strong>\n          <span>€{{ getEstimatedRequestPrice() }}</span>\n          <small>Use this as a basis, then finalize boat, skipper and extra-services pricing before sending the proposal.</small>\n        </div>\n\n        <div class=\"field-grid\">\n          <label>\n            Boat price (€)\n            <input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"proposalBoatPrice\" />\n          </label>\n          <label>\n            Skipper price (€)\n            <input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"proposalSkipperPrice\" />\n          </label>\n          <label>\n            Extra services / options (€)\n            <input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"proposalExtraServicesPrice\" />\n          </label>\n          <label>\n            Proposal notes\n            <textarea rows=\"3\" [(ngModel)]=\"proposalNotes\"></textarea>\n          </label>\n        </div>\n\n        <div class=\"payment-summary clarity-grid\">\n          <div><strong>Total proposal</strong><span>€{{ getAdminProposalTotal() }}</span></div>\n          <div><strong>Deposit 10%</strong><span>€{{ getAdminProposalDeposit() }}</span></div>\n          <div><strong>Client next step</strong><span>Accept T&C · Pay deposit · Select warranty</span></div>\n        </div>\n\n        <div class=\"customer-action-bar\">\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"sendingAdminProposal\" (click)=\"saveAdminProposalDraft()\">\n            {{ sendingAdminProposal ? 'Saving...' : 'Save draft' }}\n          </button>\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"sendingAdminProposal || getAdminProposalTotal() <= 0\" (click)=\"sendAdminProposalToClient()\">\n            {{ sendingAdminProposal ? 'Sending...' : 'Send proposal to client' }}\n          </button>\n        </div>\n\n        <p class=\"success\" *ngIf=\"adminProposalMessage\">{{ adminProposalMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"adminProposalError\">{{ adminProposalError }}</p>\n      </section>\n\n\n\n      <section class=\"admin-booking-request-card\" *ngIf=\"canAdminAcceptRejectBooking()\">\n        <h2>Booking request pending admin confirmation</h2>\n        <p>\n          The customer has authorized the deposit. Accepting this request will capture the deposit and confirm the booking.\n          Rejecting it will cancel the authorization without capturing the money.\n        </p>\n\n        <div class=\"payment-summary clarity-grid\">\n          <div><strong>Deposit status</strong><span>{{ getDepositStatusLabel() }}</span></div>\n          <div><strong>Booking request status</strong><span>{{ booking.bookingRequestStatus || booking.status || '-' }}</span></div>\n          <div><strong>Stripe PaymentIntent</strong><span>{{ booking.stripePaymentIntentId || booking.payments?.deposit?.stripePaymentIntentId || '-' }}</span></div>\n        </div>\n\n        <label>\n          Rejection reason\n          <textarea rows=\"3\" [(ngModel)]=\"rejectionReason\" placeholder=\"Required only if you reject the request\"></textarea>\n        </label>\n\n        <div class=\"customer-action-bar\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"adminDecisionLoading\" (click)=\"acceptBookingRequest()\">\n            {{ adminDecisionLoading ? 'Processing...' : 'Accept and capture deposit' }}\n          </button>\n          <button class=\"btn btn-danger\" type=\"button\" [disabled]=\"adminDecisionLoading\" (click)=\"rejectBookingRequest()\">\n            {{ adminDecisionLoading ? 'Processing...' : 'Reject without capture' }}\n          </button>\n        </div>\n\n        <p class=\"success\" *ngIf=\"adminDecisionMessage\">{{ adminDecisionMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"adminDecisionError\">{{ adminDecisionError }}</p>\n      </section>\n\n\n\n      <section class=\"invoice-actions-card\" *ngIf=\"isAdmin && isOutingDone()\">\n        <h2>Facturation</h2>\n        <p>La sortie est passée. Vous pouvez éditer une facture imprimable puis l'enregistrer en PDF depuis le navigateur.</p>\n        <div class=\"customer-action-bar\">\n          <a class=\"btn btn-secondary\" [routerLink]=\"['/admin/bookings', booking.bookingId, 'invoice']\" [queryParams]=\"{ type: 'booking' }\">\n            Facture prestations ALEGRIA\n          </a>\n          <a class=\"btn btn-primary\" [routerLink]=\"['/admin/bookings', booking.bookingId, 'invoice']\" [queryParams]=\"{ type: 'extras' }\">\n            Facture extras / catering\n          </a>\n        </div>\n      </section>\n\n\n\n      <section class=\"customer-edit-card\" *ngIf=\"!isAdmin && editMode\">\n        <h2>{{ btext('updateBookingInfo') }}</h2>\n\n        <label>\n          {{ btext('customerName') }}\n          <input type=\"text\" [(ngModel)]=\"booking.customerName\" />\n        </label>\n\n        <label>\n          {{ btext('email') }}\n          <input type=\"email\" [(ngModel)]=\"booking.email\" />\n        </label>\n\n        <label>\n          {{ btext('phone') }}\n          <input type=\"tel\" [(ngModel)]=\"booking.phone\" />\n        </label>\n\n        <label>\n          {{ btext('numberOfGuests') }}\n          <input type=\"number\" min=\"1\" [(ngModel)]=\"booking.passengers\" />\n        </label>\n\n        <label>\n          {{ btext('pickupLocation') }}\n          <input type=\"text\" [(ngModel)]=\"booking.pickupLocation\" />\n        </label>\n\n        <label>\n          {{ btext('comments') }}\n          <textarea rows=\"3\" [(ngModel)]=\"booking.comments\"></textarea>\n        </label>\n\n        <div class=\"customer-edit-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCustomerUpdate\" (click)=\"saveCustomerUpdate()\">\n            {{ savingCustomerUpdate ? btext('saving') : btext('saveUpdate') }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"savingCustomerUpdate\" (click)=\"cancelCustomerUpdate()\">\n            {{ btext('cancel') }}\n          </button>\n        </div>\n\n        <p class=\"success\" *ngIf=\"customerUpdateMessage\">{{ customerUpdateMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"customerUpdateError\">{{ customerUpdateError }}</p>\n      </section>\n\n      <section class=\"payment-admin-card\">\n        <h2>{{ getWorkflowTitle() }}</h2>\n\n        <div class=\"payment-summary workflow-summary clarity-grid\">\n          <div class=\"status-summary-card\"><strong>{{ btext('bookingStatus') }}</strong><button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal()\">{{ getStatusLabel() }}</button></div>\n          <div><strong>{{ btext('deposit') }}</strong><span>{{ getDepositStatusLabel() }}</span></div>\n          <div><strong>{{ btext('termsConditions') }}</strong><span>{{ getTermsStatusLabel() }}</span></div>\n          <div><strong>{{ btext('warrantyMode') }}</strong><span>{{ getWarrantyModeLabel() }}</span></div>\n          <div><strong>{{ btext('stripeWarrantyCard') }}</strong><span>{{ getWarrantyCardLabel() }}</span></div>\n          <div><strong>{{ btext('remaining') }}</strong><span>{{ getBalanceStatusLabel() }}</span></div>\n          <div><strong>{{ btext('damage') }}</strong><span>{{ getDamageStatusLabel() }}</span></div>\n        </div>\n\n        <div class=\"customer-action-bar\" *ngIf=\"!isAdmin\">\n          <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"canCustomerUpdateBooking() && !editMode\" (click)=\"updateCustomerBooking()\">\n            {{ btext('updateBookingInfo') }}\n          </button>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"canCustomerPayDeposit()\" (click)=\"payDeposit()\">\n            Pay 10% deposit\n          </button>\n        </div>\n\n        <div class=\"workflow-panel customer-payment-hub\" *ngIf=\"canShowCustomerPaymentHub()\">\n          <h3>Paiements client</h3>\n          <p class=\"muted\">Depuis cette page, le client peut payer le solde, les extras/services proposés et un montant ad hoc.</p>\n\n          <div class=\"client-payment-row\" *ngIf=\"canCustomerSeeBalancePayment()\">\n            <div>\n              <strong>Solde restant 90%</strong>\n              <span>€{{ getBalanceAmount() }}</span>\n            </div>\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"!canCustomerPayBalance()\" (click)=\"payBalance()\">\n              {{ getCustomerBalanceButtonLabel() }}\n            </button>\n          </div>\n\n          <div class=\"client-payment-row\" *ngFor=\"let extra of pendingExtraServices; let i = index\">\n            <div *ngIf=\"canCustomerPayExtraService(extra)\">\n              <strong>{{ extra.description || extra.title || extra.name || 'Extra service' }}</strong>\n              <span>€{{ extra.amount || extra.price || 0 }}</span>\n            </div>\n            <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"canCustomerPayExtraService(extra)\" (click)=\"payExtraService(extra)\">\n              Payer cet extra/service\n            </button>\n          </div>\n        </div>\n\n        <div class=\"customer-action-bar\" *ngIf=\"canAdminOpenDamagePage()\">\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"openAdminDamagePage()\">\n            {{ btext('openWarrantyDamagePage') }}\n          </button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'deposit_required'\">\n          <h3>{{ text('termsModalTitle') }}</h3>\n          <div class=\"terms-scroll-box tc-scrollable\" tabindex=\"0\" (scroll)=\"onTermsScroll($event)\" (keyup.end)=\"markTermsRead()\">\n            <ng-container *ngFor=\"let section of termsSections\">\n              <h4>{{ section.title }}</h4>\n              <p *ngFor=\"let paragraph of section.paragraphs\">{{ paragraph }}</p>\n            </ng-container>\n          </div>\n\n          <p class=\"muted\" *ngIf=\"!termsRead\">{{ text('termsLocked') }}</p>\n\n          <label class=\"terms-check\">\n            <input type=\"checkbox\" [(ngModel)]=\"termsAccepted\" [disabled]=\"!termsRead\" />\n            <span>{{ text('termsCheckbox') }}</span>\n          </label>\n\n          <h3>{{ text('warrantyTitle') }}</h3>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoice\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCard') }}</span>\n          </label>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoice\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCash') }}</span>\n          </label>\n\n          <p class=\"blocked-note\" *ngIf=\"getDepositBlockedReason()\">{{ getDepositBlockedReason() }}</p>\n\n          <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!isAdmin && !isDepositPaid()\" [disabled]=\"!canPayDeposit()\" (click)=\"payDeposit()\">\n            {{ text('payDepositButton') }}\n          </button>\n\n          <p class=\"paid-badge\" *ngIf=\"isDepositPaid()\">{{ text('depositAlreadyPaid') }}</p>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'warranty_choice_required'\">\n          <h3>{{ text('warrantyTitle') }}</h3>\n          <p>{{ btext('warrantyChoiceText') }}</p>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoiceConfirmed\" value=\"stripe_card\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCard') }}</span>\n          </label>\n          <label class=\"radio-card\">\n            <input type=\"radio\" name=\"warrantyChoiceConfirmed\" value=\"cash_on_board\" [(ngModel)]=\"warrantyChoice\" />\n            <span>{{ text('warrantyCash') }}</span>\n          </label>\n          <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"warrantySaving || !warrantyChoice\" (click)=\"warrantyChoice === 'cash_on_board' ? selectWarrantyCash() : selectWarrantyCard()\">\n            {{ btext('saveWarrantyChoice') }}\n          </button>\n        </div>\n\n        <div class=\"workflow-panel\" *ngIf=\"!isAdmin && getBookingWorkflowState() === 'warranty_card_required'\">\n          <h3>{{ btext('registerWarrantyCardTitle') }}</h3>\n          <p>{{ btext('registerWarrantyCardText') }}</p>\n          <button class=\"btn btn-primary\" type=\"button\" (click)=\"registerWarrantyCard()\">{{ btext('registerWarrantyCardButton') }}</button>\n        </div>\n\n\n        <div class=\"workflow-panel\" *ngIf=\"getBookingWorkflowState() === 'payment_done' && isAdmin && isOutingDone()\">\n          <h3>{{ btext('damageManagement') }}</h3>\n          <p>{{ btext('damageManagementText') }}</p>\n\n          <div class=\"cash-damage-card\" *ngIf=\"isCashWarranty()\">\n            <h3>{{ btext('cashWarrantyEnvelope') }}</h3>\n            <p>\n              {{ btext('cashWarrantyInitialEnvelope') }}: <strong>€{{ getCashWarrantyAmount() }}</strong><br />\n              {{ btext('cashWarrantyAlreadyTaken') }}: <strong>€{{ getCashWarrantyDamagesTaken() }}</strong><br />\n              {{ btext('cashWarrantyRemaining') }}: <strong>€{{ getCashWarrantyRemaining() }}</strong>\n            </p>\n\n            <label>\n              {{ btext('cashDamageAmount') }} (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cashDamageAmount\" />\n            </label>\n\n            <label>\n              {{ btext('damageReason') }}\n              <textarea rows=\"3\" [(ngModel)]=\"cashDamageReason\" placeholder=\"{{ btext('damageReasonPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCashDamage\" (click)=\"recordCashWarrantyDamage()\">\n              {{ savingCashDamage ? btext('saving') : btext('recordCashDamage') }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"cashDamageMessage\">{{ cashDamageMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"cashDamageError\">{{ cashDamageError }}</p>\n          </div>\n\n          <div class=\"cash-damage-card\" *ngIf=\"isWarrantyCardRegistered()\">\n            <h3>{{ btext('chargeCardWarranty') }}</h3>\n            <p>{{ btext('maximumWarranty') }}: <strong>€{{ booking.warrantyAmount || 500 }}</strong></p>\n\n            <label>\n              {{ btext('damageAmount') }} (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"cardDamageAmount\" />\n            </label>\n\n            <label>\n              {{ btext('damageReason') }}\n              <textarea rows=\"3\" [(ngModel)]=\"cardDamageReason\" placeholder=\"{{ btext('damageReasonPlaceholder') }}\"></textarea>\n            </label>\n\n            <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingCardDamage\" (click)=\"recordCardWarrantyDamage()\">\n              {{ savingCardDamage ? btext('charging') : btext('chargeDamageToWarrantyCard') }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"cardDamageMessage\">{{ cardDamageMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"cardDamageError\">{{ cardDamageError }}</p>\n          </div>\n        </div>\n\n\n        <div class=\"workflow-panel extra-services-panel\" *ngIf=\"booking\">\n          <h3>Remaining balance payments</h3>\n\n          <div *ngIf=\"bookingBalancePaymentRecords.length === 0\" class=\"muted\">\n            No remaining balance payment recorded for this booking.\n          </div>\n\n          <div class=\"extra-service-row\" *ngFor=\"let payment of bookingBalancePaymentRecords\">\n            <div class=\"extra-service-display\">\n              <strong>{{ getPaymentRecordDescription(payment) }}</strong>\n              <span>{{ formatPaymentAmount(getPaymentRecordAmount(payment)) }} · {{ getPaymentRecordStatus(payment) }}</span>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"workflow-panel extra-services-panel\" *ngIf=\"booking\">\n          <h3>Extra services</h3>\n\n          <div *ngIf=\"bookingExtraServices.length === 0\" class=\"muted\">\n            No extra service requested for this booking.\n          </div>\n\n          <div class=\"admin-extra-service-actions-title\" *ngIf=\"isAdmin && bookingExtraServices.length\">\n            Admin extra services management\n          </div>\n\n          <div class=\"extra-service-row\" *ngFor=\"let extra of bookingExtraServices; let i = index\">\n            <div class=\"extra-service-display\" *ngIf=\"!isEditingExtraService(extra, i)\">\n              <strong>{{ extra.description || extra.title || extra.name }}</strong>\n              <span>{{ formatPaymentAmount(extra.amount || extra.price || 0, extra) }} · {{ extra.status === 'paid' || extra.paid ? 'paid' : 'pending' }}</span>\n            </div>\n\n            <div class=\"extra-service-edit\" *ngIf=\"isAdmin && isEditingExtraService(extra, i)\">\n              <label>\n                Description\n                <input type=\"text\" [(ngModel)]=\"extraServiceEditDescription\" />\n              </label>\n              <label>\n                Amount (€)\n                <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"extraServiceEditAmount\" />\n              </label>\n              <label>\n                Status\n                <select [(ngModel)]=\"extraServiceEditStatus\">\n                  <option value=\"pending\">Pending</option>\n                  <option value=\"paid\">Paid</option>\n                  <option value=\"cancelled\">Cancelled</option>\n                </select>\n              </label>\n            </div>\n\n            <div class=\"extra-service-actions\">\n              <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!isAdmin && canCustomerPayExtraService(extra)\" (click)=\"payExtraService(extra)\">\n                Pay extra service\n              </button>\n\n              <ng-container *ngIf=\"isAdmin\">\n                <button class=\"btn btn-secondary admin-extra-btn\" type=\"button\" *ngIf=\"!isEditingExtraService(extra, i)\" (click)=\"startEditExtraService(extra, i)\">\n                  Edit\n                </button>\n                <button class=\"btn btn-primary admin-extra-btn\" type=\"button\" *ngIf=\"isEditingExtraService(extra, i)\" [disabled]=\"savingExtraService\" (click)=\"saveExtraServiceEdit(extra, i)\">\n                  Save\n                </button>\n                <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"isEditingExtraService(extra, i)\" (click)=\"cancelEditExtraService()\">\n                  Cancel\n                </button>\n                <button class=\"btn btn-danger admin-extra-btn\" type=\"button\" [disabled]=\"savingExtraService\" (click)=\"deleteExtraService(extra, i)\">\n                  Delete\n                </button>\n              </ng-container>\n            </div>\n          </div>\n\n          <div class=\"admin-extra-service-form\" *ngIf=\"canAdminCreateExtraService()\">\n            <h4>Propose an extra service to the customer</h4>\n\n            <label>\n              Service from Firebase catalog\n              <select [(ngModel)]=\"selectedExtraServiceId\">\n                <option value=\"\">Custom service</option>\n                <option *ngFor=\"let service of extraServicesCatalog\" [value]=\"service.id || service.slug\">\n                  {{ service.title || service.name || service.description }} — €{{ service.amount || service.price || 0 }}\n                </option>\n              </select>\n            </label>\n\n            <label>\n              Custom description\n              <input type=\"text\" [(ngModel)]=\"customExtraServiceDescription\" placeholder=\"Drinks, food, catering...\" />\n            </label>\n\n            <label>\n              Custom amount (€)\n              <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"customExtraServiceAmount\" />\n            </label>\n\n            <button class=\"btn btn-secondary\" type=\"button\" [disabled]=\"savingExtraService\" (click)=\"createExtraServiceRequest()\">\n              {{ savingExtraService ? 'Saving...' : 'Send extra service payment request' }}\n            </button>\n\n            <p class=\"success\" *ngIf=\"extraServiceMessage\">{{ extraServiceMessage }}</p>\n            <p class=\"error-message\" *ngIf=\"extraServiceError\">{{ extraServiceError }}</p>\n          </div>\n        </div>\n\n\n        <div class=\"workflow-panel adhoc-payment-panel\" *ngIf=\"canCustomerCreateAdhocPayment()\">\n          <h3>Ad hoc payment</h3>\n          <p>You can make an additional payment for extra services, tips, catering, drinks or any other agreed cost.</p>\n\n          <label>\n            Description\n            <input type=\"text\" [(ngModel)]=\"adhocPaymentDescription\" placeholder=\"Tip, catering, drinks, extra service...\" />\n          </label>\n\n          <label>\n            Amount (€)\n            <input type=\"number\" min=\"1\" step=\"0.01\" [(ngModel)]=\"adhocPaymentAmount\" />\n          </label>\n\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"adhocPaymentLoading\" (click)=\"payAdhocBookingAmount()\">\n            {{ adhocPaymentLoading ? 'Redirecting...' : 'Pay this amount' }}\n          </button>\n\n          <p class=\"success\" *ngIf=\"adhocPaymentMessage\">{{ adhocPaymentMessage }}</p>\n          <p class=\"error-message\" *ngIf=\"adhocPaymentError\">{{ adhocPaymentError }}</p>\n        </div>\n\n        <div class=\"workflow-panel refund-panel\" *ngIf=\"isAdmin && refundablePaymentOptions.length\">\n          <h3>Refund a payment</h3>\n          <p>Choose the paid item to refund. You can refund the 10% deposit, or refund all/part of the remaining 90%.</p>\n\n          <label>\n            Payment to refund\n            <select [(ngModel)]=\"refundTarget\" (ngModelChange)=\"onRefundTargetChange()\">\n              <option *ngFor=\"let option of refundablePaymentOptions\" [value]=\"option.type\">\n                {{ option.label }} — {{ formatPaymentAmount(option.amount) }} available\n              </option>\n            </select>\n          </label>\n\n          <label>\n            Refund amount (€)\n            <input type=\"number\" min=\"1\" step=\"0.01\" [max]=\"selectedRefundableAmount\" [(ngModel)]=\"refundAmount\" />\n          </label>\n\n          <label>\n            Reason\n            <textarea rows=\"3\" [(ngModel)]=\"refundReason\" placeholder=\"Weather compensation, commercial gesture...\"></textarea>\n          </label>\n\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"refunding || !canAdminRefund()\" (click)=\"issueRefund()\">\n            {{ refunding ? 'Refunding...' : 'Issue refund' }}\n          </button>\n\n          <p class=\"success\" *ngIf=\"refundMessage\">{{ refundMessage }}</p>\n          <p class=\"error-message\" *ngIf=\"refundError\">{{ refundError }}</p>\n        </div>\n\n\n        <p class=\"success\" *ngIf=\"balancePaymentMessage\">{{ balancePaymentMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n        <p class=\"success\" *ngIf=\"warrantyMessage\">{{ warrantyMessage }}</p>\n        <p class=\"error-message\" *ngIf=\"warrantyError\">{{ warrantyError }}</p>\n      </section>\n    \n      <div class=\"status-modal-backdrop\" *ngIf=\"statusModalOpen\" (click)=\"closeStatusModal()\">\n        <section class=\"status-modal\" (click)=\"$event.stopPropagation()\">\n          <button class=\"modal-close\" type=\"button\" (click)=\"closeStatusModal()\">×</button>\n          <span class=\"eyebrow\">{{ btext('bookingStatus') }}</span>\n          <h2>{{ getStatusLabel() }}</h2>\n          <p>{{ getStatusSummaryText() }}</p>\n\n          <div class=\"status-timeline\">\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isDepositPaid())\">\n              <strong>{{ btext('deposit') }}</strong>\n              <span>{{ getDepositStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isTermsAccepted())\">\n              <strong>{{ btext('termsConditions') }}</strong>\n              <span>{{ getTermsStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isWarrantySecured())\">\n              <strong>{{ btext('warranty') }}</strong>\n              <span>{{ getWarrantyModeLabel() }} · {{ getWarrantyCardLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isBalancePaid())\">\n              <strong>{{ btext('remaining') }}</strong>\n              <span>{{ getBalanceStatusLabel() }}</span>\n            </div>\n            <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getDamageStatusLabel().includes('recorded'))\">\n              <strong>{{ btext('damage') }}</strong>\n              <span>{{ getDamageStatusLabel() }}</span>\n            </div>\n          </div>\n\n          <div class=\"modal-actions\">\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeStatusModal()\">{{ btext('close') }}</button>\n          </div>\n        </section>\n      </div>\n\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -5880,7 +6204,7 @@ BoatComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_c
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"admin-proposals-page\">\n  <div class=\"container proposals-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ t('adminEyebrow') }}</span>\n      <h1>{{ t('adminTitle') }}</h1>\n      <p>{{ t('adminIntro') }}</p>\n    </div>\n\n    <article class=\"card admin-requests-card\">\n      <div class=\"form-title\">\n        <h2>{{ t('proposalRequests') }}</h2>\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"load()\">{{ t('refresh') }}</button>\n      </div>\n\n      <p class=\"muted\" *ngIf=\"!loading && filteredProposalRequests.length === 0\">\n        {{ t('noProposalRequests') }}\n      </p>\n\n      <div class=\"request-list\" *ngIf=\"filteredProposalRequests.length > 0\">\n        <article class=\"request-row\" *ngFor=\"let request of filteredProposalRequests\" (click)=\"editProposalRequest(request)\">\n          <div>\n            <strong>{{ request.customerName || '-' }}</strong>\n            <small>{{ request.customerEmail || '-' }}</small>\n          </div>\n\n          <div>\n            <strong>{{ request.outingType || '-' }}</strong>\n            <small>\n              {{ request.outingDate || '-' }}\n              <ng-container *ngIf=\"request.departureTime || request.startTime\">\n                · {{ request.departureTime || request.startTime }} - {{ request.arrivalTime || request.endTime }}\n              </ng-container>\n            </small>\n          </div>\n\n          <div>\n            <strong>€{{ getEstimatedProposalRequestPrice(request) }}</strong>\n            <small>{{ t('estimatedPrice') }}</small>\n            <small>{{ t('skipperPrice') }}: €{{ getEstimatedSkipperPrice(request) }}</small>\n            <small>{{ t('cleaningPrice') }}: €{{ getEstimatedCleaningPrice(request) }}</small>\n            <small>{{ t('optionsPrice') }}: €{{ getEstimatedOptionsPrice(request) }}</small>\n          </div>\n\n          <div>\n            <span class=\"status-pill pending\">{{ t('proposalRequestToFinalize') }}</span>\n            <small>{{ getProposalRequestOriginLabel(request) }}</small>\n          </div>\n        </article>\n      </div>\n    </article>\n\n    <article class=\"card\">\n      <div class=\"form-title\">\n        <h2>{{ form.proposalId ? t('editProposal') : t('newProposal') }}</h2>\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"reset()\">{{ t('new') }}</button>\n      </div>\n\n      <div class=\"form-grid\">\n        <label>{{ t('customerName') }}<input type=\"text\" name=\"customerName\" required [(ngModel)]=\"form.customerName\" /></label>\n        <label>{{ t('customerEmail') }}<input type=\"email\" name=\"customerEmail\" required email [(ngModel)]=\"form.customerEmail\" /></label>\n        <label>{{ t('phone') }}<input type=\"tel\" name=\"customerPhone\" required pattern=\"^[+()0-9 .-]{8,}$\" [(ngModel)]=\"form.customerPhone\" /></label>\n        <label>{{ t('outingType') }}<input type=\"text\" name=\"outingType\" required [(ngModel)]=\"form.outingType\" /></label>\n        <label>{{ t('outingDate') }}<input type=\"date\" name=\"outingDate\" required [(ngModel)]=\"form.outingDate\" /></label>\n        <label>{{ t('departureTime') }}<input type=\"time\" name=\"departureTime\" required [(ngModel)]=\"form.departureTime\" /></label>\n        <label>{{ t('returnTime') }}<input type=\"time\" name=\"arrivalTime\" required [(ngModel)]=\"form.arrivalTime\" /></label>\n        <label>{{ t('passengers') }}<input type=\"number\" min=\"1\" required name=\"passengers\" [(ngModel)]=\"form.passengers\" /></label>\n\n        <label>{{ t('boatPrice') }}<input type=\"number\" min=\"0\" step=\"0.01\" name=\"proposalBoatPrice\" [(ngModel)]=\"form.proposalBoatPrice\" /></label>\n        <label>{{ t('skipperPrice') }}<input type=\"number\" min=\"0\" step=\"0.01\" name=\"proposalSkipperPrice\" [(ngModel)]=\"form.proposalSkipperPrice\" /></label>\n        <label>{{ t('cleaningPrice') }}<input type=\"number\" min=\"0\" step=\"0.01\" name=\"proposalCleaningPrice\" [(ngModel)]=\"form.proposalCleaningPrice\" /></label>\n        <label>{{ t('extraServicesPrice') }}<input type=\"number\" min=\"0\" step=\"0.01\" name=\"proposalExtraServicesPrice\" [(ngModel)]=\"form.proposalExtraServicesPrice\" /></label>\n\n        <label>{{ t('totalAmount') }}<input type=\"number\" min=\"1\" step=\"0.01\" required name=\"totalAmount\" [(ngModel)]=\"form.totalAmount\" /></label>\n        <label>{{ t('warrantyAmount') }}<input type=\"number\" min=\"0\" step=\"0.01\" required name=\"warrantyAmount\" [(ngModel)]=\"form.warrantyAmount\" /></label>\n        <label class=\"wide\">{{ t('proposalMessage') }}<textarea rows=\"3\" required name=\"proposalMessage\" [(ngModel)]=\"form.proposalMessage\"></textarea></label>\n        <label class=\"wide\">{{ t('internalComments') }}<textarea rows=\"3\" name=\"comments\" [(ngModel)]=\"form.comments\"></textarea></label>\n      </div>\n\n      <div class=\"validation-list\" *ngIf=\"getProposalValidationErrors().length\">\n        <strong>{{ t('validationTitle') }}</strong>\n        <ul>\n          <li *ngFor=\"let validationError of getProposalValidationErrors()\">{{ validationError }}</li>\n        </ul>\n      </div>\n\n      <div class=\"calculation\">\n        <span>{{ t('computedTotal') || 'Total' }}: <strong>€{{ ((form.proposalBoatPrice || 0) + (form.proposalSkipperPrice || 0) + (form.proposalCleaningPrice || 0) + (form.proposalExtraServicesPrice || 0)) | number:'1.2-2' }}</strong></span>\n        <span>{{ t('deposit10') }}: <strong>€{{ (((form.proposalBoatPrice || 0) + (form.proposalSkipperPrice || 0) + (form.proposalCleaningPrice || 0) + (form.proposalExtraServicesPrice || 0)) * 0.1) | number:'1.2-2' }}</strong></span>\n        <span>{{ t('remaining90') }}: <strong>€{{ ((form.totalAmount || 0) * 0.9) | number:'1.2-2' }}</strong></span>\n        <span>{{ t('validityAfterSent') }}: <strong>{{ t('hours24') }}</strong></span>\n      </div>\n\n      <div class=\"actions\">\n        <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"saving || !isProposalFormValid\" (click)=\"saveProposal()\">\n          {{ saving ? t('saving') : t('saveProposal') }}\n        </button>\n\n        <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"form.proposalId\" [disabled]=\"!isProposalFormValid || !canRenewProposal(form)\" [title]=\"getRenewBlockedReason(form)\" (click)=\"markSent()\">\n          {{ t('markSentRenew') }}\n        </button>\n\n        <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"copyLink()\">\n          {{ t('copyClientLink') }}\n        </button>\n\n        <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"form.proposalId\" [disabled]=\"!isProposalFormValid\" (click)=\"sendCurrentProposalByEmail()\">\n          {{ t('sendByEmail') }}\n        </button>\n\n        <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"form.proposalId\" [disabled]=\"!canRenewProposal(form)\" [title]=\"getRenewBlockedReason(form)\" (click)=\"renewProposal(form)\">\n          {{ t('renew24') }}\n        </button>\n\n        <button class=\"btn btn-danger\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"deleteProposal(form)\">\n          {{ t('delete') }}\n        </button>\n      </div>\n\n      <p class=\"validity\" *ngIf=\"form.proposalId\" [class.expired]=\"isExpired(form)\">{{ formatValidity(form) }}</p>\n      <p class=\"client-link\" *ngIf=\"form.proposalId\">{{ proposalLink }}</p>\n      <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n      <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n    </article>\n\n    <div class=\"toolbar\">\n      <label class=\"search-box\">\n        {{ t('searchProposals') }}\n        <input type=\"search\" [(ngModel)]=\"searchTerm\" [placeholder]=\"t('searchPlaceholder')\" />\n      </label>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"load()\">{{ t('refresh') }}</button>\n    </div>\n\n    <p class=\"muted\" *ngIf=\"loading\">{{ t('loading') }}</p>\n\n    <div class=\"proposal-list\" *ngIf=\"!loading\">\n      <article class=\"proposal-row\" *ngFor=\"let p of filteredProposals\" (click)=\"edit(p)\" tabindex=\"0\" role=\"button\">\n        <span class=\"status\">{{ p.status || t('draft') }}</span>\n\n        <span class=\"proposal-customer\">\n          <strong>{{ p.customerName || t('unnamedCustomer') }}</strong>\n          <small>{{ p.customerEmail || t('noEmail') }}</small>\n          <small>{{ getProposalOriginLabel(p) }}</small>\n          <small *ngIf=\"p.customerPhone\">{{ p.customerPhone }}</small>\n        </span>\n\n        <span class=\"proposal-outing\">\n          <strong>{{ p.outingType || t('outing') }}</strong>\n          <small>\n            {{ p.outingDate || t('dateNotSet') }}\n            <ng-container *ngIf=\"p.departureTime\">· {{ p.departureTime }}</ng-container>\n          </small>\n          <small [class.expired]=\"isExpired(p)\">{{ formatValidity(p) }}</small>\n        </span>\n\n        <span class=\"proposal-price\">\n          <strong>€{{ p.totalAmount || 0 }}</strong>\n          <small>{{ t('deposit') }} €{{ p.depositAmount || ((p.totalAmount || 0) * 0.1) | number:'1.2-2' }}</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <ng-container *ngIf=\"isAcceptedProposal(p); else proposalActions\">\n            <button class=\"mini-link\" type=\"button\" (click)=\"openRelatedBooking(p, $event)\">{{ t('openBooking') }}</button>\n            <button class=\"mini-link\" type=\"button\" (click)=\"createSimilarProposal(p, $event)\">{{ t('createSimilarProposal') }}</button>\n          </ng-container>\n\n          <ng-template #proposalActions>\n            <button class=\"mini-link\" type=\"button\" (click)=\"openClientLink(p)\">{{ t('openLink') }}</button>\n            <button class=\"mini-link\" type=\"button\" *ngIf=\"hasRelatedBooking(p)\" (click)=\"openRelatedBooking(p, $event)\">{{ t('openBooking') }}</button>\n            <button class=\"mini-link\" type=\"button\" (click)=\"sendProposalByEmail(p)\">{{ t('email') }}</button>\n            <button class=\"mini-link\" type=\"button\" (click)=\"renewProposal(p, $event)\">{{ t('renew') }}</button>\n            <button class=\"mini-link danger\" type=\"button\" (click)=\"deleteProposal(p, $event)\">{{ t('delete') }}</button>\n          </ng-template>\n        </span>\n      </article>\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"admin-proposals-page\">\n  <div class=\"container proposals-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ t('adminEyebrow') }}</span>\n      <h1>{{ t('adminTitle') }}</h1>\n      <p>{{ t('adminIntro') }}</p>\n    </div>\n\n    <article class=\"card admin-requests-card\">\n      <div class=\"form-title\">\n        <h2>{{ t('proposalRequests') }}</h2>\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"load()\">{{ t('refresh') }}</button>\n      </div>\n\n      <p class=\"muted\" *ngIf=\"!loading && filteredProposalRequests.length === 0\">\n        {{ t('noProposalRequests') }}\n      </p>\n\n      <div class=\"request-list\" *ngIf=\"filteredProposalRequests.length > 0\">\n        <article class=\"request-row\" *ngFor=\"let request of filteredProposalRequests\" (click)=\"editProposalRequest(request)\">\n          <div>\n            <strong>{{ request.customerName || '-' }}</strong>\n            <small>{{ request.customerEmail || '-' }}</small>\n          </div>\n\n          <div>\n            <strong>{{ request.outingType || '-' }}</strong>\n            <small>\n              {{ request.outingDate || '-' }}\n              <ng-container *ngIf=\"request.departureTime || request.startTime\">\n                · {{ request.departureTime || request.startTime }} - {{ request.arrivalTime || request.endTime }}\n              </ng-container>\n            </small>\n          </div>\n\n          <div>\n            <strong>€{{ getEstimatedProposalRequestPrice(request) }}</strong>\n            <small>{{ t('estimatedPrice') }}</small>\n            <small>{{ priceTitle('skipperPrice') }}: €{{ getEstimatedSkipperPrice(request) }}</small>\n            <small>{{ priceTitle('cleaningPrice') }}: €{{ getEstimatedCleaningPrice(request) }}</small>\n            <small>{{ priceTitle('extraServicesPrice') }}: €{{ getEstimatedOptionsPrice(request) }}</small>\n          </div>\n\n          <div>\n            <span class=\"status-pill pending\">{{ t('proposalRequestToFinalize') }}</span>\n            <small>{{ getProposalRequestOriginLabel(request) }}</small>\n          </div>\n        </article>\n      </div>\n    </article>\n\n    <article class=\"card\">\n      <div class=\"form-title\">\n        <h2>{{ form.proposalId ? t('editProposal') : t('newProposal') }}</h2>\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"reset()\">{{ t('new') }}</button>\n      </div>\n\n      <div class=\"form-grid\">\n        <label>{{ t('customerName') }}<input type=\"text\" name=\"customerName\" required [(ngModel)]=\"form.customerName\" /></label>\n        <label>{{ t('customerEmail') }}<input type=\"email\" name=\"customerEmail\" required email [(ngModel)]=\"form.customerEmail\" /></label>\n        <label>{{ t('phone') }}<input type=\"tel\" name=\"customerPhone\" required pattern=\"^[+()0-9 .-]{8,}$\" [(ngModel)]=\"form.customerPhone\" /></label>\n        <label>{{ t('outingType') }}<input type=\"text\" name=\"outingType\" required [(ngModel)]=\"form.outingType\" /></label>\n        <label>{{ t('outingDate') }}<input type=\"date\" name=\"outingDate\" required [(ngModel)]=\"form.outingDate\" /></label>\n        <label>{{ t('departureTime') }}<input type=\"time\" name=\"departureTime\" required [(ngModel)]=\"form.departureTime\" /></label>\n        <label>{{ t('returnTime') }}<input type=\"time\" name=\"arrivalTime\" required [(ngModel)]=\"form.arrivalTime\" /></label>\n        <label>{{ t('passengers') }}<input type=\"number\" min=\"1\" required name=\"passengers\" [(ngModel)]=\"form.passengers\" /></label>\n\n        <label>{{ priceTitle('boatPrice') }}<input type=\"number\" min=\"0\" step=\"0.01\" name=\"proposalBoatPrice\" [(ngModel)]=\"form.proposalBoatPrice\" /></label>\n        <label>{{ priceTitle('skipperPrice') }}<input type=\"number\" min=\"0\" step=\"0.01\" name=\"proposalSkipperPrice\" [(ngModel)]=\"form.proposalSkipperPrice\" /></label>\n        <label>{{ priceTitle('cleaningPrice') }}<input type=\"number\" min=\"0\" step=\"0.01\" name=\"proposalCleaningPrice\" [(ngModel)]=\"form.proposalCleaningPrice\" /></label>\n        <label>{{ priceTitle('extraServicesPrice') }}<input type=\"number\" min=\"0\" step=\"0.01\" name=\"proposalExtraServicesPrice\" [(ngModel)]=\"form.proposalExtraServicesPrice\" /></label>\n\n        <label>{{ priceTitle('totalAmount') }}<input type=\"number\" min=\"1\" step=\"0.01\" required name=\"totalAmount\" [(ngModel)]=\"form.totalAmount\" /></label>\n        <label>{{ priceTitle('warrantyAmount') }}<input type=\"number\" min=\"0\" step=\"0.01\" required name=\"warrantyAmount\" [(ngModel)]=\"form.warrantyAmount\" /></label>\n        <label class=\"wide\">{{ t('proposalMessage') }}<textarea rows=\"3\" required name=\"proposalMessage\" [(ngModel)]=\"form.proposalMessage\"></textarea></label>\n        <label class=\"wide\">{{ t('internalComments') }}<textarea rows=\"3\" name=\"comments\" [(ngModel)]=\"form.comments\"></textarea></label>\n      </div>\n\n      <div class=\"validation-list\" *ngIf=\"getProposalValidationErrors().length\">\n        <strong>{{ t('validationTitle') }}</strong>\n        <ul>\n          <li *ngFor=\"let validationError of getProposalValidationErrors()\">{{ validationError }}</li>\n        </ul>\n      </div>\n\n      <div class=\"calculation\">\n        <span>{{ t('computedTotal') || 'Total' }}: <strong>€{{ ((form.proposalBoatPrice || 0) + (form.proposalSkipperPrice || 0) + (form.proposalCleaningPrice || 0) + (form.proposalExtraServicesPrice || 0)) | number:'1.2-2' }}</strong></span>\n        <span>{{ priceTitle('deposit10') }}: <strong>€{{ (((form.proposalBoatPrice || 0) + (form.proposalSkipperPrice || 0) + (form.proposalCleaningPrice || 0) + (form.proposalExtraServicesPrice || 0)) * 0.1) | number:'1.2-2' }}</strong></span>\n        <span>{{ priceTitle('remaining90') }}: <strong>€{{ ((form.totalAmount || 0) * 0.9) | number:'1.2-2' }}</strong></span>\n        <span>{{ t('validityAfterSent') }}: <strong>{{ t('hours24') }}</strong></span>\n      </div>\n\n      <div class=\"actions\">\n        <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"saving || !isProposalFormValid\" (click)=\"saveProposal()\">\n          {{ saving ? t('saving') : t('saveProposal') }}\n        </button>\n\n        <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"form.proposalId\" [disabled]=\"!isProposalFormValid || !canRenewProposal(form)\" [title]=\"getRenewBlockedReason(form)\" (click)=\"markSent()\">\n          {{ t('markSentRenew') }}\n        </button>\n\n        <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"copyLink()\">\n          {{ t('copyClientLink') }}\n        </button>\n\n        <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"form.proposalId\" [disabled]=\"!isProposalFormValid\" (click)=\"sendCurrentProposalByEmail()\">\n          {{ t('sendByEmail') }}\n        </button>\n\n        <button class=\"btn btn-secondary\" type=\"button\" *ngIf=\"form.proposalId\" [disabled]=\"!canRenewProposal(form)\" [title]=\"getRenewBlockedReason(form)\" (click)=\"renewProposal(form)\">\n          {{ t('renew24') }}\n        </button>\n\n        <button class=\"btn btn-danger\" type=\"button\" *ngIf=\"form.proposalId\" (click)=\"deleteProposal(form)\">\n          {{ t('delete') }}\n        </button>\n      </div>\n\n      <p class=\"validity\" *ngIf=\"form.proposalId\" [class.expired]=\"isExpired(form)\">{{ formatValidity(form) }}</p>\n      <p class=\"client-link\" *ngIf=\"form.proposalId\">{{ proposalLink }}</p>\n      <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n      <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n    </article>\n\n    <div class=\"toolbar\">\n      <label class=\"search-box\">\n        {{ t('searchProposals') }}\n        <input type=\"search\" [(ngModel)]=\"searchTerm\" [placeholder]=\"t('searchPlaceholder')\" />\n      </label>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"load()\">{{ t('refresh') }}</button>\n    </div>\n\n    <p class=\"muted\" *ngIf=\"loading\">{{ t('loading') }}</p>\n\n    <div class=\"proposal-list\" *ngIf=\"!loading\">\n      <article class=\"proposal-row\" *ngFor=\"let p of filteredProposals\" (click)=\"edit(p)\" tabindex=\"0\" role=\"button\">\n        <span class=\"status\">{{ p.status || t('draft') }}</span>\n\n        <span class=\"proposal-customer\">\n          <strong>{{ p.customerName || t('unnamedCustomer') }}</strong>\n          <small>{{ p.customerEmail || t('noEmail') }}</small>\n          <small>{{ getProposalOriginLabel(p) }}</small>\n          <small *ngIf=\"p.customerPhone\">{{ p.customerPhone }}</small>\n        </span>\n\n        <span class=\"proposal-outing\">\n          <strong>{{ p.outingType || t('outing') }}</strong>\n          <small>\n            {{ p.outingDate || t('dateNotSet') }}\n            <ng-container *ngIf=\"p.departureTime\">· {{ p.departureTime }}</ng-container>\n          </small>\n          <small [class.expired]=\"isExpired(p)\">{{ formatValidity(p) }}</small>\n        </span>\n\n        <span class=\"proposal-price\">\n          <strong>€{{ p.totalAmount || 0 }}</strong>\n          <small>{{ t('deposit') }} €{{ p.depositAmount || ((p.totalAmount || 0) * 0.1) | number:'1.2-2' }}</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <ng-container *ngIf=\"isAcceptedProposal(p); else proposalActions\">\n            <button class=\"mini-link\" type=\"button\" (click)=\"openRelatedBooking(p, $event)\">{{ t('openBooking') }}</button>\n            <button class=\"mini-link\" type=\"button\" (click)=\"createSimilarProposal(p, $event)\">{{ t('createSimilarProposal') }}</button>\n          </ng-container>\n\n          <ng-template #proposalActions>\n            <button class=\"mini-link\" type=\"button\" (click)=\"openClientLink(p)\">{{ t('openLink') }}</button>\n            <button class=\"mini-link\" type=\"button\" *ngIf=\"hasRelatedBooking(p)\" (click)=\"openRelatedBooking(p, $event)\">{{ t('openBooking') }}</button>\n            <button class=\"mini-link\" type=\"button\" (click)=\"sendProposalByEmail(p)\">{{ t('email') }}</button>\n            <button class=\"mini-link\" type=\"button\" (click)=\"renewProposal(p, $event)\">{{ t('renew') }}</button>\n            <button class=\"mini-link danger\" type=\"button\" (click)=\"deleteProposal(p, $event)\">{{ t('delete') }}</button>\n          </ng-template>\n        </span>\n      </article>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -7767,6 +8091,7 @@ let AdminProposalsComponent = class AdminProposalsComponent {
   form = this.emptyForm();
   currentLanguage = 'fr';
   pageText = _site_content__WEBPACK_IMPORTED_MODULE_4__.SITE_CONTENT.fr?.proposalManagement || {};
+  priceTitles = {};
   languageSub;
   constructor(proposalApi, router, siteContentService, languageService) {
     this.proposalApi = proposalApi;
@@ -7796,10 +8121,74 @@ let AdminProposalsComponent = class AdminProposalsComponent {
           ...(content?.[language]?.proposalManagement || {}),
           ...(content?.proposalManagement?.[language] || {})
         };
+        const languageContent = content?.[language] || {};
+        _this.priceTitles = {
+          ..._this.defaultPriceTitles(language),
+          // Firebase source of truth: /siteContent/{fr|en|es}/proposalPriceTitles
+          ...(languageContent.proposalPriceTitles || {}),
+          // Backward-compatible fallbacks for older exports.
+          ...(languageContent.priceTitles || {}),
+          ...(languageContent.proposalManagement?.priceTitles || {}),
+          ...(content?.proposalPriceTitles?.[language] || {}),
+          ...(content?.priceTitles?.[language] || {}),
+          ...(content?.proposalManagement?.priceTitles?.[language] || {}),
+          ...(content?.proposalManagement?.[language]?.priceTitles || {})
+        };
       } catch {
         _this.pageText = fallback;
+        _this.priceTitles = _this.defaultPriceTitles(language);
       }
     })();
+  }
+  defaultPriceTitles(language) {
+    const defaults = {
+      fr: {
+        boatPrice: 'Prix bateau',
+        skipperPrice: 'Prix skipper',
+        cleaningPrice: 'Prix carburant',
+        extraServicesPrice: 'Extras / services',
+        totalAmount: 'Montant total',
+        totalPrice: 'Prix total',
+        deposit10: 'Acompte 10 %',
+        deposit: 'Acompte 10 %',
+        remaining90: 'Solde 90 %',
+        remaining: 'Solde 90 %',
+        warrantyAmount: 'Caution',
+        warranty: 'Caution'
+      },
+      en: {
+        boatPrice: 'Boat price',
+        skipperPrice: 'Skipper price',
+        cleaningPrice: 'Fuel price',
+        extraServicesPrice: 'Extras / services',
+        totalAmount: 'Total amount',
+        totalPrice: 'Total price',
+        deposit10: 'Deposit 10%',
+        deposit: 'Deposit 10%',
+        remaining90: 'Balance 90%',
+        remaining: 'Balance 90%',
+        warrantyAmount: 'Warranty',
+        warranty: 'Warranty'
+      },
+      es: {
+        boatPrice: 'Precio barco',
+        skipperPrice: 'Precio skipper',
+        cleaningPrice: 'Precio combustible',
+        extraServicesPrice: 'Extras / servicios',
+        totalAmount: 'Importe total',
+        totalPrice: 'Precio total',
+        deposit10: 'Depósito 10%',
+        deposit: 'Depósito 10%',
+        remaining90: 'Saldo 90%',
+        remaining: 'Saldo 90%',
+        warrantyAmount: 'Garantía',
+        warranty: 'Garantía'
+      }
+    };
+    return defaults[language] || defaults.fr;
+  }
+  priceTitle(key) {
+    return this.priceTitles?.[key] || this.t(key) || key;
   }
   t(key) {
     return this.pageText?.[key] || key;
@@ -8203,7 +8592,7 @@ AdminProposalsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"account-page\">\n  <div class=\"container account-card\">\n    <span class=\"eyebrow\">{{ eyebrow }}</span>\n    <h1>{{ title }}</h1>\n    <p>{{ intro }}</p>\n\n    <ng-container *ngIf=\"section === 'payments'; else defaultAccountSection\">\n      <div class=\"payment-toolbar\">\n        <label>\n          <span>Type</span>\n          <select [(ngModel)]=\"paymentTypeFilter\">\n            <option value=\"all\">All payment types</option>\n            <option value=\"deposit\">10% deposit</option>\n            <option value=\"balance\">Remaining 90%</option>\n            <option value=\"warranty_card\">Warranty card</option>\n            <option value=\"warranty_cash\">Cash warranty</option>\n            <option value=\"warranty_charge\">Card damage charge</option>\n            <option value=\"cash_damage\">Cash damage</option>\n          </select>\n        </label>\n\n        <label>\n          <span>Status</span>\n          <select [(ngModel)]=\"paymentStatusFilter\">\n            <option value=\"all\">All statuses</option>\n            <option value=\"paid\">Paid</option>\n            <option value=\"registered\">Registered</option>\n            <option value=\"selected\">Selected</option>\n            <option value=\"received\">Received</option>\n            <option value=\"charged\">Charged</option>\n            <option value=\"recorded\">Recorded</option>\n          </select>\n        </label>\n\n        <label>\n          <span>Order</span>\n          <select [(ngModel)]=\"paymentSortDirection\">\n            <option value=\"desc\">Newest first</option>\n            <option value=\"asc\">Oldest first</option>\n          </select>\n        </label>\n\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetPaymentFilters()\">Reset</button>\n      </div>\n\n      <p *ngIf=\"loading\" class=\"muted\">Loading payments...</p>\n\n      <div class=\"account-empty\" *ngIf=\"!loading && payments.length === 0\">\n        <p>No payment is linked to your account yet.</p>\n        <a routerLink=\"/my-bookings\" class=\"btn btn-primary\">Go to my bookings</a>\n      </div>\n\n      <div class=\"payment-summary\" *ngIf=\"!loading && payments.length > 0\">\n        Showing <strong>{{ filteredPayments.length }}</strong> of <strong>{{ payments.length }}</strong> payment records.\n      </div>\n\n      <div class=\"payments-list\" *ngIf=\"!loading && filteredPayments.length > 0\">\n        <button class=\"payment-row\" type=\"button\" *ngFor=\"let payment of filteredPayments\" (click)=\"openPaymentBooking(payment)\">\n          <span class=\"payment-type\" [ngClass]=\"getPaymentTypeClass(payment)\">\n            {{ payment.label }}\n          </span>\n\n          <span class=\"payment-main\">\n            <strong>{{ payment.description }}</strong>\n            <small>Booking: {{ payment.bookingId }}</small>\n            <small>{{ formatPaymentDate(payment.date) }} · {{ payment.method }}</small>\n          </span>\n\n          <span class=\"payment-amount\">\n            <strong>{{ formatPaymentAmount(payment.amount) }}</strong>\n            <small>{{ payment.status }}</small>\n          </span>\n\n          <span class=\"payment-open\">Open booking ›</span>\n        </button>\n      </div>\n\n      <div class=\"account-empty\" *ngIf=\"!loading && payments.length > 0 && filteredPayments.length === 0\">\n        <p>No payment matches the selected filters.</p>\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetPaymentFilters()\">Reset filters</button>\n      </div>\n    </ng-container>\n\n    <ng-template #defaultAccountSection>\n      <div class=\"account-empty\">\n        <p>{{ emptyText }}</p>\n        <a routerLink=\"/contact\" class=\"btn btn-primary\">{{ content.nav.contact }}</a>\n      </div>\n    </ng-template>\n  </div>\n</section>\n";
+module.exports = "<section class=\"account-page\">\n  <div class=\"container account-card\">\n    <span class=\"eyebrow\">{{ eyebrow }}</span>\n    <h1>{{ title }}</h1>\n    <p>{{ intro }}</p>\n\n    <ng-container *ngIf=\"section === 'payments'; else defaultAccountSection\">\n      <div class=\"payment-toolbar\">\n        <label>\n          <span>Type</span>\n          <select [(ngModel)]=\"paymentTypeFilter\">\n            <option value=\"all\">All payment types</option>\n            <option value=\"deposit\">10% deposit</option>\n            <option value=\"balance\">Remaining 90%</option>\n            <option value=\"extra_service\">Extra services</option>\n            <option value=\"ad_hoc\">Ad hoc payments</option>\n            <option value=\"warranty_card\">Warranty card</option>\n            <option value=\"warranty_cash\">Cash warranty</option>\n            <option value=\"warranty_charge\">Card damage charge</option>\n            <option value=\"cash_damage\">Cash damage</option>\n          </select>\n        </label>\n\n        <label>\n          <span>Status</span>\n          <select [(ngModel)]=\"paymentStatusFilter\">\n            <option value=\"all\">All statuses</option>\n            <option value=\"paid\">Paid</option>\n            <option value=\"registered\">Registered</option>\n            <option value=\"selected\">Selected</option>\n            <option value=\"received\">Received</option>\n            <option value=\"charged\">Charged</option>\n            <option value=\"recorded\">Recorded</option>\n          </select>\n        </label>\n\n        <label>\n          <span>Order</span>\n          <select [(ngModel)]=\"paymentSortDirection\">\n            <option value=\"desc\">Newest first</option>\n            <option value=\"asc\">Oldest first</option>\n          </select>\n        </label>\n\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetPaymentFilters()\">Reset</button>\n      </div>\n\n      <p *ngIf=\"loading\" class=\"muted\">Loading payments...</p>\n\n      <div class=\"account-empty\" *ngIf=\"!loading && payments.length === 0\">\n        <p>No payment is linked to your account yet.</p>\n        <a routerLink=\"/my-bookings\" class=\"btn btn-primary\">Go to my bookings</a>\n      </div>\n\n      <div class=\"payment-summary\" *ngIf=\"!loading && payments.length > 0\">\n        Showing <strong>{{ filteredPayments.length }}</strong> of <strong>{{ payments.length }}</strong> payment records.\n      </div>\n\n      <div class=\"payments-list\" *ngIf=\"!loading && filteredPayments.length > 0\">\n        <button class=\"payment-row\" type=\"button\" *ngFor=\"let payment of filteredPayments\" (click)=\"openPaymentBooking(payment)\">\n          <span class=\"payment-type\" [ngClass]=\"getPaymentTypeClass(payment)\">\n            {{ payment.label }}\n          </span>\n\n          <span class=\"payment-main\">\n            <strong>{{ payment.description }}</strong>\n            <small>Booking: {{ payment.bookingId }}</small>\n            <small>{{ formatPaymentDate(payment.date) }} · {{ payment.method }}</small>\n          </span>\n\n          <span class=\"payment-amount\">\n            <strong>{{ formatPaymentAmount(payment.amount) }}</strong>\n            <small>{{ payment.status }}</small>\n          </span>\n\n          <span class=\"payment-open\">Open booking ›</span>\n        </button>\n      </div>\n\n      <div class=\"account-empty\" *ngIf=\"!loading && payments.length > 0 && filteredPayments.length === 0\">\n        <p>No payment matches the selected filters.</p>\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetPaymentFilters()\">Reset filters</button>\n      </div>\n    </ng-container>\n\n    <ng-template #defaultAccountSection>\n      <div class=\"account-empty\">\n        <p>{{ emptyText }}</p>\n        <a routerLink=\"/contact\" class=\"btn btn-primary\">{{ content.nav.contact }}</a>\n      </div>\n    </ng-template>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -9030,8 +9419,9 @@ let GuestContentService = class GuestContentService {
         try {
           const url = `${baseUrl}/guestInfo.json`;
           const value = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.firstValueFrom)(_this.http.get(url));
-          if (value?.guestFaq || value?.guestJourney || value?.proposalInfo || value?.bookingInfo) {
-            _this.cached = _this.mergeWithDefaults(value);
+          const content = _this.unwrapGuestInfo(value);
+          if (content?.guestFaq || content?.guestJourney || content?.proposalInfo || content?.bookingInfo) {
+            _this.cached = _this.mergeWithDefaults(content);
             return _this.cached;
           }
         } catch {
@@ -9041,6 +9431,17 @@ let GuestContentService = class GuestContentService {
       _this.cached = DEFAULT_GUEST_INFO_CONTENT;
       return _this.cached;
     })();
+  }
+  unwrapGuestInfo(value) {
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+    // Firebase can be imported either as /guestInfo/{...}
+    // or as /guestInfo/guestInfo/{...}. Support both.
+    if (value.guestInfo && typeof value.guestInfo === 'object') {
+      return value.guestInfo;
+    }
+    return value;
   }
   mergeWithDefaults(value) {
     return {
@@ -9076,7 +9477,7 @@ GuestContentService = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_ang
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"hero\">\n  <div class=\"container hero-grid\">\n    <div class=\"hero-copy\">\n      <span class=\"eyebrow\">{{ content.home.eyebrow }}</span>\n      <h1>{{ content.home.title }}</h1>\n      <p>{{ content.home.intro }}</p>\n<div class=\"hero-actions\">\n        <a routerLink=\"/sorties\" class=\"btn btn-primary btn-equal\">\n          {{ content.home.primaryCta }}\n        </a>\n\n        <a *ngIf=\"canShowOnlineBookingButton\" routerLink=\"/reserver\" class=\"btn btn-secondary btn-equal\">\n          {{ content.home.onlineBookingCta || 'Réserver en ligne' }}\n        </a>\n<a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\"\n          target=\"_blank\" rel=\"noreferrer\" class=\"btn btn-book\">{{ content.common.bookOnClickAndBoat }}</a>\n\n      </div>\n      <ul class=\"hero-points\">\n        <li *ngFor=\"let point of content.home.points\">{{ point }}</li>\n      </ul>\n    </div>\n\n    <div class=\"hero-visual\">\n      <img [src]=\"content.heroImage\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ content.home.sectionEyebrow }}</span>\n      <h2>{{ content.home.sectionTitle }}</h2>\n      <p>{{ content.home.sectionText }}</p>\n    </div>\n\n    <div class=\"cards-grid\">\n      <article class=\"card\" *ngFor=\"let outing of featuredOutings\">\n        <img [src]=\"outing.image\" [alt]=\"outing.title\" [routerLink]=\"['/sorties', outing.slug]\" />\n        <div class=\"card-body\">\n          <h3>{{ outing.title }}</h3>\n          <p>{{ outing.description }}</p>\n          <div class=\"meta\">{{ outing.duration }} • {{ outing.guests }}</div>\n          <div class=\"meta price\" *ngIf=\"outing.priceLabel\">{{ outing.priceLabel }}</div>\n          <a [routerLink]=\"['/sorties', outing.slug]\" class=\"text-link\">{{ content.outingsPage.cta }}</a>\n        </div>\n      </article>\n    </div>\n\n    <div class=\"home-all-tours-cta\">\n      <a routerLink=\"/sorties\" class=\"btn btn-secondary\">{{ content.nav.outings }}</a>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container split-grid\">\n    <div>\n      <span class=\"eyebrow\">{{ content.home.boatEyebrow }}</span>\n      <h2>{{ content.home.boatTitle }}</h2>\n      <p>{{ content.home.boatText }}</p>\n      <ul class=\"check-list\">\n        <li *ngFor=\"let item of highlights\">{{ item }}</li>\n      </ul>\n      <a routerLink=\"/bateau\" class=\"btn btn-secondary\">{{ content.home.boatCta }}</a>\n    </div>\n\n    <div class=\"boat-card\">\n      <img [src]=\"content.boatHeroImage\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container contact-banner\">\n    <div>\n      <span class=\"eyebrow\">{{ content.home.contactEyebrow }}</span>\n      <h2>{{ content.home.contactTitle }}</h2>\n      <p>{{ content.home.contactText }}</p>\n    </div>\n    <div class=\"contact-actions\">\n      <a routerLink=\"/contact\" class=\"btn btn-primary\">{{ content.common.requestQuote }}</a>\n      <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\"\n        target=\"_blank\" rel=\"noreferrer\" class=\"btn btn-book\">{{ content.common.bookOnClickAndBoat }}</a>\n    </div>\n  </div>\n</section>";
+module.exports = "<section class=\"hero\">\n  <div class=\"container hero-grid\">\n    <div class=\"hero-copy\">\n      <span class=\"eyebrow\">{{ content.home.eyebrow }}</span>\n      <h1>{{ content.home.title }}</h1>\n      <p>{{ content.home.intro }}</p>\n<div class=\"hero-actions\">\n        <a routerLink=\"/sorties\" class=\"btn btn-primary btn-equal\">\n          {{ content.home.primaryCta }}\n        </a>\n\n        <a *ngIf=\"canShowOnlineBookingButton\" routerLink=\"/reserver\" class=\"btn btn-secondary btn-equal\">\n          {{ content.home.onlineBookingCta || 'Réserver en ligne' }}\n        </a>\n<a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\"\n          target=\"_blank\" rel=\"noreferrer\" class=\"btn btn-book\">{{ content.common.bookOnClickAndBoat }}</a>\n\n      </div>\n      <ul class=\"hero-points\">\n        <li *ngFor=\"let point of content.home.points\">{{ point }}</li>\n      </ul>\n    </div>\n\n    <div class=\"hero-visual\">\n      <img [src]=\"content.heroImage\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ content.home.sectionEyebrow }}</span>\n      <h2>{{ content.home.sectionTitle }}</h2>\n      <p>{{ content.home.sectionText }}</p>\n    </div>\n\n    <div class=\"cards-grid\">\n      <article class=\"card\" *ngFor=\"let outing of featuredOutings\">\n        <img [src]=\"outing.image\" [alt]=\"outing.title\" [routerLink]=\"['/sorties', outing.slug]\" />\n        <div class=\"card-body\">\n          <h3>{{ outing.title }}</h3>\n          <p>{{ outing.description }}</p>\n          <div class=\"meta\">{{ outing.duration }} • {{ outing.guests }}</div>\n          <a [routerLink]=\"['/sorties', outing.slug]\" class=\"text-link\">{{ content.outingsPage.cta }}</a>\n        </div>\n      </article>\n    </div>\n\n    <div class=\"home-all-tours-cta\">\n      <a routerLink=\"/sorties\" class=\"btn btn-secondary\">{{ content.nav.outings }}</a>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container split-grid\">\n    <div>\n      <span class=\"eyebrow\">{{ content.home.boatEyebrow }}</span>\n      <h2>{{ content.home.boatTitle }}</h2>\n      <p>{{ content.home.boatText }}</p>\n      <ul class=\"check-list\">\n        <li *ngFor=\"let item of highlights\">{{ item }}</li>\n      </ul>\n      <a routerLink=\"/bateau\" class=\"btn btn-secondary\">{{ content.home.boatCta }}</a>\n    </div>\n\n    <div class=\"boat-card\">\n      <img [src]=\"content.boatHeroImage\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container contact-banner\">\n    <div>\n      <span class=\"eyebrow\">{{ content.home.contactEyebrow }}</span>\n      <h2>{{ content.home.contactTitle }}</h2>\n      <p>{{ content.home.contactText }}</p>\n    </div>\n    <div class=\"contact-actions\">\n      <a routerLink=\"/contact\" class=\"btn btn-primary\">{{ content.common.requestQuote }}</a>\n      <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\"\n        target=\"_blank\" rel=\"noreferrer\" class=\"btn btn-book\">{{ content.common.bookOnClickAndBoat }}</a>\n    </div>\n  </div>\n</section>";
 
 /***/ }),
 
@@ -9411,7 +9812,7 @@ const TOUR_CONTENT = {
       image: images.de1,
       duration: 'Journée ou demi-journée',
       guests: '12 passagers max',
-      price: 'À partir de 999 € + 300 € skipper',
+      price: '',
       highlightsTitle: 'Les points forts',
       highlights: ['Location en coque nue*', 'Skipper indépendant obligatoire', 'Programme adaptable selon la météo', 'Cadre premium pour famille, couple ou amis'],
       programTitle: 'Exemple de programme',
@@ -9433,7 +9834,7 @@ const TOUR_CONTENT = {
       image: images.sunset1,
       duration: 'Coucher de soleil',
       guests: '12 passagers max',
-      price: 'À partir de 999 € + 300 € skipper',
+      price: '',
       highlightsTitle: 'Les points forts',
       highlights: ['Ambiance élégante et détendue', 'Lumière idéale pour les photos', 'Format parfait pour un apéritif en mer', 'Expérience privative'],
       programTitle: 'Exemple de programme',
@@ -9455,7 +9856,7 @@ const TOUR_CONTENT = {
       image: images.party1,
       duration: 'Journée',
       guests: '12 passagers max',
-      price: 'À partir de 999 € + 300 € skipper',
+      price: '',
       highlightsTitle: 'Les points forts',
       highlights: ['Format personnalisable', 'Souvenirs photo dans un décor unique', 'Ambiance adaptée à votre groupe', 'Bateau privatisé en coque nue'],
       programTitle: 'Exemple de programme',
@@ -9477,7 +9878,7 @@ const TOUR_CONTENT = {
       image: images.business1,
       duration: 'Journée ou demi-journée',
       guests: '12 passagers max',
-      price: 'À partir de 999 € + 300 € skipper',
+      price: '',
       highlightsTitle: 'Les points forts',
       highlights: ['Image premium pour votre entreprise', 'Format souple et original', 'Cadre propice aux échanges', 'Expérience mémorable'],
       programTitle: 'Exemple de programme',
@@ -9501,7 +9902,7 @@ const TOUR_CONTENT = {
       image: images.de1,
       duration: 'Full day or half day',
       guests: 'Up to 12 guests',
-      price: 'From €999 + €300 skipper',
+      price: '',
       highlightsTitle: 'Highlights',
       highlights: ['Bareboat rental*', 'Independent skipper required', 'Flexible program depending on weather', 'Premium setting for family, couples or friends'],
       programTitle: 'Sample program',
@@ -9523,7 +9924,7 @@ const TOUR_CONTENT = {
       image: images.sunset1,
       duration: 'Sunset',
       guests: 'Up to 12 guests',
-      price: 'From €999 + €300 skipper',
+      price: '',
       highlightsTitle: 'Highlights',
       highlights: ['Elegant and relaxed atmosphere', 'Ideal light for photos', 'Perfect for drinks at sea', 'Private experience'],
       programTitle: 'Sample program',
@@ -9545,7 +9946,7 @@ const TOUR_CONTENT = {
       image: images.party1,
       duration: 'Full day',
       guests: 'Up to 12 guests',
-      price: 'From €999 + €300 skipper',
+      price: '',
       highlightsTitle: 'Highlights',
       highlights: ['Customizable format', 'Great photo memories', 'Atmosphere tailored to your group', 'Private bareboat charter'],
       programTitle: 'Sample program',
@@ -9567,7 +9968,7 @@ const TOUR_CONTENT = {
       image: images.business1,
       duration: 'Full day or half day',
       guests: 'Up to 12 guests',
-      price: 'From €999 + €300 skipper',
+      price: '',
       highlightsTitle: 'Highlights',
       highlights: ['Premium image for your company', 'Flexible and original format', 'Ideal setting for conversations', 'Memorable experience'],
       programTitle: 'Sample program',
@@ -9591,7 +9992,7 @@ const TOUR_CONTENT = {
       image: images.de1,
       duration: 'Día completo o medio día',
       guests: 'Hasta 12 pasajeros',
-      price: 'Desde 999 € + 300 € patrón',
+      price: '',
       highlightsTitle: 'Puntos fuertes',
       highlights: ['Alquiler en casco desnudo*', 'Patrón independiente obligatorio', 'Programa flexible según la meteorología', 'Entorno premium para familia, pareja o amigos'],
       programTitle: 'Programa orientativo',
@@ -9613,7 +10014,7 @@ const TOUR_CONTENT = {
       image: images.sunset1,
       duration: 'Atardecer',
       guests: 'Hasta 12 pasajeros',
-      price: 'Desde 999 € + 300 € patrón',
+      price: '',
       highlightsTitle: 'Puntos fuertes',
       highlights: ['Ambiente elegante y relajado', 'Luz ideal para fotos', 'Perfecto para un aperitivo en el mar', 'Experiencia privada'],
       programTitle: 'Programa orientativo',
@@ -9635,7 +10036,7 @@ const TOUR_CONTENT = {
       image: images.party1,
       duration: 'Día completo',
       guests: 'Hasta 12 pasajeros',
-      price: 'Desde 999 € + 300 € patrón',
+      price: '',
       highlightsTitle: 'Puntos fuertes',
       highlights: ['Formato personalizable', 'Recuerdos fotográficos únicos', 'Ambiente adaptado al grupo', 'Alquiler privado en casco desnudo'],
       programTitle: 'Programa orientativo',
@@ -9657,7 +10058,7 @@ const TOUR_CONTENT = {
       image: images.business1,
       duration: 'Día completo o medio día',
       guests: 'Hasta 12 pasajeros',
-      price: 'Desde 999 € + 300 € patrón',
+      price: '',
       highlightsTitle: 'Puntos fuertes',
       highlights: ['Imagen premium para su empresa', 'Formato flexible y original', 'Entorno propicio para conversar', 'Experiencia memorable'],
       programTitle: 'Programa orientativo',
@@ -11345,7 +11746,7 @@ module.exports = "<section class=\"warranty-charge-page\">\n  <div class=\"conta
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ content.outingsPage.eyebrow }}</span>\n    <h1>{{ content.outingsPage.title }}</h1>\n    <p>{{ content.outingsPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container grid\">\n    <article class=\"outing-card\" *ngFor=\"let outing of outings\">\n      <img [src]=\"outing.image\" [alt]=\"outing.title\" />\n      <div class=\"content-card\">\n        <div class=\"meta-top\">{{ outing.duration }} • {{ outing.guests }}</div>\n        <div class=\"price-line\" *ngIf=\"outing.priceLabel\">{{ outing.priceLabel }}</div>\n        <h2>{{ outing.title }}</h2>\n        <p>{{ outing.description }}</p>\n        <ul>\n          <li *ngFor=\"let point of outing.highlights\">{{ point }}</li>\n        </ul>\n        <a [routerLink]=\"['/sorties', outing.slug]\" class=\"btn\">{{ content.outingsPage.cta }}</a>\n      </div>\n    </article>\n  </div>\n</section>\n";
+module.exports = "<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ content.outingsPage.eyebrow }}</span>\n    <h1>{{ content.outingsPage.title }}</h1>\n    <p>{{ content.outingsPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container grid\">\n    <article class=\"outing-card\" *ngFor=\"let outing of outings\">\n      <img [src]=\"outing.image\" [alt]=\"outing.title\" />\n      <div class=\"content-card\">\n        <div class=\"meta-top\">{{ outing.duration }} • {{ outing.guests }}</div>\n        <h2>{{ outing.title }}</h2>\n        <p>{{ outing.description }}</p>\n        <ul>\n          <li *ngFor=\"let point of outing.highlights\">{{ point }}</li>\n        </ul>\n        <a [routerLink]=\"['/sorties', outing.slug]\" class=\"btn\">{{ content.outingsPage.cta }}</a>\n      </div>\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -12241,7 +12642,37 @@ h1 {
 
 .estimated-request-price small {
   color: #64748b;
-}`, "",{"version":3,"sources":["webpack://./src/app/home/booking-detail/booking-detail.component.scss"],"names":[],"mappings":"AAAA,gBAAgB;AAAhB;EAAgB,eAAA;EAAiB,mBAAA;EAAqB,gBAAA;AAKtD;;AAJA;EAAiB,iBAAA;EAAmB,cAAA;AASpC;;AARA;EAAgB,mBAAA;EAAqB,gBAAA;AAarC;;AAZA;EAAW,yBAAA;EAA2B,sBAAA;EAAuB,kBAAA;EAAmB,cAAA;EAAgB,gBAAA;AAoBhG;;AAnBA;EAAK,cAAA;EAAgB,aAAA;AAwBrB;;AAvBA;EAAgB,aAAA;EAAe,2DAAA;EAA6D,SAAA;AA6B5F;;AA5BA;EAAmD,gBAAA;EAAkB,mBAAA;EAAqB,aAAA;EAAe,6CAAA;EAA2C,uCAAA;AAoCpJ;;AAnCA;EAAmB,kBAAA;EAAoB,cAAA;EAAgB,kBAAA;AAyCvD;;AAxCA;EAAkB,aAAA;EAAe,cAAA;AA6CjC;;AA5CA;EAAe,oBAAA;EAAsB,oBAAA;EAAsB,oCAAA;EAAkC,cAAA;EAAgB,iBAAA;EAAmB,kBAAA;EAAmB,gBAAA;AAsDnJ;;AArDA;EAAgB,aAAA;EAAe,QAAA;EAAU,cAAA;EAAgB,cAAA;AA4DzD;;AA3DA;EAAmB,aAAA;EAAe,SAAA;EAAW,eAAA;AAiE7C;;AAhEA;EAAO,SAAA;EAAW,oBAAA;EAAsB,kBAAA;EAAoB,gBAAA;EAAkB,eAAA;EAAiB,qBAAA;AAyE/F;;AAxEA;EAAe,mBAAA;EAAqB,WAAA;AA6EpC;;AA5EA;EAAiB,mBAAA;EAAqB,cAAA;AAiFtC;;AAhFA;EAAS,WAAA;AAoFT;;AAnFA;EAAe,aAAA;EAAe,2DAAA;EAA6D,SAAA;EAAW,cAAA;AA0FtG;;AAzFA;EAAmB,mBAAA;EAAqB,mBAAA;EAAqB,aAAA;EAAe,aAAA;EAAe,QAAA;AAiG3F;;AAhGA;EAAsB,cAAA;AAoGtB;;AAnGA;EAAoB,cAAA;AAuGpB;;AAtGA;EAAY,mBAAA;EAAqB,aAAA;EAAe,mBAAA;EAAqB,cAAA;AA6GrE;;AA3GA;EACE,gBAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;EACA,6CAAA;EACA,uCAAA;AA8GF;;AA3GA;EACE,aAAA;EACA,cAAA;AA8GF;;AA3GA;EACE,aAAA;EACA,2DAAA;EACA,SAAA;EACA,cAAA;AA8GF;;AA3GA;EACE,mBAAA;EACA,mBAAA;EACA,aAAA;EACA,aAAA;EACA,QAAA;AA8GF;;AA3GA;EACE,aAAA;EACA,SAAA;AA8GF;;AA3GA;EACE,aAAA;EACA,WAAA;EACA,cAAA;EACA,gBAAA;AA8GF;;AA3GA;;EAEE,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;AA8GF;;AA3GA;EACE,oBAAA;EACA,oBAAA;EACA,uBAAA;EACA,mBAAA;EACA,WAAA;EACA,gBAAA;AA8GF;;AA3GA;EAAW,cAAA;EAAgB,gBAAA;AAgH3B;;AA/GA;EAAiB,cAAA;EAAgB,gBAAA;AAoHjC;;AAlHA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;EACA,mBAAA;EACA,qBAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,mBAAA;EACA,uCAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,mBAAA;EACA,0CAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,WAAA;EACA,iBAAA;EACA,cAAA;EACA,gBAAA;AAqHF;;AAlHA;;EAEE,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,mBAAA;EACA,wCAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,cAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,gBAAA;AAqHF;;AAlHA;EACE,gBAAA;EACA,uCAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,iBAAA;EACA,cAAA;EACA,uCAAA;EACA,mBAAA;EACA,aAAA;EACA,mBAAA;EACA,cAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,WAAA;EACA,uBAAA;EACA,cAAA;EACA,cAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,uBAAA;EACA,WAAA;EACA,eAAA;EACA,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,mBAAA;EACA,cAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,kBAAA;AAqHF;;AAlHA;EACE,2DAAA;AAqHF;;AAlHA;EACE,gBAAA;AAqHF;;AAlHA;EACE,gBAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,eAAA;EACA,YAAA;EACA,mBAAA;EACA,cAAA;EACA,aAAA;EACA,uCAAA;EACA,mBAAA;EACA,mBAAA;AAqHF;;AAlHA;EACE,gBAAA;EACA,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,iBAAA;EACA,6CAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,WAAA;EACA,gBAAA;EACA,cAAA;EACA,gBAAA;AAqHF;;AAlHA;;EAEE,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,eAAA;EACA,YAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,SAAA;EACA,eAAA;EACA,8EAAA;AAqHF;;AAlHA;EACE,2BAAA;EACA,4CAAA;AAqHF;;AAlHA;EACE,eAAA;EACA,QAAA;EACA,aAAA;EACA,iCAAA;EACA,kCAAA;UAAA,0BAAA;EACA,aAAA;EACA,mBAAA;EACA,aAAA;AAqHF;;AAlHA;EACE,uBAAA;EACA,4BAAA;EACA,cAAA;EACA,gBAAA;EACA,mBAAA;EACA,kCAAA;EACA,6CAAA;EACA,kBAAA;EACA,uCAAA;AAqHF;;AAlHA;EACE,cAAA;EACA,wBAAA;AAqHF;;AAlHA;EACE,cAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,kBAAA;EACA,WAAA;EACA,aAAA;EACA,WAAA;EACA,YAAA;EACA,SAAA;EACA,oBAAA;EACA,mBAAA;EACA,cAAA;EACA,iBAAA;EACA,eAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,YAAA;EACA,iBAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,gCAAA;EACA,WAAA;EACA,mBAAA;EACA,gBAAA;EACA,mBAAA;EACA,uCAAA;EACA,mBAAA;AAqHF;;AAlHA;EACE,cAAA;AAqHF;;AAlHA;EACE,cAAA;EACA,iBAAA;AAqHF;;AAlHA;EACE,kCAAA;EACA,oCAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,oCAAA;EACA,sCAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,yBAAA;EACA,YAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE;IACE,0BAAA;EAqHF;EAlHA;IACE,wBAAA;EAoHF;EAjHA;IACE,OAAA;EAmHF;AACF;AAhHA;EACE,oDAAA;EACA,6DAAA;AAkHF;;AA/GA;EACE,mBAAA;EACA,mBAAA;AAkHF;;AA9GA,yEAAA;AACA;;;EAGE,cAAA;EACA,4BAAA;EACA,gBAAA;EACA,kBAAA;EACA,iCAAA;EACA,4BAAA;EACA,sBAAA;EACA,wBAAA;AAiHF;;AA9GA;;EAEE,mBAAA;EACA,iBAAA;EACA,oBAAA;EACA,kBAAA;AAiHF;;AA9GA;;EAEE,gBAAA;AAiHF;;AA9GA;EACE;;;IAGE,gBAAA;EAiHF;AACF;AA7GA,sDAAA;AACA;;;EAGE,yBAAA;EACA,4CAAA;EACA,gDAAA;EACA,4BAAA;EACA,6BAAA;EACA,6BAAA;EACA,4CAAA;EACA,uCAAA;EACA,8BAAA;EACA,8BAAA;EACA,iCAAA;AA+GF;;AA5GA;EACE,2BAAA;EACA,2BAAA;EACA,wBAAA;EACA,iCAAA;AA+GF;;AA5GA;EACE,yBAAA;EACA,uBAAA;EACA,4BAAA;EACA,yCAAA;AA+GF;;AA5GA;;EAEE,yBAAA;EACA,8BAAA;EACA,4BAAA;EACA,+BAAA;EACA,oCAAA;EACA,4BAAA;EACA,6BAAA;AA+GF;;AA5GA;EACE;;;IAGE,uBAAA;IACA,2BAAA;IACA,4BAAA;EA+GF;EA5GA;IACE,yCAAA;EA8GF;AACF;AA3GA;EACE,aAAA;EACA,8BAAA;EACA,SAAA;EACA,mBAAA;EACA,kBAAA;EACA,2CAAA;AA6GF;;AA1GA;EACE,cAAA;EACA,cAAA;EACA,mBAAA;AA6GF;;AA1GA;;EAEE,aAAA;EACA,YAAA;AA6GF;;AA1GA;;EAEE,aAAA;EACA,WAAA;AA6GF;;AA1GA;EACE,gBAAA;EACA,gBAAA;EACA,uCAAA;EACA,mBAAA;EACA,mBAAA;AA6GF;;AA1GA;EACE,kBAAA;EACA,cAAA;AA6GF;;AA1GA;EACE,cAAA;AA6GF;;AAzGA;EACE,uBAAA;EACA,SAAA;AA4GF;;AAzGA;EACE,aAAA;EACA,YAAA;EACA,YAAA;AA4GF;;AAzGA;EACE,aAAA;EACA,eAAA;EACA,WAAA;EACA,yBAAA;AA4GF;;AAzGA;EACE,aAAA;EACA,qFAAA;EACA,YAAA;EACA,cAAA;EACA,WAAA;AA4GF;;AAzGA;EACE,aAAA;EACA,YAAA;EACA,cAAA;EACA,gBAAA;AA4GF;;AAzGA;;EAEE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,wBAAA;EACA,aAAA;AA4GF;;AAzGA;EACE,8BAAA;EACA,sBAAA;AA4GF;;AAzGA;EACE;IACE,0BAAA;EA4GF;EAzGA;IACE,wBAAA;EA2GF;EAxGA;IACE,cAAA;IACA,uBAAA;EA0GF;AACF;AAtGA;EACE,yBAAA;EACA,sBAAA;EACA,mBAAA;EACA,oCAAA;EACA,cAAA;EACA,gBAAA;AAwGF;;AArGA;EACE,aAAA;EACA,uBAAA;EACA,8BAAA;EACA,SAAA;EACA,eAAA;AAwGF;;AArGA;EACE,wBAAA;EACA,eAAA;EACA,WAAA;EACA,mBAAA;EACA,yBAAA;AAwGF;;AArGA;EACE,+BAAA;EACA,8BAAA;EACA,qBAAA;EACA,eAAA;EACA,uBAAA;AAwGF;;AArGA;EACE,aAAA;EACA,qFAAA;EACA,YAAA;EACA,WAAA;AAwGF;;AArGA;EACE,aAAA;EACA,YAAA;EACA,cAAA;EACA,gBAAA;AAwGF;;AArGA;;EAEE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,wBAAA;EACA,aAAA;AAwGF;;AArGA;EACE,8BAAA;EACA,sBAAA;AAwGF;;AArGA;EACE;IACE,aAAA;IACA,0BAAA;EAwGF;EArGA;IACE,wBAAA;EAuGF;EApGA;IACE,cAAA;EAsGF;EAnGA;IACE,0BAAA;EAqGF;AACF;AAjGA;EACE,0CAAA;EACA,mBAAA;AAmGF;;AAhGA;EACE,aAAA;EACA,WAAA;EACA,iBAAA;EACA,cAAA;EACA,gBAAA;AAmGF;;AAhGA;EACE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,uBAAA;EACA,aAAA;EACA,gBAAA;AAmGF;;AA/FA;EACE,iBAAA;EACA,gBAAA;EACA,mBAAA;EACA,mBAAA;EACA,0CAAA;EACA,8CAAA;AAkGF;;AA/FA;EACE,aAAA;EACA,YAAA;EACA,gBAAA;EACA,gBAAA;EACA,cAAA;AAkGF;;AA/FA;EACE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,qBAAA;EACA,aAAA;AAkGF;;AA/FA;EACE,8BAAA;EACA,sBAAA;AAkGF;;AA9FA;EACE,iBAAA;EACA,gBAAA;EACA,mBAAA;EACA,mBAAA;EACA,0CAAA;EACA,8CAAA;AAiGF;;AA9FA;EACE,aAAA;EACA,YAAA;EACA,gBAAA;EACA,gBAAA;EACA,cAAA;AAiGF;;AA9FA;;EAEE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,qBAAA;EACA,aAAA;AAiGF;;AA9FA;EACE,cAAA;EACA,aAAA;EACA,mBAAA;EACA,gBAAA;EACA,sCAAA;EACA,aAAA;EACA,YAAA;AAiGF;;AA9FA;EACE,cAAA;AAiGF;;AA9FA;EACE,iBAAA;EACA,gBAAA;EACA,cAAA;AAiGF;;AA9FA;EACE,cAAA;AAiGF","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n\n.payment-admin-card {\n  background: #fff;\n  border-radius: 24px;\n  padding: 24px;\n  margin: 24px 0;\n  box-shadow: 0 18px 45px rgba(8,38,58,.08);\n  border: 1px solid rgba(8,38,58,.08);\n}\n\n.payment-admin-card h2 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.payment-summary {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\n  gap: 12px;\n  margin: 16px 0;\n}\n\n.payment-summary div {\n  background: #f8f5ef;\n  border-radius: 16px;\n  padding: 14px;\n  display: grid;\n  gap: 4px;\n}\n\n.collect-balance {\n  display: grid;\n  gap: 12px;\n}\n\n.collect-balance label {\n  display: grid;\n  gap: 0.4rem;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.collect-balance select,\n.collect-balance textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n}\n\n.paid-badge {\n  display: inline-flex;\n  border-radius: 999px;\n  padding: 0.55rem 0.9rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n}\n\n.success { color: #047857; font-weight: 700; }\n.error-message { color: #9f1d1d; font-weight: 700; }\n\n.blocked-note {\n  background: rgba(181,139,74,.12);\n  color: #8a652d;\n  border: 1px solid rgba(181,139,74,.25);\n  border-radius: 14px;\n  padding: 0.85rem 1rem;\n  font-weight: 700;\n}\n\n.warranty-actions {\n  background: #f8f5ef;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.warranty-actions p {\n  margin-top: 0;\n  color: #516070;\n}\n\n.cash-damage-card {\n  background: #fff7ed;\n  border: 1px solid rgba(242, 140, 40, 0.25);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.cash-damage-card h3 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.cash-damage-card label {\n  display: grid;\n  gap: 0.4rem;\n  margin: 0.85rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.cash-damage-card input,\n.cash-damage-card textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n  background: #fff;\n}\n\n.deposit-actions {\n  background: #eef6f0;\n  border: 1px solid rgba(4,120,87,.18);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.deposit-actions p {\n  margin-top: 0;\n  color: #047857;\n  font-weight: 700;\n}\n\n.workflow-summary div {\n  min-height: 74px;\n}\n\n.workflow-panel {\n  background: #fff;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 18px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.workflow-panel h3 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.terms-scroll-box {\n  max-height: 260px;\n  overflow: auto;\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 16px;\n  padding: 1rem;\n  background: #f8f5ef;\n  color: #516070;\n  line-height: 1.6;\n}\n\n.terms-check {\n  display: flex;\n  gap: 0.6rem;\n  align-items: flex-start;\n  margin: 1rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.radio-card {\n  display: flex;\n  align-items: flex-start;\n  gap: 0.7rem;\n  padding: 0.9rem;\n  border: 1px solid rgba(8,38,58,.12);\n  border-radius: 16px;\n  margin: 0.7rem 0;\n  background: #f8f5ef;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.radio-card input {\n  margin-top: 0.2rem;\n}\n\n.clarity-grid {\n  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\n}\n\n.clarity-grid div {\n  min-height: 82px;\n}\n\n.clarity-grid span {\n  font-weight: 700;\n}\n\n.customer-action-bar {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.85rem;\n  align-items: center;\n  margin: 1rem 0;\n  padding: 1rem;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 16px;\n  background: #f8f5ef;\n}\n\n.customer-edit-card {\n  background: #fff;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 20px;\n  padding: 1.25rem;\n  margin: 1.25rem 0;\n  box-shadow: 0 14px 35px rgba(8,38,58,.06);\n}\n\n.customer-edit-card h2 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.customer-edit-card label {\n  display: grid;\n  gap: 0.4rem;\n  margin: 0.8rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.customer-edit-card input,\n.customer-edit-card textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n  background: #fff;\n}\n\n.customer-edit-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.85rem;\n  margin-top: 1rem;\n}\n\n.status-clickable {\n  border: 0;\n  cursor: pointer;\n  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;\n}\n\n.status-clickable:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 8px 18px rgba(8,38,58,.12);\n}\n\n.status-modal-backdrop {\n  position: fixed;\n  inset: 0;\n  z-index: 1000;\n  background: rgba(8, 38, 58, 0.42);\n  backdrop-filter: blur(4px);\n  display: grid;\n  place-items: center;\n  padding: 1rem;\n}\n\n.status-modal {\n  width: min(620px, 100%);\n  max-height: min(760px, 92vh);\n  overflow: auto;\n  background: #fff;\n  border-radius: 28px;\n  padding: clamp(1.25rem, 3vw, 2rem);\n  box-shadow: 0 30px 80px rgba(8,38,58,.24);\n  position: relative;\n  border: 1px solid rgba(8,38,58,.08);\n}\n\n.status-modal h2 {\n  color: #08263a;\n  margin: 0.35rem 0 0.5rem;\n}\n\n.status-modal p {\n  color: #516070;\n  line-height: 1.6;\n}\n\n.modal-close {\n  position: absolute;\n  top: 0.9rem;\n  right: 0.9rem;\n  width: 38px;\n  height: 38px;\n  border: 0;\n  border-radius: 999px;\n  background: #f8f5ef;\n  color: #08263a;\n  font-size: 1.4rem;\n  cursor: pointer;\n}\n\n.status-timeline {\n  display: grid;\n  gap: 0.75rem;\n  margin: 1.25rem 0;\n}\n\n.status-step {\n  display: grid;\n  grid-template-columns: 170px 1fr;\n  gap: 0.8rem;\n  align-items: center;\n  padding: 0.95rem;\n  border-radius: 18px;\n  border: 1px solid rgba(8,38,58,.08);\n  background: #f8f5ef;\n}\n\n.status-step strong {\n  color: #08263a;\n}\n\n.status-step span {\n  color: #516070;\n  line-height: 1.45;\n}\n\n.status-step.done {\n  background: rgba(4, 120, 87, .09);\n  border-color: rgba(4, 120, 87, .18);\n}\n\n.status-step.done strong::before {\n  content: \"✓ \";\n  color: #047857;\n}\n\n.status-step.pending {\n  background: rgba(181, 139, 74, .09);\n  border-color: rgba(181, 139, 74, .18);\n}\n\n.status-step.pending strong::before {\n  content: \"• \";\n  color: #b58b4a;\n}\n\n.modal-actions {\n  display: flex;\n  justify-content: flex-end;\n  gap: 0.75rem;\n  margin-top: 1rem;\n}\n\n@media (max-width: 560px) {\n  .status-step {\n    grid-template-columns: 1fr;\n  }\n\n  .modal-actions {\n    justify-content: stretch;\n  }\n\n  .modal-actions .btn {\n    flex: 1;\n  }\n}\n\n.status-summary-card {\n  border: 2px solid rgba(181,139,74,.2) !important;\n  background: linear-gradient(135deg, #fff, #f8f5ef) !important;\n}\n\n.status-summary-card .status-pill {\n  justify-self: start;\n  margin-top: 0.25rem;\n}\n\n\n/* Ensure long Firebase T&C text is fully scrollable in every language. */\n.tc-scrollable,\n.terms-scroll-box,\n.terms-content {\n  display: block;\n  max-height: min(62vh, 560px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  -webkit-overflow-scrolling: touch;\n  overscroll-behavior: contain;\n  padding-right: 0.75rem;\n  scrollbar-gutter: stable;\n}\n\n.terms-scroll-box p,\n.terms-content p {\n  white-space: normal;\n  overflow: visible;\n  text-overflow: unset;\n  word-break: normal;\n}\n\n.terms-scroll-box h4,\n.terms-content h3 {\n  position: static;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box,\n  .terms-content {\n    max-height: 58vh;\n  }\n}\n\n\n/* Hard fix for long multilingual Firebase T&C text. */\n.tc-scrollable,\n.terms-scroll-box.tc-scrollable,\n.terms-content.tc-scrollable {\n  display: block !important;\n  height: clamp(360px, 62vh, 640px) !important;\n  max-height: clamp(360px, 62vh, 640px) !important;\n  min-height: 320px !important;\n  overflow-y: scroll !important;\n  overflow-x: hidden !important;\n  -webkit-overflow-scrolling: touch !important;\n  overscroll-behavior: contain !important;\n  touch-action: pan-y !important;\n  padding-right: 1rem !important;\n  box-sizing: border-box !important;\n}\n\n.terms-modal {\n  max-height: 94vh !important;\n  overflow: hidden !important;\n  display: flex !important;\n  flex-direction: column !important;\n}\n\n.terms-modal .terms-content.tc-scrollable {\n  flex: 1 1 auto !important;\n  height: auto !important;\n  min-height: 320px !important;\n  max-height: calc(94vh - 190px) !important;\n}\n\n.terms-scroll-box.tc-scrollable p,\n.terms-content.tc-scrollable p {\n  display: block !important;\n  white-space: normal !important;\n  overflow: visible !important;\n  text-overflow: unset !important;\n  -webkit-line-clamp: unset !important;\n  line-clamp: unset !important;\n  word-break: normal !important;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box.tc-scrollable,\n  .terms-content.tc-scrollable {\n    height: 58vh !important;\n    max-height: 58vh !important;\n    min-height: 300px !important;\n  }\n\n  .terms-modal .terms-content.tc-scrollable {\n    max-height: calc(92vh - 170px) !important;\n  }\n}\n\n.extra-service-row {\n  display: flex;\n  justify-content: space-between;\n  gap: 1rem;\n  align-items: center;\n  padding: .85rem 0;\n  border-top: 1px solid rgba(8, 38, 58, .08);\n}\n\n.extra-service-row span {\n  display: block;\n  color: #64748b;\n  margin-top: .25rem;\n}\n\n.admin-extra-service-form,\n.refund-panel {\n  display: grid;\n  gap: .85rem;\n}\n\n.admin-extra-service-form label,\n.refund-panel label {\n  display: grid;\n  gap: .4rem;\n}\n\n.invoice-actions-card {\n  margin: 1.5rem 0;\n  padding: 1.25rem;\n  border: 1px solid rgba(8, 38, 58, .08);\n  border-radius: 18px;\n  background: #fffaf2;\n}\n\n.invoice-actions-card h2 {\n  margin: 0 0 .5rem;\n  color: #08263a;\n}\n\n.invoice-actions-card p {\n  color: #516070;\n}\n\n\n.extra-service-row {\n  align-items: flex-start;\n  gap: 1rem;\n}\n\n.extra-service-display {\n  display: grid;\n  gap: .25rem;\n  min-width: 0;\n}\n\n.extra-service-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: .5rem;\n  justify-content: flex-end;\n}\n\n.extra-service-edit {\n  display: grid;\n  grid-template-columns: minmax(180px, 1.5fr) minmax(120px, .7fr) minmax(130px, .7fr);\n  gap: .75rem;\n  flex: 1 1 100%;\n  width: 100%;\n}\n\n.extra-service-edit label {\n  display: grid;\n  gap: .35rem;\n  color: #516070;\n  font-weight: 700;\n}\n\n.extra-service-edit input,\n.extra-service-edit select {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, .16);\n  border-radius: 12px;\n  padding: .72rem .85rem;\n  font: inherit;\n}\n\n.btn-danger {\n  background: #9f1d1d !important;\n  color: #fff !important;\n}\n\n@media (max-width: 720px) {\n  .extra-service-edit {\n    grid-template-columns: 1fr;\n  }\n\n  .extra-service-actions {\n    justify-content: stretch;\n  }\n\n  .extra-service-actions .btn {\n    flex: 1 1 auto;\n    justify-content: center;\n  }\n}\n\n\n.admin-extra-service-actions-title {\n  margin: .75rem 0 .25rem;\n  padding: .6rem .8rem;\n  border-radius: 12px;\n  background: rgba(242, 140, 40, .14);\n  color: #9a4d08;\n  font-weight: 800;\n}\n\n.extra-service-row {\n  display: flex;\n  align-items: flex-start;\n  justify-content: space-between;\n  gap: 1rem;\n  flex-wrap: wrap;\n}\n\n.extra-service-actions {\n  display: flex !important;\n  flex-wrap: wrap;\n  gap: .5rem;\n  align-items: center;\n  justify-content: flex-end;\n}\n\n.admin-extra-btn {\n  display: inline-flex !important;\n  visibility: visible !important;\n  opacity: 1 !important;\n  min-width: 84px;\n  justify-content: center;\n}\n\n.extra-service-edit {\n  display: grid;\n  grid-template-columns: minmax(180px, 1.4fr) minmax(120px, .7fr) minmax(130px, .7fr);\n  gap: .75rem;\n  width: 100%;\n}\n\n.extra-service-edit label {\n  display: grid;\n  gap: .35rem;\n  color: #516070;\n  font-weight: 700;\n}\n\n.extra-service-edit input,\n.extra-service-edit select {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, .16);\n  border-radius: 12px;\n  padding: .72rem .85rem;\n  font: inherit;\n}\n\n.btn-danger {\n  background: #9f1d1d !important;\n  color: #fff !important;\n}\n\n@media (max-width: 720px) {\n  .extra-service-row {\n    display: grid;\n    grid-template-columns: 1fr;\n  }\n\n  .extra-service-actions {\n    justify-content: stretch;\n  }\n\n  .extra-service-actions .btn {\n    flex: 1 1 auto;\n  }\n\n  .extra-service-edit {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n.adhoc-payment-panel {\n  border: 1px solid rgba(242, 140, 40, .24);\n  background: #fffaf3;\n}\n\n.adhoc-payment-panel label {\n  display: grid;\n  gap: .4rem;\n  margin: .75rem 0;\n  color: #516070;\n  font-weight: 700;\n}\n\n.adhoc-payment-panel input {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, .16);\n  border-radius: 12px;\n  padding: .78rem .9rem;\n  font: inherit;\n  background: #fff;\n}\n\n\n.admin-booking-request-card {\n  margin: 1.25rem 0;\n  padding: 1.25rem;\n  border-radius: 20px;\n  background: #fffaf3;\n  border: 1px solid rgba(242, 140, 40, .28);\n  box-shadow: 0 14px 30px rgba(15, 23, 42, .06);\n}\n\n.admin-booking-request-card label {\n  display: grid;\n  gap: .45rem;\n  margin-top: 1rem;\n  font-weight: 700;\n  color: #334155;\n}\n\n.admin-booking-request-card textarea {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, .16);\n  border-radius: 14px;\n  padding: .85rem 1rem;\n  font: inherit;\n}\n\n.btn-danger {\n  background: #9f1d1d !important;\n  color: #fff !important;\n}\n\n\n.admin-proposal-finalization-card {\n  margin: 1.25rem 0;\n  padding: 1.25rem;\n  border-radius: 20px;\n  background: #fffaf3;\n  border: 1px solid rgba(242, 140, 40, .28);\n  box-shadow: 0 14px 30px rgba(15, 23, 42, .06);\n}\n\n.admin-proposal-finalization-card label {\n  display: grid;\n  gap: .45rem;\n  margin-top: 1rem;\n  font-weight: 700;\n  color: #334155;\n}\n\n.admin-proposal-finalization-card input,\n.admin-proposal-finalization-card textarea {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, .16);\n  border-radius: 14px;\n  padding: .85rem 1rem;\n  font: inherit;\n}\n\n.estimated-request-price {\n  margin: 1rem 0;\n  padding: 1rem;\n  border-radius: 16px;\n  background: #fff;\n  border: 1px solid rgba(8, 38, 58, .10);\n  display: grid;\n  gap: .25rem;\n}\n\n.estimated-request-price strong {\n  color: #334155;\n}\n\n.estimated-request-price span {\n  font-size: 1.7rem;\n  font-weight: 800;\n  color: #08263a;\n}\n\n.estimated-request-price small {\n  color: #64748b;\n}\n"],"sourceRoot":""}]);
+}
+
+.customer-payment-hub {
+  background: #f8f5ef;
+}
+
+.client-payment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid rgba(8, 38, 58, 0.08);
+}
+
+.client-payment-row div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.client-payment-row span {
+  color: #516070;
+  font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  .client-payment-row {
+    align-items: stretch;
+    display: grid;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/booking-detail/booking-detail.component.scss"],"names":[],"mappings":"AAAA,gBAAgB;AAAhB;EAAgB,eAAA;EAAiB,mBAAA;EAAqB,gBAAA;AAKtD;;AAJA;EAAiB,iBAAA;EAAmB,cAAA;AASpC;;AARA;EAAgB,mBAAA;EAAqB,gBAAA;AAarC;;AAZA;EAAW,yBAAA;EAA2B,sBAAA;EAAuB,kBAAA;EAAmB,cAAA;EAAgB,gBAAA;AAoBhG;;AAnBA;EAAK,cAAA;EAAgB,aAAA;AAwBrB;;AAvBA;EAAgB,aAAA;EAAe,2DAAA;EAA6D,SAAA;AA6B5F;;AA5BA;EAAmD,gBAAA;EAAkB,mBAAA;EAAqB,aAAA;EAAe,6CAAA;EAA2C,uCAAA;AAoCpJ;;AAnCA;EAAmB,kBAAA;EAAoB,cAAA;EAAgB,kBAAA;AAyCvD;;AAxCA;EAAkB,aAAA;EAAe,cAAA;AA6CjC;;AA5CA;EAAe,oBAAA;EAAsB,oBAAA;EAAsB,oCAAA;EAAkC,cAAA;EAAgB,iBAAA;EAAmB,kBAAA;EAAmB,gBAAA;AAsDnJ;;AArDA;EAAgB,aAAA;EAAe,QAAA;EAAU,cAAA;EAAgB,cAAA;AA4DzD;;AA3DA;EAAmB,aAAA;EAAe,SAAA;EAAW,eAAA;AAiE7C;;AAhEA;EAAO,SAAA;EAAW,oBAAA;EAAsB,kBAAA;EAAoB,gBAAA;EAAkB,eAAA;EAAiB,qBAAA;AAyE/F;;AAxEA;EAAe,mBAAA;EAAqB,WAAA;AA6EpC;;AA5EA;EAAiB,mBAAA;EAAqB,cAAA;AAiFtC;;AAhFA;EAAS,WAAA;AAoFT;;AAnFA;EAAe,aAAA;EAAe,2DAAA;EAA6D,SAAA;EAAW,cAAA;AA0FtG;;AAzFA;EAAmB,mBAAA;EAAqB,mBAAA;EAAqB,aAAA;EAAe,aAAA;EAAe,QAAA;AAiG3F;;AAhGA;EAAsB,cAAA;AAoGtB;;AAnGA;EAAoB,cAAA;AAuGpB;;AAtGA;EAAY,mBAAA;EAAqB,aAAA;EAAe,mBAAA;EAAqB,cAAA;AA6GrE;;AA3GA;EACE,gBAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;EACA,6CAAA;EACA,uCAAA;AA8GF;;AA3GA;EACE,aAAA;EACA,cAAA;AA8GF;;AA3GA;EACE,aAAA;EACA,2DAAA;EACA,SAAA;EACA,cAAA;AA8GF;;AA3GA;EACE,mBAAA;EACA,mBAAA;EACA,aAAA;EACA,aAAA;EACA,QAAA;AA8GF;;AA3GA;EACE,aAAA;EACA,SAAA;AA8GF;;AA3GA;EACE,aAAA;EACA,WAAA;EACA,cAAA;EACA,gBAAA;AA8GF;;AA3GA;;EAEE,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;AA8GF;;AA3GA;EACE,oBAAA;EACA,oBAAA;EACA,uBAAA;EACA,mBAAA;EACA,WAAA;EACA,gBAAA;AA8GF;;AA3GA;EAAW,cAAA;EAAgB,gBAAA;AAgH3B;;AA/GA;EAAiB,cAAA;EAAgB,gBAAA;AAoHjC;;AAlHA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;EACA,mBAAA;EACA,qBAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,mBAAA;EACA,uCAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,mBAAA;EACA,0CAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,WAAA;EACA,iBAAA;EACA,cAAA;EACA,gBAAA;AAqHF;;AAlHA;;EAEE,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,mBAAA;EACA,wCAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,cAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,gBAAA;AAqHF;;AAlHA;EACE,gBAAA;EACA,uCAAA;EACA,mBAAA;EACA,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,iBAAA;EACA,cAAA;EACA,uCAAA;EACA,mBAAA;EACA,aAAA;EACA,mBAAA;EACA,cAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,WAAA;EACA,uBAAA;EACA,cAAA;EACA,cAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,uBAAA;EACA,WAAA;EACA,eAAA;EACA,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,mBAAA;EACA,cAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,kBAAA;AAqHF;;AAlHA;EACE,2DAAA;AAqHF;;AAlHA;EACE,gBAAA;AAqHF;;AAlHA;EACE,gBAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,eAAA;EACA,YAAA;EACA,mBAAA;EACA,cAAA;EACA,aAAA;EACA,uCAAA;EACA,mBAAA;EACA,mBAAA;AAqHF;;AAlHA;EACE,gBAAA;EACA,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,iBAAA;EACA,6CAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,WAAA;EACA,gBAAA;EACA,cAAA;EACA,gBAAA;AAqHF;;AAlHA;;EAEE,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,eAAA;EACA,YAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,SAAA;EACA,eAAA;EACA,8EAAA;AAqHF;;AAlHA;EACE,2BAAA;EACA,4CAAA;AAqHF;;AAlHA;EACE,eAAA;EACA,QAAA;EACA,aAAA;EACA,iCAAA;EACA,kCAAA;UAAA,0BAAA;EACA,aAAA;EACA,mBAAA;EACA,aAAA;AAqHF;;AAlHA;EACE,uBAAA;EACA,4BAAA;EACA,cAAA;EACA,gBAAA;EACA,mBAAA;EACA,kCAAA;EACA,6CAAA;EACA,kBAAA;EACA,uCAAA;AAqHF;;AAlHA;EACE,cAAA;EACA,wBAAA;AAqHF;;AAlHA;EACE,cAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE,kBAAA;EACA,WAAA;EACA,aAAA;EACA,WAAA;EACA,YAAA;EACA,SAAA;EACA,oBAAA;EACA,mBAAA;EACA,cAAA;EACA,iBAAA;EACA,eAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,YAAA;EACA,iBAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,gCAAA;EACA,WAAA;EACA,mBAAA;EACA,gBAAA;EACA,mBAAA;EACA,uCAAA;EACA,mBAAA;AAqHF;;AAlHA;EACE,cAAA;AAqHF;;AAlHA;EACE,cAAA;EACA,iBAAA;AAqHF;;AAlHA;EACE,kCAAA;EACA,oCAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,oCAAA;EACA,sCAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,cAAA;AAqHF;;AAlHA;EACE,aAAA;EACA,yBAAA;EACA,YAAA;EACA,gBAAA;AAqHF;;AAlHA;EACE;IACE,0BAAA;EAqHF;EAlHA;IACE,wBAAA;EAoHF;EAjHA;IACE,OAAA;EAmHF;AACF;AAhHA;EACE,oDAAA;EACA,6DAAA;AAkHF;;AA/GA;EACE,mBAAA;EACA,mBAAA;AAkHF;;AA9GA,yEAAA;AACA;;;EAGE,cAAA;EACA,4BAAA;EACA,gBAAA;EACA,kBAAA;EACA,iCAAA;EACA,4BAAA;EACA,sBAAA;EACA,wBAAA;AAiHF;;AA9GA;;EAEE,mBAAA;EACA,iBAAA;EACA,oBAAA;EACA,kBAAA;AAiHF;;AA9GA;;EAEE,gBAAA;AAiHF;;AA9GA;EACE;;;IAGE,gBAAA;EAiHF;AACF;AA7GA,sDAAA;AACA;;;EAGE,yBAAA;EACA,4CAAA;EACA,gDAAA;EACA,4BAAA;EACA,6BAAA;EACA,6BAAA;EACA,4CAAA;EACA,uCAAA;EACA,8BAAA;EACA,8BAAA;EACA,iCAAA;AA+GF;;AA5GA;EACE,2BAAA;EACA,2BAAA;EACA,wBAAA;EACA,iCAAA;AA+GF;;AA5GA;EACE,yBAAA;EACA,uBAAA;EACA,4BAAA;EACA,yCAAA;AA+GF;;AA5GA;;EAEE,yBAAA;EACA,8BAAA;EACA,4BAAA;EACA,+BAAA;EACA,oCAAA;EACA,4BAAA;EACA,6BAAA;AA+GF;;AA5GA;EACE;;;IAGE,uBAAA;IACA,2BAAA;IACA,4BAAA;EA+GF;EA5GA;IACE,yCAAA;EA8GF;AACF;AA3GA;EACE,aAAA;EACA,8BAAA;EACA,SAAA;EACA,mBAAA;EACA,kBAAA;EACA,2CAAA;AA6GF;;AA1GA;EACE,cAAA;EACA,cAAA;EACA,mBAAA;AA6GF;;AA1GA;;EAEE,aAAA;EACA,YAAA;AA6GF;;AA1GA;;EAEE,aAAA;EACA,WAAA;AA6GF;;AA1GA;EACE,gBAAA;EACA,gBAAA;EACA,uCAAA;EACA,mBAAA;EACA,mBAAA;AA6GF;;AA1GA;EACE,kBAAA;EACA,cAAA;AA6GF;;AA1GA;EACE,cAAA;AA6GF;;AAzGA;EACE,uBAAA;EACA,SAAA;AA4GF;;AAzGA;EACE,aAAA;EACA,YAAA;EACA,YAAA;AA4GF;;AAzGA;EACE,aAAA;EACA,eAAA;EACA,WAAA;EACA,yBAAA;AA4GF;;AAzGA;EACE,aAAA;EACA,qFAAA;EACA,YAAA;EACA,cAAA;EACA,WAAA;AA4GF;;AAzGA;EACE,aAAA;EACA,YAAA;EACA,cAAA;EACA,gBAAA;AA4GF;;AAzGA;;EAEE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,wBAAA;EACA,aAAA;AA4GF;;AAzGA;EACE,8BAAA;EACA,sBAAA;AA4GF;;AAzGA;EACE;IACE,0BAAA;EA4GF;EAzGA;IACE,wBAAA;EA2GF;EAxGA;IACE,cAAA;IACA,uBAAA;EA0GF;AACF;AAtGA;EACE,yBAAA;EACA,sBAAA;EACA,mBAAA;EACA,oCAAA;EACA,cAAA;EACA,gBAAA;AAwGF;;AArGA;EACE,aAAA;EACA,uBAAA;EACA,8BAAA;EACA,SAAA;EACA,eAAA;AAwGF;;AArGA;EACE,wBAAA;EACA,eAAA;EACA,WAAA;EACA,mBAAA;EACA,yBAAA;AAwGF;;AArGA;EACE,+BAAA;EACA,8BAAA;EACA,qBAAA;EACA,eAAA;EACA,uBAAA;AAwGF;;AArGA;EACE,aAAA;EACA,qFAAA;EACA,YAAA;EACA,WAAA;AAwGF;;AArGA;EACE,aAAA;EACA,YAAA;EACA,cAAA;EACA,gBAAA;AAwGF;;AArGA;;EAEE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,wBAAA;EACA,aAAA;AAwGF;;AArGA;EACE,8BAAA;EACA,sBAAA;AAwGF;;AArGA;EACE;IACE,aAAA;IACA,0BAAA;EAwGF;EArGA;IACE,wBAAA;EAuGF;EApGA;IACE,cAAA;EAsGF;EAnGA;IACE,0BAAA;EAqGF;AACF;AAjGA;EACE,0CAAA;EACA,mBAAA;AAmGF;;AAhGA;EACE,aAAA;EACA,WAAA;EACA,iBAAA;EACA,cAAA;EACA,gBAAA;AAmGF;;AAhGA;EACE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,uBAAA;EACA,aAAA;EACA,gBAAA;AAmGF;;AA/FA;EACE,iBAAA;EACA,gBAAA;EACA,mBAAA;EACA,mBAAA;EACA,0CAAA;EACA,8CAAA;AAkGF;;AA/FA;EACE,aAAA;EACA,YAAA;EACA,gBAAA;EACA,gBAAA;EACA,cAAA;AAkGF;;AA/FA;EACE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,qBAAA;EACA,aAAA;AAkGF;;AA/FA;EACE,8BAAA;EACA,sBAAA;AAkGF;;AA9FA;EACE,iBAAA;EACA,gBAAA;EACA,mBAAA;EACA,mBAAA;EACA,0CAAA;EACA,8CAAA;AAiGF;;AA9FA;EACE,aAAA;EACA,YAAA;EACA,gBAAA;EACA,gBAAA;EACA,cAAA;AAiGF;;AA9FA;;EAEE,WAAA;EACA,uCAAA;EACA,mBAAA;EACA,qBAAA;EACA,aAAA;AAiGF;;AA9FA;EACE,cAAA;EACA,aAAA;EACA,mBAAA;EACA,gBAAA;EACA,sCAAA;EACA,aAAA;EACA,YAAA;AAiGF;;AA9FA;EACE,cAAA;AAiGF;;AA9FA;EACE,iBAAA;EACA,gBAAA;EACA,cAAA;AAiGF;;AA9FA;EACE,cAAA;AAiGF;;AA9FA;EACE,mBAAA;AAiGF;;AA9FA;EACE,aAAA;EACA,8BAAA;EACA,mBAAA;EACA,SAAA;EACA,iBAAA;EACA,2CAAA;AAiGF;;AA9FA;EACE,aAAA;EACA,YAAA;AAiGF;;AA9FA;EACE,cAAA;EACA,gBAAA;AAiGF;;AA9FA;EACE;IACE,oBAAA;IACA,aAAA;EAiGF;AACF","sourcesContent":[".booking-page { padding: 80px 0; background: #f6f2ea; min-height: 70vh; }\n.booking-shell { max-width: 1120px; margin: 0 auto; }\n.section-head { margin-bottom: 28px; max-width: 760px; }\n.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; color: #b58b4a; font-weight: 700; }\nh1 { color: #08263a; margin: 8px 0; }\n.booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }\n.booking-card, .booking-detail-card, .empty-card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 18px 45px rgba(8,38,58,.08); border: 1px solid rgba(8,38,58,.08); }\n.booking-card h2 { margin: 12px 0 8px; color: #08263a; font-size: 1.25rem; }\n.booking-card p { margin: 4px 0; color: #516070; }\n.status-pill { display: inline-flex; border-radius: 999px; background: rgba(181,139,74,.12); color: #8a652d; padding: 6px 10px; font-size: .78rem; font-weight: 700; }\n.booking-meta { display: grid; gap: 6px; margin: 18px 0; color: #08263a; }\n.booking-actions { display: flex; gap: 10px; flex-wrap: wrap; }\n.btn { border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; text-decoration: none; }\n.btn-primary { background: #08263a; color: #fff; }\n.btn-secondary { background: #efe7da; color: #08263a; }\n.muted { color: #667; }\n.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 24px 0; }\n.detail-grid div { background: #f8f5ef; border-radius: 16px; padding: 14px; display: grid; gap: 4px; }\n.detail-grid strong { color: #08263a; }\n.detail-grid span { color: #516070; }\n.comments { background: #f8f5ef; padding: 16px; border-radius: 16px; color: #516070; }\n\n.payment-admin-card {\n  background: #fff;\n  border-radius: 24px;\n  padding: 24px;\n  margin: 24px 0;\n  box-shadow: 0 18px 45px rgba(8,38,58,.08);\n  border: 1px solid rgba(8,38,58,.08);\n}\n\n.payment-admin-card h2 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.payment-summary {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\n  gap: 12px;\n  margin: 16px 0;\n}\n\n.payment-summary div {\n  background: #f8f5ef;\n  border-radius: 16px;\n  padding: 14px;\n  display: grid;\n  gap: 4px;\n}\n\n.collect-balance {\n  display: grid;\n  gap: 12px;\n}\n\n.collect-balance label {\n  display: grid;\n  gap: 0.4rem;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.collect-balance select,\n.collect-balance textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n}\n\n.paid-badge {\n  display: inline-flex;\n  border-radius: 999px;\n  padding: 0.55rem 0.9rem;\n  background: #047857;\n  color: #fff;\n  font-weight: 700;\n}\n\n.success { color: #047857; font-weight: 700; }\n.error-message { color: #9f1d1d; font-weight: 700; }\n\n.blocked-note {\n  background: rgba(181,139,74,.12);\n  color: #8a652d;\n  border: 1px solid rgba(181,139,74,.25);\n  border-radius: 14px;\n  padding: 0.85rem 1rem;\n  font-weight: 700;\n}\n\n.warranty-actions {\n  background: #f8f5ef;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.warranty-actions p {\n  margin-top: 0;\n  color: #516070;\n}\n\n.cash-damage-card {\n  background: #fff7ed;\n  border: 1px solid rgba(242, 140, 40, 0.25);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.cash-damage-card h3 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.cash-damage-card label {\n  display: grid;\n  gap: 0.4rem;\n  margin: 0.85rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.cash-damage-card input,\n.cash-damage-card textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n  background: #fff;\n}\n\n.deposit-actions {\n  background: #eef6f0;\n  border: 1px solid rgba(4,120,87,.18);\n  border-radius: 16px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.deposit-actions p {\n  margin-top: 0;\n  color: #047857;\n  font-weight: 700;\n}\n\n.workflow-summary div {\n  min-height: 74px;\n}\n\n.workflow-panel {\n  background: #fff;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 18px;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.workflow-panel h3 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.terms-scroll-box {\n  max-height: 260px;\n  overflow: auto;\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 16px;\n  padding: 1rem;\n  background: #f8f5ef;\n  color: #516070;\n  line-height: 1.6;\n}\n\n.terms-check {\n  display: flex;\n  gap: 0.6rem;\n  align-items: flex-start;\n  margin: 1rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.radio-card {\n  display: flex;\n  align-items: flex-start;\n  gap: 0.7rem;\n  padding: 0.9rem;\n  border: 1px solid rgba(8,38,58,.12);\n  border-radius: 16px;\n  margin: 0.7rem 0;\n  background: #f8f5ef;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.radio-card input {\n  margin-top: 0.2rem;\n}\n\n.clarity-grid {\n  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\n}\n\n.clarity-grid div {\n  min-height: 82px;\n}\n\n.clarity-grid span {\n  font-weight: 700;\n}\n\n.customer-action-bar {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.85rem;\n  align-items: center;\n  margin: 1rem 0;\n  padding: 1rem;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 16px;\n  background: #f8f5ef;\n}\n\n.customer-edit-card {\n  background: #fff;\n  border: 1px solid rgba(8,38,58,.08);\n  border-radius: 20px;\n  padding: 1.25rem;\n  margin: 1.25rem 0;\n  box-shadow: 0 14px 35px rgba(8,38,58,.06);\n}\n\n.customer-edit-card h2 {\n  margin-top: 0;\n  color: #08263a;\n}\n\n.customer-edit-card label {\n  display: grid;\n  gap: 0.4rem;\n  margin: 0.8rem 0;\n  color: #08263a;\n  font-weight: 700;\n}\n\n.customer-edit-card input,\n.customer-edit-card textarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n  background: #fff;\n}\n\n.customer-edit-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.85rem;\n  margin-top: 1rem;\n}\n\n.status-clickable {\n  border: 0;\n  cursor: pointer;\n  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;\n}\n\n.status-clickable:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 8px 18px rgba(8,38,58,.12);\n}\n\n.status-modal-backdrop {\n  position: fixed;\n  inset: 0;\n  z-index: 1000;\n  background: rgba(8, 38, 58, 0.42);\n  backdrop-filter: blur(4px);\n  display: grid;\n  place-items: center;\n  padding: 1rem;\n}\n\n.status-modal {\n  width: min(620px, 100%);\n  max-height: min(760px, 92vh);\n  overflow: auto;\n  background: #fff;\n  border-radius: 28px;\n  padding: clamp(1.25rem, 3vw, 2rem);\n  box-shadow: 0 30px 80px rgba(8,38,58,.24);\n  position: relative;\n  border: 1px solid rgba(8,38,58,.08);\n}\n\n.status-modal h2 {\n  color: #08263a;\n  margin: 0.35rem 0 0.5rem;\n}\n\n.status-modal p {\n  color: #516070;\n  line-height: 1.6;\n}\n\n.modal-close {\n  position: absolute;\n  top: 0.9rem;\n  right: 0.9rem;\n  width: 38px;\n  height: 38px;\n  border: 0;\n  border-radius: 999px;\n  background: #f8f5ef;\n  color: #08263a;\n  font-size: 1.4rem;\n  cursor: pointer;\n}\n\n.status-timeline {\n  display: grid;\n  gap: 0.75rem;\n  margin: 1.25rem 0;\n}\n\n.status-step {\n  display: grid;\n  grid-template-columns: 170px 1fr;\n  gap: 0.8rem;\n  align-items: center;\n  padding: 0.95rem;\n  border-radius: 18px;\n  border: 1px solid rgba(8,38,58,.08);\n  background: #f8f5ef;\n}\n\n.status-step strong {\n  color: #08263a;\n}\n\n.status-step span {\n  color: #516070;\n  line-height: 1.45;\n}\n\n.status-step.done {\n  background: rgba(4, 120, 87, .09);\n  border-color: rgba(4, 120, 87, .18);\n}\n\n.status-step.done strong::before {\n  content: \"✓ \";\n  color: #047857;\n}\n\n.status-step.pending {\n  background: rgba(181, 139, 74, .09);\n  border-color: rgba(181, 139, 74, .18);\n}\n\n.status-step.pending strong::before {\n  content: \"• \";\n  color: #b58b4a;\n}\n\n.modal-actions {\n  display: flex;\n  justify-content: flex-end;\n  gap: 0.75rem;\n  margin-top: 1rem;\n}\n\n@media (max-width: 560px) {\n  .status-step {\n    grid-template-columns: 1fr;\n  }\n\n  .modal-actions {\n    justify-content: stretch;\n  }\n\n  .modal-actions .btn {\n    flex: 1;\n  }\n}\n\n.status-summary-card {\n  border: 2px solid rgba(181,139,74,.2) !important;\n  background: linear-gradient(135deg, #fff, #f8f5ef) !important;\n}\n\n.status-summary-card .status-pill {\n  justify-self: start;\n  margin-top: 0.25rem;\n}\n\n\n/* Ensure long Firebase T&C text is fully scrollable in every language. */\n.tc-scrollable,\n.terms-scroll-box,\n.terms-content {\n  display: block;\n  max-height: min(62vh, 560px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  -webkit-overflow-scrolling: touch;\n  overscroll-behavior: contain;\n  padding-right: 0.75rem;\n  scrollbar-gutter: stable;\n}\n\n.terms-scroll-box p,\n.terms-content p {\n  white-space: normal;\n  overflow: visible;\n  text-overflow: unset;\n  word-break: normal;\n}\n\n.terms-scroll-box h4,\n.terms-content h3 {\n  position: static;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box,\n  .terms-content {\n    max-height: 58vh;\n  }\n}\n\n\n/* Hard fix for long multilingual Firebase T&C text. */\n.tc-scrollable,\n.terms-scroll-box.tc-scrollable,\n.terms-content.tc-scrollable {\n  display: block !important;\n  height: clamp(360px, 62vh, 640px) !important;\n  max-height: clamp(360px, 62vh, 640px) !important;\n  min-height: 320px !important;\n  overflow-y: scroll !important;\n  overflow-x: hidden !important;\n  -webkit-overflow-scrolling: touch !important;\n  overscroll-behavior: contain !important;\n  touch-action: pan-y !important;\n  padding-right: 1rem !important;\n  box-sizing: border-box !important;\n}\n\n.terms-modal {\n  max-height: 94vh !important;\n  overflow: hidden !important;\n  display: flex !important;\n  flex-direction: column !important;\n}\n\n.terms-modal .terms-content.tc-scrollable {\n  flex: 1 1 auto !important;\n  height: auto !important;\n  min-height: 320px !important;\n  max-height: calc(94vh - 190px) !important;\n}\n\n.terms-scroll-box.tc-scrollable p,\n.terms-content.tc-scrollable p {\n  display: block !important;\n  white-space: normal !important;\n  overflow: visible !important;\n  text-overflow: unset !important;\n  -webkit-line-clamp: unset !important;\n  line-clamp: unset !important;\n  word-break: normal !important;\n}\n\n@media (max-width: 720px) {\n  .tc-scrollable,\n  .terms-scroll-box.tc-scrollable,\n  .terms-content.tc-scrollable {\n    height: 58vh !important;\n    max-height: 58vh !important;\n    min-height: 300px !important;\n  }\n\n  .terms-modal .terms-content.tc-scrollable {\n    max-height: calc(92vh - 170px) !important;\n  }\n}\n\n.extra-service-row {\n  display: flex;\n  justify-content: space-between;\n  gap: 1rem;\n  align-items: center;\n  padding: .85rem 0;\n  border-top: 1px solid rgba(8, 38, 58, .08);\n}\n\n.extra-service-row span {\n  display: block;\n  color: #64748b;\n  margin-top: .25rem;\n}\n\n.admin-extra-service-form,\n.refund-panel {\n  display: grid;\n  gap: .85rem;\n}\n\n.admin-extra-service-form label,\n.refund-panel label {\n  display: grid;\n  gap: .4rem;\n}\n\n.invoice-actions-card {\n  margin: 1.5rem 0;\n  padding: 1.25rem;\n  border: 1px solid rgba(8, 38, 58, .08);\n  border-radius: 18px;\n  background: #fffaf2;\n}\n\n.invoice-actions-card h2 {\n  margin: 0 0 .5rem;\n  color: #08263a;\n}\n\n.invoice-actions-card p {\n  color: #516070;\n}\n\n\n.extra-service-row {\n  align-items: flex-start;\n  gap: 1rem;\n}\n\n.extra-service-display {\n  display: grid;\n  gap: .25rem;\n  min-width: 0;\n}\n\n.extra-service-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: .5rem;\n  justify-content: flex-end;\n}\n\n.extra-service-edit {\n  display: grid;\n  grid-template-columns: minmax(180px, 1.5fr) minmax(120px, .7fr) minmax(130px, .7fr);\n  gap: .75rem;\n  flex: 1 1 100%;\n  width: 100%;\n}\n\n.extra-service-edit label {\n  display: grid;\n  gap: .35rem;\n  color: #516070;\n  font-weight: 700;\n}\n\n.extra-service-edit input,\n.extra-service-edit select {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, .16);\n  border-radius: 12px;\n  padding: .72rem .85rem;\n  font: inherit;\n}\n\n.btn-danger {\n  background: #9f1d1d !important;\n  color: #fff !important;\n}\n\n@media (max-width: 720px) {\n  .extra-service-edit {\n    grid-template-columns: 1fr;\n  }\n\n  .extra-service-actions {\n    justify-content: stretch;\n  }\n\n  .extra-service-actions .btn {\n    flex: 1 1 auto;\n    justify-content: center;\n  }\n}\n\n\n.admin-extra-service-actions-title {\n  margin: .75rem 0 .25rem;\n  padding: .6rem .8rem;\n  border-radius: 12px;\n  background: rgba(242, 140, 40, .14);\n  color: #9a4d08;\n  font-weight: 800;\n}\n\n.extra-service-row {\n  display: flex;\n  align-items: flex-start;\n  justify-content: space-between;\n  gap: 1rem;\n  flex-wrap: wrap;\n}\n\n.extra-service-actions {\n  display: flex !important;\n  flex-wrap: wrap;\n  gap: .5rem;\n  align-items: center;\n  justify-content: flex-end;\n}\n\n.admin-extra-btn {\n  display: inline-flex !important;\n  visibility: visible !important;\n  opacity: 1 !important;\n  min-width: 84px;\n  justify-content: center;\n}\n\n.extra-service-edit {\n  display: grid;\n  grid-template-columns: minmax(180px, 1.4fr) minmax(120px, .7fr) minmax(130px, .7fr);\n  gap: .75rem;\n  width: 100%;\n}\n\n.extra-service-edit label {\n  display: grid;\n  gap: .35rem;\n  color: #516070;\n  font-weight: 700;\n}\n\n.extra-service-edit input,\n.extra-service-edit select {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, .16);\n  border-radius: 12px;\n  padding: .72rem .85rem;\n  font: inherit;\n}\n\n.btn-danger {\n  background: #9f1d1d !important;\n  color: #fff !important;\n}\n\n@media (max-width: 720px) {\n  .extra-service-row {\n    display: grid;\n    grid-template-columns: 1fr;\n  }\n\n  .extra-service-actions {\n    justify-content: stretch;\n  }\n\n  .extra-service-actions .btn {\n    flex: 1 1 auto;\n  }\n\n  .extra-service-edit {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n.adhoc-payment-panel {\n  border: 1px solid rgba(242, 140, 40, .24);\n  background: #fffaf3;\n}\n\n.adhoc-payment-panel label {\n  display: grid;\n  gap: .4rem;\n  margin: .75rem 0;\n  color: #516070;\n  font-weight: 700;\n}\n\n.adhoc-payment-panel input {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, .16);\n  border-radius: 12px;\n  padding: .78rem .9rem;\n  font: inherit;\n  background: #fff;\n}\n\n\n.admin-booking-request-card {\n  margin: 1.25rem 0;\n  padding: 1.25rem;\n  border-radius: 20px;\n  background: #fffaf3;\n  border: 1px solid rgba(242, 140, 40, .28);\n  box-shadow: 0 14px 30px rgba(15, 23, 42, .06);\n}\n\n.admin-booking-request-card label {\n  display: grid;\n  gap: .45rem;\n  margin-top: 1rem;\n  font-weight: 700;\n  color: #334155;\n}\n\n.admin-booking-request-card textarea {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, .16);\n  border-radius: 14px;\n  padding: .85rem 1rem;\n  font: inherit;\n}\n\n.btn-danger {\n  background: #9f1d1d !important;\n  color: #fff !important;\n}\n\n\n.admin-proposal-finalization-card {\n  margin: 1.25rem 0;\n  padding: 1.25rem;\n  border-radius: 20px;\n  background: #fffaf3;\n  border: 1px solid rgba(242, 140, 40, .28);\n  box-shadow: 0 14px 30px rgba(15, 23, 42, .06);\n}\n\n.admin-proposal-finalization-card label {\n  display: grid;\n  gap: .45rem;\n  margin-top: 1rem;\n  font-weight: 700;\n  color: #334155;\n}\n\n.admin-proposal-finalization-card input,\n.admin-proposal-finalization-card textarea {\n  width: 100%;\n  border: 1px solid rgba(8, 38, 58, .16);\n  border-radius: 14px;\n  padding: .85rem 1rem;\n  font: inherit;\n}\n\n.estimated-request-price {\n  margin: 1rem 0;\n  padding: 1rem;\n  border-radius: 16px;\n  background: #fff;\n  border: 1px solid rgba(8, 38, 58, .10);\n  display: grid;\n  gap: .25rem;\n}\n\n.estimated-request-price strong {\n  color: #334155;\n}\n\n.estimated-request-price span {\n  font-size: 1.7rem;\n  font-weight: 800;\n  color: #08263a;\n}\n\n.estimated-request-price small {\n  color: #64748b;\n}\n\n.customer-payment-hub {\n  background: #f8f5ef;\n}\n\n.client-payment-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 1rem;\n  padding: .9rem 0;\n  border-top: 1px solid rgba(8, 38, 58, .08);\n}\n\n.client-payment-row div {\n  display: grid;\n  gap: .25rem;\n}\n\n.client-payment-row span {\n  color: #516070;\n  font-weight: 700;\n}\n\n@media (max-width: 720px) {\n  .client-payment-row {\n    align-items: stretch;\n    display: grid;\n  }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -12255,7 +12686,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"page-hero\">\n  <div class=\"container text-block\">\n    <span class=\"eyebrow\">{{ content.boatPage.eyebrow }}</span>\n    <h1>{{ content.boatPage.title }}</h1>\n    <p>{{ content.boatPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container split-grid\">\n    <div>\n      <h2>{{ content.boatPage.reasonsTitle }}</h2>\n      <p>{{ content.boatPage.reasonsText }}</p>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of content.boatPage.reasons\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"visual-grid\">\n      <img *ngFor=\"let image of images\" [src]=\"image\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container split-grid secondary-grid\">\n    <div>\n      <h2>{{ content.boatPage.comfortTitle }}</h2>\n      <p>{{ content.boatPage.comfortText }}</p>\n      <div class=\"price-box\">{{ content.priceFrom }}</div>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/contact\" class=\"btn\">{{ content.boatPage.cta }}</a>\n        <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\" target=\"_blank\" rel=\"noreferrer\" class=\"btn btn-book\">{{ content.common.bookOnClickAndBoat }}</a>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ content.boatPage.occasionsTitle }}</h2>\n      <ul class=\"occasions-list\">\n        <li *ngFor=\"let item of content.boatPage.occasions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section safety-link-section\">\n  <div class=\"container safety-link-box\">\n    <div>\n      <span class=\"eyebrow\">Safety</span>\n      <h2>Consignes de sécurité à bord</h2>\n      <p>Retrouvez les consignes principales pour profiter de votre navigation à bord d’Alegria en toute sérénité.</p>\n    </div>\n    <a routerLink=\"/safety\" class=\"btn btn-secondary\">Voir les consignes</a>\n  </div>\n</section>\n\n<app-safety-instructions></app-safety-instructions>\n\n\n<section class=\"section checklist-wrapper\">\n  <app-checklist></app-checklist>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container specs-grid\">\n    <div>\n      <h2>{{ specsTitle }}</h2>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of specs\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div>\n      <h2>{{ servicesTitle }}</h2>\n      <div class=\"offering-grid\">\n        <div class=\"offer-card\">\n          <h3>{{ coreTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of coreOffering\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ optionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of optionalExtras\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ suggestionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of guestSuggestions\">{{ item }}</li>\n          </ul>\n        </div>\n      </div>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/crew\" class=\"btn btn-secondary\">{{ crewCta }}</a>\n      </div>\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"page-hero\">\n  <div class=\"container text-block\">\n    <span class=\"eyebrow\">{{ content.boatPage.eyebrow }}</span>\n    <h1>{{ content.boatPage.title }}</h1>\n    <p>{{ content.boatPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container split-grid\">\n    <div>\n      <h2>{{ content.boatPage.reasonsTitle }}</h2>\n      <p>{{ content.boatPage.reasonsText }}</p>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of content.boatPage.reasons\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"visual-grid\">\n      <img *ngFor=\"let image of images\" [src]=\"image\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container split-grid secondary-grid\">\n    <div>\n      <h2>{{ content.boatPage.comfortTitle }}</h2>\n      <p>{{ content.boatPage.comfortText }}</p>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/contact\" class=\"btn\">{{ content.boatPage.cta }}</a>\n        <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\" target=\"_blank\" rel=\"noreferrer\" class=\"btn btn-book\">{{ content.common.bookOnClickAndBoat }}</a>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ content.boatPage.occasionsTitle }}</h2>\n      <ul class=\"occasions-list\">\n        <li *ngFor=\"let item of content.boatPage.occasions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section safety-link-section\">\n  <div class=\"container safety-link-box\">\n    <div>\n      <span class=\"eyebrow\">Safety</span>\n      <h2>Consignes de sécurité à bord</h2>\n      <p>Retrouvez les consignes principales pour profiter de votre navigation à bord d’Alegria en toute sérénité.</p>\n    </div>\n    <a routerLink=\"/safety\" class=\"btn btn-secondary\">Voir les consignes</a>\n  </div>\n</section>\n\n<app-safety-instructions></app-safety-instructions>\n\n\n<section class=\"section checklist-wrapper\">\n  <app-checklist></app-checklist>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container specs-grid\">\n    <div>\n      <h2>{{ specsTitle }}</h2>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of specs\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div>\n      <h2>{{ servicesTitle }}</h2>\n      <div class=\"offering-grid\">\n        <div class=\"offer-card\">\n          <h3>{{ coreTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of coreOffering\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ optionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of optionalExtras\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ suggestionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of guestSuggestions\">{{ item }}</li>\n          </ul>\n        </div>\n      </div>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/crew\" class=\"btn btn-secondary\">{{ crewCta }}</a>\n      </div>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -12518,12 +12949,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AdminExternalBookingsComponent: () => (/* binding */ AdminExternalBookingsComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _admin_external_bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin-external-bookings.component.html?ngResource */ 71010);
 /* harmony import */ var _admin_external_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./admin-external-bookings.component.scss?ngResource */ 56598);
 /* harmony import */ var _admin_external_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_admin_external_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
 /* harmony import */ var _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../bookings/proposal-api.service */ 79439);
+/* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../site-content */ 14009);
+/* harmony import */ var _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../site-content-service/site-content.service */ 73196);
+/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+
+
+
 
 
 
@@ -12532,9 +12969,14 @@ __webpack_require__.r(__webpack_exports__);
 
 let AdminExternalBookingsComponent = class AdminExternalBookingsComponent {
   proposalApi;
+  siteContentService;
+  languageService;
   saving = false;
   message = '';
   error = '';
+  currentLanguage = 'fr';
+  pageText = _site_content__WEBPACK_IMPORTED_MODULE_4__.SITE_CONTENT.fr?.externalBookings || {};
+  languageSub;
   form = {
     source: 'samboat',
     status: 'accepted',
@@ -12546,28 +12988,81 @@ let AdminExternalBookingsComponent = class AdminExternalBookingsComponent {
     departureTime: '10:00',
     arrivalTime: '18:00',
     totalAmount: 0,
+    externalRemainingOnboardAmount: 0,
+    externalExtraServicesOnboardAmount: 0,
     warrantyAmount: 500,
+    proposalMessage: 'Please accept the T&C, pay the deposit for the amount due on board, and select your warranty mode.',
     warrantyPaymentChoice: 'stripe_card'
   };
-  constructor(proposalApi) {
+  constructor(proposalApi, siteContentService, languageService) {
     this.proposalApi = proposalApi;
+    this.siteContentService = siteContentService;
+    this.languageService = languageService;
   }
-  saveExternalBooking() {
+  ngOnInit() {
+    this.languageSub = this.languageService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      this.loadPageText(language);
+    });
+    this.loadPageText(this.currentLanguage);
+  }
+  ngOnDestroy() {
+    this.languageSub?.unsubscribe();
+  }
+  loadPageText(language) {
     var _this = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this.saving = true;
-      _this.error = '';
-      _this.message = '';
+      const fallback = _site_content__WEBPACK_IMPORTED_MODULE_4__.SITE_CONTENT[language]?.externalBookings || _site_content__WEBPACK_IMPORTED_MODULE_4__.SITE_CONTENT.fr?.externalBookings || {};
       try {
-        const saved = yield _this.proposalApi.createExternalBooking(_this.form);
-        _this.form = {
+        const content = yield _this.siteContentService.getContent();
+        _this.pageText = {
+          ...fallback,
+          ...(content?.[language]?.externalBookings || {}),
+          ...(content?.externalBookings?.[language] || {})
+        };
+      } catch {
+        _this.pageText = fallback;
+      }
+    })();
+  }
+  t(key) {
+    return this.pageText?.[key] || key;
+  }
+  saveExternalBooking() {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this2.saving = true;
+      _this2.error = '';
+      _this2.message = '';
+      try {
+        const remainingOnboardAmount = Number(_this2.form.externalRemainingOnboardAmount || 0);
+        const extraServicesOnboardAmount = Number(_this2.form.externalExtraServicesOnboardAmount || 0);
+        const onboardAmount = remainingOnboardAmount + extraServicesOnboardAmount;
+        const warrantyAmount = Number(_this2.form.warrantyAmount || 0);
+        if (remainingOnboardAmount < 0 || extraServicesOnboardAmount < 0) {
+          throw new Error(_this2.t('negativeAmountsError'));
+        }
+        if (onboardAmount <= 0) {
+          throw new Error(_this2.t('missingOnboardAmountError'));
+        }
+        if (warrantyAmount < 0) {
+          throw new Error(_this2.t('negativeWarrantyError'));
+        }
+        const saved = yield _this2.proposalApi.createExternalBooking({
+          ..._this2.form,
+          totalAmount: onboardAmount,
+          externalRemainingOnboardAmount: remainingOnboardAmount,
+          externalExtraServicesOnboardAmount: extraServicesOnboardAmount,
+          warrantyAmount
+        });
+        _this2.form = {
           ...saved
         };
-        _this.message = `External booking saved. Warranty link: ${window.location.origin}/proposal/${saved.proposalId}`;
+        _this2.message = `${_this2.t('savedMessage')} ${window.location.origin}/proposal/${saved.proposalId}`;
       } catch (e) {
-        _this.error = e?.message || 'Unable to save external booking.';
+        _this2.error = e?.message || _this2.t('saveError');
       }
-      _this.saving = false;
+      _this2.saving = false;
     })();
   }
   get warrantyLink() {
@@ -12575,9 +13070,13 @@ let AdminExternalBookingsComponent = class AdminExternalBookingsComponent {
   }
   static ctorParameters = () => [{
     type: _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_3__.ProposalApiService
+  }, {
+    type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__.SiteContentService
+  }, {
+    type: _services_language_service__WEBPACK_IMPORTED_MODULE_6__.LanguageService
   }];
 };
-AdminExternalBookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
+AdminExternalBookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
   selector: 'app-admin-external-bookings',
   template: _admin_external_bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_admin_external_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
@@ -13505,7 +14004,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "\n<section class=\"external-bookings-page\">\n  <div class=\"container external-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">Admin</span>\n      <h1>SamBoat / Click&Boat bookings</h1>\n      <p>For platform bookings, the only Alegria flow needed is the security / damage deposit.</p>\n    </div>\n\n    <article class=\"external-card\">\n      <div class=\"form-grid\">\n        <label>Platform<select [(ngModel)]=\"form.source\"><option value=\"samboat\">SamBoat</option><option value=\"clickandboat\">Click&Boat</option><option value=\"other\">Other</option></select></label>\n        <label>Customer name<input type=\"text\" [(ngModel)]=\"form.customerName\" /></label>\n        <label>Customer email<input type=\"email\" [(ngModel)]=\"form.customerEmail\" /></label>\n        <label>Phone<input type=\"tel\" [(ngModel)]=\"form.customerPhone\" /></label>\n        <label>Outing type<input type=\"text\" [(ngModel)]=\"form.outingType\" /></label>\n        <label>Outing date<input type=\"date\" [(ngModel)]=\"form.outingDate\" /></label>\n        <label>Departure time<input type=\"time\" [(ngModel)]=\"form.departureTime\" /></label>\n        <label>Return time<input type=\"time\" [(ngModel)]=\"form.arrivalTime\" /></label>\n        <label>Warranty amount (€)<input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"form.warrantyAmount\" /></label>\n        <label>Warranty method<select [(ngModel)]=\"form.warrantyPaymentChoice\"><option value=\"stripe_card\">Stripe card registration</option><option value=\"cash_on_board\">€500 cash before departure</option></select></label>\n      </div>\n\n      <div class=\"actions\"><button class=\"btn btn-primary\" type=\"button\" [disabled]=\"saving\" (click)=\"saveExternalBooking()\">{{ saving ? 'Saving...' : 'Save external booking' }}</button></div>\n      <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n      <p class=\"client-link\" *ngIf=\"warrantyLink\">{{ warrantyLink }}</p>\n      <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n    </article>\n  </div>\n</section>\n";
+module.exports = "<section class=\"external-bookings-page\">\n  <div class=\"container external-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ t('eyebrow') }}</span>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n\n    <article class=\"external-card\">\n      <div class=\"form-grid\">\n        <label>{{ t('platform') }}\n          <select [(ngModel)]=\"form.source\">\n            <option value=\"samboat\">{{ t('platformSamboat') }}</option>\n            <option value=\"clickandboat\">{{ t('platformClickAndBoat') }}</option>\n            <option value=\"other\">{{ t('platformOther') }}</option>\n          </select>\n        </label>\n\n        <label>{{ t('customerName') }}<input type=\"text\" [(ngModel)]=\"form.customerName\" /></label>\n        <label>{{ t('customerEmail') }}<input type=\"email\" [(ngModel)]=\"form.customerEmail\" /></label>\n        <label>{{ t('phone') }}<input type=\"tel\" [(ngModel)]=\"form.customerPhone\" /></label>\n        <label>{{ t('outingType') }}<input type=\"text\" [(ngModel)]=\"form.outingType\" /></label>\n        <label>{{ t('outingDate') }}<input type=\"date\" [(ngModel)]=\"form.outingDate\" /></label>\n        <label>{{ t('departureTime') }}<input type=\"time\" [(ngModel)]=\"form.departureTime\" /></label>\n        <label>{{ t('returnTime') }}<input type=\"time\" [(ngModel)]=\"form.arrivalTime\" /></label>\n        <label>{{ t('remainingOnboardAmount') }}<input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"form.externalRemainingOnboardAmount\" /></label>\n        <label>{{ t('extraServicesOnboardAmount') }}<input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"form.externalExtraServicesOnboardAmount\" /></label>\n        <label>{{ t('totalForDeposit') }}<input type=\"number\" readonly [value]=\"(form.externalRemainingOnboardAmount || 0) + (form.externalExtraServicesOnboardAmount || 0)\" /></label>\n        <label>{{ t('warrantyAmount') }}<input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"form.warrantyAmount\" /></label>\n\n        <label>{{ t('warrantyMethod') }}\n          <select [(ngModel)]=\"form.warrantyPaymentChoice\">\n            <option value=\"stripe_card\">{{ t('warrantyStripeCard') }}</option>\n            <option value=\"cash_on_board\">{{ t('warrantyCash') }}</option>\n          </select>\n        </label>\n      </div>\n\n      <div class=\"actions\">\n        <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"saving\" (click)=\"saveExternalBooking()\">\n          {{ saving ? t('saving') : t('createClientProposal') }}\n        </button>\n      </div>\n\n      <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n      <p class=\"client-link\" *ngIf=\"warrantyLink\">{{ t('clientProposalLink') }}: {{ warrantyLink }}</p>\n      <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -13664,6 +14163,71 @@ textarea {
   font-size: 0.92rem;
 }
 
+.form-error {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  background: #fff1f2;
+  color: #9f1239;
+  font-weight: 700;
+}
+
+.sent-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(8, 38, 58, 0.62);
+}
+
+.sent-modal {
+  position: relative;
+  width: min(460px, 100%);
+  border-radius: 28px;
+  background: #fff;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.28);
+}
+
+.sent-modal h2 {
+  margin: 0 0 0.65rem;
+}
+
+.sent-modal p {
+  margin: 0 0 1.4rem;
+  color: #475569;
+}
+
+.modal-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 1rem;
+  border-radius: 50%;
+  background: #e8f4f7;
+  color: #0b6e8f;
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.85rem;
+  right: 1rem;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
 @media (max-width: 860px) {
   .contact-grid,
   .field-grid {
@@ -13723,7 +14287,7 @@ p, li, input, textarea, select, .card-body, .term-section {
 
 .section-light {
   background: var(--alegria-sand);
-}`, "",{"version":3,"sources":["webpack://./src/app/home/contact/contact.component.scss"],"names":[],"mappings":"AACA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,kCAAA;EACA,WAAA;AACF;;AAEA;;EAEE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,8CAAA;AACF;;AAEA;EACE,aAAA;EACA,qCAAA;EACA,SAAA;AACF;;AAEA;EACE,aAAA;EACA,sBAAA;EACA,YAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;;;EAGE,yBAAA;EACA,mBAAA;EACA,oBAAA;EACA,aAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,aAAA;EACA,eAAA;EACA,SAAA;EACA,kBAAA;AACF;;AAEA;EACE,oBAAA;EACA,uBAAA;EACA,mBAAA;EACA,qBAAA;EACA,YAAA;EACA,eAAA;EACA,uBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE,mBAAA;EACA,WAAA;AACF;;AAEA;EACE,mBAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,YAAA;EACA,kBAAA;EACA,gCAAA;AACF;;AAEA;;EAEE,cAAA;EACA,qBAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,mBAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE;;IAEE,0BAAA;EACF;AACF;AAGA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AADF;;AAIA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AADF;;AAIA;EACE,yCAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,2BAAA;AADF;;AAIA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AADF;;AAIA;EACE,sCAAA;EACA,0BAAA;AADF;;AAIA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AADF;;AAIA;EACE,6DAAA;AADF;;AAIA;EACE,+BAAA;AADF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  color: #08263a;\n  font-size: 1.35rem;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.contact-grid {\n  display: grid;\n  grid-template-columns: 1.2fr 0.8fr;\n  gap: 1.4rem;\n}\n\n.contact-card,\n.info-card {\n  background: #fff;\n  border-radius: 24px;\n  padding: 1.45rem;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.field-grid {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 1rem;\n}\n\nlabel {\n  display: flex;\n  flex-direction: column;\n  gap: 0.45rem;\n  color: #334155;\n  font-weight: 600;\n  font-size: 0.92rem;\n}\n\ninput,\nselect,\ntextarea {\n  border: 1px solid #cbd5e1;\n  border-radius: 14px;\n  padding: 0.9rem 1rem;\n  font: inherit;\n  color: #08263a;\n  background: #fff;\n}\n\n.full-width {\n  margin-top: 1rem;\n}\n\n.form-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  margin-top: 1.2rem;\n}\n\n.btn {\n  display: inline-flex;\n  justify-content: center;\n  align-items: center;\n  text-decoration: none;\n  border: none;\n  cursor: pointer;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n.btn-primary {\n  background: #08263a;\n  color: #fff;\n}\n\n.btn-secondary {\n  background: #e8f4f7;\n  color: #08263a;\n}\n\n.info-block {\n  display: grid;\n  gap: 0.35rem;\n  padding: 0.95rem 0;\n  border-bottom: 1px solid #e8f4f7;\n}\n\n.info-block a,\n.info-block span {\n  color: #0b6e8f;\n  text-decoration: none;\n}\n\n.price-info span {\n  font-weight: 700;\n}\n\n.notice {\n  margin-top: 1rem;\n  padding: 1rem;\n  border-radius: 16px;\n  background: #e8f4f7;\n  color: #08263a;\n  font-size: 0.92rem;\n}\n\n@media (max-width: 860px) {\n  .contact-grid,\n  .field-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/app/home/contact/contact.component.scss"],"names":[],"mappings":"AACA;EACE,+BAAA;EACA,cAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;;EAEE,eAAA;AACF;;AAEA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AACF;;AAEA;EACE,oCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,aAAA;EACA,kCAAA;EACA,WAAA;AACF;;AAEA;;EAEE,gBAAA;EACA,mBAAA;EACA,gBAAA;EACA,8CAAA;AACF;;AAEA;EACE,aAAA;EACA,qCAAA;EACA,SAAA;AACF;;AAEA;EACE,aAAA;EACA,sBAAA;EACA,YAAA;EACA,cAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;;;EAGE,yBAAA;EACA,mBAAA;EACA,oBAAA;EACA,aAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,aAAA;EACA,eAAA;EACA,SAAA;EACA,kBAAA;AACF;;AAEA;EACE,oBAAA;EACA,uBAAA;EACA,mBAAA;EACA,qBAAA;EACA,YAAA;EACA,eAAA;EACA,uBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;AACF;;AAEA;EACE,mBAAA;EACA,WAAA;AACF;;AAEA;EACE,mBAAA;EACA,cAAA;AACF;;AAEA;EACE,aAAA;EACA,YAAA;EACA,kBAAA;EACA,gCAAA;AACF;;AAEA;;EAEE,cAAA;EACA,qBAAA;AACF;;AAEA;EACE,gBAAA;AACF;;AAEA;EACE,gBAAA;EACA,aAAA;EACA,mBAAA;EACA,mBAAA;EACA,cAAA;EACA,kBAAA;AACF;;AAGA;EACE,gBAAA;EACA,oBAAA;EACA,mBAAA;EACA,mBAAA;EACA,cAAA;EACA,gBAAA;AAAF;;AAGA;EACE,eAAA;EACA,QAAA;EACA,cAAA;EACA,aAAA;EACA,mBAAA;EACA,uBAAA;EACA,eAAA;EACA,iCAAA;AAAF;;AAGA;EACE,kBAAA;EACA,uBAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;EACA,kBAAA;EACA,8CAAA;AAAF;;AAGA;EACE,mBAAA;AAAF;;AAGA;EACE,kBAAA;EACA,cAAA;AAAF;;AAGA;EACE,oBAAA;EACA,mBAAA;EACA,uBAAA;EACA,WAAA;EACA,YAAA;EACA,mBAAA;EACA,kBAAA;EACA,mBAAA;EACA,cAAA;EACA,iBAAA;EACA,gBAAA;AAAF;;AAGA;EACE,kBAAA;EACA,YAAA;EACA,WAAA;EACA,YAAA;EACA,uBAAA;EACA,cAAA;EACA,iBAAA;EACA,cAAA;EACA,eAAA;AAAF;;AAGA;EACE;;IAEE,0BAAA;EAAF;AACF;AAIA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAFF;;AAKA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAFF;;AAKA;EACE,yCAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,2BAAA;AAFF;;AAKA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAFF;;AAKA;EACE,sCAAA;EACA,0BAAA;AAFF;;AAKA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAFF;;AAKA;EACE,6DAAA;AAFF;;AAKA;EACE,+BAAA;AAFF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.85rem, 3vw, 3rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  color: #08263a;\n  font-size: 1.35rem;\n}\n\np {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.97rem;\n}\n\n.contact-grid {\n  display: grid;\n  grid-template-columns: 1.2fr 0.8fr;\n  gap: 1.4rem;\n}\n\n.contact-card,\n.info-card {\n  background: #fff;\n  border-radius: 24px;\n  padding: 1.45rem;\n  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);\n}\n\n.field-grid {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 1rem;\n}\n\nlabel {\n  display: flex;\n  flex-direction: column;\n  gap: 0.45rem;\n  color: #334155;\n  font-weight: 600;\n  font-size: 0.92rem;\n}\n\ninput,\nselect,\ntextarea {\n  border: 1px solid #cbd5e1;\n  border-radius: 14px;\n  padding: 0.9rem 1rem;\n  font: inherit;\n  color: #08263a;\n  background: #fff;\n}\n\n.full-width {\n  margin-top: 1rem;\n}\n\n.form-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  margin-top: 1.2rem;\n}\n\n.btn {\n  display: inline-flex;\n  justify-content: center;\n  align-items: center;\n  text-decoration: none;\n  border: none;\n  cursor: pointer;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n}\n\n.btn-primary {\n  background: #08263a;\n  color: #fff;\n}\n\n.btn-secondary {\n  background: #e8f4f7;\n  color: #08263a;\n}\n\n.info-block {\n  display: grid;\n  gap: 0.35rem;\n  padding: 0.95rem 0;\n  border-bottom: 1px solid #e8f4f7;\n}\n\n.info-block a,\n.info-block span {\n  color: #0b6e8f;\n  text-decoration: none;\n}\n\n.price-info span {\n  font-weight: 700;\n}\n\n.notice {\n  margin-top: 1rem;\n  padding: 1rem;\n  border-radius: 16px;\n  background: #e8f4f7;\n  color: #08263a;\n  font-size: 0.92rem;\n}\n\n\n.form-error {\n  margin-top: 1rem;\n  padding: 0.9rem 1rem;\n  border-radius: 14px;\n  background: #fff1f2;\n  color: #9f1239;\n  font-weight: 700;\n}\n\n.sent-modal-backdrop {\n  position: fixed;\n  inset: 0;\n  z-index: 10000;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 1.5rem;\n  background: rgba(8, 38, 58, 0.62);\n}\n\n.sent-modal {\n  position: relative;\n  width: min(460px, 100%);\n  border-radius: 28px;\n  background: #fff;\n  padding: 2rem;\n  text-align: center;\n  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.28);\n}\n\n.sent-modal h2 {\n  margin: 0 0 0.65rem;\n}\n\n.sent-modal p {\n  margin: 0 0 1.4rem;\n  color: #475569;\n}\n\n.modal-icon {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 56px;\n  height: 56px;\n  margin-bottom: 1rem;\n  border-radius: 50%;\n  background: #e8f4f7;\n  color: #0b6e8f;\n  font-size: 1.8rem;\n  font-weight: 800;\n}\n\n.modal-close {\n  position: absolute;\n  top: 0.85rem;\n  right: 1rem;\n  border: none;\n  background: transparent;\n  color: #64748b;\n  font-size: 1.6rem;\n  line-height: 1;\n  cursor: pointer;\n}\n\n@media (max-width: 860px) {\n  .contact-grid,\n  .field-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -14536,15 +15100,34 @@ let BookingApiService = class BookingApiService {
     return this.postFirstAvailable([`${this.baseUrl}/pay/outing-deposit-checkout`, `${this.baseUrl}/api/payments/create-deposit-checkout-session`, `${this.baseUrl}/stripe/deposit-checkout`], enrichedPayload);
   }
   createBalanceCheckout(payload) {
+    const balanceAmount = Number(payload.balanceAmount || payload.amount || 0);
     const enrichedPayload = {
       ...payload,
       proposalId: payload.proposalId || payload.bookingId,
-      amount: Number(payload.amount || payload.balanceAmount || 0),
-      balanceAmount: Number(payload.balanceAmount || payload.amount || 0),
-      currency: payload.currency || 'eur',
-      paymentType: payload.paymentType || 'balance'
+      amount: balanceAmount,
+      balanceAmount,
+      // Some deployed backends only have the original deposit checkout route.
+      // Keep the balance metadata, but also provide depositAmount so that legacy
+      // checkout handlers can still create a Stripe session for the 90% payment.
+      depositAmount: balanceAmount,
+      remainingAmount: balanceAmount,
+      paymentType: payload.paymentType || 'balance',
+      checkoutType: 'balance',
+      description: `Remaining 90% balance for booking ${payload.bookingId}`,
+      currency: payload.currency || 'eur'
     };
-    return this.postFirstAvailable([`${this.baseUrl}/pay/outing-balance-checkout`, `${this.baseUrl}/pay/outing-remaining-checkout`, `${this.baseUrl}/api/payments/create-balance-checkout-session`, `${this.baseUrl}/api/payments/create-remaining-checkout-session`, `${this.baseUrl}/stripe/balance-checkout`, `${this.baseUrl}/stripe/remaining-checkout`], enrichedPayload);
+    return this.postFirstAvailable([
+    // Routes present in the latest backend app(36).zip.
+    `${this.baseUrl}/pay/outing-balance-checkout`, `${this.baseUrl}/pay/outing-remaining-checkout`, `${this.baseUrl}/api/payments/create-balance-checkout-session`, `${this.baseUrl}/api/payments/create-remaining-checkout-session`, `${this.baseUrl}/stripe/balance-checkout`, `${this.baseUrl}/stripe/remaining-checkout`,
+    // Practical fallback: latest backend also has extra-service checkout.
+    // This still redirects to Stripe for the 90% amount; the booking-detail return handler
+    // records balancePaid=true because successUrl keeps paymentType=balance.
+    `${this.baseUrl}/pay/outing-extra-service-checkout`, `${this.baseUrl}/api/payments/create-extra-service-checkout-session`, `${this.baseUrl}/stripe/extra-service-checkout`], {
+      ...enrichedPayload,
+      extraServiceId: `balance_${payload.bookingId}`,
+      title: 'Remaining 90% balance',
+      name: 'Remaining 90% balance'
+    });
   }
   createWarrantySetup(payload) {
     return this.postFirstAvailable([`${this.baseUrl}/pay/outing-warranty-checkout`, `${this.baseUrl}/api/payments/create-warranty-checkout-session`, `${this.baseUrl}/api/payments/create-warranty-setup-session`, `${this.baseUrl}/stripe/warranty-setup`], payload);
@@ -14598,7 +15181,10 @@ let BookingApiService = class BookingApiService {
     return this.postFirstAvailable([`${this.baseUrl}/pay/outing-booking-reject`, `${this.baseUrl}/api/bookings/reject-request`], payload);
   }
   getExtraServicesCatalog() {
-    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.readFirebasePath('/bnExtraServices')).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.map)(raw => this.normalizeArray(raw).filter(item => item && item.active !== false)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)([])));
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.readFirebasePath('/bnExtraServices')).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.map)(raw => {
+      const catalog = this.unwrapFirebaseNamedObject(raw, 'bnExtraServices');
+      return this.normalizeArray(catalog).filter(item => item && item.active !== false).sort((a, b) => Number(a.sortOrder ?? 999) - Number(b.sortOrder ?? 999));
+    }), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)([])));
   }
   createExtraServiceRequest(bookingId, extraService) {
     var _this4 = this;
@@ -14630,9 +15216,31 @@ let BookingApiService = class BookingApiService {
     })();
   }
   createExtraServiceCheckout(payload) {
-    return this.postFirstAvailable([`${this.baseUrl}/pay/outing-extra-service-checkout`, `${this.baseUrl}/api/payments/create-extra-service-checkout-session`, `${this.baseUrl}/stripe/extra-service-checkout`], {
+    const amount = Number(payload.amount || 0);
+    return this.postFirstAvailable([`${this.baseUrl}/pay/outing-extra-service-checkout`, `${this.baseUrl}/api/payments/create-extra-service-checkout-session`, `${this.baseUrl}/stripe/extra-service-checkout`,
+    // Legacy fallback: create a standard Stripe checkout session with extra-service metadata.
+    `${this.baseUrl}/pay/outing-deposit-checkout`, `${this.baseUrl}/api/payments/create-deposit-checkout-session`, `${this.baseUrl}/stripe/deposit-checkout`], {
       ...payload,
+      amount,
+      depositAmount: amount,
       paymentType: 'extra_service',
+      checkoutType: 'extra_service',
+      currency: payload.currency || 'eur'
+    });
+  }
+  createAdhocCheckout(payload) {
+    const adhocPaymentId = payload.adhocPaymentId || `adhoc_${Date.now()}`;
+    return this.postFirstAvailable([
+    // The latest backend app(36).zip does not expose dedicated ad-hoc routes.
+    // Use the deployed generic extra-service checkout for ad-hoc customer payments.
+    `${this.baseUrl}/pay/outing-extra-service-checkout`, `${this.baseUrl}/api/payments/create-extra-service-checkout-session`, `${this.baseUrl}/stripe/extra-service-checkout`], {
+      ...payload,
+      adhocPaymentId,
+      extraServiceId: adhocPaymentId,
+      amount: Number(payload.amount || 0),
+      depositAmount: Number(payload.amount || 0),
+      paymentType: 'ad_hoc',
+      checkoutType: 'ad_hoc',
       currency: payload.currency || 'eur'
     });
   }
@@ -14653,19 +15261,25 @@ let BookingApiService = class BookingApiService {
   postFirstAvailable(endpoints, payload) {
     return new rxjs__WEBPACK_IMPORTED_MODULE_4__.Observable(observer => {
       let index = 0;
+      let lastError = null;
       const tryNext = () => {
         if (index >= endpoints.length) {
-          observer.error(new Error('No payment endpoint is available. Please verify the backend extra service/ad hoc checkout route is deployed.'));
+          const backendMessage = lastError?.error?.error || lastError?.error?.message || lastError?.message;
+          observer.error(new Error(backendMessage || 'No checkout endpoint is available on the deployed backend.'));
           return;
         }
-        this.http.post(endpoints[index++], payload, {
-          withCredentials: true
-        }).subscribe({
+        // Do not send cookies for Stripe checkout creation.
+        // The backend sent by the project uses Access-Control-Allow-Origin: *;
+        // withCredentials=true can make browsers reject the call before the route is reached.
+        this.http.post(endpoints[index++], payload).subscribe({
           next: response => {
             observer.next(response);
             observer.complete();
           },
-          error: () => tryNext()
+          error: error => {
+            lastError = error;
+            tryNext();
+          }
         });
       };
       tryNext();
@@ -14910,6 +15524,20 @@ let BookingApiService = class BookingApiService {
     })) : [];
     return raw.map(item => this.normalizeBooking(item)).filter(booking => !!booking.bookingId);
   }
+  unwrapFirebaseNamedObject(raw, key) {
+    if (!raw || typeof raw !== 'object') {
+      return raw;
+    }
+    // Firebase exports may contain either:
+    //   /bnExtraServices/{serviceId}
+    // or the imported wrapper:
+    //   /bnExtraServices/bnExtraServices/{serviceId}
+    // Same principle is used for guestInfo.
+    if (raw[key] && typeof raw[key] === 'object') {
+      return raw[key];
+    }
+    return raw;
+  }
   normalizeArray(raw) {
     if (!raw) {
       return [];
@@ -14953,8 +15581,10 @@ let BookingApiService = class BookingApiService {
     const totalPrice = Number(item.totalPrice ?? item.total ?? item.amount ?? item.price ?? 0);
     const depositAmount = Number(item.depositAmount ?? item.deposit ?? (totalPrice ? Math.round(totalPrice * 0.1 * 100) / 100 : 0));
     const balanceAmount = Number(item.balanceAmount ?? (totalPrice && depositAmount ? Math.round((totalPrice - depositAmount) * 100) / 100 : 0));
-    const warrantyAmount = Number(item.warrantyAmount ?? item.warranty ?? item.cautionAmount ?? item.securityDepositAmount ?? 0);
-    const payments = item.payments || item.paymentStatus || {};
+    const nestedRaw = item.raw || {};
+    const nestedRawRaw = nestedRaw.raw || {};
+    const warrantyAmount = Number(item.warrantyAmount ?? nestedRaw.warrantyAmount ?? nestedRawRaw.warrantyAmount ?? item.warranty ?? item.cautionAmount ?? item.securityDepositAmount ?? 0);
+    const payments = item.payments || nestedRaw.payments || nestedRawRaw.payments || item.paymentStatus || {};
     const depositPayment = payments.deposit || item.depositPayment || {};
     const warrantyPayment = payments.warranty || item.warrantyPayment || {};
     const balancePayment = payments.balance || item.balancePayment || {};
@@ -14990,12 +15620,12 @@ let BookingApiService = class BookingApiService {
       comments: item.comments || item.notes?.customerNote || item.comment || '',
       termsAccepted: item.termsAccepted === true || item.termsStatus === 'accepted',
       termsAcceptedAt: item.termsAcceptedAt || null,
-      warrantyPaymentChoice: item.warrantyPaymentChoice || item.warrantyMethod || item.warrantyChoice || '',
-      warrantyMethod: item.warrantyMethod || item.warrantyPaymentChoice || '',
-      warrantySelected: item.warrantySelected === true || !!item.warrantyPaymentChoice || !!item.warrantyMethod,
-      warrantySelectedAt: item.warrantySelectedAt || null,
-      warrantyRegistered: item.warrantyRegistered === true || item.warrantyStatus === 'card_registered' || item.warrantyStatus === 'warranty_card_saved',
-      warrantyCashSelected: item.warrantyPaymentChoice === 'cash_on_board' || item.warrantyMethod === 'cash' || item.warrantyStatus === 'cash_selected',
+      warrantyPaymentChoice: item.warrantyPaymentChoice || nestedRaw.warrantyPaymentChoice || nestedRawRaw.warrantyPaymentChoice || item.warrantyMethod || nestedRaw.warrantyMethod || nestedRawRaw.warrantyMethod || item.warrantyChoice || '',
+      warrantyMethod: item.warrantyMethod || nestedRaw.warrantyMethod || nestedRawRaw.warrantyMethod || item.warrantyPaymentChoice || nestedRaw.warrantyPaymentChoice || nestedRawRaw.warrantyPaymentChoice || '',
+      warrantySelected: item.warrantySelected === true || !!item.warrantyPaymentChoice || !!nestedRaw.warrantyPaymentChoice || !!nestedRawRaw.warrantyPaymentChoice || !!item.warrantyMethod || !!nestedRaw.warrantyMethod || !!nestedRawRaw.warrantyMethod,
+      warrantySelectedAt: item.warrantySelectedAt || nestedRaw.warrantySelectedAt || nestedRawRaw.warrantySelectedAt || null,
+      warrantyRegistered: (item.warrantyPaymentChoice || nestedRaw.warrantyPaymentChoice || nestedRawRaw.warrantyPaymentChoice) === 'cash_on_board' || (item.warrantyStatus || nestedRaw.warrantyStatus || nestedRawRaw.warrantyStatus) === 'cash_selected' ? false : item.warrantyRegistered === true || nestedRaw.warrantyRegistered === true || nestedRawRaw.warrantyRegistered === true || item.warrantyStatus === 'card_registered' || item.warrantyStatus === 'warranty_card_saved' || nestedRaw.warrantyStatus === 'card_registered' || nestedRaw.warrantyStatus === 'warranty_card_saved',
+      warrantyCashSelected: item.warrantyPaymentChoice === 'cash_on_board' || nestedRaw.warrantyPaymentChoice === 'cash_on_board' || nestedRawRaw.warrantyPaymentChoice === 'cash_on_board' || item.warrantyMethod === 'cash' || nestedRaw.warrantyMethod === 'cash' || nestedRawRaw.warrantyMethod === 'cash' || item.warrantyStatus === 'cash_selected' || nestedRaw.warrantyStatus === 'cash_selected' || nestedRawRaw.warrantyStatus === 'cash_selected',
       damageReported: item.damageReported === true || item.warrantyStatus === 'charged' || item.warrantyCashDamageAmount > 0,
       damageCharged: item.damageCharged === true || item.warrantyStatus === 'charged' || item.warrantyCashDamageAmount > 0,
       extraServices: Array.isArray(item.extraServices) ? item.extraServices : this.normalizeArray(item.extraServices || item.payments?.extraServices || []),
@@ -15308,7 +15938,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n    <div class=\"price-pill\">{{ tour.price }}</div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/contact\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
+module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/contact\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -15357,6 +15987,9 @@ let ProposalApiService = class ProposalApiService {
   }
   validateProposalInput(input) {
     const errors = [];
+    const source = String(input.source || '').toLowerCase();
+    const bookingSource = String(input.bookingSource || '').toLowerCase();
+    const isExternalBooking = bookingSource === 'external' || ['external', 'samboat', 'clickandboat', 'click_and_boat', 'platform', 'airbnb', 'manual_external'].includes(source);
     const email = String(input.customerEmail || '').trim();
     const phone = String(input.customerPhone || '').trim();
     if (!String(input.customerName || '').trim()) errors.push('Customer name is required.');
@@ -15369,10 +16002,10 @@ let ProposalApiService = class ProposalApiService {
     if (!String(input.outingDate || '').trim()) errors.push('Outing date is required.');else if (Number.isNaN(Date.parse(String(input.outingDate)))) errors.push('Outing date is invalid.');
     if (!String(input.departureTime || '').trim()) errors.push('Departure time is required.');
     if (!String(input.arrivalTime || '').trim()) errors.push('Return time is required.');
-    if (Number(input.passengers || 0) <= 0) errors.push('Passengers must be greater than zero.');
-    if (Number(input.totalAmount || 0) <= 0) errors.push('Total amount must be greater than zero.');
+    if (!isExternalBooking && Number(input.passengers || 0) <= 0) errors.push('Passengers must be greater than zero.');
+    if (!isExternalBooking && Number(input.totalAmount || 0) <= 0) errors.push('Total amount must be greater than zero.');
     if (Number(input.warrantyAmount || 0) < 0) errors.push('Warranty amount cannot be negative.');
-    if (!String(input.proposalMessage || '').trim()) errors.push('Proposal message is required.');
+    if (!isExternalBooking && !String(input.proposalMessage || '').trim()) errors.push('Proposal message is required.');
     if (errors.length) throw new Error(errors.join(' '));
   }
   saveProposal(input) {
@@ -15510,8 +16143,9 @@ let ProposalApiService = class ProposalApiService {
         warrantyRegistered: warrantyPaymentChoice === 'cash_on_board' ? true : hydrated.warrantyRegistered === true,
         depositPaid: true,
         depositStatus: 'paid',
-        paymentStatus: hydrated.paymentStatus || '',
+        paymentStatus: 'paid',
         acceptedTS: Date.now(),
+        bookingRequestStatus: 'confirmed',
         modifiedTS: Date.now()
       };
       yield _this4.createBookingFromProposal(accepted);
@@ -15596,18 +16230,45 @@ let ProposalApiService = class ProposalApiService {
   createExternalBooking(input) {
     var _this9 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const remainingOnboardAmount = Number(input.externalRemainingOnboardAmount || input.remainingOnboardAmount || 0);
+      const extraServicesOnboardAmount = Number(input.externalExtraServicesOnboardAmount || input.extraServicesOnboardAmount || 0);
+      const onboardAmount = Number(input.totalAmount || remainingOnboardAmount + extraServicesOnboardAmount || 0);
+      const warrantyAmount = Number(input.warrantyAmount ?? 500);
+      const platformSource = String(input.source || 'samboat');
       const saved = yield _this9.saveProposal({
         ...input,
-        source: input.source || 'samboat',
-        status: 'accepted',
-        depositStatus: 'platform',
-        warrantyStatus: input.warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : 'not_selected',
-        tncAccepted: true,
-        tncAcceptedAt: Date.now(),
-        acceptedTS: Date.now(),
+        source: platformSource,
+        bookingSource: 'external',
+        externalPlatform: platformSource,
+        externalOnboardAmount: onboardAmount,
+        externalRemainingOnboardAmount: remainingOnboardAmount,
+        externalExtraServicesOnboardAmount: extraServicesOnboardAmount,
+        proposalExtraServicesPrice: extraServicesOnboardAmount,
+        proposalMessage: input.proposalMessage || 'Please accept the T&C, pay the deposit for the amount due on board, and select your warranty mode.',
+        passengers: Number(input.passengers || 0),
+        totalAmount: onboardAmount,
+        warrantyAmount,
+        status: 'sent',
+        depositStatus: 'pending',
+        depositPaid: false,
+        paymentStatus: 'awaiting_deposit',
+        warrantyStatus: 'not_selected',
+        warrantyRegistered: false,
+        tncAccepted: false,
+        tncAcceptedAt: null,
+        acceptedTS: undefined,
+        validUntil: input.validUntil || Date.now() + 30 * 24 * 60 * 60 * 1000,
         relatedBookingId: input.relatedBookingId || input.proposalId
       });
-      yield _this9.createBookingFromProposal(saved);
+      if (!saved.relatedBookingId) {
+        yield _this9.patchProposal(saved.proposalId, {
+          relatedBookingId: saved.proposalId
+        });
+        return {
+          ...saved,
+          relatedBookingId: saved.proposalId
+        };
+      }
       return saved;
     })();
   }
@@ -15635,6 +16296,69 @@ let ProposalApiService = class ProposalApiService {
       });
     })();
   }
+  markDepositPaidFromStripeReturn(proposalId, payload = {}) {
+    var _this12 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const current = yield _this12.readItem(_this12.proposalsCollection, proposalId);
+      if (!current) {
+        throw new Error('Proposal not found');
+      }
+      const patch = {
+        depositPaid: true,
+        depositStatus: 'paid',
+        paymentStatus: 'paid',
+        stripeCheckoutSessionId: payload.sessionId || payload.checkoutSessionId || current.stripeCheckoutSessionId || '',
+        stripePaymentIntentId: payload.paymentIntentId || current.stripePaymentIntentId || '',
+        modifiedTS: Date.now()
+      };
+      yield _this12.patchProposal(proposalId, patch);
+      yield _this12.patchBookingDepositState(proposalId, {
+        ...current,
+        ...patch
+      }, payload).catch(() => undefined);
+      return {
+        ...current,
+        ...patch
+      };
+    })();
+  }
+  patchBookingDepositState(proposalId, proposal, payload = {}) {
+    var _this13 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const bookingId = proposal.relatedBookingId || proposalId;
+      const existing = yield _this13.readItem(_this13.bookingsCollection, bookingId).catch(() => undefined);
+      const payment = {
+        ...(existing?.payments?.deposit || {}),
+        paid: true,
+        depositPaid: true,
+        status: 'paid',
+        depositStatus: 'paid',
+        paymentStatus: 'paid',
+        amount: Number(proposal.depositAmount || 0),
+        checkoutSessionId: payload.sessionId || payload.checkoutSessionId || proposal.stripeCheckoutSessionId || '',
+        stripeCheckoutSessionId: payload.sessionId || payload.checkoutSessionId || proposal.stripeCheckoutSessionId || '',
+        stripePaymentIntentId: payload.paymentIntentId || proposal.stripePaymentIntentId || '',
+        paidAt: existing?.payments?.deposit?.paidAt || Date.now(),
+        source: 'stripe_return'
+      };
+      yield _this13.writeItem(_this13.bookingsCollection, bookingId, {
+        ...(existing || {}),
+        bookingId,
+        proposalId,
+        ownerId: 'alegria',
+        depositPaid: true,
+        depositStatus: 'paid',
+        paymentStatus: 'paid',
+        stripeCheckoutSessionId: payment.stripeCheckoutSessionId,
+        stripePaymentIntentId: payment.stripePaymentIntentId,
+        modifiedTS: Date.now(),
+        payments: {
+          ...(existing?.payments || {}),
+          deposit: payment
+        }
+      });
+    })();
+  }
   createDepositCheckout(proposal) {
     return this.http.post(`${this.baseUrl}/pay/outing-deposit-checkout`, {
       bookingId: proposal.proposalId,
@@ -15646,7 +16370,7 @@ let ProposalApiService = class ProposalApiService {
       outingType: proposal.outingType,
       depositAmount: proposal.depositAmount,
       currency: 'eur',
-      successUrl: `${window.location.origin}/proposal/${proposal.proposalId}?payment=success`,
+      successUrl: `${window.location.origin}/proposal/${proposal.proposalId}?payment=success&session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${window.location.origin}/proposal/${proposal.proposalId}?payment=cancelled`
     }, {
       withCredentials: true
@@ -15680,13 +16404,18 @@ let ProposalApiService = class ProposalApiService {
     return this.postFirstAvailable([`${this.baseUrl}/pay/outing-warranty-charge`, `${this.baseUrl}/api/payments/charge-warranty`, `${this.baseUrl}/stripe/warranty-charge`], payload);
   }
   createBookingFromProposal(p) {
-    var _this12 = this;
+    var _this14 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      yield _this12.writeItem(_this12.bookingsCollection, p.proposalId, {
+      yield _this14.writeItem(_this14.bookingsCollection, p.proposalId, {
         bookingId: p.relatedBookingId || p.proposalId,
         proposalId: p.proposalId,
         relatedBookingId: p.relatedBookingId || p.proposalId,
         source: p.source,
+        bookingSource: p.bookingSource || '',
+        externalPlatform: p.externalPlatform || '',
+        externalOnboardAmount: p.externalOnboardAmount || p.totalAmount || 0,
+        externalRemainingOnboardAmount: p.externalRemainingOnboardAmount || 0,
+        externalExtraServicesOnboardAmount: p.externalExtraServicesOnboardAmount || 0,
         customerName: p.customerName,
         email: p.customerEmail,
         phone: p.customerPhone || '',
@@ -15698,17 +16427,22 @@ let ProposalApiService = class ProposalApiService {
         totalPrice: p.totalAmount,
         depositAmount: p.depositAmount,
         balanceAmount: p.balanceAmount,
+        remainingOnboardAmount: p.externalRemainingOnboardAmount || p.balanceAmount,
+        extraServicesOnboardAmount: p.externalExtraServicesOnboardAmount || 0,
+        remainingFeesAmount: p.balanceAmount,
         warrantyAmount: p.warrantyAmount || 500,
         depositStatus: p.depositStatus || (p.depositPaid ? 'paid' : 'pending'),
         depositPaid: p.depositPaid === true || p.depositStatus === 'paid',
-        paymentStatus: '',
-        warrantyStatus: p.warrantyStatus || 'not_selected',
-        warrantyRegistered: p.warrantyRegistered === true,
+        paymentStatus: p.paymentStatus || (p.depositPaid === true || p.depositStatus === 'paid' ? 'paid' : 'pending'),
+        warrantyStatus: p.warrantyStatus || (p.warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : 'card_registered'),
+        warrantyRegistered: p.warrantyRegistered === true || p.warrantyPaymentChoice === 'cash_on_board',
         warrantyPaymentChoice: p.warrantyPaymentChoice || null,
         customerUid: p.customerUid || '',
         customerAuthProvider: p.customerAuthProvider || '',
         customerAccountCreated: p.customerAccountCreated === true,
-        bookingStatus: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? true : 'not_confirmed',
+        bookingStatus: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? 'confirmed' : 'not_confirmed',
+        status: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? 'confirmed' : 'not_confirmed',
+        bookingRequestStatus: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? 'confirmed' : 'not_confirmed',
         proposalStatus: 'accepted',
         tncAccepted: p.tncAccepted,
         termsAccepted: p.tncAccepted,
@@ -15753,49 +16487,49 @@ let ProposalApiService = class ProposalApiService {
     return window.location.origin;
   }
   readProposalWithPaymentState(id) {
-    var _this13 = this;
+    var _this15 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const proposal = yield _this13.readItem(_this13.proposalsCollection, id);
+      const proposal = yield _this15.readItem(_this15.proposalsCollection, id);
       if (!proposal) return undefined;
       if (proposal.status === 'accepted') {
-        const existingBooking = yield _this13.readItem(_this13.bookingsCollection, proposal.relatedBookingId || proposal.proposalId).catch(() => undefined);
+        const existingBooking = yield _this15.readItem(_this15.bookingsCollection, proposal.relatedBookingId || proposal.proposalId).catch(() => undefined);
         if (!existingBooking) {
-          yield _this13.createBookingFromProposal({
+          yield _this15.createBookingFromProposal({
             ...proposal,
             relatedBookingId: proposal.relatedBookingId || proposal.proposalId
           });
-          yield _this13.patchProposal(proposal.proposalId, {
+          yield _this15.patchProposal(proposal.proposalId, {
             relatedBookingId: proposal.relatedBookingId || proposal.proposalId
           }).catch(() => undefined);
         }
       }
-      const backendBooking = yield _this13.readItem('backendbookings', id).catch(() => undefined);
-      const depositPayment = backendBooking?.payments?.deposit || backendBooking?.payment || null;
-      const warrantyPayment = backendBooking?.payments?.warranty || null;
-      const warrantyCharge = backendBooking?.payments?.warrantyCharge || null;
-      const depositPaid = proposal.depositPaid === true || proposal.depositStatus === 'paid' || proposal.paymentStatus === 'paid' || backendBooking?.depositPaid === true || backendBooking?.depositStatus === 'paid' || backendBooking?.paymentStatus === 'paid' || backendBooking?.paymentStatus === 'charge_succeeded' || depositPayment?.depositPaid === true || depositPayment?.paid === true || depositPayment?.status === 'paid' || depositPayment?.status === 'deposit_paid';
+      const canonicalBooking = yield _this15.readItem(_this15.bookingsCollection, proposal.relatedBookingId || proposal.proposalId).catch(() => undefined);
+      const depositPayment = canonicalBooking?.payments?.deposit || canonicalBooking?.payment || null;
+      const warrantyPayment = canonicalBooking?.payments?.warranty || null;
+      const warrantyCharge = canonicalBooking?.payments?.warrantyCharge || null;
+      const depositPaid = proposal.depositPaid === true || proposal.depositStatus === 'paid' || proposal.paymentStatus === 'paid' || canonicalBooking?.depositPaid === true || canonicalBooking?.depositStatus === 'paid' || canonicalBooking?.paymentStatus === 'paid' || canonicalBooking?.paymentStatus === 'charge_succeeded' || depositPayment?.depositPaid === true || depositPayment?.paid === true || depositPayment?.status === 'paid' || depositPayment?.status === 'deposit_paid';
       return {
         ...proposal,
         relatedBookingId: proposal.relatedBookingId || proposal.proposalId,
         depositPaid,
         depositStatus: depositPaid ? 'paid' : proposal.depositStatus || depositPayment?.status || 'pending',
-        paymentStatus: depositPaid ? 'paid' : proposal.paymentStatus || backendBooking?.paymentStatus || depositPayment?.status || '',
-        stripeCheckoutSessionId: proposal.stripeCheckoutSessionId || backendBooking?.stripeCheckoutSessionId || depositPayment?.stripeCheckoutSessionId || depositPayment?.checkoutSessionId || '',
-        stripePaymentIntentId: proposal.stripePaymentIntentId || backendBooking?.stripePaymentIntentId || depositPayment?.stripePaymentIntentId || depositPayment?.paymentIntentId || '',
-        warrantyStatus: proposal.warrantyStatus || backendBooking?.warrantyStatus || warrantyPayment?.warrantyStatus || warrantyPayment?.status || 'not_selected',
-        warrantyRegistered: proposal.warrantyRegistered === true || backendBooking?.warrantyRegistered === true || warrantyPayment?.warrantyRegistered === true || warrantyPayment?.status === 'warranty_card_saved' || warrantyPayment?.status === 'card_registered',
-        warrantyPaymentMethodId: proposal.warrantyPaymentMethodId || backendBooking?.warrantyPaymentMethodId || warrantyPayment?.paymentMethodId || '',
-        warrantySetupIntentId: proposal.warrantySetupIntentId || backendBooking?.warrantySetupIntentId || warrantyPayment?.setupIntentId || '',
-        warrantyChargeAmount: proposal.warrantyChargeAmount || backendBooking?.warrantyChargedAmount || warrantyCharge?.warrantyChargeAmount || 0,
-        warrantyChargeReason: proposal.warrantyChargeReason || backendBooking?.warrantyChargeReason || warrantyCharge?.warrantyChargeReason || '',
-        warrantyChargeStatus: proposal.warrantyChargeStatus || backendBooking?.warrantyStatus || warrantyCharge?.status || ''
+        paymentStatus: depositPaid ? 'paid' : proposal.paymentStatus || canonicalBooking?.paymentStatus || depositPayment?.status || '',
+        stripeCheckoutSessionId: proposal.stripeCheckoutSessionId || canonicalBooking?.stripeCheckoutSessionId || depositPayment?.stripeCheckoutSessionId || depositPayment?.checkoutSessionId || '',
+        stripePaymentIntentId: proposal.stripePaymentIntentId || canonicalBooking?.stripePaymentIntentId || depositPayment?.stripePaymentIntentId || depositPayment?.paymentIntentId || '',
+        warrantyStatus: proposal.warrantyStatus || canonicalBooking?.warrantyStatus || warrantyPayment?.warrantyStatus || warrantyPayment?.status || 'not_selected',
+        warrantyRegistered: proposal.warrantyRegistered === true || canonicalBooking?.warrantyRegistered === true || warrantyPayment?.warrantyRegistered === true || warrantyPayment?.status === 'warranty_card_saved' || warrantyPayment?.status === 'card_registered',
+        warrantyPaymentMethodId: proposal.warrantyPaymentMethodId || canonicalBooking?.warrantyPaymentMethodId || warrantyPayment?.paymentMethodId || '',
+        warrantySetupIntentId: proposal.warrantySetupIntentId || canonicalBooking?.warrantySetupIntentId || warrantyPayment?.setupIntentId || '',
+        warrantyChargeAmount: proposal.warrantyChargeAmount || canonicalBooking?.warrantyChargedAmount || warrantyCharge?.warrantyChargeAmount || 0,
+        warrantyChargeReason: proposal.warrantyChargeReason || canonicalBooking?.warrantyChargeReason || warrantyCharge?.warrantyChargeReason || '',
+        warrantyChargeStatus: proposal.warrantyChargeStatus || canonicalBooking?.warrantyStatus || warrantyCharge?.status || ''
       };
     })();
   }
   readCollection(collection) {
-    var _this14 = this;
+    var _this16 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const value = yield _this14.http.get(`${_this14.firebaseUrl}/${collection}.json`).toPromise();
+      const value = yield _this16.http.get(`${_this16.firebaseUrl}/${collection}.json`).toPromise();
       if (!value) return [];
       return Object.keys(value).map(key => ({
         ...value[key],
@@ -15804,9 +16538,9 @@ let ProposalApiService = class ProposalApiService {
     })();
   }
   readItem(collection, id) {
-    var _this15 = this;
+    var _this17 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const value = yield _this15.http.get(`${_this15.firebaseUrl}/${collection}/${id}.json`).toPromise();
+      const value = yield _this17.http.get(`${_this17.firebaseUrl}/${collection}/${id}.json`).toPromise();
       return value ? {
         ...value,
         proposalId: value.proposalId || id
@@ -15814,15 +16548,15 @@ let ProposalApiService = class ProposalApiService {
     })();
   }
   deleteItem(collection, id) {
-    var _this16 = this;
+    var _this18 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      yield _this16.http.delete(`${_this16.firebaseUrl}/${collection}/${id}.json`).toPromise();
+      yield _this18.http.delete(`${_this18.firebaseUrl}/${collection}/${id}.json`).toPromise();
     })();
   }
   writeItem(collection, id, value) {
-    var _this17 = this;
+    var _this19 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      yield _this17.http.put(`${_this17.firebaseUrl}/${collection}/${id}.json`, value).toPromise();
+      yield _this19.http.put(`${_this19.firebaseUrl}/${collection}/${id}.json`, value).toPromise();
     })();
   }
   static ctorParameters = () => [{
@@ -16376,6 +17110,9 @@ let BookingDetailComponent = class BookingDetailComponent {
   refundMessage = '';
   refundError = '';
   refunding = false;
+  refundTarget = 'deposit';
+  balancePaymentRecordsCache = [];
+  refundablePaymentOptionsCache = [];
   editMode = false;
   savingCustomerUpdate = false;
   customerUpdateMessage = '';
@@ -16451,6 +17188,7 @@ let BookingDetailComponent = class BookingDetailComponent {
     this.editMode = this.route.snapshot.queryParamMap.get('edit') === 'true';
     this.bookingApi.getBooking(bookingId).subscribe(booking => {
       this.booking = booking;
+      this.refreshDerivedPaymentState();
       this.termsAccepted = this.isTermsAccepted();
       this.termsRead = this.termsAccepted || this.termsRead;
       this.warrantyChoice = this.getWarrantyChoice();
@@ -16458,7 +17196,52 @@ let BookingDetailComponent = class BookingDetailComponent {
       if (this.isAdmin) this.loadExtraServicesCatalog();
       this.loading = false;
       this.syncConfirmedStatusIfReady();
+      this.handleCheckoutReturn();
     });
+  }
+  handleCheckoutReturn() {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const payment = String(_this.route.snapshot.queryParamMap.get('payment') || '').toLowerCase();
+      const paymentType = String(_this.route.snapshot.queryParamMap.get('paymentType') || '').toLowerCase();
+      if (payment !== 'success' || paymentType !== 'balance' || !_this.booking?.bookingId || _this.isBalancePaid()) {
+        return;
+      }
+      const now = Date.now();
+      const balanceAmount = _this.getBalanceAmount();
+      const existingPayments = _this.booking.payments || {};
+      const payload = {
+        balancePaid: true,
+        remainingPaid: true,
+        balanceStatus: 'paid',
+        balancePaymentStatus: 'paid',
+        paymentStatus: 'balance_paid',
+        balancePaidAt: now,
+        payments: {
+          ...existingPayments,
+          balance: {
+            ...(existingPayments.balance || {}),
+            amount: balanceAmount,
+            paid: true,
+            status: 'paid',
+            paymentStatus: 'paid',
+            paidAt: now,
+            source: 'stripe_checkout_return'
+          }
+        }
+      };
+      try {
+        yield _this.bookingApi.updateBooking(_this.booking.bookingId, payload);
+        _this.booking = {
+          ..._this.booking,
+          ...payload
+        };
+        _this.refreshDerivedPaymentState();
+        _this.balancePaymentMessage = 'Remaining 90% payment recorded.';
+      } catch (e) {
+        _this.balancePaymentError = e?.message || 'Payment succeeded, but the booking could not be updated locally.';
+      }
+    })();
   }
   get isAdmin() {
     const user = this.loggedUser || this.readCachedUser() || {};
@@ -16476,18 +17259,18 @@ let BookingDetailComponent = class BookingDetailComponent {
     return this.isAdmin && !!this.booking?.bookingId && this.isPendingAdminConfirmation();
   }
   acceptBookingRequest() {
-    var _this = this;
+    var _this2 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this.booking?.bookingId || _this.adminDecisionLoading) return;
-      _this.adminDecisionLoading = true;
-      _this.adminDecisionMessage = '';
-      _this.adminDecisionError = '';
-      _this.bookingApi.acceptBookingRequest(_this.booking.bookingId, _this.booking.ownerId || 'alegria').subscribe({
+      if (!_this2.booking?.bookingId || _this2.adminDecisionLoading) return;
+      _this2.adminDecisionLoading = true;
+      _this2.adminDecisionMessage = '';
+      _this2.adminDecisionError = '';
+      _this2.bookingApi.acceptBookingRequest(_this2.booking.bookingId, _this2.booking.ownerId || 'alegria').subscribe({
         next: function () {
           var _ref = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-            _this.adminDecisionMessage = 'Booking accepted. The authorized deposit has been captured.';
-            _this.booking = {
-              ..._this.booking,
+            _this2.adminDecisionMessage = 'Booking accepted. The authorized deposit has been captured.';
+            _this2.booking = {
+              ..._this2.booking,
               bookingStatus: true,
               status: 'confirmed',
               bookingRequestStatus: 'confirmed',
@@ -16501,31 +17284,31 @@ let BookingDetailComponent = class BookingDetailComponent {
           };
         }(),
         error: error => {
-          _this.adminDecisionError = error?.error?.error || error?.error?.message || error?.message || 'Unable to accept booking request.';
+          _this2.adminDecisionError = error?.error?.error || error?.error?.message || error?.message || 'Unable to accept booking request.';
         },
         complete: () => {
-          _this.adminDecisionLoading = false;
+          _this2.adminDecisionLoading = false;
         }
       });
     })();
   }
   rejectBookingRequest() {
-    var _this2 = this;
+    var _this3 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this2.booking?.bookingId || _this2.adminDecisionLoading) return;
-      const reason = String(_this2.rejectionReason || '').trim();
+      if (!_this3.booking?.bookingId || _this3.adminDecisionLoading) return;
+      const reason = String(_this3.rejectionReason || '').trim();
       if (!reason) {
-        _this2.adminDecisionError = 'Please enter a rejection reason.';
+        _this3.adminDecisionError = 'Please enter a rejection reason.';
         return;
       }
-      _this2.adminDecisionLoading = true;
-      _this2.adminDecisionMessage = '';
-      _this2.adminDecisionError = '';
-      _this2.bookingApi.rejectBookingRequest(_this2.booking.bookingId, reason, _this2.booking.ownerId || 'alegria').subscribe({
+      _this3.adminDecisionLoading = true;
+      _this3.adminDecisionMessage = '';
+      _this3.adminDecisionError = '';
+      _this3.bookingApi.rejectBookingRequest(_this3.booking.bookingId, reason, _this3.booking.ownerId || 'alegria').subscribe({
         next: () => {
-          _this2.adminDecisionMessage = 'Booking rejected. The authorized deposit was not captured.';
-          _this2.booking = {
-            ..._this2.booking,
+          _this3.adminDecisionMessage = 'Booking rejected. The authorized deposit was not captured.';
+          _this3.booking = {
+            ..._this3.booking,
             bookingStatus: false,
             status: 'rejected',
             bookingRequestStatus: 'rejected',
@@ -16536,10 +17319,10 @@ let BookingDetailComponent = class BookingDetailComponent {
           };
         },
         error: error => {
-          _this2.adminDecisionError = error?.error?.error || error?.error?.message || error?.message || 'Unable to reject booking request.';
+          _this3.adminDecisionError = error?.error?.error || error?.error?.message || error?.message || 'Unable to reject booking request.';
         },
         complete: () => {
-          _this2.adminDecisionLoading = false;
+          _this3.adminDecisionLoading = false;
         }
       });
     })();
@@ -16575,33 +17358,33 @@ let BookingDetailComponent = class BookingDetailComponent {
     return Math.round(this.getAdminProposalTotal() * 0.10 * 100) / 100;
   }
   saveAdminProposalDraft() {
-    var _this3 = this;
+    var _this4 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this3.booking?.bookingId || _this3.sendingAdminProposal) return;
-      _this3.sendingAdminProposal = true;
-      _this3.adminProposalMessage = '';
-      _this3.adminProposalError = '';
+      if (!_this4.booking?.bookingId || _this4.sendingAdminProposal) return;
+      _this4.sendingAdminProposal = true;
+      _this4.adminProposalMessage = '';
+      _this4.adminProposalError = '';
       try {
-        const total = _this3.getAdminProposalTotal();
-        const deposit = _this3.getAdminProposalDeposit();
-        yield _this3.bookingApi.updateBooking(_this3.booking.bookingId, {
-          proposalBoatPrice: Number(_this3.proposalBoatPrice || 0),
-          proposalSkipperPrice: Number(_this3.proposalSkipperPrice || 0),
-          proposalExtraServicesPrice: Number(_this3.proposalExtraServicesPrice || 0),
+        const total = _this4.getAdminProposalTotal();
+        const deposit = _this4.getAdminProposalDeposit();
+        yield _this4.bookingApi.updateBooking(_this4.booking.bookingId, {
+          proposalBoatPrice: Number(_this4.proposalBoatPrice || 0),
+          proposalSkipperPrice: Number(_this4.proposalSkipperPrice || 0),
+          proposalExtraServicesPrice: Number(_this4.proposalExtraServicesPrice || 0),
           totalPrice: total,
           depositAmount: deposit,
           balanceAmount: Math.max(0, Math.round((total - deposit) * 100) / 100),
-          proposalNotes: _this3.proposalNotes || '',
+          proposalNotes: _this4.proposalNotes || '',
           status: 'admin_pricing_in_progress',
           bookingRequestStatus: 'admin_pricing_in_progress',
           proposalUpdatedAt: Date.now()
         });
-        _this3.adminProposalMessage = 'Proposal draft saved.';
-        _this3.booking = {
-          ..._this3.booking,
-          proposalBoatPrice: Number(_this3.proposalBoatPrice || 0),
-          proposalSkipperPrice: Number(_this3.proposalSkipperPrice || 0),
-          proposalExtraServicesPrice: Number(_this3.proposalExtraServicesPrice || 0),
+        _this4.adminProposalMessage = 'Proposal draft saved.';
+        _this4.booking = {
+          ..._this4.booking,
+          proposalBoatPrice: Number(_this4.proposalBoatPrice || 0),
+          proposalSkipperPrice: Number(_this4.proposalSkipperPrice || 0),
+          proposalExtraServicesPrice: Number(_this4.proposalExtraServicesPrice || 0),
           totalPrice: total,
           depositAmount: deposit,
           balanceAmount: Math.max(0, Math.round((total - deposit) * 100) / 100),
@@ -16609,30 +17392,30 @@ let BookingDetailComponent = class BookingDetailComponent {
           status: 'admin_pricing_in_progress'
         };
       } catch (e) {
-        _this3.adminProposalError = e?.message || 'Unable to save proposal draft.';
+        _this4.adminProposalError = e?.message || 'Unable to save proposal draft.';
       } finally {
-        _this3.sendingAdminProposal = false;
+        _this4.sendingAdminProposal = false;
       }
     })();
   }
   sendAdminProposalToClient() {
-    var _this4 = this;
+    var _this5 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this4.booking?.bookingId || _this4.sendingAdminProposal) return;
-      const total = _this4.getAdminProposalTotal();
+      if (!_this5.booking?.bookingId || _this5.sendingAdminProposal) return;
+      const total = _this5.getAdminProposalTotal();
       if (total <= 0) {
-        _this4.adminProposalError = 'Please enter a valid proposal total before sending.';
+        _this5.adminProposalError = 'Please enter a valid proposal total before sending.';
         return;
       }
-      _this4.sendingAdminProposal = true;
-      _this4.adminProposalMessage = '';
-      _this4.adminProposalError = '';
+      _this5.sendingAdminProposal = true;
+      _this5.adminProposalMessage = '';
+      _this5.adminProposalError = '';
       try {
-        const booking = _this4.booking;
-        const deposit = _this4.getAdminProposalDeposit();
+        const booking = _this5.booking;
+        const deposit = _this5.getAdminProposalDeposit();
         const balance = Math.max(0, Math.round((total - deposit) * 100) / 100);
         const now = Date.now();
-        const proposal = yield _this4.proposalApi.saveProposal({
+        const proposal = yield _this5.proposalApi.saveProposal({
           source: 'request',
           status: 'sent',
           proposalOrigin: 'customer_request',
@@ -16656,21 +17439,21 @@ let BookingDetailComponent = class BookingDetailComponent {
           depositAmount: deposit,
           balanceAmount: balance,
           warrantyAmount: Number(booking.warrantyAmount || 500),
-          proposalMessage: _this4.proposalNotes || 'Proposal created after the customer submitted an online request. Please accept the T&C and pay the deposit to block the date and confirm the booking.',
-          comments: [_this4.proposalNotes || '', `Created from customer request: ${booking.bookingId}`, booking.comments || ''].filter(Boolean).join('\n'),
+          proposalMessage: _this5.proposalNotes || 'Proposal created after the customer submitted an online request. Please accept the T&C and pay the deposit to block the date and confirm the booking.',
+          comments: [_this5.proposalNotes || '', `Created from customer request: ${booking.bookingId}`, booking.comments || ''].filter(Boolean).join('\n'),
           validUntil: now + 24 * 60 * 60 * 1000,
           bookingRequestStatus: 'proposal_sent',
-          proposalBoatPrice: Number(_this4.proposalBoatPrice || 0),
-          proposalSkipperPrice: Number(_this4.proposalSkipperPrice || 0),
-          proposalExtraServicesPrice: Number(_this4.proposalExtraServicesPrice || 0)
+          proposalBoatPrice: Number(_this5.proposalBoatPrice || 0),
+          proposalSkipperPrice: Number(_this5.proposalSkipperPrice || 0),
+          proposalExtraServicesPrice: Number(_this5.proposalExtraServicesPrice || 0)
         });
-        yield _this4.bookingApi.deleteBooking(booking.bookingId);
-        _this4.adminProposalMessage = 'Proposal sent to client. The original request has been transformed into a proposal and removed from requests.';
-        setTimeout(() => _this4.router.navigate(['/admin/proposals']), 900);
+        yield _this5.bookingApi.deleteBooking(booking.bookingId);
+        _this5.adminProposalMessage = 'Proposal sent to client. The original request has been transformed into a proposal and removed from requests.';
+        setTimeout(() => _this5.router.navigate(['/admin/proposals']), 900);
       } catch (e) {
-        _this4.adminProposalError = e?.message || 'Unable to send proposal.';
+        _this5.adminProposalError = e?.message || 'Unable to send proposal.';
       } finally {
-        _this4.sendingAdminProposal = false;
+        _this5.sendingAdminProposal = false;
       }
     })();
   }
@@ -16681,28 +17464,28 @@ let BookingDetailComponent = class BookingDetailComponent {
     });
   }
   loadProposalInfo(language) {
-    var _this5 = this;
+    var _this6 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const defaultProposal = _this5.defaultProposalInfo(language);
-      const defaultBooking = _this5.defaultBookingInfo(language);
+      const defaultProposal = _this6.defaultProposalInfo(language);
+      const defaultBooking = _this6.defaultBookingInfo(language);
       try {
-        const content = yield _this5.guestContent.getContent();
+        const content = yield _this6.guestContent.getContent();
         const firebaseProposal = content?.proposalInfo?.[language] || content?.guestInfo?.proposalInfo?.[language] || {};
         const firebaseBooking = content?.bookingInfo?.[language] || content?.guestInfo?.bookingInfo?.[language] || {};
         const firebaseSections = firebaseProposal?.termsSections;
         const completeTermsSections = Array.isArray(firebaseSections) && firebaseSections.length >= 5 ? firebaseSections : defaultProposal.termsSections;
-        _this5.proposalInfo = {
+        _this6.proposalInfo = {
           ...defaultProposal,
           ...firebaseProposal,
           termsSections: completeTermsSections
         };
-        _this5.bookingInfo = {
+        _this6.bookingInfo = {
           ...defaultBooking,
           ...firebaseBooking
         };
       } catch {
-        _this5.proposalInfo = defaultProposal;
-        _this5.bookingInfo = defaultBooking;
+        _this6.proposalInfo = defaultProposal;
+        _this6.bookingInfo = defaultBooking;
       }
     })();
   }
@@ -17139,16 +17922,16 @@ let BookingDetailComponent = class BookingDetailComponent {
   getDerivedBookingStatus() {
     const anyBooking = this.booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
-    if (this.isBookingCancelledByDate() || this.isCancelledBooking()) return 'cancelled';
     // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
     if (this.isBalancePaid()) return 'payment_done';
-    if (rawStatus === 'payment_done' || rawStatus === 'full_payment_done' || rawStatus === 'paid' || rawStatus === 'completed') {
-      return 'payment_done';
-    }
     if (rawStatus === true || rawStatus === 'true' || rawStatus === 'confirmed' || anyBooking.confirmed === true || anyBooking.bookingConfirmed === true) {
       return 'confirmed';
     }
     if (this.isDepositPaid() && this.isTermsAccepted()) return 'confirmed';
+    if (this.isBookingCancelledByDate() || this.isCancelledBooking()) return 'cancelled';
+    if (rawStatus === 'payment_done' || rawStatus === 'full_payment_done' || rawStatus === 'paid' || rawStatus === 'completed') {
+      return 'payment_done';
+    }
     return 'not_confirmed';
   }
   getStatusLabel() {
@@ -17286,25 +18069,25 @@ let BookingDetailComponent = class BookingDetailComponent {
     this.termsRead = true;
   }
   saveTermsAndWarrantyChoice(status = 'awaiting_deposit') {
-    var _this6 = this;
+    var _this7 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this6.booking?.bookingId) return;
+      if (!_this7.booking?.bookingId) return;
       const now = Date.now();
-      const existingPayments = _this6.booking.payments || {};
-      const warrantyChoice = _this6.warrantyChoice || _this6.getWarrantyChoice();
+      const existingPayments = _this7.booking.payments || {};
+      const warrantyChoice = _this7.warrantyChoice || _this7.getWarrantyChoice();
       const payload = {
-        termsAccepted: _this6.termsAccepted,
-        tcAccepted: _this6.termsAccepted,
-        tAndCAccepted: _this6.termsAccepted,
-        termsAndConditionsAccepted: _this6.termsAccepted,
-        acceptedTerms: _this6.termsAccepted,
-        termsAcceptedAt: _this6.termsAccepted ? now : null,
-        termsStatus: _this6.termsAccepted ? 'accepted' : 'pending',
-        tcStatus: _this6.termsAccepted ? 'accepted' : 'pending',
+        termsAccepted: _this7.termsAccepted,
+        tcAccepted: _this7.termsAccepted,
+        tAndCAccepted: _this7.termsAccepted,
+        termsAndConditionsAccepted: _this7.termsAccepted,
+        acceptedTerms: _this7.termsAccepted,
+        termsAcceptedAt: _this7.termsAccepted ? now : null,
+        termsStatus: _this7.termsAccepted ? 'accepted' : 'pending',
+        tcStatus: _this7.termsAccepted ? 'accepted' : 'pending',
         warrantyPaymentChoice: warrantyChoice,
         warrantySelected: !!warrantyChoice,
         warrantySelectedAt: warrantyChoice ? now : null,
-        bookingStatus: _this6.isBookingConfirmed() ? _this6.booking.bookingStatus || 'confirmed' : status,
+        bookingStatus: _this7.isBookingConfirmed() ? _this7.booking.bookingStatus || 'confirmed' : status,
         payments: {
           ...existingPayments,
           warranty: {
@@ -17319,71 +18102,71 @@ let BookingDetailComponent = class BookingDetailComponent {
         payload.warrantyMethod = 'cash';
         payload.warrantyStatus = 'cash_selected';
         payload.warrantyCashSelected = true;
-        payload.warrantyAmount = _this6.booking.warrantyAmount || 500;
+        payload.warrantyAmount = _this7.booking.warrantyAmount || 500;
       }
       if (warrantyChoice === 'stripe_card') {
         payload.warrantyMethod = 'card';
-        payload.warrantyStatus = _this6.isWarrantyCardRegistered() ? 'card_registered' : 'card_selected';
+        payload.warrantyStatus = _this7.isWarrantyCardRegistered() ? 'card_registered' : 'card_selected';
       }
-      yield _this6.bookingApi.updateBooking(_this6.booking.bookingId, payload);
-      _this6.booking = {
-        ..._this6.booking,
+      yield _this7.bookingApi.updateBooking(_this7.booking.bookingId, payload);
+      _this7.booking = {
+        ..._this7.booking,
         ...payload
       };
-      yield _this6.syncConfirmedStatusIfReady();
+      yield _this7.syncConfirmedStatusIfReady();
     })();
   }
   selectWarrantyCash() {
-    var _this7 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this7.warrantyChoice = 'cash_on_board';
-      _this7.warrantySaving = true;
-      _this7.warrantyError = '';
-      _this7.warrantyMessage = '';
-      try {
-        yield _this7.saveTermsAndWarrantyChoice(_this7.isBookingConfirmed() ? 'confirmed' : 'awaiting_deposit');
-        _this7.warrantyMessage = 'Cash warranty selected. The €500 cash envelope will be handled before departure.';
-      } catch (e) {
-        _this7.warrantyError = e?.message || 'Unable to save warranty choice.';
-      }
-      _this7.warrantySaving = false;
-    })();
-  }
-  selectWarrantyCard() {
     var _this8 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this8.warrantyChoice = 'stripe_card';
+      _this8.warrantyChoice = 'cash_on_board';
       _this8.warrantySaving = true;
       _this8.warrantyError = '';
       _this8.warrantyMessage = '';
       try {
         yield _this8.saveTermsAndWarrantyChoice(_this8.isBookingConfirmed() ? 'confirmed' : 'awaiting_deposit');
-        _this8.warrantyMessage = 'Card warranty selected. You can now register the card with Stripe.';
+        _this8.warrantyMessage = 'Cash warranty selected. The €500 cash envelope will be handled before departure.';
       } catch (e) {
         _this8.warrantyError = e?.message || 'Unable to save warranty choice.';
       }
       _this8.warrantySaving = false;
     })();
   }
-  syncConfirmedStatusIfReady() {
+  selectWarrantyCard() {
     var _this9 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this9.booking?.bookingId) return;
-      if (!_this9.isDepositPaid() || !_this9.isTermsAccepted()) return;
-      const currentStatus = String(_this9.booking.bookingStatus || '').toLowerCase();
+      _this9.warrantyChoice = 'stripe_card';
+      _this9.warrantySaving = true;
+      _this9.warrantyError = '';
+      _this9.warrantyMessage = '';
+      try {
+        yield _this9.saveTermsAndWarrantyChoice(_this9.isBookingConfirmed() ? 'confirmed' : 'awaiting_deposit');
+        _this9.warrantyMessage = 'Card warranty selected. You can now register the card with Stripe.';
+      } catch (e) {
+        _this9.warrantyError = e?.message || 'Unable to save warranty choice.';
+      }
+      _this9.warrantySaving = false;
+    })();
+  }
+  syncConfirmedStatusIfReady() {
+    var _this10 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this10.booking?.bookingId) return;
+      if (!_this10.isDepositPaid() || !_this10.isTermsAccepted()) return;
+      const currentStatus = String(_this10.booking.bookingStatus || '').toLowerCase();
       if (currentStatus === 'confirmed' || currentStatus === 'payment_done') return;
       const now = Date.now();
       const payload = {
         bookingStatus: 'confirmed',
         depositStatus: 'paid',
         depositPaid: true,
-        confirmedAt: _this9.booking.confirmedAt || now,
+        confirmedAt: _this10.booking.confirmedAt || now,
         modifiedTS: now
       };
       try {
-        yield _this9.bookingApi.updateBooking(_this9.booking.bookingId, payload);
-        _this9.booking = {
-          ..._this9.booking,
+        yield _this10.bookingApi.updateBooking(_this10.booking.bookingId, payload);
+        _this10.booking = {
+          ..._this10.booking,
           ...payload
         };
       } catch {
@@ -17464,42 +18247,46 @@ let BookingDetailComponent = class BookingDetailComponent {
     const anyBooking = this.booking || {};
     const balancePayment = anyBooking?.payments?.balance || {};
     const remainingPayment = anyBooking?.payments?.remaining || {};
-    return this.isBalanceCompletedStatusValue(anyBooking.paymentStatus) || this.isBalanceCompletedStatusValue(anyBooking.balancePaid) || this.isBalanceCompletedStatusValue(anyBooking.balanceStatus) || this.isBalanceCompletedStatusValue(anyBooking.balancePaymentStatus) || this.isBalanceCompletedStatusValue(anyBooking.remainingPaid) || this.isBalanceCompletedStatusValue(anyBooking.remainingStatus) || this.isBalanceCompletedStatusValue(anyBooking.remainingPaymentStatus) || this.isBalanceCompletedStatusValue(balancePayment.paid) || this.isBalanceCompletedStatusValue(balancePayment.status) || this.isBalanceCompletedStatusValue(balancePayment.paymentStatus) || this.isBalanceCompletedStatusValue(remainingPayment.paid) || this.isBalanceCompletedStatusValue(remainingPayment.status) || this.isBalanceCompletedStatusValue(remainingPayment.paymentStatus);
+    // Do not treat a generic top-level paymentStatus === 'paid' as the 90% balance being paid:
+    // in older records it can simply mean the 10% deposit checkout succeeded.
+    const topLevelPaymentStatus = String(anyBooking.paymentStatus || '').toLowerCase().trim();
+    const topLevelMeansFullBalancePaid = ['balance_paid', 'remaining_paid', 'full_payment_done', 'balance_payment_done', 'remaining_payment_done'].includes(topLevelPaymentStatus) || anyBooking.balancePaid === true || anyBooking.remainingPaid === true;
+    return topLevelMeansFullBalancePaid || this.isBalanceCompletedStatusValue(anyBooking.balancePaid) || this.isBalanceCompletedStatusValue(anyBooking.balanceStatus) || this.isBalanceCompletedStatusValue(anyBooking.balancePaymentStatus) || this.isBalanceCompletedStatusValue(anyBooking.remainingPaid) || this.isBalanceCompletedStatusValue(anyBooking.remainingStatus) || this.isBalanceCompletedStatusValue(anyBooking.remainingPaymentStatus) || this.isBalanceCompletedStatusValue(balancePayment.paid) || this.isBalanceCompletedStatusValue(balancePayment.status) || this.isBalanceCompletedStatusValue(balancePayment.paymentStatus) || this.isBalanceCompletedStatusValue(remainingPayment.paid) || this.isBalanceCompletedStatusValue(remainingPayment.status) || this.isBalanceCompletedStatusValue(remainingPayment.paymentStatus);
   }
   recordCashWarrantyDamage() {
-    var _this10 = this;
+    var _this11 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this10.isAdmin || !_this10.isOutingDone()) return;
-      if (!_this10.booking?.bookingId) return;
-      const amount = Number(_this10.cashDamageAmount || 0);
-      const reason = String(_this10.cashDamageReason || '').trim();
-      _this10.cashDamageError = '';
-      _this10.cashDamageMessage = '';
-      if (!_this10.isCashWarranty()) {
-        _this10.cashDamageError = 'Cash warranty is not registered for this booking.';
+      if (!_this11.isAdmin || !_this11.isOutingDone()) return;
+      if (!_this11.booking?.bookingId) return;
+      const amount = Number(_this11.cashDamageAmount || 0);
+      const reason = String(_this11.cashDamageReason || '').trim();
+      _this11.cashDamageError = '';
+      _this11.cashDamageMessage = '';
+      if (!_this11.isCashWarranty()) {
+        _this11.cashDamageError = 'Cash warranty is not registered for this booking.';
         return;
       }
       if (!amount || amount <= 0) {
-        _this10.cashDamageError = 'Please enter a valid damage amount.';
+        _this11.cashDamageError = 'Please enter a valid damage amount.';
         return;
       }
-      if (amount > _this10.getCashWarrantyRemaining()) {
-        _this10.cashDamageError = `Amount cannot exceed remaining cash warranty (€${_this10.getCashWarrantyRemaining()}).`;
+      if (amount > _this11.getCashWarrantyRemaining()) {
+        _this11.cashDamageError = `Amount cannot exceed remaining cash warranty (€${_this11.getCashWarrantyRemaining()}).`;
         return;
       }
       if (!reason) {
-        _this10.cashDamageError = 'Please describe the damage or cost.';
+        _this11.cashDamageError = 'Please describe the damage or cost.';
         return;
       }
-      _this10.savingCashDamage = true;
+      _this11.savingCashDamage = true;
       const now = Date.now();
-      const existingPayments = _this10.booking.payments || {};
-      const previousDamage = _this10.getCashWarrantyDamagesTaken();
+      const existingPayments = _this11.booking.payments || {};
+      const previousDamage = _this11.getCashWarrantyDamagesTaken();
       const totalDamageTaken = Math.round((previousDamage + amount) * 100) / 100;
-      const warrantyAmount = _this10.getCashWarrantyAmount();
+      const warrantyAmount = _this11.getCashWarrantyAmount();
       const remaining = Math.max(0, Math.round((warrantyAmount - totalDamageTaken) * 100) / 100);
       try {
-        yield _this10.bookingApi.updateBooking(_this10.booking.bookingId, {
+        yield _this11.bookingApi.updateBooking(_this11.booking.bookingId, {
           warrantyMethod: 'cash',
           warrantyStatus: remaining > 0 ? 'cash_partially_used' : 'cash_fully_used',
           warrantyCashReceived: true,
@@ -17527,8 +18314,8 @@ let BookingDetailComponent = class BookingDetailComponent {
             }
           }
         });
-        _this10.booking = {
-          ..._this10.booking,
+        _this11.booking = {
+          ..._this11.booking,
           warrantyMethod: 'cash',
           warrantyStatus: remaining > 0 ? 'cash_partially_used' : 'cash_fully_used',
           warrantyCashReceived: true,
@@ -17556,113 +18343,113 @@ let BookingDetailComponent = class BookingDetailComponent {
             }
           }
         };
-        _this10.cashDamageAmount = null;
-        _this10.cashDamageReason = '';
-        _this10.cashDamageMessage = `Cash warranty damage recorded. Remaining cash to return: €${remaining}.`;
+        _this11.cashDamageAmount = null;
+        _this11.cashDamageReason = '';
+        _this11.cashDamageMessage = `Cash warranty damage recorded. Remaining cash to return: €${remaining}.`;
       } catch (e) {
-        _this10.cashDamageError = e?.message || 'Unable to record cash warranty damage.';
+        _this11.cashDamageError = e?.message || 'Unable to record cash warranty damage.';
       } finally {
-        _this10.savingCashDamage = false;
+        _this11.savingCashDamage = false;
       }
     })();
   }
   payDeposit() {
-    var _this11 = this;
+    var _this12 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this11.booking?.bookingId || _this11.isDepositPaid()) return;
-      if (!_this11.canPayDeposit()) {
-        _this11.balancePaymentError = _this11.getDepositBlockedReason();
+      if (!_this12.booking?.bookingId || _this12.isDepositPaid()) return;
+      if (!_this12.canPayDeposit()) {
+        _this12.balancePaymentError = _this12.getDepositBlockedReason();
         return;
       }
       try {
-        yield _this11.saveTermsAndWarrantyChoice('awaiting_deposit');
+        yield _this12.saveTermsAndWarrantyChoice('awaiting_deposit');
       } catch (e) {
         // Do not block Stripe checkout if the booking already has T&C/warranty data locally.
         console.warn('Could not persist T&C/warranty before Stripe checkout, continuing with checkout.', e);
       }
       const currentUrl = window.location.href;
-      const depositAmount = _this11.getDepositAmount();
-      const payload = {
-        bookingId: _this11.booking.bookingId,
-        proposalId: _this11.booking.bookingId,
-        ownerId: _this11.booking.ownerId || 'alegria',
-        amount: depositAmount,
-        depositAmount,
-        totalAmount: Number(_this11.booking.totalPrice || 0),
-        currency: 'eur',
-        paymentType: 'deposit',
-        customerEmail: _this11.booking.email || '',
-        customerName: _this11.booking.customerName || '',
-        customerPhone: _this11.booking.customerPhone || _this11.booking.phone || '',
-        outingType: _this11.booking.outingType || '',
-        outingDate: _this11.booking.outingDate || '',
-        successUrl: currentUrl.includes('?') ? `${currentUrl}&payment=success&bookingId=${encodeURIComponent(_this11.booking.bookingId)}&paymentType=deposit` : `${currentUrl}?payment=success&bookingId=${encodeURIComponent(_this11.booking.bookingId)}&paymentType=deposit`,
-        cancelUrl: currentUrl.includes('?') ? `${currentUrl}&payment=cancelled&bookingId=${encodeURIComponent(_this11.booking.bookingId)}&paymentType=deposit` : `${currentUrl}?payment=cancelled&bookingId=${encodeURIComponent(_this11.booking.bookingId)}&paymentType=deposit`
-      };
-      _this11.bookingApi.createDepositCheckout(payload).subscribe({
-        next: response => {
-          const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
-          if (url) {
-            window.location.href = url;
-            return;
-          }
-          _this11.balancePaymentError = 'Unable to open Stripe deposit checkout.';
-        },
-        error: error => {
-          _this11.balancePaymentError = error?.error?.error || error?.error?.message || error?.message || 'Unable to create deposit checkout.';
-        }
-      });
-    })();
-  }
-  registerWarrantyCard() {
-    var _this12 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this12.booking?.bookingId) return;
-      _this12.balancePaymentError = '';
-      _this12.balancePaymentMessage = '';
-      if (_this12.getWarrantyChoice() !== 'stripe_card') {
-        yield _this12.selectWarrantyCard();
-      }
-      const currentUrl = window.location.href;
-      const warrantyAmount = Number(_this12.booking.warrantyAmount || 500);
+      const depositAmount = _this12.getDepositAmount();
       const payload = {
         bookingId: _this12.booking.bookingId,
+        proposalId: _this12.booking.bookingId,
         ownerId: _this12.booking.ownerId || 'alegria',
-        warrantyAmount,
+        amount: depositAmount,
+        depositAmount,
+        totalAmount: Number(_this12.booking.totalPrice || 0),
         currency: 'eur',
+        paymentType: 'deposit',
         customerEmail: _this12.booking.email || '',
         customerName: _this12.booking.customerName || '',
         customerPhone: _this12.booking.customerPhone || _this12.booking.phone || '',
         outingType: _this12.booking.outingType || '',
         outingDate: _this12.booking.outingDate || '',
-        successUrl: currentUrl.includes('?') ? `${currentUrl}&payment=success&bookingId=${encodeURIComponent(_this12.booking.bookingId)}&paymentType=warranty` : `${currentUrl}?payment=success&bookingId=${encodeURIComponent(_this12.booking.bookingId)}&paymentType=warranty`,
-        cancelUrl: currentUrl.includes('?') ? `${currentUrl}&payment=cancelled&bookingId=${encodeURIComponent(_this12.booking.bookingId)}&paymentType=warranty` : `${currentUrl}?payment=cancelled&bookingId=${encodeURIComponent(_this12.booking.bookingId)}&paymentType=warranty`
+        successUrl: currentUrl.includes('?') ? `${currentUrl}&payment=success&bookingId=${encodeURIComponent(_this12.booking.bookingId)}&paymentType=deposit` : `${currentUrl}?payment=success&bookingId=${encodeURIComponent(_this12.booking.bookingId)}&paymentType=deposit`,
+        cancelUrl: currentUrl.includes('?') ? `${currentUrl}&payment=cancelled&bookingId=${encodeURIComponent(_this12.booking.bookingId)}&paymentType=deposit` : `${currentUrl}?payment=cancelled&bookingId=${encodeURIComponent(_this12.booking.bookingId)}&paymentType=deposit`
       };
-      _this12.bookingApi.createWarrantySetup(payload).subscribe({
+      _this12.bookingApi.createDepositCheckout(payload).subscribe({
         next: response => {
           const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
           if (url) {
             window.location.href = url;
             return;
           }
-          _this12.balancePaymentError = 'Unable to open Stripe warranty setup.';
+          _this12.balancePaymentError = 'Unable to open Stripe deposit checkout.';
         },
         error: error => {
-          _this12.balancePaymentError = error?.error?.error || error?.error?.message || error?.message || 'Unable to create warranty setup.';
+          _this12.balancePaymentError = error?.error?.error || error?.error?.message || error?.message || 'Unable to create deposit checkout.';
         }
       });
     })();
   }
-  markCashWarrantyReceived() {
+  registerWarrantyCard() {
     var _this13 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!_this13.booking?.bookingId) return;
       _this13.balancePaymentError = '';
       _this13.balancePaymentMessage = '';
+      if (_this13.getWarrantyChoice() !== 'stripe_card') {
+        yield _this13.selectWarrantyCard();
+      }
+      const currentUrl = window.location.href;
+      const warrantyAmount = Number(_this13.booking.warrantyAmount || 500);
+      const payload = {
+        bookingId: _this13.booking.bookingId,
+        ownerId: _this13.booking.ownerId || 'alegria',
+        warrantyAmount,
+        currency: 'eur',
+        customerEmail: _this13.booking.email || '',
+        customerName: _this13.booking.customerName || '',
+        customerPhone: _this13.booking.customerPhone || _this13.booking.phone || '',
+        outingType: _this13.booking.outingType || '',
+        outingDate: _this13.booking.outingDate || '',
+        successUrl: currentUrl.includes('?') ? `${currentUrl}&payment=success&bookingId=${encodeURIComponent(_this13.booking.bookingId)}&paymentType=warranty` : `${currentUrl}?payment=success&bookingId=${encodeURIComponent(_this13.booking.bookingId)}&paymentType=warranty`,
+        cancelUrl: currentUrl.includes('?') ? `${currentUrl}&payment=cancelled&bookingId=${encodeURIComponent(_this13.booking.bookingId)}&paymentType=warranty` : `${currentUrl}?payment=cancelled&bookingId=${encodeURIComponent(_this13.booking.bookingId)}&paymentType=warranty`
+      };
+      _this13.bookingApi.createWarrantySetup(payload).subscribe({
+        next: response => {
+          const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
+          if (url) {
+            window.location.href = url;
+            return;
+          }
+          _this13.balancePaymentError = 'Unable to open Stripe warranty setup.';
+        },
+        error: error => {
+          _this13.balancePaymentError = error?.error?.error || error?.error?.message || error?.message || 'Unable to create warranty setup.';
+        }
+      });
+    })();
+  }
+  markCashWarrantyReceived() {
+    var _this14 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this14.booking?.bookingId) return;
+      _this14.balancePaymentError = '';
+      _this14.balancePaymentMessage = '';
       const now = Date.now();
-      const existingPayments = _this13.booking.payments || {};
+      const existingPayments = _this14.booking.payments || {};
       try {
-        yield _this13.bookingApi.updateBooking(_this13.booking.bookingId, {
+        yield _this14.bookingApi.updateBooking(_this14.booking.bookingId, {
           warrantyMethod: 'cash',
           warrantyStatus: 'cash_received',
           warrantyCashReceived: true,
@@ -17680,8 +18467,8 @@ let BookingDetailComponent = class BookingDetailComponent {
             }
           }
         });
-        _this13.booking = {
-          ..._this13.booking,
+        _this14.booking = {
+          ..._this14.booking,
           warrantyMethod: 'cash',
           warrantyStatus: 'cash_received',
           warrantyCashReceived: true,
@@ -17699,48 +18486,48 @@ let BookingDetailComponent = class BookingDetailComponent {
             }
           }
         };
-        _this13.balancePaymentMessage = 'Cash warranty received and recorded.';
+        _this14.balancePaymentMessage = 'Cash warranty received and recorded.';
       } catch (e) {
-        _this13.balancePaymentError = e?.message || 'Unable to record cash warranty.';
+        _this14.balancePaymentError = e?.message || 'Unable to record cash warranty.';
       }
     })();
   }
   recordCardWarrantyDamage() {
-    var _this14 = this;
+    var _this15 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this14.booking?.bookingId) return;
-      const amount = Number(_this14.cardDamageAmount || 0);
-      const reason = String(_this14.cardDamageReason || '').trim();
-      _this14.cardDamageError = '';
-      _this14.cardDamageMessage = '';
-      if (!_this14.isWarrantyCardRegistered()) {
-        _this14.cardDamageError = 'No registered warranty card for this booking.';
+      if (!_this15.booking?.bookingId) return;
+      const amount = Number(_this15.cardDamageAmount || 0);
+      const reason = String(_this15.cardDamageReason || '').trim();
+      _this15.cardDamageError = '';
+      _this15.cardDamageMessage = '';
+      if (!_this15.isWarrantyCardRegistered()) {
+        _this15.cardDamageError = 'No registered warranty card for this booking.';
         return;
       }
       if (!amount || amount <= 0) {
-        _this14.cardDamageError = 'Please enter a valid damage amount.';
+        _this15.cardDamageError = 'Please enter a valid damage amount.';
         return;
       }
-      const maxWarranty = Number(_this14.booking.warrantyAmount || 500);
+      const maxWarranty = Number(_this15.booking.warrantyAmount || 500);
       if (amount > maxWarranty) {
-        _this14.cardDamageError = `Amount cannot exceed warranty maximum (€${maxWarranty}).`;
+        _this15.cardDamageError = `Amount cannot exceed warranty maximum (€${maxWarranty}).`;
         return;
       }
       if (!reason) {
-        _this14.cardDamageError = 'Please describe the damage.';
+        _this15.cardDamageError = 'Please describe the damage.';
         return;
       }
-      _this14.savingCardDamage = true;
-      _this14.bookingApi.chargeWarranty(_this14.booking.bookingId, amount, reason, _this14.booking.ownerId || 'alegria').subscribe({
+      _this15.savingCardDamage = true;
+      _this15.bookingApi.chargeWarranty(_this15.booking.bookingId, amount, reason, _this15.booking.ownerId || 'alegria').subscribe({
         next: function () {
           var _ref2 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-            _this14.cardDamageMessage = 'Damage charged successfully to the registered card.';
-            _this14.cardDamageAmount = null;
-            _this14.cardDamageReason = '';
-            _this14.savingCardDamage = false;
+            _this15.cardDamageMessage = 'Damage charged successfully to the registered card.';
+            _this15.cardDamageAmount = null;
+            _this15.cardDamageReason = '';
+            _this15.savingCardDamage = false;
             const now = Date.now();
-            _this14.booking = {
-              ..._this14.booking,
+            _this15.booking = {
+              ..._this15.booking,
               damageReported: true,
               damageCharged: true,
               warrantyStatus: 'charged',
@@ -17754,32 +18541,32 @@ let BookingDetailComponent = class BookingDetailComponent {
           };
         }(),
         error: error => {
-          _this14.cardDamageError = error?.error?.error || error?.error?.message || error?.message || 'Unable to charge warranty card.';
-          _this14.savingCardDamage = false;
+          _this15.cardDamageError = error?.error?.error || error?.error?.message || error?.message || 'Unable to charge warranty card.';
+          _this15.savingCardDamage = false;
         }
       });
     })();
   }
   recordBalancePayment() {
-    var _this15 = this;
+    var _this16 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (_this15.isAdmin) return;
-      if (!_this15.booking?.bookingId) return;
-      if (!_this15.canRecordBalancePayment()) {
-        _this15.balancePaymentError = _this15.getBalanceBlockedReason();
+      if (_this16.isAdmin) return;
+      if (!_this16.booking?.bookingId) return;
+      if (!_this16.canRecordBalancePayment()) {
+        _this16.balancePaymentError = _this16.getBalanceBlockedReason();
         return;
       }
-      _this15.savingBalancePayment = true;
-      _this15.balancePaymentError = '';
-      _this15.balancePaymentMessage = '';
+      _this16.savingBalancePayment = true;
+      _this16.balancePaymentError = '';
+      _this16.balancePaymentMessage = '';
       const now = Date.now();
-      const balanceAmount = _this15.getBalanceAmount();
-      const existingPayments = _this15.booking.payments || {};
+      const balanceAmount = _this16.getBalanceAmount();
+      const existingPayments = _this16.booking.payments || {};
       try {
-        yield _this15.bookingApi.updateBooking(_this15.booking.bookingId, {
+        yield _this16.bookingApi.updateBooking(_this16.booking.bookingId, {
           balancePaid: true,
           balanceAmount,
-          balancePaymentMethod: _this15.balancePaymentMethod,
+          balancePaymentMethod: _this16.balancePaymentMethod,
           balancePaidAt: now,
           bookingStatus: 'payment_done',
           paymentStatus: 'full_payment_done',
@@ -17790,18 +18577,18 @@ let BookingDetailComponent = class BookingDetailComponent {
               paid: true,
               status: 'paid',
               amount: balanceAmount,
-              method: _this15.balancePaymentMethod,
-              notes: _this15.balancePaymentNotes || '',
+              method: _this16.balancePaymentMethod,
+              notes: _this16.balancePaymentNotes || '',
               paidAt: now
             }
           }
         });
-        _this15.balancePaymentMessage = 'Remaining 90% payment recorded.';
-        _this15.booking = {
-          ..._this15.booking,
+        _this16.balancePaymentMessage = 'Remaining 90% payment recorded.';
+        _this16.booking = {
+          ..._this16.booking,
           balancePaid: true,
           balanceAmount,
-          balancePaymentMethod: _this15.balancePaymentMethod,
+          balancePaymentMethod: _this16.balancePaymentMethod,
           balancePaidAt: now,
           bookingStatus: 'payment_done',
           paymentStatus: 'full_payment_done',
@@ -17812,16 +18599,16 @@ let BookingDetailComponent = class BookingDetailComponent {
               paid: true,
               status: 'paid',
               amount: balanceAmount,
-              method: _this15.balancePaymentMethod,
-              notes: _this15.balancePaymentNotes || '',
+              method: _this16.balancePaymentMethod,
+              notes: _this16.balancePaymentNotes || '',
               paidAt: now
             }
           }
         };
       } catch (e) {
-        _this15.balancePaymentError = e?.message || 'Unable to record remaining balance payment.';
+        _this16.balancePaymentError = e?.message || 'Unable to record remaining balance payment.';
       }
-      _this15.savingBalancePayment = false;
+      _this16.savingBalancePayment = false;
     })();
   }
   canCustomerUpdateBooking() {
@@ -17830,15 +18617,29 @@ let BookingDetailComponent = class BookingDetailComponent {
   canCustomerPayDeposit() {
     return !this.isAdmin && this.getBookingWorkflowState() === 'deposit_required' && !this.isDepositPaid();
   }
+  canCustomerSeeBalancePayment() {
+    return !this.isAdmin && !!this.booking?.bookingId && this.getBalanceAmount() > 0;
+  }
   canCustomerPayBalance() {
-    return !this.isAdmin && !this.isBookingDatePastOrToday() && !this.isCancelledBooking() && this.getBookingWorkflowState() === 'balance_required';
+    return this.canCustomerSeeBalancePayment() && !this.isBalancePaid();
+  }
+  getCustomerBalanceButtonLabel() {
+    return this.isBalancePaid() ? 'Solde 90% payé' : 'Payer le solde 90%';
+  }
+  getCustomerBalanceBlockedReason() {
+    return '';
+  }
+  hasCustomerPayableExtraServices() {
+    return this.pendingExtraServices.some(extra => this.canCustomerPayExtraService(extra));
+  }
+  canShowCustomerPaymentHub() {
+    return !this.isAdmin && !!this.booking?.bookingId && (this.canCustomerSeeBalancePayment() || this.hasCustomerPayableExtraServices() || this.canCustomerCreateAdhocPayment());
   }
   shouldShowCustomerPaymentButton() {
-    return this.getDerivedBookingStatus() !== 'cancelled' && (this.canCustomerPayDeposit() || this.canCustomerPayBalance());
+    return this.canCustomerPayDeposit();
   }
   get customerPaymentButtonLabel() {
     if (this.canCustomerPayDeposit()) return 'Pay 10% deposit';
-    if (this.canCustomerPayBalance()) return `Pay remaining 90% (€${this.getBalanceAmount()})`;
     return 'Payment';
   }
   updateCustomerBooking() {
@@ -17852,42 +18653,39 @@ let BookingDetailComponent = class BookingDetailComponent {
     this.customerUpdateError = '';
   }
   saveCustomerUpdate() {
-    var _this16 = this;
+    var _this17 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this16.booking?.bookingId) return;
-      _this16.savingCustomerUpdate = true;
-      _this16.customerUpdateMessage = '';
-      _this16.customerUpdateError = '';
+      if (!_this17.booking?.bookingId) return;
+      _this17.savingCustomerUpdate = true;
+      _this17.customerUpdateMessage = '';
+      _this17.customerUpdateError = '';
       try {
         const payload = {
-          customerName: _this16.booking.customerName || '',
-          email: _this16.booking.email || '',
-          phone: _this16.booking.phone || '',
-          passengers: _this16.booking.passengers || null,
-          pickupLocation: _this16.booking.pickupLocation || '',
-          comments: _this16.booking.comments || '',
+          customerName: _this17.booking.customerName || '',
+          email: _this17.booking.email || '',
+          phone: _this17.booking.phone || '',
+          passengers: _this17.booking.passengers || null,
+          pickupLocation: _this17.booking.pickupLocation || '',
+          comments: _this17.booking.comments || '',
           modifiedTS: Date.now()
         };
-        yield _this16.bookingApi.updateBooking(_this16.booking.bookingId, payload);
-        _this16.booking = {
-          ..._this16.booking,
+        yield _this17.bookingApi.updateBooking(_this17.booking.bookingId, payload);
+        _this17.booking = {
+          ..._this17.booking,
           ...payload
         };
-        _this16.customerUpdateMessage = 'Booking information updated.';
-        _this16.editMode = false;
+        _this17.refreshDerivedPaymentState();
+        _this17.customerUpdateMessage = 'Booking information updated.';
+        _this17.editMode = false;
       } catch (e) {
-        _this16.customerUpdateError = e?.message || 'Unable to update booking information.';
+        _this17.customerUpdateError = e?.message || 'Unable to update booking information.';
       }
-      _this16.savingCustomerUpdate = false;
+      _this17.savingCustomerUpdate = false;
     })();
   }
   payBalance() {
     if (this.isAdmin) return;
     if (!this.booking?.bookingId || this.isBalancePaid()) return;
-    if (this.isBookingDatePastOrToday() || this.isCancelledBooking()) {
-      this.balancePaymentError = 'This booking is cancelled or the outing date is today/already past. The remaining balance cannot be paid.';
-      return;
-    }
     const currentUrl = window.location.href;
     const balanceAmount = this.getBalanceAmount();
     const payload = {
@@ -17932,14 +18730,104 @@ let BookingDetailComponent = class BookingDetailComponent {
       this.payBalance();
     }
   }
-  get bookingExtraServices() {
+  get rawExtraServices() {
     return Array.isArray(this.booking?.extraServices) ? this.booking.extraServices : [];
+  }
+  get bookingExtraServices() {
+    // Stripe balance checkout may be stored by older backend/frontend fallbacks in extraServices.
+    // Keep those records out of the Extra services section.
+    return this.rawExtraServices.filter(item => !this.isBalancePaymentRecord(item));
+  }
+  get bookingBalancePaymentRecords() {
+    return this.balancePaymentRecordsCache || [];
+  }
+  computeBalancePaymentRecords() {
+    const payments = this.booking?.payments || {};
+    const records = [];
+    if (payments.balance) records.push({
+      ...payments.balance,
+      paymentType: payments.balance.paymentType || 'balance'
+    });
+    if (payments.remaining) records.push({
+      ...payments.remaining,
+      paymentType: payments.remaining.paymentType || 'balance'
+    });
+    this.rawExtraServices.filter(item => this.isBalancePaymentRecord(item)).forEach(item => records.push({
+      ...item,
+      paymentType: 'balance'
+    }));
+    return this.dedupePaymentRecords(records, 'balance');
+  }
+  refreshDerivedPaymentState() {
+    this.balancePaymentRecordsCache = this.computeBalancePaymentRecords();
+    this.refundablePaymentOptionsCache = this.computeRefundablePaymentOptions();
+    if (!this.refundablePaymentOptionsCache.some(option => option.type === this.refundTarget)) {
+      this.refundTarget = this.refundablePaymentOptionsCache[0]?.type || 'deposit';
+    }
+    this.onRefundTargetChange();
+  }
+  dedupePaymentRecords(records, defaultType = '') {
+    const byKey = new Map();
+    records.filter(Boolean).forEach((record, index) => {
+      const type = String(record.paymentType || record.type || defaultType || 'payment').toLowerCase().replace(/[\s-]/g, '_');
+      const bookingId = String(record.bookingId || record.relatedBookingId || this.booking?.bookingId || 'booking');
+      const key = `${bookingId}:${type}`;
+      const current = byKey.get(key);
+      if (!current || this.getPaymentRecordPriority(record, index) >= this.getPaymentRecordPriority(current, index)) {
+        byKey.set(key, record);
+      }
+    });
+    return Array.from(byKey.values());
+  }
+  getPaymentRecordPriority(record, index = 0) {
+    let score = index;
+    const status = String(record?.status || record?.paymentStatus || '').toLowerCase();
+    if (record?.paid === true || status.includes('paid') || status.includes('succeeded')) score += 1000;
+    if (record?.stripeCheckoutSessionId || record?.checkoutSessionId || record?.stripePaymentIntentId || record?.paymentIntentId) score += 100;
+    if (record?.modifiedTS || record?.updatedAt || record?.createdTS) score += Number(record.modifiedTS || record.updatedAt || record.createdTS || 0) / 100000000000000;
+    return score;
   }
   get pendingExtraServices() {
     return this.bookingExtraServices.filter(item => item && item.status !== 'paid' && item.paid !== true);
   }
   get paidExtraServices() {
     return this.bookingExtraServices.filter(item => item && (item.status === 'paid' || item.paid === true));
+  }
+  isBalancePaymentRecord(item) {
+    if (!item) return false;
+    const type = String(item.paymentType || item.type || item.kind || '').toLowerCase().replace(/[\s-]/g, '_');
+    const status = String(item.status || item.paymentStatus || '').toLowerCase();
+    const description = String(item.description || item.title || item.name || '').toLowerCase();
+    return type === 'balance' || type === 'remaining' || type === 'remaining_90' || status === 'balance_paid' || description.includes('remaining 90') || description.includes('90% balance') || description.includes('remaining balance');
+  }
+  getPaymentRecordDescription(item) {
+    return item?.description || item?.title || item?.name || 'Remaining balance';
+  }
+  getPaymentRecordStatus(item) {
+    if (item?.paid === true) return 'paid';
+    return item?.status || item?.paymentStatus || 'pending';
+  }
+  getPaymentRecordAmount(item) {
+    const raw = Number(item?.amount ?? item?.amount_total ?? item?.total ?? item?.price ?? 0);
+    return this.normalizeStripeAmount(raw, item);
+  }
+  normalizeStripeAmount(amount, source) {
+    if (!Number.isFinite(amount)) return 0;
+    const rawCurrency = String(source?.currency || source?.currencyCode || '').toLowerCase();
+    const sourceLooksStripe = !!(source?.stripeCheckoutSessionId || source?.checkoutSessionId || source?.stripePaymentIntentId || source?.paymentIntentId || source?.amount_total);
+    if (sourceLooksStripe || rawCurrency === 'eur') {
+      return Math.round(amount) / 100;
+    }
+    return amount > 10000 ? Math.round(amount) / 100 : amount;
+  }
+  formatPaymentAmount(value, source) {
+    const amount = this.normalizeStripeAmount(Number(value || 0), source);
+    return new Intl.NumberFormat(this.currentLanguage === 'fr' ? 'fr-FR' : this.currentLanguage === 'es' ? 'es-ES' : 'en-US', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
+      maximumFractionDigits: 2
+    }).format(amount);
   }
   get totalPaidAmount() {
     const payments = this.booking?.payments || {};
@@ -17957,38 +18845,39 @@ let BookingDetailComponent = class BookingDetailComponent {
     return this.isAdmin && !!this.booking?.bookingId;
   }
   canCustomerPayExtraService(extra) {
-    return !this.isAdmin && !!this.booking?.bookingId && extra && extra.status !== 'paid' && extra.paid !== true;
+    const amount = Number(extra?.amount || extra?.price || 0);
+    return !this.isAdmin && !!this.booking?.bookingId && !this.isCancelledBooking() && !!extra && amount > 0 && extra.status !== 'paid' && extra.status !== 'cancelled' && extra.paid !== true;
   }
   createExtraServiceRequest() {
-    var _this17 = this;
+    var _this18 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this17.isAdmin) return;
-      if (!_this17.booking?.bookingId) return;
-      _this17.savingExtraService = true;
-      _this17.extraServiceMessage = '';
-      _this17.extraServiceError = '';
+      if (!_this18.isAdmin) return;
+      if (!_this18.booking?.bookingId) return;
+      _this18.savingExtraService = true;
+      _this18.extraServiceMessage = '';
+      _this18.extraServiceError = '';
       try {
-        const selected = _this17.extraServicesCatalog.find(item => item.id === _this17.selectedExtraServiceId || item.slug === _this17.selectedExtraServiceId);
-        const description = _this17.customExtraServiceDescription || selected?.title || selected?.name || selected?.description || '';
-        const amount = Number(_this17.customExtraServiceAmount || selected?.amount || selected?.price || 0);
+        const selected = _this18.extraServicesCatalog.find(item => item.id === _this18.selectedExtraServiceId || item.slug === _this18.selectedExtraServiceId);
+        const description = _this18.customExtraServiceDescription || selected?.title || selected?.name || selected?.description || '';
+        const amount = Number(_this18.customExtraServiceAmount || selected?.amount || selected?.price || 0);
         if (!description || !amount || amount <= 0) {
           throw new Error('Please select or enter an extra service with a valid amount.');
         }
-        yield _this17.bookingApi.createExtraServiceRequest(_this17.booking.bookingId, {
+        yield _this18.bookingApi.createExtraServiceRequest(_this18.booking.bookingId, {
           extraServiceCatalogId: selected?.id || selected?.slug || null,
           description,
           amount,
           currency: 'eur'
         });
-        _this17.extraServiceMessage = 'Extra service payment request created.';
-        _this17.customExtraServiceDescription = '';
-        _this17.customExtraServiceAmount = null;
-        _this17.selectedExtraServiceId = '';
-        _this17.bookingApi.getBooking(_this17.booking.bookingId).subscribe(booking => _this17.booking = booking);
+        _this18.extraServiceMessage = 'Extra service payment request created.';
+        _this18.customExtraServiceDescription = '';
+        _this18.customExtraServiceAmount = null;
+        _this18.selectedExtraServiceId = '';
+        _this18.bookingApi.getBooking(_this18.booking.bookingId).subscribe(booking => _this18.booking = booking);
       } catch (e) {
-        _this17.extraServiceError = e?.message || 'Unable to create extra service request.';
+        _this18.extraServiceError = e?.message || 'Unable to create extra service request.';
       } finally {
-        _this17.savingExtraService = false;
+        _this18.savingExtraService = false;
       }
     })();
   }
@@ -18014,61 +18903,31 @@ let BookingDetailComponent = class BookingDetailComponent {
     this.extraServiceEditStatus = 'pending';
   }
   saveExtraServiceEdit(extra, index) {
-    var _this18 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this18.isAdmin || !_this18.booking?.bookingId) return;
-      const description = String(_this18.extraServiceEditDescription || '').trim();
-      const amount = Number(_this18.extraServiceEditAmount || 0);
-      if (!description || !amount || amount <= 0) {
-        _this18.extraServiceError = 'Please enter a valid description and amount.';
-        return;
-      }
-      _this18.savingExtraService = true;
-      _this18.extraServiceMessage = '';
-      _this18.extraServiceError = '';
-      try {
-        const services = [..._this18.bookingExtraServices];
-        const current = services[index] || {};
-        services[index] = {
-          ...current,
-          id: current.id || current.extraServiceId || _this18.getExtraServiceId(current, index),
-          description,
-          amount,
-          currency: current.currency || 'eur',
-          status: _this18.extraServiceEditStatus || current.status || 'pending',
-          paid: _this18.extraServiceEditStatus === 'paid' ? true : _this18.extraServiceEditStatus === 'pending' ? false : current.paid === true,
-          modifiedTS: Date.now()
-        };
-        yield _this18.bookingApi.updateBooking(_this18.booking.bookingId, {
-          extraServices: services,
-          modifiedTS: Date.now()
-        });
-        _this18.booking = {
-          ..._this18.booking,
-          extraServices: services
-        };
-        _this18.cancelEditExtraService();
-        _this18.extraServiceMessage = 'Extra service updated.';
-      } catch (e) {
-        _this18.extraServiceError = e?.message || 'Unable to update extra service.';
-      } finally {
-        _this18.savingExtraService = false;
-      }
-    })();
-  }
-  deleteExtraService(extra, index) {
     var _this19 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!_this19.isAdmin || !_this19.booking?.bookingId) return;
-      const label = extra?.description || extra?.title || extra?.name || 'this extra service';
-      const paid = extra?.paid === true || extra?.status === 'paid';
-      const confirmed = window.confirm(paid ? `Delete ${label}? This extra service is marked as paid.` : `Delete ${label}?`);
-      if (!confirmed) return;
+      const description = String(_this19.extraServiceEditDescription || '').trim();
+      const amount = Number(_this19.extraServiceEditAmount || 0);
+      if (!description || !amount || amount <= 0) {
+        _this19.extraServiceError = 'Please enter a valid description and amount.';
+        return;
+      }
       _this19.savingExtraService = true;
       _this19.extraServiceMessage = '';
       _this19.extraServiceError = '';
       try {
-        const services = _this19.bookingExtraServices.filter((_item, i) => i !== index);
+        const services = [..._this19.bookingExtraServices];
+        const current = services[index] || {};
+        services[index] = {
+          ...current,
+          id: current.id || current.extraServiceId || _this19.getExtraServiceId(current, index),
+          description,
+          amount,
+          currency: current.currency || 'eur',
+          status: _this19.extraServiceEditStatus || current.status || 'pending',
+          paid: _this19.extraServiceEditStatus === 'paid' ? true : _this19.extraServiceEditStatus === 'pending' ? false : current.paid === true,
+          modifiedTS: Date.now()
+        };
         yield _this19.bookingApi.updateBooking(_this19.booking.bookingId, {
           extraServices: services,
           modifiedTS: Date.now()
@@ -18077,14 +18936,46 @@ let BookingDetailComponent = class BookingDetailComponent {
           ..._this19.booking,
           extraServices: services
         };
-        _this19.extraServiceMessage = 'Extra service deleted.';
-        if (_this19.isEditingExtraService(extra, index)) {
-          _this19.cancelEditExtraService();
-        }
+        _this19.refreshDerivedPaymentState();
+        _this19.cancelEditExtraService();
+        _this19.extraServiceMessage = 'Extra service updated.';
       } catch (e) {
-        _this19.extraServiceError = e?.message || 'Unable to delete extra service.';
+        _this19.extraServiceError = e?.message || 'Unable to update extra service.';
       } finally {
         _this19.savingExtraService = false;
+      }
+    })();
+  }
+  deleteExtraService(extra, index) {
+    var _this20 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this20.isAdmin || !_this20.booking?.bookingId) return;
+      const label = extra?.description || extra?.title || extra?.name || 'this extra service';
+      const paid = extra?.paid === true || extra?.status === 'paid';
+      const confirmed = window.confirm(paid ? `Delete ${label}? This extra service is marked as paid.` : `Delete ${label}?`);
+      if (!confirmed) return;
+      _this20.savingExtraService = true;
+      _this20.extraServiceMessage = '';
+      _this20.extraServiceError = '';
+      try {
+        const services = _this20.bookingExtraServices.filter((_item, i) => i !== index);
+        yield _this20.bookingApi.updateBooking(_this20.booking.bookingId, {
+          extraServices: services,
+          modifiedTS: Date.now()
+        });
+        _this20.booking = {
+          ..._this20.booking,
+          extraServices: services
+        };
+        _this20.refreshDerivedPaymentState();
+        _this20.extraServiceMessage = 'Extra service deleted.';
+        if (_this20.isEditingExtraService(extra, index)) {
+          _this20.cancelEditExtraService();
+        }
+      } catch (e) {
+        _this20.extraServiceError = e?.message || 'Unable to delete extra service.';
+      } finally {
+        _this20.savingExtraService = false;
       }
     })();
   }
@@ -18125,9 +19016,9 @@ let BookingDetailComponent = class BookingDetailComponent {
     }
     const currentUrl = window.location.href;
     this.adhocPaymentLoading = true;
-    this.bookingApi.createExtraServiceCheckout({
+    this.bookingApi.createAdhocCheckout({
       bookingId: this.booking.bookingId,
-      extraServiceId: `adhoc_${Date.now()}`,
+      adhocPaymentId: `adhoc_${Date.now()}`,
       ownerId: this.booking.ownerId || 'alegria',
       amount,
       description,
@@ -18152,14 +19043,57 @@ let BookingDetailComponent = class BookingDetailComponent {
       }
     });
   }
+  get refundablePaymentOptions() {
+    return this.refundablePaymentOptionsCache || [];
+  }
+  computeRefundablePaymentOptions() {
+    const options = [];
+    const deposit = this.getDepositRefundableAmount();
+    const balance = this.getBalanceRefundableAmount();
+    if (deposit > 0) options.push({
+      type: 'deposit',
+      label: '10% deposit',
+      amount: deposit
+    });
+    if (balance > 0) options.push({
+      type: 'balance',
+      label: 'Remaining 90%',
+      amount: balance
+    });
+    return options;
+  }
+  get selectedRefundableAmount() {
+    return this.refundTarget === 'balance' ? this.getBalanceRefundableAmount() : this.getDepositRefundableAmount();
+  }
+  getDepositRefundableAmount() {
+    const payments = this.booking?.payments || {};
+    const payment = payments.deposit || {};
+    const raw = Number(payment.amount ?? payment.amount_total ?? this.booking?.depositAmount ?? 0);
+    const paid = payment.paid === true || this.isDepositPaid() ? this.normalizeStripeAmount(raw, payment) : 0;
+    return Math.max(0, Math.round((paid - this.getRefundedAmountForType('deposit')) * 100) / 100);
+  }
+  getBalanceRefundableAmount() {
+    const payment = this.bookingBalancePaymentRecords[0] || {};
+    const raw = Number(payment.amount ?? payment.amount_total ?? this.booking?.balanceAmount ?? this.booking?.remainingFeesAmount ?? 0);
+    const paid = payment.paid === true || this.isBalancePaid() || String(payment.status || '').toLowerCase().includes('paid') ? this.normalizeStripeAmount(raw, payment) : 0;
+    return Math.max(0, Math.round((paid - this.getRefundedAmountForType('balance')) * 100) / 100);
+  }
+  getRefundedAmountForType(type) {
+    const refunds = Array.isArray(this.booking?.refunds) ? this.booking.refunds : [];
+    return refunds.filter(item => String(item.paymentType || item.type || item.refundType || '').toLowerCase().replace(/[\s-]/g, '_') === type).reduce((sum, item) => sum + this.normalizeStripeAmount(Number(item.amount || item.amount_total || 0), item), 0);
+  }
+  onRefundTargetChange() {
+    const max = this.selectedRefundableAmount;
+    if (this.refundAmount && this.refundAmount > max) this.refundAmount = max;
+  }
   canAdminRefund() {
-    return this.isAdmin && !!this.booking?.bookingId && this.refundableAmount > 0;
+    return this.isAdmin && !!this.booking?.bookingId && this.selectedRefundableAmount > 0;
   }
   issueRefund() {
     if (!this.booking?.bookingId || !this.canAdminRefund()) return;
     const amount = Number(this.refundAmount || 0);
-    if (!amount || amount <= 0 || amount > this.refundableAmount) {
-      this.refundError = `Refund amount must be between €1 and €${this.refundableAmount}.`;
+    if (!amount || amount <= 0 || amount > this.selectedRefundableAmount) {
+      this.refundError = `Refund amount must be between €1 and €${this.selectedRefundableAmount}.`;
       return;
     }
     this.refunding = true;
@@ -18169,13 +19103,17 @@ let BookingDetailComponent = class BookingDetailComponent {
       bookingId: this.booking.bookingId,
       ownerId: this.booking.ownerId || 'alegria',
       amount,
+      paymentType: this.refundTarget,
       reason: this.refundReason || ''
     }).subscribe({
       next: () => {
         this.refundMessage = 'Refund issued.';
         this.refundAmount = null;
         this.refundReason = '';
-        this.bookingApi.getBooking(this.booking.bookingId).subscribe(booking => this.booking = booking);
+        this.bookingApi.getBooking(this.booking.bookingId).subscribe(booking => {
+          this.booking = booking;
+          this.refreshDerivedPaymentState();
+        });
       },
       error: error => this.refundError = error?.error?.error || error?.message || 'Unable to issue refund.',
       complete: () => this.refunding = false
@@ -19835,7 +20773,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n    <div class=\"price-pill\">{{ tour.price }}</div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/contact\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
+module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/contact\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -23711,16 +24649,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ProposalConfirmationComponent: () => (/* binding */ ProposalConfirmationComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _proposal_confirmation_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./proposal-confirmation.component.html?ngResource */ 26090);
 /* harmony import */ var _proposal_confirmation_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./proposal-confirmation.component.scss?ngResource */ 19182);
 /* harmony import */ var _proposal_confirmation_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_proposal_confirmation_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ 50085);
 /* harmony import */ var _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../bookings/proposal-api.service */ 79439);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _guest_content_guest_content_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../guest-content/guest-content.service */ 51038);
-/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+/* harmony import */ var _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../site-content-service/site-content.service */ 73196);
+/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+
 
 
 
@@ -23736,6 +24676,7 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
   proposalApi;
   router;
   guestContent;
+  siteContentService;
   languageService;
   users;
   storeDb;
@@ -23755,6 +24696,7 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
   termsModalWasClosed = false;
   currentLanguage = 'fr';
   proposalInfo = this.defaultProposalInfo('fr');
+  priceTitles = this.defaultPriceTitles('fr');
   finalizingBooking = false;
   finalBookingId = '';
   proposalAccessReady = false;
@@ -23763,11 +24705,12 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
   proposalAccessMessage = '';
   proposalAccessMode = '';
   customerAccountCreating = false;
-  constructor(route, proposalApi, router, guestContent, languageService, users, storeDb, utilsSvc, mainSvc) {
+  constructor(route, proposalApi, router, guestContent, siteContentService, languageService, users, storeDb, utilsSvc, mainSvc) {
     this.route = route;
     this.proposalApi = proposalApi;
     this.router = router;
     this.guestContent = guestContent;
+    this.siteContentService = siteContentService;
     this.languageService = languageService;
     this.users = users;
     this.storeDb = storeDb;
@@ -23800,14 +24743,35 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
     });
     this.route.queryParamMap.subscribe(params => {
       if (params.get('payment') === 'success') {
-        this.message = this.text('depositPaymentSuccess');
-        setTimeout(() => this.reloadProposal(true), 1500);
+        this.persistDepositSuccess(params.get('session_id') || params.get('sessionId') || '');
       }
       if (params.get('warranty') === 'success') {
         this.message = this.text('warrantySuccess');
         setTimeout(() => this.reloadProposal(true), 1500);
       }
     });
+  }
+  persistDepositSuccess(sessionId = '') {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const proposalId = _this2.route.snapshot.paramMap.get('proposalId') || _this2.proposal?.proposalId || '';
+      if (!proposalId) {
+        _this2.message = _this2.text('depositPaymentSuccess');
+        setTimeout(() => _this2.reloadProposal(true), 1500);
+        return;
+      }
+      _this2.message = _this2.text('depositPaymentSuccess');
+      try {
+        _this2.proposal = yield _this2.proposalApi.markDepositPaidFromStripeReturn(proposalId, {
+          sessionId
+        });
+        _this2.payingDeposit = false;
+        _this2.reloadProposal(true);
+      } catch {
+        _this2.payingDeposit = false;
+        setTimeout(() => _this2.reloadProposal(true), 1500);
+      }
+    })();
   }
   proposalAccessStorageKey(proposalId) {
     return `alegria_proposal_access_${proposalId || this.proposal?.proposalId || ''}`;
@@ -23889,61 +24853,61 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
     };
   }
   prepareProposalAccess() {
-    var _this2 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this2.proposal) return;
-      _this2.proposalAccessError = '';
-      _this2.proposalAccessMessage = '';
-      if (!_this2.proposalEmail) {
-        _this2.proposalAccessReady = true;
-        _this2.proposalAccessMode = 'ready';
-        _this2.rememberProposalAccess();
-        return;
-      }
-      if (_this2.restoreProposalAccessFromStorage()) {
-        return;
-      }
-      if (_this2.currentUserMatchesProposal()) {
-        _this2.proposalAccessReady = true;
-        _this2.proposalAccessMode = 'ready';
-        yield _this2.attachCurrentUserToProposal('existing');
-        _this2.rememberProposalAccess();
-        return;
-      }
-      if (_this2.isGmailProposal) {
-        _this2.proposalAccessReady = false;
-        _this2.proposalAccessMode = 'google';
-        _this2.proposalAccessMessage = 'This proposal was prepared for a Gmail address. Please continue with Google to open it securely.';
-        return;
-      }
-      yield _this2.createAndLoginCustomerAccount();
-    })();
-  }
-  continueWithGoogle() {
     var _this3 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!_this3.proposal) return;
-      _this3.proposalAccessLoading = true;
       _this3.proposalAccessError = '';
+      _this3.proposalAccessMessage = '';
+      if (!_this3.proposalEmail) {
+        _this3.proposalAccessReady = true;
+        _this3.proposalAccessMode = 'ready';
+        _this3.rememberProposalAccess();
+        return;
+      }
+      if (_this3.restoreProposalAccessFromStorage()) {
+        return;
+      }
+      if (_this3.currentUserMatchesProposal()) {
+        _this3.proposalAccessReady = true;
+        _this3.proposalAccessMode = 'ready';
+        yield _this3.attachCurrentUserToProposal('existing');
+        _this3.rememberProposalAccess();
+        return;
+      }
+      if (_this3.isGmailProposal) {
+        _this3.proposalAccessReady = false;
+        _this3.proposalAccessMode = 'google';
+        _this3.proposalAccessMessage = 'This proposal was prepared for a Gmail address. Please continue with Google to open it securely.';
+        return;
+      }
+      yield _this3.createAndLoginCustomerAccount();
+    })();
+  }
+  continueWithGoogle() {
+    var _this4 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this4.proposal) return;
+      _this4.proposalAccessLoading = true;
+      _this4.proposalAccessError = '';
       try {
-        const user = yield _this3.users.signInWithGoogleAndLoadProfile();
+        const user = yield _this4.users.signInWithGoogleAndLoadProfile();
         const signedEmail = String(user?.email || '').trim().toLowerCase();
-        if (signedEmail !== _this3.proposalEmail) {
-          _this3.proposalAccessReady = false;
-          _this3.proposalAccessError = `Please sign in with ${_this3.proposal.customerEmail}. This proposal is linked to that email address.`;
+        if (signedEmail !== _this4.proposalEmail) {
+          _this4.proposalAccessReady = false;
+          _this4.proposalAccessError = `Please sign in with ${_this4.proposal.customerEmail}. This proposal is linked to that email address.`;
           return;
         }
         const uid = user.userId || user.uid;
         const now = Date.now();
-        const displayName = user.displayName || _this3.proposal.customerName || _this3.proposalEmail;
-        const names = _this3.splitName(displayName);
+        const displayName = user.displayName || _this4.proposal.customerName || _this4.proposalEmail;
+        const names = _this4.splitName(displayName);
         const profile = {
           userId: uid,
           firstname: names.firstname,
           lastname: names.lastname,
           displayName: names.displayName,
           email: signedEmail,
-          phone: _this3.proposal.customerPhone || user.phone || '',
+          phone: _this4.proposal.customerPhone || user.phone || '',
           role: 'customer',
           provider: 'google',
           state: 'active',
@@ -23952,39 +24916,39 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
           modifiedTS: now,
           createdTS: now
         };
-        yield _this3.storeDb.partialUpdateObject(_this3.utilsSvc.backendFBstoreId, _this3.utilsSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_6__.OBJECTNAME.bnUsers, profile, uid);
-        _this3.mainSvc.setLoggedUser?.(profile);
-        yield _this3.proposalApi.attachCustomerAccount(_this3.proposal.proposalId, {
+        yield _this4.storeDb.partialUpdateObject(_this4.utilsSvc.backendFBstoreId, _this4.utilsSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_7__.OBJECTNAME.bnUsers, profile, uid);
+        _this4.mainSvc.setLoggedUser?.(profile);
+        yield _this4.proposalApi.attachCustomerAccount(_this4.proposal.proposalId, {
           customerUid: uid,
           customerAuthProvider: 'google'
         });
-        _this3.proposal = {
-          ..._this3.proposal,
+        _this4.proposal = {
+          ..._this4.proposal,
           customerUid: uid,
           customerAuthProvider: 'google'
         };
-        _this3.proposalAccessReady = true;
-        _this3.proposalAccessMode = 'ready';
-        _this3.rememberProposalAccess();
+        _this4.proposalAccessReady = true;
+        _this4.proposalAccessMode = 'ready';
+        _this4.rememberProposalAccess();
       } catch (e) {
-        _this3.proposalAccessError = e?.message || 'Google sign-in failed.';
+        _this4.proposalAccessError = e?.message || 'Google sign-in failed.';
       } finally {
-        _this3.proposalAccessLoading = false;
+        _this4.proposalAccessLoading = false;
       }
     })();
   }
   createAndLoginCustomerAccount() {
-    var _this4 = this;
+    var _this5 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this4.proposal || !_this4.proposalEmail) return;
-      _this4.customerAccountCreating = true;
-      _this4.proposalAccessLoading = true;
-      _this4.proposalAccessError = '';
-      _this4.proposalAccessMessage = 'Preparing your secure customer access...';
+      if (!_this5.proposal || !_this5.proposalEmail) return;
+      _this5.customerAccountCreating = true;
+      _this5.proposalAccessLoading = true;
+      _this5.proposalAccessError = '';
+      _this5.proposalAccessMessage = 'Preparing your secure customer access...';
       try {
-        const password = _this4.generateTemporaryPassword();
-        const names = _this4.splitName(_this4.proposal.customerName || _this4.proposalEmail);
-        const authUser = yield _this4.users.registerWithEmail(_this4.proposalEmail, password, names.displayName);
+        const password = _this5.generateTemporaryPassword();
+        const names = _this5.splitName(_this5.proposal.customerName || _this5.proposalEmail);
+        const authUser = yield _this5.users.registerWithEmail(_this5.proposalEmail, password, names.displayName);
         const uid = authUser?.uid || authUser?.userId;
         const now = Date.now();
         const profile = {
@@ -23992,76 +24956,145 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
           firstname: names.firstname,
           lastname: names.lastname,
           displayName: names.displayName,
-          email: _this4.proposalEmail,
-          phone: _this4.proposal.customerPhone || '',
+          email: _this5.proposalEmail,
+          phone: _this5.proposal.customerPhone || '',
           role: 'customer',
           provider: 'auto_email',
           state: 'active',
           emailverified: false,
           createdTS: now,
           modifiedTS: now,
-          proposalId: _this4.proposal.proposalId,
+          proposalId: _this5.proposal.proposalId,
           accountCreatedFromProposal: true
         };
-        yield _this4.storeDb.updateObject(_this4.utilsSvc.backendFBstoreId, _this4.utilsSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_6__.OBJECTNAME.bnUsers, profile, uid);
-        _this4.mainSvc.setLoggedUser?.(profile);
-        yield _this4.proposalApi.attachCustomerAccount(_this4.proposal.proposalId, {
+        yield _this5.storeDb.updateObject(_this5.utilsSvc.backendFBstoreId, _this5.utilsSvc.mdb, godigital_lib__WEBPACK_IMPORTED_MODULE_7__.OBJECTNAME.bnUsers, profile, uid);
+        _this5.mainSvc.setLoggedUser?.(profile);
+        yield _this5.proposalApi.attachCustomerAccount(_this5.proposal.proposalId, {
           customerUid: uid,
           customerAuthProvider: 'auto_email',
           customerAccountCreated: true
         });
-        _this4.proposal = {
-          ..._this4.proposal,
+        _this5.proposal = {
+          ..._this5.proposal,
           customerUid: uid,
           customerAuthProvider: 'auto_email',
           customerAccountCreated: true
         };
-        _this4.proposalAccessReady = true;
-        _this4.proposalAccessMode = 'ready';
-        _this4.proposalAccessMessage = '';
-        _this4.rememberProposalAccess();
+        _this5.proposalAccessReady = true;
+        _this5.proposalAccessMode = 'ready';
+        _this5.proposalAccessMessage = '';
+        _this5.rememberProposalAccess();
       } catch (e) {
         const msg = String(e?.message || e || '');
         if (msg.toLowerCase().includes('email') && msg.toLowerCase().includes('use')) {
-          _this4.proposalAccessError = 'A secure customer account already exists for this email. Please contact Alegria or use the password recovery link to access it.';
+          _this5.proposalAccessError = 'A secure customer account already exists for this email. Please contact Alegria or use the password recovery link to access it.';
         } else {
-          _this4.proposalAccessError = msg || 'Unable to prepare the customer account for this proposal.';
+          _this5.proposalAccessError = msg || 'Unable to prepare the customer account for this proposal.';
         }
-        _this4.proposalAccessReady = false;
+        _this5.proposalAccessReady = false;
       } finally {
-        _this4.customerAccountCreating = false;
-        _this4.proposalAccessLoading = false;
+        _this5.customerAccountCreating = false;
+        _this5.proposalAccessLoading = false;
       }
     })();
   }
   attachCurrentUserToProposal(provider) {
-    var _this5 = this;
+    var _this6 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this5.proposal) return;
-      const current = _this5.getCurrentUser();
+      if (!_this6.proposal) return;
+      const current = _this6.getCurrentUser();
       const uid = current?.userId || current?.uid;
-      if (!uid || _this5.proposal.customerUid === uid) return;
-      yield _this5.proposalApi.attachCustomerAccount(_this5.proposal.proposalId, {
+      if (!uid || _this6.proposal.customerUid === uid) return;
+      yield _this6.proposalApi.attachCustomerAccount(_this6.proposal.proposalId, {
         customerUid: uid,
         customerAuthProvider: provider
       });
-      _this5.proposal = {
-        ..._this5.proposal,
+      _this6.proposal = {
+        ..._this6.proposal,
         customerUid: uid,
         customerAuthProvider: provider
       };
     })();
   }
   loadProposalInfo(language) {
-    var _this6 = this;
+    var _this7 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const defaultInfo = _this7.defaultProposalInfo(language);
+      let guestContent = null;
+      let siteContent = null;
       try {
-        const content = yield _this6.guestContent.getContent();
-        _this6.proposalInfo = content?.proposalInfo?.[language] || content?.guestInfo?.proposalInfo?.[language] || _this6.defaultProposalInfo(language);
-      } catch {
-        _this6.proposalInfo = _this6.defaultProposalInfo(language);
-      }
+        guestContent = yield _this7.guestContent.getContent();
+      } catch {}
+      try {
+        siteContent = yield _this7.siteContentService.getContent();
+      } catch {}
+      _this7.proposalInfo = guestContent?.proposalInfo?.[language] || guestContent?.guestInfo?.proposalInfo?.[language] || siteContent?.[language]?.proposalInfo || siteContent?.proposalInfo?.[language] || defaultInfo;
+      // Main configurable source: /siteContent/{language}/proposalPriceTitles
+      // Legacy paths are kept only as fallbacks for older Firebase exports.
+      _this7.priceTitles = {
+        ..._this7.defaultPriceTitles(language),
+        ...(siteContent?.[language]?.proposalPriceTitles || {}),
+        ...(siteContent?.[language]?.priceTitles || {}),
+        ...(siteContent?.proposalPriceTitles?.[language] || {}),
+        ...(siteContent?.priceTitles?.[language] || {}),
+        ...(guestContent?.proposalPriceTitles?.[language] || {}),
+        ...(guestContent?.priceTitles?.[language] || {}),
+        ...(guestContent?.guestInfo?.proposalPriceTitles?.[language] || {}),
+        ...(guestContent?.guestInfo?.priceTitles?.[language] || {}),
+        ...(guestContent?.proposalInfo?.priceTitles?.[language] || {}),
+        ...(guestContent?.guestInfo?.proposalInfo?.[language]?.priceTitles || {})
+      };
     })();
+  }
+  defaultPriceTitles(language) {
+    const defaults = {
+      fr: {
+        totalPrice: 'Prix total',
+        totalAmount: 'Montant total',
+        deposit: 'Acompte 10 %',
+        deposit10: 'Acompte 10 %',
+        remaining: 'Solde 90 %',
+        remaining90: 'Solde 90 %',
+        warranty: 'Caution',
+        warrantyAmount: 'Caution',
+        boatPrice: 'Prix bateau',
+        skipperPrice: 'Prix skipper',
+        cleaningPrice: 'Prix carburant',
+        extraServicesPrice: 'Extras / services'
+      },
+      en: {
+        totalPrice: 'Total price',
+        totalAmount: 'Total amount',
+        deposit: 'Deposit 10%',
+        deposit10: 'Deposit 10%',
+        remaining: 'Balance 90%',
+        remaining90: 'Balance 90%',
+        warranty: 'Warranty',
+        warrantyAmount: 'Warranty',
+        boatPrice: 'Boat price',
+        skipperPrice: 'Skipper price',
+        cleaningPrice: 'Fuel price',
+        extraServicesPrice: 'Extras / services'
+      },
+      es: {
+        totalPrice: 'Precio total',
+        totalAmount: 'Importe total',
+        deposit: 'Depósito 10%',
+        deposit10: 'Depósito 10%',
+        remaining: 'Saldo 90%',
+        remaining90: 'Saldo 90%',
+        warranty: 'Garantía',
+        warrantyAmount: 'Garantía',
+        boatPrice: 'Precio barco',
+        skipperPrice: 'Precio skipper',
+        cleaningPrice: 'Precio combustible',
+        extraServicesPrice: 'Extras / servicios'
+      }
+    };
+    return defaults[language] || defaults.fr;
+  }
+  priceTitle(key) {
+    return this.priceTitles?.[key] || this.text(key) || key;
   }
   text(key) {
     return this.proposalInfo?.[key] || this.defaultProposalInfo(this.currentLanguage)[key] || key;
@@ -24079,6 +25112,9 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
   defaultProposalInfo(language) {
     const defaults = {
       fr: {
+        remainingOnBoard: 'Reste à payer à bord',
+        extraServicesOnBoard: 'Extras/services à payer à bord',
+        amountDueOnBoard: 'Montant à régler à bord',
         secureProposalAccess: "Accès sécurisé à la proposition",
         accessProposalSecurely: "Accédez à votre proposition en toute sécurité",
         proposalLinkedTo: "Cette proposition est liée à",
@@ -24183,6 +25219,9 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
         }]
       },
       en: {
+        remainingOnBoard: 'Remaining to pay on board',
+        extraServicesOnBoard: 'Extra services to pay on board',
+        amountDueOnBoard: 'Amount due on board',
         secureProposalAccess: "Secure proposal access",
         accessProposalSecurely: "Access your proposal securely",
         proposalLinkedTo: "This proposal is linked to",
@@ -24287,6 +25326,9 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
         }]
       },
       es: {
+        remainingOnBoard: 'Resto a pagar a bordo',
+        extraServicesOnBoard: 'Servicios extra a pagar a bordo',
+        amountDueOnBoard: 'Importe a pagar a bordo',
         secureProposalAccess: "Acceso seguro a la propuesta",
         accessProposalSecurely: "Acceda a su propuesta de forma segura",
         proposalLinkedTo: "Esta propuesta está vinculada a",
@@ -24407,10 +25449,13 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
     return this.termsModalWasOpened && this.termsModalWasClosed;
   }
   get warrantyRegistered() {
+    if (this.warrantyCashSelected) return false;
     return !!this.proposal && (this.proposal.warrantyRegistered === true || this.proposal.warrantyStatus === 'card_registered' || this.proposal.warrantyStatus === 'warranty_card_saved' || this.proposal.warrantyStatus === 'warranty_card_registered');
   }
   get warrantyCashSelected() {
-    return this.proposal?.warrantyPaymentChoice === 'cash_on_board';
+    const p = this.proposal || {};
+    const raw = p.raw || {};
+    return p.warrantyPaymentChoice === 'cash_on_board' || raw.warrantyPaymentChoice === 'cash_on_board' || p.warrantyStatus === 'cash_selected' || raw.warrantyStatus === 'cash_selected';
   }
   get warrantyMessage() {
     if (this.warrantyRegistered) {
@@ -24454,31 +25499,31 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
     return !!this.proposal && !this.expired && this.canAcceptTermsCheckbox && this.acceptedTerms;
   }
   acceptProposal() {
-    var _this7 = this;
+    var _this8 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this7.proposal || !_this7.proposalAccessReady || !_this7.canAccept) return;
-      _this7.accepting = true;
-      _this7.error = '';
+      if (!_this8.proposal || !_this8.proposalAccessReady || !_this8.canAccept) return;
+      _this8.accepting = true;
+      _this8.error = '';
       try {
-        _this7.proposal = yield _this7.proposalApi.markTermsAccepted(_this7.proposal.proposalId);
-        _this7.message = _this7.text('termsAcceptedMessage') || 'Terms and Conditions accepted.';
+        _this8.proposal = yield _this8.proposalApi.markTermsAccepted(_this8.proposal.proposalId);
+        _this8.message = _this8.text('termsAcceptedMessage') || 'Terms and Conditions accepted.';
       } catch (e) {
-        _this7.error = e?.message || _this7.text('acceptError');
+        _this8.error = e?.message || _this8.text('acceptError');
       }
-      _this7.accepting = false;
+      _this8.accepting = false;
     })();
   }
   reloadProposal(tryFinalize = false) {
-    var _this8 = this;
+    var _this9 = this;
     const id = this.route.snapshot.paramMap.get('proposalId') || '';
     if (!id) return;
     this.proposalApi.getProposal(id).subscribe({
       next: function () {
         var _ref2 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (proposal) {
           if (proposal) {
-            _this8.proposal = proposal;
-            if (tryFinalize && _this8.canFinalizeProposal) {
-              yield _this8.finalizeProposal();
+            _this9.proposal = proposal;
+            if (tryFinalize && _this9.canFinalizeProposal) {
+              yield _this9.finalizeProposal();
             }
           }
         });
@@ -24514,84 +25559,86 @@ let ProposalConfirmationComponent = class ProposalConfirmationComponent {
     this.router.navigate(['/bookings', this.relatedBookingId]);
   }
   acceptCashWarranty() {
-    var _this9 = this;
+    var _this10 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this9.proposal || !_this9.proposalAccessReady || !_this9.depositPaid) return;
-      _this9.payingWarranty = true;
-      _this9.error = '';
+      if (!_this10.proposal || !_this10.proposalAccessReady || !_this10.depositPaid) return;
+      _this10.payingWarranty = true;
+      _this10.error = '';
       try {
-        _this9.proposal = yield _this9.proposalApi.setWarrantyChoice(_this9.proposal.proposalId, 'cash_on_board');
-        yield _this9.finalizeProposal();
+        _this10.proposal = yield _this10.proposalApi.setWarrantyChoice(_this10.proposal.proposalId, 'cash_on_board');
+        yield _this10.finalizeProposal();
       } catch (e) {
-        _this9.error = e?.message || _this9.text('warrantyError');
+        _this10.error = e?.message || _this10.text('warrantyError');
       }
-      _this9.payingWarranty = false;
+      _this10.payingWarranty = false;
     })();
   }
   finalizeProposal() {
-    var _this10 = this;
+    var _this11 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this10.proposal || !_this10.canFinalizeProposal || _this10.finalizingBooking) return;
-      _this10.finalizingBooking = true;
-      _this10.error = '';
+      if (!_this11.proposal || !_this11.canFinalizeProposal || _this11.finalizingBooking) return;
+      _this11.finalizingBooking = true;
+      _this11.error = '';
       try {
-        const result = yield _this10.proposalApi.finalizeProposalWizard(_this10.proposal.proposalId, _this10.proposal.warrantyPaymentChoice || _this10.warrantyChoice);
-        _this10.finalBookingId = result.bookingId;
-        _this10.message = _this10.text('bookingCreatedText');
-        _this10.router.navigate(['/bookings', result.bookingId]);
+        const result = yield _this11.proposalApi.finalizeProposalWizard(_this11.proposal.proposalId, _this11.proposal.warrantyPaymentChoice || _this11.warrantyChoice);
+        _this11.finalBookingId = result.bookingId;
+        _this11.message = _this11.text('bookingCreatedText');
+        _this11.router.navigate(['/bookings', result.bookingId]);
       } catch (e) {
-        _this10.error = e?.message || _this10.text('acceptError');
+        _this11.error = e?.message || _this11.text('acceptError');
       } finally {
-        _this10.finalizingBooking = false;
+        _this11.finalizingBooking = false;
       }
     })();
   }
   registerWarrantyCard() {
-    var _this11 = this;
+    var _this12 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this11.proposal || !_this11.proposalAccessReady || !_this11.depositPaid) return;
-      _this11.payingWarranty = true;
-      _this11.error = '';
+      if (!_this12.proposal || !_this12.proposalAccessReady || !_this12.depositPaid) return;
+      _this12.payingWarranty = true;
+      _this12.error = '';
       try {
-        _this11.proposal = yield _this11.proposalApi.setWarrantyChoice(_this11.proposal.proposalId, 'stripe_card');
+        _this12.proposal = yield _this12.proposalApi.setWarrantyChoice(_this12.proposal.proposalId, 'stripe_card');
       } catch {}
-      _this11.rememberProposalAccess();
-      _this11.proposalApi.createWarrantySetup(_this11.proposal).subscribe({
+      _this12.rememberProposalAccess();
+      _this12.proposalApi.createWarrantySetup(_this12.proposal).subscribe({
         next: r => {
           const url = r.url || r.checkoutUrl || r.sessionUrl;
           if (url) window.location.href = url;else {
-            _this11.payingWarranty = false;
-            _this11.error = _this11.text('warrantyError');
+            _this12.payingWarranty = false;
+            _this12.error = _this12.text('warrantyError');
           }
         },
         error: () => {
-          _this11.payingWarranty = false;
-          _this11.error = _this11.text('warrantyError');
+          _this12.payingWarranty = false;
+          _this12.error = _this12.text('warrantyError');
         }
       });
     })();
   }
   static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_7__.ActivatedRoute
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_8__.ActivatedRoute
   }, {
     type: _bookings_proposal_api_service__WEBPACK_IMPORTED_MODULE_3__.ProposalApiService
   }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_7__.Router
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_8__.Router
   }, {
     type: _guest_content_guest_content_service__WEBPACK_IMPORTED_MODULE_4__.GuestContentService
   }, {
-    type: _services_language_service__WEBPACK_IMPORTED_MODULE_5__.LanguageService
+    type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__.SiteContentService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_6__.UsersService
+    type: _services_language_service__WEBPACK_IMPORTED_MODULE_6__.LanguageService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_6__.StoreDbService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.UsersService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_6__.UtilsService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.StoreDbService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_6__.ServicesService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.UtilsService
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.ServicesService
   }];
 };
-ProposalConfirmationComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.Component)({
+ProposalConfirmationComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_9__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_10__.Component)({
   selector: 'app-proposal-confirmation',
   template: _proposal_confirmation_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_proposal_confirmation_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]

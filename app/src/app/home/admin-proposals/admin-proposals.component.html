@@ -36,9 +36,9 @@
           <div>
             <strong>€{{ getEstimatedProposalRequestPrice(request) }}</strong>
             <small>{{ t('estimatedPrice') }}</small>
-            <small>{{ t('skipperPrice') }}: €{{ getEstimatedSkipperPrice(request) }}</small>
-            <small>{{ t('cleaningPrice') }}: €{{ getEstimatedCleaningPrice(request) }}</small>
-            <small>{{ t('optionsPrice') }}: €{{ getEstimatedOptionsPrice(request) }}</small>
+            <small>{{ priceTitle('skipperPrice') }}: €{{ getEstimatedSkipperPrice(request) }}</small>
+            <small>{{ priceTitle('cleaningPrice') }}: €{{ getEstimatedCleaningPrice(request) }}</small>
+            <small>{{ priceTitle('extraServicesPrice') }}: €{{ getEstimatedOptionsPrice(request) }}</small>
           </div>
 
           <div>
@@ -65,13 +65,13 @@
         <label>{{ t('returnTime') }}<input type="time" name="arrivalTime" required [(ngModel)]="form.arrivalTime" /></label>
         <label>{{ t('passengers') }}<input type="number" min="1" required name="passengers" [(ngModel)]="form.passengers" /></label>
 
-        <label>{{ t('boatPrice') }}<input type="number" min="0" step="0.01" name="proposalBoatPrice" [(ngModel)]="form.proposalBoatPrice" /></label>
-        <label>{{ t('skipperPrice') }}<input type="number" min="0" step="0.01" name="proposalSkipperPrice" [(ngModel)]="form.proposalSkipperPrice" /></label>
-        <label>{{ t('cleaningPrice') }}<input type="number" min="0" step="0.01" name="proposalCleaningPrice" [(ngModel)]="form.proposalCleaningPrice" /></label>
-        <label>{{ t('extraServicesPrice') }}<input type="number" min="0" step="0.01" name="proposalExtraServicesPrice" [(ngModel)]="form.proposalExtraServicesPrice" /></label>
+        <label>{{ priceTitle('boatPrice') }}<input type="number" min="0" step="0.01" name="proposalBoatPrice" [(ngModel)]="form.proposalBoatPrice" /></label>
+        <label>{{ priceTitle('skipperPrice') }}<input type="number" min="0" step="0.01" name="proposalSkipperPrice" [(ngModel)]="form.proposalSkipperPrice" /></label>
+        <label>{{ priceTitle('cleaningPrice') }}<input type="number" min="0" step="0.01" name="proposalCleaningPrice" [(ngModel)]="form.proposalCleaningPrice" /></label>
+        <label>{{ priceTitle('extraServicesPrice') }}<input type="number" min="0" step="0.01" name="proposalExtraServicesPrice" [(ngModel)]="form.proposalExtraServicesPrice" /></label>
 
-        <label>{{ t('totalAmount') }}<input type="number" min="1" step="0.01" required name="totalAmount" [(ngModel)]="form.totalAmount" /></label>
-        <label>{{ t('warrantyAmount') }}<input type="number" min="0" step="0.01" required name="warrantyAmount" [(ngModel)]="form.warrantyAmount" /></label>
+        <label>{{ priceTitle('totalAmount') }}<input type="number" min="1" step="0.01" required name="totalAmount" [(ngModel)]="form.totalAmount" /></label>
+        <label>{{ priceTitle('warrantyAmount') }}<input type="number" min="0" step="0.01" required name="warrantyAmount" [(ngModel)]="form.warrantyAmount" /></label>
         <label class="wide">{{ t('proposalMessage') }}<textarea rows="3" required name="proposalMessage" [(ngModel)]="form.proposalMessage"></textarea></label>
         <label class="wide">{{ t('internalComments') }}<textarea rows="3" name="comments" [(ngModel)]="form.comments"></textarea></label>
       </div>
@@ -85,8 +85,8 @@
 
       <div class="calculation">
         <span>{{ t('computedTotal') || 'Total' }}: <strong>€{{ ((form.proposalBoatPrice || 0) + (form.proposalSkipperPrice || 0) + (form.proposalCleaningPrice || 0) + (form.proposalExtraServicesPrice || 0)) | number:'1.2-2' }}</strong></span>
-        <span>{{ t('deposit10') }}: <strong>€{{ (((form.proposalBoatPrice || 0) + (form.proposalSkipperPrice || 0) + (form.proposalCleaningPrice || 0) + (form.proposalExtraServicesPrice || 0)) * 0.1) | number:'1.2-2' }}</strong></span>
-        <span>{{ t('remaining90') }}: <strong>€{{ ((form.totalAmount || 0) * 0.9) | number:'1.2-2' }}</strong></span>
+        <span>{{ priceTitle('deposit10') }}: <strong>€{{ (((form.proposalBoatPrice || 0) + (form.proposalSkipperPrice || 0) + (form.proposalCleaningPrice || 0) + (form.proposalExtraServicesPrice || 0)) * 0.1) | number:'1.2-2' }}</strong></span>
+        <span>{{ priceTitle('remaining90') }}: <strong>€{{ ((form.totalAmount || 0) * 0.9) | number:'1.2-2' }}</strong></span>
         <span>{{ t('validityAfterSent') }}: <strong>{{ t('hours24') }}</strong></span>
       </div>
 

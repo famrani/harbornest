@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProposalApiService, AlegriaProposal, WarrantyPaymentChoice } from '../bookings/proposal-api.service';
 import { StoreDbService, OBJECTNAME, UsersService, ServicesService, UtilsService } from 'godigital-lib';
 import { GuestContentService } from '../guest-content/guest-content.service';
+import { SiteContentService } from '../site-content-service/site-content.service';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
 
 @Component({
@@ -22,6 +23,7 @@ export class ProposalConfirmationComponent implements OnInit {
   termsModalWasClosed = false;
   currentLanguage: SiteLanguage = 'fr';
   proposalInfo: any = this.defaultProposalInfo('fr');
+  priceTitles: any = this.defaultPriceTitles('fr');
   finalizingBooking = false;
   finalBookingId = '';
 
@@ -37,6 +39,7 @@ export class ProposalConfirmationComponent implements OnInit {
     private proposalApi: ProposalApiService,
     private router: Router,
     private guestContent: GuestContentService,
+    private siteContentService: SiteContentService,
     private languageService: LanguageService,
     private users: UsersService,
     private storeDb: StoreDbService,
@@ -62,8 +65,7 @@ export class ProposalConfirmationComponent implements OnInit {
     });
     this.route.queryParamMap.subscribe((params) => {
       if (params.get('payment') === 'success') {
-        this.message = this.text('depositPaymentSuccess');
-        setTimeout(() => this.reloadProposal(true), 1500);
+        this.persistDepositSuccess(params.get('session_id') || params.get('sessionId') || '');
       }
       if (params.get('warranty') === 'success') {
         this.message = this.text('warrantySuccess');
@@ -73,6 +75,28 @@ export class ProposalConfirmationComponent implements OnInit {
   }
 
 
+
+
+  private async persistDepositSuccess(sessionId = ''): Promise<void> {
+    const proposalId = this.route.snapshot.paramMap.get('proposalId') || this.proposal?.proposalId || '';
+
+    if (!proposalId) {
+      this.message = this.text('depositPaymentSuccess');
+      setTimeout(() => this.reloadProposal(true), 1500);
+      return;
+    }
+
+    this.message = this.text('depositPaymentSuccess');
+
+    try {
+      this.proposal = await this.proposalApi.markDepositPaidFromStripeReturn(proposalId, { sessionId });
+      this.payingDeposit = false;
+      this.reloadProposal(true);
+    } catch {
+      this.payingDeposit = false;
+      setTimeout(() => this.reloadProposal(true), 1500);
+    }
+  }
 
   private proposalAccessStorageKey(proposalId?: string): string {
     return `alegria_proposal_access_${proposalId || this.proposal?.proposalId || ''}`;
@@ -314,15 +338,48 @@ export class ProposalConfirmationComponent implements OnInit {
   }
 
   async loadProposalInfo(language: SiteLanguage): Promise<void> {
-    try {
-      const content: any = await this.guestContent.getContent();
-      this.proposalInfo =
-        content?.proposalInfo?.[language] ||
-        content?.guestInfo?.proposalInfo?.[language] ||
-        this.defaultProposalInfo(language);
-    } catch {
-      this.proposalInfo = this.defaultProposalInfo(language);
-    }
+    const defaultInfo = this.defaultProposalInfo(language);
+    let guestContent: any = null;
+    let siteContent: any = null;
+
+    try { guestContent = await this.guestContent.getContent(); } catch {}
+    try { siteContent = await this.siteContentService.getContent(); } catch {}
+
+    this.proposalInfo =
+      guestContent?.proposalInfo?.[language] ||
+      guestContent?.guestInfo?.proposalInfo?.[language] ||
+      siteContent?.[language]?.proposalInfo ||
+      siteContent?.proposalInfo?.[language] ||
+      defaultInfo;
+
+    // Main configurable source: /siteContent/{language}/proposalPriceTitles
+    // Legacy paths are kept only as fallbacks for older Firebase exports.
+    this.priceTitles = {
+      ...this.defaultPriceTitles(language),
+      ...(siteContent?.[language]?.proposalPriceTitles || {}),
+      ...(siteContent?.[language]?.priceTitles || {}),
+      ...(siteContent?.proposalPriceTitles?.[language] || {}),
+      ...(siteContent?.priceTitles?.[language] || {}),
+      ...(guestContent?.proposalPriceTitles?.[language] || {}),
+      ...(guestContent?.priceTitles?.[language] || {}),
+      ...(guestContent?.guestInfo?.proposalPriceTitles?.[language] || {}),
+      ...(guestContent?.guestInfo?.priceTitles?.[language] || {}),
+      ...(guestContent?.proposalInfo?.priceTitles?.[language] || {}),
+      ...(guestContent?.guestInfo?.proposalInfo?.[language]?.priceTitles || {})
+    };
+  }
+
+  private defaultPriceTitles(language: SiteLanguage): any {
+    const defaults: any = {
+      fr: { totalPrice: 'Prix total', totalAmount: 'Montant total', deposit: 'Acompte 10 %', deposit10: 'Acompte 10 %', remaining: 'Solde 90 %', remaining90: 'Solde 90 %', warranty: 'Caution', warrantyAmount: 'Caution', boatPrice: 'Prix bateau', skipperPrice: 'Prix skipper', cleaningPrice: 'Prix carburant', extraServicesPrice: 'Extras / services' },
+      en: { totalPrice: 'Total price', totalAmount: 'Total amount', deposit: 'Deposit 10%', deposit10: 'Deposit 10%', remaining: 'Balance 90%', remaining90: 'Balance 90%', warranty: 'Warranty', warrantyAmount: 'Warranty', boatPrice: 'Boat price', skipperPrice: 'Skipper price', cleaningPrice: 'Fuel price', extraServicesPrice: 'Extras / services' },
+      es: { totalPrice: 'Precio total', totalAmount: 'Importe total', deposit: 'Depósito 10%', deposit10: 'Depósito 10%', remaining: 'Saldo 90%', remaining90: 'Saldo 90%', warranty: 'Garantía', warrantyAmount: 'Garantía', boatPrice: 'Precio barco', skipperPrice: 'Precio skipper', cleaningPrice: 'Precio combustible', extraServicesPrice: 'Extras / servicios' }
+    };
+    return defaults[language] || defaults.fr;
+  }
+
+  priceTitle(key: string): string {
+    return this.priceTitles?.[key] || this.text(key) || key;
   }
 
   text(key: string): string {
@@ -345,6 +402,9 @@ export class ProposalConfirmationComponent implements OnInit {
   private defaultProposalInfo(language: SiteLanguage): any {
     const defaults: any = {
       fr: {
+        remainingOnBoard: 'Reste à payer à bord',
+        extraServicesOnBoard: 'Extras/services à payer à bord',
+        amountDueOnBoard: 'Montant à régler à bord',
         secureProposalAccess: "Accès sécurisé à la proposition",
         accessProposalSecurely: "Accédez à votre proposition en toute sécurité",
         proposalLinkedTo: "Cette proposition est liée à",
@@ -428,6 +488,9 @@ export class ProposalConfirmationComponent implements OnInit {
         ]
       },
       en: {
+        remainingOnBoard: 'Remaining to pay on board',
+        extraServicesOnBoard: 'Extra services to pay on board',
+        amountDueOnBoard: 'Amount due on board',
         secureProposalAccess: "Secure proposal access",
         accessProposalSecurely: "Access your proposal securely",
         proposalLinkedTo: "This proposal is linked to",
@@ -511,6 +574,9 @@ export class ProposalConfirmationComponent implements OnInit {
         ]
       },
       es: {
+        remainingOnBoard: 'Resto a pagar a bordo',
+        extraServicesOnBoard: 'Servicios extra a pagar a bordo',
+        amountDueOnBoard: 'Importe a pagar a bordo',
         secureProposalAccess: "Acceso seguro a la propuesta",
         accessProposalSecurely: "Acceda a su propuesta de forma segura",
         proposalLinkedTo: "Esta propuesta está vinculada a",
@@ -614,6 +680,7 @@ export class ProposalConfirmationComponent implements OnInit {
   }
 
   get warrantyRegistered(): boolean {
+    if (this.warrantyCashSelected) return false;
     return !!this.proposal && (
       this.proposal.warrantyRegistered === true ||
       this.proposal.warrantyStatus === 'card_registered' ||
@@ -623,7 +690,12 @@ export class ProposalConfirmationComponent implements OnInit {
   }
 
   get warrantyCashSelected(): boolean {
-    return this.proposal?.warrantyPaymentChoice === 'cash_on_board';
+    const p: any = this.proposal || {};
+    const raw = p.raw || {};
+    return p.warrantyPaymentChoice === 'cash_on_board' ||
+      raw.warrantyPaymentChoice === 'cash_on_board' ||
+      p.warrantyStatus === 'cash_selected' ||
+      raw.warrantyStatus === 'cash_selected';
   }
 
   get warrantyMessage(): string {

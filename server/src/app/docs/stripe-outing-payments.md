@@ -67,8 +67,8 @@ Protect this endpoint for owner/admin users only.
 ## Firebase writes
 
 - `/backendpayments/{paymentId}`
-- `/backendbookings/{bookingId}/payments/deposit`
-- `/backendbookings/{bookingId}/payments/warranty`
+- `/bnBookings/{bookingId}/payments/deposit`
+- `/bnBookings/{bookingId}/payments/warranty`
 
 
 ## Frontend aliases also supported

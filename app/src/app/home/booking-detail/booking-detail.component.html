@@ -188,9 +188,34 @@
             {{ btext('updateBookingInfo') }}
           </button>
 
-          <button class="btn btn-primary" type="button" *ngIf="shouldShowCustomerPaymentButton()" (click)="customerPayment()">
-            {{ customerPaymentButtonLabel }}
+          <button class="btn btn-primary" type="button" *ngIf="canCustomerPayDeposit()" (click)="payDeposit()">
+            Pay 10% deposit
           </button>
+        </div>
+
+        <div class="workflow-panel customer-payment-hub" *ngIf="canShowCustomerPaymentHub()">
+          <h3>Paiements client</h3>
+          <p class="muted">Depuis cette page, le client peut payer le solde, les extras/services proposés et un montant ad hoc.</p>
+
+          <div class="client-payment-row" *ngIf="canCustomerSeeBalancePayment()">
+            <div>
+              <strong>Solde restant 90%</strong>
+              <span>€{{ getBalanceAmount() }}</span>
+            </div>
+            <button class="btn btn-primary" type="button" [disabled]="!canCustomerPayBalance()" (click)="payBalance()">
+              {{ getCustomerBalanceButtonLabel() }}
+            </button>
+          </div>
+
+          <div class="client-payment-row" *ngFor="let extra of pendingExtraServices; let i = index">
+            <div *ngIf="canCustomerPayExtraService(extra)">
+              <strong>{{ extra.description || extra.title || extra.name || 'Extra service' }}</strong>
+              <span>€{{ extra.amount || extra.price || 0 }}</span>
+            </div>
+            <button class="btn btn-primary" type="button" *ngIf="canCustomerPayExtraService(extra)" (click)="payExtraService(extra)">
+              Payer cet extra/service
+            </button>
+          </div>
         </div>
 
         <div class="customer-action-bar" *ngIf="canAdminOpenDamagePage()">
@@ -256,30 +281,6 @@
           <button class="btn btn-primary" type="button" (click)="registerWarrantyCard()">{{ btext('registerWarrantyCardButton') }}</button>
         </div>
 
-        <div class="workflow-panel" *ngIf="!isAdmin && getBookingWorkflowState() === 'balance_required'">
-          <h3>{{ btext('collectRemainingTitle') }}</h3>
-          <p>{{ btext('amountDueBeforeDeparture') }}: <strong>€{{ getBalanceAmount() }}</strong></p>
-
-          <div class="collect-balance" *ngIf="canAdminCreateExtraService()">
-            <label>
-              {{ btext('paymentMethod') }}
-              <select [(ngModel)]="balancePaymentMethod">
-                <option value="sumup">{{ btext('sumupCard') }}</option>
-                <option value="cash">{{ btext('cash') }}</option>
-                <option value="mixed">{{ btext('mixed') }}</option>
-              </select>
-            </label>
-
-            <label>
-              {{ btext('notes') }}
-              <textarea rows="3" [(ngModel)]="balancePaymentNotes" placeholder="{{ btext('balanceNotesPlaceholder') }}"></textarea>
-            </label>
-
-            <button class="btn btn-primary" type="button" [disabled]="savingBalancePayment" (click)="recordBalancePayment()">
-              {{ savingBalancePayment ? btext('saving') : btext('recordRemainingPayment') }}
-            </button>
-          </div>
-        </div>
 
         <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'payment_done' && isAdmin && isOutingDone()">
           <h3>{{ btext('damageManagement') }}</h3>
@@ -336,6 +337,21 @@
 
 
         <div class="workflow-panel extra-services-panel" *ngIf="booking">
+          <h3>Remaining balance payments</h3>
+
+          <div *ngIf="bookingBalancePaymentRecords.length === 0" class="muted">
+            No remaining balance payment recorded for this booking.
+          </div>
+
+          <div class="extra-service-row" *ngFor="let payment of bookingBalancePaymentRecords">
+            <div class="extra-service-display">
+              <strong>{{ getPaymentRecordDescription(payment) }}</strong>
+              <span>{{ formatPaymentAmount(getPaymentRecordAmount(payment)) }} · {{ getPaymentRecordStatus(payment) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="workflow-panel extra-services-panel" *ngIf="booking">
           <h3>Extra services</h3>
 
           <div *ngIf="bookingExtraServices.length === 0" class="muted">
@@ -349,7 +365,7 @@
           <div class="extra-service-row" *ngFor="let extra of bookingExtraServices; let i = index">
             <div class="extra-service-display" *ngIf="!isEditingExtraService(extra, i)">
               <strong>{{ extra.description || extra.title || extra.name }}</strong>
-              <span>€{{ extra.amount || 0 }} · {{ extra.status === 'paid' || extra.paid ? 'paid' : 'pending' }}</span>
+              <span>{{ formatPaymentAmount(extra.amount || extra.price || 0, extra) }} · {{ extra.status === 'paid' || extra.paid ? 'paid' : 'pending' }}</span>
             </div>
 
             <div class="extra-service-edit" *ngIf="isAdmin && isEditingExtraService(extra, i)">
@@ -448,13 +464,22 @@
           <p class="error-message" *ngIf="adhocPaymentError">{{ adhocPaymentError }}</p>
         </div>
 
-        <div class="workflow-panel refund-panel" *ngIf="false">
-          <h3>Refund</h3>
-          <p>Paid: <strong>€{{ totalPaidAmount }}</strong> · Already refunded: <strong>€{{ totalRefundedAmount }}</strong> · Available: <strong>€{{ refundableAmount }}</strong></p>
+        <div class="workflow-panel refund-panel" *ngIf="isAdmin && refundablePaymentOptions.length">
+          <h3>Refund a payment</h3>
+          <p>Choose the paid item to refund. You can refund the 10% deposit, or refund all/part of the remaining 90%.</p>
+
+          <label>
+            Payment to refund
+            <select [(ngModel)]="refundTarget" (ngModelChange)="onRefundTargetChange()">
+              <option *ngFor="let option of refundablePaymentOptions" [value]="option.type">
+                {{ option.label }} — {{ formatPaymentAmount(option.amount) }} available
+              </option>
+            </select>
+          </label>
 
           <label>
             Refund amount (€)
-            <input type="number" min="1" step="0.01" [max]="refundableAmount" [(ngModel)]="refundAmount" />
+            <input type="number" min="1" step="0.01" [max]="selectedRefundableAmount" [(ngModel)]="refundAmount" />
           </label>
 
           <label>

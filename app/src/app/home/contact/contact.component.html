@@ -52,9 +52,11 @@
         </label>
 
         <div class="form-actions">
-          <button class="btn btn-primary" type="submit" [disabled]="contactForm.invalid">{{ content.contactPage.sendEmail }}</button>
+          <button class="btn btn-primary" type="submit" [disabled]="contactForm.invalid || isSending">{{ isSending ? 'Envoi...' : content.contactPage.sendEmail }}</button>
           <a class="btn btn-secondary" [href]="whatsappHref" target="_blank" rel="noreferrer">{{ content.contactPage.prepareWhatsapp }}</a>
         </div>
+
+        <div class="form-error" *ngIf="sendError">{{ sendError }}</div>
       </form>
     </div>
 
@@ -79,7 +81,6 @@
 
       <div class="info-block price-info">
         <strong>{{ content.common.requestQuote }}</strong>
-        <span>{{ content.priceFrom }}</span>
       </div>
 
             <div class="info-block">
@@ -93,3 +94,14 @@
     </aside>
   </div>
 </section>
+
+
+<div class="sent-modal-backdrop" *ngIf="showSentModal" (click)="closeSentModal()">
+  <div class="sent-modal" role="dialog" aria-modal="true" [attr.aria-label]="sentModalTitle" (click)="$event.stopPropagation()">
+    <button type="button" class="modal-close" (click)="closeSentModal()" [attr.aria-label]="sentModalButton">×</button>
+    <div class="modal-icon">✓</div>
+    <h2>{{ sentModalTitle }}</h2>
+    <p>{{ sentModalMessage }}</p>
+    <button type="button" class="btn btn-primary" (click)="closeSentModal()">{{ sentModalButton }}</button>
+  </div>
+</div>

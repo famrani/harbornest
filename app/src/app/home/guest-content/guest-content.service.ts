@@ -183,9 +183,10 @@ export class GuestContentService {
     for (const baseUrl of this.restDatabaseUrls) {
       try {
         const url = `${baseUrl}/guestInfo.json`;
-        const value = await firstValueFrom(this.http.get<GuestInfoFirebaseContent | null>(url));
-        if (value?.guestFaq || value?.guestJourney || value?.proposalInfo || value?.bookingInfo) {
-          this.cached = this.mergeWithDefaults(value as GuestInfoFirebaseContent);
+        const value = await firstValueFrom(this.http.get<any | null>(url));
+        const content = this.unwrapGuestInfo(value);
+        if (content?.guestFaq || content?.guestJourney || content?.proposalInfo || content?.bookingInfo) {
+          this.cached = this.mergeWithDefaults(content as GuestInfoFirebaseContent);
           return this.cached;
         }
       } catch {
@@ -195,6 +196,20 @@ export class GuestContentService {
 
     this.cached = DEFAULT_GUEST_INFO_CONTENT;
     return this.cached;
+  }
+
+  private unwrapGuestInfo(value: any): GuestInfoFirebaseContent | null {
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+
+    // Firebase can be imported either as /guestInfo/{...}
+    // or as /guestInfo/guestInfo/{...}. Support both.
+    if (value.guestInfo && typeof value.guestInfo === 'object') {
+      return value.guestInfo as GuestInfoFirebaseContent;
+    }
+
+    return value as GuestInfoFirebaseContent;
   }
 
   private mergeWithDefaults(value: GuestInfoFirebaseContent): GuestInfoFirebaseContent {

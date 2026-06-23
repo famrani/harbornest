@@ -1,29 +1,49 @@
-
 <section class="external-bookings-page">
   <div class="container external-shell">
     <div class="section-head">
-      <span class="eyebrow">Admin</span>
-      <h1>SamBoat / Click&Boat bookings</h1>
-      <p>For platform bookings, the only Alegria flow needed is the security / damage deposit.</p>
+      <span class="eyebrow">{{ t('eyebrow') }}</span>
+      <h1>{{ t('title') }}</h1>
+      <p>{{ t('intro') }}</p>
     </div>
 
     <article class="external-card">
       <div class="form-grid">
-        <label>Platform<select [(ngModel)]="form.source"><option value="samboat">SamBoat</option><option value="clickandboat">Click&Boat</option><option value="other">Other</option></select></label>
-        <label>Customer name<input type="text" [(ngModel)]="form.customerName" /></label>
-        <label>Customer email<input type="email" [(ngModel)]="form.customerEmail" /></label>
-        <label>Phone<input type="tel" [(ngModel)]="form.customerPhone" /></label>
-        <label>Outing type<input type="text" [(ngModel)]="form.outingType" /></label>
-        <label>Outing date<input type="date" [(ngModel)]="form.outingDate" /></label>
-        <label>Departure time<input type="time" [(ngModel)]="form.departureTime" /></label>
-        <label>Return time<input type="time" [(ngModel)]="form.arrivalTime" /></label>
-        <label>Warranty amount (€)<input type="number" min="0" step="0.01" [(ngModel)]="form.warrantyAmount" /></label>
-        <label>Warranty method<select [(ngModel)]="form.warrantyPaymentChoice"><option value="stripe_card">Stripe card registration</option><option value="cash_on_board">€500 cash before departure</option></select></label>
+        <label>{{ t('platform') }}
+          <select [(ngModel)]="form.source">
+            <option value="samboat">{{ t('platformSamboat') }}</option>
+            <option value="clickandboat">{{ t('platformClickAndBoat') }}</option>
+            <option value="other">{{ t('platformOther') }}</option>
+          </select>
+        </label>
+
+        <label>{{ t('customerName') }}<input type="text" [(ngModel)]="form.customerName" /></label>
+        <label>{{ t('customerEmail') }}<input type="email" [(ngModel)]="form.customerEmail" /></label>
+        <label>{{ t('phone') }}<input type="tel" [(ngModel)]="form.customerPhone" /></label>
+        <label>{{ t('outingType') }}<input type="text" [(ngModel)]="form.outingType" /></label>
+        <label>{{ t('outingDate') }}<input type="date" [(ngModel)]="form.outingDate" /></label>
+        <label>{{ t('departureTime') }}<input type="time" [(ngModel)]="form.departureTime" /></label>
+        <label>{{ t('returnTime') }}<input type="time" [(ngModel)]="form.arrivalTime" /></label>
+        <label>{{ t('remainingOnboardAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.externalRemainingOnboardAmount" /></label>
+        <label>{{ t('extraServicesOnboardAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.externalExtraServicesOnboardAmount" /></label>
+        <label>{{ t('totalForDeposit') }}<input type="number" readonly [value]="(form.externalRemainingOnboardAmount || 0) + (form.externalExtraServicesOnboardAmount || 0)" /></label>
+        <label>{{ t('warrantyAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.warrantyAmount" /></label>
+
+        <label>{{ t('warrantyMethod') }}
+          <select [(ngModel)]="form.warrantyPaymentChoice">
+            <option value="stripe_card">{{ t('warrantyStripeCard') }}</option>
+            <option value="cash_on_board">{{ t('warrantyCash') }}</option>
+          </select>
+        </label>
       </div>
 
-      <div class="actions"><button class="btn btn-primary" type="button" [disabled]="saving" (click)="saveExternalBooking()">{{ saving ? 'Saving...' : 'Save external booking' }}</button></div>
+      <div class="actions">
+        <button class="btn btn-primary" type="button" [disabled]="saving" (click)="saveExternalBooking()">
+          {{ saving ? t('saving') : t('createClientProposal') }}
+        </button>
+      </div>
+
       <p class="success" *ngIf="message">{{ message }}</p>
-      <p class="client-link" *ngIf="warrantyLink">{{ warrantyLink }}</p>
+      <p class="client-link" *ngIf="warrantyLink">{{ t('clientProposalLink') }}: {{ warrantyLink }}</p>
       <p class="error" *ngIf="error">{{ error }}</p>
     </article>
   </div>

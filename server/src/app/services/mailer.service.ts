@@ -20,10 +20,15 @@ export class MailerService {
     }
   }
 
-  sendToOwner(subject: string, html: string) {
+  sendToOwner(subject: string, html: string, ownerEmail?: string) {
+    const to = (ownerEmail || process.env.MAIL_TO || '').trim();
+    if (!to) {
+      console.warn('[MAIL] Owner recipient missing: siteContent contactInfo email and MAIL_TO are empty.');
+      return Promise.resolve();
+    }
     return this.transporter.sendMail({
       from: process.env.MAIL_FROM!,
-      to: process.env.MAIL_TO!,
+      to,
       subject,
       html
     });

@@ -9,7 +9,7 @@ interface CustomerPaymentView {
   id: string;
   bookingId: string;
   booking: AlegriaBooking;
-  type: 'deposit' | 'balance' | 'warranty_card' | 'warranty_cash' | 'warranty_charge' | 'cash_damage';
+  type: 'deposit' | 'balance' | 'extra_service' | 'ad_hoc' | 'warranty_card' | 'warranty_cash' | 'warranty_charge' | 'cash_damage';
   label: string;
   amount: number;
   status: string;
@@ -131,15 +131,29 @@ export class AccountSummaryComponent implements OnInit {
           booking,
           type: 'balance',
           label: 'Remaining 90%',
-          amount: balanceAmount,
+          amount: this.normalizePaymentAmount(Number(payments?.balance?.amount ?? payments?.balance?.amount_total ?? payments?.remaining?.amount ?? payments?.remaining?.amount_total ?? balanceAmount), payments?.balance || payments?.remaining),
           status: 'paid',
-          method: anyBooking.balancePaymentMethod || payments?.balance?.method || 'Onboard',
-          date: payments?.balance?.paidAt || anyBooking.balancePaidAt || anyBooking.paidAt || anyBooking.modifiedTS,
+          method: anyBooking.balancePaymentMethod || payments?.balance?.method || payments?.remaining?.method || 'Onboard',
+          date: payments?.balance?.paidAt || payments?.remaining?.paidAt || payments?.balance?.updatedAt || payments?.remaining?.updatedAt || payments?.balance?.modifiedTS || payments?.remaining?.modifiedTS || anyBooking.balancePaidAt || anyBooking.paidAt || anyBooking.modifiedTS,
           description: this.bookingDescription(booking),
         });
       }
 
-      if (this.isWarrantyCardRegistered(booking)) {
+      const cashWarrantyReceived = anyBooking.warrantyCashReceived === true || anyBooking.warrantyStatus === 'cash_received' || payments?.warranty?.status === 'cash_received';
+      if (this.isCashWarrantySelected(booking)) {
+        rows.push({
+          id: `${bookingId}-warranty-cash`,
+          bookingId,
+          booking,
+          type: 'warranty_cash',
+          label: cashWarrantyReceived ? 'Cash warranty received' : 'Cash warranty selected',
+          amount: warrantyAmount,
+          status: cashWarrantyReceived ? 'received' : 'selected',
+          method: 'Cash on board',
+          date: anyBooking.warrantyCashReceivedAt || payments?.warranty?.receivedAt || anyBooking.warrantySelectedAt || anyBooking.modifiedTS || anyBooking.updatedAt,
+          description: this.bookingDescription(booking),
+        });
+      } else if (this.isWarrantyCardRegistered(booking)) {
         rows.push({
           id: `${bookingId}-warranty-card`,
           bookingId,
@@ -150,21 +164,6 @@ export class AccountSummaryComponent implements OnInit {
           status: 'registered',
           method: 'Stripe card',
           date: payments?.warranty?.updatedAt || payments?.warranty?.modifiedTS || anyBooking.warrantyRegisteredAt || anyBooking.updatedAt,
-          description: this.bookingDescription(booking),
-        });
-      }
-
-      if (this.isCashWarrantySelected(booking)) {
-        rows.push({
-          id: `${bookingId}-warranty-cash`,
-          bookingId,
-          booking,
-          type: 'warranty_cash',
-          label: 'Cash warranty',
-          amount: warrantyAmount,
-          status: anyBooking.warrantyCashReceived === true || anyBooking.warrantyStatus === 'cash_received' ? 'received' : 'selected',
-          method: 'Cash',
-          date: anyBooking.warrantyCashReceivedAt || payments?.warranty?.receivedAt || anyBooking.warrantySelectedAt,
           description: this.bookingDescription(booking),
         });
       }
@@ -193,16 +192,95 @@ export class AccountSummaryComponent implements OnInit {
           booking,
           type: 'cash_damage',
           label: 'Damage taken from cash warranty',
-          amount: cashDamageAmount,
+          amount: this.normalizePaymentAmount(cashDamageAmount, payments?.warrantyCashDamage),
           status: 'recorded',
           method: 'Cash warranty',
           date: anyBooking.warrantyCashDamageRecordedAt || payments?.warrantyCashDamage?.recordedAt,
           description: anyBooking.warrantyCashDamageReason || payments?.warrantyCashDamage?.reason || this.bookingDescription(booking),
         });
       }
+
+      Object.entries(payments || {}).forEach(([key, rawRecord]: [string, any]) => {
+        const record: any = rawRecord || {};
+        if (['deposit', 'balance', 'remaining', 'warranty', 'warrantyCharge', 'warrantyCashDamage'].includes(key)) return;
+
+        const type = this.inferPaymentType(key, record);
+        if (!type) return;
+
+        rows.push({
+          id: `${bookingId}-${key}`,
+          bookingId,
+          booking,
+          type,
+          label: this.getPaymentTypeLabel(type),
+          amount: this.normalizePaymentAmount(Number(record.amount ?? record.amount_total ?? record.total ?? record.price ?? 0), record),
+          status: record.paid === true ? 'paid' : (record.status || record.paymentStatus || 'pending'),
+          method: record.method || (record.stripeCheckoutSessionId || record.checkoutSessionId ? 'Stripe' : 'Manual'),
+          date: record.paidAt || record.updatedAt || record.modifiedTS || record.createdTS || anyBooking.modifiedTS,
+          description: record.description || record.title || record.name || this.bookingDescription(booking),
+        });
+      });
+
+      const extraServices = Array.isArray(anyBooking.extraServices) ? anyBooking.extraServices : [];
+      extraServices.forEach((record: any, index: number) => {
+        const type = this.inferPaymentType(`extraService-${index}`, record);
+        if (!type) return;
+        if (record.status !== 'paid' && record.paid !== true && record.paymentStatus !== 'paid') return;
+
+        rows.push({
+          id: `${bookingId}-extra-${index}`,
+          bookingId,
+          booking,
+          type,
+          label: this.getPaymentTypeLabel(type),
+          amount: this.normalizePaymentAmount(Number(record.amount ?? record.amount_total ?? record.total ?? record.price ?? 0), record),
+          status: 'paid',
+          method: record.method || (record.stripeCheckoutSessionId || record.checkoutSessionId ? 'Stripe' : 'Manual'),
+          date: record.paidAt || record.updatedAt || record.modifiedTS || record.createdTS || anyBooking.modifiedTS,
+          description: record.description || record.title || record.name || this.bookingDescription(booking),
+        });
+      });
     }
 
-    return rows;
+    return this.dedupeCustomerPayments(rows);
+  }
+
+  private dedupeCustomerPayments(rows: CustomerPaymentView[]): CustomerPaymentView[] {
+    const map = new Map<string, CustomerPaymentView>();
+
+    for (const row of rows || []) {
+      // The same booking/payment type can be represented twice: once from the
+      // booking summary fields and once from a Stripe payment record. Keep only
+      // one visible row per booking + payment type, preferring a paid Stripe row
+      // over a synthetic onboard/manual summary row.
+      const shouldDedupe = row.type === 'balance' || row.type === 'deposit' || row.type === 'warranty_cash' || row.type === 'warranty_card';
+      const key = shouldDedupe ? `${row.bookingId}-${row.type}` : row.id;
+      const existing = map.get(key);
+      if (!existing) {
+        map.set(key, row);
+        continue;
+      }
+
+      map.set(key, this.pickBestPaymentRow(existing, row));
+    }
+
+    return Array.from(map.values());
+  }
+
+  private pickBestPaymentRow(a: CustomerPaymentView, b: CustomerPaymentView): CustomerPaymentView {
+    const score = (row: CustomerPaymentView): number => {
+      const method = String(row.method || '').toLowerCase();
+      const status = String(row.status || '').toLowerCase();
+      const description = String(row.description || '').toLowerCase();
+      let value = 0;
+      if (status === 'paid' || status === 'received' || status === 'registered' || status === 'selected') value += 20;
+      if (method.includes('stripe')) value += 10;
+      if (description.includes('remaining 90') || description.includes('balance')) value += 5;
+      if (row.date) value += 1;
+      return value;
+    };
+
+    return score(b) >= score(a) ? b : a;
   }
 
   openPaymentBooking(payment: CustomerPaymentView): void {
@@ -259,6 +337,10 @@ export class AccountSummaryComponent implements OnInit {
   }
 
   isWarrantyCardRegistered(booking: AlegriaBooking): boolean {
+    // Cash warranty has priority over legacy/old card flags. Some proposals store
+    // warrantyRegistered=true after cash selection, so that boolean alone must not
+    // create a card-warranty row.
+    if (this.isCashWarrantySelected(booking)) return false;
     const anyBooking: any = booking;
     const warrantyPayment = anyBooking?.payments?.warranty || {};
     return anyBooking.warrantyRegistered === true ||
@@ -270,21 +352,54 @@ export class AccountSummaryComponent implements OnInit {
   }
 
   isCashWarrantySelected(booking: AlegriaBooking): boolean {
-    const anyBooking: any = booking;
-    const warrantyPayment = anyBooking?.payments?.warranty || {};
-    return anyBooking.warrantyPaymentChoice === 'cash_on_board' ||
-      anyBooking.warrantyMethod === 'cash' ||
-      anyBooking.warrantyStatus === 'cash_selected' ||
-      anyBooking.warrantyStatus === 'cash_received' ||
-      anyBooking.warrantyCashSelected === true ||
-      anyBooking.warrantyCashReceived === true ||
-      warrantyPayment.method === 'cash' ||
-      warrantyPayment.status === 'cash_selected' ||
-      warrantyPayment.status === 'cash_received';
+    const anyBooking: any = booking || {};
+    const raw = anyBooking.raw || {};
+    const rawRaw = raw.raw || {};
+    const warrantyPayment = anyBooking?.payments?.warranty || raw?.payments?.warranty || rawRaw?.payments?.warranty || {};
+    const values = [
+      anyBooking.warrantyPaymentChoice,
+      anyBooking.warrantyMethod,
+      anyBooking.warrantyStatus,
+      anyBooking.warrantyCashSelected,
+      anyBooking.warrantyCashReceived,
+      raw.warrantyPaymentChoice,
+      raw.warrantyMethod,
+      raw.warrantyStatus,
+      raw.warrantyCashSelected,
+      raw.warrantyCashReceived,
+      rawRaw.warrantyPaymentChoice,
+      rawRaw.warrantyMethod,
+      rawRaw.warrantyStatus,
+      rawRaw.warrantyCashSelected,
+      rawRaw.warrantyCashReceived,
+      warrantyPayment.method,
+      warrantyPayment.status,
+      warrantyPayment.paymentMethod,
+      warrantyPayment.paymentChoice,
+    ].map((value) => String(value ?? '').toLowerCase().trim());
+
+    return values.some((value) =>
+      value === 'cash_on_board' ||
+      value === 'cash' ||
+      value === 'cash_selected' ||
+      value === 'cash_received' ||
+      value === 'cash_warranty' ||
+      value === 'warranty_cash' ||
+      value.includes('cash_on_board') ||
+      value.includes('cash_selected') ||
+      value.includes('cash_received') ||
+      value.includes('cash_warranty') ||
+      value.includes('warranty_cash')
+    );
   }
 
   formatPaymentAmount(amount: number): string {
-    return `€${Number(amount || 0).toFixed(2)}`;
+    return new Intl.NumberFormat(this.currentLanguage === 'fr' ? 'fr-FR' : this.currentLanguage === 'es' ? 'es-ES' : 'en-US', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: Number(amount || 0) % 1 === 0 ? 0 : 2,
+      maximumFractionDigits: 2,
+    }).format(Number(amount || 0));
   }
 
   formatPaymentDate(value: number | string | null | undefined): string {
@@ -304,8 +419,36 @@ export class AccountSummaryComponent implements OnInit {
     return Number.isNaN(date.getTime()) ? 0 : date.getTime();
   }
 
-  private normalizePaymentAmount(amount: number): number {
-    return amount > 999 ? Math.round(amount) / 100 : amount;
+  private normalizePaymentAmount(amount: number, source?: any): number {
+    if (!Number.isFinite(amount)) return 0;
+    const currency = String(source?.currency || source?.currencyCode || '').toLowerCase();
+    const sourceLooksStripe = !!(source?.stripeCheckoutSessionId || source?.checkoutSessionId || source?.stripePaymentIntentId || source?.paymentIntentId || source?.amount_total);
+    if (sourceLooksStripe || currency === 'eur') {
+      return Math.round(amount) / 100;
+    }
+    return amount > 10000 ? Math.round(amount) / 100 : amount;
+  }
+
+  private inferPaymentType(key: string, record: any): CustomerPaymentView['type'] | '' {
+    const type = String(record?.paymentType || record?.type || key || '').toLowerCase().replace(/[\s-]/g, '_');
+    const description = String(record?.description || record?.title || record?.name || '').toLowerCase();
+
+    if (type.includes('balance') || type.includes('remaining') || description.includes('remaining 90') || description.includes('90% balance') || description.includes('remaining balance')) return 'balance';
+    if (type.includes('ad_hoc') || type.includes('adhoc')) return 'ad_hoc';
+    if (type.includes('extra')) return 'extra_service';
+    return '';
+  }
+
+  private getPaymentTypeLabel(type: CustomerPaymentView['type']): string {
+    if (type === 'balance') return 'Remaining 90%';
+    if (type === 'extra_service') return 'Extra services';
+    if (type === 'ad_hoc') return 'Ad hoc payment';
+    if (type === 'deposit') return '10% deposit';
+    if (type === 'warranty_card') return 'Warranty card registration';
+    if (type === 'warranty_cash') return 'Cash warranty';
+    if (type === 'warranty_charge') return 'Damage charged to warranty card';
+    if (type === 'cash_damage') return 'Damage taken from cash warranty';
+    return 'Payment';
   }
 
   private bookingDescription(booking: AlegriaBooking): string {

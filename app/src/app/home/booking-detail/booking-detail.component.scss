@@ -783,3 +783,33 @@ h1 { color: #08263a; margin: 8px 0; }
 .estimated-request-price small {
   color: #64748b;
 }
+
+.customer-payment-hub {
+  background: #f8f5ef;
+}
+
+.client-payment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: .9rem 0;
+  border-top: 1px solid rgba(8, 38, 58, .08);
+}
+
+.client-payment-row div {
+  display: grid;
+  gap: .25rem;
+}
+
+.client-payment-row span {
+  color: #516070;
+  font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  .client-payment-row {
+    align-items: stretch;
+    display: grid;
+  }
+}

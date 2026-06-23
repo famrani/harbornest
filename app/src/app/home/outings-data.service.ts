@@ -142,7 +142,7 @@ export class OutingsDataService {
         description: localized.description,
         image: outing.image,
         highlights: localized.highlights || [],
-        priceLabel: localized.priceLabel || (outing.priceFrom ? this.priceLabel(language, outing.priceFrom) : undefined),
+        priceLabel: undefined,
       } as OutingItem;
     });
   }
@@ -164,7 +164,7 @@ export class OutingsDataService {
       image: outing.image || fallback.image,
       duration: localized.duration || fallback.duration,
       guests: localized.guests || fallback.guests,
-      price: localized.priceLabel || (outing.priceFrom ? this.priceLabel(language, outing.priceFrom) : fallback.price),
+      price: '',
       highlights: localized.highlights || fallback.highlights,
       programTitle: localized.programTitle || fallback.programTitle,
       program: localized.program || fallback.program,

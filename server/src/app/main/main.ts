@@ -17,6 +17,8 @@ export class MainComponent {
         OBJECTNAME.bnUsers,
         OBJECTNAME.bnLocations,
         OBJECTNAME.bnBookings,
+        OBJECTNAME.guestInfo,
+        OBJECTNAME.bnExtraServices,
     ];
 
     private utilSvc = new UtilsService();

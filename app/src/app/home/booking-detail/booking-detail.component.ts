@@ -58,6 +58,9 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   refundMessage = '';
   refundError = '';
   refunding = false;
+  refundTarget: 'deposit' | 'balance' = 'deposit';
+  balancePaymentRecordsCache: any[] = [];
+  refundablePaymentOptionsCache: any[] = [];
   editMode = false;
   savingCustomerUpdate = false;
   customerUpdateMessage = '';
@@ -154,6 +157,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     this.editMode = this.route.snapshot.queryParamMap.get('edit') === 'true';
     this.bookingApi.getBooking(bookingId).subscribe((booking) => {
       this.booking = booking;
+      this.refreshDerivedPaymentState();
       this.termsAccepted = this.isTermsAccepted();
       this.termsRead = this.termsAccepted || this.termsRead;
       this.warrantyChoice = this.getWarrantyChoice();
@@ -161,7 +165,51 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
       if (this.isAdmin) this.loadExtraServicesCatalog();
       this.loading = false;
       this.syncConfirmedStatusIfReady();
+      this.handleCheckoutReturn();
     });
+  }
+
+
+  private async handleCheckoutReturn(): Promise<void> {
+    const payment = String(this.route.snapshot.queryParamMap.get('payment') || '').toLowerCase();
+    const paymentType = String(this.route.snapshot.queryParamMap.get('paymentType') || '').toLowerCase();
+
+    if (payment !== 'success' || paymentType !== 'balance' || !this.booking?.bookingId || this.isBalancePaid()) {
+      return;
+    }
+
+    const now = Date.now();
+    const balanceAmount = this.getBalanceAmount();
+    const existingPayments = (this.booking as any).payments || {};
+    const payload: any = {
+      balancePaid: true,
+      remainingPaid: true,
+      balanceStatus: 'paid',
+      balancePaymentStatus: 'paid',
+      paymentStatus: 'balance_paid',
+      balancePaidAt: now,
+      payments: {
+        ...existingPayments,
+        balance: {
+          ...(existingPayments.balance || {}),
+          amount: balanceAmount,
+          paid: true,
+          status: 'paid',
+          paymentStatus: 'paid',
+          paidAt: now,
+          source: 'stripe_checkout_return',
+        }
+      }
+    };
+
+    try {
+      await this.bookingApi.updateBooking(this.booking.bookingId, payload);
+      this.booking = { ...this.booking, ...payload } as any;
+      this.refreshDerivedPaymentState();
+      this.balancePaymentMessage = 'Remaining 90% payment recorded.';
+    } catch (e: any) {
+      this.balancePaymentError = e?.message || 'Payment succeeded, but the booking could not be updated locally.';
+    }
   }
 
   get isAdmin(): boolean {
@@ -850,19 +898,8 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     const anyBooking: any = this.booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
 
-    if (this.isBookingCancelledByDate() || this.isCancelledBooking()) return 'cancelled';
-
     // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
     if (this.isBalancePaid()) return 'payment_done';
-
-    if (
-      rawStatus === 'payment_done' ||
-      rawStatus === 'full_payment_done' ||
-      rawStatus === 'paid' ||
-      rawStatus === 'completed'
-    ) {
-      return 'payment_done';
-    }
 
     if (
       rawStatus === true ||
@@ -875,6 +912,18 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     }
 
     if (this.isDepositPaid() && this.isTermsAccepted()) return 'confirmed';
+
+    if (this.isBookingCancelledByDate() || this.isCancelledBooking()) return 'cancelled';
+
+    if (
+      rawStatus === 'payment_done' ||
+      rawStatus === 'full_payment_done' ||
+      rawStatus === 'paid' ||
+      rawStatus === 'completed'
+    ) {
+      return 'payment_done';
+    }
+
     return 'not_confirmed';
   }
 
@@ -1306,7 +1355,18 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     const balancePayment = anyBooking?.payments?.balance || {};
     const remainingPayment = anyBooking?.payments?.remaining || {};
 
-    return this.isBalanceCompletedStatusValue(anyBooking.paymentStatus) ||
+    // Do not treat a generic top-level paymentStatus === 'paid' as the 90% balance being paid:
+    // in older records it can simply mean the 10% deposit checkout succeeded.
+    const topLevelPaymentStatus = String(anyBooking.paymentStatus || '').toLowerCase().trim();
+    const topLevelMeansFullBalancePaid = [
+      'balance_paid',
+      'remaining_paid',
+      'full_payment_done',
+      'balance_payment_done',
+      'remaining_payment_done'
+    ].includes(topLevelPaymentStatus) || anyBooking.balancePaid === true || anyBooking.remainingPaid === true;
+
+    return topLevelMeansFullBalancePaid ||
       this.isBalanceCompletedStatusValue(anyBooking.balancePaid) ||
       this.isBalanceCompletedStatusValue(anyBooking.balanceStatus) ||
       this.isBalanceCompletedStatusValue(anyBooking.balancePaymentStatus) ||
@@ -1703,20 +1763,40 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     return !this.isAdmin && this.getBookingWorkflowState() === 'deposit_required' && !this.isDepositPaid();
   }
 
-  canCustomerPayBalance(): boolean {
+  canCustomerSeeBalancePayment(): boolean {
     return !this.isAdmin &&
-      !this.isBookingDatePastOrToday() &&
-      !this.isCancelledBooking() &&
-      this.getBookingWorkflowState() === 'balance_required';
+      !!this.booking?.bookingId &&
+      this.getBalanceAmount() > 0;
+  }
+
+  canCustomerPayBalance(): boolean {
+    return this.canCustomerSeeBalancePayment() && !this.isBalancePaid();
+  }
+
+  getCustomerBalanceButtonLabel(): string {
+    return this.isBalancePaid() ? 'Solde 90% payé' : 'Payer le solde 90%';
+  }
+
+  getCustomerBalanceBlockedReason(): string {
+    return '';
+  }
+
+  hasCustomerPayableExtraServices(): boolean {
+    return this.pendingExtraServices.some((extra: any) => this.canCustomerPayExtraService(extra));
+  }
+
+  canShowCustomerPaymentHub(): boolean {
+    return !this.isAdmin &&
+      !!this.booking?.bookingId &&
+      (this.canCustomerSeeBalancePayment() || this.hasCustomerPayableExtraServices() || this.canCustomerCreateAdhocPayment());
   }
 
   shouldShowCustomerPaymentButton(): boolean {
-    return this.getDerivedBookingStatus() !== 'cancelled' && (this.canCustomerPayDeposit() || this.canCustomerPayBalance());
+    return this.canCustomerPayDeposit();
   }
 
   get customerPaymentButtonLabel(): string {
     if (this.canCustomerPayDeposit()) return 'Pay 10% deposit';
-    if (this.canCustomerPayBalance()) return `Pay remaining 90% (€${this.getBalanceAmount()})`;
     return 'Payment';
   }
 
@@ -1756,6 +1836,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         ...this.booking,
         ...payload,
       } as any;
+      this.refreshDerivedPaymentState();
 
       this.customerUpdateMessage = 'Booking information updated.';
       this.editMode = false;
@@ -1769,10 +1850,6 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   payBalance(): void {
     if (this.isAdmin) return;
     if (!this.booking?.bookingId || this.isBalancePaid()) return;
-    if (this.isBookingDatePastOrToday() || this.isCancelledBooking()) {
-      this.balancePaymentError = 'This booking is cancelled or the outing date is today/already past. The remaining balance cannot be paid.';
-      return;
-    }
 
     const currentUrl = window.location.href;
     const balanceAmount = this.getBalanceAmount();
@@ -1824,8 +1901,64 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   }
 
 
-  get bookingExtraServices(): any[] {
+  private get rawExtraServices(): any[] {
     return Array.isArray((this.booking as any)?.extraServices) ? (this.booking as any).extraServices : [];
+  }
+
+  get bookingExtraServices(): any[] {
+    // Stripe balance checkout may be stored by older backend/frontend fallbacks in extraServices.
+    // Keep those records out of the Extra services section.
+    return this.rawExtraServices.filter((item: any) => !this.isBalancePaymentRecord(item));
+  }
+
+  get bookingBalancePaymentRecords(): any[] {
+    return this.balancePaymentRecordsCache || [];
+  }
+
+  private computeBalancePaymentRecords(): any[] {
+    const payments: any = (this.booking as any)?.payments || {};
+    const records: any[] = [];
+
+    if (payments.balance) records.push({ ...payments.balance, paymentType: payments.balance.paymentType || 'balance' });
+    if (payments.remaining) records.push({ ...payments.remaining, paymentType: payments.remaining.paymentType || 'balance' });
+
+    this.rawExtraServices
+      .filter((item: any) => this.isBalancePaymentRecord(item))
+      .forEach((item: any) => records.push({ ...item, paymentType: 'balance' }));
+
+    return this.dedupePaymentRecords(records, 'balance');
+  }
+
+  private refreshDerivedPaymentState(): void {
+    this.balancePaymentRecordsCache = this.computeBalancePaymentRecords();
+    this.refundablePaymentOptionsCache = this.computeRefundablePaymentOptions();
+    if (!this.refundablePaymentOptionsCache.some((option: any) => option.type === this.refundTarget)) {
+      this.refundTarget = (this.refundablePaymentOptionsCache[0]?.type || 'deposit') as any;
+    }
+    this.onRefundTargetChange();
+  }
+
+  private dedupePaymentRecords(records: any[], defaultType = ''): any[] {
+    const byKey = new Map<string, any>();
+    records.filter(Boolean).forEach((record: any, index: number) => {
+      const type = String(record.paymentType || record.type || defaultType || 'payment').toLowerCase().replace(/[\s-]/g, '_');
+      const bookingId = String(record.bookingId || record.relatedBookingId || this.booking?.bookingId || 'booking');
+      const key = `${bookingId}:${type}`;
+      const current = byKey.get(key);
+      if (!current || this.getPaymentRecordPriority(record, index) >= this.getPaymentRecordPriority(current, index)) {
+        byKey.set(key, record);
+      }
+    });
+    return Array.from(byKey.values());
+  }
+
+  private getPaymentRecordPriority(record: any, index = 0): number {
+    let score = index;
+    const status = String(record?.status || record?.paymentStatus || '').toLowerCase();
+    if (record?.paid === true || status.includes('paid') || status.includes('succeeded')) score += 1000;
+    if (record?.stripeCheckoutSessionId || record?.checkoutSessionId || record?.stripePaymentIntentId || record?.paymentIntentId) score += 100;
+    if (record?.modifiedTS || record?.updatedAt || record?.createdTS) score += Number(record.modifiedTS || record.updatedAt || record.createdTS || 0) / 100000000000000;
+    return score;
   }
 
   get pendingExtraServices(): any[] {
@@ -1834,6 +1967,55 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
 
   get paidExtraServices(): any[] {
     return this.bookingExtraServices.filter((item: any) => item && (item.status === 'paid' || item.paid === true));
+  }
+
+  isBalancePaymentRecord(item: any): boolean {
+    if (!item) return false;
+    const type = String(item.paymentType || item.type || item.kind || '').toLowerCase().replace(/[\s-]/g, '_');
+    const status = String(item.status || item.paymentStatus || '').toLowerCase();
+    const description = String(item.description || item.title || item.name || '').toLowerCase();
+
+    return type === 'balance' ||
+      type === 'remaining' ||
+      type === 'remaining_90' ||
+      status === 'balance_paid' ||
+      description.includes('remaining 90') ||
+      description.includes('90% balance') ||
+      description.includes('remaining balance');
+  }
+
+  getPaymentRecordDescription(item: any): string {
+    return item?.description || item?.title || item?.name || 'Remaining balance';
+  }
+
+  getPaymentRecordStatus(item: any): string {
+    if (item?.paid === true) return 'paid';
+    return item?.status || item?.paymentStatus || 'pending';
+  }
+
+  getPaymentRecordAmount(item: any): number {
+    const raw = Number(item?.amount ?? item?.amount_total ?? item?.total ?? item?.price ?? 0);
+    return this.normalizeStripeAmount(raw, item);
+  }
+
+  normalizeStripeAmount(amount: number, source?: any): number {
+    if (!Number.isFinite(amount)) return 0;
+    const rawCurrency = String(source?.currency || source?.currencyCode || '').toLowerCase();
+    const sourceLooksStripe = !!(source?.stripeCheckoutSessionId || source?.checkoutSessionId || source?.stripePaymentIntentId || source?.paymentIntentId || source?.amount_total);
+    if (sourceLooksStripe || rawCurrency === 'eur') {
+      return Math.round(amount) / 100;
+    }
+    return amount > 10000 ? Math.round(amount) / 100 : amount;
+  }
+
+  formatPaymentAmount(value: any, source?: any): string {
+    const amount = this.normalizeStripeAmount(Number(value || 0), source);
+    return new Intl.NumberFormat(this.currentLanguage === 'fr' ? 'fr-FR' : this.currentLanguage === 'es' ? 'es-ES' : 'en-US', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
+      maximumFractionDigits: 2,
+    }).format(amount);
   }
 
   get totalPaidAmount(): number {
@@ -1862,7 +2044,15 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   }
 
   canCustomerPayExtraService(extra: any): boolean {
-    return !this.isAdmin && !!this.booking?.bookingId && extra && extra.status !== 'paid' && extra.paid !== true;
+    const amount = Number(extra?.amount || extra?.price || 0);
+    return !this.isAdmin &&
+      !!this.booking?.bookingId &&
+      !this.isCancelledBooking() &&
+      !!extra &&
+      amount > 0 &&
+      extra.status !== 'paid' &&
+      extra.status !== 'cancelled' &&
+      extra.paid !== true;
   }
 
   async createExtraServiceRequest(): Promise<void> {
@@ -1958,6 +2148,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
       } as any);
 
       this.booking = { ...this.booking, extraServices: services } as any;
+      this.refreshDerivedPaymentState();
       this.cancelEditExtraService();
       this.extraServiceMessage = 'Extra service updated.';
     } catch (e: any) {
@@ -1988,6 +2179,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
       } as any);
 
       this.booking = { ...this.booking, extraServices: services } as any;
+      this.refreshDerivedPaymentState();
       this.extraServiceMessage = 'Extra service deleted.';
       if (this.isEditingExtraService(extra, index)) {
         this.cancelEditExtraService();
@@ -2047,9 +2239,9 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     const currentUrl = window.location.href;
     this.adhocPaymentLoading = true;
 
-    this.bookingApi.createExtraServiceCheckout({
+    this.bookingApi.createAdhocCheckout({
       bookingId: this.booking.bookingId,
-      extraServiceId: `adhoc_${Date.now()}`,
+      adhocPaymentId: `adhoc_${Date.now()}`,
       ownerId: this.booking.ownerId || 'alegria',
       amount,
       description,
@@ -2076,15 +2268,61 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   }
 
 
+  get refundablePaymentOptions(): any[] {
+    return this.refundablePaymentOptionsCache || [];
+  }
+
+  private computeRefundablePaymentOptions(): any[] {
+    const options: any[] = [];
+    const deposit = this.getDepositRefundableAmount();
+    const balance = this.getBalanceRefundableAmount();
+    if (deposit > 0) options.push({ type: 'deposit', label: '10% deposit', amount: deposit });
+    if (balance > 0) options.push({ type: 'balance', label: 'Remaining 90%', amount: balance });
+    return options;
+  }
+
+  get selectedRefundableAmount(): number {
+    return this.refundTarget === 'balance' ? this.getBalanceRefundableAmount() : this.getDepositRefundableAmount();
+  }
+
+  getDepositRefundableAmount(): number {
+    const payments: any = (this.booking as any)?.payments || {};
+    const payment = payments.deposit || {};
+    const raw = Number(payment.amount ?? payment.amount_total ?? (this.booking as any)?.depositAmount ?? 0);
+    const paid = (payment.paid === true || this.isDepositPaid()) ? this.normalizeStripeAmount(raw, payment) : 0;
+    return Math.max(0, Math.round((paid - this.getRefundedAmountForType('deposit')) * 100) / 100);
+  }
+
+  getBalanceRefundableAmount(): number {
+    const payment = this.bookingBalancePaymentRecords[0] || {};
+    const raw = Number(payment.amount ?? payment.amount_total ?? (this.booking as any)?.balanceAmount ?? (this.booking as any)?.remainingFeesAmount ?? 0);
+    const paid = (payment.paid === true || this.isBalancePaid() || String(payment.status || '').toLowerCase().includes('paid'))
+      ? this.normalizeStripeAmount(raw, payment)
+      : 0;
+    return Math.max(0, Math.round((paid - this.getRefundedAmountForType('balance')) * 100) / 100);
+  }
+
+  getRefundedAmountForType(type: 'deposit' | 'balance'): number {
+    const refunds = Array.isArray((this.booking as any)?.refunds) ? (this.booking as any).refunds : [];
+    return refunds
+      .filter((item: any) => String(item.paymentType || item.type || item.refundType || '').toLowerCase().replace(/[\s-]/g, '_') === type)
+      .reduce((sum: number, item: any) => sum + this.normalizeStripeAmount(Number(item.amount || item.amount_total || 0), item), 0);
+  }
+
+  onRefundTargetChange(): void {
+    const max = this.selectedRefundableAmount;
+    if (this.refundAmount && this.refundAmount > max) this.refundAmount = max;
+  }
+
   canAdminRefund(): boolean {
-    return this.isAdmin && !!this.booking?.bookingId && this.refundableAmount > 0;
+    return this.isAdmin && !!this.booking?.bookingId && this.selectedRefundableAmount > 0;
   }
 
   issueRefund(): void {
     if (!this.booking?.bookingId || !this.canAdminRefund()) return;
     const amount = Number(this.refundAmount || 0);
-    if (!amount || amount <= 0 || amount > this.refundableAmount) {
-      this.refundError = `Refund amount must be between €1 and €${this.refundableAmount}.`;
+    if (!amount || amount <= 0 || amount > this.selectedRefundableAmount) {
+      this.refundError = `Refund amount must be between €1 and €${this.selectedRefundableAmount}.`;
       return;
     }
 
@@ -2095,13 +2333,14 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
       bookingId: this.booking.bookingId,
       ownerId: this.booking.ownerId || 'alegria',
       amount,
+      paymentType: this.refundTarget,
       reason: this.refundReason || '',
     }).subscribe({
       next: () => {
         this.refundMessage = 'Refund issued.';
         this.refundAmount = null;
         this.refundReason = '';
-        this.bookingApi.getBooking(this.booking!.bookingId).subscribe((booking) => this.booking = booking);
+        this.bookingApi.getBooking(this.booking!.bookingId).subscribe((booking) => { this.booking = booking; this.refreshDerivedPaymentState(); });
       },
       error: (error: any) => this.refundError = error?.error?.error || error?.message || 'Unable to issue refund.',
       complete: () => this.refunding = false,

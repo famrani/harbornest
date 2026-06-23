@@ -36,9 +36,9 @@
           <div><strong>{{ t('destination') }}</strong><span>{{ request.destination || '-' }}</span></div>
           <div><strong>{{ t('passengers') }}</strong><span>{{ request.passengers || '-' }}</span></div>
           <div><strong>{{ t('estimatedPrice') }}</strong><span>€{{ request.estimatedPrice || request.totalAmount || 0 }}</span></div>
-          <div><strong>{{ t('skipperPrice') }}</strong><span>€{{ getEstimatedSkipperPrice(request) }}</span></div>
-          <div><strong>{{ t('cleaningPrice') }}</strong><span>€{{ getEstimatedCleaningPrice(request) }}</span></div>
-          <div><strong>{{ t('optionsPrice') }}</strong><span>€{{ getEstimatedOptionsPrice(request) }}</span></div>
+          <div><strong>{{ priceTitle('skipperPrice') }}</strong><span>€{{ getEstimatedSkipperPrice(request) }}</span></div>
+          <div><strong>{{ priceTitle('cleaningPrice') }}</strong><span>€{{ getEstimatedCleaningPrice(request) }}</span></div>
+          <div><strong>{{ priceTitle('extraServicesPrice') }}</strong><span>€{{ getEstimatedOptionsPrice(request) }}</span></div>
         </div>
         <p class="proposal-message">{{ t('requestWaitingText') }}</p>
       </article>
@@ -69,10 +69,10 @@
         <h2>{{ proposal.outingType || t('outingProposal') }}</h2>
         <p class="proposal-date">{{ proposal.outingDate || t('dateNotSet') }}<ng-container *ngIf="proposal.departureTime"> · {{ proposal.departureTime }}</ng-container><ng-container *ngIf="proposal.arrivalTime">–{{ proposal.arrivalTime }}</ng-container></p>
         <div class="proposal-grid">
-          <div><strong>{{ t('total') }}</strong><span>€{{ proposal.totalAmount || 0 }}</span></div>
-          <div><strong>{{ t('deposit10') }}</strong><span>€{{ getDepositAmount(proposal) }}</span></div>
-          <div><strong>{{ t('remaining') }}</strong><span>€{{ getBalanceAmount(proposal) }}</span></div>
-          <div><strong>{{ t('warranty') }}</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>
+          <div><strong>{{ priceTitle('totalAmount') }}</strong><span>€{{ proposal.totalAmount || 0 }}</span></div>
+          <div><strong>{{ priceTitle('deposit10') }}</strong><span>€{{ getDepositAmount(proposal) }}</span></div>
+          <div><strong>{{ priceTitle('remaining90') }}</strong><span>€{{ getBalanceAmount(proposal) }}</span></div>
+          <div><strong>{{ priceTitle('warrantyAmount') }}</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>
         </div>
         <p class="proposal-message" *ngIf="proposal.proposalMessage">{{ proposal.proposalMessage }}</p>
         <div class="proposal-actions" (click)="$event.stopPropagation()">

@@ -256,7 +256,7 @@ class StripeService {
                 cancel_url: this.appendCheckoutParams(cancelUrl, { bookingId }),
                 metadata: { bookingId },
             });
-            await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payment`).update({
+            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payment`).update({
                 status: 'init',
                 checkoutSessionId: session.id,
                 updatedAt: Date.now(),
@@ -277,7 +277,7 @@ class StripeService {
             if (!ownerId || !bookingId || !amount) {
                 return res.status(400).json({ error: 'ownerId, bookingId, amount required' });
             }
-            const bookingSnap = await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}`).once('value');
+            const bookingSnap = await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).once('value');
             if (!bookingSnap.exists())
                 return res.status(404).json({ error: 'Booking not found' });
             const booking = bookingSnap.val();
@@ -287,7 +287,7 @@ class StripeService {
                 return res.status(400).json({ error: 'No saved payment method/customer — complete checkout setup first' });
             }
             // Mark confirmed (your business choice)
-            await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}`).update({
+            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
                 status: 'confirmed',
                 updatedAt: Date.now(),
             });
@@ -302,7 +302,7 @@ class StripeService {
                 description: `Booking #${bookingId}`,
                 metadata: { bookingId },
             });
-            await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payment`).update({
+            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payment`).update({
                 status: 'charge_processing',
                 paymentIntentId: pi.id,
                 updatedAt: Date.now(),
@@ -313,12 +313,12 @@ class StripeService {
             console.error('[acceptAndCharge] error:', e?.message || e);
             const { bookingId } = (req.body || {});
             if (bookingId) {
-                await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payment`).update({
+                await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payment`).update({
                     status: 'charge_failed',
                     lastError: e?.message || 'Charge failed',
                     updatedAt: Date.now(),
                 });
-                await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}`).update({
+                await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
                     status: 'pending',
                     updatedAt: Date.now(),
                 });
@@ -418,8 +418,8 @@ class StripeService {
     }
     buildBookingPaymentPath(bookingId, child) {
         return child
-            ? `/backendbookings/${bookingId}/payments/${child}`
-            : `/backendbookings/${bookingId}/payments`;
+            ? `/bnBookings/${bookingId}/payments/${child}`
+            : `/bnBookings/${bookingId}/payments`;
     }
     appendCheckoutParams(url, params) {
         const separator = url.includes('?') ? '&' : '?';
@@ -870,8 +870,8 @@ class StripeService {
             updatedAt: now,
         };
         await Promise.all([
-            this.stbDbSvc.db.ref(`/backendbookings/${params.bookingId}/payments/deposit`).update(updatePayload),
-            this.stbDbSvc.db.ref(`/backendbookings/${params.bookingId}/payment`).update(updatePayload),
+            this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}/payments/deposit`).update(updatePayload),
+            this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}/payment`).update(updatePayload),
             this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}/payments/deposit`).update(updatePayload),
             this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}`).update({
                 depositStatus: 'authorized',
@@ -919,8 +919,8 @@ class StripeService {
             updatedAt: now,
         };
         await Promise.all([
-            this.stbDbSvc.db.ref(`/backendbookings/${params.bookingId}/payments/deposit`).update(updatePayload),
-            this.stbDbSvc.db.ref(`/backendbookings/${params.bookingId}/payment`).update(updatePayload),
+            this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}/payments/deposit`).update(updatePayload),
+            this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}/payment`).update(updatePayload),
             this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}/payments/deposit`).update(updatePayload),
             this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}`).update({
                 depositStatus: 'paid',
@@ -966,8 +966,8 @@ class StripeService {
             updatedAt: now,
         };
         await Promise.all([
-            this.stbDbSvc.db.ref(`/backendbookings/${params.bookingId}/payments/warranty`).update(updatePayload),
-            this.stbDbSvc.db.ref(`/backendbookings/${params.bookingId}/payment`).update(updatePayload),
+            this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}/payments/warranty`).update(updatePayload),
+            this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}/payment`).update(updatePayload),
             this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}/payments/warranty`).update(updatePayload),
             this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}`).update({
                 warrantyStatus: 'card_registered',
@@ -1084,7 +1084,7 @@ class StripeService {
                             modifiedTS: now,
                             updatedAt: now,
                         };
-                        await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payments/warranty`).update(updatePayload);
+                        await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/warranty`).update(updatePayload);
                         await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/warranty`).update(updatePayload);
                         await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
                             warrantyStatus: 'card_registered',
@@ -1095,7 +1095,7 @@ class StripeService {
                             await this.stbDbSvc.db.ref(`/backendpayments/${paymentId}`).update(updatePayload);
                         }
                         // Keep backward compatibility with older booking.payment shape.
-                        await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payment`).update({
+                        await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payment`).update({
                             status: 'pm_saved',
                             setupIntentId: si.id,
                             paymentMethodId,
@@ -1138,7 +1138,7 @@ class StripeService {
                             await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/extraServices/${extraServiceId}`).update(updatePayload);
                         }
                         else {
-                            await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payments/deposit`).update({ ...updatePayload, status: 'deposit_paid' });
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/deposit`).update({ ...updatePayload, status: 'deposit_paid' });
                             await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/deposit`).update({ ...updatePayload, status: 'deposit_paid' });
                             await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
                                 depositStatus: 'paid',
@@ -1156,7 +1156,7 @@ class StripeService {
                     const pi = event.data.object;
                     const bookingId = (pi.metadata && pi.metadata['bookingId']) || null;
                     if (bookingId) {
-                        await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}`).update({
+                        await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
                             status: 'confirmed',
                             updatedAt: Date.now(),
                             paymentStatus: 'charge_succeeded',
@@ -1170,13 +1170,13 @@ class StripeService {
                     const bookingId = (pi.metadata && pi.metadata['bookingId']) || null;
                     const message = (pi.last_payment_error && pi.last_payment_error.message) || 'Payment failed';
                     if (bookingId) {
-                        await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payment`).update({
+                        await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payment`).update({
                             status: 'charge_failed',
                             lastError: message,
                             paymentIntentId: pi.id,
                             updatedAt: Date.now(),
                         });
-                        await this.stbDbSvc.db.ref(`/backendbookings/${bookingId}`).update({
+                        await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
                             status: 'pending',
                             updatedAt: Date.now(),
                         });
@@ -1250,8 +1250,8 @@ class StripeService {
                     modifiedTS: now,
                     updatedAt: now,
                 }),
-                this.stbDbSvc.db.ref(`/backendbookings/${bookingId}`).update(updatePayload).catch(() => undefined),
-                this.stbDbSvc.db.ref(`/backendbookings/${bookingId}/payments/deposit`).update({
+                this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update(updatePayload).catch(() => undefined),
+                this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/deposit`).update({
                     status: 'captured',
                     depositStatus: 'paid',
                     depositPaid: true,
@@ -1320,7 +1320,7 @@ class StripeService {
                     modifiedTS: now,
                     updatedAt: now,
                 }),
-                this.stbDbSvc.db.ref(`/backendbookings/${bookingId}`).update(updatePayload).catch(() => undefined),
+                this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update(updatePayload).catch(() => undefined),
             ]);
             return res.json({ ok: true, bookingId, paymentIntent: cancelledPaymentIntent ? { id: cancelledPaymentIntent.id, status: cancelledPaymentIntent.status } : null });
         }
@@ -1747,7 +1747,188 @@ class StripeService {
         }
     }
     async refundOutingPayment(req, res) {
-        return res.status(501).json({ error: 'refundOutingPayment not yet implemented' });
+        try {
+            const body = req.body || {};
+            const ownerId = body.ownerId || 'alegria';
+            const bookingId = body.bookingId || body.proposalId || body.id;
+            const requestedType = String(body.paymentType || body.refundType || body.type || '').toLowerCase();
+            const extraServiceId = body.extraServiceId || body.serviceId || null;
+            const reason = body.reason || body.refundReason || '';
+            const explicitPaymentIntentId = body.paymentIntentId || body.stripePaymentIntentId || null;
+            const explicitCheckoutSessionId = body.checkoutSessionId || body.stripeCheckoutSessionId || null;
+            if (!bookingId) {
+                return res.status(400).json({ error: 'bookingId is required' });
+            }
+            const paymentType = requestedType.includes('deposit') ? 'deposit' :
+                requestedType.includes('balance') || requestedType.includes('remaining') || requestedType.includes('90') ? 'balance' :
+                    requestedType.includes('extra') || requestedType.includes('service') ? 'extra_service' :
+                        requestedType || 'balance';
+            const rawAmount = body.amountCents ?? body.refundAmountCents ?? body.amount ?? body.refundAmount ?? body.refund ?? body.value;
+            const amountCents = Number(body.amountCents ?? body.refundAmountCents) > 0
+                ? Math.round(Number(body.amountCents ?? body.refundAmountCents))
+                : this.normalizeAmountToCents(rawAmount);
+            if (!amountCents) {
+                return res.status(400).json({
+                    error: 'A refund amount is required and must be greater than 0',
+                    received: { amount: body.amount, refundAmount: body.refundAmount, amountCents: body.amountCents }
+                });
+            }
+            const bookingRef = this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`);
+            const bookingSnap = await bookingRef.once('value');
+            if (!bookingSnap.exists()) {
+                return res.status(404).json({ error: 'Booking not found', bookingId });
+            }
+            const booking = bookingSnap.val() || {};
+            let paymentPath = '';
+            if (paymentType === 'deposit') {
+                paymentPath = `/bnBookings/${bookingId}/payments/deposit`;
+            }
+            else if (paymentType === 'balance') {
+                paymentPath = `/bnBookings/${bookingId}/payments/balance`;
+            }
+            else if (paymentType === 'extra_service') {
+                if (extraServiceId) {
+                    paymentPath = `/bnBookings/${bookingId}/payments/extraServices/${extraServiceId}`;
+                }
+                else {
+                    return res.status(400).json({ error: 'extraServiceId is required to refund an extra service payment' });
+                }
+            }
+            else {
+                return res.status(400).json({
+                    error: 'Unsupported paymentType for booking refund',
+                    supportedPaymentTypes: ['deposit', 'balance', 'remaining', 'extra_service'],
+                    received: requestedType
+                });
+            }
+            const paymentSnap = await this.stbDbSvc.db.ref(paymentPath).once('value');
+            const payment = paymentSnap.val() || {};
+            let paymentIntentId = explicitPaymentIntentId ||
+                payment.stripePaymentIntentId ||
+                payment.paymentIntentId ||
+                (paymentType === 'deposit' ? (booking.stripePaymentIntentId || booking.paymentPaymentIntentId) : null);
+            let checkoutSessionId = explicitCheckoutSessionId ||
+                payment.stripeCheckoutSessionId ||
+                payment.checkoutSessionId ||
+                (paymentType === 'deposit' ? booking.stripeCheckoutSessionId : null);
+            const stripe = await this.getStripeForOwner(ownerId);
+            if (!paymentIntentId && checkoutSessionId) {
+                const session = await stripe.checkout.sessions.retrieve(checkoutSessionId);
+                paymentIntentId = session.payment_intent || null;
+            }
+            if (!paymentIntentId) {
+                return res.status(400).json({
+                    error: 'No Stripe payment intent found for this payment. Cannot refund automatically.',
+                    bookingId,
+                    paymentType,
+                    paymentPath,
+                    hasCheckoutSession: !!checkoutSessionId
+                });
+            }
+            const pi = await stripe.paymentIntents.retrieve(paymentIntentId);
+            const paidAmount = Number(pi.amount_received || pi.amount || payment.amount_total || payment.amount || 0);
+            const alreadyRefunded = Number(pi.amount_refunded || payment.refundedAmountCents || payment.refundedAmount || 0);
+            const maxRefundable = Math.max(0, paidAmount - alreadyRefunded);
+            if (maxRefundable && amountCents > maxRefundable) {
+                return res.status(400).json({
+                    error: 'Requested refund exceeds refundable amount',
+                    requestedAmountCents: amountCents,
+                    paidAmountCents: paidAmount,
+                    alreadyRefundedCents: alreadyRefunded,
+                    maxRefundableCents: maxRefundable
+                });
+            }
+            const refund = await stripe.refunds.create({
+                payment_intent: paymentIntentId,
+                amount: amountCents,
+                reason: ['duplicate', 'fraudulent', 'requested_by_customer'].includes(String(body.stripeReason || '')) ? body.stripeReason : undefined,
+                metadata: {
+                    bookingId,
+                    ownerId,
+                    paymentType,
+                    extraServiceId: extraServiceId || '',
+                    reason: reason || '',
+                    source: 'admin_booking_refund',
+                },
+            });
+            const now = Date.now();
+            const newRefundedAmountCents = Number(payment.refundedAmountCents || payment.refundedAmount || 0) + amountCents;
+            const recordedPaidAmountCents = paidAmount || Number(payment.amount_total || payment.amount || 0);
+            const isFullRefund = recordedPaidAmountCents > 0 && newRefundedAmountCents >= recordedPaidAmountCents;
+            const refundStatus = isFullRefund ? 'refunded' : 'partially_refunded';
+            const refundPayload = {
+                refundId: refund.id,
+                bookingId,
+                ownerId,
+                paymentType,
+                extraServiceId: extraServiceId || null,
+                amount: amountCents,
+                amountCents,
+                currency: refund.currency || payment.currency || 'eur',
+                status: refund.status || 'succeeded',
+                reason: reason || null,
+                stripePaymentIntentId: paymentIntentId,
+                stripeRefundId: refund.id,
+                createdTS: now,
+                modifiedTS: now,
+            };
+            await this.stbDbSvc.db.ref(`${paymentPath}/refunds/${refund.id}`).set(refundPayload);
+            await this.stbDbSvc.db.ref(paymentPath).update({
+                refundStatus,
+                refunded: isFullRefund,
+                partiallyRefunded: !isFullRefund,
+                refundedAmountCents: newRefundedAmountCents,
+                refundedAmount: newRefundedAmountCents / 100,
+                lastRefundId: refund.id,
+                lastRefundAmountCents: amountCents,
+                lastRefundAmount: amountCents / 100,
+                lastRefundAt: now,
+                modifiedTS: now,
+                updatedAt: now,
+            });
+            const bookingUpdate = {
+                modifiedTS: now,
+                updatedAt: now,
+            };
+            if (paymentType === 'deposit') {
+                bookingUpdate.depositRefundStatus = refundStatus;
+                bookingUpdate.depositRefundedAmountCents = newRefundedAmountCents;
+                bookingUpdate.depositRefunded = isFullRefund;
+                if (isFullRefund) {
+                    bookingUpdate.depositPaid = false;
+                    bookingUpdate.depositStatus = 'refunded';
+                }
+            }
+            else if (paymentType === 'balance') {
+                bookingUpdate.balanceRefundStatus = refundStatus;
+                bookingUpdate.balanceRefundedAmountCents = newRefundedAmountCents;
+                bookingUpdate.balanceRefunded = isFullRefund;
+                if (isFullRefund) {
+                    bookingUpdate.balancePaid = false;
+                    bookingUpdate.balanceStatus = 'refunded';
+                    bookingUpdate.paymentStatus = 'balance_refunded';
+                }
+            }
+            await bookingRef.update(bookingUpdate);
+            return res.json({
+                ok: true,
+                refund,
+                bookingId,
+                paymentType,
+                amountCents,
+                amount: amountCents / 100,
+                refundStatus,
+                paymentIntentId,
+            });
+        }
+        catch (e) {
+            console.error('[refundOutingPayment] error:', e);
+            return res.status(400).json({
+                error: e?.message || 'Failed to refund outing payment',
+                code: e?.code || null,
+                type: e?.type || null
+            });
+        }
     }
 }
 exports.StripeService = StripeService;

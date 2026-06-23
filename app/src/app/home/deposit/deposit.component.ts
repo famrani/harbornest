@@ -115,6 +115,7 @@ export class DepositComponent implements OnInit, OnDestroy {
   totalPrice: number | null = null;
   currency = 'eur';
   paymentMode = 'deposit';
+  routeWarrantyMethod = '';
 
   bookingId = '';
   ownerId = '';
@@ -194,6 +195,7 @@ export class DepositComponent implements OnInit, OnDestroy {
       this.bookingId = params.get('bookingId') || this.bookingId;
       this.ownerId = params.get('ownerId') || this.ownerId;
       this.paymentMode = params.get('mode') || this.paymentMode;
+      this.routeWarrantyMethod = params.get('warrantyMethod') || params.get('warrantyMode') || params.get('warrantyChoice') || params.get('warrantyPaymentChoice') || this.routeWarrantyMethod;
 
       const total = params.get('total') || params.get('totalPrice') || params.get('amount');
       if (total !== null && total !== '') {
@@ -234,8 +236,128 @@ export class DepositComponent implements OnInit, OnDestroy {
     return !this.isWarrantyAdminMode;
   }
 
+  get cashWarrantySelected(): boolean {
+    return this.isCashWarrantyMethodSelected();
+  }
+
+  get cardWarrantySelected(): boolean {
+    return !this.cashWarrantySelected && this.isWarrantyCardMethodSelected();
+  }
+
   get showWarrantyRegistration(): boolean {
-    return !this.isWarrantyAdminMode && !!this.booking && this.warrantyAmount > 0;
+    // Never show any warranty card/Stripe section when the booking/proposal says cash.
+    // Cash mode is intentionally checked first and has priority over old Stripe fields.
+    return !this.isWarrantyAdminMode &&
+      !!this.booking &&
+      this.warrantyAmount > 0 &&
+      !this.cashWarrantySelected &&
+      !this.cardWarrantySelected;
+  }
+
+  get showWarrantyCardSummary(): boolean {
+    // Show the card summary only for an explicit card/Stripe warranty choice.
+    // If cash is present anywhere on the booking/proposal object, hide it.
+    return !this.isWarrantyAdminMode &&
+      !!this.booking &&
+      this.warrantyAmount > 0 &&
+      !this.cashWarrantySelected &&
+      this.cardWarrantySelected;
+  }
+
+  get warrantyCardLast4(): string {
+    const anyBooking: any = this.booking || {};
+    const warrantyPayment = anyBooking?.payments?.warranty || {};
+    return String(
+      anyBooking.warrantyCardLast4 ||
+      anyBooking.cardLast4 ||
+      anyBooking.paymentMethodLast4 ||
+      warrantyPayment.cardLast4 ||
+      warrantyPayment.last4 ||
+      warrantyPayment.paymentMethodLast4 ||
+      warrantyPayment.card?.last4 ||
+      ''
+    );
+  }
+
+  get warrantySetupIntentAmount(): number {
+    const anyBooking: any = this.booking || {};
+    const warrantyPayment = anyBooking?.payments?.warranty || {};
+    const raw = Number(
+      anyBooking.warrantySetupIntentAmount ??
+      anyBooking.setupIntentAmount ??
+      warrantyPayment.setupIntentAmount ??
+      warrantyPayment.amount_total ??
+      warrantyPayment.amount ??
+      this.warrantyAmount ??
+      0
+    );
+    if (!Number.isFinite(raw) || raw <= 0) return 0;
+    return raw >= 10000 ? raw / 100 : raw;
+  }
+
+  private normalizeWarrantyValue(value: any): string {
+    return String(value ?? '').toLowerCase().trim().replace(/[\s-]+/g, '_');
+  }
+
+  private warrantyFieldValues(): string[] {
+    const values: any[] = [];
+    const visit = (obj: any, depth = 0): void => {
+      if (!obj || depth > 8) return;
+      if (typeof obj !== 'object') return;
+      Object.keys(obj).forEach((key) => {
+        const lowerKey = key.toLowerCase();
+        const value = obj[key];
+        if (
+          lowerKey.includes('warranty') ||
+          lowerKey.includes('caution') ||
+          lowerKey.includes('securitydeposit') ||
+          lowerKey.includes('damagedeposit') ||
+          lowerKey === 'method' ||
+          lowerKey === 'mode' ||
+          lowerKey === 'choice' ||
+          lowerKey === 'type' ||
+          lowerKey === 'status'
+        ) {
+          values.push(value);
+        }
+        if (value && typeof value === 'object' && !Array.isArray(value)) {
+          visit(value, depth + 1);
+        }
+      });
+    };
+
+    values.push(this.routeWarrantyMethod);
+    visit(this.booking || {});
+    return values
+      .filter((value) => value !== undefined && value !== null && value !== '')
+      .map((value) => this.normalizeWarrantyValue(value));
+  }
+
+  private isWarrantyCardMethodSelected(): boolean {
+    if (this.isCashWarrantyMethodSelected()) return false;
+    const values = this.warrantyFieldValues();
+    const cardValues = ['stripe_card', 'card', 'credit_card', 'creditcard', 'stripe', 'card_selected', 'card_registered', 'warranty_card_saved', 'warranty_card_registered'];
+    return values.some((value) =>
+      cardValues.includes(value) ||
+      value.includes('stripe_card') ||
+      value.includes('credit_card') ||
+      value.includes('card_registered') ||
+      value.includes('warranty_card')
+    );
+  }
+
+  private isCashWarrantyMethodSelected(): boolean {
+    const values = this.warrantyFieldValues();
+    const cashValues = ['cash_on_board', 'cash', 'cash_selected', 'cash_received', 'cash_warranty', 'warranty_cash'];
+    return values.some((value) =>
+      cashValues.includes(value) ||
+      value.startsWith('cash') ||
+      value.includes('cash_on_board') ||
+      value.includes('cash_warranty') ||
+      value.includes('warranty_cash') ||
+      value === 'espèces' ||
+      value === 'especes'
+    );
   }
 
   get chargeableWarrantyAmount(): number {
@@ -248,6 +370,7 @@ export class DepositComponent implements OnInit, OnDestroy {
   }
 
   get warrantyStatusLabel(): string {
+    if (this.cashWarrantySelected) return 'cash selected';
     const value = this.booking?.warrantyStatus;
     if (value === true) return 'registered';
     if (value === false || value === undefined || value === null || value === '') return 'not registered';
