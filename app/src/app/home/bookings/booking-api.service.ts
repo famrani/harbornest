@@ -472,8 +472,13 @@ export class BookingApiService {
   }): Observable<any> {
     const adhocPaymentId = payload.adhocPaymentId || `adhoc_${Date.now()}`;
     return this.postFirstAvailable([
-      // The latest backend app(36).zip does not expose dedicated ad-hoc routes.
-      // Use the deployed generic extra-service checkout for ad-hoc customer payments.
+      `${this.baseUrl}/pay/outing-adhoc-checkout`,
+      `${this.baseUrl}/pay/outing-ad-hoc-checkout`,
+      `${this.baseUrl}/api/payments/create-adhoc-checkout-session`,
+      `${this.baseUrl}/api/payments/create-ad-hoc-checkout-session`,
+      `${this.baseUrl}/stripe/adhoc-checkout`,
+      `${this.baseUrl}/stripe/ad-hoc-checkout`,
+      // Compatibility fallback for older deployments.
       `${this.baseUrl}/pay/outing-extra-service-checkout`,
       `${this.baseUrl}/api/payments/create-extra-service-checkout-session`,
       `${this.baseUrl}/stripe/extra-service-checkout`,

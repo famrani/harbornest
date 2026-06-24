@@ -1137,6 +1137,12 @@ class StripeService {
                             await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/extraServices`).set(updatedExtraServices);
                             await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/extraServices/${extraServiceId}`).update(updatePayload);
                         }
+                        else if (paymentType === 'ad_hoc') {
+                            const adhocPaymentId = (session.metadata && (session.metadata['adhocPaymentId'] || session.metadata['extraServiceId'])) || null;
+                            if (adhocPaymentId) {
+                                await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/adHoc/${adhocPaymentId}`).update(updatePayload);
+                            }
+                        }
                         else {
                             await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/deposit`).update({ ...updatePayload, status: 'deposit_paid' });
                             await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/deposit`).update({ ...updatePayload, status: 'deposit_paid' });
@@ -1450,6 +1456,14 @@ class StripeService {
         stripeRouter.post('/pay/outing-extra-service-checkout', (req, res) => this.createOutingExtraServiceCheckout(req, res));
         stripeRouter.post('/api/payments/create-extra-service-checkout-session', (req, res) => this.createOutingExtraServiceCheckout(req, res));
         stripeRouter.post('/stripe/extra-service-checkout', (req, res) => this.createOutingExtraServiceCheckout(req, res));
+        // Dedicated ad-hoc aliases used by the frontend. They intentionally reuse
+        // the generic additional-payment checkout but preserve paymentType=ad_hoc.
+        stripeRouter.post('/pay/outing-adhoc-checkout', (req, res) => this.createOutingExtraServiceCheckout(req, res));
+        stripeRouter.post('/pay/outing-ad-hoc-checkout', (req, res) => this.createOutingExtraServiceCheckout(req, res));
+        stripeRouter.post('/api/payments/create-adhoc-checkout-session', (req, res) => this.createOutingExtraServiceCheckout(req, res));
+        stripeRouter.post('/api/payments/create-ad-hoc-checkout-session', (req, res) => this.createOutingExtraServiceCheckout(req, res));
+        stripeRouter.post('/stripe/adhoc-checkout', (req, res) => this.createOutingExtraServiceCheckout(req, res));
+        stripeRouter.post('/stripe/ad-hoc-checkout', (req, res) => this.createOutingExtraServiceCheckout(req, res));
         stripeRouter.post('/pay/outing-refund', (req, res) => this.refundOutingPayment(req, res));
         stripeRouter.post('/api/payments/refund', (req, res) => this.refundOutingPayment(req, res));
         stripeRouter.post('/stripe/booking-refund', (req, res) => this.refundOutingPayment(req, res));
@@ -1601,7 +1615,10 @@ class StripeService {
             const extraServiceId = body.extraServiceId || body.serviceId || body.id || `extra_${Date.now()}`;
             const rawAmount = body.amount ?? body.extraAmount ?? body.price;
             const currency = String(body.currency || 'eur').toLowerCase();
-            const description = body.description || body.title || body.name || 'Extra service / ad hoc payment';
+            const requestedPaymentType = String(body.paymentType || body.checkoutType || body.type || '').toLowerCase();
+            const isAdHocPayment = requestedPaymentType.includes('ad_hoc') || requestedPaymentType.includes('adhoc') || requestedPaymentType.includes('ad-hoc');
+            const normalizedPaymentType = isAdHocPayment ? 'ad_hoc' : 'extra_service';
+            const description = body.description || body.title || body.name || (isAdHocPayment ? 'Ad hoc payment' : 'Extra service payment');
             const rawCustomerEmail = body.customerEmail || body.email || body.customer?.email;
             const customerEmail = this.isValidEmailForStripe(rawCustomerEmail) ? String(rawCustomerEmail).trim() : '';
             const customerName = body.customerName || body.name || body.customer?.fullName || (!customerEmail ? rawCustomerEmail : '');
@@ -1660,14 +1677,16 @@ class StripeService {
                 success_url: this.appendCheckoutParams(successUrl, {
                     session_id: '{CHECKOUT_SESSION_ID}',
                     bookingId,
-                    paymentType: 'extra_service',
+                    paymentType: normalizedPaymentType,
                     extraServiceId,
+                    adhocPaymentId: isAdHocPayment ? extraServiceId : '',
                     payment: 'success'
                 }),
                 cancel_url: this.appendCheckoutParams(cancelUrl, {
                     bookingId,
-                    paymentType: 'extra_service',
+                    paymentType: normalizedPaymentType,
                     extraServiceId,
+                    adhocPaymentId: isAdHocPayment ? extraServiceId : '',
                     payment: 'cancelled'
                 }),
                 payment_intent_data: {
@@ -1675,8 +1694,9 @@ class StripeService {
                         paymentId,
                         bookingId,
                         ownerId,
-                        paymentType: 'extra_service',
+                        paymentType: normalizedPaymentType,
                         extraServiceId,
+                        adhocPaymentId: isAdHocPayment ? extraServiceId : '',
                         description,
                     },
                 },
@@ -1684,8 +1704,9 @@ class StripeService {
                     paymentId,
                     bookingId,
                     ownerId,
-                    paymentType: 'extra_service',
+                    paymentType: normalizedPaymentType,
                     extraServiceId,
+                    adhocPaymentId: isAdHocPayment ? extraServiceId : '',
                     description,
                 },
             });
@@ -1694,8 +1715,9 @@ class StripeService {
                 paymentId,
                 ownerId,
                 bookingId,
-                paymentType: 'extra_service',
+                paymentType: normalizedPaymentType,
                 extraServiceId,
+                adhocPaymentId: isAdHocPayment ? extraServiceId : '',
                 description,
                 amount,
                 currency,
@@ -1710,32 +1732,37 @@ class StripeService {
                 modifiedTS: now,
             };
             await paymentRef.set(payload);
-            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/extraServices/${extraServiceId}`).set(payload);
-            const bookingSnap = await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).once('value');
-            const booking = bookingSnap.val() || {};
-            const extraServices = Array.isArray(booking.extraServices) ? [...booking.extraServices] : [];
-            const index = extraServices.findIndex((item) => item.id === extraServiceId || item.extraServiceId === extraServiceId);
-            const extraPayload = {
-                id: extraServiceId,
-                extraServiceId,
-                description,
-                amount: amount > 10000 ? amount / 100 : amount,
-                amountCents: amount,
-                currency,
-                status: 'pending',
-                paid: false,
-                stripeCheckoutSessionId: session.id,
-                createdTS: now,
-                modifiedTS: now,
-            };
-            if (index >= 0) {
-                extraServices[index] = { ...extraServices[index], ...extraPayload };
+            if (isAdHocPayment) {
+                await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/adHoc/${extraServiceId}`).set(payload);
             }
             else {
-                extraServices.push(extraPayload);
+                await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/extraServices/${extraServiceId}`).set(payload);
+                const bookingSnap = await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).once('value');
+                const booking = bookingSnap.val() || {};
+                const extraServices = Array.isArray(booking.extraServices) ? [...booking.extraServices] : [];
+                const index = extraServices.findIndex((item) => item.id === extraServiceId || item.extraServiceId === extraServiceId);
+                const extraPayload = {
+                    id: extraServiceId,
+                    extraServiceId,
+                    description,
+                    amount: amount > 10000 ? amount / 100 : amount,
+                    amountCents: amount,
+                    currency,
+                    status: 'pending',
+                    paid: false,
+                    stripeCheckoutSessionId: session.id,
+                    createdTS: now,
+                    modifiedTS: now,
+                };
+                if (index >= 0) {
+                    extraServices[index] = { ...extraServices[index], ...extraPayload };
+                }
+                else {
+                    extraServices.push(extraPayload);
+                }
+                await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/extraServices`).set(extraServices);
             }
-            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/extraServices`).set(extraServices);
-            return res.json({ ok: true, url: session.url, id: session.id, paymentId, extraServiceId });
+            return res.json({ ok: true, url: session.url, id: session.id, paymentId, extraServiceId, adhocPaymentId: isAdHocPayment ? extraServiceId : '', paymentType: normalizedPaymentType });
         }
         catch (e) {
             console.error('[createOutingExtraServiceCheckout] error:', e);
@@ -1762,7 +1789,8 @@ class StripeService {
             const paymentType = requestedType.includes('deposit') ? 'deposit' :
                 requestedType.includes('balance') || requestedType.includes('remaining') || requestedType.includes('90') ? 'balance' :
                     requestedType.includes('extra') || requestedType.includes('service') ? 'extra_service' :
-                        requestedType || 'balance';
+                        requestedType.includes('ad_hoc') || requestedType.includes('adhoc') || requestedType.includes('ad-hoc') ? 'ad_hoc' :
+                            requestedType || 'balance';
             const rawAmount = body.amountCents ?? body.refundAmountCents ?? body.amount ?? body.refundAmount ?? body.refund ?? body.value;
             const amountCents = Number(body.amountCents ?? body.refundAmountCents) > 0
                 ? Math.round(Number(body.amountCents ?? body.refundAmountCents))
@@ -1794,10 +1822,18 @@ class StripeService {
                     return res.status(400).json({ error: 'extraServiceId is required to refund an extra service payment' });
                 }
             }
+            else if (paymentType === 'ad_hoc') {
+                if (extraServiceId) {
+                    paymentPath = `/bnBookings/${bookingId}/payments/adHoc/${extraServiceId}`;
+                }
+                else {
+                    return res.status(400).json({ error: 'adhocPaymentId/extraServiceId is required to refund an ad hoc payment' });
+                }
+            }
             else {
                 return res.status(400).json({
                     error: 'Unsupported paymentType for booking refund',
-                    supportedPaymentTypes: ['deposit', 'balance', 'remaining', 'extra_service'],
+                    supportedPaymentTypes: ['deposit', 'balance', 'remaining', 'extra_service', 'ad_hoc'],
                     received: requestedType
                 });
             }
