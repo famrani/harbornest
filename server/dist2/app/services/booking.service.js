@@ -37,6 +37,68 @@ function pickContactEmail(siteContent, preferredLocale) {
     }
     return '';
 }
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+function pickCustomerEmail(record) {
+    const candidates = [
+        record?.customerEmail,
+        record?.email,
+        record?.customer?.email,
+        record?.raw?.customerEmail,
+        record?.raw?.email,
+        record?.raw?.customer?.email,
+    ];
+    for (const value of candidates) {
+        if (isEmail(String(value || '').trim()))
+            return String(value).trim();
+    }
+    return '';
+}
+function pickCustomerName(record) {
+    return String(record?.customerName ||
+        record?.name ||
+        record?.customer?.fullName ||
+        [record?.customer?.firstname, record?.customer?.lastname].filter(Boolean).join(' ') ||
+        record?.raw?.customerName ||
+        record?.raw?.name ||
+        '').trim();
+}
+function getPublicAppOrigin(req) {
+    const configured = String(process.env.PUBLIC_APP_URL ||
+        process.env.FRONTEND_URL ||
+        process.env.APP_URL ||
+        '').trim().replace(/\/+$/, '');
+    if (configured)
+        return configured;
+    const origin = String(req.headers.origin || '').trim().replace(/\/+$/, '');
+    if (origin)
+        return origin;
+    const proto = String(req.headers['x-forwarded-proto'] || req.protocol || 'https').split(',')[0].trim();
+    const host = String(req.headers['x-forwarded-host'] || req.headers.host || '').split(',')[0].trim();
+    return host ? `${proto}://${host}` : '';
+}
+function formatMoneyEuro(amount) {
+    const n = Number(amount || 0);
+    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(n);
+}
+function proposalSummaryHtml(record) {
+    const rows = [
+        ['Sortie', record?.outingType || record?.raw?.outingType || ''],
+        ['Date', record?.outingDate || record?.raw?.outingDate || ''],
+        ['Horaires', [record?.departureTime || record?.raw?.departureTime, record?.arrivalTime || record?.raw?.arrivalTime].filter(Boolean).join(' - ')],
+        ['Passagers', record?.passengers || record?.raw?.passengers || ''],
+        ['Montant total', formatMoneyEuro(record?.totalAmount || record?.totalPrice || record?.raw?.totalAmount || 0)],
+        ['Acompte 10 %', formatMoneyEuro(record?.depositAmount || record?.raw?.depositAmount || 0)],
+        ['Solde 90 %', formatMoneyEuro(record?.balanceAmount || record?.remainingFeesAmount || record?.raw?.balanceAmount || 0)],
+    ].filter(([, value]) => value !== undefined && value !== null && String(value).trim() !== '');
+    return rows.map(([label, value]) => `<p><strong>${escapeHtml(label)} :</strong> ${escapeHtml(value)}</p>`).join('');
+}
 // sendBookingEmail composes and sends notification emails to both the owner and the guest
 async function sendBookingEmail(mailer, booking, bookingId, ownerEmail) {
     const { eventType, start, end, people, customer, price, notes, } = booking;
@@ -259,6 +321,60 @@ class BookingsService {
             .filter((item) => item && item.active !== false)
             .sort((a, b) => Number(a.sortOrder ?? 999) - Number(b.sortOrder ?? 999));
     }
+    async notifyProposalReady(req, proposalId) {
+        const snap = await this.storeDbc.db.ref(`/bnProposals/${proposalId}`).once('value');
+        const proposal = snap.val();
+        if (!proposal)
+            throw new Error('Proposal not found');
+        const email = pickCustomerEmail(proposal);
+        if (!email)
+            throw new Error('Customer email missing on proposal');
+        const name = pickCustomerName(proposal);
+        const origin = getPublicAppOrigin(req);
+        const proposalUrl = `${origin}/proposal/${encodeURIComponent(proposalId)}`;
+        const subject = `Votre proposition Alegria est prête`;
+        const html = `
+            <h2>Votre proposition est prête</h2>
+            <p>Bonjour ${escapeHtml(name || '')},</p>
+            <p>Votre proposition pour votre sortie Alegria est maintenant disponible.</p>
+            ${proposalSummaryHtml(proposal)}
+            <p style="margin:24px 0;"><a href="${escapeHtml(proposalUrl)}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">Voir et confirmer ma proposition</a></p>
+            <p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p>
+            <p><a href="${escapeHtml(proposalUrl)}">${escapeHtml(proposalUrl)}</a></p>
+        `;
+        await this.mailer.sendToGuest(email, subject, html);
+        await this.storeDbc.db.ref(`/bnProposals/${proposalId}`).update({
+            proposalEmailSentAt: Date.now(),
+            proposalEmailSentTo: email,
+        });
+    }
+    async notifyBookingConfirmed(req, bookingId) {
+        const snap = await this.storeDbc.db.ref(`${firebase_service_1.OBJECTNAME.bnBookings}/${bookingId}`).once('value');
+        const booking = snap.val();
+        if (!booking)
+            throw new Error('Booking not found');
+        const email = pickCustomerEmail(booking);
+        if (!email)
+            throw new Error('Customer email missing on booking');
+        const name = pickCustomerName(booking);
+        const origin = getPublicAppOrigin(req);
+        const bookingUrl = `${origin}/bookings/${encodeURIComponent(bookingId)}`;
+        const subject = `Votre réservation Alegria est confirmée`;
+        const html = `
+            <h2>Votre réservation est confirmée</h2>
+            <p>Bonjour ${escapeHtml(name || '')},</p>
+            <p>Merci, votre proposition a bien été confirmée et transformée en réservation.</p>
+            ${proposalSummaryHtml(booking)}
+            <p style="margin:24px 0;"><a href="${escapeHtml(bookingUrl)}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">Ouvrir ma réservation</a></p>
+            <p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p>
+            <p><a href="${escapeHtml(bookingUrl)}">${escapeHtml(bookingUrl)}</a></p>
+        `;
+        await this.mailer.sendToGuest(email, subject, html);
+        await this.storeDbc.db.ref(`${firebase_service_1.OBJECTNAME.bnBookings}/${bookingId}`).update({
+            bookingConfirmationEmailSentAt: Date.now(),
+            bookingConfirmationEmailSentTo: email,
+        });
+    }
     async setRoutes(router) {
         await this.mailer.verify(); // log SMTP status on boot
         const limiter = (0, express_rate_limit_1.default)({ windowMs: 10 * 60 * 1000, max: 20 });
@@ -286,6 +402,26 @@ class BookingsService {
             }
             catch (e) {
                 console.error(e);
+                return res.status(500).json({ ok: false, error: e?.message || String(e) });
+            }
+        });
+        router.post('/api/proposals/:proposalId/notify-sent', async (req, res) => {
+            try {
+                await this.notifyProposalReady(req, req.params.proposalId);
+                return res.json({ ok: true });
+            }
+            catch (e) {
+                console.error('[MAIL] proposal notification failed:', e);
+                return res.status(500).json({ ok: false, error: e?.message || String(e) });
+            }
+        });
+        router.post('/api/bookings/:bookingId/notify-confirmed', async (req, res) => {
+            try {
+                await this.notifyBookingConfirmed(req, req.params.bookingId);
+                return res.json({ ok: true });
+            }
+            catch (e) {
+                console.error('[MAIL] booking confirmation notification failed:', e);
                 return res.status(500).json({ ok: false, error: e?.message || String(e) });
             }
         });

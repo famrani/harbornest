@@ -296,6 +296,9 @@ export class ProposalApiService {
 
     await this.createBookingFromProposal(accepted);
     await this.deleteProposal(proposalId);
+    await this.notifyBookingConfirmed(bookingId).toPromise().catch((error) => {
+      console.warn('Booking confirmation email notification failed', error);
+    });
     return { bookingId };
   }
 
@@ -336,11 +339,23 @@ export class ProposalApiService {
     }
   }
 
+
+  notifyProposalSent(proposalId: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/api/proposals/${encodeURIComponent(proposalId)}/notify-sent`, {}, { withCredentials: true });
+  }
+
+  notifyBookingConfirmed(bookingId: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/api/bookings/${encodeURIComponent(bookingId)}/notify-confirmed`, {}, { withCredentials: true });
+  }
+
   async markSent(proposal: AlegriaProposal): Promise<void> {
     this.assertProposalCanBeRenewed(proposal);
     await this.patchProposal(proposal.proposalId, {
       status: 'sent',
       validUntil: Date.now() + 24 * 60 * 60 * 1000,
+    });
+    await this.notifyProposalSent(proposal.proposalId).toPromise().catch((error) => {
+      console.warn('Proposal email notification failed', error);
     });
   }
 

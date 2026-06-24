@@ -16150,6 +16150,9 @@ let ProposalApiService = class ProposalApiService {
       };
       yield _this4.createBookingFromProposal(accepted);
       yield _this4.deleteProposal(proposalId);
+      yield _this4.notifyBookingConfirmed(bookingId).toPromise().catch(error => {
+        console.warn('Booking confirmation email notification failed', error);
+      });
       return {
         bookingId
       };
@@ -16184,6 +16187,16 @@ let ProposalApiService = class ProposalApiService {
       throw new Error('This proposal cannot be renewed because the outing date is today or already past.');
     }
   }
+  notifyProposalSent(proposalId) {
+    return this.http.post(`${this.baseUrl}/api/proposals/${encodeURIComponent(proposalId)}/notify-sent`, {}, {
+      withCredentials: true
+    });
+  }
+  notifyBookingConfirmed(bookingId) {
+    return this.http.post(`${this.baseUrl}/api/bookings/${encodeURIComponent(bookingId)}/notify-confirmed`, {}, {
+      withCredentials: true
+    });
+  }
   markSent(proposal) {
     var _this5 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
@@ -16191,6 +16204,9 @@ let ProposalApiService = class ProposalApiService {
       yield _this5.patchProposal(proposal.proposalId, {
         status: 'sent',
         validUntil: Date.now() + 24 * 60 * 60 * 1000
+      });
+      yield _this5.notifyProposalSent(proposal.proposalId).toPromise().catch(error => {
+        console.warn('Proposal email notification failed', error);
       });
     })();
   }
