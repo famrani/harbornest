@@ -26,6 +26,7 @@ export class ProposalConfirmationComponent implements OnInit {
   priceTitles: any = this.defaultPriceTitles('fr');
   finalizingBooking = false;
   finalBookingId = '';
+  selectedWizardStep: 1 | 2 | 3 | 4 | null = null;
 
   proposalAccessReady = false;
   proposalAccessLoading = false;
@@ -735,16 +736,39 @@ export class ProposalConfirmationComponent implements OnInit {
     return this.warrantyRegistered || this.warrantyCashSelected;
   }
 
-  get wizardStep(): 1 | 2 | 3 | 4 {
+  private get computedWizardStep(): 1 | 2 | 3 | 4 {
     if (!this.tncAccepted) return 1;
     if (!this.depositPaid) return 2;
     if (!this.warrantyReady) return 3;
     return 4;
   }
 
+  get wizardStep(): 1 | 2 | 3 | 4 {
+    if (this.selectedWizardStep && this.canGoToWizardStep(this.selectedWizardStep)) {
+      return this.selectedWizardStep;
+    }
+    return this.computedWizardStep;
+  }
+
+  canGoToWizardStep(step: 1 | 2 | 3 | 4): boolean {
+    if (step === 1) return true;
+    if (step === 2) return this.tncAccepted;
+    if (step === 3) return this.tncAccepted && this.depositPaid;
+    return this.tncAccepted && this.depositPaid && this.warrantyReady;
+  }
+
+  goToWizardStep(step: 1 | 2 | 3 | 4): void {
+    if (this.canGoToWizardStep(step)) {
+      this.selectedWizardStep = step;
+      this.message = '';
+      this.error = '';
+    }
+  }
+
   get wizardProgressPercent(): number {
-    if (this.wizardStep === 1) return 33;
-    if (this.wizardStep === 2) return 66;
+    const computed = this.computedWizardStep;
+    if (computed === 1) return 33;
+    if (computed === 2) return 66;
     return 100;
   }
 
@@ -763,6 +787,7 @@ export class ProposalConfirmationComponent implements OnInit {
     this.error = '';
     try {
       this.proposal = await this.proposalApi.markTermsAccepted(this.proposal.proposalId);
+      this.selectedWizardStep = 2;
       this.message = this.text('termsAcceptedMessage') || 'Terms and Conditions accepted.';
     } catch (e: any) {
       this.error = e?.message || this.text('acceptError');
@@ -778,6 +803,9 @@ export class ProposalConfirmationComponent implements OnInit {
       next: async (proposal) => {
         if (proposal) {
           this.proposal = proposal;
+          if (!this.selectedWizardStep || !this.canGoToWizardStep(this.selectedWizardStep)) {
+            this.selectedWizardStep = this.computedWizardStep;
+          }
           if (tryFinalize && this.canFinalizeProposal) {
             await this.finalizeProposal();
           }

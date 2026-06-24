@@ -813,3 +813,48 @@ h1 { color: #08263a; margin: 8px 0; }
     display: grid;
   }
 }
+
+.booking-payments-panel {
+  background: #f8fbff;
+  border: 1px solid rgba(8, 38, 58, .10);
+}
+
+.booking-payment-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .95rem 0;
+  border-top: 1px solid rgba(8, 38, 58, .08);
+}
+
+.booking-payment-main,
+.booking-payment-meta {
+  display: grid;
+  gap: .25rem;
+}
+
+.booking-payment-main span,
+.booking-payment-meta span {
+  color: #64748b;
+  font-size: .92rem;
+}
+
+.booking-payment-meta {
+  text-align: right;
+  min-width: 9rem;
+}
+
+.paid-badge-inline {
+  color: #047857 !important;
+  font-weight: 800;
+}
+
+@media (max-width: 720px) {
+  .booking-payment-row {
+    display: grid;
+  }
+
+  .booking-payment-meta {
+    text-align: left;
+  }
+}

@@ -63,35 +63,43 @@
           </div>
 
           <div class="wizard-steps">
-            <div class="wizard-step" [class.active]="wizardStep === 1" [class.done]="tncAccepted">
+            <button class="wizard-step" type="button" [class.active]="wizardStep === 1" [class.done]="tncAccepted" [disabled]="!canGoToWizardStep(1)" (click)="goToWizardStep(1)">
               <span>1</span>
               <strong>{{ text('wizardStepTerms') }}</strong>
-            </div>
-            <div class="wizard-step" [class.active]="wizardStep === 2" [class.done]="depositPaid">
+            </button>
+            <button class="wizard-step" type="button" [class.active]="wizardStep === 2" [class.done]="depositPaid" [disabled]="!canGoToWizardStep(2)" (click)="goToWizardStep(2)">
               <span>2</span>
               <strong>{{ text('wizardStepDeposit') }}</strong>
-            </div>
-            <div class="wizard-step" [class.active]="wizardStep === 3" [class.done]="warrantyReady">
+            </button>
+            <button class="wizard-step" type="button" [class.active]="wizardStep === 3" [class.done]="warrantyReady" [disabled]="!canGoToWizardStep(3)" (click)="goToWizardStep(3)">
               <span>3</span>
               <strong>{{ text('wizardStepWarranty') }}</strong>
-            </div>
+            </button>
           </div>
 
           <section class="wizard-panel" *ngIf="wizardStep === 1">
             <h2>{{ text('acceptTitle') }}</h2>
             <p>{{ text('readBeforeAccept') }}</p>
 
-            <button class="link-button" type="button" (click)="openTermsModal()">{{ text('openTerms') }}</button>
+            <div class="paid-badge" *ngIf="tncAccepted">{{ text('termsAlreadyAccepted') || text('termsAcceptedMessage') }}</div>
 
-            <label class="terms-check">
-              <input type="checkbox" [(ngModel)]="acceptedTerms" [disabled]="!canAcceptTermsCheckbox" />
-              <span>{{ text('termsCheckbox') }}</span>
-            </label>
+            <ng-container *ngIf="!tncAccepted">
+              <button class="link-button" type="button" (click)="openTermsModal()">{{ text('openTerms') }}</button>
 
-            <p class="muted" *ngIf="!canAcceptTermsCheckbox">{{ text('termsLocked') }}</p>
+              <label class="terms-check">
+                <input type="checkbox" [(ngModel)]="acceptedTerms" [disabled]="!canAcceptTermsCheckbox" />
+                <span>{{ text('termsCheckbox') }}</span>
+              </label>
 
-            <button class="btn btn-primary" type="button" [disabled]="!canAccept || accepting" (click)="acceptProposal()">
-              {{ accepting ? text('acceptingButton') : (text('wizardAcceptTermsButton') || 'Validate T&C and continue') }}
+              <p class="muted" *ngIf="!canAcceptTermsCheckbox">{{ text('termsLocked') }}</p>
+
+              <button class="btn btn-primary" type="button" [disabled]="!canAccept || accepting" (click)="acceptProposal()">
+                {{ accepting ? text('acceptingButton') : (text('wizardAcceptTermsButton') || 'Validate T&C and continue') }}
+              </button>
+            </ng-container>
+
+            <button class="btn btn-primary" type="button" *ngIf="tncAccepted" (click)="goToWizardStep(2)">
+              {{ text('continueToDepositButton') || text('payDepositButton') }}
             </button>
           </section>
 
@@ -100,14 +108,25 @@
             <p>{{ depositMessage }}</p>
             <p class="muted">{{ priceTitle('deposit') }}: <strong>€{{ proposal.depositAmount }}</strong></p>
 
-            <button class="btn btn-primary" type="button" [disabled]="payingDeposit" (click)="payDeposit()">
-              {{ payingDeposit ? text('redirecting') : text('payDepositButton') }}
-            </button>
+            <div class="wizard-actions">
+              <button class="btn btn-secondary" type="button" (click)="goToWizardStep(1)">
+                {{ text('previousStepButton') || 'Previous step' }}
+              </button>
+              <button class="btn btn-primary" type="button" [disabled]="payingDeposit" (click)="payDeposit()">
+                {{ payingDeposit ? text('redirecting') : text('payDepositButton') }}
+              </button>
+            </div>
           </section>
 
           <section class="wizard-panel" *ngIf="wizardStep === 3">
             <h2>{{ text('warrantyTitle') }}</h2>
             <p>{{ text('warrantyWizardIntro') }}</p>
+
+            <div class="wizard-actions wizard-actions-top">
+              <button class="btn btn-secondary" type="button" (click)="goToWizardStep(2)">
+                {{ text('previousStepButton') || 'Previous step' }}
+              </button>
+            </div>
 
             <div class="warranty-options">
               <label class="radio-card">

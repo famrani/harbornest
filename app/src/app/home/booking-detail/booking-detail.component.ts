@@ -60,6 +60,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   refunding = false;
   refundTarget: 'deposit' | 'balance' = 'deposit';
   balancePaymentRecordsCache: any[] = [];
+  bookingPaymentRecordsCache: any[] = [];
   refundablePaymentOptionsCache: any[] = [];
   editMode = false;
   savingCustomerUpdate = false;
@@ -166,6 +167,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
       this.loading = false;
       this.syncConfirmedStatusIfReady();
       this.handleCheckoutReturn();
+      this.refreshPaymentsFromBackendIfNeeded();
     });
   }
 
@@ -210,6 +212,38 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     } catch (e: any) {
       this.balancePaymentError = e?.message || 'Payment succeeded, but the booking could not be updated locally.';
     }
+  }
+
+
+  private refreshPaymentsFromBackendIfNeeded(): void {
+    const payment = String(this.route.snapshot.queryParamMap.get('payment') || '').toLowerCase();
+    const paymentType = String(this.route.snapshot.queryParamMap.get('paymentType') || '').toLowerCase();
+    if (payment !== 'success' || !this.booking?.bookingId) return;
+    // Balance is handled locally above. Extra-service and ad-hoc payments may be written by Stripe webhooks
+    // a moment after redirect; ask the backend for the consolidated payment state and merge it into the page.
+    if (!['extra_service', 'extraservice', 'extra', 'ad_hoc', 'adhoc', 'ad-hoc'].includes(paymentType)) return;
+
+    this.bookingApi.getPaymentStatus(this.booking.bookingId).subscribe({
+      next: (status: any) => {
+        const incomingPayments = status?.payments || status?.booking?.payments || status?.data?.payments || {};
+        const incomingExtraServices = status?.extraServices || status?.booking?.extraServices || status?.data?.extraServices;
+        const incomingRefunds = status?.refunds || status?.booking?.refunds || status?.data?.refunds;
+        this.booking = {
+          ...(this.booking as any),
+          ...(status?.booking || status?.data?.booking || {}),
+          payments: {
+            ...((this.booking as any)?.payments || {}),
+            ...(incomingPayments || {}),
+          },
+          extraServices: Array.isArray(incomingExtraServices) ? incomingExtraServices : (this.booking as any)?.extraServices,
+          refunds: Array.isArray(incomingRefunds) ? incomingRefunds : (this.booking as any)?.refunds,
+        } as any;
+        this.refreshDerivedPaymentState();
+      },
+      error: () => {
+        // Non blocking: the booking page still shows local booking payment records.
+      },
+    });
   }
 
   get isAdmin(): boolean {
@@ -483,10 +517,14 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
       const content: any = await this.guestContent.getContent();
       const firebaseProposal =
         content?.proposalInfo?.[language] ||
+        content?.[language]?.proposalInfo ||
+        content?.siteContent?.[language]?.proposalInfo ||
         content?.guestInfo?.proposalInfo?.[language] ||
         {};
       const firebaseBooking =
         content?.bookingInfo?.[language] ||
+        content?.[language]?.bookingInfo ||
+        content?.siteContent?.[language]?.bookingInfo ||
         content?.guestInfo?.bookingInfo?.[language] ||
         {};
 
@@ -518,6 +556,31 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
 
   btext(key: string): string {
     return this.bookingInfo?.[key] || this.defaultBookingInfo(this.currentLanguage)[key] || '';
+  }
+
+
+  getVisibleBookingComments(): string {
+    const comments = String((this.booking as any)?.comments || '').trim();
+    if (!comments) return '';
+    return this.isTechnicalProposalRequestComment(comments) ? '' : comments;
+  }
+
+  private isTechnicalProposalRequestComment(value: string): boolean {
+    const text = String(value || '').toLowerCase();
+    const markers = [
+      'proposal request - no payment yet',
+      'admin must finalize boat price',
+      'requested period:',
+      'requested time:',
+      'estimated price:',
+      'skipper price:',
+      'cleaning price:',
+      'extra guests price:',
+      'start marina:',
+      'destination:',
+      'options:'
+    ];
+    return markers.some((marker) => text.includes(marker)) && text.includes('proposal request');
   }
 
   private defaultBookingInfo(language: SiteLanguage): any {
@@ -595,12 +658,58 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         workflowWarrantyRequired: 'Caution requise',
         workflowBalanceRequired: 'Solde à régler',
         workflowPaymentDone: 'Paiement terminé',
+        workflowSelectWarrantyMethod: 'Sélectionner le mode de caution',
+        workflowRegisterWarrantyCard: 'Enregistrer la carte de caution',
+        workflowPayRemaining90: 'Payer le solde restant 90 %',
+        workflowPaymentDoneDamageManagement: 'Paiement effectué — gestion des dommages',
         depositPaid: 'Acompte payé',
         depositPending: 'Acompte en attente',
         balancePaid: 'Solde payé',
         balancePending: 'Solde en attente',
         damageReported: 'Dommages signalés',
-        noDamageReported: 'Aucun dommage signalé'
+        noDamageReported: 'Aucun dommage signalé',
+        bookingPaymentsTitle: 'Paiements de cette réservation',
+        bookingPaymentsEmpty: 'Aucun paiement enregistré pour cette réservation.',
+        paymentTypeDeposit: 'Acompte',
+        paymentTypeBalance: 'Solde restant',
+        paymentTypeExtraService: 'Service supplémentaire',
+        paymentTypeAdHoc: 'Paiement ad hoc',
+        paymentTypeWarranty: 'Caution',
+        paymentTypeCashWarranty: 'Caution espèces',
+        paymentTypeCardWarranty: 'Caution carte',
+        paymentTypeWarrantyCharge: 'Dommage imputé sur caution',
+        paymentTypeRefund: 'Remboursement',
+        paymentDescriptionDeposit: 'Acompte de 10 % payé à la confirmation.',
+        paymentDescriptionBalance: 'Solde restant de 90 % pour cette réservation.',
+        paymentDescriptionExtraService: 'Service supplémentaire payé pour cette réservation.',
+        paymentDescriptionAdHoc: 'Paiement complémentaire lié à cette réservation.',
+        paymentDescriptionRefund: 'Remboursement lié à cette réservation.',
+        paymentTypePayment: 'Paiement',
+        extraServicesTitle: 'Services supplémentaires',
+        noExtraServiceRequested: 'Aucun service supplémentaire demandé pour cette réservation.',
+        adminExtraServicesManagement: 'Gestion des services supplémentaires administrateur',
+        proposeExtraServiceTitle: 'Proposer un service supplémentaire au client',
+        serviceFromCatalogLabel: 'Service du catalogue Firebase',
+        customServiceOption: 'Service personnalisé',
+        customDescriptionLabel: 'Description personnalisée',
+        customDescriptionPlaceholder: 'Boissons, repas, catering...',
+        customAmountLabel: 'Montant personnalisé (€)',
+        sendExtraServicePaymentRequest: 'Envoyer la demande de paiement du service',
+        payExtraServiceButton: 'Payer le service supplémentaire',
+        edit: 'Modifier',
+        delete: 'Supprimer',
+        completed: 'Terminé',
+        selected: 'Sélectionné',
+        inOffer: "Dans l'offre",
+        adhocPaymentTitle: 'Paiement ad hoc',
+        adhocPaymentText: 'Vous pouvez effectuer un paiement complémentaire pour un service, un pourboire, du catering, des boissons ou tout autre coût convenu.',
+        descriptionLabel: 'Description',
+        amountLabel: 'Montant (€)',
+        adhocDescriptionPlaceholder: 'Pourboire, catering, boissons, service supplémentaire...',
+        payThisAmount: 'Payer ce montant',
+        redirecting: 'Redirection...',
+        paymentRefundBrief: 'Remboursement partiel ou total lié à cette réservation.',
+        refunded: 'Remboursé'
       },
       en: {
         cashWarrantyEnvelope: 'Cash warranty envelope',
@@ -675,12 +784,58 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         workflowWarrantyRequired: 'Warranty required',
         workflowBalanceRequired: 'Balance required',
         workflowPaymentDone: 'Payment completed',
+        workflowSelectWarrantyMethod: 'Select warranty method',
+        workflowRegisterWarrantyCard: 'Register warranty card',
+        workflowPayRemaining90: 'Pay remaining 90%',
+        workflowPaymentDoneDamageManagement: 'Payment done — damage management',
         depositPaid: 'Deposit paid',
         depositPending: 'Deposit pending',
         balancePaid: 'Balance paid',
         balancePending: 'Balance pending',
         damageReported: 'Damage reported',
-        noDamageReported: 'No damage reported'
+        noDamageReported: 'No damage reported',
+        bookingPaymentsTitle: 'Payments for this booking',
+        bookingPaymentsEmpty: 'No payment recorded for this booking yet.',
+        paymentTypeDeposit: 'Deposit',
+        paymentTypeBalance: 'Remaining fees',
+        paymentTypeExtraService: 'Extra service',
+        paymentTypeAdHoc: 'Ad hoc payment',
+        paymentTypeWarranty: 'Warranty',
+        paymentTypeCashWarranty: 'Cash warranty',
+        paymentTypeCardWarranty: 'Warranty card',
+        paymentTypeWarrantyCharge: 'Warranty damage charge',
+        paymentTypeRefund: 'Refund',
+        paymentDescriptionDeposit: '10% deposit paid when the booking was confirmed.',
+        paymentDescriptionBalance: 'Remaining 90% fees for this booking.',
+        paymentDescriptionExtraService: 'Extra service paid for this booking.',
+        paymentDescriptionAdHoc: 'Additional ad hoc payment linked to this booking.',
+        paymentDescriptionRefund: 'Refund linked to this booking.',
+        paymentTypePayment: 'Payment',
+        extraServicesTitle: 'Extra services',
+        noExtraServiceRequested: 'No extra service requested for this booking.',
+        adminExtraServicesManagement: 'Admin extra services management',
+        proposeExtraServiceTitle: 'Propose an extra service to the customer',
+        serviceFromCatalogLabel: 'Service from Firebase catalog',
+        customServiceOption: 'Custom service',
+        customDescriptionLabel: 'Custom description',
+        customDescriptionPlaceholder: 'Drinks, food, catering...',
+        customAmountLabel: 'Custom amount (€)',
+        sendExtraServicePaymentRequest: 'Send extra service payment request',
+        payExtraServiceButton: 'Pay extra service',
+        edit: 'Edit',
+        delete: 'Delete',
+        completed: 'Completed',
+        selected: 'Selected',
+        inOffer: 'In offer',
+        adhocPaymentTitle: 'Ad hoc payment',
+        adhocPaymentText: 'You can make an additional payment for extra services, tips, catering, drinks or any other agreed cost.',
+        descriptionLabel: 'Description',
+        amountLabel: 'Amount (€)',
+        adhocDescriptionPlaceholder: 'Tip, catering, drinks, extra service...',
+        payThisAmount: 'Pay this amount',
+        redirecting: 'Redirecting...',
+        paymentRefundBrief: 'Partial or full refund linked to this booking.',
+        refunded: 'Refunded'
       },
       es: {
         cashWarrantyEnvelope: 'Sobre de garantía en efectivo',
@@ -755,12 +910,58 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         workflowWarrantyRequired: 'Garantía requerida',
         workflowBalanceRequired: 'Saldo pendiente',
         workflowPaymentDone: 'Pago completado',
+        workflowSelectWarrantyMethod: 'Seleccionar método de garantía',
+        workflowRegisterWarrantyCard: 'Registrar tarjeta de garantía',
+        workflowPayRemaining90: 'Pagar el 90 % restante',
+        workflowPaymentDoneDamageManagement: 'Pago realizado — gestión de daños',
         depositPaid: 'Depósito pagado',
         depositPending: 'Depósito pendiente',
         balancePaid: 'Saldo pagado',
         balancePending: 'Saldo pendiente',
         damageReported: 'Daños reportados',
-        noDamageReported: 'Sin daños reportados'
+        noDamageReported: 'Sin daños reportados',
+        bookingPaymentsTitle: 'Pagos de esta reserva',
+        bookingPaymentsEmpty: 'Aún no hay pagos registrados para esta reserva.',
+        paymentTypeDeposit: 'Depósito',
+        paymentTypeBalance: 'Importe restante',
+        paymentTypeExtraService: 'Servicio adicional',
+        paymentTypeAdHoc: 'Pago ad hoc',
+        paymentTypeWarranty: 'Garantía',
+        paymentTypeCashWarranty: 'Garantía en efectivo',
+        paymentTypeCardWarranty: 'Tarjeta de garantía',
+        paymentTypeWarrantyCharge: 'Cargo por daños en garantía',
+        paymentTypeRefund: 'Reembolso',
+        paymentDescriptionDeposit: 'Depósito del 10 % pagado al confirmar la reserva.',
+        paymentDescriptionBalance: 'Importe restante del 90 % para esta reserva.',
+        paymentDescriptionExtraService: 'Servicio adicional pagado para esta reserva.',
+        paymentDescriptionAdHoc: 'Pago adicional vinculado a esta reserva.',
+        paymentDescriptionRefund: 'Reembolso vinculado a esta reserva.',
+        paymentTypePayment: 'Pago',
+        extraServicesTitle: 'Servicios extra',
+        noExtraServiceRequested: 'No hay servicios extra solicitados para esta reserva.',
+        adminExtraServicesManagement: 'Gestión administrativa de servicios extra',
+        proposeExtraServiceTitle: 'Proponer un servicio extra al cliente',
+        serviceFromCatalogLabel: 'Servicio del catálogo Firebase',
+        customServiceOption: 'Servicio personalizado',
+        customDescriptionLabel: 'Descripción personalizada',
+        customDescriptionPlaceholder: 'Bebidas, comida, catering...',
+        customAmountLabel: 'Importe personalizado (€)',
+        sendExtraServicePaymentRequest: 'Enviar solicitud de pago del servicio',
+        payExtraServiceButton: 'Pagar servicio extra',
+        edit: 'Editar',
+        delete: 'Eliminar',
+        completed: 'Completado',
+        selected: 'Seleccionado',
+        inOffer: 'Incluido en la oferta',
+        adhocPaymentTitle: 'Pago ad hoc',
+        adhocPaymentText: 'Puede realizar un pago adicional por servicios extra, propinas, catering, bebidas u otro coste acordado.',
+        descriptionLabel: 'Descripción',
+        amountLabel: 'Importe (€)',
+        adhocDescriptionPlaceholder: 'Propina, catering, bebidas, servicio extra...',
+        payThisAmount: 'Pagar este importe',
+        redirecting: 'Redirigiendo...',
+        paymentRefundBrief: 'Reembolso parcial o total vinculado a esta reserva.',
+        refunded: 'Reembolsado'
       }
     };
 
@@ -1042,11 +1243,13 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
 
   getWorkflowTitle(): string {
     const state = this.getBookingWorkflowState();
-    if (state === 'deposit_required') return '1. ' + this.btext('workflowDepositRequired') + ': ' + this.btext('termsConditions') + ', ' + this.btext('warrantyChoiceTitle') + ' and ' + this.btext('deposit');
-    if (state === 'warranty_choice_required') return '2. Select warranty method';
-    if (state === 'warranty_card_required') return '2. Register warranty card';
-    if (state === 'balance_required') return '3. Pay remaining 90%';
-    return '4. Payment done — damage management';
+    if (state === 'deposit_required') {
+      return '1. ' + this.btext('workflowDepositRequired') + ': ' + this.btext('termsConditions') + ', ' + this.btext('warrantyChoiceTitle') + ' + ' + this.btext('deposit');
+    }
+    if (state === 'warranty_choice_required') return '2. ' + this.btext('workflowSelectWarrantyMethod');
+    if (state === 'warranty_card_required') return '2. ' + this.btext('workflowRegisterWarrantyCard');
+    if (state === 'balance_required') return '3. ' + this.btext('workflowPayRemaining90');
+    return '4. ' + this.btext('workflowPaymentDoneDamageManagement');
   }
 
   isTermsAccepted(): boolean {
@@ -1070,6 +1273,35 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     if (b.warrantyMethod === 'cash' || b.warrantyStatus === 'cash_selected' || b.warrantyCashSelected === true) return 'cash_on_board';
     if (b.warrantyMethod === 'card' || b.warrantyMethod === 'stripe_card' || this.isWarrantyCardRegistered() || w.method === 'card') return 'stripe_card';
     return '';
+  }
+
+  isCashWarrantySelected(): boolean {
+    const choice = String(this.getWarrantyChoice() || '').toLowerCase();
+    const b: any = this.booking || {};
+    const w = b?.payments?.warranty || {};
+    const raw = b?.raw || {};
+    const values = [
+      choice,
+      b.warrantyPaymentChoice,
+      b.warrantyMethod,
+      b.warrantyMode,
+      b.warrantyStatus,
+      w.warrantyPaymentChoice,
+      w.method,
+      w.status,
+      raw.warrantyPaymentChoice,
+      raw.warrantyMethod,
+      raw.warrantyMode,
+      raw.warrantyStatus
+    ].map(v => String(v || '').toLowerCase());
+
+    return values.some(v =>
+      v === 'cash_on_board' ||
+      v === 'cash' ||
+      v === 'cash_selected' ||
+      v === 'warranty_cash' ||
+      v.includes('cash')
+    );
   }
 
   isWarrantySelected(): boolean {
@@ -1931,6 +2163,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
 
   private refreshDerivedPaymentState(): void {
     this.balancePaymentRecordsCache = this.computeBalancePaymentRecords();
+    this.bookingPaymentRecordsCache = this.computeBookingPaymentRecords();
     this.refundablePaymentOptionsCache = this.computeRefundablePaymentOptions();
     if (!this.refundablePaymentOptionsCache.some((option: any) => option.type === this.refundTarget)) {
       this.refundTarget = (this.refundablePaymentOptionsCache[0]?.type || 'deposit') as any;
@@ -1969,6 +2202,211 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     return this.bookingExtraServices.filter((item: any) => item && (item.status === 'paid' || item.paid === true));
   }
 
+  get bookingPaymentRecords(): any[] {
+    // Important: do not recompute this from the template on every Angular change-detection pass.
+    // Recomputing here creates a fresh array each time and can make the booking page appear to hang.
+    return this.bookingPaymentRecordsCache || [];
+  }
+
+  private computeBookingPaymentRecords(): any[] {
+    const booking: any = this.booking || {};
+    const payments: any = booking.payments || {};
+    const rows: any[] = [];
+
+    Object.entries(payments || {}).forEach(([key, rawRecord]: [string, any]) => {
+      if (!rawRecord || typeof rawRecord !== 'object') return;
+      const paymentType = this.normalizePaymentType(rawRecord.paymentType || rawRecord.type || key);
+      if (paymentType === 'warranty' && this.isCashWarrantySelected()) return;
+      rows.push({
+        ...rawRecord,
+        sourceKey: key,
+        paymentType,
+        label: this.getPaymentTypeLabel(paymentType),
+        description: rawRecord.description || rawRecord.title || rawRecord.name || this.getPaymentTypeLabel(paymentType),
+        normalizedAmount: this.getPaymentRecordAmount(rawRecord),
+        statusLabel: this.getPaymentRecordStatus(rawRecord),
+        sortDate: Number(rawRecord.paidAt || rawRecord.updatedAt || rawRecord.modifiedTS || rawRecord.createdTS || 0),
+        raw: rawRecord,
+      });
+    });
+
+    this.bookingExtraServices.forEach((extra: any, index: number) => {
+      if (!extra) return;
+      rows.push({
+        ...extra,
+        sourceKey: extra.paymentId || extra.extraServiceId || extra.id || `extra_${index}`,
+        paymentType: 'extra_service',
+        label: this.getPaymentTypeLabel('extra_service'),
+        description: extra.description || extra.title || extra.name || 'Extra service',
+        normalizedAmount: this.getPaymentRecordAmount(extra),
+        statusLabel: this.getPaymentRecordStatus(extra),
+        sortDate: Number(extra.paidAt || extra.updatedAt || extra.modifiedTS || extra.createdTS || 0),
+        raw: extra,
+      });
+    });
+
+    this.ensureCoreBookingPaymentRows(rows, booking);
+
+    const refunds = Array.isArray(booking.refunds) ? booking.refunds : [];
+    refunds.forEach((refund: any, index: number) => {
+      const amount = Math.abs(Number(refund.amount || refund.amountRefunded || 0));
+      rows.push({
+        ...refund,
+        sourceKey: refund.refundId || refund.id || `refund_${index}`,
+        paymentType: 'refund',
+        label: this.getPaymentTypeLabel('refund'),
+        description: refund.reason || refund.description || 'Refund',
+        normalizedAmount: -Math.abs(this.normalizeStripeAmount(amount, refund)),
+        statusLabel: refund.status || 'refunded',
+        sortDate: Number(refund.refundedAt || refund.updatedAt || refund.modifiedTS || refund.createdTS || 0),
+        raw: refund,
+      });
+    });
+
+    return this.dedupeBookingPaymentRows(rows)
+      .filter((row: any) => this.shouldShowBookingPaymentRow(row))
+      .sort((a: any, b: any) => this.getBookingPaymentTypeOrder(a) - this.getBookingPaymentTypeOrder(b) || (a.sortDate || 0) - (b.sortDate || 0));
+  }
+
+  private ensureCoreBookingPaymentRows(rows: any[], booking: any): void {
+    const status = String(booking?.status || booking?.bookingStatus || booking?.bookingRequestStatus || '').toLowerCase();
+    const depositPaid = booking?.depositPaid === true || String(booking?.depositStatus || '').toLowerCase() === 'paid' || status === 'confirmed';
+    const existingDeposit = rows.find((row: any) => this.normalizePaymentType(row.paymentType) === 'deposit');
+    const depositAmount = this.firstPositiveNumber(booking?.depositAmount, booking?.raw?.depositAmount, booking?.payments?.deposit?.amount, booking?.payments?.deposit?.amount_total);
+
+    if (existingDeposit) {
+      if ((!existingDeposit.normalizedAmount || Number(existingDeposit.normalizedAmount) <= 0) && depositAmount > 0) {
+        existingDeposit.normalizedAmount = this.normalizeStripeAmount(depositAmount, { amount: depositAmount });
+      }
+      if (depositPaid) {
+        existingDeposit.paid = true;
+        existingDeposit.statusLabel = this.btext('paid');
+      }
+      existingDeposit.description = existingDeposit.description || this.btext('paymentDescriptionDeposit');
+    } else if (depositPaid || depositAmount > 0) {
+      rows.push({
+        sourceKey: 'deposit_fallback',
+        paymentType: 'deposit',
+        label: this.getPaymentTypeLabel('deposit'),
+        description: this.btext('paymentDescriptionDeposit'),
+        normalizedAmount: this.normalizeStripeAmount(depositAmount, { amount: depositAmount }),
+        paid: depositPaid,
+        statusLabel: depositPaid ? this.btext('paid') : this.btext('pending'),
+        sortDate: Number(booking?.payments?.deposit?.modifiedTS || booking?.updatedAt || booking?.modifiedTS || booking?.createdTS || 0),
+        raw: booking,
+      });
+    }
+
+    const balancePaid = this.isBalancePaid();
+    const existingBalance = rows.find((row: any) => this.normalizePaymentType(row.paymentType) === 'balance');
+    const balanceAmount = this.firstPositiveNumber(booking?.balanceAmount, booking?.remainingFeesAmount, booking?.remainingOnboardAmount, booking?.payments?.balance?.amount, booking?.payments?.balance?.amount_total);
+    if (existingBalance) {
+      if ((!existingBalance.normalizedAmount || Number(existingBalance.normalizedAmount) <= 0) && balanceAmount > 0) {
+        existingBalance.normalizedAmount = this.normalizeStripeAmount(balanceAmount, { amount: balanceAmount });
+      }
+      existingBalance.description = existingBalance.description || this.btext('paymentDescriptionBalance');
+    } else if (balancePaid || balanceAmount > 0) {
+      rows.push({
+        sourceKey: 'balance_fallback',
+        paymentType: 'balance',
+        label: this.getPaymentTypeLabel('balance'),
+        description: this.btext('paymentDescriptionBalance'),
+        normalizedAmount: this.normalizeStripeAmount(balanceAmount, { amount: balanceAmount }),
+        paid: balancePaid,
+        statusLabel: balancePaid ? this.btext('paid') : this.btext('pending'),
+        sortDate: Number(booking?.payments?.balance?.modifiedTS || booking?.updatedAt || booking?.modifiedTS || booking?.createdTS || 0),
+        raw: booking,
+      });
+    }
+  }
+
+  private firstPositiveNumber(...values: any[]): number {
+    for (const value of values) {
+      const numeric = Number(value || 0);
+      if (Number.isFinite(numeric) && numeric > 0) return numeric;
+    }
+    return 0;
+  }
+
+
+  private shouldShowBookingPaymentRow(row: any): boolean {
+    const type = this.normalizePaymentType(row?.paymentType || row?.type || row?.sourceKey);
+    const amount = Math.abs(Number(row?.normalizedAmount || 0));
+    const description = String(row?.description || row?.label || row?.sourceKey || '').toLowerCase();
+    const looksLikeOptionalPayment =
+      type === 'extra_service' ||
+      type === 'ad_hoc' ||
+      description.includes('extra service') ||
+      description.includes('service supplémentaire') ||
+      description.includes('ad hoc') ||
+      description.includes('adhoc');
+
+    // Never show empty placeholder rows for optional payments. A real extra/ad hoc payment
+    // must have a positive amount; otherwise the page displays confusing 0 € entries.
+    if (looksLikeOptionalPayment && amount <= 0) return false;
+
+    // Hide any non-core zero-amount placeholders that may come from legacy/fallback payment objects.
+    const coreTypes = ['deposit', 'balance', 'warranty', 'warranty_charge', 'refund'];
+    if (amount <= 0 && !coreTypes.includes(type)) return false;
+
+    return true;
+  }
+
+  private getBookingPaymentTypeOrder(row: any): number {
+    const type = this.normalizePaymentType(row?.paymentType || row?.type || row?.sourceKey);
+    if (type === 'deposit') return 10;
+    if (type === 'balance') return 20;
+    if (type === 'extra_service') return 30;
+    if (type === 'ad_hoc') return 40;
+    if (type === 'refund') return 50;
+    return 90;
+  }
+
+  private dedupeBookingPaymentRows(rows: any[]): any[] {
+    const byKey = new Map<string, any>();
+    rows.filter(Boolean).forEach((row: any, index: number) => {
+      const paymentType = this.normalizePaymentType(row.paymentType || row.type || row.sourceKey || 'payment');
+      const paymentId = row.paymentId || row.checkoutSessionId || row.stripeCheckoutSessionId || row.paymentIntentId || row.stripePaymentIntentId || row.setupIntentId || row.id || '';
+      const stableForSingleTypes = ['deposit', 'balance', 'remaining', 'remaining_90', 'warranty', 'warranty_charge'];
+      const key = stableForSingleTypes.includes(paymentType)
+        ? `${paymentType}:${this.booking?.bookingId || 'booking'}`
+        : paymentId
+          ? `${paymentType}:${paymentId}`
+          : `${paymentType}:${row.sourceKey || row.description || index}`;
+      const current = byKey.get(key);
+      if (!current || this.getPaymentRecordPriority(row, index) >= this.getPaymentRecordPriority(current, index)) {
+        byKey.set(key, row);
+      }
+    });
+    return Array.from(byKey.values());
+  }
+
+  private normalizePaymentType(value: any): string {
+    const type = String(value || '').toLowerCase().replace(/[\s-]/g, '_');
+    if (type === 'remaining' || type === 'remaining_90' || type === 'remaining_balance') return 'balance';
+    if (type === 'extras' || type === 'extra' || type === 'extra_services' || type === 'extraservice') return 'extra_service';
+    if (type === 'adhoc' || type === 'adhoc_payment' || type === 'ad_hoc' || type === 'ad_hoc_payment' || type === 'ad__hoc' || type === 'ad_hoc_checkout') return 'ad_hoc';
+    if (type === 'warrantycharge' || type === 'warranty_damage' || type === 'damage') return 'warranty_charge';
+    return type || 'payment';
+  }
+
+  getPaymentTypeLabel(type: string): string {
+    const normalized = this.normalizePaymentType(type);
+    if (normalized === 'deposit') return this.btext('paymentTypeDeposit');
+    if (normalized === 'balance') return this.btext('paymentTypeBalance');
+    if (normalized === 'extra_service') return this.btext('paymentTypeExtraService');
+    if (normalized === 'ad_hoc') return this.btext('paymentTypeAdHoc');
+    if (normalized === 'warranty') return this.isCashWarrantySelected() ? this.btext('paymentTypeCashWarranty') : this.btext('paymentTypeCardWarranty');
+    if (normalized === 'warranty_charge') return this.btext('paymentTypeWarrantyCharge');
+    if (normalized === 'refund') return this.btext('paymentTypeRefund');
+    return this.btext('paymentTypePayment') || 'Payment';
+  }
+
+  isPaymentRowPaid(row: any): boolean {
+    const status = String(row?.statusLabel || row?.status || row?.paymentStatus || '').toLowerCase();
+    return row?.paid === true || status.includes('paid') || status.includes('succeeded') || status.includes('refunded');
+  }
+
   isBalancePaymentRecord(item: any): boolean {
     if (!item) return false;
     const type = String(item.paymentType || item.type || item.kind || '').toLowerCase().replace(/[\s-]/g, '_');
@@ -1985,12 +2423,26 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   }
 
   getPaymentRecordDescription(item: any): string {
-    return item?.description || item?.title || item?.name || 'Remaining balance';
+    if (item?.description || item?.title || item?.name) return item.description || item.title || item.name;
+    const type = this.normalizePaymentType(item?.paymentType || item?.type || item?.sourceKey);
+    if (type === 'deposit') return this.btext('paymentDescriptionDeposit');
+    if (type === 'balance') return this.btext('paymentDescriptionBalance');
+    if (type === 'extra_service') return this.btext('paymentDescriptionExtraService');
+    if (type === 'ad_hoc') return this.btext('paymentDescriptionAdHoc');
+    if (type === 'refund') return this.btext('paymentDescriptionRefund');
+    return this.getPaymentTypeLabel(type);
   }
 
   getPaymentRecordStatus(item: any): string {
-    if (item?.paid === true) return 'paid';
-    return item?.status || item?.paymentStatus || 'pending';
+    const type = this.normalizePaymentType(item?.paymentType || item?.type || item?.sourceKey);
+    if (type === 'refund') return item?.status || this.btext('refunded');
+    if (item?.paid === true) return this.btext('paid');
+    const status = String(item?.status || item?.paymentStatus || '').toLowerCase();
+    if (status.includes('paid') || status.includes('succeeded')) return this.btext('paid');
+    if (status.includes('refund')) return this.btext('refunded');
+    if (status === 'selected') return this.btext('selected');
+    if (status === 'in_offer' || status === 'in offer') return this.btext('inOffer');
+    return item?.status || item?.paymentStatus || this.btext('pending');
   }
 
   getPaymentRecordAmount(item: any): number {

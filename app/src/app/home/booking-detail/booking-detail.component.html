@@ -20,7 +20,7 @@
         <div><strong>{{ btext('owner') }}</strong><span>{{ booking.ownerId || '-' }}</span></div>
       </div>
 
-      <p class="comments" *ngIf="booking.comments">{{ booking.comments }}</p>
+      <p class="comments" *ngIf="getVisibleBookingComments()">{{ getVisibleBookingComments() }}</p>
 
 
       <section class="admin-proposal-finalization-card" *ngIf="isRequestAwaitingAdminProposal()">
@@ -336,86 +336,90 @@
         </div>
 
 
-        <div class="workflow-panel extra-services-panel" *ngIf="booking">
-          <h3>Remaining balance payments</h3>
+        <div class="workflow-panel booking-payments-panel" *ngIf="booking">
+          <h3>{{ btext('bookingPaymentsTitle') }}</h3>
 
-          <div *ngIf="bookingBalancePaymentRecords.length === 0" class="muted">
-            No remaining balance payment recorded for this booking.
+          <div *ngIf="bookingPaymentRecords.length === 0" class="muted">
+            {{ btext('bookingPaymentsEmpty') }}
           </div>
 
-          <div class="extra-service-row" *ngFor="let payment of bookingBalancePaymentRecords">
-            <div class="extra-service-display">
-              <strong>{{ getPaymentRecordDescription(payment) }}</strong>
-              <span>{{ formatPaymentAmount(getPaymentRecordAmount(payment)) }} · {{ getPaymentRecordStatus(payment) }}</span>
+          <div class="booking-payment-row" *ngFor="let payment of bookingPaymentRecords">
+            <div class="booking-payment-main">
+              <strong>{{ payment.label || getPaymentTypeLabel(payment.paymentType) }}</strong>
+              <span>{{ payment.description || getPaymentRecordDescription(payment) }}</span>
+            </div>
+            <div class="booking-payment-meta">
+              <strong>{{ formatPaymentAmount(payment.normalizedAmount) }}</strong>
+              <span [class.paid-badge-inline]="isPaymentRowPaid(payment)">{{ payment.statusLabel || getPaymentRecordStatus(payment) }}</span>
             </div>
           </div>
         </div>
 
         <div class="workflow-panel extra-services-panel" *ngIf="booking">
-          <h3>Extra services</h3>
+          <h3>{{ btext('extraServicesTitle') }}</h3>
 
           <div *ngIf="bookingExtraServices.length === 0" class="muted">
-            No extra service requested for this booking.
+            {{ btext('noExtraServiceRequested') }}
           </div>
 
           <div class="admin-extra-service-actions-title" *ngIf="isAdmin && bookingExtraServices.length">
-            Admin extra services management
+            {{ btext('adminExtraServicesManagement') }}
           </div>
 
           <div class="extra-service-row" *ngFor="let extra of bookingExtraServices; let i = index">
             <div class="extra-service-display" *ngIf="!isEditingExtraService(extra, i)">
               <strong>{{ extra.description || extra.title || extra.name }}</strong>
-              <span>{{ formatPaymentAmount(extra.amount || extra.price || 0, extra) }} · {{ extra.status === 'paid' || extra.paid ? 'paid' : 'pending' }}</span>
+              <span>{{ formatPaymentAmount(extra.amount || extra.price || 0, extra) }} · {{ extra.status === 'paid' || extra.paid ? btext('paid') : btext('pending') }}</span>
             </div>
 
             <div class="extra-service-edit" *ngIf="isAdmin && isEditingExtraService(extra, i)">
               <label>
-                Description
+                {{ btext('descriptionLabel') }}
                 <input type="text" [(ngModel)]="extraServiceEditDescription" />
               </label>
               <label>
-                Amount (€)
+                {{ btext('amountLabel') }}
                 <input type="number" min="1" step="0.01" [(ngModel)]="extraServiceEditAmount" />
               </label>
               <label>
-                Status
+                {{ btext('status') }}
                 <select [(ngModel)]="extraServiceEditStatus">
-                  <option value="pending">Pending</option>
-                  <option value="paid">Paid</option>
-                  <option value="cancelled">Cancelled</option>
+                  <option value="pending">{{ btext('pending') }}</option>
+                  <option value="paid">{{ btext('paid') }}</option>
+                  <option value="cancelled">{{ btext('cancel') }}</option>
                 </select>
               </label>
             </div>
 
             <div class="extra-service-actions">
               <button class="btn btn-primary" type="button" *ngIf="!isAdmin && canCustomerPayExtraService(extra)" (click)="payExtraService(extra)">
-                Pay extra service
+                {{ btext('payExtraServiceButton') }}
               </button>
 
               <ng-container *ngIf="isAdmin">
                 <button class="btn btn-secondary admin-extra-btn" type="button" *ngIf="!isEditingExtraService(extra, i)" (click)="startEditExtraService(extra, i)">
-                  Edit
+                  {{ btext('edit') }}
                 </button>
                 <button class="btn btn-primary admin-extra-btn" type="button" *ngIf="isEditingExtraService(extra, i)" [disabled]="savingExtraService" (click)="saveExtraServiceEdit(extra, i)">
-                  Save
+                  {{ btext('saveUpdate') }}
                 </button>
                 <button class="btn btn-secondary" type="button" *ngIf="isEditingExtraService(extra, i)" (click)="cancelEditExtraService()">
-                  Cancel
+                  {{ btext('cancel') }}
                 </button>
                 <button class="btn btn-danger admin-extra-btn" type="button" [disabled]="savingExtraService" (click)="deleteExtraService(extra, i)">
-                  Delete
+                  {{ btext('delete') }}
                 </button>
               </ng-container>
             </div>
           </div>
 
           <div class="admin-extra-service-form" *ngIf="canAdminCreateExtraService()">
-            <h4>Propose an extra service to the customer</h4>
+            <h4>{{ btext('proposeExtraServiceTitle') }}</h4>
 
             <label>
-              Service from Firebase catalog
+              {{ btext('serviceFromCatalogLabel') }}
               <select [(ngModel)]="selectedExtraServiceId">
-                <option value="">Custom service</option>
+                <option value="">{{ btext('customServiceOption') }}</option>
                 <option *ngFor="let service of extraServicesCatalog" [value]="service.id || service.slug">
                   {{ service.title || service.name || service.description }} — €{{ service.amount || service.price || 0 }}
                 </option>
@@ -423,17 +427,17 @@
             </label>
 
             <label>
-              Custom description
-              <input type="text" [(ngModel)]="customExtraServiceDescription" placeholder="Drinks, food, catering..." />
+              {{ btext('customDescriptionLabel') }}
+              <input type="text" [(ngModel)]="customExtraServiceDescription" placeholder="{{ btext('customDescriptionPlaceholder') }}" />
             </label>
 
             <label>
-              Custom amount (€)
+              {{ btext('customAmountLabel') }}
               <input type="number" min="1" step="0.01" [(ngModel)]="customExtraServiceAmount" />
             </label>
 
             <button class="btn btn-secondary" type="button" [disabled]="savingExtraService" (click)="createExtraServiceRequest()">
-              {{ savingExtraService ? 'Saving...' : 'Send extra service payment request' }}
+              {{ savingExtraService ? btext('saving') : btext('sendExtraServicePaymentRequest') }}
             </button>
 
             <p class="success" *ngIf="extraServiceMessage">{{ extraServiceMessage }}</p>
@@ -443,21 +447,21 @@
 
 
         <div class="workflow-panel adhoc-payment-panel" *ngIf="canCustomerCreateAdhocPayment()">
-          <h3>Ad hoc payment</h3>
-          <p>You can make an additional payment for extra services, tips, catering, drinks or any other agreed cost.</p>
+          <h3>{{ btext('adhocPaymentTitle') }}</h3>
+          <p>{{ btext('adhocPaymentText') }}</p>
 
           <label>
-            Description
-            <input type="text" [(ngModel)]="adhocPaymentDescription" placeholder="Tip, catering, drinks, extra service..." />
+            {{ btext('descriptionLabel') }}
+            <input type="text" [(ngModel)]="adhocPaymentDescription" placeholder="{{ btext('adhocDescriptionPlaceholder') }}" />
           </label>
 
           <label>
-            Amount (€)
+            {{ btext('amountLabel') }}
             <input type="number" min="1" step="0.01" [(ngModel)]="adhocPaymentAmount" />
           </label>
 
           <button class="btn btn-primary" type="button" [disabled]="adhocPaymentLoading" (click)="payAdhocBookingAmount()">
-            {{ adhocPaymentLoading ? 'Redirecting...' : 'Pay this amount' }}
+            {{ adhocPaymentLoading ? btext('redirecting') : btext('payThisAmount') }}
           </button>
 
           <p class="success" *ngIf="adhocPaymentMessage">{{ adhocPaymentMessage }}</p>
