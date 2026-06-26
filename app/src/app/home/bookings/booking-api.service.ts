@@ -186,32 +186,55 @@ export class BookingApiService {
   async createBooking(input: Partial<AlegriaBooking>): Promise<AlegriaBooking> {
     const now = Date.now();
     const bookingId = input.bookingId || `booking_${now}_${Math.random().toString(36).slice(2, 8)}`;
-    const totalPrice = Number(input.totalPrice || 0);
-    const depositAmount = Number(input.depositAmount || Math.round(totalPrice * 0.10 * 100) / 100);
-    const balanceAmount = Number(input.balanceAmount || Math.round((totalPrice - depositAmount) * 100) / 100);
+    const anyInput: any = input || {};
+    const proposalBoatPrice = Number(anyInput.proposalBoatPrice ?? anyInput.estimatedBoatPrice ?? anyInput.boatPrice ?? 0) || 0;
+    const proposalSkipperPrice = Number(anyInput.proposalSkipperPrice ?? anyInput.estimatedSkipperPrice ?? anyInput.skipperCashAmount ?? 0) || 0;
+    const proposalExtraServicesPrice = Number(anyInput.proposalExtraServicesPrice ?? anyInput.estimatedExtraGuestsAmount ?? anyInput.estimatedOptionsPrice ?? anyInput.extraServicesPrice ?? 0) || 0;
+    const calculatedTotal = proposalBoatPrice + proposalSkipperPrice + proposalExtraServicesPrice;
+    const totalPrice = Number(anyInput.totalPrice ?? anyInput.totalAmount ?? anyInput.estimatedPrice ?? calculatedTotal ?? 0) || calculatedTotal || 0;
+    const skipperCashAmount = Number(anyInput.skipperCashAmount ?? proposalSkipperPrice ?? 0) || 0;
+    const onlinePayableAmount = Number(anyInput.onlinePayableAmount ?? anyInput.appPayableAmount ?? Math.max(0, totalPrice - skipperCashAmount)) || 0;
+    const explicitDeposit = Number(anyInput.depositAmount ?? 0) || 0;
+    const depositAmount = explicitDeposit > 0 ? explicitDeposit : Math.round(onlinePayableAmount * 0.10 * 100) / 100;
+    const explicitBalance = Number(anyInput.balanceAmount ?? anyInput.remainingFeesAmount ?? anyInput.remainingOnboardAmount ?? 0) || 0;
+    const balanceAmount = explicitBalance > 0 ? explicitBalance : Math.max(0, Math.round((onlinePayableAmount - depositAmount) * 100) / 100);
+    const isConfirmed = anyInput.bookingStatus === true || String(anyInput.bookingStatus || anyInput.status || '').toLowerCase() === 'confirmed';
+    const isDepositPaid = anyInput.depositPaid === true || anyInput.depositStatus === true || anyInput.depositStatus === 'paid' || anyInput.paymentStatus === true || anyInput.paymentStatus === 'paid';
 
     const booking: AlegriaBooking = {
       ...(input as any),
       bookingId,
-      customerName: input.customerName || '',
-      email: input.email || '',
+      customerName: input.customerName || anyInput.customerName || '',
+      email: input.email || anyInput.customerEmail || '',
       phone: input.phone || input.customerPhone || '',
       outingType: input.outingType || 'Online booking',
       outingDate: input.outingDate || '',
-      departureTime: input.departureTime || (input as any).timePeriod || '',
-      arrivalTime: input.arrivalTime || '',
+      departureTime: input.departureTime || anyInput.startTime || anyInput.timePeriod || '',
+      arrivalTime: input.arrivalTime || anyInput.endTime || '',
       passengers: Number(input.passengers || 0),
       totalPrice,
+      totalAmount: totalPrice,
+      onlinePayableAmount,
+      appPayableAmount: onlinePayableAmount,
+      skipperCashAmount,
+      proposalBoatPrice: anyInput.proposalBoatPrice ?? proposalBoatPrice,
+      proposalSkipperPrice: anyInput.proposalSkipperPrice ?? proposalSkipperPrice,
+      proposalExtraServicesPrice: anyInput.proposalExtraServicesPrice ?? proposalExtraServicesPrice,
       depositAmount,
       balanceAmount,
+      remainingFeesAmount: balanceAmount,
+      remainingOnboardAmount: balanceAmount,
       warrantyAmount: Number(input.warrantyAmount || 500),
-      bookingStatus: false,
-      depositStatus: false,
-      depositPaid: false,
-      paymentStatus: false,
+      bookingStatus: anyInput.bookingStatus ?? (isConfirmed ? 'confirmed' : 'not_confirmed'),
+      status: anyInput.status || (isConfirmed ? 'confirmed' : 'not_confirmed'),
+      bookingRequestStatus: anyInput.bookingRequestStatus || (isConfirmed ? 'confirmed' : 'not_confirmed'),
+      depositStatus: anyInput.depositStatus ?? (isDepositPaid ? 'paid' : 'pending'),
+      depositPaid: isDepositPaid,
+      paymentStatus: anyInput.paymentStatus ?? (isDepositPaid ? 'paid' : 'pending'),
+      balancePaid: anyInput.balancePaid === true || anyInput.balanceStatus === 'paid',
       warrantyStatus: input.warrantyStatus || false,
       ownerId: input.ownerId || 'alegria',
-      createdTS: now,
+      createdTS: anyInput.createdTS || now,
       modifiedTS: now,
     } as any;
 
@@ -341,6 +364,38 @@ export class BookingApiService {
     ], payload);
   }
 
+
+
+
+  completeBalancePayment(payload: {
+    bookingId: string;
+    ownerId?: string;
+    checkoutSessionId?: string;
+    sessionId?: string;
+  }): Observable<any> {
+    return this.postFirstAvailable([
+      `${this.baseUrl}/pay/outing-balance-complete`,
+      `${this.baseUrl}/pay/outing-remaining-complete`,
+      `${this.baseUrl}/api/payments/complete-balance-payment`,
+      `${this.baseUrl}/api/payments/complete-remaining-payment`,
+      `${this.baseUrl}/stripe/balance-complete`,
+      `${this.baseUrl}/stripe/remaining-complete`,
+    ], payload);
+  }
+
+  completeWarrantySetup(payload: {
+    bookingId: string;
+    ownerId?: string;
+    checkoutSessionId?: string;
+    sessionId?: string;
+  }): Observable<any> {
+    return this.postFirstAvailable([
+      `${this.baseUrl}/pay/outing-warranty-complete`,
+      `${this.baseUrl}/api/payments/complete-warranty-setup`,
+      `${this.baseUrl}/stripe/warranty-complete`,
+    ], payload);
+  }
+
   getPaymentStatus(bookingId: string): Observable<any> {
     const endpoints = [
       `${this.baseUrl}/pay/outing-payment-status?bookingId=${encodeURIComponent(bookingId)}`,
@@ -451,7 +506,9 @@ export class BookingApiService {
     ], {
       ...payload,
       amount,
+      extraServiceAmount: amount,
       depositAmount: amount,
+      amountUnit: 'eur',
       paymentType: 'extra_service',
       checkoutType: 'extra_service',
       currency: payload.currency || 'eur'
@@ -487,7 +544,9 @@ export class BookingApiService {
       adhocPaymentId,
       extraServiceId: adhocPaymentId,
       amount: Number(payload.amount || 0),
+      adhocAmount: Number(payload.amount || 0),
       depositAmount: Number(payload.amount || 0),
+      amountUnit: 'eur',
       paymentType: 'ad_hoc',
       checkoutType: 'ad_hoc',
       currency: payload.currency || 'eur'
@@ -579,16 +638,28 @@ export class BookingApiService {
   }
 
 
+  private notifyBookingUpdated(bookingId: string, payload: Partial<AlegriaBooking>): void {
+    if (!bookingId) return;
+    const safePayload: any = { ...(payload || {}) };
+    delete safePayload.raw;
+    this.http.post<any>(`${this.baseUrl}/api/bookings/${encodeURIComponent(bookingId)}/notify-updated`, { payload: safePayload }).subscribe({
+      next: () => {},
+      error: (error) => console.warn('[BookingApi] booking update email notification failed', error?.message || error)
+    });
+  }
+
   async updateBooking(bookingId: string, payload: Partial<AlegriaBooking>): Promise<void> {
     const store: any = this.storeDb as any;
     const util: any = this.utilsSvc as any;
     const existing = await this.getBookingFromFirebase(bookingId).catch(() => undefined);
     const merged = { ...(existing?.raw || existing || {}), ...payload, bookingId, modifiedTS: Date.now() };
+    const notify = () => this.notifyBookingUpdated(bookingId, payload);
 
     // Prefer real RTDB handles when available.
     for (const db of this.getRealtimeDatabaseCandidates(store, util)) {
       try {
         await db.ref(`${this.collectionName}/${bookingId}`).set(merged);
+        notify();
         return;
       } catch {}
     }
@@ -597,6 +668,7 @@ export class BookingApiService {
     for (const baseUrl of this.restDatabaseUrls) {
       try {
         await this.http.put(`${baseUrl.replace(/\/+$/, '')}/${this.collectionName}/${bookingId}.json`, merged).toPromise();
+        notify();
         return;
       } catch {}
     }
@@ -607,15 +679,18 @@ export class BookingApiService {
 
     try {
       await store.updateObject(this.collectionName, merged, bookingId);
+      notify();
       return;
     } catch {}
 
     try {
       await store.updateObject(this.collectionName, bookingId, merged);
+      notify();
       return;
     } catch {}
 
     await store.updateObject(util.backendFBstoreId, util.mdb, this.collectionName, merged, bookingId);
+    notify();
   }
 
   private get baseUrl(): string {

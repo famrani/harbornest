@@ -273,23 +273,32 @@ export class BookingsComponent implements OnInit, OnDestroy {
   }
 
   isBookingCancelledByDate(booking: AlegriaBooking): boolean {
+    const anyBooking: any = booking || {};
+    const bookingStatus = anyBooking.bookingStatus;
+    const status = String(anyBooking.status || '').toLowerCase().trim();
+    const requestStatus = String(anyBooking.bookingRequestStatus || '').toLowerCase().trim();
+
+    // Legacy Firebase records use bookingStatus: true to mean confirmed/executed.
+    // A past date must never turn those bookings into cancelled bookings.
+    if (bookingStatus === true || bookingStatus === 'true' || status === 'confirmed' || requestStatus === 'confirmed') return false;
+    if (this.isBalancePaid(booking)) return false;
     return this.isBookingDatePastOrToday(booking) && !this.isBalancePaid(booking);
   }
 
   isCancelledBooking(booking: AlegriaBooking): boolean {
     const anyBooking: any = booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
-    return rawStatus === false || rawStatus === 'false' || rawStatus === 'cancelled' || rawStatus === 'canceled' || anyBooking.cancelled === true || anyBooking.canceled === true;
+    const normalizedStatus = String(rawStatus).toLowerCase().trim();
+    return rawStatus === false || normalizedStatus === 'false' || normalizedStatus === 'cancelled' || normalizedStatus === 'canceled' || anyBooking.cancelled === true || anyBooking.canceled === true;
   }
 
   getDerivedBookingStatus(booking: AlegriaBooking): string {
     const anyBooking: any = booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
 
-    if (this.isBookingCancelledByDate(booking) || this.isCancelledBooking(booking)) return 'cancelled';
-
-    // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
+    // Read Firebase status first. bookingStatus: true means confirmed/executed in legacy bnBookings.
     if (this.isBalancePaid(booking)) return 'payment_done';
+    if (this.isCancelledBooking(booking)) return 'cancelled';
 
     if (
       rawStatus === 'payment_done' ||
@@ -503,7 +512,18 @@ export class BookingsComponent implements OnInit, OnDestroy {
     const balancePayment = anyBooking?.payments?.balance || {};
     const remainingPayment = anyBooking?.payments?.remaining || {};
 
-    return this.isBalanceCompletedStatusValue(anyBooking.paymentStatus) ||
+    const topLevelPaymentStatus = String(anyBooking.paymentStatus || '').toLowerCase().trim();
+    const topLevelMeansBalancePaid = anyBooking.paymentStatus === true || [
+      'balance_paid',
+      'remaining_paid',
+      'full_payment_done',
+      'balance_payment_done',
+      'remaining_payment_done'
+    ].includes(topLevelPaymentStatus);
+
+    // Do not treat generic paymentStatus='paid' as the 90% balance.
+    // In older bookings it only means the 10% deposit has been paid.
+    return topLevelMeansBalancePaid ||
       this.isBalanceCompletedStatusValue(anyBooking.balancePaid) ||
       this.isBalanceCompletedStatusValue(anyBooking.balanceStatus) ||
       this.isBalanceCompletedStatusValue(anyBooking.balancePaymentStatus) ||

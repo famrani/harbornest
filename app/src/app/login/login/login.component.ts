@@ -17,6 +17,7 @@ declare var $: any;
 export class LoginComponent {
   loginForm: FormGroup;
   sending = false;
+  showPassword = false;
 
   // modal
   showErrorModal = false;
@@ -44,17 +45,24 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       email: [localStorage.getItem('rememberEmail') || '', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-      rememberme: [!!localStorage.getItem('rememberEmail')],
+      password: [localStorage.getItem('rememberPassword') || '', [Validators.required]],
+      rememberme: [localStorage.getItem('rememberLogin') === 'true' || !!localStorage.getItem('rememberEmail')],
     });
 
-    this.redirectTo = this.route.snapshot.queryParamMap.get('redirect');
+    this.redirectTo = this.route.snapshot.queryParamMap.get('returnUrl')
+      || this.route.snapshot.queryParamMap.get('redirect')
+      || localStorage.getItem('redirectAfterLogin')
+      || sessionStorage.getItem('redirectAfterLogin');
     if (this.route.snapshot.queryParamMap.get('created') === 'true') {
       this.accountCreatedMessage = 'Account created successfully. Please check your inbox and your Junk/Spam folder for the password setup/reset email before signing in.';
     }
   }
 
   get f() { return this.loginForm.controls; }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   private openError(message: string, title = 'Authentication failed') {
     this.errorModalTitle = title;
@@ -65,6 +73,10 @@ export class LoginComponent {
 
   private postLoginRedirect() {
     const target = this.redirectTo && this.redirectTo.startsWith('/') ? this.redirectTo : '/';
+    try {
+      localStorage.removeItem('redirectAfterLogin');
+      sessionStorage.removeItem('redirectAfterLogin');
+    } catch {}
     this.router.navigateByUrl(target);
   }
 
@@ -75,11 +87,19 @@ export class LoginComponent {
     try {
       const v = this.loginForm.value;
 
-      // remember me
-      if (v.remember) {
-        localStorage.setItem('rememberEmail', v.email);
+      const rememberMe = !!v.rememberme;
+
+      // Remember me: keep credentials available for the next visit when selected.
+      // This is intentionally explicit because the user wants the password restored too.
+      if (rememberMe) {
+        localStorage.setItem('rememberLogin', 'true');
+        localStorage.setItem('rememberEmail', v.email || '');
+        localStorage.setItem('rememberPassword', v.password || '');
       } else {
+        localStorage.removeItem('rememberLogin');
         localStorage.removeItem('rememberEmail');
+        localStorage.removeItem('rememberPassword');
+        localStorage.removeItem('loggedUser');
       }
 
       [status, user] = await this.loginSvc.localUtilsSvc.processLogin(v.email, v.password, undefined) as any;
@@ -87,11 +107,11 @@ export class LoginComponent {
       this.loginSvc.mainSvc.setLoggedUser(user);
       try {
         sessionStorage.setItem('loggedUser', JSON.stringify(user));
-        localStorage.setItem('loggedUser', JSON.stringify(user));
-      } catch {}
-      try {
-        sessionStorage.setItem('loggedUser', JSON.stringify(user));
-        localStorage.setItem('loggedUser', JSON.stringify(user));
+        if (rememberMe) {
+          localStorage.setItem('loggedUser', JSON.stringify(user));
+        } else {
+          localStorage.removeItem('loggedUser');
+        }
       } catch {}
 
 

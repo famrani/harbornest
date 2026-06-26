@@ -858,3 +858,194 @@ h1 { color: #08263a; margin: 8px 0; }
     text-align: left;
   }
 }
+
+.booking-overview-v2,
+.financial-summary-v2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.overview-card,
+.financial-row {
+  background: #f8f5ef;
+  border: 1px solid rgba(8,38,58,.06);
+  border-radius: 18px;
+  padding: 15px;
+}
+
+.overview-card {
+  display: grid;
+  gap: 5px;
+}
+
+.overview-card.outing-card {
+  grid-column: span 2;
+}
+
+.overview-card.compact {
+  align-content: start;
+}
+
+.overview-label {
+  color: #8a652d;
+  font-size: .78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.overview-card strong,
+.financial-row strong {
+  color: #08263a;
+  font-size: 1rem;
+}
+
+.overview-card span,
+.financial-row span {
+  color: #516070;
+}
+
+.financial-summary-v2 {
+  grid-template-columns: 1fr;
+  background: #fff;
+  border: 1px solid rgba(8,38,58,.08);
+  border-radius: 22px;
+  padding: 16px;
+}
+
+.financial-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.financial-row > div:first-child {
+  display: grid;
+  gap: 4px;
+}
+
+.total-row strong {
+  font-size: 1.35rem;
+}
+
+.financial-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 96px;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: #efe7da;
+  color: #8a652d;
+  font-weight: 800;
+  font-size: .82rem;
+  text-align: center;
+}
+
+.financial-status.is-paid {
+  background: rgba(4,120,87,.12);
+  color: #047857;
+}
+
+.balance-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.booking-progress-v2 {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.progress-step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 2px 12px;
+  align-items: center;
+  background: #f8f5ef;
+  border: 1px solid rgba(8,38,58,.06);
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.progress-step .progress-dot {
+  grid-row: span 2;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e7dfd2;
+  color: #8a652d;
+  font-weight: 900;
+}
+
+.progress-step.done .progress-dot {
+  background: rgba(4,120,87,.14);
+  color: #047857;
+}
+
+.progress-step strong {
+  color: #08263a;
+}
+
+.progress-step small {
+  color: #516070;
+}
+
+.customer-payment-hub .client-payment-row:empty {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .overview-card.outing-card { grid-column: span 1; }
+  .financial-row { align-items: flex-start; flex-direction: column; }
+  .balance-actions { justify-content: flex-start; }
+}
+
+.skipper-payment-panel {
+  border: 1px solid rgba(181, 139, 74, .24);
+  background: #fffaf3;
+}
+
+.skipper-payment-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: .85rem;
+  margin: 1rem 0;
+}
+
+.skipper-payment-summary > div {
+  background: #fff;
+  border: 1px solid rgba(8,38,58,.08);
+  border-radius: 14px;
+  padding: .85rem;
+  display: grid;
+  gap: .25rem;
+}
+
+.skipper-payment-panel label {
+  display: grid;
+  gap: .4rem;
+  margin: .75rem 0;
+  color: #08263a;
+  font-weight: 700;
+}
+
+.skipper-payment-panel select,
+.skipper-payment-panel textarea {
+  width: 100%;
+  border: 1px solid rgba(8,38,58,.16);
+  border-radius: 12px;
+  padding: .78rem .9rem;
+  font: inherit;
+  background: #fff;
+}

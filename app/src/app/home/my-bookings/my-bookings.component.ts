@@ -294,11 +294,12 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
   isCancelledBooking(booking: AlegriaBooking): boolean {
     const anyBooking: any = booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
+    const normalizedStatus = String(rawStatus).toLowerCase().trim();
     return rawStatus === false ||
-      rawStatus === 'false' ||
-      rawStatus === 'cancelled' ||
-      rawStatus === 'canceled' ||
-      rawStatus === 'deleted' ||
+      normalizedStatus === 'false' ||
+      normalizedStatus === 'cancelled' ||
+      normalizedStatus === 'canceled' ||
+      normalizedStatus === 'deleted' ||
       anyBooking.cancelled === true ||
       anyBooking.canceled === true;
   }
@@ -335,6 +336,15 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
   }
 
   isBookingCancelledByDate(booking: AlegriaBooking): boolean {
+    const anyBooking: any = booking || {};
+    const bookingStatus = anyBooking.bookingStatus;
+    const status = String(anyBooking.status || '').toLowerCase().trim();
+    const requestStatus = String(anyBooking.bookingRequestStatus || '').toLowerCase().trim();
+
+    // Legacy Firebase records use bookingStatus: true to mean confirmed/executed.
+    // A past date must never turn those bookings into cancelled bookings.
+    if (bookingStatus === true || bookingStatus === 'true' || status === 'confirmed' || requestStatus === 'confirmed') return false;
+    if (this.isBalancePaid(booking)) return false;
     return this.isBookingDatePastOrToday(booking) && !this.isBalancePaid(booking);
   }
 
@@ -421,7 +431,18 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
     const balancePayment = anyBooking?.payments?.balance || {};
     const remainingPayment = anyBooking?.payments?.remaining || {};
 
-    return this.isBalanceCompletedStatusValue(anyBooking.paymentStatus) ||
+    const topLevelPaymentStatus = String(anyBooking.paymentStatus || '').toLowerCase().trim();
+    const topLevelMeansBalancePaid = anyBooking.paymentStatus === true || [
+      'balance_paid',
+      'remaining_paid',
+      'full_payment_done',
+      'balance_payment_done',
+      'remaining_payment_done'
+    ].includes(topLevelPaymentStatus);
+
+    // Do not treat generic paymentStatus='paid' as the 90% balance.
+    // In older bookings it only means the 10% deposit has been paid.
+    return topLevelMeansBalancePaid ||
       this.isBalanceCompletedStatusValue(anyBooking.balancePaid) ||
       this.isBalanceCompletedStatusValue(anyBooking.balanceStatus) ||
       this.isBalanceCompletedStatusValue(anyBooking.balancePaymentStatus) ||
@@ -530,10 +551,50 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
     this.router.navigate(['/bookings', booking.bookingId]);
   }
 
-  payBooking(booking: AlegriaBooking): void {
-    if (!this.shouldShowPaymentButton(booking)) return;
+  payBooking(booking: AlegriaBooking, event?: Event): void {
+    event?.stopPropagation();
+    if (!this.shouldShowPaymentButton(booking) || !booking?.bookingId) return;
 
-    const mode = this.canPayDeposit(booking) ? 'deposit' : 'balance';
-    this.router.navigate(['/payment', booking.bookingId], { queryParams: { mode } });
+    if (this.canPayDeposit(booking)) {
+      this.router.navigate(['/payment', booking.bookingId], { queryParams: { mode: 'deposit' } });
+      return;
+    }
+
+    if (!this.canPayBalance(booking)) return;
+
+    const bookingId = booking.bookingId;
+    const bookingUrl = `${window.location.origin}/bookings/${encodeURIComponent(bookingId)}`;
+    const balanceAmount = this.getBalanceAmount(booking);
+    const payload = {
+      bookingId,
+      proposalId: bookingId,
+      ownerId: (booking as any).ownerId || 'alegria',
+      amount: balanceAmount,
+      balanceAmount,
+      totalAmount: Number((booking as any).onlinePayableAmount || booking.totalPrice || 0),
+      currency: 'eur',
+      paymentType: 'balance',
+      customerEmail: booking.email || '',
+      customerName: booking.customerName || '',
+      customerPhone: (booking as any).customerPhone || booking.phone || '',
+      outingType: booking.outingType || '',
+      outingDate: booking.outingDate || '',
+      successUrl: `${bookingUrl}?payment=success&bookingId=${encodeURIComponent(bookingId)}&paymentType=balance`,
+      cancelUrl: `${bookingUrl}?payment=cancelled&bookingId=${encodeURIComponent(bookingId)}&paymentType=balance`,
+    };
+
+    this.bookingApi.createBalanceCheckout(payload).subscribe({
+      next: (response: any) => {
+        const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
+        if (url) {
+          window.location.href = url;
+          return;
+        }
+        window.alert('Unable to open Stripe remaining balance checkout.');
+      },
+      error: (error: any) => {
+        window.alert(error?.error?.error || error?.error?.message || error?.message || 'Unable to create remaining balance checkout.');
+      }
+    });
   }
 }

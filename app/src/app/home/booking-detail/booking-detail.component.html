@@ -7,18 +7,72 @@
       <h1>{{ booking.outingType }}</h1>
       <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>
 
-      <div class="detail-grid">
-        <div><strong>{{ btext('customer') }}</strong><span>{{ booking.customerName }}</span></div>
-        <div><strong>{{ btext('email') }}</strong><span>{{ booking.email }}</span></div>
-        <div><strong>{{ btext('phone') }}</strong><span>{{ booking.phone || '-' }}</span></div>
-        <div><strong>{{ btext('passengers') }}</strong><span>{{ booking.passengers || '-' }}</span></div>
-        <div><strong>{{ btext('totalPrice') }}</strong><span>€{{ booking.totalPrice || 0 }}</span></div>
-        <div><strong>{{ btext('deposit') }}</strong><span>€{{ getDepositAmount() }} · {{ getCompletedLabel(isDepositPaid()) }}</span></div>
-        <div><strong>{{ btext('remaining') }}</strong><span>€{{ getBalanceAmount() }} · {{ getCompletedLabel(isBalancePaid()) }}</span></div>
-        <div><strong>{{ btext('warranty') }}</strong><span>{{ getWarrantyModeLabel() }} · {{ getWarrantyCardLabel() }}</span></div>
-        <div><strong>{{ btext('status') }}</strong><button class="status-pill status-clickable" type="button" (click)="openStatusModal()">{{ getStatusLabel() }}</button></div>
-        <div><strong>{{ btext('owner') }}</strong><span>{{ booking.ownerId || '-' }}</span></div>
-      </div>
+      <section class="booking-overview-v2">
+        <div class="overview-card outing-card">
+          <span class="overview-label">{{ btext('bookingDetail') }}</span>
+          <strong>{{ booking.outingType }}</strong>
+          <span>{{ booking.outingDate }} · {{ booking.departureTime }} - {{ booking.arrivalTime }}</span>
+        </div>
+        <div class="overview-card">
+          <span class="overview-label">{{ btext('customer') }}</span>
+          <strong>{{ booking.customerName || '-' }}</strong>
+          <span>{{ booking.email || '-' }}</span>
+          <span>{{ booking.phone || '-' }}</span>
+        </div>
+        <div class="overview-card compact">
+          <span class="overview-label">{{ btext('passengers') }}</span>
+          <strong>{{ booking.passengers || '-' }}</strong>
+        </div>
+        <div class="overview-card compact">
+          <span class="overview-label">{{ btext('status') }}</span>
+          <button class="status-pill status-clickable" type="button" (click)="openStatusModal()">{{ getStatusLabel() }}</button>
+        </div>
+      </section>
+
+      <section class="financial-summary-v2">
+        <div class="financial-row total-row">
+          <div>
+            <span class="overview-label">{{ btext('totalPrice') }}</span>
+            <strong>€{{ booking.totalPrice || 0 }}</strong>
+          </div>
+        </div>
+        <div class="financial-row">
+          <div>
+            <span class="overview-label">{{ btext('deposit') }}</span>
+            <strong>€{{ getDepositAmount() }}</strong>
+          </div>
+          <span class="financial-status" [class.is-paid]="isDepositPaid()">{{ getCompletedLabel(isDepositPaid()) }}</span>
+        </div>
+        <div class="financial-row balance-row">
+          <div>
+            <span class="overview-label">{{ btext('remaining') }}</span>
+            <strong>€{{ getBalanceAmount() }}</strong>
+          </div>
+          <div class="balance-actions">
+            <span class="financial-status" [class.is-paid]="isBalancePaid()">{{ getCompletedLabel(isBalancePaid()) }}</span>
+            <button class="btn btn-primary" type="button" *ngIf="!isAdmin && canCustomerSeeBalancePayment()" [disabled]="!canCustomerPayBalance()" (click)="payBalance()">
+              {{ getCustomerBalanceButtonLabel() }}
+            </button>
+            <button class="btn btn-primary" type="button" *ngIf="isAdmin && canAdminTriggerBalancePayment()" [disabled]="adminBalanceCheckoutLoading" (click)="triggerCustomerBalanceStripeCheckout()">
+              {{ adminBalanceCheckoutLoading ? btext('redirecting') : btext('adminPayCustomerBalance') }}
+            </button>
+          </div>
+        </div>
+        <div class="financial-row" *ngIf="hasSkipperFee()">
+          <div>
+            <span class="overview-label">{{ btext('skipperPayment') }}</span>
+            <strong>€{{ getSkipperCashAmount() }}</strong>
+          </div>
+          <span class="financial-status" [class.is-paid]="isSkipperPaymentPaid()">{{ getSkipperPaymentStatusLabel() }}</span>
+        </div>
+        <div class="financial-row">
+          <div>
+            <span class="overview-label">{{ btext('warranty') }}</span>
+            <strong>{{ getWarrantyModeLabel() }}</strong>
+          </div>
+          <span class="financial-status" [class.is-paid]="isWarrantySelected()">{{ getWarrantyCardLabel() }}</span>
+        </div>
+      </section>
 
       <p class="comments" *ngIf="getVisibleBookingComments()">{{ getVisibleBookingComments() }}</p>
 
@@ -171,16 +225,39 @@
       </section>
 
       <section class="payment-admin-card">
-        <h2>{{ getWorkflowTitle() }}</h2>
+        <h2>{{ btext('bookingProgress') || getWorkflowTitle() }}</h2>
 
-        <div class="payment-summary workflow-summary clarity-grid">
-          <div class="status-summary-card"><strong>{{ btext('bookingStatus') }}</strong><button class="status-pill status-clickable" type="button" (click)="openStatusModal()">{{ getStatusLabel() }}</button></div>
-          <div><strong>{{ btext('deposit') }}</strong><span>{{ getDepositStatusLabel() }}</span></div>
-          <div><strong>{{ btext('termsConditions') }}</strong><span>{{ getTermsStatusLabel() }}</span></div>
-          <div><strong>{{ btext('warrantyMode') }}</strong><span>{{ getWarrantyModeLabel() }}</span></div>
-          <div><strong>{{ btext('stripeWarrantyCard') }}</strong><span>{{ getWarrantyCardLabel() }}</span></div>
-          <div><strong>{{ btext('remaining') }}</strong><span>{{ getBalanceStatusLabel() }}</span></div>
-          <div><strong>{{ btext('damage') }}</strong><span>{{ getDamageStatusLabel() }}</span></div>
+        <div class="booking-progress-v2">
+          <div class="progress-step" [class.done]="isDepositPaid()">
+            <span class="progress-dot">✓</span>
+            <strong>{{ btext('deposit') }}</strong>
+            <small>{{ getDepositStatusLabel() }}</small>
+          </div>
+          <div class="progress-step" [class.done]="termsAccepted || booking.termsAccepted || booking.tncAccepted">
+            <span class="progress-dot">✓</span>
+            <strong>{{ btext('termsConditions') }}</strong>
+            <small>{{ getTermsStatusLabel() }}</small>
+          </div>
+          <div class="progress-step" [class.done]="isWarrantySelected()">
+            <span class="progress-dot">✓</span>
+            <strong>{{ btext('warrantyMode') }}</strong>
+            <small>{{ getWarrantyModeLabel() }}</small>
+          </div>
+          <div class="progress-step" [class.done]="isBalancePaid()">
+            <span class="progress-dot">✓</span>
+            <strong>{{ btext('remaining') }}</strong>
+            <small>{{ getBalanceStatusLabel() }}</small>
+          </div>
+          <div class="progress-step" *ngIf="hasSkipperFee()" [class.done]="isSkipperPaymentPaid()">
+            <span class="progress-dot">✓</span>
+            <strong>{{ btext('skipperPayment') }}</strong>
+            <small>{{ getSkipperPaymentStatusLabel() }}</small>
+          </div>
+          <div class="progress-step" [class.done]="getDamageStatusLabel() !== btext('noDamageReported')">
+            <span class="progress-dot">✓</span>
+            <strong>{{ btext('damage') }}</strong>
+            <small>{{ getDamageStatusLabel() }}</small>
+          </div>
         </div>
 
         <div class="customer-action-bar" *ngIf="!isAdmin">
@@ -194,18 +271,8 @@
         </div>
 
         <div class="workflow-panel customer-payment-hub" *ngIf="canShowCustomerPaymentHub()">
-          <h3>Paiements client</h3>
-          <p class="muted">Depuis cette page, le client peut payer le solde, les extras/services proposés et un montant ad hoc.</p>
-
-          <div class="client-payment-row" *ngIf="canCustomerSeeBalancePayment()">
-            <div>
-              <strong>Solde restant 90%</strong>
-              <span>€{{ getBalanceAmount() }}</span>
-            </div>
-            <button class="btn btn-primary" type="button" [disabled]="!canCustomerPayBalance()" (click)="payBalance()">
-              {{ getCustomerBalanceButtonLabel() }}
-            </button>
-          </div>
+          <h3>{{ btext('customerPaymentsTitle') }}</h3>
+          <p class="muted">{{ btext('customerPaymentsText') }}</p>
 
           <div class="client-payment-row" *ngFor="let extra of pendingExtraServices; let i = index">
             <div *ngIf="canCustomerPayExtraService(extra)">
@@ -282,7 +349,49 @@
         </div>
 
 
-        <div class="workflow-panel" *ngIf="getBookingWorkflowState() === 'payment_done' && isAdmin && isOutingDone()">
+        <div class="workflow-panel skipper-payment-panel" *ngIf="canAdminManageSkipperPayment()">
+          <h3>{{ btext('skipperPaymentTitle') }}</h3>
+          <p>{{ btext('skipperPaymentText') }}</p>
+
+          <div class="skipper-payment-summary">
+            <div>
+              <span class="overview-label">{{ btext('amountLabel') }}</span>
+              <strong>€{{ getSkipperCashAmount() }}</strong>
+            </div>
+            <div>
+              <span class="overview-label">{{ btext('status') }}</span>
+              <strong>{{ getSkipperPaymentStatusLabel() }}</strong>
+            </div>
+          </div>
+
+          <label>
+            {{ btext('skipperPaymentMethod') }}
+            <select [(ngModel)]="skipperPaymentMethod">
+              <option value="cash">{{ btext('cash') }}</option>
+              <option value="bank_transfer">Virement</option>
+              <option value="other">Autre</option>
+            </select>
+          </label>
+
+          <label class="terms-check">
+            <input type="checkbox" [(ngModel)]="skipperPaymentReceived" />
+            <span>{{ btext('skipperPaymentReceived') }}</span>
+          </label>
+
+          <label>
+            {{ btext('skipperPaymentNotes') }}
+            <textarea rows="3" [(ngModel)]="skipperPaymentNotes" placeholder="{{ btext('skipperPaymentNotesPlaceholder') }}"></textarea>
+          </label>
+
+          <button class="btn btn-primary" type="button" [disabled]="savingSkipperPayment" (click)="saveSkipperPaymentStatus()">
+            {{ savingSkipperPayment ? btext('saving') : btext('saveSkipperPayment') }}
+          </button>
+
+          <p class="success" *ngIf="skipperPaymentMessage">{{ skipperPaymentMessage }}</p>
+          <p class="error-message" *ngIf="skipperPaymentError">{{ skipperPaymentError }}</p>
+        </div>
+
+        <div class="workflow-panel" *ngIf="canAdminManageDamages()">
           <h3>{{ btext('damageManagement') }}</h3>
           <p>{{ btext('damageManagementText') }}</p>
 
@@ -312,7 +421,7 @@
             <p class="error-message" *ngIf="cashDamageError">{{ cashDamageError }}</p>
           </div>
 
-          <div class="cash-damage-card" *ngIf="isWarrantyCardRegistered()">
+          <div class="cash-damage-card" *ngIf="isWarrantyCardSelectedOrRegistered()">
             <h3>{{ btext('chargeCardWarranty') }}</h3>
             <p>{{ btext('maximumWarranty') }}: <strong>€{{ booking.warrantyAmount || 500 }}</strong></p>
 

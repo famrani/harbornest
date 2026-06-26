@@ -278,3 +278,32 @@ a:hover {
     font-size: 2rem;
   }
 }
+
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .form-control {
+  padding-right: 86px;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: #0d6f8f;
+  font-family: 'Raleway', system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  color: #08263a;
+  text-decoration: underline;
+}

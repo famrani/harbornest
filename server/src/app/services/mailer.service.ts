@@ -1,5 +1,11 @@
 import nodemailer from 'nodemailer';
 
+function alegriaSender(): string {
+  const name = (process.env.MAIL_FROM_NAME || 'Alegria Team').trim();
+  const email = (process.env.MAIL_FROM_EMAIL || process.env.MAIL_FROM || 'alegria.boat01@gmail.com').trim();
+  return `\"${name}\" <${email}>`;
+}
+
 export class MailerService {
   private transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST!,
@@ -27,7 +33,7 @@ export class MailerService {
       return Promise.resolve();
     }
     return this.transporter.sendMail({
-      from: process.env.MAIL_FROM!,
+      from: alegriaSender(),
       to,
       subject,
       html
@@ -37,7 +43,7 @@ export class MailerService {
   sendToGuest(guestEmail: string, subject: string, html: string) {
     if (!guestEmail) return Promise.resolve();
     return this.transporter.sendMail({
-      from: process.env.MAIL_FROM!,
+      from: alegriaSender(),
       to: guestEmail,
       subject,
       html

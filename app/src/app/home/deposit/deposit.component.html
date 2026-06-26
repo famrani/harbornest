@@ -1,9 +1,9 @@
 <section class="deposit-page">
   <div class="container deposit-layout">
     <div class="deposit-copy">
-      <span class="eyebrow">{{ isWarrantyAdminMode ? 'Admin warranty' : copy.eyebrow }}</span>
-      <h1>{{ isWarrantyAdminMode ? 'Charge warranty for damage' : copy.title }}</h1>
-      <p *ngIf="!isWarrantyAdminMode">{{ copy.intro }}</p>
+      <span class="eyebrow">{{ paymentPageEyebrow }}</span>
+      <h1>{{ paymentPageTitle }}</h1>
+      <p *ngIf="!isWarrantyAdminMode">{{ paymentPageIntro }}</p>
       <p *ngIf="isWarrantyAdminMode">
         This admin page is only for charging an amount from the registered warranty after confirmed damage.
       </p>
@@ -11,13 +11,22 @@
       <p class="success" *ngIf="paymentReturnMessage">{{ paymentReturnMessage }}</p>
 
       <div class="summary-card">
-        <h2>{{ isWarrantyAdminMode ? 'Booking summary' : copy.includedTitle }}</h2>
+        <h2>{{ isWarrantyAdminMode ? 'Booking summary' : paymentSummaryTitle }}</h2>
 
-        <ng-container *ngIf="!isWarrantyAdminMode">
+        <ng-container *ngIf="!isWarrantyAdminMode && !isBalanceMode">
           <ul>
             <li *ngFor="let item of copy.included">{{ item }}</li>
           </ul>
           <p class="note">{{ copy.note }}</p>
+        </ng-container>
+
+        <ng-container *ngIf="!isWarrantyAdminMode && isBalanceMode">
+          <ul>
+            <li>The deposit has already been paid.</li>
+            <li>The remaining balance will be paid securely by Stripe.</li>
+            <li>Skipper fees, when applicable, are paid in cash on board.</li>
+          </ul>
+          <p class="note">This page is dedicated to the remaining balance for this confirmed booking.</p>
         </ng-container>
 
         <ng-container *ngIf="isWarrantyAdminMode && booking">
@@ -59,15 +68,25 @@
         <input type="number" name="totalPrice" [(ngModel)]="totalPrice" min="1" step="0.01" required />
       </label>
 
+      <div class="deposit-total" *ngIf="skipperCashAmount > 0">
+        <span>Skipper fees payable in cash on board</span>
+        <strong>{{ formatAmount(skipperCashAmount) }}</strong>
+      </div>
+
+      <div class="deposit-total" *ngIf="skipperCashAmount > 0">
+        <span>Online payable amount</span>
+        <strong>{{ formatAmount(onlinePayableAmount) }}</strong>
+      </div>
+
       <div class="deposit-total">
-        <span>{{ copy.deposit }}</span>
-        <strong>{{ formatAmount(depositAmount) }}</strong>
+        <span>{{ paymentAmountLabel }}</span>
+        <strong>{{ formatAmount(paymentAmount) }}</strong>
       </div>
 
       <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
       <button type="submit" class="btn btn-primary" [disabled]="isLoading">
-        {{ isLoading ? copy.loading : copy.payDeposit }}
+        {{ paymentButtonLabel }}
       </button>
 
       <p class="secure">{{ copy.securePayment }}</p>
@@ -94,6 +113,11 @@
         <span>Warranty amount</span>
         <strong>{{ formatAmount(warrantyAmount) }}</strong>
       </div>
+
+      <button type="button" class="btn btn-primary" [disabled]="isWarrantyLoading" (click)="registerWarrantyCard()">
+        {{ isWarrantyLoading ? 'Opening Stripe...' : 'Register warranty card' }}
+      </button>
+      <p class="error" *ngIf="warrantySetupMessage">{{ warrantySetupMessage }}</p>
     </section>
 
     <section class="deposit-card warranty-setup-card" *ngIf="showWarrantyCardSummary">

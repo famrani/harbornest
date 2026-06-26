@@ -37,6 +37,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   cardDamageMessage = '';
   cardDamageError = '';
   savingCardDamage = false;
+  adminBalanceCheckoutLoading = false;
   extraServicesCatalog: any[] = [];
   selectedExtraServiceId = '';
   customExtraServiceDescription = '';
@@ -83,6 +84,12 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   sendingAdminProposal = false;
   adminProposalMessage = '';
   adminProposalError = '';
+  skipperPaymentMethod = 'cash';
+  skipperPaymentReceived = false;
+  skipperPaymentNotes = '';
+  savingSkipperPayment = false;
+  skipperPaymentMessage = '';
+  skipperPaymentError = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -142,6 +149,23 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  private redirectToLoginIfNeeded(): boolean {
+    const user = this.loggedUser || this.readCachedUser();
+    if (user) return false;
+
+    const currentUrl = this.router.url || '/';
+    try {
+      localStorage.setItem('redirectAfterLogin', currentUrl);
+      sessionStorage.setItem('redirectAfterLogin', currentUrl);
+    } catch {}
+
+    this.router.navigate(['/login'], {
+      queryParams: { returnUrl: currentUrl }
+    });
+    return true;
+  }
+
   ngOnDestroy(): void {
     this.accountSub?.unsubscribe();
   }
@@ -154,15 +178,20 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     });
 
     this.watchLoggedUser();
+    if (this.redirectToLoginIfNeeded()) {
+      this.loading = false;
+      return;
+    }
     const bookingId = this.route.snapshot.paramMap.get('bookingId') || '';
     this.editMode = this.route.snapshot.queryParamMap.get('edit') === 'true';
     this.bookingApi.getBooking(bookingId).subscribe((booking) => {
-      this.booking = booking;
+      this.booking = this.normalizeBookingAmounts(booking as any) as any;
       this.refreshDerivedPaymentState();
       this.termsAccepted = this.isTermsAccepted();
       this.termsRead = this.termsAccepted || this.termsRead;
       this.warrantyChoice = this.getWarrantyChoice();
       this.initializeAdminProposalFields();
+      this.initializeSkipperPaymentFields();
       if (this.isAdmin) this.loadExtraServicesCatalog();
       this.loading = false;
       this.syncConfirmedStatusIfReady();
@@ -172,45 +201,322 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   }
 
 
+
+  private getCurrentBookingId(): string {
+    const bookingId = (this.booking as any)?.bookingId || (this.booking as any)?.proposalId || this.route.snapshot.paramMap.get('id') || this.route.snapshot.paramMap.get('bookingId') || '';
+    if (!bookingId) {
+      throw new Error('Missing booking id.');
+    }
+    return String(bookingId);
+  }
+
+
+  private normalizeBookingAmounts(booking: any): any {
+    if (!booking) return booking;
+    const firstPositive = (...values: any[]): number => {
+      for (const value of values) {
+        const n = Number(value);
+        if (Number.isFinite(n) && n > 0) return n;
+      }
+      return 0;
+    };
+    const raw = booking.raw || {};
+    const proposalBoatPrice = firstPositive(booking.proposalBoatPrice, booking.estimatedBoatPrice, raw.proposalBoatPrice, raw.estimatedBoatPrice, raw.estimatedBasePrice);
+    const proposalSkipperPrice = firstPositive(booking.proposalSkipperPrice, booking.estimatedSkipperPrice, booking.skipperCashAmount, raw.proposalSkipperPrice, raw.estimatedSkipperPrice);
+    const proposalExtraServicesPrice = firstPositive(booking.proposalExtraServicesPrice, booking.estimatedExtraGuestsAmount, booking.estimatedOptionsPrice, raw.proposalExtraServicesPrice, raw.estimatedExtraGuestsAmount, raw.estimatedOptionsPrice);
+    const computedTotal = proposalBoatPrice + proposalSkipperPrice + proposalExtraServicesPrice;
+    const totalPrice = firstPositive(booking.totalPrice, booking.totalAmount, booking.estimatedPrice, raw.totalPrice, raw.totalAmount, raw.estimatedPrice, computedTotal);
+    const skipperCashAmount = firstPositive(booking.skipperCashAmount, proposalSkipperPrice, raw.skipperCashAmount);
+    const onlinePayableAmount = firstPositive(booking.onlinePayableAmount, booking.appPayableAmount, raw.onlinePayableAmount, raw.appPayableAmount, Math.max(0, totalPrice - skipperCashAmount));
+    const depositAmount = firstPositive(booking.depositAmount, raw.depositAmount, Math.round(onlinePayableAmount * 0.10 * 100) / 100);
+    const balanceAmount = firstPositive(booking.balanceAmount, booking.remainingFeesAmount, booking.remainingOnboardAmount, raw.balanceAmount, raw.remainingFeesAmount, Math.max(0, Math.round((onlinePayableAmount - depositAmount) * 100) / 100));
+    const existingSkipperPayment = booking.skipperPayment || raw.skipperPayment || {};
+    const skipperPayment = {
+      amount: firstPositive(existingSkipperPayment.amount, booking.skipperPaymentAmount, skipperCashAmount),
+      status: existingSkipperPayment.status || (booking.skipperPaid === true || booking.skipperPaymentReceived === true ? 'paid' : 'pending'),
+      method: existingSkipperPayment.method || booking.skipperPaymentMethod || 'cash',
+      paid: existingSkipperPayment.paid === true || booking.skipperPaid === true || booking.skipperPaymentReceived === true,
+      paidAt: existingSkipperPayment.paidAt || booking.skipperPaidAt || 0,
+      receivedBy: existingSkipperPayment.receivedBy || booking.skipperPaymentReceivedBy || '',
+      notes: existingSkipperPayment.notes || booking.skipperPaymentNotes || '',
+    };
+
+    return {
+      ...booking,
+      totalPrice,
+      totalAmount: booking.totalAmount || totalPrice,
+      proposalBoatPrice: booking.proposalBoatPrice ?? proposalBoatPrice,
+      proposalSkipperPrice: booking.proposalSkipperPrice ?? proposalSkipperPrice,
+      proposalExtraServicesPrice: booking.proposalExtraServicesPrice ?? proposalExtraServicesPrice,
+      skipperCashAmount: booking.skipperCashAmount ?? skipperCashAmount,
+      skipperPayment,
+      skipperPaymentAmount: booking.skipperPaymentAmount ?? skipperPayment.amount,
+      skipperPaymentStatus: booking.skipperPaymentStatus ?? skipperPayment.status,
+      skipperPaymentMethod: booking.skipperPaymentMethod ?? skipperPayment.method,
+      onlinePayableAmount: booking.onlinePayableAmount ?? onlinePayableAmount,
+      appPayableAmount: booking.appPayableAmount ?? onlinePayableAmount,
+      depositAmount,
+      balanceAmount,
+      remainingFeesAmount: booking.remainingFeesAmount ?? balanceAmount,
+      remainingOnboardAmount: booking.remainingOnboardAmount ?? balanceAmount,
+      warrantyAmount: firstPositive(booking.warrantyAmount, raw.warrantyAmount, 500),
+    };
+  }
+
   private async handleCheckoutReturn(): Promise<void> {
     const payment = String(this.route.snapshot.queryParamMap.get('payment') || '').toLowerCase();
-    const paymentType = String(this.route.snapshot.queryParamMap.get('paymentType') || '').toLowerCase();
+    const paymentType = this.normalizePaymentType(this.route.snapshot.queryParamMap.get('paymentType') || '');
 
-    if (payment !== 'success' || paymentType !== 'balance' || !this.booking?.bookingId || this.isBalancePaid()) {
+    if (payment !== 'success' || !this.booking?.bookingId) {
       return;
     }
 
-    const now = Date.now();
-    const balanceAmount = this.getBalanceAmount();
-    const existingPayments = (this.booking as any).payments || {};
-    const payload: any = {
-      balancePaid: true,
-      remainingPaid: true,
-      balanceStatus: 'paid',
-      balancePaymentStatus: 'paid',
-      paymentStatus: 'balance_paid',
-      balancePaidAt: now,
-      payments: {
-        ...existingPayments,
-        balance: {
-          ...(existingPayments.balance || {}),
-          amount: balanceAmount,
-          paid: true,
-          status: 'paid',
-          paymentStatus: 'paid',
-          paidAt: now,
-          source: 'stripe_checkout_return',
+    const currentBooking = this.booking;
+    if (paymentType === 'balance') {
+      if (this.isBalancePaid()) return;
+
+      const query = this.route.snapshot.queryParamMap;
+      const checkoutSessionId = String(query.get('session_id') || query.get('sessionId') || query.get('checkoutSessionId') || '').trim();
+      const ownerId = (currentBooking as any).ownerId || 'alegria';
+
+      try {
+        if (checkoutSessionId) {
+          const response: any = await this.bookingApi.completeBalancePayment({
+            bookingId: this.getCurrentBookingId(),
+            ownerId,
+            checkoutSessionId,
+          }).toPromise();
+
+          const now = Date.now();
+          const amountCents = Number(response?.amount || 0);
+          const balanceAmount = amountCents > 999 ? amountCents / 100 : (amountCents || this.getBalanceAmount());
+          const existingPayments = (this.booking as any).payments || {};
+          const payload: any = {
+            balancePaid: true,
+            remainingPaid: true,
+            balanceStatus: 'paid',
+            balancePaymentStatus: 'paid',
+            paymentStatus: 'full_payment_done',
+            balancePaidAt: now,
+            stripeBalanceCheckoutSessionId: response?.stripeCheckoutSessionId || checkoutSessionId,
+            stripeBalancePaymentIntentId: response?.stripePaymentIntentId || '',
+            payments: {
+              ...existingPayments,
+              balance: {
+                ...(existingPayments.balance || {}),
+                amount: amountCents || this.getBalanceAmount(),
+                amount_total: amountCents || this.getBalanceAmount(),
+                amountUnit: amountCents > 999 ? 'cents' : 'eur',
+                paid: true,
+                status: 'paid',
+                paymentStatus: 'paid',
+                paidAt: now,
+                paymentType: 'balance',
+                stripeCheckoutSessionId: response?.stripeCheckoutSessionId || checkoutSessionId,
+                stripePaymentIntentId: response?.stripePaymentIntentId || '',
+                source: 'stripe_checkout_complete',
+              }
+            }
+          };
+          this.booking = { ...this.booking, ...payload } as any;
+          this.refreshDerivedPaymentState();
+          this.balancePaymentMessage = 'Remaining 90% payment recorded.';
+          return;
         }
+      } catch (e: any) {
+        this.balancePaymentError = e?.error?.error || e?.message || 'Stripe payment succeeded, but the backend could not record the remaining balance.';
+        // Fall through to local Firebase safety-net below.
       }
+
+      const now = Date.now();
+      const balanceAmount = this.getBalanceAmount();
+      const existingPayments = (this.booking as any).payments || {};
+      const payload: any = {
+        balancePaid: true,
+        remainingPaid: true,
+        balanceStatus: 'paid',
+        balancePaymentStatus: 'paid',
+        paymentStatus: 'full_payment_done',
+        balancePaidAt: now,
+        payments: {
+          ...existingPayments,
+          balance: {
+            ...(existingPayments.balance || {}),
+            amount: balanceAmount,
+            amountUnit: 'eur',
+            paid: true,
+            status: 'paid',
+            paymentStatus: 'paid',
+            paidAt: now,
+            paymentType: 'balance',
+            source: 'stripe_checkout_return_fallback',
+          }
+        }
+      };
+
+      try {
+        await this.bookingApi.updateBooking(this.getCurrentBookingId(), payload);
+        this.booking = { ...this.booking, ...payload } as any;
+        this.refreshDerivedPaymentState();
+        this.balancePaymentMessage = 'Remaining 90% payment recorded.';
+      } catch (e: any) {
+        this.balancePaymentError = e?.message || 'Payment succeeded, but the booking could not be updated locally.';
+      }
+      return;
+    }
+
+    if (paymentType === 'warranty') {
+      await this.recordWarrantyCheckoutReturn();
+      return;
+    }
+
+    if (paymentType === 'extra_service' || paymentType === 'ad_hoc') {
+      await this.recordOptionalCheckoutReturn(paymentType);
+    }
+  }
+
+
+  private async recordWarrantyCheckoutReturn(): Promise<void> {
+    if (!this.booking?.bookingId) return;
+
+    const query = this.route.snapshot.queryParamMap;
+    const checkoutSessionId = String(query.get('session_id') || query.get('sessionId') || query.get('checkoutSessionId') || '').trim();
+    if (!checkoutSessionId) {
+      this.balancePaymentError = 'Warranty card setup succeeded, but the Stripe session id is missing.';
+      return;
+    }
+
+    const ownerId = (this.booking as any).ownerId || 'alegria';
+    this.balancePaymentError = '';
+    this.balancePaymentMessage = '';
+
+    this.bookingApi.completeWarrantySetup({
+      bookingId: this.getCurrentBookingId(),
+      ownerId,
+      checkoutSessionId,
+    }).subscribe({
+      next: (response: any) => {
+        const now = Date.now();
+        const existingPayments = (this.booking as any).payments || {};
+        const warrantyPayment = existingPayments.warranty || {};
+        const payload: any = {
+          warrantyPaymentChoice: 'stripe_card',
+          warrantyMethod: 'stripe_card',
+          warrantyStatus: 'card_registered',
+          warrantyRegistered: true,
+          warrantyPaymentMethodId: response?.paymentMethodId || (this.booking as any).warrantyPaymentMethodId || '',
+          warrantySetupIntentId: response?.setupIntentId || (this.booking as any).warrantySetupIntentId || '',
+          stripeCustomerId: response?.stripeCustomerId || (this.booking as any).stripeCustomerId || '',
+          warrantyStripeCustomerId: response?.stripeCustomerId || (this.booking as any).warrantyStripeCustomerId || '',
+          warrantyCardLast4: response?.cardLast4 || (this.booking as any).warrantyCardLast4 || '',
+          warrantyCardBrand: response?.cardBrand || (this.booking as any).warrantyCardBrand || '',
+          modifiedTS: now,
+          payments: {
+            ...existingPayments,
+            warranty: {
+              ...warrantyPayment,
+              paymentType: 'warranty',
+              status: 'warranty_card_saved',
+              warrantyStatus: 'card_registered',
+              warrantyRegistered: true,
+              method: 'stripe_card',
+              warrantyPaymentChoice: 'stripe_card',
+              amount: response?.amount || warrantyPayment.amount || (this.booking as any).warrantyAmount || 500,
+              currency: response?.currency || warrantyPayment.currency || 'eur',
+              setupIntentId: response?.setupIntentId || warrantyPayment.setupIntentId || '',
+              paymentMethodId: response?.paymentMethodId || warrantyPayment.paymentMethodId || '',
+              warrantyPaymentMethodId: response?.paymentMethodId || warrantyPayment.warrantyPaymentMethodId || '',
+              stripeCustomerId: response?.stripeCustomerId || warrantyPayment.stripeCustomerId || '',
+              cardLast4: response?.cardLast4 || warrantyPayment.cardLast4 || '',
+              cardBrand: response?.cardBrand || warrantyPayment.cardBrand || '',
+              modifiedTS: now,
+            }
+          }
+        };
+
+        this.booking = { ...(this.booking as any), ...payload } as any;
+        this.warrantyChoice = 'stripe_card';
+        this.refreshDerivedPaymentState();
+        this.balancePaymentMessage = 'Warranty card registered successfully.';
+      },
+      error: (error: any) => {
+        this.balancePaymentError = error?.error?.error || error?.error?.message || error?.message || 'Warranty card was selected but could not be saved as a chargeable payment method.';
+      }
+    });
+  }
+
+  private async recordOptionalCheckoutReturn(paymentType: 'extra_service' | 'ad_hoc'): Promise<void> {
+    if (!this.booking?.bookingId) return;
+
+    const now = Date.now();
+    const query = this.route.snapshot.queryParamMap;
+    const idParam = paymentType === 'extra_service' ? 'extraServiceId' : 'adhocPaymentId';
+    const paymentId = String(query.get(idParam) || query.get('paymentId') || `${paymentType}_${now}`);
+    const description = String(query.get('description') || (paymentType === 'extra_service' ? 'Extra service' : 'Ad hoc payment'));
+    const amount = Number(query.get('amount') || 0);
+    if (!Number.isFinite(amount) || amount <= 0) return;
+
+    const paymentRecord: any = {
+      paymentId,
+      id: paymentId,
+      bookingId: this.getCurrentBookingId(),
+      paymentType,
+      description,
+      amount,
+      amountUnit: 'eur',
+      currency: 'eur',
+      paid: true,
+      status: 'paid',
+      paymentStatus: 'paid',
+      paidAt: now,
+      modifiedTS: now,
+      source: 'stripe_checkout_return',
     };
 
+    const existingPayments = (this.booking as any).payments || {};
+    const paymentsKey = paymentType === 'extra_service' ? `extra_${paymentId}` : `adhoc_${paymentId}`;
+    const payload: any = {
+      payments: {
+        ...existingPayments,
+        [paymentsKey]: {
+          ...(existingPayments[paymentsKey] || {}),
+          ...paymentRecord,
+        },
+      },
+      modifiedTS: now,
+    };
+
+    if (paymentType === 'extra_service') {
+      const extraServices = Array.isArray((this.booking as any).extraServices) ? [...(this.booking as any).extraServices] : [];
+      const index = extraServices.findIndex((item: any) => String(item?.id || item?.extraServiceId || item?.paymentId) === paymentId);
+      const extraRecord = {
+        ...(index >= 0 ? extraServices[index] : {}),
+        ...paymentRecord,
+        extraServiceId: paymentId,
+      };
+      if (index >= 0) {
+        extraServices[index] = extraRecord;
+      } else {
+        extraServices.push(extraRecord);
+      }
+      payload.extraServices = extraServices;
+    }
+
     try {
-      await this.bookingApi.updateBooking(this.booking.bookingId, payload);
-      this.booking = { ...this.booking, ...payload } as any;
+      await this.bookingApi.updateBooking(this.getCurrentBookingId(), payload);
+      this.booking = { ...(this.booking as any), ...payload } as any;
       this.refreshDerivedPaymentState();
-      this.balancePaymentMessage = 'Remaining 90% payment recorded.';
+      if (paymentType === 'extra_service') {
+        this.extraServiceMessage = this.btext('paid') || 'Paid';
+      } else {
+        this.adhocPaymentMessage = this.btext('paid') || 'Paid';
+        this.adhocPaymentAmount = null;
+        this.adhocPaymentDescription = '';
+      }
     } catch (e: any) {
-      this.balancePaymentError = e?.message || 'Payment succeeded, but the booking could not be updated locally.';
+      const message = e?.message || 'Payment succeeded, but the booking could not be updated locally.';
+      if (paymentType === 'extra_service') this.extraServiceError = message;
+      if (paymentType === 'ad_hoc') this.adhocPaymentError = message;
     }
   }
 
@@ -602,6 +908,9 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         recordCashDamage: 'Enregistrer le montant prélevé pour dommage',
         loadingBooking: 'Chargement de la réservation...',
         bookingDetail: 'Détail de la réservation',
+        bookingProgress: 'Progression de la réservation',
+        customerPaymentsTitle: 'Paiements complémentaires',
+        customerPaymentsText: 'Les services supplémentaires proposés peuvent être réglés ici.',
         customer: 'Client',
         email: 'Email',
         phone: 'Téléphone',
@@ -708,8 +1017,22 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         adhocDescriptionPlaceholder: 'Pourboire, catering, boissons, service supplémentaire...',
         payThisAmount: 'Payer ce montant',
         redirecting: 'Redirection...',
+        adminPayCustomerBalance: 'Faire payer le solde au client',
         paymentRefundBrief: 'Remboursement partiel ou total lié à cette réservation.',
-        refunded: 'Remboursé'
+        refunded: 'Remboursé',
+        skipperCash: 'Skipper à payer à bord',
+        skipperPayment: 'Paiement skipper',
+        skipperPaymentTitle: 'Paiement skipper',
+        skipperPaymentText: 'Le skipper est payé hors application. Confirmez ici que le paiement a bien été reçu.',
+        skipperPaymentReceived: 'Paiement skipper reçu',
+        skipperPaymentPending: 'À encaisser à bord',
+        skipperPaymentMethod: 'Mode de paiement skipper',
+        skipperPaymentNotes: 'Notes paiement skipper',
+        skipperPaymentNotesPlaceholder: 'Espèces reçues, virement, nom du skipper, remarque...',
+        saveSkipperPayment: 'Enregistrer le paiement skipper',
+        skipperPaymentSaved: 'Paiement skipper enregistré.',
+        paymentTypeSkipperCash: 'Skipper cash',
+        paymentDescriptionSkipperCash: 'Frais skipper payés hors application.'
       },
       en: {
         cashWarrantyEnvelope: 'Cash warranty envelope',
@@ -728,6 +1051,9 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         recordCashDamage: 'Record cash taken for damage',
         loadingBooking: 'Loading booking...',
         bookingDetail: 'Booking detail',
+        bookingProgress: 'Booking progress',
+        customerPaymentsTitle: 'Additional payments',
+        customerPaymentsText: 'Proposed extra services can be paid here.',
         customer: 'Customer',
         email: 'Email',
         phone: 'Phone',
@@ -834,8 +1160,22 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         adhocDescriptionPlaceholder: 'Tip, catering, drinks, extra service...',
         payThisAmount: 'Pay this amount',
         redirecting: 'Redirecting...',
+        adminPayCustomerBalance: 'Pay customer remaining balance',
         paymentRefundBrief: 'Partial or full refund linked to this booking.',
-        refunded: 'Refunded'
+        refunded: 'Refunded',
+        skipperCash: 'Skipper to pay onboard',
+        skipperPayment: 'Skipper payment',
+        skipperPaymentTitle: 'Skipper payment',
+        skipperPaymentText: 'The skipper is paid outside the app. Confirm here that the payment has been received.',
+        skipperPaymentReceived: 'Skipper payment received',
+        skipperPaymentPending: 'To collect onboard',
+        skipperPaymentMethod: 'Skipper payment method',
+        skipperPaymentNotes: 'Skipper payment notes',
+        skipperPaymentNotesPlaceholder: 'Cash received, bank transfer, skipper name, note...',
+        saveSkipperPayment: 'Save skipper payment',
+        skipperPaymentSaved: 'Skipper payment recorded.',
+        paymentTypeSkipperCash: 'Skipper cash',
+        paymentDescriptionSkipperCash: 'Skipper fees paid outside the app.'
       },
       es: {
         cashWarrantyEnvelope: 'Sobre de garantía en efectivo',
@@ -854,6 +1194,9 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         recordCashDamage: 'Registrar efectivo tomado por daños',
         loadingBooking: 'Cargando reserva...',
         bookingDetail: 'Detalle de la reserva',
+        bookingProgress: 'Progreso de la reserva',
+        customerPaymentsTitle: 'Pagos adicionales',
+        customerPaymentsText: 'Los servicios adicionales propuestos se pueden pagar aquí.',
         customer: 'Cliente',
         email: 'Correo electrónico',
         phone: 'Teléfono',
@@ -960,8 +1303,22 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         adhocDescriptionPlaceholder: 'Propina, catering, bebidas, servicio extra...',
         payThisAmount: 'Pagar este importe',
         redirecting: 'Redirigiendo...',
+        adminPayCustomerBalance: 'Cobrar saldo restante al cliente',
         paymentRefundBrief: 'Reembolso parcial o total vinculado a esta reserva.',
-        refunded: 'Reembolsado'
+        refunded: 'Reembolsado',
+        skipperCash: 'Patrón a pagar a bordo',
+        skipperPayment: 'Pago del patrón',
+        skipperPaymentTitle: 'Pago del patrón',
+        skipperPaymentText: 'El patrón se paga fuera de la aplicación. Confirme aquí que el pago ha sido recibido.',
+        skipperPaymentReceived: 'Pago del patrón recibido',
+        skipperPaymentPending: 'Cobrar a bordo',
+        skipperPaymentMethod: 'Método de pago del patrón',
+        skipperPaymentNotes: 'Notas del pago del patrón',
+        skipperPaymentNotesPlaceholder: 'Efectivo recibido, transferencia, nombre del patrón, nota...',
+        saveSkipperPayment: 'Guardar pago del patrón',
+        skipperPaymentSaved: 'Pago del patrón registrado.',
+        paymentTypeSkipperCash: 'Patrón en efectivo',
+        paymentDescriptionSkipperCash: 'Costes del patrón pagados fuera de la aplicación.'
       }
     };
 
@@ -1054,6 +1411,109 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   }
 
 
+  private initializeSkipperPaymentFields(): void {
+    const skipperPayment = this.getSkipperPayment();
+    this.skipperPaymentMethod = skipperPayment.method || 'cash';
+    this.skipperPaymentReceived = this.isSkipperPaymentPaid();
+    this.skipperPaymentNotes = skipperPayment.notes || '';
+  }
+
+  getSkipperCashAmount(): number {
+    const b: any = this.booking || {};
+    const raw = b.raw || {};
+    const payment = b.skipperPayment || raw.skipperPayment || {};
+    return this.firstPositiveNumber(
+      payment.amount,
+      b.skipperPaymentAmount,
+      b.skipperCashAmount,
+      b.proposalSkipperPrice,
+      b.estimatedSkipperPrice,
+      raw.skipperPaymentAmount,
+      raw.skipperCashAmount,
+      raw.proposalSkipperPrice,
+      raw.estimatedSkipperPrice,
+      b.skipperPrice
+    );
+  }
+
+  hasSkipperFee(): boolean {
+    return this.getSkipperCashAmount() > 0;
+  }
+
+  getSkipperPayment(): any {
+    const b: any = this.booking || {};
+    const raw = b.raw || {};
+    return b.skipperPayment || raw.skipperPayment || {
+      amount: this.getSkipperCashAmount(),
+      status: b.skipperPaymentStatus || (b.skipperPaid === true || b.skipperPaymentReceived === true ? 'paid' : 'pending'),
+      method: b.skipperPaymentMethod || 'cash',
+      paid: b.skipperPaid === true || b.skipperPaymentReceived === true,
+      paidAt: b.skipperPaidAt || 0,
+      receivedBy: b.skipperPaymentReceivedBy || '',
+      notes: b.skipperPaymentNotes || '',
+    };
+  }
+
+  isSkipperPaymentPaid(): boolean {
+    const p = this.getSkipperPayment();
+    const status = String(p?.status || '').toLowerCase();
+    return p?.paid === true || status === 'paid' || status === 'received' || (this.booking as any)?.skipperPaid === true || (this.booking as any)?.skipperPaymentReceived === true;
+  }
+
+  getSkipperPaymentStatusLabel(): string {
+    return this.isSkipperPaymentPaid() ? this.btext('paid') : this.btext('skipperPaymentPending');
+  }
+
+  canAdminManageSkipperPayment(): boolean {
+    return this.isAdmin && !!this.booking?.bookingId && this.hasSkipperFee();
+  }
+
+  async saveSkipperPaymentStatus(): Promise<void> {
+    if (!this.canAdminManageSkipperPayment()) return;
+    this.savingSkipperPayment = true;
+    this.skipperPaymentMessage = '';
+    this.skipperPaymentError = '';
+    try {
+      const existing = this.getSkipperPayment();
+      const now = Date.now();
+      const userName = this.loggedUser?.displayName || this.loggedUser?.name || this.loggedUser?.email || 'admin';
+      const skipperPayment: any = {
+        ...existing,
+        amount: this.getSkipperCashAmount(),
+        method: this.skipperPaymentMethod || existing.method || 'cash',
+        status: this.skipperPaymentReceived ? 'paid' : 'pending',
+        paid: this.skipperPaymentReceived === true,
+        paidAt: this.skipperPaymentReceived ? (existing.paidAt || now) : 0,
+        receivedBy: this.skipperPaymentReceived ? (existing.receivedBy || userName) : '',
+        notes: String(this.skipperPaymentNotes || '').trim(),
+        modifiedTS: now,
+      };
+
+      const payload: any = {
+        skipperPayment,
+        skipperPaymentAmount: skipperPayment.amount,
+        skipperPaymentMethod: skipperPayment.method,
+        skipperPaymentStatus: skipperPayment.status,
+        skipperPaid: skipperPayment.paid,
+        skipperPaymentReceived: skipperPayment.paid,
+        skipperPaidAt: skipperPayment.paidAt,
+        skipperPaymentReceivedBy: skipperPayment.receivedBy,
+        skipperPaymentNotes: skipperPayment.notes,
+        modifiedTS: now,
+      };
+
+      await this.bookingApi.updateBooking(this.getCurrentBookingId(), payload);
+      this.booking = { ...(this.booking as any), ...payload } as any;
+      this.refreshDerivedPaymentState();
+      this.skipperPaymentMessage = this.btext('skipperPaymentSaved') || 'Skipper payment recorded.';
+    } catch (e: any) {
+      this.skipperPaymentError = e?.error?.message || e?.message || 'Unable to save skipper payment.';
+    } finally {
+      this.savingSkipperPayment = false;
+    }
+  }
+
+
   getBookingOutingTime(): number {
     const booking: any = this.booking || {};
     const rawDate = String(booking.outingDate || booking.date || booking.bookingDate || '').trim();
@@ -1088,10 +1548,20 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   isCancelledBooking(): boolean {
     const anyBooking: any = this.booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
-    return rawStatus === false || rawStatus === 'false' || rawStatus === 'cancelled' || rawStatus === 'canceled' || anyBooking.cancelled === true || anyBooking.canceled === true;
+    const normalizedStatus = String(rawStatus).toLowerCase().trim();
+    return rawStatus === false || normalizedStatus === 'false' || normalizedStatus === 'cancelled' || normalizedStatus === 'canceled' || anyBooking.cancelled === true || anyBooking.canceled === true;
   }
 
   isBookingCancelledByDate(): boolean {
+    const anyBooking: any = this.booking || {};
+    const bookingStatus = anyBooking.bookingStatus;
+    const status = String(anyBooking.status || '').toLowerCase().trim();
+    const requestStatus = String(anyBooking.bookingRequestStatus || '').toLowerCase().trim();
+
+    // Legacy Firebase records use bookingStatus: true to mean confirmed/executed.
+    // A past date must never turn those bookings into cancelled bookings.
+    if (bookingStatus === true || bookingStatus === 'true' || status === 'confirmed' || requestStatus === 'confirmed') return false;
+    if (this.isBalancePaid()) return false;
     return this.isBookingDatePastOrToday() && !this.isBalancePaid();
   }
 
@@ -1271,7 +1741,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     const w = b?.payments?.warranty || {};
     if (b.warrantyPaymentChoice) return b.warrantyPaymentChoice;
     if (b.warrantyMethod === 'cash' || b.warrantyStatus === 'cash_selected' || b.warrantyCashSelected === true) return 'cash_on_board';
-    if (b.warrantyMethod === 'card' || b.warrantyMethod === 'stripe_card' || this.isWarrantyCardRegistered() || w.method === 'card') return 'stripe_card';
+    if (b.warrantyMethod === 'card' || b.warrantyMethod === 'stripe_card' || this.isWarrantyCardRegistered() || this.isWarrantyCardSelectedOrRegistered() || w.method === 'card' || w.method === 'stripe_card') return 'stripe_card';
     return '';
   }
 
@@ -1381,7 +1851,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
       payload.warrantyStatus = this.isWarrantyCardRegistered() ? 'card_registered' : 'card_selected';
     }
 
-    await this.bookingApi.updateBooking(this.booking.bookingId, payload);
+    await this.bookingApi.updateBooking(this.getCurrentBookingId(), payload);
     this.booking = { ...this.booking, ...payload } as any;
     await this.syncConfirmedStatusIfReady();
   }
@@ -1431,7 +1901,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     };
 
     try {
-      await this.bookingApi.updateBooking(this.booking.bookingId, payload);
+      await this.bookingApi.updateBooking(this.getCurrentBookingId(), payload);
       this.booking = {
         ...this.booking,
         ...payload,
@@ -1441,15 +1911,31 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  getOnlinePayableAmount(): number {
+    const b: any = this.booking || {};
+    const explicit = Number(b.onlinePayableAmount ?? b.appPayableAmount ?? b.raw?.onlinePayableAmount ?? b.raw?.appPayableAmount ?? 0);
+    if (explicit > 0) return explicit;
+    return Math.max(0, Math.round((Number(this.booking?.totalPrice || 0) - this.getSkipperCashAmount()) * 100) / 100);
+  }
+
   getDepositAmount(): number {
     const total = Number(this.booking?.totalPrice || 0);
-    return Number(this.booking?.depositAmount || (total ? Math.round(total * 0.1 * 100) / 100 : 0));
+    const existing = Number(this.booking?.depositAmount || 0);
+    const expectedFull = Math.round(total * 0.1 * 100) / 100;
+    const expectedOnline = Math.round(this.getOnlinePayableAmount() * 0.1 * 100) / 100;
+    if (this.getSkipperCashAmount() > 0 && existing > 0 && Math.abs(existing - expectedFull) < 0.01) return expectedOnline;
+    return Number(existing || (total ? expectedOnline : 0));
   }
 
   getBalanceAmount(): number {
     const total = Number(this.booking?.totalPrice || 0);
+    const existing = Number((this.booking as any)?.balanceAmount || 0);
     const deposit = this.getDepositAmount();
-    return Number((this.booking as any)?.balanceAmount || Math.max(0, Math.round((total - deposit) * 100) / 100));
+    const expectedFull = Math.round((total - Math.round(total * 0.1 * 100) / 100) * 100) / 100;
+    const expectedOnline = Math.max(0, Math.round((this.getOnlinePayableAmount() - deposit) * 100) / 100);
+    if (this.getSkipperCashAmount() > 0 && existing > 0 && Math.abs(existing - expectedFull) < 0.01) return expectedOnline;
+    return Number(existing || expectedOnline);
   }
 
 
@@ -1518,31 +2004,101 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     return this.isDepositPaid() && this.isTermsAccepted();
   }
 
-  isWarrantyCardRegistered(): boolean {
-    const anyBooking: any = this.booking || {};
-    const warrantyPayment = anyBooking?.payments?.warranty || {};
-    const legacyPayment = anyBooking?.payment || {};
+  getWarrantyPaymentMethodId(): string {
+    const b: any = this.booking || {};
+    const raw: any = b.raw || {};
+    const rawRaw: any = raw.raw || {};
+    const warrantyPayment: any = b?.payments?.warranty || {};
+    const rawWarrantyPayment: any = raw?.payments?.warranty || {};
+    const rawRawWarrantyPayment: any = rawRaw?.payments?.warranty || {};
+    const legacyPayment: any = b?.payment || {};
+    const rawPayment: any = raw?.payment || {};
 
-    return this.isCompletedStatusValue(anyBooking.warrantyStatus) ||
-      this.isCompletedStatusValue(anyBooking.warrantyRegistered) ||
-      this.isCompletedStatusValue(legacyPayment.warrantyStatus) ||
-      this.isCompletedStatusValue(legacyPayment.warrantyRegistered) ||
-      this.isCompletedStatusValue(warrantyPayment.warrantyStatus) ||
-      this.isCompletedStatusValue(warrantyPayment.warrantyRegistered) ||
-      this.isCompletedStatusValue(warrantyPayment.status);
+    return String(
+      b.warrantyPaymentMethodId ||
+      b.stripePaymentMethodId ||
+      b.paymentMethodId ||
+      b.setupIntentPaymentMethodId ||
+      raw.warrantyPaymentMethodId ||
+      raw.stripePaymentMethodId ||
+      raw.paymentMethodId ||
+      raw.setupIntentPaymentMethodId ||
+      rawRaw.warrantyPaymentMethodId ||
+      rawRaw.stripePaymentMethodId ||
+      rawRaw.paymentMethodId ||
+      rawRaw.setupIntentPaymentMethodId ||
+      warrantyPayment.paymentMethodId ||
+      warrantyPayment.warrantyPaymentMethodId ||
+      warrantyPayment.stripePaymentMethodId ||
+      warrantyPayment.setupIntentPaymentMethodId ||
+      rawWarrantyPayment.paymentMethodId ||
+      rawWarrantyPayment.warrantyPaymentMethodId ||
+      rawWarrantyPayment.stripePaymentMethodId ||
+      rawWarrantyPayment.setupIntentPaymentMethodId ||
+      rawRawWarrantyPayment.paymentMethodId ||
+      rawRawWarrantyPayment.warrantyPaymentMethodId ||
+      rawRawWarrantyPayment.stripePaymentMethodId ||
+      rawRawWarrantyPayment.setupIntentPaymentMethodId ||
+      legacyPayment.paymentMethodId ||
+      legacyPayment.warrantyPaymentMethodId ||
+      legacyPayment.stripePaymentMethodId ||
+      rawPayment.paymentMethodId ||
+      rawPayment.warrantyPaymentMethodId ||
+      rawPayment.stripePaymentMethodId ||
+      ''
+    ).trim();
+  }
+
+  isWarrantyCardSelectedOrRegistered(): boolean {
+    const b: any = this.booking || {};
+    const raw: any = b.raw || {};
+    const warrantyPayment: any = b?.payments?.warranty || {};
+    const values = [
+      b.warrantyPaymentChoice,
+      b.warrantyMethod,
+      b.warrantyMode,
+      b.warrantyStatus,
+      raw.warrantyPaymentChoice,
+      raw.warrantyMethod,
+      raw.warrantyMode,
+      raw.warrantyStatus,
+      warrantyPayment.warrantyPaymentChoice,
+      warrantyPayment.method,
+      warrantyPayment.mode,
+      warrantyPayment.status,
+      warrantyPayment.warrantyStatus,
+    ].map((v: any) => String(v || '').toLowerCase().trim());
+
+    return this.isWarrantyCardRegistered() || values.some((v: string) =>
+      v === 'card' ||
+      v === 'stripe_card' ||
+      v === 'credit_card' ||
+      v === 'card_selected' ||
+      v === 'stripe_card_selected' ||
+      v === 'card_registered' ||
+      v === 'warranty_card_saved' ||
+      v === 'pm_saved'
+    );
+  }
+
+  isWarrantyCardRegistered(): boolean {
+    return !!this.getWarrantyPaymentMethodId();
   }
 
 
   isCashWarranty(): boolean {
     const anyBooking: any = this.booking || {};
     const warrantyPayment = anyBooking?.payments?.warranty || {};
+    const choice = String(anyBooking.warrantyPaymentChoice || warrantyPayment.warrantyPaymentChoice || '').toLowerCase();
+    const status = String(anyBooking.warrantyStatus || warrantyPayment.status || warrantyPayment.warrantyStatus || '').toLowerCase();
+    const method = String(anyBooking.warrantyMethod || warrantyPayment.method || '').toLowerCase();
 
-    return anyBooking.warrantyMethod === 'cash' ||
-      anyBooking.warrantyStatus === 'cash_received' ||
+    return choice === 'cash_on_board' || choice === 'cash' ||
+      method === 'cash' || method === 'cash_on_board' ||
+      status === 'cash_selected' || status === 'cash_received' || status === 'cash_partially_used' || status === 'cash_fully_used' ||
+      anyBooking.warrantyCashSelected === true ||
       anyBooking.warrantyCashReceived === true ||
-      warrantyPayment.method === 'cash' ||
-      warrantyPayment.cashReceived === true ||
-      warrantyPayment.status === 'cash_received';
+      warrantyPayment.cashReceived === true;
   }
 
   getCashWarrantyAmount(): number {
@@ -1590,7 +2146,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     // Do not treat a generic top-level paymentStatus === 'paid' as the 90% balance being paid:
     // in older records it can simply mean the 10% deposit checkout succeeded.
     const topLevelPaymentStatus = String(anyBooking.paymentStatus || '').toLowerCase().trim();
-    const topLevelMeansFullBalancePaid = [
+    const topLevelMeansFullBalancePaid = anyBooking.paymentStatus === true || [
       'balance_paid',
       'remaining_paid',
       'full_payment_done',
@@ -1738,12 +2294,12 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     const currentUrl = window.location.href;
     const depositAmount = this.getDepositAmount();
     const payload = {
-      bookingId: this.booking.bookingId,
+      bookingId: this.getCurrentBookingId(),
       proposalId: this.booking.bookingId,
       ownerId: this.booking.ownerId || 'alegria',
       amount: depositAmount,
       depositAmount,
-      totalAmount: Number(this.booking.totalPrice || 0),
+      totalAmount: this.getOnlinePayableAmount(),
       currency: 'eur',
       paymentType: 'deposit',
       customerEmail: this.booking.email || '',
@@ -1782,7 +2338,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     const currentUrl = window.location.href;
     const warrantyAmount = Number((this.booking as any).warrantyAmount || 500);
     const payload = {
-      bookingId: this.booking.bookingId,
+      bookingId: this.getCurrentBookingId(),
       ownerId: this.booking.ownerId || 'alegria',
       warrantyAmount,
       currency: 'eur',
@@ -1866,16 +2422,23 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   }
 
   async recordCardWarrantyDamage(): Promise<void> {
-    if (!this.booking?.bookingId) return;
+    if (!this.isAdmin || !this.booking?.bookingId) return;
     const amount = Number(this.cardDamageAmount || 0);
     const reason = String(this.cardDamageReason || '').trim();
 
     this.cardDamageError = '';
     this.cardDamageMessage = '';
 
-    if (!this.isWarrantyCardRegistered()) {
-      this.cardDamageError = 'No registered warranty card for this booking.';
+    if (!this.isWarrantyCardSelectedOrRegistered()) {
+      this.cardDamageError = 'No warranty card selected for this booking.';
       return;
+    }
+
+    // Prefer a locally persisted reusable PaymentMethod ID, but still allow the backend
+    // to resolve it from the saved SetupIntent/customer if the booking object was not refreshed yet.
+    const localPaymentMethodId = this.getWarrantyPaymentMethodId();
+    if (!localPaymentMethodId) {
+      console.warn('Warranty card is selected but no paymentMethodId is visible in the frontend booking object; backend will try to resolve it.');
     }
 
     if (!amount || amount <= 0) {
@@ -2062,7 +2625,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         modifiedTS: Date.now(),
       };
 
-      await this.bookingApi.updateBooking(this.booking.bookingId, payload);
+      await this.bookingApi.updateBooking(this.getCurrentBookingId(), payload);
 
       this.booking = {
         ...this.booking,
@@ -2080,18 +2643,17 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   }
 
   payBalance(): void {
-    if (this.isAdmin) return;
     if (!this.booking?.bookingId || this.isBalancePaid()) return;
 
     const currentUrl = window.location.href;
     const balanceAmount = this.getBalanceAmount();
     const payload = {
-      bookingId: this.booking.bookingId,
+      bookingId: this.getCurrentBookingId(),
       proposalId: this.booking.bookingId,
       ownerId: this.booking.ownerId || 'alegria',
       amount: balanceAmount,
       balanceAmount,
-      totalAmount: Number(this.booking.totalPrice || 0),
+      totalAmount: this.getOnlinePayableAmount(),
       currency: 'eur',
       paymentType: 'balance',
       customerEmail: this.booking.email || '',
@@ -2116,6 +2678,30 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         this.balancePaymentError = error?.error?.error || error?.error?.message || error?.message || 'Unable to create balance checkout.';
       }
     });
+  }
+
+
+  canAdminTriggerBalancePayment(): boolean {
+    return this.isAdmin &&
+      !!this.booking?.bookingId &&
+      this.getBalanceAmount() > 0 &&
+      !this.isBalancePaid();
+  }
+
+  canAdminManageDamages(): boolean {
+    return this.isAdmin && !!this.booking?.bookingId && (this.isCashWarranty() || this.isWarrantyCardSelectedOrRegistered());
+  }
+
+  triggerCustomerBalanceStripeCheckout(): void {
+    if (!this.canAdminTriggerBalancePayment()) return;
+    this.adminBalanceCheckoutLoading = true;
+    this.balancePaymentError = '';
+    this.balancePaymentMessage = '';
+    try {
+      this.payBalance();
+    } finally {
+      setTimeout(() => { this.adminBalanceCheckoutLoading = false; }, 3000);
+    }
   }
 
   customerPayment(): void {
@@ -2318,6 +2904,31 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         raw: booking,
       });
     }
+
+    const skipperAmount = this.getSkipperCashAmount();
+    const skipperPaid = this.isSkipperPaymentPaid();
+    const existingSkipper = rows.find((row: any) => this.normalizePaymentType(row.paymentType) === 'skipper_cash');
+    if (skipperAmount > 0) {
+      const skipperPayment = this.getSkipperPayment();
+      if (existingSkipper) {
+        existingSkipper.normalizedAmount = skipperAmount;
+        existingSkipper.paid = skipperPaid;
+        existingSkipper.statusLabel = skipperPaid ? this.btext('paid') : this.btext('skipperPaymentPending');
+        existingSkipper.description = existingSkipper.description || this.btext('paymentDescriptionSkipperCash');
+      } else {
+        rows.push({
+          sourceKey: 'skipper_cash_fallback',
+          paymentType: 'skipper_cash',
+          label: this.getPaymentTypeLabel('skipper_cash'),
+          description: this.btext('paymentDescriptionSkipperCash'),
+          normalizedAmount: skipperAmount,
+          paid: skipperPaid,
+          statusLabel: skipperPaid ? this.btext('paid') : this.btext('skipperPaymentPending'),
+          sortDate: Number(skipperPayment?.paidAt || skipperPayment?.modifiedTS || booking?.updatedAt || booking?.modifiedTS || booking?.createdTS || 0),
+          raw: skipperPayment,
+        });
+      }
+    }
   }
 
   private firstPositiveNumber(...values: any[]): number {
@@ -2346,7 +2957,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     if (looksLikeOptionalPayment && amount <= 0) return false;
 
     // Hide any non-core zero-amount placeholders that may come from legacy/fallback payment objects.
-    const coreTypes = ['deposit', 'balance', 'warranty', 'warranty_charge', 'refund'];
+    const coreTypes = ['deposit', 'balance', 'skipper_cash', 'skipper_cash', 'warranty', 'warranty_charge', 'refund'];
     if (amount <= 0 && !coreTypes.includes(type)) return false;
 
     return true;
@@ -2356,6 +2967,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     const type = this.normalizePaymentType(row?.paymentType || row?.type || row?.sourceKey);
     if (type === 'deposit') return 10;
     if (type === 'balance') return 20;
+    if (type === 'skipper_cash') return 25;
     if (type === 'extra_service') return 30;
     if (type === 'ad_hoc') return 40;
     if (type === 'refund') return 50;
@@ -2367,7 +2979,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     rows.filter(Boolean).forEach((row: any, index: number) => {
       const paymentType = this.normalizePaymentType(row.paymentType || row.type || row.sourceKey || 'payment');
       const paymentId = row.paymentId || row.checkoutSessionId || row.stripeCheckoutSessionId || row.paymentIntentId || row.stripePaymentIntentId || row.setupIntentId || row.id || '';
-      const stableForSingleTypes = ['deposit', 'balance', 'remaining', 'remaining_90', 'warranty', 'warranty_charge'];
+      const stableForSingleTypes = ['deposit', 'balance', 'remaining', 'remaining_90', 'skipper_cash', 'warranty', 'warranty_charge'];
       const key = stableForSingleTypes.includes(paymentType)
         ? `${paymentType}:${this.booking?.bookingId || 'booking'}`
         : paymentId
@@ -2386,6 +2998,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     if (type === 'remaining' || type === 'remaining_90' || type === 'remaining_balance') return 'balance';
     if (type === 'extras' || type === 'extra' || type === 'extra_services' || type === 'extraservice') return 'extra_service';
     if (type === 'adhoc' || type === 'adhoc_payment' || type === 'ad_hoc' || type === 'ad_hoc_payment' || type === 'ad__hoc' || type === 'ad_hoc_checkout') return 'ad_hoc';
+    if (type === 'skipper' || type === 'skipper_cash' || type === 'skipper_payment' || type === 'skipper_fee') return 'skipper_cash';
     if (type === 'warrantycharge' || type === 'warranty_damage' || type === 'damage') return 'warranty_charge';
     return type || 'payment';
   }
@@ -2394,6 +3007,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     const normalized = this.normalizePaymentType(type);
     if (normalized === 'deposit') return this.btext('paymentTypeDeposit');
     if (normalized === 'balance') return this.btext('paymentTypeBalance');
+    if (normalized === 'skipper_cash') return this.btext('paymentTypeSkipperCash');
     if (normalized === 'extra_service') return this.btext('paymentTypeExtraService');
     if (normalized === 'ad_hoc') return this.btext('paymentTypeAdHoc');
     if (normalized === 'warranty') return this.isCashWarrantySelected() ? this.btext('paymentTypeCashWarranty') : this.btext('paymentTypeCardWarranty');
@@ -2427,6 +3041,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     const type = this.normalizePaymentType(item?.paymentType || item?.type || item?.sourceKey);
     if (type === 'deposit') return this.btext('paymentDescriptionDeposit');
     if (type === 'balance') return this.btext('paymentDescriptionBalance');
+    if (type === 'skipper_cash') return this.btext('paymentDescriptionSkipperCash');
     if (type === 'extra_service') return this.btext('paymentDescriptionExtraService');
     if (type === 'ad_hoc') return this.btext('paymentDescriptionAdHoc');
     if (type === 'refund') return this.btext('paymentDescriptionRefund');
@@ -2436,6 +3051,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   getPaymentRecordStatus(item: any): string {
     const type = this.normalizePaymentType(item?.paymentType || item?.type || item?.sourceKey);
     if (type === 'refund') return item?.status || this.btext('refunded');
+    if (type === 'skipper_cash') return item?.paid === true ? this.btext('paid') : this.btext('skipperPaymentPending');
     if (item?.paid === true) return this.btext('paid');
     const status = String(item?.status || item?.paymentStatus || '').toLowerCase();
     if (status.includes('paid') || status.includes('succeeded')) return this.btext('paid');
@@ -2452,12 +3068,36 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
 
   normalizeStripeAmount(amount: number, source?: any): number {
     if (!Number.isFinite(amount)) return 0;
-    const rawCurrency = String(source?.currency || source?.currencyCode || '').toLowerCase();
-    const sourceLooksStripe = !!(source?.stripeCheckoutSessionId || source?.checkoutSessionId || source?.stripePaymentIntentId || source?.paymentIntentId || source?.amount_total);
-    if (sourceLooksStripe || rawCurrency === 'eur') {
+
+    const explicitUnit = String(source?.amountUnit || source?.unit || source?.amount_unit || '').toLowerCase();
+    if (explicitUnit === 'cents' || explicitUnit === 'centimes') return Math.round(amount) / 100;
+    if (explicitUnit === 'euros' || explicitUnit === 'eur') return amount;
+
+    // Stripe webhooks/Checkout usually expose amount_total in cents.
+    if (source && Object.prototype.hasOwnProperty.call(source, 'amount_total')) {
       return Math.round(amount) / 100;
     }
-    return amount > 10000 ? Math.round(amount) / 100 : amount;
+
+    const hasStripeIdentifiers = !!(
+      source?.stripeCheckoutSessionId ||
+      source?.checkoutSessionId ||
+      source?.stripePaymentIntentId ||
+      source?.paymentIntentId ||
+      source?.stripeSessionId
+    );
+
+    // For Stripe payment records without amount_total, high integer values are cents.
+    // Keep normal booking/proposal amounts such as 137, 1233, 150 as euros.
+    if (hasStripeIdentifiers && Number.isInteger(amount) && Math.abs(amount) >= 10000) {
+      return Math.round(amount) / 100;
+    }
+
+    // Defensive fallback for legacy rows that stored cents without Stripe ids.
+    if (Number.isInteger(amount) && Math.abs(amount) >= 10000) {
+      return Math.round(amount) / 100;
+    }
+
+    return amount;
   }
 
   formatPaymentAmount(value: any, source?: any): string {
@@ -2496,7 +3136,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   }
 
   canCustomerPayExtraService(extra: any): boolean {
-    const amount = Number(extra?.amount || extra?.price || 0);
+    const amount = this.normalizeStripeAmount(Number(extra?.amount || extra?.price || 0), extra);
     return !this.isAdmin &&
       !!this.booking?.bookingId &&
       !this.isCancelledBooking() &&
@@ -2644,20 +3284,44 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
   }
 
 
+  private withReturnParams(url: string, params: Record<string, string | number | boolean | null | undefined>): string {
+    const query = Object.entries(params)
+      .filter((_entry) => _entry[1] !== null && _entry[1] !== undefined && String(_entry[1]) !== '')
+      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
+      .join('&');
+    if (!query) return url;
+    return `${url}${url.includes('?') ? '&' : '?'}${query}`;
+  }
+
   payExtraService(extra: any): void {
     if (this.isAdmin) return;
     if (!this.booking?.bookingId || !this.canCustomerPayExtraService(extra)) return;
+
     const currentUrl = window.location.href;
+    const extraServiceId = this.getExtraServiceId(extra, 0);
+    const amount = this.normalizeStripeAmount(Number(extra.amount || extra.price || 0), extra);
+    const description = extra.description || extra.title || 'Extra service';
+
     this.bookingApi.createExtraServiceCheckout({
-      bookingId: this.booking.bookingId,
-      extraServiceId: extra.id,
+      bookingId: this.getCurrentBookingId(),
+      extraServiceId,
       ownerId: this.booking.ownerId || 'alegria',
-      amount: Number(extra.amount || 0),
-      description: extra.description || extra.title || 'Extra service',
+      amount,
+      description,
       customerEmail: this.booking.email || '',
       customerName: this.booking.customerName || '',
-      successUrl: currentUrl.includes('?') ? `${currentUrl}&payment=success&paymentType=extra_service` : `${currentUrl}?payment=success&paymentType=extra_service`,
-      cancelUrl: currentUrl.includes('?') ? `${currentUrl}&payment=cancelled&paymentType=extra_service` : `${currentUrl}?payment=cancelled&paymentType=extra_service`,
+      successUrl: this.withReturnParams(currentUrl, {
+        payment: 'success',
+        paymentType: 'extra_service',
+        extraServiceId,
+        amount,
+        description,
+      }),
+      cancelUrl: this.withReturnParams(currentUrl, {
+        payment: 'cancelled',
+        paymentType: 'extra_service',
+        extraServiceId,
+      }),
     }).subscribe({
       next: (response: any) => {
         const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
@@ -2689,18 +3353,29 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     }
 
     const currentUrl = window.location.href;
+    const adhocPaymentId = `adhoc_${Date.now()}`;
     this.adhocPaymentLoading = true;
 
     this.bookingApi.createAdhocCheckout({
-      bookingId: this.booking.bookingId,
-      adhocPaymentId: `adhoc_${Date.now()}`,
+      bookingId: this.getCurrentBookingId(),
+      adhocPaymentId,
       ownerId: this.booking.ownerId || 'alegria',
       amount,
       description,
       customerEmail: this.booking.email || '',
       customerName: this.booking.customerName || '',
-      successUrl: currentUrl.includes('?') ? `${currentUrl}&payment=success&paymentType=adhoc` : `${currentUrl}?payment=success&paymentType=adhoc`,
-      cancelUrl: currentUrl.includes('?') ? `${currentUrl}&payment=cancelled&paymentType=adhoc` : `${currentUrl}?payment=cancelled&paymentType=adhoc`,
+      successUrl: this.withReturnParams(currentUrl, {
+        payment: 'success',
+        paymentType: 'adhoc',
+        adhocPaymentId,
+        amount,
+        description,
+      }),
+      cancelUrl: this.withReturnParams(currentUrl, {
+        payment: 'cancelled',
+        paymentType: 'adhoc',
+        adhocPaymentId,
+      }),
     }).subscribe({
       next: (response: any) => {
         const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
@@ -2782,7 +3457,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     this.refundMessage = '';
     this.refundError = '';
     this.bookingApi.refundBooking({
-      bookingId: this.booking.bookingId,
+      bookingId: this.getCurrentBookingId(),
       ownerId: this.booking.ownerId || 'alegria',
       amount,
       paymentType: this.refundTarget,

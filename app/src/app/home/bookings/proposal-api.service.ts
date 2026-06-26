@@ -37,6 +37,9 @@ export interface AlegriaProposal {
   startMarina?: string;
   passengers?: number;
   totalAmount: number;
+  skipperCashAmount?: number;
+  onlinePayableAmount?: number;
+  appPayableAmount?: number;
   proposalCleaningPrice?: number;
   estimatedOptionsPrice?: number;
   estimatedBoatPrice?: number;
@@ -146,15 +149,27 @@ export class ProposalApiService {
     if (errors.length) throw new Error(errors.join(' '));
   }
 
+  private getSkipperCashAmount(input: Partial<AlegriaProposal>): number {
+    return Number((input as any).proposalSkipperPrice ?? (input as any).estimatedSkipperPrice ?? (input as any).skipperPrice ?? 0) || 0;
+  }
+
+  private getOnlinePayableAmount(input: Partial<AlegriaProposal>): number {
+    const total = Number((input as any).totalAmount ?? (input as any).totalPrice ?? 0) || 0;
+    const skipperCashAmount = this.getSkipperCashAmount(input);
+    return Math.max(0, Math.round((total - skipperCashAmount) * 100) / 100);
+  }
+
 
   async saveProposal(input: Partial<AlegriaProposal>): Promise<AlegriaProposal> {
     this.validateProposalInput(input);
     const now = Date.now();
     const proposalId = input.proposalId || `proposal_${now}_${Math.random().toString(36).slice(2, 8)}`;
     const totalAmount = Number(input.totalAmount || 0);
+    const skipperCashAmount = this.getSkipperCashAmount(input);
+    const onlinePayableAmount = this.getOnlinePayableAmount(input);
     const depositRate = 0.10;
-    const depositAmount = Math.round(totalAmount * depositRate * 100) / 100;
-    const balanceAmount = Math.round((totalAmount - depositAmount) * 100) / 100;
+    const depositAmount = Math.round(onlinePayableAmount * depositRate * 100) / 100;
+    const balanceAmount = Math.round((onlinePayableAmount - depositAmount) * 100) / 100;
     const proposal: AlegriaProposal = {
       proposalId,
       source: input.source || 'direct',
@@ -173,6 +188,9 @@ export class ProposalApiService {
       bookingRequestStatus: (input as any).bookingRequestStatus || 'request_submitted',
       passengers: Number(input.passengers || 0) || undefined,
       totalAmount,
+      skipperCashAmount: skipperCashAmount as any,
+      onlinePayableAmount: onlinePayableAmount as any,
+      appPayableAmount: onlinePayableAmount as any,
       proposalCleaningPrice: (input as any).proposalCleaningPrice || null,
       estimatedOptionsPrice: (input as any).estimatedOptionsPrice || null,
       estimatedBoatPrice: (input as any).estimatedBoatPrice || null,
@@ -509,16 +527,94 @@ export class ProposalApiService {
       customerPhone: proposal.customerPhone,
       outingDate: proposal.outingDate,
       outingType: proposal.outingType,
+      amount: proposal.depositAmount,
       depositAmount: proposal.depositAmount,
+      totalAmount: (proposal as any).onlinePayableAmount || (proposal as any).appPayableAmount || Math.max(0, Number(proposal.totalAmount || 0) - Number((proposal as any).proposalSkipperPrice || (proposal as any).estimatedSkipperPrice || 0)),
+      skipperCashAmount: (proposal as any).proposalSkipperPrice || (proposal as any).estimatedSkipperPrice || 0,
+      paymentType: 'deposit',
       currency: 'eur',
       successUrl: `${window.location.origin}/proposal/${proposal.proposalId}?payment=success&session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${window.location.origin}/proposal/${proposal.proposalId}?payment=cancelled`,
     }, { withCredentials: true });
   }
 
+  async markWarrantyRegisteredFromStripeReturn(proposalId: string, payload: any = {}): Promise<AlegriaProposal> {
+    const current = await this.readItem(this.proposalsCollection, proposalId);
+    if (!current) throw new Error('Proposal not found');
+
+    const sessionId = String(payload.sessionId || payload.session_id || payload.checkoutSessionId || '').trim();
+    let backendResult: any = {};
+    if (sessionId) {
+      try {
+        backendResult = await this.completeWarrantySetup(proposalId, sessionId, 'alegria').toPromise();
+      } catch {
+        // Keep the local fallback below, but without a payment method the admin screen will clearly show that the card is not chargeable.
+        backendResult = {};
+      }
+    }
+
+    const paymentMethodId = backendResult?.paymentMethodId || payload.paymentMethodId || '';
+    const setupIntentId = backendResult?.setupIntentId || payload.setupIntentId || payload.setup_intent || current.warrantySetupIntentId || '';
+    const stripeCustomerId = backendResult?.stripeCustomerId || payload.stripeCustomerId || '';
+    const cardLast4 = backendResult?.cardLast4 || payload.cardLast4 || '';
+    const cardBrand = backendResult?.cardBrand || payload.cardBrand || '';
+
+    const patch: Partial<AlegriaProposal> = {
+      warrantyPaymentChoice: 'stripe_card',
+      warrantyMethod: 'stripe_card',
+      warrantyRegistered: !!paymentMethodId,
+      warrantyStatus: paymentMethodId ? 'card_registered' : 'card_selected',
+      warrantySetupIntentId: setupIntentId,
+      warrantyPaymentMethodId: paymentMethodId,
+      warrantyCardLast4: cardLast4,
+      modifiedTS: Date.now(),
+    } as any;
+
+    await this.patchProposal(proposalId, patch);
+    const bookingId = (current as any).relatedBookingId || proposalId;
+    const existing = await this.readItem(this.bookingsCollection, bookingId).catch(() => undefined);
+    await this.writeItem(this.bookingsCollection, bookingId, {
+      ...(existing || {}),
+      bookingId,
+      proposalId,
+      warrantyPaymentChoice: 'stripe_card',
+      warrantyMethod: 'stripe_card',
+      warrantyRegistered: !!paymentMethodId,
+      warrantyStatus: paymentMethodId ? 'card_registered' : 'card_selected',
+      warrantySetupIntentId: setupIntentId,
+      warrantyPaymentMethodId: paymentMethodId,
+      stripeCustomerId,
+      warrantyStripeCustomerId: stripeCustomerId,
+      warrantyCardLast4: cardLast4,
+      warrantyCardBrand: cardBrand,
+      modifiedTS: Date.now(),
+      payments: {
+        ...(existing?.payments || {}),
+        warranty: {
+          ...(existing?.payments?.warranty || {}),
+          paymentType: 'warranty',
+          status: paymentMethodId ? 'warranty_card_saved' : 'card_selected',
+          warrantyRegistered: !!paymentMethodId,
+          method: 'stripe_card',
+          warrantyPaymentChoice: 'stripe_card',
+          setupIntentId,
+          paymentMethodId,
+          warrantyPaymentMethodId: paymentMethodId,
+          stripeCustomerId,
+          cardLast4,
+          cardBrand,
+          amount: Number(current.warrantyAmount || 500),
+          updatedAt: Date.now(),
+        }
+      }
+    });
+    return { ...current, ...patch } as AlegriaProposal;
+  }
+
   createWarrantySetup(proposal: AlegriaProposal): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/pay/outing-warranty-checkout`, {
+    const payload = {
       bookingId: proposal.proposalId,
+      proposalId: proposal.proposalId,
       ownerId: 'alegria',
       customerName: proposal.customerName,
       customerEmail: proposal.customerEmail,
@@ -526,10 +622,37 @@ export class ProposalApiService {
       outingDate: proposal.outingDate,
       outingType: proposal.outingType,
       warrantyAmount: proposal.warrantyAmount || 500,
+      amount: proposal.warrantyAmount || 500,
+      paymentType: 'warranty',
+      checkoutType: 'warranty_setup',
       currency: 'eur',
-      successUrl: `${window.location.origin}/proposal/${proposal.proposalId}?warranty=success`,
+      successUrl: `${window.location.origin}/proposal/${proposal.proposalId}?warranty=success&session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${window.location.origin}/proposal/${proposal.proposalId}?warranty=cancelled`,
-    }, { withCredentials: true });
+    };
+
+    return this.postFirstAvailable([
+      `${this.baseUrl}/pay/outing-warranty-checkout`,
+      `${this.baseUrl}/api/payments/create-warranty-checkout-session`,
+      `${this.baseUrl}/api/payments/create-warranty-setup-session`,
+      `${this.baseUrl}/stripe/warranty-setup`,
+      `${this.baseUrl}/stripe/warranty-checkout`,
+    ], payload);
+  }
+
+
+  completeWarrantySetup(proposalId: string, sessionId: string, ownerId = 'alegria'): Observable<any> {
+    const payload = {
+      bookingId: proposalId,
+      proposalId,
+      ownerId,
+      checkoutSessionId: sessionId,
+      sessionId,
+    };
+    return this.postFirstAvailable([
+      `${this.baseUrl}/pay/outing-warranty-complete`,
+      `${this.baseUrl}/api/payments/complete-warranty-setup`,
+      `${this.baseUrl}/stripe/warranty-complete`,
+    ], payload);
   }
 
 
@@ -550,6 +673,25 @@ export class ProposalApiService {
   }
 
   private async createBookingFromProposal(p: AlegriaProposal): Promise<void> {
+    const anyP: any = p || {};
+    const raw: any = anyP.raw || {};
+    const firstPositive = (...values: any[]): number => {
+      for (const value of values) {
+        const n = Number(value);
+        if (Number.isFinite(n) && n > 0) return n;
+      }
+      return 0;
+    };
+    const proposalBoatPrice = firstPositive(anyP.proposalBoatPrice, anyP.estimatedBoatPrice, raw.proposalBoatPrice, raw.estimatedBoatPrice, raw.estimatedBasePrice);
+    const proposalSkipperPrice = firstPositive(anyP.proposalSkipperPrice, anyP.estimatedSkipperPrice, anyP.skipperCashAmount, raw.proposalSkipperPrice, raw.estimatedSkipperPrice);
+    const proposalExtraServicesPrice = firstPositive(anyP.proposalExtraServicesPrice, anyP.estimatedExtraGuestsAmount, anyP.estimatedOptionsPrice, raw.proposalExtraServicesPrice, raw.estimatedExtraGuestsAmount, raw.estimatedOptionsPrice);
+    const computedTotal = proposalBoatPrice + proposalSkipperPrice + proposalExtraServicesPrice;
+    const totalAmount = firstPositive(anyP.totalAmount, anyP.totalPrice, anyP.estimatedPrice, raw.totalAmount, raw.totalPrice, raw.estimatedPrice, computedTotal);
+    const skipperCashAmount = firstPositive(anyP.skipperCashAmount, proposalSkipperPrice, raw.skipperCashAmount);
+    const onlinePayableAmount = firstPositive(anyP.onlinePayableAmount, anyP.appPayableAmount, raw.onlinePayableAmount, raw.appPayableAmount, Math.max(0, totalAmount - skipperCashAmount));
+    const depositAmount = firstPositive(anyP.depositAmount, raw.depositAmount, Math.round(onlinePayableAmount * 0.10 * 100) / 100);
+    const balanceAmount = firstPositive(anyP.balanceAmount, anyP.remainingFeesAmount, raw.balanceAmount, raw.remainingFeesAmount, Math.max(0, Math.round((onlinePayableAmount - depositAmount) * 100) / 100));
+
     await this.writeItem(this.bookingsCollection, p.proposalId, {
       bookingId: p.relatedBookingId || p.proposalId,
       proposalId: p.proposalId,
@@ -557,7 +699,7 @@ export class ProposalApiService {
       source: p.source,
       bookingSource: (p as any).bookingSource || '',
       externalPlatform: (p as any).externalPlatform || '',
-      externalOnboardAmount: (p as any).externalOnboardAmount || p.totalAmount || 0,
+      externalOnboardAmount: (p as any).externalOnboardAmount || totalAmount || 0,
       externalRemainingOnboardAmount: (p as any).externalRemainingOnboardAmount || 0,
       externalExtraServicesOnboardAmount: (p as any).externalExtraServicesOnboardAmount || 0,
       customerName: p.customerName,
@@ -568,12 +710,24 @@ export class ProposalApiService {
       departureTime: p.departureTime || '',
       arrivalTime: p.arrivalTime || '',
       passengers: p.passengers || null,
-      totalPrice: p.totalAmount,
-      depositAmount: p.depositAmount,
-      balanceAmount: p.balanceAmount,
-      remainingOnboardAmount: (p as any).externalRemainingOnboardAmount || p.balanceAmount,
+      proposalBoatPrice,
+      proposalSkipperPrice,
+      proposalExtraServicesPrice,
+      estimatedBoatPrice: (p as any).estimatedBoatPrice ?? proposalBoatPrice,
+      estimatedSkipperPrice: (p as any).estimatedSkipperPrice ?? proposalSkipperPrice,
+      estimatedExtraGuestsAmount: (p as any).estimatedExtraGuestsAmount ?? 0,
+      estimatedOptionsPrice: (p as any).estimatedOptionsPrice ?? 0,
+      estimatedPrice: (p as any).estimatedPrice ?? totalAmount,
+      totalPrice: totalAmount,
+      totalAmount,
+      skipperCashAmount,
+      onlinePayableAmount,
+      appPayableAmount: onlinePayableAmount,
+      depositAmount,
+      balanceAmount,
+      remainingOnboardAmount: (p as any).externalRemainingOnboardAmount || balanceAmount,
       extraServicesOnboardAmount: (p as any).externalExtraServicesOnboardAmount || 0,
-      remainingFeesAmount: p.balanceAmount,
+      remainingFeesAmount: balanceAmount,
       warrantyAmount: p.warrantyAmount || 500,
       depositStatus: p.depositStatus || (p.depositPaid ? 'paid' : 'pending'),
       depositPaid: p.depositPaid === true || p.depositStatus === 'paid',
@@ -610,7 +764,7 @@ export class ProposalApiService {
           return;
         }
 
-        this.http.post<any>(endpoints[index++], payload, { withCredentials: true }).subscribe({
+        this.http.post<any>(endpoints[index++], payload).subscribe({
           next: (response) => {
             observer.next(response);
             observer.complete();

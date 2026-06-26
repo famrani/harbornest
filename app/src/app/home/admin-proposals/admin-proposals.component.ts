@@ -311,16 +311,20 @@ export class AdminProposalsComponent implements OnInit, OnDestroy {
     const cleaningPrice = Number(form.proposalCleaningPrice || 0);
     const extraServicesPrice = Number(form.proposalExtraServicesPrice || 0);
     const finalTotal = boatPrice + skipperPrice + cleaningPrice + extraServicesPrice;
+    const onlinePayableAmount = Math.max(0, Math.round((finalTotal - skipperPrice) * 100) / 100);
 
     if (finalTotal > 0) {
       const depositRate = Number(form.depositRate || 0.10);
-      const depositAmount = Math.round(finalTotal * depositRate * 100) / 100;
+      const depositAmount = Math.round(onlinePayableAmount * depositRate * 100) / 100;
       this.form = {
         ...this.form,
         totalAmount: Math.round(finalTotal * 100) / 100,
+        skipperCashAmount: skipperPrice,
+        onlinePayableAmount,
+        appPayableAmount: onlinePayableAmount,
         depositRate,
         depositAmount,
-        balanceAmount: Math.round((finalTotal - depositAmount) * 100) / 100,
+        balanceAmount: Math.round((onlinePayableAmount - depositAmount) * 100) / 100,
       } as any;
     }
   }

@@ -208,12 +208,16 @@ export class DepositComponent implements OnInit, OnDestroy {
       if (payment === 'success') {
         this.paymentReturnMessage = paymentType === 'warranty'
           ? 'Warranty card registration completed successfully.'
-          : 'Deposit payment completed successfully.';
+          : paymentType === 'balance'
+            ? 'Remaining balance payment completed successfully.'
+            : 'Deposit payment completed successfully.';
         this.loadPaymentStatus();
       } else if (payment === 'cancelled') {
         this.paymentReturnMessage = paymentType === 'warranty'
           ? 'Warranty card registration was cancelled.'
-          : 'Deposit payment was cancelled.';
+          : paymentType === 'balance'
+            ? 'Remaining balance payment was cancelled.'
+            : 'Deposit payment was cancelled.';
       }
     });
   }
@@ -232,8 +236,60 @@ export class DepositComponent implements OnInit, OnDestroy {
     return this.isAdmin && this.paymentMode === 'warranty';
   }
 
+  get isBalanceMode(): boolean {
+    return String(this.paymentMode || '').toLowerCase() === 'balance';
+  }
+
   get showDepositPayment(): boolean {
     return !this.isWarrantyAdminMode;
+  }
+
+  get paymentPageEyebrow(): string {
+    if (this.isWarrantyAdminMode) return 'Admin warranty';
+    return this.isBalanceMode ? 'Remaining balance' : this.copy.eyebrow;
+  }
+
+  get paymentPageTitle(): string {
+    if (this.isWarrantyAdminMode) return 'Charge warranty for damage';
+    return this.isBalanceMode ? 'Pay the remaining balance for your outing' : this.copy.title;
+  }
+
+  get paymentPageIntro(): string {
+    return this.isBalanceMode
+      ? 'Review your booking information and pay the remaining balance securely by Stripe.'
+      : this.copy.intro;
+  }
+
+  get paymentSummaryTitle(): string {
+    return this.isBalanceMode ? 'Payment summary' : this.copy.includedTitle;
+  }
+
+  get paymentAmountLabel(): string {
+    return this.isBalanceMode ? 'Remaining balance to pay' : this.copy.deposit;
+  }
+
+  get paymentButtonLabel(): string {
+    if (this.isLoading) return this.copy.loading;
+    return this.isBalanceMode ? 'Pay remaining balance' : this.copy.payDeposit;
+  }
+
+  get paymentAmount(): number {
+    return this.isBalanceMode ? this.remainingBalanceAmount : this.depositAmount;
+  }
+
+  get remainingBalanceAmount(): number {
+    const b: any = this.booking || {};
+    const explicit = Number(b.balanceAmount ?? b.remainingFeesAmount ?? b.remainingOnboardAmount ?? b.payments?.balance?.amount ?? b.payments?.remaining?.amount ?? 0);
+    if (explicit > 0) return this.normalizePossibleStripeAmount(explicit);
+    return Math.max(0, Math.round((this.onlinePayableAmount - this.depositAmount) * 100) / 100);
+  }
+
+  private normalizePossibleStripeAmount(value: number): number {
+    const amount = Number(value || 0);
+    if (!Number.isFinite(amount) || amount <= 0) return 0;
+    // Stripe stores amounts in cents. Booking/proposal amounts are usually in euros.
+    // Values above 20,000 are almost certainly cents for this application.
+    return amount > 20000 ? Math.round(amount) / 100 : amount;
   }
 
   get cashWarrantySelected(): boolean {
@@ -244,6 +300,24 @@ export class DepositComponent implements OnInit, OnDestroy {
     return !this.cashWarrantySelected && this.isWarrantyCardMethodSelected();
   }
 
+
+  get warrantyCardRegistered(): boolean {
+    if (this.cashWarrantySelected) return false;
+    const anyBooking: any = this.booking || {};
+    const warrantyPayment = anyBooking?.payments?.warranty || {};
+    return anyBooking.warrantyRegistered === true ||
+      anyBooking.warrantyStatus === 'card_registered' ||
+      anyBooking.warrantyStatus === 'warranty_card_saved' ||
+      anyBooking.warrantyStatus === 'warranty_card_registered' ||
+      !!anyBooking.warrantySetupIntentId ||
+      !!anyBooking.warrantyPaymentMethodId ||
+      warrantyPayment.warrantyRegistered === true ||
+      warrantyPayment.status === 'card_registered' ||
+      warrantyPayment.status === 'warranty_card_saved' ||
+      !!warrantyPayment.setupIntentId ||
+      !!warrantyPayment.paymentMethodId;
+  }
+
   get showWarrantyRegistration(): boolean {
     // Never show any warranty card/Stripe section when the booking/proposal says cash.
     // Cash mode is intentionally checked first and has priority over old Stripe fields.
@@ -251,7 +325,8 @@ export class DepositComponent implements OnInit, OnDestroy {
       !!this.booking &&
       this.warrantyAmount > 0 &&
       !this.cashWarrantySelected &&
-      !this.cardWarrantySelected;
+      this.cardWarrantySelected &&
+      !this.warrantyCardRegistered;
   }
 
   get showWarrantyCardSummary(): boolean {
@@ -261,7 +336,8 @@ export class DepositComponent implements OnInit, OnDestroy {
       !!this.booking &&
       this.warrantyAmount > 0 &&
       !this.cashWarrantySelected &&
-      this.cardWarrantySelected;
+      this.cardWarrantySelected &&
+      this.warrantyCardRegistered;
   }
 
   get warrantyCardLast4(): string {
@@ -377,8 +453,24 @@ export class DepositComponent implements OnInit, OnDestroy {
     return String(value);
   }
 
+  get skipperCashAmount(): number {
+    const b: any = this.booking || {};
+    return Number(b.skipperCashAmount ?? b.proposalSkipperPrice ?? b.estimatedSkipperPrice ?? b.raw?.proposalSkipperPrice ?? b.raw?.estimatedSkipperPrice ?? 0) || 0;
+  }
+
+  get onlinePayableAmount(): number {
+    const explicit = Number((this.booking as any)?.onlinePayableAmount ?? (this.booking as any)?.appPayableAmount ?? 0);
+    if (explicit > 0) return explicit;
+    return Math.max(0, Math.round((Number(this.totalPrice || 0) - this.skipperCashAmount) * 100) / 100);
+  }
+
   get depositAmount(): number {
-    return Math.round(((this.totalPrice || 0) * 0.5) * 100) / 100;
+    const existing = Number((this.booking as any)?.depositAmount || 0);
+    const expectedFull = Math.round(Number(this.totalPrice || 0) * 0.1 * 100) / 100;
+    const expectedOnline = Math.round(this.onlinePayableAmount * 0.1 * 100) / 100;
+    if (this.skipperCashAmount > 0 && existing > 0 && Math.abs(existing - expectedFull) < 0.01) return expectedOnline;
+    if (existing > 0) return existing;
+    return expectedOnline;
   }
 
   get canPay(): boolean {
@@ -510,7 +602,67 @@ export class DepositComponent implements OnInit, OnDestroy {
     });
   }
 
+  payRemainingBalance(): void {
+    this.errorMessage = '';
+
+    if (!this.canPay) {
+      this.errorMessage = this.copy.requiredNotice;
+      return;
+    }
+
+    if (!this.bookingId || !this.ownerId) {
+      this.errorMessage = 'Missing booking id or owner id for Stripe payment.';
+      return;
+    }
+
+    const amount = this.remainingBalanceAmount;
+    if (!amount || amount <= 0) {
+      this.errorMessage = 'No remaining balance is due for this booking.';
+      return;
+    }
+
+    this.isLoading = true;
+    const baseReturnUrl = `${window.location.origin}/bookings/${this.bookingId}`;
+
+    this.bookingApi.createBalanceCheckout({
+      bookingId: this.bookingId,
+      proposalId: this.bookingId,
+      ownerId: this.ownerId,
+      amount,
+      balanceAmount: amount,
+      totalAmount: this.onlinePayableAmount,
+      currency: this.currency,
+      paymentType: 'balance',
+      customerName: this.customerName.trim(),
+      customerEmail: this.customerEmail.trim(),
+      customerPhone: this.booking?.customerPhone || this.booking?.phone || '',
+      outingDate: this.outingDate,
+      outingType: this.outingType,
+      successUrl: `${baseReturnUrl}?payment=success&paymentType=balance`,
+      cancelUrl: `${baseReturnUrl}?payment=cancelled&paymentType=balance`,
+    }).subscribe({
+      next: (response) => {
+        const checkoutUrl = response.url || response.checkoutUrl || response.sessionUrl;
+        if (checkoutUrl) {
+          window.location.href = checkoutUrl;
+        } else {
+          this.isLoading = false;
+          this.errorMessage = 'Unable to open Stripe remaining balance checkout.';
+        }
+      },
+      error: () => {
+        this.isLoading = false;
+        this.errorMessage = 'Unable to open Stripe remaining balance checkout.';
+      }
+    });
+  }
+
   payDeposit(): void {
+    if (this.isBalanceMode) {
+      this.payRemainingBalance();
+      return;
+    }
+
     this.errorMessage = '';
 
     if (!this.canPay) {

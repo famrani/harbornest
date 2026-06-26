@@ -5,6 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MailerService = void 0;
 const nodemailer_1 = __importDefault(require("nodemailer"));
+function alegriaSender() {
+    const name = (process.env.MAIL_FROM_NAME || 'Alegria Team').trim();
+    const email = (process.env.MAIL_FROM_EMAIL || process.env.MAIL_FROM || 'alegria.boat01@gmail.com').trim();
+    return `\"${name}\" <${email}>`;
+}
 class MailerService {
     constructor() {
         this.transporter = nodemailer_1.default.createTransport({
@@ -33,7 +38,7 @@ class MailerService {
             return Promise.resolve();
         }
         return this.transporter.sendMail({
-            from: process.env.MAIL_FROM,
+            from: alegriaSender(),
             to,
             subject,
             html
@@ -43,7 +48,7 @@ class MailerService {
         if (!guestEmail)
             return Promise.resolve();
         return this.transporter.sendMail({
-            from: process.env.MAIL_FROM,
+            from: alegriaSender(),
             to: guestEmail,
             subject,
             html

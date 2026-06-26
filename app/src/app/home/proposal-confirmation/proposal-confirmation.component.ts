@@ -69,14 +69,30 @@ export class ProposalConfirmationComponent implements OnInit {
         this.persistDepositSuccess(params.get('session_id') || params.get('sessionId') || '');
       }
       if (params.get('warranty') === 'success') {
-        this.message = this.text('warrantySuccess');
-        setTimeout(() => this.reloadProposal(true), 1500);
+        this.persistWarrantySuccess(params.get('session_id') || params.get('sessionId') || '');
       }
     });
   }
 
 
 
+
+
+  private async persistWarrantySuccess(sessionId = ''): Promise<void> {
+    const proposalId = this.route.snapshot.paramMap.get('proposalId') || this.proposal?.proposalId || '';
+    this.message = this.text('warrantySuccess');
+    if (!proposalId) {
+      setTimeout(() => this.reloadProposal(true), 1500);
+      return;
+    }
+    try {
+      this.proposal = await this.proposalApi.markWarrantyRegisteredFromStripeReturn(proposalId, { sessionId });
+      this.warrantyChoice = 'stripe_card';
+      setTimeout(() => this.reloadProposal(true), 800);
+    } catch {
+      setTimeout(() => this.reloadProposal(true), 1500);
+    }
+  }
 
   private async persistDepositSuccess(sessionId = ''): Promise<void> {
     const proposalId = this.route.snapshot.paramMap.get('proposalId') || this.proposal?.proposalId || '';
@@ -372,15 +388,28 @@ export class ProposalConfirmationComponent implements OnInit {
 
   private defaultPriceTitles(language: SiteLanguage): any {
     const defaults: any = {
-      fr: { totalPrice: 'Prix total', totalAmount: 'Montant total', deposit: 'Acompte 10 %', deposit10: 'Acompte 10 %', remaining: 'Solde 90 %', remaining90: 'Solde 90 %', warranty: 'Caution', warrantyAmount: 'Caution', boatPrice: 'Prix bateau', skipperPrice: 'Prix skipper', cleaningPrice: 'Prix carburant', extraServicesPrice: 'Extras / services' },
-      en: { totalPrice: 'Total price', totalAmount: 'Total amount', deposit: 'Deposit 10%', deposit10: 'Deposit 10%', remaining: 'Balance 90%', remaining90: 'Balance 90%', warranty: 'Warranty', warrantyAmount: 'Warranty', boatPrice: 'Boat price', skipperPrice: 'Skipper price', cleaningPrice: 'Fuel price', extraServicesPrice: 'Extras / services' },
-      es: { totalPrice: 'Precio total', totalAmount: 'Importe total', deposit: 'Depósito 10%', deposit10: 'Depósito 10%', remaining: 'Saldo 90%', remaining90: 'Saldo 90%', warranty: 'Garantía', warrantyAmount: 'Garantía', boatPrice: 'Precio barco', skipperPrice: 'Precio skipper', cleaningPrice: 'Precio combustible', extraServicesPrice: 'Extras / servicios' }
+      fr: { totalPrice: 'Prix total', totalAmount: 'Montant total', deposit: 'Acompte 10 %', deposit10: 'Acompte 10 %', remaining: 'Solde 90 %', remaining90: 'Solde 90 %', warranty: 'Caution', warrantyAmount: 'Caution', boatPrice: 'Prix bateau', skipperPrice: 'Skipper à payer en espèces', skipperCash: 'Skipper à payer en espèces', onlinePayable: 'Montant payable en ligne', cleaningPrice: 'Prix carburant', extraServicesPrice: 'Extras / services' },
+      en: { totalPrice: 'Total price', totalAmount: 'Total amount', deposit: 'Deposit 10%', deposit10: 'Deposit 10%', remaining: 'Balance 90%', remaining90: 'Balance 90%', warranty: 'Warranty', warrantyAmount: 'Warranty', boatPrice: 'Boat price', skipperPrice: 'Skipper cash on board', skipperCash: 'Skipper cash on board', onlinePayable: 'Online payable amount', cleaningPrice: 'Fuel price', extraServicesPrice: 'Extras / services' },
+      es: { totalPrice: 'Precio total', totalAmount: 'Importe total', deposit: 'Depósito 10%', deposit10: 'Depósito 10%', remaining: 'Saldo 90%', remaining90: 'Saldo 90%', warranty: 'Garantía', warrantyAmount: 'Garantía', boatPrice: 'Precio barco', skipperPrice: 'Skipper en efectivo a bordo', skipperCash: 'Skipper en efectivo a bordo', onlinePayable: 'Importe pagadero en línea', cleaningPrice: 'Precio combustible', extraServicesPrice: 'Extras / servicios' }
     };
     return defaults[language] || defaults.fr;
   }
 
   priceTitle(key: string): string {
     return this.priceTitles?.[key] || this.text(key) || key;
+  }
+
+
+  get skipperCashAmount(): number {
+    const p: any = this.proposal || {};
+    return Number(p.skipperCashAmount ?? p.proposalSkipperPrice ?? p.estimatedSkipperPrice ?? 0) || 0;
+  }
+
+  get onlinePayableAmount(): number {
+    const p: any = this.proposal || {};
+    const explicit = Number(p.onlinePayableAmount ?? p.appPayableAmount ?? 0);
+    if (explicit > 0) return explicit;
+    return Math.max(0, Math.round((Number(p.totalAmount || 0) - this.skipperCashAmount) * 100) / 100);
   }
 
   text(key: string): string {

@@ -98,7 +98,7 @@
         <span class="row-actions" (click)="$event.stopPropagation()">
           <button type="button" class="mini-btn"
             *ngIf="shouldShowPaymentButton(booking) && !isBalancePaid(booking)"
-            (click)="payBooking(booking)">
+            (click)="payBooking(booking, $event)">
             {{ getPaymentButtonLabel(booking) }}
           </button>
           <span class="row-chevron">›</span>

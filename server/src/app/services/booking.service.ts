@@ -193,6 +193,273 @@ function proposalSummaryHtml(record: any): string {
     return rows.map(([label, value]) => `<p><strong>${escapeHtml(label)} :</strong> ${escapeHtml(value)}</p>`).join('');
 }
 
+
+type EmailTemplate = {
+    subject?: string;
+    title?: string;
+    html?: string;
+    text?: string;
+    buttonText?: string;
+    footer?: string;
+};
+
+const DEFAULT_EMAIL_TEMPLATES: Record<string, Record<string, EmailTemplate>> = {
+    fr: {
+        proposalReady: {
+            subject: 'Votre proposition Alegria est prête',
+            title: 'Votre proposition est prête',
+            buttonText: 'Voir et confirmer ma proposition',
+            html: '<p>Bonjour {{customerName}},</p><p>Votre proposition pour votre sortie Alegria est maintenant disponible.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p><p><a href="{{proposalUrl}}">{{proposalUrl}}</a></p>',
+            footer: 'À bientôt à bord,<br/>L’équipe Alegria'
+        },
+        bookingConfirmed: {
+            subject: 'Votre réservation Alegria est confirmée',
+            title: 'Votre réservation est confirmée',
+            buttonText: 'Ouvrir ma réservation',
+            html: '<p>Bonjour {{customerName}},</p><p>Merci, votre proposition a bien été confirmée et transformée en réservation.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{bookingUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p><p><a href="{{bookingUrl}}">{{bookingUrl}}</a></p>',
+            footer: 'À bientôt à bord,<br/>L’équipe Alegria'
+        }
+    },
+    en: {
+        proposalReady: {
+            subject: 'Your Alegria proposal is ready',
+            title: 'Your proposal is ready',
+            buttonText: 'View and confirm my proposal',
+            html: '<p>Hello {{customerName}},</p><p>Your Alegria outing proposal is now available.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>If the button does not work, copy this link into your browser:</p><p><a href="{{proposalUrl}}">{{proposalUrl}}</a></p>',
+            footer: 'See you soon on board,<br/>The Alegria Team'
+        },
+        bookingConfirmed: {
+            subject: 'Your Alegria booking is confirmed',
+            title: 'Your booking is confirmed',
+            buttonText: 'Open my booking',
+            html: '<p>Hello {{customerName}},</p><p>Thank you, your proposal has been confirmed and converted into a booking.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{bookingUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>If the button does not work, copy this link into your browser:</p><p><a href="{{bookingUrl}}">{{bookingUrl}}</a></p>',
+            footer: 'See you soon on board,<br/>The Alegria Team'
+        }
+    },
+    es: {
+        proposalReady: {
+            subject: 'Tu propuesta Alegria está lista',
+            title: 'Tu propuesta está lista',
+            buttonText: 'Ver y confirmar mi propuesta',
+            html: '<p>Hola {{customerName}},</p><p>Tu propuesta para la salida Alegria ya está disponible.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si el botón no funciona, copia este enlace en tu navegador:</p><p><a href="{{proposalUrl}}">{{proposalUrl}}</a></p>',
+            footer: 'Hasta pronto a bordo,<br/>El equipo Alegria'
+        },
+        bookingConfirmed: {
+            subject: 'Tu reserva Alegria está confirmada',
+            title: 'Tu reserva está confirmada',
+            buttonText: 'Abrir mi reserva',
+            html: '<p>Hola {{customerName}},</p><p>Gracias, tu propuesta ha sido confirmada y convertida en reserva.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{bookingUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si el botón no funciona, copia este enlace en tu navegador:</p><p><a href="{{bookingUrl}}">{{bookingUrl}}</a></p>',
+            footer: 'Hasta pronto a bordo,<br/>El equipo Alegria'
+        }
+    }
+};
+
+function normalizeLang(record: any): string {
+    const raw = String(record?.language || record?.lang || record?.locale || record?.raw?.language || record?.raw?.lang || record?.raw?.locale || 'fr').toLowerCase();
+    if (raw.startsWith('en')) return 'en';
+    if (raw.startsWith('es')) return 'es';
+    return 'fr';
+}
+
+function getPathValue(data: any, path: string): any {
+    return path.split('.').reduce((acc: any, key: string) => acc && acc[key] !== undefined ? acc[key] : undefined, data);
+}
+
+function renderTemplateString(template: string, data: Record<string, any>, htmlSafe = true): string {
+    return String(template || '').replace(/\{\{\s*([\w.]+)\s*\}\}/g, (_m, key) => {
+        const raw = getPathValue(data, key);
+        if (raw === undefined || raw === null) return '';
+        const value = String(raw);
+        if (!htmlSafe) return value;
+        if (key.toLowerCase().endsWith('html')) return value;
+        return escapeHtml(value);
+    });
+}
+
+function wrapEmailLayout(template: EmailTemplate, data: Record<string, any>): string {
+    const title = renderTemplateString(template.title || '', data);
+    const body = renderTemplateString(template.html || '', { ...data, buttonText: template.buttonText || data.buttonText || '' });
+    const footer = renderTemplateString(template.footer || '', data);
+    return `
+      <div style="margin:0;padding:0;background:#f5f7f8;font-family:Arial,Helvetica,sans-serif;color:#19323a;">
+        <div style="max-width:640px;margin:0 auto;padding:24px;">
+          <div style="background:#ffffff;border-radius:16px;padding:28px;border:1px solid #e6ecef;">
+            <div style="font-size:20px;font-weight:700;color:#0b4b5a;margin-bottom:18px;">Alegria</div>
+            ${title ? `<h2 style="margin:0 0 16px 0;color:#0b4b5a;">${title}</h2>` : ''}
+            <div style="font-size:15px;line-height:1.6;">${body}</div>
+            ${footer ? `<div style="margin-top:28px;padding-top:18px;border-top:1px solid #e6ecef;color:#60727a;font-size:13px;line-height:1.5;">${footer}</div>` : ''}
+          </div>
+        </div>
+      </div>`;
+}
+
+async function loadEmailTemplate(db: any, lang: string, key: string): Promise<EmailTemplate> {
+    const languages = [lang, 'fr', 'en', 'es'].filter((v, i, a) => v && a.indexOf(v) === i);
+    for (const l of languages) {
+        const snap = await db.ref(`/siteContent/${l}/emailTemplates/${key}`).once('value').catch(() => null);
+        const val = snap?.val?.();
+        if (val && typeof val === 'object') {
+            return { ...(DEFAULT_EMAIL_TEMPLATES[l]?.[key] || DEFAULT_EMAIL_TEMPLATES.fr[key] || {}), ...val };
+        }
+    }
+    return DEFAULT_EMAIL_TEMPLATES[lang]?.[key] || DEFAULT_EMAIL_TEMPLATES.fr[key] || {};
+}
+
+
+
+type AlegriaNotificationRequest = {
+    eventId?: string;
+    type?: string;
+    proposalId?: string;
+    bookingId?: string;
+    actor?: string;
+    customerName?: string;
+    customerEmail?: string;
+    customerPhone?: string;
+    outingType?: string;
+    outingDate?: string;
+    amount?: number;
+    totalAmount?: number;
+    paymentType?: string;
+    paymentStatus?: string;
+    previousStatus?: string;
+    newStatus?: string;
+    changedFields?: string[];
+    before?: any;
+    after?: any;
+    source?: string;
+    recipients?: string[];
+    adminEmail?: string;
+    proposalUrl?: string;
+    bookingUrl?: string;
+};
+
+function normalizeEmail(value: any): string {
+    const email = String(value || '').trim().toLowerCase();
+    return isEmail(email) ? email : '';
+}
+
+function getAdminNotificationEmail(): string {
+    return normalizeEmail(process.env.ALEGRIA_ADMIN_EMAIL || process.env.MAIL_TO || 'alegria.boat01@gmail.com') || 'alegria.boat01@gmail.com';
+}
+
+function buildNotificationRecipients(payload: AlegriaNotificationRequest): { adminEmail: string; customerEmail: string; recipients: string[] } {
+    const adminEmail = normalizeEmail(payload.adminEmail) || getAdminNotificationEmail();
+    const customerEmail = normalizeEmail(payload.customerEmail);
+    const recipients = [adminEmail];
+    if (customerEmail && customerEmail !== adminEmail) recipients.push(customerEmail);
+    return { adminEmail, customerEmail, recipients };
+}
+
+function humanNotificationType(type?: string): string {
+    const value = String(type || '').toLowerCase();
+    const labels: Record<string, string> = {
+        proposal_created: 'Proposition créée',
+        proposal_updated: 'Proposition mise à jour',
+        proposal_sent: 'Proposition envoyée',
+        booking_updated: 'Réservation mise à jour',
+        booking_confirmed: 'Réservation confirmée',
+        payment_completed: 'Paiement reçu',
+    };
+    return labels[value] || 'Notification Alegria';
+}
+
+function formatChangedFields(fields?: string[]): string {
+    if (!Array.isArray(fields) || !fields.length) return '';
+    return fields.slice(0, 20).map((f) => escapeHtml(f)).join(', ');
+}
+
+function firstNonEmpty(...values: any[]): string {
+    for (const value of values) {
+        const text = String(value ?? '').trim();
+        if (text) return text;
+    }
+    return '';
+}
+
+function notificationSummaryHtml(payload: AlegriaNotificationRequest): string {
+    const allRows: Array<[string, any]> = [
+        ['Type', humanNotificationType(payload.type)],
+        ['Réservation', payload.bookingId || ''],
+        ['Proposition', payload.proposalId || ''],
+        ['Client', payload.customerName || ''],
+        ['Email client', payload.customerEmail || ''],
+        ['Téléphone', payload.customerPhone || ''],
+        ['Sortie', payload.outingType || ''],
+        ['Date', payload.outingDate || ''],
+        ['Ancien statut', payload.previousStatus || ''],
+        ['Nouveau statut', payload.newStatus || ''],
+        ['Paiement', payload.paymentType || ''],
+        ['Statut paiement', payload.paymentStatus || ''],
+        ['Montant paiement', payload.amount ? formatMoneyEuro(payload.amount) : ''],
+        ['Montant total', payload.totalAmount ? formatMoneyEuro(payload.totalAmount) : ''],
+    ];
+
+    const rows: Array<[string, any]> = allRows.filter((row: [string, any]) => {
+        const value = row[1];
+        return value !== undefined && value !== null && String(value).trim() !== '';
+    });
+
+    return `
+        <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;">
+          ${rows.map(([label, value]) => `
+            <tr>
+              <td style="padding:8px 10px;border-bottom:1px solid #e6ecef;color:#60727a;width:35%;">${escapeHtml(label)}</td>
+              <td style="padding:8px 10px;border-bottom:1px solid #e6ecef;color:#19323a;font-weight:600;">${escapeHtml(value)}</td>
+            </tr>`).join('')}
+        </table>`;
+}
+
+function buildNotificationEmail(payload: AlegriaNotificationRequest, recipientRole: 'admin' | 'customer', baseUrl?: string): { subject: string; html: string } {
+    const label = humanNotificationType(payload.type);
+    const ref = firstNonEmpty(payload.bookingId, payload.proposalId);
+    const subjectParts = [`Alegria - ${label}`];
+    if (ref) subjectParts.push(`#${ref}`);
+    if (payload.amount && String(payload.type) === 'payment_completed') subjectParts.push(formatMoneyEuro(payload.amount));
+
+    const customerName = firstNonEmpty(payload.customerName, 'Client Alegria');
+    const safeBaseUrl = String(baseUrl || process.env.ALEGRIA_APP_URL || process.env.APP_PUBLIC_URL || '').replace(/\/$/, '');
+    const proposalUrl = firstNonEmpty(
+        payload.proposalUrl,
+        payload.proposalId && safeBaseUrl ? `${safeBaseUrl}/proposal/${encodeURIComponent(payload.proposalId)}` : ''
+    );
+    const bookingUrl = firstNonEmpty(
+        payload.bookingUrl,
+        payload.bookingId && safeBaseUrl ? `${safeBaseUrl}/booking/${encodeURIComponent(payload.bookingId)}` : ''
+    );
+    const actionUrl = proposalUrl || bookingUrl;
+    const actionLabel = proposalUrl ? 'Voir la proposition' : 'Voir la réservation';
+    const actionHtml = actionUrl ? `
+            <p style="margin:24px 0;">
+              <a href="${escapeHtml(actionUrl)}" style="background:#0b4b5a;color:#ffffff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:700;">${escapeHtml(actionLabel)}</a>
+            </p>
+            <p style="font-size:13px;color:#60727a;line-height:1.5;margin:0 0 16px 0;">Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br><a href="${escapeHtml(actionUrl)}" style="color:#0b4b5a;">${escapeHtml(actionUrl)}</a></p>` : '';
+
+    const intro = recipientRole === 'admin'
+        ? `Une mise à jour vient d'être enregistrée pour ${customerName}.`
+        : String(payload.type) === 'payment_completed'
+            ? `Bonjour ${customerName}, nous confirmons la bonne réception de votre paiement.`
+            : `Bonjour ${customerName}, votre dossier Alegria vient d'être mis à jour.`;
+
+    const html = `
+      <div style="margin:0;padding:0;background:#f5f7f8;font-family:Arial,Helvetica,sans-serif;color:#19323a;">
+        <div style="max-width:640px;margin:0 auto;padding:24px;">
+          <div style="background:#ffffff;border-radius:16px;padding:28px;border:1px solid #e6ecef;">
+            <div style="font-size:20px;font-weight:700;color:#0b4b5a;margin-bottom:18px;">${escapeHtml(customerName)}</div>
+            <h2 style="margin:0 0 16px 0;color:#0b4b5a;">${escapeHtml(label)}</h2>
+            <p style="font-size:15px;line-height:1.6;margin:0 0 12px 0;">${escapeHtml(intro)}</p>
+            ${notificationSummaryHtml(payload)}
+            ${actionHtml}
+            <p style="margin-top:24px;color:#60727a;font-size:13px;line-height:1.5;">
+              Notification générée automatiquement le ${escapeHtml(new Date().toLocaleString('fr-FR'))}.
+            </p>
+          </div>
+        </div>
+      </div>`;
+
+    return { subject: subjectParts.join(' - '), html };
+}
+
 // sendBookingEmail composes and sends notification emails to both the owner and the guest
 export async function sendBookingEmail(mailer: MailerService, booking: any, bookingId: string, ownerEmail?: string) {
     const {
@@ -466,24 +733,31 @@ export class BookingsService {
         const email = pickCustomerEmail(proposal);
         if (!email) throw new Error('Customer email missing on proposal');
 
+        const lang = normalizeLang(proposal);
         const name = pickCustomerName(proposal);
         const origin = getPublicAppOrigin(req);
         const proposalUrl = `${origin}/proposal/${encodeURIComponent(proposalId)}`;
-        const subject = `Votre proposition Alegria est prête`;
-        const html = `
-            <h2>Votre proposition est prête</h2>
-            <p>Bonjour ${escapeHtml(name || '')},</p>
-            <p>Votre proposition pour votre sortie Alegria est maintenant disponible.</p>
-            ${proposalSummaryHtml(proposal)}
-            <p style="margin:24px 0;"><a href="${escapeHtml(proposalUrl)}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">Voir et confirmer ma proposition</a></p>
-            <p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p>
-            <p><a href="${escapeHtml(proposalUrl)}">${escapeHtml(proposalUrl)}</a></p>
-        `;
+        const template = await loadEmailTemplate(this.storeDbc.db, lang, 'proposalReady');
+        const data = {
+            customerName: name || '',
+            proposalId,
+            proposalUrl,
+            summaryHtml: proposalSummaryHtml(proposal),
+            outingType: proposal?.outingType || proposal?.raw?.outingType || '',
+            outingDate: proposal?.outingDate || proposal?.raw?.outingDate || '',
+            totalAmount: formatMoneyEuro(proposal?.totalAmount || proposal?.totalPrice || proposal?.raw?.totalAmount || 0),
+            depositAmount: formatMoneyEuro(proposal?.depositAmount || proposal?.raw?.depositAmount || 0),
+            balanceAmount: formatMoneyEuro(proposal?.balanceAmount || proposal?.remainingFeesAmount || proposal?.raw?.balanceAmount || 0),
+        };
+        const subject = renderTemplateString(template.subject || 'Votre proposition Alegria est prête', data, false);
+        const html = wrapEmailLayout(template, data);
 
         await this.mailer.sendToGuest(email, subject, html);
         await this.storeDbc.db.ref(`/bnProposals/${proposalId}`).update({
             proposalEmailSentAt: Date.now(),
             proposalEmailSentTo: email,
+            proposalEmailTemplateKey: 'proposalReady',
+            proposalEmailLanguage: lang,
         });
     }
 
@@ -495,24 +769,31 @@ export class BookingsService {
         const email = pickCustomerEmail(booking);
         if (!email) throw new Error('Customer email missing on booking');
 
+        const lang = normalizeLang(booking);
         const name = pickCustomerName(booking);
         const origin = getPublicAppOrigin(req);
         const bookingUrl = `${origin}/bookings/${encodeURIComponent(bookingId)}`;
-        const subject = `Votre réservation Alegria est confirmée`;
-        const html = `
-            <h2>Votre réservation est confirmée</h2>
-            <p>Bonjour ${escapeHtml(name || '')},</p>
-            <p>Merci, votre proposition a bien été confirmée et transformée en réservation.</p>
-            ${proposalSummaryHtml(booking)}
-            <p style="margin:24px 0;"><a href="${escapeHtml(bookingUrl)}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">Ouvrir ma réservation</a></p>
-            <p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p>
-            <p><a href="${escapeHtml(bookingUrl)}">${escapeHtml(bookingUrl)}</a></p>
-        `;
+        const template = await loadEmailTemplate(this.storeDbc.db, lang, 'bookingConfirmed');
+        const data = {
+            customerName: name || '',
+            bookingId,
+            bookingUrl,
+            summaryHtml: proposalSummaryHtml(booking),
+            outingType: booking?.outingType || booking?.raw?.outingType || '',
+            outingDate: booking?.outingDate || booking?.raw?.outingDate || '',
+            totalAmount: formatMoneyEuro(booking?.totalAmount || booking?.totalPrice || booking?.raw?.totalAmount || 0),
+            depositAmount: formatMoneyEuro(booking?.depositAmount || booking?.raw?.depositAmount || 0),
+            balanceAmount: formatMoneyEuro(booking?.balanceAmount || booking?.remainingFeesAmount || booking?.raw?.balanceAmount || 0),
+        };
+        const subject = renderTemplateString(template.subject || 'Votre réservation Alegria est confirmée', data, false);
+        const html = wrapEmailLayout(template, data);
 
         await this.mailer.sendToGuest(email, subject, html);
         await this.storeDbc.db.ref(`${OBJECTNAME.bnBookings}/${bookingId}`).update({
             bookingConfirmationEmailSentAt: Date.now(),
             bookingConfirmationEmailSentTo: email,
+            bookingConfirmationEmailTemplateKey: 'bookingConfirmed',
+            bookingConfirmationEmailLanguage: lang,
         });
     }
 
@@ -564,6 +845,81 @@ export class BookingsService {
                 return res.json({ ok: true });
             } catch (e: any) {
                 console.error('[MAIL] booking confirmation notification failed:', e);
+                return res.status(500).json({ ok: false, error: e?.message || String(e) });
+            }
+        });
+
+
+
+        router.post('/api/notifications/alegria', async (req: Request, res: Response) => {
+            try {
+                const payload = (req.body || {}) as AlegriaNotificationRequest;
+                const eventId = String(payload.eventId || `${Date.now()}_${Math.random().toString(36).slice(2, 10)}`);
+                const now = Date.now();
+                const { adminEmail, customerEmail, recipients } = buildNotificationRecipients(payload);
+                const requestOrigin = String(req.headers.origin || `${req.protocol}://${req.get('host') || ''}`).replace(/\/$/, '');
+                const baseUrl = String(process.env.ALEGRIA_APP_URL || process.env.APP_PUBLIC_URL || requestOrigin || '').replace(/\/$/, '');
+                const normalizedPayload: AlegriaNotificationRequest = {
+                    ...payload,
+                    eventId,
+                    adminEmail,
+                    customerEmail: customerEmail || payload.customerEmail || '',
+                    proposalUrl: firstNonEmpty(payload.proposalUrl, payload.proposalId && baseUrl ? `${baseUrl}/proposal/${encodeURIComponent(payload.proposalId)}` : ''),
+                    bookingUrl: firstNonEmpty(payload.bookingUrl, payload.bookingId && baseUrl ? `${baseUrl}/booking/${encodeURIComponent(payload.bookingId)}` : ''),
+                    recipients,
+                    status: 'sending' as any,
+                    emailSent: false as any,
+                    backendReceivedAt: now as any,
+                } as any;
+
+                await this.storeDbc.db.ref(`/bnNotifications/${eventId}`).update(normalizedPayload).catch((e: any) => {
+                    console.warn('[MAIL] unable to update notification queue before send:', e?.message || e);
+                });
+
+                const adminMail = buildNotificationEmail(normalizedPayload, 'admin', baseUrl);
+                await this.mailer.sendToOwner(adminMail.subject, adminMail.html, adminEmail);
+
+                let customerSent = false;
+                if (customerEmail) {
+                    const customerMail = buildNotificationEmail(normalizedPayload, 'customer', baseUrl);
+                    await this.mailer.sendToGuest(customerEmail, customerMail.subject, customerMail.html);
+                    customerSent = true;
+                }
+
+                const sentPatch = {
+                    status: 'sent',
+                    emailSent: true,
+                    sentAt: Date.now(),
+                    sentByBackend: true,
+                    adminEmailSentTo: adminEmail,
+                    customerEmailSentTo: customerSent ? customerEmail : null,
+                    recipients,
+                };
+                const updates: any = {};
+                const applyPatch = (basePath: string) => {
+                    Object.keys(sentPatch).forEach((key) => {
+                        updates[`${basePath}/${key}`] = (sentPatch as any)[key];
+                    });
+                };
+                applyPatch(`/bnNotifications/${eventId}`);
+                if (payload.bookingId) applyPatch(`/bnBookingEvents/${payload.bookingId}/${eventId}`);
+                if (payload.proposalId) applyPatch(`/bnProposalEvents/${payload.proposalId}/${eventId}`);
+                await this.storeDbc.db.ref().update(updates).catch((e: any) => {
+                    console.warn('[MAIL] unable to mark notification as sent:', e?.message || e);
+                });
+
+                return res.json({ ok: true, eventId, recipients, customerSent });
+            } catch (e: any) {
+                console.error('[MAIL] generic notification failed:', e);
+                const eventId = String(req.body?.eventId || '').trim();
+                if (eventId) {
+                    await this.storeDbc.db.ref(`/bnNotifications/${eventId}`).update({
+                        status: 'failed',
+                        emailSent: false,
+                        failedAt: Date.now(),
+                        error: e?.message || String(e),
+                    }).catch(() => undefined);
+                }
                 return res.status(500).json({ ok: false, error: e?.message || String(e) });
             }
         });
