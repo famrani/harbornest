@@ -20,6 +20,8 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
 
   form: Partial<AlegriaProposal> = {
     source: 'samboat',
+    externalPlatformName: '',
+    externalPlatformBookingRef: '',
     status: 'accepted',
     customerName: '',
     customerEmail: '',
@@ -82,6 +84,17 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
       const extraServicesOnboardAmount = Number((this.form as any).externalExtraServicesOnboardAmount || 0);
       const onboardAmount = remainingOnboardAmount + extraServicesOnboardAmount;
       const warrantyAmount = Number(this.form.warrantyAmount || 0);
+      const platformSource = String((this.form as any).source || '');
+      const externalPlatformName = String((this.form as any).externalPlatformName || '').trim();
+      const externalPlatformBookingRef = String((this.form as any).externalPlatformBookingRef || '').trim();
+
+      if (platformSource === 'other' && !externalPlatformName) {
+        throw new Error(this.t('missingOtherPlatformNameError'));
+      }
+
+      if (!externalPlatformBookingRef) {
+        throw new Error(this.t('missingPlatformBookingRefError'));
+      }
 
       if (remainingOnboardAmount < 0 || extraServicesOnboardAmount < 0) {
         throw new Error(this.t('negativeAmountsError'));
@@ -98,6 +111,10 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
       const saved = await this.proposalApi.createExternalBooking({
         ...this.form,
         totalAmount: onboardAmount,
+        externalPlatformName,
+        externalPlatformBookingRef,
+        platformBookingReference: externalPlatformBookingRef,
+        platformReservationNumber: externalPlatformBookingRef,
         externalRemainingOnboardAmount: remainingOnboardAmount,
         externalExtraServicesOnboardAmount: extraServicesOnboardAmount,
         warrantyAmount,

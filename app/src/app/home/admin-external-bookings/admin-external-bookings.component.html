@@ -16,6 +16,9 @@
           </select>
         </label>
 
+        <label *ngIf="form.source === 'other'">{{ t('otherPlatformName') }}<input type="text" [(ngModel)]="form.externalPlatformName" [placeholder]="t('otherPlatformNamePlaceholder')" /></label>
+        <label>{{ t('platformBookingReference') }}<input type="text" [(ngModel)]="form.externalPlatformBookingRef" [placeholder]="t('platformBookingReferencePlaceholder')" /></label>
+
         <label>{{ t('customerName') }}<input type="text" [(ngModel)]="form.customerName" /></label>
         <label>{{ t('customerEmail') }}<input type="email" [(ngModel)]="form.customerEmail" /></label>
         <label>{{ t('phone') }}<input type="tel" [(ngModel)]="form.customerPhone" /></label>

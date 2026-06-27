@@ -889,6 +889,36 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
     return markers.some((marker) => text.includes(marker)) && text.includes('proposal request');
   }
 
+
+  isExternalBooking(): boolean {
+    const booking: any = this.booking || {};
+    const source = String(booking.source || booking.bookingSource || booking.externalPlatform || '').toLowerCase();
+    return source === 'external' || !!booking.externalPlatform || !!booking.externalPlatformBookingRef || !!booking.platformBookingReference || !!booking.platformReservationNumber;
+  }
+
+  getExternalPlatformLabel(): string {
+    const booking: any = this.booking || {};
+    const platform = String(booking.externalPlatform || booking.source || '').trim();
+    const platformName = String(booking.externalPlatformName || booking.otherPlatformName || '').trim();
+    const normalized = platform.toLowerCase();
+
+    if (normalized === 'other') return platformName || this.btext('platformOther') || 'Other';
+    if (normalized === 'samboat') return 'SamBoat';
+    if (normalized === 'clickandboat' || normalized === 'click_and_boat') return 'Click&Boat';
+    return platformName || platform || '-';
+  }
+
+  getExternalBookingReference(): string {
+    const booking: any = this.booking || {};
+    return String(
+      booking.externalPlatformBookingRef ||
+      booking.platformBookingReference ||
+      booking.platformReservationNumber ||
+      booking.externalReservationReference ||
+      ''
+    ).trim();
+  }
+
   private defaultBookingInfo(language: SiteLanguage): any {
     const defaults: any = {
       fr: {
@@ -920,6 +950,9 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         remaining: 'Solde 90 %',
         warranty: 'Caution',
         status: 'Statut',
+        externalPlatform: 'Plateforme externe',
+        externalBookingReference: 'Référence réservation plateforme',
+        platformOther: 'Autre',
         owner: 'Propriétaire',
         comments: 'Commentaires',
         paid: 'Payé',
@@ -1063,6 +1096,9 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         remaining: '90% balance',
         warranty: 'Warranty',
         status: 'Status',
+        externalPlatform: 'External platform',
+        externalBookingReference: 'Platform booking reference',
+        platformOther: 'Other',
         owner: 'Owner',
         comments: 'Comments',
         paid: 'Paid',
@@ -1206,6 +1242,9 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
         remaining: 'Saldo 90 %',
         warranty: 'Garantía',
         status: 'Estado',
+        externalPlatform: 'Plataforma externa',
+        externalBookingReference: 'Referencia de reserva plataforma',
+        platformOther: 'Otro',
         owner: 'Propietario',
         comments: 'Comentarios',
         paid: 'Pagado',

@@ -23,6 +23,11 @@
           <span class="overview-label">{{ btext('passengers') }}</span>
           <strong>{{ booking.passengers || '-' }}</strong>
         </div>
+        <div class="overview-card" *ngIf="isExternalBooking()">
+          <span class="overview-label">{{ btext('externalPlatform') }}</span>
+          <strong>{{ getExternalPlatformLabel() }}</strong>
+          <span *ngIf="getExternalBookingReference()">{{ btext('externalBookingReference') }}: {{ getExternalBookingReference() }}</span>
+        </div>
         <div class="overview-card compact">
           <span class="overview-label">{{ btext('status') }}</span>
           <button class="status-pill status-clickable" type="button" (click)="openStatusModal()">{{ getStatusLabel() }}</button>

@@ -21,6 +21,8 @@ export interface AlegriaProposal {
   externalExtraServicesOnboardAmount?: number;
   externalRemainingOnboardAmount?: number;
   externalPlatform?: string;
+  externalPlatformName?: string;
+  externalPlatformBookingRef?: string;
   bookingSource?: string;
   status: ProposalStatus;
   customerName: string;
@@ -410,12 +412,26 @@ export class ProposalApiService {
     const onboardAmount = Number((input as any).totalAmount || (remainingOnboardAmount + extraServicesOnboardAmount) || 0);
     const warrantyAmount = Number((input as any).warrantyAmount ?? 500);
     const platformSource = String((input as any).source || 'samboat');
+    const externalPlatformName = platformSource === 'other'
+      ? String((input as any).externalPlatformName || (input as any).otherPlatformName || '').trim()
+      : '';
+    const externalPlatformBookingRef = String(
+      (input as any).externalPlatformBookingRef ||
+      (input as any).platformBookingReference ||
+      (input as any).platformReservationNumber ||
+      (input as any).externalReservationReference ||
+      ''
+    ).trim();
 
     const saved = await this.saveProposal({
       ...input,
       source: platformSource as any,
       bookingSource: 'external',
       externalPlatform: platformSource,
+      externalPlatformName,
+      externalPlatformBookingRef,
+      platformBookingReference: externalPlatformBookingRef,
+      platformReservationNumber: externalPlatformBookingRef,
       externalOnboardAmount: onboardAmount,
       externalRemainingOnboardAmount: remainingOnboardAmount,
       externalExtraServicesOnboardAmount: extraServicesOnboardAmount,

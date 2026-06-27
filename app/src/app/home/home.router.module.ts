@@ -70,6 +70,7 @@ const routes: Routes = [
   { path: 'admin/bookings', component: BookingsComponent },
   { path: 'admin/bookings/:bookingId/invoice', component: BookingInvoiceComponent },
   { path: 'admin/bookings/:bookingId', component: BookingDetailComponent },
+  { path: 'admin/payments', component: AccountSummaryComponent, data: { section: 'payments', admin: true } },
   { path: 'admin/outings', component: AdminOutingsComponent },
   { path: 'admin/outings/:outingId', component: AdminOutingDetailComponent },
   { path: 'admin/manage-outings', component: AdminManageOutingsComponent },

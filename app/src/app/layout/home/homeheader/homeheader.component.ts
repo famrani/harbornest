@@ -218,15 +218,15 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
   }
 
   get myBookingsLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Mes réservations' : this.currentLanguage === 'es' ? 'Mis reservas' : 'My bookings';
+    return this.alegriaBookingsLabel;
   }
 
   get myPaymentsLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Mes paiements' : this.currentLanguage === 'es' ? 'Mis pagos' : 'My payments';
+    return this.paymentsLabel;
   }
 
   get myProfileLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Mon profil' : this.currentLanguage === 'es' ? 'Mi perfil' : 'My profile';
+    return this.menuText('profile', 'Mon profil', 'My profile', 'Mi perfil');
   }
 
 
@@ -252,7 +252,7 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
   }
 
   get logoutLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Se déconnecter' : this.currentLanguage === 'es' ? 'Cerrar sesión' : 'Logout';
+    return this.menuText('logout', 'Déconnexion', 'Logout', 'Cerrar sesión');
   }
 
 
@@ -277,11 +277,11 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
   }
 
   get proposalsLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Propositions' : this.currentLanguage === 'es' ? 'Propuestas' : 'Proposals';
+    return this.menuText('proposals', 'Propositions', 'Proposals', 'Propuestas');
   }
 
   get externalBookingsLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Réservations externes' : this.currentLanguage === 'es' ? 'Reservas externas' : 'External bookings';
+    return this.platformBookingsLabel;
   }
 
   get boatLogsSectionLabel(): string {
@@ -309,7 +309,7 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
   }
 
   get myProposalsLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Mes propositions' : this.currentLanguage === 'es' ? 'Mis propuestas' : 'My proposals';
+    return this.menuText('myProposals', 'Mes propositions', 'My proposals', 'Mis propuestas');
   }
 
   get paymentsWarrantySectionLabel(): string {
@@ -328,4 +328,28 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
   get pricingModelLabel(): string {
     return this.currentLanguage === 'fr' ? 'Modèle tarifaire' : this.currentLanguage === 'es' ? 'Modelo de precios' : 'Pricing model';
   }
+  private menuText(key: string, fallbackFr: string, fallbackEn: string, fallbackEs: string): string {
+    const fromFirebase = (this.content as any)?.menu?.[key];
+    if (fromFirebase) {
+      return String(fromFirebase);
+    }
+    return this.currentLanguage === 'fr' ? fallbackFr : this.currentLanguage === 'es' ? fallbackEs : fallbackEn;
+  }
+
+  get alegriaBookingsLabel(): string {
+    return this.menuText('alegriaBookings', 'Réservations Alegria', 'Alegria bookings', 'Reservas Alegria');
+  }
+
+  get platformBookingsLabel(): string {
+    return this.menuText('platformBookings', 'Réservations plateformes', 'Platform bookings', 'Reservas plataformas');
+  }
+
+  get paymentsLabel(): string {
+    return this.menuText('payments', 'Paiements', 'Payments', 'Pagos');
+  }
+
+  get operationsSectionLabel(): string {
+    return this.menuText('operations', 'Opérations', 'Operations', 'Operaciones');
+  }
+
 }

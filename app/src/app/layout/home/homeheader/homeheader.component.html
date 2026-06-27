@@ -62,36 +62,28 @@
 </div>
 
         <div class="dropdown-panel dropdown-panel-right account-admin-panel" *ngIf="isLoggedIn && isAdmin">
-          <span class="dropdown-section-title">{{ reservationsSectionLabel }}</span>
-          <a routerLink="/admin/bookings" routerLinkActive="active" (click)="closeMenu()">{{ confirmedBookingsLabel }}</a>
+          <a routerLink="/my-profile" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
           <a routerLink="/admin/proposals" routerLinkActive="active" (click)="closeMenu()">{{ proposalsLabel }}</a>
-          <a routerLink="/admin/external-bookings" routerLinkActive="active" (click)="closeMenu()">{{ externalBookingsLabel }}</a>
+          <a routerLink="/admin/bookings" routerLinkActive="active" (click)="closeMenu()">{{ alegriaBookingsLabel }}</a>
+          <a routerLink="/admin/external-bookings" routerLinkActive="active" (click)="closeMenu()">{{ platformBookingsLabel }}</a>
+          <a routerLink="/my-payments" routerLinkActive="active" (click)="closeMenu()">{{ paymentsLabel }}</a>
 
-          <span class="dropdown-section-title">{{ boatLogsSectionLabel }}</span>
+          <span class="dropdown-section-title">{{ operationsSectionLabel }}</span>
           <a routerLink="/admin/outings" routerLinkActive="active" (click)="closeMenu()">{{ boatLogManagerLabel }}</a>
-
-          <span class="dropdown-section-title">{{ publicOutingInfoSectionLabel }}</span>
           <a routerLink="/admin/manage-outings" routerLinkActive="active" (click)="closeMenu()">{{ managePublicOutingsLabel }}</a>
-            <a routerLink="/admin/pricing-model" routerLinkActive="active" (click)="closeMenu()">{{ pricingModelLabel }}</a>
+          <a routerLink="/admin/pricing-model" routerLinkActive="active" (click)="closeMenu()">{{ pricingModelLabel }}</a>
           <a routerLink="/admin/feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ adminFeedbacksLabel }}</a>
 
-          <span class="dropdown-section-title">{{ accountSectionLabel }}</span>
-          <a routerLink="/my-profile" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
           <button class="dropdown-action" type="button" (click)="logout()">{{ logoutLabel }}</button>
         </div>
 
         <div class="dropdown-panel dropdown-panel-right account-customer-panel" *ngIf="isLoggedIn && isCustomer">
-          <span class="dropdown-section-title">{{ myTripRequestsSectionLabel }}</span>
-          <a routerLink="/my-proposals" routerLinkActive="active" (click)="closeMenu()">{{ myProposalsLabel }}</a>
-          <a routerLink="/my-bookings" routerLinkActive="active" (click)="closeMenu()">{{ myBookingsLabel }}</a>
-
-          <span class="dropdown-section-title">{{ paymentsWarrantySectionLabel }}</span>
-          <a routerLink="/my-payments" routerLinkActive="active" (click)="closeMenu()">{{ myPaymentsLabel }}</a>
-          <span class="dropdown-section-title">{{ afterOutingSectionLabel }}</span>
-          <a routerLink="/my-feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ myFeedbacksLabel }}</a>
-
-          <span class="dropdown-section-title">{{ accountSectionLabel }}</span>
           <a routerLink="/my-profile" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
+          <a routerLink="/my-proposals" routerLinkActive="active" (click)="closeMenu()">{{ myProposalsLabel }}</a>
+          <a routerLink="/my-bookings" routerLinkActive="active" (click)="closeMenu()">{{ alegriaBookingsLabel }}</a>
+          <a routerLink="/my-external-bookings" routerLinkActive="active" (click)="closeMenu()">{{ platformBookingsLabel }}</a>
+          <a routerLink="/my-payments" routerLinkActive="active" (click)="closeMenu()">{{ paymentsLabel }}</a>
+          <a routerLink="/my-feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ myFeedbacksLabel }}</a>
           <button class="dropdown-action" type="button" (click)="logout()">{{ logoutLabel }}</button>
         </div>
       </details>

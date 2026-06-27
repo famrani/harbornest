@@ -50,7 +50,9 @@ export class AccountSummaryComponent implements OnInit {
     this.loggedUser = svc.bnUser || svc.currentUser || null;
     const role = String(this.loggedUser?.role || '').toLowerCase();
     const isAdmin = role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
-    if (isAdmin && (this.section === 'bookings' || this.section === 'payments' || this.section === 'feedbacks')) {
+    // Admin users may use the shared AccountSummaryComponent for /admin/payments.
+    // Only redirect admin users away from customer-only sections, not from payments.
+    if (isAdmin && (this.section === 'bookings' || this.section === 'feedbacks')) {
       this.router.navigate(['/admin/bookings']);
       return;
     }
@@ -66,7 +68,9 @@ export class AccountSummaryComponent implements OnInit {
   }
 
   loadCustomerPayments(): void {
-    const email = this.loggedUser?.email || '';
+    const role = String(this.loggedUser?.role || '').toLowerCase();
+    const isAdmin = role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
+    const email = isAdmin ? undefined : (this.loggedUser?.email || '');
     this.loading = true;
 
     this.bookingApi.getBookings(email).subscribe({
@@ -460,6 +464,8 @@ export class AccountSummaryComponent implements OnInit {
   }
 
   get title(): string {
+    const role = String(this.loggedUser?.role || '').toLowerCase();
+    const isAdmin = role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
     const labels: any = {
       bookings: {
         fr: 'Mes réservations',
@@ -467,9 +473,9 @@ export class AccountSummaryComponent implements OnInit {
         es: 'Mis reservas',
       },
       payments: {
-        fr: 'Mes paiements',
-        en: 'My payments',
-        es: 'Mis pagos',
+        fr: isAdmin ? 'Paiements clients' : 'Mes paiements',
+        en: isAdmin ? 'Customer payments' : 'My payments',
+        es: isAdmin ? 'Pagos de clientes' : 'Mis pagos',
       },
       profile: {
         fr: 'Mon profil',
@@ -494,9 +500,9 @@ export class AccountSummaryComponent implements OnInit {
         es: 'Encuentre aquí sus solicitudes, salidas confirmadas e información de reserva.',
       },
       payments: {
-        fr: 'Consultez vos acomptes, paiements et soldes liés à vos sorties.',
-        en: 'View your deposits, payments and balances related to your outings.',
-        es: 'Consulte sus depósitos, pagos y saldos relacionados con sus salidas.',
+        fr: String(this.loggedUser?.role || '').toLowerCase() === 'admin' || String(this.loggedUser?.role || '').toLowerCase() === 'owner' || this.loggedUser?.isAdmin === true ? 'Consultez les acomptes, soldes, extras, paiements ad hoc et cautions liés aux réservations.' : 'Consultez vos acomptes, paiements et soldes liés à vos sorties.',
+        en: String(this.loggedUser?.role || '').toLowerCase() === 'admin' || String(this.loggedUser?.role || '').toLowerCase() === 'owner' || this.loggedUser?.isAdmin === true ? 'View deposits, balances, extras, ad hoc payments and warranties linked to bookings.' : 'View your deposits, payments and balances related to your outings.',
+        es: String(this.loggedUser?.role || '').toLowerCase() === 'admin' || String(this.loggedUser?.role || '').toLowerCase() === 'owner' || this.loggedUser?.isAdmin === true ? 'Consulte depósitos, saldos, extras, pagos ad hoc y garantías vinculados a las reservas.' : 'Consulte sus depósitos, pagos y saldos relacionados con sus salidas.',
       },
       profile: {
         fr: 'Gérez vos informations personnelles et coordonnées de contact.',
