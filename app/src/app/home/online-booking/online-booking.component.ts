@@ -265,6 +265,86 @@ export class OnlineBookingComponent implements OnInit, OnDestroy {
   }
 
 
+
+  formatAmount(amount: number | null | undefined): string {
+    const value = Number(amount || 0);
+    try {
+      return new Intl.NumberFormat(this.currentLanguage || 'fr', {
+        style: 'currency',
+        currency: 'EUR',
+        maximumFractionDigits: 0,
+      }).format(value);
+    } catch {
+      return `€${Math.round(value)}`;
+    }
+  }
+
+  get shouldShowEstimatedPrice(): boolean {
+    return !!this.form.pricePeriod;
+  }
+
+  get formattedBookingTotal(): string {
+    return this.formatAmount(this.bookingTotal);
+  }
+
+  get selectedPeriodLabel(): string {
+    return this.pricePeriods.find((item) => item.id === this.form.pricePeriod)?.label || '-';
+  }
+
+  get boatCustomerTotalAmount(): number {
+    return Math.round((
+      this.estimatedBoatPriceAmount +
+      this.cleaningPriceAmount +
+      this.extraGuestsAmount +
+      this.selectedOptionsTotal
+    ) * 100) / 100;
+  }
+
+  get skipperCustomerTotalAmount(): number {
+    return Math.round(this.skipperPriceAmount * 100) / 100;
+  }
+
+  get totalCustomerPayableAmount(): number {
+    return Math.round((this.boatCustomerTotalAmount + this.skipperCustomerTotalAmount) * 100) / 100;
+  }
+
+  get formattedBoatCustomerTotal(): string {
+    return this.formatAmount(this.boatCustomerTotalAmount);
+  }
+
+  get formattedSkipperCustomerTotal(): string {
+    return this.formatAmount(this.skipperCustomerTotalAmount);
+  }
+
+  get formattedTotalCustomerPayable(): string {
+    return this.formatAmount(this.totalCustomerPayableAmount);
+  }
+
+  get optionsSummary(): string {
+    if (!this.selectedOptions.length) return this.bookingText?.noOptions || '-';
+    return this.selectedOptions.map((option) => option.label).join(', ');
+  }
+
+  get pricingSummaryTitle(): string {
+    return this.bookingText?.pricingSummaryTitle || this.bookingText?.estimatedPriceTitle || 'Estimated pricing';
+  }
+
+  get boatTotalLabel(): string {
+    return this.bookingText?.boatTotalLabel || this.bookingText?.boatPrice || 'Boat total';
+  }
+
+  get skipperTotalLabel(): string {
+    return this.bookingText?.skipperTotalLabel || this.bookingText?.skipperPrice || 'Skipper total';
+  }
+
+  get customerTotalLabel(): string {
+    return this.bookingText?.customerTotalLabel || this.bookingText?.totalPrice || 'Total to pay';
+  }
+
+  get pricingClarityNotice(): string {
+    return this.bookingText?.pricingClarityNotice || this.bookingText?.estimatedPriceNote || '';
+  }
+
   get selectedOptionsTotal(): number {
     return this.selectedOptions.reduce((sum, option) => sum + Number(option.price || 0), 0);
   }
@@ -741,6 +821,13 @@ export class OnlineBookingComponent implements OnInit, OnDestroy {
 
     try {
       const proposalId = await this.ensureBookingCreated();
+
+      await this.proposalApi.notifyBookingRequestCreated(proposalId, {
+        language: this.currentLanguage,
+        source: 'online_booking_request',
+      }).toPromise().catch((mailError) => {
+        console.warn('Booking request email notification failed', mailError);
+      });
 
       this.message = this.bookingText?.requestSubmittedMessage || this.bookingText?.finalMessage || '';
       try {

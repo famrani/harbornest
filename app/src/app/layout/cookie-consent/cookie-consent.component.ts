@@ -9,7 +9,7 @@ interface CookieCopy {
   learnMore: string;
 }
 
-const COOKIE_COPY: Record<SiteLanguage, CookieCopy> = {
+const COOKIE_COPY: Partial<Record<SiteLanguage, CookieCopy>> & { fr: CookieCopy } = {
   fr: {
     title: 'Gestion des cookies',
     text: 'Nous utilisons des cookies nécessaires au bon fonctionnement du site et, le cas échéant, à l’amélioration de votre expérience. En continuant, vous acceptez leur utilisation.',
@@ -46,7 +46,7 @@ export class CookieConsentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.visible = localStorage.getItem(this.storageKey) !== 'accepted';
     this.languageSub = this.languageService.language$.subscribe((language) => {
-      this.copy = COOKIE_COPY[language];
+      this.copy = COOKIE_COPY[language] || COOKIE_COPY.fr;
     });
   }
 

@@ -1,42 +1,77 @@
 <div class="container py-5 auth-shell">
   <div class="auth-brand">
-    <span class="auth-eyebrow">Alegria Boat</span>
+    <span class="auth-eyebrow">{{ 'login.eyebrow' | siteText:'ALEGRIA BOAT' }}</span>
     <div class="auth-mark">⛵</div>
-    <h1 class="h4 mb-1">Welcome aboard</h1>
-    <p class="text-muted small mb-4">Sign in to manage your booking, deposit and private sea experience.</p>
+    <h1 class="h4 mb-1">{{ 'login.welcomeTitle' | siteText:'Bienvenue à bord' }}</h1>
+    <p class="text-muted small mb-4">{{ 'login.welcomeSubtitle' | siteText:'Connectez-vous pour gérer votre réservation, votre acompte et votre expérience en mer.' }}</p>
   </div>
-<form class="form-box" [formGroup]="loginForm" (ngSubmit)="loginWithEmail()">
-      <h4 class="text-center mb-4">Login to&nbsp;<strong>Alegria</strong></h4>
-      <div class="f-group"><label class="form-label"><strong>Email</strong></label>
-        <input [class]="loginForm.controls['email'].invalid ?'form-control error':'form-control'"
-          type="email" required="" placeholder="email" formControlName="email" name="email" autocomplete="username"></div>
-      <div class="f-group"><label class="form-label"><strong>Password</strong></label>
-        <div class="password-wrapper">
-          <input [class]="loginForm.controls['password'].invalid ?'form-control error':'form-control'"
-            [type]="showPassword ? 'text' : 'password'" required="" placeholder="password" formControlName="password" name="password" autocomplete="current-password">
-          <button class="password-toggle" type="button" (click)="togglePasswordVisibility()"
-            [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
-            {{ showPassword ? 'Hide' : 'Show' }}
-          </button>
+
+  <form class="form-box" [formGroup]="loginForm" (ngSubmit)="loginWithEmail()">
+    <h4 class="text-center mb-4">{{ 'login.formTitle' | siteText:'Connexion à Alegria' }}</h4>
+
+    <div class="f-group">
+      <label class="form-label"><strong>{{ 'login.email' | siteText:'Email' }}</strong></label>
+      <input
+        [class]="loginForm.controls['email'].invalid ? 'form-control error' : 'form-control'"
+        type="email"
+        required=""
+        [placeholder]="'login.email' | siteText:'Email'"
+        formControlName="email"
+        name="email"
+        autocomplete="username">
+    </div>
+
+    <div class="f-group">
+      <label class="form-label"><strong>{{ 'login.password' | siteText:'Mot de passe' }}</strong></label>
+      <div class="password-wrapper">
+        <input
+          [class]="loginForm.controls['password'].invalid ? 'form-control error' : 'form-control'"
+          [type]="showPassword ? 'text' : 'password'"
+          required=""
+          [placeholder]="'login.password' | siteText:'Mot de passe'"
+          formControlName="password"
+          name="password"
+          autocomplete="current-password">
+        <button
+          class="password-toggle"
+          type="button"
+          (click)="togglePasswordVisibility()"
+          [attr.aria-label]="showPassword ? ('login.hidePassword' | siteText:'Masquer le mot de passe') : ('login.showPassword' | siteText:'Afficher le mot de passe')">
+          {{ showPassword ? ('login.hidePasswordShort' | siteText:'Masquer') : ('login.showPasswordShort' | siteText:'Afficher') }}
+        </button>
+      </div>
+    </div>
+
+    <div class="row mx-0">
+      <div class="col-6">
+        <div class="form-check d-inline-block">
+          <input id="rememberme" class="form-check-input" type="checkbox" formControlName="rememberme">
+          <label for="rememberme" class="form-check-label small">{{ 'login.rememberMe' | siteText:'Se souvenir de moi' }}</label>
         </div>
       </div>
-      <div class="row mx-0">
-        <div class="col-6">
-          <div class="form-check d-inline-block"><input id="rememberme" class="form-check-input" type="checkbox" formControlName="rememberme"><label for="rememberme"
-              class="form-check-label small">Remember me</label></div>
-        </div>
-        <div class="col-6" style="text-align: right;"><a class="small" [routerLink]="['/forgotpwd']">Forgot password</a></div>
-      </div><button class="btn btn-primary w-100 my-4" type="submit" [disabled]="loginForm.invalid"
-      >Log in</button>
-      <div class="seperator">
-        <hr class="w-100">
-        <p>or</p>
-        <hr class="w-100">
+      <div class="col-6" style="text-align: right;">
+        <a class="small" [routerLink]="['/forgotpwd']">{{ 'login.forgotPassword' | siteText:'Mot de passe oublié' }}</a>
       </div>
-      <button class="btn btn-outline-primary w-100 my-4" type="button" [routerLink]="['/signup']">Create an account</button>
-      <!-- Google Sign-In -->
-      <button id="googleLoginBtn" class="btn btn-outline-danger w-100 my-2" type="button" (click)="loginWithGoogle()">Continue with Google</button>
-    </form>
+    </div>
+
+    <button class="btn btn-primary w-100 my-4" type="submit" [disabled]="loginForm.invalid || sending">
+      {{ sending ? ('login.signingIn' | siteText:'Connexion en cours...') : ('login.loginButton' | siteText:'Se connecter') }}
+    </button>
+
+    <div class="seperator">
+      <hr class="w-100">
+      <p>{{ 'login.or' | siteText:'ou' }}</p>
+      <hr class="w-100">
+    </div>
+
+    <button class="btn btn-outline-primary w-100 my-4" type="button" [routerLink]="['/signup']">
+      {{ 'login.createAccount' | siteText:'Créer un compte' }}
+    </button>
+
+    <button id="googleLoginBtn" class="btn btn-outline-danger w-100 my-2" type="button" (click)="loginWithGoogle()" [disabled]="sending">
+      {{ 'login.continueWithGoogle' | siteText:'Continuer avec Google' }}
+    </button>
+  </form>
 </div>
 
 <!-- Login Error Modal -->
@@ -44,14 +79,17 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 rounded-3 shadow-sm">
       <div class="modal-header bg-danger text-white rounded-top">
-        <h5 class="modal-title fw-bold" id="loginErrorLabel">Login Failed</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title fw-bold" id="loginErrorLabel">{{ 'login.loginFailedTitle' | siteText:'Connexion impossible' }}</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" [attr.aria-label]="'login.close' | siteText:'Fermer'"></button>
       </div>
       <div class="modal-body text-center p-4">
-        <p class="mb-0">The email or password you entered is incorrect.<br>Please check your credentials and try again.</p>
+        <p class="mb-0">
+          {{ 'login.loginFailedMessage1' | siteText:'L’email ou le mot de passe saisi est incorrect.' }}<br>
+          {{ 'login.loginFailedMessage2' | siteText:'Veuillez vérifier vos identifiants et réessayer.' }}
+        </p>
       </div>
       <div class="modal-footer justify-content-center border-0 pb-4">
-        <button type="button" class="btn btn-outline-danger px-4" data-bs-dismiss="modal">OK</button>
+        <button type="button" class="btn btn-outline-danger px-4" data-bs-dismiss="modal">{{ 'login.ok' | siteText:'OK' }}</button>
       </div>
     </div>
   </div>
@@ -62,15 +100,15 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 rounded-3 shadow-sm">
       <div class="modal-header bg-warning text-dark rounded-top">
-        <h5 class="modal-title fw-bold" id="emailNotVerifiedLabel">Email Not Verified</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title fw-bold" id="emailNotVerifiedLabel">{{ 'login.emailNotVerifiedTitle' | siteText:'Email non vérifié' }}</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="modal" [attr.aria-label]="'login.close' | siteText:'Fermer'"></button>
       </div>
       <div class="modal-body text-center p-4">
-        <p class="mb-2">Your account was created, but your email address is not yet verified.</p>
-        <p>Please check your <strong>inbox</strong> (or <strong>spam folder</strong>) and click the confirmation link to activate your account.</p>
+        <p class="mb-2">{{ 'login.emailNotVerifiedMessage1' | siteText:'Votre compte a été créé, mais votre adresse email n’est pas encore vérifiée.' }}</p>
+        <p>{{ 'login.emailNotVerifiedMessage2' | siteText:'Veuillez vérifier votre boîte de réception ou votre dossier spam, puis cliquez sur le lien de confirmation pour activer votre compte.' }}</p>
       </div>
       <div class="modal-footer justify-content-center border-0 pb-4">
-        <button type="button" class="btn btn-outline-warning px-4" data-bs-dismiss="modal">OK</button>
+        <button type="button" class="btn btn-outline-warning px-4" data-bs-dismiss="modal">{{ 'login.ok' | siteText:'OK' }}</button>
       </div>
     </div>
   </div>

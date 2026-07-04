@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-export type SiteLanguage = 'fr' | 'en' | 'es';
+export type SiteLanguage = 'fr' | 'en' | 'es' | 'it' | 'de' | 'nl' | 'ru';
 
 @Injectable({
   providedIn: 'root'
@@ -26,10 +26,16 @@ export class LanguageService {
     }
   }
 
+  readonly supportedLanguages: SiteLanguage[] = ['fr', 'en', 'es', 'it', 'de', 'nl', 'ru'];
+
+  isSupportedLanguage(language: any): language is SiteLanguage {
+    return this.supportedLanguages.includes(language as SiteLanguage);
+  }
+
   private readInitialLanguage(): SiteLanguage {
     try {
       const saved = localStorage.getItem(this.storageKey) as SiteLanguage | null;
-      if (saved === 'fr' || saved === 'en' || saved === 'es') {
+      if (this.isSupportedLanguage(saved)) {
         return saved;
       }
     } catch {

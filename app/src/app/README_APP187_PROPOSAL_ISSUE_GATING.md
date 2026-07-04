@@ -1,0 +1,1 @@
+Customer-created requests remain blocked until admin sends/issues proposal. markSent now persists proposalIssued/issued flags and clears admin-pending flags so customer can accept T&C, pay deposit and register warranty after admin sends the proposal.

@@ -63,7 +63,7 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
     rating: 5,
   };
 
-  outingOptions: Record<SiteLanguage, string[]> = {
+  outingOptions: Partial<Record<SiteLanguage, string[]>> & { fr: string[]; en: string[]; es: string[] } = {
     fr: ['Journée en mer', 'Coucher de soleil', 'Fête privée', 'Sortie entreprise'],
     en: ['Full day at sea', 'Sunset cruise', 'Private party', 'Corporate outing'],
     es: ['Día en el mar', 'Atardecer', 'Fiesta privada', 'Evento de empresa'],
@@ -85,15 +85,15 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.currentLanguage = language;
       if (!this.feedback.outingType) {
-        this.feedback.outingType = this.outingOptions[language][0];
+        this.feedback.outingType = (this.outingOptions[language] || this.outingOptions.en || this.outingOptions.fr)[0];
       }
       if (!this.editFeedback.outingType) {
-        this.editFeedback.outingType = this.outingOptions[language][0];
+        this.editFeedback.outingType = (this.outingOptions[language] || this.outingOptions.en || this.outingOptions.fr)[0];
       }
     });
 
-    this.feedback.outingType = this.outingOptions[this.currentLanguage][0];
-    this.editFeedback.outingType = this.outingOptions[this.currentLanguage][0];
+    this.feedback.outingType = (this.outingOptions[this.currentLanguage] || this.outingOptions.en || this.outingOptions.fr)[0];
+    this.editFeedback.outingType = (this.outingOptions[this.currentLanguage] || this.outingOptions.en || this.outingOptions.fr)[0];
 
     const svc = this.mainSvc as any;
     const userObservable = typeof svc.getLoggedUser === 'function'
@@ -272,7 +272,7 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
     this.feedback.bookingId = booking.bookingId;
     this.feedback.date = booking.outingDate || '';
     this.feedback.time = booking.departureTime || '';
-    this.feedback.outingType = booking.outingType || this.outingOptions[this.currentLanguage][0];
+    this.feedback.outingType = booking.outingType || (this.outingOptions[this.currentLanguage] || this.outingOptions.en || this.outingOptions.fr)[0];
   }
 
   filterMine(items: CustomerFeedback[]): CustomerFeedback[] {
@@ -357,7 +357,7 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
         bookingId: '',
         date: '',
         time: '',
-        outingType: this.outingOptions[this.currentLanguage][0],
+        outingType: (this.outingOptions[this.currentLanguage] || this.outingOptions.en || this.outingOptions.fr)[0],
         comments: '',
         rating: 5,
       };
@@ -385,7 +385,7 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
     this.editFeedback = {
       date: item.date || '',
       time: item.time || '',
-      outingType: item.outingType || this.outingOptions[this.currentLanguage][0],
+      outingType: item.outingType || (this.outingOptions[this.currentLanguage] || this.outingOptions.en || this.outingOptions.fr)[0],
       comments: this.displayComment(item),
       rating: Number(item.rating || item.rate || 5),
     };
@@ -398,7 +398,7 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
     this.editFeedback = {
       date: '',
       time: '',
-      outingType: this.outingOptions[this.currentLanguage][0],
+      outingType: (this.outingOptions[this.currentLanguage] || this.outingOptions.en || this.outingOptions.fr)[0],
       comments: '',
       rating: 5,
     };

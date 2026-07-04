@@ -22,25 +22,17 @@
 
         
         <div class="outing-tabs">
-          <button type="button" class="outing-tab" [class.active]="activeTab === 'details'" (click)="activeTab = 'details'">
-            Outing Details
-          </button>
-          <button type="button" class="outing-tab" [class.active]="activeTab === 'departure'" (click)="activeTab = 'departure'">
-            Departure
-          </button>
-          <button type="button" class="outing-tab" [class.active]="activeTab === 'anchoring'" (click)="activeTab = 'anchoring'">
-            Anchoring
-          </button>
-          <button type="button" class="outing-tab" [class.active]="activeTab === 'return'" (click)="activeTab = 'return'">
-            Return
-          </button>
+          <button type="button" class="outing-tab" [class.active]="activeTab === 'details'" (click)="activeTab = 'details'">{{ 'auto.home.admin-outing-detail.admin-outing-detail.component.outing_details' | siteText }}</button>
+          <button type="button" class="outing-tab" [class.active]="activeTab === 'departure'" (click)="activeTab = 'departure'">{{ 'auto.home.admin-outing-detail.admin-outing-detail.component.departure' | siteText }}</button>
+          <button type="button" class="outing-tab" [class.active]="activeTab === 'anchoring'" (click)="activeTab = 'anchoring'">{{ 'auto.home.admin-outing-detail.admin-outing-detail.component.anchoring' | siteText }}</button>
+          <button type="button" class="outing-tab" [class.active]="activeTab === 'return'" (click)="activeTab = 'return'">{{ 'auto.home.admin-outing-detail.admin-outing-detail.component.return' | siteText }}</button>
         </div>
 
         <div class="form-grid" *ngIf="activeTab === 'details'">
           <label>
             {{ t('outingType') }}
             <select [(ngModel)]="outing.outingType">
-              <option *ngFor="let type of outingTypes[currentLanguage]" [value]="type">{{ type }}</option>
+              <option *ngFor="let type of (outingTypes[currentLanguage] || outingTypes.en || outingTypes.fr)" [value]="type">{{ type }}</option>
             </select>
           </label>
 
@@ -144,7 +136,7 @@
         <div class="form-grid">
           <label class="wide">
             {{ t('anchorageLocation') }}
-            <input type="text" [(ngModel)]="anchorageForm.location" placeholder="Lérins, Baie des Milliardaires, Cap d’Antibes..." />
+            <input type="text" [(ngModel)]="anchorageForm.location" [placeholder]="'auto.home.admin-outing-detail.admin-outing-detail.component.l_rins_baie_des_milliardaires_cap_d_antibes' | siteText" />
           </label>
           <label class="wide">
             {{ t('comments') }}

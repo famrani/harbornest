@@ -388,9 +388,121 @@ export class StripeService {
         return ['false', 'cancelled', 'canceled', 'deleted'].includes(normalized);
     }
 
+
+    private hasExplicitCustomerTermsAcceptance(booking: any): boolean {
+        const accepted = booking?.terms?.accepted === true ||
+            booking?.workflow?.termsAccepted === true ||
+            booking?.bookingWorkflow?.termsAccepted === true ||
+            booking?.documents?.termsAccepted === true ||
+            booking?.termsAccepted === true ||
+            booking?.acceptedTerms === true ||
+            booking?.tcAccepted === true ||
+            booking?.tncAccepted === true ||
+            booking?.tAndCAccepted === true ||
+            booking?.termsAndConditionsAccepted === true;
+
+        const acceptedAt = booking?.terms?.acceptedAt ||
+            booking?.workflow?.termsAcceptedAt ||
+            booking?.bookingWorkflow?.termsAcceptedAt ||
+            booking?.documents?.termsAcceptedAt ||
+            booking?.termsAcceptedAt ||
+            booking?.acceptedTermsAt ||
+            booking?.tcAcceptedAt ||
+            booking?.tncAcceptedAt ||
+            booking?.termsAndConditionsAcceptedAt;
+
+        const acceptedBy = booking?.terms?.acceptedBy ||
+            booking?.workflow?.termsAcceptedBy ||
+            booking?.bookingWorkflow?.termsAcceptedBy ||
+            booking?.documents?.termsAcceptedBy ||
+            booking?.termsAcceptedBy ||
+            booking?.acceptedTermsBy ||
+            booking?.tcAcceptedBy ||
+            booking?.tncAcceptedBy;
+
+        return accepted === true && !!(acceptedAt || acceptedBy);
+    }
+
+    private async assertTermsAcceptedBeforeCustomerAction(bookingId: string): Promise<any> {
+        const id = String(bookingId || '').trim();
+
+        if (!id) {
+            throw new Error('bookingId is required');
+        }
+
+        // Customer checkout can be launched either from a finalized booking
+        // (/bnBookings/{bookingId}) or from an issued proposal
+        // (/bnProposals/{proposalId}) before the booking object is created.
+        //
+        // Release 3.2 changed Terms & Conditions so they are no longer
+        // pre-accepted on booking creation. This guard therefore checks the
+        // actual record used by the checkout instead of assuming that every
+        // checkout id already exists under /bnBookings.
+        const bookingSnap = await this.stbDbSvc.db.ref(`/bnBookings/${id}`).once('value');
+        const booking = bookingSnap.val();
+
+        if (booking && this.hasExplicitCustomerTermsAcceptance(booking)) {
+            return booking;
+        }
+
+        const proposalSnap = await this.stbDbSvc.db.ref(`/bnProposals/${id}`).once('value');
+        const proposal = proposalSnap.val();
+
+        if (proposal && this.hasExplicitCustomerTermsAcceptance(proposal)) {
+            return proposal;
+        }
+
+        if (booking || proposal) {
+            throw new Error('The customer must explicitly accept the Terms & Conditions before payment or warranty registration.');
+        }
+
+        throw new Error('Booking or proposal not found for payment.');
+    }
+
+    private computePaymentWorkflowUpdate(booking: any): any {
+        const n = (value: any) => Number(value || 0) || 0;
+        const payments = booking?.payments || {};
+        const alegriaRevenue = n(booking?.alegriaRevenueTotal || booking?.onlinePayableAmount || booking?.appPayableAmount || booking?.proposalBoatPrice + booking?.proposalFuelPrice + booking?.proposalExtraServicesPrice);
+        const skipperRevenue = n(booking?.skipperCashAmount || booking?.proposalSkipperPrice || payments?.direct?.skipperCashAmount);
+        const alegriaPaid = n(booking?.alegriaPaidAmount || payments?.balance?.amount || payments?.alegria?.amount) + (booking?.depositPaid === true ? n(booking?.depositPaidAmount || booking?.depositAmount || payments?.deposit?.amount) : 0);
+        const skipperPaid = n(booking?.skipperPaidAmount || payments?.skipper?.amount || (booking?.skipperPaid === true ? skipperRevenue : 0));
+        const alegriaRemaining = Math.max(0, Math.round((alegriaRevenue - alegriaPaid) * 100) / 100);
+        const skipperRemaining = Math.max(0, Math.round((skipperRevenue - skipperPaid) * 100) / 100);
+        const warrantyStatus = String(booking?.warrantyStatus || '').toLowerCase();
+        const warrantyMethod = String(booking?.warrantyMethod || booking?.warrantyPaymentChoice || '').toLowerCase();
+        const warrantyAmount = n(booking?.warrantyAmount || booking?.cautionAmount || booking?.securityDepositAmount);
+        const warrantyComplete = warrantyAmount <= 0 ||
+            (warrantyMethod.includes('cash') && (warrantyStatus.includes('cash_selected') || warrantyStatus.includes('cash_received'))) ||
+            ((warrantyMethod.includes('card') || warrantyMethod.includes('stripe')) && (warrantyStatus.includes('card_registered') || !!booking?.warrantyPaymentMethodId || !!booking?.warrantySetupIntentId));
+        const termsAccepted = this.hasExplicitCustomerTermsAcceptance(booking);
+        const fullyPaid = alegriaRemaining <= 0 && skipperRemaining <= 0;
+        const confirmed = termsAccepted && fullyPaid && warrantyComplete;
+        return {
+            workflow: {
+                ...(booking?.workflow || {}),
+                termsAccepted,
+                alegriaPaymentComplete: alegriaRemaining <= 0,
+                skipperPaymentComplete: skipperRemaining <= 0,
+                warrantyComplete,
+                fullyPaid,
+                confirmed,
+                updatedAt: Date.now(),
+            },
+            alegriaRemaining,
+            skipperRemaining,
+            fullyPaid,
+            confirmed,
+            bookingStatus: confirmed ? 'confirmed' : 'waiting_for_customer',
+            paymentStatus: fullyPaid ? 'fully_paid' : 'payment_pending',
+        };
+    }
+
     private async assertBalanceCheckoutAllowed(bookingId: string, body: any): Promise<void> {
         const bookingSnap = await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).once('value');
         const booking = bookingSnap.val() || {};
+        if (!this.hasExplicitCustomerTermsAcceptance(booking)) {
+            throw new Error('The customer must explicitly accept the Terms & Conditions before payment.');
+        }
         const outingDate = booking.outingDate || booking.date || booking.bookingDate || body.outingDate || body.date;
 
         if (this.isCancelledStatusValue(booking.bookingStatus ?? booking.status) || booking.cancelled === true || booking.canceled === true) {
@@ -515,6 +627,8 @@ export class StripeService {
                     received: { bookingId: body.bookingId, proposalId: body.proposalId, id: body.id }
                 });
             }
+
+            await this.assertTermsAcceptedBeforeCustomerAction(bookingId);
 
             const amount = this.normalizeAmountToCents(rawDepositAmount);
             if (!amount) {
@@ -658,6 +772,8 @@ export class StripeService {
             if (!ownerId || !bookingId) {
                 return res.status(400).json({ error: 'ownerId and bookingId are required' });
             }
+
+            await this.assertTermsAcceptedBeforeCustomerAction(bookingId);
 
             const amount = this.normalizeAmountToCents(warrantyAmount);
             if (!amount) return res.status(400).json({ error: 'warrantyAmount must be greater than 0' });
@@ -1248,12 +1364,7 @@ export class StripeService {
         const existingBooking = bookingSnap?.val?.() || {};
         const existingProposal = proposalSnap?.val?.() || {};
 
-        const termsAccepted =
-            existingBooking.termsAccepted === true ||
-            existingBooking.termsStatus === 'accepted' ||
-            existingBooking?.documents?.termsAccepted === true ||
-            existingProposal.termsAccepted === true ||
-            existingProposal.termsStatus === 'accepted';
+        const termsAccepted = this.hasExplicitCustomerTermsAcceptance(existingBooking) || this.hasExplicitCustomerTermsAcceptance(existingProposal);
 
         const derivedBookingStatus = termsAccepted ? 'confirmed' : 'awaiting_terms';
 
@@ -1880,6 +1991,16 @@ export class StripeService {
             this.createOutingBalanceCheckout(req, res)
         );
 
+        stripeRouter.post('/pay/outing-skipper-fee-checkout', (req: Request, res: Response) =>
+            this.createOutingExtraServiceCheckout(req, res)
+        );
+        stripeRouter.post('/api/payments/create-skipper-fee-checkout-session', (req: Request, res: Response) =>
+            this.createOutingExtraServiceCheckout(req, res)
+        );
+        stripeRouter.post('/stripe/skipper-fee-checkout', (req: Request, res: Response) =>
+            this.createOutingExtraServiceCheckout(req, res)
+        );
+
 
         stripeRouter.post('/pay/outing-balance-complete', (req: Request, res: Response) =>
             this.completeOutingBalancePayment(req, res)
@@ -2183,7 +2304,8 @@ export class StripeService {
             const currency = String(body.currency || 'eur').toLowerCase();
             const requestedPaymentType = String(body.paymentType || body.checkoutType || body.type || '').toLowerCase();
             const isAdHocPayment = requestedPaymentType.includes('ad_hoc') || requestedPaymentType.includes('adhoc') || requestedPaymentType.includes('ad-hoc');
-            const normalizedPaymentType = isAdHocPayment ? 'ad_hoc' : 'extra_service';
+            const isSkipperFeePayment = requestedPaymentType.includes('skipper');
+            const normalizedPaymentType = isSkipperFeePayment ? 'skipper_fee' : (isAdHocPayment ? 'ad_hoc' : 'extra_service');
             const description = body.description || body.title || body.name || (isAdHocPayment ? 'Ad hoc payment' : 'Extra service payment');
             const rawCustomerEmail = body.customerEmail || body.email || body.customer?.email;
             const customerEmail = this.isValidEmailForStripe(rawCustomerEmail) ? String(rawCustomerEmail).trim() : '';
@@ -2195,6 +2317,8 @@ export class StripeService {
             if (!bookingId) {
                 return res.status(400).json({ error: 'bookingId is required' });
             }
+
+            await this.assertTermsAcceptedBeforeCustomerAction(bookingId);
 
             const amount = this.normalizeAmountToCents(rawAmount);
             if (!amount) {
@@ -2308,7 +2432,9 @@ export class StripeService {
 
             await paymentRef.set(payload);
 
-            if (isAdHocPayment) {
+            if (isSkipperFeePayment) {
+                await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/skipper`).set(payload);
+            } else if (isAdHocPayment) {
                 await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/adHoc/${extraServiceId}`).set(payload);
             } else {
                 await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/extraServices/${extraServiceId}`).set(payload);

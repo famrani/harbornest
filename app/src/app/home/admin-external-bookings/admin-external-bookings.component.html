@@ -1,53 +1,180 @@
 <section class="external-bookings-page">
   <div class="container external-shell">
-    <div class="section-head">
+    <div class="section-head" *ngIf="!embedded">
       <span class="eyebrow">{{ t('eyebrow') }}</span>
       <h1>{{ t('title') }}</h1>
       <p>{{ t('intro') }}</p>
+      <p class="archive-notice" *ngIf="isHistoricalMode">{{ t('archiveOnlyNotice') }}</p>
     </div>
 
     <article class="external-card">
+      <h2>{{ t('boat') }}</h2>
       <div class="form-grid">
-        <label>{{ t('platform') }}
-          <select [(ngModel)]="form.source">
-            <option value="samboat">{{ t('platformSamboat') }}</option>
-            <option value="clickandboat">{{ t('platformClickAndBoat') }}</option>
-            <option value="other">{{ t('platformOther') }}</option>
+        <label>{{ t('boat') }}
+          <select [(ngModel)]="selectedBoatId" (ngModelChange)="onBoatSelected($event)">
+            <option *ngFor="let boat of boats" [value]="boat.boatId">{{ boat.boatName }} — {{ boat.model || boat.boatType }}</option>
           </select>
         </label>
 
-        <label *ngIf="form.source === 'other'">{{ t('otherPlatformName') }}<input type="text" [(ngModel)]="form.externalPlatformName" [placeholder]="t('otherPlatformNamePlaceholder')" /></label>
-        <label>{{ t('platformBookingReference') }}<input type="text" [(ngModel)]="form.externalPlatformBookingRef" [placeholder]="t('platformBookingReferencePlaceholder')" /></label>
+        <label class="computed-field">{{ t('boatName') }}
+          <input type="text" readonly [(ngModel)]="form.boatName" />
+          <small>{{ t('calculatedField') }}</small>
+        </label>
 
+        <label class="computed-field">{{ t('boatType') }}
+          <input type="text" readonly [(ngModel)]="form.boatType" />
+          <small>{{ t('calculatedField') }}</small>
+        </label>
+
+        <label class="computed-field">{{ t('boatManufacturer') }}
+          <input type="text" readonly [(ngModel)]="form.boatManufacturer" />
+          <small>{{ t('calculatedField') }}</small>
+        </label>
+
+        <label class="computed-field">{{ t('boatModel') }}
+          <input type="text" readonly [(ngModel)]="form.boatModel" />
+          <small>{{ t('calculatedField') }}</small>
+        </label>
+
+        <label class="boat-url-line">{{ t('boatListingUrl') }}
+          <input type="url" [(ngModel)]="form.boatClickAndBoatUrl" />
+          <a *ngIf="form.boatClickAndBoatUrl" [href]="form.boatClickAndBoatUrl" target="_blank" rel="noopener">{{ 'auto.home.admin-external-bookings.admin-external-bookings.component.open_listing' | siteText }}</a>
+        </label>
+
+        <label>{{ t('startMarina') }}
+          <select [(ngModel)]="form.startMarina">
+            <option *ngFor="let marina of departureMarinas" [value]="marina">{{ marina }}</option>
+          </select>
+        </label>
+      </div>
+
+      <h2>{{ sourceSectionTitle }}</h2>
+      <div class="form-grid">
+        <label>{{ t('entryMode') }}
+          <select [(ngModel)]="form.entryMode">
+            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.future' | siteText">{{ t('futureMode') }}</option>
+            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.historical' | siteText">{{ t('historicalMode') }}</option>
+            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.proposal' | siteText">{{ t('clientProposalMode') }}</option>
+          </select>
+        </label>
+
+        <label>{{ t('platform') }}
+          <select [(ngModel)]="form.source" (ngModelChange)="onPlatformChanged()">
+            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.direct' | siteText">{{ t('platformDirect') }}</option>
+            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.clickandboat' | siteText">{{ t('platformClickAndBoat') }}</option>
+            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.samboat' | siteText">{{ t('platformSamboat') }}</option>
+            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.other' | siteText">{{ t('platformOther') }}</option>
+          </select>
+        </label>
+
+        <label *ngIf="isOtherSource">{{ t('otherPlatformName') }}
+          <input type="text" [(ngModel)]="form.externalPlatformName" [placeholder]="t('otherPlatformNamePlaceholder')" />
+        </label>
+
+        <ng-container *ngIf="!isDirectSource">
+          <label>{{ platformReferenceLabel }}
+            <input type="text" [(ngModel)]="form.externalPlatformBookingRef" [placeholder]="platformReferenceLabel" />
+          </label>
+
+          <label>{{ t('externalPlatformListingName') }}
+            <input type="text" [(ngModel)]="form.externalPlatformListingName" [placeholder]="platformDisplayName + ' listing name'" />
+          </label>
+
+          <label>{{ platformListingUrlLabel }}
+            <input type="url" [(ngModel)]="form.externalPlatformUrl" [placeholder]="'https://...'" />
+            <a *ngIf="form.externalPlatformUrl" [href]="form.externalPlatformUrl" target="_blank" rel="noopener">{{ 'auto.home.admin-external-bookings.admin-external-bookings.component.open_listing' | siteText }}</a>
+          </label>
+
+          <label>{{ platformBookingUrlLabel }}
+            <input type="url" [(ngModel)]="form.platformBookingUrl" [placeholder]="'https://...'" />
+            <a *ngIf="form.platformBookingUrl" [href]="form.platformBookingUrl" target="_blank" rel="noopener">{{ 'auto.home.admin-external-bookings.admin-external-bookings.component.open_booking' | siteText }}</a>
+          </label>
+        </ng-container>
+      </div>
+
+      <h2>{{ t('customerName') }}</h2>
+      <div class="form-grid">
         <label>{{ t('customerName') }}<input type="text" [(ngModel)]="form.customerName" /></label>
         <label>{{ t('customerEmail') }}<input type="email" [(ngModel)]="form.customerEmail" /></label>
         <label>{{ t('phone') }}<input type="tel" [(ngModel)]="form.customerPhone" /></label>
+        <label>{{ t('passengers') }}<input type="number" min="0" step="1" [(ngModel)]="form.passengers" /></label>
         <label>{{ t('outingType') }}<input type="text" [(ngModel)]="form.outingType" /></label>
-        <label>{{ t('outingDate') }}<input type="date" [(ngModel)]="form.outingDate" /></label>
+        <label>{{ t('outingDate') }}<input type="date" [min]="outingDateMin" [max]="outingDateMax" [(ngModel)]="form.outingDate" /><small>{{ outingDateHint }}</small></label>
         <label>{{ t('departureTime') }}<input type="time" [(ngModel)]="form.departureTime" /></label>
         <label>{{ t('returnTime') }}<input type="time" [(ngModel)]="form.arrivalTime" /></label>
-        <label>{{ t('remainingOnboardAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.externalRemainingOnboardAmount" /></label>
-        <label>{{ t('extraServicesOnboardAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.externalExtraServicesOnboardAmount" /></label>
-        <label>{{ t('totalForDeposit') }}<input type="number" readonly [value]="(form.externalRemainingOnboardAmount || 0) + (form.externalExtraServicesOnboardAmount || 0)" /></label>
+      </div>
+
+      <h2>{{ customerCostTitle }}</h2>
+      <div class="form-grid">
+        <label *ngIf="isHistoricalMode">{{ isDirectSource ? t('totalCollectedHistorical') : 'Total cost to client' }}<input type="number" min="0" step="0.01" [(ngModel)]="form.totalAmount" /></label>
+
+        <ng-container *ngIf="!isDirectSource">
+          <label>{{ platformCustomerAmountLabel }}<input type="number" min="0" step="0.01" [(ngModel)]="form.externalPlatformTotalClientAmount" /></label>
+          <label>{{ platformPayoutLabel }}<input type="number" min="0" step="0.01" [(ngModel)]="form.externalPlatformPaidAmount" /></label>
+          <label>{{ t('externalPlatformNetOwnerAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.externalPlatformNetOwnerAmount" /></label>
+          <label>{{ t('externalPlatformRemainingOwnerAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.externalPlatformRemainingOwnerAmount" /></label>
+          <label>{{ t('externalPortAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.externalPortAmount" /></label>
+        </ng-container>
+      </div>
+
+      <h2>{{ alegriaCollectionsTitle }}</h2>
+      <div class="form-grid">
+        <label>{{ t('skipperCashAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.skipperCashAmount" /></label>
+        <label>{{ t('cleaningCashAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.cleaningCashAmount" /></label>
+        <label>{{ t('cateringAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.cateringAmount" /></label>
+        <label>{{ t('drinksAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.drinksAmount" /></label>
+        <label>{{ t('waterToysAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.waterToysAmount" /></label>
+        <label>{{ t('tipsAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.tipsAmount" /></label>
+        <label>{{ t('otherOnboardAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.otherOnboardAmount" /></label>
+
+        <label class="computed-field">{{ isHistoricalMode ? t('notCollectedHistorical') : t('payableOnlineTotal') }}
+          <input type="number" readonly [value]="isHistoricalMode ? 0 : payableOnlineTotal" />
+          <small>{{ t('calculatedField') }}</small>
+        </label>
+        <label class="computed-field">{{ isHistoricalMode ? t('notCollectedHistorical') : t('cashOnBoardTotal') }}
+          <input type="number" readonly [value]="isHistoricalMode ? 0 : cashOnBoardTotal" />
+          <small>{{ t('calculatedField') }}</small>
+        </label>
+        <label class="computed-field">{{ isHistoricalMode ? t('notCollectedHistorical') : t('remainingTotal') }}
+          <input type="number" readonly [value]="isHistoricalMode ? 0 : remainingTotal" />
+          <small>{{ t('calculatedField') }}</small>
+        </label>
         <label>{{ t('warrantyAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.warrantyAmount" /></label>
 
         <label>{{ t('warrantyMethod') }}
           <select [(ngModel)]="form.warrantyPaymentChoice">
-            <option value="stripe_card">{{ t('warrantyStripeCard') }}</option>
-            <option value="cash_on_board">{{ t('warrantyCash') }}</option>
+            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.stripe_card' | siteText">{{ t('warrantyStripeCard') }}</option>
+            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.cash_on_board' | siteText">{{ t('warrantyCash') }}</option>
           </select>
         </label>
       </div>
 
+      <label class="full-width">{{ t('externalDocuments') }}
+        <textarea rows="4" [(ngModel)]="form.externalDocuments" [placeholder]="'auto.home.admin-external-bookings.admin-external-bookings.component.rachat_caution_facture_damage_waiver_conditions' | siteText"></textarea>
+      </label>
+
       <div class="actions">
-        <button class="btn btn-primary" type="button" [disabled]="saving" (click)="saveExternalBooking()">
-          {{ saving ? t('saving') : t('createClientProposal') }}
+        <button class="btn btn-primary" type="button" [disabled]="saving" (click)="form.entryMode === 'proposal' ? saveExternalBooking() : saveManualHistoricalBooking()">
+          {{ saving ? t('saving') : (form.entryMode === 'proposal' ? t('createClientProposal') : t('manualBookingSavedMessage')) }}
         </button>
       </div>
 
       <p class="success" *ngIf="message">{{ message }}</p>
+      <p class="client-link" *ngIf="createdBookingId">
+        <a [routerLink]="['/admin/bookings', createdBookingId]">{{ 'auto.home.admin-external-bookings.admin-external-bookings.component.ouvrir_la_r_servation_cr_e' | siteText }}</a>
+      </p>
       <p class="client-link" *ngIf="warrantyLink">{{ t('clientProposalLink') }}: {{ warrantyLink }}</p>
       <p class="error" *ngIf="error">{{ error }}</p>
+    </article>
+
+    <article class="external-card platform-bookings-list" *ngIf="!embedded && platformBookings.length">
+      <h2>{{ 'auto.home.admin-external-bookings.admin-external-bookings.component.r_servations' | siteText }}</h2>
+      <button class="platform-booking-row" type="button" *ngFor="let booking of platformBookings" (click)="openBooking(booking)">
+        <span><strong>{{ booking.customerName || '-' }}</strong><small>{{ booking.email || '-' }}</small></span>
+        <span><strong>{{ booking.externalPlatformName || booking.externalPlatform || booking.source || 'Direct Alegria' }}</strong><small>{{ booking.externalPlatformBookingRef || booking.platformBookingReference || (booking.source === 'direct' ? 'Direct' : '-') }}</small></span>
+        <span><strong>{{ booking.outingDate }}</strong><small>{{ booking.departureTime }} - {{ booking.arrivalTime }}</small></span>
+        <span><strong>{{ booking.totalPrice | currency:'EUR':'symbol':'1.0-2' }}</strong><small>{{ 'auto.home.admin-external-bookings.admin-external-bookings.component.restant_alegria' | siteText }}</small></span>
+      </button>
     </article>
   </div>
 </section>

@@ -240,16 +240,56 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
   }
 
   isTermsAccepted(booking: AlegriaBooking): boolean {
-    const anyBooking: any = booking;
-    return anyBooking.termsAccepted === true ||
+    const anyBooking: any = booking || {};
+    const explicitAccepted = anyBooking.customerTermsAccepted === true ||
+      anyBooking.termsAccepted === true ||
+      anyBooking.tncAccepted === true ||
       anyBooking.tcAccepted === true ||
       anyBooking.tAndCAccepted === true ||
       anyBooking.termsAndConditionsAccepted === true ||
       anyBooking.acceptedTerms === true ||
-      anyBooking.termsStatus === 'accepted' ||
-      anyBooking.tcStatus === 'accepted' ||
+      anyBooking.workflow?.termsAccepted === true ||
+      anyBooking.bookingWorkflow?.termsAccepted === true ||
       anyBooking?.documents?.termsAccepted === true ||
       anyBooking?.terms?.accepted === true;
+
+    const explicitTimestamp = anyBooking.termsAcceptedAt ||
+      anyBooking.tncAcceptedAt ||
+      anyBooking.tcAcceptedAt ||
+      anyBooking.acceptedTermsAt ||
+      anyBooking.termsAndConditionsAcceptedAt ||
+      anyBooking.workflow?.termsAcceptedAt ||
+      anyBooking.bookingWorkflow?.termsAcceptedAt ||
+      anyBooking?.documents?.termsAcceptedAt ||
+      anyBooking?.terms?.acceptedAt;
+
+    const acceptedBy = anyBooking.termsAcceptedBy ||
+      anyBooking.tncAcceptedBy ||
+      anyBooking.acceptedTermsBy ||
+      anyBooking.workflow?.termsAcceptedBy ||
+      anyBooking.bookingWorkflow?.termsAcceptedBy ||
+      anyBooking?.documents?.termsAcceptedBy ||
+      anyBooking?.terms?.acceptedBy;
+
+    const source = String(
+      anyBooking.termsAcceptedSource ||
+      anyBooking.tncAcceptedSource ||
+      anyBooking.acceptedTermsSource ||
+      anyBooking.workflow?.termsAcceptedSource ||
+      anyBooking.bookingWorkflow?.termsAcceptedSource ||
+      anyBooking?.documents?.termsAcceptedSource ||
+      anyBooking?.terms?.source ||
+      ''
+    ).toLowerCase();
+
+    const formalCustomerMarker = anyBooking.customerTermsAccepted === true ||
+      source.includes('customer') ||
+      source.includes('client') ||
+      source.includes('proposal') ||
+      source.includes('portal') ||
+      !!acceptedBy;
+
+    return explicitAccepted === true && !!explicitTimestamp && formalCustomerMarker;
   }
 
   isCompletedStatusValue(value: any): boolean {

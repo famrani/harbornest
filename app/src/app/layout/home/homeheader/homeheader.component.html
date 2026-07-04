@@ -1,20 +1,20 @@
 <header class="site-header">
   <div class="container header-bar">
     <a class="brand" routerLink="/" (click)="closeMenu()">
-      <img class="brand-logo" src="assets/img/logo-Alegria.png" alt="Alegria" />
+      <img class="brand-logo" src="assets/img/logo-Alegria.png" [alt]="t('brand')" />
       <span class="brand-text">
-        <strong>{{ content.brand }}</strong>
-        <small>{{ content.brandTagline }}</small>
+        <strong>{{ t('brand') }}</strong>
+        <small>{{ t('brandTagline') }}</small>
       </span>
     </a>
 
-    <button class="menu-toggle" type="button" (click)="toggleMenu()" aria-label="Open menu">
+    <button class="menu-toggle" type="button" (click)="toggleMenu()" [attr.aria-label]="t('nav.openMenu')">
       ☰
     </button>
 
     <nav class="main-nav" [class.open]="menuOpen">
       <details class="nav-dropdown" (toggle)="onDropdownToggle($event)">
-        <summary>{{ content.nav.outings }}</summary>
+        <summary>{{ t('nav.outings') }}</summary>
         <div class="dropdown-panel">
           <a routerLink="/sorties" routerLinkActive="active" (click)="closeMenu()">{{ allOutingsLabel }}</a>
           <a routerLink="/sorties/journee-en-mer" routerLinkActive="active" (click)="closeMenu()">{{ dayAtSeaLabel }}</a>
@@ -25,7 +25,7 @@
       </details>
 
       <details class="nav-dropdown" (toggle)="onDropdownToggle($event)">
-        <summary>{{ content.nav.boat }}</summary>
+        <summary>{{ t('nav.boat') }}</summary>
         <div class="dropdown-panel">
           <a routerLink="/bateau" routerLinkActive="active" (click)="closeMenu()">{{ boatPresentationLabel }}</a>
           <a routerLink="/galerie" routerLinkActive="active" (click)="closeMenu()">{{ galleryLabel }}</a>
@@ -43,13 +43,18 @@
           <a routerLink="/booking-process" routerLinkActive="active" (click)="closeMenu()">{{ depositLabel }}</a>
         </div>
       </details>
+
       <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">{{ contactLabel }}</a>
 
       <div class="language-switcher">
-        <select [value]="currentLanguage" (change)="changeLanguage($any($event.target).value)" aria-label="Language selector">
+        <select [value]="currentLanguage" (change)="changeLanguage($any($event.target).value)" [attr.aria-label]="t('nav.languageSelector')">
           <option value="fr">Français</option>
           <option value="en">English</option>
           <option value="es">Español</option>
+          <option value="it">Italiano</option>
+          <option value="de">Deutsch</option>
+          <option value="nl">Nederlands</option>
+          <option value="ru">Русский</option>
         </select>
       </div>
 
@@ -59,17 +64,17 @@
         <div class="dropdown-panel dropdown-panel-right" *ngIf="!isLoggedIn">
           <a routerLink="/login" routerLinkActive="active" (click)="closeMenu()">{{ loginLabel }}</a>
           <a routerLink="/signup" routerLinkActive="active" (click)="closeMenu()">{{ signupLabel }}</a>
-</div>
+        </div>
 
         <div class="dropdown-panel dropdown-panel-right account-admin-panel" *ngIf="isLoggedIn && isAdmin">
           <a routerLink="/my-profile" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
           <a routerLink="/admin/proposals" routerLinkActive="active" (click)="closeMenu()">{{ proposalsLabel }}</a>
-          <a routerLink="/admin/bookings" routerLinkActive="active" (click)="closeMenu()">{{ alegriaBookingsLabel }}</a>
-          <a routerLink="/admin/external-bookings" routerLinkActive="active" (click)="closeMenu()">{{ platformBookingsLabel }}</a>
+          <a routerLink="/admin/bookings" routerLinkActive="active" (click)="closeMenu()">{{ reservationsLabel }}</a>
           <a routerLink="/my-payments" routerLinkActive="active" (click)="closeMenu()">{{ paymentsLabel }}</a>
 
           <span class="dropdown-section-title">{{ operationsSectionLabel }}</span>
           <a routerLink="/admin/outings" routerLinkActive="active" (click)="closeMenu()">{{ boatLogManagerLabel }}</a>
+          <a routerLink="/admin/fleet" routerLinkActive="active" (click)="closeMenu()">{{ fleetLabel }}</a>
           <a routerLink="/admin/manage-outings" routerLinkActive="active" (click)="closeMenu()">{{ managePublicOutingsLabel }}</a>
           <a routerLink="/admin/pricing-model" routerLinkActive="active" (click)="closeMenu()">{{ pricingModelLabel }}</a>
           <a routerLink="/admin/feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ adminFeedbacksLabel }}</a>
@@ -80,8 +85,7 @@
         <div class="dropdown-panel dropdown-panel-right account-customer-panel" *ngIf="isLoggedIn && isCustomer">
           <a routerLink="/my-profile" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
           <a routerLink="/my-proposals" routerLinkActive="active" (click)="closeMenu()">{{ myProposalsLabel }}</a>
-          <a routerLink="/my-bookings" routerLinkActive="active" (click)="closeMenu()">{{ alegriaBookingsLabel }}</a>
-          <a routerLink="/my-external-bookings" routerLinkActive="active" (click)="closeMenu()">{{ platformBookingsLabel }}</a>
+          <a routerLink="/my-bookings" routerLinkActive="active" (click)="closeMenu()">{{ reservationsLabel }}</a>
           <a routerLink="/my-payments" routerLinkActive="active" (click)="closeMenu()">{{ paymentsLabel }}</a>
           <a routerLink="/my-feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ myFeedbacksLabel }}</a>
           <button class="dropdown-action" type="button" (click)="logout()">{{ logoutLabel }}</button>
@@ -90,4 +94,3 @@
     </nav>
   </div>
 </header>
-

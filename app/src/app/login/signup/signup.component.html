@@ -1,67 +1,63 @@
 <div class="container py-5 auth-shell">
   <div class="auth-brand">
-    <span class="auth-eyebrow">Alegria Boat</span>
+    <span class="auth-eyebrow">{{ 'auto.login.signup.signup.component.alegria_boat' | siteText }}</span>
     <div class="auth-mark">⛵</div>
-    <h1 class="h4 mb-1">Create your account</h1>
-    <p class="text-muted small mb-4">Prepare your charter, manage your details and confirm your deposit securely.</p>
+    <h1 class="h4 mb-1">{{ 'auto.login.signup.signup.component.create_your_account' | siteText }}</h1>
+    <p class="text-muted small mb-4">{{ 'auto.login.signup.signup.component.prepare_your_charter_manage_your_details_and_confi' | siteText }}</p>
   </div>
 
-  <div *ngIf="success" class="alert alert-success py-2">
-    Account created successfully. Please check your inbox and your Junk/Spam folder for the password setup/reset email, then sign in.
-  </div>
+  <div *ngIf="success" class="alert alert-success py-2">{{ 'auto.login.signup.signup.component.account_created_successfully_please_check_your_inb' | siteText }}</div>
 
   <form [formGroup]="form" (ngSubmit)="signupWithEmail()" novalidate>
     <div class="row g-3">
       <div class="col-md-6">
-        <label class="form-label small mb-1">First name</label>
+        <label class="form-label small mb-1">{{ 'auto.login.signup.signup.component.first_name' | siteText }}</label>
         <input class="form-control form-control-sm" formControlName="firstname" />
       </div>
       <div class="col-md-6">
-        <label class="form-label small mb-1">Last name</label>
+        <label class="form-label small mb-1">{{ 'auto.login.signup.signup.component.last_name' | siteText }}</label>
         <input class="form-control form-control-sm" formControlName="lastname" />
       </div>
 
       <div class="col-md-6">
-        <label class="form-label small mb-1">Display name (optional)</label>
-        <input class="form-control form-control-sm" formControlName="displayName" placeholder="Public name" />
+        <label class="form-label small mb-1">{{ 'auto.login.signup.signup.component.display_name_optional' | siteText }}</label>
+        <input class="form-control form-control-sm" formControlName="displayName" [placeholder]="'auto.login.signup.signup.component.public_name' | siteText" />
       </div>
       <div class="col-md-6">
-        <label class="form-label small mb-1">Country</label>
-        <input class="form-control form-control-sm" formControlName="country" placeholder="FR" />
+        <label class="form-label small mb-1">{{ 'auto.login.signup.signup.component.country' | siteText }}</label>
+        <input class="form-control form-control-sm" formControlName="country" [placeholder]="'auto.login.signup.signup.component.fr' | siteText" />
       </div>
 
       <div class="col-md-6">
-        <label class="form-label small mb-1">Email</label>
+        <label class="form-label small mb-1">{{ 'auto.login.signup.signup.component.email' | siteText }}</label>
         <input type="email" class="form-control form-control-sm" formControlName="email"
           [class.is-invalid]="f.email.touched && f.email.invalid" />
-        <div class="invalid-feedback" *ngIf="f.email.touched && f.email.hasError('required')">Email is required.</div>
-        <div class="invalid-feedback" *ngIf="f.email.touched && f.email.hasError('email')">Enter a valid email.</div>
+        <div class="invalid-feedback" *ngIf="f.email.touched && f.email.hasError('required')">{{ 'auto.login.signup.signup.component.email_is_required' | siteText }}</div>
+        <div class="invalid-feedback" *ngIf="f.email.touched && f.email.hasError('email')">{{ 'auto.login.signup.signup.component.enter_a_valid_email' | siteText }}</div>
       </div>
 
       <div class="col-md-6">
-        <label class="form-label small mb-1">Phone (optional)</label>
+        <label class="form-label small mb-1">{{ 'auto.login.signup.signup.component.phone_optional' | siteText }}</label>
         <input class="form-control form-control-sm" formControlName="phone" placeholder="+33 6 ..." />
       </div>
 
       <div class="col-md-6">
-        <label class="form-label small mb-1">Password</label>
+        <label class="form-label small mb-1">{{ 'auto.login.signup.signup.component.password' | siteText }}</label>
         <input type="password" class="form-control form-control-sm" formControlName="password"
           [class.is-invalid]="f.password.touched && f.password.invalid" />
-        <div class="invalid-feedback" *ngIf="f.password.touched && f.password.hasError('required')">Password is
-          required.</div>
-        <div class="invalid-feedback" *ngIf="f.password.touched && f.password.hasError('minlength')">Minimum 6
-          characters.</div>
+        <div class="invalid-feedback" *ngIf="f.password.touched && f.password.hasError('required')">{{ 'auto.login.signup.signup.component.password_is_required' | siteText }}</div>
+        <div class="invalid-feedback" *ngIf="f.password.touched && f.password.hasError('minlength')">{{ 'auto.login.signup.signup.component.minimum_6_characters' | siteText }}</div>
       </div>
 
       <div class="col-md-6">
-        <label class="form-label small mb-1">Account type</label>
+        <label class="form-label small mb-1">{{ 'auto.login.signup.signup.component.account_type' | siteText }}</label>
         <select class="form-select form-select-sm" formControlName="role">
-          <option value="customer">Customer</option>
-          <option value="owner">Boat owner / Host</option>
-          <option value="provider">Service partner</option>
-          <option value="admin">Platform admin</option>
+          <option [value]="'auto.login.signup.signup.component.customer' | siteText">{{ 'auto.login.signup.signup.component.customer' | siteText }}</option>
+          <option [value]="'auto.login.signup.signup.component.owner' | siteText">{{ 'auto.login.signup.signup.component.boat_owner_host' | siteText }}</option>
+          <option [value]="'auto.login.signup.signup.component.provider' | siteText">{{ 'auto.login.signup.signup.component.service_partner' | siteText }}</option>
+          <option [value]="'auto.login.signup.signup.component.admin' | siteText">{{ 'auto.login.signup.signup.component.platform_admin' | siteText }}</option>
         </select>
-        <div class="form-text small">Admin role must be granted by the platform.</div>
+        <div class="form-text small">{{ 'auto.login.signup.signup.component.admin_role_must_be_granted_by_the_platform' | siteText }}</div>
       </div>
 
       <!-- Stripe Connect opt-in (only shows for owner/provider) -->
@@ -69,32 +65,26 @@
         <div class="form-check">
           <input class="form-check-input" type="checkbox" id="connectStripe" [(ngModel)]="connectStripeNow"
             [ngModelOptions]="{standalone: true}">
-          <label class="form-check-label small" for="connectStripe">
-            Connect my Stripe account right after signup
-          </label>
+          <label class="form-check-label small" for="connectStripe">{{ 'auto.login.signup.signup.component.connect_my_stripe_account_right_after_signup' | siteText }}</label>
         </div>
-        <div class="form-text small">You can also do this later from your dashboard.</div>
+        <div class="form-text small">{{ 'auto.login.signup.signup.component.you_can_also_do_this_later_from_your_dashboard' | siteText }}</div>
       </div>
 
       <!-- Social links -->
       <div class="col-12">
-        <label class="form-label d-flex justify-content-between align-items-center small">
-          Social links
-          <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" (click)="addSocial()">
-            Add link
-          </button>
+        <label class="form-label d-flex justify-content-between align-items-center small">{{ 'auto.login.signup.signup.component.social_links' | siteText }}<button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" (click)="addSocial()">{{ 'auto.login.signup.signup.component.add_link' | siteText }}</button>
         </label>
 
         <div *ngFor="let s of socials.controls; let i = index" class="row g-2 align-items-center mb-2">
           <div class="col-md-3">
-            <input class="form-control form-control-sm" [formControl]="s.get('label')" placeholder="Instagram" />
+            <input class="form-control form-control-sm" [formControl]="s.get('label')" [placeholder]="'auto.login.signup.signup.component.instagram' | siteText" />
           </div>
           <div class="col-md-8">
             <input class="form-control form-control-sm" [formControl]="s.get('url')"
-              placeholder="https://instagram.com/yourname" />
+              [placeholder]="'auto.login.signup.signup.component.https_instagram_com_yourname' | siteText" />
           </div>
           <div class="col-md-1 text-end">
-            <button type="button" class="btn btn-link text-danger p-0" (click)="removeSocial(i)" title="Remove">
+            <button type="button" class="btn btn-link text-danger p-0" (click)="removeSocial(i)" [title]="'auto.login.signup.signup.component.remove' | siteText">
               <i class="bi bi-x-lg"></i>
             </button>
           </div>
@@ -103,10 +93,10 @@
 
       <!-- Photos upload -->
       <div class="col-12">
-        <label class="form-label small mb-1">Photos (optional)</label>
+        <label class="form-label small mb-1">{{ 'auto.login.signup.signup.component.photos_optional' | siteText }}</label>
         <input type="file" class="form-control form-control-sm" (change)="onPhotosSelected(($event.target).files)"
           multiple />
-        <div class="form-text small">JPG/PNG. You can add more later.</div>
+        <div class="form-text small">{{ 'auto.login.signup.signup.component.jpg_png_you_can_add_more_later' | siteText }}</div>
 
         <div class="d-flex flex-wrap gap-2 mt-2" *ngIf="photoUrls.length">
           <img *ngFor="let url of photoUrls" [src]="url" class="rounded border"
@@ -118,13 +108,10 @@
       <div class="col-12">
         <div class="form-check">
           <input class="form-check-input" type="checkbox" id="acceptTerms" formControlName="acceptTerms" />
-          <label class="form-check-label small" for="acceptTerms">
-            I agree to the <a routerLink="/terms">Terms</a> &amp; <a routerLink="/privacy">Privacy</a>.
+          <label class="form-check-label small" for="acceptTerms">{{ 'auto.login.signup.signup.component.i_agree_to_the' | siteText }}<a routerLink="/terms">{{ 'auto.login.signup.signup.component.terms' | siteText }}</a>{{ 'auto.login.signup.signup.component.amp' | siteText }}<a routerLink="/privacy">{{ 'auto.login.signup.signup.component.privacy' | siteText }}</a>.
           </label>
         </div>
-        <div class="text-danger small mt-1" *ngIf="f.acceptTerms.touched && f.acceptTerms.invalid">
-          You must accept the terms to create an account.
-        </div>
+        <div class="text-danger small mt-1" *ngIf="f.acceptTerms.touched && f.acceptTerms.invalid">{{ 'auto.login.signup.signup.component.you_must_accept_the_terms_to_create_an_account' | siteText }}</div>
       </div>
     </div>
 
@@ -135,22 +122,20 @@
     </div>
   </form>
 
-  <div class="text-center text-muted my-3 small">or</div>
+  <div class="text-center text-muted my-3 small">{{ 'auto.login.signup.signup.component.or' | siteText }}</div>
 
   <div class="d-grid">
     <button class="btn btn-outline-dark btn-sm rounded-pill" (click)="signupWithGoogle()" [disabled]="sending">
       <span class="d-inline-flex align-items-center gap-2">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="16" height="16" alt="">
-        Continue with Google
-      </span>
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="16" height="16" alt="">{{ 'auto.login.signup.signup.component.continue_with_google' | siteText }}</span>
     </button>
   </div>
 
   <hr class="my-4">
 
   <div class="text-center">
-    <span class="text-muted me-1 small">Already have an account?</span>
-    <a routerLink="/login" class="text-decoration-none small">Sign in</a>
+    <span class="text-muted me-1 small">{{ 'auto.login.signup.signup.component.already_have_an_account' | siteText }}</span>
+    <a routerLink="/login" class="text-decoration-none small">{{ 'auto.login.signup.signup.component.sign_in' | siteText }}</a>
   </div>
 </div>
 
@@ -161,13 +146,13 @@
     <div class="modal-content">
       <div class="modal-header py-2">
         <h5 class="modal-title">{{ errorModalTitle }}</h5>
-        <button type="button" class="btn-close" aria-label="Close" (click)="closeErrorModal()"></button>
+        <button type="button" class="btn-close" [aria-label]="'auto.login.signup.signup.component.close' | siteText" (click)="closeErrorModal()"></button>
       </div>
       <div class="modal-body">
         <p class="mb-0">{{ errorModalMessage }}</p>
       </div>
       <div class="modal-footer py-2">
-        <button type="button" class="btn btn-sm btn-secondary" (click)="closeErrorModal()">Close</button>
+        <button type="button" class="btn btn-sm btn-secondary" (click)="closeErrorModal()">{{ 'auto.login.signup.signup.component.close' | siteText }}</button>
       </div>
     </div>
   </div>
@@ -179,13 +164,13 @@
     <div class="modal-content">
       <div class="modal-header py-2">
         <h5 class="modal-title">{{ successModalTitle }}</h5>
-        <button type="button" class="btn-close" aria-label="Close" (click)="closeSuccessModal()"></button>
+        <button type="button" class="btn-close" [aria-label]="'auto.login.signup.signup.component.close' | siteText" (click)="closeSuccessModal()"></button>
       </div>
       <div class="modal-body">
-        <p class="mb-0">{{ successModalMessage }}<br><br><strong>Please also check your Junk/Spam folder.</strong></p>
+        <p class="mb-0">{{ successModalMessage }}<br><br><strong>{{ 'auto.login.signup.signup.component.please_also_check_your_junk_spam_folder' | siteText }}</strong></p>
       </div>
       <div class="modal-footer py-2">
-        <button type="button" class="btn btn-sm btn-dark" (click)="closeSuccessModal()">Go to login</button>
+        <button type="button" class="btn btn-sm btn-dark" (click)="closeSuccessModal()">{{ 'auto.login.signup.signup.component.go_to_login' | siteText }}</button>
       </div>
     </div>
   </div>

@@ -1,206 +1,52 @@
-[36m⠋[39m Generating browser application bundles (phase: setup)...[36m⠙[39m Generating browser application bundles (phase: setup)...[36m⠹[39m Generating browser application bundles (phase: building)...[36m⠸[39m Generating browser application bundles (phase: building)...[36m⠼[39m Generating browser application bundles (phase: building)...[36m⠴[39m Generating browser application bundles (phase: building)...[36m⠦[39m Generating browser application bundles (phase: building)...[36m⠧[39m Generating browser application bundles (phase: building)...[36m⠇[39m Generating browser application bundles (phase: sealing)...[36m⠏[39m Generating browser application bundles (phase: sealing)...[36m⠋[39m Generating browser application bundles (phase: sealing)...[32m✔[39m Browser application bundle generation complete.
+[36m⠋[39m Generating browser application bundles (phase: setup)...[36m⠙[39m Generating browser application bundles (phase: setup)...[36m⠹[39m Generating browser application bundles (phase: building)...[36m⠸[39m Generating browser application bundles (phase: building)...[36m⠼[39m Generating browser application bundles (phase: building)...[36m⠴[39m Generating browser application bundles (phase: building)...[36m⠦[39m Generating browser application bundles (phase: building)...[36m⠧[39m Generating browser application bundles (phase: building)...[36m⠇[39m Generating browser application bundles (phase: building)...[36m⠏[39m Generating browser application bundles (phase: sealing)...[32m✔[39m Browser application bundle generation complete.
 [1m[33m
 [0m[33mWarning: [33m[0m/Users/faycalamrani/data/ADN/harbornest-1/app/src/app/app.module.ts depends on 'ng2-haversine'. CommonJS or AMD dependencies can cause optimization bailouts.
 For more info see: https://angular.dev/tools/cli/build#configuring-commonjs-dependencies
 
 [39m[22m
 [1m[31m
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m313[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
+[0m[91mError: [31m[0m[96msrc/app/home/guest-content/guest-content.service.ts[0m:[93m44[0m:[93m3[0m - [91merror[0m[90m TS2739: [0mType '{ fr: { eyebrow: string; title: string; intro: string; items: { question: string; answer: string; }[]; }; en: { eyebrow: string; title: string; intro: string; items: { question: string; answer: string; }[]; }; es: { ...; }; }' is missing the following properties from type 'Record<SiteLanguage, GuestFaqContent>': it, de, nl, ru
 
-[7m313[0m     "deposit10": "Acompte 10 %",
-[7m   [0m [91m    ~~~~~~~~~~~[0m
+[7m44[0m   guestFaq: {
+[7m  [0m [91m  ~~~~~~~~[0m
 
+  [96msrc/app/home/guest-content/guest-content.service.ts[0m:[93m37[0m:[93m3[0m
+    [7m37[0m   guestFaq: Record<SiteLanguage, GuestFaqContent>;
+    [7m  [0m [96m  ~~~~~~~~[0m
+    The expected type comes from property 'guestFaq' which is declared here on type 'GuestInfoFirebaseContent'
 
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m314[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
 
-[7m314[0m     "remaining90": "Solde 90 % à bord",
-[7m   [0m [91m    ~~~~~~~~~~~~~[0m
+[0m[91mError: [31m[0m[96msrc/app/home/guest-content/guest-content.service.ts[0m:[93m103[0m:[93m3[0m - [91merror[0m[90m TS2739: [0mType '{ fr: { eyebrow: string; title: string; intro: string; addressLabel: string; address: string; mapNote: string; steps: { icon: string; title: string; text: string; bullets: string[]; }[]; finalNote: string; }; en: { ...; }; es: { ...; }; }' is missing the following properties from type 'Record<SiteLanguage, GuestJourneyContent>': it, de, nl, ru
 
+[7m103[0m   guestJourney: {
+[7m   [0m [91m  ~~~~~~~~~~~~[0m
 
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m326[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
+  [96msrc/app/home/guest-content/guest-content.service.ts[0m:[93m38[0m:[93m3[0m
+    [7m38[0m   guestJourney: Record<SiteLanguage, GuestJourneyContent>;
+    [7m  [0m [96m  ~~~~~~~~~~~~[0m
+    The expected type comes from property 'guestJourney' which is declared here on type 'GuestInfoFirebaseContent'
 
-[7m326[0m     "refresh": "Actualiser",
-[7m   [0m [91m    ~~~~~~~~~[0m
 
+[0m[91mError: [31m[0m[96msrc/app/home/guest-content/guest-content.service.ts[0m:[93m217[0m:[93m7[0m - [91merror[0m[90m TS2739: [0mType '{ fr: GuestFaqContent; en: GuestFaqContent; es: GuestFaqContent; }' is missing the following properties from type 'Record<SiteLanguage, GuestFaqContent>': it, de, nl, ru
 
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m330[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
+[7m217[0m       guestFaq: {
+[7m   [0m [91m      ~~~~~~~~[0m
 
-[7m330[0m     "noEmail": "Aucun email",
-[7m   [0m [91m    ~~~~~~~~~[0m
+  [96msrc/app/home/guest-content/guest-content.service.ts[0m:[93m37[0m:[93m3[0m
+    [7m37[0m   guestFaq: Record<SiteLanguage, GuestFaqContent>;
+    [7m  [0m [96m  ~~~~~~~~[0m
+    The expected type comes from property 'guestFaq' which is declared here on type 'GuestInfoFirebaseContent'
 
 
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m331[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
+[0m[91mError: [31m[0m[96msrc/app/home/guest-content/guest-content.service.ts[0m:[93m222[0m:[93m7[0m - [91merror[0m[90m TS2739: [0mType '{ fr: GuestJourneyContent; en: GuestJourneyContent; es: GuestJourneyContent; }' is missing the following properties from type 'Record<SiteLanguage, GuestJourneyContent>': it, de, nl, ru
 
-[7m331[0m     "outing": "Sortie",
-[7m   [0m [91m    ~~~~~~~~[0m
+[7m222[0m       guestJourney: {
+[7m   [0m [91m      ~~~~~~~~~~~~[0m
 
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m332[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m332[0m     "dateNotSet": "Date non définie",
-[7m   [0m [91m    ~~~~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m334[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m334[0m     "openBooking": "Ouvrir la réservation",
-[7m   [0m [91m    ~~~~~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m359[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m359[0m     "pending": "En attente",
-[7m   [0m [91m    ~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m360[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m360[0m     "accepted": "Acceptée",
-[7m   [0m [91m    ~~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m363[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m363[0m     "search": "Rechercher",
-[7m   [0m [91m    ~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m378[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m378[0m     "warranty": "Caution",
-[7m   [0m [91m    ~~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m840[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m840[0m     "deposit10": "Deposit 10%",
-[7m   [0m [91m    ~~~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m841[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m841[0m     "remaining90": "Remaining 90% onboard",
-[7m   [0m [91m    ~~~~~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m853[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m853[0m     "refresh": "Refresh",
-[7m   [0m [91m    ~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m857[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m857[0m     "noEmail": "No email",
-[7m   [0m [91m    ~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m858[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m858[0m     "outing": "Outing",
-[7m   [0m [91m    ~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m859[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m859[0m     "dateNotSet": "Date not set",
-[7m   [0m [91m    ~~~~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m861[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m861[0m     "openBooking": "Open booking",
-[7m   [0m [91m    ~~~~~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m886[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m886[0m     "pending": "Pending",
-[7m   [0m [91m    ~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m887[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m887[0m     "accepted": "Accepted",
-[7m   [0m [91m    ~~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m890[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m890[0m     "search": "Search",
-[7m   [0m [91m    ~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m905[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m905[0m     "warranty": "Warranty",
-[7m   [0m [91m    ~~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m1343[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m1343[0m     "deposit10": "Depósito 10 %",
-[7m    [0m [91m    ~~~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m1344[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m1344[0m     "remaining90": "Saldo 90 % a bordo",
-[7m    [0m [91m    ~~~~~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m1356[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m1356[0m     "refresh": "Actualizar",
-[7m    [0m [91m    ~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m1360[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m1360[0m     "noEmail": "Sin email",
-[7m    [0m [91m    ~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m1361[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m1361[0m     "outing": "Salida",
-[7m    [0m [91m    ~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m1362[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m1362[0m     "dateNotSet": "Fecha no definida",
-[7m    [0m [91m    ~~~~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m1364[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m1364[0m     "openBooking": "Abrir reserva",
-[7m    [0m [91m    ~~~~~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m1389[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m1389[0m     "pending": "Pendiente",
-[7m    [0m [91m    ~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m1390[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m1390[0m     "accepted": "Aceptada",
-[7m    [0m [91m    ~~~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m1393[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m1393[0m     "search": "Buscar",
-[7m    [0m [91m    ~~~~~~~~[0m
-
-
-[0m[91mError: [31m[0m[96msrc/app/home/site-content.ts[0m:[93m1408[0m:[93m5[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
-
-[7m1408[0m     "warranty": "Garantía",
-[7m    [0m [91m    ~~~~~~~~~~[0m
+  [96msrc/app/home/guest-content/guest-content.service.ts[0m:[93m38[0m:[93m3[0m
+    [7m38[0m   guestJourney: Record<SiteLanguage, GuestJourneyContent>;
+    [7m  [0m [96m  ~~~~~~~~~~~~[0m
+    The expected type comes from property 'guestJourney' which is declared here on type 'GuestInfoFirebaseContent'
 
 
 [39m[22m

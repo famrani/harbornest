@@ -41,6 +41,14 @@ export interface AlegriaBooking {
   startMarina?: string;
   passengers?: number;
   totalPrice: number;
+  customerEmail?: string;
+  totalAmount?: number;
+  onlinePayableAmount?: number;
+  appPayableAmount?: number;
+  remainingFeesAmount?: number;
+  remainingOnboardAmount?: number;
+  skipperPaid?: boolean;
+  skipperStatus?: string;
   proposalCleaningPrice?: number;
   estimatedOptionsPrice?: number;
   estimatedCleaningPrice?: number;
@@ -99,6 +107,24 @@ export interface AlegriaBooking {
   proposalSkipperPrice?: number;
   proposalExtraServicesPrice?: number;
   proposalNotes?: string;
+  bookingSource?: string;
+  source?: string;
+  externalPlatform?: string;
+  externalPlatformName?: string;
+  externalPlatformBookingRef?: string;
+  platformBookingReference?: string;
+  platformReservationNumber?: string;
+  externalPlatformListingName?: string;
+  externalPlatformUrl?: string;
+  externalPlatformPaidAmount?: number;
+  externalPlatformNetOwnerAmount?: number;
+  externalPlatformTotalClientAmount?: number;
+  externalPlatformRemainingOwnerAmount?: number;
+  externalPortAmount?: number;
+  externalCashOnBoardAmount?: number;
+  externalTotalRemainingAmount?: number;
+  externalPaymentItems?: any[];
+  externalDocuments?: string;
   requestNeedsAdminProposal?: boolean;
   pricingToBeFinalizedByAdmin?: boolean;
   clientNextStep?: string;
@@ -106,6 +132,13 @@ export interface AlegriaBooking {
   proposalCreatedAt?: number;
   proposalCreatedFromRequestId?: string;
   requestSubmittedAt?: number;
+  boatId?: string;
+  boatName?: string;
+  boatType?: string;
+  boatManufacturer?: string;
+  boatModel?: string;
+  boatYear?: number;
+  boatRegistrationNumber?: string;
   raw?: any;
 }
 
@@ -242,6 +275,35 @@ export class BookingApiService {
     return booking;
   }
 
+  getBookingDirect(bookingId: string): Observable<AlegriaBooking | undefined> {
+    return from(this.getBookingDirectFromFirebase(bookingId)).pipe(
+      catchError(() => of(undefined))
+    );
+  }
+
+  private async getBookingDirectFromFirebase(bookingId: string): Promise<AlegriaBooking | undefined> {
+    if (!bookingId) return undefined;
+
+    for (const baseUrl of this.restDatabaseUrls) {
+      try {
+        const direct = await this.http.get<any>(`${baseUrl.replace(/\/+$/, '')}/${this.collectionName}/${encodeURIComponent(bookingId)}.json`).toPromise();
+        if (direct) return this.normalizeBooking({ bookingId, ...direct } as any);
+      } catch {}
+    }
+
+    const store: any = this.storeDb as any;
+    const util: any = this.utilsSvc as any;
+    for (const db of this.getRealtimeDatabaseCandidates(store, util)) {
+      try {
+        const snap = await db.ref(`${this.collectionName}/${bookingId}`).once('value');
+        const value = snap && typeof snap.val === 'function' ? snap.val() : null;
+        if (value) return this.normalizeBooking({ bookingId, ...value } as any);
+      } catch {}
+    }
+
+    return undefined;
+  }
+
   getBooking(bookingId: string): Observable<AlegriaBooking | undefined> {
     return from(this.getBookingFromFirebase(bookingId)).pipe(
       catchError(() => this.getBookingFromBackend(bookingId)),
@@ -284,6 +346,90 @@ export class BookingApiService {
       `${this.baseUrl}/api/payments/create-deposit-checkout-session`,
       `${this.baseUrl}/stripe/deposit-checkout`,
     ], enrichedPayload);
+  }
+
+  completeDepositPayment(payload: {
+    bookingId: string;
+    ownerId?: string;
+    checkoutSessionId?: string;
+    sessionId?: string;
+    amount?: number;
+    depositAmount?: number;
+  }): Observable<any> {
+    const endpoints = [
+      `${this.baseUrl}/pay/outing-deposit-complete`,
+      `${this.baseUrl}/api/payments/complete-deposit-payment`,
+      `${this.baseUrl}/stripe/deposit-complete`,
+    ];
+
+    return new Observable((observer) => {
+      const markLocally = async (backendResponse: any = {}, backendError: any = null) => {
+        try {
+          const localResult = await this.markDepositPaidLocally(payload, backendResponse);
+          observer.next({ ...(backendResponse || {}), ...(localResult || {}), localDepositSaved: true, backendError: backendError?.message || backendError?.error?.message || '' });
+          observer.complete();
+        } catch (localError) {
+          observer.error(localError);
+        }
+      };
+
+      this.postFirstAvailable(endpoints, payload).subscribe({
+        next: (response) => markLocally(response),
+        error: (error) => markLocally({}, error),
+      });
+    });
+  }
+
+  private async markDepositPaidLocally(payload: { bookingId: string; checkoutSessionId?: string; sessionId?: string; amount?: number; depositAmount?: number; }, backendResponse: any = {}): Promise<any> {
+    const bookingId = String(payload.bookingId || '').trim();
+    if (!bookingId) throw new Error('Missing booking id for local deposit update.');
+
+    const existing = await this.getBookingFromFirebase(bookingId).catch(() => undefined) as any;
+    const raw = existing?.raw || existing || {};
+    const now = Date.now();
+    const existingPayments = raw.payments || {};
+    const explicitAmount = Number(payload.depositAmount ?? payload.amount ?? backendResponse?.depositAmount ?? backendResponse?.amount ?? 0) || 0;
+    const storedDeposit = Number(raw.depositAmount ?? existingPayments?.deposit?.amount ?? 0) || 0;
+    const paidAmount = explicitAmount > 0 ? explicitAmount : this.normalizePaymentAmount(storedDeposit);
+    const sessionId = String(payload.sessionId || payload.checkoutSessionId || backendResponse?.sessionId || backendResponse?.checkoutSessionId || backendResponse?.stripeCheckoutSessionId || '').trim();
+    const paymentIntentId = String(backendResponse?.paymentIntentId || backendResponse?.stripePaymentIntentId || '').trim();
+
+    await this.updateBooking(bookingId, {
+      depositPaid: true,
+      depositStatus: 'paid',
+      depositPaymentStatus: 'paid',
+      depositPaidAmount: paidAmount,
+      paidDepositAmount: paidAmount,
+      depositPaymentMethod: 'Stripe',
+      depositPaidAt: raw.depositPaidAt || now,
+      paymentStatus: 'deposit_paid',
+      paymentStatusLabel: 'deposit_paid',
+      payments: {
+        ...existingPayments,
+        deposit: {
+          ...(existingPayments.deposit || {}),
+          paid: true,
+          status: 'paid',
+          paymentStatus: 'paid',
+          paymentType: 'deposit',
+          type: 'deposit',
+          method: 'Stripe',
+          amount: paidAmount,
+          amount_total: Math.round(paidAmount * 100),
+          currency: 'eur',
+          bookingId,
+          ownerId: raw.ownerId || 'alegria',
+          checkoutSessionId: sessionId,
+          stripeCheckoutSessionId: sessionId,
+          stripePaymentIntentId: paymentIntentId,
+          paidAt: existingPayments.deposit?.paidAt || now,
+          modifiedTS: now,
+          source: 'stripe_return',
+        },
+      },
+    } as any);
+
+    return { bookingId, depositPaid: true, depositAmount: paidAmount };
   }
 
   createBalanceCheckout(payload: {
@@ -367,21 +513,218 @@ export class BookingApiService {
 
 
 
+  createSkipperFeeCheckout(payload: {
+    bookingId: string;
+    proposalId?: string;
+    ownerId: string;
+    amount: number;
+    skipperAmount?: number;
+    totalAmount?: number;
+    currency?: string;
+    customerEmail?: string;
+    customerName?: string;
+    customerPhone?: string;
+    outingType?: string;
+    outingDate?: string;
+    successUrl: string;
+    cancelUrl: string;
+  }): Observable<any> {
+    const amount = Number(payload.amount || payload.skipperAmount || 0);
+    return this.postFirstAvailable([
+      `${this.baseUrl}/pay/outing-skipper-fee-checkout`,
+      `${this.baseUrl}/api/payments/create-skipper-fee-checkout-session`,
+      `${this.baseUrl}/stripe/skipper-fee-checkout`,
+      `${this.baseUrl}/pay/outing-extra-service-checkout`,
+      `${this.baseUrl}/api/payments/create-extra-service-checkout-session`,
+      `${this.baseUrl}/stripe/extra-service-checkout`,
+      `${this.baseUrl}/pay/outing-deposit-checkout`,
+      `${this.baseUrl}/api/payments/create-deposit-checkout-session`,
+      `${this.baseUrl}/stripe/deposit-checkout`,
+    ], {
+      ...payload,
+      proposalId: payload.proposalId || payload.bookingId,
+      amount,
+      skipperAmount: amount,
+      extraServiceAmount: amount,
+      depositAmount: amount,
+      extraServiceId: `skipper_${payload.bookingId}`,
+      title: 'Skipper fee',
+      name: 'Skipper fee',
+      description: `Skipper fee for booking ${payload.bookingId}`,
+      paymentType: 'skipper_fee',
+      checkoutType: 'skipper_fee',
+      currency: payload.currency || 'eur'
+    });
+  }
+
+
+
   completeBalancePayment(payload: {
     bookingId: string;
     ownerId?: string;
     checkoutSessionId?: string;
     sessionId?: string;
+    amount?: number;
+    balanceAmount?: number;
   }): Observable<any> {
-    return this.postFirstAvailable([
+    const endpoints = [
       `${this.baseUrl}/pay/outing-balance-complete`,
       `${this.baseUrl}/pay/outing-remaining-complete`,
       `${this.baseUrl}/api/payments/complete-balance-payment`,
       `${this.baseUrl}/api/payments/complete-remaining-payment`,
       `${this.baseUrl}/stripe/balance-complete`,
       `${this.baseUrl}/stripe/remaining-complete`,
-    ], payload);
+    ];
+
+    return new Observable((observer) => {
+      const markLocally = async (backendResponse: any = {}, backendError: any = null) => {
+        try {
+          const localResult = await this.markBalancePaidLocally(payload, backendResponse);
+          observer.next({ ...(backendResponse || {}), ...(localResult || {}), localBalanceSaved: true, backendError: backendError?.message || backendError?.error?.message || '' });
+          observer.complete();
+        } catch (localError) {
+          observer.error(localError);
+        }
+      };
+
+      this.postFirstAvailable(endpoints, payload).subscribe({
+        next: (response) => markLocally(response),
+        error: (error) => markLocally({}, error),
+      });
+    });
   }
+
+  private async markBalancePaidLocally(payload: { bookingId: string; checkoutSessionId?: string; sessionId?: string; amount?: number; balanceAmount?: number; }, backendResponse: any = {}): Promise<any> {
+    const bookingId = String(payload.bookingId || '').trim();
+    if (!bookingId) throw new Error('Missing booking id for local balance update.');
+
+    const existing = await this.getBookingFromFirebase(bookingId).catch(() => undefined) as any;
+    const raw = existing?.raw || existing || {};
+    const now = Date.now();
+    const existingPayments = raw.payments || {};
+    const explicitAmount = Number(payload.balanceAmount ?? payload.amount ?? backendResponse?.balanceAmount ?? backendResponse?.amount ?? 0) || 0;
+    const storedBalance = Number(
+      raw.balanceAmount
+      ?? raw.remainingFeesAmount
+      ?? raw.remainingOnboardAmount
+      ?? raw.remainingAlegriaRevenue
+      ?? raw.alegriaRemaining
+      ?? existingPayments?.pendingAlegria?.amount
+      ?? existingPayments?.balance?.amount
+      ?? 0
+    ) || 0;
+    const computedRemaining = this.computeRemainingAlegriaAmount(raw);
+    const paidAmount = explicitAmount > 0 ? explicitAmount : this.normalizePaymentAmount(storedBalance || computedRemaining);
+    const sessionId = String(payload.sessionId || payload.checkoutSessionId || backendResponse?.sessionId || backendResponse?.checkoutSessionId || backendResponse?.stripeCheckoutSessionId || '').trim();
+    const paymentIntentId = String(backendResponse?.paymentIntentId || backendResponse?.stripePaymentIntentId || '').trim();
+
+    await this.updateBooking(bookingId, {
+      balancePaid: true,
+      balanceStatus: 'paid',
+      balancePaymentStatus: 'paid',
+      balancePaymentMethod: 'Stripe',
+      balancePaidAt: raw.balancePaidAt || now,
+      remainingFeesAmount: 0,
+      remainingOnboardAmount: 0,
+      remainingAlegriaRevenue: 0,
+      alegriaPaid: true,
+      alegriaPaidAmount: (Number(raw.alegriaPaidAmount || existingPayments?.alegria?.amount || existingPayments?.balance?.amount || 0) || 0) + paidAmount,
+      alegriaPaymentStatus: 'paid',
+      paymentStatus: 'balance_paid',
+      paymentStatusLabel: 'balance_paid',
+      payments: {
+        ...existingPayments,
+        alegria: {
+          ...(existingPayments.alegria || {}),
+          paid: true,
+          status: 'paid',
+          paymentStatus: 'paid',
+          paymentType: 'alegria_balance',
+          type: 'alegria_balance',
+          method: 'Stripe',
+          amount: (Number(existingPayments?.alegria?.amount || 0) || 0) + paidAmount,
+          amount_total: Math.round(((Number(existingPayments?.alegria?.amount || 0) || 0) + paidAmount) * 100),
+          currency: 'eur',
+          bookingId,
+          ownerId: raw.ownerId || 'alegria',
+          checkoutSessionId: sessionId,
+          stripeCheckoutSessionId: sessionId,
+          stripePaymentIntentId: paymentIntentId,
+          paidAt: existingPayments.alegria?.paidAt || now,
+          modifiedTS: now,
+          source: 'stripe_return',
+        },
+        pendingAlegria: null,
+        balance: {
+          ...(existingPayments.balance || {}),
+          paid: true,
+          status: 'paid',
+          paymentStatus: 'paid',
+          paymentType: 'balance',
+          type: 'balance',
+          method: 'Stripe',
+          amount: paidAmount,
+          amount_total: Math.round(paidAmount * 100),
+          currency: 'eur',
+          bookingId,
+          ownerId: raw.ownerId || 'alegria',
+          checkoutSessionId: sessionId,
+          stripeCheckoutSessionId: sessionId,
+          stripePaymentIntentId: paymentIntentId,
+          paidAt: existingPayments.balance?.paidAt || now,
+          modifiedTS: now,
+          source: 'stripe_return',
+        },
+      },
+    } as any);
+
+    return { bookingId, balancePaid: true, balanceAmount: paidAmount };
+  }
+
+  private normalizePaymentAmount(value: number): number {
+    const amount = Number(value || 0);
+    if (!amount) return 0;
+    return amount > 10000 ? Math.round((amount / 100) * 100) / 100 : Math.round(amount * 100) / 100;
+  }
+
+  private computeRemainingAlegriaAmount(raw: any): number {
+    const n = (...values: any[]): number => {
+      for (const value of values) {
+        if (value === undefined || value === null || value === '') continue;
+        const parsed = Number(value);
+        if (Number.isFinite(parsed)) return parsed;
+      }
+      return 0;
+    };
+
+    const payments = raw?.payments || {};
+    const source = String(raw?.source || raw?.bookingSource || raw?.externalPlatform || '').toLowerCase();
+    const external = !!source && !['direct', 'alegria', 'direct alegria'].includes(source);
+
+    const platformPaid = n(raw?.externalPlatformPaidAmount, payments?.platform?.paidAmount, raw?.raw?.externalPlatformPaidAmount);
+    const skipper = n(raw?.skipperCashAmount, raw?.proposalSkipperPrice, payments?.direct?.skipperCashAmount);
+    const fuel = external
+      ? n(raw?.cleaningCashAmount, payments?.direct?.cleaningCashAmount)
+      : n(raw?.proposalFuelPrice, raw?.fuelPrice, raw?.fuelAmount, raw?.proposalCleaningPrice);
+    const catering = n(raw?.cateringAmount, payments?.direct?.cateringAmount);
+    const tips = n(raw?.tipsAmount, raw?.tipAmount, payments?.direct?.tipsAmount, payments?.direct?.tipAmount);
+    const drinks = n(raw?.drinksAmount, payments?.direct?.drinksAmount);
+    const waterToys = n(raw?.waterToysAmount, payments?.direct?.waterToysAmount);
+    const other = n(raw?.otherOnboardAmount, payments?.direct?.otherOnboardAmount);
+    const explicitExtras = n(raw?.proposalExtraServicesPrice, raw?.extraServicesPrice, raw?.extrasAmount, raw?.extraServicesAmount);
+    const extras = external ? catering + tips + drinks + waterToys + other : explicitExtras;
+
+    let boat = n(raw?.proposalBoatPrice, raw?.boatPrice, raw?.estimatedBoatPrice);
+    let customerTotal = n(raw?.totalAmount, raw?.totalPrice, raw?.totalCustomerCost, raw?.customerTotal);
+    if (external && customerTotal && !boat) boat = Math.max(0, customerTotal - skipper - fuel - extras);
+
+    const alegriaRevenue = external ? platformPaid + fuel + extras : boat + fuel + extras;
+    const alreadyPaid = platformPaid
+      + n(payments?.alegria?.amount, payments?.balance?.amount, raw?.alegriaPaidAmount, raw?.balancePaidAmount)
+      + n(payments?.deposit?.amount, raw?.depositPaidAmount, raw?.paidDepositAmount);
+    return Math.max(0, Math.round((alegriaRevenue - alreadyPaid) * 100) / 100);
+  }
+
 
   completeWarrantySetup(payload: {
     bookingId: string;
@@ -416,6 +759,76 @@ export class BookingApiService {
       };
       tryNext();
     });
+  }
+
+
+  /**
+   * Payment-page source of truth.
+   * - Booking/payment state comes from bnBookings/{bookingId}.
+   * - Stripe transaction details come only from bnPayment records linked to the booking/proposal.
+   * This avoids mixing backend summary endpoints with the persisted booking state shown to the customer.
+   */
+  getPaymentPageState(bookingId: string): Observable<any> {
+    return from(this.getPaymentPageStateFromFirebase(bookingId)).pipe(
+      catchError((error) => { throw error; })
+    );
+  }
+
+  private async getPaymentPageStateFromFirebase(bookingId: string): Promise<any> {
+    const id = String(bookingId || '').trim();
+    if (!id) throw new Error('Missing booking id.');
+
+    const booking = await this.getBookingFromFirebase(id).catch(() => undefined) as any;
+    const raw = booking?.raw || booking || {};
+    const proposalId = String(raw.proposalId || raw.relatedBookingId || raw.sourceProposalId || raw.bookingId || id).trim();
+    const ids = Array.from(new Set([id, proposalId].filter(Boolean)));
+
+    const stripeRecords: any[] = [];
+    for (const matchId of ids) {
+      const byBooking = await this.fetchBnPaymentRecordsByField('bookingId', matchId).catch(() => null);
+      Object.entries(byBooking || {}).forEach(([key, value]: [string, any]) => {
+        if (value && typeof value === 'object') stripeRecords.push({ paymentId: value.paymentId || key, ...value });
+      });
+
+      const byProposal = await this.fetchBnPaymentRecordsByField('proposalId', matchId).catch(() => null);
+      Object.entries(byProposal || {}).forEach(([key, value]: [string, any]) => {
+        if (value && typeof value === 'object') stripeRecords.push({ paymentId: value.paymentId || key, ...value });
+      });
+    }
+
+    const unique = new Map<string, any>();
+    stripeRecords.forEach((record) => {
+      const key = String(record.paymentId || record.stripeCheckoutSessionId || record.stripePaymentIntentId || record.checkoutSessionId || JSON.stringify(record));
+      unique.set(key, record);
+    });
+
+    return {
+      bookingId: id,
+      booking: raw,
+      payments: raw.payments || {},
+      paymentStatus: raw.paymentStatus || null,
+      depositStatus: raw.depositStatus || null,
+      balanceStatus: raw.balanceStatus || raw.balancePaymentStatus || null,
+      warrantyStatus: raw.warrantyStatus || null,
+      stripePayments: Array.from(unique.values()),
+    };
+  }
+
+  private async fetchBnPaymentRecordsByField(field: string, value: string): Promise<any | null> {
+    const safeField = encodeURIComponent(`\"${field}\"`).replace(/%5C/g, '');
+    const encodedValue = encodeURIComponent(`\"${value}\"`).replace(/%5C/g, '');
+    const collection = 'bnPayment';
+
+    for (const baseUrl of this.restDatabaseUrls) {
+      try {
+        const base = baseUrl.replace(/\/+$/, '');
+        const url = `${base}/${collection}.json?orderBy=${safeField}&equalTo=${encodedValue}`;
+        const result = await this.http.get<any>(url).toPromise();
+        if (result && typeof result === 'object') return result;
+      } catch {}
+    }
+
+    return null;
   }
 
   chargeWarranty(bookingId: string, amount: number, reason: string, ownerId?: string): Observable<any> {
@@ -593,7 +1006,22 @@ export class BookingApiService {
         // withCredentials=true can make browsers reject the call before the route is reached.
         this.http.post<any>(endpoints[index++], payload).subscribe({
           next: (response) => { observer.next(response); observer.complete(); },
-          error: (error) => { lastError = error; tryNext(); },
+          error: (error) => {
+            lastError = error;
+
+            // 400/401/403/409 are application-level responses from a route that exists
+            // (for example: Terms & Conditions not accepted, missing amount, cancelled booking).
+            // Retrying fallback endpoint aliases only creates duplicate console errors and can
+            // hide the actual backend message. Only retry for routing/network style failures.
+            const status = Number(error?.status || 0);
+            if ([400, 401, 403, 409].includes(status)) {
+              const backendMessage = error?.error?.error || error?.error?.message || error?.message;
+              observer.error(new Error(backendMessage || 'The payment request was rejected by the backend.'));
+              return;
+            }
+
+            tryNext();
+          },
         });
       };
       tryNext();
@@ -965,9 +1393,23 @@ export class BookingApiService {
     const start = time.startAt || item.startAt || item.departureAt || '';
     const end = time.endAt || item.endAt || item.arrivalAt || '';
 
-    const totalPrice = Number(item.totalPrice ?? item.total ?? item.amount ?? item.price ?? 0);
+    const totalPrice = Number(
+      item.totalPrice ??
+      item.totalAmount ??
+      item.estimatedPrice ??
+      item.total ??
+      item.amount ??
+      item.price ??
+      ((Number(item.proposalBoatPrice || 0) + Number(item.proposalSkipperPrice || 0) + Number(item.proposalExtraServicesPrice || 0)) || 0)
+    );
+    const rawDepositPayment = (item.payments || item.raw?.payments || item.raw?.raw?.payments || {}).deposit || {};
+    const legacyPaymentForAmount = item.payment || {};
     const depositAmount = Number(
       item.depositAmount ??
+      rawDepositPayment.amount ??
+      (rawDepositPayment.amount_total ? Number(rawDepositPayment.amount_total) / 100 : undefined) ??
+      legacyPaymentForAmount.amount ??
+      (legacyPaymentForAmount.amount_total ? Number(legacyPaymentForAmount.amount_total) / 100 : undefined) ??
       item.deposit ??
       (totalPrice ? Math.round(totalPrice * 0.1 * 100) / 100 : 0)
     );
@@ -1010,8 +1452,9 @@ export class BookingApiService {
     return {
       bookingId: item.bookingId || item.id || item.reference || '',
       ownerId: item.ownerId || item.owner || item.hostId || '',
-      customerName: item.customerName || customer.fullName || item.name || `${customer.firstname || ''} ${customer.lastname || ''}`.trim() || '',
-      email: item.email || customer.email || '',
+      customerName: item.customerName || item.customerFullName || item.payments?.deposit?.customerName || item.payments?.warranty?.customerName || customer.fullName || item.name || `${customer.firstname || ''} ${customer.lastname || ''}`.trim() || '',
+      email: item.email || item.customerEmail || item.payments?.deposit?.customerEmail || item.payments?.warranty?.customerEmail || customer.email || '',
+      customerEmail: item.customerEmail || item.email || item.payments?.deposit?.customerEmail || item.payments?.warranty?.customerEmail || customer.email || '',
       phone: item.phone || customer.phone || '',
       customerPhone: item.customerPhone || item.phone || customer.phone || '',
       outingType: item.outingType || item.outing || item.type || item.category || '',
@@ -1020,6 +1463,13 @@ export class BookingApiService {
       arrivalTime: item.arrivalTime || (end ? String(end).slice(11, 16) : ''),
       passengers: Number(item.passengers || party.total || item.guests || 0) || undefined,
       totalPrice,
+      totalAmount: Number(item.totalAmount ?? totalPrice),
+      onlinePayableAmount: Number(item.onlinePayableAmount ?? item.appPayableAmount ?? Math.max(0, totalPrice - Number(item.skipperCashAmount || item.proposalSkipperPrice || 0))),
+      appPayableAmount: Number(item.appPayableAmount ?? item.onlinePayableAmount ?? Math.max(0, totalPrice - Number(item.skipperCashAmount || item.proposalSkipperPrice || 0))),
+      remainingFeesAmount: Number(item.remainingFeesAmount ?? item.balanceAmount ?? balanceAmount),
+      remainingOnboardAmount: Number(item.remainingOnboardAmount ?? item.balanceAmount ?? balanceAmount),
+      skipperPaid: item.skipperPaid === true || item.payments?.direct?.skipperPaid === true,
+      skipperStatus: item.skipperStatus || item.payments?.direct?.skipperStatus || (Number(item.skipperCashAmount || item.proposalSkipperPrice || 0) > 0 ? 'to_be_paid_onboard' : 'not_applicable'),
       depositAmount,
       balanceAmount,
       warrantyAmount,
@@ -1046,6 +1496,31 @@ export class BookingApiService {
       damageCharged: item.damageCharged === true || item.warrantyStatus === 'charged' || item.warrantyCashDamageAmount > 0,
       extraServices: Array.isArray(item.extraServices) ? item.extraServices : this.normalizeArray(item.extraServices || item.payments?.extraServices || []),
       refunds: Array.isArray(item.refunds) ? item.refunds : this.normalizeArray(item.refunds || item.payments?.refunds || []),
+      bookingSource: item.bookingSource || item.raw?.bookingSource || '',
+      source: item.source || item.raw?.source || '',
+      externalPlatform: item.externalPlatform || item.raw?.externalPlatform || item.source || '',
+      externalPlatformName: item.externalPlatformName || item.raw?.externalPlatformName || '',
+      externalPlatformBookingRef: item.externalPlatformBookingRef || item.platformBookingReference || item.platformReservationNumber || item.raw?.externalPlatformBookingRef || '',
+      platformBookingReference: item.platformBookingReference || item.externalPlatformBookingRef || item.raw?.platformBookingReference || '',
+      platformReservationNumber: item.platformReservationNumber || item.externalPlatformBookingRef || item.raw?.platformReservationNumber || '',
+      externalPlatformListingName: item.externalPlatformListingName || item.raw?.externalPlatformListingName || '',
+      externalPlatformUrl: item.externalPlatformUrl || item.raw?.externalPlatformUrl || '',
+      externalPlatformPaidAmount: Number(item.externalPlatformPaidAmount || item.raw?.externalPlatformPaidAmount || 0),
+      externalPlatformNetOwnerAmount: Number(item.externalPlatformNetOwnerAmount || item.raw?.externalPlatformNetOwnerAmount || 0),
+      externalPlatformTotalClientAmount: Number(item.externalPlatformTotalClientAmount || item.raw?.externalPlatformTotalClientAmount || 0),
+      externalPlatformRemainingOwnerAmount: Number(item.externalPlatformRemainingOwnerAmount || item.raw?.externalPlatformRemainingOwnerAmount || 0),
+      externalPortAmount: Number(item.externalPortAmount || item.raw?.externalPortAmount || 0),
+      externalCashOnBoardAmount: Number(item.externalCashOnBoardAmount || item.raw?.externalCashOnBoardAmount || 0),
+      externalTotalRemainingAmount: Number(item.externalTotalRemainingAmount || item.raw?.externalTotalRemainingAmount || 0),
+      externalPaymentItems: Array.isArray(item.externalPaymentItems) ? item.externalPaymentItems : this.normalizeArray(item.externalPaymentItems || item.raw?.externalPaymentItems || []),
+      externalDocuments: item.externalDocuments || item.raw?.externalDocuments || '',
+      boatId: item.boatId || item.raw?.boatId || '',
+      boatName: item.boatName || item.raw?.boatName || '',
+      boatType: item.boatType || item.raw?.boatType || '',
+      boatManufacturer: item.boatManufacturer || item.raw?.boatManufacturer || '',
+      boatModel: item.boatModel || item.raw?.boatModel || '',
+      boatYear: item.boatYear || item.raw?.boatYear || null,
+      boatRegistrationNumber: item.boatRegistrationNumber || item.raw?.boatRegistrationNumber || '',
       raw: item,
     };
   }}

@@ -35,6 +35,7 @@ import { AdminExternalBookingsComponent } from './admin-external-bookings/admin-
 import { BookingProcessComponent } from './booking-process/booking-process.component';
 import { OnlineBookingComponent } from './online-booking/online-booking.component';
 import { AdminPricingModelComponent } from './admin-pricing-model/admin-pricing-model.component';
+import { AdminFleetComponent } from './admin-fleet/admin-fleet.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -68,8 +69,10 @@ const routes: Routes = [
   { path: 'leave-feedback', redirectTo: 'my-feedbacks', pathMatch: 'full' },
   { path: 'admin/feedbacks', component: AdminFeedbacksComponent },
   { path: 'admin/bookings', component: BookingsComponent },
+  { path: 'admin/reservations', component: BookingsComponent },
   { path: 'admin/bookings/:bookingId/invoice', component: BookingInvoiceComponent },
   { path: 'admin/bookings/:bookingId', component: BookingDetailComponent },
+  { path: 'admin/booking-detail-v2/:bookingId', component: BookingDetailComponent },
   { path: 'admin/payments', component: AccountSummaryComponent, data: { section: 'payments', admin: true } },
   { path: 'admin/outings', component: AdminOutingsComponent },
   { path: 'admin/outings/:outingId', component: AdminOutingDetailComponent },
@@ -77,7 +80,10 @@ const routes: Routes = [
   { path: 'admin/proposals', component: AdminProposalsComponent },
   { path: 'proposal/:proposalId', component: ProposalConfirmationComponent },
   { path: 'admin/pricing-model', component: AdminPricingModelComponent },
-  { path: 'admin/external-bookings', component: AdminExternalBookingsComponent },
+  { path: 'admin/fleet', component: AdminFleetComponent },
+  { path: 'admin/external-bookings', component: BookingsComponent },
+  { path: 'admin/new-reservation', component: BookingsComponent },
+  { path: 'my-external-bookings', component: AdminExternalBookingsComponent },
   { path: 'admin/warranty-charge', component: AdminWarrantyChargeComponent },
 ];
 

@@ -388,9 +388,9 @@ export class ProposalConfirmationComponent implements OnInit {
 
   private defaultPriceTitles(language: SiteLanguage): any {
     const defaults: any = {
-      fr: { totalPrice: 'Prix total', totalAmount: 'Montant total', deposit: 'Acompte 10 %', deposit10: 'Acompte 10 %', remaining: 'Solde 90 %', remaining90: 'Solde 90 %', warranty: 'Caution', warrantyAmount: 'Caution', boatPrice: 'Prix bateau', skipperPrice: 'Skipper à payer en espèces', skipperCash: 'Skipper à payer en espèces', onlinePayable: 'Montant payable en ligne', cleaningPrice: 'Prix carburant', extraServicesPrice: 'Extras / services' },
-      en: { totalPrice: 'Total price', totalAmount: 'Total amount', deposit: 'Deposit 10%', deposit10: 'Deposit 10%', remaining: 'Balance 90%', remaining90: 'Balance 90%', warranty: 'Warranty', warrantyAmount: 'Warranty', boatPrice: 'Boat price', skipperPrice: 'Skipper cash on board', skipperCash: 'Skipper cash on board', onlinePayable: 'Online payable amount', cleaningPrice: 'Fuel price', extraServicesPrice: 'Extras / services' },
-      es: { totalPrice: 'Precio total', totalAmount: 'Importe total', deposit: 'Depósito 10%', deposit10: 'Depósito 10%', remaining: 'Saldo 90%', remaining90: 'Saldo 90%', warranty: 'Garantía', warrantyAmount: 'Garantía', boatPrice: 'Precio barco', skipperPrice: 'Skipper en efectivo a bordo', skipperCash: 'Skipper en efectivo a bordo', onlinePayable: 'Importe pagadero en línea', cleaningPrice: 'Precio combustible', extraServicesPrice: 'Extras / servicios' }
+      fr: { totalPrice: 'Prix total', totalAmount: 'Montant total', deposit: 'Acompte 10 %', deposit10: 'Acompte 10 %', remaining: 'Solde 90 %', remaining90: 'Solde 90 %', warranty: 'Caution', warrantyAmount: 'Caution', boatPrice: 'Prix bateau', skipperPrice: 'Skipper à payer en espèces', skipperCash: 'Skipper à payer en espèces', onlinePayable: 'Montant payable en ligne', cleaningPrice: 'Prix carburant', fuelPrice: 'Prix carburant', extraServicesPrice: 'Extras / services' },
+      en: { totalPrice: 'Total price', totalAmount: 'Total amount', deposit: 'Deposit 10%', deposit10: 'Deposit 10%', remaining: 'Balance 90%', remaining90: 'Balance 90%', warranty: 'Warranty', warrantyAmount: 'Warranty', boatPrice: 'Boat price', skipperPrice: 'Skipper cash on board', skipperCash: 'Skipper cash on board', onlinePayable: 'Online payable amount', cleaningPrice: 'Fuel price', fuelPrice: 'Fuel price', extraServicesPrice: 'Extras / services' },
+      es: { totalPrice: 'Precio total', totalAmount: 'Importe total', deposit: 'Depósito 10%', deposit10: 'Depósito 10%', remaining: 'Saldo 90%', remaining90: 'Saldo 90%', warranty: 'Garantía', warrantyAmount: 'Garantía', boatPrice: 'Precio barco', skipperPrice: 'Skipper en efectivo a bordo', skipperCash: 'Skipper en efectivo a bordo', onlinePayable: 'Importe pagadero en línea', cleaningPrice: 'Precio combustible', fuelPrice: 'Precio combustible', extraServicesPrice: 'Extras / servicios' }
     };
     return defaults[language] || defaults.fr;
   }
@@ -399,6 +399,21 @@ export class ProposalConfirmationComponent implements OnInit {
     return this.priceTitles?.[key] || this.text(key) || key;
   }
 
+
+  get boatPriceAmount(): number {
+    const p: any = this.proposal || {};
+    return Number(p.proposalBoatPrice ?? p.estimatedBoatPrice ?? 0) || 0;
+  }
+
+  get fuelPriceAmount(): number {
+    const p: any = this.proposal || {};
+    return Number(p.proposalFuelPrice ?? p.fuelPrice ?? p.fuelAmount ?? p.proposalCleaningPrice ?? p.estimatedCleaningPrice ?? 0) || 0;
+  }
+
+  get extraServicesAmount(): number {
+    const p: any = this.proposal || {};
+    return Number(p.proposalExtraServicesPrice ?? p.extraServicesPrice ?? p.extrasAmount ?? p.extraServicesAmount ?? 0) || 0;
+  }
 
   get skipperCashAmount(): number {
     const p: any = this.proposal || {};
@@ -409,7 +424,63 @@ export class ProposalConfirmationComponent implements OnInit {
     const p: any = this.proposal || {};
     const explicit = Number(p.onlinePayableAmount ?? p.appPayableAmount ?? 0);
     if (explicit > 0) return explicit;
+    const computed = this.boatPriceAmount + this.fuelPriceAmount + this.extraServicesAmount;
+    if (computed > 0) return Math.round(computed * 100) / 100;
     return Math.max(0, Math.round((Number(p.totalAmount || 0) - this.skipperCashAmount) * 100) / 100);
+  }
+
+  get customerTotalAmount(): number {
+    const computed = this.boatPriceAmount + this.fuelPriceAmount + this.extraServicesAmount + this.skipperCashAmount;
+    if (computed > 0) return Math.round(computed * 100) / 100;
+    return Number((this.proposal as any)?.totalAmount ?? (this.proposal as any)?.totalPrice ?? 0) || 0;
+  }
+
+  get depositAmount(): number {
+    const p: any = this.proposal || {};
+    const explicit = Number(p.depositAmount ?? 0);
+    if (explicit > 0) return explicit;
+    return Math.round(this.onlinePayableAmount * 0.1 * 100) / 100;
+  }
+
+  get depositPaidAmount(): number {
+    if (!this.depositPaid) return 0;
+    const p: any = this.proposal || {};
+    const payment = p.payments?.deposit || {};
+    const centsAmount = payment.amount_total ? Number(payment.amount_total) / 100 : 0;
+    const paid = Number(p.depositPaidAmount ?? p.paidDepositAmount ?? payment.amount ?? centsAmount ?? 0);
+    if (paid > 0) return paid;
+    return this.depositAmount;
+  }
+
+  get remainingOnlineAmount(): number {
+    const p: any = this.proposal || {};
+    const explicit = Number(p.balanceAmount ?? p.remainingFeesAmount ?? p.remainingOnlineAmount ?? 0);
+    if (explicit > 0 && this.depositPaid) return explicit;
+    return Math.max(0, Math.round((this.onlinePayableAmount - this.depositPaidAmount) * 100) / 100);
+  }
+
+
+  get warrantyAmount(): number {
+    const p: any = this.proposal || {};
+    const raw = p.raw || {};
+    return Number(p.warrantyAmount ?? p.warrantyMaxAmount ?? raw.warrantyAmount ?? raw.warrantyMaxAmount ?? 500) || 500;
+  }
+
+  get warrantyMethodText(): string {
+    if (this.warrantyCashSelected || this.warrantyChoice === 'cash_on_board') {
+      return this.text('warrantyMethodCash');
+    }
+    return this.text('warrantyMethodCard');
+  }
+
+  get warrantyStatusText(): string {
+    if (this.warrantyRegistered) {
+      return this.text('warrantyStatusRegistered');
+    }
+    if (this.warrantyCashSelected || this.warrantyChoice === 'cash_on_board') {
+      return this.text('warrantyStatusCashOnBoard');
+    }
+    return this.text('warrantyStatusPending');
   }
 
   text(key: string): string {
@@ -435,6 +506,26 @@ export class ProposalConfirmationComponent implements OnInit {
         remainingOnBoard: 'Reste à payer à bord',
         extraServicesOnBoard: 'Extras/services à payer à bord',
         amountDueOnBoard: 'Montant à régler à bord',
+        financialSummary: 'Synthèse financière',
+        totalCustomerCost: 'Coût total client',
+        payAlegria: 'À payer à Alegria',
+        remainingToPayAlegria: 'Reste à payer à Alegria',
+        alegriaPaymentNote: 'À régler à Alegria avant la sortie ou selon les modalités convenues.',
+        alegriaSubtotal: 'Montant Alegria',
+        alreadyPaidDeposit: 'Déjà payé (acompte)',
+        amountDueAlegria: 'Montant restant à payer à Alegria',
+        remainingToPaySkipper: 'Reste à payer au skipper',
+        skipperPaymentNote: 'À régler directement au skipper.',
+        warrantyModeAndAmount: 'Mode et montant de la caution',
+        method: 'Mode',
+        status: 'Statut',
+        warrantyMethodCard: 'Carte bancaire',
+        warrantyMethodCash: 'Espèces',
+        warrantyStatusRegistered: 'Carte enregistrée',
+        warrantyStatusCashOnBoard: 'À remettre le jour de la sortie',
+        warrantyStatusPending: 'À choisir / à finaliser',
+        paySkipper: 'À payer au skipper',
+        skipperFee: 'Skipper',
         secureProposalAccess: "Accès sécurisé à la proposition",
         accessProposalSecurely: "Accédez à votre proposition en toute sécurité",
         proposalLinkedTo: "Cette proposition est liée à",
@@ -456,6 +547,10 @@ export class ProposalConfirmationComponent implements OnInit {
         loading: 'Chargement de la proposition...',
         notFound: 'Proposition introuvable.',
         expiredText: 'Cette proposition n’est plus valide. Merci de contacter Alegria Boat pour recevoir une nouvelle proposition.',
+        proposalWaitingAdminTitle: 'Votre demande est en cours de préparation',
+        proposalWaitingAdminMessage: 'Alegria a bien reçu votre demande. Vous pourrez accepter les CGV, payer l’acompte et choisir la caution uniquement lorsque l’administrateur aura finalisé et envoyé la proposition.',
+        proposalWaitingAdminStatus: 'En attente de finalisation Alegria',
+        proposalWaitingAdminHint: 'Vous recevrez un email et un message WhatsApp dès que votre proposition sera prête.',
         customer: 'Client',
         date: 'Date',
         time: 'Horaire',
@@ -521,6 +616,26 @@ export class ProposalConfirmationComponent implements OnInit {
         remainingOnBoard: 'Remaining to pay on board',
         extraServicesOnBoard: 'Extra services to pay on board',
         amountDueOnBoard: 'Amount due on board',
+        financialSummary: 'Financial summary',
+        totalCustomerCost: 'Total customer cost',
+        payAlegria: 'To pay to Alegria',
+        remainingToPayAlegria: 'Remaining to pay to Alegria',
+        alegriaPaymentNote: 'To be paid to Alegria before the outing or as agreed.',
+        alegriaSubtotal: 'Alegria amount',
+        alreadyPaidDeposit: 'Already paid (deposit)',
+        amountDueAlegria: 'Amount remaining to pay to Alegria',
+        remainingToPaySkipper: 'Remaining to pay to the skipper',
+        skipperPaymentNote: 'To be paid directly to the skipper.',
+        warrantyModeAndAmount: 'Warranty mode and amount',
+        method: 'Method',
+        status: 'Status',
+        warrantyMethodCard: 'Credit card',
+        warrantyMethodCash: 'Cash',
+        warrantyStatusRegistered: 'Card registered',
+        warrantyStatusCashOnBoard: 'To be provided on the outing day',
+        warrantyStatusPending: 'To be selected / finalized',
+        paySkipper: 'To pay to the skipper',
+        skipperFee: 'Skipper',
         secureProposalAccess: "Secure proposal access",
         accessProposalSecurely: "Access your proposal securely",
         proposalLinkedTo: "This proposal is linked to",
@@ -542,6 +657,10 @@ export class ProposalConfirmationComponent implements OnInit {
         loading: 'Loading proposal...',
         notFound: 'Proposal not found.',
         expiredText: 'This proposal is no longer valid. Please contact Alegria Boat for a new proposal.',
+        proposalWaitingAdminTitle: 'Your request is being prepared',
+        proposalWaitingAdminMessage: 'Alegria has received your request. You will be able to accept the terms, pay the deposit and choose the warranty only once the administrator has finalized and issued the proposal.',
+        proposalWaitingAdminStatus: 'Waiting for Alegria finalization',
+        proposalWaitingAdminHint: 'You will receive an email and a WhatsApp message as soon as your proposal is ready.',
         customer: 'Customer',
         date: 'Date',
         time: 'Time',
@@ -607,6 +726,26 @@ export class ProposalConfirmationComponent implements OnInit {
         remainingOnBoard: 'Resto a pagar a bordo',
         extraServicesOnBoard: 'Servicios extra a pagar a bordo',
         amountDueOnBoard: 'Importe a pagar a bordo',
+        financialSummary: 'Resumen financiero',
+        totalCustomerCost: 'Coste total cliente',
+        payAlegria: 'A pagar a Alegria',
+        remainingToPayAlegria: 'Pendiente de pagar a Alegria',
+        alegriaPaymentNote: 'A pagar a Alegria antes de la salida o según lo acordado.',
+        alegriaSubtotal: 'Importe Alegria',
+        alreadyPaidDeposit: 'Ya pagado (depósito)',
+        amountDueAlegria: 'Importe pendiente de pagar a Alegria',
+        remainingToPaySkipper: 'Pendiente de pagar al patrón',
+        skipperPaymentNote: 'A pagar directamente al patrón.',
+        warrantyModeAndAmount: 'Modo e importe de la garantía',
+        method: 'Método',
+        status: 'Estado',
+        warrantyMethodCard: 'Tarjeta bancaria',
+        warrantyMethodCash: 'Efectivo',
+        warrantyStatusRegistered: 'Tarjeta registrada',
+        warrantyStatusCashOnBoard: 'A entregar el día de la salida',
+        warrantyStatusPending: 'A seleccionar / finalizar',
+        paySkipper: 'A pagar al patrón',
+        skipperFee: 'Patrón',
         secureProposalAccess: "Acceso seguro a la propuesta",
         accessProposalSecurely: "Acceda a su propuesta de forma segura",
         proposalLinkedTo: "Esta propuesta está vinculada a",
@@ -628,6 +767,10 @@ export class ProposalConfirmationComponent implements OnInit {
         loading: 'Cargando propuesta...',
         notFound: 'Propuesta no encontrada.',
         expiredText: 'Esta propuesta ya no es válida. Contacte con Alegria Boat para recibir una nueva propuesta.',
+        proposalWaitingAdminTitle: 'Su solicitud está en preparación',
+        proposalWaitingAdminMessage: 'Alegria ha recibido su solicitud. Podrá aceptar las condiciones, pagar el depósito y elegir la garantía solo cuando el administrador haya finalizado y enviado la propuesta.',
+        proposalWaitingAdminStatus: 'Pendiente de finalización por Alegria',
+        proposalWaitingAdminHint: 'Recibirá un email y un mensaje de WhatsApp en cuanto la propuesta esté lista.',
         customer: 'Cliente',
         date: 'Fecha',
         time: 'Hora',
@@ -706,7 +849,7 @@ export class ProposalConfirmationComponent implements OnInit {
   }
 
   get canAcceptTermsCheckbox(): boolean {
-    return this.termsModalWasOpened && this.termsModalWasClosed;
+    return this.proposalCanStartCustomerWorkflow && this.termsModalWasOpened && this.termsModalWasClosed;
   }
 
   get warrantyRegistered(): boolean {
@@ -758,7 +901,47 @@ export class ProposalConfirmationComponent implements OnInit {
 
 
   get tncAccepted(): boolean {
-    return this.proposal?.tncAccepted === true || !!this.proposal?.tncAcceptedAt;
+    const p: any = this.proposal || {};
+    const explicit = p.customerTermsAccepted === true ||
+      p.tncAccepted === true ||
+      p.termsAccepted === true ||
+      p.workflow?.termsAccepted === true ||
+      p.bookingWorkflow?.termsAccepted === true ||
+      p.terms?.accepted === true ||
+      p.documents?.termsAccepted === true;
+
+    const acceptedAt = p.tncAcceptedAt ||
+      p.termsAcceptedAt ||
+      p.workflow?.termsAcceptedAt ||
+      p.bookingWorkflow?.termsAcceptedAt ||
+      p.terms?.acceptedAt ||
+      p.documents?.termsAcceptedAt;
+
+    const acceptedBy = p.tncAcceptedBy ||
+      p.termsAcceptedBy ||
+      p.workflow?.termsAcceptedBy ||
+      p.bookingWorkflow?.termsAcceptedBy ||
+      p.terms?.acceptedBy ||
+      p.documents?.termsAcceptedBy;
+
+    const source = String(
+      p.tncAcceptedSource ||
+      p.termsAcceptedSource ||
+      p.workflow?.termsAcceptedSource ||
+      p.bookingWorkflow?.termsAcceptedSource ||
+      p.terms?.source ||
+      p.documents?.termsAcceptedSource ||
+      ''
+    ).toLowerCase();
+
+    const formalCustomerMarker = p.customerTermsAccepted === true ||
+      source.includes('customer') ||
+      source.includes('client') ||
+      source.includes('proposal') ||
+      source.includes('portal') ||
+      !!acceptedBy;
+
+    return explicit === true && !!acceptedAt && formalCustomerMarker;
   }
 
   get warrantyReady(): boolean {
@@ -780,6 +963,7 @@ export class ProposalConfirmationComponent implements OnInit {
   }
 
   canGoToWizardStep(step: 1 | 2 | 3 | 4): boolean {
+    if (!this.proposalCanStartCustomerWorkflow) return false;
     if (step === 1) return true;
     if (step === 2) return this.tncAccepted;
     if (step === 3) return this.tncAccepted && this.depositPaid;
@@ -805,13 +989,47 @@ export class ProposalConfirmationComponent implements OnInit {
     return !!this.proposal && this.tncAccepted && this.depositPaid && this.warrantyReady;
   }
 
+  get proposalLifecycleStatus(): string {
+    const p: any = this.proposal || {};
+    return String(p.status || p.bookingRequestStatus || p.proposalStatus || '').toLowerCase();
+  }
+
+  get customerRequestPendingAdmin(): boolean {
+    const p: any = this.proposal || {};
+    const status = this.proposalLifecycleStatus;
+    return status === 'request' ||
+      status === 'proposal_requested' ||
+      status === 'pending_admin' ||
+      status === 'pending_admin_review' ||
+      status === 'draft' ||
+      p.requestNeedsAdminProposal === true ||
+      p.pricingToBeFinalizedByAdmin === true ||
+      p.proposalIssued !== true && (p.proposalOrigin === 'customer_request' || p.requestOrigin === 'customer');
+  }
+
+  get proposalCanStartCustomerWorkflow(): boolean {
+    const status = this.proposalLifecycleStatus;
+    const p: any = this.proposal || {};
+
+    if (!this.proposal) return false;
+    if (status === 'accepted' || this.tncAccepted || this.depositPaid || this.warrantyReady) return true;
+    if (status === 'sent' || status === 'issued' || status === 'proposal_issued' || status === 'proposal_sent' || status === 'admin_sent') return true;
+    if (p.proposalIssued === true || p.issued === true || p.requestNeedsAdminProposal === false || p.pricingToBeFinalizedByAdmin === false || !!p.proposalIssuedAt || !!p.proposalSentAt || !!p.proposalNotificationQueuedAt) return true;
+
+    return !this.customerRequestPendingAdmin;
+  }
+
+  get proposalWaitingForAdmin(): boolean {
+    return !!this.proposal && !this.proposalCanStartCustomerWorkflow;
+  }
+
   get expired(): boolean { return !!this.proposal?.validUntil && Date.now() > this.proposal.validUntil; }
   get canAccept(): boolean {
-    return !!this.proposal && !this.expired && this.canAcceptTermsCheckbox && this.acceptedTerms;
+    return !!this.proposal && this.proposalCanStartCustomerWorkflow && !this.expired && this.canAcceptTermsCheckbox && this.acceptedTerms;
   }
 
   async acceptProposal(): Promise<void> {
-    if (!this.proposal || !this.proposalAccessReady || !this.canAccept) return;
+    if (!this.proposal || !this.proposalAccessReady || !this.proposalCanStartCustomerWorkflow || !this.canAccept) return;
     this.accepting = true;
     this.error = '';
     try {
@@ -844,7 +1062,7 @@ export class ProposalConfirmationComponent implements OnInit {
   }
 
   payDeposit(): void {
-    if (!this.proposal || !this.proposalAccessReady) return;
+    if (!this.proposal || !this.proposalAccessReady || !this.proposalCanStartCustomerWorkflow) return;
     this.rememberProposalAccess();
     this.payingDeposit = true;
     this.proposalApi.createDepositCheckout(this.proposal).subscribe({
@@ -863,7 +1081,7 @@ export class ProposalConfirmationComponent implements OnInit {
   }
 
   async acceptCashWarranty(): Promise<void> {
-    if (!this.proposal || !this.proposalAccessReady || !this.depositPaid) return;
+    if (!this.proposal || !this.proposalAccessReady || !this.proposalCanStartCustomerWorkflow || !this.depositPaid) return;
     this.payingWarranty = true;
     this.error = '';
     try {
@@ -876,7 +1094,7 @@ export class ProposalConfirmationComponent implements OnInit {
   }
 
   async finalizeProposal(): Promise<void> {
-    if (!this.proposal || !this.canFinalizeProposal || this.finalizingBooking) return;
+    if (!this.proposal || !this.proposalCanStartCustomerWorkflow || !this.canFinalizeProposal || this.finalizingBooking) return;
 
     this.finalizingBooking = true;
     this.error = '';
@@ -896,7 +1114,7 @@ export class ProposalConfirmationComponent implements OnInit {
   }
 
   async registerWarrantyCard(): Promise<void> {
-    if (!this.proposal || !this.proposalAccessReady || !this.depositPaid) return;
+    if (!this.proposal || !this.proposalAccessReady || !this.proposalCanStartCustomerWorkflow || !this.depositPaid) return;
     this.payingWarranty = true;
     this.error = '';
     try {

@@ -2,20 +2,20 @@
   <div>
     <form class="form-box" [formGroup]="forgotpwdForm">
       <div class="auth-brand">
-        <span class="auth-eyebrow">Alegria Boat</span>
+        <span class="auth-eyebrow">{{ 'auto.login.forgotpwd.forgotpwd.component.alegria_boat' | siteText }}</span>
         <div class="auth-mark">⛵</div>
-        <h1 class="h4 mb-1">Reset your password</h1>
+        <h1 class="h4 mb-1">{{ 'auto.login.forgotpwd.forgotpwd.component.reset_your_password' | siteText }}</h1>
       </div>
-      <p class="text-center small mb-3">Enter your Alegria account email to receive a secure reset link.</p>
+      <p class="text-center small mb-3">{{ 'auto.login.forgotpwd.forgotpwd.component.enter_your_alegria_account_email_to_receive_a_secu' | siteText }}</p>
       <div class="f-group">
-        <label class="form-label"><strong>Email Address</strong></label>
+        <label class="form-label"><strong>{{ 'auto.login.forgotpwd.forgotpwd.component.email_address' | siteText }}</strong></label>
         <input [class]="forgotpwdForm.controls['email'].invalid ?'form-control error':'form-control'"
-        type="text" required="" placeholder="email" formControlName="email" />
+        type="text" required="" [placeholder]="'auto.login.forgotpwd.forgotpwd.component.email' | siteText" formControlName="email" />
       </div>
       <button class="btn btn-primary w-100 my-4" type="submit" [disabled]="forgotpwdForm.invalid"
-      (click)="forgotpwd()">Send Reset Link</button>
+      (click)="forgotpwd()">{{ 'auto.login.forgotpwd.forgotpwd.component.send_reset_link' | siteText }}</button>
       <div class="text-center small">
-        <a [routerLink]="['/login']">Back to Login</a>
+        <a [routerLink]="['/login']">{{ 'auto.login.forgotpwd.forgotpwd.component.back_to_login' | siteText }}</a>
       </div>
     </form>
   </div>
@@ -26,14 +26,12 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="resetModalLabel">Email Sent</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="resetModalLabel">{{ 'auto.login.forgotpwd.forgotpwd.component.email_sent' | siteText }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" [aria-label]="'auto.login.forgotpwd.forgotpwd.component.close' | siteText"></button>
       </div>
-      <div class="modal-body">
-        We've sent you an email with instructions to reset your password.
-      </div>
+      <div class="modal-body">{{ 'auto.login.forgotpwd.forgotpwd.component.we_ve_sent_you_an_email_with_instructions_to_reset' | siteText }}</div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" routerLink="/home">OK</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" routerLink="/home">{{ 'auto.login.forgotpwd.forgotpwd.component.ok' | siteText }}</button>
       </div>
     </div>
   </div>

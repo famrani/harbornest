@@ -25,7 +25,7 @@
       <label class="full" *ngIf="availableFeedbackBookings().length > 0">
         <span>{{ t('outing') }}</span>
         <select name="bookingId" [(ngModel)]="feedback.bookingId" (ngModelChange)="selectFeedbackBooking($event)" required>
-          <option value="" disabled>Select an outing</option>
+          <option value="" disabled>{{ 'auto.home.my-feedbacks.my-feedbacks.component.select_an_outing' | siteText }}</option>
           <option *ngFor="let booking of availableFeedbackBookings()" [value]="booking.bookingId">
             {{ feedbackBookingLabel(booking) }}
           </option>

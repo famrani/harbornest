@@ -20,6 +20,7 @@ export class AdminProposalsComponent implements OnInit, OnDestroy {
   message = '';
   error = '';
   form: Partial<AlegriaProposal> = this.emptyForm();
+  whatsappDialog: { proposal: Partial<AlegriaProposal>; text: string; url: string; phone: string } | null = null;
   currentLanguage: SiteLanguage = 'fr';
   pageText: any = (SITE_CONTENT as any).fr?.proposalManagement || {};
   priceTitles: any = {};
@@ -196,12 +197,12 @@ export class AdminProposalsComponent implements OnInit, OnDestroy {
       pricingToBeFinalizedByAdmin: false,
       proposalBoatPrice: (request as any).proposalBoatPrice ?? (request as any).estimatedBoatPrice ?? (request as any).estimatedBasePrice ?? request.totalAmount ?? 0,
       proposalSkipperPrice: (request as any).proposalSkipperPrice ?? (request as any).estimatedSkipperPrice ?? 0,
-      proposalCleaningPrice: (request as any).proposalCleaningPrice ?? (request as any).estimatedCleaningPrice ?? 0,
+      proposalFuelPrice: (request as any).proposalFuelPrice ?? (request as any).fuelPrice ?? (request as any).fuelAmount ?? (request as any).proposalCleaningPrice ?? (request as any).estimatedCleaningPrice ?? 0,
       proposalExtraServicesPrice: (request as any).proposalExtraServicesPrice ?? (this.getRequestedOptionsTotal(request) + Number((request as any).estimatedExtraGuestsAmount || 0)),
       totalAmount:
         Number((request as any).proposalBoatPrice ?? (request as any).estimatedBoatPrice ?? (request as any).estimatedBasePrice ?? request.totalAmount ?? 0) +
         Number((request as any).proposalSkipperPrice ?? (request as any).estimatedSkipperPrice ?? 0) +
-        Number((request as any).proposalCleaningPrice ?? (request as any).estimatedCleaningPrice ?? 0) +
+        Number((request as any).proposalFuelPrice ?? (request as any).fuelPrice ?? (request as any).fuelAmount ?? (request as any).proposalCleaningPrice ?? (request as any).estimatedCleaningPrice ?? 0) +
         Number((request as any).proposalExtraServicesPrice ?? (this.getRequestedOptionsTotal(request) + Number((request as any).estimatedExtraGuestsAmount || 0))),
       proposalMessage: request.proposalMessage || this.t('proposalFromRequestDefaultMessage'),
     } as any;
@@ -308,9 +309,9 @@ export class AdminProposalsComponent implements OnInit, OnDestroy {
     const form: any = this.form || {};
     const boatPrice = Number(form.proposalBoatPrice || 0);
     const skipperPrice = Number(form.proposalSkipperPrice || 0);
-    const cleaningPrice = Number(form.proposalCleaningPrice || 0);
+    const fuelPrice = Number(form.proposalFuelPrice ?? form.fuelPrice ?? form.fuelAmount ?? form.proposalCleaningPrice ?? 0);
     const extraServicesPrice = Number(form.proposalExtraServicesPrice || 0);
-    const finalTotal = boatPrice + skipperPrice + cleaningPrice + extraServicesPrice;
+    const finalTotal = boatPrice + skipperPrice + fuelPrice + extraServicesPrice;
     const onlinePayableAmount = Math.max(0, Math.round((finalTotal - skipperPrice) * 100) / 100);
 
     if (finalTotal > 0) {
@@ -320,6 +321,9 @@ export class AdminProposalsComponent implements OnInit, OnDestroy {
         ...this.form,
         totalAmount: Math.round(finalTotal * 100) / 100,
         skipperCashAmount: skipperPrice,
+        proposalFuelPrice: fuelPrice,
+        fuelPrice: fuelPrice,
+        fuelAmount: fuelPrice,
         onlinePayableAmount,
         appPayableAmount: onlinePayableAmount,
         depositRate,
@@ -337,8 +341,10 @@ export class AdminProposalsComponent implements OnInit, OnDestroy {
     try {
       this.applyFinalPricingToForm();
       const saved = await this.proposalApi.saveProposal(this.form);
-      this.form = { ...saved };
-      this.message = this.t('proposalSaved');
+      await this.proposalApi.markSent(saved);
+      this.form = { ...saved, status: 'sent' } as any;
+      this.prepareWhatsappDialog(this.form);
+      this.message = this.t('proposalSavedAndSent') !== 'proposalSavedAndSent' ? this.t('proposalSavedAndSent') : `${this.t('proposalSaved')} Email et WhatsApp préparés/envoyés au client.`;
       this.load();
     } catch (e: any) { this.error = e?.message || this.t('unableSave'); }
     this.saving = false;
@@ -354,6 +360,7 @@ export class AdminProposalsComponent implements OnInit, OnDestroy {
     }
     this.applyFinalPricingToForm();
     await this.proposalApi.markSent(this.form as AlegriaProposal);
+    this.prepareWhatsappDialog(this.form);
     this.message = this.t('markedSent');
     this.load();
   }
@@ -420,20 +427,26 @@ export class AdminProposalsComponent implements OnInit, OnDestroy {
   sendProposalByEmail(proposal: AlegriaProposal): void {
     const link = `${window.location.origin}/proposal/${proposal.proposalId}`;
     const subject = `Alegria Boat proposal - ${proposal.outingType || 'Your outing'}`;
+    const f = this.proposalFinancials(proposal);
     const body = [
       `Hello ${proposal.customerName || ''},`,
       '',
-      'Thank you for your request.',
+      'Your Alegria Boat proposal is ready.',
       '',
-      'Please find below your Alegria Boat proposal:',
+      'Financial summary',
+      `Boat outing: ${this.money(f.boatPrice)}`,
+      f.fuelPrice ? `Fuel: ${this.money(f.fuelPrice)}` : '',
+      f.extraServicesPrice ? `Extras / services: ${this.money(f.extraServicesPrice)}` : '',
+      f.skipperCashAmount ? `Skipper, paid directly: ${this.money(f.skipperCashAmount)}` : '',
+      `Total customer cost: ${this.money(f.totalAmount)}`,
       '',
-      `Outing: ${proposal.outingType || ''}`,
-      `Date: ${proposal.outingDate || ''}`,
-      `Time: ${proposal.departureTime || ''} - ${proposal.arrivalTime || ''}`,
-      `Total price: €${proposal.totalAmount || 0}`,
-      `10% booking deposit: €${proposal.depositAmount || 0}`,
-      `Remaining balance to pay onboard: €${proposal.balanceAmount || 0}`,
-      `Security deposit: €${proposal.warrantyAmount || 500}`,
+      'To pay to Alegria',
+      `Alegria amount: ${this.money(f.onlinePayableAmount)}`,
+      `10% deposit: ${this.money(f.depositAmount)}`,
+      `Alegria balance: ${this.money(f.balanceAmount)}`,
+      '',
+      f.skipperCashAmount ? `To pay to skipper: ${this.money(f.skipperCashAmount)}` : '',
+      `Warranty: ${this.money(f.warrantyAmount)}`,
       '',
       'To accept the proposal, sign the Terms & Conditions, choose your warranty method, and pay the 10% deposit, please use this secure link:',
       link,
@@ -442,10 +455,90 @@ export class AdminProposalsComponent implements OnInit, OnDestroy {
       '',
       'Best regards,',
       'Alegria Boat'
-    ].join('\n');
+    ].filter(Boolean).join('\n');
 
     const mailto = `mailto:${encodeURIComponent(proposal.customerEmail || '')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailto;
+  }
+
+  prepareWhatsappDialog(proposal: Partial<AlegriaProposal>): void {
+    if (!proposal?.proposalId) return;
+    const phone = this.normalizeWhatsappPhone(proposal.customerPhone || '');
+    const text = this.buildWhatsappMessage(proposal);
+    this.whatsappDialog = {
+      proposal,
+      phone,
+      text,
+      url: phone ? `https://wa.me/${phone}?text=${encodeURIComponent(text)}` : ''
+    };
+  }
+
+  openWhatsappDialog(proposal: Partial<AlegriaProposal>, event?: Event): void {
+    event?.stopPropagation();
+    this.prepareWhatsappDialog(proposal);
+  }
+
+  closeWhatsappDialog(): void {
+    this.whatsappDialog = null;
+  }
+
+  openWhatsappWindow(): void {
+    if (!this.whatsappDialog?.url) return;
+    window.open(this.whatsappDialog.url, '_blank');
+  }
+
+  copyWhatsappText(): void {
+    if (!this.whatsappDialog?.text) return;
+    navigator.clipboard?.writeText(this.whatsappDialog.text);
+    this.message = 'Message WhatsApp copié.';
+  }
+
+  private buildWhatsappMessage(proposal: Partial<AlegriaProposal>): string {
+    const f = this.proposalFinancials(proposal);
+    const link = `${window.location.origin}/proposal/${proposal.proposalId}`;
+    return [
+      `Bonjour ${proposal.customerName || ''} 👋`,
+      `Votre proposition Alegria Boat pour ${proposal.outingType || 'votre sortie'}${proposal.outingDate ? ` le ${proposal.outingDate}` : ''} est prête.`,
+      '',
+      `💙 À payer à Alegria : ${this.money(f.onlinePayableAmount)}`,
+      `• Acompte 10 % : ${this.money(f.depositAmount)}`,
+      `• Solde Alegria : ${this.money(f.balanceAmount)}`,
+      f.skipperCashAmount ? `👨‍✈️ À payer au skipper : ${this.money(f.skipperCashAmount)}` : '',
+      `🛡 Garantie : ${this.money(f.warrantyAmount)}`,
+      '',
+      `Coût total client : ${this.money(f.totalAmount)}`,
+      '',
+      `Consulter et accepter la proposition : ${link}`
+    ].filter(Boolean).join('\n');
+  }
+
+  private proposalFinancials(proposal: Partial<AlegriaProposal>): any {
+    const boatPrice = Number((proposal as any).proposalBoatPrice ?? (proposal as any).estimatedBoatPrice ?? 0) || 0;
+    const fuelPrice = Number((proposal as any).proposalFuelPrice ?? (proposal as any).fuelPrice ?? (proposal as any).fuelAmount ?? 0) || 0;
+    const extraServicesPrice = Number((proposal as any).proposalExtraServicesPrice ?? 0) || 0;
+    const skipperCashAmount = Number((proposal as any).skipperCashAmount ?? (proposal as any).proposalSkipperPrice ?? 0) || 0;
+    const totalAmount = Number((proposal as any).totalAmount ?? (boatPrice + fuelPrice + extraServicesPrice + skipperCashAmount)) || 0;
+    const onlinePayableAmount = Number((proposal as any).onlinePayableAmount ?? (proposal as any).appPayableAmount ?? Math.max(0, totalAmount - skipperCashAmount)) || 0;
+    const depositAmount = Number((proposal as any).depositAmount ?? Math.round(onlinePayableAmount * 0.10 * 100) / 100) || 0;
+    const balanceAmount = Number((proposal as any).balanceAmount ?? Math.max(0, Math.round((onlinePayableAmount - depositAmount) * 100) / 100)) || 0;
+    const warrantyAmount = Number((proposal as any).warrantyAmount || 500) || 0;
+    return { boatPrice, fuelPrice, extraServicesPrice, skipperCashAmount, totalAmount, onlinePayableAmount, depositAmount, balanceAmount, warrantyAmount };
+  }
+
+  private money(value: any): string {
+    return `${(Number(value || 0)).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+  }
+
+  private normalizeWhatsappPhone(value: any): string {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    const plusPrefixed = raw.startsWith('+');
+    const digits = raw.replace(/[^\d]/g, '');
+    if (!digits) return '';
+    if (plusPrefixed) return digits;
+    if (digits.startsWith('00')) return digits.slice(2);
+    if (digits.startsWith('0') && digits.length === 10) return `33${digits.slice(1)}`;
+    return digits;
   }
 
 

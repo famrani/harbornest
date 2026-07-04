@@ -22,7 +22,13 @@ function requireFields(obj, fields, res) {
     return true;
 }
 function pickContactEmail(siteContent, preferredLocale) {
-    const locales = [preferredLocale, 'fr', 'en', 'es'].filter(Boolean);
+    // New v2 content root: /alegria_v2/tenants/alegria/brand/contactEmail
+    const v2Email = siteContent?.alegria_v2?.tenants?.alegria?.brand?.contactEmail || siteContent?.tenants?.alegria?.brand?.contactEmail;
+    if (isEmail(v2Email))
+        return String(v2Email).trim();
+    // Legacy siteContent by language. Kept so existing Firebase objects such as
+    // backendusers, bnBookings, bnPayments and siteContent keep working.
+    const locales = [preferredLocale, 'fr', 'en', 'es', 'it', 'de', 'nl', 'ru'].filter(Boolean);
     for (const locale of locales) {
         const email = siteContent?.[locale]?.contactInfo?.email;
         if (isEmail(email))
@@ -87,15 +93,45 @@ function formatMoneyEuro(amount) {
     const n = Number(amount || 0);
     return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(n);
 }
+function numericValue(...values) {
+    for (const value of values) {
+        if (value === undefined || value === null || value === '')
+            continue;
+        const n = Number(value);
+        if (Number.isFinite(n))
+            return n;
+    }
+    return 0;
+}
+function proposalFinancialBreakdown(record) {
+    const raw = record?.raw || {};
+    const boatAmount = numericValue(record?.proposalBoatPrice, record?.boatPrice, record?.estimatedBoatPrice, raw?.proposalBoatPrice, raw?.boatPrice, raw?.estimatedBoatPrice);
+    const fuelAmount = numericValue(record?.proposalFuelPrice, record?.fuelPrice, record?.fuelAmount, raw?.proposalFuelPrice, raw?.fuelPrice, raw?.fuelAmount);
+    const extraAmount = numericValue(record?.proposalExtraServicesPrice, record?.extraServicesPrice, record?.extraServicesAmount, raw?.proposalExtraServicesPrice, raw?.extraServicesPrice, raw?.extraServicesAmount);
+    const skipperAmount = numericValue(record?.proposalSkipperPrice, record?.skipperCashAmount, record?.skipperAmount, record?.estimatedSkipperPrice, raw?.proposalSkipperPrice, raw?.skipperCashAmount, raw?.skipperAmount, raw?.estimatedSkipperPrice);
+    const alegriaAmount = numericValue(record?.onlinePayableAmount, record?.appPayableAmount, raw?.onlinePayableAmount, raw?.appPayableAmount, boatAmount + fuelAmount + extraAmount);
+    const customerTotal = numericValue(record?.customerTotal, record?.totalCustomerCost, record?.totalAmount, record?.totalPrice, raw?.customerTotal, raw?.totalCustomerCost, raw?.totalAmount, raw?.totalPrice, alegriaAmount + skipperAmount);
+    const depositAmount = numericValue(record?.depositAmount, record?.proposalDepositAmount, raw?.depositAmount, raw?.proposalDepositAmount);
+    const balanceAmount = numericValue(record?.balanceAmount, record?.remainingFeesAmount, record?.remainingOnlineAmount, raw?.balanceAmount, raw?.remainingFeesAmount, raw?.remainingOnlineAmount, Math.max(0, alegriaAmount - depositAmount));
+    const warrantyAmount = numericValue(record?.warrantyAmount, record?.depositWarrantyAmount, raw?.warrantyAmount, raw?.depositWarrantyAmount);
+    return { boatAmount, fuelAmount, extraAmount, skipperAmount, alegriaAmount, customerTotal, depositAmount, balanceAmount, warrantyAmount };
+}
 function proposalSummaryHtml(record) {
+    const f = proposalFinancialBreakdown(record);
     const rows = [
         ['Sortie', record?.outingType || record?.raw?.outingType || ''],
         ['Date', record?.outingDate || record?.raw?.outingDate || ''],
         ['Horaires', [record?.departureTime || record?.raw?.departureTime, record?.arrivalTime || record?.raw?.arrivalTime].filter(Boolean).join(' - ')],
         ['Passagers', record?.passengers || record?.raw?.passengers || ''],
-        ['Montant total', formatMoneyEuro(record?.totalAmount || record?.totalPrice || record?.raw?.totalAmount || 0)],
-        ['Acompte 10 %', formatMoneyEuro(record?.depositAmount || record?.raw?.depositAmount || 0)],
-        ['Solde 90 %', formatMoneyEuro(record?.balanceAmount || record?.remainingFeesAmount || record?.raw?.balanceAmount || 0)],
+        ['Prix bateau', formatMoneyEuro(f.boatAmount)],
+        ['Carburant', formatMoneyEuro(f.fuelAmount)],
+        ['Extras / services', formatMoneyEuro(f.extraAmount)],
+        ['Skipper à payer directement', formatMoneyEuro(f.skipperAmount)],
+        ['Coût total client', formatMoneyEuro(f.customerTotal)],
+        ['Total à payer à Alegria', formatMoneyEuro(f.alegriaAmount)],
+        ['Acompte 10 %', formatMoneyEuro(f.depositAmount)],
+        ['Solde à payer à Alegria', formatMoneyEuro(f.balanceAmount)],
+        ['Garantie', formatMoneyEuro(f.warrantyAmount)],
     ].filter(([, value]) => value !== undefined && value !== null && String(value).trim() !== '');
     return rows.map(([label, value]) => `<p><strong>${escapeHtml(label)} :</strong> ${escapeHtml(value)}</p>`).join('');
 }
@@ -114,6 +150,20 @@ const DEFAULT_EMAIL_TEMPLATES = {
             buttonText: 'Ouvrir ma réservation',
             html: '<p>Bonjour {{customerName}},</p><p>Merci, votre proposition a bien été confirmée et transformée en réservation.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{bookingUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p><p><a href="{{bookingUrl}}">{{bookingUrl}}</a></p>',
             footer: 'À bientôt à bord,<br/>L’équipe Alegria'
+        },
+        bookingRequestAdmin: {
+            subject: 'Nouvelle demande de sortie Alegria - {{outingType}} - {{outingDate}} - {{customerName}}',
+            title: 'Nouvelle demande de sortie',
+            buttonText: 'Ouvrir la demande',
+            html: '<p>Une nouvelle demande de sortie vient d’être envoyée par {{customerName}}.</p>{{summaryHtml}}<p><strong>Client :</strong> {{customerName}}<br/><strong>Email :</strong> {{customerEmail}}<br/><strong>Téléphone :</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p><p><a href="{{proposalUrl}}">{{proposalUrl}}</a></p>',
+            footer: 'Notification automatique Alegria'
+        },
+        bookingRequestCustomer: {
+            subject: 'Nous avons bien reçu votre demande Alegria',
+            title: 'Votre demande a bien été envoyée',
+            buttonText: 'Voir ma demande',
+            html: '<p>Bonjour {{customerName}},</p><p>Merci, nous avons bien reçu votre demande de sortie Alegria. Notre équipe va préparer une proposition personnalisée avec le prix bateau, le prix skipper et les éventuels services complémentaires.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>',
+            footer: 'À bientôt à bord,<br/>L’équipe Alegria'
         }
     },
     en: {
@@ -129,6 +179,20 @@ const DEFAULT_EMAIL_TEMPLATES = {
             title: 'Your booking is confirmed',
             buttonText: 'Open my booking',
             html: '<p>Hello {{customerName}},</p><p>Thank you, your proposal has been confirmed and converted into a booking.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{bookingUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>If the button does not work, copy this link into your browser:</p><p><a href="{{bookingUrl}}">{{bookingUrl}}</a></p>',
+            footer: 'See you soon on board,<br/>The Alegria Team'
+        },
+        bookingRequestAdmin: {
+            subject: 'New Alegria outing request - {{outingType}} - {{outingDate}} - {{customerName}}',
+            title: 'New outing request',
+            buttonText: 'Open the request',
+            html: '<p>A new outing request has just been submitted by {{customerName}}.</p>{{summaryHtml}}<p><strong>Customer:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Phone:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>If the button does not work, copy this link into your browser:</p><p><a href="{{proposalUrl}}">{{proposalUrl}}</a></p>',
+            footer: 'Automatic Alegria notification'
+        },
+        bookingRequestCustomer: {
+            subject: 'We have received your Alegria request',
+            title: 'Your request has been sent',
+            buttonText: 'View my request',
+            html: '<p>Hello {{customerName}},</p><p>Thank you, we have received your Alegria outing request. Our team will prepare a personalized proposal with the boat price, skipper price and any additional services.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>',
             footer: 'See you soon on board,<br/>The Alegria Team'
         }
     },
@@ -146,7 +210,37 @@ const DEFAULT_EMAIL_TEMPLATES = {
             buttonText: 'Abrir mi reserva',
             html: '<p>Hola {{customerName}},</p><p>Gracias, tu propuesta ha sido confirmada y convertida en reserva.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{bookingUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si el botón no funciona, copia este enlace en tu navegador:</p><p><a href="{{bookingUrl}}">{{bookingUrl}}</a></p>',
             footer: 'Hasta pronto a bordo,<br/>El equipo Alegria'
+        },
+        bookingRequestAdmin: {
+            subject: 'Nueva solicitud de salida Alegria - {{outingType}} - {{outingDate}} - {{customerName}}',
+            title: 'Nueva solicitud de salida',
+            buttonText: 'Abrir la solicitud',
+            html: '<p>{{customerName}} acaba de enviar una nueva solicitud de salida.</p>{{summaryHtml}}<p><strong>Cliente:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Teléfono:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si el botón no funciona, copia este enlace en tu navegador:</p><p><a href="{{proposalUrl}}">{{proposalUrl}}</a></p>',
+            footer: 'Notificación automática de Alegria'
+        },
+        bookingRequestCustomer: {
+            subject: 'Hemos recibido tu solicitud Alegria',
+            title: 'Tu solicitud ha sido enviada',
+            buttonText: 'Ver mi solicitud',
+            html: '<p>Hola {{customerName}},</p><p>Gracias, hemos recibido tu solicitud de salida Alegria. Nuestro equipo preparará una propuesta personalizada con el precio del barco, el precio del skipper y los servicios adicionales.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>',
+            footer: 'Hasta pronto a bordo,<br/>El equipo Alegria'
         }
+    },
+    it: {
+        bookingRequestAdmin: { subject: 'Nuova richiesta Alegria - {{outingType}} - {{outingDate}} - {{customerName}}', title: 'Nuova richiesta di uscita', buttonText: 'Apri la richiesta', html: '<p>È stata inviata una nuova richiesta di uscita da {{customerName}}.</p>{{summaryHtml}}<p><strong>Cliente:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Telefono:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Notifica automatica Alegria' },
+        bookingRequestCustomer: { subject: 'Abbiamo ricevuto la tua richiesta Alegria', title: 'La tua richiesta è stata inviata', buttonText: 'Vedi la mia richiesta', html: '<p>Ciao {{customerName}},</p><p>Grazie, abbiamo ricevuto la tua richiesta di uscita Alegria. Il nostro team preparerà una proposta personalizzata con il prezzo della barca, il prezzo dello skipper e gli eventuali servizi aggiuntivi.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'A presto a bordo,<br/>Il team Alegria' }
+    },
+    de: {
+        bookingRequestAdmin: { subject: 'Neue Alegria-Anfrage - {{outingType}} - {{outingDate}} - {{customerName}}', title: 'Neue Ausflugsanfrage', buttonText: 'Anfrage öffnen', html: '<p>Eine neue Ausflugsanfrage wurde von {{customerName}} gesendet.</p>{{summaryHtml}}<p><strong>Kunde:</strong> {{customerName}}<br/><strong>E-Mail:</strong> {{customerEmail}}<br/><strong>Telefon:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Automatische Alegria-Benachrichtigung' },
+        bookingRequestCustomer: { subject: 'Wir haben Ihre Alegria-Anfrage erhalten', title: 'Ihre Anfrage wurde gesendet', buttonText: 'Meine Anfrage ansehen', html: '<p>Hallo {{customerName}},</p><p>Vielen Dank, wir haben Ihre Alegria-Ausflugsanfrage erhalten. Unser Team erstellt ein individuelles Angebot mit Bootspreis, Skipperpreis und eventuellen Zusatzleistungen.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Bis bald an Bord,<br/>Das Alegria-Team' }
+    },
+    nl: {
+        bookingRequestAdmin: { subject: 'Nieuwe Alegria-aanvraag - {{outingType}} - {{outingDate}} - {{customerName}}', title: 'Nieuwe aanvraag voor een uitstap', buttonText: 'Aanvraag openen', html: '<p>Er is een nieuwe uitstapaanvraag verzonden door {{customerName}}.</p>{{summaryHtml}}<p><strong>Klant:</strong> {{customerName}}<br/><strong>E-mail:</strong> {{customerEmail}}<br/><strong>Telefoon:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Automatische Alegria-melding' },
+        bookingRequestCustomer: { subject: 'We hebben je Alegria-aanvraag ontvangen', title: 'Je aanvraag is verzonden', buttonText: 'Mijn aanvraag bekijken', html: '<p>Hallo {{customerName}},</p><p>Dank je, we hebben je Alegria-uitstapaanvraag ontvangen. Ons team maakt een persoonlijk voorstel met de bootprijs, de skipperprijs en eventuele extra diensten.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Tot snel aan boord,<br/>Het Alegria-team' }
+    },
+    ru: {
+        bookingRequestAdmin: { subject: 'Новая заявка Alegria - {{outingType}} - {{outingDate}} - {{customerName}}', title: 'Новая заявка на прогулку', buttonText: 'Открыть заявку', html: '<p>Новая заявка на прогулку была отправлена клиентом {{customerName}}.</p>{{summaryHtml}}<p><strong>Клиент:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Телефон:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Автоматическое уведомление Alegria' },
+        bookingRequestCustomer: { subject: 'Мы получили вашу заявку Alegria', title: 'Ваша заявка отправлена', buttonText: 'Посмотреть мою заявку', html: '<p>Здравствуйте, {{customerName}},</p><p>Спасибо, мы получили вашу заявку на прогулку Alegria. Наша команда подготовит персональное предложение с ценой лодки, ценой шкипера и дополнительными услугами.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'До скорой встречи на борту,<br/>Команда Alegria' }
     }
 };
 function normalizeLang(record) {
@@ -155,6 +249,14 @@ function normalizeLang(record) {
         return 'en';
     if (raw.startsWith('es'))
         return 'es';
+    if (raw.startsWith('it'))
+        return 'it';
+    if (raw.startsWith('de'))
+        return 'de';
+    if (raw.startsWith('nl'))
+        return 'nl';
+    if (raw.startsWith('ru'))
+        return 'ru';
     return 'fr';
 }
 function getPathValue(data, path) {
@@ -190,7 +292,26 @@ function wrapEmailLayout(template, data) {
       </div>`;
 }
 async function loadEmailTemplate(db, lang, key) {
-    const languages = [lang, 'fr', 'en', 'es'].filter((v, i, a) => v && a.indexOf(v) === i);
+    const languages = [lang, 'fr', 'en', 'es', 'it', 'de', 'nl', 'ru'].filter((v, i, a) => v && a.indexOf(v) === i);
+    // New additive Firebase content root. This does not replace legacy operational
+    // roots such as backendusers/bnBookings/bnPayments. It is only used for
+    // configurable text, templates, features and tenant settings.
+    for (const l of languages) {
+        const snap = await db.ref(`/alegria_v2/i18n/${l}/emails/${key}`).once('value').catch(() => null);
+        const val = snap?.val?.();
+        if (val && typeof val === 'object') {
+            const fallback = DEFAULT_EMAIL_TEMPLATES[l]?.[key] || DEFAULT_EMAIL_TEMPLATES.fr[key] || {};
+            return {
+                ...fallback,
+                subject: val.subject || fallback.subject,
+                title: val.intro || val.title || fallback.title,
+                html: val.html || val.body || val.intro || fallback.html,
+                buttonText: val.cta || val.buttonText || fallback.buttonText,
+                footer: val.footer || fallback.footer,
+            };
+        }
+    }
+    // Legacy path kept for backward compatibility.
     for (const l of languages) {
         const snap = await db.ref(`/siteContent/${l}/emailTemplates/${key}`).once('value').catch(() => null);
         const val = snap?.val?.();
@@ -533,6 +654,61 @@ class BookingsService {
             .filter((item) => item && item.active !== false)
             .sort((a, b) => Number(a.sortOrder ?? 999) - Number(b.sortOrder ?? 999));
     }
+    async notifyBookingRequestCreated(req, proposalId) {
+        const snap = await this.storeDbc.db.ref(`/bnProposals/${proposalId}`).once('value');
+        const proposal = snap.val();
+        if (!proposal)
+            throw new Error('Proposal request not found');
+        const lang = normalizeLang(proposal);
+        const email = pickCustomerEmail(proposal);
+        const name = pickCustomerName(proposal);
+        const origin = getPublicAppOrigin(req);
+        const proposalUrl = `${origin}/admin/proposals`;
+        const customerProposalUrl = `${origin}/my-proposals`;
+        const finance = proposalFinancialBreakdown(proposal);
+        const data = {
+            customerName: name || '',
+            customerEmail: email || '',
+            customerPhone: proposal?.customerPhone || proposal?.phone || proposal?.raw?.customerPhone || '',
+            proposalId,
+            proposalUrl,
+            customerProposalUrl,
+            summaryHtml: proposalSummaryHtml(proposal),
+            outingType: proposal?.outingType || proposal?.raw?.outingType || '',
+            outingDate: proposal?.outingDate || proposal?.raw?.outingDate || '',
+            totalAmount: formatMoneyEuro(finance.customerTotal),
+            customerTotal: formatMoneyEuro(finance.customerTotal),
+            boatAmount: formatMoneyEuro(finance.boatAmount),
+            fuelAmount: formatMoneyEuro(finance.fuelAmount),
+            extraServicesAmount: formatMoneyEuro(finance.extraAmount),
+            skipperAmount: formatMoneyEuro(finance.skipperAmount),
+            skipperFee: formatMoneyEuro(finance.skipperAmount),
+            alegriaAmount: formatMoneyEuro(finance.alegriaAmount),
+            depositAmount: formatMoneyEuro(finance.depositAmount),
+            balanceAmount: formatMoneyEuro(finance.balanceAmount),
+            warrantyAmount: formatMoneyEuro(finance.warrantyAmount),
+        };
+        const adminTemplate = await loadEmailTemplate(this.storeDbc.db, lang, 'bookingRequestAdmin');
+        const adminSubject = renderTemplateString(adminTemplate.subject || 'Nouvelle demande de sortie Alegria', data, false);
+        const adminHtml = wrapEmailLayout(adminTemplate, data);
+        const adminEmail = getAdminNotificationEmail();
+        await this.mailer.sendToOwner(adminSubject, adminHtml, adminEmail);
+        let customerSent = false;
+        if (email) {
+            const customerTemplate = await loadEmailTemplate(this.storeDbc.db, lang, 'bookingRequestCustomer');
+            const customerSubject = renderTemplateString(customerTemplate.subject || 'Nous avons bien reçu votre demande Alegria', data, false);
+            const customerHtml = wrapEmailLayout(customerTemplate, { ...data, proposalUrl: customerProposalUrl });
+            await this.mailer.sendToGuest(email, customerSubject, customerHtml);
+            customerSent = true;
+        }
+        await this.storeDbc.db.ref(`/bnProposals/${proposalId}`).update({
+            requestEmailSentAt: Date.now(),
+            requestAdminEmailSentTo: adminEmail,
+            requestCustomerEmailSentTo: customerSent ? email : null,
+            requestEmailTemplateKeys: ['bookingRequestAdmin', 'bookingRequestCustomer'],
+            requestEmailLanguage: lang,
+        });
+    }
     async notifyProposalReady(req, proposalId) {
         const snap = await this.storeDbc.db.ref(`/bnProposals/${proposalId}`).once('value');
         const proposal = snap.val();
@@ -546,6 +722,7 @@ class BookingsService {
         const origin = getPublicAppOrigin(req);
         const proposalUrl = `${origin}/proposal/${encodeURIComponent(proposalId)}`;
         const template = await loadEmailTemplate(this.storeDbc.db, lang, 'proposalReady');
+        const finance = proposalFinancialBreakdown(proposal);
         const data = {
             customerName: name || '',
             proposalId,
@@ -553,9 +730,17 @@ class BookingsService {
             summaryHtml: proposalSummaryHtml(proposal),
             outingType: proposal?.outingType || proposal?.raw?.outingType || '',
             outingDate: proposal?.outingDate || proposal?.raw?.outingDate || '',
-            totalAmount: formatMoneyEuro(proposal?.totalAmount || proposal?.totalPrice || proposal?.raw?.totalAmount || 0),
-            depositAmount: formatMoneyEuro(proposal?.depositAmount || proposal?.raw?.depositAmount || 0),
-            balanceAmount: formatMoneyEuro(proposal?.balanceAmount || proposal?.remainingFeesAmount || proposal?.raw?.balanceAmount || 0),
+            totalAmount: formatMoneyEuro(finance.customerTotal),
+            customerTotal: formatMoneyEuro(finance.customerTotal),
+            boatAmount: formatMoneyEuro(finance.boatAmount),
+            fuelAmount: formatMoneyEuro(finance.fuelAmount),
+            extraServicesAmount: formatMoneyEuro(finance.extraAmount),
+            skipperAmount: formatMoneyEuro(finance.skipperAmount),
+            skipperFee: formatMoneyEuro(finance.skipperAmount),
+            alegriaAmount: formatMoneyEuro(finance.alegriaAmount),
+            depositAmount: formatMoneyEuro(finance.depositAmount),
+            balanceAmount: formatMoneyEuro(finance.balanceAmount),
+            warrantyAmount: formatMoneyEuro(finance.warrantyAmount),
         };
         const subject = renderTemplateString(template.subject || 'Votre proposition Alegria est prête', data, false);
         const html = wrapEmailLayout(template, data);
@@ -580,6 +765,7 @@ class BookingsService {
         const origin = getPublicAppOrigin(req);
         const bookingUrl = `${origin}/bookings/${encodeURIComponent(bookingId)}`;
         const template = await loadEmailTemplate(this.storeDbc.db, lang, 'bookingConfirmed');
+        const finance = proposalFinancialBreakdown(booking);
         const data = {
             customerName: name || '',
             bookingId,
@@ -587,9 +773,17 @@ class BookingsService {
             summaryHtml: proposalSummaryHtml(booking),
             outingType: booking?.outingType || booking?.raw?.outingType || '',
             outingDate: booking?.outingDate || booking?.raw?.outingDate || '',
-            totalAmount: formatMoneyEuro(booking?.totalAmount || booking?.totalPrice || booking?.raw?.totalAmount || 0),
-            depositAmount: formatMoneyEuro(booking?.depositAmount || booking?.raw?.depositAmount || 0),
-            balanceAmount: formatMoneyEuro(booking?.balanceAmount || booking?.remainingFeesAmount || booking?.raw?.balanceAmount || 0),
+            totalAmount: formatMoneyEuro(finance.customerTotal),
+            customerTotal: formatMoneyEuro(finance.customerTotal),
+            boatAmount: formatMoneyEuro(finance.boatAmount),
+            fuelAmount: formatMoneyEuro(finance.fuelAmount),
+            extraServicesAmount: formatMoneyEuro(finance.extraAmount),
+            skipperAmount: formatMoneyEuro(finance.skipperAmount),
+            skipperFee: formatMoneyEuro(finance.skipperAmount),
+            alegriaAmount: formatMoneyEuro(finance.alegriaAmount),
+            depositAmount: formatMoneyEuro(finance.depositAmount),
+            balanceAmount: formatMoneyEuro(finance.balanceAmount),
+            warrantyAmount: formatMoneyEuro(finance.warrantyAmount),
         };
         const subject = renderTemplateString(template.subject || 'Votre réservation Alegria est confirmée', data, false);
         const html = wrapEmailLayout(template, data);
@@ -628,6 +822,16 @@ class BookingsService {
             }
             catch (e) {
                 console.error(e);
+                return res.status(500).json({ ok: false, error: e?.message || String(e) });
+            }
+        });
+        router.post('/api/proposals/:proposalId/notify-request-created', async (req, res) => {
+            try {
+                await this.notifyBookingRequestCreated(req, req.params.proposalId);
+                return res.json({ ok: true });
+            }
+            catch (e) {
+                console.error('[MAIL] booking request notification failed:', e);
                 return res.status(500).json({ ok: false, error: e?.message || String(e) });
             }
         });
@@ -729,7 +933,8 @@ class BookingsService {
                 const { bookingId } = await this.createBooking(p);
                 // 2) Email notification(s) (owner + guest)
                 try {
-                    const siteContent = await this.storeDbc.getObject('siteContent').catch(() => null);
+                    const siteContent = await this.storeDbc.getObject('alegria_v2').then((v) => v ? ({ alegria_v2: v }) : null).catch(() => null)
+                        || await this.storeDbc.getObject('siteContent').catch(() => null);
                     const ownerEmail = pickContactEmail(siteContent, p?.locale || p?.language || p?.lang);
                     await sendBookingEmail(this.mailer, p, bookingId, ownerEmail);
                 }

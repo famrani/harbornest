@@ -3,337 +3,265 @@
 
     <!-- ENGLISH -->
     <ng-container *ngIf="language === 'en'">
-      <span class="eyebrow">Legal</span>
-      <h1>Catamaran Experience Terms & Conditions</h1>
+      <span class="eyebrow">{{ 'auto.home.terms.terms.component.legal' | siteText }}</span>
+      <h1>{{ 'auto.home.terms.terms.component.catamaran_experience_terms_conditions' | siteText }}</h1>
 
-      <p class="intro">
-        These Terms & Conditions apply to direct bookings made with Alegria Boat for private catamaran experiences aboard Alegria.
-        Bookings made through third-party platforms such as Click&Boat or SamBoat remain subject to the applicable platform terms and payment rules.
-      </p>
+      <p class="intro">{{ 'auto.home.terms.terms.component.these_terms_conditions_apply_to_direct_bookings_ma' | siteText }}</p>
 
       <article class="terms-card">
-        <h2>1. The 3-step booking and payment process</h2>
+        <h2>{{ 'auto.home.terms.terms.component.1_the_3_step_booking_and_payment_process' | siteText }}</h2>
 
         <div class="process-step">
-          <h3>Step 1 — Confirm the booking online</h3>
-          <p>
-            For direct bookings, the customer confirms the outing on <strong>alegriaboat.eu</strong> by accepting these Terms & Conditions
-            and paying a <strong>10% booking confirmation deposit</strong>.
+          <h3>{{ 'auto.home.terms.terms.component.step_1_confirm_the_booking_online' | siteText }}</h3>
+          <p>{{ 'auto.home.terms.terms.component.for_direct_bookings_the_customer_confirms_the_outi' | siteText }}<strong>{{ 'auto.home.terms.terms.component.alegriaboat_eu' | siteText }}</strong>{{ 'auto.home.terms.terms.component.by_accepting_these_terms_conditions_and_paying_a' | siteText }}<strong>{{ 'auto.home.terms.terms.component.10_booking_confirmation_deposit' | siteText }}</strong>.
           </p>
-          <p>The booking is confirmed only once this 10% deposit has been successfully paid.</p>
+          <p>{{ 'auto.home.terms.terms.component.the_booking_is_confirmed_only_once_this_10_deposit' | siteText }}</p>
         </div>
 
         <div class="process-step">
-          <h3>Step 2 — Register the security / damage deposit</h3>
-          <p>
-            Before the outing, the customer may be required to register a <strong>500€ security / damage deposit</strong>
-            on <strong>alegriaboat.eu</strong> using Stripe.
-          </p>
-          <p>
-            This online registration is normally completed approximately one day before the outing and requires a valid debit or credit card.
-            Unless otherwise stated, the Stripe registration does not immediately charge the customer.
-          </p>
-          <p>
-            As an alternative, Alegria Boat may exceptionally accept a <strong>500€ cash damage deposit</strong> before departure.
-            This amount will be returned at the end of the excursion if no damage, missing equipment, unpaid amount or abnormal cleaning requirement is observed.
-          </p>
+          <h3>{{ 'auto.home.terms.terms.component.step_2_register_the_security_damage_deposit' | siteText }}</h3>
+          <p>{{ 'auto.home.terms.terms.component.before_the_outing_the_customer_may_be_required_to_' | siteText }}<strong>{{ 'auto.home.terms.terms.component.500_security_damage_deposit' | siteText }}</strong>{{ 'auto.home.terms.terms.component.on' | siteText }}<strong>{{ 'auto.home.terms.terms.component.alegriaboat_eu' | siteText }}</strong>{{ 'auto.home.terms.terms.component.using_stripe' | siteText }}</p>
+          <p>{{ 'auto.home.terms.terms.component.this_online_registration_is_normally_completed_app' | siteText }}</p>
+          <p>{{ 'auto.home.terms.terms.component.as_an_alternative_alegria_boat_may_exceptionally_a' | siteText }}<strong>{{ 'auto.home.terms.terms.component.500_cash_damage_deposit' | siteText }}</strong>{{ 'auto.home.terms.terms.component.before_departure_this_amount_will_be_returned_at_t' | siteText }}</p>
         </div>
 
         <div class="process-step">
-          <h3>Step 3 — Pay the remaining 90% onboard before departure</h3>
-          <p>
-            The remaining <strong>90% balance</strong> is paid onboard <strong>before departure</strong>, using SumUp, credit/debit card,
-            Apple Pay, Google Pay or cash.
-          </p>
-          <p>Alegria Boat may refuse departure if the remaining balance has not been fully paid before leaving the dock.</p>
+          <h3>{{ 'auto.home.terms.terms.component.step_3_pay_the_remaining_90_onboard_before_departu' | siteText }}</h3>
+          <p>{{ 'auto.home.terms.terms.component.the_remaining' | siteText }}<strong>{{ 'auto.home.terms.terms.component.90_balance' | siteText }}</strong>{{ 'auto.home.terms.terms.component.is_paid_onboard' | siteText }}<strong>{{ 'auto.home.terms.terms.component.before_departure' | siteText }}</strong>{{ 'auto.home.terms.terms.component.using_sumup_credit_debit_card_apple_pay_google_pay' | siteText }}</p>
+          <p>{{ 'auto.home.terms.terms.component.alegria_boat_may_refuse_departure_if_the_remaining' | siteText }}</p>
         </div>
 
-        <h2>2. Cancellation and refund policy</h2>
-        <p>For direct bookings, the 10% booking confirmation deposit is fully refundable if the customer cancels at least <strong>10 calendar days before the outing</strong>.</p>
-        <p>If the customer cancels less than 10 calendar days before the outing, the 10% deposit is non-refundable.</p>
-        <p>If Alegria Boat cancels the outing for any reason, including weather, safety, technical or operational reasons, the amounts paid directly to Alegria Boat will be refunded.</p>
+        <h2>{{ 'auto.home.terms.terms.component.2_cancellation_and_refund_policy' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.for_direct_bookings_the_10_booking_confirmation_de' | siteText }}<strong>{{ 'auto.home.terms.terms.component.10_calendar_days_before_the_outing' | siteText }}</strong>.</p>
+        <p>{{ 'auto.home.terms.terms.component.if_the_customer_cancels_less_than_10_calendar_days' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.if_alegria_boat_cancels_the_outing_for_any_reason_' | siteText }}</p>
 
-        <h2>3. Bookings through Click&Boat, SamBoat or other platforms</h2>
-        <p>Bookings made through third-party platforms are governed by the relevant platform’s payment, cancellation and refund rules.</p>
-        <p>Alegria Boat may still ask the customer to provide practical information, complete safety forms or register a security deposit when required for the outing.</p>
+        <h2>{{ 'auto.home.terms.terms.component.3_bookings_through_click_boat_samboat_or_other_pla' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.bookings_made_through_third_party_platforms_are_go' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.alegria_boat_may_still_ask_the_customer_to_provide' | siteText }}</p>
 
-        <h2>4. Punctuality and departure time</h2>
-        <p>Customers must arrive on time at the agreed meeting point and be fully ready for boarding and departure at the scheduled time.</p>
-        <p>Customer delays may shorten the outing duration and do not entitle the customer to a refund, extension or compensation.</p>
+        <h2>{{ 'auto.home.terms.terms.component.4_punctuality_and_departure_time' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.customers_must_arrive_on_time_at_the_agreed_meetin' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.customer_delays_may_shorten_the_outing_duration_an' | siteText }}</p>
 
-        <h2>5. Skipper authority and safety</h2>
-        <p>The skipper has full authority over the vessel and all safety-related decisions. Guests must comply with the skipper’s instructions at all times.</p>
-        <p>Alegria Boat may refuse boarding or interrupt the outing without refund in case of dangerous behavior, intoxication, drug use, aggression or refusal to follow safety instructions.</p>
+        <h2>{{ 'auto.home.terms.terms.component.5_skipper_authority_and_safety' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.the_skipper_has_full_authority_over_the_vessel_and' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.alegria_boat_may_refuse_boarding_or_interrupt_the_' | siteText }}</p>
 
-        <h2>6. Swimming and water activities</h2>
-        <p>Swimming, snorkeling and any water-related activity are undertaken entirely at the participant’s own risk.</p>
-        <p>Participants are responsible for assessing their own swimming ability and for supervising minors under their responsibility. The skipper may prohibit swimming or water activities at any time for safety reasons.</p>
+        <h2>{{ 'auto.home.terms.terms.component.6_swimming_and_water_activities' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.swimming_snorkeling_and_any_water_related_activity' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.participants_are_responsible_for_assessing_their_o' | siteText }}</p>
 
-        <h2>7. Damage, security deposit and liability</h2>
-        <p>The customer is financially responsible for damage caused by themselves or members of their group through negligence, misuse of equipment, failure to follow instructions or breach of onboard rules.</p>
-        <p>Alegria Boat may charge all or part of the registered security deposit for damage, missing equipment, extraordinary cleaning, unpaid onboard amounts or other justified costs.</p>
+        <h2>{{ 'auto.home.terms.terms.component.7_damage_security_deposit_and_liability' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.the_customer_is_financially_responsible_for_damage' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.alegria_boat_may_charge_all_or_part_of_the_registe' | siteText }}</p>
 
         
-        <h2>8. Common damages and chargeable incidents</h2>
-        <p>
-          Certain onboard damages occur frequently and may generate significant repair or maintenance costs.
-        </p>
+        <h2>{{ 'auto.home.terms.terms.component.8_common_damages_and_chargeable_incidents' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.certain_onboard_damages_occur_frequently_and_may_g' | siteText }}</p>
 
         <ul>
           <li>
-            <strong>Marine toilets:</strong> onboard toilets are extremely sensitive and are not comparable to household toilets.
-            Toilet paper, wipes, sanitary products or any foreign object must never be thrown into the toilets.
-            Marine toilets clog very quickly and unclogging or repair operations may be charged to the customer.
-          </li>
+            <strong>{{ 'auto.home.terms.terms.component.marine_toilets' | siteText }}</strong>{{ 'auto.home.terms.terms.component.onboard_toilets_are_extremely_sensitive_and_are_no' | siteText }}</li>
 
           <li>
-            <strong>Cigarette burns:</strong> cushion covers and upholstery are highly sensitive to cigarette burns.
-            Burn marks on cushions, seating or fabrics may require expensive replacement or repair and may be charged to the customer.
-          </li>
+            <strong>{{ 'auto.home.terms.terms.component.cigarette_burns' | siteText }}</strong>{{ 'auto.home.terms.terms.component.cushion_covers_and_upholstery_are_highly_sensitive' | siteText }}</li>
         </ul>
 
-        <h2>9. Personal belongings</h2>
-        <p>Guests remain responsible for their personal belongings, including phones, bags, jewellery, sunglasses, cameras and other valuables.</p>
+        <h2>{{ 'auto.home.terms.terms.component.9_personal_belongings' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.guests_remain_responsible_for_their_personal_belon' | siteText }}</p>
 
-        <h2>10. Environment and conduct</h2>
-        <p>Guests must respect marine life, coastal areas and environmental rules. Throwing waste into the sea is strictly prohibited.</p>
+        <h2>{{ 'auto.home.terms.terms.component.10_environment_and_conduct' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.guests_must_respect_marine_life_coastal_areas_and_' | siteText }}</p>
 
-        <h2>11. Force majeure and weather</h2>
-        <p>Alegria Boat shall not be liable for delays, changes or cancellations caused by weather, sea conditions, port authority decisions, technical issues, force majeure or any event beyond reasonable control.</p>
-        <p>The skipper alone decides whether sea and weather conditions are safe for departure, continuation or return.</p>
+        <h2>{{ 'auto.home.terms.terms.component.11_force_majeure_and_weather' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.alegria_boat_shall_not_be_liable_for_delays_change' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.the_skipper_alone_decides_whether_sea_and_weather_' | siteText }}</p>
 
-        <h2>12. Payment providers and privacy</h2>
-        <p>Payments and card registrations may be processed by third-party providers such as Stripe and SumUp. Alegria Boat does not store full credit or debit card details.</p>
+        <h2>{{ 'auto.home.terms.terms.component.12_payment_providers_and_privacy' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.payments_and_card_registrations_may_be_processed_b' | siteText }}</p>
 
-        <h2>13. Governing law</h2>
-        <p>These Terms & Conditions are governed by French law, subject to any mandatory consumer protection rules that may apply.</p>
+        <h2>{{ 'auto.home.terms.terms.component.13_governing_law' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.these_terms_conditions_are_governed_by_french_law_' | siteText }}</p>
 
-        <h2>14. Acceptance</h2>
-        <p>By confirming a booking, making a payment, registering a security deposit, boarding the vessel or participating in an outing, the customer acknowledges having read, understood and accepted these Terms & Conditions.</p>
+        <h2>{{ 'auto.home.terms.terms.component.14_acceptance' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.by_confirming_a_booking_making_a_payment_registeri' | siteText }}</p>
       </article>
     </ng-container>
 
     <!-- FRENCH -->
     <ng-container *ngIf="language === 'fr'">
-      <span class="eyebrow">Mentions légales</span>
-      <h1>Conditions Générales des Expériences Catamaran</h1>
+      <span class="eyebrow">{{ 'auto.home.terms.terms.component.mentions_l_gales' | siteText }}</span>
+      <h1>{{ 'auto.home.terms.terms.component.conditions_g_n_rales_des_exp_riences_catamaran' | siteText }}</h1>
 
-      <p class="intro">
-        Ces Conditions Générales s’appliquent aux réservations directes effectuées avec Alegria Boat pour des expériences privées à bord du catamaran Alegria.
-        Les réservations effectuées via des plateformes tierces telles que Click&Boat ou SamBoat restent soumises aux conditions de paiement et d’annulation de ces plateformes.
-      </p>
+      <p class="intro">{{ 'auto.home.terms.terms.component.ces_conditions_g_n_rales_s_appliquent_aux_r_servat' | siteText }}</p>
 
       <article class="terms-card">
-        <h2>1. Processus de réservation et de paiement en 3 étapes</h2>
+        <h2>{{ 'auto.home.terms.terms.component.1_processus_de_r_servation_et_de_paiement_en_3_tap' | siteText }}</h2>
 
         <div class="process-step">
-          <h3>Étape 1 — Confirmation de la réservation en ligne</h3>
-          <p>
-            Pour les réservations directes, le client confirme la sortie sur <strong>alegriaboat.eu</strong> en acceptant les présentes Conditions Générales
-            et en réglant un <strong>acompte de confirmation de 10%</strong>.
+          <h3>{{ 'auto.home.terms.terms.component.tape_1_confirmation_de_la_r_servation_en_ligne' | siteText }}</h3>
+          <p>{{ 'auto.home.terms.terms.component.pour_les_r_servations_directes_le_client_confirme_' | siteText }}<strong>{{ 'auto.home.terms.terms.component.alegriaboat_eu' | siteText }}</strong>{{ 'auto.home.terms.terms.component.en_acceptant_les_pr_sentes_conditions_g_n_rales_et' | siteText }}<strong>{{ 'auto.home.terms.terms.component.acompte_de_confirmation_de_10' | siteText }}</strong>.
           </p>
-          <p>La réservation n’est confirmée qu’après paiement effectif de cet acompte de 10%.</p>
+          <p>{{ 'auto.home.terms.terms.component.la_r_servation_n_est_confirm_e_qu_apr_s_paiement_e' | siteText }}</p>
         </div>
 
         <div class="process-step">
-          <h3>Étape 2 — Enregistrement de la caution / dépôt de garantie</h3>
-          <p>
-            Avant la sortie, le client peut être invité à enregistrer une <strong>caution / dépôt de garantie de 500€</strong>
-            sur <strong>alegriaboat.eu</strong> via Stripe.
-          </p>
-          <p>
-            Cet enregistrement en ligne est généralement effectué environ un jour avant la sortie et nécessite une carte bancaire valide.
-            Sauf indication contraire, l’enregistrement Stripe ne débite pas immédiatement le client.
-          </p>
-          <p>
-            À défaut, Alegria Boat pourra exceptionnellement accepter une <strong>caution de 500€ en espèces</strong> avant le départ.
-            Cette somme sera restituée à la fin de l’excursion si aucun dommage, matériel manquant, impayé ou nettoyage anormal n’est constaté.
-          </p>
+          <h3>{{ 'auto.home.terms.terms.component.tape_2_enregistrement_de_la_caution_d_p_t_de_garan' | siteText }}</h3>
+          <p>{{ 'auto.home.terms.terms.component.avant_la_sortie_le_client_peut_tre_invit_enregistr' | siteText }}<strong>{{ 'auto.home.terms.terms.component.caution_d_p_t_de_garantie_de_500' | siteText }}</strong>{{ 'auto.home.terms.terms.component.sur' | siteText }}<strong>{{ 'auto.home.terms.terms.component.alegriaboat_eu' | siteText }}</strong>{{ 'auto.home.terms.terms.component.via_stripe' | siteText }}</p>
+          <p>{{ 'auto.home.terms.terms.component.cet_enregistrement_en_ligne_est_g_n_ralement_effec' | siteText }}</p>
+          <p>{{ 'auto.home.terms.terms.component.d_faut_alegria_boat_pourra_exceptionnellement_acce' | siteText }}<strong>{{ 'auto.home.terms.terms.component.caution_de_500_en_esp_ces' | siteText }}</strong>{{ 'auto.home.terms.terms.component.avant_le_d_part_cette_somme_sera_restitu_e_la_fin_' | siteText }}</p>
         </div>
 
         <div class="process-step">
-          <h3>Étape 3 — Paiement des 90% restants à bord avant le départ</h3>
-          <p>
-            Le <strong>solde de 90%</strong> est réglé à bord <strong>avant le départ</strong>, via SumUp, carte bancaire,
-            Apple Pay, Google Pay ou espèces.
-          </p>
-          <p>Alegria Boat peut refuser le départ si le solde n’a pas été intégralement réglé avant de quitter le quai.</p>
+          <h3>{{ 'auto.home.terms.terms.component.tape_3_paiement_des_90_restants_bord_avant_le_d_pa' | siteText }}</h3>
+          <p>{{ 'auto.home.terms.terms.component.le' | siteText }}<strong>{{ 'auto.home.terms.terms.component.solde_de_90' | siteText }}</strong>{{ 'auto.home.terms.terms.component.est_r_gl_bord' | siteText }}<strong>{{ 'auto.home.terms.terms.component.avant_le_d_part' | siteText }}</strong>{{ 'auto.home.terms.terms.component.via_sumup_carte_bancaire_apple_pay_google_pay_ou_e' | siteText }}</p>
+          <p>{{ 'auto.home.terms.terms.component.alegria_boat_peut_refuser_le_d_part_si_le_solde_n_' | siteText }}</p>
         </div>
 
-        <h2>2. Politique d’annulation et de remboursement</h2>
-        <p>Pour les réservations directes, l’acompte de 10% est intégralement remboursable si le client annule au moins <strong>10 jours calendaires avant la sortie</strong>.</p>
-        <p>Si le client annule moins de 10 jours calendaires avant la sortie, l’acompte de 10% n’est pas remboursable.</p>
-        <p>Si Alegria Boat annule la sortie, notamment pour météo, sécurité, problème technique ou opérationnel, les sommes payées directement à Alegria Boat sont remboursées.</p>
+        <h2>{{ 'auto.home.terms.terms.component.2_politique_d_annulation_et_de_remboursement' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.pour_les_r_servations_directes_l_acompte_de_10_est' | siteText }}<strong>{{ 'auto.home.terms.terms.component.10_jours_calendaires_avant_la_sortie' | siteText }}</strong>.</p>
+        <p>{{ 'auto.home.terms.terms.component.si_le_client_annule_moins_de_10_jours_calendaires_' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.si_alegria_boat_annule_la_sortie_notamment_pour_m_' | siteText }}</p>
 
-        <h2>3. Réservations via Click&Boat, SamBoat ou autres plateformes</h2>
-        <p>Les réservations réalisées via des plateformes tierces sont régies par les règles de paiement, d’annulation et de remboursement de ces plateformes.</p>
-        <p>Alegria Boat peut néanmoins demander au client des informations pratiques, des formulaires de sécurité ou l’enregistrement d’une caution lorsque cela est nécessaire.</p>
+        <h2>{{ 'auto.home.terms.terms.component.3_r_servations_via_click_boat_samboat_ou_autres_pl' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.les_r_servations_r_alis_es_via_des_plateformes_tie' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.alegria_boat_peut_n_anmoins_demander_au_client_des' | siteText }}</p>
 
-        <h2>4. Ponctualité et heure de départ</h2>
-        <p>Les clients doivent arriver à l’heure au point de rendez-vous convenu et être prêts pour l’embarquement et le départ à l’heure prévue.</p>
-        <p>Tout retard du client peut réduire la durée de la sortie et ne donne droit à aucun remboursement, prolongation ou compensation.</p>
+        <h2>{{ 'auto.home.terms.terms.component.4_ponctualit_et_heure_de_d_part' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.les_clients_doivent_arriver_l_heure_au_point_de_re' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.tout_retard_du_client_peut_r_duire_la_dur_e_de_la_' | siteText }}</p>
 
-        <h2>5. Autorité du skipper et sécurité</h2>
-        <p>Le skipper dispose de l’autorité complète sur le navire et sur toutes les décisions relatives à la sécurité. Les passagers doivent respecter ses instructions à tout moment.</p>
-        <p>Alegria Boat peut refuser l’embarquement ou interrompre la sortie sans remboursement en cas de comportement dangereux, état d’ébriété, usage de stupéfiants, agressivité ou refus de respecter les consignes.</p>
+        <h2>{{ 'auto.home.terms.terms.component.5_autorit_du_skipper_et_s_curit' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.le_skipper_dispose_de_l_autorit_compl_te_sur_le_na' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.alegria_boat_peut_refuser_l_embarquement_ou_interr' | siteText }}</p>
 
-        <h2>6. Baignade et activités nautiques</h2>
-        <p>La baignade, le snorkeling et toute activité nautique sont pratiqués sous l’entière responsabilité des participants.</p>
-        <p>Chaque participant est responsable de l’évaluation de ses capacités de nage et de la surveillance des mineurs sous sa responsabilité. Le skipper peut interdire la baignade ou toute activité nautique pour raisons de sécurité.</p>
+        <h2>{{ 'auto.home.terms.terms.component.6_baignade_et_activit_s_nautiques' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.la_baignade_le_snorkeling_et_toute_activit_nautiqu' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.chaque_participant_est_responsable_de_l_valuation_' | siteText }}</p>
 
-        <h2>7. Dommages, caution et responsabilité</h2>
-        <p>Le client est financièrement responsable des dommages causés par lui-même ou les membres de son groupe par négligence, mauvaise utilisation du matériel, non-respect des consignes ou violation des règles à bord.</p>
-        <p>Alegria Boat peut prélever tout ou partie de la caution enregistrée en cas de dommage, matériel manquant, nettoyage exceptionnel, somme impayée ou frais justifiés.</p>
+        <h2>{{ 'auto.home.terms.terms.component.7_dommages_caution_et_responsabilit' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.le_client_est_financi_rement_responsable_des_domma' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.alegria_boat_peut_pr_lever_tout_ou_partie_de_la_ca' | siteText }}</p>
 
         
-        <h2>8. Dommages courants et frais facturables</h2>
-        <p>
-          Certains dommages à bord sont fréquents et peuvent engendrer des frais importants de réparation ou de maintenance.
-        </p>
+        <h2>{{ 'auto.home.terms.terms.component.8_dommages_courants_et_frais_facturables' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.certains_dommages_bord_sont_fr_quents_et_peuvent_e' | siteText }}</p>
 
         <ul>
           <li>
-            <strong>Toilettes marines :</strong> les toilettes à bord sont extrêmement sensibles et ne fonctionnent pas comme les toilettes d’une maison.
-            Il est strictement interdit d’y jeter du papier toilette, lingettes, protections hygiéniques ou tout autre objet.
-            Les toilettes marines se bouchent très rapidement et les frais de débouchage ou de réparation pourront être facturés au client.
-          </li>
+            <strong>{{ 'auto.home.terms.terms.component.toilettes_marines' | siteText }}</strong>{{ 'auto.home.terms.terms.component.les_toilettes_bord_sont_extr_mement_sensibles_et_n' | siteText }}</li>
 
           <li>
-            <strong>Brûlures de cigarettes :</strong> les housses de coussins et tissus du bateau sont très sensibles aux brûlures de cigarettes.
-            Toute brûlure sur les coussins, banquettes ou tissus pourra nécessiter un remplacement coûteux et être facturée au client.
-          </li>
+            <strong>{{ 'auto.home.terms.terms.component.br_lures_de_cigarettes' | siteText }}</strong>{{ 'auto.home.terms.terms.component.les_housses_de_coussins_et_tissus_du_bateau_sont_t' | siteText }}</li>
         </ul>
 
-        <h2>9. Effets personnels</h2>
-        <p>Les passagers restent responsables de leurs effets personnels, notamment téléphones, sacs, bijoux, lunettes, appareils photo et objets de valeur.</p>
+        <h2>{{ 'auto.home.terms.terms.component.9_effets_personnels' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.les_passagers_restent_responsables_de_leurs_effets' | siteText }}</p>
 
-        <h2>10. Environnement et conduite</h2>
-        <p>Les passagers doivent respecter la faune marine, le littoral et les règles environnementales. Il est strictement interdit de jeter des déchets en mer.</p>
+        <h2>{{ 'auto.home.terms.terms.component.10_environnement_et_conduite' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.les_passagers_doivent_respecter_la_faune_marine_le' | siteText }}</p>
 
-        <h2>11. Force majeure et météo</h2>
-        <p>Alegria Boat ne saurait être tenue responsable des retards, changements ou annulations dus à la météo, l’état de la mer, les décisions des autorités portuaires, un problème technique, un cas de force majeure ou tout événement échappant à son contrôle raisonnable.</p>
-        <p>Le skipper décide seul si les conditions météo et maritimes permettent le départ, la poursuite ou le retour.</p>
+        <h2>{{ 'auto.home.terms.terms.component.11_force_majeure_et_m_t_o' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.alegria_boat_ne_saurait_tre_tenue_responsable_des_' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.le_skipper_d_cide_seul_si_les_conditions_m_t_o_et_' | siteText }}</p>
 
-        <h2>12. Prestataires de paiement et confidentialité</h2>
-        <p>Les paiements et enregistrements de carte peuvent être traités par des prestataires tiers tels que Stripe et SumUp. Alegria Boat ne conserve pas les informations complètes de carte bancaire.</p>
+        <h2>{{ 'auto.home.terms.terms.component.12_prestataires_de_paiement_et_confidentialit' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.les_paiements_et_enregistrements_de_carte_peuvent_' | siteText }}</p>
 
-        <h2>13. Loi applicable</h2>
-        <p>Les présentes Conditions Générales sont régies par le droit français, sous réserve des règles impératives de protection du consommateur applicables.</p>
+        <h2>{{ 'auto.home.terms.terms.component.13_loi_applicable' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.les_pr_sentes_conditions_g_n_rales_sont_r_gies_par' | siteText }}</p>
 
-        <h2>14. Acceptation</h2>
-        <p>En confirmant une réservation, en effectuant un paiement, en enregistrant une caution, en embarquant ou en participant à une sortie, le client reconnaît avoir lu, compris et accepté les présentes Conditions Générales.</p>
+        <h2>{{ 'auto.home.terms.terms.component.14_acceptation' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.en_confirmant_une_r_servation_en_effectuant_un_pai' | siteText }}</p>
       </article>
     </ng-container>
 
     <!-- SPANISH -->
     <ng-container *ngIf="language === 'es'">
-      <span class="eyebrow">Legal</span>
-      <h1>Términos y Condiciones de Experiencias en Catamarán</h1>
+      <span class="eyebrow">{{ 'auto.home.terms.terms.component.legal' | siteText }}</span>
+      <h1>{{ 'auto.home.terms.terms.component.t_rminos_y_condiciones_de_experiencias_en_catamar_' | siteText }}</h1>
 
-      <p class="intro">
-        Estos Términos y Condiciones se aplican a las reservas directas realizadas con Alegria Boat para experiencias privadas a bordo del catamarán Alegria.
-        Las reservas realizadas a través de plataformas como Click&Boat o SamBoat quedan sujetas a las condiciones de pago y cancelación de dichas plataformas.
-      </p>
+      <p class="intro">{{ 'auto.home.terms.terms.component.estos_t_rminos_y_condiciones_se_aplican_a_las_rese' | siteText }}</p>
 
       <article class="terms-card">
-        <h2>1. Proceso de reserva y pago en 3 pasos</h2>
+        <h2>{{ 'auto.home.terms.terms.component.1_proceso_de_reserva_y_pago_en_3_pasos' | siteText }}</h2>
 
         <div class="process-step">
-          <h3>Paso 1 — Confirmación online de la reserva</h3>
-          <p>
-            Para las reservas directas, el cliente confirma la salida en <strong>alegriaboat.eu</strong> aceptando estos Términos y Condiciones
-            y pagando un <strong>depósito de confirmación del 10%</strong>.
+          <h3>{{ 'auto.home.terms.terms.component.paso_1_confirmaci_n_online_de_la_reserva' | siteText }}</h3>
+          <p>{{ 'auto.home.terms.terms.component.para_las_reservas_directas_el_cliente_confirma_la_' | siteText }}<strong>{{ 'auto.home.terms.terms.component.alegriaboat_eu' | siteText }}</strong>{{ 'auto.home.terms.terms.component.aceptando_estos_t_rminos_y_condiciones_y_pagando_u' | siteText }}<strong>{{ 'auto.home.terms.terms.component.dep_sito_de_confirmaci_n_del_10' | siteText }}</strong>.
           </p>
-          <p>La reserva queda confirmada únicamente cuando se ha pagado correctamente este depósito del 10%.</p>
+          <p>{{ 'auto.home.terms.terms.component.la_reserva_queda_confirmada_nicamente_cuando_se_ha' | siteText }}</p>
         </div>
 
         <div class="process-step">
-          <h3>Paso 2 — Registro del depósito de garantía</h3>
-          <p>
-            Antes de la salida, se podrá solicitar al cliente registrar un <strong>depósito de garantía de 500€</strong>
-            en <strong>alegriaboat.eu</strong> mediante Stripe.
-          </p>
-          <p>
-            Este registro online normalmente se realiza aproximadamente un día antes de la salida y requiere una tarjeta válida de débito o crédito.
-            Salvo indicación contraria, el registro mediante Stripe no supone un cargo inmediato.
-          </p>
-          <p>
-            Como alternativa, Alegria Boat podrá aceptar excepcionalmente un <strong>depósito en efectivo de 500€</strong> antes de la salida.
-            Esta cantidad será devuelta al final de la excursión si no se observa ningún daño, material perdido, importe impagado o limpieza extraordinaria.
-          </p>
+          <h3>{{ 'auto.home.terms.terms.component.paso_2_registro_del_dep_sito_de_garant_a' | siteText }}</h3>
+          <p>{{ 'auto.home.terms.terms.component.antes_de_la_salida_se_podr_solicitar_al_cliente_re' | siteText }}<strong>{{ 'auto.home.terms.terms.component.dep_sito_de_garant_a_de_500' | siteText }}</strong>{{ 'auto.home.terms.terms.component.en' | siteText }}<strong>{{ 'auto.home.terms.terms.component.alegriaboat_eu' | siteText }}</strong>{{ 'auto.home.terms.terms.component.mediante_stripe' | siteText }}</p>
+          <p>{{ 'auto.home.terms.terms.component.este_registro_online_normalmente_se_realiza_aproxi' | siteText }}</p>
+          <p>{{ 'auto.home.terms.terms.component.como_alternativa_alegria_boat_podr_aceptar_excepci' | siteText }}<strong>{{ 'auto.home.terms.terms.component.dep_sito_en_efectivo_de_500' | siteText }}</strong>{{ 'auto.home.terms.terms.component.antes_de_la_salida_esta_cantidad_ser_devuelta_al_f' | siteText }}</p>
         </div>
 
         <div class="process-step">
-          <h3>Paso 3 — Pago del 90% restante a bordo antes de la salida</h3>
-          <p>
-            El <strong>90% restante</strong> se paga a bordo <strong>antes de la salida</strong>, mediante SumUp, tarjeta,
-            Apple Pay, Google Pay o efectivo.
-          </p>
-          <p>Alegria Boat podrá rechazar la salida si el saldo restante no ha sido abonado íntegramente antes de abandonar el muelle.</p>
+          <h3>{{ 'auto.home.terms.terms.component.paso_3_pago_del_90_restante_a_bordo_antes_de_la_sa' | siteText }}</h3>
+          <p>{{ 'auto.home.terms.terms.component.el' | siteText }}<strong>{{ 'auto.home.terms.terms.component.90_restante' | siteText }}</strong>{{ 'auto.home.terms.terms.component.se_paga_a_bordo' | siteText }}<strong>{{ 'auto.home.terms.terms.component.antes_de_la_salida' | siteText }}</strong>{{ 'auto.home.terms.terms.component.mediante_sumup_tarjeta_apple_pay_google_pay_o_efec' | siteText }}</p>
+          <p>{{ 'auto.home.terms.terms.component.alegria_boat_podr_rechazar_la_salida_si_el_saldo_r' | siteText }}</p>
         </div>
 
-        <h2>2. Política de cancelación y reembolso</h2>
-        <p>Para las reservas directas, el depósito del 10% es totalmente reembolsable si el cliente cancela al menos <strong>10 días naturales antes de la salida</strong>.</p>
-        <p>Si el cliente cancela con menos de 10 días naturales de antelación, el depósito del 10% no será reembolsable.</p>
-        <p>Si Alegria Boat cancela la salida por cualquier motivo, incluidos meteorología, seguridad, problemas técnicos u operativos, se reembolsarán los importes pagados directamente a Alegria Boat.</p>
+        <h2>{{ 'auto.home.terms.terms.component.2_pol_tica_de_cancelaci_n_y_reembolso' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.para_las_reservas_directas_el_dep_sito_del_10_es_t' | siteText }}<strong>{{ 'auto.home.terms.terms.component.10_d_as_naturales_antes_de_la_salida' | siteText }}</strong>.</p>
+        <p>{{ 'auto.home.terms.terms.component.si_el_cliente_cancela_con_menos_de_10_d_as_natural' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.si_alegria_boat_cancela_la_salida_por_cualquier_mo' | siteText }}</p>
 
-        <h2>3. Reservas mediante Click&Boat, SamBoat u otras plataformas</h2>
-        <p>Las reservas realizadas a través de plataformas de terceros se rigen por las normas de pago, cancelación y reembolso de dichas plataformas.</p>
-        <p>Alegria Boat podrá solicitar información práctica, formularios de seguridad o el registro de un depósito de garantía cuando sea necesario para la salida.</p>
+        <h2>{{ 'auto.home.terms.terms.component.3_reservas_mediante_click_boat_samboat_u_otras_pla' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.las_reservas_realizadas_a_trav_s_de_plataformas_de' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.alegria_boat_podr_solicitar_informaci_n_pr_ctica_f' | siteText }}</p>
 
-        <h2>4. Puntualidad y hora de salida</h2>
-        <p>Los clientes deben llegar puntualmente al punto de encuentro acordado y estar listos para embarcar y salir a la hora prevista.</p>
-        <p>Los retrasos del cliente pueden reducir la duración de la salida y no dan derecho a reembolso, ampliación ni compensación.</p>
+        <h2>{{ 'auto.home.terms.terms.component.4_puntualidad_y_hora_de_salida' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.los_clientes_deben_llegar_puntualmente_al_punto_de' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.los_retrasos_del_cliente_pueden_reducir_la_duraci_' | siteText }}</p>
 
-        <h2>5. Autoridad del patrón y seguridad</h2>
-        <p>El patrón tiene plena autoridad sobre la embarcación y sobre todas las decisiones relacionadas con la seguridad. Los pasajeros deben cumplir sus instrucciones en todo momento.</p>
-        <p>Alegria Boat podrá denegar el embarque o interrumpir la salida sin reembolso en caso de comportamiento peligroso, embriaguez, consumo de drogas, agresividad o negativa a seguir las instrucciones.</p>
+        <h2>{{ 'auto.home.terms.terms.component.5_autoridad_del_patr_n_y_seguridad' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.el_patr_n_tiene_plena_autoridad_sobre_la_embarcaci' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.alegria_boat_podr_denegar_el_embarque_o_interrumpi' | siteText }}</p>
 
-        <h2>6. Natación y actividades acuáticas</h2>
-        <p>La natación, el snorkel y cualquier actividad acuática se realizan bajo la exclusiva responsabilidad del participante.</p>
-        <p>Cada participante es responsable de evaluar su propia capacidad de natación y de supervisar a los menores a su cargo. El patrón puede prohibir la natación o cualquier actividad acuática por motivos de seguridad.</p>
+        <h2>{{ 'auto.home.terms.terms.component.6_nataci_n_y_actividades_acu_ticas' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.la_nataci_n_el_snorkel_y_cualquier_actividad_acu_t' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.cada_participante_es_responsable_de_evaluar_su_pro' | siteText }}</p>
 
-        <h2>7. Daños, depósito de garantía y responsabilidad</h2>
-        <p>El cliente es económicamente responsable de los daños causados por él o por miembros de su grupo por negligencia, mal uso del equipo, incumplimiento de instrucciones o infracción de las normas de a bordo.</p>
-        <p>Alegria Boat podrá cobrar todo o parte del depósito registrado por daños, material perdido, limpieza extraordinaria, importes impagados u otros costes justificados.</p>
+        <h2>{{ 'auto.home.terms.terms.component.7_da_os_dep_sito_de_garant_a_y_responsabilidad' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.el_cliente_es_econ_micamente_responsable_de_los_da' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.alegria_boat_podr_cobrar_todo_o_parte_del_dep_sito' | siteText }}</p>
 
         
-        <h2>8. Daños frecuentes y gastos facturables</h2>
-        <p>
-          Algunos daños a bordo ocurren con frecuencia y pueden generar costes importantes de reparación o mantenimiento.
-        </p>
+        <h2>{{ 'auto.home.terms.terms.component.8_da_os_frecuentes_y_gastos_facturables' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.algunos_da_os_a_bordo_ocurren_con_frecuencia_y_pue' | siteText }}</p>
 
         <ul>
           <li>
-            <strong>Baños marinos:</strong> los baños a bordo son extremadamente sensibles y no funcionan como los baños de una vivienda.
-            Está estrictamente prohibido tirar papel higiénico, toallitas, productos sanitarios u otros objetos.
-            Los baños marinos se obstruyen muy rápidamente y los costes de desatasco o reparación podrán ser facturados al cliente.
-          </li>
+            <strong>{{ 'auto.home.terms.terms.component.ba_os_marinos' | siteText }}</strong>{{ 'auto.home.terms.terms.component.los_ba_os_a_bordo_son_extremadamente_sensibles_y_n' | siteText }}</li>
 
           <li>
-            <strong>Quemaduras de cigarrillos:</strong> las fundas de cojines y tapicerías son muy sensibles a las quemaduras de cigarrillos.
-            Cualquier quemadura en cojines, asientos o tejidos podrá requerir una sustitución costosa y ser facturada al cliente.
-          </li>
+            <strong>{{ 'auto.home.terms.terms.component.quemaduras_de_cigarrillos' | siteText }}</strong>{{ 'auto.home.terms.terms.component.las_fundas_de_cojines_y_tapicer_as_son_muy_sensibl' | siteText }}</li>
         </ul>
 
-        <h2>9. Objetos personales</h2>
-        <p>Los pasajeros siguen siendo responsables de sus objetos personales, incluidos teléfonos, bolsos, joyas, gafas, cámaras y otros objetos de valor.</p>
+        <h2>{{ 'auto.home.terms.terms.component.9_objetos_personales' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.los_pasajeros_siguen_siendo_responsables_de_sus_ob' | siteText }}</p>
 
-        <h2>10. Medio ambiente y conducta</h2>
-        <p>Los pasajeros deben respetar la vida marina, las zonas costeras y las normas medioambientales. Está estrictamente prohibido tirar residuos al mar.</p>
+        <h2>{{ 'auto.home.terms.terms.component.10_medio_ambiente_y_conducta' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.los_pasajeros_deben_respetar_la_vida_marina_las_zo' | siteText }}</p>
 
-        <h2>11. Fuerza mayor y meteorología</h2>
-        <p>Alegria Boat no será responsable de retrasos, cambios o cancelaciones causados por meteorología, estado del mar, decisiones de autoridades portuarias, problemas técnicos, fuerza mayor o cualquier evento fuera de su control razonable.</p>
-        <p>El patrón decide en exclusiva si las condiciones marítimas y meteorológicas permiten la salida, continuación o regreso.</p>
+        <h2>{{ 'auto.home.terms.terms.component.11_fuerza_mayor_y_meteorolog_a' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.alegria_boat_no_ser_responsable_de_retrasos_cambio' | siteText }}</p>
+        <p>{{ 'auto.home.terms.terms.component.el_patr_n_decide_en_exclusiva_si_las_condiciones_m' | siteText }}</p>
 
-        <h2>12. Proveedores de pago y privacidad</h2>
-        <p>Los pagos y registros de tarjeta pueden ser procesados por proveedores externos como Stripe y SumUp. Alegria Boat no almacena los datos completos de tarjetas bancarias.</p>
+        <h2>{{ 'auto.home.terms.terms.component.12_proveedores_de_pago_y_privacidad' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.los_pagos_y_registros_de_tarjeta_pueden_ser_proces' | siteText }}</p>
 
-        <h2>13. Ley aplicable</h2>
-        <p>Estos Términos y Condiciones se rigen por la ley francesa, sin perjuicio de las normas obligatorias de protección al consumidor que puedan aplicarse.</p>
+        <h2>{{ 'auto.home.terms.terms.component.13_ley_aplicable' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.estos_t_rminos_y_condiciones_se_rigen_por_la_ley_f' | siteText }}</p>
 
-        <h2>14. Aceptación</h2>
-        <p>Al confirmar una reserva, realizar un pago, registrar un depósito de garantía, embarcar o participar en una salida, el cliente reconoce haber leído, entendido y aceptado estos Términos y Condiciones.</p>
+        <h2>{{ 'auto.home.terms.terms.component.14_aceptaci_n' | siteText }}</h2>
+        <p>{{ 'auto.home.terms.terms.component.al_confirmar_una_reserva_realizar_un_pago_registra' | siteText }}</p>
       </article>
     </ng-container>
 

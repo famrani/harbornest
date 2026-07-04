@@ -1,19 +1,17 @@
 <footer class="site-footer-simple">
   <div class="container footer-simple">
-    
     <div class="footer-left">
-      © {{ year }} {{ content.brand }}
+      © {{ year }} {{ content?.brand || 'Alegria' }}
     </div>
 
     <div class="footer-center">
-      Release {{ mainSvc.version }}
+      {{ releaseLabel }} {{ mainSvc.version }}
     </div>
 
     <div class="footer-right">
-      <a routerLink="/contact">{{ content.nav.contact }}</a>
+      <a routerLink="/contact">{{ content?.nav?.contact || 'Contact' }}</a>
       <a routerLink="/terms">{{ termsLabel }}</a>
       <a routerLink="/safety">{{ safetyLabel }}</a>
     </div>
-
   </div>
 </footer>

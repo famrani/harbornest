@@ -71,13 +71,13 @@ const TOUR_GALLERIES: Record<TourKey, string[]> = {
   'sortie-entreprise': [images.business1, images.business2],
 };
 
-const GALLERY_TITLES: Record<SiteLanguage, string> = {
+const GALLERY_TITLES: Partial<Record<SiteLanguage, string>> & { fr: string } = {
   fr: 'Galerie photos',
   en: 'Photo gallery',
   es: 'Galería de fotos',
 };
 
-const SERVICE_BLOCKS: Record<SiteLanguage, { coreTitle: string; core: string[]; optionsTitle: string; options: string[]; suggestionsTitle: string; suggestions: string[] }> = {
+const SERVICE_BLOCKS: Partial<Record<SiteLanguage, { coreTitle: string; core: string[]; optionsTitle: string; options: string[]; suggestionsTitle: string; suggestions: string[] }>> & { fr: { coreTitle: string; core: string[]; optionsTitle: string; options: string[]; suggestionsTitle: string; suggestions: string[] } } = {
   fr: {
     coreTitle: 'Offre incluse',
     core: ['Vaisselle, verres, couverts et assiettes', 'Réfrigérateur, four, micro-ondes', 'WiFi à bord', 'Système audio', 'Skipper indépendant obligatoire'],
@@ -104,7 +104,7 @@ const SERVICE_BLOCKS: Record<SiteLanguage, { coreTitle: string; core: string[]; 
   },
 };
 
-export const TOUR_CONTENT: Record<SiteLanguage, any> = {
+export const TOUR_CONTENT: Partial<Record<SiteLanguage, any>> & { fr: any } = {
   fr: {
     'journee-en-mer': {
       key: 'journee-en-mer', route: 'journee-en-mer', eyebrow: 'Sortie signature', title: 'Journée en mer à bord d’Alegria', subtitle: 'Une journée ou demi-journée privative pour profiter de la Côte d’Azur.', intro: 'Embarquez pour une journée ou demi-journée élégante au départ de Villeneuve-Loubet : navigation, baignade et mouillages proches comme les îles de Lérins, la baie des Milliardaires, le Cap d’Antibes ou Villefranche selon la météo.', image: images.de1, duration: 'Journée ou demi-journée', guests: '12 passagers max', price: '', highlightsTitle: 'Les points forts', highlights: ['Location en coque nue*', 'Skipper indépendant obligatoire', 'Programme adaptable selon la météo', 'Cadre premium pour famille, couple ou amis'], programTitle: 'Exemple de programme', program: ['Embarquement sur les quais d’honneur', 'Navigation vers un mouillage proche : îles de Lérins, baie des Milliardaires, Cap d’Antibes ou Villefranche selon les conditions', 'Temps libre pour baignade et détente', 'Déjeuner à bord ou escale selon votre projet', 'Retour au port'], includesTitle: 'Ce qui est prévu', includes: ['Bateau privatisé en coque nue', 'Organisation sur mesure', 'Temps de baignade', 'Confort à bord'], idealForTitle: 'Idéal pour', idealFor: ['Une journée en famille', 'Une sortie entre amis', 'Un moment en couple', 'Une découverte de la Côte d’Azur'], cta: 'Voir la disponibilité', contactNote: 'Indiquez votre date, le nombre de personnes et l’ambiance souhaitée.'
@@ -148,17 +148,18 @@ export const TOUR_CONTENT: Record<SiteLanguage, any> = {
 
 (Object.keys(TOUR_CONTENT) as SiteLanguage[]).forEach((language) => {
   (Object.keys(TOUR_CONTENT[language]) as TourKey[]).forEach((key) => {
-    TOUR_CONTENT[language][key].galleryTitle = GALLERY_TITLES[language];
+    TOUR_CONTENT[language][key].galleryTitle = GALLERY_TITLES[language] || GALLERY_TITLES.fr;
     TOUR_CONTENT[language][key].gallery = TOUR_GALLERIES[key];
-    TOUR_CONTENT[language][key].coreOfferingTitle = SERVICE_BLOCKS[language].coreTitle;
-    TOUR_CONTENT[language][key].coreOffering = SERVICE_BLOCKS[language].core;
-    TOUR_CONTENT[language][key].optionalExtrasTitle = SERVICE_BLOCKS[language].optionsTitle;
-    TOUR_CONTENT[language][key].optionalExtras = SERVICE_BLOCKS[language].options;
-    TOUR_CONTENT[language][key].suggestionsTitle = SERVICE_BLOCKS[language].suggestionsTitle;
-    TOUR_CONTENT[language][key].guestSuggestions = SERVICE_BLOCKS[language].suggestions;
+    const serviceBlock = SERVICE_BLOCKS[language] || SERVICE_BLOCKS.fr;
+    TOUR_CONTENT[language][key].coreOfferingTitle = serviceBlock.coreTitle;
+    TOUR_CONTENT[language][key].coreOffering = serviceBlock.core;
+    TOUR_CONTENT[language][key].optionalExtrasTitle = serviceBlock.optionsTitle;
+    TOUR_CONTENT[language][key].optionalExtras = serviceBlock.options;
+    TOUR_CONTENT[language][key].suggestionsTitle = serviceBlock.suggestionsTitle;
+    TOUR_CONTENT[language][key].guestSuggestions = serviceBlock.suggestions;
   });
 });
 
 export function getTourContent(language: SiteLanguage, key: TourKey): TourPage {
-  return TOUR_CONTENT[language][key];
+  return (TOUR_CONTENT[language] || TOUR_CONTENT.fr)[key];
 }

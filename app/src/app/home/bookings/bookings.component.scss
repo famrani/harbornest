@@ -102,7 +102,7 @@ h1 {
 .booking-list-row {
   width: 100%;
   display: grid;
-  grid-template-columns: auto minmax(180px, 1.4fr) minmax(180px, 1.2fr) minmax(130px, .8fr) auto;
+  grid-template-columns: auto minmax(170px, 1.2fr) minmax(170px, 1.1fr) minmax(140px, .9fr) minmax(130px, .8fr) auto;
   gap: 16px;
   align-items: center;
   text-align: left;
@@ -135,6 +135,7 @@ h1 {
 
 .booking-main,
 .booking-trip,
+.booking-platform,
 .booking-price {
   display: grid;
   gap: 4px;
@@ -143,6 +144,7 @@ h1 {
 
 .booking-main strong,
 .booking-trip strong,
+.booking-platform strong,
 .booking-price strong {
   color: #08263a;
   overflow: hidden;
@@ -152,6 +154,7 @@ h1 {
 
 .booking-main small,
 .booking-trip small,
+.booking-platform small,
 .booking-price small {
   color: #516070;
   overflow: hidden;
@@ -173,6 +176,7 @@ h1 {
   .status-pill,
   .booking-main,
   .booking-trip,
+  .booking-platform,
   .booking-price {
     grid-column: 1 / 2;
   }
@@ -508,6 +512,7 @@ h1 {
 
 .booking-main,
 .booking-trip,
+.booking-platform,
 .booking-price {
   display: grid;
   gap: 0.2rem;
@@ -515,6 +520,7 @@ h1 {
 
 .booking-main strong,
 .booking-trip strong,
+.booking-platform strong,
 .booking-price strong {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -523,6 +529,7 @@ h1 {
 
 .booking-main small,
 .booking-trip small,
+.booking-platform small,
 .booking-price small {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -553,5 +560,203 @@ h1 {
 
   .row-actions {
     justify-content: flex-start;
+  }
+}
+
+
+.create-reservation-panel {
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid rgba(8, 38, 58, .08);
+  box-shadow: 0 18px 45px rgba(8, 38, 58, .08);
+  margin: 1rem 0 1.25rem;
+}
+
+.create-panel-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.create-panel-header h2 {
+  margin: .25rem 0;
+}
+
+.create-panel-header p {
+  margin: 0;
+  color: #516070;
+}
+
+.success-message {
+  padding: .85rem 1rem;
+  border-radius: 14px;
+  background: #eef9f2;
+  color: #155b34;
+  font-weight: 800;
+}
+
+
+/* Compact reservation list */
+.booking-toolbar {
+  gap: 8px;
+  margin-bottom: .75rem;
+}
+
+.booking-toolbar label {
+  font-size: .78rem;
+}
+
+.booking-toolbar input,
+.booking-toolbar select {
+  min-height: 34px;
+  padding: 7px 10px;
+  font-size: .82rem;
+}
+
+.list-summary {
+  font-size: .82rem;
+  margin: 8px 0;
+}
+
+.bookings-list {
+  gap: 6px;
+}
+
+.booking-list-row {
+  grid-template-columns: auto minmax(180px, 1.25fr) minmax(150px, 1fr) minmax(140px, .9fr) minmax(95px, .55fr) auto;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  min-height: 54px;
+  box-shadow: 0 6px 16px rgba(8,38,58,.055);
+}
+
+.booking-list-row:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(8,38,58,.09);
+}
+
+.status-pill {
+  min-height: 22px;
+  padding: 3px 8px;
+  font-size: .68rem;
+  line-height: 1;
+}
+
+.booking-main,
+.booking-trip,
+.booking-platform,
+.booking-price {
+  gap: 1px;
+}
+
+.booking-main strong,
+.booking-trip strong,
+.booking-platform strong,
+.booking-price strong {
+  font-size: .82rem;
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.booking-main small,
+.booking-trip small,
+.booking-platform small,
+.booking-price small {
+  font-size: .7rem;
+  line-height: 1.1;
+}
+
+.booking-price strong,
+.booking-price small {
+  text-align: right;
+}
+
+.row-chevron {
+  font-size: 1.35rem;
+}
+
+.btn {
+  padding: 8px 12px;
+  font-size: .82rem;
+}
+
+.booking-tabs {
+  margin-bottom: .65rem;
+}
+
+.booking-tabs button {
+  padding: 7px 12px;
+  font-size: .82rem;
+}
+
+@media (max-width: 820px) {
+  .booking-list-row {
+    grid-template-columns: 1fr auto;
+    min-height: auto;
+    padding: 10px 12px;
+  }
+
+  .booking-price strong,
+  .booking-price small {
+    text-align: left;
+  }
+}
+
+
+.create-panel-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .65rem;
+  flex-wrap: wrap;
+}
+
+.embedded-reservation-form {
+  display: block;
+  margin-top: .75rem;
+}
+
+.embedded-reservation-form app-admin-external-bookings {
+  display: block;
+}
+
+.create-panel-help {
+  margin: .75rem 0 0;
+  color: #516070;
+  font-size: .9rem;
+}
+
+.create-reservation-panel .external-bookings-page {
+  padding: 0 !important;
+  background: transparent !important;
+  min-height: 0 !important;
+}
+
+.create-reservation-panel .external-shell {
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+.create-reservation-panel .external-card {
+  margin: .75rem 0 0 !important;
+  box-shadow: none !important;
+  border-radius: 18px !important;
+  padding: 18px !important;
+}
+
+@media (max-width: 720px) {
+  .create-panel-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .create-panel-actions .btn {
+    padding: 8px 12px;
+    font-size: .85rem;
   }
 }

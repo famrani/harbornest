@@ -4,16 +4,69 @@ import { firstValueFrom } from 'rxjs';
 import { SITE_CONTENT, SiteContent } from '../site-content';
 import { SiteLanguage } from '../../services/language.service';
 
+export type SiteContentRoot = Partial<Record<SiteLanguage, any>> & {
+  i18n?: Partial<Record<SiteLanguage, any>>;
+  languages?: any;
+  meta?: any;
+};
+
+export interface AlegriaV2TenantConfig {
+  tenantId: string;
+  slug: string;
+  publicUrl?: string;
+  brand?: {
+    name?: string;
+    legalName?: string;
+    primaryBoatId?: string;
+    contactEmail?: string;
+    contactPhone?: string;
+  };
+  settings?: any;
+  boats?: Record<string, any>;
+}
+
+export interface AlegriaV2ContentRoot {
+  alegria_v2?: {
+    tenants?: Record<string, AlegriaV2TenantConfig>;
+    languages?: Record<string, any>;
+    i18n?: Partial<Record<SiteLanguage, any>>;
+    routing?: any;
+    dataModel?: any;
+    meta?: any;
+  };
+}
+
 @Injectable({ providedIn: 'root' })
 export class SiteContentService {
   private readonly restDatabaseUrls = [
     'https://adn-dev-4d05d.firebaseio.com',
   ];
 
+  private readonly languages: SiteLanguage[] = ['fr', 'en', 'es', 'it', 'de', 'nl', 'ru'];
+  private readonly defaultTenantId = 'alegria';
+
   private cached?: Record<SiteLanguage, SiteContent>;
+  private rawSiteContent?: SiteContentRoot | null;
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * Release 3.1: siteContent is the single UI-text source.
+   *
+   * Supported Firebase shapes:
+   *   /siteContent/fr/...
+   *   /siteContent/en/...
+   *   /siteContent/es/...
+   *   /siteContent/it/...
+   *   /siteContent/de/...
+   *   /siteContent/nl/...
+   *   /siteContent/ru/...
+   *
+   * Backwards compatible only for old dumps that still have:
+   *   /siteContent/i18n/fr/...
+   *
+   * The service no longer reads /alegria_v2 for translations.
+   */
   async getContent(forceRefresh = false): Promise<Record<SiteLanguage, SiteContent>> {
     if (this.cached && !forceRefresh) {
       return this.cached;
@@ -21,12 +74,12 @@ export class SiteContentService {
 
     for (const baseUrl of this.restDatabaseUrls) {
       try {
-        const value = await firstValueFrom(
-          this.http.get<Partial<Record<SiteLanguage, Partial<SiteContent>>> | null>(`${baseUrl}/siteContent.json`)
-        );
+        const raw = await firstValueFrom(this.http.get<SiteContentRoot | null>(`${baseUrl}/siteContent.json`));
+        const normalized = this.normalizeSiteContent(raw);
 
-        if (value && (value.fr || value.en || value.es)) {
-          this.cached = this.mergeAll(value);
+        if (normalized) {
+          this.rawSiteContent = raw;
+          this.cached = this.mergeAll(normalized);
           return this.cached;
         }
       } catch {
@@ -34,36 +87,104 @@ export class SiteContentService {
       }
     }
 
-    this.cached = SITE_CONTENT;
+    this.rawSiteContent = SITE_CONTENT as any;
+    this.cached = this.mergeAll(SITE_CONTENT as any);
     return this.cached;
   }
 
   async getLanguageContent(language: SiteLanguage): Promise<SiteContent> {
     const all = await this.getContent();
-    return all[language] || all.fr || SITE_CONTENT.fr;
+    return all[language] || all.en || all.fr || SITE_CONTENT.en || SITE_CONTENT.fr;
   }
 
   async getRawContent(forceRefresh = false): Promise<any> {
-    if (!forceRefresh && this.cached) {
-      // This keeps normal page rendering fast, but this method is mainly used by pages that
-      // need to inspect flexible Firebase paths before merging.
-    }
+    if (!forceRefresh && this.rawSiteContent) return this.rawSiteContent;
 
     for (const baseUrl of this.restDatabaseUrls) {
       try {
-        return await firstValueFrom(this.http.get<any>(`${baseUrl}/siteContent.json`));
+        this.rawSiteContent = await firstValueFrom(this.http.get<any>(`${baseUrl}/siteContent.json`));
+        return this.rawSiteContent;
       } catch {}
+    }
+
+    return SITE_CONTENT as any;
+  }
+
+  async translate(path: string, language: SiteLanguage = 'fr', fallback = ''): Promise<string> {
+    const all = await this.getContent();
+    return this.tFromContent(all, path, language, fallback);
+  }
+
+  /** Synchronous lookup for components/pipes that already hold a content object. */
+  tFromContent(all: any, path: string, language: SiteLanguage = 'fr', fallback = ''): string {
+    const current = all?.[language];
+    const english = all?.en;
+    const french = all?.fr;
+
+    const value = this.getByPath(current, path);
+    if (typeof value === 'string') return value;
+
+    const englishValue = this.getByPath(english, path);
+    if (typeof englishValue === 'string') return englishValue;
+
+    const frenchValue = this.getByPath(french, path);
+    if (typeof frenchValue === 'string') return frenchValue;
+
+    if (fallback) return fallback;
+
+    // Development-safe fallback: never break rendering because a key is missing.
+    return path;
+  }
+
+  /**
+   * These tenant helpers are intentionally kept as no-op/legacy-safe methods so
+   * existing components that still call them do not break. UI translations must
+   * not rely on alegria_v2 anymore.
+   */
+  async getV2Root(_forceRefresh = false): Promise<AlegriaV2ContentRoot | null> {
+    return null;
+  }
+
+  async getTenantConfig(_tenantId = this.defaultTenantId, _forceRefresh = false): Promise<AlegriaV2TenantConfig | null> {
+    return null;
+  }
+
+  async getTenantSettings(_tenantId = this.defaultTenantId, _forceRefresh = false): Promise<any> {
+    return null;
+  }
+
+  async getTenantMarinas(_tenantId = this.defaultTenantId): Promise<Array<{ id: string; label: string; default?: boolean }>> {
+    const all = await this.getContent();
+    const marinas = (all?.fr as any)?.settings?.marinas || (all?.en as any)?.settings?.marinas;
+    return Array.isArray(marinas) ? marinas : [];
+  }
+
+  private normalizeSiteContent(raw: SiteContentRoot | null | undefined): Partial<Record<SiteLanguage, Partial<SiteContent>>> | null {
+    if (!raw || typeof raw !== 'object') return null;
+
+    // Preferred Release 3.1 shape: siteContent/fr, siteContent/en, etc.
+    if (this.hasAnyLanguage(raw)) {
+      return raw as Partial<Record<SiteLanguage, Partial<SiteContent>>>;
+    }
+
+    // Backwards compatibility only: siteContent/i18n/fr, siteContent/i18n/en, etc.
+    if (raw.i18n && this.hasAnyLanguage(raw.i18n as any)) {
+      return raw.i18n as Partial<Record<SiteLanguage, Partial<SiteContent>>>;
     }
 
     return null;
   }
 
+  private hasAnyLanguage(value: any): boolean {
+    return !!value && this.languages.some((lang) => !!value[lang]);
+  }
+
   private mergeAll(value: Partial<Record<SiteLanguage, Partial<SiteContent>>>): Record<SiteLanguage, SiteContent> {
-    return {
-      fr: this.deepMerge(SITE_CONTENT.fr, value.fr || {}),
-      en: this.deepMerge(SITE_CONTENT.en, value.en || {}),
-      es: this.deepMerge(SITE_CONTENT.es, value.es || {}),
-    };
+    return this.languages.reduce((acc, language) => {
+      const fallback = (SITE_CONTENT as any)[language] || SITE_CONTENT.en || SITE_CONTENT.fr;
+      (acc as any)[language] = this.deepMerge(fallback, (value as any)[language] || {});
+      return acc;
+    }, {} as Record<SiteLanguage, SiteContent>);
   }
 
   private deepMerge<T>(target: T, source: any): T {
@@ -91,5 +212,12 @@ export class SiteContentService {
     });
 
     return output as T;
+  }
+
+  private getByPath(obj: any, path: string): any {
+    return String(path || '')
+      .split('.')
+      .filter(Boolean)
+      .reduce((acc, key) => (acc && typeof acc === 'object' ? acc[key] : undefined), obj);
   }
 }

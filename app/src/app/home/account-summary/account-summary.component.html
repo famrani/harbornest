@@ -5,81 +5,105 @@
     <p>{{ intro }}</p>
 
     <ng-container *ngIf="section === 'payments'; else defaultAccountSection">
-      <div class="payment-toolbar">
+      <div class="payment-toolbar booking-payment-toolbar">
         <label>
-          <span>Type</span>
-          <select [(ngModel)]="paymentTypeFilter">
-            <option value="all">All payment types</option>
-            <option value="deposit">10% deposit</option>
-            <option value="balance">Remaining 90%</option>
-            <option value="extra_service">Extra services</option>
-            <option value="ad_hoc">Ad hoc payments</option>
-            <option value="warranty_card">Warranty card</option>
-            <option value="warranty_cash">Cash warranty</option>
-            <option value="warranty_charge">Card damage charge</option>
-            <option value="cash_damage">Cash damage</option>
-          </select>
-        </label>
-
-        <label>
-          <span>Status</span>
-          <select [(ngModel)]="paymentStatusFilter">
-            <option value="all">All statuses</option>
-            <option value="paid">Paid</option>
-            <option value="registered">Registered</option>
-            <option value="selected">Selected</option>
-            <option value="received">Received</option>
-            <option value="charged">Charged</option>
-            <option value="recorded">Recorded</option>
-          </select>
-        </label>
-
-        <label>
-          <span>Order</span>
+          <span>{{ 'auto.home.account-summary.account-summary.component.order' | siteText }}</span>
           <select [(ngModel)]="paymentSortDirection">
-            <option value="desc">Newest first</option>
-            <option value="asc">Oldest first</option>
+            <option [value]="'auto.home.account-summary.account-summary.component.desc' | siteText">{{ 'auto.home.account-summary.account-summary.component.newest_first' | siteText }}</option>
+            <option [value]="'auto.home.account-summary.account-summary.component.asc' | siteText">{{ 'auto.home.account-summary.account-summary.component.oldest_first' | siteText }}</option>
           </select>
         </label>
 
-        <button class="btn btn-secondary" type="button" (click)="resetPaymentFilters()">Reset</button>
+        <button class="btn btn-secondary" type="button" (click)="resetPaymentFilters()">{{ 'auto.home.account-summary.account-summary.component.reset' | siteText }}</button>
       </div>
 
-      <p *ngIf="loading" class="muted">Loading payments...</p>
+      <p *ngIf="loading" class="muted">{{ 'auto.home.account-summary.account-summary.component.loading_bookings_and_payments' | siteText }}</p>
 
-      <div class="account-empty" *ngIf="!loading && payments.length === 0">
-        <p>No payment is linked to your account yet.</p>
-        <a routerLink="/my-bookings" class="btn btn-primary">Go to my bookings</a>
+      <div class="account-empty" *ngIf="!loading && paymentGroups.length === 0">
+        <p>{{ 'auto.home.account-summary.account-summary.component.no_booking_or_payment_is_linked_to_your_account_ye' | siteText }}</p>
+        <a routerLink="/my-bookings" class="btn btn-primary">{{ 'auto.home.account-summary.account-summary.component.go_to_my_bookings' | siteText }}</a>
       </div>
 
-      <div class="payment-summary" *ngIf="!loading && payments.length > 0">
-        Showing <strong>{{ filteredPayments.length }}</strong> of <strong>{{ payments.length }}</strong> payment records.
+      <div class="payment-summary" *ngIf="!loading && paymentGroups.length > 0">{{ 'auto.home.account-summary.account-summary.component.showing' | siteText }}<strong>{{ filteredPaymentGroups.length }}</strong> booking{{ filteredPaymentGroups.length > 1 ? 's' : '' }}.
       </div>
 
-      <div class="payments-list" *ngIf="!loading && filteredPayments.length > 0">
-        <button class="payment-row" type="button" *ngFor="let payment of filteredPayments" (click)="openPaymentBooking(payment)">
-          <span class="payment-type" [ngClass]="getPaymentTypeClass(payment)">
-            {{ payment.label }}
-          </span>
+      <div class="booking-payment-list" *ngIf="!loading && filteredPaymentGroups.length > 0">
+        <article class="booking-payment-card" *ngFor="let group of filteredPaymentGroups">
+          <div class="booking-payment-header">
+            <div>
+              <h2>{{ group.title }}</h2>
+              <p>{{ group.bookingId }}</p>
+            </div>
+            <span class="booking-status" [ngClass]="group.statusClass">{{ group.statusLabel }}</span>
+          </div>
 
-          <span class="payment-main">
-            <strong>{{ payment.description }}</strong>
-            <small>Booking: {{ payment.bookingId }}</small>
-            <small>{{ formatPaymentDate(payment.date) }} · {{ payment.method }}</small>
-          </span>
+          <div class="booking-payment-grid">
+            <div class="booking-payment-panel">
+              <span class="panel-label">{{ 'auto.home.account-summary.account-summary.component.financial_summary' | siteText }}</span>
+              <div class="amount-line">
+                <span>{{ 'auto.home.account-summary.account-summary.component.total_outing' | siteText }}</span>
+                <strong>{{ formatPaymentAmount(group.totalCustomerCost) }}</strong>
+              </div>
+              <div class="amount-line">
+                <span>{{ 'auto.home.account-summary.account-summary.component.alegria' | siteText }}</span>
+                <strong>{{ formatPaymentAmount(group.alegriaAmount) }}</strong>
+              </div>
+              <div class="amount-line">
+                <span>{{ 'auto.home.account-summary.account-summary.component.skipper' | siteText }}</span>
+                <strong>{{ formatPaymentAmount(group.skipperAmount) }}</strong>
+              </div>
+            </div>
 
-          <span class="payment-amount">
-            <strong>{{ formatPaymentAmount(payment.amount) }}</strong>
-            <small>{{ payment.status }}</small>
-          </span>
+            <div class="booking-payment-panel highlight-panel">
+              <span class="panel-label">{{ 'auto.home.account-summary.account-summary.component.alegria_payment' | siteText }}</span>
+              <div class="amount-line">
+                <span>{{ 'auto.home.account-summary.account-summary.component.deposit_paid' | siteText }}</span>
+                <strong>{{ formatPaymentAmount(group.depositPaidAmount) }}</strong>
+              </div>
+              <div class="amount-line total-line">
+                <span>{{ 'auto.home.account-summary.account-summary.component.remaining' | siteText }}</span>
+                <strong>{{ formatPaymentAmount(group.remainingAlegriaAmount) }}</strong>
+              </div>
+              <button class="btn btn-primary compact-action" type="button" (click)="openBookingGroup(group)">
+                {{ getPaymentActionLabel(group) }}
+              </button>
+            </div>
 
-          <span class="payment-open">Open booking ›</span>
-        </button>
-      </div>
+            <div class="booking-payment-panel">
+              <span class="panel-label">{{ 'auto.home.account-summary.account-summary.component.skipper' | siteText }}</span>
+              <div class="amount-line total-line">
+                <span>{{ 'auto.home.account-summary.account-summary.component.cash_onboard' | siteText }}</span>
+                <strong>{{ formatPaymentAmount(group.skipperAmount) }}</strong>
+              </div>
+              <small>{{ 'auto.home.account-summary.account-summary.component.to_be_paid_directly_to_the_skipper_on_board' | siteText }}</small>
+            </div>
 
-      <div class="account-empty" *ngIf="!loading && payments.length > 0 && filteredPayments.length === 0">
-        <p>No payment matches the selected filters.</p>
-        <button class="btn btn-secondary" type="button" (click)="resetPaymentFilters()">Reset filters</button>
+            <div class="booking-payment-panel warranty-panel">
+              <span class="panel-label">{{ 'auto.home.account-summary.account-summary.component.warranty' | siteText }}</span>
+              <div class="amount-line">
+                <span>{{ 'auto.home.account-summary.account-summary.component.amount' | siteText }}</span>
+                <strong>{{ formatPaymentAmount(group.warrantyAmount) }}</strong>
+              </div>
+              <div class="amount-line">
+                <span>{{ 'auto.home.account-summary.account-summary.component.mode' | siteText }}</span>
+                <strong>{{ group.warrantyMode }}</strong>
+              </div>
+              <div class="amount-line">
+                <span>{{ 'auto.home.account-summary.account-summary.component.status' | siteText }}</span>
+                <strong>{{ group.warrantyStatus }}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="booking-payment-records" *ngIf="group.visiblePayments.length > 0">
+            <span>{{ 'auto.home.account-summary.account-summary.component.recorded_payments' | siteText }}</span>
+            <div class="mini-payment" *ngFor="let payment of group.visiblePayments">
+              <span>{{ payment.label }}</span>
+              <strong>{{ formatPaymentAmount(payment.amount) }}</strong>
+              <small>{{ payment.status }} · {{ payment.method }}</small>
+            </div>
+          </div>
+        </article>
       </div>
     </ng-container>
 

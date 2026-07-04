@@ -12,6 +12,7 @@ import { ForgotPasswordComponent } from './forgotpwd/forgotpwd.component';
 import { GodigitalbModule } from 'godigital-lib';
 
 import { LoginRoutingModule } from './login.router.module';
+import { SiteTextPipe } from '../home/site-text.pipe';
 
 @NgModule({
   declarations: [LoginComponent, SignupComponent, ForgotPasswordComponent],
@@ -22,6 +23,7 @@ import { LoginRoutingModule } from './login.router.module';
     FormsModule, ReactiveFormsModule,
     CookieModule.forRoot(),
     GodigitalbModule,
+    SiteTextPipe,
   ],
   providers:[]
 })

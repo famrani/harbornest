@@ -1,7 +1,7 @@
 <section class="admin-page">
   <div class="container">
     <div class="admin-head">
-      <span class="eyebrow">Admin</span>
+      <span class="eyebrow">{{ 'auto.home.admin-manage-outings.admin-manage-outings.component.admin' | siteText }}</span>
       <h1>{{ t('title') }}</h1>
       <p>{{ t('intro') }}</p>
     </div>
@@ -35,7 +35,7 @@
 
         <div class="lang-block" *ngFor="let lang of ['fr', 'en', 'es']">
           <h2>{{ lang | uppercase }}</h2>
-          <div class="editor-row"><label>Title</label><input type="text" [(ngModel)]="selected[lang].title" name="title-{{lang}}" /></div>
+          <div class="editor-row"><label>{{ 'auto.home.admin-manage-outings.admin-manage-outings.component.title' | siteText }}</label><input type="text" [(ngModel)]="selected[lang].title" name="title-{{lang}}" /></div>
           <div class="editor-row"><label>{{ t('duration') }}</label><input type="text" [(ngModel)]="selected[lang].duration" name="duration-{{lang}}" /></div>
           <div class="editor-row"><label>{{ t('guests') }}</label><input type="text" [(ngModel)]="selected[lang].guests" name="guests-{{lang}}" /></div>
           <div class="editor-row">
@@ -51,7 +51,7 @@
               <input type="text" [(ngModel)]="selected[lang].highlights![i]" name="highlight-{{lang}}-{{i}}" />
               <button type="button" class="small-danger" (click)="removeHighlight(lang, i)">×</button>
             </div>
-            <button type="button" class="secondary" (click)="addHighlight(lang)">+ Add</button>
+            <button type="button" class="secondary" (click)="addHighlight(lang)">{{ 'auto.home.admin-manage-outings.admin-manage-outings.component.add' | siteText }}</button>
           </div>
         </div>
 

@@ -1,3 +1,12 @@
+
+      <div class="external-platform-summary" *ngIf="proposal?.bookingSource === 'external' || proposal?.externalPlatform || proposal?.externalPlatformBookingRef">
+        <h3>{{ 'auto.home.proposal-confirmation.proposal-confirmation.component.r_servation_plateforme' | siteText }}</h3>
+        <p><strong>{{ 'auto.home.proposal-confirmation.proposal-confirmation.component.plateforme' | siteText }}</strong> {{ proposal?.externalPlatformName || proposal?.externalPlatform || proposal?.source }}</p>
+        <p><strong>{{ 'auto.home.proposal-confirmation.proposal-confirmation.component.r_f_rence' | siteText }}</strong> {{ proposal?.externalPlatformBookingRef || proposal?.platformBookingReference || proposal?.platformReservationNumber }}</p>
+        <p *ngIf="proposal?.externalPlatformPaidAmount"><strong>{{ 'auto.home.proposal-confirmation.proposal-confirmation.component.d_j_pay_plateforme' | siteText }}</strong> {{ proposal?.externalPlatformPaidAmount | currency:'EUR':'symbol':'1.0-2' }}</p>
+        <p *ngIf="proposal?.externalTotalRemainingAmount"><strong>{{ 'auto.home.proposal-confirmation.proposal-confirmation.component.restant_alegria' | siteText }}</strong> {{ proposal?.externalTotalRemainingAmount | currency:'EUR':'symbol':'1.0-2' }}</p>
+      </div>
+
 <section class="proposal-confirmation-page">
   <div class="container proposal-shell">
     <p class="muted" *ngIf="loading">{{ text('loading') }}</p>
@@ -8,18 +17,80 @@
       <h1>{{ proposal.outingType }}</h1>
       <p class="muted" *ngIf="proposal.proposalMessage">{{ proposal.proposalMessage }}</p>
 
-      <div class="summary-grid">
+      <div class="proposal-meta-strip">
         <div><strong>{{ text('customer') }}</strong><span>{{ proposal.customerName }}</span></div>
         <div><strong>{{ text('date') }}</strong><span>{{ proposal.outingDate }}</span></div>
         <div><strong>{{ text('time') }}</strong><span>{{ proposal.departureTime }} → {{ proposal.arrivalTime }}</span></div>
         <div><strong>{{ text('passengers') }}</strong><span>{{ proposal.passengers || '-' }}</span></div>
-        <div><strong>{{ priceTitle('totalPrice') }}</strong><span>€{{ proposal.totalAmount }}</span></div>
-        <div *ngIf="skipperCashAmount > 0"><strong>{{ priceTitle('skipperCash') }}</strong><span>€{{ skipperCashAmount }}</span></div>
-        <div><strong>{{ priceTitle('onlinePayable') }}</strong><span>€{{ onlinePayableAmount }}</span></div>
-        <div><strong>{{ priceTitle('deposit') }}</strong><span>€{{ proposal.depositAmount }}</span></div>
-        <div><strong>{{ priceTitle('remaining') }}</strong><span>€{{ proposal.balanceAmount }}</span></div>
-        <div><strong>{{ priceTitle('warranty') }}</strong><span>€{{ proposal.warrantyAmount || 500 }}</span></div>
       </div>
+
+      <section class="customer-finance-simple customer-proposal-clean">
+        <div class="finance-panel finance-summary-panel">
+          <h2>{{ text('financialSummary') }}</h2>
+          <div class="finance-line" *ngIf="boatPriceAmount > 0">
+            <span>{{ priceTitle('boatPrice') }}</span>
+            <strong>{{ boatPriceAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+          <div class="finance-line" *ngIf="fuelPriceAmount > 0">
+            <span>{{ priceTitle('fuelPrice') || priceTitle('cleaningPrice') }}</span>
+            <strong>{{ fuelPriceAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+          <div class="finance-line" *ngIf="extraServicesAmount > 0">
+            <span>{{ priceTitle('extraServicesPrice') }}</span>
+            <strong>{{ extraServicesAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+          <div class="finance-line" *ngIf="skipperCashAmount > 0">
+            <span>{{ text('skipperFee') || priceTitle('skipperCash') }}</span>
+            <strong>{{ skipperCashAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+          <div class="finance-line finance-total">
+            <span>{{ text('totalCustomerCost') || priceTitle('totalPrice') }}</span>
+            <strong>{{ customerTotalAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+        </div>
+
+        <div class="finance-panel alegria-panel">
+          <h2>{{ text('remainingToPayAlegria') }}</h2>
+          <p class="finance-note">{{ text('alegriaPaymentNote') }}</p>
+          <div class="finance-line muted-line" *ngIf="onlinePayableAmount > 0">
+            <span>{{ text('alegriaSubtotal') }}</span>
+            <strong>{{ onlinePayableAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+          <div class="finance-line muted-line" *ngIf="depositPaidAmount > 0">
+            <span>{{ text('alreadyPaidDeposit') || priceTitle('deposit') }}</span>
+            <strong>-{{ depositPaidAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+          <div class="finance-line finance-total">
+            <span>{{ text('amountDueAlegria') }}</span>
+            <strong>{{ remainingOnlineAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+        </div>
+
+        <div class="finance-panel skipper-panel">
+          <h2>{{ text('remainingToPaySkipper') }}</h2>
+          <p class="finance-note">{{ text('skipperPaymentNote') }}</p>
+          <div class="finance-line finance-total">
+            <span>{{ text('skipperFee') || priceTitle('skipperCash') }}</span>
+            <strong>{{ skipperCashAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+        </div>
+
+        <div class="finance-panel warranty-panel">
+          <h2>{{ text('warrantyModeAndAmount') }}</h2>
+          <div class="finance-line">
+            <span>{{ text('amount') }}</span>
+            <strong>{{ warrantyAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+          <div class="finance-line">
+            <span>{{ text('method') }}</span>
+            <strong>{{ warrantyMethodText }}</strong>
+          </div>
+          <div class="finance-line">
+            <span>{{ text('status') }}</span>
+            <strong>{{ warrantyStatusText }}</strong>
+          </div>
+        </div>
+      </section>
 
       <section class="proposal-auth-card" *ngIf="!proposalAccessReady">
         <span class="eyebrow">{{ text('secureProposalAccess') }}</span>
@@ -51,12 +122,17 @@
           type="button"
           *ngIf="proposalAccessMode !== 'google' && proposalAccessError"
           [disabled]="proposalAccessLoading"
-          (click)="prepareProposalAccess()">
-          Retry
-        </button>
+          (click)="prepareProposalAccess()">{{ 'auto.home.proposal-confirmation.proposal-confirmation.component.retry' | siteText }}</button>
       </section>
 
-      <ng-container *ngIf="proposalAccessReady">
+      <section class="proposal-waiting-admin-card" *ngIf="proposalAccessReady && proposalWaitingForAdmin">
+        <span class="eyebrow">{{ text('proposalWaitingAdminStatus') }}</span>
+        <h2>{{ text('proposalWaitingAdminTitle') }}</h2>
+        <p>{{ text('proposalWaitingAdminMessage') }}</p>
+        <p class="muted">{{ text('proposalWaitingAdminHint') }}</p>
+      </section>
+
+      <ng-container *ngIf="proposalAccessReady && proposalCanStartCustomerWorkflow">
         <div class="expired" *ngIf="expired">{{ text('expiredText') }}</div>
 
         <section class="proposal-wizard" *ngIf="!expired">
@@ -133,11 +209,11 @@
 
             <div class="warranty-options">
               <label class="radio-card">
-                <input type="radio" name="warrantyChoice" value="stripe_card" [(ngModel)]="warrantyChoice" />
+                <input type="radio" name="warrantyChoice" [value]="'auto.home.proposal-confirmation.proposal-confirmation.component.stripe_card' | siteText" [(ngModel)]="warrantyChoice" />
                 <span>{{ text('warrantyCard') }}</span>
               </label>
               <label class="radio-card">
-                <input type="radio" name="warrantyChoice" value="cash_on_board" [(ngModel)]="warrantyChoice" />
+                <input type="radio" name="warrantyChoice" [value]="'auto.home.proposal-confirmation.proposal-confirmation.component.cash_on_board' | siteText" [(ngModel)]="warrantyChoice" />
                 <span>{{ text('warrantyCash') }}</span>
               </label>
             </div>
@@ -181,7 +257,7 @@
         <div class="terms-modal-backdrop" *ngIf="termsModalOpen" (click)="closeTermsModal()">
           <section class="terms-modal" (click)="$event.stopPropagation()">
             <button class="modal-close" type="button" (click)="closeTermsModal()">×</button>
-            <span class="eyebrow">Alegria Boat</span>
+            <span class="eyebrow">{{ 'auto.home.proposal-confirmation.proposal-confirmation.component.alegria_boat' | siteText }}</span>
             <h2>{{ text('termsModalTitle') }}</h2>
 
             <div class="terms-content tc-scrollable" tabindex="0">

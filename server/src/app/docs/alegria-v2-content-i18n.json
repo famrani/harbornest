@@ -1,0 +1,82 @@
+{
+  "languages": ["fr", "en", "es", "it", "de", "nl", "ru"],
+  "content": {
+    "booking": {
+      "completionTitle": {"fr":"Progression de la réservation","en":"Booking completion","es":"Progreso de la reserva","it":"Avanzamento della prenotazione","de":"Buchungsfortschritt","nl":"Boekingsvoortgang","ru":"Ход бронирования"},
+      "waitingForCustomer": {"fr":"En attente du client","en":"Waiting for customer","es":"En espera del cliente","it":"In attesa del cliente","de":"Wartet auf den Kunden","nl":"Wachten op klant","ru":"Ожидает клиента"},
+      "bookingConfirmed": {"fr":"Réservation confirmée","en":"Booking confirmed","es":"Reserva confirmada","it":"Prenotazione confermata","de":"Buchung bestätigt","nl":"Boeking bevestigd","ru":"Бронирование подтверждено"},
+      "completed": {"fr":"Sortie terminée","en":"Completed","es":"Completado","it":"Completata","de":"Abgeschlossen","nl":"Voltooid","ru":"Завершено"},
+      "cancelled": {"fr":"Annulée","en":"Cancelled","es":"Cancelada","it":"Annullata","de":"Storniert","nl":"Geannuleerd","ru":"Отменено"},
+      "termsStep": {"fr":"Conditions générales","en":"Terms & Conditions","es":"Condiciones generales","it":"Termini e condizioni","de":"Allgemeine Geschäftsbedingungen","nl":"Algemene voorwaarden","ru":"Условия и положения"},
+      "termsWaiting": {"fr":"À accepter par le client","en":"To be accepted by the customer","es":"Debe aceptarlas el cliente","it":"Da accettare dal cliente","de":"Vom Kunden zu akzeptieren","nl":"Te accepteren door de klant","ru":"Должен принять клиент"},
+      "termsAccepted": {"fr":"Conditions acceptées","en":"Terms accepted","es":"Condiciones aceptadas","it":"Termini accettati","de":"Bedingungen akzeptiert","nl":"Voorwaarden geaccepteerd","ru":"Условия приняты"},
+      "termsAcceptCta": {"fr":"J’accepte les conditions générales","en":"I accept the Terms & Conditions","es":"Acepto las condiciones generales","it":"Accetto i termini e condizioni","de":"Ich akzeptiere die AGB","nl":"Ik accepteer de algemene voorwaarden","ru":"Я принимаю условия"},
+      "proposalNotIssued": {"fr":"Votre demande a bien été envoyée. Alegria prépare votre proposition.","en":"Your request has been sent. Alegria is preparing your proposal.","es":"Su solicitud ha sido enviada. Alegria está preparando su propuesta.","it":"La tua richiesta è stata inviata. Alegria sta preparando la proposta.","de":"Ihre Anfrage wurde gesendet. Alegria bereitet Ihr Angebot vor.","nl":"Uw aanvraag is verzonden. Alegria bereidt uw voorstel voor.","ru":"Ваш запрос отправлен. Alegria готовит предложение."}
+    },
+    "finance": {
+      "summary": {"fr":"Synthèse financière","en":"Financial summary","es":"Resumen financiero","it":"Riepilogo finanziario","de":"Finanzübersicht","nl":"Financieel overzicht","ru":"Финансовая сводка"},
+      "boat": {"fr":"Bateau","en":"Boat","es":"Barco","it":"Barca","de":"Boot","nl":"Boot","ru":"Лодка"},
+      "fuel": {"fr":"Carburant","en":"Fuel","es":"Combustible","it":"Carburante","de":"Kraftstoff","nl":"Brandstof","ru":"Топливо"},
+      "extraServices": {"fr":"Services supplémentaires","en":"Extra services","es":"Servicios adicionales","it":"Servizi extra","de":"Zusatzleistungen","nl":"Extra diensten","ru":"Дополнительные услуги"},
+      "skipper": {"fr":"Skipper","en":"Skipper","es":"Patrón","it":"Skipper","de":"Skipper","nl":"Schipper","ru":"Шкипер"},
+      "totalCustomerCost": {"fr":"Coût total client","en":"Total customer cost","es":"Coste total cliente","it":"Costo totale cliente","de":"Gesamtkosten Kunde","nl":"Totale klantkosten","ru":"Итоговая стоимость"},
+      "alegriaRevenue": {"fr":"Revenu Alegria","en":"Alegria revenue","es":"Ingresos Alegria","it":"Ricavo Alegria","de":"Alegria-Umsatz","nl":"Alegria-inkomsten","ru":"Доход Alegria"},
+      "skipperRevenue": {"fr":"Revenu skipper","en":"Skipper revenue","es":"Ingresos patrón","it":"Ricavo skipper","de":"Skipper-Umsatz","nl":"Schipper-inkomsten","ru":"Доход шкипера"},
+      "alreadyPaid": {"fr":"Déjà payé","en":"Already paid","es":"Ya pagado","it":"Già pagato","de":"Bereits bezahlt","nl":"Al betaald","ru":"Уже оплачено"},
+      "leftToPay": {"fr":"Reste à payer","en":"Left to pay","es":"Pendiente de pago","it":"Da pagare","de":"Noch zu zahlen","nl":"Nog te betalen","ru":"Осталось оплатить"},
+      "fullyPaid": {"fr":"Entièrement payé","en":"Fully paid","es":"Totalmente pagado","it":"Interamente pagato","de":"Vollständig bezahlt","nl":"Volledig betaald","ru":"Полностью оплачено"},
+      "paymentPending": {"fr":"Paiement en attente","en":"Payment pending","es":"Pago pendiente","it":"Pagamento in sospeso","de":"Zahlung ausstehend","nl":"Betaling in behandeling","ru":"Ожидается оплата"},
+      "payAlegria": {"fr":"Payer Alegria","en":"Pay Alegria","es":"Pagar Alegria","it":"Paga Alegria","de":"Alegria bezahlen","nl":"Alegria betalen","ru":"Оплатить Alegria"},
+      "paySkipper": {"fr":"Payer skipper","en":"Pay skipper","es":"Pagar patrón","it":"Paga skipper","de":"Skipper bezahlen","nl":"Schipper betalen","ru":"Оплатить шкипера"},
+      "payWithStripe": {"fr":"Payer par carte","en":"Pay by card","es":"Pagar con tarjeta","it":"Paga con carta","de":"Mit Karte bezahlen","nl":"Betaal met kaart","ru":"Оплатить картой"}
+    },
+    "warranty": {
+      "title": {"fr":"Caution","en":"Warranty","es":"Garantía","it":"Cauzione","de":"Kaution","nl":"Waarborg","ru":"Гарантия"},
+      "amount": {"fr":"Montant","en":"Amount","es":"Importe","it":"Importo","de":"Betrag","nl":"Bedrag","ru":"Сумма"},
+      "method": {"fr":"Mode","en":"Method","es":"Método","it":"Metodo","de":"Methode","nl":"Methode","ru":"Способ"},
+      "cash": {"fr":"Espèces","en":"Cash","es":"Efectivo","it":"Contanti","de":"Bar","nl":"Contant","ru":"Наличные"},
+      "creditCard": {"fr":"Carte bancaire","en":"Credit card","es":"Tarjeta bancaria","it":"Carta bancaria","de":"Kreditkarte","nl":"Creditcard","ru":"Банковская карта"},
+      "changeMethod": {"fr":"Changer le mode de caution","en":"Change warranty method","es":"Cambiar el método de garantía","it":"Cambia metodo cauzione","de":"Kautionsmethode ändern","nl":"Waarborgmethode wijzigen","ru":"Изменить способ гарантии"},
+      "registerCard": {"fr":"Enregistrer ma carte","en":"Register my card","es":"Registrar mi tarjeta","it":"Registra la mia carta","de":"Meine Karte hinterlegen","nl":"Mijn kaart registreren","ru":"Зарегистрировать карту"},
+      "cashSelected": {"fr":"Caution espèces sélectionnée","en":"Cash warranty selected","es":"Garantía en efectivo seleccionada","it":"Cauzione in contanti selezionata","de":"Barkaution ausgewählt","nl":"Contante waarborg geselecteerd","ru":"Выбран залог наличными"},
+      "cardRegistered": {"fr":"Carte enregistrée","en":"Card registered","es":"Tarjeta registrada","it":"Carta registrata","de":"Karte hinterlegt","nl":"Kaart geregistreerd","ru":"Карта зарегистрирована"},
+      "pending": {"fr":"Caution à compléter","en":"Warranty pending","es":"Garantía pendiente","it":"Cauzione da completare","de":"Kaution ausstehend","nl":"Waarborg in behandeling","ru":"Гарантия ожидает"}
+    },
+    "buttons": {
+      "save": {"fr":"Enregistrer","en":"Save","es":"Guardar","it":"Salva","de":"Speichern","nl":"Opslaan","ru":"Сохранить"},
+      "cancel": {"fr":"Annuler","en":"Cancel","es":"Cancelar","it":"Annulla","de":"Abbrechen","nl":"Annuleren","ru":"Отмена"},
+      "continue": {"fr":"Continuer","en":"Continue","es":"Continuar","it":"Continua","de":"Weiter","nl":"Doorgaan","ru":"Продолжить"},
+      "edit": {"fr":"Modifier","en":"Edit","es":"Editar","it":"Modifica","de":"Bearbeiten","nl":"Bewerken","ru":"Редактировать"},
+      "openBooking": {"fr":"Ouvrir la réservation","en":"Open booking","es":"Abrir reserva","it":"Apri prenotazione","de":"Buchung öffnen","nl":"Boeking openen","ru":"Открыть бронирование"}
+    },
+    "validation": {
+      "futureDate": {"fr":"Pour une réservation future, la date doit être aujourd’hui ou dans le futur.","en":"For a future booking, the date must be today or in the future.","es":"Para una reserva futura, la fecha debe ser hoy o posterior.","it":"Per una prenotazione futura, la data deve essere oggi o futura.","de":"Für eine zukünftige Buchung muss das Datum heute oder in der Zukunft liegen.","nl":"Voor een toekomstige boeking moet de datum vandaag of in de toekomst zijn.","ru":"Для будущего бронирования дата должна быть сегодня или позже."},
+      "historicalDate": {"fr":"Pour une réservation historique, la date doit être aujourd’hui ou dans le passé.","en":"For a historical booking, the date must be today or in the past.","es":"Para una reserva histórica, la fecha debe ser hoy o anterior.","it":"Per una prenotazione storica, la data deve essere oggi o passata.","de":"Für eine historische Buchung muss das Datum heute oder in der Vergangenheit liegen.","nl":"Voor een historische boeking moet de datum vandaag of in het verleden zijn.","ru":"Для исторического бронирования дата должна быть сегодня или раньше."},
+      "termsRequiredBeforePayment": {"fr":"Le client doit accepter formellement les conditions générales avant tout paiement.","en":"The customer must formally accept the Terms & Conditions before any payment.","es":"El cliente debe aceptar formalmente las condiciones antes de cualquier pago.","it":"Il cliente deve accettare formalmente i termini prima di qualsiasi pagamento.","de":"Der Kunde muss die AGB vor jeder Zahlung ausdrücklich akzeptieren.","nl":"De klant moet de voorwaarden formeel accepteren vóór betaling.","ru":"Клиент должен формально принять условия перед любой оплатой."}
+    },
+    "email": {
+      "proposalIssuedSubject": {"fr":"Votre proposition Alegria est prête","en":"Your Alegria proposal is ready","es":"Su propuesta Alegria está lista","it":"La tua proposta Alegria è pronta","de":"Ihr Alegria-Angebot ist bereit","nl":"Uw Alegria-voorstel is klaar","ru":"Ваше предложение Alegria готово"},
+      "proposalIssuedIntro": {"fr":"Votre proposition est maintenant disponible.","en":"Your proposal is now available.","es":"Su propuesta ya está disponible.","it":"La tua proposta è ora disponibile.","de":"Ihr Angebot ist jetzt verfügbar.","nl":"Uw voorstel is nu beschikbaar.","ru":"Ваше предложение доступно."}
+    },
+    "whatsapp": {
+      "proposalIssued": {"fr":"Bonjour {{customerName}} 👋 Votre proposition Alegria est prête. Alegria: {{alegriaAmount}}, skipper: {{skipperAmount}}, caution: {{warrantyAmount}}. Voir: {{proposalUrl}}","en":"Hello {{customerName}} 👋 Your Alegria proposal is ready. Alegria: {{alegriaAmount}}, skipper: {{skipperAmount}}, warranty: {{warrantyAmount}}. View: {{proposalUrl}}","es":"Hola {{customerName}} 👋 Su propuesta Alegria está lista. Alegria: {{alegriaAmount}}, patrón: {{skipperAmount}}, garantía: {{warrantyAmount}}. Ver: {{proposalUrl}}","it":"Ciao {{customerName}} 👋 La tua proposta Alegria è pronta. Alegria: {{alegriaAmount}}, skipper: {{skipperAmount}}, cauzione: {{warrantyAmount}}. Vedi: {{proposalUrl}}","de":"Hallo {{customerName}} 👋 Ihr Alegria-Angebot ist bereit. Alegria: {{alegriaAmount}}, Skipper: {{skipperAmount}}, Kaution: {{warrantyAmount}}. Öffnen: {{proposalUrl}}","nl":"Hallo {{customerName}} 👋 Uw Alegria-voorstel is klaar. Alegria: {{alegriaAmount}}, schipper: {{skipperAmount}}, waarborg: {{warrantyAmount}}. Bekijk: {{proposalUrl}}","ru":"Здравствуйте, {{customerName}} 👋 Ваше предложение Alegria готово. Alegria: {{alegriaAmount}}, шкипер: {{skipperAmount}}, гарантия: {{warrantyAmount}}. Открыть: {{proposalUrl}}"}
+    }
+  },
+  "configuration": {
+    "payments": {"skipperStripe": true, "warrantyCard": true, "partialPayments": true},
+    "booking": {"enableProposal": true, "enableHistorical": true},
+    "integrations": {"clickAndBoat": true, "samBoat": true}
+  },
+  "referenceData": {
+    "departureMarinas": [
+      {"id":"marina_baie_des_anges","name":"Marina Baie des Anges","default":true},
+      {"id":"port_vauban_antibes","name":"Port Vauban - Antibes"},
+      {"id":"vieux_port_cannes","name":"Vieux Port de Cannes"},
+      {"id":"port_canto_cannes","name":"Port Canto - Cannes"},
+      {"id":"port_gallice_juan_les_pins","name":"Port Gallice - Juan-les-Pins"},
+      {"id":"golfe_juan","name":"Golfe-Juan"},
+      {"id":"port_nice","name":"Port de Nice"},
+      {"id":"saint_laurent_du_var","name":"Saint-Laurent-du-Var"}
+    ]
+  }
+}

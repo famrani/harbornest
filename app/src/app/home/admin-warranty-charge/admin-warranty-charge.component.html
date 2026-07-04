@@ -1,25 +1,17 @@
 <section class="warranty-charge-page">
   <div class="container warranty-shell">
-    <span class="eyebrow">Admin</span>
-    <h1>Charge warranty for damage</h1>
-    <p class="intro">
-      Use this only when damage, blocked toilets, missing equipment, extra cleaning or unpaid costs must be charged.
-    </p>
+    <span class="eyebrow">{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.admin' | siteText }}</span>
+    <h1>{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.charge_warranty_for_damage' | siteText }}</h1>
+    <p class="intro">{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.use_this_only_when_damage_blocked_toilets_missing_' | siteText }}</p>
 
     <article class="warranty-card">
-      <label>
-        Booking / proposal ID
-        <input type="text" [(ngModel)]="bookingId" placeholder="proposal_xxxxx" />
+      <label>{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.booking_proposal_id' | siteText }}<input type="text" [(ngModel)]="bookingId" [placeholder]="'auto.home.admin-warranty-charge.admin-warranty-charge.component.proposal_xxxxx' | siteText" />
       </label>
 
-      <label>
-        Amount to charge (€)
-        <input type="number" min="1" step="0.01" [(ngModel)]="amount" />
+      <label>{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.amount_to_charge' | siteText }}<input type="number" min="1" step="0.01" [(ngModel)]="amount" />
       </label>
 
-      <label>
-        Damage / charge reason
-        <textarea rows="5" [(ngModel)]="reason" placeholder="Example: blocked marine toilet, cigarette burn on cushion cover, broken paddle..."></textarea>
+      <label>{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.damage_charge_reason' | siteText }}<textarea rows="5" [(ngModel)]="reason" [placeholder]="'auto.home.admin-warranty-charge.admin-warranty-charge.component.example_blocked_marine_toilet_cigarette_burn_on_cu' | siteText"></textarea>
       </label>
 
       <button class="btn btn-danger" type="button" [disabled]="charging" (click)="chargeWarranty()">

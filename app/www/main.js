@@ -3705,7 +3705,7 @@ class ServicesService {
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<header class=\"site-header\">\n  <div class=\"container header-bar\">\n    <a class=\"brand\" routerLink=\"/\" (click)=\"closeMenu()\">\n      <img class=\"brand-logo\" src=\"assets/img/logo-Alegria.png\" alt=\"Alegria\" />\n      <span class=\"brand-text\">\n        <strong>{{ content.brand }}</strong>\n        <small>{{ content.brandTagline }}</small>\n      </span>\n    </a>\n\n    <button class=\"menu-toggle\" type=\"button\" (click)=\"toggleMenu()\" aria-label=\"Open menu\">\n      ☰\n    </button>\n\n    <nav class=\"main-nav\" [class.open]=\"menuOpen\">\n      <details class=\"nav-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ content.nav.outings }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/sorties\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ allOutingsLabel }}</a>\n          <a routerLink=\"/sorties/journee-en-mer\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ dayAtSeaLabel }}</a>\n          <a routerLink=\"/sorties/coucher-de-soleil\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ sunsetLabel }}</a>\n          <a routerLink=\"/sorties/anniversaire\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ partyLabel }}</a>\n          <a routerLink=\"/sorties/sortie-entreprise\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ corporateLabel }}</a>\n        </div>\n      </details>\n\n      <details class=\"nav-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ content.nav.boat }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/bateau\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ boatPresentationLabel }}</a>\n          <a routerLink=\"/galerie\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ galleryLabel }}</a>\n          <a routerLink=\"/crew\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ crewLabel }}</a>\n          <a routerLink=\"/safety\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ safetyLabel }}</a>\n        </div>\n      </details>\n\n      <details class=\"nav-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ practicalInfoLabel }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/how-it-works\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ guestJourneyLabel }}</a>\n          <a routerLink=\"/faq\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ faqLabel }}</a>\n          <a routerLink=\"/terms\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ termsLabel }}</a>\n          <a routerLink=\"/booking-process\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ depositLabel }}</a>\n        </div>\n      </details>\n      <a routerLink=\"/contact\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ contactLabel }}</a>\n\n      <div class=\"language-switcher\">\n        <select [value]=\"currentLanguage\" (change)=\"changeLanguage($any($event.target).value)\" aria-label=\"Language selector\">\n          <option value=\"fr\">Français</option>\n          <option value=\"en\">English</option>\n          <option value=\"es\">Español</option>\n        </select>\n      </div>\n\n      <details class=\"nav-dropdown account-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ accountSummaryLabel }}</summary>\n\n        <div class=\"dropdown-panel dropdown-panel-right\" *ngIf=\"!isLoggedIn\">\n          <a routerLink=\"/login\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ loginLabel }}</a>\n          <a routerLink=\"/signup\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ signupLabel }}</a>\n</div>\n\n        <div class=\"dropdown-panel dropdown-panel-right account-admin-panel\" *ngIf=\"isLoggedIn && isAdmin\">\n          <a routerLink=\"/my-profile\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProfileLabel }}</a>\n          <a routerLink=\"/admin/proposals\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ proposalsLabel }}</a>\n          <a routerLink=\"/admin/bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ alegriaBookingsLabel }}</a>\n          <a routerLink=\"/admin/external-bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ platformBookingsLabel }}</a>\n          <a routerLink=\"/my-payments\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ paymentsLabel }}</a>\n\n          <span class=\"dropdown-section-title\">{{ operationsSectionLabel }}</span>\n          <a routerLink=\"/admin/outings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ boatLogManagerLabel }}</a>\n          <a routerLink=\"/admin/manage-outings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ managePublicOutingsLabel }}</a>\n          <a routerLink=\"/admin/pricing-model\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ pricingModelLabel }}</a>\n          <a routerLink=\"/admin/feedbacks\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ adminFeedbacksLabel }}</a>\n\n          <button class=\"dropdown-action\" type=\"button\" (click)=\"logout()\">{{ logoutLabel }}</button>\n        </div>\n\n        <div class=\"dropdown-panel dropdown-panel-right account-customer-panel\" *ngIf=\"isLoggedIn && isCustomer\">\n          <a routerLink=\"/my-profile\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProfileLabel }}</a>\n          <a routerLink=\"/my-proposals\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProposalsLabel }}</a>\n          <a routerLink=\"/my-bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ alegriaBookingsLabel }}</a>\n          <a routerLink=\"/my-external-bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ platformBookingsLabel }}</a>\n          <a routerLink=\"/my-payments\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ paymentsLabel }}</a>\n          <a routerLink=\"/my-feedbacks\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myFeedbacksLabel }}</a>\n          <button class=\"dropdown-action\" type=\"button\" (click)=\"logout()\">{{ logoutLabel }}</button>\n        </div>\n      </details>\n    </nav>\n  </div>\n</header>\n\n";
+module.exports = "<header class=\"site-header\">\n  <div class=\"container header-bar\">\n    <a class=\"brand\" routerLink=\"/\" (click)=\"closeMenu()\">\n      <img class=\"brand-logo\" src=\"assets/img/logo-Alegria.png\" [alt]=\"t('brand')\" />\n      <span class=\"brand-text\">\n        <strong>{{ t('brand') }}</strong>\n        <small>{{ t('brandTagline') }}</small>\n      </span>\n    </a>\n\n    <button class=\"menu-toggle\" type=\"button\" (click)=\"toggleMenu()\" [attr.aria-label]=\"t('nav.openMenu')\">\n      ☰\n    </button>\n\n    <nav class=\"main-nav\" [class.open]=\"menuOpen\">\n      <details class=\"nav-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ t('nav.outings') }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/sorties\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ allOutingsLabel }}</a>\n          <a routerLink=\"/sorties/journee-en-mer\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ dayAtSeaLabel }}</a>\n          <a routerLink=\"/sorties/coucher-de-soleil\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ sunsetLabel }}</a>\n          <a routerLink=\"/sorties/anniversaire\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ partyLabel }}</a>\n          <a routerLink=\"/sorties/sortie-entreprise\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ corporateLabel }}</a>\n        </div>\n      </details>\n\n      <details class=\"nav-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ t('nav.boat') }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/bateau\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ boatPresentationLabel }}</a>\n          <a routerLink=\"/galerie\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ galleryLabel }}</a>\n          <a routerLink=\"/crew\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ crewLabel }}</a>\n          <a routerLink=\"/safety\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ safetyLabel }}</a>\n        </div>\n      </details>\n\n      <details class=\"nav-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ practicalInfoLabel }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/how-it-works\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ guestJourneyLabel }}</a>\n          <a routerLink=\"/faq\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ faqLabel }}</a>\n          <a routerLink=\"/terms\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ termsLabel }}</a>\n          <a routerLink=\"/booking-process\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ depositLabel }}</a>\n        </div>\n      </details>\n\n      <a routerLink=\"/contact\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ contactLabel }}</a>\n\n      <div class=\"language-switcher\">\n        <select [value]=\"currentLanguage\" (change)=\"changeLanguage($any($event.target).value)\" [attr.aria-label]=\"t('nav.languageSelector')\">\n          <option value=\"fr\">Français</option>\n          <option value=\"en\">English</option>\n          <option value=\"es\">Español</option>\n          <option value=\"it\">Italiano</option>\n          <option value=\"de\">Deutsch</option>\n          <option value=\"nl\">Nederlands</option>\n          <option value=\"ru\">Русский</option>\n        </select>\n      </div>\n\n      <details class=\"nav-dropdown account-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ accountSummaryLabel }}</summary>\n\n        <div class=\"dropdown-panel dropdown-panel-right\" *ngIf=\"!isLoggedIn\">\n          <a routerLink=\"/login\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ loginLabel }}</a>\n          <a routerLink=\"/signup\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ signupLabel }}</a>\n        </div>\n\n        <div class=\"dropdown-panel dropdown-panel-right account-admin-panel\" *ngIf=\"isLoggedIn && isAdmin\">\n          <a routerLink=\"/my-profile\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProfileLabel }}</a>\n          <a routerLink=\"/admin/proposals\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ proposalsLabel }}</a>\n          <a routerLink=\"/admin/bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ reservationsLabel }}</a>\n          <a routerLink=\"/my-payments\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ paymentsLabel }}</a>\n\n          <span class=\"dropdown-section-title\">{{ operationsSectionLabel }}</span>\n          <a routerLink=\"/admin/outings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ boatLogManagerLabel }}</a>\n          <a routerLink=\"/admin/fleet\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ fleetLabel }}</a>\n          <a routerLink=\"/admin/manage-outings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ managePublicOutingsLabel }}</a>\n          <a routerLink=\"/admin/pricing-model\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ pricingModelLabel }}</a>\n          <a routerLink=\"/admin/feedbacks\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ adminFeedbacksLabel }}</a>\n\n          <button class=\"dropdown-action\" type=\"button\" (click)=\"logout()\">{{ logoutLabel }}</button>\n        </div>\n\n        <div class=\"dropdown-panel dropdown-panel-right account-customer-panel\" *ngIf=\"isLoggedIn && isCustomer\">\n          <a routerLink=\"/my-profile\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProfileLabel }}</a>\n          <a routerLink=\"/my-proposals\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProposalsLabel }}</a>\n          <a routerLink=\"/my-bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ reservationsLabel }}</a>\n          <a routerLink=\"/my-payments\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ paymentsLabel }}</a>\n          <a routerLink=\"/my-feedbacks\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myFeedbacksLabel }}</a>\n          <button class=\"dropdown-action\" type=\"button\" (click)=\"logout()\">{{ logoutLabel }}</button>\n        </div>\n      </details>\n    </nav>\n  </div>\n</header>\n";
 
 /***/ }),
 
@@ -4059,6 +4059,11 @@ const SITE_CONTENT = {
       endTimeAfterStartTime: "L’heure de fin doit être postérieure à l’heure de début.",
       durationTooLong: "La durée choisie dépasse la durée maximale autorisée pour cette formule : {hours}h.",
       estimatedPriceTitle: "Prix estimatif de votre demande",
+      pricingSummaryTitle: "Prix estimé",
+      boatTotalLabel: "Total bateau",
+      skipperTotalLabel: "Total skipper",
+      customerTotalLabel: "Total à payer par le client",
+      pricingClarityNotice: "Aucun paiement n’est demandé maintenant. Cette estimation montre le total bateau, le total skipper et le total que le client devra payer. L’équipe finalisera la proposition avant de l’envoyer.",
       selectedPeriod: "Formule",
       estimatedPriceNote: "Ce prix est estimatif. L’équipe finalisera ensuite l’offre avec le prix du bateau, du skipper et des services additionnels avant de vous envoyer la proposition.",
       invalidDate: "La date de sortie n’est pas valide.",
@@ -4668,6 +4673,11 @@ const SITE_CONTENT = {
       endTimeAfterStartTime: "End time must be later than start time.",
       durationTooLong: "The selected duration exceeds the maximum duration allowed for this formula: {hours}h.",
       estimatedPriceTitle: "Estimated price for your request",
+      pricingSummaryTitle: "Estimated price",
+      boatTotalLabel: "Total boat",
+      skipperTotalLabel: "Total skipper",
+      customerTotalLabel: "Total customer will pay",
+      pricingClarityNotice: "No payment is requested now. This estimate shows the boat total, the skipper total and the total the customer will have to pay. The team will finalize the proposal before sending it.",
       selectedPeriod: "Period",
       estimatedPriceNote: "This price is an estimate. The team will then finalize the offer with the boat price, skipper price and extra services before sending you the proposal.",
       invalidDate: "The outing date is invalid.",
@@ -5278,6 +5288,11 @@ const SITE_CONTENT = {
       endTimeAfterStartTime: "La hora de fin debe ser posterior a la hora de inicio.",
       durationTooLong: "La duración seleccionada supera la duración máxima permitida para esta fórmula: {hours}h.",
       estimatedPriceTitle: "Precio estimado de su solicitud",
+      pricingSummaryTitle: "Precio estimado",
+      boatTotalLabel: "Total barco",
+      skipperTotalLabel: "Total skipper",
+      customerTotalLabel: "Total a pagar por el cliente",
+      pricingClarityNotice: "No se solicita ningún pago ahora. Esta estimación muestra el total del barco, el total del skipper y el total que el cliente tendrá que pagar. El equipo finalizará la propuesta antes de enviarla.",
       selectedPeriod: "Fórmula",
       estimatedPriceNote: "Este precio es estimativo. El equipo finalizará la oferta con el precio del barco, del skipper y de los servicios adicionales antes de enviarle la propuesta.",
       invalidDate: "La fecha de salida no es válida.",
@@ -5587,6 +5602,376 @@ const SITE_CONTENT = {
     boatHighlights: ['Catamarán Bali 4.1 amplio y estable', 'Hasta 12 pasajeros', 'Navegación cómoda y ambiente elegante', 'Salida: Villeneuve, Antibes o Cannes']
   }
 };
+const BOOKING_FINANCE_CONTENT = {
+  en: {
+    boat: 'Boat',
+    openBoatListing: 'Open boat listing',
+    platform: 'Platform',
+    reference: 'Reference',
+    openPlatformBooking: 'Open platform booking',
+    historicalBooking: 'Historical booking',
+    completed: 'Completed',
+    historicalPaidMessage: 'Everything has been paid and collected. No customer action is required.',
+    customerFinancialSummary: 'Customer financial summary',
+    customerQuestion: 'What does the customer pay?',
+    customerCost: 'Customer cost',
+    boatOuting: 'Boat outing',
+    skipper: 'Skipper',
+    extraServices: 'Extra services',
+    totalCustomerCost: 'TOTAL CUSTOMER COST',
+    alreadyPaidDeposit: 'Already paid (deposit)',
+    stripe: 'Stripe',
+    remainingBoatBalance: 'Remaining boat balance',
+    remainingSkipperFee: 'Remaining skipper fee',
+    totalRemaining: 'TOTAL REMAINING',
+    alegriaCollections: 'Alegria collections',
+    alegriaQuestion: 'How much money has Alegria actually received?',
+    collectedOnline: 'Collected online (Stripe)',
+    deposit: 'Deposit',
+    totalStripe: 'TOTAL STRIPE',
+    collectedOnboard: 'Collected onboard',
+    boatBalance: 'Boat balance',
+    catering: 'Catering',
+    tips: 'Tips',
+    fuel: 'Fuel',
+    totalOnboard: 'TOTAL ONBOARD',
+    outstanding: 'Outstanding collections',
+    total: 'TOTAL',
+    warranty: 'Warranty',
+    method: 'Method',
+    status: 'Status',
+    paymentHistory: 'Payment history',
+    paid: 'Paid',
+    pending: 'Pending',
+    registered: 'Registered',
+    receivedOnboard: 'Received onboard',
+    creditCard: 'Credit Card',
+    cash: 'Cash',
+    onboard: 'Onboard',
+    stripeOrOnboard: 'Stripe/onboard',
+    notRevenue: 'Warranty is separate and never included in revenue calculations.',
+    warrantyCardRegistered: 'Warranty card registered',
+    cashWarrantyRecorded: 'Cash warranty recorded',
+    warrantyNotSelected: 'Warranty not selected'
+  },
+  fr: {
+    boat: 'Bateau',
+    openBoatListing: 'Ouvrir l’annonce bateau',
+    platform: 'Plateforme',
+    reference: 'Référence',
+    openPlatformBooking: 'Ouvrir la réservation plateforme',
+    historicalBooking: 'Réservation historique',
+    completed: 'Terminée',
+    historicalPaidMessage: 'Tout a été payé et encaissé. Aucune action client n’est requise.',
+    customerFinancialSummary: 'Synthèse financière client',
+    customerQuestion: 'Que paie le client ?',
+    customerCost: 'Coût client',
+    boatOuting: 'Sortie bateau',
+    skipper: 'Skipper',
+    extraServices: 'Services additionnels',
+    totalCustomerCost: 'COÛT TOTAL CLIENT',
+    alreadyPaidDeposit: 'Déjà payé (acompte)',
+    stripe: 'Stripe',
+    remainingBoatBalance: 'Solde bateau restant',
+    remainingSkipperFee: 'Frais skipper restants',
+    totalRemaining: 'TOTAL RESTANT',
+    alegriaCollections: 'Encaissements Alegria',
+    alegriaQuestion: 'Combien Alegria a réellement encaissé ?',
+    collectedOnline: 'Encaissé en ligne (Stripe)',
+    deposit: 'Acompte',
+    totalStripe: 'TOTAL STRIPE',
+    collectedOnboard: 'Encaissé à bord',
+    boatBalance: 'Solde bateau',
+    catering: 'Catering',
+    tips: 'Pourboires',
+    fuel: 'Carburant',
+    totalOnboard: 'TOTAL À BORD',
+    outstanding: 'Encaissements à réaliser',
+    total: 'TOTAL',
+    warranty: 'Caution',
+    method: 'Méthode',
+    status: 'Statut',
+    paymentHistory: 'Historique des paiements',
+    paid: 'Payé',
+    pending: 'En attente',
+    registered: 'Enregistrée',
+    receivedOnboard: 'Reçue à bord',
+    creditCard: 'Carte bancaire',
+    cash: 'Espèces',
+    onboard: 'À bord',
+    stripeOrOnboard: 'Stripe/à bord',
+    notRevenue: 'La caution reste séparée et n’entre jamais dans les calculs de revenu.',
+    warrantyCardRegistered: 'Carte de caution enregistrée',
+    cashWarrantyRecorded: 'Caution espèces enregistrée',
+    warrantyNotSelected: 'Caution non sélectionnée'
+  },
+  es: {
+    boat: 'Barco',
+    openBoatListing: 'Abrir anuncio del barco',
+    platform: 'Plataforma',
+    reference: 'Referencia',
+    openPlatformBooking: 'Abrir reserva de plataforma',
+    historicalBooking: 'Reserva histórica',
+    completed: 'Completada',
+    historicalPaidMessage: 'Todo ha sido pagado y cobrado. No se requiere ninguna acción del cliente.',
+    customerFinancialSummary: 'Resumen financiero del cliente',
+    customerQuestion: '¿Qué paga el cliente?',
+    customerCost: 'Coste cliente',
+    boatOuting: 'Salida en barco',
+    skipper: 'Skipper',
+    extraServices: 'Servicios extra',
+    totalCustomerCost: 'COSTE TOTAL CLIENTE',
+    alreadyPaidDeposit: 'Ya pagado (depósito)',
+    stripe: 'Stripe',
+    remainingBoatBalance: 'Saldo barco restante',
+    remainingSkipperFee: 'Skipper restante',
+    totalRemaining: 'TOTAL RESTANTE',
+    alegriaCollections: 'Cobros Alegria',
+    alegriaQuestion: '¿Cuánto ha recibido Alegria realmente?',
+    collectedOnline: 'Cobrado online (Stripe)',
+    deposit: 'Depósito',
+    totalStripe: 'TOTAL STRIPE',
+    collectedOnboard: 'Cobrado a bordo',
+    boatBalance: 'Saldo barco',
+    catering: 'Catering',
+    tips: 'Propinas',
+    fuel: 'Combustible',
+    totalOnboard: 'TOTAL A BORDO',
+    outstanding: 'Cobros pendientes',
+    total: 'TOTAL',
+    warranty: 'Garantía',
+    method: 'Método',
+    status: 'Estado',
+    paymentHistory: 'Historial de pagos',
+    paid: 'Pagado',
+    pending: 'Pendiente',
+    registered: 'Registrada',
+    receivedOnboard: 'Recibida a bordo',
+    creditCard: 'Tarjeta bancaria',
+    cash: 'Efectivo',
+    onboard: 'A bordo',
+    stripeOrOnboard: 'Stripe/a bordo',
+    notRevenue: 'La garantía queda separada y nunca entra en los cálculos de ingresos.',
+    warrantyCardRegistered: 'Tarjeta de garantía registrada',
+    cashWarrantyRecorded: 'Garantía en efectivo registrada',
+    warrantyNotSelected: 'Garantía no seleccionada'
+  },
+  it: {
+    boat: 'Barca',
+    openBoatListing: 'Apri annuncio barca',
+    platform: 'Piattaforma',
+    reference: 'Riferimento',
+    openPlatformBooking: 'Apri prenotazione piattaforma',
+    historicalBooking: 'Prenotazione storica',
+    completed: 'Completata',
+    historicalPaidMessage: 'Tutto è stato pagato e incassato. Non è richiesta alcuna azione del cliente.',
+    customerFinancialSummary: 'Riepilogo finanziario cliente',
+    customerQuestion: 'Cosa paga il cliente?',
+    customerCost: 'Costo cliente',
+    boatOuting: 'Uscita in barca',
+    skipper: 'Skipper',
+    extraServices: 'Servizi extra',
+    totalCustomerCost: 'COSTO TOTALE CLIENTE',
+    alreadyPaidDeposit: 'Già pagato (deposito)',
+    stripe: 'Stripe',
+    remainingBoatBalance: 'Saldo barca restante',
+    remainingSkipperFee: 'Skipper restante',
+    totalRemaining: 'TOTALE RESTANTE',
+    alegriaCollections: 'Incassi Alegria',
+    alegriaQuestion: 'Quanto ha effettivamente ricevuto Alegria?',
+    collectedOnline: 'Incassato online (Stripe)',
+    deposit: 'Deposito',
+    totalStripe: 'TOTALE STRIPE',
+    collectedOnboard: 'Incassato a bordo',
+    boatBalance: 'Saldo barca',
+    catering: 'Catering',
+    tips: 'Mance',
+    fuel: 'Carburante',
+    totalOnboard: 'TOTALE A BORDO',
+    outstanding: 'Incassi in sospeso',
+    total: 'TOTALE',
+    warranty: 'Cauzione',
+    method: 'Metodo',
+    status: 'Stato',
+    paymentHistory: 'Storico pagamenti',
+    paid: 'Pagato',
+    pending: 'In attesa',
+    registered: 'Registrata',
+    receivedOnboard: 'Ricevuta a bordo',
+    creditCard: 'Carta di credito',
+    cash: 'Contanti',
+    onboard: 'A bordo',
+    stripeOrOnboard: 'Stripe/a bordo',
+    notRevenue: 'La cauzione resta separata e non entra mai nei calcoli dei ricavi.',
+    warrantyCardRegistered: 'Carta cauzione registrata',
+    cashWarrantyRecorded: 'Cauzione in contanti registrata',
+    warrantyNotSelected: 'Cauzione non selezionata'
+  },
+  de: {
+    boat: 'Boot',
+    openBoatListing: 'Bootsangebot öffnen',
+    platform: 'Plattform',
+    reference: 'Referenz',
+    openPlatformBooking: 'Plattformbuchung öffnen',
+    historicalBooking: 'Historische Buchung',
+    completed: 'Abgeschlossen',
+    historicalPaidMessage: 'Alles wurde bezahlt und eingezogen. Es ist keine Kundenaktion erforderlich.',
+    customerFinancialSummary: 'Finanzübersicht Kunde',
+    customerQuestion: 'Was zahlt der Kunde?',
+    customerCost: 'Kundenkosten',
+    boatOuting: 'Bootsausfahrt',
+    skipper: 'Skipper',
+    extraServices: 'Zusatzleistungen',
+    totalCustomerCost: 'GESAMTKOSTEN KUNDE',
+    alreadyPaidDeposit: 'Bereits bezahlt (Anzahlung)',
+    stripe: 'Stripe',
+    remainingBoatBalance: 'Restbetrag Boot',
+    remainingSkipperFee: 'Restbetrag Skipper',
+    totalRemaining: 'GESAMT OFFEN',
+    alegriaCollections: 'Alegria-Einnahmen',
+    alegriaQuestion: 'Wie viel Geld hat Alegria tatsächlich erhalten?',
+    collectedOnline: 'Online erhalten (Stripe)',
+    deposit: 'Anzahlung',
+    totalStripe: 'TOTAL STRIPE',
+    collectedOnboard: 'An Bord erhalten',
+    boatBalance: 'Bootssaldo',
+    catering: 'Catering',
+    tips: 'Trinkgeld',
+    fuel: 'Kraftstoff',
+    totalOnboard: 'TOTAL AN BORD',
+    outstanding: 'Ausstehende Zahlungen',
+    total: 'TOTAL',
+    warranty: 'Kaution',
+    method: 'Methode',
+    status: 'Status',
+    paymentHistory: 'Zahlungsverlauf',
+    paid: 'Bezahlt',
+    pending: 'Ausstehend',
+    registered: 'Registriert',
+    receivedOnboard: 'An Bord erhalten',
+    creditCard: 'Kreditkarte',
+    cash: 'Bar',
+    onboard: 'An Bord',
+    stripeOrOnboard: 'Stripe/an Bord',
+    notRevenue: 'Die Kaution bleibt getrennt und wird nie in Umsatzberechnungen einbezogen.',
+    warrantyCardRegistered: 'Kautionskarte registriert',
+    cashWarrantyRecorded: 'Barkaution erfasst',
+    warrantyNotSelected: 'Kaution nicht ausgewählt'
+  },
+  nl: {
+    boat: 'Boot',
+    openBoatListing: 'Bootadvertentie openen',
+    platform: 'Platform',
+    reference: 'Referentie',
+    openPlatformBooking: 'Platformboeking openen',
+    historicalBooking: 'Historische boeking',
+    completed: 'Voltooid',
+    historicalPaidMessage: 'Alles is betaald en geïnd. Er is geen klantactie vereist.',
+    customerFinancialSummary: 'Financieel overzicht klant',
+    customerQuestion: 'Wat betaalt de klant?',
+    customerCost: 'Klantkosten',
+    boatOuting: 'Boottocht',
+    skipper: 'Schipper',
+    extraServices: 'Extra diensten',
+    totalCustomerCost: 'TOTALE KLANTKOSTEN',
+    alreadyPaidDeposit: 'Al betaald (aanbetaling)',
+    stripe: 'Stripe',
+    remainingBoatBalance: 'Resterend bootsaldo',
+    remainingSkipperFee: 'Resterende schipperkosten',
+    totalRemaining: 'TOTAAL RESTEREND',
+    alegriaCollections: 'Alegria ontvangsten',
+    alegriaQuestion: 'Hoeveel heeft Alegria werkelijk ontvangen?',
+    collectedOnline: 'Online ontvangen (Stripe)',
+    deposit: 'Aanbetaling',
+    totalStripe: 'TOTAL STRIPE',
+    collectedOnboard: 'Aan boord ontvangen',
+    boatBalance: 'Bootsaldo',
+    catering: 'Catering',
+    tips: 'Fooien',
+    fuel: 'Brandstof',
+    totalOnboard: 'TOTAAL AAN BOORD',
+    outstanding: 'Openstaande ontvangsten',
+    total: 'TOTAAL',
+    warranty: 'Waarborg',
+    method: 'Methode',
+    status: 'Status',
+    paymentHistory: 'Betaalgeschiedenis',
+    paid: 'Betaald',
+    pending: 'In afwachting',
+    registered: 'Geregistreerd',
+    receivedOnboard: 'Aan boord ontvangen',
+    creditCard: 'Creditcard',
+    cash: 'Contant',
+    onboard: 'Aan boord',
+    stripeOrOnboard: 'Stripe/aan boord',
+    notRevenue: 'De waarborg blijft apart en telt nooit mee in omzetberekeningen.',
+    warrantyCardRegistered: 'Waarborgkaart geregistreerd',
+    cashWarrantyRecorded: 'Contante waarborg geregistreerd',
+    warrantyNotSelected: 'Waarborg niet geselecteerd'
+  },
+  ru: {
+    boat: 'Лодка',
+    openBoatListing: 'Открыть объявление лодки',
+    platform: 'Платформа',
+    reference: 'Ссылка',
+    openPlatformBooking: 'Открыть бронирование платформы',
+    historicalBooking: 'Историческое бронирование',
+    completed: 'Завершено',
+    historicalPaidMessage: 'Всё оплачено и получено. Действия клиента не требуются.',
+    customerFinancialSummary: 'Финансовая сводка клиента',
+    customerQuestion: 'Что оплачивает клиент?',
+    customerCost: 'Стоимость для клиента',
+    boatOuting: 'Прогулка на лодке',
+    skipper: 'Шкипер',
+    extraServices: 'Дополнительные услуги',
+    totalCustomerCost: 'ИТОГО ДЛЯ КЛИЕНТА',
+    alreadyPaidDeposit: 'Уже оплачено (депозит)',
+    stripe: 'Stripe',
+    remainingBoatBalance: 'Остаток за лодку',
+    remainingSkipperFee: 'Остаток за шкипера',
+    totalRemaining: 'ИТОГО ОСТАЛОСЬ',
+    alegriaCollections: 'Поступления Alegria',
+    alegriaQuestion: 'Сколько Alegria фактически получила?',
+    collectedOnline: 'Получено онлайн (Stripe)',
+    deposit: 'Депозит',
+    totalStripe: 'ИТОГО STRIPE',
+    collectedOnboard: 'Получено на борту',
+    boatBalance: 'Остаток за лодку',
+    catering: 'Кейтеринг',
+    tips: 'Чаевые',
+    fuel: 'Топливо',
+    totalOnboard: 'ИТОГО НА БОРТУ',
+    outstanding: 'Ожидаемые платежи',
+    total: 'ИТОГО',
+    warranty: 'Залог',
+    method: 'Способ',
+    status: 'Статус',
+    paymentHistory: 'История платежей',
+    paid: 'Оплачено',
+    pending: 'Ожидается',
+    registered: 'Зарегистрировано',
+    receivedOnboard: 'Получено на борту',
+    creditCard: 'Банковская карта',
+    cash: 'Наличные',
+    onboard: 'На борту',
+    stripeOrOnboard: 'Stripe/на борту',
+    notRevenue: 'Залог хранится отдельно и никогда не входит в расчёт выручки.',
+    warrantyCardRegistered: 'Карта для залога зарегистрирована',
+    cashWarrantyRecorded: 'Залог наличными зарегистрирован',
+    warrantyNotSelected: 'Залог не выбран'
+  }
+};
+['fr', 'en', 'es', 'it', 'de', 'nl', 'ru'].forEach(language => {
+  if (!SITE_CONTENT[language]) {
+    SITE_CONTENT[language] = {
+      ...SITE_CONTENT.en
+    };
+  }
+  SITE_CONTENT[language] = {
+    ...SITE_CONTENT[language],
+    bookingFinance: BOOKING_FINANCE_CONTENT[language]
+  };
+});
 
 /***/ }),
 
@@ -6882,9 +7267,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _homefooter_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./homefooter.component.scss?ngResource */ 38745);
 /* harmony import */ var _homefooter_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_homefooter_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _home_site_content__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../home/site-content */ 14009);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../services/language.service */ 48756);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _home_site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../home/site-content-service/site-content.service */ 73196);
 
 
@@ -6913,7 +7298,7 @@ let HomefooterComponent = class HomefooterComponent {
     this.loadSiteContent();
     this.languageSub = this.languageService.language$.subscribe(language => {
       this.currentLanguage = language;
-      this.content = this.allSiteContent[language] || _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[language];
+      this.applyLanguageContent(language);
     });
   }
   loadSiteContent() {
@@ -6921,30 +7306,26 @@ let HomefooterComponent = class HomefooterComponent {
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       try {
         _this.allSiteContent = yield _this.siteContentService.getContent();
-        _this.content = _this.allSiteContent[_this.currentLanguage] || _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[_this.currentLanguage];
       } catch {
         _this.allSiteContent = _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
-        _this.content = _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[_this.currentLanguage] || _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
       }
+      _this.applyLanguageContent(_this.currentLanguage);
     })();
   }
+  applyLanguageContent(language) {
+    this.content = this.allSiteContent?.[language] || _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT?.[language] || _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
+  }
+  get footerContent() {
+    return this.content?.footer || {};
+  }
+  get releaseLabel() {
+    return this.footerContent.release || 'Release';
+  }
   get termsLabel() {
-    if (this.currentLanguage === 'en') {
-      return 'Terms & Conditions';
-    }
-    if (this.currentLanguage === 'es') {
-      return 'Términos y condiciones';
-    }
-    return 'Conditions générales';
+    return this.footerContent.terms || 'Conditions générales';
   }
   get safetyLabel() {
-    if (this.currentLanguage === 'en') {
-      return 'Safety instructions';
-    }
-    if (this.currentLanguage === 'es') {
-      return 'Instrucciones de seguridad';
-    }
-    return 'Consignes de sécurité';
+    return this.footerContent.safety || 'Consignes de sécurité';
   }
   ngOnDestroy() {
     this.languageSub?.unsubscribe();
@@ -7035,7 +7416,7 @@ __webpack_require__.r(__webpack_exports__);
 let LayoutModule = class LayoutModule {};
 LayoutModule = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.NgModule)({
   declarations: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent, _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__.HomeheaderComponent, _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__.HomefooterComponent, _layoutnone_layoutnone_component__WEBPACK_IMPORTED_MODULE_3__.LayoutnoneComponent, _cookie_consent_cookie_consent_component__WEBPACK_IMPORTED_MODULE_5__.CookieConsentComponent],
-  imports: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent, _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__.HomeheaderComponent, _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__.HomefooterComponent, _cookie_consent_cookie_consent_component__WEBPACK_IMPORTED_MODULE_5__.CookieConsentComponent, _angular_common__WEBPACK_IMPORTED_MODULE_8__.CommonModule, _angular_router__WEBPACK_IMPORTED_MODULE_9__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_10__.IonicModule, _angular_forms__WEBPACK_IMPORTED_MODULE_11__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_11__.ReactiveFormsModule, ngx_spinner__WEBPACK_IMPORTED_MODULE_12__.NgxSpinnerModule, _layout_router_module__WEBPACK_IMPORTED_MODULE_4__.LayoutRoutingModule],
+  imports: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent, _home_homeheader_homeheader_component__WEBPACK_IMPORTED_MODULE_1__.HomeheaderComponent, _home_homefooter_homefooter_component__WEBPACK_IMPORTED_MODULE_2__.HomefooterComponent, _layoutnone_layoutnone_component__WEBPACK_IMPORTED_MODULE_3__.LayoutnoneComponent, _angular_common__WEBPACK_IMPORTED_MODULE_8__.CommonModule, _angular_router__WEBPACK_IMPORTED_MODULE_9__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_10__.IonicModule, _angular_forms__WEBPACK_IMPORTED_MODULE_11__.FormsModule, _angular_forms__WEBPACK_IMPORTED_MODULE_11__.ReactiveFormsModule, ngx_spinner__WEBPACK_IMPORTED_MODULE_12__.NgxSpinnerModule, _layout_router_module__WEBPACK_IMPORTED_MODULE_4__.LayoutRoutingModule],
   exports: [_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent]
 })], LayoutModule);
 
@@ -7086,10 +7467,14 @@ let LanguageService = class LanguageService {
       // localStorage can be unavailable in some environments.
     }
   }
+  supportedLanguages = ['fr', 'en', 'es', 'it', 'de', 'nl', 'ru'];
+  isSupportedLanguage(language) {
+    return this.supportedLanguages.includes(language);
+  }
   readInitialLanguage() {
     try {
       const saved = localStorage.getItem(this.storageKey);
-      if (saved === 'fr' || saved === 'en' || saved === 'es') {
+      if (this.isSupportedLanguage(saved)) {
         return saved;
       }
     } catch {
@@ -7149,6 +7534,288 @@ let HomeheaderComponent = class HomeheaderComponent {
   loggedUser = null;
   languageSub;
   accountSub;
+  headerText = {
+    fr: {
+      hi: 'Bonjour',
+      brand: 'Alegria',
+      brandTagline: 'Sorties privées en catamaran',
+      'nav.openMenu': 'Ouvrir le menu',
+      'nav.outings': 'Sorties',
+      'nav.allOutings': 'Toutes les sorties',
+      'nav.dayAtSea': 'Journée en mer',
+      'nav.sunset': 'Coucher de soleil',
+      'nav.party': 'Fête privée',
+      'nav.corporate': 'Sortie entreprise',
+      'nav.boat': 'Le bateau',
+      'nav.boatPresentation': 'Présentation',
+      'nav.gallery': 'Galerie',
+      'nav.crew': 'Équipage',
+      'nav.safety': 'Consignes de sécurité',
+      'nav.practicalInformation': 'Infos pratiques',
+      'nav.guestJourney': 'Comment se déroule la sortie',
+      'nav.faq': 'FAQ invités',
+      'nav.terms': 'Conditions générales',
+      'nav.depositAndWarranty': 'Comment réserver ?',
+      'nav.contact': 'Contact',
+      'nav.languageSelector': 'Sélecteur de langue',
+      'nav.account': 'Compte',
+      'nav.login': 'Se connecter',
+      'nav.signup': 'Créer un compte',
+      'nav.myProfile': 'Mon profil',
+      'nav.proposals': 'Propositions',
+      'nav.myProposals': 'Mes propositions',
+      'nav.reservations': 'Réservations',
+      'nav.payments': 'Paiements',
+      'nav.operations': 'Opérations',
+      'nav.boatLogManager': 'Gestion du journal de bord',
+      'nav.fleet': 'Flotte / bateaux',
+      'nav.managePublicOutings': 'Gérer les sorties publiques',
+      'nav.pricingModel': 'Modèle tarifaire',
+      'nav.feedbacks': 'Avis clients',
+      'nav.myFeedbacks': 'Mes avis',
+      'nav.logout': 'Déconnexion'
+    },
+    en: {
+      hi: 'Hi',
+      brand: 'Alegria',
+      brandTagline: 'Private catamaran outings',
+      'nav.openMenu': 'Open menu',
+      'nav.outings': 'Outings',
+      'nav.allOutings': 'All outings',
+      'nav.dayAtSea': 'Day at sea',
+      'nav.sunset': 'Sunset cruise',
+      'nav.party': 'Private party',
+      'nav.corporate': 'Corporate outing',
+      'nav.boat': 'Boat',
+      'nav.boatPresentation': 'Boat presentation',
+      'nav.gallery': 'Gallery',
+      'nav.crew': 'Crew',
+      'nav.safety': 'Safety instructions',
+      'nav.practicalInformation': 'Practical information',
+      'nav.guestJourney': 'How the outing works',
+      'nav.faq': 'Guest FAQ',
+      'nav.terms': 'Terms & Conditions',
+      'nav.depositAndWarranty': 'How booking works',
+      'nav.contact': 'Contact',
+      'nav.languageSelector': 'Language selector',
+      'nav.account': 'Account',
+      'nav.login': 'Log in',
+      'nav.signup': 'Create account',
+      'nav.myProfile': 'My profile',
+      'nav.proposals': 'Proposals',
+      'nav.myProposals': 'My proposals',
+      'nav.reservations': 'Bookings',
+      'nav.payments': 'Payments',
+      'nav.operations': 'Operations',
+      'nav.boatLogManager': 'Boat log manager',
+      'nav.fleet': 'Fleet / boats',
+      'nav.managePublicOutings': 'Manage public outings',
+      'nav.pricingModel': 'Pricing model',
+      'nav.feedbacks': 'Customer feedbacks',
+      'nav.myFeedbacks': 'My feedbacks',
+      'nav.logout': 'Log out'
+    },
+    es: {
+      hi: 'Hola',
+      brand: 'Alegria',
+      brandTagline: 'Salidas privadas en catamarán',
+      'nav.openMenu': 'Abrir menú',
+      'nav.outings': 'Salidas',
+      'nav.allOutings': 'Todas las salidas',
+      'nav.dayAtSea': 'Día en el mar',
+      'nav.sunset': 'Atardecer',
+      'nav.party': 'Fiesta privada',
+      'nav.corporate': 'Evento de empresa',
+      'nav.boat': 'Barco',
+      'nav.boatPresentation': 'Presentación',
+      'nav.gallery': 'Galería',
+      'nav.crew': 'Tripulación',
+      'nav.safety': 'Instrucciones de seguridad',
+      'nav.practicalInformation': 'Información práctica',
+      'nav.guestJourney': 'Cómo será la salida',
+      'nav.faq': 'FAQ invitados',
+      'nav.terms': 'Condiciones generales',
+      'nav.depositAndWarranty': 'Cómo reservar',
+      'nav.contact': 'Contacto',
+      'nav.languageSelector': 'Selector de idioma',
+      'nav.account': 'Cuenta',
+      'nav.login': 'Iniciar sesión',
+      'nav.signup': 'Crear una cuenta',
+      'nav.myProfile': 'Mi perfil',
+      'nav.proposals': 'Propuestas',
+      'nav.myProposals': 'Mis propuestas',
+      'nav.reservations': 'Reservas',
+      'nav.payments': 'Pagos',
+      'nav.operations': 'Operaciones',
+      'nav.boatLogManager': 'Gestor de bitácora',
+      'nav.fleet': 'Flota / barcos',
+      'nav.managePublicOutings': 'Gestionar salidas públicas',
+      'nav.pricingModel': 'Modelo de precios',
+      'nav.feedbacks': 'Comentarios clientes',
+      'nav.myFeedbacks': 'Mis comentarios',
+      'nav.logout': 'Cerrar sesión'
+    },
+    it: {
+      hi: 'Ciao',
+      brand: 'Alegria',
+      brandTagline: 'Uscite private in catamarano',
+      'nav.openMenu': 'Apri menu',
+      'nav.outings': 'Uscite',
+      'nav.allOutings': 'Tutte le uscite',
+      'nav.dayAtSea': 'Giornata in mare',
+      'nav.sunset': 'Crociera al tramonto',
+      'nav.party': 'Festa privata',
+      'nav.corporate': 'Uscita aziendale',
+      'nav.boat': 'Barca',
+      'nav.boatPresentation': 'Presentazione',
+      'nav.gallery': 'Galleria',
+      'nav.crew': 'Equipaggio',
+      'nav.safety': 'Istruzioni di sicurezza',
+      'nav.practicalInformation': 'Informazioni pratiche',
+      'nav.guestJourney': 'Come si svolge l’uscita',
+      'nav.faq': 'FAQ ospiti',
+      'nav.terms': 'Condizioni generali',
+      'nav.depositAndWarranty': 'Come prenotare',
+      'nav.contact': 'Contatto',
+      'nav.languageSelector': 'Selettore lingua',
+      'nav.account': 'Account',
+      'nav.login': 'Accedi',
+      'nav.signup': 'Crea un account',
+      'nav.myProfile': 'Il mio profilo',
+      'nav.proposals': 'Proposte',
+      'nav.myProposals': 'Le mie proposte',
+      'nav.reservations': 'Prenotazioni',
+      'nav.payments': 'Pagamenti',
+      'nav.operations': 'Operazioni',
+      'nav.boatLogManager': 'Gestione diario di bordo',
+      'nav.fleet': 'Flotta / barche',
+      'nav.managePublicOutings': 'Gestire le uscite pubbliche',
+      'nav.pricingModel': 'Modello tariffario',
+      'nav.feedbacks': 'Recensioni clienti',
+      'nav.myFeedbacks': 'Le mie recensioni',
+      'nav.logout': 'Disconnetti'
+    },
+    de: {
+      hi: 'Hallo',
+      brand: 'Alegria',
+      brandTagline: 'Private Katamaran-Ausflüge',
+      'nav.openMenu': 'Menü öffnen',
+      'nav.outings': 'Ausflüge',
+      'nav.allOutings': 'Alle Ausflüge',
+      'nav.dayAtSea': 'Tag auf See',
+      'nav.sunset': 'Sonnenuntergangsfahrt',
+      'nav.party': 'Private Feier',
+      'nav.corporate': 'Firmenausflug',
+      'nav.boat': 'Boot',
+      'nav.boatPresentation': 'Präsentation',
+      'nav.gallery': 'Galerie',
+      'nav.crew': 'Crew',
+      'nav.safety': 'Sicherheitshinweise',
+      'nav.practicalInformation': 'Praktische Informationen',
+      'nav.guestJourney': 'Ablauf des Ausflugs',
+      'nav.faq': 'Gäste-FAQ',
+      'nav.terms': 'Allgemeine Geschäftsbedingungen',
+      'nav.depositAndWarranty': 'So funktioniert die Buchung',
+      'nav.contact': 'Kontakt',
+      'nav.languageSelector': 'Sprachauswahl',
+      'nav.account': 'Konto',
+      'nav.login': 'Anmelden',
+      'nav.signup': 'Konto erstellen',
+      'nav.myProfile': 'Mein Profil',
+      'nav.proposals': 'Angebote',
+      'nav.myProposals': 'Meine Angebote',
+      'nav.reservations': 'Buchungen',
+      'nav.payments': 'Zahlungen',
+      'nav.operations': 'Betrieb',
+      'nav.boatLogManager': 'Logbuchverwaltung',
+      'nav.fleet': 'Flotte / Boote',
+      'nav.managePublicOutings': 'Öffentliche Ausflüge verwalten',
+      'nav.pricingModel': 'Preismodell',
+      'nav.feedbacks': 'Kundenbewertungen',
+      'nav.myFeedbacks': 'Meine Bewertungen',
+      'nav.logout': 'Abmelden'
+    },
+    nl: {
+      hi: 'Hallo',
+      brand: 'Alegria',
+      brandTagline: 'Privé-uitstappen met catamaran',
+      'nav.openMenu': 'Menu openen',
+      'nav.outings': 'Uitstappen',
+      'nav.allOutings': 'Alle uitstappen',
+      'nav.dayAtSea': 'Dag op zee',
+      'nav.sunset': 'Zonsondergangstocht',
+      'nav.party': 'Privéfeest',
+      'nav.corporate': 'Bedrijfsuitstap',
+      'nav.boat': 'Boot',
+      'nav.boatPresentation': 'Presentatie',
+      'nav.gallery': 'Galerij',
+      'nav.crew': 'Bemanning',
+      'nav.safety': 'Veiligheidsinstructies',
+      'nav.practicalInformation': 'Praktische informatie',
+      'nav.guestJourney': 'Hoe de uitstap verloopt',
+      'nav.faq': 'FAQ voor gasten',
+      'nav.terms': 'Algemene voorwaarden',
+      'nav.depositAndWarranty': 'Hoe boeken werkt',
+      'nav.contact': 'Contact',
+      'nav.languageSelector': 'Taalselector',
+      'nav.account': 'Account',
+      'nav.login': 'Inloggen',
+      'nav.signup': 'Account aanmaken',
+      'nav.myProfile': 'Mijn profiel',
+      'nav.proposals': 'Voorstellen',
+      'nav.myProposals': 'Mijn voorstellen',
+      'nav.reservations': 'Boekingen',
+      'nav.payments': 'Betalingen',
+      'nav.operations': 'Operaties',
+      'nav.boatLogManager': 'Logboekbeheer',
+      'nav.fleet': 'Vloot / boten',
+      'nav.managePublicOutings': 'Publieke uitstappen beheren',
+      'nav.pricingModel': 'Prijsmodel',
+      'nav.feedbacks': 'Klantbeoordelingen',
+      'nav.myFeedbacks': 'Mijn beoordelingen',
+      'nav.logout': 'Uitloggen'
+    },
+    ru: {
+      hi: 'Здравствуйте',
+      brand: 'Alegria',
+      brandTagline: 'Частные прогулки на катамаране',
+      'nav.openMenu': 'Открыть меню',
+      'nav.outings': 'Прогулки',
+      'nav.allOutings': 'Все прогулки',
+      'nav.dayAtSea': 'День в море',
+      'nav.sunset': 'Круиз на закате',
+      'nav.party': 'Частная вечеринка',
+      'nav.corporate': 'Корпоративная прогулка',
+      'nav.boat': 'Лодка',
+      'nav.boatPresentation': 'Презентация',
+      'nav.gallery': 'Галерея',
+      'nav.crew': 'Экипаж',
+      'nav.safety': 'Инструкции по безопасности',
+      'nav.practicalInformation': 'Практическая информация',
+      'nav.guestJourney': 'Как проходит прогулка',
+      'nav.faq': 'FAQ для гостей',
+      'nav.terms': 'Общие условия',
+      'nav.depositAndWarranty': 'Как проходит бронирование',
+      'nav.contact': 'Контакт',
+      'nav.languageSelector': 'Выбор языка',
+      'nav.account': 'Аккаунт',
+      'nav.login': 'Войти',
+      'nav.signup': 'Создать аккаунт',
+      'nav.myProfile': 'Мой профиль',
+      'nav.proposals': 'Предложения',
+      'nav.myProposals': 'Мои предложения',
+      'nav.reservations': 'Бронирования',
+      'nav.payments': 'Платежи',
+      'nav.operations': 'Операции',
+      'nav.boatLogManager': 'Управление судовым журналом',
+      'nav.fleet': 'Флот / лодки',
+      'nav.managePublicOutings': 'Управление публичными прогулками',
+      'nav.pricingModel': 'Тарифная модель',
+      'nav.feedbacks': 'Отзывы клиентов',
+      'nav.myFeedbacks': 'Мои отзывы',
+      'nav.logout': 'Выйти'
+    }
+  };
   constructor(languageService, router, mainSvc, siteContentService) {
     this.languageService = languageService;
     this.router = router;
@@ -7156,10 +7823,11 @@ let HomeheaderComponent = class HomeheaderComponent {
     this.siteContentService = siteContentService;
   }
   ngOnInit() {
+    this.currentLanguage = this.languageService.currentLanguage || 'fr';
     this.loadSiteContent();
     this.languageSub = this.languageService.language$.subscribe(language => {
       this.currentLanguage = language;
-      this.content = this.allSiteContent[language] || _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[language];
+      this.content = this.allSiteContent[language] || _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[language] || _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
     });
     const svc = this.mainSvc;
     const userObservable = typeof svc.getLoggedUser === 'function' ? svc.getLoggedUser() : typeof svc.getUser === 'function' ? svc.getUser() : svc.bnUserO;
@@ -7176,7 +7844,7 @@ let HomeheaderComponent = class HomeheaderComponent {
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       try {
         _this.allSiteContent = yield _this.siteContentService.getContent();
-        _this.content = _this.allSiteContent[_this.currentLanguage] || _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[_this.currentLanguage];
+        _this.content = _this.allSiteContent[_this.currentLanguage] || _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[_this.currentLanguage] || _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
       } catch {
         _this.allSiteContent = _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
         _this.content = _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[_this.currentLanguage] || _home_site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
@@ -7186,6 +7854,23 @@ let HomeheaderComponent = class HomeheaderComponent {
   ngOnDestroy() {
     this.languageSub?.unsubscribe();
     this.accountSub?.unsubscribe();
+  }
+  t(key, fallback = '') {
+    const directValue = key.split('.').reduce((obj, part) => obj?.[part], this.content);
+    if (typeof directValue === 'string' && directValue.trim()) {
+      return directValue;
+    }
+    const legacyNavKey = key.startsWith('nav.') ? key.replace('nav.', '') : '';
+    const legacyNavValue = legacyNavKey ? this.content?.nav?.[legacyNavKey] : undefined;
+    if (typeof legacyNavValue === 'string' && legacyNavValue.trim()) {
+      return legacyNavValue;
+    }
+    const menuKey = key.startsWith('nav.') ? key.replace('nav.', '') : key;
+    const menuValue = this.content?.menu?.[menuKey];
+    if (typeof menuValue === 'string' && menuValue.trim()) {
+      return menuValue;
+    }
+    return this.headerText[this.currentLanguage]?.[key] || this.headerText.en[key] || fallback || key;
   }
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
@@ -7247,164 +7932,166 @@ let HomeheaderComponent = class HomeheaderComponent {
   get firstName() {
     const user = this.loggedUser || {};
     const fromName = user.firstname || user.firstName || user.displayName || user.email || '';
-    return String(fromName).split(' ')[0] || this.accountLabel;
+    return String(fromName).split(' ')[0] || this.t('nav.account');
   }
   get accountSummaryLabel() {
     if (this.isLoggedIn) {
-      return this.currentLanguage === 'fr' ? `Bonjour ${this.firstName}` : this.currentLanguage === 'es' ? `Hola ${this.firstName}` : `Hi ${this.firstName}`;
+      return `${this.t('hi')} ${this.firstName}`;
     }
-    return this.accountLabel;
+    return this.t('nav.account');
   }
   get allOutingsLabel() {
-    return this.currentLanguage === 'fr' ? 'Toutes les sorties' : this.currentLanguage === 'es' ? 'Todas las salidas' : 'All experiences';
+    return this.t('nav.allOutings');
   }
   get dayAtSeaLabel() {
-    return this.currentLanguage === 'fr' ? 'Journée en mer' : this.currentLanguage === 'es' ? 'Día en el mar' : 'Full day at sea';
+    return this.t('nav.dayAtSea');
   }
   get sunsetLabel() {
-    return this.currentLanguage === 'fr' ? 'Coucher de soleil' : this.currentLanguage === 'es' ? 'Atardecer' : 'Sunset cruise';
+    return this.t('nav.sunset');
   }
   get partyLabel() {
-    return this.currentLanguage === 'fr' ? 'Fête privée' : this.currentLanguage === 'es' ? 'Fiesta privada' : 'Private party';
+    return this.t('nav.party');
   }
   get corporateLabel() {
-    return this.currentLanguage === 'fr' ? 'Sortie entreprise' : this.currentLanguage === 'es' ? 'Evento de empresa' : 'Corporate outing';
+    return this.t('nav.corporate');
   }
   get boatPresentationLabel() {
-    return this.currentLanguage === 'fr' ? 'Présentation' : this.currentLanguage === 'es' ? 'Presentación' : 'Overview';
+    return this.t('nav.boatPresentation');
   }
   get checklistLabel() {
-    return this.currentLanguage === 'fr' ? 'Checklist sécurité' : this.currentLanguage === 'es' ? 'Checklist de seguridad' : 'Safety checklist';
+    return this.t('nav.safety');
   }
   get safetyLabel() {
-    return this.currentLanguage === 'fr' ? 'Consignes de sécurité' : this.currentLanguage === 'es' ? 'Instrucciones de seguridad' : 'Safety instructions';
+    return this.t('nav.safety');
   }
   get practicalInfoLabel() {
-    return this.currentLanguage === 'fr' ? 'Infos pratiques' : this.currentLanguage === 'es' ? 'Información práctica' : 'Practical info';
+    return this.t('nav.practicalInformation');
   }
   get guestJourneyLabel() {
-    return this.currentLanguage === 'fr' ? 'Comment se déroule la sortie' : this.currentLanguage === 'es' ? 'Cómo será la salida' : 'How the outing works';
+    return this.t('nav.guestJourney');
   }
   get faqLabel() {
-    return this.currentLanguage === 'fr' ? 'FAQ invités' : this.currentLanguage === 'es' ? 'FAQ invitados' : 'Guest FAQ';
+    return this.t('nav.faq');
   }
   get termsLabel() {
-    return this.currentLanguage === 'fr' ? 'Conditions générales' : this.currentLanguage === 'es' ? 'Condiciones generales' : 'Terms & conditions';
+    return this.t('nav.terms');
   }
   get depositLabel() {
-    return this.currentLanguage === 'fr' ? 'Comment réserver ?' : this.currentLanguage === 'es' ? '¿Cómo reservar?' : 'How booking works';
+    return this.t('nav.depositAndWarranty');
   }
   get accountLabel() {
-    return this.currentLanguage === 'fr' ? 'Compte' : this.currentLanguage === 'es' ? 'Cuenta' : 'Account';
+    return this.t('nav.account');
   }
   get loginLabel() {
-    return this.currentLanguage === 'fr' ? 'Se connecter' : this.currentLanguage === 'es' ? 'Iniciar sesión' : 'Log in';
+    return this.t('nav.login');
   }
   get signupLabel() {
-    return this.currentLanguage === 'fr' ? 'Créer un compte' : this.currentLanguage === 'es' ? 'Crear una cuenta' : 'Create account';
+    return this.t('nav.signup');
   }
   get guestLabel() {
-    return this.currentLanguage === 'fr' ? 'Continuer comme invité' : this.currentLanguage === 'es' ? 'Continuar como invitado' : 'Continue as guest';
+    return this.t('nav.login');
   }
   get myBookingsLabel() {
-    return this.alegriaBookingsLabel;
+    return this.reservationsLabel;
   }
   get myPaymentsLabel() {
     return this.paymentsLabel;
   }
   get myProfileLabel() {
-    return this.menuText('profile', 'Mon profil', 'My profile', 'Mi perfil');
+    return this.t('nav.myProfile');
   }
   get myFeedbacksLabel() {
-    return this.currentLanguage === 'fr' ? 'Mes avis' : this.currentLanguage === 'es' ? 'Mis comentarios' : 'My feedbacks';
+    return this.t('nav.myFeedbacks');
   }
   get adminBookingsLabel() {
-    return this.currentLanguage === 'fr' ? 'Réservations (admin)' : this.currentLanguage === 'es' ? 'Reservas (admin)' : 'Bookings (admin)';
+    return this.reservationsLabel;
   }
   get adminFeedbacksLabel() {
-    return this.currentLanguage === 'fr' ? 'Avis clients (admin)' : this.currentLanguage === 'es' ? 'Comentarios clientes (admin)' : 'Customer feedbacks (admin)';
+    return this.t('nav.feedbacks');
   }
   get adminOutingsLabel() {
     return this.boatLogManagerLabel;
   }
   get adminPublicOutingsLabel() {
-    return this.currentLanguage === 'fr' ? 'Offres sorties' : this.currentLanguage === 'es' ? 'Ofertas de salidas' : 'Public outings';
+    return this.managePublicOutingsLabel;
   }
   get logoutLabel() {
-    return this.menuText('logout', 'Déconnexion', 'Logout', 'Cerrar sesión');
+    return this.t('nav.logout');
   }
   get galleryLabel() {
-    return this.currentLanguage === 'fr' ? 'Galerie' : this.currentLanguage === 'es' ? 'Galería' : 'Gallery';
+    return this.t('nav.gallery');
   }
   get crewLabel() {
-    return this.currentLanguage === 'fr' ? 'Équipage' : this.currentLanguage === 'es' ? 'Tripulación' : 'Crew';
+    return this.t('nav.crew');
   }
   get contactLabel() {
-    return this.currentLanguage === 'fr' ? 'Contact' : this.currentLanguage === 'es' ? 'Contacto' : 'Contact';
+    return this.t('nav.contact');
   }
   get reservationsSectionLabel() {
-    return this.currentLanguage === 'fr' ? 'Réservations' : this.currentLanguage === 'es' ? 'Reservas' : 'Reservations';
+    return this.reservationsLabel;
   }
   get confirmedBookingsLabel() {
-    return this.currentLanguage === 'fr' ? 'Réservations confirmées' : this.currentLanguage === 'es' ? 'Reservas confirmadas' : 'Confirmed bookings';
+    return this.reservationsLabel;
   }
   get proposalsLabel() {
-    return this.menuText('proposals', 'Propositions', 'Proposals', 'Propuestas');
+    return this.t('nav.proposals');
   }
   get externalBookingsLabel() {
-    return this.platformBookingsLabel;
+    return this.reservationsLabel;
   }
   get boatLogsSectionLabel() {
-    return this.currentLanguage === 'fr' ? 'Journal de bord' : this.currentLanguage === 'es' ? 'Bitácora del barco' : 'Boat logs';
+    return this.boatLogManagerLabel;
   }
   get boatLogManagerLabel() {
-    return this.currentLanguage === 'fr' ? 'Gestion du journal de bord' : this.currentLanguage === 'es' ? 'Gestor de bitácora' : 'Boat log manager';
+    return this.t('nav.boatLogManager');
   }
   get publicOutingInfoSectionLabel() {
-    return this.currentLanguage === 'fr' ? 'Informations sorties publiques' : this.currentLanguage === 'es' ? 'Información de salidas públicas' : 'Public outing information';
+    return this.managePublicOutingsLabel;
   }
   get managePublicOutingsLabel() {
-    return this.currentLanguage === 'fr' ? 'Gérer les sorties publiques' : this.currentLanguage === 'es' ? 'Gestionar salidas públicas' : 'Manage public outings';
+    return this.t('nav.managePublicOutings');
   }
   get accountSectionLabel() {
-    return this.currentLanguage === 'fr' ? 'Compte' : this.currentLanguage === 'es' ? 'Cuenta' : 'Account';
+    return this.t('nav.account');
   }
   get myTripRequestsSectionLabel() {
-    return this.currentLanguage === 'fr' ? 'Mes demandes de sortie' : this.currentLanguage === 'es' ? 'Mis solicitudes de salida' : 'My trip requests';
+    return this.t('nav.myProposals');
   }
   get myProposalsLabel() {
-    return this.menuText('myProposals', 'Mes propositions', 'My proposals', 'Mis propuestas');
+    return this.t('nav.myProposals');
   }
   get paymentsWarrantySectionLabel() {
-    return this.currentLanguage === 'fr' ? 'Paiements & caution' : this.currentLanguage === 'es' ? 'Pagos y garantía' : 'Payments & warranty';
+    return this.paymentsLabel;
   }
   get afterOutingSectionLabel() {
-    return this.currentLanguage === 'fr' ? 'Après la sortie' : this.currentLanguage === 'es' ? 'Después de la salida' : 'After the outing';
+    return this.t('nav.feedbacks');
   }
   get onlineBookingLabel() {
-    return this.currentLanguage === 'fr' ? 'Réserver en ligne' : this.currentLanguage === 'es' ? 'Reservar en línea' : 'Book online';
+    return this.t('nav.depositAndWarranty');
+  }
+  get fleetLabel() {
+    return this.t('nav.fleet');
   }
   get pricingModelLabel() {
-    return this.currentLanguage === 'fr' ? 'Modèle tarifaire' : this.currentLanguage === 'es' ? 'Modelo de precios' : 'Pricing model';
-  }
-  menuText(key, fallbackFr, fallbackEn, fallbackEs) {
-    const fromFirebase = this.content?.menu?.[key];
-    if (fromFirebase) {
-      return String(fromFirebase);
-    }
-    return this.currentLanguage === 'fr' ? fallbackFr : this.currentLanguage === 'es' ? fallbackEs : fallbackEn;
+    return this.t('nav.pricingModel');
   }
   get alegriaBookingsLabel() {
-    return this.menuText('alegriaBookings', 'Réservations Alegria', 'Alegria bookings', 'Reservas Alegria');
+    return this.reservationsLabel;
   }
   get platformBookingsLabel() {
-    return this.menuText('platformBookings', 'Réservations plateformes', 'Platform bookings', 'Reservas plataformas');
+    return this.reservationsLabel;
+  }
+  get reservationsLabel() {
+    return this.t('nav.reservations');
+  }
+  get newReservationLabel() {
+    return this.reservationsLabel;
   }
   get paymentsLabel() {
-    return this.menuText('payments', 'Paiements', 'Payments', 'Pagos');
+    return this.t('nav.payments');
   }
   get operationsSectionLabel() {
-    return this.menuText('operations', 'Opérations', 'Operations', 'Operaciones');
+    return this.t('nav.operations');
   }
   static ctorParameters = () => [{
     type: _services_language_service__WEBPACK_IMPORTED_MODULE_4__.LanguageService
@@ -7682,7 +8369,7 @@ let CookieConsentComponent = class CookieConsentComponent {
   ngOnInit() {
     this.visible = localStorage.getItem(this.storageKey) !== 'accepted';
     this.languageSub = this.languageService.language$.subscribe(language => {
-      this.copy = COOKIE_COPY[language];
+      this.copy = COOKIE_COPY[language] || COOKIE_COPY.fr;
     });
   }
   ngOnDestroy() {
@@ -7723,7 +8410,7 @@ module.exports = "<div class=\"cookie-banner\" *ngIf=\"visible\" role=\"dialog\"
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<footer class=\"site-footer-simple\">\n  <div class=\"container footer-simple\">\n    \n    <div class=\"footer-left\">\n      © {{ year }} {{ content.brand }}\n    </div>\n\n    <div class=\"footer-center\">\n      Release {{ mainSvc.version }}\n    </div>\n\n    <div class=\"footer-right\">\n      <a routerLink=\"/contact\">{{ content.nav.contact }}</a>\n      <a routerLink=\"/terms\">{{ termsLabel }}</a>\n      <a routerLink=\"/safety\">{{ safetyLabel }}</a>\n    </div>\n\n  </div>\n</footer>";
+module.exports = "<footer class=\"site-footer-simple\">\n  <div class=\"container footer-simple\">\n    <div class=\"footer-left\">\n      © {{ year }} {{ content?.brand || 'Alegria' }}\n    </div>\n\n    <div class=\"footer-center\">\n      {{ releaseLabel }} {{ mainSvc.version }}\n    </div>\n\n    <div class=\"footer-right\">\n      <a routerLink=\"/contact\">{{ content?.nav?.contact || 'Contact' }}</a>\n      <a routerLink=\"/terms\">{{ termsLabel }}</a>\n      <a routerLink=\"/safety\">{{ safetyLabel }}</a>\n    </div>\n  </div>\n</footer>";
 
 /***/ }),
 
@@ -7753,10 +8440,30 @@ __webpack_require__.r(__webpack_exports__);
 let SiteContentService = class SiteContentService {
   http;
   restDatabaseUrls = ['https://adn-dev-4d05d.firebaseio.com'];
+  languages = ['fr', 'en', 'es', 'it', 'de', 'nl', 'ru'];
+  defaultTenantId = 'alegria';
   cached;
+  rawSiteContent;
   constructor(http) {
     this.http = http;
   }
+  /**
+   * Release 3.1: siteContent is the single UI-text source.
+   *
+   * Supported Firebase shapes:
+   *   /siteContent/fr/...
+   *   /siteContent/en/...
+   *   /siteContent/es/...
+   *   /siteContent/it/...
+   *   /siteContent/de/...
+   *   /siteContent/nl/...
+   *   /siteContent/ru/...
+   *
+   * Backwards compatible only for old dumps that still have:
+   *   /siteContent/i18n/fr/...
+   *
+   * The service no longer reads /alegria_v2 for translations.
+   */
   getContent(forceRefresh = false) {
     var _this = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
@@ -7765,16 +8472,19 @@ let SiteContentService = class SiteContentService {
       }
       for (const baseUrl of _this.restDatabaseUrls) {
         try {
-          const value = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.firstValueFrom)(_this.http.get(`${baseUrl}/siteContent.json`));
-          if (value && (value.fr || value.en || value.es)) {
-            _this.cached = _this.mergeAll(value);
+          const raw = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.firstValueFrom)(_this.http.get(`${baseUrl}/siteContent.json`));
+          const normalized = _this.normalizeSiteContent(raw);
+          if (normalized) {
+            _this.rawSiteContent = raw;
+            _this.cached = _this.mergeAll(normalized);
             return _this.cached;
           }
         } catch {
           // Continue to local fallback.
         }
       }
-      _this.cached = _site_content__WEBPACK_IMPORTED_MODULE_1__.SITE_CONTENT;
+      _this.rawSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_1__.SITE_CONTENT;
+      _this.cached = _this.mergeAll(_site_content__WEBPACK_IMPORTED_MODULE_1__.SITE_CONTENT);
       return _this.cached;
     })();
   }
@@ -7782,30 +8492,93 @@ let SiteContentService = class SiteContentService {
     var _this2 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const all = yield _this2.getContent();
-      return all[language] || all.fr || _site_content__WEBPACK_IMPORTED_MODULE_1__.SITE_CONTENT.fr;
+      return all[language] || all.en || all.fr || _site_content__WEBPACK_IMPORTED_MODULE_1__.SITE_CONTENT.en || _site_content__WEBPACK_IMPORTED_MODULE_1__.SITE_CONTENT.fr;
     })();
   }
   getRawContent(forceRefresh = false) {
     var _this3 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!forceRefresh && _this3.cached) {
-        // This keeps normal page rendering fast, but this method is mainly used by pages that
-        // need to inspect flexible Firebase paths before merging.
-      }
+      if (!forceRefresh && _this3.rawSiteContent) return _this3.rawSiteContent;
       for (const baseUrl of _this3.restDatabaseUrls) {
         try {
-          return yield (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.firstValueFrom)(_this3.http.get(`${baseUrl}/siteContent.json`));
+          _this3.rawSiteContent = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.firstValueFrom)(_this3.http.get(`${baseUrl}/siteContent.json`));
+          return _this3.rawSiteContent;
         } catch {}
       }
+      return _site_content__WEBPACK_IMPORTED_MODULE_1__.SITE_CONTENT;
+    })();
+  }
+  translate(path, language = 'fr', fallback = '') {
+    var _this4 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const all = yield _this4.getContent();
+      return _this4.tFromContent(all, path, language, fallback);
+    })();
+  }
+  /** Synchronous lookup for components/pipes that already hold a content object. */
+  tFromContent(all, path, language = 'fr', fallback = '') {
+    const current = all?.[language];
+    const english = all?.en;
+    const french = all?.fr;
+    const value = this.getByPath(current, path);
+    if (typeof value === 'string') return value;
+    const englishValue = this.getByPath(english, path);
+    if (typeof englishValue === 'string') return englishValue;
+    const frenchValue = this.getByPath(french, path);
+    if (typeof frenchValue === 'string') return frenchValue;
+    if (fallback) return fallback;
+    // Development-safe fallback: never break rendering because a key is missing.
+    return path;
+  }
+  /**
+   * These tenant helpers are intentionally kept as no-op/legacy-safe methods so
+   * existing components that still call them do not break. UI translations must
+   * not rely on alegria_v2 anymore.
+   */
+  getV2Root(_forceRefresh = false) {
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return null;
     })();
   }
+  getTenantConfig(_tenantId = this.defaultTenantId, _forceRefresh = false) {
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      return null;
+    })();
+  }
+  getTenantSettings(_tenantId = this.defaultTenantId, _forceRefresh = false) {
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      return null;
+    })();
+  }
+  getTenantMarinas(_tenantId = this.defaultTenantId) {
+    var _this5 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const all = yield _this5.getContent();
+      const marinas = all?.fr?.settings?.marinas || all?.en?.settings?.marinas;
+      return Array.isArray(marinas) ? marinas : [];
+    })();
+  }
+  normalizeSiteContent(raw) {
+    if (!raw || typeof raw !== 'object') return null;
+    // Preferred Release 3.1 shape: siteContent/fr, siteContent/en, etc.
+    if (this.hasAnyLanguage(raw)) {
+      return raw;
+    }
+    // Backwards compatibility only: siteContent/i18n/fr, siteContent/i18n/en, etc.
+    if (raw.i18n && this.hasAnyLanguage(raw.i18n)) {
+      return raw.i18n;
+    }
+    return null;
+  }
+  hasAnyLanguage(value) {
+    return !!value && this.languages.some(lang => !!value[lang]);
+  }
   mergeAll(value) {
-    return {
-      fr: this.deepMerge(_site_content__WEBPACK_IMPORTED_MODULE_1__.SITE_CONTENT.fr, value.fr || {}),
-      en: this.deepMerge(_site_content__WEBPACK_IMPORTED_MODULE_1__.SITE_CONTENT.en, value.en || {}),
-      es: this.deepMerge(_site_content__WEBPACK_IMPORTED_MODULE_1__.SITE_CONTENT.es, value.es || {})
-    };
+    return this.languages.reduce((acc, language) => {
+      const fallback = _site_content__WEBPACK_IMPORTED_MODULE_1__.SITE_CONTENT[language] || _site_content__WEBPACK_IMPORTED_MODULE_1__.SITE_CONTENT.en || _site_content__WEBPACK_IMPORTED_MODULE_1__.SITE_CONTENT.fr;
+      acc[language] = this.deepMerge(fallback, value[language] || {});
+      return acc;
+    }, {});
   }
   deepMerge(target, source) {
     if (Array.isArray(source)) {
@@ -7829,6 +8602,9 @@ let SiteContentService = class SiteContentService {
       }
     });
     return output;
+  }
+  getByPath(obj, path) {
+    return String(path || '').split('.').filter(Boolean).reduce((acc, key) => acc && typeof acc === 'object' ? acc[key] : undefined, obj);
   }
   static ctorParameters = () => [{
     type: _angular_common_http__WEBPACK_IMPORTED_MODULE_3__.HttpClient
@@ -8666,14 +9442,14 @@ const routes = [{
   component: _layout_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent,
   children: [{
     path: '',
-    loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_home_home_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./home/home.module */ 45055)).then(m => m.HomeModule)
+    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("common"), __webpack_require__.e("src_app_home_home_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./home/home.module */ 45055)).then(m => m.HomeModule)
   }]
 }, {
   path: '',
   component: _layout_home_homelayout_homelayout_component__WEBPACK_IMPORTED_MODULE_0__.HomelayoutComponent,
   children: [{
     path: '',
-    loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_login_login_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./login/login.module */ 91307)).then(m => m.LoginModule)
+    loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("common"), __webpack_require__.e("src_app_login_login_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./login/login.module */ 91307)).then(m => m.LoginModule)
   }]
 }, {
   path: '**',

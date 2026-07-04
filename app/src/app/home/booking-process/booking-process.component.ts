@@ -16,7 +16,7 @@ interface BookingProcessCopy {
   finalNote: string;
 }
 
-const COPY: Record<SiteLanguage, BookingProcessCopy> = {
+const COPY: Partial<Record<SiteLanguage, BookingProcessCopy>> & { fr: BookingProcessCopy } = {
   fr: {
     eyebrow: 'Infos pratiques',
     title: 'Comment fonctionne une réservation ?',

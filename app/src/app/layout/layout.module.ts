@@ -24,7 +24,7 @@ import { CookieConsentComponent } from './cookie-consent/cookie-consent.componen
     HomelayoutComponent,
     HomeheaderComponent,
     HomefooterComponent,
-    CookieConsentComponent,
+    LayoutnoneComponent,
     CommonModule,
     RouterModule,
     IonicModule,

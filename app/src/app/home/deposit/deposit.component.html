@@ -4,9 +4,7 @@
       <span class="eyebrow">{{ paymentPageEyebrow }}</span>
       <h1>{{ paymentPageTitle }}</h1>
       <p *ngIf="!isWarrantyAdminMode">{{ paymentPageIntro }}</p>
-      <p *ngIf="isWarrantyAdminMode">
-        This admin page is only for charging an amount from the registered warranty after confirmed damage.
-      </p>
+      <p *ngIf="isWarrantyAdminMode">{{ 'auto.home.deposit.deposit.component.this_admin_page_is_only_for_charging_an_amount_fro' | siteText }}</p>
 
       <p class="success" *ngIf="paymentReturnMessage">{{ paymentReturnMessage }}</p>
 
@@ -22,21 +20,21 @@
 
         <ng-container *ngIf="!isWarrantyAdminMode && isBalanceMode">
           <ul>
-            <li>The deposit has already been paid.</li>
-            <li>The remaining balance will be paid securely by Stripe.</li>
-            <li>Skipper fees, when applicable, are paid in cash on board.</li>
+            <li>{{ 'auto.home.deposit.deposit.component.the_deposit_has_already_been_paid' | siteText }}</li>
+            <li>{{ 'auto.home.deposit.deposit.component.the_remaining_balance_will_be_paid_securely_by_str' | siteText }}</li>
+            <li>{{ 'auto.home.deposit.deposit.component.skipper_fees_when_applicable_are_paid_in_cash_on_b' | siteText }}</li>
           </ul>
-          <p class="note">This page is dedicated to the remaining balance for this confirmed booking.</p>
+          <p class="note">{{ 'auto.home.deposit.deposit.component.this_page_is_dedicated_to_the_remaining_balance_fo' | siteText }}</p>
         </ng-container>
 
         <ng-container *ngIf="isWarrantyAdminMode && booking">
           <div class="summary-lines">
-            <div><strong>Customer</strong><span>{{ customerName || '-' }}</span></div>
-            <div><strong>Email</strong><span>{{ customerEmail || '-' }}</span></div>
-            <div><strong>Outing</strong><span>{{ outingType || '-' }}</span></div>
-            <div><strong>Date</strong><span>{{ outingDate || '-' }}</span></div>
-            <div><strong>Warranty amount</strong><span>{{ formatAmount(chargeableWarrantyAmount) }}</span></div>
-            <div><strong>Warranty status</strong><span>{{ warrantyStatusLabel }}</span></div>
+            <div><strong>{{ 'auto.home.deposit.deposit.component.customer' | siteText }}</strong><span>{{ customerName || '-' }}</span></div>
+            <div><strong>{{ 'auto.home.deposit.deposit.component.email' | siteText }}</strong><span>{{ customerEmail || '-' }}</span></div>
+            <div><strong>{{ 'auto.home.deposit.deposit.component.outing' | siteText }}</strong><span>{{ outingType || '-' }}</span></div>
+            <div><strong>{{ 'auto.home.deposit.deposit.component.date' | siteText }}</strong><span>{{ outingDate || '-' }}</span></div>
+            <div><strong>{{ 'auto.home.deposit.deposit.component.warranty_amount' | siteText }}</strong><span>{{ formatAmount(chargeableWarrantyAmount) }}</span></div>
+            <div><strong>{{ 'auto.home.deposit.deposit.component.warranty_status' | siteText }}</strong><span>{{ warrantyStatusLabel }}</span></div>
           </div>
         </ng-container>
       </div>
@@ -69,12 +67,12 @@
       </label>
 
       <div class="deposit-total" *ngIf="skipperCashAmount > 0">
-        <span>Skipper fees payable in cash on board</span>
+        <span>{{ 'auto.home.deposit.deposit.component.skipper_fees_payable_in_cash_on_board' | siteText }}</span>
         <strong>{{ formatAmount(skipperCashAmount) }}</strong>
       </div>
 
       <div class="deposit-total" *ngIf="skipperCashAmount > 0">
-        <span>Online payable amount</span>
+        <span>{{ 'auto.home.deposit.deposit.component.online_payable_amount' | siteText }}</span>
         <strong>{{ formatAmount(onlinePayableAmount) }}</strong>
       </div>
 
@@ -94,23 +92,23 @@
 
 
     <section class="deposit-card warranty-setup-card" *ngIf="cashWarrantySelected && !isWarrantyAdminMode">
-      <span class="eyebrow">Warranty</span>
-      <h2>Cash warranty selected</h2>
-      <p class="note">The warranty for this proposal is handled in cash on board. No credit-card registration is required on this page.</p>
+      <span class="eyebrow">{{ 'auto.home.deposit.deposit.component.warranty' | siteText }}</span>
+      <h2>{{ 'auto.home.deposit.deposit.component.cash_warranty_selected' | siteText }}</h2>
+      <p class="note">{{ 'auto.home.deposit.deposit.component.the_warranty_for_this_proposal_is_handled_in_cash_' | siteText }}</p>
 
       <div class="deposit-total">
-        <span>Cash warranty amount</span>
+        <span>{{ 'auto.home.deposit.deposit.component.cash_warranty_amount' | siteText }}</span>
         <strong>{{ formatAmount(warrantyAmount) }}</strong>
       </div>
     </section>
 
     <section class="deposit-card warranty-setup-card" *ngIf="showWarrantyRegistration">
-      <span class="eyebrow">Warranty</span>
-      <h2>Select warranty card mode</h2>
-      <p class="note">Credit-card warranty mode has not been selected yet for this booking.</p>
+      <span class="eyebrow">{{ 'auto.home.deposit.deposit.component.warranty' | siteText }}</span>
+      <h2>{{ 'auto.home.deposit.deposit.component.select_warranty_card_mode' | siteText }}</h2>
+      <p class="note">{{ 'auto.home.deposit.deposit.component.credit_card_warranty_mode_has_not_been_selected_ye' | siteText }}</p>
 
       <div class="deposit-total">
-        <span>Warranty amount</span>
+        <span>{{ 'auto.home.deposit.deposit.component.warranty_amount' | siteText }}</span>
         <strong>{{ formatAmount(warrantyAmount) }}</strong>
       </div>
 
@@ -121,41 +119,39 @@
     </section>
 
     <section class="deposit-card warranty-setup-card" *ngIf="showWarrantyCardSummary">
-      <span class="eyebrow">Warranty</span>
-      <h2>Credit card warranty selected</h2>
-      <p class="note">The warranty will be handled by credit card. No additional card registration is required on this page.</p>
+      <span class="eyebrow">{{ 'auto.home.deposit.deposit.component.warranty' | siteText }}</span>
+      <h2>{{ 'auto.home.deposit.deposit.component.credit_card_warranty_selected' | siteText }}</h2>
+      <p class="note">{{ 'auto.home.deposit.deposit.component.the_warranty_will_be_handled_by_credit_card_no_add' | siteText }}</p>
 
       <div class="summary-lines">
-        <div><strong>Warranty mode</strong><span>Credit card</span></div>
-        <div><strong>Card</strong><span>{{ warrantyCardLast4 ? ('•••• ' + warrantyCardLast4) : 'Saved card' }}</span></div>
-        <div><strong>Setup intent amount</strong><span>{{ formatAmount(warrantySetupIntentAmount || warrantyAmount) }}</span></div>
-        <div><strong>Setup intent</strong><span>{{ booking?.warrantySetupIntentId || booking?.payments?.warranty?.setupIntentId || '-' }}</span></div>
+        <div><strong>{{ 'auto.home.deposit.deposit.component.warranty_mode' | siteText }}</strong><span>{{ 'auto.home.deposit.deposit.component.credit_card' | siteText }}</span></div>
+        <div><strong>{{ 'auto.home.deposit.deposit.component.card' | siteText }}</strong><span>{{ warrantyCardLast4 ? ('•••• ' + warrantyCardLast4) : 'Saved card' }}</span></div>
+        <div><strong>{{ 'auto.home.deposit.deposit.component.setup_intent_amount' | siteText }}</strong><span>{{ formatAmount(warrantySetupIntentAmount || warrantyAmount) }}</span></div>
+        <div><strong>{{ 'auto.home.deposit.deposit.component.setup_intent' | siteText }}</strong><span>{{ booking?.warrantySetupIntentId || booking?.payments?.warranty?.setupIntentId || '-' }}</span></div>
       </div>
 
       <p class="success" *ngIf="warrantySetupMessage">{{ warrantySetupMessage }}</p>
-      <p class="secure">Card details are stored securely by Stripe.</p>
+      <p class="secure">{{ 'auto.home.deposit.deposit.component.card_details_are_stored_securely_by_stripe' | siteText }}</p>
     </section>
 
     <section class="deposit-card admin-warranty-card" *ngIf="isWarrantyAdminMode && booking">
-      <span class="eyebrow">Admin</span>
-      <h2>Charge damage amount</h2>
-      <p class="note">
-        Enter the amount to charge within the registered warranty and describe the damage.
-      </p>
+      <span class="eyebrow">{{ 'auto.home.deposit.deposit.component.admin' | siteText }}</span>
+      <h2>{{ 'auto.home.deposit.deposit.component.charge_damage_amount' | siteText }}</h2>
+      <p class="note">{{ 'auto.home.deposit.deposit.component.enter_the_amount_to_charge_within_the_registered_w' | siteText }}</p>
 
       <div class="deposit-total">
-        <span>Maximum warranty</span>
+        <span>{{ 'auto.home.deposit.deposit.component.maximum_warranty' | siteText }}</span>
         <strong>{{ formatAmount(chargeableWarrantyAmount) }}</strong>
       </div>
 
       <label>
-        <span>Amount to charge</span>
+        <span>{{ 'auto.home.deposit.deposit.component.amount_to_charge' | siteText }}</span>
         <input type="number" name="warrantyChargeAmount" [(ngModel)]="warrantyChargeAmount" min="1" [max]="chargeableWarrantyAmount || null" step="0.01" />
       </label>
 
       <label>
-        <span>Damage details / reason</span>
-        <textarea name="warrantyReason" rows="5" [(ngModel)]="warrantyReason" placeholder="Example: damaged cushion, missing equipment, repair invoice reference..."></textarea>
+        <span>{{ 'auto.home.deposit.deposit.component.damage_details_reason' | siteText }}</span>
+        <textarea name="warrantyReason" rows="5" [(ngModel)]="warrantyReason" [placeholder]="'auto.home.deposit.deposit.component.example_damaged_cushion_missing_equipment_repair_i' | siteText"></textarea>
       </label>
 
       <p class="error" *ngIf="warrantyError">{{ warrantyError }}</p>

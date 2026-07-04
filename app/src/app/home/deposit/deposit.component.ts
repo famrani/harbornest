@@ -27,7 +27,7 @@ type DepositCopy = {
   note: string;
 };
 
-const COPY: Record<SiteLanguage, DepositCopy> = {
+const COPY: Partial<Record<SiteLanguage, DepositCopy>> & { fr: DepositCopy } = {
   fr: {
     eyebrow: 'Confirmation',
     title: 'Confirmez votre sortie à bord d’Alegria',
@@ -40,7 +40,7 @@ const COPY: Record<SiteLanguage, DepositCopy> = {
     deposit: 'Acompte à régler',
     payDeposit: 'Payer l’acompte',
     securePayment: 'Paiement sécurisé par Stripe',
-    requiredNotice: 'Merci de compléter le nom, l’email, la date et le prix total.',
+    requiredNotice: 'Merci de compléter les informations et d’accepter les conditions générales avant le paiement.',
     error: 'Le paiement n’a pas pu être initialisé. Merci de réessayer ou de nous contacter.',
     loading: 'Redirection vers Stripe...',
     includedTitle: 'Résumé',
@@ -63,7 +63,7 @@ const COPY: Record<SiteLanguage, DepositCopy> = {
     deposit: 'Deposit to pay',
     payDeposit: 'Pay deposit',
     securePayment: 'Secure payment by Stripe',
-    requiredNotice: 'Please complete the name, email, date and total price.',
+    requiredNotice: 'Please complete the details and accept the Terms & Conditions before payment.',
     error: 'Payment could not be initialized. Please try again or contact us.',
     loading: 'Redirecting to Stripe...',
     includedTitle: 'Summary',
@@ -86,7 +86,7 @@ const COPY: Record<SiteLanguage, DepositCopy> = {
     deposit: 'Depósito a pagar',
     payDeposit: 'Pagar depósito',
     securePayment: 'Pago seguro con Stripe',
-    requiredNotice: 'Complete el nombre, el email, la fecha y el precio total.',
+    requiredNotice: 'Complete los datos y acepte las condiciones generales antes del pago.',
     error: 'No se pudo iniciar el pago. Inténtelo de nuevo o contáctenos.',
     loading: 'Redirigiendo a Stripe...',
     includedTitle: 'Resumen',
@@ -150,7 +150,7 @@ export class DepositComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.currentLanguage = language;
-      this.copy = COPY[language];
+      this.copy = COPY[language] || COPY.fr;
     });
 
     const svc = this.mainSvc as any;
@@ -479,8 +479,61 @@ export class DepositComponent implements OnInit, OnDestroy {
       this.customerEmail.trim() &&
       this.outingDate &&
       this.totalPrice &&
-      this.totalPrice > 0
+      this.totalPrice > 0 &&
+      this.isTermsAccepted(this.booking)
     );
+  }
+
+  private isTermsAccepted(booking: any): boolean {
+    const explicitAccepted = booking?.customerTermsAccepted === true ||
+      booking?.tncAccepted === true ||
+      booking?.termsAccepted === true ||
+      booking?.acceptedTerms === true ||
+      booking?.tcAccepted === true ||
+      booking?.tAndCAccepted === true ||
+      booking?.termsAndConditionsAccepted === true ||
+      booking?.workflow?.termsAccepted === true ||
+      booking?.bookingWorkflow?.termsAccepted === true ||
+      booking?.terms?.accepted === true ||
+      booking?.documents?.termsAccepted === true;
+
+    const explicitTimestamp = booking?.tncAcceptedAt ||
+      booking?.termsAcceptedAt ||
+      booking?.acceptedTermsAt ||
+      booking?.tcAcceptedAt ||
+      booking?.termsAndConditionsAcceptedAt ||
+      booking?.workflow?.termsAcceptedAt ||
+      booking?.bookingWorkflow?.termsAcceptedAt ||
+      booking?.terms?.acceptedAt ||
+      booking?.documents?.termsAcceptedAt;
+
+    const acceptedBy = booking?.tncAcceptedBy ||
+      booking?.termsAcceptedBy ||
+      booking?.acceptedTermsBy ||
+      booking?.workflow?.termsAcceptedBy ||
+      booking?.bookingWorkflow?.termsAcceptedBy ||
+      booking?.terms?.acceptedBy ||
+      booking?.documents?.termsAcceptedBy;
+
+    const source = String(
+      booking?.tncAcceptedSource ||
+      booking?.termsAcceptedSource ||
+      booking?.acceptedTermsSource ||
+      booking?.workflow?.termsAcceptedSource ||
+      booking?.bookingWorkflow?.termsAcceptedSource ||
+      booking?.terms?.source ||
+      booking?.documents?.termsAcceptedSource ||
+      ''
+    ).toLowerCase();
+
+    const formalCustomerMarker = booking?.customerTermsAccepted === true ||
+      source.includes('customer') ||
+      source.includes('client') ||
+      source.includes('proposal') ||
+      source.includes('portal') ||
+      !!acceptedBy;
+
+    return explicitAccepted === true && !!explicitTimestamp && formalCustomerMarker;
   }
 
   formatAmount(amount: number | null): string {
@@ -505,9 +558,22 @@ export class DepositComponent implements OnInit, OnDestroy {
 
   loadPaymentStatus(): void {
     if (!this.bookingId) return;
-    this.bookingApi.getPaymentStatus(this.bookingId).subscribe({
-      next: (status) => {
-        this.paymentStatus = status?.payments || status || this.paymentStatus;
+
+    this.bookingApi.getPaymentPageState(this.bookingId).subscribe({
+      next: (state) => {
+        this.paymentStatus = state || this.paymentStatus;
+
+        // Keep the page aligned with bnBookings as the source of truth.
+        // Stripe details are kept separately in state.stripePayments, coming from bnPayment.
+        if (state?.booking) {
+          this.booking = { ...(this.booking || {}), ...(state.booking || {}) } as any;
+          this.customerName = state.booking.customerName || this.customerName;
+          this.customerEmail = state.booking.email || state.booking.customerEmail || this.customerEmail;
+          this.outingDate = state.booking.outingDate || this.outingDate;
+          this.outingType = state.booking.outingType || this.outingType;
+          this.totalPrice = Number(state.booking.totalPrice ?? state.booking.totalAmount ?? this.totalPrice ?? 0) || this.totalPrice;
+          this.ownerId = state.booking.ownerId || this.ownerId;
+        }
       },
       error: () => {}
     });

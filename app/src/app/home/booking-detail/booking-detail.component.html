@@ -1,660 +1,393 @@
 <section class="booking-page">
   <div class="container booking-shell">
-    <p *ngIf="loading" class="muted">{{ btext('loadingBooking') }}</p>
+    <article class="loading-card" *ngIf="loading">
+      <h1>{{ tText('auto.home.booking-detail.booking-detail.component.loading_booking') }}</h1>
+      <p>{{ bookingId }}</p>
+    </article>
 
-    <article class="booking-detail-card" *ngIf="!loading && booking">
-      <span class="eyebrow">{{ btext('bookingDetail') }}</span>
-      <h1>{{ booking.outingType }}</h1>
-      <p>{{ booking.outingDate }} • {{ booking.departureTime }} - {{ booking.arrivalTime }}</p>
+    <article class="empty-card" *ngIf="!loading && notFound">
+      <h1>{{ tText('auto.home.booking-detail.booking-detail.component.booking_not_found') }}</h1>
+      <p *ngIf="error">{{ error }}</p>
+      <button class="btn btn-secondary" type="button" (click)="goBack()">{{ tText('auto.home.booking-detail.booking-detail.component.back') }}</button>
+      <button class="btn btn-secondary" type="button" (click)="loadBooking()">{{ tText('auto.home.booking-detail.booking-detail.component.retry') }}</button>
+    </article>
 
-      <section class="booking-overview-v2">
-        <div class="overview-card outing-card">
-          <span class="overview-label">{{ btext('bookingDetail') }}</span>
-          <strong>{{ booking.outingType }}</strong>
-          <span>{{ booking.outingDate }} · {{ booking.departureTime }} - {{ booking.arrivalTime }}</span>
+    <article class="booking-detail-card" *ngIf="!loading && vm">
+      <div class="booking-hero">
+        <div>
+          <span class="eyebrow">{{ vm.isExternalBooking ? vm.platformLabel + ' booking' : 'Alegria booking' }}</span>
+          <h1>{{ vm.display.customerName || '-' }}</h1>
+          <p>{{ vm.display.outingDate || '-' }} · {{ vm.display.departureTime || '-' }} → {{ vm.display.arrivalTime || '-' }} · {{ vm.display.passengers || 0 }} guests</p>
         </div>
-        <div class="overview-card">
-          <span class="overview-label">{{ btext('customer') }}</span>
-          <strong>{{ booking.customerName || '-' }}</strong>
-          <span>{{ booking.email || '-' }}</span>
-          <span>{{ booking.phone || '-' }}</span>
-        </div>
-        <div class="overview-card compact">
-          <span class="overview-label">{{ btext('passengers') }}</span>
-          <strong>{{ booking.passengers || '-' }}</strong>
-        </div>
-        <div class="overview-card" *ngIf="isExternalBooking()">
-          <span class="overview-label">{{ btext('externalPlatform') }}</span>
-          <strong>{{ getExternalPlatformLabel() }}</strong>
-          <span *ngIf="getExternalBookingReference()">{{ btext('externalBookingReference') }}: {{ getExternalBookingReference() }}</span>
-        </div>
-        <div class="overview-card compact">
-          <span class="overview-label">{{ btext('status') }}</span>
-          <button class="status-pill status-clickable" type="button" (click)="openStatusModal()">{{ getStatusLabel() }}</button>
-        </div>
-      </section>
 
-      <section class="financial-summary-v2">
-        <div class="financial-row total-row">
+        <div class="status-badges">
+          <span class="status-badge done">{{ vm.bookingStatusBadge }}</span>
+          <span class="status-badge paid">{{ vm.paymentStatusBadge }}</span>
+          <span class="status-badge warranty">{{ vm.warrantyStatusBadge }}</span>
+        </div>
+      </div>
+
+      <p class="error-message" *ngIf="error">{{ error }}</p>
+
+      <section class="booking-completion-card" *ngIf="!editMode">
+        <div class="completion-header">
           <div>
-            <span class="overview-label">{{ btext('totalPrice') }}</span>
-            <strong>€{{ booking.totalPrice || 0 }}</strong>
+            <h2>{{ t('bookingCompletion') }}</h2>
+            <p>{{ vm.customerJourneyStatus }}</p>
           </div>
+          <strong>{{ vm.bookingCompletionPercent }}%</strong>
         </div>
-        <div class="financial-row">
+        <div class="completion-bar"><span [style.width.%]="vm.bookingCompletionPercent"></span></div>
+        <div class="completion-steps">
+          <span [class.done]="vm.termsAccepted">{{ vm.termsAccepted ? '✓' : '○' }} {{ t('termsAndConditions') }}</span>
+          <span [class.done]="vm.alegriaPaymentComplete">{{ vm.alegriaPaymentComplete ? '✓' : '○' }} {{ t('alegriaPaid') }}</span>
+          <span [class.done]="vm.skipperPaymentComplete">{{ vm.skipperPaymentComplete ? '✓' : '○' }} {{ t('skipperPaid') }}</span>
+          <span [class.done]="vm.warrantyComplete">{{ vm.warrantyComplete ? '✓' : '○' }} {{ t('warranty') }}</span>
+        </div>
+      </section>
+
+      <div class="admin-toolbar" *ngIf="vm.isAdmin">
+        <button class="btn btn-primary" type="button" *ngIf="!editMode" (click)="startEdit()">{{ tText('auto.home.booking-detail.booking-detail.component.edit_booking') }}</button>
+        <button class="btn btn-danger" type="button" *ngIf="!editMode" [disabled]="deleting" (click)="deleteBooking()">
+          {{ deleting ? 'Deleting...' : 'Delete booking' }}
+        </button>
+        <button class="btn btn-secondary" type="button" (click)="goBack()">{{ tText('auto.home.booking-detail.booking-detail.component.back') }}</button>
+      </div>
+
+      <form class="edit-panel booking-cockpit-edit" *ngIf="editMode" (ngSubmit)="saveEdit()">
+        <div class="edit-header">
           <div>
-            <span class="overview-label">{{ btext('deposit') }}</span>
-            <strong>€{{ getDepositAmount() }}</strong>
+            <h2>{{ tText('auto.home.booking-detail.booking-detail.component.edit_booking_cockpit') }}</h2>
+            <p class="section-help">{{ tText('auto.home.booking-detail.booking-detail.component.all_cockpit_fields_below_are_editable_financial_to') }}</p>
           </div>
-          <span class="financial-status" [class.is-paid]="isDepositPaid()">{{ getCompletedLabel(isDepositPaid()) }}</span>
-        </div>
-        <div class="financial-row balance-row">
-          <div>
-            <span class="overview-label">{{ btext('remaining') }}</span>
-            <strong>€{{ getBalanceAmount() }}</strong>
-          </div>
-          <div class="balance-actions">
-            <span class="financial-status" [class.is-paid]="isBalancePaid()">{{ getCompletedLabel(isBalancePaid()) }}</span>
-            <button class="btn btn-primary" type="button" *ngIf="!isAdmin && canCustomerSeeBalancePayment()" [disabled]="!canCustomerPayBalance()" (click)="payBalance()">
-              {{ getCustomerBalanceButtonLabel() }}
-            </button>
-            <button class="btn btn-primary" type="button" *ngIf="isAdmin && canAdminTriggerBalancePayment()" [disabled]="adminBalanceCheckoutLoading" (click)="triggerCustomerBalanceStripeCheckout()">
-              {{ adminBalanceCheckoutLoading ? btext('redirecting') : btext('adminPayCustomerBalance') }}
-            </button>
-          </div>
-        </div>
-        <div class="financial-row" *ngIf="hasSkipperFee()">
-          <div>
-            <span class="overview-label">{{ btext('skipperPayment') }}</span>
-            <strong>€{{ getSkipperCashAmount() }}</strong>
-          </div>
-          <span class="financial-status" [class.is-paid]="isSkipperPaymentPaid()">{{ getSkipperPaymentStatusLabel() }}</span>
-        </div>
-        <div class="financial-row">
-          <div>
-            <span class="overview-label">{{ btext('warranty') }}</span>
-            <strong>{{ getWarrantyModeLabel() }}</strong>
-          </div>
-          <span class="financial-status" [class.is-paid]="isWarrantySelected()">{{ getWarrantyCardLabel() }}</span>
-        </div>
-      </section>
-
-      <p class="comments" *ngIf="getVisibleBookingComments()">{{ getVisibleBookingComments() }}</p>
-
-
-      <section class="admin-proposal-finalization-card" *ngIf="isRequestAwaitingAdminProposal()">
-        <h2>Finalize the offer</h2>
-        <p>
-          The customer has submitted the outing details. No payment has been requested yet.
-          Finalize the boat price, skipper price and extra services, then send the proposal to the client.
-        </p>
-
-        <div class="estimated-request-price">
-          <strong>Estimated request price</strong>
-          <span>€{{ getEstimatedRequestPrice() }}</span>
-          <small>Use this as a basis, then finalize boat, skipper and extra-services pricing before sending the proposal.</small>
-        </div>
-
-        <div class="field-grid">
-          <label>
-            Boat price (€)
-            <input type="number" min="0" step="0.01" [(ngModel)]="proposalBoatPrice" />
-          </label>
-          <label>
-            Skipper price (€)
-            <input type="number" min="0" step="0.01" [(ngModel)]="proposalSkipperPrice" />
-          </label>
-          <label>
-            Extra services / options (€)
-            <input type="number" min="0" step="0.01" [(ngModel)]="proposalExtraServicesPrice" />
-          </label>
-          <label>
-            Proposal notes
-            <textarea rows="3" [(ngModel)]="proposalNotes"></textarea>
-          </label>
-        </div>
-
-        <div class="payment-summary clarity-grid">
-          <div><strong>Total proposal</strong><span>€{{ getAdminProposalTotal() }}</span></div>
-          <div><strong>Deposit 10%</strong><span>€{{ getAdminProposalDeposit() }}</span></div>
-          <div><strong>Client next step</strong><span>Accept T&C · Pay deposit · Select warranty</span></div>
-        </div>
-
-        <div class="customer-action-bar">
-          <button class="btn btn-secondary" type="button" [disabled]="sendingAdminProposal" (click)="saveAdminProposalDraft()">
-            {{ sendingAdminProposal ? 'Saving...' : 'Save draft' }}
-          </button>
-          <button class="btn btn-primary" type="button" [disabled]="sendingAdminProposal || getAdminProposalTotal() <= 0" (click)="sendAdminProposalToClient()">
-            {{ sendingAdminProposal ? 'Sending...' : 'Send proposal to client' }}
-          </button>
-        </div>
-
-        <p class="success" *ngIf="adminProposalMessage">{{ adminProposalMessage }}</p>
-        <p class="error-message" *ngIf="adminProposalError">{{ adminProposalError }}</p>
-      </section>
-
-
-
-      <section class="admin-booking-request-card" *ngIf="canAdminAcceptRejectBooking()">
-        <h2>Booking request pending admin confirmation</h2>
-        <p>
-          The customer has authorized the deposit. Accepting this request will capture the deposit and confirm the booking.
-          Rejecting it will cancel the authorization without capturing the money.
-        </p>
-
-        <div class="payment-summary clarity-grid">
-          <div><strong>Deposit status</strong><span>{{ getDepositStatusLabel() }}</span></div>
-          <div><strong>Booking request status</strong><span>{{ booking.bookingRequestStatus || booking.status || '-' }}</span></div>
-          <div><strong>Stripe PaymentIntent</strong><span>{{ booking.stripePaymentIntentId || booking.payments?.deposit?.stripePaymentIntentId || '-' }}</span></div>
-        </div>
-
-        <label>
-          Rejection reason
-          <textarea rows="3" [(ngModel)]="rejectionReason" placeholder="Required only if you reject the request"></textarea>
-        </label>
-
-        <div class="customer-action-bar">
-          <button class="btn btn-primary" type="button" [disabled]="adminDecisionLoading" (click)="acceptBookingRequest()">
-            {{ adminDecisionLoading ? 'Processing...' : 'Accept and capture deposit' }}
-          </button>
-          <button class="btn btn-danger" type="button" [disabled]="adminDecisionLoading" (click)="rejectBookingRequest()">
-            {{ adminDecisionLoading ? 'Processing...' : 'Reject without capture' }}
-          </button>
-        </div>
-
-        <p class="success" *ngIf="adminDecisionMessage">{{ adminDecisionMessage }}</p>
-        <p class="error-message" *ngIf="adminDecisionError">{{ adminDecisionError }}</p>
-      </section>
-
-
-
-      <section class="invoice-actions-card" *ngIf="isAdmin && isOutingDone()">
-        <h2>Facturation</h2>
-        <p>La sortie est passée. Vous pouvez éditer une facture imprimable puis l'enregistrer en PDF depuis le navigateur.</p>
-        <div class="customer-action-bar">
-          <a class="btn btn-secondary" [routerLink]="['/admin/bookings', booking.bookingId, 'invoice']" [queryParams]="{ type: 'booking' }">
-            Facture prestations ALEGRIA
-          </a>
-          <a class="btn btn-primary" [routerLink]="['/admin/bookings', booking.bookingId, 'invoice']" [queryParams]="{ type: 'extras' }">
-            Facture extras / catering
-          </a>
-        </div>
-      </section>
-
-
-
-      <section class="customer-edit-card" *ngIf="!isAdmin && editMode">
-        <h2>{{ btext('updateBookingInfo') }}</h2>
-
-        <label>
-          {{ btext('customerName') }}
-          <input type="text" [(ngModel)]="booking.customerName" />
-        </label>
-
-        <label>
-          {{ btext('email') }}
-          <input type="email" [(ngModel)]="booking.email" />
-        </label>
-
-        <label>
-          {{ btext('phone') }}
-          <input type="tel" [(ngModel)]="booking.phone" />
-        </label>
-
-        <label>
-          {{ btext('numberOfGuests') }}
-          <input type="number" min="1" [(ngModel)]="booking.passengers" />
-        </label>
-
-        <label>
-          {{ btext('pickupLocation') }}
-          <input type="text" [(ngModel)]="booking.pickupLocation" />
-        </label>
-
-        <label>
-          {{ btext('comments') }}
-          <textarea rows="3" [(ngModel)]="booking.comments"></textarea>
-        </label>
-
-        <div class="customer-edit-actions">
-          <button class="btn btn-primary" type="button" [disabled]="savingCustomerUpdate" (click)="saveCustomerUpdate()">
-            {{ savingCustomerUpdate ? btext('saving') : btext('saveUpdate') }}
-          </button>
-          <button class="btn btn-secondary" type="button" [disabled]="savingCustomerUpdate" (click)="cancelCustomerUpdate()">
-            {{ btext('cancel') }}
-          </button>
-        </div>
-
-        <p class="success" *ngIf="customerUpdateMessage">{{ customerUpdateMessage }}</p>
-        <p class="error-message" *ngIf="customerUpdateError">{{ customerUpdateError }}</p>
-      </section>
-
-      <section class="payment-admin-card">
-        <h2>{{ btext('bookingProgress') || getWorkflowTitle() }}</h2>
-
-        <div class="booking-progress-v2">
-          <div class="progress-step" [class.done]="isDepositPaid()">
-            <span class="progress-dot">✓</span>
-            <strong>{{ btext('deposit') }}</strong>
-            <small>{{ getDepositStatusLabel() }}</small>
-          </div>
-          <div class="progress-step" [class.done]="termsAccepted || booking.termsAccepted || booking.tncAccepted">
-            <span class="progress-dot">✓</span>
-            <strong>{{ btext('termsConditions') }}</strong>
-            <small>{{ getTermsStatusLabel() }}</small>
-          </div>
-          <div class="progress-step" [class.done]="isWarrantySelected()">
-            <span class="progress-dot">✓</span>
-            <strong>{{ btext('warrantyMode') }}</strong>
-            <small>{{ getWarrantyModeLabel() }}</small>
-          </div>
-          <div class="progress-step" [class.done]="isBalancePaid()">
-            <span class="progress-dot">✓</span>
-            <strong>{{ btext('remaining') }}</strong>
-            <small>{{ getBalanceStatusLabel() }}</small>
-          </div>
-          <div class="progress-step" *ngIf="hasSkipperFee()" [class.done]="isSkipperPaymentPaid()">
-            <span class="progress-dot">✓</span>
-            <strong>{{ btext('skipperPayment') }}</strong>
-            <small>{{ getSkipperPaymentStatusLabel() }}</small>
-          </div>
-          <div class="progress-step" [class.done]="getDamageStatusLabel() !== btext('noDamageReported')">
-            <span class="progress-dot">✓</span>
-            <strong>{{ btext('damage') }}</strong>
-            <small>{{ getDamageStatusLabel() }}</small>
+          <div class="actions compact-actions">
+            <button class="btn btn-primary" type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Save booking' }}</button>
+            <button class="btn btn-secondary" type="button" (click)="cancelEdit()">{{ tText('auto.home.booking-detail.booking-detail.component.cancel') }}</button>
           </div>
         </div>
 
-        <div class="customer-action-bar" *ngIf="!isAdmin">
-          <button class="btn btn-secondary" type="button" *ngIf="canCustomerUpdateBooking() && !editMode" (click)="updateCustomerBooking()">
-            {{ btext('updateBookingInfo') }}
-          </button>
-
-          <button class="btn btn-primary" type="button" *ngIf="canCustomerPayDeposit()" (click)="payDeposit()">
-            Pay 10% deposit
-          </button>
-        </div>
-
-        <div class="workflow-panel customer-payment-hub" *ngIf="canShowCustomerPaymentHub()">
-          <h3>{{ btext('customerPaymentsTitle') }}</h3>
-          <p class="muted">{{ btext('customerPaymentsText') }}</p>
-
-          <div class="client-payment-row" *ngFor="let extra of pendingExtraServices; let i = index">
-            <div *ngIf="canCustomerPayExtraService(extra)">
-              <strong>{{ extra.description || extra.title || extra.name || 'Extra service' }}</strong>
-              <span>€{{ extra.amount || extra.price || 0 }}</span>
-            </div>
-            <button class="btn btn-primary" type="button" *ngIf="canCustomerPayExtraService(extra)" (click)="payExtraService(extra)">
-              Payer cet extra/service
-            </button>
-          </div>
-        </div>
-
-        <div class="customer-action-bar" *ngIf="canAdminOpenDamagePage()">
-          <button class="btn btn-secondary" type="button" (click)="openAdminDamagePage()">
-            {{ btext('openWarrantyDamagePage') }}
-          </button>
-        </div>
-
-        <div class="workflow-panel" *ngIf="!isAdmin && getBookingWorkflowState() === 'deposit_required'">
-          <h3>{{ text('termsModalTitle') }}</h3>
-          <div class="terms-scroll-box tc-scrollable" tabindex="0" (scroll)="onTermsScroll($event)" (keyup.end)="markTermsRead()">
-            <ng-container *ngFor="let section of termsSections">
-              <h4>{{ section.title }}</h4>
-              <p *ngFor="let paragraph of section.paragraphs">{{ paragraph }}</p>
-            </ng-container>
-          </div>
-
-          <p class="muted" *ngIf="!termsRead">{{ text('termsLocked') }}</p>
-
-          <label class="terms-check">
-            <input type="checkbox" [(ngModel)]="termsAccepted" [disabled]="!termsRead" />
-            <span>{{ text('termsCheckbox') }}</span>
-          </label>
-
-          <h3>{{ text('warrantyTitle') }}</h3>
-          <label class="radio-card">
-            <input type="radio" name="warrantyChoice" value="stripe_card" [(ngModel)]="warrantyChoice" />
-            <span>{{ text('warrantyCard') }}</span>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="warrantyChoice" value="cash_on_board" [(ngModel)]="warrantyChoice" />
-            <span>{{ text('warrantyCash') }}</span>
-          </label>
-
-          <p class="blocked-note" *ngIf="getDepositBlockedReason()">{{ getDepositBlockedReason() }}</p>
-
-          <button class="btn btn-primary" type="button" *ngIf="!isAdmin && !isDepositPaid()" [disabled]="!canPayDeposit()" (click)="payDeposit()">
-            {{ text('payDepositButton') }}
-          </button>
-
-          <p class="paid-badge" *ngIf="isDepositPaid()">{{ text('depositAlreadyPaid') }}</p>
-        </div>
-
-        <div class="workflow-panel" *ngIf="!isAdmin && getBookingWorkflowState() === 'warranty_choice_required'">
-          <h3>{{ text('warrantyTitle') }}</h3>
-          <p>{{ btext('warrantyChoiceText') }}</p>
-          <label class="radio-card">
-            <input type="radio" name="warrantyChoiceConfirmed" value="stripe_card" [(ngModel)]="warrantyChoice" />
-            <span>{{ text('warrantyCard') }}</span>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="warrantyChoiceConfirmed" value="cash_on_board" [(ngModel)]="warrantyChoice" />
-            <span>{{ text('warrantyCash') }}</span>
-          </label>
-          <button class="btn btn-secondary" type="button" [disabled]="warrantySaving || !warrantyChoice" (click)="warrantyChoice === 'cash_on_board' ? selectWarrantyCash() : selectWarrantyCard()">
-            {{ btext('saveWarrantyChoice') }}
-          </button>
-        </div>
-
-        <div class="workflow-panel" *ngIf="!isAdmin && getBookingWorkflowState() === 'warranty_card_required'">
-          <h3>{{ btext('registerWarrantyCardTitle') }}</h3>
-          <p>{{ btext('registerWarrantyCardText') }}</p>
-          <button class="btn btn-primary" type="button" (click)="registerWarrantyCard()">{{ btext('registerWarrantyCardButton') }}</button>
-        </div>
-
-
-        <div class="workflow-panel skipper-payment-panel" *ngIf="canAdminManageSkipperPayment()">
-          <h3>{{ btext('skipperPaymentTitle') }}</h3>
-          <p>{{ btext('skipperPaymentText') }}</p>
-
-          <div class="skipper-payment-summary">
-            <div>
-              <span class="overview-label">{{ btext('amountLabel') }}</span>
-              <strong>€{{ getSkipperCashAmount() }}</strong>
-            </div>
-            <div>
-              <span class="overview-label">{{ btext('status') }}</span>
-              <strong>{{ getSkipperPaymentStatusLabel() }}</strong>
-            </div>
-          </div>
-
-          <label>
-            {{ btext('skipperPaymentMethod') }}
-            <select [(ngModel)]="skipperPaymentMethod">
-              <option value="cash">{{ btext('cash') }}</option>
-              <option value="bank_transfer">Virement</option>
-              <option value="other">Autre</option>
-            </select>
-          </label>
-
-          <label class="terms-check">
-            <input type="checkbox" [(ngModel)]="skipperPaymentReceived" />
-            <span>{{ btext('skipperPaymentReceived') }}</span>
-          </label>
-
-          <label>
-            {{ btext('skipperPaymentNotes') }}
-            <textarea rows="3" [(ngModel)]="skipperPaymentNotes" placeholder="{{ btext('skipperPaymentNotesPlaceholder') }}"></textarea>
-          </label>
-
-          <button class="btn btn-primary" type="button" [disabled]="savingSkipperPayment" (click)="saveSkipperPaymentStatus()">
-            {{ savingSkipperPayment ? btext('saving') : btext('saveSkipperPayment') }}
-          </button>
-
-          <p class="success" *ngIf="skipperPaymentMessage">{{ skipperPaymentMessage }}</p>
-          <p class="error-message" *ngIf="skipperPaymentError">{{ skipperPaymentError }}</p>
-        </div>
-
-        <div class="workflow-panel" *ngIf="canAdminManageDamages()">
-          <h3>{{ btext('damageManagement') }}</h3>
-          <p>{{ btext('damageManagementText') }}</p>
-
-          <div class="cash-damage-card" *ngIf="isCashWarranty()">
-            <h3>{{ btext('cashWarrantyEnvelope') }}</h3>
-            <p>
-              {{ btext('cashWarrantyInitialEnvelope') }}: <strong>€{{ getCashWarrantyAmount() }}</strong><br />
-              {{ btext('cashWarrantyAlreadyTaken') }}: <strong>€{{ getCashWarrantyDamagesTaken() }}</strong><br />
-              {{ btext('cashWarrantyRemaining') }}: <strong>€{{ getCashWarrantyRemaining() }}</strong>
-            </p>
-
-            <label>
-              {{ btext('cashDamageAmount') }} (€)
-              <input type="number" min="1" step="0.01" [(ngModel)]="cashDamageAmount" />
-            </label>
-
-            <label>
-              {{ btext('damageReason') }}
-              <textarea rows="3" [(ngModel)]="cashDamageReason" placeholder="{{ btext('damageReasonPlaceholder') }}"></textarea>
-            </label>
-
-            <button class="btn btn-primary" type="button" [disabled]="savingCashDamage" (click)="recordCashWarrantyDamage()">
-              {{ savingCashDamage ? btext('saving') : btext('recordCashDamage') }}
-            </button>
-
-            <p class="success" *ngIf="cashDamageMessage">{{ cashDamageMessage }}</p>
-            <p class="error-message" *ngIf="cashDamageError">{{ cashDamageError }}</p>
-          </div>
-
-          <div class="cash-damage-card" *ngIf="isWarrantyCardSelectedOrRegistered()">
-            <h3>{{ btext('chargeCardWarranty') }}</h3>
-            <p>{{ btext('maximumWarranty') }}: <strong>€{{ booking.warrantyAmount || 500 }}</strong></p>
-
-            <label>
-              {{ btext('damageAmount') }} (€)
-              <input type="number" min="1" step="0.01" [(ngModel)]="cardDamageAmount" />
-            </label>
-
-            <label>
-              {{ btext('damageReason') }}
-              <textarea rows="3" [(ngModel)]="cardDamageReason" placeholder="{{ btext('damageReasonPlaceholder') }}"></textarea>
-            </label>
-
-            <button class="btn btn-primary" type="button" [disabled]="savingCardDamage" (click)="recordCardWarrantyDamage()">
-              {{ savingCardDamage ? btext('charging') : btext('chargeDamageToWarrantyCard') }}
-            </button>
-
-            <p class="success" *ngIf="cardDamageMessage">{{ cardDamageMessage }}</p>
-            <p class="error-message" *ngIf="cardDamageError">{{ cardDamageError }}</p>
-          </div>
-        </div>
-
-
-        <div class="workflow-panel booking-payments-panel" *ngIf="booking">
-          <h3>{{ btext('bookingPaymentsTitle') }}</h3>
-
-          <div *ngIf="bookingPaymentRecords.length === 0" class="muted">
-            {{ btext('bookingPaymentsEmpty') }}
-          </div>
-
-          <div class="booking-payment-row" *ngFor="let payment of bookingPaymentRecords">
-            <div class="booking-payment-main">
-              <strong>{{ payment.label || getPaymentTypeLabel(payment.paymentType) }}</strong>
-              <span>{{ payment.description || getPaymentRecordDescription(payment) }}</span>
-            </div>
-            <div class="booking-payment-meta">
-              <strong>{{ formatPaymentAmount(payment.normalizedAmount) }}</strong>
-              <span [class.paid-badge-inline]="isPaymentRowPaid(payment)">{{ payment.statusLabel || getPaymentRecordStatus(payment) }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="workflow-panel extra-services-panel" *ngIf="booking">
-          <h3>{{ btext('extraServicesTitle') }}</h3>
-
-          <div *ngIf="bookingExtraServices.length === 0" class="muted">
-            {{ btext('noExtraServiceRequested') }}
-          </div>
-
-          <div class="admin-extra-service-actions-title" *ngIf="isAdmin && bookingExtraServices.length">
-            {{ btext('adminExtraServicesManagement') }}
-          </div>
-
-          <div class="extra-service-row" *ngFor="let extra of bookingExtraServices; let i = index">
-            <div class="extra-service-display" *ngIf="!isEditingExtraService(extra, i)">
-              <strong>{{ extra.description || extra.title || extra.name }}</strong>
-              <span>{{ formatPaymentAmount(extra.amount || extra.price || 0, extra) }} · {{ extra.status === 'paid' || extra.paid ? btext('paid') : btext('pending') }}</span>
-            </div>
-
-            <div class="extra-service-edit" *ngIf="isAdmin && isEditingExtraService(extra, i)">
-              <label>
-                {{ btext('descriptionLabel') }}
-                <input type="text" [(ngModel)]="extraServiceEditDescription" />
-              </label>
-              <label>
-                {{ btext('amountLabel') }}
-                <input type="number" min="1" step="0.01" [(ngModel)]="extraServiceEditAmount" />
-              </label>
-              <label>
-                {{ btext('status') }}
-                <select [(ngModel)]="extraServiceEditStatus">
-                  <option value="pending">{{ btext('pending') }}</option>
-                  <option value="paid">{{ btext('paid') }}</option>
-                  <option value="cancelled">{{ btext('cancel') }}</option>
-                </select>
-              </label>
-            </div>
-
-            <div class="extra-service-actions">
-              <button class="btn btn-primary" type="button" *ngIf="!isAdmin && canCustomerPayExtraService(extra)" (click)="payExtraService(extra)">
-                {{ btext('payExtraServiceButton') }}
-              </button>
-
-              <ng-container *ngIf="isAdmin">
-                <button class="btn btn-secondary admin-extra-btn" type="button" *ngIf="!isEditingExtraService(extra, i)" (click)="startEditExtraService(extra, i)">
-                  {{ btext('edit') }}
-                </button>
-                <button class="btn btn-primary admin-extra-btn" type="button" *ngIf="isEditingExtraService(extra, i)" [disabled]="savingExtraService" (click)="saveExtraServiceEdit(extra, i)">
-                  {{ btext('saveUpdate') }}
-                </button>
-                <button class="btn btn-secondary" type="button" *ngIf="isEditingExtraService(extra, i)" (click)="cancelEditExtraService()">
-                  {{ btext('cancel') }}
-                </button>
-                <button class="btn btn-danger admin-extra-btn" type="button" [disabled]="savingExtraService" (click)="deleteExtraService(extra, i)">
-                  {{ btext('delete') }}
-                </button>
-              </ng-container>
-            </div>
-          </div>
-
-          <div class="admin-extra-service-form" *ngIf="canAdminCreateExtraService()">
-            <h4>{{ btext('proposeExtraServiceTitle') }}</h4>
-
-            <label>
-              {{ btext('serviceFromCatalogLabel') }}
-              <select [(ngModel)]="selectedExtraServiceId">
-                <option value="">{{ btext('customServiceOption') }}</option>
-                <option *ngFor="let service of extraServicesCatalog" [value]="service.id || service.slug">
-                  {{ service.title || service.name || service.description }} — €{{ service.amount || service.price || 0 }}
-                </option>
-              </select>
-            </label>
-
-            <label>
-              {{ btext('customDescriptionLabel') }}
-              <input type="text" [(ngModel)]="customExtraServiceDescription" placeholder="{{ btext('customDescriptionPlaceholder') }}" />
-            </label>
-
-            <label>
-              {{ btext('customAmountLabel') }}
-              <input type="number" min="1" step="0.01" [(ngModel)]="customExtraServiceAmount" />
-            </label>
-
-            <button class="btn btn-secondary" type="button" [disabled]="savingExtraService" (click)="createExtraServiceRequest()">
-              {{ savingExtraService ? btext('saving') : btext('sendExtraServicePaymentRequest') }}
-            </button>
-
-            <p class="success" *ngIf="extraServiceMessage">{{ extraServiceMessage }}</p>
-            <p class="error-message" *ngIf="extraServiceError">{{ extraServiceError }}</p>
-          </div>
-        </div>
-
-
-        <div class="workflow-panel adhoc-payment-panel" *ngIf="canCustomerCreateAdhocPayment()">
-          <h3>{{ btext('adhocPaymentTitle') }}</h3>
-          <p>{{ btext('adhocPaymentText') }}</p>
-
-          <label>
-            {{ btext('descriptionLabel') }}
-            <input type="text" [(ngModel)]="adhocPaymentDescription" placeholder="{{ btext('adhocDescriptionPlaceholder') }}" />
-          </label>
-
-          <label>
-            {{ btext('amountLabel') }}
-            <input type="number" min="1" step="0.01" [(ngModel)]="adhocPaymentAmount" />
-          </label>
-
-          <button class="btn btn-primary" type="button" [disabled]="adhocPaymentLoading" (click)="payAdhocBookingAmount()">
-            {{ adhocPaymentLoading ? btext('redirecting') : btext('payThisAmount') }}
-          </button>
-
-          <p class="success" *ngIf="adhocPaymentMessage">{{ adhocPaymentMessage }}</p>
-          <p class="error-message" *ngIf="adhocPaymentError">{{ adhocPaymentError }}</p>
-        </div>
-
-        <div class="workflow-panel refund-panel" *ngIf="isAdmin && refundablePaymentOptions.length">
-          <h3>Refund a payment</h3>
-          <p>Choose the paid item to refund. You can refund the 10% deposit, or refund all/part of the remaining 90%.</p>
-
-          <label>
-            Payment to refund
-            <select [(ngModel)]="refundTarget" (ngModelChange)="onRefundTargetChange()">
-              <option *ngFor="let option of refundablePaymentOptions" [value]="option.type">
-                {{ option.label }} — {{ formatPaymentAmount(option.amount) }} available
-              </option>
-            </select>
-          </label>
-
-          <label>
-            Refund amount (€)
-            <input type="number" min="1" step="0.01" [max]="selectedRefundableAmount" [(ngModel)]="refundAmount" />
-          </label>
-
-          <label>
-            Reason
-            <textarea rows="3" [(ngModel)]="refundReason" placeholder="Weather compensation, commercial gesture..."></textarea>
-          </label>
-
-          <button class="btn btn-primary" type="button" [disabled]="refunding || !canAdminRefund()" (click)="issueRefund()">
-            {{ refunding ? 'Refunding...' : 'Issue refund' }}
-          </button>
-
-          <p class="success" *ngIf="refundMessage">{{ refundMessage }}</p>
-          <p class="error-message" *ngIf="refundError">{{ refundError }}</p>
-        </div>
-
-
-        <p class="success" *ngIf="balancePaymentMessage">{{ balancePaymentMessage }}</p>
-        <p class="error-message" *ngIf="balancePaymentError">{{ balancePaymentError }}</p>
-        <p class="success" *ngIf="warrantyMessage">{{ warrantyMessage }}</p>
-        <p class="error-message" *ngIf="warrantyError">{{ warrantyError }}</p>
-      </section>
-    
-      <div class="status-modal-backdrop" *ngIf="statusModalOpen" (click)="closeStatusModal()">
-        <section class="status-modal" (click)="$event.stopPropagation()">
-          <button class="modal-close" type="button" (click)="closeStatusModal()">×</button>
-          <span class="eyebrow">{{ btext('bookingStatus') }}</span>
-          <h2>{{ getStatusLabel() }}</h2>
-          <p>{{ getStatusSummaryText() }}</p>
-
-          <div class="status-timeline">
-            <div class="status-step" [ngClass]="getStatusStepClass(isDepositPaid())">
-              <strong>{{ btext('deposit') }}</strong>
-              <span>{{ getDepositStatusLabel() }}</span>
-            </div>
-            <div class="status-step" [ngClass]="getStatusStepClass(isTermsAccepted())">
-              <strong>{{ btext('termsConditions') }}</strong>
-              <span>{{ getTermsStatusLabel() }}</span>
-            </div>
-            <div class="status-step" [ngClass]="getStatusStepClass(isWarrantySecured())">
-              <strong>{{ btext('warranty') }}</strong>
-              <span>{{ getWarrantyModeLabel() }} · {{ getWarrantyCardLabel() }}</span>
-            </div>
-            <div class="status-step" [ngClass]="getStatusStepClass(isBalancePaid())">
-              <strong>{{ btext('remaining') }}</strong>
-              <span>{{ getBalanceStatusLabel() }}</span>
-            </div>
-            <div class="status-step" [ngClass]="getStatusStepClass(getDamageStatusLabel().includes('recorded'))">
-              <strong>{{ btext('damage') }}</strong>
-              <span>{{ getDamageStatusLabel() }}</span>
-            </div>
-          </div>
-
-          <div class="modal-actions">
-            <button class="btn btn-secondary" type="button" (click)="closeStatusModal()">{{ btext('close') }}</button>
+        <section class="edit-section info-edit">
+          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.1_customer_and_outing') }}</h3>
+          <div class="edit-grid">
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.customer_name') }}<input name="customerName" [(ngModel)]="editForm.customerName" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.email') }}<input name="email" type="email" [(ngModel)]="editForm.email" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.phone') }}<input name="phone" [(ngModel)]="editForm.phone" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.outing_date') }}<input name="outingDate" type="date" [(ngModel)]="editForm.outingDate" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.departure_time') }}<input name="departureTime" type="time" [(ngModel)]="editForm.departureTime" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.arrival_time') }}<input name="arrivalTime" type="time" [(ngModel)]="editForm.arrivalTime" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.passengers') }}<input name="passengers" type="number" min="0" [(ngModel)]="editForm.passengers" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.outing_type') }}<input name="outingType" [(ngModel)]="editForm.outingType" /></label>
           </div>
         </section>
+
+        <section class="edit-section boat-edit">
+          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.2_boat') }}</h3>
+          <div class="edit-grid">
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.boat_name') }}<input name="boatName" [(ngModel)]="editForm.boatName" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.boat_type') }}<input name="boatType" [(ngModel)]="editForm.boatType" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.manufacturer') }}<input name="boatManufacturer" [(ngModel)]="editForm.boatManufacturer" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.model') }}<input name="boatModel" [(ngModel)]="editForm.boatModel" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.departure_marina') }}<input name="startMarina" [(ngModel)]="editForm.startMarina" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.boat_listing_url') }}<input name="externalPlatformUrl" type="url" [(ngModel)]="editForm.externalPlatformUrl" /></label>
+          </div>
+        </section>
+
+        <section class="edit-section platform-edit" *ngIf="editForm.source && editForm.source !== 'direct'">
+          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.3_platform') }}</h3>
+          <div class="edit-grid">
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.platform_source') }}<select name="source" [(ngModel)]="editForm.source">
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.direct')">{{ tText('auto.home.booking-detail.booking-detail.component.direct_alegria') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.clickandboat')">{{ tText('auto.home.booking-detail.booking-detail.component.click_boat') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.samboat')">{{ tText('auto.home.booking-detail.booking-detail.component.samboat') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.other')">{{ tText('auto.home.booking-detail.booking-detail.component.other') }}</option>
+              </select>
+            </label>
+            <label *ngIf="showPlatformNameField()">{{ tText('auto.home.booking-detail.booking-detail.component.platform_name') }}<input name="externalPlatformName" [(ngModel)]="editForm.externalPlatformName" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.platform_booking') }}<input name="externalPlatformBookingRef" [(ngModel)]="editForm.externalPlatformBookingRef" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.booking_url') }}<input name="platformBookingUrl" type="url" [(ngModel)]="editForm.platformBookingUrl" /></label>
+          </div>
+        </section>
+
+        <section class="edit-section customer-cost-edit">
+          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.4_customer_cost') }}</h3>
+          <p class="section-help">{{ tText('auto.home.booking-detail.booking-detail.component.this_is_what_the_client_paid_or_was_charged_in_tot') }}</p>
+          <div class="edit-grid">
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.total_cost_to_client') }}<input name="totalAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.totalAmount" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.amount_paid_by_customer_on_platform') }}<input name="externalPlatformTotalClientAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.externalPlatformTotalClientAmount" /></label>
+          </div>
+        </section>
+
+        <section class="edit-section revenue-edit">
+          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.5_alegria_revenue_and_onboard_collections') }}</h3>
+          <p class="section-help">{{ tText('auto.home.booking-detail.booking-detail.component.this_is_what_alegria_receives_platform_payout_plus') }}</p>
+          <div class="edit-grid">
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.platform_payout_to_alegria') }}<input name="externalPlatformPaidAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.externalPlatformPaidAmount" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.skipper_fee') }}<input name="skipperCashAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.skipperCashAmount" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.catering') }}<input name="cateringAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.cateringAmount" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.tip') }}<input name="tipsAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.tipsAmount" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.cleaning_fuel') }}<input name="cleaningCashAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.cleaningCashAmount" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.drinks') }}<input name="drinksAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.drinksAmount" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.water_toys') }}<input name="waterToysAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.waterToysAmount" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.other_onboard') }}<input name="otherOnboardAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.otherOnboardAmount" /></label>
+          </div>
+        </section>
+
+        <section class="edit-section warranty-edit">
+          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.6_warranty') }}</h3>
+          <div class="edit-grid">
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.warranty_amount') }}<input name="warrantyAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.warrantyAmount" /></label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.warranty_method') }}<select name="warrantyPaymentChoice" [(ngModel)]="editForm.warrantyPaymentChoice">
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.cash')">{{ tText('auto.home.booking-detail.booking-detail.component.cash') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.stripe_card')">{{ tText('auto.home.booking-detail.booking-detail.component.stripe_credit_card') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.bank_check')">{{ tText('auto.home.booking-detail.booking-detail.component.bank_check') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.none')">{{ tText('auto.home.booking-detail.booking-detail.component.no_warranty') }}</option>
+              </select>
+            </label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.warranty_status') }}<select name="warrantyStatus" [(ngModel)]="editForm.warrantyStatus">
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.not_requested')">{{ tText('auto.home.booking-detail.booking-detail.component.not_requested') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.selected')">{{ tText('auto.home.booking-detail.booking-detail.component.selected') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.cash_selected')">{{ tText('auto.home.booking-detail.booking-detail.component.cash_selected') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.card_selected')">{{ tText('auto.home.booking-detail.booking-detail.component.card_selected') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.card_registered')">{{ tText('auto.home.booking-detail.booking-detail.component.card_registered') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.charged')">{{ tText('auto.home.booking-detail.booking-detail.component.charged') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.released')">{{ tText('auto.home.booking-detail.booking-detail.component.released') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.refunded')">{{ tText('auto.home.booking-detail.booking-detail.component.refunded') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.cancelled')">{{ tText('auto.home.booking-detail.booking-detail.component.cancelled') }}</option>
+              </select>
+            </label>
+          </div>
+        </section>
+
+        <section class="edit-section status-edit">
+          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.7_statuses') }}</h3>
+          <div class="edit-grid">
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.booking_status') }}<select name="bookingStatus" [(ngModel)]="editForm.bookingStatus">
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.proposal')">{{ tText('auto.home.booking-detail.booking-detail.component.proposal') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.pending')">{{ tText('auto.home.booking-detail.booking-detail.component.pending') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.confirmed')">{{ tText('auto.home.booking-detail.booking-detail.component.confirmed') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.completed')">{{ tText('auto.home.booking-detail.booking-detail.component.completed') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.cancelled')">{{ tText('auto.home.booking-detail.booking-detail.component.cancelled') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.no_show')">{{ tText('auto.home.booking-detail.booking-detail.component.no_show') }}</option>
+              </select>
+            </label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.payment_status') }}<select name="paymentStatusLabel" [(ngModel)]="editForm.paymentStatusLabel">
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.pending')">{{ tText('auto.home.booking-detail.booking-detail.component.pending') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.deposit_paid')">{{ tText('auto.home.booking-detail.booking-detail.component.deposit_paid') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.balance_paid')">{{ tText('auto.home.booking-detail.booking-detail.component.balance_paid') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.fully_paid')">{{ tText('auto.home.booking-detail.booking-detail.component.fully_paid') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.refunded')">{{ tText('auto.home.booking-detail.booking-detail.component.refunded') }}</option>
+              </select>
+            </label>
+            <label>{{ tText('auto.home.booking-detail.booking-detail.component.status') }}<select name="status" [(ngModel)]="editForm.status">
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.proposal')">{{ tText('auto.home.booking-detail.booking-detail.component.proposal') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.pending')">{{ tText('auto.home.booking-detail.booking-detail.component.pending') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.confirmed')">{{ tText('auto.home.booking-detail.booking-detail.component.confirmed') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.completed')">{{ tText('auto.home.booking-detail.booking-detail.component.completed') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.cancelled')">{{ tText('auto.home.booking-detail.booking-detail.component.cancelled') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.no_show')">{{ tText('auto.home.booking-detail.booking-detail.component.no_show') }}</option>
+              </select>
+            </label>
+          </div>
+        </section>
+
+        <section class="edit-section">
+          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.8_notes') }}</h3>
+          <label class="full-width">{{ tText('auto.home.booking-detail.booking-detail.component.comments') }}<textarea name="comments" rows="3" [(ngModel)]="editForm.comments"></textarea></label>
+        </section>
+
+        <div class="actions sticky-save-actions">
+          <button class="btn btn-primary" type="submit" [disabled]="saving">{{ saving ? 'Saving...' : 'Save booking' }}</button>
+          <button class="btn btn-secondary" type="button" (click)="cancelEdit()">{{ tText('auto.home.booking-detail.booking-detail.component.cancel') }}</button>
+        </div>
+      </form>
+
+      <div class="card-grid" *ngIf="!editMode">
+        <article class="info-card">
+          <h2>{{ tText('auto.home.booking-detail.booking-detail.component.customer') }}</h2>
+          <p class="big-value">{{ vm.display.customerName || '-' }}</p>
+          <p>{{ vm.display.email || '-' }}</p>
+          <p>{{ vm.display.phone || '-' }}</p>
+        </article>
+
+        <article class="info-card">
+          <h2>{{ t('boat') }}</h2>
+          <p class="big-value">{{ vm.display.boatName || 'Alegria' }}</p>
+          <p>{{ vm.display.boatManufacturer || '' }} {{ vm.display.boatModel || vm.display.boatType || '' }}</p>
+          <p>{{ vm.display.startMarina || 'Marina Baie des Anges' }}</p>
+          <p class="links-row" *ngIf="vm.boatListingUrl"><a [href]="vm.boatListingUrl" target="_blank" rel="noopener">{{ t('openBoatListing') }} ↗</a></p>
+        </article>
+
+        <article class="info-card" *ngIf="vm.isExternalBooking">
+          <h2>{{ t('platform') }}</h2>
+          <p class="big-value">{{ vm.platformLabel }}</p>
+          <p>{{ t('reference') }}: {{ vm.display.externalPlatformBookingRef || vm.display.platformBookingReference || vm.display.platformReservationNumber || '-' }}</p>
+          <p class="links-row" *ngIf="vm.platformBookingUrl"><a [href]="vm.platformBookingUrl" target="_blank" rel="noopener">{{ t('openPlatformBooking') }} ↗</a></p>
+        </article>
+
+        <article class="info-card historical-card" *ngIf="vm.isHistoricalBooking">
+          <h2>{{ t('historicalBooking') }}</h2>
+          <p class="big-value">{{ t('completed') }}</p>
+          <p>{{ t('historicalPaidMessage') }}</p>
+        </article>
       </div>
+
+      <section class="customer-finance-simple booking-customer-clean" *ngIf="!editMode">
+        <article class="cockpit-section finance-panel finance-summary-panel">
+          <h2>{{ t('financialSummary') }}</h2>
+          <div class="finance-table compact">
+            <div class="finance-line" *ngIf="vm.boatOutingCost > 0"><span>{{ t('boatOuting') }}</span><strong>{{ formatMoney(vm.boatOutingCost) }}</strong></div>
+            <div class="finance-line" *ngIf="vm.fuelCost > 0"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.fuelCost) }}</strong></div>
+            <div class="finance-line" *ngIf="vm.extraServicesCost > 0"><span>{{ t('extraServices') }}</span><strong>{{ formatMoney(vm.extraServicesCost) }}</strong></div>
+            <div class="finance-line" *ngIf="vm.skipperCost > 0"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.skipperCost) }}</strong></div>
+            <div class="finance-line finance-total"><span>{{ t('totalCustomerCost') }}</span><strong>{{ formatMoney(vm.totalCustomerCost) }}</strong></div>
+          </div>
+        </article>
+
+        <article class="cockpit-section finance-panel alegria-panel">
+          <h2>{{ t('alegriaRevenue') }}</h2>
+          <p class="finance-subtitle">{{ t('alegriaRevenueHelp') }}</p>
+          <div class="finance-table compact">
+            <ng-container *ngIf="vm.isExternalBooking || vm.isHistoricalBooking; else directAlegriaRevenue">
+              <div class="finance-line" *ngIf="vm.collectedViaPlatform > 0"><span>{{ t('platformPayoutToAlegria') }}</span><strong>{{ formatMoney(vm.collectedViaPlatform) }}</strong></div>
+              <div class="finance-line" *ngIf="vm.totalDirectCatering > 0"><span>{{ t('catering') }}</span><strong>{{ formatMoney(vm.totalDirectCatering) }}</strong></div>
+              <div class="finance-line" *ngIf="vm.totalDirectTips > 0"><span>{{ t('tips') }}</span><strong>{{ formatMoney(vm.totalDirectTips) }}</strong></div>
+              <div class="finance-line" *ngIf="vm.totalDirectCleaningFuel > 0"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.totalDirectCleaningFuel) }}</strong></div>
+              <div class="finance-line" *ngIf="vm.totalDirectDrinks > 0"><span>{{ tText('auto.home.booking-detail.booking-detail.component.drinks_cd3fe5') }}</span><strong>{{ formatMoney(vm.totalDirectDrinks) }}</strong></div>
+              <div class="finance-line" *ngIf="vm.totalDirectWaterToys > 0"><span>{{ tText('auto.home.booking-detail.booking-detail.component.water_toys_966ae2') }}</span><strong>{{ formatMoney(vm.totalDirectWaterToys) }}</strong></div>
+              <div class="finance-line" *ngIf="vm.totalDirectOther > 0"><span>{{ tText('auto.home.booking-detail.booking-detail.component.other') }}</span><strong>{{ formatMoney(vm.totalDirectOther) }}</strong></div>
+            </ng-container>
+            <ng-template #directAlegriaRevenue>
+              <div class="finance-line" *ngIf="vm.boatOutingCost > 0"><span>{{ t('boatOuting') }}</span><strong>{{ formatMoney(vm.boatOutingCost) }}</strong></div>
+              <div class="finance-line" *ngIf="vm.fuelCost > 0"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.fuelCost) }}</strong></div>
+              <div class="finance-line" *ngIf="vm.extraServicesCost > 0"><span>{{ t('extraServices') }}</span><strong>{{ formatMoney(vm.extraServicesCost) }}</strong></div>
+            </ng-template>
+            <div class="finance-line finance-total"><span>{{ t('alegriaRevenue') }}</span><strong>{{ formatMoney(vm.alegriaRevenueTotal) }}</strong></div>
+            <div class="finance-line paid-line" *ngIf="vm.alegriaPaidAmount > 0"><span>{{ t('alreadyPaid') }}</span><strong>{{ formatMoney(vm.alegriaPaidAmount) }}</strong></div>
+            <div class="finance-line outstanding-line" *ngIf="vm.remainingAlegriaRevenue > 0"><span>{{ t('leftToPay') }}</span><strong>{{ formatMoney(vm.remainingAlegriaRevenue) }}</strong></div>
+            <div class="finance-line paid-line" *ngIf="vm.remainingAlegriaRevenue <= 0"><span>{{ t('status') }}</span><strong>✓ {{ t('paid') }}</strong></div>
+          </div>
+          <button class="btn btn-primary finance-action" type="button" *ngIf="canPayDepositOnline()" [disabled]="payingAlegria" (click)="payDepositOnline()">
+            {{ payingAlegria ? t('redirecting') : t('payDepositNow') }}
+          </button>
+          <button class="btn btn-primary finance-action" type="button" *ngIf="canPayAlegriaOnline()" [disabled]="payingAlegria" (click)="payAlegriaOnline()">
+            {{ payingAlegria ? t('redirecting') : (t('payAlegriaNow') + ' ' + formatMoney(vm.remainingAlegriaRevenue)) }}
+          </button>
+        </article>
+
+        <article class="cockpit-section finance-panel skipper-panel">
+          <h2>{{ t('skipperRevenue') }}</h2>
+          <p class="finance-subtitle">{{ t('skipperRevenueHelp') }}</p>
+          <div class="finance-table compact">
+            <div class="finance-line finance-total"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.skipperCost) }}</strong></div>
+            <div class="finance-line paid-line" *ngIf="vm.skipperPaidAmount > 0"><span>{{ t('alreadyPaid') }}</span><strong>{{ formatMoney(vm.skipperPaidAmount) }}</strong></div>
+            <div class="finance-line outstanding-line" *ngIf="vm.remainingSkipperFee > 0"><span>{{ t('leftToPay') }}</span><strong>{{ formatMoney(vm.remainingSkipperFee) }}</strong></div>
+            <div class="finance-line paid-line" *ngIf="vm.remainingSkipperFee <= 0"><span>{{ t('status') }}</span><strong>✓ {{ t('skipperPaid') }}</strong></div>
+          </div>
+          <button class="btn btn-primary finance-action" type="button" *ngIf="canPaySkipperOnline()" [disabled]="payingSkipper" (click)="paySkipperOnline()">
+            {{ payingSkipper ? t('redirecting') : (t('paySkipperNow') + ' ' + formatMoney(vm.remainingSkipperFee)) }}
+          </button>
+          <button class="btn btn-secondary finance-action" type="button" *ngIf="canConfirmSkipperPaid()" [disabled]="payingSkipper" (click)="confirmSkipperPaid()">
+            {{ payingSkipper ? t('saving') : t('confirmSkipperPaid') }}
+          </button>
+        </article>
+
+        <article class="cockpit-section finance-panel warranty-panel">
+          <h2>{{ t('warranty') }}</h2>
+          <div class="finance-table compact">
+            <div class="finance-line"><span>{{ t('amount') }}</span><strong>{{ formatMoney(warrantyAmount()) }}</strong></div>
+            <div class="finance-line"><span>{{ t('method') }}</span><strong>{{ warrantyMethodLabel(vm.display.warrantyPaymentChoice || vm.display.warrantyMethod) }}</strong></div>
+            <div class="finance-line"><span>{{ t('status') }}</span><strong>{{ vm.warrantyStatusBadge }}</strong></div>
+          </div>
+          <p class="finance-note">{{ t('changeWarrantyMethodHelp') }}</p>
+          <div class="warranty-actions">
+            <button class="btn btn-secondary finance-action" type="button" *ngIf="canSelectCashWarranty()" [disabled]="registeringWarrantyCard" (click)="selectCashWarranty()">
+              {{ registeringWarrantyCard ? t('saving') : t('chooseWarrantyCash') }}
+            </button>
+            <button class="btn btn-secondary finance-action" type="button" *ngIf="canRegisterWarrantyCard()" [disabled]="registeringWarrantyCard" (click)="registerWarrantyCardOnline()">
+              {{ registeringWarrantyCard ? t('redirecting') : t('registerWarrantyCardButton') }}
+            </button>
+          </div>
+        </article>
+      </section>
+
+      <article class="cockpit-section customer-cost" *ngIf="false && !editMode && vm.isAdmin">
+        <div class="summary-title-row">
+          <div>
+            <h2>{{ t('customerFinancialSummary') }}</h2>
+            <p class="section-help">{{ t('customerQuestion') }}</p>
+          </div>
+          <span class="status-badge paid">{{ vm.paymentStatusBadge }}</span>
+        </div>
+
+        <div class="finance-table">
+          <h3>{{ t('customerCost') }}</h3>
+          <div class="finance-line"><span>{{ t('boatOuting') }}</span><strong>{{ formatMoney(vm.boatOutingCost) }}</strong></div>
+          <div class="finance-line" *ngIf="vm.fuelCost > 0"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.fuelCost) }}</strong></div>
+          <div class="finance-line"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.skipperCost) }}</strong></div>
+          <div class="finance-line"><span>{{ t('extraServices') }}</span><strong>{{ formatMoney(vm.extraServicesCost) }}</strong></div>
+          <div class="finance-line finance-total"><span>{{ t('totalCustomerCost') }}</span><strong>{{ formatMoney(vm.totalCustomerCost) }}</strong></div>
+          <div class="finance-line paid-line"><span>{{ t('alreadyPaidDeposit') }}</span><strong>{{ formatMoney(vm.depositPaidAmount) }} <small>✓ {{ t('stripe') }}</small></strong></div>
+          <div class="finance-line"><span>{{ t('remainingBoatBalance') }}</span><strong>{{ formatMoney(vm.remainingBoatBalance) }}</strong></div>
+          <div class="finance-line" *ngIf="vm.remainingFuelCost > 0"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.remainingFuelCost) }}</strong></div>
+          <div class="finance-line"><span>{{ t('remainingSkipperFee') }}</span><strong>{{ formatMoney(vm.remainingSkipperFee) }}</strong></div>
+          <div class="finance-line" *ngIf="vm.remainingExtraServices > 0"><span>{{ t('remainingExtraServices') }}</span><strong>{{ formatMoney(vm.remainingExtraServices) }}</strong></div>
+          <div class="finance-line finance-total"><span>{{ t('totalRemaining') }}</span><strong>{{ formatMoney(vm.totalRemainingCustomer) }}</strong></div>
+        </div>
+      </article>
+
+      <article class="cockpit-section alegria-revenue" *ngIf="false && !editMode && vm.isAdmin">
+        <div class="summary-title-row">
+          <div>
+            <h2>{{ t('alegriaCollections') }}</h2>
+            <p class="section-help">{{ t('alegriaQuestion') }}</p>
+          </div>
+          <span class="status-badge done">{{ t('stripe') }} / {{ t('collectedOnboard') }}</span>
+        </div>
+
+        <div class="finance-columns">
+          <div class="finance-table compact">
+            <h3>{{ t('collectedOnline') }}</h3>
+            <div class="finance-line"><span>{{ t('deposit') }}</span><strong>{{ formatMoney(vm.stripeDepositCollected) }}</strong></div>
+            <div class="finance-line finance-total"><span>{{ t('totalStripe') }}</span><strong>{{ formatMoney(vm.totalStripeCollections) }}</strong></div>
+          </div>
+
+          <div class="finance-table compact">
+            <h3>{{ t('collectedOnboard') }}</h3>
+            <div class="finance-line"><span>{{ t('boatBalance') }}</span><strong>{{ formatMoney(vm.onboardBoatBalanceCollected) }}</strong></div>
+            <div class="finance-line"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.onboardSkipperCollected) }}</strong></div>
+            <div class="finance-line"><span>{{ t('catering') }}</span><strong>{{ formatMoney(vm.totalDirectCatering) }}</strong></div>
+            <div class="finance-line"><span>{{ t('tips') }}</span><strong>{{ formatMoney(vm.totalDirectTips) }}</strong></div>
+            <div class="finance-line"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.totalDirectCleaningFuel) }}</strong></div>
+            <div class="finance-line finance-total"><span>{{ t('totalOnboard') }}</span><strong>{{ formatMoney(vm.totalOnboardCollections) }}</strong></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="cockpit-section outstanding-cockpit" *ngIf="false && !editMode && vm.isAdmin && vm.outstandingTotal > 0">
+        <h2>{{ t('outstanding') }}</h2>
+        <div class="finance-table compact">
+          <div class="finance-line"><span>{{ t('boatBalance') }}</span><strong>{{ formatMoney(vm.outstandingBoatBalance) }}</strong></div>
+          <div class="finance-line" *ngIf="vm.outstandingFuelCost > 0"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.outstandingFuelCost) }}</strong></div>
+          <div class="finance-line"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.outstandingSkipperFee) }}</strong></div>
+          <div class="finance-line" *ngIf="vm.outstandingExtraServices > 0"><span>{{ t('extraServices') }}</span><strong>{{ formatMoney(vm.outstandingExtraServices) }}</strong></div>
+          <div class="finance-line finance-total"><span>{{ t('total') }}</span><strong>{{ formatMoney(vm.outstandingTotal) }}</strong></div>
+        </div>
+      </article>
+
+      <article class="cockpit-section warranty-cockpit" *ngIf="false && !editMode && vm.isAdmin">
+        <div class="summary-title-row">
+          <div>
+            <h2>{{ t('warranty') }}</h2>
+            <p class="section-help">{{ t('notRevenue') }}</p>
+          </div>
+          <span class="status-badge warranty">{{ vm.warrantyStatusBadge }}</span>
+        </div>
+        <div class="financial-grid">
+          <div><span>{{ t('warranty') }}</span><strong>{{ formatMoney(vm.display.warrantyAmount || 0) }}</strong></div>
+          <div><span>{{ t('method') }}</span><strong>{{ warrantyMethodLabel(vm.display.warrantyPaymentChoice || vm.display.warrantyMethod) }}</strong></div>
+          <div><span>{{ t('status') }}</span><strong>{{ vm.warrantyStatusBadge }}</strong></div>
+        </div>
+      </article>
 
     </article>
   </div>

@@ -374,3 +374,105 @@ label{display:grid;gap:6px;color:#08263a;font-weight:700}input,textarea,select{b
   margin-top: 0;
   margin-bottom: 16px;
 }
+
+.external-platform-summary {
+  max-width: 900px;
+  margin: 1rem auto;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(8,43,63,.12);
+  border-radius: 16px;
+  background: #fffaf3;
+}
+
+/* Customer proposal: clear four-section financial summary */
+.customer-proposal-clean {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.customer-proposal-clean .finance-panel {
+  background: #fff;
+  border: 1px solid rgba(8, 38, 58, .08);
+  border-radius: 22px;
+  padding: 1.15rem;
+  box-shadow: 0 14px 38px rgba(8, 38, 58, .06);
+}
+
+.customer-proposal-clean h2 {
+  margin: 0 0 .75rem;
+  font-size: 1.15rem;
+}
+
+.customer-proposal-clean .finance-note {
+  margin: -.25rem 0 .75rem;
+  color: #516070;
+}
+
+.customer-proposal-clean .finance-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .55rem 0;
+  border-bottom: 1px solid rgba(8, 38, 58, .08);
+  color: #516070;
+}
+
+.customer-proposal-clean .finance-line:last-child {
+  border-bottom: 0;
+}
+
+.customer-proposal-clean .finance-line strong {
+  color: #08263a;
+  white-space: nowrap;
+}
+
+.customer-proposal-clean .finance-total {
+  margin-top: .35rem;
+  padding-top: .8rem;
+  border-top: 2px solid rgba(8, 38, 58, .14);
+  border-bottom: 0;
+  color: #08263a;
+  font-weight: 800;
+}
+
+.customer-proposal-clean .finance-total strong {
+  font-size: 1.15rem;
+}
+
+.customer-proposal-clean .muted-line {
+  opacity: .86;
+}
+
+.customer-proposal-clean .alegria-panel {
+  border-color: rgba(4, 120, 87, .2);
+  background: #f7fbf8;
+}
+
+.customer-proposal-clean .skipper-panel {
+  border-color: rgba(181, 139, 74, .26);
+  background: #fffaf3;
+}
+
+.customer-proposal-clean .warranty-panel {
+  border-color: rgba(91, 67, 130, .18);
+  background: #fbf8ff;
+}
+
+.proposal-waiting-admin-card {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  border-radius: 18px;
+  background: #fff8ed;
+  border: 1px solid rgba(181, 139, 74, .32);
+  box-shadow: 0 16px 40px rgba(8, 38, 58, .08);
+}
+
+.proposal-waiting-admin-card h2 {
+  margin: .35rem 0 .75rem;
+}
+
+.proposal-waiting-admin-card p {
+  margin: .35rem 0;
+  line-height: 1.55;
+}

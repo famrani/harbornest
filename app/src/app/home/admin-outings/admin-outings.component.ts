@@ -6,7 +6,7 @@ import { LanguageService, SiteLanguage } from '../../services/language.service';
 
 interface ChecklistItem {
   id: string;
-  label: Record<SiteLanguage, string>;
+  label: Partial<Record<SiteLanguage, string>> & { fr: string; en?: string; es?: string; };
   done: boolean;
   doneBy?: string;
   doneByUid?: string;
@@ -15,7 +15,7 @@ interface ChecklistItem {
 
 interface ChecklistGroup {
   id: string;
-  title: Record<SiteLanguage, string>;
+  title: Partial<Record<SiteLanguage, string>> & { fr: string; en?: string; es?: string; };
   items: ChecklistItem[];
 }
 
@@ -79,7 +79,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
   error = '';
   closeError = '';
 
-  outingTypes: Record<SiteLanguage, string[]> = {
+  outingTypes: Partial<Record<SiteLanguage, string[]>> & { fr: string[]; en: string[]; es: string[] } = {
     fr: ['Journée en mer', 'Demi-journée', 'Coucher de soleil', 'Fête privée', 'Sortie entreprise'],
     en: ['Full day at sea', 'Half-day outing', 'Sunset cruise', 'Private party', 'Corporate outing'],
     es: ['Día en el mar', 'Medio día', 'Atardecer', 'Fiesta privada', 'Evento de empresa'],
@@ -116,11 +116,11 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.currentLanguage = language;
       if (!this.form.outingType) {
-        this.form.outingType = this.outingTypes[language][0];
+        this.form.outingType = (this.outingTypes[language] || this.outingTypes.en || this.outingTypes.fr)[0];
       }
     });
 
-    this.form.outingType = this.outingTypes[this.currentLanguage][0];
+    this.form.outingType = (this.outingTypes[this.currentLanguage] || this.outingTypes.en || this.outingTypes.fr)[0];
     this.form.customOutingType = '';
 
     const svc = this.mainSvc as any;
@@ -204,7 +204,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
   }
 
   customTypeLabel(): string {
-    const labels: Record<SiteLanguage, string> = {
+    const labels: Partial<Record<SiteLanguage, string>> & { fr: string } = {
       fr: 'Autre / texte libre',
       en: 'Other / free text',
       es: 'Otro / texto libre',
@@ -213,7 +213,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
   }
 
   customTypePlaceholder(): string {
-    const labels: Record<SiteLanguage, string> = {
+    const labels: Partial<Record<SiteLanguage, string>> & { fr: string } = {
       fr: 'Ex. Sortie presse, EVJF, shooting photo...',
       en: 'E.g. press outing, bachelor party, photo shoot...',
       es: 'Ej. salida de prensa, despedida, sesión de fotos...',
@@ -240,7 +240,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.form.outingType = value || this.outingTypes[this.currentLanguage][0];
+    this.form.outingType = value || (this.outingTypes[this.currentLanguage] || this.outingTypes.en || this.outingTypes.fr)[0];
     this.form.customOutingType = '';
   }
 
@@ -249,7 +249,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
     this.selectedOuting = null;
     this.editingOutingId = '';
     this.form = this.emptyForm();
-    this.form.outingType = this.outingTypes[this.currentLanguage][0];
+    this.form.outingType = (this.outingTypes[this.currentLanguage] || this.outingTypes.en || this.outingTypes.fr)[0];
     this.departureChecklistGroups = this.buildDepartureChecklistGroups();
     this.currentAnchorages = [];
     this.anchorageForm = this.emptyAnchorageForm();
@@ -402,7 +402,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
   serializeChecklistGroups(groups: ChecklistGroup[]): { id: string; title: string; items: { id: string; done: boolean; label: string; doneBy?: string; doneByUid?: string; doneAt?: number | null }[] }[] {
     return groups.map((group) => ({
       id: group.id,
-      title: group.title[this.currentLanguage] || group.title.fr,
+      title: group.title[this.currentLanguage] || group.title.en || group.title.fr || '',
       items: this.serializeChecklist(group.items),
     }));
   }
@@ -950,7 +950,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
       this.arrivalChecklistGroupsByOuting[payload.outingId] = arrivalGroups;
       this.arrivalChecklistByOuting[payload.outingId] = this.flattenChecklistGroups(arrivalGroups);
       this.form = this.emptyForm();
-      this.form.outingType = this.outingTypes[this.currentLanguage][0];
+      this.form.outingType = (this.outingTypes[this.currentLanguage] || this.outingTypes.en || this.outingTypes.fr)[0];
       this.departureChecklistGroups = this.buildDepartureChecklistGroups();
       this.currentAnchorages = [];
       this.anchorageForm = this.emptyAnchorageForm();
@@ -998,7 +998,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
     return items.map((item) => ({
       id: item.id,
       done: item.done,
-      label: item.label[this.currentLanguage] || item.label.fr,
+      label: item.label[this.currentLanguage] || item.label.en || item.label.fr || '',
       doneBy: item.doneBy || '',
       doneByUid: item.doneByUid || '',
       doneAt: item.doneAt || null,

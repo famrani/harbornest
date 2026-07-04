@@ -215,8 +215,45 @@
       <div class="summary-line"><strong>{{ bookingText.startMarina }}</strong><span>{{ form.startMarina || '-' }}</span></div>
       <div class="summary-line"><strong>{{ bookingText.destination }}</strong><span>{{ form.destination || '-' }}</span></div>
       <div class="summary-line"><strong>{{ bookingText.optionsTitle }}</strong><span>{{ optionsSummary }}</span></div>
+
+      <div class="summary-pricing" *ngIf="shouldShowEstimatedPrice">
+        <h3>{{ pricingSummaryTitle }}</h3>
+
+        <div class="summary-price-row">
+          <span>{{ boatTotalLabel }}</span>
+          <strong>{{ formattedBoatCustomerTotal }}</strong>
+        </div>
+
+        <div class="summary-price-detail">
+          <span>{{ bookingText.boatPrice || bookingText.basePrice }}</span>
+          <em>{{ formatAmount(estimatedBoatPriceAmount) }}</em>
+        </div>
+        <div class="summary-price-detail" *ngIf="extraGuestsAmount > 0">
+          <span>{{ bookingText.extraGuests }}</span>
+          <em>{{ formatAmount(extraGuestsAmount) }}</em>
+        </div>
+        <div class="summary-price-detail" *ngIf="cleaningPriceAmount > 0">
+          <span>{{ bookingText.cleaningPrice }}</span>
+          <em>{{ formatAmount(cleaningPriceAmount) }}</em>
+        </div>
+        <div class="summary-price-detail" *ngIf="selectedOptionsTotal > 0">
+          <span>{{ bookingText.optionsPrice || bookingText.optionsTitle }}</span>
+          <em>{{ formatAmount(selectedOptionsTotal) }}</em>
+        </div>
+
+        <div class="summary-price-row">
+          <span>{{ skipperTotalLabel }}</span>
+          <strong>{{ formattedSkipperCustomerTotal }}</strong>
+        </div>
+
+        <div class="summary-price-row total">
+          <span>{{ customerTotalLabel }}</span>
+          <strong>{{ formattedTotalCustomerPayable }}</strong>
+        </div>
+      </div>
+
       <div class="summary-note">
-        {{ bookingText.requestSummaryNotice }}
+        {{ pricingClarityNotice || bookingText.requestSummaryNotice }}
       </div>
     </aside>
   </div>

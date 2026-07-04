@@ -24,7 +24,7 @@ export class GuestFaqComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.currentLanguage = language;
-      this.content = this.allContent[language] || this.allContent.fr;
+      this.content = this.allContent[language] || this.allContent.en || this.allContent.fr;
     });
     this.load();
   }
@@ -38,7 +38,7 @@ export class GuestFaqComponent implements OnInit, OnDestroy {
     try {
       const content = await this.guestContentService.getContent();
       this.allContent = content.guestFaq;
-      this.content = this.allContent[this.currentLanguage] || this.allContent.fr;
+      this.content = this.allContent[this.currentLanguage] || this.allContent.en || this.allContent.fr;
     } finally {
       this.loading = false;
     }

@@ -39,6 +39,8 @@ import { AdminExternalBookingsComponent } from './admin-external-bookings/admin-
 import { BookingProcessComponent } from './booking-process/booking-process.component';
 import { OnlineBookingComponent } from './online-booking/online-booking.component';
 import { AdminPricingModelComponent } from './admin-pricing-model/admin-pricing-model.component';
+import { AdminFleetComponent } from './admin-fleet/admin-fleet.component';
+import { SiteTextPipe } from './site-text.pipe';
 
 @NgModule({
   declarations: [
@@ -76,6 +78,7 @@ import { AdminPricingModelComponent } from './admin-pricing-model/admin-pricing-
     BookingProcessComponent,
     OnlineBookingComponent,
     AdminPricingModelComponent,
+    AdminFleetComponent,
   ],
   imports: [
     CommonModule,
@@ -83,6 +86,7 @@ import { AdminPricingModelComponent } from './admin-pricing-model/admin-pricing-
     RouterModule,
     IonicModule,
     HomeRoutingModule,
+    SiteTextPipe,
   ],
 })
 export class HomeModule {}

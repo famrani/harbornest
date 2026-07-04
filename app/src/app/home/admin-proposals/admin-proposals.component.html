@@ -67,7 +67,7 @@
 
         <label>{{ priceTitle('boatPrice') }}<input type="number" min="0" step="0.01" name="proposalBoatPrice" [(ngModel)]="form.proposalBoatPrice" /></label>
         <label>{{ priceTitle('skipperPrice') }}<input type="number" min="0" step="0.01" name="proposalSkipperPrice" [(ngModel)]="form.proposalSkipperPrice" /></label>
-        <label>{{ priceTitle('cleaningPrice') }}<input type="number" min="0" step="0.01" name="proposalCleaningPrice" [(ngModel)]="form.proposalCleaningPrice" /></label>
+        <label>{{ priceTitle('cleaningPrice') }}<input type="number" min="0" step="0.01" name="proposalFuelPrice" [(ngModel)]="form.proposalFuelPrice" /></label>
         <label>{{ priceTitle('extraServicesPrice') }}<input type="number" min="0" step="0.01" name="proposalExtraServicesPrice" [(ngModel)]="form.proposalExtraServicesPrice" /></label>
 
         <label>{{ priceTitle('totalAmount') }}<input type="number" min="1" step="0.01" required name="totalAmount" [(ngModel)]="form.totalAmount" /></label>
@@ -84,11 +84,11 @@
       </div>
 
       <div class="calculation">
-        <span>{{ t('computedTotal') || 'Total' }}: <strong>€{{ ((form.proposalBoatPrice || 0) + (form.proposalSkipperPrice || 0) + (form.proposalCleaningPrice || 0) + (form.proposalExtraServicesPrice || 0)) | number:'1.2-2' }}</strong></span>
+        <span>{{ t('computedTotal') || 'Total' }}: <strong>€{{ ((form.proposalBoatPrice || 0) + (form.proposalSkipperPrice || 0) + (form.proposalFuelPrice || 0) + (form.proposalExtraServicesPrice || 0)) | number:'1.2-2' }}</strong></span>
         <span>{{ priceTitle('skipperPrice') }} cash: <strong>€{{ (form.proposalSkipperPrice || 0) | number:'1.2-2' }}</strong></span>
-        <span>Online payable: <strong>€{{ ((form.proposalBoatPrice || 0) + (form.proposalCleaningPrice || 0) + (form.proposalExtraServicesPrice || 0)) | number:'1.2-2' }}</strong></span>
-        <span>{{ priceTitle('deposit10') }}: <strong>€{{ (((form.proposalBoatPrice || 0) + (form.proposalCleaningPrice || 0) + (form.proposalExtraServicesPrice || 0)) * 0.1) | number:'1.2-2' }}</strong></span>
-        <span>{{ priceTitle('remaining90') }}: <strong>€{{ (((form.proposalBoatPrice || 0) + (form.proposalCleaningPrice || 0) + (form.proposalExtraServicesPrice || 0)) * 0.9) | number:'1.2-2' }}</strong></span>
+        <span>{{ 'auto.home.admin-proposals.admin-proposals.component.online_payable' | siteText }}<strong>€{{ ((form.proposalBoatPrice || 0) + (form.proposalFuelPrice || 0) + (form.proposalExtraServicesPrice || 0)) | number:'1.2-2' }}</strong></span>
+        <span>{{ priceTitle('deposit10') }}: <strong>€{{ (((form.proposalBoatPrice || 0) + (form.proposalFuelPrice || 0) + (form.proposalExtraServicesPrice || 0)) * 0.1) | number:'1.2-2' }}</strong></span>
+        <span>{{ priceTitle('remaining90') }}: <strong>€{{ (((form.proposalBoatPrice || 0) + (form.proposalFuelPrice || 0) + (form.proposalExtraServicesPrice || 0)) * 0.9) | number:'1.2-2' }}</strong></span>
         <span>{{ t('validityAfterSent') }}: <strong>{{ t('hours24') }}</strong></span>
       </div>
 
@@ -108,6 +108,8 @@
         <button class="btn btn-primary" type="button" *ngIf="form.proposalId" [disabled]="!isProposalFormValid" (click)="sendCurrentProposalByEmail()">
           {{ t('sendByEmail') }}
         </button>
+
+        <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" [disabled]="!form.customerPhone" (click)="openWhatsappDialog(form)">{{ 'auto.home.admin-proposals.admin-proposals.component.whatsapp' | siteText }}</button>
 
         <button class="btn btn-secondary" type="button" *ngIf="form.proposalId" [disabled]="!canRenewProposal(form)" [title]="getRenewBlockedReason(form)" (click)="renewProposal(form)">
           {{ t('renew24') }}
@@ -169,6 +171,7 @@
             <button class="mini-link" type="button" (click)="openClientLink(p)">{{ t('openLink') }}</button>
             <button class="mini-link" type="button" *ngIf="hasRelatedBooking(p)" (click)="openRelatedBooking(p, $event)">{{ t('openBooking') }}</button>
             <button class="mini-link" type="button" (click)="sendProposalByEmail(p)">{{ t('email') }}</button>
+            <button class="mini-link" type="button" (click)="openWhatsappDialog(p, $event)">{{ 'auto.home.admin-proposals.admin-proposals.component.whatsapp' | siteText }}</button>
             <button class="mini-link" type="button" (click)="renewProposal(p, $event)">{{ t('renew') }}</button>
             <button class="mini-link danger" type="button" (click)="deleteProposal(p, $event)">{{ t('delete') }}</button>
           </ng-template>
@@ -176,4 +179,35 @@
       </article>
     </div>
   </div>
+
+
+<div class="whatsapp-overlay" *ngIf="whatsappDialog" (click)="closeWhatsappDialog()">
+  <article class="whatsapp-modal" (click)="$event.stopPropagation()">
+    <div class="whatsapp-head">
+      <div>
+        <p class="eyebrow">{{ 'auto.home.admin-proposals.admin-proposals.component.whatsapp' | siteText }}</p>
+        <h3>{{ 'auto.home.admin-proposals.admin-proposals.component.envoyer_la_proposition_au_client' | siteText }}</h3>
+      </div>
+      <button class="modal-close" type="button" (click)="closeWhatsappDialog()">×</button>
+    </div>
+
+    <p class="muted">{{ 'auto.home.admin-proposals.admin-proposals.component.cette_fen_tre_ouvre_whatsapp_web_vers_le_t_l_phone' | siteText }}</p>
+
+    <div class="whatsapp-target">
+      <span>{{ 'auto.home.admin-proposals.admin-proposals.component.client' | siteText }}</span>
+      <strong>{{ whatsappDialog.proposal.customerName || whatsappDialog.proposal.customerPhone }}</strong>
+      <small>{{ whatsappDialog.proposal.customerPhone }}</small>
+    </div>
+
+    <textarea class="whatsapp-text" readonly [value]="whatsappDialog.text"></textarea>
+
+    <p class="error" *ngIf="!whatsappDialog.phone">{{ 'auto.home.admin-proposals.admin-proposals.component.num_ro_client_manquant_ou_invalide' | siteText }}</p>
+
+    <div class="actions">
+      <button class="btn btn-primary" type="button" [disabled]="!whatsappDialog.url" (click)="openWhatsappWindow()">{{ 'auto.home.admin-proposals.admin-proposals.component.ouvrir_whatsapp' | siteText }}</button>
+      <button class="btn btn-secondary" type="button" (click)="copyWhatsappText()">{{ 'auto.home.admin-proposals.admin-proposals.component.copier_le_message' | siteText }}</button>
+      <button class="btn btn-secondary" type="button" (click)="closeWhatsappDialog()">{{ 'auto.home.admin-proposals.admin-proposals.component.fermer' | siteText }}</button>
+    </div>
+  </article>
+</div>
 </section>

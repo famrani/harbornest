@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { ServicesService } from 'godigital-lib';
+
 import { SITE_CONTENT, SiteContent } from '../../../home/site-content';
 import { LanguageService, SiteLanguage } from '../../../services/language.service';
-import { ServicesService } from 'godigital-lib';
 import { SiteContentService } from '../../../home/site-content-service/site-content.service';
 
 @Component({
@@ -12,51 +13,60 @@ import { SiteContentService } from '../../../home/site-content-service/site-cont
 })
 export class HomefooterComponent implements OnInit, OnDestroy {
   year = new Date().getFullYear();
+
   content: SiteContent = SITE_CONTENT.fr;
-  private allSiteContent = SITE_CONTENT;
+  private allSiteContent: Record<string, SiteContent> = SITE_CONTENT as any;
+
   currentLanguage: SiteLanguage = 'fr';
   private languageSub?: Subscription;
 
-  constructor(private languageService: LanguageService, public mainSvc: ServicesService, private siteContentService: SiteContentService) {}
+  constructor(
+    private languageService: LanguageService,
+    public mainSvc: ServicesService,
+    private siteContentService: SiteContentService
+  ) {}
 
   ngOnInit(): void {
     this.loadSiteContent();
+
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.currentLanguage = language;
-      this.content = this.allSiteContent[language] || SITE_CONTENT[language];
+      this.applyLanguageContent(language);
     });
   }
 
   private async loadSiteContent(): Promise<void> {
     try {
       this.allSiteContent = await this.siteContentService.getContent();
-      this.content = this.allSiteContent[this.currentLanguage] || SITE_CONTENT[this.currentLanguage];
     } catch {
-      this.allSiteContent = SITE_CONTENT;
-      this.content = SITE_CONTENT[this.currentLanguage] || SITE_CONTENT.fr;
+      this.allSiteContent = SITE_CONTENT as any;
     }
+
+    this.applyLanguageContent(this.currentLanguage);
   }
 
-  get termsLabel(): string {
-    if (this.currentLanguage === 'en') {
-      return 'Terms & Conditions';
-    }
-    if (this.currentLanguage === 'es') {
-      return 'Términos y condiciones';
-    }
-    return 'Conditions générales';
+  private applyLanguageContent(language: SiteLanguage): void {
+    this.content =
+      this.allSiteContent?.[language] ||
+      SITE_CONTENT?.[language] ||
+      SITE_CONTENT.fr;
   }
 
+  private get footerContent(): any {
+  return this.content?.footer || {};
+}
 
-  get safetyLabel(): string {
-    if (this.currentLanguage === 'en') {
-      return 'Safety instructions';
-    }
-    if (this.currentLanguage === 'es') {
-      return 'Instrucciones de seguridad';
-    }
-    return 'Consignes de sécurité';
-  }
+get releaseLabel(): string {
+  return this.footerContent.release || 'Release';
+}
+
+get termsLabel(): string {
+  return this.footerContent.terms || 'Conditions générales';
+}
+
+get safetyLabel(): string {
+  return this.footerContent.safety || 'Consignes de sécurité';
+}
 
   ngOnDestroy(): void {
     this.languageSub?.unsubscribe();

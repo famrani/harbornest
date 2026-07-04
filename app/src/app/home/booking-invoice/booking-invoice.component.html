@@ -1,41 +1,41 @@
 <section class="invoice-page" *ngIf="!loading && booking">
   <div class="invoice-toolbar no-print">
-    <a class="btn btn-secondary" [routerLink]="['/admin/bookings', booking.bookingId]">Retour réservation</a>
-    <button class="btn btn-secondary" type="button" (click)="addLine()">Ajouter une ligne</button>
-    <button class="btn btn-primary" type="button" (click)="printPdf()">Imprimer / Enregistrer en PDF</button>
+    <a class="btn btn-secondary" [routerLink]="['/admin/bookings', booking.bookingId]">{{ 'auto.home.booking-invoice.booking-invoice.component.retour_r_servation' | siteText }}</a>
+    <button class="btn btn-secondary" type="button" (click)="addLine()">{{ 'auto.home.booking-invoice.booking-invoice.component.ajouter_une_ligne' | siteText }}</button>
+    <button class="btn btn-primary" type="button" (click)="printPdf()">{{ 'auto.home.booking-invoice.booking-invoice.component.imprimer_enregistrer_en_pdf' | siteText }}</button>
   </div>
 
   <article class="invoice-sheet">
     <header class="invoice-header">
       <div>
-        <h1>FACTURE</h1>
+        <h1>{{ 'auto.home.booking-invoice.booking-invoice.component.facture' | siteText }}</h1>
         <p>{{ invoiceType === 'extras' ? 'Prestations additionnelles / Catering' : 'Prestations ALEGRIA' }}</p>
       </div>
       <div class="invoice-meta">
-        <label>N° facture <input [(ngModel)]="invoiceNumber" /></label>
-        <label>Date <input type="date" [(ngModel)]="invoiceDate" /></label>
+        <label>{{ 'auto.home.booking-invoice.booking-invoice.component.n_facture' | siteText }}<input [(ngModel)]="invoiceNumber" /></label>
+        <label>{{ 'auto.home.booking-invoice.booking-invoice.component.date' | siteText }}<input type="date" [(ngModel)]="invoiceDate" /></label>
       </div>
     </header>
 
     <section class="invoice-parties">
       <div>
-        <h2>Émetteur</h2>
-        <label>Nom <input [(ngModel)]="sellerName" /></label>
-        <label>Détails <textarea rows="3" [(ngModel)]="sellerDetails"></textarea></label>
-        <label>Adresse <textarea rows="2" [(ngModel)]="sellerAddress"></textarea></label>
-        <label>SIRET / TVA <input [(ngModel)]="sellerSiret" /></label>
+        <h2>{{ 'auto.home.booking-invoice.booking-invoice.component.metteur' | siteText }}</h2>
+        <label>{{ 'auto.home.booking-invoice.booking-invoice.component.nom' | siteText }}<input [(ngModel)]="sellerName" /></label>
+        <label>{{ 'auto.home.booking-invoice.booking-invoice.component.d_tails' | siteText }}<textarea rows="3" [(ngModel)]="sellerDetails"></textarea></label>
+        <label>{{ 'auto.home.booking-invoice.booking-invoice.component.adresse' | siteText }}<textarea rows="2" [(ngModel)]="sellerAddress"></textarea></label>
+        <label>{{ 'auto.home.booking-invoice.booking-invoice.component.siret_tva' | siteText }}<input [(ngModel)]="sellerSiret" /></label>
       </div>
 
       <div>
-        <h2>Client</h2>
-        <label>Nom <input [(ngModel)]="customerName" /></label>
-        <label>Email <input [(ngModel)]="customerEmail" /></label>
-        <label>Adresse <textarea rows="3" [(ngModel)]="customerAddress"></textarea></label>
+        <h2>{{ 'auto.home.booking-invoice.booking-invoice.component.client' | siteText }}</h2>
+        <label>{{ 'auto.home.booking-invoice.booking-invoice.component.nom' | siteText }}<input [(ngModel)]="customerName" /></label>
+        <label>{{ 'auto.home.booking-invoice.booking-invoice.component.email' | siteText }}<input [(ngModel)]="customerEmail" /></label>
+        <label>{{ 'auto.home.booking-invoice.booking-invoice.component.adresse' | siteText }}<textarea rows="3" [(ngModel)]="customerAddress"></textarea></label>
       </div>
     </section>
 
     <section class="booking-summary">
-      <h2>Sortie concernée</h2>
+      <h2>{{ 'auto.home.booking-invoice.booking-invoice.component.sortie_concern_e' | siteText }}</h2>
       <p>
         <strong>{{ booking.outingType }}</strong><br />
         Date : {{ booking.outingDate }}<br />
@@ -46,17 +46,15 @@
     </section>
 
     <section class="invoice-note" *ngIf="invoiceType === 'booking'">
-      <strong>Note :</strong>
-      Les frais liés à la location du bateau ont été encaissés séparément par Click&Boat. La présente facture concerne uniquement les prestations ALEGRIA indiquées ci-dessous.
-    </section>
+      <strong>{{ 'auto.home.booking-invoice.booking-invoice.component.note' | siteText }}</strong>{{ 'auto.home.booking-invoice.booking-invoice.component.les_frais_li_s_la_location_du_bateau_ont_t_encaiss' | siteText }}</section>
 
     <table class="invoice-table">
       <thead>
         <tr>
-          <th>Description</th>
-          <th>Qté</th>
-          <th>Prix unitaire</th>
-          <th>Total</th>
+          <th>{{ 'auto.home.booking-invoice.booking-invoice.component.description' | siteText }}</th>
+          <th>{{ 'auto.home.booking-invoice.booking-invoice.component.qt' | siteText }}</th>
+          <th>{{ 'auto.home.booking-invoice.booking-invoice.component.prix_unitaire' | siteText }}</th>
+          <th>{{ 'auto.home.booking-invoice.booking-invoice.component.total' | siteText }}</th>
           <th class="no-print"></th>
         </tr>
       </thead>
@@ -66,12 +64,12 @@
           <td><input type="number" min="0" step="1" [(ngModel)]="line.quantity" /></td>
           <td><input type="number" min="0" step="0.01" [(ngModel)]="line.unitPrice" /></td>
           <td>€{{ getLineTotal(line) | number:'1.2-2' }}</td>
-          <td class="no-print"><button type="button" class="mini-btn" (click)="removeLine(i)">Supprimer</button></td>
+          <td class="no-print"><button type="button" class="mini-btn" (click)="removeLine(i)">{{ 'auto.home.booking-invoice.booking-invoice.component.supprimer' | siteText }}</button></td>
         </tr>
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="3">Total TTC</td>
+          <td colspan="3">{{ 'auto.home.booking-invoice.booking-invoice.component.total_ttc' | siteText }}</td>
           <td>€{{ total | number:'1.2-2' }}</td>
           <td class="no-print"></td>
         </tr>
@@ -79,10 +77,10 @@
     </table>
 
     <section class="invoice-bottom">
-      <label>Conditions de paiement <input [(ngModel)]="paymentTerms" /></label>
-      <label>Notes <textarea rows="4" [(ngModel)]="notes"></textarea></label>
+      <label>{{ 'auto.home.booking-invoice.booking-invoice.component.conditions_de_paiement' | siteText }}<input [(ngModel)]="paymentTerms" /></label>
+      <label>{{ 'auto.home.booking-invoice.booking-invoice.component.notes' | siteText }}<textarea rows="4" [(ngModel)]="notes"></textarea></label>
     </section>
   </article>
 </section>
 
-<p *ngIf="loading" class="muted">Chargement de la facture...</p>
+<p *ngIf="loading" class="muted">{{ 'auto.home.booking-invoice.booking-invoice.component.chargement_de_la_facture' | siteText }}</p>

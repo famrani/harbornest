@@ -7,7 +7,7 @@ import { LanguageService, SiteLanguage } from '../../services/language.service';
 
 interface ChecklistItem {
   id: string;
-  label: Record<SiteLanguage, string>;
+  label: Partial<Record<SiteLanguage, string>> & { fr: string; en?: string; es?: string; };
   done: boolean;
   doneBy?: string;
   doneByUid?: string;
@@ -16,7 +16,7 @@ interface ChecklistItem {
 
 interface ChecklistGroup {
   id: string;
-  title: Record<SiteLanguage, string>;
+  title: Partial<Record<SiteLanguage, string>> & { fr: string; en?: string; es?: string; };
   items: ChecklistItem[];
 }
 
@@ -84,7 +84,7 @@ export class AdminOutingDetailComponent implements OnInit, OnDestroy {
   saved = false;
   error = '';
 
-  outingTypes: Record<SiteLanguage, string[]> = {
+  outingTypes: Partial<Record<SiteLanguage, string[]>> & { fr: string[]; en: string[]; es: string[] } = {
     fr: ['Journée en mer', 'Demi-journée', 'Coucher de soleil', 'Fête privée', 'Sortie entreprise'],
     en: ['Full day at sea', 'Half-day outing', 'Sunset cruise', 'Private party', 'Corporate outing'],
     es: ['Día en el mar', 'Medio día', 'Atardecer', 'Fiesta privada', 'Evento de empresa'],
@@ -271,7 +271,7 @@ export class AdminOutingDetailComponent implements OnInit, OnDestroy {
     return items.map((item) => ({
       id: item.id,
       done: item.done,
-      label: item.label[this.currentLanguage] || item.label.fr,
+      label: item.label[this.currentLanguage] || item.label.en || item.label.fr || '',
       doneBy: item.doneBy || '',
       doneByUid: item.doneByUid || '',
       doneAt: item.doneAt || null,
@@ -281,7 +281,7 @@ export class AdminOutingDetailComponent implements OnInit, OnDestroy {
   serializeChecklistGroups(groups: ChecklistGroup[]): { id: string; title: string; items: { id: string; done: boolean; label: string; doneBy?: string; doneByUid?: string; doneAt?: number | null }[] }[] {
     return groups.map((group) => ({
       id: group.id,
-      title: group.title[this.currentLanguage] || group.title.fr,
+      title: group.title[this.currentLanguage] || group.title.en || group.title.fr || '',
       items: this.serializeChecklist(group.items),
     }));
   }

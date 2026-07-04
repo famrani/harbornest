@@ -7,11 +7,9 @@
     </div>
 
     <div class="booking-tabs" *ngIf="!loading && bookings.length > 0">
-      <button type="button" [class.active]="activeDateTab === 'upcoming'" (click)="setDateTab('upcoming')">
-        Upcoming <span>{{ upcomingBookingsCount }}</span>
+      <button type="button" [class.active]="activeDateTab === 'upcoming'" (click)="setDateTab('upcoming')">{{ t('auto.home.bookings.bookings.component.upcoming') }}<span>{{ upcomingBookingsCount }}</span>
       </button>
-      <button type="button" [class.active]="activeDateTab === 'past'" (click)="setDateTab('past')">
-        Past <span>{{ pastBookingsCount }}</span>
+      <button type="button" [class.active]="activeDateTab === 'past'" (click)="setDateTab('past')">{{ t('auto.home.bookings.bookings.component.past') }}<span>{{ pastBookingsCount }}</span>
       </button>
     </div>
 
@@ -30,53 +28,90 @@
       <label>
         <span>{{ t('status') }}</span>
         <select [(ngModel)]="statusFilter">
-          <option value="all">{{ t('allStatuses') }}</option>
-          <option value="not_confirmed">{{ t('notConfirmed') }}</option>
-          <option value="confirmed">{{ t('confirmed') }}</option>
-          <option value="payment_done">{{ t('paymentDone') }}</option>
+          <option [value]="'all'">{{ t('allStatuses') }}</option>
+          <option [value]="'not_confirmed'">{{ t('notConfirmed') }}</option>
+          <option [value]="'confirmed'">{{ t('confirmed') }}</option>
+          <option [value]="'payment_done'">{{ t('paymentDone') }}</option>
         </select>
       </label>
 
       <label>
         <span>{{ t('warranty') }}</span>
         <select [(ngModel)]="warrantyFilter">
-          <option value="all">{{ t('allWarranties') }}</option>
-          <option value="not_selected">{{ t('notSelected') }}</option>
-          <option value="cash">{{ t('cashSelected') }}</option>
-          <option value="card_selected">{{ t('cardSelected') }}</option>
-          <option value="card_registered">{{ t('cardRegistered') }}</option>
+          <option [value]="'all'">{{ t('allWarranties') }}</option>
+          <option [value]="'not_selected'">{{ t('notSelected') }}</option>
+          <option [value]="'cash'">{{ t('cashSelected') }}</option>
+          <option [value]="'card_selected'">{{ t('cardSelected') }}</option>
+          <option [value]="'card_registered'">{{ t('cardRegistered') }}</option>
+        </select>
+      </label>
+
+      <label>
+        <span>{{ t('auto.home.bookings.bookings.component.platform') }}</span>
+        <select [(ngModel)]="platformFilter">
+          <option [value]="'all'">{{ t('auto.home.bookings.bookings.component.all_platforms') }}</option>
+          <option [value]="'direct'">{{ t('auto.home.bookings.bookings.component.direct_alegria') }}</option>
+          <option [value]="'clickandboat'">{{ t('auto.home.bookings.bookings.component.click_boat') }}</option>
+          <option [value]="'samboat'">{{ t('auto.home.bookings.bookings.component.samboat') }}</option>
+          <option [value]="'other'">{{ t('auto.home.bookings.bookings.component.other') }}</option>
         </select>
       </label>
 
       <label>
         <span>{{ t('orderBy') }}</span>
         <select [(ngModel)]="sortField">
-          <option value="date">{{ t('date') }}</option>
-          <option value="customer">{{ t('customer') }}</option>
-          <option value="status">Status</option>
-          <option value="total">{{ t('totalPrice') }}</option>
-          <option value="balance">{{ t('remaining90') }}</option>
+          <option [value]="'date'">{{ t('date') }}</option>
+          <option [value]="'customer'">{{ t('customer') }}</option>
+          <option [value]="'status'">{{ t('auto.home.bookings.bookings.component.status') }}</option>
+          <option [value]="'total'">{{ t('totalPrice') }}</option>
+          <option [value]="'balance'">{{ t('remaining90') }}</option>
         </select>
       </label>
 
       <label>
         <span>{{ t('direction') }}</span>
         <select [(ngModel)]="sortDirection">
-          <option value="asc">{{ t('ascending') }}</option>
-          <option value="desc">{{ t('descending') }}</option>
+          <option [value]="'asc'">{{ t('ascending') }}</option>
+          <option [value]="'desc'">{{ t('descending') }}</option>
         </select>
       </label>
 
       <button class="btn btn-secondary" type="button" (click)="resetFilters()">{{ t('resetFilters') }}</button>
-      <a class="btn btn-primary" routerLink="/admin/proposals">{{ t('proposals') }}</a>
-      <a class="btn btn-secondary" routerLink="/admin/external-bookings">{{ t('externalBookings') }}</a>
+      <a class="btn btn-secondary" routerLink="/admin/proposals">{{ t('proposals') }}</a>
+      <button class="btn btn-primary" type="button" (click)="openCreateReservation()">{{ t('auto.home.bookings.bookings.component.new_reservation') }}</button>
       <button class="btn btn-secondary" type="button" (click)="loadBookings()">{{ t('refresh') }}</button>
     </div>
+
+    <section id="create-reservation-panel" class="create-reservation-panel" *ngIf="showCreateReservation">
+      <div class="create-panel-header">
+        <div>
+          <span class="eyebrow">{{ t('auto.home.bookings.bookings.component.reservation_cockpit') }}</span>
+          <h2>{{ t('auto.home.bookings.bookings.component.new_reservation_bb6c90') }}</h2>
+          <p>{{ t('auto.home.bookings.bookings.component.create_a_direct_click_boat_samboat_or_other_platfo') }}</p>
+        </div>
+        <div class="create-panel-actions">
+          <a class="btn btn-primary" routerLink="/my-external-bookings">{{ t('auto.home.bookings.bookings.component.open_reservation_form') }}</a>
+          <button class="btn btn-secondary" type="button" (click)="closeCreateReservation()">{{ t('auto.home.bookings.bookings.component.close') }}</button>
+        </div>
+      </div>
+
+      <div class="embedded-reservation-form">
+        <app-admin-external-bookings
+          [embedded]="true"
+          (bookingCreated)="onReservationCreated($event)"
+        ></app-admin-external-bookings>
+      </div>
+
+      <p class="create-panel-help">{{ t('auto.home.bookings.bookings.component.if_the_embedded_form_is_not_visible_on_your_browse') }}<strong>{{ t('auto.home.bookings.bookings.component.open_reservation_form') }}</strong>.
+      </p>
+    </section>
+
+    <p class="success-message" *ngIf="createReservationMessage">{{ createReservationMessage }}</p>
 
     <p *ngIf="loading" class="muted">{{ t('loadingBookings') }}</p>
     <p *ngIf="!loading && errorMessage" class="error-message">{{ errorMessage }}</p>
     <p *ngIf="!loading && !errorMessage && bookings.length === 0" class="muted">
-      {{ t('noBookingsFirebase') }} <strong>/bnBookings</strong>.
+      {{ t('noBookingsFirebase') }} <strong>{{ t('auto.home.bookings.bookings.component.bnbookings') }}</strong>.
     </p>
 
     <div class="list-summary" *ngIf="!loading && bookings.length > 0">
@@ -103,6 +138,11 @@
             {{ booking.outingDate || t('dateNotSet') }}
             <ng-container *ngIf="booking.departureTime">• {{ booking.departureTime }}</ng-container>
           </small>
+        </span>
+
+        <span class="booking-platform">
+          <strong>{{ getPlatformLabel(booking) }}</strong>
+          <small>{{ getPlatformReference(booking) || 'Platform' }}</small>
         </span>
 
         <span class="booking-price">
@@ -137,9 +177,9 @@
         <label>
           {{ t('paymentMethod') }}
           <select [(ngModel)]="balancePaymentMethod">
-            <option value="sumup">SumUp / card</option>
-            <option value="cash">{{ t('cash') }}</option>
-            <option value="mixed">{{ t('mixed') }}</option>
+            <option [value]="'sumup'">{{ t('auto.home.bookings.bookings.component.sumup_card') }}</option>
+            <option [value]="'cash'">{{ t('cash') }}</option>
+            <option [value]="'mixed'">{{ t('mixed') }}</option>
           </select>
         </label>
 

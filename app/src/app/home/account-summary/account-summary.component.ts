@@ -18,6 +18,27 @@ interface CustomerPaymentView {
   description: string;
 }
 
+
+interface CustomerBookingPaymentGroup {
+  bookingId: string;
+  booking: AlegriaBooking;
+  title: string;
+  date?: string;
+  totalCustomerCost: number;
+  alegriaAmount: number;
+  skipperAmount: number;
+  depositAmount: number;
+  depositPaidAmount: number;
+  balancePaidAmount: number;
+  remainingAlegriaAmount: number;
+  warrantyAmount: number;
+  warrantyMode: string;
+  warrantyStatus: string;
+  statusLabel: string;
+  statusClass: string;
+  lastActivity: number;
+  visiblePayments: CustomerPaymentView[];
+}
 @Component({
   selector: 'app-account-summary',
   templateUrl: './account-summary.component.html',
@@ -32,6 +53,7 @@ export class AccountSummaryComponent implements OnInit {
   loggedUser: any = null;
   bookings: AlegriaBooking[] = [];
   payments: CustomerPaymentView[] = [];
+  paymentGroups: CustomerBookingPaymentGroup[] = [];
   paymentTypeFilter = 'all';
   paymentStatusFilter = 'all';
   paymentSortDirection: 'asc' | 'desc' = 'desc';
@@ -70,21 +92,68 @@ export class AccountSummaryComponent implements OnInit {
   loadCustomerPayments(): void {
     const role = String(this.loggedUser?.role || '').toLowerCase();
     const isAdmin = role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
-    const email = isAdmin ? undefined : (this.loggedUser?.email || '');
+    const email = isAdmin ? undefined : String(this.loggedUser?.email || '').trim();
     this.loading = true;
+
+    // Customer pages must never fall back to loading every booking.
+    // If we do not yet know who the customer is, show an empty state rather than all payments.
+    if (!isAdmin && !this.hasCustomerIdentity()) {
+      this.bookings = [];
+      this.payments = [];
+      this.paymentGroups = [];
+      this.loading = false;
+      return;
+    }
 
     this.bookingApi.getBookings(email).subscribe({
       next: (bookings) => {
-        this.bookings = bookings || [];
-        this.payments = this.buildPayments(this.bookings);
+        this.bookings = isAdmin ? (bookings || []) : this.filterBookingsForCurrentCustomer(bookings || []);
+        this.payments = this.buildPayments(this.bookings).filter((payment) => Number(payment.amount || 0) > 0);
+        this.paymentGroups = this.buildPaymentGroups(this.bookings, this.payments);
         this.loading = false;
       },
       error: () => {
         this.bookings = [];
         this.payments = [];
+        this.paymentGroups = [];
         this.loading = false;
       }
     });
+  }
+
+  private hasCustomerIdentity(): boolean {
+    return !!(
+      String(this.loggedUser?.email || '').trim() ||
+      String(this.loggedUser?.userId || this.loggedUser?.uid || this.loggedUser?.id || '').trim() ||
+      String(this.loggedUser?.phone || this.loggedUser?.customerPhone || '').trim()
+    );
+  }
+
+  private filterBookingsForCurrentCustomer(bookings: AlegriaBooking[]): AlegriaBooking[] {
+    const email = String(this.loggedUser?.email || '').trim().toLowerCase();
+    const uid = String(this.loggedUser?.userId || this.loggedUser?.uid || this.loggedUser?.id || '').trim();
+    const phone = this.normalizePhone(this.loggedUser?.phone || this.loggedUser?.customerPhone || '');
+
+    return (bookings || []).filter((booking) => {
+      const b: any = booking || {};
+      const bookingEmails = [b.email, b.customerEmail, b.clientEmail, b.userEmail].map((value) => String(value || '').trim().toLowerCase()).filter(Boolean);
+      const bookingIds = [b.userId, b.customerId, b.customerUid, b.clientUserId, b.uid, b.createdByUid].map((value) => String(value || '').trim()).filter(Boolean);
+      const bookingPhones = [b.phone, b.customerPhone, b.clientPhone].map((value) => this.normalizePhone(value)).filter(Boolean);
+
+      if (email && bookingEmails.includes(email)) return true;
+      if (uid && bookingIds.includes(uid)) return true;
+      if (phone && bookingPhones.includes(phone)) return true;
+      return false;
+    });
+  }
+
+  private normalizePhone(value: any): string {
+    return String(value || '').replace(/[^0-9+]/g, '').replace(/^00/, '+');
+  }
+
+  get filteredPaymentGroups(): CustomerBookingPaymentGroup[] {
+    const groups = [...(this.paymentGroups || [])];
+    return groups.sort((a, b) => (a.lastActivity - b.lastActivity) * (this.paymentSortDirection === 'asc' ? 1 : -1));
   }
 
   get filteredPayments(): CustomerPaymentView[] {
@@ -247,6 +316,138 @@ export class AccountSummaryComponent implements OnInit {
     }
 
     return this.dedupeCustomerPayments(rows);
+  }
+
+  private buildPaymentGroups(bookings: AlegriaBooking[], payments: CustomerPaymentView[]): CustomerBookingPaymentGroup[] {
+    const paymentsByBooking = new Map<string, CustomerPaymentView[]>();
+    for (const payment of payments || []) {
+      if (!payment?.bookingId || Number(payment.amount || 0) <= 0) continue;
+      const list = paymentsByBooking.get(payment.bookingId) || [];
+      list.push(payment);
+      paymentsByBooking.set(payment.bookingId, list);
+    }
+
+    return (bookings || []).map((booking) => {
+      const anyBooking: any = booking || {};
+      const bookingId = booking.bookingId;
+      const totalCustomerCost = this.getCustomerTotal(booking);
+      const skipperAmount = this.getSkipperAmount(booking);
+      const alegriaAmount = this.getAlegriaAmount(booking, totalCustomerCost, skipperAmount);
+      const depositAmount = this.getDepositAmountFromAlegria(booking, alegriaAmount);
+      const depositPaidAmount = this.isDepositPaid(booking) ? depositAmount : 0;
+      const balancePaidAmount = this.isBalancePaid(booking) ? Math.max(0, alegriaAmount - depositAmount) : 0;
+      const remainingAlegriaAmount = Math.max(0, Math.round((alegriaAmount - depositPaidAmount - balancePaidAmount) * 100) / 100);
+      const warrantyAmount = Number(anyBooking.warrantyAmount || anyBooking?.payments?.warranty?.amount || 500);
+      const warrantyMode = this.getWarrantyModeLabel(booking);
+      const warrantyStatus = this.getWarrantyStatusLabel(booking);
+      const visiblePayments = (paymentsByBooking.get(bookingId) || []).filter((payment) => Number(payment.amount || 0) > 0);
+      const status = this.getBookingPaymentStatusLabel(booking, depositPaidAmount, remainingAlegriaAmount);
+      const times = [
+        Number(anyBooking.modifiedTS || 0),
+        Number(anyBooking.updatedAt || 0),
+        Number(anyBooking.createdTS || 0),
+        ...visiblePayments.map((payment) => this.getPaymentTime(payment)),
+      ].filter((value) => Number.isFinite(value) && value > 0);
+
+      return {
+        bookingId,
+        booking,
+        title: this.bookingDescription(booking),
+        date: booking.outingDate,
+        totalCustomerCost,
+        alegriaAmount,
+        skipperAmount,
+        depositAmount,
+        depositPaidAmount,
+        balancePaidAmount,
+        remainingAlegriaAmount,
+        warrantyAmount,
+        warrantyMode,
+        warrantyStatus,
+        statusLabel: status.label,
+        statusClass: status.className,
+        lastActivity: times.length ? Math.max(...times) : 0,
+        visiblePayments,
+      };
+    });
+  }
+
+  private getCustomerTotal(booking: AlegriaBooking): number {
+    const anyBooking: any = booking || {};
+    const explicit = Number(anyBooking.totalCustomerCost ?? anyBooking.customerTotal ?? anyBooking.totalAmount ?? anyBooking.totalPrice ?? booking.totalPrice ?? 0);
+    if (explicit > 0) return explicit;
+    return this.getAlegriaAmount(booking, 0, 0) + this.getSkipperAmount(booking);
+  }
+
+  private getSkipperAmount(booking: AlegriaBooking): number {
+    const anyBooking: any = booking || {};
+    return Number(anyBooking.proposalSkipperPrice ?? anyBooking.skipperCashAmount ?? anyBooking.estimatedSkipperPrice ?? anyBooking.skipperPrice ?? anyBooking.remainingSkipperAmount ?? 0) || 0;
+  }
+
+  private getAlegriaAmount(booking: AlegriaBooking, totalCustomerCost?: number, skipperAmount?: number): number {
+    const anyBooking: any = booking || {};
+    const explicit = Number(anyBooking.onlinePayableAmount ?? anyBooking.appPayableAmount ?? anyBooking.alegriaAmount ?? anyBooking.alegriaPayableAmount ?? 0);
+    if (explicit > 0) return explicit;
+    const total = Number(totalCustomerCost || this.getCustomerTotalFallback(booking));
+    const skipper = Number(skipperAmount ?? this.getSkipperAmount(booking));
+    return Math.max(0, Math.round((total - skipper) * 100) / 100);
+  }
+
+  private getCustomerTotalFallback(booking: AlegriaBooking): number {
+    const anyBooking: any = booking || {};
+    return Number(anyBooking.totalCustomerCost ?? anyBooking.customerTotal ?? anyBooking.totalAmount ?? anyBooking.totalPrice ?? booking.totalPrice ?? 0) || 0;
+  }
+
+  private getDepositAmountFromAlegria(booking: AlegriaBooking, alegriaAmount: number): number {
+    const anyBooking: any = booking || {};
+    const explicit = Number(anyBooking.depositAmount ?? anyBooking.paidDepositAmount ?? anyBooking.depositPaidAmount ?? 0);
+    if (explicit > 0) return explicit;
+    return alegriaAmount ? Math.round(alegriaAmount * 0.1 * 100) / 100 : 0;
+  }
+
+  private getWarrantyModeLabel(booking: AlegriaBooking): string {
+    if (this.isCashWarrantySelected(booking)) return this.currentLanguage === 'fr' ? 'Espèces à bord' : 'Cash onboard';
+    if (this.isWarrantyCardRegistered(booking)) return this.currentLanguage === 'fr' ? 'Carte bancaire' : 'Credit card';
+    return this.currentLanguage === 'fr' ? 'À choisir' : 'To be selected';
+  }
+
+  private getWarrantyStatusLabel(booking: AlegriaBooking): string {
+    const anyBooking: any = booking || {};
+    if (anyBooking.warrantyCashReceived === true || anyBooking.warrantyStatus === 'cash_received') return this.currentLanguage === 'fr' ? 'Espèces reçues' : 'Cash received';
+    if (this.isCashWarrantySelected(booking)) return this.currentLanguage === 'fr' ? 'À remettre à bord' : 'To bring onboard';
+    if (this.isWarrantyCardRegistered(booking)) return this.currentLanguage === 'fr' ? 'Carte enregistrée' : 'Card registered';
+    return this.currentLanguage === 'fr' ? 'À finaliser' : 'To finalize';
+  }
+
+  private getBookingPaymentStatusLabel(booking: AlegriaBooking, depositPaidAmount: number, remainingAlegriaAmount: number): { label: string; className: string } {
+    const anyBooking: any = booking || {};
+    const rawStatus = String(anyBooking.status || anyBooking.bookingStatus || '').toLowerCase();
+    if (rawStatus === 'completed' || rawStatus === 'closed' || rawStatus === 'done') {
+      return { label: this.currentLanguage === 'fr' ? 'Sortie terminée' : 'Completed', className: 'status-completed' };
+    }
+    if (depositPaidAmount <= 0) {
+      return { label: this.currentLanguage === 'fr' ? 'Acompte à payer' : 'Awaiting deposit', className: 'status-warning' };
+    }
+    if (remainingAlegriaAmount > 0) {
+      return { label: this.currentLanguage === 'fr' ? 'Solde à payer' : 'Awaiting balance', className: 'status-balance' };
+    }
+    return { label: this.currentLanguage === 'fr' ? 'Alegria payé' : 'Alegria paid', className: 'status-paid' };
+  }
+
+  openBookingGroup(group: CustomerBookingPaymentGroup): void {
+    if (!group?.bookingId) return;
+    this.router.navigate(['/bookings', group.bookingId]);
+  }
+
+  getPaymentActionLabel(group: CustomerBookingPaymentGroup): string {
+    if (!group) return this.currentLanguage === 'fr' ? 'Ouvrir' : 'Open';
+    if (group.depositPaidAmount <= 0 && group.depositAmount > 0) {
+      return `${this.currentLanguage === 'fr' ? 'Payer acompte' : 'Pay deposit'} ${this.formatPaymentAmount(group.depositAmount)}`;
+    }
+    if (group.remainingAlegriaAmount > 0) {
+      return `${this.currentLanguage === 'fr' ? 'Payer solde' : 'Pay balance'} ${this.formatPaymentAmount(group.remainingAlegriaAmount)}`;
+    }
+    return this.currentLanguage === 'fr' ? 'Ouvrir la réservation' : 'Open booking';
   }
 
   private dedupeCustomerPayments(rows: CustomerPaymentView[]): CustomerPaymentView[] {

@@ -149,7 +149,7 @@ export class MyProposalsComponent implements OnInit, OnDestroy {
 
 
   get proposalRequests(): AlegriaProposal[] {
-    return this.proposals.filter((proposal: any) => proposal.status === 'request' || proposal.requestNeedsAdminProposal === true);
+    return this.proposals.filter((proposal: any) => this.isProposalRequest(proposal));
   }
 
   get filteredRequests(): AlegriaBooking[] {
@@ -192,6 +192,7 @@ export class MyProposalsComponent implements OnInit, OnDestroy {
   get filteredProposals(): AlegriaProposal[] {
     const term = this.normalize(this.searchTerm);
     return this.proposals.filter((proposal) => {
+      if (this.isProposalRequest(proposal)) return false;
       if (this.getProposalTab(proposal) !== this.activeTab) return false;
 
       if (!term) return true;
@@ -213,19 +214,19 @@ export class MyProposalsComponent implements OnInit, OnDestroy {
   get requestsCount(): number { return this.requests.length + this.proposalRequests.length; }
 
   get pendingCount(): number {
-    return this.proposals.filter((proposal) => this.getProposalTab(proposal) === 'pending').length;
+    return this.proposals.filter((proposal) => !this.isProposalRequest(proposal) && this.getProposalTab(proposal) === 'pending').length;
   }
 
   get acceptedCount(): number {
-    return this.proposals.filter((proposal) => this.getProposalTab(proposal) === 'accepted').length;
+    return this.proposals.filter((proposal) => !this.isProposalRequest(proposal) && this.getProposalTab(proposal) === 'accepted').length;
   }
 
   get declinedCount(): number {
-    return this.proposals.filter((proposal) => this.getProposalTab(proposal) === 'declined').length;
+    return this.proposals.filter((proposal) => !this.isProposalRequest(proposal) && this.getProposalTab(proposal) === 'declined').length;
   }
 
   get expiredCount(): number {
-    return this.proposals.filter((proposal) => this.getProposalTab(proposal) === 'expired').length;
+    return this.proposals.filter((proposal) => !this.isProposalRequest(proposal) && this.getProposalTab(proposal) === 'expired').length;
   }
 
   setTab(tab: ProposalTab): void {
@@ -239,6 +240,21 @@ export class MyProposalsComponent implements OnInit, OnDestroy {
 
   getRequestStatusLabel(request: AlegriaBooking): string {
     return this.t('requestSubmittedStatus');
+  }
+
+  /**
+   * Customer-created proposal requests are counted only under "Demandes".
+   * They must not also appear in "En attente", which is reserved for
+   * proposals finalized/issued by the admin and waiting for customer action.
+   */
+  isProposalRequest(proposal: AlegriaProposal | Partial<AlegriaProposal>): boolean {
+    const status = String((proposal as any)?.status || '').toLowerCase();
+    const origin = String((proposal as any)?.proposalOrigin || (proposal as any)?.source || '').toLowerCase();
+    return status === 'request' ||
+      status === 'proposal_requested' ||
+      status === 'pending_admin' ||
+      (proposal as any)?.requestNeedsAdminProposal === true ||
+      (origin === 'customer_request' && status !== 'sent' && status !== 'issued' && status !== 'proposal_issued' && status !== 'accepted');
   }
 
 
@@ -279,6 +295,7 @@ export class MyProposalsComponent implements OnInit, OnDestroy {
   getProposalTab(proposal: AlegriaProposal): ProposalTab {
     const status = String(proposal.status || '').toLowerCase();
 
+    if (this.isProposalRequest(proposal)) return 'requests';
     if (status === 'accepted') return 'accepted';
     if (status === 'cancelled' || status === 'declined' || status === 'rejected') return 'declined';
     if (status === 'expired' || this.isExpired(proposal)) return 'expired';

@@ -13,11 +13,9 @@
     </div>
 
     <div class="booking-tabs" *ngIf="!loading && bookings.length">
-      <button type="button" [class.active]="activeDateTab === 'upcoming'" (click)="setDateTab('upcoming')">
-        Upcoming <span>{{ upcomingBookingsCount }}</span>
+      <button type="button" [class.active]="activeDateTab === 'upcoming'" (click)="setDateTab('upcoming')">{{ 'auto.home.my-bookings.my-bookings.component.upcoming' | siteText }}<span>{{ upcomingBookingsCount }}</span>
       </button>
-      <button type="button" [class.active]="activeDateTab === 'past'" (click)="setDateTab('past')">
-        Past <span>{{ pastBookingsCount }}</span>
+      <button type="button" [class.active]="activeDateTab === 'past'" (click)="setDateTab('past')">{{ 'auto.home.my-bookings.my-bookings.component.past' | siteText }}<span>{{ pastBookingsCount }}</span>
       </button>
     </div>
 
@@ -30,40 +28,40 @@
       <label>
         <span>{{ t('status') }}</span>
         <select [(ngModel)]="statusFilter">
-          <option value="all">{{ t('allStatuses') }}</option>
-          <option value="not_confirmed">{{ t('notConfirmed') }}</option>
-          <option value="confirmed">{{ t('confirmed') }}</option>
-          <option value="payment_done">{{ t('paymentDone') }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.all' | siteText">{{ t('allStatuses') }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.not_confirmed' | siteText">{{ t('notConfirmed') }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.confirmed' | siteText">{{ t('confirmed') }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.payment_done' | siteText">{{ t('paymentDone') }}</option>
         </select>
       </label>
 
       <label>
         <span>{{ t('warranty') }}</span>
         <select [(ngModel)]="warrantyFilter">
-          <option value="all">{{ t('allWarranties') }}</option>
-          <option value="not_selected">{{ t('notSelected') }}</option>
-          <option value="cash">{{ t('cashSelected') }}</option>
-          <option value="card_selected">{{ t('cardSelected') }}</option>
-          <option value="card_registered">{{ t('cardRegistered') }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.all' | siteText">{{ t('allWarranties') }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.not_selected' | siteText">{{ t('notSelected') }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.cash' | siteText">{{ t('cashSelected') }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.card_selected' | siteText">{{ t('cardSelected') }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.card_registered' | siteText">{{ t('cardRegistered') }}</option>
         </select>
       </label>
 
       <label>
         <span>{{ t('orderBy') }}</span>
         <select [(ngModel)]="sortField">
-          <option value="date">{{ t('date') }}</option>
-          <option value="customer">{{ t('customer') }}</option>
-          <option value="status">Status</option>
-          <option value="total">{{ t('totalPrice') }}</option>
-          <option value="balance">{{ t('remaining90') }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.date' | siteText">{{ t('date') }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.customer' | siteText">{{ t('customer') }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.status' | siteText">{{ 'auto.home.my-bookings.my-bookings.component.status' | siteText }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.total' | siteText">{{ t('totalPrice') }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.balance' | siteText">{{ t('remaining90') }}</option>
         </select>
       </label>
 
       <label>
         <span>{{ t('direction') }}</span>
         <select [(ngModel)]="sortDirection">
-          <option value="asc">{{ t('ascending') }}</option>
-          <option value="desc">{{ t('descending') }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.asc' | siteText">{{ t('ascending') }}</option>
+          <option [value]="'auto.home.my-bookings.my-bookings.component.desc' | siteText">{{ t('descending') }}</option>
         </select>
       </label>
 

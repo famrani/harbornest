@@ -17,7 +17,7 @@ interface SafetyContent {
   sections: SafetySection[];
 }
 
-const SAFETY_CONTENT: Record<SiteLanguage, SafetyContent> = {
+const SAFETY_CONTENT: Partial<Record<SiteLanguage, SafetyContent>> & { fr: SafetyContent } = {
   fr: {
     eyebrow: 'Sécurité à bord',
     title: 'Consignes de sécurité à bord',
@@ -436,7 +436,7 @@ export class SafetyInstructionsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.languageSub = this.languageService.language$.subscribe((language) => {
-      this.content = SAFETY_CONTENT[language];
+      this.content = SAFETY_CONTENT[language] || SAFETY_CONTENT.fr;
     });
   }
 

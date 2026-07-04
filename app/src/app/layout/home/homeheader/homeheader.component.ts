@@ -21,6 +21,289 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
   private languageSub?: Subscription;
   private accountSub?: Subscription;
 
+  private readonly headerText: Record<SiteLanguage, Record<string, string>> = {
+    fr: {
+      hi: 'Bonjour',
+      brand: 'Alegria',
+      brandTagline: 'Sorties privées en catamaran',
+      'nav.openMenu': 'Ouvrir le menu',
+      'nav.outings': 'Sorties',
+      'nav.allOutings': 'Toutes les sorties',
+      'nav.dayAtSea': 'Journée en mer',
+      'nav.sunset': 'Coucher de soleil',
+      'nav.party': 'Fête privée',
+      'nav.corporate': 'Sortie entreprise',
+      'nav.boat': 'Le bateau',
+      'nav.boatPresentation': 'Présentation',
+      'nav.gallery': 'Galerie',
+      'nav.crew': 'Équipage',
+      'nav.safety': 'Consignes de sécurité',
+      'nav.practicalInformation': 'Infos pratiques',
+      'nav.guestJourney': 'Comment se déroule la sortie',
+      'nav.faq': 'FAQ invités',
+      'nav.terms': 'Conditions générales',
+      'nav.depositAndWarranty': 'Comment réserver ?',
+      'nav.contact': 'Contact',
+      'nav.languageSelector': 'Sélecteur de langue',
+      'nav.account': 'Compte',
+      'nav.login': 'Se connecter',
+      'nav.signup': 'Créer un compte',
+      'nav.myProfile': 'Mon profil',
+      'nav.proposals': 'Propositions',
+      'nav.myProposals': 'Mes propositions',
+      'nav.reservations': 'Réservations',
+      'nav.payments': 'Paiements',
+      'nav.operations': 'Opérations',
+      'nav.boatLogManager': 'Gestion du journal de bord',
+      'nav.fleet': 'Flotte / bateaux',
+      'nav.managePublicOutings': 'Gérer les sorties publiques',
+      'nav.pricingModel': 'Modèle tarifaire',
+      'nav.feedbacks': 'Avis clients',
+      'nav.myFeedbacks': 'Mes avis',
+      'nav.logout': 'Déconnexion',
+    },
+    en: {
+      hi: 'Hi',
+      brand: 'Alegria',
+      brandTagline: 'Private catamaran outings',
+      'nav.openMenu': 'Open menu',
+      'nav.outings': 'Outings',
+      'nav.allOutings': 'All outings',
+      'nav.dayAtSea': 'Day at sea',
+      'nav.sunset': 'Sunset cruise',
+      'nav.party': 'Private party',
+      'nav.corporate': 'Corporate outing',
+      'nav.boat': 'Boat',
+      'nav.boatPresentation': 'Boat presentation',
+      'nav.gallery': 'Gallery',
+      'nav.crew': 'Crew',
+      'nav.safety': 'Safety instructions',
+      'nav.practicalInformation': 'Practical information',
+      'nav.guestJourney': 'How the outing works',
+      'nav.faq': 'Guest FAQ',
+      'nav.terms': 'Terms & Conditions',
+      'nav.depositAndWarranty': 'How booking works',
+      'nav.contact': 'Contact',
+      'nav.languageSelector': 'Language selector',
+      'nav.account': 'Account',
+      'nav.login': 'Log in',
+      'nav.signup': 'Create account',
+      'nav.myProfile': 'My profile',
+      'nav.proposals': 'Proposals',
+      'nav.myProposals': 'My proposals',
+      'nav.reservations': 'Bookings',
+      'nav.payments': 'Payments',
+      'nav.operations': 'Operations',
+      'nav.boatLogManager': 'Boat log manager',
+      'nav.fleet': 'Fleet / boats',
+      'nav.managePublicOutings': 'Manage public outings',
+      'nav.pricingModel': 'Pricing model',
+      'nav.feedbacks': 'Customer feedbacks',
+      'nav.myFeedbacks': 'My feedbacks',
+      'nav.logout': 'Log out',
+    },
+    es: {
+      hi: 'Hola',
+      brand: 'Alegria',
+      brandTagline: 'Salidas privadas en catamarán',
+      'nav.openMenu': 'Abrir menú',
+      'nav.outings': 'Salidas',
+      'nav.allOutings': 'Todas las salidas',
+      'nav.dayAtSea': 'Día en el mar',
+      'nav.sunset': 'Atardecer',
+      'nav.party': 'Fiesta privada',
+      'nav.corporate': 'Evento de empresa',
+      'nav.boat': 'Barco',
+      'nav.boatPresentation': 'Presentación',
+      'nav.gallery': 'Galería',
+      'nav.crew': 'Tripulación',
+      'nav.safety': 'Instrucciones de seguridad',
+      'nav.practicalInformation': 'Información práctica',
+      'nav.guestJourney': 'Cómo será la salida',
+      'nav.faq': 'FAQ invitados',
+      'nav.terms': 'Condiciones generales',
+      'nav.depositAndWarranty': 'Cómo reservar',
+      'nav.contact': 'Contacto',
+      'nav.languageSelector': 'Selector de idioma',
+      'nav.account': 'Cuenta',
+      'nav.login': 'Iniciar sesión',
+      'nav.signup': 'Crear una cuenta',
+      'nav.myProfile': 'Mi perfil',
+      'nav.proposals': 'Propuestas',
+      'nav.myProposals': 'Mis propuestas',
+      'nav.reservations': 'Reservas',
+      'nav.payments': 'Pagos',
+      'nav.operations': 'Operaciones',
+      'nav.boatLogManager': 'Gestor de bitácora',
+      'nav.fleet': 'Flota / barcos',
+      'nav.managePublicOutings': 'Gestionar salidas públicas',
+      'nav.pricingModel': 'Modelo de precios',
+      'nav.feedbacks': 'Comentarios clientes',
+      'nav.myFeedbacks': 'Mis comentarios',
+      'nav.logout': 'Cerrar sesión',
+    },
+    it: {
+      hi: 'Ciao',
+      brand: 'Alegria',
+      brandTagline: 'Uscite private in catamarano',
+      'nav.openMenu': 'Apri menu',
+      'nav.outings': 'Uscite',
+      'nav.allOutings': 'Tutte le uscite',
+      'nav.dayAtSea': 'Giornata in mare',
+      'nav.sunset': 'Crociera al tramonto',
+      'nav.party': 'Festa privata',
+      'nav.corporate': 'Uscita aziendale',
+      'nav.boat': 'Barca',
+      'nav.boatPresentation': 'Presentazione',
+      'nav.gallery': 'Galleria',
+      'nav.crew': 'Equipaggio',
+      'nav.safety': 'Istruzioni di sicurezza',
+      'nav.practicalInformation': 'Informazioni pratiche',
+      'nav.guestJourney': 'Come si svolge l’uscita',
+      'nav.faq': 'FAQ ospiti',
+      'nav.terms': 'Condizioni generali',
+      'nav.depositAndWarranty': 'Come prenotare',
+      'nav.contact': 'Contatto',
+      'nav.languageSelector': 'Selettore lingua',
+      'nav.account': 'Account',
+      'nav.login': 'Accedi',
+      'nav.signup': 'Crea un account',
+      'nav.myProfile': 'Il mio profilo',
+      'nav.proposals': 'Proposte',
+      'nav.myProposals': 'Le mie proposte',
+      'nav.reservations': 'Prenotazioni',
+      'nav.payments': 'Pagamenti',
+      'nav.operations': 'Operazioni',
+      'nav.boatLogManager': 'Gestione diario di bordo',
+      'nav.fleet': 'Flotta / barche',
+      'nav.managePublicOutings': 'Gestire le uscite pubbliche',
+      'nav.pricingModel': 'Modello tariffario',
+      'nav.feedbacks': 'Recensioni clienti',
+      'nav.myFeedbacks': 'Le mie recensioni',
+      'nav.logout': 'Disconnetti',
+    },
+    de: {
+      hi: 'Hallo',
+      brand: 'Alegria',
+      brandTagline: 'Private Katamaran-Ausflüge',
+      'nav.openMenu': 'Menü öffnen',
+      'nav.outings': 'Ausflüge',
+      'nav.allOutings': 'Alle Ausflüge',
+      'nav.dayAtSea': 'Tag auf See',
+      'nav.sunset': 'Sonnenuntergangsfahrt',
+      'nav.party': 'Private Feier',
+      'nav.corporate': 'Firmenausflug',
+      'nav.boat': 'Boot',
+      'nav.boatPresentation': 'Präsentation',
+      'nav.gallery': 'Galerie',
+      'nav.crew': 'Crew',
+      'nav.safety': 'Sicherheitshinweise',
+      'nav.practicalInformation': 'Praktische Informationen',
+      'nav.guestJourney': 'Ablauf des Ausflugs',
+      'nav.faq': 'Gäste-FAQ',
+      'nav.terms': 'Allgemeine Geschäftsbedingungen',
+      'nav.depositAndWarranty': 'So funktioniert die Buchung',
+      'nav.contact': 'Kontakt',
+      'nav.languageSelector': 'Sprachauswahl',
+      'nav.account': 'Konto',
+      'nav.login': 'Anmelden',
+      'nav.signup': 'Konto erstellen',
+      'nav.myProfile': 'Mein Profil',
+      'nav.proposals': 'Angebote',
+      'nav.myProposals': 'Meine Angebote',
+      'nav.reservations': 'Buchungen',
+      'nav.payments': 'Zahlungen',
+      'nav.operations': 'Betrieb',
+      'nav.boatLogManager': 'Logbuchverwaltung',
+      'nav.fleet': 'Flotte / Boote',
+      'nav.managePublicOutings': 'Öffentliche Ausflüge verwalten',
+      'nav.pricingModel': 'Preismodell',
+      'nav.feedbacks': 'Kundenbewertungen',
+      'nav.myFeedbacks': 'Meine Bewertungen',
+      'nav.logout': 'Abmelden',
+    },
+    nl: {
+      hi: 'Hallo',
+      brand: 'Alegria',
+      brandTagline: 'Privé-uitstappen met catamaran',
+      'nav.openMenu': 'Menu openen',
+      'nav.outings': 'Uitstappen',
+      'nav.allOutings': 'Alle uitstappen',
+      'nav.dayAtSea': 'Dag op zee',
+      'nav.sunset': 'Zonsondergangstocht',
+      'nav.party': 'Privéfeest',
+      'nav.corporate': 'Bedrijfsuitstap',
+      'nav.boat': 'Boot',
+      'nav.boatPresentation': 'Presentatie',
+      'nav.gallery': 'Galerij',
+      'nav.crew': 'Bemanning',
+      'nav.safety': 'Veiligheidsinstructies',
+      'nav.practicalInformation': 'Praktische informatie',
+      'nav.guestJourney': 'Hoe de uitstap verloopt',
+      'nav.faq': 'FAQ voor gasten',
+      'nav.terms': 'Algemene voorwaarden',
+      'nav.depositAndWarranty': 'Hoe boeken werkt',
+      'nav.contact': 'Contact',
+      'nav.languageSelector': 'Taalselector',
+      'nav.account': 'Account',
+      'nav.login': 'Inloggen',
+      'nav.signup': 'Account aanmaken',
+      'nav.myProfile': 'Mijn profiel',
+      'nav.proposals': 'Voorstellen',
+      'nav.myProposals': 'Mijn voorstellen',
+      'nav.reservations': 'Boekingen',
+      'nav.payments': 'Betalingen',
+      'nav.operations': 'Operaties',
+      'nav.boatLogManager': 'Logboekbeheer',
+      'nav.fleet': 'Vloot / boten',
+      'nav.managePublicOutings': 'Publieke uitstappen beheren',
+      'nav.pricingModel': 'Prijsmodel',
+      'nav.feedbacks': 'Klantbeoordelingen',
+      'nav.myFeedbacks': 'Mijn beoordelingen',
+      'nav.logout': 'Uitloggen',
+    },
+    ru: {
+      hi: 'Здравствуйте',
+      brand: 'Alegria',
+      brandTagline: 'Частные прогулки на катамаране',
+      'nav.openMenu': 'Открыть меню',
+      'nav.outings': 'Прогулки',
+      'nav.allOutings': 'Все прогулки',
+      'nav.dayAtSea': 'День в море',
+      'nav.sunset': 'Круиз на закате',
+      'nav.party': 'Частная вечеринка',
+      'nav.corporate': 'Корпоративная прогулка',
+      'nav.boat': 'Лодка',
+      'nav.boatPresentation': 'Презентация',
+      'nav.gallery': 'Галерея',
+      'nav.crew': 'Экипаж',
+      'nav.safety': 'Инструкции по безопасности',
+      'nav.practicalInformation': 'Практическая информация',
+      'nav.guestJourney': 'Как проходит прогулка',
+      'nav.faq': 'FAQ для гостей',
+      'nav.terms': 'Общие условия',
+      'nav.depositAndWarranty': 'Как проходит бронирование',
+      'nav.contact': 'Контакт',
+      'nav.languageSelector': 'Выбор языка',
+      'nav.account': 'Аккаунт',
+      'nav.login': 'Войти',
+      'nav.signup': 'Создать аккаунт',
+      'nav.myProfile': 'Мой профиль',
+      'nav.proposals': 'Предложения',
+      'nav.myProposals': 'Мои предложения',
+      'nav.reservations': 'Бронирования',
+      'nav.payments': 'Платежи',
+      'nav.operations': 'Операции',
+      'nav.boatLogManager': 'Управление судовым журналом',
+      'nav.fleet': 'Флот / лодки',
+      'nav.managePublicOutings': 'Управление публичными прогулками',
+      'nav.pricingModel': 'Тарифная модель',
+      'nav.feedbacks': 'Отзывы клиентов',
+      'nav.myFeedbacks': 'Мои отзывы',
+      'nav.logout': 'Выйти',
+    },
+  };
+
   constructor(
     private languageService: LanguageService,
     private router: Router,
@@ -29,10 +312,11 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.currentLanguage = this.languageService.currentLanguage || 'fr';
     this.loadSiteContent();
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.currentLanguage = language;
-      this.content = this.allSiteContent[language] || SITE_CONTENT[language];
+      this.content = this.allSiteContent[language] || SITE_CONTENT[language] || SITE_CONTENT.fr;
     });
 
     const svc = this.mainSvc as any;
@@ -54,7 +338,7 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
   private async loadSiteContent(): Promise<void> {
     try {
       this.allSiteContent = await this.siteContentService.getContent();
-      this.content = this.allSiteContent[this.currentLanguage] || SITE_CONTENT[this.currentLanguage];
+      this.content = this.allSiteContent[this.currentLanguage] || SITE_CONTENT[this.currentLanguage] || SITE_CONTENT.fr;
     } catch {
       this.allSiteContent = SITE_CONTENT;
       this.content = SITE_CONTENT[this.currentLanguage] || SITE_CONTENT.fr;
@@ -64,6 +348,30 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.languageSub?.unsubscribe();
     this.accountSub?.unsubscribe();
+  }
+
+  t(key: string, fallback = ''): string {
+    const directValue = key.split('.').reduce((obj: any, part: string) => obj?.[part], this.content as any);
+    if (typeof directValue === 'string' && directValue.trim()) {
+      return directValue;
+    }
+
+    const legacyNavKey = key.startsWith('nav.') ? key.replace('nav.', '') : '';
+    const legacyNavValue = legacyNavKey ? (this.content as any)?.nav?.[legacyNavKey] : undefined;
+    if (typeof legacyNavValue === 'string' && legacyNavValue.trim()) {
+      return legacyNavValue;
+    }
+
+    const menuKey = key.startsWith('nav.') ? key.replace('nav.', '') : key;
+    const menuValue = (this.content as any)?.menu?.[menuKey];
+    if (typeof menuValue === 'string' && menuValue.trim()) {
+      return menuValue;
+    }
+
+    return this.headerText[this.currentLanguage]?.[key]
+      || this.headerText.en[key]
+      || fallback
+      || key;
   }
 
   toggleMenu(): void {
@@ -92,7 +400,6 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
 
   closeMenu(): void {
     this.menuOpen = false;
-
     this.closeAllDropdowns();
   }
 
@@ -138,218 +445,65 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
   get firstName(): string {
     const user = this.loggedUser || {};
     const fromName = user.firstname || user.firstName || user.displayName || user.email || '';
-    return String(fromName).split(' ')[0] || this.accountLabel;
+    return String(fromName).split(' ')[0] || this.t('nav.account');
   }
 
   get accountSummaryLabel(): string {
     if (this.isLoggedIn) {
-      return this.currentLanguage === 'fr' ? `Bonjour ${this.firstName}` : this.currentLanguage === 'es' ? `Hola ${this.firstName}` : `Hi ${this.firstName}`;
+      return `${this.t('hi')} ${this.firstName}`;
     }
-    return this.accountLabel;
+    return this.t('nav.account');
   }
 
-  get allOutingsLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Toutes les sorties' : this.currentLanguage === 'es' ? 'Todas las salidas' : 'All experiences';
-  }
-
-  get dayAtSeaLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Journée en mer' : this.currentLanguage === 'es' ? 'Día en el mar' : 'Full day at sea';
-  }
-
-  get sunsetLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Coucher de soleil' : this.currentLanguage === 'es' ? 'Atardecer' : 'Sunset cruise';
-  }
-
-  get partyLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Fête privée' : this.currentLanguage === 'es' ? 'Fiesta privada' : 'Private party';
-  }
-
-  get corporateLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Sortie entreprise' : this.currentLanguage === 'es' ? 'Evento de empresa' : 'Corporate outing';
-  }
-
-  get boatPresentationLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Présentation' : this.currentLanguage === 'es' ? 'Presentación' : 'Overview';
-  }
-
-  get checklistLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Checklist sécurité' : this.currentLanguage === 'es' ? 'Checklist de seguridad' : 'Safety checklist';
-  }
-
-  get safetyLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Consignes de sécurité' : this.currentLanguage === 'es' ? 'Instrucciones de seguridad' : 'Safety instructions';
-  }
-
-  get practicalInfoLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Infos pratiques' : this.currentLanguage === 'es' ? 'Información práctica' : 'Practical info';
-  }
-
-
-  get guestJourneyLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Comment se déroule la sortie' : this.currentLanguage === 'es' ? 'Cómo será la salida' : 'How the outing works';
-  }
-
-  get faqLabel(): string {
-    return this.currentLanguage === 'fr' ? 'FAQ invités' : this.currentLanguage === 'es' ? 'FAQ invitados' : 'Guest FAQ';
-  }
-
-  get termsLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Conditions générales' : this.currentLanguage === 'es' ? 'Condiciones generales' : 'Terms & conditions';
-  }
-
-  get depositLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Comment réserver ?' : this.currentLanguage === 'es' ? '¿Cómo reservar?' : 'How booking works';
-  }
-
-  get accountLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Compte' : this.currentLanguage === 'es' ? 'Cuenta' : 'Account';
-  }
-
-  get loginLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Se connecter' : this.currentLanguage === 'es' ? 'Iniciar sesión' : 'Log in';
-  }
-
-  get signupLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Créer un compte' : this.currentLanguage === 'es' ? 'Crear una cuenta' : 'Create account';
-  }
-
-  get guestLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Continuer comme invité' : this.currentLanguage === 'es' ? 'Continuar como invitado' : 'Continue as guest';
-  }
-
-  get myBookingsLabel(): string {
-    return this.alegriaBookingsLabel;
-  }
-
-  get myPaymentsLabel(): string {
-    return this.paymentsLabel;
-  }
-
-  get myProfileLabel(): string {
-    return this.menuText('profile', 'Mon profil', 'My profile', 'Mi perfil');
-  }
-
-
-  get myFeedbacksLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Mes avis' : this.currentLanguage === 'es' ? 'Mis comentarios' : 'My feedbacks';
-  }
-
-  get adminBookingsLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Réservations (admin)' : this.currentLanguage === 'es' ? 'Reservas (admin)' : 'Bookings (admin)';
-  }
-
-  get adminFeedbacksLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Avis clients (admin)' : this.currentLanguage === 'es' ? 'Comentarios clientes (admin)' : 'Customer feedbacks (admin)';
-  }
-
-
-  get adminOutingsLabel(): string {
-    return this.boatLogManagerLabel;
-  }
-
-  get adminPublicOutingsLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Offres sorties' : this.currentLanguage === 'es' ? 'Ofertas de salidas' : 'Public outings';
-  }
-
-  get logoutLabel(): string {
-    return this.menuText('logout', 'Déconnexion', 'Logout', 'Cerrar sesión');
-  }
-
-
-  get galleryLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Galerie' : this.currentLanguage === 'es' ? 'Galería' : 'Gallery';
-  }
-
-  get crewLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Équipage' : this.currentLanguage === 'es' ? 'Tripulación' : 'Crew';
-  }
-
-  get contactLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Contact' : this.currentLanguage === 'es' ? 'Contacto' : 'Contact';
-  }
-
-  get reservationsSectionLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Réservations' : this.currentLanguage === 'es' ? 'Reservas' : 'Reservations';
-  }
-
-  get confirmedBookingsLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Réservations confirmées' : this.currentLanguage === 'es' ? 'Reservas confirmadas' : 'Confirmed bookings';
-  }
-
-  get proposalsLabel(): string {
-    return this.menuText('proposals', 'Propositions', 'Proposals', 'Propuestas');
-  }
-
-  get externalBookingsLabel(): string {
-    return this.platformBookingsLabel;
-  }
-
-  get boatLogsSectionLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Journal de bord' : this.currentLanguage === 'es' ? 'Bitácora del barco' : 'Boat logs';
-  }
-
-  get boatLogManagerLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Gestion du journal de bord' : this.currentLanguage === 'es' ? 'Gestor de bitácora' : 'Boat log manager';
-  }
-
-  get publicOutingInfoSectionLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Informations sorties publiques' : this.currentLanguage === 'es' ? 'Información de salidas públicas' : 'Public outing information';
-  }
-
-  get managePublicOutingsLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Gérer les sorties publiques' : this.currentLanguage === 'es' ? 'Gestionar salidas públicas' : 'Manage public outings';
-  }
-
-  get accountSectionLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Compte' : this.currentLanguage === 'es' ? 'Cuenta' : 'Account';
-  }
-
-  get myTripRequestsSectionLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Mes demandes de sortie' : this.currentLanguage === 'es' ? 'Mis solicitudes de salida' : 'My trip requests';
-  }
-
-  get myProposalsLabel(): string {
-    return this.menuText('myProposals', 'Mes propositions', 'My proposals', 'Mis propuestas');
-  }
-
-  get paymentsWarrantySectionLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Paiements & caution' : this.currentLanguage === 'es' ? 'Pagos y garantía' : 'Payments & warranty';
-  }
-
-  get afterOutingSectionLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Après la sortie' : this.currentLanguage === 'es' ? 'Después de la salida' : 'After the outing';
-  }
-
-
-  get onlineBookingLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Réserver en ligne' : this.currentLanguage === 'es' ? 'Reservar en línea' : 'Book online';
-  }
-
-  get pricingModelLabel(): string {
-    return this.currentLanguage === 'fr' ? 'Modèle tarifaire' : this.currentLanguage === 'es' ? 'Modelo de precios' : 'Pricing model';
-  }
-  private menuText(key: string, fallbackFr: string, fallbackEn: string, fallbackEs: string): string {
-    const fromFirebase = (this.content as any)?.menu?.[key];
-    if (fromFirebase) {
-      return String(fromFirebase);
-    }
-    return this.currentLanguage === 'fr' ? fallbackFr : this.currentLanguage === 'es' ? fallbackEs : fallbackEn;
-  }
-
-  get alegriaBookingsLabel(): string {
-    return this.menuText('alegriaBookings', 'Réservations Alegria', 'Alegria bookings', 'Reservas Alegria');
-  }
-
-  get platformBookingsLabel(): string {
-    return this.menuText('platformBookings', 'Réservations plateformes', 'Platform bookings', 'Reservas plataformas');
-  }
-
-  get paymentsLabel(): string {
-    return this.menuText('payments', 'Paiements', 'Payments', 'Pagos');
-  }
-
-  get operationsSectionLabel(): string {
-    return this.menuText('operations', 'Opérations', 'Operations', 'Operaciones');
-  }
-
+  get allOutingsLabel(): string { return this.t('nav.allOutings'); }
+  get dayAtSeaLabel(): string { return this.t('nav.dayAtSea'); }
+  get sunsetLabel(): string { return this.t('nav.sunset'); }
+  get partyLabel(): string { return this.t('nav.party'); }
+  get corporateLabel(): string { return this.t('nav.corporate'); }
+  get boatPresentationLabel(): string { return this.t('nav.boatPresentation'); }
+  get checklistLabel(): string { return this.t('nav.safety'); }
+  get safetyLabel(): string { return this.t('nav.safety'); }
+  get practicalInfoLabel(): string { return this.t('nav.practicalInformation'); }
+  get guestJourneyLabel(): string { return this.t('nav.guestJourney'); }
+  get faqLabel(): string { return this.t('nav.faq'); }
+  get termsLabel(): string { return this.t('nav.terms'); }
+  get depositLabel(): string { return this.t('nav.depositAndWarranty'); }
+  get accountLabel(): string { return this.t('nav.account'); }
+  get loginLabel(): string { return this.t('nav.login'); }
+  get signupLabel(): string { return this.t('nav.signup'); }
+  get guestLabel(): string { return this.t('nav.login'); }
+  get myBookingsLabel(): string { return this.reservationsLabel; }
+  get myPaymentsLabel(): string { return this.paymentsLabel; }
+  get myProfileLabel(): string { return this.t('nav.myProfile'); }
+  get myFeedbacksLabel(): string { return this.t('nav.myFeedbacks'); }
+  get adminBookingsLabel(): string { return this.reservationsLabel; }
+  get adminFeedbacksLabel(): string { return this.t('nav.feedbacks'); }
+  get adminOutingsLabel(): string { return this.boatLogManagerLabel; }
+  get adminPublicOutingsLabel(): string { return this.managePublicOutingsLabel; }
+  get logoutLabel(): string { return this.t('nav.logout'); }
+  get galleryLabel(): string { return this.t('nav.gallery'); }
+  get crewLabel(): string { return this.t('nav.crew'); }
+  get contactLabel(): string { return this.t('nav.contact'); }
+  get reservationsSectionLabel(): string { return this.reservationsLabel; }
+  get confirmedBookingsLabel(): string { return this.reservationsLabel; }
+  get proposalsLabel(): string { return this.t('nav.proposals'); }
+  get externalBookingsLabel(): string { return this.reservationsLabel; }
+  get boatLogsSectionLabel(): string { return this.boatLogManagerLabel; }
+  get boatLogManagerLabel(): string { return this.t('nav.boatLogManager'); }
+  get publicOutingInfoSectionLabel(): string { return this.managePublicOutingsLabel; }
+  get managePublicOutingsLabel(): string { return this.t('nav.managePublicOutings'); }
+  get accountSectionLabel(): string { return this.t('nav.account'); }
+  get myTripRequestsSectionLabel(): string { return this.t('nav.myProposals'); }
+  get myProposalsLabel(): string { return this.t('nav.myProposals'); }
+  get paymentsWarrantySectionLabel(): string { return this.paymentsLabel; }
+  get afterOutingSectionLabel(): string { return this.t('nav.feedbacks'); }
+  get onlineBookingLabel(): string { return this.t('nav.depositAndWarranty'); }
+  get fleetLabel(): string { return this.t('nav.fleet'); }
+  get pricingModelLabel(): string { return this.t('nav.pricingModel'); }
+  get alegriaBookingsLabel(): string { return this.reservationsLabel; }
+  get platformBookingsLabel(): string { return this.reservationsLabel; }
+  get reservationsLabel(): string { return this.t('nav.reservations'); }
+  get newReservationLabel(): string { return this.reservationsLabel; }
+  get paymentsLabel(): string { return this.t('nav.payments'); }
+  get operationsSectionLabel(): string { return this.t('nav.operations'); }
 }

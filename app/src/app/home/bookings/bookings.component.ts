@@ -14,6 +14,27 @@ interface BookingFieldView {
 
 type BookingView = AlegriaBooking & { displayFields: BookingFieldView[] };
 
+const BOOKING_AUTO_TEXT: Record<string, string> = {
+  "auto.home.bookings.bookings.component.upcoming": "Upcoming",
+  "auto.home.bookings.bookings.component.past": "Past",
+  "auto.home.bookings.bookings.component.platform": "Platform",
+  "auto.home.bookings.bookings.component.all_platforms": "All platforms",
+  "auto.home.bookings.bookings.component.direct_alegria": "Direct Alegria",
+  "auto.home.bookings.bookings.component.click_boat": "Click&Boat",
+  "auto.home.bookings.bookings.component.samboat": "Samboat",
+  "auto.home.bookings.bookings.component.other": "Other",
+  "auto.home.bookings.bookings.component.status": "Status",
+  "auto.home.bookings.bookings.component.new_reservation": "New reservation",
+  "auto.home.bookings.bookings.component.reservation_cockpit": "Reservation cockpit",
+  "auto.home.bookings.bookings.component.new_reservation_bb6c90": "New reservation",
+  "auto.home.bookings.bookings.component.create_a_direct_click_boat_samboat_or_other_platfo": "Create a direct, Click&Boat, Samboat or other platform reservation.",
+  "auto.home.bookings.bookings.component.open_reservation_form": "Open reservation form",
+  "auto.home.bookings.bookings.component.close": "Close",
+  "auto.home.bookings.bookings.component.if_the_embedded_form_is_not_visible_on_your_browse": "If the embedded form is not visible on your browser, ",
+  "auto.home.bookings.bookings.component.bnbookings": "bnBookings",
+  "auto.home.bookings.bookings.component.sumup_card": "SumUp card"
+};
+
 @Component({
   selector: 'app-bookings',
   templateUrl: './bookings.component.html',
@@ -27,6 +48,7 @@ export class BookingsComponent implements OnInit, OnDestroy {
   activeDateTab: 'upcoming' | 'past' = 'upcoming';
   statusFilter = 'all';
   warrantyFilter = 'all';
+  platformFilter = 'all';
   sortField: 'date' | 'customer' | 'status' | 'total' | 'balance' = 'date';
   sortDirection: 'asc' | 'desc' = 'asc';
   selectedBalanceBooking?: BookingView;
@@ -36,6 +58,8 @@ export class BookingsComponent implements OnInit, OnDestroy {
   savingBalancePayment = false;
   balancePaymentMessage = '';
   balancePaymentError = '';
+  showCreateReservation = false;
+  createReservationMessage = '';
 
   loggedUser: any = null;
   currentLanguage: SiteLanguage = 'fr';
@@ -81,7 +105,7 @@ export class BookingsComponent implements OnInit, OnDestroy {
   }
 
   t(key: string): string {
-    return this.pageText?.[key] || key;
+    return this.pageText?.[key] || BOOKING_AUTO_TEXT[key] || key;
   }
 
   ngOnDestroy(): void {
@@ -91,6 +115,42 @@ export class BookingsComponent implements OnInit, OnDestroy {
   get isAdmin(): boolean {
     const role = String(this.loggedUser?.role || '').toLowerCase();
     return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
+  }
+
+
+  getPlatformKey(booking: AlegriaBooking): string {
+    const raw: any = (booking as any) || {};
+    const value = String(
+      raw.source ||
+      raw.externalPlatform ||
+      raw.externalPlatformName ||
+      raw.bookingSource ||
+      raw.raw?.source ||
+      raw.raw?.externalPlatform ||
+      ''
+    ).toLowerCase().trim();
+
+    if (value.includes('click') || value.includes('c&b') || value.includes('clickandboat')) return 'clickandboat';
+    if (value.includes('samboat')) return 'samboat';
+    if (value === 'direct' || value === 'alegria' || value === 'direct alegria') return 'direct';
+    if (raw.bookingSource === 'direct' || raw.raw?.bookingSource === 'direct') return 'direct';
+    if (!value) return 'direct';
+    return 'other';
+  }
+
+  getPlatformLabel(booking: AlegriaBooking): string {
+    const key = this.getPlatformKey(booking);
+    if (key === 'clickandboat') return 'Click&Boat';
+    if (key === 'samboat') return 'SamBoat';
+    if (key === 'direct') return 'Direct Alegria';
+
+    const raw: any = booking || {};
+    return String(raw.externalPlatformName || raw.externalPlatform || raw.source || raw.raw?.externalPlatformName || raw.raw?.externalPlatform || 'Other');
+  }
+
+  getPlatformReference(booking: AlegriaBooking): string {
+    const raw: any = booking || {};
+    return String(raw.externalPlatformBookingRef || raw.platformBookingReference || raw.platformReservationNumber || raw.raw?.externalPlatformBookingRef || raw.raw?.platformBookingReference || '');
   }
 
   get filteredBookings(): BookingView[] {
@@ -107,6 +167,8 @@ export class BookingsComponent implements OnInit, OnDestroy {
       if (this.warrantyFilter === 'card_selected' && this.getWarrantyChoice(booking) !== 'stripe_card') return false;
       if (this.warrantyFilter === 'card_registered' && !this.isWarrantyCardRegistered(booking)) return false;
 
+      if (this.platformFilter !== 'all' && this.getPlatformKey(booking) !== this.platformFilter) return false;
+
       if (term) {
         const haystack = [
           booking.customerName,
@@ -117,6 +179,8 @@ export class BookingsComponent implements OnInit, OnDestroy {
           (booking as any).bookingId,
           this.getStatusLabel(booking),
           this.getWarrantyModeLabel(booking),
+          this.getPlatformLabel(booking),
+          this.getPlatformReference(booking),
         ].map((value) => this.normalizeSearch(value)).join(' ');
 
         if (!haystack.includes(term)) return false;
@@ -220,27 +284,88 @@ export class BookingsComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  openCreateReservation(): void {
+    this.showCreateReservation = true;
+    this.createReservationMessage = '';
+    setTimeout(() => {
+      try {
+        document.getElementById('create-reservation-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch {}
+    }, 0);
+  }
+
+  closeCreateReservation(): void {
+    this.showCreateReservation = false;
+  }
+
+  onReservationCreated(bookingId: string): void {
+    this.createReservationMessage = bookingId ? `Reservation created: ${bookingId}` : 'Reservation created.';
+    this.showCreateReservation = false;
+    this.loadBookings();
+  }
+
   resetFilters(): void {
     this.searchTerm = '';
     this.statusFilter = 'all';
     this.warrantyFilter = 'all';
+    this.platformFilter = 'all';
     this.sortField = 'date';
     this.sortDirection = this.activeDateTab === 'past' ? 'desc' : 'asc';
   }
 
   isTermsAccepted(booking: AlegriaBooking): boolean {
-    const anyBooking: any = booking;
-    return anyBooking.termsAccepted === true ||
+    const anyBooking: any = booking || {};
+    const explicitAccepted = anyBooking.customerTermsAccepted === true ||
+      anyBooking.termsAccepted === true ||
+      anyBooking.tncAccepted === true ||
       anyBooking.tcAccepted === true ||
       anyBooking.tAndCAccepted === true ||
       anyBooking.termsAndConditionsAccepted === true ||
       anyBooking.acceptedTerms === true ||
-      anyBooking.termsStatus === 'accepted' ||
-      anyBooking.tcStatus === 'accepted' ||
+      anyBooking.workflow?.termsAccepted === true ||
+      anyBooking.bookingWorkflow?.termsAccepted === true ||
       anyBooking?.documents?.termsAccepted === true ||
       anyBooking?.terms?.accepted === true;
-  }
 
+    const explicitTimestamp = anyBooking.termsAcceptedAt ||
+      anyBooking.tncAcceptedAt ||
+      anyBooking.tcAcceptedAt ||
+      anyBooking.acceptedTermsAt ||
+      anyBooking.termsAndConditionsAcceptedAt ||
+      anyBooking.workflow?.termsAcceptedAt ||
+      anyBooking.bookingWorkflow?.termsAcceptedAt ||
+      anyBooking?.documents?.termsAcceptedAt ||
+      anyBooking?.terms?.acceptedAt;
+
+    const acceptedBy = anyBooking.termsAcceptedBy ||
+      anyBooking.tncAcceptedBy ||
+      anyBooking.acceptedTermsBy ||
+      anyBooking.workflow?.termsAcceptedBy ||
+      anyBooking.bookingWorkflow?.termsAcceptedBy ||
+      anyBooking?.documents?.termsAcceptedBy ||
+      anyBooking?.terms?.acceptedBy;
+
+    const source = String(
+      anyBooking.termsAcceptedSource ||
+      anyBooking.tncAcceptedSource ||
+      anyBooking.acceptedTermsSource ||
+      anyBooking.workflow?.termsAcceptedSource ||
+      anyBooking.bookingWorkflow?.termsAcceptedSource ||
+      anyBooking?.documents?.termsAcceptedSource ||
+      anyBooking?.terms?.source ||
+      ''
+    ).toLowerCase();
+
+    const formalCustomerMarker = anyBooking.customerTermsAccepted === true ||
+      source.includes('customer') ||
+      source.includes('client') ||
+      source.includes('proposal') ||
+      source.includes('portal') ||
+      !!acceptedBy;
+
+    return explicitAccepted === true && !!explicitTimestamp && formalCustomerMarker;
+  }
 
   getBookingOutingTime(booking: AlegriaBooking): number {
     const rawDate = String((booking as any)?.outingDate || (booking as any)?.date || (booking as any)?.bookingDate || '').trim();

@@ -213,3 +213,195 @@ p {
     grid-template-columns: 1fr;
   }
 }
+
+.booking-payment-toolbar {
+  grid-template-columns: minmax(180px, 280px) auto;
+  justify-content: start;
+}
+
+.booking-payment-list {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.booking-payment-card {
+  border: 1px solid rgba(8,38,58,.09);
+  border-radius: 24px;
+  background: #fff;
+  padding: clamp(1rem, 3vw, 1.35rem);
+  box-shadow: 0 14px 34px rgba(8,38,58,.07);
+}
+
+.booking-payment-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.booking-payment-header h2 {
+  margin: 0 0 .25rem;
+  color: #08263a;
+  font-family: 'Raleway', Arial, sans-serif;
+  font-size: clamp(1.05rem, 3vw, 1.3rem);
+}
+
+.booking-payment-header p {
+  margin: 0;
+  color: #516070;
+  font-size: .9rem;
+}
+
+.booking-status {
+  border-radius: 999px;
+  padding: .4rem .65rem;
+  font-size: .78rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.booking-status.status-warning {
+  background: rgba(242,140,40,.16);
+  color: #9a5a12;
+}
+
+.booking-status.status-balance {
+  background: rgba(11,110,143,.13);
+  color: #0b6e8f;
+}
+
+.booking-status.status-paid {
+  background: rgba(4,120,87,.13);
+  color: #047857;
+}
+
+.booking-status.status-completed {
+  background: rgba(8,38,58,.1);
+  color: #08263a;
+}
+
+.booking-payment-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .85rem;
+}
+
+.booking-payment-panel {
+  border: 1px solid rgba(8,38,58,.08);
+  border-radius: 18px;
+  background: #fbf8f2;
+  padding: .95rem;
+  display: grid;
+  gap: .55rem;
+}
+
+.booking-payment-panel.highlight-panel {
+  background: rgba(4,120,87,.07);
+  border-color: rgba(4,120,87,.18);
+}
+
+.booking-payment-panel.warranty-panel {
+  background: rgba(181,139,74,.09);
+  border-color: rgba(181,139,74,.2);
+}
+
+.panel-label {
+  color: #516070;
+  font-weight: 800;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.amount-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .75rem;
+  border-top: 1px solid rgba(8,38,58,.08);
+  padding-top: .45rem;
+  color: #516070;
+}
+
+.amount-line:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.amount-line strong {
+  color: #08263a;
+  white-space: nowrap;
+}
+
+.amount-line.total-line strong {
+  font-size: 1.2rem;
+}
+
+.compact-action {
+  justify-self: start;
+  margin-top: .35rem;
+  padding: .65rem .9rem;
+  min-height: 38px;
+  font-size: .88rem;
+}
+
+.booking-payment-panel small {
+  color: #516070;
+  line-height: 1.5;
+}
+
+.booking-payment-records {
+  margin-top: .9rem;
+  border-top: 1px solid rgba(8,38,58,.08);
+  padding-top: .75rem;
+  display: grid;
+  gap: .45rem;
+}
+
+.booking-payment-records > span {
+  color: #516070;
+  font-weight: 800;
+  font-size: .82rem;
+}
+
+.mini-payment {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: .75rem;
+  align-items: center;
+  font-size: .9rem;
+  color: #516070;
+}
+
+.mini-payment strong {
+  color: #08263a;
+}
+
+.mini-payment small {
+  color: #697789;
+}
+
+@media (max-width: 760px) {
+  .booking-payment-toolbar,
+  .booking-payment-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-payment-header {
+    flex-direction: column;
+  }
+
+  .booking-status {
+    align-self: flex-start;
+  }
+
+  .mini-payment {
+    grid-template-columns: 1fr auto;
+  }
+
+  .mini-payment small {
+    grid-column: 1 / -1;
+  }
+}

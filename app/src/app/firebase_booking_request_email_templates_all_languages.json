@@ -1,0 +1,264 @@
+{
+  "siteContent": {
+    "fr": {
+      "emailTemplates": {
+        "bookingRequestAdmin": {
+          "subject": "Nouvelle demande de sortie Alegria - {{outingType}} - {{outingDate}} - {{customerName}}",
+          "title": "Nouvelle demande de sortie",
+          "buttonText": "Ouvrir la demande",
+          "html": "<p>Une nouvelle demande de sortie vient d’être envoyée par {{customerName}}.</p>{{summaryHtml}}<p><strong>Client :</strong> {{customerName}}<br/><strong>Email :</strong> {{customerEmail}}<br/><strong>Téléphone :</strong> {{customerPhone}}</p><p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p><p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p><p><a href=\"{{proposalUrl}}\">{{proposalUrl}}</a></p>",
+          "footer": "Notification automatique Alegria"
+        },
+        "bookingRequestCustomer": {
+          "subject": "Nous avons bien reçu votre demande Alegria",
+          "title": "Votre demande a bien été envoyée",
+          "buttonText": "Voir ma demande",
+          "html": "<p>Bonjour {{customerName}},</p><p>Merci, nous avons bien reçu votre demande de sortie Alegria. Notre équipe va préparer une proposition personnalisée avec le prix bateau, le prix skipper et les éventuels services complémentaires.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+          "footer": "À bientôt à bord,<br/>L’équipe Alegria"
+        }
+      }
+    },
+    "en": {
+      "emailTemplates": {
+        "bookingRequestAdmin": {
+          "subject": "New Alegria outing request - {{outingType}} - {{outingDate}} - {{customerName}}",
+          "title": "New outing request",
+          "buttonText": "Open the request",
+          "html": "<p>A new outing request has just been submitted by {{customerName}}.</p>{{summaryHtml}}<p><strong>Customer:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Phone:</strong> {{customerPhone}}</p><p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p><p>If the button does not work, copy this link into your browser:</p><p><a href=\"{{proposalUrl}}\">{{proposalUrl}}</a></p>",
+          "footer": "Automatic Alegria notification"
+        },
+        "bookingRequestCustomer": {
+          "subject": "We have received your Alegria request",
+          "title": "Your request has been sent",
+          "buttonText": "View my request",
+          "html": "<p>Hello {{customerName}},</p><p>Thank you, we have received your Alegria outing request. Our team will prepare a personalized proposal with the boat price, skipper price and any additional services.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+          "footer": "See you soon on board,<br/>The Alegria Team"
+        }
+      }
+    },
+    "es": {
+      "emailTemplates": {
+        "bookingRequestAdmin": {
+          "subject": "Nueva solicitud de salida Alegria - {{outingType}} - {{outingDate}} - {{customerName}}",
+          "title": "Nueva solicitud de salida",
+          "buttonText": "Abrir la solicitud",
+          "html": "<p>{{customerName}} acaba de enviar una nueva solicitud de salida.</p>{{summaryHtml}}<p><strong>Cliente:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Teléfono:</strong> {{customerPhone}}</p><p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p><p>Si el botón no funciona, copia este enlace en tu navegador:</p><p><a href=\"{{proposalUrl}}\">{{proposalUrl}}</a></p>",
+          "footer": "Notificación automática de Alegria"
+        },
+        "bookingRequestCustomer": {
+          "subject": "Hemos recibido tu solicitud Alegria",
+          "title": "Tu solicitud ha sido enviada",
+          "buttonText": "Ver mi solicitud",
+          "html": "<p>Hola {{customerName}},</p><p>Gracias, hemos recibido tu solicitud de salida Alegria. Nuestro equipo preparará una propuesta personalizada con el precio del barco, el precio del skipper y los servicios adicionales.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+          "footer": "Hasta pronto a bordo,<br/>El equipo Alegria"
+        }
+      }
+    },
+    "it": {
+      "emailTemplates": {
+        "bookingRequestAdmin": {
+          "subject": "Nuova richiesta Alegria - {{outingType}} - {{outingDate}} - {{customerName}}",
+          "title": "Nuova richiesta di uscita",
+          "buttonText": "Apri la richiesta",
+          "html": "<p>È stata inviata una nuova richiesta di uscita da {{customerName}}.</p>{{summaryHtml}}<p><strong>Cliente:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Telefono:</strong> {{customerPhone}}</p><p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+          "footer": "Notifica automatica Alegria"
+        },
+        "bookingRequestCustomer": {
+          "subject": "Abbiamo ricevuto la tua richiesta Alegria",
+          "title": "La tua richiesta è stata inviata",
+          "buttonText": "Vedi la mia richiesta",
+          "html": "<p>Ciao {{customerName}},</p><p>Grazie, abbiamo ricevuto la tua richiesta di uscita Alegria. Il nostro team preparerà una proposta personalizzata con il prezzo della barca, il prezzo dello skipper e gli eventuali servizi aggiuntivi.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+          "footer": "A presto a bordo,<br/>Il team Alegria"
+        }
+      }
+    },
+    "de": {
+      "emailTemplates": {
+        "bookingRequestAdmin": {
+          "subject": "Neue Alegria-Anfrage - {{outingType}} - {{outingDate}} - {{customerName}}",
+          "title": "Neue Ausflugsanfrage",
+          "buttonText": "Anfrage öffnen",
+          "html": "<p>Eine neue Ausflugsanfrage wurde von {{customerName}} gesendet.</p>{{summaryHtml}}<p><strong>Kunde:</strong> {{customerName}}<br/><strong>E-Mail:</strong> {{customerEmail}}<br/><strong>Telefon:</strong> {{customerPhone}}</p><p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+          "footer": "Automatische Alegria-Benachrichtigung"
+        },
+        "bookingRequestCustomer": {
+          "subject": "Wir haben Ihre Alegria-Anfrage erhalten",
+          "title": "Ihre Anfrage wurde gesendet",
+          "buttonText": "Meine Anfrage ansehen",
+          "html": "<p>Hallo {{customerName}},</p><p>Vielen Dank, wir haben Ihre Alegria-Ausflugsanfrage erhalten. Unser Team erstellt ein individuelles Angebot mit Bootspreis, Skipperpreis und eventuellen Zusatzleistungen.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+          "footer": "Bis bald an Bord,<br/>Das Alegria-Team"
+        }
+      }
+    },
+    "nl": {
+      "emailTemplates": {
+        "bookingRequestAdmin": {
+          "subject": "Nieuwe Alegria-aanvraag - {{outingType}} - {{outingDate}} - {{customerName}}",
+          "title": "Nieuwe aanvraag voor een uitstap",
+          "buttonText": "Aanvraag openen",
+          "html": "<p>Er is een nieuwe uitstapaanvraag verzonden door {{customerName}}.</p>{{summaryHtml}}<p><strong>Klant:</strong> {{customerName}}<br/><strong>E-mail:</strong> {{customerEmail}}<br/><strong>Telefoon:</strong> {{customerPhone}}</p><p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+          "footer": "Automatische Alegria-melding"
+        },
+        "bookingRequestCustomer": {
+          "subject": "We hebben je Alegria-aanvraag ontvangen",
+          "title": "Je aanvraag is verzonden",
+          "buttonText": "Mijn aanvraag bekijken",
+          "html": "<p>Hallo {{customerName}},</p><p>Dank je, we hebben je Alegria-uitstapaanvraag ontvangen. Ons team maakt een persoonlijk voorstel met de bootprijs, de skipperprijs en eventuele extra diensten.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+          "footer": "Tot snel aan boord,<br/>Het Alegria-team"
+        }
+      }
+    },
+    "ru": {
+      "emailTemplates": {
+        "bookingRequestAdmin": {
+          "subject": "Новая заявка Alegria - {{outingType}} - {{outingDate}} - {{customerName}}",
+          "title": "Новая заявка на прогулку",
+          "buttonText": "Открыть заявку",
+          "html": "<p>Новая заявка на прогулку была отправлена клиентом {{customerName}}.</p>{{summaryHtml}}<p><strong>Клиент:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Телефон:</strong> {{customerPhone}}</p><p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+          "footer": "Автоматическое уведомление Alegria"
+        },
+        "bookingRequestCustomer": {
+          "subject": "Мы получили вашу заявку Alegria",
+          "title": "Ваша заявка отправлена",
+          "buttonText": "Посмотреть мою заявку",
+          "html": "<p>Здравствуйте, {{customerName}},</p><p>Спасибо, мы получили вашу заявку на прогулку Alegria. Наша команда подготовит персональное предложение с ценой лодки, ценой шкипера и дополнительными услугами.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+          "footer": "До скорой встречи на борту,<br/>Команда Alegria"
+        }
+      }
+    }
+  },
+  "alegria_v2": {
+    "i18n": {
+      "fr": {
+        "emails": {
+          "bookingRequestAdmin": {
+            "subject": "Nouvelle demande de sortie Alegria - {{outingType}} - {{outingDate}} - {{customerName}}",
+            "title": "Nouvelle demande de sortie",
+            "buttonText": "Ouvrir la demande",
+            "html": "<p>Une nouvelle demande de sortie vient d’être envoyée par {{customerName}}.</p>{{summaryHtml}}<p><strong>Client :</strong> {{customerName}}<br/><strong>Email :</strong> {{customerEmail}}<br/><strong>Téléphone :</strong> {{customerPhone}}</p><p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p><p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p><p><a href=\"{{proposalUrl}}\">{{proposalUrl}}</a></p>",
+            "footer": "Notification automatique Alegria"
+          },
+          "bookingRequestCustomer": {
+            "subject": "Nous avons bien reçu votre demande Alegria",
+            "title": "Votre demande a bien été envoyée",
+            "buttonText": "Voir ma demande",
+            "html": "<p>Bonjour {{customerName}},</p><p>Merci, nous avons bien reçu votre demande de sortie Alegria. Notre équipe va préparer une proposition personnalisée avec le prix bateau, le prix skipper et les éventuels services complémentaires.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+            "footer": "À bientôt à bord,<br/>L’équipe Alegria"
+          }
+        }
+      },
+      "en": {
+        "emails": {
+          "bookingRequestAdmin": {
+            "subject": "New Alegria outing request - {{outingType}} - {{outingDate}} - {{customerName}}",
+            "title": "New outing request",
+            "buttonText": "Open the request",
+            "html": "<p>A new outing request has just been submitted by {{customerName}}.</p>{{summaryHtml}}<p><strong>Customer:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Phone:</strong> {{customerPhone}}</p><p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p><p>If the button does not work, copy this link into your browser:</p><p><a href=\"{{proposalUrl}}\">{{proposalUrl}}</a></p>",
+            "footer": "Automatic Alegria notification"
+          },
+          "bookingRequestCustomer": {
+            "subject": "We have received your Alegria request",
+            "title": "Your request has been sent",
+            "buttonText": "View my request",
+            "html": "<p>Hello {{customerName}},</p><p>Thank you, we have received your Alegria outing request. Our team will prepare a personalized proposal with the boat price, skipper price and any additional services.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+            "footer": "See you soon on board,<br/>The Alegria Team"
+          }
+        }
+      },
+      "es": {
+        "emails": {
+          "bookingRequestAdmin": {
+            "subject": "Nueva solicitud de salida Alegria - {{outingType}} - {{outingDate}} - {{customerName}}",
+            "title": "Nueva solicitud de salida",
+            "buttonText": "Abrir la solicitud",
+            "html": "<p>{{customerName}} acaba de enviar una nueva solicitud de salida.</p>{{summaryHtml}}<p><strong>Cliente:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Teléfono:</strong> {{customerPhone}}</p><p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p><p>Si el botón no funciona, copia este enlace en tu navegador:</p><p><a href=\"{{proposalUrl}}\">{{proposalUrl}}</a></p>",
+            "footer": "Notificación automática de Alegria"
+          },
+          "bookingRequestCustomer": {
+            "subject": "Hemos recibido tu solicitud Alegria",
+            "title": "Tu solicitud ha sido enviada",
+            "buttonText": "Ver mi solicitud",
+            "html": "<p>Hola {{customerName}},</p><p>Gracias, hemos recibido tu solicitud de salida Alegria. Nuestro equipo preparará una propuesta personalizada con el precio del barco, el precio del skipper y los servicios adicionales.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+            "footer": "Hasta pronto a bordo,<br/>El equipo Alegria"
+          }
+        }
+      },
+      "it": {
+        "emails": {
+          "bookingRequestAdmin": {
+            "subject": "Nuova richiesta Alegria - {{outingType}} - {{outingDate}} - {{customerName}}",
+            "title": "Nuova richiesta di uscita",
+            "buttonText": "Apri la richiesta",
+            "html": "<p>È stata inviata una nuova richiesta di uscita da {{customerName}}.</p>{{summaryHtml}}<p><strong>Cliente:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Telefono:</strong> {{customerPhone}}</p><p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+            "footer": "Notifica automatica Alegria"
+          },
+          "bookingRequestCustomer": {
+            "subject": "Abbiamo ricevuto la tua richiesta Alegria",
+            "title": "La tua richiesta è stata inviata",
+            "buttonText": "Vedi la mia richiesta",
+            "html": "<p>Ciao {{customerName}},</p><p>Grazie, abbiamo ricevuto la tua richiesta di uscita Alegria. Il nostro team preparerà una proposta personalizzata con il prezzo della barca, il prezzo dello skipper e gli eventuali servizi aggiuntivi.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+            "footer": "A presto a bordo,<br/>Il team Alegria"
+          }
+        }
+      },
+      "de": {
+        "emails": {
+          "bookingRequestAdmin": {
+            "subject": "Neue Alegria-Anfrage - {{outingType}} - {{outingDate}} - {{customerName}}",
+            "title": "Neue Ausflugsanfrage",
+            "buttonText": "Anfrage öffnen",
+            "html": "<p>Eine neue Ausflugsanfrage wurde von {{customerName}} gesendet.</p>{{summaryHtml}}<p><strong>Kunde:</strong> {{customerName}}<br/><strong>E-Mail:</strong> {{customerEmail}}<br/><strong>Telefon:</strong> {{customerPhone}}</p><p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+            "footer": "Automatische Alegria-Benachrichtigung"
+          },
+          "bookingRequestCustomer": {
+            "subject": "Wir haben Ihre Alegria-Anfrage erhalten",
+            "title": "Ihre Anfrage wurde gesendet",
+            "buttonText": "Meine Anfrage ansehen",
+            "html": "<p>Hallo {{customerName}},</p><p>Vielen Dank, wir haben Ihre Alegria-Ausflugsanfrage erhalten. Unser Team erstellt ein individuelles Angebot mit Bootspreis, Skipperpreis und eventuellen Zusatzleistungen.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+            "footer": "Bis bald an Bord,<br/>Das Alegria-Team"
+          }
+        }
+      },
+      "nl": {
+        "emails": {
+          "bookingRequestAdmin": {
+            "subject": "Nieuwe Alegria-aanvraag - {{outingType}} - {{outingDate}} - {{customerName}}",
+            "title": "Nieuwe aanvraag voor een uitstap",
+            "buttonText": "Aanvraag openen",
+            "html": "<p>Er is een nieuwe uitstapaanvraag verzonden door {{customerName}}.</p>{{summaryHtml}}<p><strong>Klant:</strong> {{customerName}}<br/><strong>E-mail:</strong> {{customerEmail}}<br/><strong>Telefoon:</strong> {{customerPhone}}</p><p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+            "footer": "Automatische Alegria-melding"
+          },
+          "bookingRequestCustomer": {
+            "subject": "We hebben je Alegria-aanvraag ontvangen",
+            "title": "Je aanvraag is verzonden",
+            "buttonText": "Mijn aanvraag bekijken",
+            "html": "<p>Hallo {{customerName}},</p><p>Dank je, we hebben je Alegria-uitstapaanvraag ontvangen. Ons team maakt een persoonlijk voorstel met de bootprijs, de skipperprijs en eventuele extra diensten.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+            "footer": "Tot snel aan boord,<br/>Het Alegria-team"
+          }
+        }
+      },
+      "ru": {
+        "emails": {
+          "bookingRequestAdmin": {
+            "subject": "Новая заявка Alegria - {{outingType}} - {{outingDate}} - {{customerName}}",
+            "title": "Новая заявка на прогулку",
+            "buttonText": "Открыть заявку",
+            "html": "<p>Новая заявка на прогулку была отправлена клиентом {{customerName}}.</p>{{summaryHtml}}<p><strong>Клиент:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Телефон:</strong> {{customerPhone}}</p><p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+            "footer": "Автоматическое уведомление Alegria"
+          },
+          "bookingRequestCustomer": {
+            "subject": "Мы получили вашу заявку Alegria",
+            "title": "Ваша заявка отправлена",
+            "buttonText": "Посмотреть мою заявку",
+            "html": "<p>Здравствуйте, {{customerName}},</p><p>Спасибо, мы получили вашу заявку на прогулку Alegria. Наша команда подготовит персональное предложение с ценой лодки, ценой шкипера и дополнительными услугами.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{proposalUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p>",
+            "footer": "До скорой встречи на борту,<br/>Команда Alegria"
+          }
+        }
+      }
+    }
+  },
+  "emailBranding": {
+    "fromName": "Alegria Team",
+    "fromEmail": "alegria.boat01@gmail.com"
+  }
+}

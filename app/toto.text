@@ -1,0 +1,97 @@
+[36m⠋[39m Generating browser application bundles (phase: setup)...[36m⠙[39m Generating browser application bundles (phase: setup)...[36m⠹[39m Generating browser application bundles (phase: building)...[36m⠸[39m Generating browser application bundles (phase: building)...[36m⠼[39m Generating browser application bundles (phase: building)...[36m⠴[39m Generating browser application bundles (phase: building)...[36m⠦[39m Generating browser application bundles (phase: building)...[36m⠧[39m Generating browser application bundles (phase: building)...[36m⠇[39m Generating browser application bundles (phase: building)...[36m⠏[39m Generating browser application bundles (phase: building)...[36m⠋[39m Generating browser application bundles (phase: building)...[36m⠙[39m Generating browser application bundles (phase: building)...[36m⠹[39m Generating browser application bundles (phase: sealing)...[32m✔[39m Browser application bundle generation complete.
+[1m[33m
+[0m[33mWarning: [33m[0m/Users/faycalamrani/data/ADN/harbornest-1/app/src/app/app.module.ts depends on 'ng2-haversine'. CommonJS or AMD dependencies can cause optimization bailouts.
+For more info see: https://angular.dev/tools/cli/build#configuring-commonjs-dependencies
+
+[39m[22m
+[1m[31m
+[0m[36m./src/app/home/bookings/proposal-api.service.ts[31m[0m - [0m[91mError: [31m[0mModule build failed (from ./node_modules/@angular-devkit/build-angular/src/tools/babel/webpack-loader.js):
+SyntaxError: /Users/faycalamrani/data/ADN/harbornest-1/app/src/app/home/bookings/proposal-api.service.ts: Nullish coalescing operator(??) requires parens when mixing with logical operators. (619:138)
+
+[0m [90m 617 |[31m         [36mconst[31m proposalFuelPrice [33m=[31m [33mNumber[31m(proposal[33m.[31mproposalFuelPrice [33m?[31m[33m?[31m proposal[33m.[31mfuelPrice [33m?[31m[33m?[31m proposal[33m.[31mfuelAmount [33m?[31m[33m?[31m proposal[33m.[31mproposalCleaningPrice [33m?[31m[33m?[31m proposal[33m.[31mestimatedCleaningPrice [33m?[31m[33m?[31m [35m0[31m) [33m||[31m [35m0[31m[33m;[31m
+ [90m 618 |[31m         [36mconst[31m skipperCashAmount [33m=[31m [33mNumber[31m(proposal[33m.[31mskipperCashAmount [33m?[31m[33m?[31m proposal[33m.[31mproposalSkipperPrice [33m?[31m[33m?[31m proposal[33m.[31mestimatedSkipperPrice [33m?[31m[33m?[31m [35m0[31m) [33m||[31m [35m0[31m[33m;[31m
+[31m[1m>[22m[1m[31m[90m 619 |[31m         [36mconst[31m totalAmount [33m=[31m [33mNumber[31m(proposal[33m.[31mtotalAmount [33m?[31m[33m?[31m proposal[33m.[31mtotalPrice [33m?[31m[33m?[31m (proposal[33m.[31monlinePayableAmount [33m||[31m [35m0[31m) [33m+[31m skipperCashAmount [33m||[31m (proposalBoatPrice [33m+[31m proposalFuelPrice [33m+[31m skipperCashAmount [33m+[31m [33mNumber[31m(proposal[33m.[31mproposalExtraServicesPrice [33m||[31m [35m0[31m))) [33m||[31m [35m0[31m[33m;[31m
+ [90m     |[31m                                                                                                                                           [31m[1m^[22m[1m[31m
+ [90m 620 |[31m         [36mconst[31m onlinePayableAmount [33m=[31m [33mNumber[31m(proposal[33m.[31monlinePayableAmount [33m?[31m[33m?[31m proposal[33m.[31mappPayableAmount [33m?[31m[33m?[31m [33mMath[31m[33m.[31mmax([35m0[31m[33m,[31m totalAmount [33m-[31m skipperCashAmount)) [33m||[31m [35m0[31m[33m;[31m
+ [90m 621 |[31m         [36mconst[31m balanceAmount [33m=[31m [33mNumber[31m(proposal[33m.[31mbalanceAmount [33m?[31m[33m?[31m proposal[33m.[31mremainingFeesAmount [33m?[31m[33m?[31m [33mMath[31m[33m.[31mmax([35m0[31m[33m,[31m onlinePayableAmount [33m-[31m [33mNumber[31m(proposal[33m.[31mdepositAmount [33m||[31m [35m0[31m))) [33m||[31m [35m0[31m[33m;[31m
+ [90m 622 |[31m         [36mawait[31m [36mthis[31m[33m.[31mwriteItem([36mthis[31m[33m.[31mbookingsCollection[33m,[31m bookingId[33m,[31m {[0m
+
+[0m[91mError: [31m[0m[96msrc/app/home/bookings/proposal-api.service.ts[0m:[93m247[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'number | null' is not assignable to type 'number | undefined'.
+  Type 'null' is not assignable to type 'number | undefined'.
+
+[7m247[0m       proposalFuelPrice: proposalFuelPrice || null,
+[7m   [0m [91m      ~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/app/home/bookings/proposal-api.service.ts[0m:[93m65[0m:[93m3[0m
+    [7m65[0m   proposalFuelPrice?: number;
+    [7m  [0m [96m  ~~~~~~~~~~~~~~~~~[0m
+    The expected type comes from property 'proposalFuelPrice' which is declared here on type 'AlegriaProposal'
+
+
+[0m[91mError: [31m[0m[96msrc/app/home/bookings/proposal-api.service.ts[0m:[93m248[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'number | null' is not assignable to type 'number | undefined'.
+  Type 'null' is not assignable to type 'number | undefined'.
+
+[7m248[0m       fuelPrice: proposalFuelPrice || null,
+[7m   [0m [91m      ~~~~~~~~~[0m
+
+  [96msrc/app/home/bookings/proposal-api.service.ts[0m:[93m66[0m:[93m3[0m
+    [7m66[0m   fuelPrice?: number;
+    [7m  [0m [96m  ~~~~~~~~~[0m
+    The expected type comes from property 'fuelPrice' which is declared here on type 'AlegriaProposal'
+
+
+[0m[91mError: [31m[0m[96msrc/app/home/bookings/proposal-api.service.ts[0m:[93m249[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'number | null' is not assignable to type 'number | undefined'.
+  Type 'null' is not assignable to type 'number | undefined'.
+
+[7m249[0m       fuelAmount: proposalFuelPrice || null,
+[7m   [0m [91m      ~~~~~~~~~~[0m
+
+  [96msrc/app/home/bookings/proposal-api.service.ts[0m:[93m67[0m:[93m3[0m
+    [7m67[0m   fuelAmount?: number;
+    [7m  [0m [96m  ~~~~~~~~~~[0m
+    The expected type comes from property 'fuelAmount' which is declared here on type 'AlegriaProposal'
+
+
+[0m[91mError: [31m[0m[96msrc/app/home/bookings/proposal-api.service.ts[0m:[93m259[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'number | null' is not assignable to type 'number | undefined'.
+  Type 'null' is not assignable to type 'number | undefined'.
+
+[7m259[0m       proposalBoatPrice: proposalBoatPrice || null,
+[7m   [0m [91m      ~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/app/home/bookings/proposal-api.service.ts[0m:[93m81[0m:[93m3[0m
+    [7m81[0m   proposalBoatPrice?: number;
+    [7m  [0m [96m  ~~~~~~~~~~~~~~~~~[0m
+    The expected type comes from property 'proposalBoatPrice' which is declared here on type 'AlegriaProposal'
+
+
+[0m[91mError: [31m[0m[96msrc/app/home/bookings/proposal-api.service.ts[0m:[93m260[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'number | null' is not assignable to type 'number | undefined'.
+  Type 'null' is not assignable to type 'number | undefined'.
+
+[7m260[0m       proposalSkipperPrice: skipperCashAmount || null,
+[7m   [0m [91m      ~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/app/home/bookings/proposal-api.service.ts[0m:[93m80[0m:[93m3[0m
+    [7m80[0m   proposalSkipperPrice?: number;
+    [7m  [0m [96m  ~~~~~~~~~~~~~~~~~~~~[0m
+    The expected type comes from property 'proposalSkipperPrice' which is declared here on type 'AlegriaProposal'
+
+
+[0m[91mError: [31m[0m[96msrc/app/home/bookings/proposal-api.service.ts[0m:[93m261[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'number | null' is not assignable to type 'number | undefined'.
+  Type 'null' is not assignable to type 'number | undefined'.
+
+[7m261[0m       proposalExtraServicesPrice: proposalExtraServicesPrice || null,
+[7m   [0m [91m      ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/app/home/bookings/proposal-api.service.ts[0m:[93m79[0m:[93m3[0m
+    [7m79[0m   proposalExtraServicesPrice?: number;
+    [7m  [0m [96m  ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    The expected type comes from property 'proposalExtraServicesPrice' which is declared here on type 'AlegriaProposal'
+
+
+[0m[91mError: [31m[0m[96msrc/app/home/bookings/proposal-api.service.ts[0m:[93m777[0m:[93m97[0m - [91merror[0m[90m TS5076: [0m'||' and '??' operations cannot be mixed without parentheses.
+
+[7m777[0m     const totalAmount = Number((proposal as any).totalAmount ?? (proposal as any).totalPrice ?? ((proposal as any).onlinePayableAmount || 0) + skipperCashAmount || (proposalBoatPrice + proposalFuelPrice + skipperCashAmount + Number((proposal as any).proposalExtraServicesPrice || 0))) || 0;
+[7m   [0m [91m                                                                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[39m[22m

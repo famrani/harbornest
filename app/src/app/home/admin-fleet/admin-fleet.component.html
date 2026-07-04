@@ -1,0 +1,118 @@
+<section class="fleet-page">
+  <div class="container fleet-shell">
+    <div class="section-head">
+      <span class="eyebrow">{{ 'auto.home.admin-fleet.admin-fleet.component.ressources' | siteText }}</span>
+      <h1>{{ 'auto.home.admin-fleet.admin-fleet.component.flotte_bateaux' | siteText }}</h1>
+      <p>{{ 'auto.home.admin-fleet.admin-fleet.component.configurez_les_informations_des_bateaux_utilis_es_' | siteText }}</p>
+    </div>
+
+    <div class="fleet-layout">
+      <aside class="fleet-list">
+        <button class="btn btn-secondary" type="button" (click)="newBoat()">{{ 'auto.home.admin-fleet.admin-fleet.component.nouveau_bateau' | siteText }}</button>
+
+        <button
+          class="fleet-list-item"
+          type="button"
+          *ngFor="let boat of boats"
+          [class.active]="boat.boatId === selectedBoatId"
+          (click)="selectBoat(boat.boatId)">
+          <strong>{{ boat.boatName }}</strong>
+          <small>{{ boat.manufacturer }} {{ boat.model }}</small>
+        </button>
+      </aside>
+
+      <article class="fleet-card">
+        <p *ngIf="loading">{{ 'auto.home.admin-fleet.admin-fleet.component.chargement' | siteText }}</p>
+
+        <div class="form-grid">
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.identifiant_bateau' | siteText }}<input type="text" [(ngModel)]="form.boatId" [placeholder]="'auto.home.admin-fleet.admin-fleet.component.alegria' | siteText" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.nom_du_bateau' | siteText }}<input type="text" [(ngModel)]="form.boatName" [placeholder]="'auto.home.admin-fleet.admin-fleet.component.alegria' | siteText" required />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.type_de_bateau' | siteText }}<input type="text" [(ngModel)]="form.boatType" [placeholder]="'auto.home.admin-fleet.admin-fleet.component.catamaran' | siteText" required />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.constructeur' | siteText }}<input type="text" [(ngModel)]="form.manufacturer" [placeholder]="'auto.home.admin-fleet.admin-fleet.component.bali_catana' | siteText" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.mod_le' | siteText }}<input type="text" [(ngModel)]="form.model" [placeholder]="'auto.home.admin-fleet.admin-fleet.component.bali_4_1' | siteText" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.ann_e' | siteText }}<input type="number" [(ngModel)]="form.year" min="1900" max="2100" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.immatriculation' | siteText }}<input type="text" [(ngModel)]="form.registrationNumber" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.marina_de_d_part_par_d_faut' | siteText }}<input type="text" [(ngModel)]="form.defaultDepartureMarina" [placeholder]="'auto.home.admin-fleet.admin-fleet.component.marina_baie_des_anges' | siteText" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.lien_click_boat' | siteText }}<input type="url" [(ngModel)]="form.clickAndBoatUrl" [placeholder]="'auto.home.admin-fleet.admin-fleet.component.https_www_clickandboat_com' | siteText" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.id_annonce_click_boat' | siteText }}<input type="text" [(ngModel)]="form.clickAndBoatListingId" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.lien_samboat' | siteText }}<input type="url" [(ngModel)]="form.samBoatUrl" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.id_annonce_samboat' | siteText }}<input type="text" [(ngModel)]="form.samBoatListingId" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.lien_site_alegria' | siteText }}<input type="url" [(ngModel)]="form.websiteUrl" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.caution_par_d_faut' | siteText }}<input type="number" min="0" step="0.01" [(ngModel)]="form.defaultWarranty" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.skipper_par_d_faut' | siteText }}<input type="number" min="0" step="0.01" [(ngModel)]="form.defaultSkipperPrice" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.nettoyage_carburant_par_d_faut' | siteText }}<input type="number" min="0" step="0.01" [(ngModel)]="form.defaultCleaningPrice" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.devise' | siteText }}<input type="text" [(ngModel)]="form.currency" [placeholder]="'auto.home.admin-fleet.admin-fleet.component.eur' | siteText" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.passagers_maximum' | siteText }}<input type="number" min="0" step="1" [(ngModel)]="form.maxGuests" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.cabines' | siteText }}<input type="number" min="0" step="1" [(ngModel)]="form.cabins" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.salles_de_bain' | siteText }}<input type="number" min="0" step="1" [(ngModel)]="form.bathrooms" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.longueur' | siteText }}<input type="text" [(ngModel)]="form.length" [placeholder]="'auto.home.admin-fleet.admin-fleet.component.12_37_m' | siteText" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.largeur' | siteText }}<input type="text" [(ngModel)]="form.beam" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.tirant_d_eau' | siteText }}<input type="text" [(ngModel)]="form.draft" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.moteurs' | siteText }}<input type="text" [(ngModel)]="form.engines" />
+          </label>
+
+          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.image_url_photo' | siteText }}<input type="url" [(ngModel)]="form.imageUrl" />
+          </label>
+
+          <label class="checkbox-line">
+            <input type="checkbox" [(ngModel)]="form.active" />{{ 'auto.home.admin-fleet.admin-fleet.component.bateau_actif' | siteText }}</label>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="button" [disabled]="saving" (click)="saveBoat()">
+            {{ saving ? 'Enregistrement...' : 'Enregistrer le bateau' }}
+          </button>
+        </div>
+
+        <p class="success" *ngIf="message">{{ message }}</p>
+        <p class="error" *ngIf="error">{{ error }}</p>
+      </article>
+    </div>
+  </div>
+</section>

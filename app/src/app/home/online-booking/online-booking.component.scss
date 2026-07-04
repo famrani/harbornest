@@ -498,3 +498,56 @@ textarea {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+.summary-pricing {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 18px;
+  background: #fffaf3;
+  border: 1px solid rgba(242, 140, 40, .28);
+}
+
+.summary-pricing h3 {
+  margin: 0 0 .8rem;
+  font-size: 1.1rem;
+}
+
+.summary-price-row,
+.summary-price-detail {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.summary-price-row {
+  padding: .65rem 0;
+  border-top: 1px solid rgba(8, 38, 58, .08);
+  color: #08263a;
+}
+
+.summary-price-row:first-of-type {
+  border-top: 0;
+}
+
+.summary-price-row strong {
+  white-space: nowrap;
+}
+
+.summary-price-row.total {
+  margin-top: .55rem;
+  padding-top: .9rem;
+  border-top: 2px solid rgba(242, 140, 40, .32);
+  font-size: 1.05rem;
+}
+
+.summary-price-detail {
+  padding: .25rem 0 .25rem .75rem;
+  color: #64748b;
+  font-size: .9rem;
+}
+
+.summary-price-detail em {
+  font-style: normal;
+  white-space: nowrap;
+}
