@@ -287,7 +287,7 @@ export class DepositComponent implements OnInit, OnDestroy {
   private normalizePossibleStripeAmount(value: number): number {
     const amount = Number(value || 0);
     if (!Number.isFinite(amount) || amount <= 0) return 0;
-    // Stripe stores amounts in cents. Booking/proposal amounts are usually in euros.
+    // Stripe stores amounts in cents. Booking/offer amounts are usually in euros.
     // Values above 20,000 are almost certainly cents for this application.
     return amount > 20000 ? Math.round(amount) / 100 : amount;
   }
@@ -319,7 +319,7 @@ export class DepositComponent implements OnInit, OnDestroy {
   }
 
   get showWarrantyRegistration(): boolean {
-    // Never show any warranty card/Stripe section when the booking/proposal says cash.
+    // Never show any warranty card/Stripe section when the booking/offer says cash.
     // Cash mode is intentionally checked first and has priority over old Stripe fields.
     return !this.isWarrantyAdminMode &&
       !!this.booking &&
@@ -331,7 +331,7 @@ export class DepositComponent implements OnInit, OnDestroy {
 
   get showWarrantyCardSummary(): boolean {
     // Show the card summary only for an explicit card/Stripe warranty choice.
-    // If cash is present anywhere on the booking/proposal object, hide it.
+    // If cash is present anywhere on the booking/offer object, hide it.
     return !this.isWarrantyAdminMode &&
       !!this.booking &&
       this.warrantyAmount > 0 &&
@@ -529,7 +529,7 @@ export class DepositComponent implements OnInit, OnDestroy {
     const formalCustomerMarker = booking?.customerTermsAccepted === true ||
       source.includes('customer') ||
       source.includes('client') ||
-      source.includes('proposal') ||
+      source.includes('offer') ||
       source.includes('portal') ||
       !!acceptedBy;
 
@@ -692,7 +692,7 @@ export class DepositComponent implements OnInit, OnDestroy {
 
     this.bookingApi.createBalanceCheckout({
       bookingId: this.bookingId,
-      proposalId: this.bookingId,
+      offerId: this.bookingId,
       ownerId: this.ownerId,
       amount,
       balanceAmount: amount,

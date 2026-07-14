@@ -6,9 +6,9 @@ This backend build adds the generic endpoint expected by the frontend notificati
 
 It accepts queued notification payloads for:
 
-- `proposal_created`
-- `proposal_updated`
-- `proposal_sent`
+- `offer_created`
+- `offer_updated`
+- `offer_sent`
 - `booking_updated`
 - `booking_confirmed`
 - `payment_completed`
@@ -19,7 +19,7 @@ For each payload it:
 2. sends an admin email to `ALEGRIA_ADMIN_EMAIL`, or `MAIL_TO`, or `alegria.boat01@gmail.com`
 3. sends a customer email when `customerEmail` is present
 4. updates `/bnNotifications/{eventId}` with `status = sent`
-5. updates matching audit timelines under `/bnBookingEvents/{bookingId}/{eventId}` and/or `/bnProposalEvents/{proposalId}/{eventId}`
+5. updates matching audit timelines under `/bnBookingEvents/{bookingId}/{eventId}` and/or `/bnProposalEvents/{offerId}/{eventId}`
 
 Required SMTP environment variables are the same as the existing mailer:
 

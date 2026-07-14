@@ -44,6 +44,10 @@
           <span [class.done]="vm.skipperPaymentComplete">{{ vm.skipperPaymentComplete ? '✓' : '○' }} {{ t('skipperPaid') }}</span>
           <span [class.done]="vm.warrantyComplete">{{ vm.warrantyComplete ? '✓' : '○' }} {{ t('warranty') }}</span>
         </div>
+        <div class="completion-links">
+          <button class="btn btn-secondary btn-small" type="button" (click)="openTermsModal()">{{ t('rereadTerms') }}</button>
+          <a routerLink="/terms" target="_blank" rel="noopener">{{ t('openTermsPage') }}</a>
+        </div>
       </section>
 
       <div class="admin-toolbar" *ngIf="vm.isAdmin">
@@ -162,7 +166,7 @@
           <h3>{{ tText('auto.home.booking-detail.booking-detail.component.7_statuses') }}</h3>
           <div class="edit-grid">
             <label>{{ tText('auto.home.booking-detail.booking-detail.component.booking_status') }}<select name="bookingStatus" [(ngModel)]="editForm.bookingStatus">
-                <option [value]="tText('auto.home.booking-detail.booking-detail.component.proposal')">{{ tText('auto.home.booking-detail.booking-detail.component.proposal') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.offer')">{{ tText('auto.home.booking-detail.booking-detail.component.offer') }}</option>
                 <option [value]="tText('auto.home.booking-detail.booking-detail.component.pending')">{{ tText('auto.home.booking-detail.booking-detail.component.pending') }}</option>
                 <option [value]="tText('auto.home.booking-detail.booking-detail.component.confirmed')">{{ tText('auto.home.booking-detail.booking-detail.component.confirmed') }}</option>
                 <option [value]="tText('auto.home.booking-detail.booking-detail.component.completed')">{{ tText('auto.home.booking-detail.booking-detail.component.completed') }}</option>
@@ -179,7 +183,7 @@
               </select>
             </label>
             <label>{{ tText('auto.home.booking-detail.booking-detail.component.status') }}<select name="status" [(ngModel)]="editForm.status">
-                <option [value]="tText('auto.home.booking-detail.booking-detail.component.proposal')">{{ tText('auto.home.booking-detail.booking-detail.component.proposal') }}</option>
+                <option [value]="tText('auto.home.booking-detail.booking-detail.component.offer')">{{ tText('auto.home.booking-detail.booking-detail.component.offer') }}</option>
                 <option [value]="tText('auto.home.booking-detail.booking-detail.component.pending')">{{ tText('auto.home.booking-detail.booking-detail.component.pending') }}</option>
                 <option [value]="tText('auto.home.booking-detail.booking-detail.component.confirmed')">{{ tText('auto.home.booking-detail.booking-detail.component.confirmed') }}</option>
                 <option [value]="tText('auto.home.booking-detail.booking-detail.component.completed')">{{ tText('auto.home.booking-detail.booking-detail.component.completed') }}</option>
@@ -269,9 +273,24 @@
           <button class="btn btn-primary finance-action" type="button" *ngIf="canPayDepositOnline()" [disabled]="payingAlegria" (click)="payDepositOnline()">
             {{ payingAlegria ? t('redirecting') : t('payDepositNow') }}
           </button>
-          <button class="btn btn-primary finance-action" type="button" *ngIf="canPayAlegriaOnline()" [disabled]="payingAlegria" (click)="payAlegriaOnline()">
-            {{ payingAlegria ? t('redirecting') : (t('payAlegriaNow') + ' ' + formatMoney(vm.remainingAlegriaRevenue)) }}
-          </button>
+          <div class="payment-method-box" *ngIf="vm.remainingAlegriaRevenue > 0">
+            <h3>{{ t('paymentMethodChoice') }}</h3>
+            <div class="payment-method-actions">
+              <button class="btn btn-primary finance-action" type="button" *ngIf="vm.remainingAlegriaRevenue > 0" [disabled]="payingAlegria || selectingAlegriaCash || isAlegriaCashSelected()" (click)="payAlegriaOnline()">
+                {{ payingAlegria ? t('redirecting') : (t('payByCard') + ' · ' + formatMoney(vm.remainingAlegriaRevenue)) }}
+              </button>
+              <button class="btn btn-secondary finance-action" type="button" [class.selected-method]="isAlegriaCashSelected()" [disabled]="selectingAlegriaCash || payingAlegria" (click)="selectAlegriaCash()">
+                {{ selectingAlegriaCash ? t('saving') : (t('payByCash') + ' · ' + formatMoney(vm.remainingAlegriaRevenue)) }}
+              </button>
+            </div>
+            <div class="finance-line payment-status-line" *ngIf="isAlegriaCashSelected()">
+              <span>{{ t('status') }}</span><strong>{{ t('cashPendingConfirmation') }}</strong>
+            </div>
+            <p class="payment-method-help">{{ isAlegriaCashSelected() ? t('cashPaymentSelected') : t('cashPaymentHelpAlegria') }}</p>
+            <button class="btn btn-secondary finance-action" type="button" *ngIf="canConfirmAlegriaCashReceived()" [disabled]="payingAlegria" (click)="confirmAlegriaCashReceived()">
+              {{ payingAlegria ? t('saving') : t('confirmAlegriaCashReceived') }}
+            </button>
+          </div>
         </article>
 
         <article class="cockpit-section finance-panel skipper-panel">
@@ -283,21 +302,55 @@
             <div class="finance-line outstanding-line" *ngIf="vm.remainingSkipperFee > 0"><span>{{ t('leftToPay') }}</span><strong>{{ formatMoney(vm.remainingSkipperFee) }}</strong></div>
             <div class="finance-line paid-line" *ngIf="vm.remainingSkipperFee <= 0"><span>{{ t('status') }}</span><strong>✓ {{ t('skipperPaid') }}</strong></div>
           </div>
-          <button class="btn btn-primary finance-action" type="button" *ngIf="canPaySkipperOnline()" [disabled]="payingSkipper" (click)="paySkipperOnline()">
-            {{ payingSkipper ? t('redirecting') : (t('paySkipperNow') + ' ' + formatMoney(vm.remainingSkipperFee)) }}
-          </button>
+          <div class="payment-method-box" *ngIf="vm.remainingSkipperFee > 0 && !vm.isAdmin">
+            <h3>{{ t('paymentMethodChoice') }}</h3>
+            <div class="payment-method-actions">
+              <button class="btn btn-primary finance-action" type="button" *ngIf="vm.remainingSkipperFee > 0" [disabled]="payingSkipper || selectingSkipperCash || isSkipperCashSelected()" (click)="paySkipperOnline()">
+                {{ payingSkipper ? t('redirecting') : (t('payByCard') + ' · ' + formatMoney(vm.remainingSkipperFee)) }}
+              </button>
+              <button class="btn btn-secondary finance-action" type="button" [class.selected-method]="isSkipperCashSelected()" [disabled]="selectingSkipperCash || payingSkipper" (click)="selectSkipperCash()">
+                {{ selectingSkipperCash ? t('saving') : (t('payByCash') + ' · ' + formatMoney(vm.remainingSkipperFee)) }}
+              </button>
+            </div>
+            <div class="finance-line payment-status-line" *ngIf="isSkipperCashSelected()">
+              <span>{{ t('status') }}</span><strong>{{ t('cashPendingConfirmation') }}</strong>
+            </div>
+            <p class="payment-method-help">{{ isSkipperCashSelected() ? t('cashPaymentSelected') : t('cashPaymentHelpSkipper') }}</p>
+          </div>
           <button class="btn btn-secondary finance-action" type="button" *ngIf="canConfirmSkipperPaid()" [disabled]="payingSkipper" (click)="confirmSkipperPaid()">
             {{ payingSkipper ? t('saving') : t('confirmSkipperPaid') }}
           </button>
         </article>
 
-        <article class="cockpit-section finance-panel warranty-panel">
-          <h2>{{ t('warranty') }}</h2>
-          <div class="finance-table compact">
-            <div class="finance-line"><span>{{ t('amount') }}</span><strong>{{ formatMoney(warrantyAmount()) }}</strong></div>
-            <div class="finance-line"><span>{{ t('method') }}</span><strong>{{ warrantyMethodLabel(vm.display.warrantyPaymentChoice || vm.display.warrantyMethod) }}</strong></div>
-            <div class="finance-line"><span>{{ t('status') }}</span><strong>{{ vm.warrantyStatusBadge }}</strong></div>
+        <article class="cockpit-section finance-panel warranty-panel warranty-overview-card">
+          <div class="workspace-card-header">
+            <div>
+              <span class="workspace-eyebrow">{{ t('financialWorkspace') }}</span>
+              <h2>{{ t('warranty') }}</h2>
+            </div>
+            <span class="workspace-status-badge">{{ vm.warrantyStatusBadge }}</span>
           </div>
+
+          <div class="warranty-amount-row">
+            <strong>{{ formatMoney(warrantyAmount()) }}</strong>
+            <span>{{ warrantyMethodLabel(vm.display.warrantyPaymentChoice || vm.display.warrantyMethod) }}</span>
+          </div>
+
+          <div class="warranty-meter" role="progressbar" [attr.aria-valuenow]="warrantyUsagePercent" aria-valuemin="0" aria-valuemax="100">
+            <div class="warranty-meter-fill" [style.width.%]="warrantyUsagePercent"></div>
+          </div>
+
+          <div class="warranty-metrics">
+            <div>
+              <span>{{ t('warrantyUsed') }}</span>
+              <strong>{{ formatMoney(warrantyChargedAmount) }}</strong>
+            </div>
+            <div>
+              <span>{{ t('warrantyAvailable') }}</span>
+              <strong>{{ formatMoney(warrantyRemainingAmount) }}</strong>
+            </div>
+          </div>
+
           <p class="finance-note">{{ t('changeWarrantyMethodHelp') }}</p>
           <div class="warranty-actions">
             <button class="btn btn-secondary finance-action" type="button" *ngIf="canSelectCashWarranty()" [disabled]="registeringWarrantyCard" (click)="selectCashWarranty()">
@@ -307,6 +360,155 @@
               {{ registeringWarrantyCard ? t('redirecting') : t('registerWarrantyCardButton') }}
             </button>
           </div>
+        </article>
+
+        <article id="additional-payments" class="cockpit-section finance-panel additional-payment-panel" *ngIf="!vm.isAdmin">
+          <h2>{{ t('additionalPayments') }}</h2>
+          <p class="finance-subtitle">{{ t('additionalPaymentsHelp') }}</p>
+          <div class="payment-action-form">
+            <label>{{ t('paymentType') }}
+              <select [(ngModel)]="extraPaymentKind" name="extraPaymentKind">
+                <option value="tip">{{ t('tipPayment') }}</option>
+                <option value="extra_service">{{ t('extraServicePayment') }}</option>
+                <option value="damage_charge">{{ t('damagePayment') }}</option>
+              </select>
+            </label>
+            <label>{{ t('amount') }}
+              <input type="number" min="0" step="0.01" [(ngModel)]="extraPaymentAmount" name="extraPaymentAmount" />
+            </label>
+            <label class="full-width">{{ t('description') }}
+              <input type="text" [(ngModel)]="extraPaymentDescription" name="extraPaymentDescription" />
+            </label>
+            <button class="btn btn-primary finance-action" type="button" [disabled]="!canPayAdditionalOnline()" (click)="payAdditionalOnline()">
+              {{ payingExtra ? t('redirecting') : t('payAdditionalNow') }}
+            </button>
+          </div>
+
+          <section class="additional-payment-history" *ngIf="additionalPaymentRows.length > 0">
+            <div class="history-heading">
+              <h3>{{ t('additionalPayments') }}</h3>
+              <span>{{ additionalPaymentRows.length }}</span>
+            </div>
+            <div class="history-list">
+              <article class="history-row" *ngFor="let row of additionalPaymentRows">
+                <div class="history-row-main">
+                  <strong>{{ row.label }}</strong>
+                  <span *ngIf="row.description">{{ row.description }}</span>
+                  <small>{{ row.date || '-' }} · {{ row.method || '-' }} · {{ row.status || '-' }}</small>
+                  <code *ngIf="row.reference">{{ row.reference }}</code>
+                </div>
+                <div class="history-amount">+{{ formatMoney(row.amount) }}</div>
+              </article>
+            </div>
+          </section>
+        </article>
+
+        <article class="cockpit-section finance-panel admin-money-panel financial-workspace" *ngIf="vm.isAdmin">
+          <div class="workspace-title-row">
+            <div>
+              <h2>{{ t('adminPaymentActions') }}</h2>
+            </div>
+          </div>
+
+          <div class="workspace-alert success" *ngIf="actionMessage">{{ actionMessage }}</div>
+
+          <div class="admin-money-grid">
+            <section class="admin-money-card damage-card">
+              <div class="admin-card-heading">
+                <span class="admin-card-icon">🛡️</span>
+                <div>
+                  <h3>{{ t('chargeWarrantyForDamages') }}</h3>
+                  <p>{{ t('warrantyAvailable') }} · {{ formatMoney(warrantyRemainingAmount) }}</p>
+                </div>
+              </div>
+
+              <label>{{ t('amount') }}
+                <div class="money-input-wrap">
+                  <span>€</span>
+                  <input type="number" min="0" [max]="warrantyRemainingAmount" step="0.01" [(ngModel)]="adminWarrantyChargeAmount" name="adminWarrantyChargeAmount" />
+                </div>
+              </label>
+              <label>{{ t('damageReason') }}
+                <textarea rows="4" [(ngModel)]="adminWarrantyChargeReason" name="adminWarrantyChargeReason"></textarea>
+              </label>
+              <button class="btn btn-danger finance-action" type="button" [disabled]="!canAdminChargeWarranty()" (click)="chargeWarrantyForDamage()">
+                {{ adminChargingWarranty ? t('saving') : t('chargeWarrantyForDamages') }}
+              </button>
+
+              <div class="operation-receipt damage-receipt" *ngIf="savedWarrantyChargeAmount > 0">
+                <div class="operation-receipt-icon">✓</div>
+                <div class="operation-receipt-body">
+                  <span class="operation-receipt-label">{{ t('lastOperation') }}</span>
+                  <strong>{{ formatMoney(savedWarrantyChargeAmount) }}</strong>
+                  <p *ngIf="savedWarrantyChargeReason">{{ savedWarrantyChargeReason }}</p>
+                  <small>
+                    <span>{{ savedWarrantyChargeMethodLabel }}</span>
+                    <span *ngIf="savedWarrantyChargeStatus"> · {{ savedWarrantyChargeStatusLabel }}</span>
+                    <span *ngIf="savedWarrantyChargeDate"> · {{ formatDisplayDate(savedWarrantyChargeDate) }}</span>
+                  </small>
+                  <code *ngIf="savedWarrantyChargeStripeId">{{ savedWarrantyChargeStripeId }}</code>
+                </div>
+              </div>
+            </section>
+
+            <section class="admin-money-card refund-card">
+              <div class="admin-card-heading">
+                <span class="admin-card-icon">↩</span>
+                <div>
+                  <h3>{{ t('refundCustomer') }}</h3>
+                  <p>{{ t('refundPaymentType') }}</p>
+                </div>
+              </div>
+
+              <label>{{ t('refundPaymentType') }}
+                <select [(ngModel)]="adminRefundPaymentType" name="adminRefundPaymentType">
+                  <option value="deposit">{{ t('deposit') }}</option>
+                  <option value="balance">{{ t('boatBalance') }}</option>
+                  <option value="skipper_fee">{{ t('skipper') }}</option>
+                  <option value="extra_service">{{ t('extraServicePayment') }}</option>
+                  <option value="ad_hoc">{{ t('additionalPayments') }}</option>
+                </select>
+              </label>
+              <label>{{ t('amount') }}
+                <div class="money-input-wrap">
+                  <span>€</span>
+                  <input type="number" min="0" step="0.01" [(ngModel)]="adminRefundAmount" name="adminRefundAmount" />
+                </div>
+              </label>
+              <label>{{ t('paymentIntentOptional') }}
+                <input type="text" [(ngModel)]="adminRefundPaymentIntentId" name="adminRefundPaymentIntentId" />
+              </label>
+              <label>{{ t('description') }}
+                <textarea rows="4" [(ngModel)]="adminRefundReason" name="adminRefundReason"></textarea>
+              </label>
+              <button class="btn btn-refund finance-action" type="button" [disabled]="!canAdminRefund()" (click)="refundCustomer()">
+                {{ adminRefunding ? t('saving') : t('refundCustomer') }}
+              </button>
+            </section>
+          </div>
+
+          <section class="financial-history-card">
+            <div class="history-heading">
+              <h3>{{ t('financialHistory') }}</h3>
+              <span>{{ financialHistoryRows.length }}</span>
+            </div>
+
+            <div class="history-empty" *ngIf="financialHistoryRows.length === 0">{{ t('noFinancialOperations') }}</div>
+
+            <div class="history-list" *ngIf="financialHistoryRows.length > 0">
+              <article class="history-row" *ngFor="let row of financialHistoryRows" [class.damage]="row.kind === 'damage'" [class.refund]="row.kind === 'refund'">
+                <div class="history-row-main">
+                  <strong>{{ row.label }}</strong>
+                  <span *ngIf="row.description">{{ row.description }}</span>
+                  <small>{{ row.date || '-' }} · {{ row.method || '-' }} · {{ row.status || '-' }}</small>
+                  <code *ngIf="row.reference">{{ row.reference }}</code>
+                </div>
+                <div class="history-amount" [class.negative]="row.signedAmount < 0">
+                  {{ row.signedAmount < 0 ? '−' : '+' }}{{ formatMoney(row.amount) }}
+                </div>
+              </article>
+            </div>
+          </section>
         </article>
       </section>
 
@@ -388,6 +590,30 @@
           <div><span>{{ t('status') }}</span><strong>{{ vm.warrantyStatusBadge }}</strong></div>
         </div>
       </article>
+
+
+      <div class="terms-modal-backdrop" *ngIf="termsModalOpen" (click)="closeTermsModal()">
+        <section class="terms-modal" role="dialog" aria-modal="true" aria-labelledby="bookingTermsTitle" (click)="$event.stopPropagation()">
+          <div class="terms-modal-header">
+            <div>
+              <span class="eyebrow">{{ t('termsAndConditions') }}</span>
+              <h2 id="bookingTermsTitle">{{ t('termsModalTitle') }}</h2>
+            </div>
+            <button class="btn btn-secondary btn-small" type="button" (click)="closeTermsModal()">{{ t('close') }}</button>
+          </div>
+
+          <div class="terms-content tc-scrollable" tabindex="0">
+            <ng-container *ngFor="let section of termsSectionsVm">
+              <h3>{{ section.title }}</h3>
+              <p *ngFor="let paragraph of section.paragraphs">{{ paragraph }}</p>
+            </ng-container>
+          </div>
+
+          <div class="terms-modal-actions">
+            <button class="btn btn-primary" type="button" (click)="closeTermsModal()">{{ t('readTermsButton') }}</button>
+          </div>
+        </section>
+      </div>
 
     </article>
   </div>

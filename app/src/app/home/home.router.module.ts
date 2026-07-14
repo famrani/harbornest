@@ -25,17 +25,18 @@ import { GuestFaqComponent } from './guest-faq/guest-faq.component';
 import { GuestJourneyComponent } from './guest-journey/guest-journey.component';
 import { BookingsComponent } from './bookings/bookings.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
-import { MyProposalsComponent } from './my-proposals/my-proposals.component';
+import { MyOffersComponent } from './my-offers/my-offers.component';
 import { BookingDetailComponent } from './booking-detail/booking-detail.component';
 import { BookingInvoiceComponent } from './booking-invoice/booking-invoice.component';
 import { AdminWarrantyChargeComponent } from './admin-warranty-charge/admin-warranty-charge.component';
-import { AdminProposalsComponent } from './admin-proposals/admin-proposals.component';
-import { ProposalConfirmationComponent } from './proposal-confirmation/proposal-confirmation.component';
+import { AdminOffersComponent } from './admin-offers/admin-offers.component';
+import { OfferConfirmationComponent } from './offer-confirmation/offer-confirmation.component';
 import { AdminExternalBookingsComponent } from './admin-external-bookings/admin-external-bookings.component';
 import { BookingProcessComponent } from './booking-process/booking-process.component';
 import { OnlineBookingComponent } from './online-booking/online-booking.component';
 import { AdminPricingModelComponent } from './admin-pricing-model/admin-pricing-model.component';
 import { AdminFleetComponent } from './admin-fleet/admin-fleet.component';
+import { SeaToysComponent } from './sea-toys/sea-toys.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -47,6 +48,7 @@ const routes: Routes = [
   { path: 'sorties/anniversaire', redirectTo: 'sorties/party', pathMatch: 'full' },
   { path: 'sorties/sortie-entreprise', component: BusinessOutingComponent },
   { path: 'bateau', component: BoatComponent },
+  { path: 'bateau/jouets-nautiques', component: SeaToysComponent },
   { path: 'galerie', component: GalleryComponent },
   { path: 'reserver', component: OnlineBookingComponent },
   { path: 'book-online', component: OnlineBookingComponent },
@@ -56,10 +58,12 @@ const routes: Routes = [
   { path: 'safety', component: SafetyInstructionsComponent },
   { path: 'deposit', component: DepositComponent },
   { path: 'booking-process', component: BookingProcessComponent },
+  { path: 'sea-toys', component: SeaToysComponent },
   { path: 'faq', component: GuestFaqComponent },
   { path: 'how-it-works', component: GuestJourneyComponent },
   { path: 'my-bookings', component: MyBookingsComponent },
-  { path: 'my-proposals', component: MyProposalsComponent },
+  { path: 'my-offers', component: MyOffersComponent },
+  { path: 'my-proposals', redirectTo: 'my-offers', pathMatch: 'full' },
   { path: 'my-payments', component: AccountSummaryComponent, data: { section: 'payments' } },
   { path: 'bookings/:bookingId/invoice', component: BookingInvoiceComponent },
   { path: 'bookings/:bookingId', component: BookingDetailComponent },
@@ -77,8 +81,10 @@ const routes: Routes = [
   { path: 'admin/outings', component: AdminOutingsComponent },
   { path: 'admin/outings/:outingId', component: AdminOutingDetailComponent },
   { path: 'admin/manage-outings', component: AdminManageOutingsComponent },
-  { path: 'admin/proposals', component: AdminProposalsComponent },
-  { path: 'proposal/:proposalId', component: ProposalConfirmationComponent },
+  { path: 'admin/offers', component: AdminOffersComponent },
+  { path: 'admin/proposals', redirectTo: 'admin/offers', pathMatch: 'full' },
+  { path: 'offer/:offerId', component: OfferConfirmationComponent },
+  { path: 'proposal/:proposalId', redirectTo: 'offer/:proposalId' },
   { path: 'admin/pricing-model', component: AdminPricingModelComponent },
   { path: 'admin/fleet', component: AdminFleetComponent },
   { path: 'admin/external-bookings', component: BookingsComponent },

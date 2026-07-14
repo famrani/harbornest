@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProposalApiService, AlegriaProposal } from '../bookings/proposal-api.service';
+import { OfferApiService, AlegriaOffer } from '../bookings/offer-api.service';
 
 @Component({
   selector: 'app-admin-warranty-charge',
@@ -13,8 +13,9 @@ export class AdminWarrantyChargeComponent {
   charging = false;
   message = '';
   error = '';
+  lastCharge: any = null;
 
-  constructor(private proposalApi: ProposalApiService) {}
+  constructor(private offerApi: OfferApiService) {}
 
   chargeWarranty(): void {
     const amount = Number(this.amount || 0);
@@ -25,7 +26,7 @@ export class AdminWarrantyChargeComponent {
     this.error = '';
 
     if (!bookingId) {
-      this.error = 'Booking / proposal id is required.';
+      this.error = 'Booking / offer id is required.';
       return;
     }
 
@@ -41,14 +42,15 @@ export class AdminWarrantyChargeComponent {
 
     this.charging = true;
 
-    const proposal = {
-      proposalId: bookingId,
+    const offer = {
+      offerId: bookingId,
       warrantyAmount: 500,
-    } as AlegriaProposal;
+    } as AlegriaOffer;
 
-    this.proposalApi.chargeWarranty(proposal, amount, reason).subscribe({
-      next: () => {
-        this.message = 'Warranty charged successfully.';
+    this.offerApi.chargeWarranty(offer, amount, reason).subscribe({
+      next: (result) => {
+        this.lastCharge = result || null;
+        this.message = 'Damage charge completed and saved.';
         this.charging = false;
       },
       error: (error) => {

@@ -379,7 +379,11 @@ class StripeService {
         return ['false', 'cancelled', 'canceled', 'deleted'].includes(normalized);
     }
     hasExplicitCustomerTermsAcceptance(booking) {
-        const accepted = booking?.terms?.accepted === true ||
+        // A persisted explicit boolean is the source of truth. Older records may
+        // not have acceptedAt/acceptedBy, so requiring audit metadata here
+        // incorrectly blocks valid payments even though the UI shows acceptance.
+        const accepted = booking?.customerTermsAccepted === true ||
+            booking?.terms?.accepted === true ||
             booking?.workflow?.termsAccepted === true ||
             booking?.bookingWorkflow?.termsAccepted === true ||
             booking?.documents?.termsAccepted === true ||
@@ -388,53 +392,130 @@ class StripeService {
             booking?.tcAccepted === true ||
             booking?.tncAccepted === true ||
             booking?.tAndCAccepted === true ||
-            booking?.termsAndConditionsAccepted === true;
-        const acceptedAt = booking?.terms?.acceptedAt ||
-            booking?.workflow?.termsAcceptedAt ||
-            booking?.bookingWorkflow?.termsAcceptedAt ||
-            booking?.documents?.termsAcceptedAt ||
-            booking?.termsAcceptedAt ||
-            booking?.acceptedTermsAt ||
-            booking?.tcAcceptedAt ||
-            booking?.tncAcceptedAt ||
-            booking?.termsAndConditionsAcceptedAt;
-        const acceptedBy = booking?.terms?.acceptedBy ||
-            booking?.workflow?.termsAcceptedBy ||
-            booking?.bookingWorkflow?.termsAcceptedBy ||
-            booking?.documents?.termsAcceptedBy ||
-            booking?.termsAcceptedBy ||
-            booking?.acceptedTermsBy ||
-            booking?.tcAcceptedBy ||
-            booking?.tncAcceptedBy;
-        return accepted === true && !!(acceptedAt || acceptedBy);
+            booking?.termsAndConditionsAccepted === true ||
+            booking?.termsAcceptedStatus === 'accepted' ||
+            booking?.termsStatus === 'accepted' ||
+            booking?.termsAndConditionsStatus === 'accepted';
+        return accepted === true;
     }
     async assertTermsAcceptedBeforeCustomerAction(bookingId) {
         const id = String(bookingId || '').trim();
         if (!id) {
             throw new Error('bookingId is required');
         }
-        // Customer checkout can be launched either from a finalized booking
-        // (/bnBookings/{bookingId}) or from an issued proposal
-        // (/bnProposals/{proposalId}) before the booking object is created.
-        //
-        // Release 3.2 changed Terms & Conditions so they are no longer
-        // pre-accepted on booking creation. This guard therefore checks the
-        // actual record used by the checkout instead of assuming that every
-        // checkout id already exists under /bnBookings.
-        const bookingSnap = await this.stbDbSvc.db.ref(`/bnBookings/${id}`).once('value');
-        const booking = bookingSnap.val();
-        if (booking && this.hasExplicitCustomerTermsAcceptance(booking)) {
-            return booking;
+        const db = this.stbDbSvc.db;
+        const bookingCandidates = [];
+        const addCandidate = (value, source) => {
+            if (!value)
+                return;
+            bookingCandidates.push({ value, source });
+        };
+        // 1) Direct Firebase key lookup.
+        const directBookingSnap = await db.ref(`/bnBookings/${id}`).once('value');
+        addCandidate(directBookingSnap.val(), `/bnBookings/${id}`);
+        // 2) Resolve legacy/new identifiers. Some screens send bookingId, offerId,
+        // proposalId or relatedBookingId, and those values are not always equal to
+        // the Firebase node key.
+        const bookingLookupFields = [
+            'bookingId',
+            'offerId',
+            'proposalId',
+            'relatedBookingId',
+            'sourceOfferId'
+        ];
+        for (const field of bookingLookupFields) {
+            try {
+                const snap = await db.ref('/bnBookings').orderByChild(field).equalTo(id).once('value');
+                const matches = snap.val() || {};
+                Object.keys(matches).forEach((key) => addCandidate(matches[key], `/bnBookings/${key} via ${field}`));
+            }
+            catch (queryError) {
+                console.warn('[terms-guard] booking lookup failed', { id, field, queryError });
+            }
         }
-        const proposalSnap = await this.stbDbSvc.db.ref(`/bnProposals/${id}`).once('value');
-        const proposal = proposalSnap.val();
-        if (proposal && this.hasExplicitCustomerTermsAcceptance(proposal)) {
-            return proposal;
+        for (const candidate of bookingCandidates) {
+            if (this.hasExplicitCustomerTermsAcceptance(candidate.value)) {
+                return candidate.value;
+            }
         }
-        if (booking || proposal) {
+        // 3) Resolve the associated offer/proposal using every relationship found
+        // on the booking plus the incoming id.
+        const relatedOfferIds = new Set([id]);
+        for (const candidate of bookingCandidates) {
+            const booking = candidate.value || {};
+            [
+                booking.offerId,
+                booking.proposalId,
+                booking.sourceOfferId,
+                booking.workflow?.offerId,
+                booking.workflow?.proposalId,
+                booking.raw?.offerId,
+                booking.raw?.proposalId
+            ].forEach((value) => {
+                const normalized = String(value || '').trim();
+                if (normalized)
+                    relatedOfferIds.add(normalized);
+            });
+        }
+        const offerCandidates = [];
+        const addOffer = (value, source) => {
+            if (!value)
+                return;
+            offerCandidates.push({ value, source });
+        };
+        for (const offerId of relatedOfferIds) {
+            const directOfferSnap = await db.ref(`/bnProposals/${offerId}`).once('value');
+            addOffer(directOfferSnap.val(), `/bnProposals/${offerId}`);
+        }
+        const offerLookupFields = [
+            'offerId',
+            'proposalId',
+            'bookingId',
+            'relatedBookingId'
+        ];
+        for (const lookupId of relatedOfferIds) {
+            for (const field of offerLookupFields) {
+                try {
+                    const snap = await db.ref('/bnProposals').orderByChild(field).equalTo(lookupId).once('value');
+                    const matches = snap.val() || {};
+                    Object.keys(matches).forEach((key) => addOffer(matches[key], `/bnProposals/${key} via ${field}`));
+                }
+                catch (queryError) {
+                    console.warn('[terms-guard] offer lookup failed', { lookupId, field, queryError });
+                }
+            }
+        }
+        for (const candidate of offerCandidates) {
+            if (this.hasExplicitCustomerTermsAcceptance(candidate.value)) {
+                return candidate.value;
+            }
+        }
+        console.error('[terms-guard] acceptance not found', {
+            requestedId: id,
+            bookingCandidates: bookingCandidates.map((candidate) => ({
+                source: candidate.source,
+                bookingId: candidate.value?.bookingId,
+                offerId: candidate.value?.offerId,
+                proposalId: candidate.value?.proposalId,
+                relatedBookingId: candidate.value?.relatedBookingId,
+                termsAccepted: candidate.value?.termsAccepted,
+                tncAccepted: candidate.value?.tncAccepted,
+                customerTermsAccepted: candidate.value?.customerTermsAccepted
+            })),
+            offerCandidates: offerCandidates.map((candidate) => ({
+                source: candidate.source,
+                offerId: candidate.value?.offerId,
+                proposalId: candidate.value?.proposalId,
+                bookingId: candidate.value?.bookingId,
+                termsAccepted: candidate.value?.termsAccepted,
+                tncAccepted: candidate.value?.tncAccepted,
+                customerTermsAccepted: candidate.value?.customerTermsAccepted
+            }))
+        });
+        if (bookingCandidates.length || offerCandidates.length) {
             throw new Error('The customer must explicitly accept the Terms & Conditions before payment or warranty registration.');
         }
-        throw new Error('Booking or proposal not found for payment.');
+        throw new Error(`Booking or offer not found for payment (${id}).`);
     }
     computePaymentWorkflowUpdate(booking) {
         const n = (value) => Number(value || 0) || 0;
@@ -507,16 +588,9 @@ class StripeService {
             this.isCompletedPaymentValue(booking?.payments?.remaining?.status)) {
             throw new Error('The remaining balance is already paid.');
         }
-        if (this.isOutingDateTodayOrPast(outingDate)) {
-            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
-                bookingStatus: false,
-                status: 'cancelled',
-                cancellationReason: 'Outing date is today or already past and remaining balance was not paid.',
-                modifiedTS: Date.now(),
-                updatedAt: Date.now(),
-            }).catch(() => undefined);
-            throw new Error('The outing date is today or already past. The remaining balance cannot be paid and the booking is cancelled.');
-        }
+        // Payment collection remains allowed on the outing day and after the outing.
+        // The outing date is informational only and must never auto-cancel a booking
+        // or block collection of an outstanding balance.
     }
     normalizeAmountToCents(value) {
         const n = Number(value || 0);
@@ -566,7 +640,7 @@ class StripeService {
         try {
             const body = req.body || {};
             const ownerId = body.ownerId || 'alegria';
-            const bookingId = body.bookingId || body.proposalId || body.id;
+            const bookingId = body.bookingId || body.offerId || body.id;
             const rawDepositAmount = body.depositAmount ?? body.amount ?? body.deposit ?? body.totalDeposit;
             const currency = String(body.currency || 'eur').toLowerCase();
             const rawCustomerEmail = body.customerEmail || body.email || body.customer?.email;
@@ -585,7 +659,7 @@ class StripeService {
             if (!bookingId) {
                 return res.status(400).json({
                     error: 'bookingId is required',
-                    received: { bookingId: body.bookingId, proposalId: body.proposalId, id: body.id }
+                    received: { bookingId: body.bookingId, offerId: body.offerId, id: body.id }
                 });
             }
             await this.assertTermsAcceptedBeforeCustomerAction(bookingId);
@@ -1028,29 +1102,149 @@ class StripeService {
     async chargeOutingWarranty(req, res) {
         try {
             let { ownerId, bookingId, amount, reason, currency = 'eur' } = req.body || {};
-            if (!bookingId) {
+            if (!bookingId)
                 return res.status(400).json({ error: 'bookingId is required' });
-            }
             const amountCents = this.normalizeAmountToCents(amount);
             if (!amountCents)
                 return res.status(400).json({ error: 'amount must be greater than 0' });
-            const warrantySnap = await this.stbDbSvc.db.ref(this.buildBookingPaymentPath(bookingId, 'warranty')).once('value');
-            const bookingSnap = await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).once('value');
+            reason = String(reason || '').trim();
+            if (!reason)
+                return res.status(400).json({ error: 'reason is required' });
+            const warrantyPath = this.buildBookingPaymentPath(bookingId, 'warranty');
+            const [warrantySnap, bookingSnap] = await Promise.all([
+                this.stbDbSvc.db.ref(warrantyPath).once('value'),
+                this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).once('value'),
+            ]);
             const booking = bookingSnap.val() || {};
             const warranty = warrantySnap.val() || {};
             ownerId = ownerId || warranty?.ownerId || booking?.ownerId || booking?.raw?.ownerId || 'alegria';
-            if (!ownerId)
-                return res.status(400).json({ error: 'ownerId is required' });
+            const warrantyMethod = String(warranty?.warrantyMethod || warranty?.warrantyPaymentChoice ||
+                booking?.warrantyMethod || booking?.warrantyPaymentChoice || '').toLowerCase();
+            const warrantyStatus = String(warranty?.status || warranty?.warrantyStatus || booking?.warrantyStatus || '').toLowerCase();
+            const maxWarrantyCents = this.normalizeAmountToCents(Number(warranty.amount || booking.warrantyAmount || 0));
+            const alreadyChargedCents = Number(booking.warrantyChargedAmount || 0);
+            if (maxWarrantyCents && alreadyChargedCents + amountCents > maxWarrantyCents) {
+                return res.status(400).json({ error: 'Requested charge exceeds the remaining warranty amount' });
+            }
+            const cashWarranty = warrantyMethod.includes('cash') || warrantyStatus.includes('cash');
+            if (cashWarranty) {
+                const chargeId = this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/warrantyCharges`).push().key || `damage_${Date.now()}`;
+                const now = Date.now();
+                const totalChargedCents = alreadyChargedCents + amountCents;
+                const chargeRecord = {
+                    chargeId,
+                    ownerId,
+                    bookingId,
+                    paymentType: 'warranty_damage_charge',
+                    amount: amountCents,
+                    amountCents,
+                    amountEuros: amountCents / 100,
+                    currency,
+                    reason,
+                    status: 'paid',
+                    paid: true,
+                    warrantyMethod: 'cash',
+                    paymentMethod: 'cash',
+                    stripePaymentIntentId: null,
+                    createdTS: now,
+                    modifiedTS: now,
+                };
+                const updates = {};
+                updates[`/bnBookings/${bookingId}/payments/warrantyCharges/${chargeId}`] = chargeRecord;
+                updates[`/bnBookings/${bookingId}/payments/warrantyCharge`] = {
+                    ...chargeRecord,
+                    warrantyChargeAmount: amountCents,
+                    warrantyChargeAmountCents: amountCents,
+                    warrantyChargeAmountEuros: amountCents / 100,
+                    warrantyChargeReason: reason,
+                    totalWarrantyChargedAmount: totalChargedCents,
+                };
+                updates[`/bnBookings/${bookingId}/warrantyStatus`] = totalChargedCents >= maxWarrantyCents && maxWarrantyCents > 0 ? 'fully_charged' : 'partially_charged';
+                updates[`/bnBookings/${bookingId}/damageReported`] = true;
+                updates[`/bnBookings/${bookingId}/damageCharged`] = true;
+                updates[`/bnBookings/${bookingId}/warrantyChargedAmount`] = totalChargedCents;
+                updates[`/bnBookings/${bookingId}/lastWarrantyChargeAmount`] = amountCents;
+                updates[`/bnBookings/${bookingId}/lastWarrantyChargeAmountCents`] = amountCents;
+                updates[`/bnBookings/${bookingId}/lastWarrantyChargeAmountEuros`] = amountCents / 100;
+                updates[`/bnBookings/${bookingId}/lastWarrantyChargeStatus`] = 'paid';
+                updates[`/bnBookings/${bookingId}/lastWarrantyChargeAt`] = now;
+                updates[`/bnBookings/${bookingId}/lastWarrantyChargePaymentMethod`] = 'cash';
+                updates[`/bnBookings/${bookingId}/warrantyChargeAmountCents`] = amountCents;
+                updates[`/bnBookings/${bookingId}/warrantyChargeAmountEuros`] = amountCents / 100;
+                updates[`/bnBookings/${bookingId}/warrantyChargeReason`] = reason;
+                updates[`/bnBookings/${bookingId}/pendingWarrantyChargeAmount`] = amountCents / 100;
+                updates[`/bnBookings/${bookingId}/pendingWarrantyChargeAmountCents`] = amountCents;
+                updates[`/bnBookings/${bookingId}/pendingWarrantyChargeReason`] = reason;
+                updates[`/bnBookings/${bookingId}/pendingWarrantyChargeStatus`] = 'paid';
+                updates[`/bnBookings/${bookingId}/pendingWarrantyChargeError`] = null;
+                updates[`/bnBookings/${bookingId}/pendingWarrantyChargeModifiedAt`] = now;
+                updates[`/bnBookings/${bookingId}/warrantyChargePaymentIntentId`] = null;
+                updates[`/bnBookings/${bookingId}/warrantyChargeRecordedAt`] = now;
+                updates[`/bnBookings/${bookingId}/modifiedTS`] = now;
+                updates[`/bnProposals/${bookingId}/warrantyChargedAmount`] = totalChargedCents;
+                updates[`/bnProposals/${bookingId}/lastWarrantyChargeAmount`] = amountCents;
+                updates[`/bnProposals/${bookingId}/warrantyChargeReason`] = reason;
+                updates[`/bnProposals/${bookingId}/warrantyChargeStatus`] = 'paid';
+                updates[`/bnProposals/${bookingId}/modifiedTS`] = now;
+                updates[`/backendpayments/${chargeId}`] = chargeRecord;
+                await this.stbDbSvc.db.ref().update(updates);
+                return res.json({
+                    ok: true,
+                    bookingId,
+                    chargeId,
+                    amount: amountCents,
+                    totalChargedAmount: totalChargedCents,
+                    remainingWarrantyAmount: maxWarrantyCents ? Math.max(0, maxWarrantyCents - totalChargedCents) : null,
+                    status: 'paid',
+                    paymentMethod: 'cash',
+                    stripePaymentIntentId: null,
+                });
+            }
+            if (warrantyMethod && !['stripe_card', 'card', 'credit_card'].includes(warrantyMethod)) {
+                return res.status(400).json({ error: 'Unsupported warranty method' });
+            }
             const storedPaymentMethodId = warranty?.paymentMethodId || warranty?.warrantyPaymentMethodId || booking?.warrantyPaymentMethodId || booking?.paymentMethodId || booking?.payment?.paymentMethodId;
             const storedStripeCustomerId = warranty?.stripeCustomerId || warranty?.warrantyStripeCustomerId || booking?.warrantyStripeCustomerId || booking?.stripeCustomerId || booking?.payment?.stripeCustomerId || booking?.payment?.customerId;
             if (!storedPaymentMethodId || !storedStripeCustomerId) {
-                return res.status(400).json({ error: 'Warranty card was selected but no reusable payment method is registered for this booking' });
-            }
-            const maxWarranty = Number(warranty.amount || booking.warrantyAmount || 0);
-            if (maxWarranty && amountCents > maxWarranty) {
-                return res.status(400).json({ error: 'Requested charge exceeds recorded warranty amount' });
+                return res.status(400).json({ error: 'No reusable Stripe warranty card is registered for this booking' });
             }
             const stripe = await this.getStripeForOwner(ownerId);
+            const chargeId = this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/warrantyCharges`).push().key || `damage_${Date.now()}`;
+            const now = Date.now();
+            // Save the requested amount before Stripe. The amount and reason therefore
+            // remain visible even if Stripe rejects the off-session charge.
+            const requestedChargeRecord = {
+                chargeId,
+                ownerId,
+                bookingId,
+                paymentType: 'warranty_damage_charge',
+                amount: amountCents,
+                amountCents,
+                amountEuros: amountCents / 100,
+                currency,
+                reason,
+                status: 'processing',
+                paid: false,
+                warrantyMethod: 'stripe_card',
+                createdTS: now,
+                modifiedTS: now,
+            };
+            await this.stbDbSvc.db.ref().update({
+                [`/bnBookings/${bookingId}/payments/warrantyCharges/${chargeId}`]: requestedChargeRecord,
+                [`/bnBookings/${bookingId}/payments/warrantyCharge`]: {
+                    ...requestedChargeRecord,
+                    warrantyChargeAmount: amountCents,
+                    warrantyChargeAmountCents: amountCents,
+                    warrantyChargeAmountEuros: amountCents / 100,
+                    warrantyChargeReason: reason,
+                },
+                [`/bnBookings/${bookingId}/pendingWarrantyChargeAmount`]: amountCents / 100,
+                [`/bnBookings/${bookingId}/pendingWarrantyChargeAmountCents`]: amountCents,
+                [`/bnBookings/${bookingId}/pendingWarrantyChargeReason`]: reason,
+                [`/bnBookings/${bookingId}/pendingWarrantyChargeStatus`]: 'processing',
+                [`/bnBookings/${bookingId}/pendingWarrantyChargeRequestedAt`]: now,
+                [`/bnBookings/${bookingId}/modifiedTS`]: now,
+            });
             const pi = await stripe.paymentIntents.create({
                 amount: amountCents,
                 currency,
@@ -1058,54 +1252,105 @@ class StripeService {
                 payment_method: storedPaymentMethodId,
                 off_session: true,
                 confirm: true,
-                description: `Alegria warranty charge for booking ${bookingId}`,
+                description: `Alegria damage charge for booking ${bookingId}`,
                 metadata: {
                     bookingId,
                     ownerId,
-                    paymentType: 'warranty_charge',
-                    reason: reason || '',
+                    chargeId,
+                    paymentType: 'warranty_damage_charge',
+                    reason,
                 },
+            }, {
+                idempotencyKey: `warranty-damage-${bookingId}-${chargeId}`,
             });
-            const now = Date.now();
-            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/warrantyCharge`).update({
-                status: 'warranty_charged',
-                warrantyChargeAmount: amountCents,
-                warrantyChargeReason: reason || null,
-                modifiedTS: Date.now(),
-            });
-            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
-                warrantyStatus: 'charged',
-                damageReported: true,
-                damageCharged: true,
-                warrantyChargedAmount: amountCents,
-                warrantyChargeReason: reason || null,
-                warrantyChargeRecordedAt: now,
-                modifiedTS: now,
-            });
-            await this.stbDbSvc.db.ref(this.buildBookingPaymentPath(bookingId, 'warranty')).update({
-                status: 'warranty_charged',
-                warrantyChargeAmount: amountCents,
-                warrantyChargeReason: reason || null,
-                warrantyChargePaymentIntentId: pi.id,
-                modifiedTS: now,
-            });
-            await this.stbDbSvc.db.ref('/backendpayments').push().set({
+            if (!['succeeded', 'processing'].includes(pi.status)) {
+                return res.status(402).json({ error: `Stripe damage charge was not completed (${pi.status})`, paymentIntentId: pi.id });
+            }
+            const totalChargedCents = alreadyChargedCents + amountCents;
+            const chargeRecord = {
+                chargeId,
                 ownerId,
                 bookingId,
-                paymentType: 'warranty_charge',
+                paymentType: 'warranty_damage_charge',
                 amount: amountCents,
+                amountCents,
+                amountEuros: amountCents / 100,
                 currency,
-                status: pi.status,
-                reason: reason || null,
+                reason,
+                status: pi.status === 'succeeded' ? 'paid' : 'processing',
+                paid: pi.status === 'succeeded',
+                warrantyMethod: 'stripe_card',
+                stripeCustomerId: storedStripeCustomerId,
+                stripePaymentMethodId: storedPaymentMethodId,
                 stripePaymentIntentId: pi.id,
                 createdTS: now,
                 modifiedTS: now,
+            };
+            const updates = {};
+            updates[`/bnBookings/${bookingId}/payments/warrantyCharges/${chargeId}`] = chargeRecord;
+            updates[`/bnBookings/${bookingId}/payments/warrantyCharge`] = {
+                ...chargeRecord,
+                warrantyChargeAmount: amountCents,
+                warrantyChargeReason: reason,
+                totalWarrantyChargedAmount: totalChargedCents,
+            };
+            updates[`/bnBookings/${bookingId}/warrantyStatus`] = totalChargedCents >= maxWarrantyCents && maxWarrantyCents > 0 ? 'fully_charged' : 'partially_charged';
+            updates[`/bnBookings/${bookingId}/damageReported`] = true;
+            updates[`/bnBookings/${bookingId}/damageCharged`] = true;
+            updates[`/bnBookings/${bookingId}/warrantyChargedAmount`] = totalChargedCents;
+            updates[`/bnBookings/${bookingId}/lastWarrantyChargeAmount`] = amountCents;
+            updates[`/bnBookings/${bookingId}/lastWarrantyChargeAmountCents`] = amountCents;
+            updates[`/bnBookings/${bookingId}/lastWarrantyChargeAmountEuros`] = amountCents / 100;
+            updates[`/bnBookings/${bookingId}/warrantyChargeAmountCents`] = amountCents;
+            updates[`/bnBookings/${bookingId}/warrantyChargeAmountEuros`] = amountCents / 100;
+            updates[`/bnBookings/${bookingId}/warrantyChargeReason`] = reason;
+            updates[`/bnBookings/${bookingId}/pendingWarrantyChargeAmount`] = amountCents / 100;
+            updates[`/bnBookings/${bookingId}/pendingWarrantyChargeAmountCents`] = amountCents;
+            updates[`/bnBookings/${bookingId}/pendingWarrantyChargeReason`] = reason;
+            updates[`/bnBookings/${bookingId}/pendingWarrantyChargeStatus`] = chargeRecord.status;
+            updates[`/bnBookings/${bookingId}/pendingWarrantyChargeModifiedAt`] = now;
+            updates[`/bnBookings/${bookingId}/warrantyChargePaymentIntentId`] = pi.id;
+            updates[`/bnBookings/${bookingId}/warrantyChargeRecordedAt`] = now;
+            updates[`/bnBookings/${bookingId}/modifiedTS`] = now;
+            updates[`/bnProposals/${bookingId}/warrantyChargedAmount`] = totalChargedCents;
+            updates[`/bnProposals/${bookingId}/lastWarrantyChargeAmount`] = amountCents;
+            updates[`/bnProposals/${bookingId}/warrantyChargeReason`] = reason;
+            updates[`/bnProposals/${bookingId}/warrantyChargeStatus`] = chargeRecord.status;
+            updates[`/bnProposals/${bookingId}/modifiedTS`] = now;
+            updates[`/backendpayments/${chargeId}`] = chargeRecord;
+            await this.stbDbSvc.db.ref().update(updates);
+            return res.json({
+                ok: true,
+                bookingId,
+                chargeId,
+                amount: amountCents,
+                totalChargedAmount: totalChargedCents,
+                remainingWarrantyAmount: maxWarrantyCents ? Math.max(0, maxWarrantyCents - totalChargedCents) : null,
+                status: chargeRecord.status,
+                stripePaymentIntentId: pi.id,
             });
-            return res.json({ ok: true, paymentIntent: pi });
         }
         catch (e) {
             console.error('[chargeOutingWarranty] error:', e);
-            return res.status(400).json({ error: e?.message || 'Failed to charge warranty' });
+            try {
+                const failedBookingId = String((req.body || {}).bookingId || '').trim();
+                const failedAmountCents = this.normalizeAmountToCents((req.body || {}).amount);
+                const failedReason = String((req.body || {}).reason || '').trim();
+                if (failedBookingId && failedAmountCents > 0) {
+                    await this.stbDbSvc.db.ref(`/bnBookings/${failedBookingId}`).update({
+                        pendingWarrantyChargeAmount: failedAmountCents / 100,
+                        pendingWarrantyChargeAmountCents: failedAmountCents,
+                        pendingWarrantyChargeReason: failedReason,
+                        pendingWarrantyChargeStatus: 'failed',
+                        pendingWarrantyChargeError: e?.message || 'Failed to charge warranty through Stripe',
+                        pendingWarrantyChargeModifiedAt: Date.now(),
+                        modifiedTS: Date.now(),
+                    });
+                }
+            }
+            catch { }
+            const code = e?.code === 'authentication_required' || e?.raw?.code === 'authentication_required' ? 402 : 400;
+            return res.status(code).json({ error: e?.message || 'Failed to charge warranty through Stripe' });
         }
     }
     /**
@@ -1241,10 +1486,10 @@ class StripeService {
     async markDepositPaidFromStripe(params) {
         const now = Date.now();
         const bookingSnap = await this.stbDbSvc.db.ref(`/bnBookings/${params.bookingId}`).once('value').catch(() => null);
-        const proposalSnap = await this.stbDbSvc.db.ref(`/bnProposals/${params.bookingId}`).once('value').catch(() => null);
+        const offerSnap = await this.stbDbSvc.db.ref(`/bnProposals/${params.bookingId}`).once('value').catch(() => null);
         const existingBooking = bookingSnap?.val?.() || {};
-        const existingProposal = proposalSnap?.val?.() || {};
-        const termsAccepted = this.hasExplicitCustomerTermsAcceptance(existingBooking) || this.hasExplicitCustomerTermsAcceptance(existingProposal);
+        const existingOffer = offerSnap?.val?.() || {};
+        const termsAccepted = this.hasExplicitCustomerTermsAcceptance(existingBooking) || this.hasExplicitCustomerTermsAcceptance(existingOffer);
         const derivedBookingStatus = termsAccepted ? 'confirmed' : 'awaiting_terms';
         const updatePayload = {
             status: 'paid',
@@ -1386,9 +1631,38 @@ class StripeService {
                     const bookingId = (session.metadata && session.metadata['bookingId']) || null;
                     const paymentType = (session.metadata && session.metadata['paymentType']) || null;
                     const paymentId = (session.metadata && session.metadata['paymentId']) || null;
+                    const standalonePayment = !!(session.metadata && session.metadata['standalonePayment'] === 'true');
+                    const customerUserId = (session.metadata && session.metadata['customerUserId']) || null;
+                    const now = Date.now();
+                    // A standalone ad-hoc payment has no booking by design. Update the
+                    // canonical payment record (and optional customer index) and stop here.
+                    if (!bookingId && standalonePayment && paymentType === 'ad_hoc') {
+                        const stripePaymentIntentId = session.payment_intent || null;
+                        const updatePayload = {
+                            status: 'paid',
+                            paid: true,
+                            paidAt: now,
+                            checkoutSessionId: session.id,
+                            stripeCheckoutSessionId: session.id,
+                            paymentIntentId: stripePaymentIntentId,
+                            stripePaymentIntentId,
+                            stripeCustomerId: session.customer || null,
+                            amount: session.amount_total || null,
+                            amount_total: session.amount_total || null,
+                            currency: session.currency || null,
+                            modifiedTS: now,
+                            updatedAt: now,
+                        };
+                        if (paymentId) {
+                            await this.stbDbSvc.db.ref(`/backendpayments/${paymentId}`).update(updatePayload);
+                            if (customerUserId) {
+                                await this.stbDbSvc.db.ref(`/backendusers/${customerUserId}/payments/${paymentId}`).update(updatePayload);
+                            }
+                        }
+                        break;
+                    }
                     if (!bookingId)
                         break;
-                    const now = Date.now();
                     if (paymentType === 'deposit_authorization') {
                         await this.markDepositAuthorizedFromStripe({
                             bookingId,
@@ -1855,7 +2129,7 @@ class StripeService {
         try {
             const body = req.body || {};
             const ownerId = body.ownerId || 'alegria';
-            const bookingId = body.bookingId || body.proposalId || body.id;
+            const bookingId = body.bookingId || body.offerId || body.id;
             const rawBalanceAmount = body.balanceAmount ?? body.remainingAmount ?? body.amount ?? body.balance ?? body.remaining;
             const currency = String(body.currency || 'eur').toLowerCase();
             const rawCustomerEmail = body.customerEmail || body.email || body.customer?.email;
@@ -1869,7 +2143,7 @@ class StripeService {
             if (!bookingId) {
                 return res.status(400).json({
                     error: 'bookingId is required',
-                    received: { bookingId: body.bookingId, proposalId: body.proposalId, id: body.id }
+                    received: { bookingId: body.bookingId, offerId: body.offerId, id: body.id }
                 });
             }
             await this.assertBalanceCheckoutAllowed(bookingId, body);
@@ -1977,8 +2251,9 @@ class StripeService {
         try {
             const body = req.body || {};
             const ownerId = body.ownerId || 'alegria';
-            const bookingId = body.bookingId || body.proposalId || body.id;
-            const extraServiceId = body.extraServiceId || body.serviceId || body.id || `extra_${Date.now()}`;
+            const bookingId = body.bookingId || body.offerId || '';
+            const standalonePayment = body.standalonePayment === true || body.standalonePayment === 'true' || !bookingId;
+            const extraServiceId = body.extraServiceId || body.adhocPaymentId || body.serviceId || body.id || `extra_${Date.now()}`;
             const rawAmount = body.amount ?? body.extraAmount ?? body.price;
             const currency = String(body.currency || 'eur').toLowerCase();
             const requestedPaymentType = String(body.paymentType || body.checkoutType || body.type || '').toLowerCase();
@@ -1990,12 +2265,17 @@ class StripeService {
             const customerEmail = this.isValidEmailForStripe(rawCustomerEmail) ? String(rawCustomerEmail).trim() : '';
             const customerName = body.customerName || body.name || body.customer?.fullName || (!customerEmail ? rawCustomerEmail : '');
             const customerPhone = body.customerPhone || body.phone || body.customer?.phone;
+            const customerUserId = body.customerUserId || body.userId || body.uid || '';
+            const category = String(body.category || (isAdHocPayment ? 'other' : 'extra_service'));
             const successUrl = body.successUrl || body.returnUrl;
             const cancelUrl = body.cancelUrl || body.failureUrl || body.returnUrl;
-            if (!bookingId) {
-                return res.status(400).json({ error: 'bookingId is required' });
+            if (!bookingId && !isAdHocPayment && !standalonePayment) {
+                return res.status(400).json({ error: 'bookingId is required for this payment type' });
             }
-            await this.assertTermsAcceptedBeforeCustomerAction(bookingId);
+            // Booking terms apply only to payments attached to a booking.
+            if (bookingId) {
+                await this.assertTermsAcceptedBeforeCustomerAction(bookingId);
+            }
             const amount = this.normalizeAmountToCents(rawAmount);
             if (!amount) {
                 return res.status(400).json({
@@ -2016,9 +2296,10 @@ class StripeService {
                     name: customerName,
                     phone: customerPhone,
                     metadata: {
-                        bookingId,
+                        bookingId: bookingId || '',
                         ownerId,
-                        source: 'alegria-extra-service',
+                        customerUserId,
+                        source: standalonePayment ? 'alegria-standalone-payment' : 'alegria-extra-service',
                     },
                 }).catch(() => null)
                 : null;
@@ -2060,9 +2341,12 @@ class StripeService {
                 payment_intent_data: {
                     metadata: {
                         paymentId,
-                        bookingId,
+                        bookingId: bookingId || '',
                         ownerId,
                         paymentType: normalizedPaymentType,
+                        standalonePayment: standalonePayment ? 'true' : 'false',
+                        customerUserId,
+                        category,
                         extraServiceId,
                         adhocPaymentId: isAdHocPayment ? extraServiceId : '',
                         description,
@@ -2070,9 +2354,12 @@ class StripeService {
                 },
                 metadata: {
                     paymentId,
-                    bookingId,
+                    bookingId: bookingId || '',
                     ownerId,
                     paymentType: normalizedPaymentType,
+                    standalonePayment: standalonePayment ? 'true' : 'false',
+                    customerUserId,
+                    category,
                     extraServiceId,
                     adhocPaymentId: isAdHocPayment ? extraServiceId : '',
                     description,
@@ -2082,7 +2369,10 @@ class StripeService {
             const payload = {
                 paymentId,
                 ownerId,
-                bookingId,
+                bookingId: bookingId || '',
+                standalonePayment,
+                customerUserId,
+                category,
                 paymentType: normalizedPaymentType,
                 extraServiceId,
                 adhocPaymentId: isAdHocPayment ? extraServiceId : '',
@@ -2100,11 +2390,19 @@ class StripeService {
                 modifiedTS: now,
             };
             await paymentRef.set(payload);
-            if (isSkipperFeePayment) {
+            if (isSkipperFeePayment && bookingId) {
                 await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/skipper`).set(payload);
             }
-            else if (isAdHocPayment) {
+            else if (isAdHocPayment && bookingId) {
                 await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/adHoc/${extraServiceId}`).set(payload);
+            }
+            else if (isAdHocPayment && standalonePayment) {
+                // Standalone payments are not attached to a booking. Keep a customer index
+                // when an authenticated user id is supplied, while backendpayments remains
+                // the canonical accounting record.
+                if (customerUserId) {
+                    await this.stbDbSvc.db.ref(`/backendusers/${customerUserId}/payments/${paymentId}`).set(payload);
+                }
             }
             else {
                 await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/extraServices/${extraServiceId}`).set(payload);
@@ -2133,7 +2431,7 @@ class StripeService {
                 }
                 await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/extraServices`).set(extraServices);
             }
-            return res.json({ ok: true, url: session.url, id: session.id, paymentId, extraServiceId, adhocPaymentId: isAdHocPayment ? extraServiceId : '', paymentType: normalizedPaymentType });
+            return res.json({ ok: true, url: session.url, id: session.id, paymentId, extraServiceId, adhocPaymentId: isAdHocPayment ? extraServiceId : '', paymentType: normalizedPaymentType, standalonePayment });
         }
         catch (e) {
             console.error('[createOutingExtraServiceCheckout] error:', e);
@@ -2148,7 +2446,7 @@ class StripeService {
         try {
             const body = req.body || {};
             const ownerId = body.ownerId || 'alegria';
-            const bookingId = body.bookingId || body.proposalId || body.id;
+            const bookingId = body.bookingId || body.offerId || body.id;
             const requestedType = String(body.paymentType || body.refundType || body.type || '').toLowerCase();
             const extraServiceId = body.extraServiceId || body.serviceId || null;
             const reason = body.reason || body.refundReason || '';
@@ -2159,9 +2457,10 @@ class StripeService {
             }
             const paymentType = requestedType.includes('deposit') ? 'deposit' :
                 requestedType.includes('balance') || requestedType.includes('remaining') || requestedType.includes('90') ? 'balance' :
-                    requestedType.includes('extra') || requestedType.includes('service') ? 'extra_service' :
-                        requestedType.includes('ad_hoc') || requestedType.includes('adhoc') || requestedType.includes('ad-hoc') ? 'ad_hoc' :
-                            requestedType || 'balance';
+                    requestedType.includes('skipper') ? 'skipper_fee' :
+                        requestedType.includes('extra') || requestedType.includes('service') ? 'extra_service' :
+                            requestedType.includes('ad_hoc') || requestedType.includes('adhoc') || requestedType.includes('ad-hoc') ? 'ad_hoc' :
+                                requestedType || 'balance';
             const rawAmount = body.amountCents ?? body.refundAmountCents ?? body.amount ?? body.refundAmount ?? body.refund ?? body.value;
             const amountCents = Number(body.amountCents ?? body.refundAmountCents) > 0
                 ? Math.round(Number(body.amountCents ?? body.refundAmountCents))
@@ -2185,6 +2484,9 @@ class StripeService {
             else if (paymentType === 'balance') {
                 paymentPath = `/bnBookings/${bookingId}/payments/balance`;
             }
+            else if (paymentType === 'skipper_fee') {
+                paymentPath = `/bnBookings/${bookingId}/payments/skipper`;
+            }
             else if (paymentType === 'extra_service') {
                 if (extraServiceId) {
                     paymentPath = `/bnBookings/${bookingId}/payments/extraServices/${extraServiceId}`;
@@ -2204,7 +2506,7 @@ class StripeService {
             else {
                 return res.status(400).json({
                     error: 'Unsupported paymentType for booking refund',
-                    supportedPaymentTypes: ['deposit', 'balance', 'remaining', 'extra_service', 'ad_hoc'],
+                    supportedPaymentTypes: ['deposit', 'balance', 'remaining', 'skipper_fee', 'extra_service', 'ad_hoc'],
                     received: requestedType
                 });
             }
@@ -2314,6 +2616,15 @@ class StripeService {
                     bookingUpdate.balancePaid = false;
                     bookingUpdate.balanceStatus = 'refunded';
                     bookingUpdate.paymentStatus = 'balance_refunded';
+                }
+            }
+            else if (paymentType === 'skipper_fee') {
+                bookingUpdate.skipperRefundStatus = refundStatus;
+                bookingUpdate.skipperRefundedAmountCents = newRefundedAmountCents;
+                bookingUpdate.skipperRefunded = isFullRefund;
+                if (isFullRefund) {
+                    bookingUpdate.skipperPaid = false;
+                    bookingUpdate.skipperStatus = 'refunded';
                 }
             }
             await bookingRef.update(bookingUpdate);

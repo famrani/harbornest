@@ -33,7 +33,7 @@ export class SiteTextPipe implements PipeTransform, OnDestroy {
   private async load(): Promise<void> {
     this.loading = true;
     try {
-      this.content = await this.siteContent.getContent(true);
+      this.content = await this.siteContent.getContent(false);
     } catch {
       this.content = SITE_CONTENT as any;
     } finally {

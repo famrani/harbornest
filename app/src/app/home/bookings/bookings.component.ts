@@ -360,7 +360,7 @@ export class BookingsComponent implements OnInit, OnDestroy {
     const formalCustomerMarker = anyBooking.customerTermsAccepted === true ||
       source.includes('customer') ||
       source.includes('client') ||
-      source.includes('proposal') ||
+      source.includes('offer') ||
       source.includes('portal') ||
       !!acceptedBy;
 
@@ -397,17 +397,10 @@ export class BookingsComponent implements OnInit, OnDestroy {
     return outingTime <= today.getTime();
   }
 
-  isBookingCancelledByDate(booking: AlegriaBooking): boolean {
-    const anyBooking: any = booking || {};
-    const bookingStatus = anyBooking.bookingStatus;
-    const status = String(anyBooking.status || '').toLowerCase().trim();
-    const requestStatus = String(anyBooking.bookingRequestStatus || '').toLowerCase().trim();
-
-    // Legacy Firebase records use bookingStatus: true to mean confirmed/executed.
-    // A past date must never turn those bookings into cancelled bookings.
-    if (bookingStatus === true || bookingStatus === 'true' || status === 'confirmed' || requestStatus === 'confirmed') return false;
-    if (this.isBalancePaid(booking)) return false;
-    return this.isBookingDatePastOrToday(booking) && !this.isBalancePaid(booking);
+  isBookingCancelledByDate(_booking: AlegriaBooking): boolean {
+    // A booking is never cancelled merely because the outing is today or in the past.
+    // Outstanding balances may still be collected after the outing date.
+    return false;
   }
 
   isCancelledBooking(booking: AlegriaBooking): boolean {

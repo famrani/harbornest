@@ -8,7 +8,7 @@ export const environment = {
   serverLogLevel: NgxLoggerLevel.DEBUG,
   payment: {
     stripe: {
-      publishableKey: 'pk_test_51KtqqrAlpat25hAYD07JjjKpYNuLqgWsAHyyAyW9uNksLLxbpw3nV1ZiBqiH47ziuNMAuhDphngKyaLfrozAntgs00RetKd62D'
+      publishableKey: 'pk_live_51KtqqrAlpat25hAYT5ioWOPDPaUt7cfj4J6eyJDaEbi1DbhswNGmRnq3GBZ5Uf0YiDryDYv8Brsg4J8Kh188okj200qP73hpPT'
     }
   }
 };

@@ -18,14 +18,14 @@ SMTP_PASS=...
 
 Templates are read from Firebase:
 
-`/siteContent/{fr|en|es}/emailTemplates/{proposalReady|bookingConfirmed}`
+`/siteContent/{fr|en|es}/emailTemplates/{offerReady|bookingConfirmed}`
 
 A Firebase import patch is included in `firebase_emailTemplates_patch.json`.
 
 Supported variables include:
 
 - `{{customerName}}`
-- `{{proposalId}}`, `{{proposalUrl}}`
+- `{{offerId}}`, `{{offerUrl}}`
 - `{{bookingId}}`, `{{bookingUrl}}`
 - `{{outingType}}`, `{{outingDate}}`
 - `{{totalAmount}}`, `{{depositAmount}}`, `{{balanceAmount}}`

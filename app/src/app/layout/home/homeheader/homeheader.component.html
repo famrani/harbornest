@@ -28,19 +28,22 @@
         <summary>{{ t('nav.boat') }}</summary>
         <div class="dropdown-panel">
           <a routerLink="/bateau" routerLinkActive="active" (click)="closeMenu()">{{ boatPresentationLabel }}</a>
+          <a routerLink="/bateau/jouets-nautiques" routerLinkActive="active" (click)="closeMenu()">{{ seaToysLabel }}</a>
           <a routerLink="/galerie" routerLinkActive="active" (click)="closeMenu()">{{ galleryLabel }}</a>
           <a routerLink="/crew" routerLinkActive="active" (click)="closeMenu()">{{ crewLabel }}</a>
           <a routerLink="/safety" routerLinkActive="active" (click)="closeMenu()">{{ safetyLabel }}</a>
         </div>
       </details>
 
+
       <details class="nav-dropdown" (toggle)="onDropdownToggle($event)">
         <summary>{{ practicalInfoLabel }}</summary>
         <div class="dropdown-panel">
-          <a routerLink="/how-it-works" routerLinkActive="active" (click)="closeMenu()">{{ guestJourneyLabel }}</a>
-          <a routerLink="/faq" routerLinkActive="active" (click)="closeMenu()">{{ faqLabel }}</a>
+          <a routerLink="/booking-process" routerLinkActive="active" (click)="closeMenu()">{{ bookingProcessLabel }}</a>
           <a routerLink="/terms" routerLinkActive="active" (click)="closeMenu()">{{ termsLabel }}</a>
-          <a routerLink="/booking-process" routerLinkActive="active" (click)="closeMenu()">{{ depositLabel }}</a>
+          <a routerLink="/safety" routerLinkActive="active" (click)="closeMenu()">{{ safetyLabel }}</a>
+          <a routerLink="/faq" routerLinkActive="active" (click)="closeMenu()">{{ faqLabel }}</a>
+          <a routerLink="/how-it-works" routerLinkActive="active" (click)="closeMenu()">{{ guestJourneyLabel }}</a>
         </div>
       </details>
 
@@ -48,13 +51,13 @@
 
       <div class="language-switcher">
         <select [value]="currentLanguage" (change)="changeLanguage($any($event.target).value)" [attr.aria-label]="t('nav.languageSelector')">
-          <option value="fr">Français</option>
-          <option value="en">English</option>
-          <option value="es">Español</option>
-          <option value="it">Italiano</option>
-          <option value="de">Deutsch</option>
-          <option value="nl">Nederlands</option>
-          <option value="ru">Русский</option>
+          <option value="fr">{{ 'layout.languages.fr' | siteText:'Français' }}</option>
+          <option value="en">{{ 'layout.languages.en' | siteText:'English' }}</option>
+          <option value="es">{{ 'layout.languages.es' | siteText:'Español' }}</option>
+          <option value="it">{{ 'layout.languages.it' | siteText:'Italiano' }}</option>
+          <option value="de">{{ 'layout.languages.de' | siteText:'Deutsch' }}</option>
+          <option value="nl">{{ 'layout.languages.nl' | siteText:'Nederlands' }}</option>
+          <option value="ru">{{ 'layout.languages.ru' | siteText:'Русский' }}</option>
         </select>
       </div>
 
@@ -68,7 +71,7 @@
 
         <div class="dropdown-panel dropdown-panel-right account-admin-panel" *ngIf="isLoggedIn && isAdmin">
           <a routerLink="/my-profile" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
-          <a routerLink="/admin/proposals" routerLinkActive="active" (click)="closeMenu()">{{ proposalsLabel }}</a>
+          <a routerLink="/admin/offers" routerLinkActive="active" (click)="closeMenu()">{{ offersLabel }}</a>
           <a routerLink="/admin/bookings" routerLinkActive="active" (click)="closeMenu()">{{ reservationsLabel }}</a>
           <a routerLink="/my-payments" routerLinkActive="active" (click)="closeMenu()">{{ paymentsLabel }}</a>
 
@@ -84,7 +87,7 @@
 
         <div class="dropdown-panel dropdown-panel-right account-customer-panel" *ngIf="isLoggedIn && isCustomer">
           <a routerLink="/my-profile" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
-          <a routerLink="/my-proposals" routerLinkActive="active" (click)="closeMenu()">{{ myProposalsLabel }}</a>
+          <a routerLink="/my-offers" routerLinkActive="active" (click)="closeMenu()">{{ myOffersLabel }}</a>
           <a routerLink="/my-bookings" routerLinkActive="active" (click)="closeMenu()">{{ reservationsLabel }}</a>
           <a routerLink="/my-payments" routerLinkActive="active" (click)="closeMenu()">{{ paymentsLabel }}</a>
           <a routerLink="/my-feedbacks" routerLinkActive="active" (click)="closeMenu()">{{ myFeedbacksLabel }}</a>

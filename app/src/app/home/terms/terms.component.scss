@@ -1,76 +1,204 @@
-.terms-page {
-  padding: 80px 0;
-  background: #f6f2ea;
-  min-height: 70vh;
+app-terms {
+  display: block;
+  width: 100%;
+  color: #08263a;
 }
 
-.terms-shell {
-  max-width: 980px;
+app-terms .terms-document-page {
+  min-height: 78vh;
+  box-sizing: border-box;
+  padding: 96px 32px 120px;
+  background:
+    radial-gradient(circle at 14% 4%, rgba(11, 120, 151, 0.10), transparent 30%),
+    linear-gradient(180deg, #fbf8f1 0%, #f6f2ea 100%);
+}
+
+app-terms .terms-document-shell {
+  width: min(1120px, calc(100vw - 64px));
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
-.eyebrow {
+app-terms .terms-document-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 38px;
+}
+
+app-terms .eyebrow {
+  display: inline-block;
   text-transform: uppercase;
-  letter-spacing: .14em;
-  font-size: .78rem;
-  color: #b58b4a;
+  letter-spacing: 0.14em;
+  font-size: 14px;
+  color: #0b7897;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+app-terms h1 {
+  color: #08263a;
+  margin: 0 0 22px;
+  font-size: clamp(38px, 4.5vw, 62px);
+  line-height: 1.04;
+  max-width: 980px;
+  letter-spacing: -0.035em;
+}
+
+app-terms .intro,
+app-terms .updated {
+  color: #334155;
+  max-width: 920px;
+  font-size: 18px;
+  line-height: 1.75;
+  margin: 0 0 10px;
+}
+
+app-terms .updated {
+  font-size: 15px;
   font-weight: 700;
+  color: #64748b;
 }
 
-h1 {
+app-terms .terms-actions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+  margin-top: 32px;
+}
+
+app-terms button {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+app-terms .primary-action {
+  background: #ff8a1d;
+  color: #fff;
+}
+
+app-terms .secondary-action {
+  background: #eef6f8;
   color: #08263a;
-  margin: 8px 0 16px;
+  border: 1px solid rgba(8, 38, 58, 0.18);
 }
 
-.intro {
-  color: #516070;
-  max-width: 820px;
-  line-height: 1.7;
+app-terms .terms-card {
+  width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 64px 76px;
+  box-shadow: 0 24px 70px rgba(8, 38, 58, 0.10);
+  border: 1px solid rgba(8, 38, 58, 0.12);
 }
 
-.terms-card {
-  background: #fff;
-  border-radius: 24px;
-  padding: 32px;
-  margin-top: 28px;
-  box-shadow: 0 18px 45px rgba(8,38,58,.08);
-  border: 1px solid rgba(8,38,58,.08);
+app-terms .terms-section {
+  margin-top: 52px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(8, 38, 58, 0.10);
 }
 
-.terms-card h2 {
-  color: #08263a;
-  margin-top: 2rem;
-}
-
-.terms-card h2:first-child {
+app-terms .terms-section:first-child {
   margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
 }
 
-.terms-card p,
-.terms-card li {
-  color: #516070;
-  line-height: 1.7;
-}
-
-.process-step {
-  background: #f8f5ef;
-  border-radius: 18px;
-  padding: 1.25rem;
-  margin: 1rem 0;
-  border: 1px solid rgba(8,38,58,.06);
-}
-
-.process-step h3 {
-  margin-top: 0;
+app-terms .terms-card h2 {
   color: #08263a;
+  margin: 0 0 18px;
+  font-size: 30px;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
 }
 
-@media (max-width: 720px) {
-  .terms-page {
-    padding: 48px 0;
+app-terms .terms-card h3 {
+  color: #08263a;
+  font-size: 22px;
+  line-height: 1.35;
+  margin: 0 0 14px;
+}
+
+app-terms .terms-card p {
+  color: #334155;
+  font-size: 18px;
+  line-height: 1.85;
+  margin: 0 0 18px;
+}
+
+app-terms .process-step {
+  background: linear-gradient(180deg, #fbfaf7 0%, #f8f5ef 100%);
+  border-radius: 22px;
+  padding: 30px 34px;
+  margin: 20px 0;
+  border: 1px solid rgba(8, 38, 58, 0.10);
+}
+
+@media (max-width: 860px) {
+  app-terms .terms-document-page {
+    padding: 72px 16px 80px;
   }
 
-  .terms-card {
-    padding: 22px;
+  app-terms .terms-document-shell {
+    width: calc(100vw - 32px);
+  }
+
+  app-terms .terms-document-header {
+    display: block;
+  }
+
+  app-terms .terms-actions {
+    margin-top: 20px;
+  }
+
+  app-terms h1 {
+    font-size: 36px;
+  }
+
+  app-terms .intro {
+    font-size: 16px;
+  }
+
+  app-terms .terms-card {
+    border-radius: 22px;
+    padding: 30px 22px;
+  }
+
+  app-terms .terms-card h2 {
+    font-size: 24px;
+  }
+
+  app-terms .terms-card h3 {
+    font-size: 20px;
+  }
+
+  app-terms .terms-card p {
+    font-size: 16px;
+  }
+}
+
+@media print {
+  app-terms .terms-document-page {
+    background: #fff;
+    padding: 0;
+  }
+
+  app-terms .terms-document-shell {
+    width: auto;
+  }
+
+  app-terms .terms-actions {
+    display: none;
+  }
+
+  app-terms .terms-card {
+    box-shadow: none;
+    border: 0;
+    padding: 0;
   }
 }

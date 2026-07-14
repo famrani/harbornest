@@ -36,7 +36,7 @@ export interface GuestJourneyContent {
 export interface GuestInfoFirebaseContent {
   guestFaq: Partial<Record<SiteLanguage, GuestFaqContent>> & { fr: GuestFaqContent; en?: GuestFaqContent; es?: GuestFaqContent; it?: GuestFaqContent; de?: GuestFaqContent; nl?: GuestFaqContent; ru?: GuestFaqContent };
   guestJourney: Partial<Record<SiteLanguage, GuestJourneyContent>> & { fr: GuestJourneyContent; en?: GuestJourneyContent; es?: GuestJourneyContent; it?: GuestJourneyContent; de?: GuestJourneyContent; nl?: GuestJourneyContent; ru?: GuestJourneyContent };
-  proposalInfo?: Partial<Record<SiteLanguage, any>>;
+  offerInfo?: Partial<Record<SiteLanguage, any>>;
   bookingInfo?: Partial<Record<SiteLanguage, any>>;
 }
 
@@ -431,7 +431,7 @@ export const DEFAULT_GUEST_INFO_CONTENT: GuestInfoFirebaseContent = {
   "guestJourney": {
     "fr": {
       "eyebrow": "Votre sortie pas à pas",
-      "title": "Comment se déroule votre sortie en mer",
+      "title": "Votre sortie en mer",
       "intro": "Voici le déroulé type d’une sortie à bord d’Alegria, depuis votre arrivée au port jusqu’au retour à la marina.",
       "addressLabel": "Adresse exacte du rendez-vous",
       "address": "Point de rendez-vous confirmé avant la sortie",
@@ -1241,7 +1241,7 @@ export class GuestContentService {
         const url = `${baseUrl}/guestInfo.json`;
         const value = await firstValueFrom(this.http.get<any | null>(url));
         const content = this.unwrapGuestInfo(value);
-        if (content?.guestFaq || content?.guestJourney || content?.proposalInfo || content?.bookingInfo) {
+        if (content?.guestFaq || content?.guestJourney || content?.offerInfo || content?.bookingInfo) {
           this.cached = this.mergeWithDefaults(content as GuestInfoFirebaseContent);
           return this.cached;
         }
@@ -1272,7 +1272,7 @@ export class GuestContentService {
         ...DEFAULT_GUEST_INFO_CONTENT.guestJourney,
         ...(value.guestJourney || {}),
       },
-      proposalInfo: value.proposalInfo,
+      offerInfo: value.offerInfo,
       bookingInfo: value.bookingInfo,
     };
   }

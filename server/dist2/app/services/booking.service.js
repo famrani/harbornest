@@ -103,7 +103,7 @@ function numericValue(...values) {
     }
     return 0;
 }
-function proposalFinancialBreakdown(record) {
+function offerFinancialBreakdown(record) {
     const raw = record?.raw || {};
     const boatAmount = numericValue(record?.proposalBoatPrice, record?.boatPrice, record?.estimatedBoatPrice, raw?.proposalBoatPrice, raw?.boatPrice, raw?.estimatedBoatPrice);
     const fuelAmount = numericValue(record?.proposalFuelPrice, record?.fuelPrice, record?.fuelAmount, raw?.proposalFuelPrice, raw?.fuelPrice, raw?.fuelAmount);
@@ -116,8 +116,8 @@ function proposalFinancialBreakdown(record) {
     const warrantyAmount = numericValue(record?.warrantyAmount, record?.depositWarrantyAmount, raw?.warrantyAmount, raw?.depositWarrantyAmount);
     return { boatAmount, fuelAmount, extraAmount, skipperAmount, alegriaAmount, customerTotal, depositAmount, balanceAmount, warrantyAmount };
 }
-function proposalSummaryHtml(record) {
-    const f = proposalFinancialBreakdown(record);
+function offerSummaryHtml(record) {
+    const f = offerFinancialBreakdown(record);
     const rows = [
         ['Sortie', record?.outingType || record?.raw?.outingType || ''],
         ['Date', record?.outingDate || record?.raw?.outingDate || ''],
@@ -137,71 +137,71 @@ function proposalSummaryHtml(record) {
 }
 const DEFAULT_EMAIL_TEMPLATES = {
     fr: {
-        proposalReady: {
-            subject: 'Votre proposition Alegria est prête',
-            title: 'Votre proposition est prête',
-            buttonText: 'Voir et confirmer ma proposition',
-            html: '<p>Bonjour {{customerName}},</p><p>Votre proposition pour votre sortie Alegria est maintenant disponible.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p><p><a href="{{proposalUrl}}">{{proposalUrl}}</a></p>',
+        offerReady: {
+            subject: 'Votre offre Alegria est prête',
+            title: 'Votre offre est prête',
+            buttonText: 'Voir et confirmer ma offre',
+            html: '<p>Bonjour {{customerName}},</p><p>Votre offre pour votre sortie Alegria est maintenant disponible.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p><p><a href="{{offerUrl}}">{{offerUrl}}</a></p>',
             footer: 'À bientôt à bord,<br/>L’équipe Alegria'
         },
         bookingConfirmed: {
             subject: 'Votre réservation Alegria est confirmée',
             title: 'Votre réservation est confirmée',
             buttonText: 'Ouvrir ma réservation',
-            html: '<p>Bonjour {{customerName}},</p><p>Merci, votre proposition a bien été confirmée et transformée en réservation.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{bookingUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p><p><a href="{{bookingUrl}}">{{bookingUrl}}</a></p>',
+            html: '<p>Bonjour {{customerName}},</p><p>Merci, votre offre a bien été confirmée et transformée en réservation.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{bookingUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p><p><a href="{{bookingUrl}}">{{bookingUrl}}</a></p>',
             footer: 'À bientôt à bord,<br/>L’équipe Alegria'
         },
         bookingRequestAdmin: {
             subject: 'Nouvelle demande de sortie Alegria - {{outingType}} - {{outingDate}} - {{customerName}}',
             title: 'Nouvelle demande de sortie',
             buttonText: 'Ouvrir la demande',
-            html: '<p>Une nouvelle demande de sortie vient d’être envoyée par {{customerName}}.</p>{{summaryHtml}}<p><strong>Client :</strong> {{customerName}}<br/><strong>Email :</strong> {{customerEmail}}<br/><strong>Téléphone :</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p><p><a href="{{proposalUrl}}">{{proposalUrl}}</a></p>',
+            html: '<p>Une nouvelle demande de sortie vient d’être envoyée par {{customerName}}.</p>{{summaryHtml}}<p><strong>Client :</strong> {{customerName}}<br/><strong>Email :</strong> {{customerEmail}}<br/><strong>Téléphone :</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p><p><a href="{{offerUrl}}">{{offerUrl}}</a></p>',
             footer: 'Notification automatique Alegria'
         },
         bookingRequestCustomer: {
             subject: 'Nous avons bien reçu votre demande Alegria',
             title: 'Votre demande a bien été envoyée',
             buttonText: 'Voir ma demande',
-            html: '<p>Bonjour {{customerName}},</p><p>Merci, nous avons bien reçu votre demande de sortie Alegria. Notre équipe va préparer une proposition personnalisée avec le prix bateau, le prix skipper et les éventuels services complémentaires.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>',
+            html: '<p>Bonjour {{customerName}},</p><p>Merci, nous avons bien reçu votre demande de sortie Alegria. Notre équipe va préparer une offre personnalisée avec le prix bateau, le prix skipper et les éventuels services complémentaires.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>',
             footer: 'À bientôt à bord,<br/>L’équipe Alegria'
         }
     },
     en: {
-        proposalReady: {
-            subject: 'Your Alegria proposal is ready',
-            title: 'Your proposal is ready',
-            buttonText: 'View and confirm my proposal',
-            html: '<p>Hello {{customerName}},</p><p>Your Alegria outing proposal is now available.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>If the button does not work, copy this link into your browser:</p><p><a href="{{proposalUrl}}">{{proposalUrl}}</a></p>',
+        offerReady: {
+            subject: 'Your Alegria offer is ready',
+            title: 'Your offer is ready',
+            buttonText: 'View and confirm my offer',
+            html: '<p>Hello {{customerName}},</p><p>Your Alegria outing offer is now available.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>If the button does not work, copy this link into your browser:</p><p><a href="{{offerUrl}}">{{offerUrl}}</a></p>',
             footer: 'See you soon on board,<br/>The Alegria Team'
         },
         bookingConfirmed: {
             subject: 'Your Alegria booking is confirmed',
             title: 'Your booking is confirmed',
             buttonText: 'Open my booking',
-            html: '<p>Hello {{customerName}},</p><p>Thank you, your proposal has been confirmed and converted into a booking.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{bookingUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>If the button does not work, copy this link into your browser:</p><p><a href="{{bookingUrl}}">{{bookingUrl}}</a></p>',
+            html: '<p>Hello {{customerName}},</p><p>Thank you, your offer has been confirmed and converted into a booking.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{bookingUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>If the button does not work, copy this link into your browser:</p><p><a href="{{bookingUrl}}">{{bookingUrl}}</a></p>',
             footer: 'See you soon on board,<br/>The Alegria Team'
         },
         bookingRequestAdmin: {
             subject: 'New Alegria outing request - {{outingType}} - {{outingDate}} - {{customerName}}',
             title: 'New outing request',
             buttonText: 'Open the request',
-            html: '<p>A new outing request has just been submitted by {{customerName}}.</p>{{summaryHtml}}<p><strong>Customer:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Phone:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>If the button does not work, copy this link into your browser:</p><p><a href="{{proposalUrl}}">{{proposalUrl}}</a></p>',
+            html: '<p>A new outing request has just been submitted by {{customerName}}.</p>{{summaryHtml}}<p><strong>Customer:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Phone:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>If the button does not work, copy this link into your browser:</p><p><a href="{{offerUrl}}">{{offerUrl}}</a></p>',
             footer: 'Automatic Alegria notification'
         },
         bookingRequestCustomer: {
             subject: 'We have received your Alegria request',
             title: 'Your request has been sent',
             buttonText: 'View my request',
-            html: '<p>Hello {{customerName}},</p><p>Thank you, we have received your Alegria outing request. Our team will prepare a personalized proposal with the boat price, skipper price and any additional services.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>',
+            html: '<p>Hello {{customerName}},</p><p>Thank you, we have received your Alegria outing request. Our team will prepare a personalized offer with the boat price, skipper price and any additional services.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>',
             footer: 'See you soon on board,<br/>The Alegria Team'
         }
     },
     es: {
-        proposalReady: {
+        offerReady: {
             subject: 'Tu propuesta Alegria está lista',
             title: 'Tu propuesta está lista',
             buttonText: 'Ver y confirmar mi propuesta',
-            html: '<p>Hola {{customerName}},</p><p>Tu propuesta para la salida Alegria ya está disponible.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si el botón no funciona, copia este enlace en tu navegador:</p><p><a href="{{proposalUrl}}">{{proposalUrl}}</a></p>',
+            html: '<p>Hola {{customerName}},</p><p>Tu propuesta para la salida Alegria ya está disponible.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si el botón no funciona, copia este enlace en tu navegador:</p><p><a href="{{offerUrl}}">{{offerUrl}}</a></p>',
             footer: 'Hasta pronto a bordo,<br/>El equipo Alegria'
         },
         bookingConfirmed: {
@@ -215,32 +215,32 @@ const DEFAULT_EMAIL_TEMPLATES = {
             subject: 'Nueva solicitud de salida Alegria - {{outingType}} - {{outingDate}} - {{customerName}}',
             title: 'Nueva solicitud de salida',
             buttonText: 'Abrir la solicitud',
-            html: '<p>{{customerName}} acaba de enviar una nueva solicitud de salida.</p>{{summaryHtml}}<p><strong>Cliente:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Teléfono:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si el botón no funciona, copia este enlace en tu navegador:</p><p><a href="{{proposalUrl}}">{{proposalUrl}}</a></p>',
+            html: '<p>{{customerName}} acaba de enviar una nueva solicitud de salida.</p>{{summaryHtml}}<p><strong>Cliente:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Teléfono:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p><p>Si el botón no funciona, copia este enlace en tu navegador:</p><p><a href="{{offerUrl}}">{{offerUrl}}</a></p>',
             footer: 'Notificación automática de Alegria'
         },
         bookingRequestCustomer: {
             subject: 'Hemos recibido tu solicitud Alegria',
             title: 'Tu solicitud ha sido enviada',
             buttonText: 'Ver mi solicitud',
-            html: '<p>Hola {{customerName}},</p><p>Gracias, hemos recibido tu solicitud de salida Alegria. Nuestro equipo preparará una propuesta personalizada con el precio del barco, el precio del skipper y los servicios adicionales.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>',
+            html: '<p>Hola {{customerName}},</p><p>Gracias, hemos recibido tu solicitud de salida Alegria. Nuestro equipo preparará una propuesta personalizada con el precio del barco, el precio del skipper y los servicios adicionales.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>',
             footer: 'Hasta pronto a bordo,<br/>El equipo Alegria'
         }
     },
     it: {
-        bookingRequestAdmin: { subject: 'Nuova richiesta Alegria - {{outingType}} - {{outingDate}} - {{customerName}}', title: 'Nuova richiesta di uscita', buttonText: 'Apri la richiesta', html: '<p>È stata inviata una nuova richiesta di uscita da {{customerName}}.</p>{{summaryHtml}}<p><strong>Cliente:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Telefono:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Notifica automatica Alegria' },
-        bookingRequestCustomer: { subject: 'Abbiamo ricevuto la tua richiesta Alegria', title: 'La tua richiesta è stata inviata', buttonText: 'Vedi la mia richiesta', html: '<p>Ciao {{customerName}},</p><p>Grazie, abbiamo ricevuto la tua richiesta di uscita Alegria. Il nostro team preparerà una proposta personalizzata con il prezzo della barca, il prezzo dello skipper e gli eventuali servizi aggiuntivi.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'A presto a bordo,<br/>Il team Alegria' }
+        bookingRequestAdmin: { subject: 'Nuova richiesta Alegria - {{outingType}} - {{outingDate}} - {{customerName}}', title: 'Nuova richiesta di uscita', buttonText: 'Apri la richiesta', html: '<p>È stata inviata una nuova richiesta di uscita da {{customerName}}.</p>{{summaryHtml}}<p><strong>Cliente:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Telefono:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Notifica automatica Alegria' },
+        bookingRequestCustomer: { subject: 'Abbiamo ricevuto la tua richiesta Alegria', title: 'La tua richiesta è stata inviata', buttonText: 'Vedi la mia richiesta', html: '<p>Ciao {{customerName}},</p><p>Grazie, abbiamo ricevuto la tua richiesta di uscita Alegria. Il nostro team preparerà una proposta personalizzata con il prezzo della barca, il prezzo dello skipper e gli eventuali servizi aggiuntivi.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'A presto a bordo,<br/>Il team Alegria' }
     },
     de: {
-        bookingRequestAdmin: { subject: 'Neue Alegria-Anfrage - {{outingType}} - {{outingDate}} - {{customerName}}', title: 'Neue Ausflugsanfrage', buttonText: 'Anfrage öffnen', html: '<p>Eine neue Ausflugsanfrage wurde von {{customerName}} gesendet.</p>{{summaryHtml}}<p><strong>Kunde:</strong> {{customerName}}<br/><strong>E-Mail:</strong> {{customerEmail}}<br/><strong>Telefon:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Automatische Alegria-Benachrichtigung' },
-        bookingRequestCustomer: { subject: 'Wir haben Ihre Alegria-Anfrage erhalten', title: 'Ihre Anfrage wurde gesendet', buttonText: 'Meine Anfrage ansehen', html: '<p>Hallo {{customerName}},</p><p>Vielen Dank, wir haben Ihre Alegria-Ausflugsanfrage erhalten. Unser Team erstellt ein individuelles Angebot mit Bootspreis, Skipperpreis und eventuellen Zusatzleistungen.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Bis bald an Bord,<br/>Das Alegria-Team' }
+        bookingRequestAdmin: { subject: 'Neue Alegria-Anfrage - {{outingType}} - {{outingDate}} - {{customerName}}', title: 'Neue Ausflugsanfrage', buttonText: 'Anfrage öffnen', html: '<p>Eine neue Ausflugsanfrage wurde von {{customerName}} gesendet.</p>{{summaryHtml}}<p><strong>Kunde:</strong> {{customerName}}<br/><strong>E-Mail:</strong> {{customerEmail}}<br/><strong>Telefon:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Automatische Alegria-Benachrichtigung' },
+        bookingRequestCustomer: { subject: 'Wir haben Ihre Alegria-Anfrage erhalten', title: 'Ihre Anfrage wurde gesendet', buttonText: 'Meine Anfrage ansehen', html: '<p>Hallo {{customerName}},</p><p>Vielen Dank, wir haben Ihre Alegria-Ausflugsanfrage erhalten. Unser Team erstellt ein individuelles Angebot mit Bootspreis, Skipperpreis und eventuellen Zusatzleistungen.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Bis bald an Bord,<br/>Das Alegria-Team' }
     },
     nl: {
-        bookingRequestAdmin: { subject: 'Nieuwe Alegria-aanvraag - {{outingType}} - {{outingDate}} - {{customerName}}', title: 'Nieuwe aanvraag voor een uitstap', buttonText: 'Aanvraag openen', html: '<p>Er is een nieuwe uitstapaanvraag verzonden door {{customerName}}.</p>{{summaryHtml}}<p><strong>Klant:</strong> {{customerName}}<br/><strong>E-mail:</strong> {{customerEmail}}<br/><strong>Telefoon:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Automatische Alegria-melding' },
-        bookingRequestCustomer: { subject: 'We hebben je Alegria-aanvraag ontvangen', title: 'Je aanvraag is verzonden', buttonText: 'Mijn aanvraag bekijken', html: '<p>Hallo {{customerName}},</p><p>Dank je, we hebben je Alegria-uitstapaanvraag ontvangen. Ons team maakt een persoonlijk voorstel met de bootprijs, de skipperprijs en eventuele extra diensten.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Tot snel aan boord,<br/>Het Alegria-team' }
+        bookingRequestAdmin: { subject: 'Nieuwe Alegria-aanvraag - {{outingType}} - {{outingDate}} - {{customerName}}', title: 'Nieuwe aanvraag voor een uitstap', buttonText: 'Aanvraag openen', html: '<p>Er is een nieuwe uitstapaanvraag verzonden door {{customerName}}.</p>{{summaryHtml}}<p><strong>Klant:</strong> {{customerName}}<br/><strong>E-mail:</strong> {{customerEmail}}<br/><strong>Telefoon:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Automatische Alegria-melding' },
+        bookingRequestCustomer: { subject: 'We hebben je Alegria-aanvraag ontvangen', title: 'Je aanvraag is verzonden', buttonText: 'Mijn aanvraag bekijken', html: '<p>Hallo {{customerName}},</p><p>Dank je, we hebben je Alegria-uitstapaanvraag ontvangen. Ons team maakt een persoonlijk voorstel met de bootprijs, de skipperprijs en eventuele extra diensten.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Tot snel aan boord,<br/>Het Alegria-team' }
     },
     ru: {
-        bookingRequestAdmin: { subject: 'Новая заявка Alegria - {{outingType}} - {{outingDate}} - {{customerName}}', title: 'Новая заявка на прогулку', buttonText: 'Открыть заявку', html: '<p>Новая заявка на прогулку была отправлена клиентом {{customerName}}.</p>{{summaryHtml}}<p><strong>Клиент:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Телефон:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Автоматическое уведомление Alegria' },
-        bookingRequestCustomer: { subject: 'Мы получили вашу заявку Alegria', title: 'Ваша заявка отправлена', buttonText: 'Посмотреть мою заявку', html: '<p>Здравствуйте, {{customerName}},</p><p>Спасибо, мы получили вашу заявку на прогулку Alegria. Наша команда подготовит персональное предложение с ценой лодки, ценой шкипера и дополнительными услугами.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{proposalUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'До скорой встречи на борту,<br/>Команда Alegria' }
+        bookingRequestAdmin: { subject: 'Новая заявка Alegria - {{outingType}} - {{outingDate}} - {{customerName}}', title: 'Новая заявка на прогулку', buttonText: 'Открыть заявку', html: '<p>Новая заявка на прогулку была отправлена клиентом {{customerName}}.</p>{{summaryHtml}}<p><strong>Клиент:</strong> {{customerName}}<br/><strong>Email:</strong> {{customerEmail}}<br/><strong>Телефон:</strong> {{customerPhone}}</p><p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'Автоматическое уведомление Alegria' },
+        bookingRequestCustomer: { subject: 'Мы получили вашу заявку Alegria', title: 'Ваша заявка отправлена', buttonText: 'Посмотреть мою заявку', html: '<p>Здравствуйте, {{customerName}},</p><p>Спасибо, мы получили вашу заявку на прогулку Alegria. Наша команда подготовит персональное предложение с ценой лодки, ценой шкипера и дополнительными услугами.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>', footer: 'До скорой встречи на борту,<br/>Команда Alegria' }
     }
 };
 function normalizeLang(record) {
@@ -339,9 +339,9 @@ function buildNotificationRecipients(payload) {
 function humanNotificationType(type) {
     const value = String(type || '').toLowerCase();
     const labels = {
-        proposal_created: 'Proposition créée',
-        proposal_updated: 'Proposition mise à jour',
-        proposal_sent: 'Proposition envoyée',
+        offer_created: 'Offre créée',
+        offer_updated: 'Offre mise à jour',
+        offer_sent: 'Offre envoyée',
         booking_updated: 'Réservation mise à jour',
         booking_confirmed: 'Réservation confirmée',
         payment_completed: 'Paiement reçu',
@@ -365,7 +365,7 @@ function notificationSummaryHtml(payload) {
     const allRows = [
         ['Type', humanNotificationType(payload.type)],
         ['Réservation', payload.bookingId || ''],
-        ['Proposition', payload.proposalId || ''],
+        ['Offre', payload.offerId || ''],
         ['Client', payload.customerName || ''],
         ['Email client', payload.customerEmail || ''],
         ['Téléphone', payload.customerPhone || ''],
@@ -393,7 +393,7 @@ function notificationSummaryHtml(payload) {
 }
 function buildNotificationEmail(payload, recipientRole, baseUrl) {
     const label = humanNotificationType(payload.type);
-    const ref = firstNonEmpty(payload.bookingId, payload.proposalId);
+    const ref = firstNonEmpty(payload.bookingId, payload.offerId);
     const subjectParts = [`Alegria - ${label}`];
     if (ref)
         subjectParts.push(`#${ref}`);
@@ -401,10 +401,10 @@ function buildNotificationEmail(payload, recipientRole, baseUrl) {
         subjectParts.push(formatMoneyEuro(payload.amount));
     const customerName = firstNonEmpty(payload.customerName, 'Client Alegria');
     const safeBaseUrl = String(baseUrl || process.env.ALEGRIA_APP_URL || process.env.APP_PUBLIC_URL || '').replace(/\/$/, '');
-    const proposalUrl = firstNonEmpty(payload.proposalUrl, payload.proposalId && safeBaseUrl ? `${safeBaseUrl}/proposal/${encodeURIComponent(payload.proposalId)}` : '');
+    const offerUrl = firstNonEmpty(payload.offerUrl, payload.offerId && safeBaseUrl ? `${safeBaseUrl}/offer/${encodeURIComponent(payload.offerId)}` : '');
     const bookingUrl = firstNonEmpty(payload.bookingUrl, payload.bookingId && safeBaseUrl ? `${safeBaseUrl}/booking/${encodeURIComponent(payload.bookingId)}` : '');
-    const actionUrl = proposalUrl || bookingUrl;
-    const actionLabel = proposalUrl ? 'Voir la proposition' : 'Voir la réservation';
+    const actionUrl = offerUrl || bookingUrl;
+    const actionLabel = offerUrl ? 'Voir la offre' : 'Voir la réservation';
     const actionHtml = actionUrl ? `
             <p style="margin:24px 0;">
               <a href="${escapeHtml(actionUrl)}" style="background:#0b4b5a;color:#ffffff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:700;">${escapeHtml(actionLabel)}</a>
@@ -654,28 +654,102 @@ class BookingsService {
             .filter((item) => item && item.active !== false)
             .sort((a, b) => Number(a.sortOrder ?? 999) - Number(b.sortOrder ?? 999));
     }
-    async notifyBookingRequestCreated(req, proposalId) {
-        const snap = await this.storeDbc.db.ref(`/bnProposals/${proposalId}`).once('value');
-        const proposal = snap.val();
-        if (!proposal)
-            throw new Error('Proposal request not found');
-        const lang = normalizeLang(proposal);
-        const email = pickCustomerEmail(proposal);
-        const name = pickCustomerName(proposal);
+    async notifyCustomerRequestChange(req, kind, source, id, patchPayload = {}) {
+        const path = source === 'booking' ? `/bnBookings/${id}` : `/bnProposals/${id}`;
+        const snap = await this.storeDbc.db.ref(path).once('value');
+        const record = snap.val();
+        if (!record)
+            throw new Error(`${source} request not found`);
+        const lang = normalizeLang(record);
+        const email = pickCustomerEmail(record);
+        const name = pickCustomerName(record);
         const origin = getPublicAppOrigin(req);
-        const proposalUrl = `${origin}/admin/proposals`;
-        const customerProposalUrl = `${origin}/my-proposals`;
-        const finance = proposalFinancialBreakdown(proposal);
+        const adminUrl = source === 'booking' ? `${origin}/admin/bookings/${encodeURIComponent(id)}` : `${origin}/admin/offers`;
+        const customerUrl = `${origin}/my-offers`;
+        const finance = offerFinancialBreakdown(record);
         const data = {
             customerName: name || '',
             customerEmail: email || '',
-            customerPhone: proposal?.customerPhone || proposal?.phone || proposal?.raw?.customerPhone || '',
-            proposalId,
-            proposalUrl,
-            customerProposalUrl,
-            summaryHtml: proposalSummaryHtml(proposal),
-            outingType: proposal?.outingType || proposal?.raw?.outingType || '',
-            outingDate: proposal?.outingDate || proposal?.raw?.outingDate || '',
+            customerPhone: record?.customerPhone || record?.phone || record?.raw?.customerPhone || '',
+            bookingId: source === 'booking' ? id : (record?.relatedBookingId || record?.bookingId || ''),
+            offerId: source === 'offer' ? id : (record?.offerId || ''),
+            offerUrl: adminUrl,
+            bookingUrl: adminUrl,
+            customerOfferUrl: customerUrl,
+            summaryHtml: offerSummaryHtml({ ...record, ...(patchPayload || {}) }),
+            outingType: record?.outingType || record?.raw?.outingType || '',
+            outingDate: record?.outingDate || record?.raw?.outingDate || '',
+            totalAmount: formatMoneyEuro(finance.customerTotal),
+            customerTotal: formatMoneyEuro(finance.customerTotal),
+            boatAmount: formatMoneyEuro(finance.boatAmount),
+            fuelAmount: formatMoneyEuro(finance.fuelAmount),
+            extraServicesAmount: formatMoneyEuro(finance.extraAmount),
+            skipperAmount: formatMoneyEuro(finance.skipperAmount),
+            skipperFee: formatMoneyEuro(finance.skipperAmount),
+            alegriaAmount: formatMoneyEuro(finance.alegriaAmount),
+            depositAmount: formatMoneyEuro(finance.depositAmount),
+            balanceAmount: formatMoneyEuro(finance.balanceAmount),
+            warrantyAmount: formatMoneyEuro(finance.warrantyAmount),
+        };
+        const adminKey = kind === 'cancelled' ? 'bookingRequestCancelledAdmin' : 'bookingRequestUpdatedAdmin';
+        const customerKey = kind === 'cancelled' ? 'bookingRequestCancelledCustomer' : 'bookingRequestUpdatedCustomer';
+        const defaultAdminSubject = kind === 'cancelled' ? 'Demande Alegria annulée par le client' : 'Demande Alegria modifiée par le client';
+        const defaultCustomerSubject = kind === 'cancelled' ? 'Votre demande Alegria a été annulée' : 'Votre demande Alegria a été modifiée';
+        const adminTemplate = await loadEmailTemplate(this.storeDbc.db, lang, adminKey);
+        const adminSubject = renderTemplateString(adminTemplate.subject || defaultAdminSubject, data, false);
+        const adminHtml = wrapEmailLayout({
+            ...adminTemplate,
+            title: adminTemplate.title || defaultAdminSubject,
+            buttonText: adminTemplate.buttonText || 'Ouvrir la demande',
+            html: adminTemplate.html || '<p>La demande de {{customerName}} a été mise à jour.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{offerUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>',
+            footer: adminTemplate.footer || 'Notification automatique Alegria'
+        }, data);
+        const adminEmail = getAdminNotificationEmail();
+        await this.mailer.sendToOwner(adminSubject, adminHtml, adminEmail);
+        let customerSent = false;
+        if (email) {
+            const customerTemplate = await loadEmailTemplate(this.storeDbc.db, lang, customerKey);
+            const customerSubject = renderTemplateString(customerTemplate.subject || defaultCustomerSubject, data, false);
+            const customerHtml = wrapEmailLayout({
+                ...customerTemplate,
+                title: customerTemplate.title || defaultCustomerSubject,
+                buttonText: customerTemplate.buttonText || 'Voir ma demande',
+                html: customerTemplate.html || '<p>Bonjour {{customerName}},</p><p>Votre demande Alegria a été mise à jour.</p>{{summaryHtml}}<p style="margin:24px 0;"><a href="{{customerOfferUrl}}" style="background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;">{{buttonText}}</a></p>',
+                footer: customerTemplate.footer || 'À bientôt à bord,<br/>L’équipe Alegria'
+            }, { ...data, offerUrl: customerUrl });
+            await this.mailer.sendToGuest(email, customerSubject, customerHtml);
+            customerSent = true;
+        }
+        const update = {
+            lastCustomerRequestNotificationAt: Date.now(),
+            lastCustomerRequestNotificationKind: kind,
+            lastCustomerRequestNotificationAdminEmail: adminEmail,
+            lastCustomerRequestNotificationCustomerEmail: customerSent ? email : null,
+        };
+        await this.storeDbc.db.ref(path).update(update).catch(() => undefined);
+    }
+    async notifyBookingRequestCreated(req, offerId) {
+        const snap = await this.storeDbc.db.ref(`/bnProposals/${offerId}`).once('value');
+        const offer = snap.val();
+        if (!offer)
+            throw new Error('Offer request not found');
+        const lang = normalizeLang(offer);
+        const email = pickCustomerEmail(offer);
+        const name = pickCustomerName(offer);
+        const origin = getPublicAppOrigin(req);
+        const offerUrl = `${origin}/admin/offers`;
+        const customerOfferUrl = `${origin}/my-offers`;
+        const finance = offerFinancialBreakdown(offer);
+        const data = {
+            customerName: name || '',
+            customerEmail: email || '',
+            customerPhone: offer?.customerPhone || offer?.phone || offer?.raw?.customerPhone || '',
+            offerId,
+            offerUrl,
+            customerOfferUrl,
+            summaryHtml: offerSummaryHtml(offer),
+            outingType: offer?.outingType || offer?.raw?.outingType || '',
+            outingDate: offer?.outingDate || offer?.raw?.outingDate || '',
             totalAmount: formatMoneyEuro(finance.customerTotal),
             customerTotal: formatMoneyEuro(finance.customerTotal),
             boatAmount: formatMoneyEuro(finance.boatAmount),
@@ -697,11 +771,11 @@ class BookingsService {
         if (email) {
             const customerTemplate = await loadEmailTemplate(this.storeDbc.db, lang, 'bookingRequestCustomer');
             const customerSubject = renderTemplateString(customerTemplate.subject || 'Nous avons bien reçu votre demande Alegria', data, false);
-            const customerHtml = wrapEmailLayout(customerTemplate, { ...data, proposalUrl: customerProposalUrl });
+            const customerHtml = wrapEmailLayout(customerTemplate, { ...data, offerUrl: customerOfferUrl });
             await this.mailer.sendToGuest(email, customerSubject, customerHtml);
             customerSent = true;
         }
-        await this.storeDbc.db.ref(`/bnProposals/${proposalId}`).update({
+        await this.storeDbc.db.ref(`/bnProposals/${offerId}`).update({
             requestEmailSentAt: Date.now(),
             requestAdminEmailSentTo: adminEmail,
             requestCustomerEmailSentTo: customerSent ? email : null,
@@ -709,27 +783,27 @@ class BookingsService {
             requestEmailLanguage: lang,
         });
     }
-    async notifyProposalReady(req, proposalId) {
-        const snap = await this.storeDbc.db.ref(`/bnProposals/${proposalId}`).once('value');
-        const proposal = snap.val();
-        if (!proposal)
-            throw new Error('Proposal not found');
-        const email = pickCustomerEmail(proposal);
+    async notifyOfferReady(req, offerId) {
+        const snap = await this.storeDbc.db.ref(`/bnProposals/${offerId}`).once('value');
+        const offer = snap.val();
+        if (!offer)
+            throw new Error('Offer not found');
+        const email = pickCustomerEmail(offer);
         if (!email)
-            throw new Error('Customer email missing on proposal');
-        const lang = normalizeLang(proposal);
-        const name = pickCustomerName(proposal);
+            throw new Error('Customer email missing on offer');
+        const lang = normalizeLang(offer);
+        const name = pickCustomerName(offer);
         const origin = getPublicAppOrigin(req);
-        const proposalUrl = `${origin}/proposal/${encodeURIComponent(proposalId)}`;
-        const template = await loadEmailTemplate(this.storeDbc.db, lang, 'proposalReady');
-        const finance = proposalFinancialBreakdown(proposal);
+        const offerUrl = `${origin}/offer/${encodeURIComponent(offerId)}`;
+        const template = await loadEmailTemplate(this.storeDbc.db, lang, 'offerReady');
+        const finance = offerFinancialBreakdown(offer);
         const data = {
             customerName: name || '',
-            proposalId,
-            proposalUrl,
-            summaryHtml: proposalSummaryHtml(proposal),
-            outingType: proposal?.outingType || proposal?.raw?.outingType || '',
-            outingDate: proposal?.outingDate || proposal?.raw?.outingDate || '',
+            offerId,
+            offerUrl,
+            summaryHtml: offerSummaryHtml(offer),
+            outingType: offer?.outingType || offer?.raw?.outingType || '',
+            outingDate: offer?.outingDate || offer?.raw?.outingDate || '',
             totalAmount: formatMoneyEuro(finance.customerTotal),
             customerTotal: formatMoneyEuro(finance.customerTotal),
             boatAmount: formatMoneyEuro(finance.boatAmount),
@@ -742,13 +816,13 @@ class BookingsService {
             balanceAmount: formatMoneyEuro(finance.balanceAmount),
             warrantyAmount: formatMoneyEuro(finance.warrantyAmount),
         };
-        const subject = renderTemplateString(template.subject || 'Votre proposition Alegria est prête', data, false);
+        const subject = renderTemplateString(template.subject || 'Votre offre Alegria est prête', data, false);
         const html = wrapEmailLayout(template, data);
         await this.mailer.sendToGuest(email, subject, html);
-        await this.storeDbc.db.ref(`/bnProposals/${proposalId}`).update({
+        await this.storeDbc.db.ref(`/bnProposals/${offerId}`).update({
             proposalEmailSentAt: Date.now(),
             proposalEmailSentTo: email,
-            proposalEmailTemplateKey: 'proposalReady',
+            proposalEmailTemplateKey: 'offerReady',
             proposalEmailLanguage: lang,
         });
     }
@@ -765,12 +839,12 @@ class BookingsService {
         const origin = getPublicAppOrigin(req);
         const bookingUrl = `${origin}/bookings/${encodeURIComponent(bookingId)}`;
         const template = await loadEmailTemplate(this.storeDbc.db, lang, 'bookingConfirmed');
-        const finance = proposalFinancialBreakdown(booking);
+        const finance = offerFinancialBreakdown(booking);
         const data = {
             customerName: name || '',
             bookingId,
             bookingUrl,
-            summaryHtml: proposalSummaryHtml(booking),
+            summaryHtml: offerSummaryHtml(booking),
             outingType: booking?.outingType || booking?.raw?.outingType || '',
             outingDate: booking?.outingDate || booking?.raw?.outingDate || '',
             totalAmount: formatMoneyEuro(finance.customerTotal),
@@ -825,9 +899,49 @@ class BookingsService {
                 return res.status(500).json({ ok: false, error: e?.message || String(e) });
             }
         });
-        router.post('/api/proposals/:proposalId/notify-request-created', async (req, res) => {
+        router.post('/api/bookings/:bookingId/notify-updated', async (req, res) => {
             try {
-                await this.notifyBookingRequestCreated(req, req.params.proposalId);
+                await this.notifyCustomerRequestChange(req, 'updated', 'booking', req.params.bookingId, req.body?.payload || {});
+                return res.json({ ok: true });
+            }
+            catch (e) {
+                console.error('[MAIL] booking request update notification failed:', e);
+                return res.status(500).json({ ok: false, error: e?.message || String(e) });
+            }
+        });
+        router.post('/api/bookings/:bookingId/notify-cancelled', async (req, res) => {
+            try {
+                await this.notifyCustomerRequestChange(req, 'cancelled', 'booking', req.params.bookingId, req.body?.payload || {});
+                return res.json({ ok: true });
+            }
+            catch (e) {
+                console.error('[MAIL] booking request cancellation notification failed:', e);
+                return res.status(500).json({ ok: false, error: e?.message || String(e) });
+            }
+        });
+        router.post('/api/offers/:offerId/notify-request-updated', async (req, res) => {
+            try {
+                await this.notifyCustomerRequestChange(req, 'updated', 'offer', req.params.offerId, req.body?.payload || {});
+                return res.json({ ok: true });
+            }
+            catch (e) {
+                console.error('[MAIL] offer request update notification failed:', e);
+                return res.status(500).json({ ok: false, error: e?.message || String(e) });
+            }
+        });
+        router.post('/api/offers/:offerId/notify-request-cancelled', async (req, res) => {
+            try {
+                await this.notifyCustomerRequestChange(req, 'cancelled', 'offer', req.params.offerId, req.body?.payload || {});
+                return res.json({ ok: true });
+            }
+            catch (e) {
+                console.error('[MAIL] offer request cancellation notification failed:', e);
+                return res.status(500).json({ ok: false, error: e?.message || String(e) });
+            }
+        });
+        router.post('/api/offers/:offerId/notify-request-created', async (req, res) => {
+            try {
+                await this.notifyBookingRequestCreated(req, req.params.offerId);
                 return res.json({ ok: true });
             }
             catch (e) {
@@ -835,13 +949,13 @@ class BookingsService {
                 return res.status(500).json({ ok: false, error: e?.message || String(e) });
             }
         });
-        router.post('/api/proposals/:proposalId/notify-sent', async (req, res) => {
+        router.post('/api/offers/:offerId/notify-sent', async (req, res) => {
             try {
-                await this.notifyProposalReady(req, req.params.proposalId);
+                await this.notifyOfferReady(req, req.params.offerId);
                 return res.json({ ok: true });
             }
             catch (e) {
-                console.error('[MAIL] proposal notification failed:', e);
+                console.error('[MAIL] offer notification failed:', e);
                 return res.status(500).json({ ok: false, error: e?.message || String(e) });
             }
         });
@@ -868,7 +982,7 @@ class BookingsService {
                     eventId,
                     adminEmail,
                     customerEmail: customerEmail || payload.customerEmail || '',
-                    proposalUrl: firstNonEmpty(payload.proposalUrl, payload.proposalId && baseUrl ? `${baseUrl}/proposal/${encodeURIComponent(payload.proposalId)}` : ''),
+                    offerUrl: firstNonEmpty(payload.offerUrl, payload.offerId && baseUrl ? `${baseUrl}/offer/${encodeURIComponent(payload.offerId)}` : ''),
                     bookingUrl: firstNonEmpty(payload.bookingUrl, payload.bookingId && baseUrl ? `${baseUrl}/booking/${encodeURIComponent(payload.bookingId)}` : ''),
                     recipients,
                     status: 'sending',
@@ -904,8 +1018,8 @@ class BookingsService {
                 applyPatch(`/bnNotifications/${eventId}`);
                 if (payload.bookingId)
                     applyPatch(`/bnBookingEvents/${payload.bookingId}/${eventId}`);
-                if (payload.proposalId)
-                    applyPatch(`/bnProposalEvents/${payload.proposalId}/${eventId}`);
+                if (payload.offerId)
+                    applyPatch(`/bnProposalEvents/${payload.offerId}/${eventId}`);
                 await this.storeDbc.db.ref().update(updates).catch((e) => {
                     console.warn('[MAIL] unable to mark notification as sent:', e?.message || e);
                 });

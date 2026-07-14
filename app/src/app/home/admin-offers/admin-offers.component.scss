@@ -1,0 +1,301 @@
+
+.admin-offers-page,.offer-confirmation-page,.external-bookings-page{padding:80px 0;background:#f6f2ea;min-height:70vh}
+.offers-shell,.offer-shell,.external-shell{max-width:1120px;margin:0 auto}
+.section-head{margin-bottom:28px;max-width:780px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;color:#b58b4a;font-weight:700}
+h1,h2,h3{color:#08263a}.card,.offer-card,.external-card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 18px 45px rgba(8,38,58,.08);border:1px solid rgba(8,38,58,.08);margin-bottom:24px}
+.form-title{display:flex;justify-content:space-between;gap:1rem;align-items:center}.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+label{display:grid;gap:6px;color:#08263a;font-weight:700}input,textarea,select{border:1px solid rgba(8,38,58,.16);border-radius:14px;padding:11px 13px;font:inherit;background:#fff}.wide{grid-column:1/-1}
+.calculation,.actions,.toolbar{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0;align-items:end}.calculation span{background:#f8f5ef;padding:10px 14px;border-radius:999px;color:#516070}
+.btn{border:0;border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer}.btn-primary{background:#08263a;color:#fff}.btn-secondary{background:#efe7da;color:#08263a}
+.client-link{background:#f8f5ef;padding:12px;border-radius:12px;word-break:break-all;color:#516070}.success{color:#047857;font-weight:700}.error,.expired{color:#9f1d1d;font-weight:700}.muted{color:#667}.search-box{flex:1 1 320px}
+.offer-list{display:grid;gap:12px}.offer-row{display:grid;grid-template-columns:auto 1.2fr 1.2fr .8fr auto;gap:16px;align-items:center;width:100%;text-align:left;background:#fff;border:1px solid rgba(8,38,58,.08);border-radius:18px;padding:16px;cursor:pointer;box-shadow:0 10px 28px rgba(8,38,58,.06)}
+.offer-row strong,.offer-row small{display:block}.offer-row small{color:#516070}.status{border-radius:999px;padding:6px 10px;background:rgba(181,139,74,.12);color:#8a652d;font-weight:700}.mini-link{border:0;background:transparent;color:#08263a;text-decoration:underline;cursor:pointer;font-weight:700}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:20px 0}.summary-grid div,.step-card,.choice-block{background:#f8f5ef;border-radius:18px;padding:16px}.summary-grid strong,.summary-grid span{display:block}.summary-grid span{color:#516070;margin-top:4px}
+.terms-check,.radio-card{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid rgba(8,38,58,.1);padding:14px;border-radius:14px;margin:10px 0;color:#516070}
+@media(max-width:800px){.offer-row{grid-template-columns:1fr}}
+
+.row-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-danger {
+  background: #9f1d1d;
+  color: #fff;
+}
+
+.validity {
+  background: #eef6f0;
+  color: #047857;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.validity.expired,
+.expired {
+  color: #9f1d1d;
+}
+
+.mini-link.danger {
+  color: #9f1d1d;
+}
+
+/* Fix offer rows: no nested buttons; each row is an article with aligned columns. */
+.offer-list {
+  display: grid;
+  gap: 12px;
+}
+
+.offer-row {
+  display: grid;
+  grid-template-columns: 120px minmax(180px, 1.15fr) minmax(200px, 1.25fr) 120px minmax(260px, auto);
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: 1px solid rgba(8,38,58,.08);
+  border-radius: 18px;
+  padding: 16px;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(8,38,58,.06);
+}
+
+.offer-row:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 38px rgba(8,38,58,.1);
+}
+
+.offer-row > span {
+  min-width: 0;
+}
+
+.offer-customer,
+.offer-outing,
+.offer-price {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.offer-row strong,
+.offer-row small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.offer-price {
+  text-align: right;
+}
+
+.row-actions {
+  justify-content: flex-end;
+  align-items: center;
+}
+
+@media(max-width:900px) {
+  .offer-row {
+    grid-template-columns: 1fr;
+  }
+
+  .offer-price {
+    text-align: left;
+  }
+
+  .row-actions {
+    justify-content: flex-start;
+  }
+}
+
+
+.validation-list {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 16px;
+  background: rgba(159, 29, 29, .08);
+  border: 1px solid rgba(159, 29, 29, .18);
+  color: #9f1d1d;
+}
+
+.validation-list strong {
+  display: block;
+  margin-bottom: .5rem;
+}
+
+.validation-list ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.validation-list li {
+  margin: .25rem 0;
+}
+
+.offer-origin {
+  margin: .35rem 0 .75rem;
+  font-size: .85rem;
+  font-weight: 700;
+  color: #64748b;
+}
+.request-card {
+  border-color: rgba(242, 140, 40, .28);
+  background: #fffaf3;
+}
+
+.admin-requests-card {
+  margin-bottom: 1.5rem;
+}
+
+.request-list {
+  display: grid;
+  gap: .75rem;
+}
+
+.request-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1.4fr .8fr .9fr;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 16px;
+  background: #fffaf3;
+  border: 1px solid rgba(242, 140, 40, .22);
+  cursor: pointer;
+}
+
+.request-row:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, .08);
+}
+
+.request-row small {
+  display: block;
+  color: #64748b;
+  margin-top: .2rem;
+}
+
+@media (max-width: 800px) {
+  .request-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.whatsapp-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(8, 38, 58, .45);
+}
+
+.whatsapp-modal {
+  width: min(620px, 100%);
+  max-height: 88vh;
+  overflow: auto;
+  background: #fff;
+  border-radius: 22px;
+  border: 1px solid rgba(8,38,58,.12);
+  box-shadow: 0 28px 80px rgba(8,38,58,.28);
+  padding: 1.25rem;
+}
+
+.whatsapp-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: .75rem;
+}
+
+.whatsapp-head h3 {
+  margin: .2rem 0 0;
+}
+
+.modal-close {
+  border: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #f3efe7;
+  color: #08263a;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.whatsapp-target {
+  display: grid;
+  gap: .15rem;
+  margin: .85rem 0;
+  padding: .85rem 1rem;
+  border-radius: 16px;
+  background: #f8f5ef;
+}
+
+.whatsapp-target span,
+.whatsapp-target small {
+  color: #516070;
+}
+
+.whatsapp-text {
+  width: 100%;
+  min-height: 230px;
+  resize: vertical;
+  white-space: pre-wrap;
+  font-size: .95rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+  .whatsapp-modal {
+    padding: 1rem;
+    border-radius: 18px;
+  }
+
+  .whatsapp-text {
+    min-height: 260px;
+    font-size: .9rem;
+  }
+
+  .whatsapp-modal .actions {
+    align-items: stretch;
+  }
+
+  .whatsapp-modal .btn {
+    width: 100%;
+  }
+}
+
+
+/* Release 76: the offer total is calculated, never entered manually. */
+.offer-total-summary {
+  min-height: 76px;
+  padding: .75rem 1rem;
+  border: 1px solid rgba(8, 38, 58, .14);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f7fbfd 0%, #fffaf3 100%);
+  display: grid;
+  align-content: center;
+  gap: .15rem;
+}
+
+.offer-total-label {
+  color: #516070;
+  font-size: .82rem;
+  font-weight: 700;
+}
+
+.offer-total-value {
+  color: #08263a;
+  font-size: 1.35rem;
+  line-height: 1.15;
+}
+
+.offer-total-summary small {
+  color: #64748b;
+}

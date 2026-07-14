@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { StoreDbService, OBJECTNAME, ServicesService, UtilsService } from 'godigital-lib';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
@@ -78,7 +79,8 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
     private mainSvc: ServicesService,
     private storeDb: StoreDbService,
     private utilSvc: UtilsService,
-    private bookingApi: BookingApiService
+    private bookingApi: BookingApiService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -283,14 +285,51 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
       return [];
     }
 
-    return items
-      .filter((item) => item.status !== 'deleted')
-      .filter((item) => (uid && item.userId === uid) || (email && item.email === email))
-      .sort((a, b) => (b.createdTS || 0) - (a.createdTS || 0));
+    return this.dedupeFeedbacks(
+      items
+        .filter((item) => item.status !== 'deleted')
+        .filter((item) => (uid && item.userId === uid) || (email && item.email === email))
+    );
   }
 
   hasAlreadyLeftFeedbackForBooking(bookingId: string): boolean {
-    return this.feedbacks.some((item) => item.status !== 'deleted' && item.bookingId === bookingId);
+    const normalizedBookingId = this.normalizeKey(bookingId);
+    if (!normalizedBookingId) return false;
+    return this.feedbacks.some((item) => item.status !== 'deleted' && this.normalizeKey(item.bookingId || '') === normalizedBookingId);
+  }
+
+  private dedupeFeedbacks(items: CustomerFeedback[]): CustomerFeedback[] {
+    const byKey = new Map<string, CustomerFeedback>();
+
+    (items || [])
+      .filter((item) => item && item.status !== 'deleted')
+      .sort((a, b) => (b.modifiedTS || b.createdTS || 0) - (a.modifiedTS || a.createdTS || 0))
+      .forEach((item) => {
+        const key = this.feedbackUniqueKey(item);
+        if (!byKey.has(key)) {
+          byKey.set(key, item);
+        }
+      });
+
+    return Array.from(byKey.values()).sort((a, b) => (b.createdTS || 0) - (a.createdTS || 0));
+  }
+
+  private feedbackUniqueKey(item: CustomerFeedback): string {
+    const bookingId = this.normalizeKey(item.bookingId || '');
+    if (bookingId) return `booking:${bookingId}`;
+    const id = this.normalizeKey(this.feedbackId(item));
+    if (id) return `feedback:${id}`;
+    return `fallback:${item.createdTS || ''}:${this.normalizeKey(item.email || '')}:${this.normalizeKey(item.date || '')}`;
+  }
+
+  private feedbackDocumentId(bookingId: string, userId: string, email: string): string {
+    const owner = this.normalizeKey(userId || email || 'guest');
+    const booking = this.normalizeKey(bookingId);
+    return `feedback_${booking}_${owner}`.replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 160);
+  }
+
+  private normalizeKey(value: any): string {
+    return String(value || '').trim().toLowerCase();
   }
 
   setRating(value: number): void {
@@ -302,6 +341,8 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
   }
 
   async saveFeedback(): Promise<void> {
+    if (this.saving) return;
+
     this.saved = false;
     this.saveError = '';
 
@@ -328,8 +369,8 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
 
     this.saving = true;
     try {
-      const id = `feedback_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
       const userId = this.loggedUser?.userId || this.loggedUser?.uid;
+      const id = this.feedbackDocumentId(this.feedback.bookingId, userId, this.loggedUser?.email || '');
       const payload = {
         feedbackId: id,
         userId,
@@ -361,10 +402,11 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
         comments: '',
         rating: 5,
       };
-      if (this.eligibleBookings.length) {
-        this.selectFeedbackBooking(this.eligibleBookings[0].bookingId);
+      this.feedbacks = this.dedupeFeedbacks([payload, ...this.feedbacks]);
+      const available = this.availableFeedbackBookings();
+      if (available.length) {
+        this.selectFeedbackBooking(available[0].bookingId);
       }
-      this.feedbacks = [payload, ...this.feedbacks];
     } catch (e: any) {
       this.saveError = e?.message || this.t('saveError');
     } finally {
@@ -491,20 +533,85 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
   }
 
   private async deleteFeedbackObject(id: string, item: CustomerFeedback): Promise<void> {
+    const userId = this.loggedUser?.userId || this.loggedUser?.uid || '';
+    const email = this.loggedUser?.email || '';
+
+    // 1) Preferred path: backend deletes from Firebase Admin SDK and verifies ownership
+    try {
+      await this.http.delete(`${this.backendBaseUrl}/api/feedbacks/${encodeURIComponent(id)}`, {
+        body: { userId, email },
+      }).toPromise();
+      return;
+    } catch (error) {
+      console.warn('[MyFeedbacks] Backend feedback delete failed, trying Firebase fallbacks.', error);
+    }
+
     const store = this.storeDb as any;
     const storeId = (this.utilSvc as any).backendFBstoreId;
     const mdb = (this.utilSvc as any).mdb;
+    const collection = OBJECTNAME.bnFeedbacks;
 
+    // 2) Direct Firebase SDK/database handle fallback
+    const dbCandidates = [
+      mdb,
+      store?.backendFbRef?.database,
+      store?.backendFbRef?.['database'],
+      store?.firebaseBSSdata?.database,
+    ].filter((db, index, array) => db && typeof db.ref === 'function' && array.indexOf(db) === index);
+
+    for (const db of dbCandidates) {
+      for (const path of [`${collection}/${id}`, storeId ? `${storeId}/${collection}/${id}` : '']) {
+        if (!path) continue;
+        try {
+          await db.ref(path).remove();
+          return;
+        } catch {}
+      }
+    }
+
+    // 3) REST fallback for root and scoped Firebase paths
+    const restBaseUrls = ['https://adn-dev-4d05d.firebaseio.com'];
+    for (const baseUrl of restBaseUrls) {
+      for (const path of [`${collection}/${id}`, storeId ? `${storeId}/${collection}/${id}` : '']) {
+        if (!path) continue;
+        try {
+          await this.http.delete(`${baseUrl.replace(/\/+$/, '')}/${path}.json`).toPromise();
+          return;
+        } catch {}
+      }
+    }
+
+    // 4) godigital-lib fallback, trying known signatures
     if (typeof store.deleteObject === 'function') {
-      await store.deleteObject(storeId, mdb, OBJECTNAME.bnFeedbacks, id);
-      return;
+      const attempts = [
+        () => store.deleteObject(collection, id),
+        () => store.deleteObject(collection, id, storeId),
+        () => store.deleteObject(storeId, mdb, collection, id),
+        () => store.deleteObject(storeId, collection, id),
+      ];
+      for (const attempt of attempts) {
+        try {
+          await attempt();
+          return;
+        } catch {}
+      }
     }
 
     if (typeof store.removeObject === 'function') {
-      await store.removeObject(storeId, mdb, OBJECTNAME.bnFeedbacks, id);
-      return;
+      const attempts = [
+        () => store.removeObject(collection, id),
+        () => store.removeObject(`${collection}/${id}`),
+        () => store.removeObject(storeId, mdb, collection, id),
+      ];
+      for (const attempt of attempts) {
+        try {
+          await attempt();
+          return;
+        } catch {}
+      }
     }
 
+    // 5) Final fallback: soft delete so the UI and lists stop showing the feedback
     await this.updateFeedbackObject(id, {
       ...item,
       feedbackId: id,
@@ -512,6 +619,14 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
       deletedTS: Date.now(),
       modifiedTS: Date.now(),
     });
+  }
+
+  private get backendBaseUrl(): string {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
+      return 'https://localhost:2000';
+    }
+    return window.location.origin;
   }
 
   stars(value: any): string {

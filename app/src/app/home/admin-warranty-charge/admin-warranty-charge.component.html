@@ -5,7 +5,7 @@
     <p class="intro">{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.use_this_only_when_damage_blocked_toilets_missing_' | siteText }}</p>
 
     <article class="warranty-card">
-      <label>{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.booking_proposal_id' | siteText }}<input type="text" [(ngModel)]="bookingId" [placeholder]="'auto.home.admin-warranty-charge.admin-warranty-charge.component.proposal_xxxxx' | siteText" />
+      <label>{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.booking_offer_id' | siteText }}<input type="text" [(ngModel)]="bookingId" [placeholder]="'auto.home.admin-warranty-charge.admin-warranty-charge.component.offer_xxxxx' | siteText" />
       </label>
 
       <label>{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.amount_to_charge' | siteText }}<input type="number" min="1" step="0.01" [(ngModel)]="amount" />
@@ -15,10 +15,15 @@
       </label>
 
       <button class="btn btn-danger" type="button" [disabled]="charging" (click)="chargeWarranty()">
-        {{ charging ? 'Charging...' : 'Charge warranty' }}
+        {{ charging ? ('auto.home.admin-warranty-charge.admin-warranty-charge.component.charging' | siteText) : ('auto.home.admin-warranty-charge.admin-warranty-charge.component.charge_warranty' | siteText) }}
       </button>
 
       <p class="success" *ngIf="message">{{ message }}</p>
+      <div class="charge-result" *ngIf="lastCharge">
+        <strong>{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.saved_damage_charge' | siteText }}</strong>
+        <span>{{ (lastCharge.amount || 0) / 100 | currency:'EUR' }}</span>
+        <small *ngIf="lastCharge.stripePaymentIntentId">Stripe: {{ lastCharge.stripePaymentIntentId }}</small>
+      </div>
       <p class="error" *ngIf="error">{{ error }}</p>
     </article>
   </div>

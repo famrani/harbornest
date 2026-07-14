@@ -27,6 +27,16 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
   currentLanguage: SiteLanguage = 'fr';
   pageText: any = (SITE_CONTENT as any).fr?.bookingManagement || {};
   private languageSub?: Subscription;
+  private readonly localFallbackText: Record<string, Record<string, string>> = {
+    fr: { upcoming: 'À venir', past: 'Passées' },
+    en: { upcoming: 'Upcoming', past: 'Past' },
+    es: { upcoming: 'Próximas', past: 'Pasadas' },
+    it: { upcoming: 'In arrivo', past: 'Passate' },
+    de: { upcoming: 'Bevorstehend', past: 'Vergangen' },
+    nl: { upcoming: 'Aankomend', past: 'Voorbij' },
+    ru: { upcoming: 'Предстоящие', past: 'Прошедшие' },
+  };
+  private readonly tabKeys = new Set(['upcoming', 'past']);
 
   constructor(
     private bookingApi: BookingApiService,
@@ -81,8 +91,18 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
   }
 
   t(key: string): string {
-    return this.pageText?.[key] || key;
+    // These tab labels were sometimes overwritten in Firebase with English values under FR.
+    // Keep them stable and translated while Firebase content is being cleaned/imported.
+    if (this.tabKeys.has(key)) {
+      return this.localFallbackText?.[this.currentLanguage]?.[key] || this.localFallbackText?.fr?.[key] || key;
+    }
+
+    return this.pageText?.[key] ||
+      this.localFallbackText?.[this.currentLanguage]?.[key] ||
+      this.localFallbackText?.fr?.[key] ||
+      key;
   }
+
 
   get isAdmin(): boolean {
     const role = String(this.loggedUser?.role || '').toLowerCase();
@@ -239,6 +259,21 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
     });
   }
 
+  getBookingProgress(booking: AlegriaBooking): number {
+    const steps = [
+      this.isDepositPaid(booking),
+      this.isTermsAccepted(booking),
+      this.isWarrantySecured(booking),
+      this.isBalancePaid(booking),
+    ];
+    return Math.round((steps.filter(Boolean).length / steps.length) * 100);
+  }
+
+  getCustomerDisplayName(booking: AlegriaBooking): string {
+    const b: any = booking || {};
+    return String(b.customerName || b.clientName || b.email || this.t('customer')).trim();
+  }
+
   isTermsAccepted(booking: AlegriaBooking): boolean {
     const anyBooking: any = booking || {};
     const explicitAccepted = anyBooking.customerTermsAccepted === true ||
@@ -285,7 +320,7 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
     const formalCustomerMarker = anyBooking.customerTermsAccepted === true ||
       source.includes('customer') ||
       source.includes('client') ||
-      source.includes('proposal') ||
+      source.includes('offer') ||
       source.includes('portal') ||
       !!acceptedBy;
 
@@ -607,7 +642,7 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
     const balanceAmount = this.getBalanceAmount(booking);
     const payload = {
       bookingId,
-      proposalId: bookingId,
+      offerId: bookingId,
       ownerId: (booking as any).ownerId || 'alegria',
       amount: balanceAmount,
       balanceAmount,

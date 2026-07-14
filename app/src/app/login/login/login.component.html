@@ -113,3 +113,12 @@
     </div>
   </div>
 </div>
+
+<!-- Inline Error Modal fallback used when Bootstrap/jQuery modal is not available -->
+<div class="auth-error-backdrop" *ngIf="showErrorModal" (click)="closeError()">
+  <div class="auth-error-card" (click)="$event.stopPropagation()">
+    <h5>{{ errorModalTitle }}</h5>
+    <p>{{ errorModalMessage }}</p>
+    <button type="button" class="btn btn-primary" (click)="closeError()">{{ 'login.ok' | siteText:'OK' }}</button>
+  </div>
+</div>

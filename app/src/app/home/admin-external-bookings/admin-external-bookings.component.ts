@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ProposalApiService, AlegriaProposal } from '../bookings/proposal-api.service';
+import { OfferApiService, AlegriaOffer } from '../bookings/offer-api.service';
 import { BookingApiService, AlegriaBooking } from '../bookings/booking-api.service';
 import { SITE_CONTENT } from '../site-content';
 import { SiteContentService } from '../site-content-service/site-content.service';
@@ -36,7 +36,7 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
   ];
   private languageSub?: Subscription;
 
-  form: Partial<AlegriaProposal> & any = {
+  form: Partial<AlegriaOffer> & any = {
     entryMode: 'future',
     source: 'direct',
     externalPlatformName: '',
@@ -71,12 +71,12 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
     externalRemainingOnboardAmount: 0,
     externalExtraServicesOnboardAmount: 0,
     warrantyAmount: 500,
-    proposalMessage: 'Please accept the T&C, pay the deposit for the amount due on board, and select your warranty mode.',
+    offerMessage: 'Please accept the T&C, pay the deposit for the amount due on board, and select your warranty mode.',
     warrantyPaymentChoice: 'stripe_card',
   };
 
   constructor(
-    private proposalApi: ProposalApiService,
+    private offerApi: OfferApiService,
     private bookingApi: BookingApiService,
     private fleetService: FleetService,
     private siteContentService: SiteContentService,
@@ -149,7 +149,8 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
   }
 
   onPlatformChanged(): void {
-    const source = String((this.form as any).source || 'direct');
+    const source = this.normalizedSource;
+    (this.form as any).source = source;
 
     if (source === 'direct') {
       (this.form as any).externalPlatformName = '';
@@ -177,16 +178,32 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
   }
 
 
+  private get normalizedSource(): string {
+    const raw = String((this.form as any).source || 'direct').trim().toLowerCase();
+    if (raw === 'direct' || raw.includes('alegria')) return 'direct';
+    if (raw === 'clickandboat' || raw.includes('click')) return 'clickandboat';
+    if (raw === 'samboat' || raw.includes('samboat')) return 'samboat';
+    if (raw === 'other' || raw === 'autre' || raw === 'otra' || raw === 'altro' || raw === 'andere' || raw === 'anders' || raw === 'другое') return 'other';
+    return raw || 'direct';
+  }
+
+  private get normalizedEntryMode(): string {
+    const raw = String((this.form as any).entryMode || 'future').trim().toLowerCase();
+    if (raw === 'historical' || raw.includes('histor') || raw.includes('pass') || raw.includes('archiv')) return 'historical';
+    if (raw === 'offer' || raw.includes('offre') || raw.includes('offer') || raw.includes('oferta')) return 'offer';
+    return 'future';
+  }
+
   get isDirectSource(): boolean {
-    return String((this.form as any).source || 'direct') === 'direct';
+    return this.normalizedSource === 'direct';
   }
 
   get isOtherSource(): boolean {
-    return String((this.form as any).source || '') === 'other';
+    return this.normalizedSource === 'other';
   }
 
   get platformDisplayName(): string {
-    const source = String((this.form as any).source || 'direct');
+    const source = this.normalizedSource;
     if (source === 'clickandboat') return 'Click&Boat';
     if (source === 'samboat') return 'SamBoat';
     if (source === 'other') {
@@ -321,10 +338,10 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
       warrantyStripeCard: this.currentLanguage === 'fr' ? 'Carte Stripe' : this.currentLanguage === 'es' ? 'Tarjeta Stripe' : 'Stripe card',
       warrantyCash: this.currentLanguage === 'fr' ? 'Cash à bord' : this.currentLanguage === 'es' ? 'Efectivo a bordo' : 'Cash on board',
       externalDocuments: this.currentLanguage === 'fr' ? 'Documents / notes plateforme' : this.currentLanguage === 'es' ? 'Documentos / notas plataforma' : 'Platform documents / notes',
-      createClientProposal: this.currentLanguage === 'fr' ? 'Créer le lien client Alegria' : this.currentLanguage === 'es' ? 'Crear enlace cliente Alegria' : 'Create Alegria client link',
+      createClientOffer: this.currentLanguage === 'fr' ? 'Créer le lien client Alegria' : this.currentLanguage === 'es' ? 'Crear enlace cliente Alegria' : 'Create Alegria client link',
       saving: this.currentLanguage === 'fr' ? 'Enregistrement...' : this.currentLanguage === 'es' ? 'Guardando...' : 'Saving...',
       savedMessage: this.currentLanguage === 'fr' ? 'Réservation plateforme créée. Lien client :' : this.currentLanguage === 'es' ? 'Reserva plataforma creada. Enlace cliente:' : 'Platform booking created. Client link:',
-      clientProposalLink: this.currentLanguage === 'fr' ? 'Lien client' : this.currentLanguage === 'es' ? 'Enlace cliente' : 'Client link',
+      clientOfferLink: this.currentLanguage === 'fr' ? 'Lien client' : this.currentLanguage === 'es' ? 'Enlace cliente' : 'Client link',
       missingOtherPlatformNameError: this.currentLanguage === 'fr' ? 'Indiquez le nom de la plateforme.' : this.currentLanguage === 'es' ? 'Indique el nombre de la plataforma.' : 'Please provide the platform name.',
       missingPlatformBookingRefError: this.currentLanguage === 'fr' ? 'Indiquez la référence réservation plateforme.' : this.currentLanguage === 'es' ? 'Indique la referencia de reserva.' : 'Please provide the platform booking reference.',
       negativeAmountsError: this.currentLanguage === 'fr' ? 'Les montants ne peuvent pas être négatifs.' : this.currentLanguage === 'es' ? 'Los importes no pueden ser negativos.' : 'Amounts cannot be negative.',
@@ -336,7 +353,7 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
     fallback.entryMode = this.currentLanguage === 'fr' ? 'Mode de saisie' : this.currentLanguage === 'es' ? 'Modo de entrada' : 'Entry mode';
     fallback.historicalMode = this.currentLanguage === 'fr' ? 'Sortie historique déjà réalisée' : this.currentLanguage === 'es' ? 'Salida histórica ya realizada' : 'Historical outing already completed';
     fallback.futureMode = this.currentLanguage === 'fr' ? 'Réservation future / à venir' : this.currentLanguage === 'es' ? 'Reserva futura' : 'Future booking';
-    fallback.clientProposalMode = this.currentLanguage === 'fr' ? 'Créer une proposition/lien client' : this.currentLanguage === 'es' ? 'Crear propuesta/enlace cliente' : 'Create client proposal/link';
+    fallback.clientOfferMode = this.currentLanguage === 'fr' ? 'Créer une offre/lien client' : this.currentLanguage === 'es' ? 'Crear propuesta/enlace cliente' : 'Create client offer/link';
     fallback.platformDirect = this.currentLanguage === 'fr' ? 'Direct Alegria' : this.currentLanguage === 'es' ? 'Directo Alegria' : 'Direct Alegria';
     fallback.boat = this.currentLanguage === 'fr' ? 'Bateau' : this.currentLanguage === 'es' ? 'Barco' : 'Boat';
     fallback.boatInfo = this.currentLanguage === 'fr' ? 'Informations bateau préremplies' : this.currentLanguage === 'es' ? 'Información del barco autocompletada' : 'Prefilled boat information';
@@ -415,7 +432,7 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
     try {
       this.validateCommonBookingFields();
       const isFuture = this.isFutureMode;
-      const saved = await this.proposalApi.createManualHistoricalBookingRecord({
+      const saved = await this.offerApi.createManualHistoricalBookingRecord({
         ...this.form,
         externalPaymentItems: this.buildRemainingPaymentItems(),
         boatId: (this.form as any).boatId,
@@ -476,7 +493,7 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
       const cashOnBoardAmount = this.cashOnBoardTotal;
       const onboardAmount = remainingOnboardAmount;
       const warrantyAmount = this.amount(this.form.warrantyAmount || 0);
-      const platformSource = String((this.form as any).source || '');
+      const platformSource = this.normalizedSource;
       const externalPlatformName = String((this.form as any).externalPlatformName || '').trim();
       const externalPlatformBookingRef = String((this.form as any).externalPlatformBookingRef || '').trim();
 
@@ -500,7 +517,7 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
         throw new Error(this.t('negativeWarrantyError'));
       }
 
-      const saved = await this.proposalApi.createExternalBooking({
+      const saved = await this.offerApi.createExternalBooking({
         ...this.form,
         totalAmount: onboardAmount,
         externalPlatformName,
@@ -516,14 +533,14 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
         proposalSkipperPrice: this.amount((this.form as any).skipperCashAmount),
         skipperCashAmount: this.amount((this.form as any).skipperCashAmount),
         warrantyAmount,
-        proposalMessage: this.t('defaultClientMessage'),
+        offerMessage: this.t('defaultClientMessage'),
       } as any);
 
       this.form = { ...saved };
-      this.createdBookingId = (saved as any).relatedBookingId || saved.proposalId;
+      this.createdBookingId = (saved as any).relatedBookingId || saved.offerId;
       this.loadPlatformBookings();
       this.loadBoats();
-      this.message = `${this.t('savedMessage')} ${window.location.origin}/proposal/${saved.proposalId}`;
+      this.message = `${this.t('savedMessage')} ${window.location.origin}/offer/${saved.offerId}`;
     } catch (e: any) {
       this.error = e?.message || this.t('saveError');
     }
@@ -536,12 +553,18 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
     return new Date().toISOString().slice(0, 10);
   }
 
+  get yesterdayIso(): string {
+    const date = new Date();
+    date.setDate(date.getDate() - 1);
+    return date.toISOString().slice(0, 10);
+  }
+
   get outingDateMin(): string | null {
     return this.isHistoricalMode ? null : this.todayIso;
   }
 
   get outingDateMax(): string | null {
-    return this.isHistoricalMode ? this.todayIso : null;
+    return this.isHistoricalMode ? this.yesterdayIso : null;
   }
 
   get outingDateHint(): string {
@@ -549,11 +572,11 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
   }
 
   get isHistoricalMode(): boolean {
-    return String((this.form as any).entryMode || '') === 'historical';
+    return this.normalizedEntryMode === 'historical';
   }
 
   get isFutureMode(): boolean {
-    return String((this.form as any).entryMode || '') === 'future';
+    return this.normalizedEntryMode === 'future';
   }
 
   private validateCommonBookingFields(): void {
@@ -574,7 +597,7 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
     if (!outingDate || Number.isNaN(Date.parse(outingDate))) {
       throw new Error(this.t('invalidDateError'));
     }
-    if (this.isHistoricalMode && outingDate > this.todayIso) {
+    if (this.isHistoricalMode && outingDate >= this.todayIso) {
       throw new Error(this.t('historicalDateFutureError'));
     }
     if (!this.isHistoricalMode && outingDate < this.todayIso) {
@@ -586,12 +609,12 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
     if (!Number.isFinite(passengers) || passengers <= 0) {
       throw new Error(this.t('invalidPassengersError'));
     }
-    if (String((this.form as any).source || '') !== 'direct' && !String((this.form as any).externalPlatformBookingRef || '').trim()) {
+    if (this.normalizedSource !== 'direct' && !String((this.form as any).externalPlatformBookingRef || '').trim()) {
       throw new Error(this.t('missingPlatformBookingRefError'));
     }
   }
 
   get warrantyLink(): string {
-    return this.form.proposalId ? `${window.location.origin}/proposal/${this.form.proposalId}` : '';
+    return this.form.offerId ? `${window.location.origin}/offer/${this.form.offerId}` : '';
   }
 }

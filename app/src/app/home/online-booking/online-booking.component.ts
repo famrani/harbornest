@@ -7,7 +7,7 @@ import { SITE_CONTENT, SiteContent } from '../site-content';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
 import { SiteContentService } from '../site-content-service/site-content.service';
 import { BookingApiService, AlegriaPricingModel } from '../bookings/booking-api.service';
-import { ProposalApiService } from '../bookings/proposal-api.service';
+import { OfferApiService } from '../bookings/offer-api.service';
 
 interface OnlineBookingOption {
   id: string;
@@ -87,7 +87,7 @@ export class OnlineBookingComponent implements OnInit, OnDestroy {
     private siteContentService: SiteContentService,
     private languageService: LanguageService,
     private bookingApi: BookingApiService,
-    private proposalApi: ProposalApiService,
+    private offerApi: OfferApiService,
   ) {}
 
   ngOnInit(): void {
@@ -261,7 +261,26 @@ export class OnlineBookingComponent implements OnInit, OnDestroy {
   }
 
   get options(): OnlineBookingOption[] {
-    return this.bookingText?.options || [];
+    const rawOptions = (this.bookingText as any)?.options;
+
+    if (Array.isArray(rawOptions)) {
+      return rawOptions.filter(Boolean);
+    }
+
+    // Firebase RTDB may return list-like data as an object/map instead of an array.
+    // Keep the UI safe by normalizing it before using array methods such as filter().
+    if (rawOptions && typeof rawOptions === 'object') {
+      return Object.entries(rawOptions)
+        .map(([key, value]: [string, any]) => ({
+          id: value?.id || key,
+          label: value?.label || key,
+          description: value?.description || '',
+          price: Number(value?.price || 0),
+        }))
+        .filter((option) => !!option.id && !!option.label);
+    }
+
+    return [];
   }
 
 
@@ -655,7 +674,7 @@ export class OnlineBookingComponent implements OnInit, OnDestroy {
     }
 
     if (this.isAdminUser) {
-      errors.push(this.bookingText?.adminCannotBookOnline || 'Admin users cannot submit client booking requests from this page.');
+      errors.push(this.bookingText?.adminCannotBookOnline || 'Admin users cannot submit client offer requests from this page.');
     }
 
     if (!this.isLoggedIn) {
@@ -727,14 +746,14 @@ export class OnlineBookingComponent implements OnInit, OnDestroy {
       status: 'requested',
     }));
 
-    const periodLabel = this.pricePeriods.find((item) => item.id === this.form.pricePeriod)?.label || this.form.pricePeriod || 'Online booking request';
+    const periodLabel = this.pricePeriods.find((item) => item.id === this.form.pricePeriod)?.label || this.form.pricePeriod || 'Online offer request';
     const now = Date.now();
 
-    const proposalRequest = await this.proposalApi.saveProposal({
+    const offerRequest = await this.offerApi.saveOffer({
       source: 'request' as any,
       status: 'request' as any,
-      proposalOrigin: this.isAdminRequestMode ? 'admin_request' : 'customer_request',
-      proposalSentAfter: this.isAdminRequestMode ? 'admin_created_request' : 'customer_request',
+      offerOrigin: this.isAdminRequestMode ? 'admin_request' : 'customer_request',
+      offerSentAfter: this.isAdminRequestMode ? 'admin_created_request' : 'customer_request',
       requestSubmittedAt: now,
       customerName: this.form.customerName,
       customerEmail: this.form.customerEmail,
@@ -764,7 +783,7 @@ export class OnlineBookingComponent implements OnInit, OnDestroy {
       estimatedOptionsPrice: this.selectedOptionsTotal,
       proposalBoatPrice: this.estimatedBoatPriceAmount,
       proposalSkipperPrice: this.skipperPriceAmount,
-      proposalCleaningPrice: this.cleaningPriceAmount,
+      offerCleaningPrice: this.cleaningPriceAmount,
       proposalExtraServicesPrice: this.selectedOptionsTotal + this.extraGuestsAmount,
       totalAmount: this.bookingTotal,
       skipperCashAmount: this.skipperPriceAmount,
@@ -773,15 +792,15 @@ export class OnlineBookingComponent implements OnInit, OnDestroy {
       depositAmount: Math.round(Math.max(0, this.bookingTotal - this.skipperPriceAmount) * 0.10 * 100) / 100,
       balanceAmount: Math.max(0, Math.round((Math.max(0, this.bookingTotal - this.skipperPriceAmount) - Math.round(Math.max(0, this.bookingTotal - this.skipperPriceAmount) * 0.10 * 100) / 100) * 100) / 100),
       warrantyAmount: 500,
-      bookingRequestStatus: 'proposal_request_to_finalize',
-      requestNeedsAdminProposal: true,
+      bookingRequestStatus: 'offer_request_to_finalize',
+      requestNeedsAdminOffer: true,
       pricingToBeFinalizedByAdmin: true,
       createdByAdmin: this.isAdminRequestMode,
       requestOrigin: this.isAdminRequestMode ? 'admin_created_request' : 'customer_request',
-      proposalMessage: 'Proposal request created online. Admin must finalize pricing before sending proposal.',
+      offerMessage: 'Offer request created online. Admin must finalize pricing before sending offer.',
       comments: [
-        'Proposal request - no payment yet',
-        'Admin must finalize boat price, skipper price and extra services, then send the proposal to the client.',
+        'Offer request - no payment yet',
+        'Admin must finalize boat price, skipper price and extra services, then send the offer to the client.',
         `Requested period: ${periodLabel}`,
         `Requested time: ${this.form.startTime} - ${this.form.endTime}`,
         `Duration: ${this.durationHours}h`,
@@ -797,9 +816,9 @@ export class OnlineBookingComponent implements OnInit, OnDestroy {
       ].filter(Boolean).join('\n'),
     } as any);
 
-    this.createdBookingId = proposalRequest.proposalId;
+    this.createdBookingId = offerRequest.offerId;
     this.persistWizardState();
-    return proposalRequest.proposalId;
+    return offerRequest.offerId;
   }
 
   async finalSubmit(): Promise<void> {
@@ -807,7 +826,7 @@ export class OnlineBookingComponent implements OnInit, OnDestroy {
     this.message = '';
 
     if (this.isAdminUser) {
-      this.error = this.bookingText?.adminCannotBookOnline || 'Admin users cannot submit client booking requests from this page.';
+      this.error = this.bookingText?.adminCannotBookOnline || 'Admin users cannot submit client offer requests from this page.';
       return;
     }
 
@@ -820,20 +839,20 @@ export class OnlineBookingComponent implements OnInit, OnDestroy {
     this.saving = true;
 
     try {
-      const proposalId = await this.ensureBookingCreated();
+      const offerId = await this.ensureBookingCreated();
 
-      await this.proposalApi.notifyBookingRequestCreated(proposalId, {
+      await this.offerApi.notifyBookingRequestCreated(offerId, {
         language: this.currentLanguage,
         source: 'online_booking_request',
       }).toPromise().catch((mailError) => {
-        console.warn('Booking request email notification failed', mailError);
+        console.warn('Offer request email notification failed', mailError);
       });
 
       this.message = this.bookingText?.requestSubmittedMessage || this.bookingText?.finalMessage || '';
       try {
         sessionStorage.removeItem(this.wizardStorageKey);
       } catch {}
-      setTimeout(() => this.router.navigate(['/my-proposals']), 1200);
+      setTimeout(() => this.router.navigate(['/my-offers']), 1200);
     } catch (e: any) {
       this.error = e?.message || this.bookingText?.requestSubmitError || '';
     } finally {

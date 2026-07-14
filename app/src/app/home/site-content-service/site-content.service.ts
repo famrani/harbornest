@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, timeout } from 'rxjs';
 import { SITE_CONTENT, SiteContent } from '../site-content';
 import { SiteLanguage } from '../../services/language.service';
 
@@ -74,7 +74,7 @@ export class SiteContentService {
 
     for (const baseUrl of this.restDatabaseUrls) {
       try {
-        const raw = await firstValueFrom(this.http.get<SiteContentRoot | null>(`${baseUrl}/siteContent.json`));
+        const raw = await firstValueFrom(this.http.get<SiteContentRoot | null>(`${baseUrl}/siteContent.json`).pipe(timeout(5000)));
         const normalized = this.normalizeSiteContent(raw);
 
         if (normalized) {
@@ -102,7 +102,7 @@ export class SiteContentService {
 
     for (const baseUrl of this.restDatabaseUrls) {
       try {
-        this.rawSiteContent = await firstValueFrom(this.http.get<any>(`${baseUrl}/siteContent.json`));
+        this.rawSiteContent = await firstValueFrom(this.http.get<any>(`${baseUrl}/siteContent.json`).pipe(timeout(5000)));
         return this.rawSiteContent;
       } catch {}
     }

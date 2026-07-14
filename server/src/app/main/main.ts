@@ -9,6 +9,7 @@ import { BookingsService } from '../services/booking.service';
 import { UsersService } from '../services/users.service';
 import { MailerService } from '../services/mailer.service';
 import { BoatownersService } from '../services/boatowners.service';
+import { FeedbacksService } from '../services/feedbacks.service';
 
 config(); // Load .env file
 
@@ -27,9 +28,10 @@ export class MainComponent {
     private mailerSvc = new MailerService();
     private usersSvc = new UsersService(this.storeDbSvc);
     private boatownersSvc = new BoatownersService(this.storeDbSvc);
+    private feedbacksSvc = new FeedbacksService(this.storeDbSvc);
     private bookingsSvc = new BookingsService(this.mailerSvc, this.storeDbSvc, this.stripeSvc);
 
-    private webServerComponent = new WebServerComponent(this.utilSvc, this.stripeSvc, this.bookingsSvc, this.usersSvc, this.boatownersSvc);
+    private webServerComponent = new WebServerComponent(this.utilSvc, this.stripeSvc, this.bookingsSvc, this.usersSvc, this.boatownersSvc, this.feedbacksSvc);
 
     public version: string | undefined;
 

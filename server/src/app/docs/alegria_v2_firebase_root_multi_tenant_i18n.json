@@ -40,7 +40,7 @@
             "stripeSkipperPayments": true,
             "cashWarranty": true,
             "creditCardWarranty": true,
-            "proposalRequests": true,
+            "offerRequests": true,
             "historicalBookings": true,
             "clickAndBoatImport": true,
             "whatsappShareWindow": true
@@ -134,7 +134,7 @@
             "stripeSkipperPayments": true,
             "cashWarranty": true,
             "creditCardWarranty": true,
-            "proposalRequests": true,
+            "offerRequests": true,
             "historicalBookings": true,
             "clickAndBoatImport": true,
             "whatsappShareWindow": true
@@ -205,7 +205,7 @@
             "registerCard": "Register my card",
             "changeWarrantyMethod": "Change warranty method",
             "openBooking": "Open booking",
-            "viewProposal": "View proposal"
+            "viewOffer": "View offer"
           },
           "status": {
             "pending": "Pending",
@@ -240,17 +240,17 @@
           "acceptTerms": "I have read and accept the Terms & Conditions",
           "completion": {
             "title": "Booking completion",
-            "proposalIssued": "Proposal issued",
+            "offerIssued": "Offer issued",
             "termsAccepted": "Terms accepted",
             "alegriaPaid": "Alegria paid",
             "skipperPaid": "Skipper paid",
             "warrantyCompleted": "Warranty completed"
           }
         },
-        "proposal": {
-          "requestSent": "Your request has been sent. The team will prepare your proposal.",
-          "issued": "Your proposal is ready.",
-          "notIssued": "Your proposal is being prepared.",
+        "offer": {
+          "requestSent": "Your request has been sent. The team will prepare your offer.",
+          "issued": "Your offer is ready.",
+          "notIssued": "Your offer is being prepared.",
           "acceptAndContinue": "Accept and continue"
         },
         "payments": {
@@ -273,13 +273,13 @@
           "cardNotCharged": "Your card will not be charged. It is only registered as a warranty in case of damage."
         },
         "emails": {
-          "proposalIssued": {
-            "subject": "Your boat proposal is ready",
-            "intro": "Your proposal is now available.",
+          "offerIssued": {
+            "subject": "Your boat offer is ready",
+            "intro": "Your offer is now available.",
             "financialSummary": "Financial summary",
             "payAlegria": "Amount payable to Alegria",
             "paySkipper": "Amount payable to skipper",
-            "cta": "View and confirm my proposal"
+            "cta": "View and confirm my offer"
           },
           "bookingConfirmed": {
             "subject": "Your booking is confirmed",
@@ -287,7 +287,7 @@
           }
         },
         "whatsapp": {
-          "proposalIssued": "Hello {{customerName}}, your proposal for {{boatName}} is ready. Alegria: {{alegriaAmount}}, skipper: {{skipperAmount}}, warranty: {{warrantyAmount}}. Open it here: {{proposalUrl}}"
+          "offerIssued": "Hello {{customerName}}, your offer for {{boatName}} is ready. Alegria: {{alegriaAmount}}, skipper: {{skipperAmount}}, warranty: {{warrantyAmount}}. Open it here: {{offerUrl}}"
         },
         "validation": {
           "futureBookingDate": "For a future booking, the date must be today or in the future.",
@@ -308,7 +308,7 @@
             "registerCard": "Enregistrer ma carte",
             "changeWarrantyMethod": "Changer le mode de caution",
             "openBooking": "Ouvrir la réservation",
-            "viewProposal": "Voir la proposition"
+            "viewOffer": "Voir la offre"
           },
           "status": {
             "pending": "En attente",
@@ -343,17 +343,17 @@
           "acceptTerms": "J’ai lu et j’accepte les conditions générales",
           "completion": {
             "title": "Finalisation de la réservation",
-            "proposalIssued": "Proposition envoyée",
+            "offerIssued": "Offre envoyée",
             "termsAccepted": "Conditions acceptées",
             "alegriaPaid": "Alegria payé",
             "skipperPaid": "Skipper payé",
             "warrantyCompleted": "Caution finalisée"
           }
         },
-        "proposal": {
-          "requestSent": "Votre demande a été envoyée. L’équipe va préparer votre proposition.",
-          "issued": "Votre proposition est prête.",
-          "notIssued": "Votre proposition est en cours de préparation.",
+        "offer": {
+          "requestSent": "Votre demande a été envoyée. L’équipe va préparer votre offre.",
+          "issued": "Votre offre est prête.",
+          "notIssued": "Votre offre est en cours de préparation.",
           "acceptAndContinue": "Accepter et continuer"
         },
         "payments": {
@@ -376,13 +376,13 @@
           "cardNotCharged": "Votre carte ne sera pas débitée. Elle est uniquement enregistrée comme caution en cas de dommage."
         },
         "emails": {
-          "proposalIssued": {
-            "subject": "Votre proposition bateau est prête",
-            "intro": "Votre proposition est maintenant disponible.",
+          "offerIssued": {
+            "subject": "Votre offre bateau est prête",
+            "intro": "Votre offre est maintenant disponible.",
             "financialSummary": "Synthèse financière",
             "payAlegria": "Montant à payer à Alegria",
             "paySkipper": "Montant à payer au skipper",
-            "cta": "Voir et confirmer ma proposition"
+            "cta": "Voir et confirmer ma offre"
           },
           "bookingConfirmed": {
             "subject": "Votre réservation est confirmée",
@@ -390,7 +390,7 @@
           }
         },
         "whatsapp": {
-          "proposalIssued": "Bonjour {{customerName}}, votre proposition pour {{boatName}} est prête. Alegria : {{alegriaAmount}}, skipper : {{skipperAmount}}, caution : {{warrantyAmount}}. Ouvrir ici : {{proposalUrl}}"
+          "offerIssued": "Bonjour {{customerName}}, votre offre pour {{boatName}} est prête. Alegria : {{alegriaAmount}}, skipper : {{skipperAmount}}, caution : {{warrantyAmount}}. Ouvrir ici : {{offerUrl}}"
         },
         "validation": {
           "futureBookingDate": "Pour une réservation future, la date doit être aujourd’hui ou dans le futur.",
@@ -411,7 +411,7 @@
             "registerCard": "Register my card",
             "changeWarrantyMethod": "Change warranty method",
             "openBooking": "Open booking",
-            "viewProposal": "View proposal"
+            "viewOffer": "View offer"
           },
           "status": {
             "pending": "Pending",
@@ -446,17 +446,17 @@
           "acceptTerms": "I have read and accept the Terms & Conditions",
           "completion": {
             "title": "Booking completion",
-            "proposalIssued": "Proposal issued",
+            "offerIssued": "Offer issued",
             "termsAccepted": "Terms accepted",
             "alegriaPaid": "Alegria paid",
             "skipperPaid": "Skipper paid",
             "warrantyCompleted": "Warranty completed"
           }
         },
-        "proposal": {
-          "requestSent": "Your request has been sent. The team will prepare your proposal.",
-          "issued": "Your proposal is ready.",
-          "notIssued": "Your proposal is being prepared.",
+        "offer": {
+          "requestSent": "Your request has been sent. The team will prepare your offer.",
+          "issued": "Your offer is ready.",
+          "notIssued": "Your offer is being prepared.",
           "acceptAndContinue": "Accept and continue"
         },
         "payments": {
@@ -479,13 +479,13 @@
           "cardNotCharged": "Your card will not be charged. It is only registered as a warranty in case of damage."
         },
         "emails": {
-          "proposalIssued": {
-            "subject": "Your boat proposal is ready",
-            "intro": "Your proposal is now available.",
+          "offerIssued": {
+            "subject": "Your boat offer is ready",
+            "intro": "Your offer is now available.",
             "financialSummary": "Financial summary",
             "payAlegria": "Amount payable to Alegria",
             "paySkipper": "Amount payable to skipper",
-            "cta": "View and confirm my proposal"
+            "cta": "View and confirm my offer"
           },
           "bookingConfirmed": {
             "subject": "Your booking is confirmed",
@@ -493,7 +493,7 @@
           }
         },
         "whatsapp": {
-          "proposalIssued": "Hello {{customerName}}, your proposal for {{boatName}} is ready. Alegria: {{alegriaAmount}}, skipper: {{skipperAmount}}, warranty: {{warrantyAmount}}. Open it here: {{proposalUrl}}"
+          "offerIssued": "Hello {{customerName}}, your offer for {{boatName}} is ready. Alegria: {{alegriaAmount}}, skipper: {{skipperAmount}}, warranty: {{warrantyAmount}}. Open it here: {{offerUrl}}"
         },
         "validation": {
           "futureBookingDate": "For a future booking, the date must be today or in the future.",
@@ -514,7 +514,7 @@
             "registerCard": "Register my card",
             "changeWarrantyMethod": "Change warranty method",
             "openBooking": "Open booking",
-            "viewProposal": "View proposal"
+            "viewOffer": "View offer"
           },
           "status": {
             "pending": "Pending",
@@ -549,17 +549,17 @@
           "acceptTerms": "I have read and accept the Terms & Conditions",
           "completion": {
             "title": "Booking completion",
-            "proposalIssued": "Proposal issued",
+            "offerIssued": "Offer issued",
             "termsAccepted": "Terms accepted",
             "alegriaPaid": "Alegria paid",
             "skipperPaid": "Skipper paid",
             "warrantyCompleted": "Warranty completed"
           }
         },
-        "proposal": {
-          "requestSent": "Your request has been sent. The team will prepare your proposal.",
-          "issued": "Your proposal is ready.",
-          "notIssued": "Your proposal is being prepared.",
+        "offer": {
+          "requestSent": "Your request has been sent. The team will prepare your offer.",
+          "issued": "Your offer is ready.",
+          "notIssued": "Your offer is being prepared.",
           "acceptAndContinue": "Accept and continue"
         },
         "payments": {
@@ -582,13 +582,13 @@
           "cardNotCharged": "Your card will not be charged. It is only registered as a warranty in case of damage."
         },
         "emails": {
-          "proposalIssued": {
-            "subject": "Your boat proposal is ready",
-            "intro": "Your proposal is now available.",
+          "offerIssued": {
+            "subject": "Your boat offer is ready",
+            "intro": "Your offer is now available.",
             "financialSummary": "Financial summary",
             "payAlegria": "Amount payable to Alegria",
             "paySkipper": "Amount payable to skipper",
-            "cta": "View and confirm my proposal"
+            "cta": "View and confirm my offer"
           },
           "bookingConfirmed": {
             "subject": "Your booking is confirmed",
@@ -596,7 +596,7 @@
           }
         },
         "whatsapp": {
-          "proposalIssued": "Hello {{customerName}}, your proposal for {{boatName}} is ready. Alegria: {{alegriaAmount}}, skipper: {{skipperAmount}}, warranty: {{warrantyAmount}}. Open it here: {{proposalUrl}}"
+          "offerIssued": "Hello {{customerName}}, your offer for {{boatName}} is ready. Alegria: {{alegriaAmount}}, skipper: {{skipperAmount}}, warranty: {{warrantyAmount}}. Open it here: {{offerUrl}}"
         },
         "validation": {
           "futureBookingDate": "For a future booking, the date must be today or in the future.",
@@ -617,7 +617,7 @@
             "registerCard": "Register my card",
             "changeWarrantyMethod": "Change warranty method",
             "openBooking": "Open booking",
-            "viewProposal": "View proposal"
+            "viewOffer": "View offer"
           },
           "status": {
             "pending": "Pending",
@@ -652,17 +652,17 @@
           "acceptTerms": "I have read and accept the Terms & Conditions",
           "completion": {
             "title": "Booking completion",
-            "proposalIssued": "Proposal issued",
+            "offerIssued": "Offer issued",
             "termsAccepted": "Terms accepted",
             "alegriaPaid": "Alegria paid",
             "skipperPaid": "Skipper paid",
             "warrantyCompleted": "Warranty completed"
           }
         },
-        "proposal": {
-          "requestSent": "Your request has been sent. The team will prepare your proposal.",
-          "issued": "Your proposal is ready.",
-          "notIssued": "Your proposal is being prepared.",
+        "offer": {
+          "requestSent": "Your request has been sent. The team will prepare your offer.",
+          "issued": "Your offer is ready.",
+          "notIssued": "Your offer is being prepared.",
           "acceptAndContinue": "Accept and continue"
         },
         "payments": {
@@ -685,13 +685,13 @@
           "cardNotCharged": "Your card will not be charged. It is only registered as a warranty in case of damage."
         },
         "emails": {
-          "proposalIssued": {
-            "subject": "Your boat proposal is ready",
-            "intro": "Your proposal is now available.",
+          "offerIssued": {
+            "subject": "Your boat offer is ready",
+            "intro": "Your offer is now available.",
             "financialSummary": "Financial summary",
             "payAlegria": "Amount payable to Alegria",
             "paySkipper": "Amount payable to skipper",
-            "cta": "View and confirm my proposal"
+            "cta": "View and confirm my offer"
           },
           "bookingConfirmed": {
             "subject": "Your booking is confirmed",
@@ -699,7 +699,7 @@
           }
         },
         "whatsapp": {
-          "proposalIssued": "Hello {{customerName}}, your proposal for {{boatName}} is ready. Alegria: {{alegriaAmount}}, skipper: {{skipperAmount}}, warranty: {{warrantyAmount}}. Open it here: {{proposalUrl}}"
+          "offerIssued": "Hello {{customerName}}, your offer for {{boatName}} is ready. Alegria: {{alegriaAmount}}, skipper: {{skipperAmount}}, warranty: {{warrantyAmount}}. Open it here: {{offerUrl}}"
         },
         "validation": {
           "futureBookingDate": "For a future booking, the date must be today or in the future.",
@@ -720,7 +720,7 @@
             "registerCard": "Register my card",
             "changeWarrantyMethod": "Change warranty method",
             "openBooking": "Open booking",
-            "viewProposal": "View proposal"
+            "viewOffer": "View offer"
           },
           "status": {
             "pending": "Pending",
@@ -755,17 +755,17 @@
           "acceptTerms": "I have read and accept the Terms & Conditions",
           "completion": {
             "title": "Booking completion",
-            "proposalIssued": "Proposal issued",
+            "offerIssued": "Offer issued",
             "termsAccepted": "Terms accepted",
             "alegriaPaid": "Alegria paid",
             "skipperPaid": "Skipper paid",
             "warrantyCompleted": "Warranty completed"
           }
         },
-        "proposal": {
-          "requestSent": "Your request has been sent. The team will prepare your proposal.",
-          "issued": "Your proposal is ready.",
-          "notIssued": "Your proposal is being prepared.",
+        "offer": {
+          "requestSent": "Your request has been sent. The team will prepare your offer.",
+          "issued": "Your offer is ready.",
+          "notIssued": "Your offer is being prepared.",
           "acceptAndContinue": "Accept and continue"
         },
         "payments": {
@@ -788,13 +788,13 @@
           "cardNotCharged": "Your card will not be charged. It is only registered as a warranty in case of damage."
         },
         "emails": {
-          "proposalIssued": {
-            "subject": "Your boat proposal is ready",
-            "intro": "Your proposal is now available.",
+          "offerIssued": {
+            "subject": "Your boat offer is ready",
+            "intro": "Your offer is now available.",
             "financialSummary": "Financial summary",
             "payAlegria": "Amount payable to Alegria",
             "paySkipper": "Amount payable to skipper",
-            "cta": "View and confirm my proposal"
+            "cta": "View and confirm my offer"
           },
           "bookingConfirmed": {
             "subject": "Your booking is confirmed",
@@ -802,7 +802,7 @@
           }
         },
         "whatsapp": {
-          "proposalIssued": "Hello {{customerName}}, your proposal for {{boatName}} is ready. Alegria: {{alegriaAmount}}, skipper: {{skipperAmount}}, warranty: {{warrantyAmount}}. Open it here: {{proposalUrl}}"
+          "offerIssued": "Hello {{customerName}}, your offer for {{boatName}} is ready. Alegria: {{alegriaAmount}}, skipper: {{skipperAmount}}, warranty: {{warrantyAmount}}. Open it here: {{offerUrl}}"
         },
         "validation": {
           "futureBookingDate": "For a future booking, the date must be today or in the future.",
@@ -823,7 +823,7 @@
             "registerCard": "Register my card",
             "changeWarrantyMethod": "Change warranty method",
             "openBooking": "Open booking",
-            "viewProposal": "View proposal"
+            "viewOffer": "View offer"
           },
           "status": {
             "pending": "Pending",
@@ -858,17 +858,17 @@
           "acceptTerms": "I have read and accept the Terms & Conditions",
           "completion": {
             "title": "Booking completion",
-            "proposalIssued": "Proposal issued",
+            "offerIssued": "Offer issued",
             "termsAccepted": "Terms accepted",
             "alegriaPaid": "Alegria paid",
             "skipperPaid": "Skipper paid",
             "warrantyCompleted": "Warranty completed"
           }
         },
-        "proposal": {
-          "requestSent": "Your request has been sent. The team will prepare your proposal.",
-          "issued": "Your proposal is ready.",
-          "notIssued": "Your proposal is being prepared.",
+        "offer": {
+          "requestSent": "Your request has been sent. The team will prepare your offer.",
+          "issued": "Your offer is ready.",
+          "notIssued": "Your offer is being prepared.",
           "acceptAndContinue": "Accept and continue"
         },
         "payments": {
@@ -891,13 +891,13 @@
           "cardNotCharged": "Your card will not be charged. It is only registered as a warranty in case of damage."
         },
         "emails": {
-          "proposalIssued": {
-            "subject": "Your boat proposal is ready",
-            "intro": "Your proposal is now available.",
+          "offerIssued": {
+            "subject": "Your boat offer is ready",
+            "intro": "Your offer is now available.",
             "financialSummary": "Financial summary",
             "payAlegria": "Amount payable to Alegria",
             "paySkipper": "Amount payable to skipper",
-            "cta": "View and confirm my proposal"
+            "cta": "View and confirm my offer"
           },
           "bookingConfirmed": {
             "subject": "Your booking is confirmed",
@@ -905,7 +905,7 @@
           }
         },
         "whatsapp": {
-          "proposalIssued": "Hello {{customerName}}, your proposal for {{boatName}} is ready. Alegria: {{alegriaAmount}}, skipper: {{skipperAmount}}, warranty: {{warrantyAmount}}. Open it here: {{proposalUrl}}"
+          "offerIssued": "Hello {{customerName}}, your offer for {{boatName}} is ready. Alegria: {{alegriaAmount}}, skipper: {{skipperAmount}}, warranty: {{warrantyAmount}}. Open it here: {{offerUrl}}"
         },
         "validation": {
           "futureBookingDate": "For a future booking, the date must be today or in the future.",
@@ -920,7 +920,7 @@
         "alegria": "/alegria",
         "bigboss": "/bigboss",
         "booking": "/:tenantSlug/bookings/:bookingId",
-        "proposal": "/:tenantSlug/proposals/:proposalId"
+        "offer": "/:tenantSlug/offers/:offerId"
       }
     },
     "dataModel": {

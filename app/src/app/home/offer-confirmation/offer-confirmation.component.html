@@ -1,0 +1,280 @@
+
+      <div class="external-platform-summary" *ngIf="offer?.bookingSource === 'external' || offer?.externalPlatform || offer?.externalPlatformBookingRef">
+        <h3>{{ 'auto.home.offer-confirmation.offer-confirmation.component.r_servation_plateforme' | siteText }}</h3>
+        <p><strong>{{ 'auto.home.offer-confirmation.offer-confirmation.component.plateforme' | siteText }}</strong> {{ offer?.externalPlatformName || offer?.externalPlatform || offer?.source }}</p>
+        <p><strong>{{ 'auto.home.offer-confirmation.offer-confirmation.component.r_f_rence' | siteText }}</strong> {{ offer?.externalPlatformBookingRef || offer?.platformBookingReference || offer?.platformReservationNumber }}</p>
+        <p *ngIf="offer?.externalPlatformPaidAmount"><strong>{{ 'auto.home.offer-confirmation.offer-confirmation.component.d_j_pay_plateforme' | siteText }}</strong> {{ offer?.externalPlatformPaidAmount | currency:'EUR':'symbol':'1.0-2' }}</p>
+        <p *ngIf="offer?.externalTotalRemainingAmount"><strong>{{ 'auto.home.offer-confirmation.offer-confirmation.component.restant_alegria' | siteText }}</strong> {{ offer?.externalTotalRemainingAmount | currency:'EUR':'symbol':'1.0-2' }}</p>
+      </div>
+
+<section class="offer-confirmation-page">
+  <div class="container offer-shell">
+    <p class="muted" *ngIf="loading">{{ text('loading') }}</p>
+    <p class="error" *ngIf="error">{{ error }}</p>
+
+    <article class="offer-card" *ngIf="!loading && offer">
+      <span class="eyebrow">{{ text('offerEyebrow') }}</span>
+      <h1>{{ offer.outingType }}</h1>
+      <p class="muted" *ngIf="offer.offerMessage">{{ offer.offerMessage }}</p>
+
+      <div class="offer-meta-strip">
+        <div><strong>{{ text('customer') }}</strong><span>{{ offer.customerName }}</span></div>
+        <div><strong>{{ text('date') }}</strong><span>{{ offer.outingDate }}</span></div>
+        <div><strong>{{ text('time') }}</strong><span>{{ offer.departureTime }} → {{ offer.arrivalTime }}</span></div>
+        <div><strong>{{ text('passengers') }}</strong><span>{{ offer.passengers || '-' }}</span></div>
+      </div>
+
+      <section class="customer-finance-simple customer-offer-clean">
+        <div class="finance-panel finance-summary-panel">
+          <h2>{{ text('financialSummary') }}</h2>
+          <div class="finance-line" *ngIf="boatPriceAmount > 0">
+            <span>{{ priceTitle('boatPrice') }}</span>
+            <strong>{{ boatPriceAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+          <div class="finance-line" *ngIf="fuelPriceAmount > 0">
+            <span>{{ priceTitle('fuelPrice') || priceTitle('cleaningPrice') }}</span>
+            <strong>{{ fuelPriceAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+          <div class="finance-line" *ngIf="extraServicesAmount > 0">
+            <span>{{ priceTitle('extraServicesPrice') }}</span>
+            <strong>{{ extraServicesAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+          <div class="finance-line" *ngIf="skipperCashAmount > 0">
+            <span>{{ text('skipperFee') || priceTitle('skipperCash') }}</span>
+            <strong>{{ skipperCashAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+          <div class="finance-line finance-total">
+            <span>{{ text('totalCustomerCost') || priceTitle('totalPrice') }}</span>
+            <strong>{{ customerTotalAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+        </div>
+
+        <div class="finance-panel alegria-panel">
+          <h2>{{ text('remainingToPayAlegria') }}</h2>
+          <p class="finance-note">{{ text('alegriaPaymentNote') }}</p>
+          <div class="finance-line muted-line" *ngIf="onlinePayableAmount > 0">
+            <span>{{ text('alegriaSubtotal') }}</span>
+            <strong>{{ onlinePayableAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+          <div class="finance-line muted-line" *ngIf="depositPaidAmount > 0">
+            <span>{{ text('alreadyPaidDeposit') || priceTitle('deposit') }}</span>
+            <strong>-{{ depositPaidAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+          <div class="finance-line finance-total">
+            <span>{{ text('amountDueAlegria') }}</span>
+            <strong>{{ remainingOnlineAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+        </div>
+
+        <div class="finance-panel skipper-panel">
+          <h2>{{ text('remainingToPaySkipper') }}</h2>
+          <p class="finance-note">{{ text('skipperPaymentNote') }}</p>
+          <div class="finance-line finance-total">
+            <span>{{ text('skipperFee') || priceTitle('skipperCash') }}</span>
+            <strong>{{ skipperCashAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+        </div>
+
+        <div class="finance-panel warranty-panel">
+          <h2>{{ text('warrantyModeAndAmount') }}</h2>
+          <div class="finance-line">
+            <span>{{ text('amount') }}</span>
+            <strong>{{ warrantyAmount | currency:'EUR':'symbol':'1.0-2' }}</strong>
+          </div>
+          <div class="finance-line">
+            <span>{{ text('method') }}</span>
+            <strong>{{ warrantyMethodText }}</strong>
+          </div>
+          <div class="finance-line">
+            <span>{{ text('status') }}</span>
+            <strong>{{ warrantyStatusText }}</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="offer-auth-card" *ngIf="!offerAccessReady">
+        <span class="eyebrow">{{ text('secureOfferAccess') }}</span>
+        <h2>{{ text('accessOfferSecurely') }}</h2>
+
+        <p *ngIf="offerAccessMode === 'google'">
+          {{ text('offerLinkedTo') }} <strong>{{ offer.customerEmail }}</strong>.
+          {{ text('continueGoogleOwnership') }}
+        </p>
+
+        <p *ngIf="offerAccessMode === 'auto_email' || customerAccountCreating || offerAccessLoading">
+          {{ text('preparingSecureAccess') }}
+        </p>
+
+        <p class="muted" *ngIf="offerAccessMessage">{{ offerAccessMessage }}</p>
+        <p class="error" *ngIf="offerAccessError">{{ offerAccessError }}</p>
+
+        <button
+          class="btn btn-primary"
+          type="button"
+          *ngIf="offerAccessMode === 'google'"
+          [disabled]="offerAccessLoading"
+          (click)="continueWithGoogle()">
+          {{ offerAccessLoading ? text('openingGoogle') : text('continueWithGoogle') }}
+        </button>
+
+        <button
+          class="btn btn-secondary"
+          type="button"
+          *ngIf="offerAccessMode !== 'google' && offerAccessError"
+          [disabled]="offerAccessLoading"
+          (click)="prepareOfferAccess()">{{ 'auto.home.offer-confirmation.offer-confirmation.component.retry' | siteText }}</button>
+      </section>
+
+      <section class="offer-waiting-admin-card" *ngIf="offerAccessReady && offerWaitingForAdmin">
+        <span class="eyebrow">{{ text('offerWaitingAdminStatus') }}</span>
+        <h2>{{ text('offerWaitingAdminTitle') }}</h2>
+        <p>{{ text('offerWaitingAdminMessage') }}</p>
+        <p class="muted">{{ text('offerWaitingAdminHint') }}</p>
+      </section>
+
+      <ng-container *ngIf="offerAccessReady && offerCanStartCustomerWorkflow">
+        <div class="expired" *ngIf="expired">{{ text('expiredText') }}</div>
+
+        <section class="offer-wizard" *ngIf="!expired">
+          <div class="wizard-progress">
+            <div class="wizard-progress-bar" [style.width.%]="wizardProgressPercent"></div>
+          </div>
+
+          <div class="wizard-steps">
+            <button class="wizard-step" type="button" [class.active]="wizardStep === 1" [class.done]="tncAccepted" [disabled]="!canGoToWizardStep(1)" (click)="goToWizardStep(1)">
+              <span>1</span>
+              <strong>{{ text('wizardStepTerms') }}</strong>
+            </button>
+            <button class="wizard-step" type="button" [class.active]="wizardStep === 2" [class.done]="depositPaid" [disabled]="!canGoToWizardStep(2)" (click)="goToWizardStep(2)">
+              <span>2</span>
+              <strong>{{ text('wizardStepDeposit') }}</strong>
+            </button>
+            <button class="wizard-step" type="button" [class.active]="wizardStep === 3" [class.done]="warrantyReady" [disabled]="!canGoToWizardStep(3)" (click)="goToWizardStep(3)">
+              <span>3</span>
+              <strong>{{ text('wizardStepWarranty') }}</strong>
+            </button>
+          </div>
+
+          <section class="wizard-panel" *ngIf="wizardStep === 1">
+            <h2>{{ text('acceptTitle') }}</h2>
+            <p>{{ text('readBeforeAccept') }}</p>
+
+            <div class="paid-badge" *ngIf="tncAccepted">{{ text('termsAlreadyAccepted') || text('termsAcceptedMessage') }}</div>
+
+            <ng-container *ngIf="!tncAccepted">
+              <button class="link-button" type="button" (click)="openTermsModal()">{{ text('openTerms') }}</button>
+
+              <label class="terms-check">
+                <input type="checkbox" [(ngModel)]="acceptedTerms" [disabled]="!canAcceptTermsCheckbox" />
+                <span>{{ text('termsCheckbox') }}</span>
+              </label>
+
+              <p class="muted" *ngIf="!canAcceptTermsCheckbox">{{ text('termsLocked') }}</p>
+
+              <button class="btn btn-primary" type="button" [disabled]="!canAccept || accepting" (click)="acceptOffer()">
+                {{ accepting ? text('acceptingButton') : (text('wizardAcceptTermsButton') || 'Validate T&C and continue') }}
+              </button>
+            </ng-container>
+
+            <button class="btn btn-primary" type="button" *ngIf="tncAccepted" (click)="goToWizardStep(2)">
+              {{ text('continueToDepositButton') || text('payDepositButton') }}
+            </button>
+          </section>
+
+          <section class="wizard-panel" *ngIf="wizardStep === 2">
+            <h2>{{ text('payDepositTitle') }}</h2>
+            <p>{{ depositMessage }}</p>
+            <p class="muted">{{ priceTitle('deposit') }}: <strong>€{{ offer.depositAmount }}</strong></p>
+            <p class="muted" *ngIf="skipperCashAmount > 0">{{ priceTitle('skipperCash') }}: <strong>€{{ skipperCashAmount }}</strong></p>
+
+            <div class="wizard-actions">
+              <button class="btn btn-secondary" type="button" (click)="goToWizardStep(1)">
+                {{ text('previousStepButton') || 'Previous step' }}
+              </button>
+              <button class="btn btn-primary" type="button" [disabled]="payingDeposit" (click)="payDeposit()">
+                {{ payingDeposit ? text('redirecting') : text('payDepositButton') }}
+              </button>
+            </div>
+          </section>
+
+          <section class="wizard-panel" *ngIf="wizardStep === 3">
+            <h2>{{ text('warrantyTitle') }}</h2>
+            <p>{{ text('warrantyWizardIntro') }}</p>
+
+            <div class="wizard-actions wizard-actions-top">
+              <button class="btn btn-secondary" type="button" (click)="goToWizardStep(2)">
+                {{ text('previousStepButton') || 'Previous step' }}
+              </button>
+            </div>
+
+            <div class="warranty-options">
+              <label class="radio-card">
+                <input type="radio" name="warrantyChoice" [value]="'stripe_card'" [(ngModel)]="warrantyChoice" />
+                <span>{{ text('warrantyCard') }}</span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="warrantyChoice" [value]="'cash_on_board'" [(ngModel)]="warrantyChoice" />
+                <span>{{ text('warrantyCash') }}</span>
+              </label>
+            </div>
+
+            <div class="step-card" *ngIf="warrantyChoice === 'stripe_card'" [class.paid]="warrantyRegistered">
+              <h3>{{ text('registerWarrantyTitle') }}</h3>
+              <p>{{ warrantyMessage }}</p>
+              <p class="muted">{{ text('maxWarranty') }}: <strong>€{{ offer.warrantyAmount || 500 }}</strong></p>
+
+              <div class="paid-badge" *ngIf="warrantyRegistered">{{ text('warrantyCardRegistered') }}</div>
+
+              <button class="btn btn-secondary" type="button" *ngIf="!warrantyRegistered" [disabled]="payingWarranty" (click)="registerWarrantyCard()">
+                {{ payingWarranty ? text('redirecting') : text('registerWarrantyButton') }}
+              </button>
+
+              <button class="btn btn-primary" type="button" *ngIf="warrantyRegistered" [disabled]="finalizingBooking" (click)="finalizeOffer()">
+                {{ finalizingBooking ? text('finalizingBooking') : text('finalizeBookingButton') }}
+              </button>
+            </div>
+
+            <div class="step-card" *ngIf="warrantyChoice === 'cash_on_board'">
+              <h3>{{ text('cashWarrantyTitle') }}</h3>
+              <p>{{ text('warrantyCashMessage') }}</p>
+              <p class="muted">{{ text('amount') }}: <strong>€{{ offer.warrantyAmount || 500 }}</strong></p>
+
+              <button class="btn btn-primary" type="button" [disabled]="payingWarranty || finalizingBooking" (click)="acceptCashWarranty()">
+                {{ finalizingBooking ? text('finalizingBooking') : text('acceptCashWarrantyButton') }}
+              </button>
+            </div>
+          </section>
+
+          <section class="wizard-panel" *ngIf="wizardStep === 4">
+            <h2>{{ text('bookingCreatedTitle') }}</h2>
+            <p>{{ text('bookingCreatedText') }}</p>
+            <button class="btn btn-primary" type="button" [disabled]="finalizingBooking" (click)="finalizeOffer()">
+              {{ finalizingBooking ? text('finalizingBooking') : text('finalizeBookingButton') }}
+            </button>
+          </section>
+        </section>
+
+        <div class="terms-modal-backdrop" *ngIf="termsModalOpen" (click)="closeTermsModal()">
+          <section class="terms-modal" (click)="$event.stopPropagation()">
+            <button class="modal-close" type="button" (click)="closeTermsModal()">×</button>
+            <span class="eyebrow">{{ 'auto.home.offer-confirmation.offer-confirmation.component.alegria_boat' | siteText }}</span>
+            <h2>{{ text('termsModalTitle') }}</h2>
+
+            <div class="terms-content tc-scrollable" tabindex="0">
+              <ng-container *ngFor="let section of termsSections">
+                <h3>{{ section.title }}</h3>
+                <p *ngFor="let paragraph of section.paragraphs">{{ paragraph }}</p>
+              </ng-container>
+            </div>
+
+            <div class="modal-actions">
+              <button class="btn btn-primary" type="button" (click)="closeTermsModal()">{{ text('readTermsButton') }}</button>
+            </div>
+          </section>
+        </div>
+
+        <p class="success" *ngIf="message">{{ message }}</p>
+      </ng-container>
+    </article>
+  </div>
+</section>

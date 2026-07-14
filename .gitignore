@@ -8,7 +8,7 @@ bootstrap1
 bootstrap2
 server/node_modules
 server/dist
-server/.env
-server/dist3server/dist2/config/*firebase-adminsdk*.json
+server/.env*
+server/dist2/config/*firebase-adminsdk*.json
 server/config/*firebase-adminsdk*.json
 server/dist2/config/*.firebase-adminsdk*.json

@@ -9,6 +9,6 @@ curl -k -X POST https://localhost:2000/pay/outing-deposit-checkout \
     "customerName": "Test User",
     "outingType": "Journée en mer",
     "outingDate": "2026-06-12",
-    "successUrl": "https://localhost:2000/proposal/test_123?payment=success", 
-    "cancelUrl": "https://localhost:2000/proposal/test_123?payment=cancelled"
+    "successUrl": "https://localhost:2000/offer/test_123?payment=success", 
+    "cancelUrl": "https://localhost:2000/offer/test_123?payment=cancelled"
   }'

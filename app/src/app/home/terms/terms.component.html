@@ -1,269 +1,32 @@
-<section class="terms-page">
-  <div class="container terms-shell">
-
-    <!-- ENGLISH -->
-    <ng-container *ngIf="language === 'en'">
-      <span class="eyebrow">{{ 'auto.home.terms.terms.component.legal' | siteText }}</span>
-      <h1>{{ 'auto.home.terms.terms.component.catamaran_experience_terms_conditions' | siteText }}</h1>
-
-      <p class="intro">{{ 'auto.home.terms.terms.component.these_terms_conditions_apply_to_direct_bookings_ma' | siteText }}</p>
-
-      <article class="terms-card">
-        <h2>{{ 'auto.home.terms.terms.component.1_the_3_step_booking_and_payment_process' | siteText }}</h2>
-
-        <div class="process-step">
-          <h3>{{ 'auto.home.terms.terms.component.step_1_confirm_the_booking_online' | siteText }}</h3>
-          <p>{{ 'auto.home.terms.terms.component.for_direct_bookings_the_customer_confirms_the_outi' | siteText }}<strong>{{ 'auto.home.terms.terms.component.alegriaboat_eu' | siteText }}</strong>{{ 'auto.home.terms.terms.component.by_accepting_these_terms_conditions_and_paying_a' | siteText }}<strong>{{ 'auto.home.terms.terms.component.10_booking_confirmation_deposit' | siteText }}</strong>.
-          </p>
-          <p>{{ 'auto.home.terms.terms.component.the_booking_is_confirmed_only_once_this_10_deposit' | siteText }}</p>
-        </div>
-
-        <div class="process-step">
-          <h3>{{ 'auto.home.terms.terms.component.step_2_register_the_security_damage_deposit' | siteText }}</h3>
-          <p>{{ 'auto.home.terms.terms.component.before_the_outing_the_customer_may_be_required_to_' | siteText }}<strong>{{ 'auto.home.terms.terms.component.500_security_damage_deposit' | siteText }}</strong>{{ 'auto.home.terms.terms.component.on' | siteText }}<strong>{{ 'auto.home.terms.terms.component.alegriaboat_eu' | siteText }}</strong>{{ 'auto.home.terms.terms.component.using_stripe' | siteText }}</p>
-          <p>{{ 'auto.home.terms.terms.component.this_online_registration_is_normally_completed_app' | siteText }}</p>
-          <p>{{ 'auto.home.terms.terms.component.as_an_alternative_alegria_boat_may_exceptionally_a' | siteText }}<strong>{{ 'auto.home.terms.terms.component.500_cash_damage_deposit' | siteText }}</strong>{{ 'auto.home.terms.terms.component.before_departure_this_amount_will_be_returned_at_t' | siteText }}</p>
-        </div>
-
-        <div class="process-step">
-          <h3>{{ 'auto.home.terms.terms.component.step_3_pay_the_remaining_90_onboard_before_departu' | siteText }}</h3>
-          <p>{{ 'auto.home.terms.terms.component.the_remaining' | siteText }}<strong>{{ 'auto.home.terms.terms.component.90_balance' | siteText }}</strong>{{ 'auto.home.terms.terms.component.is_paid_onboard' | siteText }}<strong>{{ 'auto.home.terms.terms.component.before_departure' | siteText }}</strong>{{ 'auto.home.terms.terms.component.using_sumup_credit_debit_card_apple_pay_google_pay' | siteText }}</p>
-          <p>{{ 'auto.home.terms.terms.component.alegria_boat_may_refuse_departure_if_the_remaining' | siteText }}</p>
-        </div>
-
-        <h2>{{ 'auto.home.terms.terms.component.2_cancellation_and_refund_policy' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.for_direct_bookings_the_10_booking_confirmation_de' | siteText }}<strong>{{ 'auto.home.terms.terms.component.10_calendar_days_before_the_outing' | siteText }}</strong>.</p>
-        <p>{{ 'auto.home.terms.terms.component.if_the_customer_cancels_less_than_10_calendar_days' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.if_alegria_boat_cancels_the_outing_for_any_reason_' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.3_bookings_through_click_boat_samboat_or_other_pla' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.bookings_made_through_third_party_platforms_are_go' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.alegria_boat_may_still_ask_the_customer_to_provide' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.4_punctuality_and_departure_time' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.customers_must_arrive_on_time_at_the_agreed_meetin' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.customer_delays_may_shorten_the_outing_duration_an' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.5_skipper_authority_and_safety' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.the_skipper_has_full_authority_over_the_vessel_and' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.alegria_boat_may_refuse_boarding_or_interrupt_the_' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.6_swimming_and_water_activities' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.swimming_snorkeling_and_any_water_related_activity' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.participants_are_responsible_for_assessing_their_o' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.7_damage_security_deposit_and_liability' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.the_customer_is_financially_responsible_for_damage' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.alegria_boat_may_charge_all_or_part_of_the_registe' | siteText }}</p>
-
-        
-        <h2>{{ 'auto.home.terms.terms.component.8_common_damages_and_chargeable_incidents' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.certain_onboard_damages_occur_frequently_and_may_g' | siteText }}</p>
-
-        <ul>
-          <li>
-            <strong>{{ 'auto.home.terms.terms.component.marine_toilets' | siteText }}</strong>{{ 'auto.home.terms.terms.component.onboard_toilets_are_extremely_sensitive_and_are_no' | siteText }}</li>
-
-          <li>
-            <strong>{{ 'auto.home.terms.terms.component.cigarette_burns' | siteText }}</strong>{{ 'auto.home.terms.terms.component.cushion_covers_and_upholstery_are_highly_sensitive' | siteText }}</li>
-        </ul>
-
-        <h2>{{ 'auto.home.terms.terms.component.9_personal_belongings' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.guests_remain_responsible_for_their_personal_belon' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.10_environment_and_conduct' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.guests_must_respect_marine_life_coastal_areas_and_' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.11_force_majeure_and_weather' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.alegria_boat_shall_not_be_liable_for_delays_change' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.the_skipper_alone_decides_whether_sea_and_weather_' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.12_payment_providers_and_privacy' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.payments_and_card_registrations_may_be_processed_b' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.13_governing_law' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.these_terms_conditions_are_governed_by_french_law_' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.14_acceptance' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.by_confirming_a_booking_making_a_payment_registeri' | siteText }}</p>
-      </article>
-    </ng-container>
-
-    <!-- FRENCH -->
-    <ng-container *ngIf="language === 'fr'">
-      <span class="eyebrow">{{ 'auto.home.terms.terms.component.mentions_l_gales' | siteText }}</span>
-      <h1>{{ 'auto.home.terms.terms.component.conditions_g_n_rales_des_exp_riences_catamaran' | siteText }}</h1>
-
-      <p class="intro">{{ 'auto.home.terms.terms.component.ces_conditions_g_n_rales_s_appliquent_aux_r_servat' | siteText }}</p>
-
-      <article class="terms-card">
-        <h2>{{ 'auto.home.terms.terms.component.1_processus_de_r_servation_et_de_paiement_en_3_tap' | siteText }}</h2>
-
-        <div class="process-step">
-          <h3>{{ 'auto.home.terms.terms.component.tape_1_confirmation_de_la_r_servation_en_ligne' | siteText }}</h3>
-          <p>{{ 'auto.home.terms.terms.component.pour_les_r_servations_directes_le_client_confirme_' | siteText }}<strong>{{ 'auto.home.terms.terms.component.alegriaboat_eu' | siteText }}</strong>{{ 'auto.home.terms.terms.component.en_acceptant_les_pr_sentes_conditions_g_n_rales_et' | siteText }}<strong>{{ 'auto.home.terms.terms.component.acompte_de_confirmation_de_10' | siteText }}</strong>.
-          </p>
-          <p>{{ 'auto.home.terms.terms.component.la_r_servation_n_est_confirm_e_qu_apr_s_paiement_e' | siteText }}</p>
-        </div>
-
-        <div class="process-step">
-          <h3>{{ 'auto.home.terms.terms.component.tape_2_enregistrement_de_la_caution_d_p_t_de_garan' | siteText }}</h3>
-          <p>{{ 'auto.home.terms.terms.component.avant_la_sortie_le_client_peut_tre_invit_enregistr' | siteText }}<strong>{{ 'auto.home.terms.terms.component.caution_d_p_t_de_garantie_de_500' | siteText }}</strong>{{ 'auto.home.terms.terms.component.sur' | siteText }}<strong>{{ 'auto.home.terms.terms.component.alegriaboat_eu' | siteText }}</strong>{{ 'auto.home.terms.terms.component.via_stripe' | siteText }}</p>
-          <p>{{ 'auto.home.terms.terms.component.cet_enregistrement_en_ligne_est_g_n_ralement_effec' | siteText }}</p>
-          <p>{{ 'auto.home.terms.terms.component.d_faut_alegria_boat_pourra_exceptionnellement_acce' | siteText }}<strong>{{ 'auto.home.terms.terms.component.caution_de_500_en_esp_ces' | siteText }}</strong>{{ 'auto.home.terms.terms.component.avant_le_d_part_cette_somme_sera_restitu_e_la_fin_' | siteText }}</p>
-        </div>
-
-        <div class="process-step">
-          <h3>{{ 'auto.home.terms.terms.component.tape_3_paiement_des_90_restants_bord_avant_le_d_pa' | siteText }}</h3>
-          <p>{{ 'auto.home.terms.terms.component.le' | siteText }}<strong>{{ 'auto.home.terms.terms.component.solde_de_90' | siteText }}</strong>{{ 'auto.home.terms.terms.component.est_r_gl_bord' | siteText }}<strong>{{ 'auto.home.terms.terms.component.avant_le_d_part' | siteText }}</strong>{{ 'auto.home.terms.terms.component.via_sumup_carte_bancaire_apple_pay_google_pay_ou_e' | siteText }}</p>
-          <p>{{ 'auto.home.terms.terms.component.alegria_boat_peut_refuser_le_d_part_si_le_solde_n_' | siteText }}</p>
-        </div>
-
-        <h2>{{ 'auto.home.terms.terms.component.2_politique_d_annulation_et_de_remboursement' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.pour_les_r_servations_directes_l_acompte_de_10_est' | siteText }}<strong>{{ 'auto.home.terms.terms.component.10_jours_calendaires_avant_la_sortie' | siteText }}</strong>.</p>
-        <p>{{ 'auto.home.terms.terms.component.si_le_client_annule_moins_de_10_jours_calendaires_' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.si_alegria_boat_annule_la_sortie_notamment_pour_m_' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.3_r_servations_via_click_boat_samboat_ou_autres_pl' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.les_r_servations_r_alis_es_via_des_plateformes_tie' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.alegria_boat_peut_n_anmoins_demander_au_client_des' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.4_ponctualit_et_heure_de_d_part' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.les_clients_doivent_arriver_l_heure_au_point_de_re' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.tout_retard_du_client_peut_r_duire_la_dur_e_de_la_' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.5_autorit_du_skipper_et_s_curit' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.le_skipper_dispose_de_l_autorit_compl_te_sur_le_na' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.alegria_boat_peut_refuser_l_embarquement_ou_interr' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.6_baignade_et_activit_s_nautiques' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.la_baignade_le_snorkeling_et_toute_activit_nautiqu' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.chaque_participant_est_responsable_de_l_valuation_' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.7_dommages_caution_et_responsabilit' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.le_client_est_financi_rement_responsable_des_domma' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.alegria_boat_peut_pr_lever_tout_ou_partie_de_la_ca' | siteText }}</p>
-
-        
-        <h2>{{ 'auto.home.terms.terms.component.8_dommages_courants_et_frais_facturables' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.certains_dommages_bord_sont_fr_quents_et_peuvent_e' | siteText }}</p>
-
-        <ul>
-          <li>
-            <strong>{{ 'auto.home.terms.terms.component.toilettes_marines' | siteText }}</strong>{{ 'auto.home.terms.terms.component.les_toilettes_bord_sont_extr_mement_sensibles_et_n' | siteText }}</li>
-
-          <li>
-            <strong>{{ 'auto.home.terms.terms.component.br_lures_de_cigarettes' | siteText }}</strong>{{ 'auto.home.terms.terms.component.les_housses_de_coussins_et_tissus_du_bateau_sont_t' | siteText }}</li>
-        </ul>
-
-        <h2>{{ 'auto.home.terms.terms.component.9_effets_personnels' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.les_passagers_restent_responsables_de_leurs_effets' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.10_environnement_et_conduite' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.les_passagers_doivent_respecter_la_faune_marine_le' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.11_force_majeure_et_m_t_o' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.alegria_boat_ne_saurait_tre_tenue_responsable_des_' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.le_skipper_d_cide_seul_si_les_conditions_m_t_o_et_' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.12_prestataires_de_paiement_et_confidentialit' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.les_paiements_et_enregistrements_de_carte_peuvent_' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.13_loi_applicable' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.les_pr_sentes_conditions_g_n_rales_sont_r_gies_par' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.14_acceptation' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.en_confirmant_une_r_servation_en_effectuant_un_pai' | siteText }}</p>
-      </article>
-    </ng-container>
-
-    <!-- SPANISH -->
-    <ng-container *ngIf="language === 'es'">
-      <span class="eyebrow">{{ 'auto.home.terms.terms.component.legal' | siteText }}</span>
-      <h1>{{ 'auto.home.terms.terms.component.t_rminos_y_condiciones_de_experiencias_en_catamar_' | siteText }}</h1>
-
-      <p class="intro">{{ 'auto.home.terms.terms.component.estos_t_rminos_y_condiciones_se_aplican_a_las_rese' | siteText }}</p>
-
-      <article class="terms-card">
-        <h2>{{ 'auto.home.terms.terms.component.1_proceso_de_reserva_y_pago_en_3_pasos' | siteText }}</h2>
-
-        <div class="process-step">
-          <h3>{{ 'auto.home.terms.terms.component.paso_1_confirmaci_n_online_de_la_reserva' | siteText }}</h3>
-          <p>{{ 'auto.home.terms.terms.component.para_las_reservas_directas_el_cliente_confirma_la_' | siteText }}<strong>{{ 'auto.home.terms.terms.component.alegriaboat_eu' | siteText }}</strong>{{ 'auto.home.terms.terms.component.aceptando_estos_t_rminos_y_condiciones_y_pagando_u' | siteText }}<strong>{{ 'auto.home.terms.terms.component.dep_sito_de_confirmaci_n_del_10' | siteText }}</strong>.
-          </p>
-          <p>{{ 'auto.home.terms.terms.component.la_reserva_queda_confirmada_nicamente_cuando_se_ha' | siteText }}</p>
-        </div>
-
-        <div class="process-step">
-          <h3>{{ 'auto.home.terms.terms.component.paso_2_registro_del_dep_sito_de_garant_a' | siteText }}</h3>
-          <p>{{ 'auto.home.terms.terms.component.antes_de_la_salida_se_podr_solicitar_al_cliente_re' | siteText }}<strong>{{ 'auto.home.terms.terms.component.dep_sito_de_garant_a_de_500' | siteText }}</strong>{{ 'auto.home.terms.terms.component.en' | siteText }}<strong>{{ 'auto.home.terms.terms.component.alegriaboat_eu' | siteText }}</strong>{{ 'auto.home.terms.terms.component.mediante_stripe' | siteText }}</p>
-          <p>{{ 'auto.home.terms.terms.component.este_registro_online_normalmente_se_realiza_aproxi' | siteText }}</p>
-          <p>{{ 'auto.home.terms.terms.component.como_alternativa_alegria_boat_podr_aceptar_excepci' | siteText }}<strong>{{ 'auto.home.terms.terms.component.dep_sito_en_efectivo_de_500' | siteText }}</strong>{{ 'auto.home.terms.terms.component.antes_de_la_salida_esta_cantidad_ser_devuelta_al_f' | siteText }}</p>
-        </div>
-
-        <div class="process-step">
-          <h3>{{ 'auto.home.terms.terms.component.paso_3_pago_del_90_restante_a_bordo_antes_de_la_sa' | siteText }}</h3>
-          <p>{{ 'auto.home.terms.terms.component.el' | siteText }}<strong>{{ 'auto.home.terms.terms.component.90_restante' | siteText }}</strong>{{ 'auto.home.terms.terms.component.se_paga_a_bordo' | siteText }}<strong>{{ 'auto.home.terms.terms.component.antes_de_la_salida' | siteText }}</strong>{{ 'auto.home.terms.terms.component.mediante_sumup_tarjeta_apple_pay_google_pay_o_efec' | siteText }}</p>
-          <p>{{ 'auto.home.terms.terms.component.alegria_boat_podr_rechazar_la_salida_si_el_saldo_r' | siteText }}</p>
-        </div>
-
-        <h2>{{ 'auto.home.terms.terms.component.2_pol_tica_de_cancelaci_n_y_reembolso' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.para_las_reservas_directas_el_dep_sito_del_10_es_t' | siteText }}<strong>{{ 'auto.home.terms.terms.component.10_d_as_naturales_antes_de_la_salida' | siteText }}</strong>.</p>
-        <p>{{ 'auto.home.terms.terms.component.si_el_cliente_cancela_con_menos_de_10_d_as_natural' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.si_alegria_boat_cancela_la_salida_por_cualquier_mo' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.3_reservas_mediante_click_boat_samboat_u_otras_pla' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.las_reservas_realizadas_a_trav_s_de_plataformas_de' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.alegria_boat_podr_solicitar_informaci_n_pr_ctica_f' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.4_puntualidad_y_hora_de_salida' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.los_clientes_deben_llegar_puntualmente_al_punto_de' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.los_retrasos_del_cliente_pueden_reducir_la_duraci_' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.5_autoridad_del_patr_n_y_seguridad' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.el_patr_n_tiene_plena_autoridad_sobre_la_embarcaci' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.alegria_boat_podr_denegar_el_embarque_o_interrumpi' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.6_nataci_n_y_actividades_acu_ticas' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.la_nataci_n_el_snorkel_y_cualquier_actividad_acu_t' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.cada_participante_es_responsable_de_evaluar_su_pro' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.7_da_os_dep_sito_de_garant_a_y_responsabilidad' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.el_cliente_es_econ_micamente_responsable_de_los_da' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.alegria_boat_podr_cobrar_todo_o_parte_del_dep_sito' | siteText }}</p>
-
-        
-        <h2>{{ 'auto.home.terms.terms.component.8_da_os_frecuentes_y_gastos_facturables' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.algunos_da_os_a_bordo_ocurren_con_frecuencia_y_pue' | siteText }}</p>
-
-        <ul>
-          <li>
-            <strong>{{ 'auto.home.terms.terms.component.ba_os_marinos' | siteText }}</strong>{{ 'auto.home.terms.terms.component.los_ba_os_a_bordo_son_extremadamente_sensibles_y_n' | siteText }}</li>
-
-          <li>
-            <strong>{{ 'auto.home.terms.terms.component.quemaduras_de_cigarrillos' | siteText }}</strong>{{ 'auto.home.terms.terms.component.las_fundas_de_cojines_y_tapicer_as_son_muy_sensibl' | siteText }}</li>
-        </ul>
-
-        <h2>{{ 'auto.home.terms.terms.component.9_objetos_personales' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.los_pasajeros_siguen_siendo_responsables_de_sus_ob' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.10_medio_ambiente_y_conducta' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.los_pasajeros_deben_respetar_la_vida_marina_las_zo' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.11_fuerza_mayor_y_meteorolog_a' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.alegria_boat_no_ser_responsable_de_retrasos_cambio' | siteText }}</p>
-        <p>{{ 'auto.home.terms.terms.component.el_patr_n_decide_en_exclusiva_si_las_condiciones_m' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.12_proveedores_de_pago_y_privacidad' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.los_pagos_y_registros_de_tarjeta_pueden_ser_proces' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.13_ley_aplicable' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.estos_t_rminos_y_condiciones_se_rigen_por_la_ley_f' | siteText }}</p>
-
-        <h2>{{ 'auto.home.terms.terms.component.14_aceptaci_n' | siteText }}</h2>
-        <p>{{ 'auto.home.terms.terms.component.al_confirmar_una_reserva_realizar_un_pago_registra' | siteText }}</p>
-      </article>
-    </ng-container>
-
-  </div>
-</section>
+<main class="terms-document-page">
+  <section class="terms-document-shell" *ngIf="!loading">
+    <header class="terms-document-header">
+      <div>
+        <span class="eyebrow">{{ terms.eyebrow }}</span>
+        <h1>{{ terms.title }}</h1>
+        <p class="intro">{{ terms.intro }}</p>
+        <p class="updated">{{ terms.updatedLabel }} : {{ terms.updated }}</p>
+      </div>
+
+      <div class="terms-actions">
+        <button type="button" class="secondary-action" (click)="goBack()">{{ terms.back }}</button>
+        <button type="button" class="primary-action" (click)="print()">{{ terms.print }}</button>
+      </div>
+    </header>
+
+    <article class="terms-card">
+      <section class="terms-section" *ngFor="let section of terms.sections; trackBy: trackByTitle">
+        <h2>{{ section.title }}</h2>
+
+        <ng-container *ngIf="section.steps?.length">
+          <div class="process-step" *ngFor="let step of section.steps; trackBy: trackByTitle">
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.text }}</p>
+          </div>
+        </ng-container>
+
+        <p *ngFor="let paragraph of section.paragraphs">{{ paragraph }}</p>
+      </section>
+    </article>
+  </section>
+</main>

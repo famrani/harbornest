@@ -5,63 +5,105 @@
     <p>{{ intro }}</p>
 
     <ng-container *ngIf="section === 'payments'; else defaultAccountSection">
+      <section class="standalone-payment-card">
+        <div class="standalone-payment-copy">
+          <span class="selector-kicker">{{ paymentPageText('standaloneTitle') }}</span>
+          <p>{{ paymentPageText('standaloneHelp') }}</p>
+        </div>
+        <div class="standalone-payment-form">
+          <label>
+            <span>{{ paymentPageText('standaloneAmount') }}</span>
+            <input type="number" min="1" step="0.01" [(ngModel)]="standalonePaymentAmount" [placeholder]="paymentPageText('standaloneAmountPlaceholder')" />
+          </label>
+          <label class="standalone-comment">
+            <span>{{ paymentPageText('standaloneComment') }}</span>
+            <textarea rows="3" [(ngModel)]="standalonePaymentComment" [placeholder]="paymentPageText('standaloneCommentPlaceholder')"></textarea>
+          </label>
+          <p class="form-error" *ngIf="standalonePaymentError">{{ standalonePaymentError }}</p>
+          <button class="btn btn-primary" type="button" [disabled]="standalonePaymentLoading" (click)="startStandalonePayment()">
+            {{ standalonePaymentLoading ? paymentPageText('standaloneLoading') : paymentPageText('standaloneCta') }}
+          </button>
+        </div>
+      </section>
+
+      <section class="booking-selector-card" *ngIf="!loading && paymentGroups.length > 0">
+        <div class="booking-selector-copy">
+          <span class="selector-kicker">{{ paymentPageText('chooseBooking') }}</span>
+          <p>{{ paymentPageText('chooseHelp') }}</p>
+        </div>
+        <div class="booking-selector-control">
+          <select [(ngModel)]="selectedBookingId" aria-label="Booking">
+            <option value="all">{{ paymentPageText('allBookings') }}</option>
+            <option *ngFor="let group of paymentGroups" [value]="group.bookingId">
+              {{ group.customerName }} · {{ group.title }} · {{ group.date || '-' }} · {{ formatPaymentAmount(group.remainingAlegriaAmount + group.skipperAmount) }}
+            </option>
+          </select>
+          <div class="selected-booking-actions" *ngIf="selectedPaymentGroup as selected">
+            <div class="selected-due">
+              <span>{{ paymentPageText('amountStillDue') }}</span>
+              <strong>{{ formatPaymentAmount(selected.remainingAlegriaAmount + (selected.skipperAmount || 0)) }}</strong>
+            </div>
+            <button class="btn btn-primary" type="button" (click)="openSelectedBooking(false)">{{ paymentPageText('continuePayment') }}</button>
+            <button class="btn btn-secondary" type="button" (click)="openSelectedBooking(true)">{{ paymentPageText('additionalPayment') }}</button>
+          </div>
+        </div>
+      </section>
+
       <div class="payment-toolbar booking-payment-toolbar">
         <label>
-          <span>{{ 'auto.home.account-summary.account-summary.component.order' | siteText }}</span>
+          <span>{{ paymentPageText('order') }}</span>
           <select [(ngModel)]="paymentSortDirection">
-            <option [value]="'auto.home.account-summary.account-summary.component.desc' | siteText">{{ 'auto.home.account-summary.account-summary.component.newest_first' | siteText }}</option>
-            <option [value]="'auto.home.account-summary.account-summary.component.asc' | siteText">{{ 'auto.home.account-summary.account-summary.component.oldest_first' | siteText }}</option>
+            <option value="desc">{{ paymentPageText('newestFirst') }}</option>
+            <option value="asc">{{ paymentPageText('oldestFirst') }}</option>
           </select>
         </label>
 
-        <button class="btn btn-secondary" type="button" (click)="resetPaymentFilters()">{{ 'auto.home.account-summary.account-summary.component.reset' | siteText }}</button>
+        <button class="btn btn-secondary" type="button" (click)="resetPaymentFilters()">{{ paymentPageText('reset') }}</button>
       </div>
 
-      <p *ngIf="loading" class="muted">{{ 'auto.home.account-summary.account-summary.component.loading_bookings_and_payments' | siteText }}</p>
+      <p *ngIf="loading" class="muted">{{ paymentPageText('loading') }}</p>
 
       <div class="account-empty" *ngIf="!loading && paymentGroups.length === 0">
-        <p>{{ 'auto.home.account-summary.account-summary.component.no_booking_or_payment_is_linked_to_your_account_ye' | siteText }}</p>
-        <a routerLink="/my-bookings" class="btn btn-primary">{{ 'auto.home.account-summary.account-summary.component.go_to_my_bookings' | siteText }}</a>
+        <p>{{ paymentPageText('empty') }}</p>
+        <a routerLink="/my-bookings" class="btn btn-primary">{{ paymentPageText('goToBookings') }}</a>
       </div>
 
-      <div class="payment-summary" *ngIf="!loading && paymentGroups.length > 0">{{ 'auto.home.account-summary.account-summary.component.showing' | siteText }}<strong>{{ filteredPaymentGroups.length }}</strong> booking{{ filteredPaymentGroups.length > 1 ? 's' : '' }}.
-      </div>
+      <div class="payment-summary" *ngIf="!loading && paymentGroups.length > 0">{{ paymentPageText('showing') }} <strong>{{ filteredPaymentGroups.length }}</strong> {{ paymentPageText(filteredPaymentGroups.length === 1 ? 'bookingSingular' : 'bookingPlural') }}.</div>
 
       <div class="booking-payment-list" *ngIf="!loading && filteredPaymentGroups.length > 0">
         <article class="booking-payment-card" *ngFor="let group of filteredPaymentGroups">
           <div class="booking-payment-header">
             <div>
-              <h2>{{ group.title }}</h2>
-              <p>{{ group.bookingId }}</p>
+              <div class="customer-line"><span class="customer-avatar">👤</span><div><h2>{{ group.customerName }}</h2><p>{{ group.title }} · {{ group.date || '-' }}</p></div></div><div class="booking-meta-line"><span>{{ paymentPageText('passengers') }}: {{ group.passengers || '-' }}</span><span>{{ paymentPageText('reference') }}: {{ group.bookingId }}</span></div>
             </div>
             <span class="booking-status" [ngClass]="group.statusClass">{{ group.statusLabel }}</span>
           </div>
 
           <div class="booking-payment-grid">
             <div class="booking-payment-panel">
-              <span class="panel-label">{{ 'auto.home.account-summary.account-summary.component.financial_summary' | siteText }}</span>
+              <span class="panel-label">{{ paymentPageText('financialSummary') }}</span>
               <div class="amount-line">
-                <span>{{ 'auto.home.account-summary.account-summary.component.total_outing' | siteText }}</span>
+                <span>{{ paymentPageText('totalOuting') }}</span>
                 <strong>{{ formatPaymentAmount(group.totalCustomerCost) }}</strong>
               </div>
               <div class="amount-line">
-                <span>{{ 'auto.home.account-summary.account-summary.component.alegria' | siteText }}</span>
+                <span>{{ paymentPageText('alegria') }}</span>
                 <strong>{{ formatPaymentAmount(group.alegriaAmount) }}</strong>
               </div>
               <div class="amount-line">
-                <span>{{ 'auto.home.account-summary.account-summary.component.skipper' | siteText }}</span>
+                <span>{{ paymentPageText('skipper') }}</span>
                 <strong>{{ formatPaymentAmount(group.skipperAmount) }}</strong>
               </div>
             </div>
 
             <div class="booking-payment-panel highlight-panel">
-              <span class="panel-label">{{ 'auto.home.account-summary.account-summary.component.alegria_payment' | siteText }}</span>
+              <span class="panel-label">{{ paymentPageText('alegriaPayment') }}</span>
               <div class="amount-line">
-                <span>{{ 'auto.home.account-summary.account-summary.component.deposit_paid' | siteText }}</span>
+                <span>{{ paymentPageText('depositPaid') }}</span>
                 <strong>{{ formatPaymentAmount(group.depositPaidAmount) }}</strong>
               </div>
               <div class="amount-line total-line">
-                <span>{{ 'auto.home.account-summary.account-summary.component.remaining' | siteText }}</span>
+                <span>{{ paymentPageText('remaining') }}</span>
                 <strong>{{ formatPaymentAmount(group.remainingAlegriaAmount) }}</strong>
               </div>
               <button class="btn btn-primary compact-action" type="button" (click)="openBookingGroup(group)">
@@ -70,33 +112,33 @@
             </div>
 
             <div class="booking-payment-panel">
-              <span class="panel-label">{{ 'auto.home.account-summary.account-summary.component.skipper' | siteText }}</span>
+              <span class="panel-label">{{ paymentPageText('skipper') }}</span>
               <div class="amount-line total-line">
-                <span>{{ 'auto.home.account-summary.account-summary.component.cash_onboard' | siteText }}</span>
+                <span>{{ paymentPageText('cashOnboard') }}</span>
                 <strong>{{ formatPaymentAmount(group.skipperAmount) }}</strong>
               </div>
-              <small>{{ 'auto.home.account-summary.account-summary.component.to_be_paid_directly_to_the_skipper_on_board' | siteText }}</small>
+              <small>{{ paymentPageText('skipperOnboardHelp') }}</small>
             </div>
 
             <div class="booking-payment-panel warranty-panel">
-              <span class="panel-label">{{ 'auto.home.account-summary.account-summary.component.warranty' | siteText }}</span>
+              <span class="panel-label">{{ paymentPageText('warranty') }}</span>
               <div class="amount-line">
-                <span>{{ 'auto.home.account-summary.account-summary.component.amount' | siteText }}</span>
+                <span>{{ paymentPageText('standaloneAmount') }}</span>
                 <strong>{{ formatPaymentAmount(group.warrantyAmount) }}</strong>
               </div>
               <div class="amount-line">
-                <span>{{ 'auto.home.account-summary.account-summary.component.mode' | siteText }}</span>
+                <span>{{ paymentPageText('mode') }}</span>
                 <strong>{{ group.warrantyMode }}</strong>
               </div>
               <div class="amount-line">
-                <span>{{ 'auto.home.account-summary.account-summary.component.status' | siteText }}</span>
+                <span>{{ paymentPageText('status') }}</span>
                 <strong>{{ group.warrantyStatus }}</strong>
               </div>
             </div>
           </div>
 
           <div class="booking-payment-records" *ngIf="group.visiblePayments.length > 0">
-            <span>{{ 'auto.home.account-summary.account-summary.component.recorded_payments' | siteText }}</span>
+            <span>{{ paymentPageText('recordedPayments') }}</span>
             <div class="mini-payment" *ngFor="let payment of group.visiblePayments">
               <span>{{ payment.label }}</span>
               <strong>{{ formatPaymentAmount(payment.amount) }}</strong>

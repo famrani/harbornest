@@ -11,6 +11,7 @@ import { HomefooterComponent } from './home/homefooter/homefooter.component';
 import { LayoutnoneComponent } from './layoutnone/layoutnone.component';
 import { LayoutRoutingModule } from './layout.router.module';
 import { CookieConsentComponent } from './cookie-consent/cookie-consent.component';
+import { SiteTextPipe } from '../home/site-text.pipe';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { CookieConsentComponent } from './cookie-consent/cookie-consent.componen
     ReactiveFormsModule,
     NgxSpinnerModule,
     LayoutRoutingModule,
+    SiteTextPipe,
   ],
   exports: [HomelayoutComponent],
 })

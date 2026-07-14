@@ -36,7 +36,7 @@
           <small>{{ t('calculatedField') }}</small>
         </label>
 
-        <label class="boat-url-line">{{ t('boatListingUrl') }}
+        <label class="boat-url-line" *ngIf="!isDirectSource">{{ t('boatListingUrl') }}
           <input type="url" [(ngModel)]="form.boatClickAndBoatUrl" />
           <a *ngIf="form.boatClickAndBoatUrl" [href]="form.boatClickAndBoatUrl" target="_blank" rel="noopener">{{ 'auto.home.admin-external-bookings.admin-external-bookings.component.open_listing' | siteText }}</a>
         </label>
@@ -52,18 +52,18 @@
       <div class="form-grid">
         <label>{{ t('entryMode') }}
           <select [(ngModel)]="form.entryMode">
-            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.future' | siteText">{{ t('futureMode') }}</option>
-            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.historical' | siteText">{{ t('historicalMode') }}</option>
-            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.proposal' | siteText">{{ t('clientProposalMode') }}</option>
+            <option value="future">{{ t('futureMode') }}</option>
+            <option value="historical">{{ t('historicalMode') }}</option>
+            <option value="offer">{{ t('clientOfferMode') }}</option>
           </select>
         </label>
 
         <label>{{ t('platform') }}
           <select [(ngModel)]="form.source" (ngModelChange)="onPlatformChanged()">
-            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.direct' | siteText">{{ t('platformDirect') }}</option>
-            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.clickandboat' | siteText">{{ t('platformClickAndBoat') }}</option>
-            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.samboat' | siteText">{{ t('platformSamboat') }}</option>
-            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.other' | siteText">{{ t('platformOther') }}</option>
+            <option value="direct">{{ t('platformDirect') }}</option>
+            <option value="clickandboat">{{ t('platformClickAndBoat') }}</option>
+            <option value="samboat">{{ t('platformSamboat') }}</option>
+            <option value="other">{{ t('platformOther') }}</option>
           </select>
         </label>
 
@@ -106,7 +106,7 @@
 
       <h2>{{ customerCostTitle }}</h2>
       <div class="form-grid">
-        <label *ngIf="isHistoricalMode">{{ isDirectSource ? t('totalCollectedHistorical') : 'Total cost to client' }}<input type="number" min="0" step="0.01" [(ngModel)]="form.totalAmount" /></label>
+        <label *ngIf="isHistoricalMode">{{ isDirectSource ? t('directBookingAmount') : t('totalCustomerCost') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.totalAmount" /></label>
 
         <ng-container *ngIf="!isDirectSource">
           <label>{{ platformCustomerAmountLabel }}<input type="number" min="0" step="0.01" [(ngModel)]="form.externalPlatformTotalClientAmount" /></label>
@@ -143,8 +143,8 @@
 
         <label>{{ t('warrantyMethod') }}
           <select [(ngModel)]="form.warrantyPaymentChoice">
-            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.stripe_card' | siteText">{{ t('warrantyStripeCard') }}</option>
-            <option [value]="'auto.home.admin-external-bookings.admin-external-bookings.component.cash_on_board' | siteText">{{ t('warrantyCash') }}</option>
+            <option value="stripe_card">{{ t('warrantyStripeCard') }}</option>
+            <option value="cash_on_board">{{ t('warrantyCash') }}</option>
           </select>
         </label>
       </div>
@@ -154,8 +154,8 @@
       </label>
 
       <div class="actions">
-        <button class="btn btn-primary" type="button" [disabled]="saving" (click)="form.entryMode === 'proposal' ? saveExternalBooking() : saveManualHistoricalBooking()">
-          {{ saving ? t('saving') : (form.entryMode === 'proposal' ? t('createClientProposal') : t('manualBookingSavedMessage')) }}
+        <button class="btn btn-primary" type="button" [disabled]="saving" (click)="form.entryMode === 'offer' ? saveExternalBooking() : saveManualHistoricalBooking()">
+          {{ saving ? t('saving') : (form.entryMode === 'offer' ? t('createClientOffer') : t('manualBookingSavedMessage')) }}
         </button>
       </div>
 
@@ -163,7 +163,7 @@
       <p class="client-link" *ngIf="createdBookingId">
         <a [routerLink]="['/admin/bookings', createdBookingId]">{{ 'auto.home.admin-external-bookings.admin-external-bookings.component.ouvrir_la_r_servation_cr_e' | siteText }}</a>
       </p>
-      <p class="client-link" *ngIf="warrantyLink">{{ t('clientProposalLink') }}: {{ warrantyLink }}</p>
+      <p class="client-link" *ngIf="warrantyLink">{{ t('clientOfferLink') }}: {{ warrantyLink }}</p>
       <p class="error" *ngIf="error">{{ error }}</p>
     </article>
 

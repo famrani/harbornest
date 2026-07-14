@@ -1,6 +1,6 @@
 # Release 36 - Online booking request emails
 
-When a customer submits an online booking request, the frontend now calls `/api/proposals/:proposalId/notify-request-created`.
+When a customer submits an online booking request, the frontend now calls `/api/offers/:offerId/notify-request-created`.
 
 The backend sends:
 - an admin notification to `ALEGRIA_ADMIN_EMAIL`, `MAIL_TO`, or `alegria.boat01@gmail.com`

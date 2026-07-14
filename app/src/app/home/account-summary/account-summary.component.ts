@@ -4,6 +4,7 @@ import { ServicesService } from 'godigital-lib';
 import { SITE_CONTENT, SiteContent } from '../site-content';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
 import { BookingApiService, AlegriaBooking } from '../bookings/booking-api.service';
+import { SiteContentService } from '../site-content-service/site-content.service';
 
 interface CustomerPaymentView {
   id: string;
@@ -23,6 +24,9 @@ interface CustomerBookingPaymentGroup {
   bookingId: string;
   booking: AlegriaBooking;
   title: string;
+  customerName: string;
+  customerEmail: string;
+  passengers: number;
   date?: string;
   totalCustomerCost: number;
   alegriaAmount: number;
@@ -46,6 +50,7 @@ interface CustomerBookingPaymentGroup {
 })
 export class AccountSummaryComponent implements OnInit {
   content: SiteContent = SITE_CONTENT.fr;
+  private allSiteContent: any = SITE_CONTENT;
   currentLanguage: SiteLanguage = 'fr';
   section = 'bookings';
 
@@ -57,13 +62,19 @@ export class AccountSummaryComponent implements OnInit {
   paymentTypeFilter = 'all';
   paymentStatusFilter = 'all';
   paymentSortDirection: 'asc' | 'desc' = 'desc';
+  selectedBookingId = 'all';
+  standalonePaymentAmount: number | null = null;
+  standalonePaymentComment = '';
+  standalonePaymentLoading = false;
+  standalonePaymentError = '';
 
   constructor(
     private route: ActivatedRoute,
     private languageService: LanguageService,
     private router: Router,
     private mainSvc: ServicesService,
-    private bookingApi: BookingApiService
+    private bookingApi: BookingApiService,
+    private siteContentService: SiteContentService
   ) {}
 
   ngOnInit(): void {
@@ -79,13 +90,36 @@ export class AccountSummaryComponent implements OnInit {
       return;
     }
 
+    // Render immediately from the bundled fallback, then replace it with the
+    // Firebase content. This prevents technical translation keys from flashing
+    // on screen and keeps the page usable when Firebase is temporarily slow.
+    this.currentLanguage = this.languageService.currentLanguage || 'fr';
+    this.content = (this.allSiteContent as any)[this.currentLanguage] || SITE_CONTENT.fr;
+    void this.loadSiteContent();
+
     this.languageService.language$.subscribe((language) => {
       this.currentLanguage = language;
-      this.content = SITE_CONTENT[language];
+      this.content = (this.allSiteContent as any)?.[language] || (SITE_CONTENT as any)[language] || SITE_CONTENT.fr;
     });
 
     if (this.section === 'payments') {
       this.loadCustomerPayments();
+    }
+  }
+
+  private async loadSiteContent(): Promise<void> {
+    try {
+      const firebaseContent = await Promise.race([
+        this.siteContentService.getContent(false),
+        new Promise<any>((_, reject) => setTimeout(() => reject(new Error('site-content-timeout')), 5000)),
+      ]);
+      if (firebaseContent && typeof firebaseContent === 'object') {
+        this.allSiteContent = firebaseContent;
+        this.content = firebaseContent[this.currentLanguage] || (SITE_CONTENT as any)[this.currentLanguage] || SITE_CONTENT.fr;
+      }
+    } catch {
+      this.allSiteContent = SITE_CONTENT;
+      this.content = (SITE_CONTENT as any)[this.currentLanguage] || SITE_CONTENT.fr;
     }
   }
 
@@ -152,8 +186,125 @@ export class AccountSummaryComponent implements OnInit {
   }
 
   get filteredPaymentGroups(): CustomerBookingPaymentGroup[] {
-    const groups = [...(this.paymentGroups || [])];
+    const groups = [...(this.paymentGroups || [])]
+      .filter((group) => this.selectedBookingId === 'all' || group.bookingId === this.selectedBookingId);
     return groups.sort((a, b) => (a.lastActivity - b.lastActivity) * (this.paymentSortDirection === 'asc' ? 1 : -1));
+  }
+
+  get selectedPaymentGroup(): CustomerBookingPaymentGroup | null {
+    if (!this.selectedBookingId || this.selectedBookingId === 'all') return null;
+    return (this.paymentGroups || []).find((group) => group.bookingId === this.selectedBookingId) || null;
+  }
+
+  openSelectedBooking(focusAdditionalPayment = false): void {
+    const group = this.selectedPaymentGroup;
+    if (!group?.bookingId) return;
+    this.router.navigate(['/bookings', group.bookingId], {
+      queryParams: focusAdditionalPayment ? { focus: 'additional-payment' } : undefined,
+    });
+  }
+
+  startStandalonePayment(): void {
+    const amount = Number(this.standalonePaymentAmount || 0);
+    const description = String(this.standalonePaymentComment || '').trim();
+    this.standalonePaymentError = '';
+    if (!Number.isFinite(amount) || amount <= 0) {
+      this.standalonePaymentError = this.paymentPageText('standaloneAmountError');
+      return;
+    }
+    if (!description) {
+      this.standalonePaymentError = this.paymentPageText('standaloneCommentError');
+      return;
+    }
+
+    const paymentId = `standalone_${Date.now()}`;
+    const returnUrl = `${window.location.origin}/my-payments`;
+    this.standalonePaymentLoading = true;
+    this.bookingApi.createAdhocCheckout({
+      ownerId: 'alegria',
+      bookingId: '',
+      adhocPaymentId: paymentId,
+      amount,
+      description,
+      customerEmail: String(this.loggedUser?.email || ''),
+      customerName: String(this.loggedUser?.displayName || `${this.loggedUser?.firstname || ''} ${this.loggedUser?.lastname || ''}`.trim()),
+      customerUserId: String(this.loggedUser?.userId || this.loggedUser?.uid || ''),
+      category: 'other',
+      successUrl: `${returnUrl}?payment=success&paymentType=ad_hoc&standalone=1&adhocPaymentId=${encodeURIComponent(paymentId)}`,
+      cancelUrl: `${returnUrl}?payment=cancelled&paymentType=ad_hoc&standalone=1&adhocPaymentId=${encodeURIComponent(paymentId)}`,
+      standalonePayment: true,
+    } as any).subscribe({
+      next: (response: any) => {
+        this.standalonePaymentLoading = false;
+        const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
+        if (url) window.location.href = url;
+        else this.standalonePaymentError = this.paymentPageText('standaloneCheckoutError');
+      },
+      error: (error: any) => {
+        this.standalonePaymentLoading = false;
+        this.standalonePaymentError = error?.error?.error || error?.error?.message || error?.message || this.paymentPageText('standaloneCheckoutError');
+      },
+    });
+  }
+
+  paymentPageText(key: string): string {
+    const payments = (this.content as any)?.accountSummary?.payments || {};
+    const firebaseValue = payments[key];
+    if (typeof firebaseValue === 'string' && firebaseValue.trim()) return firebaseValue;
+
+    const fallback: Record<string, Record<string, string>> = {
+      eyebrow: { fr: 'Espace client', en: 'Customer area', es: 'Área cliente', it: 'Area cliente', de: 'Kundenbereich', nl: 'Klantenzone', ru: 'Личный кабинет' },
+      title: { fr: 'Mes paiements', en: 'My payments', es: 'Mis pagos', it: 'I miei pagamenti', de: 'Meine Zahlungen', nl: 'Mijn betalingen', ru: 'Мои платежи' },
+      adminTitle: { fr: 'Paiements clients', en: 'Customer payments', es: 'Pagos de clientes', it: 'Pagamenti clienti', de: 'Kundenzahlungen', nl: 'Klantbetalingen', ru: 'Платежи клиентов' },
+      intro: { fr: 'Consultez vos acomptes, paiements et soldes liés à vos sorties.', en: 'View your deposits, payments and balances related to your outings.', es: 'Consulte sus depósitos, pagos y saldos relacionados con sus salidas.', it: 'Consulta acconti, pagamenti e saldi relativi alle tue uscite.', de: 'Sehen Sie Anzahlungen, Zahlungen und Restbeträge Ihrer Ausflüge.', nl: 'Bekijk uw aanbetalingen, betalingen en saldi voor uw uitstappen.', ru: 'Просматривайте авансы, платежи и остатки по вашим поездкам.' },
+      adminIntro: { fr: 'Consultez les acomptes, soldes, extras, paiements libres et cautions liés aux réservations.', en: 'View deposits, balances, extras, standalone payments and warranties linked to bookings.', es: 'Consulte depósitos, saldos, extras, pagos libres y garantías vinculados a las reservas.', it: 'Consulta acconti, saldi, extra, pagamenti liberi e cauzioni collegati alle prenotazioni.', de: 'Sehen Sie Anzahlungen, Restbeträge, Extras, freie Zahlungen und Kautionen zu Buchungen.', nl: 'Bekijk aanbetalingen, saldi, extra’s, vrije betalingen en waarborgen bij boekingen.', ru: 'Просматривайте авансы, остатки, доплаты, свободные платежи и залоги по бронированиям.' },
+      standaloneTitle: { fr: 'Effectuer un paiement libre', en: 'Make a standalone payment', es: 'Realizar un pago libre', it: 'Effettua un pagamento libero', de: 'Freie Zahlung vornehmen', nl: 'Een vrije betaling doen', ru: 'Выполнить свободный платеж' },
+      standaloneHelp: { fr: 'Payez un pourboire, un service additionnel ou tout autre montant sans le rattacher à une réservation. Ajoutez un commentaire pour décrire le paiement.', en: 'Pay a tip, an additional service or any other amount without linking it to a booking. Add a comment describing the payment.', es: 'Pague una propina, un servicio adicional u otro importe sin vincularlo a una reserva. Añada un comentario.', it: 'Paga una mancia, un servizio aggiuntivo o un altro importo senza collegarlo a una prenotazione. Aggiungi un commento.', de: 'Zahlen Sie Trinkgeld, Zusatzleistungen oder einen anderen Betrag ohne Buchungszuordnung. Fügen Sie einen Kommentar hinzu.', nl: 'Betaal een fooi, extra service of ander bedrag zonder koppeling aan een boeking. Voeg een opmerking toe.', ru: 'Оплатите чаевые, дополнительную услугу или другую сумму без привязки к бронированию. Добавьте комментарий.' },
+      standaloneAmount: { fr: 'Montant', en: 'Amount', es: 'Importe', it: 'Importo', de: 'Betrag', nl: 'Bedrag', ru: 'Сумма' },
+      standaloneAmountPlaceholder: { fr: 'Ex. 50,00', en: 'E.g. 50.00', es: 'Ej. 50,00', it: 'Es. 50,00', de: 'Z. B. 50,00', nl: 'Bijv. 50,00', ru: 'Напр. 50,00' },
+      standaloneComment: { fr: 'Commentaire', en: 'Comment', es: 'Comentario', it: 'Commento', de: 'Kommentar', nl: 'Opmerking', ru: 'Комментарий' },
+      standaloneCommentPlaceholder: { fr: 'Décrivez le paiement : pourboire, service additionnel, autre…', en: 'Describe the payment: tip, additional service, other…', es: 'Describa el pago: propina, servicio adicional, otro…', it: 'Descrivi il pagamento: mancia, servizio aggiuntivo, altro…', de: 'Beschreiben Sie die Zahlung: Trinkgeld, Zusatzleistung, Sonstiges…', nl: 'Beschrijf de betaling: fooi, extra service, anders…', ru: 'Опишите платеж: чаевые, дополнительная услуга, другое…' },
+      standaloneLoading: { fr: 'Ouverture du paiement…', en: 'Opening payment…', es: 'Abriendo el pago…', it: 'Apertura del pagamento…', de: 'Zahlung wird geöffnet…', nl: 'Betaling wordt geopend…', ru: 'Открытие оплаты…' },
+      standaloneCta: { fr: 'Payer ce montant', en: 'Pay this amount', es: 'Pagar este importe', it: 'Paga questo importo', de: 'Diesen Betrag zahlen', nl: 'Dit bedrag betalen', ru: 'Оплатить эту сумму' },
+      chooseBooking: { fr: 'Choisissez une réservation', en: 'Choose a booking', es: 'Elija una reserva', it: 'Scegli una prenotazione', de: 'Buchung auswählen', nl: 'Kies een boeking', ru: 'Выберите бронирование' },
+      allBookings: { fr: 'Toutes mes réservations', en: 'All my bookings', es: 'Todas mis reservas', it: 'Tutte le prenotazioni', de: 'Alle Buchungen', nl: 'Alle boekingen', ru: 'Все бронирования' },
+      chooseHelp: { fr: 'Sélectionnez la sortie à régler ou à laquelle associer un paiement additionnel.', en: 'Select the outing you want to finish paying or associate an additional payment with.', es: 'Seleccione la salida que desea terminar de pagar o asociar a un pago adicional.', it: 'Seleziona l’uscita da saldare o a cui associare un pagamento aggiuntivo.', de: 'Wählen Sie den Ausflug, den Sie bezahlen oder einer zusätzlichen Zahlung zuordnen möchten.', nl: 'Selecteer de uitstap die u wilt afbetalen of aan een extra betaling wilt koppelen.', ru: 'Выберите поездку для оплаты или дополнительного платежа.' },
+      continuePayment: { fr: 'Continuer le paiement', en: 'Continue payment', es: 'Continuar el pago', it: 'Continua il pagamento', de: 'Zahlung fortsetzen', nl: 'Betaling voortzetten', ru: 'Продолжить оплату' },
+      additionalPayment: { fr: 'Ajouter un paiement', en: 'Add a payment', es: 'Añadir un pago', it: 'Aggiungi un pagamento', de: 'Zahlung hinzufügen', nl: 'Betaling toevoegen', ru: 'Добавить платеж' },
+      amountStillDue: { fr: 'Montant restant dû', en: 'Amount still due', es: 'Importe pendiente', it: 'Importo ancora dovuto', de: 'Noch fälliger Betrag', nl: 'Nog te betalen', ru: 'Остаток к оплате' },
+      order: { fr: 'Trier par', en: 'Sort by', es: 'Ordenar por', it: 'Ordina per', de: 'Sortieren nach', nl: 'Sorteren op', ru: 'Сортировать' },
+      newestFirst: { fr: 'Plus récent d’abord', en: 'Newest first', es: 'Más reciente primero', it: 'Più recenti prima', de: 'Neueste zuerst', nl: 'Nieuwste eerst', ru: 'Сначала новые' },
+      oldestFirst: { fr: 'Plus ancien d’abord', en: 'Oldest first', es: 'Más antiguo primero', it: 'Meno recenti prima', de: 'Älteste zuerst', nl: 'Oudste eerst', ru: 'Сначала старые' },
+      reset: { fr: 'Réinitialiser', en: 'Reset', es: 'Restablecer', it: 'Reimposta', de: 'Zurücksetzen', nl: 'Resetten', ru: 'Сбросить' },
+      loading: { fr: 'Chargement des réservations et paiements…', en: 'Loading bookings and payments…', es: 'Cargando reservas y pagos…', it: 'Caricamento prenotazioni e pagamenti…', de: 'Buchungen und Zahlungen werden geladen…', nl: 'Boekingen en betalingen laden…', ru: 'Загрузка бронирований и платежей…' },
+      empty: { fr: 'Aucune réservation ni aucun paiement n’est encore associé à votre compte.', en: 'No booking or payment is linked to your account yet.', es: 'Aún no hay ninguna reserva o pago asociado a su cuenta.', it: 'Nessuna prenotazione o pagamento è ancora collegato al tuo account.', de: 'Noch keine Buchung oder Zahlung mit Ihrem Konto verknüpft.', nl: 'Er is nog geen boeking of betaling aan uw account gekoppeld.', ru: 'К вашему аккаунту пока не привязаны бронирования или платежи.' },
+      goToBookings: { fr: 'Voir mes réservations', en: 'View my bookings', es: 'Ver mis reservas', it: 'Vedi le mie prenotazioni', de: 'Meine Buchungen ansehen', nl: 'Mijn boekingen bekijken', ru: 'Посмотреть бронирования' },
+      showing: { fr: 'Affichage de', en: 'Showing', es: 'Mostrando', it: 'Visualizzazione di', de: 'Angezeigt werden', nl: 'Weergave van', ru: 'Показано' },
+      bookingSingular: { fr: 'réservation', en: 'booking', es: 'reserva', it: 'prenotazione', de: 'Buchung', nl: 'boeking', ru: 'бронирование' },
+      bookingPlural: { fr: 'réservations', en: 'bookings', es: 'reservas', it: 'prenotazioni', de: 'Buchungen', nl: 'boekingen', ru: 'бронирования' },
+      customer: { fr: 'Client', en: 'Customer', es: 'Cliente', it: 'Cliente', de: 'Kunde', nl: 'Klant', ru: 'Клиент' },
+      unknownCustomer: { fr: 'Client non renseigné', en: 'Customer not specified', es: 'Cliente no indicado', it: 'Cliente non specificato', de: 'Kunde nicht angegeben', nl: 'Klant niet opgegeven', ru: 'Клиент не указан' },
+      outingDate: { fr: 'Date de sortie', en: 'Outing date', es: 'Fecha de salida', it: 'Data dell’uscita', de: 'Ausflugsdatum', nl: 'Datum uitstap', ru: 'Дата поездки' },
+      passengers: { fr: 'Passagers', en: 'Passengers', es: 'Pasajeros', it: 'Passeggeri', de: 'Passagiere', nl: 'Passagiers', ru: 'Пассажиры' },
+      reference: { fr: 'Référence', en: 'Reference', es: 'Referencia', it: 'Riferimento', de: 'Referenz', nl: 'Referentie', ru: 'Номер' },
+      financialSummary: { fr: 'Synthèse financière', en: 'Financial summary', es: 'Resumen financiero', it: 'Riepilogo finanziario', de: 'Finanzübersicht', nl: 'Financieel overzicht', ru: 'Финансовая сводка' },
+      totalOuting: { fr: 'Total de la sortie', en: 'Total outing', es: 'Total de la salida', it: 'Totale uscita', de: 'Gesamtausflug', nl: 'Totaal uitstap', ru: 'Итого поездка' },
+      alegria: { fr: 'Alegria', en: 'Alegria', es: 'Alegria', it: 'Alegria', de: 'Alegria', nl: 'Alegria', ru: 'Alegria' },
+      skipper: { fr: 'Skipper', en: 'Skipper', es: 'Patrón', it: 'Skipper', de: 'Skipper', nl: 'Schipper', ru: 'Шкипер' },
+      alegriaPayment: { fr: 'Paiement Alegria', en: 'Alegria payment', es: 'Pago Alegria', it: 'Pagamento Alegria', de: 'Alegria-Zahlung', nl: 'Alegria-betaling', ru: 'Платеж Alegria' },
+      depositPaid: { fr: 'Acompte payé', en: 'Deposit paid', es: 'Depósito pagado', it: 'Acconto pagato', de: 'Anzahlung bezahlt', nl: 'Aanbetaling betaald', ru: 'Аванс оплачен' },
+      remaining: { fr: 'Reste à payer', en: 'Remaining', es: 'Pendiente', it: 'Residuo', de: 'Restbetrag', nl: 'Resterend', ru: 'Остаток' },
+      cashOnboard: { fr: 'À payer à bord', en: 'Pay onboard', es: 'Pagar a bordo', it: 'Da pagare a bordo', de: 'An Bord zu zahlen', nl: 'Aan boord betalen', ru: 'Оплата на борту' },
+      skipperOnboardHelp: { fr: 'À régler directement au skipper à bord.', en: 'Pay directly to the skipper onboard.', es: 'Pagar directamente al patrón a bordo.', it: 'Da pagare direttamente allo skipper a bordo.', de: 'Direkt an den Skipper an Bord zahlen.', nl: 'Rechtstreeks aan de schipper aan boord betalen.', ru: 'Оплатить непосредственно шкиперу на борту.' },
+      warranty: { fr: 'Caution', en: 'Warranty', es: 'Fianza', it: 'Cauzione', de: 'Kaution', nl: 'Waarborg', ru: 'Залог' },
+      mode: { fr: 'Mode', en: 'Method', es: 'Método', it: 'Metodo', de: 'Methode', nl: 'Methode', ru: 'Способ' },
+      status: { fr: 'Statut', en: 'Status', es: 'Estado', it: 'Stato', de: 'Status', nl: 'Status', ru: 'Статус' },
+      recordedPayments: { fr: 'Historique des paiements', en: 'Payment history', es: 'Historial de pagos', it: 'Storico pagamenti', de: 'Zahlungsverlauf', nl: 'Betalingsgeschiedenis', ru: 'История платежей' },
+      standaloneAmountError: { fr: 'Saisissez un montant supérieur à zéro.', en: 'Enter an amount greater than zero.', es: 'Introduzca un importe superior a cero.', it: 'Inserisci un importo superiore a zero.', de: 'Geben Sie einen Betrag größer als null ein.', nl: 'Voer een bedrag groter dan nul in.', ru: 'Введите сумму больше нуля.' },
+      standaloneCommentError: { fr: 'Ajoutez un commentaire décrivant le paiement.', en: 'Add a comment describing the payment.', es: 'Añada un comentario que describa el pago.', it: 'Aggiungi un commento che descriva il pagamento.', de: 'Fügen Sie einen Kommentar zur Zahlung hinzu.', nl: 'Voeg een opmerking toe die de betaling beschrijft.', ru: 'Добавьте комментарий с описанием платежа.' },
+      standaloneCheckoutError: { fr: 'Impossible d’ouvrir le paiement sécurisé.', en: 'Unable to open secure payment.', es: 'No se puede abrir el pago seguro.', it: 'Impossibile aprire il pagamento sicuro.', de: 'Die sichere Zahlung konnte nicht geöffnet werden.', nl: 'De beveiligde betaling kan niet worden geopend.', ru: 'Не удалось открыть защищённую оплату.' },
+    };
+    return fallback[key]?.[this.currentLanguage] || fallback[key]?.en || key;
   }
 
   get filteredPayments(): CustomerPaymentView[] {
@@ -353,6 +504,9 @@ export class AccountSummaryComponent implements OnInit {
         bookingId,
         booking,
         title: this.bookingDescription(booking),
+        customerName: this.getBookingCustomerName(booking),
+        customerEmail: String(anyBooking.email || anyBooking.customerEmail || anyBooking.clientEmail || ''),
+        passengers: Number(anyBooking.passengers || anyBooking.guestCount || 0),
         date: booking.outingDate,
         totalCustomerCost,
         alegriaAmount,
@@ -434,6 +588,17 @@ export class AccountSummaryComponent implements OnInit {
     return { label: this.currentLanguage === 'fr' ? 'Alegria payé' : 'Alegria paid', className: 'status-paid' };
   }
 
+
+  getBookingCustomerName(booking: AlegriaBooking): string {
+    const b: any = booking || {};
+    const nested = b.customer || b.client || {};
+    const fullName = [nested.firstname || nested.firstName, nested.lastname || nested.lastName].filter(Boolean).join(' ').trim();
+    return String(
+      b.customerName || b.clientName || nested.displayName || nested.name || fullName ||
+      b.email || b.customerEmail || this.paymentPageText('unknownCustomer')
+    ).trim();
+  }
+
   openBookingGroup(group: CustomerBookingPaymentGroup): void {
     if (!group?.bookingId) return;
     this.router.navigate(['/bookings', group.bookingId]);
@@ -497,6 +662,7 @@ export class AccountSummaryComponent implements OnInit {
     this.paymentTypeFilter = 'all';
     this.paymentStatusFilter = 'all';
     this.paymentSortDirection = 'desc';
+    this.selectedBookingId = 'all';
   }
 
   getDepositAmount(booking: AlegriaBooking): number {
@@ -542,7 +708,7 @@ export class AccountSummaryComponent implements OnInit {
   }
 
   isWarrantyCardRegistered(booking: AlegriaBooking): boolean {
-    // Cash warranty has priority over legacy/old card flags. Some proposals store
+    // Cash warranty has priority over legacy/old card flags. Some offers store
     // warrantyRegistered=true after cash selection, so that boolean alone must not
     // create a card-warranty row.
     if (this.isCashWarrantySelected(booking)) return false;
@@ -661,70 +827,34 @@ export class AccountSummaryComponent implements OnInit {
   }
 
   get eyebrow(): string {
-    return this.currentLanguage === 'fr' ? 'Espace client' : this.currentLanguage === 'es' ? 'Área cliente' : 'Customer area';
+    return this.section === 'payments' ? this.paymentPageText('eyebrow') : this.currentLanguage === 'fr' ? 'Espace client' : this.currentLanguage === 'es' ? 'Área cliente' : 'Customer area';
   }
 
   get title(): string {
-    const role = String(this.loggedUser?.role || '').toLowerCase();
-    const isAdmin = role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
+    if (this.section === 'payments') {
+      const role = String(this.loggedUser?.role || '').toLowerCase();
+      const isAdmin = role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
+      return this.paymentPageText(isAdmin ? 'adminTitle' : 'title');
+    }
     const labels: any = {
-      bookings: {
-        fr: 'Mes réservations',
-        en: 'My bookings',
-        es: 'Mis reservas',
-      },
-      payments: {
-        fr: isAdmin ? 'Paiements clients' : 'Mes paiements',
-        en: isAdmin ? 'Customer payments' : 'My payments',
-        es: isAdmin ? 'Pagos de clientes' : 'Mis pagos',
-      },
-      profile: {
-        fr: 'Mon profil',
-        en: 'My profile',
-        es: 'Mi perfil',
-      },
-      feedbacks: {
-        fr: 'Mes avis',
-        en: 'My feedbacks',
-        es: 'Mis comentarios',
-      },
+      bookings: { fr: 'Mes réservations', en: 'My bookings', es: 'Mis reservas' },
+      profile: { fr: 'Mon profil', en: 'My profile', es: 'Mi perfil' },
+      feedbacks: { fr: 'Mes avis', en: 'My feedbacks', es: 'Mis comentarios' },
     };
-
-    return labels[this.section]?.[this.currentLanguage] || labels.bookings[this.currentLanguage];
+    return labels[this.section]?.[this.currentLanguage] || labels.bookings[this.currentLanguage] || labels.bookings.en;
   }
 
   get intro(): string {
+    if (this.section === 'payments') {
+      const role = String(this.loggedUser?.role || '').toLowerCase();
+      const isAdmin = role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
+      return this.paymentPageText(isAdmin ? 'adminIntro' : 'intro');
+    }
     const labels: any = {
-      bookings: {
-        fr: 'Retrouvez ici vos demandes, sorties confirmées et informations de réservation.',
-        en: 'Find your requests, confirmed outings and booking information here.',
-        es: 'Encuentre aquí sus solicitudes, salidas confirmadas e información de reserva.',
-      },
-      payments: {
-        fr: String(this.loggedUser?.role || '').toLowerCase() === 'admin' || String(this.loggedUser?.role || '').toLowerCase() === 'owner' || this.loggedUser?.isAdmin === true ? 'Consultez les acomptes, soldes, extras, paiements ad hoc et cautions liés aux réservations.' : 'Consultez vos acomptes, paiements et soldes liés à vos sorties.',
-        en: String(this.loggedUser?.role || '').toLowerCase() === 'admin' || String(this.loggedUser?.role || '').toLowerCase() === 'owner' || this.loggedUser?.isAdmin === true ? 'View deposits, balances, extras, ad hoc payments and warranties linked to bookings.' : 'View your deposits, payments and balances related to your outings.',
-        es: String(this.loggedUser?.role || '').toLowerCase() === 'admin' || String(this.loggedUser?.role || '').toLowerCase() === 'owner' || this.loggedUser?.isAdmin === true ? 'Consulte depósitos, saldos, extras, pagos ad hoc y garantías vinculados a las reservas.' : 'Consulte sus depósitos, pagos y saldos relacionados con sus salidas.',
-      },
-      profile: {
-        fr: 'Gérez vos informations personnelles et coordonnées de contact.',
-        en: 'Manage your personal information and contact details.',
-        es: 'Gestione su información personal y datos de contacto.',
-      },
-      feedbacks: {
-        fr: 'Retrouvez ou laissez vos avis après une sortie à bord d’Alegria.',
-        en: 'View or leave your feedback after an outing aboard Alegria.',
-        es: 'Vea o deje sus comentarios después de una salida a bordo de Alegria.',
-      },
+      bookings: { fr: 'Retrouvez ici vos demandes, sorties confirmées et informations de réservation.', en: 'Find your requests, confirmed outings and booking information here.', es: 'Encuentre aquí sus solicitudes, salidas confirmadas e información de reserva.' },
+      profile: { fr: 'Gérez vos informations personnelles et coordonnées de contact.', en: 'Manage your personal information and contact details.', es: 'Gestione su información personal y datos de contacto.' },
+      feedbacks: { fr: 'Retrouvez ou laissez vos avis après une sortie à bord d’Alegria.', en: 'View or leave your feedback after an outing aboard Alegria.', es: 'Vea o deje sus comentarios después de una salida a bordo de Alegria.' },
     };
-
-    return labels[this.section]?.[this.currentLanguage] || labels.bookings[this.currentLanguage];
-  }
-
-  get emptyText(): string {
-    return this.currentLanguage === 'fr'
-      ? 'Cette section sera connectée à votre compte dès que vos données seront disponibles.'
-      : this.currentLanguage === 'es'
-        ? 'Esta sección se conectará a su cuenta cuando sus datos estén disponibles.'
-        : 'This section will be connected to your account as soon as your data is available.';
+    return labels[this.section]?.[this.currentLanguage] || labels.bookings[this.currentLanguage] || labels.bookings.en;
   }
 }

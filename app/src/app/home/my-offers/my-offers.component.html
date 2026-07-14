@@ -1,0 +1,116 @@
+<section class="offer-page">
+  <div class="container offer-shell">
+    <div class="section-head offer-page-head">
+      <div>
+        <span class="eyebrow">{{ t('myEyebrow') }}</span>
+        <h1>{{ t('myTitle') }}</h1>
+        <p>{{ t('myIntro') }}</p>
+      </div>
+
+      <button class="btn btn-primary create-offer-request-btn" type="button" (click)="createOfferRequest()">
+        {{ t('createOfferRequest') }}
+      </button>
+    </div>
+    <p *ngIf="loading" class="muted">{{ t('loadingMy') }}</p>
+    <p *ngIf="!loading && error" class="error-message">{{ error }}</p>
+    <p *ngIf="actionMessage" class="success-message">{{ actionMessage }}</p>
+    <p *ngIf="actionError" class="error-message">{{ actionError }}</p>
+    <div class="offer-tabs" *ngIf="!loading && ((offers.length > 0 || requests.length > 0) || requests.length > 0)">
+      <button type="button" [class.active]="activeTab === 'requests'" (click)="setTab('requests')">{{ t('requests') }} <span>{{ requestsCount }}</span></button>
+      <button type="button" [class.active]="activeTab === 'pending'" (click)="setTab('pending')">{{ t('pending') }} <span>{{ pendingCount }}</span></button>
+      <button type="button" [class.active]="activeTab === 'accepted'" (click)="setTab('accepted')">{{ t('accepted') }} <span>{{ acceptedCount }}</span></button>
+      <button type="button" [class.active]="activeTab === 'declined'" (click)="setTab('declined')">{{ t('declined') }} <span>{{ declinedCount }}</span></button>
+      <button type="button" [class.active]="activeTab === 'expired'" (click)="setTab('expired')">{{ t('expiredStatus') }} <span>{{ expiredCount }}</span></button>
+    </div>
+    <div class="offer-toolbar" *ngIf="!loading && (offers.length > 0 || requests.length > 0)">
+      <label><span>{{ t('search') }}</span><input type="search" [(ngModel)]="searchTerm" [placeholder]="t('mySearchPlaceholder')" /></label>
+      <button class="btn btn-secondary" type="button" *ngIf="searchTerm" (click)="searchTerm = ''">{{ t('clear') }}</button>
+      <button class="btn btn-secondary" type="button" (click)="loadOffers()">{{ t('refresh') }}</button>
+    </div>
+    <div class="empty-card" *ngIf="!loading && offers.length === 0 && requests.length === 0">{{ t('emptyNoOffer') }}</div>
+    <div class="empty-card" *ngIf="!loading && (offers.length > 0 || requests.length > 0) && filteredOffers.length === 0 && filteredRequests.length === 0 && filteredOfferRequests.length === 0">{{ t('emptyNoMatch') }}</div>
+
+
+    <div class="offer-list" *ngIf="!loading && filteredOfferRequests.length > 0">
+      <article class="offer-card request-card" *ngFor="let request of filteredOfferRequests">
+        <div class="offer-top">
+          <span class="status-pill pending">{{ t('requestSubmittedStatus') }}</span>
+          <span class="validity">{{ t('awaitingAdminOffer') }}</span>
+        </div>
+        <h2>{{ request.outingType || t('outingOffer') }}</h2>
+        <p class="offer-date">{{ request.outingDate || t('dateNotSet') }}<ng-container *ngIf="request.departureTime"> · {{ request.departureTime }}</ng-container></p>
+        <div class="offer-grid">
+          <div><strong>{{ t('from') }}</strong><span>{{ request.startMarina || '-' }}</span></div>
+          <div><strong>{{ t('destination') }}</strong><span>{{ request.destination || '-' }}</span></div>
+          <div><strong>{{ t('passengers') }}</strong><span>{{ request.passengers || '-' }}</span></div>
+          <div><strong>{{ t('estimatedPrice') }}</strong><span>€{{ request.estimatedPrice || request.totalAmount || 0 }}</span></div>
+          <div><strong>{{ priceTitle('skipperPrice') }}</strong><span>€{{ getEstimatedSkipperPrice(request) }}</span></div>
+          <div><strong>{{ priceTitle('cleaningPrice') }}</strong><span>€{{ getEstimatedCleaningPrice(request) }}</span></div>
+          <div><strong>{{ priceTitle('extraServicesPrice') }}</strong><span>€{{ getEstimatedOptionsPrice(request) }}</span></div>
+        </div>
+        <p class="offer-message">{{ t('requestWaitingText') }}</p>
+        <div class="offer-actions" (click)="$event.stopPropagation()" *ngIf="canManageOfferRequest(request)">
+          <button class="btn btn-secondary" type="button" (click)="cancelCustomerOfferRequest(request, $event)">{{ t('cancelRequest') }}</button>
+        </div>
+      </article>
+    </div>
+
+    <div class="offer-list" *ngIf="!loading && filteredRequests.length > 0">
+      <article class="offer-card request-card" *ngFor="let request of filteredRequests" (click)="openRequest(request)">
+        <div class="offer-top">
+          <span class="status-pill pending">{{ getRequestStatusLabel(request) }}</span>
+          <span class="validity">{{ t('awaitingAdminOffer') }}</span>
+        </div>
+        <h2>{{ request.outingType || t('outingOffer') }}</h2>
+        <p class="offer-date">{{ request.outingDate || t('dateNotSet') }}<ng-container *ngIf="request.departureTime"> · {{ request.departureTime }}</ng-container></p>
+        <div class="offer-grid">
+          <div><strong>{{ t('from') }}</strong><span>{{ request.startMarina || '-' }}</span></div>
+          <div><strong>{{ t('destination') }}</strong><span>{{ request.destination || '-' }}</span></div>
+          <div><strong>{{ t('passengers') }}</strong><span>{{ request.passengers || '-' }}</span></div>
+          <div><strong>{{ t('requestSource') }}</strong><span>{{ t('createdByCustomer') }}</span></div>
+        </div>
+        <p class="offer-message">{{ t('requestWaitingText') }}</p>
+
+        <form class="request-edit-form" *ngIf="editingRequestId === request.bookingId" (click)="$event.stopPropagation()" (ngSubmit)="saveEditRequest(request, $event)">
+          <label><span>{{ t('date') }}</span><input type="date" name="outingDate" [(ngModel)]="editRequestForm.outingDate" /></label>
+          <label><span>{{ t('departureTime') }}</span><input type="time" name="departureTime" [(ngModel)]="editRequestForm.departureTime" /></label>
+          <label><span>{{ t('arrivalTime') }}</span><input type="time" name="arrivalTime" [(ngModel)]="editRequestForm.arrivalTime" /></label>
+          <label><span>{{ t('passengers') }}</span><input type="number" min="1" name="passengers" [(ngModel)]="editRequestForm.passengers" /></label>
+          <label><span>{{ t('from') }}</span><input type="text" name="startMarina" [(ngModel)]="editRequestForm.startMarina" /></label>
+          <label><span>{{ t('destination') }}</span><input type="text" name="destination" [(ngModel)]="editRequestForm.destination" /></label>
+          <label class="wide"><span>{{ t('comments') }}</span><textarea name="comments" rows="3" [(ngModel)]="editRequestForm.comments"></textarea></label>
+          <div class="offer-actions wide">
+            <button class="btn btn-primary" type="submit">{{ t('saveRequestChanges') }}</button>
+            <button class="btn btn-secondary" type="button" (click)="cancelEditRequest($event)">{{ t('cancel') }}</button>
+          </div>
+        </form>
+
+        <div class="offer-actions" (click)="$event.stopPropagation()" *ngIf="canManageRequest(request) && editingRequestId !== request.bookingId">
+          <button class="btn btn-primary" type="button" (click)="startEditRequest(request, $event)">{{ t('editRequest') }}</button>
+          <button class="btn btn-secondary" type="button" (click)="cancelCustomerRequest(request, $event)">{{ t('cancelRequest') }}</button>
+        </div>
+      </article>
+    </div>
+
+    <div class="offer-list" *ngIf="!loading && filteredOffers.length > 0">
+      <article class="offer-card" *ngFor="let offer of filteredOffers" (click)="openOffer(offer)">
+        <div class="offer-top"><span class="status-pill" [ngClass]="getStatusClass(offer)">{{ getStatusLabel(offer) }}</span><span class="validity">{{ getValidityLabel(offer) }}</span></div>
+        <p class="offer-origin">{{ getOfferOriginLabel(offer) }}</p>
+        <h2>{{ offer.outingType || t('outingOffer') }}</h2>
+        <p class="offer-date">{{ offer.outingDate || t('dateNotSet') }}<ng-container *ngIf="offer.departureTime"> · {{ offer.departureTime }}</ng-container><ng-container *ngIf="offer.arrivalTime">–{{ offer.arrivalTime }}</ng-container></p>
+        <div class="offer-grid">
+          <div><strong>{{ priceTitle('totalAmount') }}</strong><span>€{{ offer.totalAmount || 0 }}</span></div>
+          <div><strong>{{ priceTitle('deposit10') }}</strong><span>€{{ getDepositAmount(offer) }}</span></div>
+          <div><strong>{{ priceTitle('remaining90') }}</strong><span>€{{ getBalanceAmount(offer) }}</span></div>
+          <div><strong>{{ priceTitle('warrantyAmount') }}</strong><span>€{{ offer.warrantyAmount || 500 }}</span></div>
+        </div>
+        <p class="offer-message" *ngIf="offer.offerMessage">{{ offer.offerMessage }}</p>
+        <div class="offer-actions" (click)="$event.stopPropagation()">
+          <button class="btn btn-primary" type="button" *ngIf="getOfferTab(offer) === 'pending'" (click)="openOffer(offer)">{{ t('viewAcceptOffer') }}</button>
+          <button class="btn btn-secondary" type="button" *ngIf="hasRelatedBooking(offer)" (click)="openRelatedBooking(offer, $event)">{{ t('openRelatedBooking') }}</button>
+          <button class="btn btn-secondary" type="button" *ngIf="getOfferTab(offer) !== 'pending'" (click)="openOffer(offer)">{{ t('viewDetails') }}</button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

@@ -307,3 +307,34 @@ a:hover {
   color: #08263a;
   text-decoration: underline;
 }
+
+.auth-error-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.auth-error-card {
+  width: min(460px, 100%);
+  background: #fff;
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.25);
+  text-align: center;
+}
+
+.auth-error-card h5 {
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.auth-error-card p {
+  color: #475569;
+  line-height: 1.55;
+  margin-bottom: 20px;
+}

@@ -104,7 +104,7 @@ export class BookingFinancialService {
     const tips = this.n(booking?.tipsAmount, booking?.tipAmount, payments?.direct?.tipsAmount, payments?.direct?.tipAmount, booking?.raw?.tipsAmount, booking?.raw?.tipAmount);
     const fuel = external
       ? this.n(booking?.cleaningCashAmount, payments?.direct?.cleaningCashAmount, booking?.raw?.cleaningCashAmount)
-      : this.n(booking?.proposalFuelPrice, booking?.fuelPrice, booking?.fuelAmount, booking?.proposalCleaningPrice, booking?.estimatedCleaningPrice);
+      : this.n(booking?.proposalFuelPrice, booking?.fuelPrice, booking?.fuelAmount, booking?.offerCleaningPrice, booking?.estimatedCleaningPrice);
     const drinks = this.n(booking?.drinksAmount, payments?.direct?.drinksAmount, booking?.raw?.drinksAmount);
     const waterToys = this.n(booking?.waterToysAmount, payments?.direct?.waterToysAmount, booking?.raw?.waterToysAmount);
     const other = this.n(booking?.otherOnboardAmount, payments?.direct?.otherOnboardAmount, booking?.raw?.otherOnboardAmount);

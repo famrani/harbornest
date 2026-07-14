@@ -49,7 +49,7 @@ export interface AlegriaBooking {
   remainingOnboardAmount?: number;
   skipperPaid?: boolean;
   skipperStatus?: string;
-  proposalCleaningPrice?: number;
+  offerCleaningPrice?: number;
   estimatedOptionsPrice?: number;
   estimatedCleaningPrice?: number;
   estimatedSkipperPrice?: number;
@@ -106,7 +106,7 @@ export interface AlegriaBooking {
   proposalBoatPrice?: number;
   proposalSkipperPrice?: number;
   proposalExtraServicesPrice?: number;
-  proposalNotes?: string;
+  offerNotes?: string;
   bookingSource?: string;
   source?: string;
   externalPlatform?: string;
@@ -125,12 +125,12 @@ export interface AlegriaBooking {
   externalTotalRemainingAmount?: number;
   externalPaymentItems?: any[];
   externalDocuments?: string;
-  requestNeedsAdminProposal?: boolean;
+  requestNeedsAdminOffer?: boolean;
   pricingToBeFinalizedByAdmin?: boolean;
   clientNextStep?: string;
   requestedOptions?: any[];
-  proposalCreatedAt?: number;
-  proposalCreatedFromRequestId?: string;
+  offerCreatedAt?: number;
+  offerCreatedFromRequestId?: string;
   requestSubmittedAt?: number;
   boatId?: string;
   boatName?: string;
@@ -313,7 +313,7 @@ export class BookingApiService {
 
   createDepositCheckout(payload: {
     bookingId: string;
-    proposalId?: string;
+    offerId?: string;
     ownerId: string;
     amount?: number;
     depositAmount: number;
@@ -329,12 +329,17 @@ export class BookingApiService {
     customerPhone?: string;
     outingType?: string;
     outingDate?: string;
+    termsAccepted?: boolean;
+    tncAccepted?: boolean;
+    customerTermsAccepted?: boolean;
+    termsAcceptedAt?: number | string | null;
+    tncAcceptedAt?: number | string | null;
     successUrl: string;
     cancelUrl: string;
   }): Observable<any> {
     const enrichedPayload = {
       ...payload,
-      proposalId: payload.proposalId || payload.bookingId,
+      offerId: payload.offerId || payload.bookingId,
       amount: Number(payload.amount || payload.depositAmount || 0),
       depositAmount: Number(payload.depositAmount || payload.amount || 0),
       currency: payload.currency || 'eur',
@@ -434,7 +439,7 @@ export class BookingApiService {
 
   createBalanceCheckout(payload: {
     bookingId: string;
-    proposalId?: string;
+    offerId?: string;
     ownerId: string;
     amount?: number;
     balanceAmount: number;
@@ -446,13 +451,18 @@ export class BookingApiService {
     customerPhone?: string;
     outingType?: string;
     outingDate?: string;
+    termsAccepted?: boolean;
+    tncAccepted?: boolean;
+    customerTermsAccepted?: boolean;
+    termsAcceptedAt?: number | string | null;
+    tncAcceptedAt?: number | string | null;
     successUrl: string;
     cancelUrl: string;
   }): Observable<any> {
     const balanceAmount = Number(payload.balanceAmount || payload.amount || 0);
     const enrichedPayload = {
       ...payload,
-      proposalId: payload.proposalId || payload.bookingId,
+      offerId: payload.offerId || payload.bookingId,
       amount: balanceAmount,
       balanceAmount,
       // Some deployed backends only have the original deposit checkout route.
@@ -499,6 +509,11 @@ export class BookingApiService {
     customerPhone?: string;
     outingType?: string;
     outingDate?: string;
+    termsAccepted?: boolean;
+    tncAccepted?: boolean;
+    customerTermsAccepted?: boolean;
+    termsAcceptedAt?: number | string | null;
+    tncAcceptedAt?: number | string | null;
     successUrl: string;
     cancelUrl: string;
   }): Observable<any> {
@@ -515,7 +530,7 @@ export class BookingApiService {
 
   createSkipperFeeCheckout(payload: {
     bookingId: string;
-    proposalId?: string;
+    offerId?: string;
     ownerId: string;
     amount: number;
     skipperAmount?: number;
@@ -526,6 +541,11 @@ export class BookingApiService {
     customerPhone?: string;
     outingType?: string;
     outingDate?: string;
+    termsAccepted?: boolean;
+    tncAccepted?: boolean;
+    customerTermsAccepted?: boolean;
+    termsAcceptedAt?: number | string | null;
+    tncAcceptedAt?: number | string | null;
     successUrl: string;
     cancelUrl: string;
   }): Observable<any> {
@@ -542,7 +562,7 @@ export class BookingApiService {
       `${this.baseUrl}/stripe/deposit-checkout`,
     ], {
       ...payload,
-      proposalId: payload.proposalId || payload.bookingId,
+      offerId: payload.offerId || payload.bookingId,
       amount,
       skipperAmount: amount,
       extraServiceAmount: amount,
@@ -705,7 +725,7 @@ export class BookingApiService {
     const skipper = n(raw?.skipperCashAmount, raw?.proposalSkipperPrice, payments?.direct?.skipperCashAmount);
     const fuel = external
       ? n(raw?.cleaningCashAmount, payments?.direct?.cleaningCashAmount)
-      : n(raw?.proposalFuelPrice, raw?.fuelPrice, raw?.fuelAmount, raw?.proposalCleaningPrice);
+      : n(raw?.proposalFuelPrice, raw?.fuelPrice, raw?.fuelAmount, raw?.offerCleaningPrice);
     const catering = n(raw?.cateringAmount, payments?.direct?.cateringAmount);
     const tips = n(raw?.tipsAmount, raw?.tipAmount, payments?.direct?.tipsAmount, payments?.direct?.tipAmount);
     const drinks = n(raw?.drinksAmount, payments?.direct?.drinksAmount);
@@ -765,7 +785,7 @@ export class BookingApiService {
   /**
    * Payment-page source of truth.
    * - Booking/payment state comes from bnBookings/{bookingId}.
-   * - Stripe transaction details come only from bnPayment records linked to the booking/proposal.
+   * - Stripe transaction details come only from bnPayment records linked to the booking/offer.
    * This avoids mixing backend summary endpoints with the persisted booking state shown to the customer.
    */
   getPaymentPageState(bookingId: string): Observable<any> {
@@ -780,8 +800,8 @@ export class BookingApiService {
 
     const booking = await this.getBookingFromFirebase(id).catch(() => undefined) as any;
     const raw = booking?.raw || booking || {};
-    const proposalId = String(raw.proposalId || raw.relatedBookingId || raw.sourceProposalId || raw.bookingId || id).trim();
-    const ids = Array.from(new Set([id, proposalId].filter(Boolean)));
+    const offerId = String(raw.offerId || raw.relatedBookingId || raw.sourceOfferId || raw.bookingId || id).trim();
+    const ids = Array.from(new Set([id, offerId].filter(Boolean)));
 
     const stripeRecords: any[] = [];
     for (const matchId of ids) {
@@ -790,8 +810,8 @@ export class BookingApiService {
         if (value && typeof value === 'object') stripeRecords.push({ paymentId: value.paymentId || key, ...value });
       });
 
-      const byProposal = await this.fetchBnPaymentRecordsByField('proposalId', matchId).catch(() => null);
-      Object.entries(byProposal || {}).forEach(([key, value]: [string, any]) => {
+      const byOffer = await this.fetchBnPaymentRecordsByField('offerId', matchId).catch(() => null);
+      Object.entries(byOffer || {}).forEach(([key, value]: [string, any]) => {
         if (value && typeof value === 'object') stripeRecords.push({ paymentId: value.paymentId || key, ...value });
       });
     }
@@ -904,6 +924,8 @@ export class BookingApiService {
     currency?: string;
     customerEmail?: string;
     customerName?: string;
+    customerUserId?: string;
+    category?: string;
     successUrl: string;
     cancelUrl: string;
   }): Observable<any> {
@@ -929,7 +951,7 @@ export class BookingApiService {
   }
 
   createAdhocCheckout(payload: {
-    bookingId: string;
+    bookingId?: string;
     adhocPaymentId?: string;
     ownerId: string;
     amount: number;
@@ -937,8 +959,11 @@ export class BookingApiService {
     currency?: string;
     customerEmail?: string;
     customerName?: string;
+    customerUserId?: string;
+    category?: string;
     successUrl: string;
     cancelUrl: string;
+    standalonePayment?: boolean;
   }): Observable<any> {
     const adhocPaymentId = payload.adhocPaymentId || `adhoc_${Date.now()}`;
     return this.postFirstAvailable([
@@ -1033,8 +1058,38 @@ export class BookingApiService {
     const status = String((booking as any)?.bookingRequestStatus || (booking as any)?.status || '').toLowerCase();
     return status === 'request_submitted' ||
       status === 'admin_pricing_in_progress' ||
-      (booking as any)?.requestNeedsAdminProposal === true ||
+      (booking as any)?.requestNeedsAdminOffer === true ||
       (booking as any)?.pricingToBeFinalizedByAdmin === true;
+  }
+
+  canCustomerManageRequest(booking: Partial<AlegriaBooking> | undefined): boolean {
+    if (!booking) return false;
+    const status = String((booking as any).bookingRequestStatus || (booking as any).status || '').toLowerCase();
+    const issued = (booking as any).offerCreatedFromRequestId || (booking as any).offerId || (booking as any).relatedOfferId || (booking as any).offerIssued === true;
+    if (issued) return false;
+    return this.isRequestBooking(booking) && !['cancelled_by_customer', 'deleted', 'offer_issued', 'offer_sent', 'accepted', 'confirmed'].includes(status);
+  }
+
+  async updateCustomerRequest(bookingId: string, payload: Partial<AlegriaBooking>): Promise<void> {
+    const patch: Partial<AlegriaBooking> = {
+      ...payload,
+      bookingRequestStatus: 'request_updated_by_customer',
+      status: 'request_updated_by_customer',
+      requestUpdatedByCustomerAt: Date.now(),
+      requestNeedsAdminOffer: true,
+      pricingToBeFinalizedByAdmin: true,
+    } as any;
+    await this.updateBooking(bookingId, patch);
+  }
+
+  async cancelCustomerRequest(bookingId: string): Promise<void> {
+    await this.updateBooking(bookingId, {
+      status: 'cancelled_by_customer',
+      bookingRequestStatus: 'cancelled_by_customer',
+      requestCancelledByCustomerAt: Date.now(),
+      requestNeedsAdminOffer: false,
+      pricingToBeFinalizedByAdmin: false,
+    } as any);
   }
 
   async deleteBooking(bookingId: string): Promise<void> {
@@ -1070,9 +1125,12 @@ export class BookingApiService {
     if (!bookingId) return;
     const safePayload: any = { ...(payload || {}) };
     delete safePayload.raw;
-    this.http.post<any>(`${this.baseUrl}/api/bookings/${encodeURIComponent(bookingId)}/notify-updated`, { payload: safePayload }).subscribe({
+    const status = String(safePayload.bookingRequestStatus || safePayload.status || '').toLowerCase();
+    if (!['request_updated_by_customer', 'cancelled_by_customer'].includes(status)) return;
+    const endpoint = status === 'cancelled_by_customer' ? 'notify-cancelled' : 'notify-updated';
+    this.http.post<any>(`${this.baseUrl}/api/bookings/${encodeURIComponent(bookingId)}/${endpoint}`, { payload: safePayload }).subscribe({
       next: () => {},
-      error: (error) => console.warn('[BookingApi] booking update email notification failed', error?.message || error)
+      error: (error) => console.warn('[BookingApi] offer request email notification failed', error?.message || error)
     });
   }
 
@@ -1151,8 +1209,8 @@ export class BookingApiService {
   private async getBookingsFromFirebase(email?: string): Promise<AlegriaBooking[]> {
     const raw = await this.readBookingsRaw();
     const bookings = this.normalizeBookings(raw)
-      .filter((booking) => booking.bookingStatus !== 'deleted')
-      .filter((booking) => !this.isRequestBooking(booking))
+      .filter((booking) => String((booking as any).bookingStatus || (booking as any).status || '').toLowerCase() !== 'deleted')
+      .filter((booking) => String((booking as any).bookingRequestStatus || (booking as any).status || '').toLowerCase() !== 'cancelled_by_customer')
       .sort((a, b) => String(b.outingDate || '').localeCompare(String(a.outingDate || '')) || String(b.departureTime || '').localeCompare(String(a.departureTime || '')));
 
     if (!email) return bookings;

@@ -9,6 +9,7 @@ import { StripeService } from '../services/stripeAdn';
 import { BookingsService } from '../services/booking.service'
 import { UsersService } from '../services/users.service'
 import { BoatownersService } from '../services/boatowners.service';
+import { FeedbacksService } from '../services/feedbacks.service';
 
 export class WebServerComponent {
     private app = express();
@@ -23,6 +24,7 @@ export class WebServerComponent {
     private bookingsSvc: BookingsService,
     private usersSvc: UsersService,
     private boatownersSvc: BoatownersService,
+    private feedbacksSvc: FeedbacksService,
   ) {}
 
     async initWebServer(): Promise<void> {
@@ -100,5 +102,6 @@ export class WebServerComponent {
     this.bookingsSvc.setRoutes(this.router);
     this.usersSvc.setRoutes(this.router);
     this.boatownersSvc.setRoutes(this.router);
+    this.feedbacksSvc.setRoutes(this.router);
     }
 }

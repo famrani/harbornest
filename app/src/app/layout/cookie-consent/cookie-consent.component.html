@@ -1,10 +1,10 @@
-<div class="cookie-banner" *ngIf="visible" role="dialog" aria-live="polite" aria-label="Cookie notice">
+<div class="cookie-banner" *ngIf="visible" role="dialog" aria-live="polite" [attr.aria-label]="'layout.cookieConsent.ariaLabel' | siteText:'Gestion des cookies'">
   <div class="cookie-copy">
-    <strong>{{ copy.title }}</strong>
-    <p>{{ copy.text }}</p>
+    <strong>{{ 'layout.cookieConsent.title' | siteText:'Gestion des cookies' }}</strong>
+    <p>{{ 'layout.cookieConsent.text' | siteText:'Nous utilisons des cookies nécessaires au bon fonctionnement du site et, le cas échéant, à l’amélioration de votre expérience. En continuant, vous acceptez leur utilisation.' }}</p>
   </div>
   <div class="cookie-actions">
-    <a routerLink="/terms" class="cookie-link">{{ copy.learnMore }}</a>
-    <button type="button" class="cookie-accept" (click)="accept()">{{ copy.accept }}</button>
+    <a routerLink="/terms" class="cookie-link">{{ 'layout.cookieConsent.learnMore' | siteText:'Conditions générales' }}</a>
+    <button type="button" class="cookie-accept" (click)="accept()">{{ 'layout.cookieConsent.accept' | siteText:'J’accepte' }}</button>
   </div>
 </div>

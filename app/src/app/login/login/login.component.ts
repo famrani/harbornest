@@ -71,6 +71,31 @@ export class LoginComponent {
   }
   closeError() { this.showErrorModal = false; }
 
+  private withTimeout<T>(promise: Promise<T>, timeoutMs = 20000, message = 'Login is taking too long. Please try again.'): Promise<T> {
+    let timer: any;
+    const timeoutPromise = new Promise<T>((_, reject) => {
+      timer = setTimeout(() => reject(new Error(message)), timeoutMs);
+    });
+
+    return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timer));
+  }
+
+  private normalizeAuthError(error: any): string {
+    const code = error?.code || error?.[0] || error?.message || '';
+    const rawMessage = error?.message || '';
+
+    if (String(code).includes('EMAILNOTVERIFIED')) {
+      return 'EMAIL_NOT_VERIFIED';
+    }
+    if (String(code).includes('auth/invalid-credential') || String(code).includes('auth/wrong-password') || String(code).includes('auth/user-not-found')) {
+      return 'The email or password is incorrect.';
+    }
+    if (String(code).includes('auth/too-many-requests')) {
+      return 'Too many attempts. Please wait a moment and try again.';
+    }
+    return rawMessage || 'Authentication failed. Please try again.';
+  }
+
   private postLoginRedirect() {
     const target = this.redirectTo && this.redirectTo.startsWith('/') ? this.redirectTo : '/';
     try {
@@ -102,7 +127,16 @@ export class LoginComponent {
         localStorage.removeItem('loggedUser');
       }
 
-      [status, user] = await this.loginSvc.localUtilsSvc.processLogin(v.email, v.password, undefined) as any;
+      [status, user] = await this.withTimeout(
+        this.loginSvc.localUtilsSvc.processLogin(v.email, v.password, undefined) as Promise<any>,
+        20000,
+        'Login is taking too long. Please check your connection and try again.'
+      ) as any;
+
+      if (!user) {
+        throw new Error('Authentication failed. Please try again.');
+      }
+
       this.loginSvc.wnGuest = user;
       this.loginSvc.mainSvc.setLoggedUser(user);
       try {
@@ -120,11 +154,11 @@ export class LoginComponent {
 
       this.postLoginRedirect();
     } catch (e: any) {
-      status = e ? e[0] : AUTHSTATUS.UNKNOWNERROR;
-      if (status === AUTHSTATUS.EMAILNOTVERIFIED) {
+      const message = this.normalizeAuthError(e);
+      if (message === 'EMAIL_NOT_VERIFIED') {
         $('#emailNotVerifiedModal').modal('show');
-      } else if (status === AUTHSTATUS.UNKNOWNERROR) {
-        $('#loginErrorModal').modal('show');
+      } else {
+        this.openError(message, 'Connexion impossible');
       }
     } finally {
       this.sending = false;
@@ -134,7 +168,11 @@ export class LoginComponent {
   async loginWithGoogle() {
     this.sending = true;
     try {
-      const user = await this.users.signInWithGoogleAndLoadProfile();
+      const user = await this.withTimeout(
+        this.users.signInWithGoogleAndLoadProfile(),
+        20000,
+        'Google sign-in is taking too long. Please try again.'
+      );
 
       // (Optional) ensure we have an RTDB profile doc (in case first-time Google login)
       // If your UsersService already upserts, you can remove this block:

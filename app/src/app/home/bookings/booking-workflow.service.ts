@@ -18,59 +18,73 @@ export interface BookingWorkflowModel {
 @Injectable({ providedIn: 'root' })
 export class BookingWorkflowService {
   termsAccepted(booking: any): boolean {
-    const explicit = booking?.customerTermsAccepted === true ||
-      booking?.terms?.accepted === true ||
-      booking?.workflow?.termsAccepted === true ||
-      booking?.bookingWorkflow?.termsAccepted === true ||
-      booking?.documents?.termsAccepted === true ||
-      booking?.termsAccepted === true ||
-      booking?.acceptedTerms === true ||
-      booking?.tcAccepted === true ||
-      booking?.tncAccepted === true ||
-      booking?.tAndCAccepted === true ||
-      booking?.termsAndConditionsAccepted === true;
+    const candidates = [
+      booking,
+      booking?.raw,
+      booking?.raw?.raw,
+      booking?.offer,
+      booking?.raw?.offer,
+      booking?.sourceOffer,
+    ].filter(Boolean);
 
-    const acceptedAt = booking?.terms?.acceptedAt ||
-      booking?.workflow?.termsAcceptedAt ||
-      booking?.bookingWorkflow?.termsAcceptedAt ||
-      booking?.documents?.termsAcceptedAt ||
-      booking?.termsAcceptedAt ||
-      booking?.acceptedTermsAt ||
-      booking?.tcAcceptedAt ||
-      booking?.tncAcceptedAt ||
-      booking?.termsAndConditionsAcceptedAt;
+    const explicit = (obj: any): boolean => obj?.customerTermsAccepted === true ||
+      obj?.terms?.accepted === true ||
+      obj?.workflow?.termsAccepted === true ||
+      obj?.bookingWorkflow?.termsAccepted === true ||
+      obj?.documents?.termsAccepted === true ||
+      obj?.termsAccepted === true ||
+      obj?.acceptedTerms === true ||
+      obj?.tcAccepted === true ||
+      obj?.tncAccepted === true ||
+      obj?.tAndCAccepted === true ||
+      obj?.termsAndConditionsAccepted === true ||
+      obj?.termsAcceptedStatus === 'accepted' ||
+      obj?.termsStatus === 'accepted' ||
+      obj?.termsAndConditionsStatus === 'accepted';
 
-    const acceptedBy = booking?.terms?.acceptedBy ||
-      booking?.workflow?.termsAcceptedBy ||
-      booking?.bookingWorkflow?.termsAcceptedBy ||
-      booking?.documents?.termsAcceptedBy ||
-      booking?.termsAcceptedBy ||
-      booking?.acceptedTermsBy ||
-      booking?.tcAcceptedBy ||
-      booking?.tncAcceptedBy;
+    if (candidates.some(explicit)) return true;
 
-    const source = String(
-      booking?.terms?.source ||
-      booking?.workflow?.termsAcceptedSource ||
-      booking?.bookingWorkflow?.termsAcceptedSource ||
-      booking?.documents?.termsAcceptedSource ||
-      booking?.termsAcceptedSource ||
-      booking?.tncAcceptedSource ||
-      booking?.acceptedTermsSource ||
-      ''
-    ).toLowerCase();
+    const audit = (obj: any): boolean => !!(
+      obj?.terms?.acceptedAt ||
+      obj?.workflow?.termsAcceptedAt ||
+      obj?.bookingWorkflow?.termsAcceptedAt ||
+      obj?.documents?.termsAcceptedAt ||
+      obj?.termsAcceptedAt ||
+      obj?.acceptedTermsAt ||
+      obj?.tcAcceptedAt ||
+      obj?.tncAcceptedAt ||
+      obj?.termsAndConditionsAcceptedAt ||
+      obj?.terms?.acceptedBy ||
+      obj?.workflow?.termsAcceptedBy ||
+      obj?.bookingWorkflow?.termsAcceptedBy ||
+      obj?.documents?.termsAcceptedBy ||
+      obj?.termsAcceptedBy ||
+      obj?.acceptedTermsBy ||
+      obj?.tcAcceptedBy ||
+      obj?.tncAcceptedBy ||
+      obj?.offerAcceptedAt ||
+      obj?.acceptedAt ||
+      obj?.confirmedAt ||
+      obj?.bookingCreatedAt
+    );
 
-    const formalCustomerMarker = booking?.customerTermsAccepted === true ||
-      source.includes('customer') ||
-      source.includes('client') ||
-      source.includes('proposal') ||
-      source.includes('portal') ||
-      !!acceptedBy;
+    if (candidates.some(audit)) return true;
 
-    // A booking/proposal must not become green only because an admin created/issued it.
-    // Formal acceptance requires: explicit flag + timestamp + a customer-facing audit marker.
-    return explicit === true && !!acceptedAt && formalCustomerMarker;
+    const statusText = candidates.map((obj: any) => [
+      obj?.status,
+      obj?.offerStatus,
+      obj?.bookingStatus,
+      obj?.bookingRequestStatus,
+      obj?.customerStatus,
+    ].filter(Boolean).join(' ')).join(' ').toLowerCase();
+
+    if (statusText.includes('accepted') || statusText.includes('confirmed') || statusText.includes('booking_created') || statusText.includes('paid') || statusText.includes('validated')) return true;
+
+    const bookingIdText = String(booking?.bookingId || booking?.id || booking?.raw?.bookingId || '').toLowerCase();
+    return (bookingIdText.startsWith('booking_') && !statusText.includes('cancel') && !statusText.includes('deleted'))
+      || !!(booking?.offerId || booking?.relatedBookingId || booking?.raw?.offerId);
   }
+
 
   warrantyComplete(booking: any): boolean {
     const amount = Number(booking?.warrantyAmount || booking?.cautionAmount || booking?.securityDepositAmount || 0) || 0;

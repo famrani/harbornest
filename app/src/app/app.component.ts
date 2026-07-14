@@ -70,14 +70,11 @@ export class AppComponent implements OnInit {
           }
           value2 = this.utilSvc.getUid();
           try {
-            this.localUtilsSvc.processLogin(undefined, undefined, value2)
-              .then(async e => {
-                //                        this.router.navigate(['/home']);
-              })
-              .catch(e => {
-                //                        this.router.navigate(['/home']);
-              }
-              );
+            if (value2) {
+              const autoLogin = this.localUtilsSvc.processLogin(undefined, undefined, value2);
+              const timeout = new Promise(resolve => setTimeout(() => resolve(null), 8000));
+              Promise.race([autoLogin, timeout]).catch(() => null);
+            }
           } catch (e) { }
         });
     });

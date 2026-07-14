@@ -57,15 +57,23 @@ export class HomefooterComponent implements OnInit, OnDestroy {
 }
 
 get releaseLabel(): string {
-  return this.footerContent.release || 'Release';
+  return this.footerContent.release || '';
+}
+
+get bookingProcessLabel(): string {
+  return this.footerContent.bookingProcess || this.footerContent.howToBook || '';
+}
+
+get seaToysLabel(): string {
+  return this.footerContent.seaToys || (this.content as any)?.nav?.seaToys || '';
 }
 
 get termsLabel(): string {
-  return this.footerContent.terms || 'Conditions générales';
+  return this.footerContent.terms || '';
 }
 
 get safetyLabel(): string {
-  return this.footerContent.safety || 'Consignes de sécurité';
+  return this.footerContent.safety || '';
 }
 
   ngOnDestroy(): void {

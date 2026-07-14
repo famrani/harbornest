@@ -29,15 +29,16 @@ import { GuestFaqComponent } from './guest-faq/guest-faq.component';
 import { GuestJourneyComponent } from './guest-journey/guest-journey.component';
 import { BookingsComponent } from './bookings/bookings.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
-import { MyProposalsComponent } from './my-proposals/my-proposals.component';
+import { MyOffersComponent } from './my-offers/my-offers.component';
 import { BookingDetailComponent } from './booking-detail/booking-detail.component';
 import { BookingInvoiceComponent } from './booking-invoice/booking-invoice.component';
 import { AdminWarrantyChargeComponent } from './admin-warranty-charge/admin-warranty-charge.component';
-import { AdminProposalsComponent } from './admin-proposals/admin-proposals.component';
-import { ProposalConfirmationComponent } from './proposal-confirmation/proposal-confirmation.component';
+import { AdminOffersComponent } from './admin-offers/admin-offers.component';
+import { OfferConfirmationComponent } from './offer-confirmation/offer-confirmation.component';
 import { AdminExternalBookingsComponent } from './admin-external-bookings/admin-external-bookings.component';
 import { BookingProcessComponent } from './booking-process/booking-process.component';
 import { OnlineBookingComponent } from './online-booking/online-booking.component';
+import { SeaToysComponent } from './sea-toys/sea-toys.component';
 import { AdminPricingModelComponent } from './admin-pricing-model/admin-pricing-model.component';
 import { AdminFleetComponent } from './admin-fleet/admin-fleet.component';
 import { SiteTextPipe } from './site-text.pipe';
@@ -68,17 +69,18 @@ import { SiteTextPipe } from './site-text.pipe';
     GuestJourneyComponent,
     BookingsComponent,
     MyBookingsComponent,
-    MyProposalsComponent,
+    MyOffersComponent,
     BookingDetailComponent,
     BookingInvoiceComponent,
     AdminWarrantyChargeComponent,
-    AdminProposalsComponent,
-    ProposalConfirmationComponent,
+    AdminOffersComponent,
+    OfferConfirmationComponent,
     AdminExternalBookingsComponent,
     BookingProcessComponent,
     OnlineBookingComponent,
     AdminPricingModelComponent,
     AdminFleetComponent,
+    SeaToysComponent,
   ],
   imports: [
     CommonModule,

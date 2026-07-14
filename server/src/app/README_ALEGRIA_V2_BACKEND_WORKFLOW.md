@@ -2,7 +2,7 @@
 
 Backend Stripe endpoints now enforce that Terms & Conditions must be explicitly accepted before creating customer payment or warranty setup sessions.
 
-The backend helper checks for an explicit acceptance flag and an audit marker (`acceptedAt` or `acceptedBy`) and no longer infers acceptance from proposal/booking status.
+The backend helper checks for an explicit acceptance flag and an audit marker (`acceptedAt` or `acceptedBy`) and no longer infers acceptance from offer/booking status.
 
 Skipper-fee checkout is routed as its own `paymentType=skipper_fee` and stored under `/bnBookings/{bookingId}/payments/skipper`.
 

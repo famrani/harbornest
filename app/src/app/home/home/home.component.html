@@ -1,87 +1,341 @@
-<section class="hero">
-  <div class="container hero-grid">
-    <div class="hero-copy">
-      <span class="eyebrow">{{ content.home.eyebrow }}</span>
-      <h1>{{ content.home.title }}</h1>
-      <p>{{ content.home.intro }}</p>
-<div class="hero-actions">
-        <a routerLink="/sorties" class="btn btn-primary btn-equal">
-          {{ content.home.primaryCta }}
-        </a>
-
-        <a *ngIf="canShowOnlineBookingButton" routerLink="/reserver" class="btn btn-secondary btn-equal">
-          {{ content.home.onlineBookingCta || 'Réserver en ligne' }}
-        </a>
-<a href="https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556"
-          target="_blank" rel="noreferrer" class="btn btn-book">{{ content.common.bookOnClickAndBoat }}</a>
-
-      </div>
-      <ul class="hero-points">
-        <li *ngFor="let point of content.home.points">{{ point }}</li>
-      </ul>
-    </div>
-
-    <div class="hero-visual">
-      <img [src]="content.heroImage" [alt]="content.brand" />
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow">{{ content.home.sectionEyebrow }}</span>
-      <h2>{{ content.home.sectionTitle }}</h2>
-      <p>{{ content.home.sectionText }}</p>
-    </div>
-
-    <div class="cards-grid">
-      <article class="card" *ngFor="let outing of featuredOutings">
-        <img [src]="outing.image" [alt]="outing.title" [routerLink]="['/sorties', outing.slug]" />
-        <div class="card-body">
-          <h3>{{ outing.title }}</h3>
-          <p>{{ outing.description }}</p>
-          <div class="meta">{{ outing.duration }} • {{ outing.guests }}</div>
-          <a [routerLink]="['/sorties', outing.slug]" class="text-link">{{ content.outingsPage.cta }}</a>
+<ng-container *ngIf="contentReady">
+  <ng-container *ngIf="isAdmin && adminGroups.length; else customerHome">
+    <section class="admin-home-hero">
+      <div class="container admin-hero-grid">
+        <div>
+          <span class="eyebrow">{{ adminHome?.eyebrow }}</span>
+          <h1>{{ adminHome?.title }}<ng-container *ngIf="userFirstName"> {{ userFirstName }}</ng-container></h1>
+          <p>{{ adminHome?.intro }}</p>
         </div>
-      </article>
-    </div>
+        <div class="admin-hero-actions" *ngIf="adminHeroActions.length">
+          <a class="btn btn-primary" *ngFor="let action of adminHeroActions" [routerLink]="action.route">
+            {{ action.label }}
+          </a>
+        </div>
+      </div>
+    </section>
 
-    <div class="home-all-tours-cta">
-      <a routerLink="/sorties" class="btn btn-secondary">{{ content.nav.outings }}</a>
+
+    <section class="section admin-dashboard-section">
+      <div class="container">
+        <div class="section-head centered">
+          <span class="eyebrow">{{ adminHome?.sectionsEyebrow }}</span>
+          <h2>{{ adminHome?.sectionsTitle }}</h2>
+          <p>{{ adminHome?.sectionsText }}</p>
+        </div>
+
+        <div class="admin-groups-grid">
+          <article class="admin-group-card" *ngFor="let group of adminGroups" [class.admin-group-featured]="group.featured">
+            <div class="admin-group-head">
+              <span class="admin-group-icon">{{ group.icon }}</span>
+              <div>
+                <h3>{{ group.title }}</h3>
+                <p>{{ group.text }}</p>
+              </div>
+            </div>
+
+            <div class="admin-links-grid" *ngIf="group.items?.length">
+              <a class="admin-link-card" *ngFor="let item of group.items" [routerLink]="item.route">
+                <strong>{{ item.title }}</strong>
+                <small>{{ item.text }}</small>
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+
+  <ng-template #customerHome>
+  <section class="hero hero-redesign">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">{{ hp.hero?.eyebrow }}</span>
+        <h1>{{ hp.hero?.title }}</h1>
+        <p>{{ hp.hero?.intro }}</p>
+
+        <div class="hero-actions">
+          <a [routerLink]="hp.hero?.primaryRoute || '/sorties'" class="btn btn-primary btn-equal">
+            {{ hp.hero?.primaryCta }}
+          </a>
+
+          <a *ngIf="canShowOnlineBookingButton" [routerLink]="hp.hero?.secondaryRoute || '/reserver'" class="btn btn-secondary btn-equal">
+            {{ hp.hero?.secondaryCta }}
+          </a>
+        </div>
+
+        <ul class="hero-points" *ngIf="hp.hero?.badges?.length">
+          <li *ngFor="let point of hp.hero.badges">{{ point }}</li>
+        </ul>
+      </div>
+
+      <div class="hero-visual hero-card">
+        <img [src]="heroImage" [alt]="hp.hero?.imageAlt || content.brand" />
+        <div class="hero-price-card" *ngIf="hp.hero?.priceText || hp.hero?.priceValue">
+          <span>{{ hp.hero?.priceText }}</span>
+          <strong>{{ hp.hero?.priceValue }}</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section quick-actions-section" *ngIf="quickActions.length">
+    <div class="container">
+      <div class="section-head centered">
+        <span class="eyebrow">{{ hp.quickActions?.eyebrow }}</span>
+        <h2>{{ hp.quickActions?.title }}</h2>
+        <p>{{ hp.quickActions?.text }}</p>
+      </div>
+
+      <div class="action-grid">
+        <a class="action-card" *ngFor="let action of quickActions" href="" (click)="onProtectedHomeAction($event, action)">
+          <span class="action-icon">{{ action.icon }}</span>
+          <strong>{{ action.title }}</strong>
+          <small>{{ action.text }}</small>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section booking-process-teaser-section" *ngIf="bookingProcessTeaser">
+    <div class="container booking-process-teaser">
+      <div class="booking-process-teaser-copy">
+        <span class="eyebrow">{{ bookingProcessTeaser.eyebrow }}</span>
+        <h2>{{ bookingProcessTeaser.title }}</h2>
+        <p>{{ bookingProcessTeaser.text }}</p>
+        <a [routerLink]="bookingProcessTeaser.route || '/booking-process'" class="btn btn-secondary">
+          {{ bookingProcessTeaser.cta }}
+        </a>
+      </div>
+      <div class="booking-process-mini-steps" *ngIf="bookingProcessMiniSteps.length">
+        <article *ngFor="let step of bookingProcessMiniSteps; let i = index">
+          <span>{{ i + 1 }}</span>
+          <strong>{{ step.title }}</strong>
+          <small>{{ step.text }}</small>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dashboard-section" *ngIf="dashboardCards.length">
+    <div class="container customer-dashboard">
+      <div>
+        <span class="eyebrow">{{ dashboard.eyebrow }}</span>
+        <h2>{{ dashboard.title }}<ng-container *ngIf="userFirstName"> {{ userFirstName }}</ng-container></h2>
+        <p>{{ dashboard.text }}</p>
+      </div>
+
+      <div class="dashboard-cards">
+        <a class="dashboard-card" *ngFor="let card of dashboardCards" [routerLink]="card.route">
+          <span>{{ card.icon }}</span>
+          <strong>{{ card.title }}</strong>
+          <small>{{ card.text }}</small>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" *ngIf="experiences.length">
+    <div class="container">
+      <div class="section-head centered">
+        <span class="eyebrow">{{ hp.experiences?.eyebrow }}</span>
+        <h2>{{ hp.experiences?.title }}</h2>
+        <p>{{ hp.experiences?.text }}</p>
+      </div>
+
+      <div class="cards-grid experience-grid">
+        <article class="card experience-card" *ngFor="let experience of experiences">
+          <img [src]="experience.image" [alt]="experience.title" [routerLink]="experience.route || ['/sorties', experience.slug]" />
+          <div class="card-body">
+            <h3>{{ experience.title }}</h3>
+            <p>{{ experience.description }}</p>
+            <div class="meta" *ngIf="experience.meta">{{ experience.meta }}</div>
+            <div class="meta price" *ngIf="experience.price">{{ experience.price }}</div>
+            <a [routerLink]="experience.route || ['/sorties', experience.slug]" class="text-link">{{ hp.experiences?.cardCta }}</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="home-all-tours-cta" *ngIf="hp.experiences?.cta">
+        <a [routerLink]="hp.experiences?.ctaRoute || '/sorties'" class="btn btn-secondary">{{ hp.experiences.cta }}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-light pricing-section" *ngIf="pricingRows.length">
+    <div class="container">
+      <div class="section-head centered">
+        <span class="eyebrow">{{ hp.pricing?.eyebrow }}</span>
+        <h2>{{ hp.pricing?.title }}</h2>
+        <p>{{ hp.pricing?.text }}</p>
+      </div>
+
+      <div class="pricing-table-wrap">
+        <table class="pricing-table">
+          <thead>
+            <tr>
+              <th>{{ hp.pricing?.experienceLabel }}</th>
+              <th>{{ hp.pricing?.boatLabel }}</th>
+              <th>{{ hp.pricing?.skipperLabel }}</th>
+              <th>{{ hp.pricing?.totalLabel }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of pricingRows">
+              <td>{{ row.experience }}</td>
+              <td>{{ row.boat }}</td>
+              <td>{{ row.skipper }}</td>
+              <td><strong>{{ row.total }}</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pricing-notes">
+        <div *ngIf="pricingIncluded.length">
+          <h3>{{ hp.pricing?.includedTitle }}</h3>
+          <ul class="check-list compact">
+            <li *ngFor="let item of pricingIncluded">{{ item }}</li>
+          </ul>
+        </div>
+        <div *ngIf="pricingOptions.length">
+          <h3>{{ hp.pricing?.optionsTitle }}</h3>
+          <ul class="check-list compact">
+            <li *ngFor="let item of pricingOptions">{{ item }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="booking-process-actions" *ngIf="hp.pricing?.cta">
+        <a [routerLink]="hp.pricing?.ctaRoute || '/reserver'" class="btn btn-primary">{{ hp.pricing.cta }}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section destinations-section" *ngIf="destinations.length">
+    <div class="container">
+      <div class="section-head centered">
+        <span class="eyebrow">{{ hp.destinations?.eyebrow }}</span>
+        <h2>{{ hp.destinations?.title }}</h2>
+        <p>{{ hp.destinations?.text }}</p>
+      </div>
+
+      <div class="destination-grid">
+        <article class="destination-card" *ngFor="let destination of destinations">
+          <span>{{ destination.tag }}</span>
+          <h3>{{ destination.title }}</h3>
+          <p>{{ destination.text }}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-light journey-section" *ngIf="journeySteps.length">
+    <div class="container">
+      <div class="section-head centered">
+        <span class="eyebrow">{{ hp.journey?.eyebrow }}</span>
+        <h2>{{ hp.journey?.title }}</h2>
+        <p>{{ hp.journey?.text }}</p>
+      </div>
+
+      <div class="journey-grid">
+        <article class="journey-step" *ngFor="let step of journeySteps; let i = index">
+          <span class="step-number">{{ i + 1 }}</span>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.text }}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-light" *ngIf="hp.boat">
+    <div class="container split-grid">
+      <div>
+        <span class="eyebrow">{{ hp.boat?.eyebrow }}</span>
+        <h2>{{ hp.boat?.title }}</h2>
+        <p>{{ hp.boat?.text }}</p>
+        <ul class="check-list" *ngIf="boatHighlights.length">
+          <li *ngFor="let item of boatHighlights">{{ item }}</li>
+        </ul>
+        <a [routerLink]="hp.boat?.ctaRoute || '/bateau'" class="btn btn-secondary" *ngIf="hp.boat?.cta">{{ hp.boat.cta }}</a>
+      </div>
+
+      <div class="boat-card">
+        <img [src]="boatImage" [alt]="hp.boat?.imageAlt || content.brand" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section reviews-section" *ngIf="reviews.length">
+    <div class="container">
+      <div class="section-head centered">
+        <span class="eyebrow">{{ hp.reviews?.eyebrow }}</span>
+        <h2>{{ hp.reviews?.title }}</h2>
+        <p>{{ hp.reviews?.text }}</p>
+      </div>
+
+      <div class="review-grid">
+        <article class="review-card" *ngFor="let review of reviews">
+          <div class="stars">{{ review.stars }}</div>
+          <p>{{ review.quote }}</p>
+          <strong>{{ review.name }}</strong>
+          <small>{{ review.context }}</small>
+        </article>
+      </div>
+
+      <div class="home-all-tours-cta" *ngIf="hp.reviews?.cta">
+        <a [routerLink]="hp.reviews?.ctaRoute || '/feedback'" class="btn btn-secondary">{{ hp.reviews.cta }}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section faq-section" *ngIf="faqItems.length">
+    <div class="container faq-wrap">
+      <div class="section-head">
+        <span class="eyebrow">{{ hp.faq?.eyebrow }}</span>
+        <h2>{{ hp.faq?.title }}</h2>
+        <p>{{ hp.faq?.text }}</p>
+        <a [routerLink]="hp.faq?.ctaRoute || '/faq'" class="btn btn-secondary" *ngIf="hp.faq?.cta">{{ hp.faq.cta }}</a>
+      </div>
+
+      <div class="faq-list">
+        <article class="faq-item" *ngFor="let item of faqItems">
+          <h3>{{ item.question }}</h3>
+          <p>{{ item.answer }}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" *ngIf="hp.finalCta">
+    <div class="container contact-banner">
+      <div>
+        <span class="eyebrow">{{ hp.finalCta?.eyebrow }}</span>
+        <h2>{{ hp.finalCta?.title }}</h2>
+        <p>{{ hp.finalCta?.text }}</p>
+      </div>
+      <div class="contact-actions">
+        <a [routerLink]="hp.finalCta?.primaryRoute || '/reserver'" class="btn btn-primary" *ngIf="hp.finalCta?.primaryCta">{{ hp.finalCta.primaryCta }}</a>
+        <a [routerLink]="hp.finalCta?.secondaryRoute || '/contact'" class="btn btn-secondary" *ngIf="hp.finalCta?.secondaryCta">{{ hp.finalCta.secondaryCta }}</a>
+      </div>
+    </div>
+  </section>
+
+  </ng-template>
+
+  <div class="auth-choice-backdrop" *ngIf="showAuthChoiceModal" (click)="closeAuthChoiceModal()">
+    <div class="auth-choice-modal" role="dialog" aria-modal="true" [attr.aria-label]="authModalTitle" (click)="$event.stopPropagation()">
+      <button type="button" class="auth-choice-close" (click)="closeAuthChoiceModal()" [attr.aria-label]="authModalCloseLabel">×</button>
+      <span class="eyebrow">{{ authModal?.eyebrow }}</span>
+      <h2>{{ authModalTitle }}</h2>
+      <p>{{ authModalText }}</p>
+      <div class="auth-choice-actions">
+        <button type="button" class="btn btn-primary" (click)="goToLogin()">{{ authModalLoginLabel }}</button>
+        <button type="button" class="btn btn-secondary" (click)="goToSignup()">{{ authModalSignupLabel }}</button>
+      </div>
+      <button type="button" class="auth-choice-cancel" (click)="closeAuthChoiceModal()">{{ authModalCancelLabel }}</button>
     </div>
   </div>
-</section>
 
-<section class="section section-light">
-  <div class="container split-grid">
-    <div>
-      <span class="eyebrow">{{ content.home.boatEyebrow }}</span>
-      <h2>{{ content.home.boatTitle }}</h2>
-      <p>{{ content.home.boatText }}</p>
-      <ul class="check-list">
-        <li *ngFor="let item of highlights">{{ item }}</li>
-      </ul>
-      <a routerLink="/bateau" class="btn btn-secondary">{{ content.home.boatCta }}</a>
-    </div>
-
-    <div class="boat-card">
-      <img [src]="content.boatHeroImage" [alt]="content.brand" />
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container contact-banner">
-    <div>
-      <span class="eyebrow">{{ content.home.contactEyebrow }}</span>
-      <h2>{{ content.home.contactTitle }}</h2>
-      <p>{{ content.home.contactText }}</p>
-    </div>
-    <div class="contact-actions">
-      <a routerLink="/contact" class="btn btn-primary">{{ content.common.requestQuote }}</a>
-      <a href="https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556"
-        target="_blank" rel="noreferrer" class="btn btn-book">{{ content.common.bookOnClickAndBoat }}</a>
-    </div>
-  </div>
-</section>
+</ng-container>
