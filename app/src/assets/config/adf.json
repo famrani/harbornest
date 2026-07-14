@@ -5,7 +5,7 @@
     "stripeplatform": "test",
     "stripepublickey": "pk_test_ksDl8VQ7yCT2HDpDGN0hBUXe",
     "3words": "G49UQZCC",
-    "release": "2.91"
+    "release": "2.92"
   },
   "dev": {
     "firebaseMasterConfig": {

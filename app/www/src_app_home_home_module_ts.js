@@ -14243,14 +14243,28 @@ let HomeComponent = class HomeComponent {
   }
   buildAdminSimpleGroup(id, icon, titleKey, textKey, route) {
     const t = this.adminDashboardText();
+    const safeRoute = this.normalizeAdminRoute(route, route);
     return {
       id,
       icon,
       title: t[titleKey],
       text: t[textKey],
-      route,
-      items: []
+      route: safeRoute,
+      // The dashboard template renders actionable links from group.items.
+      // Keep one guaranteed action for every simple section so the card is never inert.
+      items: [{
+        title: t[titleKey],
+        text: t[textKey],
+        route: safeRoute
+      }]
     };
+  }
+  normalizeAdminRoute(candidate, fallback) {
+    const value = String(candidate || '').trim();
+    if (!value || value === '#' || value.toLowerCase() === 'javascript:void(0)') {
+      return fallback;
+    }
+    return value.startsWith('/') ? value : `/${value}`;
   }
   mergeAdminGroup(sourceGroups, fallback, markers, keepFallbackItems = false) {
     const existing = sourceGroups.find(group => {
@@ -14260,13 +14274,21 @@ let HomeComponent = class HomeComponent {
     if (!existing) {
       return fallback;
     }
+    const existingItems = Array.isArray(existing.items) ? existing.items.map(item => ({
+      ...item,
+      route: this.normalizeAdminRoute(item?.route, fallback.route)
+    })).filter(item => !!item.route) : [];
+    const selectedItems = keepFallbackItems || existingItems.length === 0 ? fallback.items : existingItems;
     return {
       ...fallback,
       ...existing,
       id: fallback.id,
       icon: existing.icon || fallback.icon,
-      route: existing.route || fallback.route,
-      items: keepFallbackItems ? fallback.items : Array.isArray(existing.items) ? existing.items : fallback.items
+      route: this.normalizeAdminRoute(existing.route, fallback.route),
+      items: selectedItems.map(item => ({
+        ...item,
+        route: this.normalizeAdminRoute(item?.route, fallback.route)
+      }))
     };
   }
   adminDashboardText() {

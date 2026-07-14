@@ -472,14 +472,31 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private buildAdminSimpleGroup(id: string, icon: string, titleKey: string, textKey: string, route: string): any {
     const t = this.adminDashboardText();
+    const safeRoute = this.normalizeAdminRoute(route, route);
     return {
       id,
       icon,
       title: t[titleKey],
       text: t[textKey],
-      route,
-      items: [],
+      route: safeRoute,
+      // The dashboard template renders actionable links from group.items.
+      // Keep one guaranteed action for every simple section so the card is never inert.
+      items: [
+        {
+          title: t[titleKey],
+          text: t[textKey],
+          route: safeRoute,
+        },
+      ],
     };
+  }
+
+  private normalizeAdminRoute(candidate: any, fallback: string): string {
+    const value = String(candidate || '').trim();
+    if (!value || value === '#' || value.toLowerCase() === 'javascript:void(0)') {
+      return fallback;
+    }
+    return value.startsWith('/') ? value : `/${value}`;
   }
 
   private mergeAdminGroup(sourceGroups: any[], fallback: any, markers: string[], keepFallbackItems = false): any {
@@ -492,13 +509,29 @@ export class HomeComponent implements OnInit, OnDestroy {
       return fallback;
     }
 
+    const existingItems = Array.isArray(existing.items)
+      ? existing.items
+          .map((item: any) => ({
+            ...item,
+            route: this.normalizeAdminRoute(item?.route, fallback.route),
+          }))
+          .filter((item: any) => !!item.route)
+      : [];
+
+    const selectedItems = keepFallbackItems || existingItems.length === 0
+      ? fallback.items
+      : existingItems;
+
     return {
       ...fallback,
       ...existing,
       id: fallback.id,
       icon: existing.icon || fallback.icon,
-      route: existing.route || fallback.route,
-      items: keepFallbackItems ? fallback.items : (Array.isArray(existing.items) ? existing.items : fallback.items),
+      route: this.normalizeAdminRoute(existing.route, fallback.route),
+      items: selectedItems.map((item: any) => ({
+        ...item,
+        route: this.normalizeAdminRoute(item?.route, fallback.route),
+      })),
     };
   }
 
