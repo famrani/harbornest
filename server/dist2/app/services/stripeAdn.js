@@ -1145,6 +1145,14 @@ class StripeService {
             const warrantyMethod = String(warranty?.warrantyMethod || warranty?.warrantyPaymentChoice ||
                 booking?.warrantyMethod || booking?.warrantyPaymentChoice || '').toLowerCase();
             const warrantyStatus = String(warranty?.status || warranty?.warrantyStatus || booking?.warrantyStatus || '').toLowerCase();
+            const warrantyReleased = booking?.warrantyReleased === true ||
+                warranty?.warrantyReleased === true ||
+                warrantyStatus === 'released' ||
+                booking?.warrantyActive === false ||
+                booking?.canChargeWarranty === false;
+            if (warrantyReleased) {
+                return res.status(409).json({ error: 'Warranty has already been released and can no longer be charged' });
+            }
             const maxWarrantyCents = this.normalizeAmountToCents(Number(warranty.amount || booking.warrantyAmount || 0));
             const alreadyChargedCents = Number(booking.warrantyChargedAmount || 0);
             if (maxWarrantyCents && alreadyChargedCents + amountCents > maxWarrantyCents) {
@@ -1380,7 +1388,7 @@ class StripeService {
     /**
      * Release a registered warranty card when the outing is finished and no damage
      * has been observed. A succeeded SetupIntent cannot be deleted; instead the
-     * reusable PaymentMethod is detached and its active references are cleared.
+     * PaymentMethod is retained for audit, while application guards permanently block further charges.
      *
      * body: { ownerId?, bookingId, releasedBy? }
      */
@@ -1423,35 +1431,22 @@ class StripeService {
             const setupIntentId = warranty?.setupIntentId || warranty?.warrantySetupIntentId || booking?.warrantySetupIntentId || null;
             const paymentMethodId = warranty?.paymentMethodId || warranty?.warrantyPaymentMethodId || booking?.warrantyPaymentMethodId || null;
             let setupIntentStatus = null;
-            let paymentMethodDetached = false;
+            const paymentMethodDetached = false;
+            // A successful SetupIntent is an audit record and cannot be deleted.
+            // Releasing the warranty is an application-level state transition: the
+            // saved PaymentMethod remains attached, but all future damage charges are
+            // blocked by warrantyStatus/canChargeWarranty checks.
             if (warrantyMethod.includes('card') || warrantyMethod.includes('stripe') || paymentMethodId || setupIntentId) {
                 const stripe = await this.getStripeForOwner(ownerId);
                 if (setupIntentId) {
                     try {
                         const setupIntent = await stripe.setupIntents.retrieve(setupIntentId);
                         setupIntentStatus = setupIntent.status;
-                        if (['requires_payment_method', 'requires_confirmation', 'requires_action'].includes(setupIntent.status)) {
-                            await stripe.setupIntents.cancel(setupIntentId, { cancellation_reason: 'abandoned' });
-                            setupIntentStatus = 'canceled';
-                        }
                     }
                     catch (error) {
                         if (error?.code !== 'resource_missing')
                             throw error;
                         setupIntentStatus = 'not_found';
-                    }
-                }
-                if (paymentMethodId) {
-                    try {
-                        await stripe.paymentMethods.detach(paymentMethodId);
-                        paymentMethodDetached = true;
-                    }
-                    catch (error) {
-                        // Detaching is idempotent from the application's perspective.
-                        if (error?.code !== 'resource_missing' && !String(error?.message || '').toLowerCase().includes('previously detached')) {
-                            throw error;
-                        }
-                        paymentMethodDetached = true;
                     }
                 }
             }
@@ -1480,24 +1475,23 @@ class StripeService {
             updates[`/bnBookings/${bookingId}/payments/warranty/releasedAt`] = now;
             updates[`/bnBookings/${bookingId}/payments/warranty/releasedBy`] = releaseRecord.releasedBy;
             updates[`/bnBookings/${bookingId}/payments/warranty/noDamageObserved`] = true;
-            updates[`/bnBookings/${bookingId}/payments/warranty/paymentMethodDetached`] = paymentMethodDetached;
-            updates[`/bnBookings/${bookingId}/payments/warranty/paymentMethodId`] = null;
-            updates[`/bnBookings/${bookingId}/payments/warranty/warrantyPaymentMethodId`] = null;
+            updates[`/bnBookings/${bookingId}/payments/warranty/paymentMethodDetached`] = false;
+            updates[`/bnBookings/${bookingId}/payments/warranty/canChargeWarranty`] = false;
             updates[`/bnBookings/${bookingId}/warrantyStatus`] = 'released';
             updates[`/bnBookings/${bookingId}/warrantyReleased`] = true;
             updates[`/bnBookings/${bookingId}/warrantyReleasedAt`] = now;
             updates[`/bnBookings/${bookingId}/warrantyReleasedBy`] = releaseRecord.releasedBy;
             updates[`/bnBookings/${bookingId}/warrantyNoDamageObserved`] = true;
             updates[`/bnBookings/${bookingId}/warrantyActive`] = false;
-            updates[`/bnBookings/${bookingId}/warrantyPaymentMethodDetached`] = paymentMethodDetached;
+            updates[`/bnBookings/${bookingId}/canChargeWarranty`] = false;
+            updates[`/bnBookings/${bookingId}/warrantyPaymentMethodDetached`] = false;
             updates[`/bnBookings/${bookingId}/releasedWarrantyPaymentMethodId`] = paymentMethodId;
             updates[`/bnBookings/${bookingId}/releasedWarrantySetupIntentId`] = setupIntentId;
-            updates[`/bnBookings/${bookingId}/warrantyPaymentMethodId`] = null;
             updates[`/bnBookings/${bookingId}/modifiedTS`] = now;
             updates[`/bnProposals/${bookingId}/warrantyStatus`] = 'released';
             updates[`/bnProposals/${bookingId}/warrantyReleased`] = true;
             updates[`/bnProposals/${bookingId}/warrantyReleasedAt`] = now;
-            updates[`/bnProposals/${bookingId}/warrantyPaymentMethodId`] = null;
+            updates[`/bnProposals/${bookingId}/canChargeWarranty`] = false;
             updates[`/bnProposals/${bookingId}/modifiedTS`] = now;
             updates[`/backendpayments/${releaseId}`] = releaseRecord;
             await this.stbDbSvc.db.ref().update(updates);
