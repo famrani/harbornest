@@ -376,6 +376,57 @@ export class OfferApiService {
     };
 
     await this.writeItem(this.offersCollection, offerId, updated);
+
+    // Keep the canonical booking synchronized when it already exists. Payments
+    // are validated from bnBookings, while terms are accepted from the offer UI.
+    const bookingId = String((current as any).relatedBookingId || (current as any).bookingId || offerId).trim();
+    if (bookingId) {
+      const existingBooking = await this.readItem(this.bookingsCollection, bookingId).catch(() => undefined);
+      if (existingBooking) {
+        await this.writeItem(this.bookingsCollection, bookingId, {
+          ...existingBooking,
+          termsAccepted: true,
+          tncAccepted: true,
+          customerTermsAccepted: true,
+          termsAcceptedAt: acceptedAt,
+          tncAcceptedAt: acceptedAt,
+          termsAcceptedBy: acceptedBy,
+          tncAcceptedBy: acceptedBy,
+          termsAcceptedSource: 'customer_portal',
+          tncAcceptedSource: 'customer_portal',
+          terms: {
+            ...(existingBooking.terms || {}),
+            accepted: true,
+            acceptedAt,
+            acceptedBy,
+            source: 'customer_portal',
+          },
+          documents: {
+            ...(existingBooking.documents || {}),
+            termsAccepted: true,
+            termsAcceptedAt: acceptedAt,
+            termsAcceptedBy: acceptedBy,
+            termsAcceptedSource: 'customer_portal',
+          },
+          workflow: {
+            ...(existingBooking.workflow || {}),
+            termsAccepted: true,
+            termsAcceptedAt: acceptedAt,
+            termsAcceptedBy: acceptedBy,
+            termsAcceptedSource: 'customer_portal',
+          },
+          bookingWorkflow: {
+            ...(existingBooking.bookingWorkflow || {}),
+            termsAccepted: true,
+            termsAcceptedAt: acceptedAt,
+            termsAcceptedBy: acceptedBy,
+            termsAcceptedSource: 'customer_portal',
+          },
+          modifiedTS: now,
+        });
+      }
+    }
+
     return updated;
   }
 

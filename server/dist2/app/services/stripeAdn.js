@@ -555,10 +555,34 @@ class StripeService {
         };
     }
     async assertBalanceCheckoutAllowed(bookingId, body) {
-        const bookingSnap = await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).once('value');
-        const booking = bookingSnap.val() || {};
-        if (!this.hasExplicitCustomerTermsAcceptance(booking)) {
-            throw new Error('The customer must explicitly accept the Terms & Conditions before payment.');
+        // Use the same exhaustive Offer/Booking resolution as every other customer
+        // payment action. Terms may have been accepted on the offer before the
+        // canonical booking document was created or synchronized.
+        const acceptedEntity = await this.assertTermsAcceptedBeforeCustomerAction(bookingId);
+        const directBookingSnap = await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).once('value');
+        const directBooking = directBookingSnap.val();
+        const booking = directBooking || acceptedEntity || {};
+        // Backfill the canonical booking with the accepted terms state so future
+        // checks remain fast and all payment flows share one persisted truth.
+        if (directBooking && !this.hasExplicitCustomerTermsAcceptance(directBooking) && this.hasExplicitCustomerTermsAcceptance(acceptedEntity)) {
+            const acceptedAt = acceptedEntity?.termsAcceptedAt || acceptedEntity?.tncAcceptedAt || acceptedEntity?.terms?.acceptedAt || Date.now();
+            const acceptedBy = acceptedEntity?.termsAcceptedBy || acceptedEntity?.tncAcceptedBy || acceptedEntity?.terms?.acceptedBy || 'customer';
+            const termsPatch = {
+                termsAccepted: true,
+                tncAccepted: true,
+                customerTermsAccepted: true,
+                termsAcceptedAt: acceptedAt,
+                tncAcceptedAt: acceptedAt,
+                termsAcceptedBy: acceptedBy,
+                tncAcceptedBy: acceptedBy,
+                termsAcceptedSource: acceptedEntity?.termsAcceptedSource || acceptedEntity?.tncAcceptedSource || 'customer_portal',
+                terms: { ...(directBooking?.terms || {}), accepted: true, acceptedAt, acceptedBy, source: 'customer_portal' },
+                workflow: { ...(directBooking?.workflow || {}), termsAccepted: true, termsAcceptedAt: acceptedAt, termsAcceptedBy: acceptedBy, termsAcceptedSource: 'customer_portal' },
+                bookingWorkflow: { ...(directBooking?.bookingWorkflow || {}), termsAccepted: true, termsAcceptedAt: acceptedAt, termsAcceptedBy: acceptedBy, termsAcceptedSource: 'customer_portal' },
+                modifiedTS: Date.now()
+            };
+            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update(termsPatch);
+            Object.assign(booking, termsPatch);
         }
         const outingDate = booking.outingDate || booking.date || booking.bookingDate || body.outingDate || body.date;
         if (this.isCancelledStatusValue(booking.bookingStatus ?? booking.status) || booking.cancelled === true || booking.canceled === true) {
@@ -1354,6 +1378,146 @@ class StripeService {
         }
     }
     /**
+     * Release a registered warranty card when the outing is finished and no damage
+     * has been observed. A succeeded SetupIntent cannot be deleted; instead the
+     * reusable PaymentMethod is detached and its active references are cleared.
+     *
+     * body: { ownerId?, bookingId, releasedBy? }
+     */
+    async releaseOutingWarranty(req, res) {
+        try {
+            let { ownerId, bookingId, releasedBy } = req.body || {};
+            bookingId = String(bookingId || '').trim();
+            if (!bookingId)
+                return res.status(400).json({ error: 'bookingId is required' });
+            const [bookingSnap, warrantySnap] = await Promise.all([
+                this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).once('value'),
+                this.stbDbSvc.db.ref(this.buildBookingPaymentPath(bookingId, 'warranty')).once('value'),
+            ]);
+            const booking = bookingSnap.val() || {};
+            if (!bookingSnap.exists())
+                return res.status(404).json({ error: 'Booking not found' });
+            const warranty = warrantySnap.val() || {};
+            const alreadyReleased = booking.warrantyReleased === true ||
+                String(booking.warrantyStatus || '').toLowerCase() === 'released';
+            if (alreadyReleased) {
+                return res.json({ ok: true, bookingId, status: 'released', alreadyReleased: true });
+            }
+            const charges = booking?.payments?.warrantyCharges || {};
+            const successfulStatuses = new Set(['paid', 'succeeded', 'captured', 'success', 'processing']);
+            const warrantyChargeItems = Object.keys(charges).map((key) => charges[key]);
+            const successfulChargeCents = warrantyChargeItems.reduce((total, item) => {
+                const status = String(item?.status || '').toLowerCase();
+                if (!successfulStatuses.has(status) && item?.paid !== true)
+                    return total;
+                const itemAmountCents = Number(item?.amountCents ?? item?.amount ?? 0);
+                return total + (Number.isFinite(itemAmountCents) ? itemAmountCents : 0);
+            }, 0);
+            const chargedCents = Math.max(Number(booking.warrantyChargedAmount || 0), successfulChargeCents);
+            if (chargedCents > 0 || booking.damageCharged === true) {
+                return res.status(409).json({ error: 'The warranty cannot be released because a damage charge has been recorded' });
+            }
+            ownerId = ownerId || warranty?.ownerId || booking?.ownerId || booking?.raw?.ownerId || 'alegria';
+            const warrantyMethod = String(warranty?.warrantyMethod || warranty?.warrantyPaymentChoice ||
+                booking?.warrantyMethod || booking?.warrantyPaymentChoice || '').toLowerCase();
+            const setupIntentId = warranty?.setupIntentId || warranty?.warrantySetupIntentId || booking?.warrantySetupIntentId || null;
+            const paymentMethodId = warranty?.paymentMethodId || warranty?.warrantyPaymentMethodId || booking?.warrantyPaymentMethodId || null;
+            let setupIntentStatus = null;
+            let paymentMethodDetached = false;
+            if (warrantyMethod.includes('card') || warrantyMethod.includes('stripe') || paymentMethodId || setupIntentId) {
+                const stripe = await this.getStripeForOwner(ownerId);
+                if (setupIntentId) {
+                    try {
+                        const setupIntent = await stripe.setupIntents.retrieve(setupIntentId);
+                        setupIntentStatus = setupIntent.status;
+                        if (['requires_payment_method', 'requires_confirmation', 'requires_action'].includes(setupIntent.status)) {
+                            await stripe.setupIntents.cancel(setupIntentId, { cancellation_reason: 'abandoned' });
+                            setupIntentStatus = 'canceled';
+                        }
+                    }
+                    catch (error) {
+                        if (error?.code !== 'resource_missing')
+                            throw error;
+                        setupIntentStatus = 'not_found';
+                    }
+                }
+                if (paymentMethodId) {
+                    try {
+                        await stripe.paymentMethods.detach(paymentMethodId);
+                        paymentMethodDetached = true;
+                    }
+                    catch (error) {
+                        // Detaching is idempotent from the application's perspective.
+                        if (error?.code !== 'resource_missing' && !String(error?.message || '').toLowerCase().includes('previously detached')) {
+                            throw error;
+                        }
+                        paymentMethodDetached = true;
+                    }
+                }
+            }
+            const now = Date.now();
+            const releaseId = this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/warrantyReleases`).push().key || `release_${now}`;
+            const releaseRecord = {
+                releaseId,
+                ownerId,
+                bookingId,
+                paymentType: 'warranty_release',
+                warrantyAmount: Number(booking.warrantyAmount || warranty.amount || 0),
+                status: 'released',
+                noDamageObserved: true,
+                releasedBy: releasedBy || 'admin',
+                releasedAt: now,
+                paymentMethodDetached,
+                setupIntentStatus,
+                archivedPaymentMethodId: paymentMethodId,
+                archivedSetupIntentId: setupIntentId,
+                createdTS: now,
+                modifiedTS: now,
+            };
+            const updates = {};
+            updates[`/bnBookings/${bookingId}/payments/warrantyReleases/${releaseId}`] = releaseRecord;
+            updates[`/bnBookings/${bookingId}/payments/warranty/status`] = 'released';
+            updates[`/bnBookings/${bookingId}/payments/warranty/releasedAt`] = now;
+            updates[`/bnBookings/${bookingId}/payments/warranty/releasedBy`] = releaseRecord.releasedBy;
+            updates[`/bnBookings/${bookingId}/payments/warranty/noDamageObserved`] = true;
+            updates[`/bnBookings/${bookingId}/payments/warranty/paymentMethodDetached`] = paymentMethodDetached;
+            updates[`/bnBookings/${bookingId}/payments/warranty/paymentMethodId`] = null;
+            updates[`/bnBookings/${bookingId}/payments/warranty/warrantyPaymentMethodId`] = null;
+            updates[`/bnBookings/${bookingId}/warrantyStatus`] = 'released';
+            updates[`/bnBookings/${bookingId}/warrantyReleased`] = true;
+            updates[`/bnBookings/${bookingId}/warrantyReleasedAt`] = now;
+            updates[`/bnBookings/${bookingId}/warrantyReleasedBy`] = releaseRecord.releasedBy;
+            updates[`/bnBookings/${bookingId}/warrantyNoDamageObserved`] = true;
+            updates[`/bnBookings/${bookingId}/warrantyActive`] = false;
+            updates[`/bnBookings/${bookingId}/warrantyPaymentMethodDetached`] = paymentMethodDetached;
+            updates[`/bnBookings/${bookingId}/releasedWarrantyPaymentMethodId`] = paymentMethodId;
+            updates[`/bnBookings/${bookingId}/releasedWarrantySetupIntentId`] = setupIntentId;
+            updates[`/bnBookings/${bookingId}/warrantyPaymentMethodId`] = null;
+            updates[`/bnBookings/${bookingId}/modifiedTS`] = now;
+            updates[`/bnProposals/${bookingId}/warrantyStatus`] = 'released';
+            updates[`/bnProposals/${bookingId}/warrantyReleased`] = true;
+            updates[`/bnProposals/${bookingId}/warrantyReleasedAt`] = now;
+            updates[`/bnProposals/${bookingId}/warrantyPaymentMethodId`] = null;
+            updates[`/bnProposals/${bookingId}/modifiedTS`] = now;
+            updates[`/backendpayments/${releaseId}`] = releaseRecord;
+            await this.stbDbSvc.db.ref().update(updates);
+            return res.json({
+                ok: true,
+                bookingId,
+                releaseId,
+                status: 'released',
+                releasedAt: now,
+                noDamageObserved: true,
+                paymentMethodDetached,
+                setupIntentStatus,
+            });
+        }
+        catch (e) {
+            console.error('[releaseOutingWarranty] error:', e);
+            return res.status(400).json({ error: e?.message || 'Failed to release warranty' });
+        }
+    }
+    /**
      * Read payment status for a booking.
      * query: ownerId?, bookingId
      */
@@ -2086,6 +2250,7 @@ class StripeService {
         stripeRouter.post('/api/payments/create-warranty-checkout-session', (req, res) => this.createOutingWarrantySetupCheckout(req, res));
         stripeRouter.post('/api/payments/create-warranty-setup-session', (req, res) => this.createOutingWarrantySetupCheckout(req, res));
         stripeRouter.post('/api/payments/charge-warranty', (req, res) => this.chargeOutingWarranty(req, res));
+        stripeRouter.post('/api/payments/release-warranty', (req, res) => this.releaseOutingWarranty(req, res));
         stripeRouter.get('/api/payments/status', (req, res) => this.outingPaymentStatus(req, res));
         stripeRouter.post('/api/bookings/accept-request', (req, res) => this.acceptOutingBookingRequest(req, res));
         stripeRouter.post('/api/bookings/reject-request', (req, res) => this.rejectOutingBookingRequest(req, res));
@@ -2093,6 +2258,8 @@ class StripeService {
         stripeRouter.post('/stripe/deposit-checkout', (req, res) => this.createOutingDepositCheckout(req, res));
         stripeRouter.post('/stripe/warranty-setup', (req, res) => this.createOutingWarrantySetupCheckout(req, res));
         stripeRouter.post('/stripe/warranty-charge', (req, res) => this.chargeOutingWarranty(req, res));
+        stripeRouter.post('/pay/outing-warranty-release', (req, res) => this.releaseOutingWarranty(req, res));
+        stripeRouter.post('/stripe/warranty-release', (req, res) => this.releaseOutingWarranty(req, res));
         stripeRouter.post('/pay/outing-extra-service-checkout', (req, res) => this.createOutingExtraServiceCheckout(req, res));
         stripeRouter.post('/api/payments/create-extra-service-checkout-session', (req, res) => this.createOutingExtraServiceCheckout(req, res));
         stripeRouter.post('/stripe/extra-service-checkout', (req, res) => this.createOutingExtraServiceCheckout(req, res));

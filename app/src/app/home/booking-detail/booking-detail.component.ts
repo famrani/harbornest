@@ -111,6 +111,7 @@ export class BookingDetailComponent implements OnInit {
   adminWarrantyChargeAmount: number | null = null;
   adminWarrantyChargeReason = '';
   adminChargingWarranty = false;
+  adminReleasingWarranty = false;
   adminRefundAmount: number | null = null;
   adminRefundReason = '';
   adminRefundPaymentType = 'balance';
@@ -1532,6 +1533,41 @@ export class BookingDetailComponent implements OnInit {
     });
   }
 
+  isWarrantyReleased(booking: any = this.vm?.display): boolean {
+    const status = String(booking?.warrantyStatus || booking?.payments?.warranty?.status || '').toLowerCase();
+    return booking?.warrantyReleased === true || status === 'released';
+  }
+
+  canAdminReleaseWarranty(): boolean {
+    if (!this.vm || !this.vm.isAdmin || this.editMode || this.adminReleasingWarranty) return false;
+    const booking: any = this.vm.display || {};
+    if (this.isWarrantyReleased(booking) || !this.hasWarrantyCardRegistered(booking)) return false;
+    if (this.warrantyChargedAmount > 0 || booking.damageCharged === true) return false;
+    const status = String(booking.bookingStatus || booking.status || '').toLowerCase();
+    const outingDate = booking.outingDate || booking.date;
+    const outingIsPastOrToday = outingDate ? new Date(`${String(outingDate).slice(0, 10)}T23:59:59`).getTime() <= Date.now() : false;
+    return ['completed', 'closed', 'finished', 'terminated'].includes(status) || outingIsPastOrToday;
+  }
+
+  releaseWarranty(): void {
+    if (!this.vm || !this.canAdminReleaseWarranty()) return;
+    const bookingId = this.vm.bookingId || this.bookingId;
+    this.adminReleasingWarranty = true;
+    this.error = '';
+    this.actionMessage = '';
+    this.bookingApi.releaseWarranty(bookingId, this.vm.display?.ownerId || 'alegria', 'admin').subscribe({
+      next: () => {
+        this.adminReleasingWarranty = false;
+        this.actionMessage = this.t('warrantyReleaseSuccess');
+        this.loadBooking();
+      },
+      error: (error: any) => {
+        this.adminReleasingWarranty = false;
+        this.error = error?.error?.error || error?.error?.message || error?.message || this.t('warrantyReleaseError');
+      }
+    });
+  }
+
   get savedWarrantyChargeAmount(): number {
     const display: any = this.vm?.display || {};
     const cents = Number(display.lastWarrantyChargeAmount || display.warrantyChargeAmountCents || 0);
@@ -1760,7 +1796,7 @@ export class BookingDetailComponent implements OnInit {
     if (!this.vm || this.editMode) return false;
     const booking = this.vm.display || {};
     const cardRegistered = this.hasWarrantyCardRegistered(booking);
-    return this.warrantyAmount() > 0 && !cardRegistered;
+    return this.warrantyAmount() > 0 && !cardRegistered && !this.isWarrantyReleased(booking);
   }
 
   async registerWarrantyCardOnline(): Promise<void> {
@@ -1818,6 +1854,7 @@ export class BookingDetailComponent implements OnInit {
   canSelectCashWarranty(): boolean {
     if (!this.vm || this.editMode) return false;
     const booking = this.vm.display || {};
+    if (this.isWarrantyReleased(booking)) return false;
     const amount = this.warrantyAmount();
     const method = String(booking.warrantyPaymentChoice || booking.warrantyMethod || '').toLowerCase();
     const status = String(booking.warrantyStatus || '').toLowerCase();
@@ -1850,6 +1887,7 @@ export class BookingDetailComponent implements OnInit {
   }
 
   private hasWarrantyCardRegistered(booking: any): boolean {
+    if (this.isWarrantyReleased(booking)) return false;
     const status = String(booking?.warrantyStatus || '').toLowerCase();
     const method = String(booking?.warrantyPaymentChoice || booking?.warrantyMethod || '').toLowerCase();
     // The currently selected warranty method wins. If the customer switches to cash,
@@ -1865,6 +1903,7 @@ export class BookingDetailComponent implements OnInit {
   }
 
   private isWarrantyComplete(booking: any): boolean {
+    if (this.isWarrantyReleased(booking)) return true;
     const amount = this.number(booking?.warrantyAmount || booking?.cautionAmount || booking?.securityDepositAmount || 500);
     if (amount <= 0) return true;
     return this.hasWarrantyCardRegistered(booking) || this.isCashWarrantySelected(booking);
@@ -2134,6 +2173,12 @@ export class BookingDetailComponent implements OnInit {
       damageReasonRequired: { en: 'Please describe the damage before charging the warranty.', fr: 'Merci de décrire les dommages avant de débiter la caution.', es: 'Describa los daños antes de cargar la garantía.', it: 'Descrivi il danno prima di addebitare la cauzione.', de: 'Bitte beschreiben Sie den Schaden, bevor Sie die Kaution belasten.', nl: 'Beschrijf de schade voordat u de waarborg aanrekent.', ru: 'Опишите ущерб перед списанием залога.' },
       warrantyChargeSuccess: { en: 'Warranty charge recorded.', fr: 'Débit de caution enregistré.', es: 'Cargo de garantía registrado.', it: 'Addebito cauzione registrato.', de: 'Kautionsbelastung erfasst.', nl: 'Waarborgaanrekening geregistreerd.', ru: 'Списание залога записано.' },
       warrantyChargeError: { en: 'Unable to charge warranty.', fr: 'Impossible de débiter la caution.', es: 'No se puede cargar la garantía.', it: 'Impossibile addebitare la cauzione.', de: 'Kaution kann nicht belastet werden.', nl: 'Kan waarborg niet aanrekenen.', ru: 'Не удалось списать залог.' },
+      warrantyRelease: { en: 'Release warranty', fr: 'Libérer la caution', es: 'Liberar garantía', it: 'Rilascia cauzione', de: 'Kaution freigeben', nl: 'Waarborg vrijgeven', ru: 'Освободить залог' },
+      warrantyReleased: { en: 'Warranty released', fr: 'Caution libérée', es: 'Garantía liberada', it: 'Cauzione rilasciata', de: 'Kaution freigegeben', nl: 'Waarborg vrijgegeven', ru: 'Залог освобождён' },
+      warrantyReleaseSuccess: { en: 'Warranty released. The saved card was removed and no charge was made.', fr: 'Caution libérée. La carte enregistrée a été supprimée et aucun débit n’a été effectué.', es: 'Garantía liberada. Se eliminó la tarjeta guardada y no se realizó ningún cargo.', it: 'Cauzione rilasciata. La carta salvata è stata rimossa e non è stato effettuato alcun addebito.', de: 'Kaution freigegeben. Die gespeicherte Karte wurde entfernt und nicht belastet.', nl: 'Waarborg vrijgegeven. De opgeslagen kaart is verwijderd en er is niets aangerekend.', ru: 'Залог освобождён. Сохранённая карта удалена, списаний не было.' },
+      warrantyReleaseError: { en: 'Unable to release the warranty.', fr: 'Impossible de libérer la caution.', es: 'No se puede liberar la garantía.', it: 'Impossibile rilasciare la cauzione.', de: 'Kaution kann nicht freigegeben werden.', nl: 'Kan waarborg niet vrijgeven.', ru: 'Не удалось освободить залог.' },
+      warrantyReleasedNoDamage: { en: 'No damage was observed. The saved warranty card has been removed.', fr: 'Aucun dommage n’a été constaté. La carte de caution enregistrée a été supprimée.', es: 'No se observaron daños. Se eliminó la tarjeta de garantía guardada.', it: 'Nessun danno rilevato. La carta di cauzione salvata è stata rimossa.', de: 'Es wurden keine Schäden festgestellt. Die gespeicherte Kautionskarte wurde entfernt.', nl: 'Er is geen schade vastgesteld. De opgeslagen waarborgkaart is verwijderd.', ru: 'Повреждений не обнаружено. Сохранённая карта залога удалена.' },
+      warrantyReleasedAt: { en: 'Released on', fr: 'Libérée le', es: 'Liberada el', it: 'Rilasciata il', de: 'Freigegeben am', nl: 'Vrijgegeven op', ru: 'Освобождён' },
       refundCustomer: { en: 'Refund customer', fr: 'Rembourser le client', es: 'Reembolsar al cliente', it: 'Rimborsa il cliente', de: 'Kunden erstatten', nl: 'Klant terugbetalen', ru: 'Вернуть клиенту' },
       refundPaymentType: { en: 'Payment to refund', fr: 'Paiement à rembourser', es: 'Pago a reembolsar', it: 'Pagamento da rimborsare', de: 'Zu erstattende Zahlung', nl: 'Terug te betalen betaling', ru: 'Платеж для возврата' },
       refundSuccess: { en: 'Refund recorded.', fr: 'Remboursement enregistré.', es: 'Reembolso registrado.', it: 'Rimborso registrato.', de: 'Erstattung erfasst.', nl: 'Terugbetaling geregistreerd.', ru: 'Возврат записан.' },
@@ -2209,6 +2254,7 @@ export class BookingDetailComponent implements OnInit {
   }
 
   private buildWarrantyBadge(booking: any): string {
+    if (this.isWarrantyReleased(booking)) return this.t('warrantyReleased');
     if (this.hasWarrantyCardRegistered(booking)) return this.t('warrantyCardRegistered');
     if (this.isCashWarrantySelected(booking) || booking.warrantyRegistered === true) return this.t('cashWarrantyRecorded');
     return this.t('warrantyNotSelected');

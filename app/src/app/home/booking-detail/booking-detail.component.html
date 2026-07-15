@@ -351,13 +351,22 @@
             </div>
           </div>
 
-          <p class="finance-note">{{ t('changeWarrantyMethodHelp') }}</p>
+          <div class="warranty-release-summary" *ngIf="isWarrantyReleased(vm.display)">
+            <strong>✓ {{ t('warrantyReleased') }}</strong>
+            <span>{{ t('warrantyReleasedNoDamage') }}</span>
+            <small *ngIf="vm.display.warrantyReleasedAt">{{ t('warrantyReleasedAt') }} {{ formatDisplayDate(vm.display.warrantyReleasedAt) }}</small>
+          </div>
+
+          <p class="finance-note" *ngIf="!isWarrantyReleased(vm.display)">{{ t('changeWarrantyMethodHelp') }}</p>
           <div class="warranty-actions">
             <button class="btn btn-secondary finance-action" type="button" *ngIf="canSelectCashWarranty()" [disabled]="registeringWarrantyCard" (click)="selectCashWarranty()">
               {{ registeringWarrantyCard ? t('saving') : t('chooseWarrantyCash') }}
             </button>
             <button class="btn btn-secondary finance-action" type="button" *ngIf="canRegisterWarrantyCard()" [disabled]="registeringWarrantyCard" (click)="registerWarrantyCardOnline()">
               {{ registeringWarrantyCard ? t('redirecting') : t('registerWarrantyCardButton') }}
+            </button>
+            <button class="btn btn-success finance-action" type="button" *ngIf="canAdminReleaseWarranty()" [disabled]="adminReleasingWarranty" (click)="releaseWarranty()">
+              {{ adminReleasingWarranty ? t('saving') : t('warrantyRelease') }}
             </button>
           </div>
         </article>

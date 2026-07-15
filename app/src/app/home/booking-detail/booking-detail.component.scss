@@ -1322,3 +1322,21 @@
   padding: 1rem;
   margin-top: .75rem;
 }
+
+.warranty-release-summary {
+  display: grid;
+  gap: .35rem;
+  margin: 1rem 0;
+  padding: .9rem 1rem;
+  border: 1px solid rgba(34, 139, 94, .25);
+  border-radius: 14px;
+  background: rgba(224, 247, 236, .75);
+}
+.warranty-release-summary strong { color: #176b47; }
+.warranty-release-summary span,
+.warranty-release-summary small { color: #365f50; }
+.warranty-actions .btn-success {
+  background: #176b47;
+  color: #fff;
+  border-color: #176b47;
+}

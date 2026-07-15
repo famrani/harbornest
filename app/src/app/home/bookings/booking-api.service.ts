@@ -860,6 +860,15 @@ export class BookingApiService {
     ], payload);
   }
 
+  releaseWarranty(bookingId: string, ownerId?: string, releasedBy = 'admin'): Observable<any> {
+    const payload = { bookingId, ownerId, releasedBy };
+    return this.postFirstAvailable([
+      `${this.baseUrl}/api/payments/release-warranty`,
+      `${this.baseUrl}/pay/outing-warranty-release`,
+      `${this.baseUrl}/stripe/warranty-release`,
+    ], payload);
+  }
+
 
 
   acceptBookingRequest(bookingId: string, ownerId = 'alegria', note = ''): Observable<any> {
