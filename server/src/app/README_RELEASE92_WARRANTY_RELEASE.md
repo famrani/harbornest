@@ -1,3 +1,3 @@
-# Release 92 - Warranty release
+# Release 92.2 – Warranty release without detaching card
 
-Adds `/api/payments/release-warranty` and aliases. A succeeded SetupIntent is retained for audit; the reusable PaymentMethod is detached and the booking is marked released.
+The release endpoint marks the warranty as closed in Firebase and prevents all future damage charges. The Stripe PaymentMethod and succeeded SetupIntent remain attached for audit; no detach call is made.

@@ -1476,7 +1476,9 @@ export class BookingDetailComponent implements OnInit {
   }
 
   canAdminChargeWarranty(): boolean {
-    return !!this.vm && this.vm.isAdmin && !this.editMode && Number(this.adminWarrantyChargeAmount || 0) > 0 && !this.adminChargingWarranty;
+    if (!this.vm || !this.vm.isAdmin || this.editMode || this.adminChargingWarranty) return false;
+    if (this.isWarrantyReleased(this.vm.display) || this.vm.display?.canChargeWarranty === false) return false;
+    return Number(this.adminWarrantyChargeAmount || 0) > 0;
   }
 
   async chargeWarrantyForDamage(): Promise<void> {
@@ -2177,7 +2179,7 @@ export class BookingDetailComponent implements OnInit {
       warrantyReleased: { en: 'Warranty released', fr: 'Caution libérée', es: 'Garantía liberada', it: 'Cauzione rilasciata', de: 'Kaution freigegeben', nl: 'Waarborg vrijgegeven', ru: 'Залог освобождён' },
       warrantyReleaseSuccess: { en: 'Warranty released. The saved card was removed and no charge was made.', fr: 'Caution libérée. La carte enregistrée a été supprimée et aucun débit n’a été effectué.', es: 'Garantía liberada. Se eliminó la tarjeta guardada y no se realizó ningún cargo.', it: 'Cauzione rilasciata. La carta salvata è stata rimossa e non è stato effettuato alcun addebito.', de: 'Kaution freigegeben. Die gespeicherte Karte wurde entfernt und nicht belastet.', nl: 'Waarborg vrijgegeven. De opgeslagen kaart is verwijderd en er is niets aangerekend.', ru: 'Залог освобождён. Сохранённая карта удалена, списаний не было.' },
       warrantyReleaseError: { en: 'Unable to release the warranty.', fr: 'Impossible de libérer la caution.', es: 'No se puede liberar la garantía.', it: 'Impossibile rilasciare la cauzione.', de: 'Kaution kann nicht freigegeben werden.', nl: 'Kan waarborg niet vrijgeven.', ru: 'Не удалось освободить залог.' },
-      warrantyReleasedNoDamage: { en: 'No damage was observed. The saved warranty card has been removed.', fr: 'Aucun dommage n’a été constaté. La carte de caution enregistrée a été supprimée.', es: 'No se observaron daños. Se eliminó la tarjeta de garantía guardada.', it: 'Nessun danno rilevato. La carta di cauzione salvata è stata rimossa.', de: 'Es wurden keine Schäden festgestellt. Die gespeicherte Kautionskarte wurde entfernt.', nl: 'Er is geen schade vastgesteld. De opgeslagen waarborgkaart is verwijderd.', ru: 'Повреждений не обнаружено. Сохранённая карта залога удалена.' },
+      warrantyReleasedNoDamage: { en: 'No damage was observed. The warranty is closed and no further charge is permitted.', fr: 'Aucun dommage n’a été constaté. La caution est clôturée et aucun nouveau débit n’est autorisé.', es: 'No se observaron daños. La garantía está cerrada y no se permite ningún cargo adicional.', it: 'Nessun danno rilevato. La cauzione è chiusa e non sono consentiti ulteriori addebiti.', de: 'Es wurden keine Schäden festgestellt. Die Kaution ist geschlossen und weitere Belastungen sind nicht zulässig.', nl: 'Er is geen schade vastgesteld. De waarborg is afgesloten en verdere afschrijvingen zijn niet toegestaan.', ru: 'Повреждений не обнаружено. Залог закрыт, дальнейшие списания запрещены.' },
       warrantyReleasedAt: { en: 'Released on', fr: 'Libérée le', es: 'Liberada el', it: 'Rilasciata il', de: 'Freigegeben am', nl: 'Vrijgegeven op', ru: 'Освобождён' },
       refundCustomer: { en: 'Refund customer', fr: 'Rembourser le client', es: 'Reembolsar al cliente', it: 'Rimborsa il cliente', de: 'Kunden erstatten', nl: 'Klant terugbetalen', ru: 'Вернуть клиенту' },
       refundPaymentType: { en: 'Payment to refund', fr: 'Paiement à rembourser', es: 'Pago a reembolsar', it: 'Pagamento da rimborsare', de: 'Zu erstattende Zahlung', nl: 'Terug te betalen betaling', ru: 'Платеж для возврата' },

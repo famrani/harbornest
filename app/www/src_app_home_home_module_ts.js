@@ -28149,7 +28149,9 @@ let BookingDetailComponent = class BookingDetailComponent {
     });
   }
   canAdminChargeWarranty() {
-    return !!this.vm && this.vm.isAdmin && !this.editMode && Number(this.adminWarrantyChargeAmount || 0) > 0 && !this.adminChargingWarranty;
+    if (!this.vm || !this.vm.isAdmin || this.editMode || this.adminChargingWarranty) return false;
+    if (this.isWarrantyReleased(this.vm.display) || this.vm.display?.canChargeWarranty === false) return false;
+    return Number(this.adminWarrantyChargeAmount || 0) > 0;
   }
   chargeWarrantyForDamage() {
     var _this15 = this;
@@ -29287,13 +29289,13 @@ let BookingDetailComponent = class BookingDetailComponent {
         ru: 'Не удалось освободить залог.'
       },
       warrantyReleasedNoDamage: {
-        en: 'No damage was observed. The saved warranty card has been removed.',
-        fr: 'Aucun dommage n’a été constaté. La carte de caution enregistrée a été supprimée.',
-        es: 'No se observaron daños. Se eliminó la tarjeta de garantía guardada.',
-        it: 'Nessun danno rilevato. La carta di cauzione salvata è stata rimossa.',
-        de: 'Es wurden keine Schäden festgestellt. Die gespeicherte Kautionskarte wurde entfernt.',
-        nl: 'Er is geen schade vastgesteld. De opgeslagen waarborgkaart is verwijderd.',
-        ru: 'Повреждений не обнаружено. Сохранённая карта залога удалена.'
+        en: 'No damage was observed. The warranty is closed and no further charge is permitted.',
+        fr: 'Aucun dommage n’a été constaté. La caution est clôturée et aucun nouveau débit n’est autorisé.',
+        es: 'No se observaron daños. La garantía está cerrada y no se permite ningún cargo adicional.',
+        it: 'Nessun danno rilevato. La cauzione è chiusa e non sono consentiti ulteriori addebiti.',
+        de: 'Es wurden keine Schäden festgestellt. Die Kaution ist geschlossen und weitere Belastungen sind nicht zulässig.',
+        nl: 'Er is geen schade vastgesteld. De waarborg is afgesloten en verdere afschrijvingen zijn niet toegestaan.',
+        ru: 'Повреждений не обнаружено. Залог закрыт, дальнейшие списания запрещены.'
       },
       warrantyReleasedAt: {
         en: 'Released on',
