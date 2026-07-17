@@ -260,6 +260,10 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
   }
 
   getBookingProgress(booking: AlegriaBooking): number {
+    // A completed/closed outing is always 100%, even when legacy records do not
+    // contain every intermediate workflow flag (terms, warranty, balance, etc.).
+    if (this.isBookingCompleted(booking)) return 100;
+
     const steps = [
       this.isDepositPaid(booking),
       this.isTermsAccepted(booking),
@@ -267,6 +271,37 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
       this.isBalancePaid(booking),
     ];
     return Math.round((steps.filter(Boolean).length / steps.length) * 100);
+  }
+
+  isBookingCompleted(booking: AlegriaBooking): boolean {
+    const b: any = booking || {};
+    const values = [
+      b.bookingStatus,
+      b.status,
+      b.outingStatus,
+      b.bookingRequestStatus,
+      b.workflow?.status,
+      b.bookingWorkflow?.status,
+      b.raw?.bookingStatus,
+      b.raw?.status,
+    ].map((value) => String(value ?? '').toLowerCase().trim());
+
+    const completedStatuses = new Set([
+      'completed',
+      'complete',
+      'closed',
+      'terminated',
+      'finished',
+      'done',
+      'outing_completed',
+      'booking_completed',
+    ]);
+
+    return b.completed === true ||
+      b.outingCompleted === true ||
+      b.workflow?.outingCompleted === true ||
+      b.bookingWorkflow?.outingCompleted === true ||
+      values.some((value) => completedStatuses.has(value));
   }
 
   getCustomerDisplayName(booking: AlegriaBooking): string {
@@ -427,6 +462,9 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
     const anyBooking: any = booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
 
+    // The outing lifecycle takes precedence over the payment workflow in summaries.
+    if (this.isBookingCompleted(booking)) return 'completed';
+
     // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
     if (this.isBalancePaid(booking)) return 'payment_done';
 
@@ -458,10 +496,11 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
 
   getStatusLabel(booking: AlegriaBooking): string {
     const status = this.getDerivedBookingStatus(booking);
-    if (status === 'cancelled') return 'Cancelled';
-    if (status === 'payment_done') return 'Payment done';
-    if (status === 'confirmed') return 'Confirmed';
-    return 'Not confirmed';
+    if (status === 'completed') return this.t('outingCompleted');
+    if (status === 'cancelled') return this.t('cancelled');
+    if (status === 'payment_done') return this.t('paymentDone');
+    if (status === 'confirmed') return this.t('confirmed');
+    return this.t('notConfirmed');
   }
 
   getWarrantyChoice(booking: AlegriaBooking): string {
