@@ -52,10 +52,10 @@ export class OnlineBookingComponent implements OnInit, OnDestroy {
 
   pricingModel: AlegriaPricingModel = {
     day: 1200,
-    halfDay: 800,
+    halfDay: 900,
     sunset: 600,
     evening: 900,
-    skipperPrice: 300,
+    skipperPrice: 450,
     cleaningPrice: 150,
     nominalGuests: 8,
     extraGuestPrice: 60,

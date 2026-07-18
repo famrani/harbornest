@@ -6,6 +6,7 @@ import { DynamicOuting, OutingsDataService } from '../outings-data.service';
 import { SiteContentService } from '../site-content-service/site-content.service';
 import { ServicesService } from 'godigital-lib';
 import { Router } from '@angular/router';
+import { AlegriaPricingModel, BookingApiService } from '../bookings/booking-api.service';
 
 @Component({
   selector: 'app-home',
@@ -29,6 +30,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   private cachedQuickActionsSourceRef: any = null;
   private cachedQuickActionsLanguage: SiteLanguage | null = null;
   private cachedQuickActions: any[] = [];
+  private cachedPricingRowsKey = '';
+  private cachedPricingRows: any[] = [];
   private languageSub?: Subscription;
   private accountSub?: Subscription;
 
@@ -37,6 +40,23 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   loggedUser: any = null;
   contentReady = false;
+  pricingModel: AlegriaPricingModel = {
+    day: 1200,
+    halfDay: 900,
+    sunset: 600,
+    evening: 900,
+    skipperPrice: 450,
+    cleaningPrice: 150,
+    nominalGuests: 8,
+    extraGuestPrice: 60,
+    minGuests: 1,
+    maxGuests: 12,
+    seasonalMultipliers: [
+      { startDate: '2026-07-01', endDate: '2026-08-31', multiplier: 1.20, label: 'High season' }
+    ],
+    specialDates: [],
+  };
+  pricingModelReady = false;
   pendingProtectedRoute = '/login';
   showAuthChoiceModal = false;
 
@@ -304,10 +324,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     private siteContentService: SiteContentService,
     private mainSvc: ServicesService,
     private router: Router,
+    private bookingApi: BookingApiService,
   ) {}
 
   ngOnInit(): void {
     this.loadSiteContent();
+    this.loadPricingModel();
 
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.currentLanguage = language;
@@ -567,6 +589,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.hp?.hero?.image || this.content?.heroImage || '';
   }
 
+  /**
+   * Canonical "starting from" price shown in the hero.
+   * It uses the same pricing model and seasonal multiplier as the pricing table,
+   * so the hero can no longer display a stale Firebase value such as 799 €.
+   */
+  get heroPriceValue(): string {
+    const multiplier = this.getHomepagePricingMultiplier();
+    const eveningBase = Number(this.pricingModel?.evening || this.pricingModel?.halfDay || 0);
+    const eveningBoat = this.roundCurrency(eveningBase * multiplier);
+    const skipper = this.roundCurrency(Number(this.pricingModel?.skipperPrice || 0));
+    const total = eveningBoat + skipper;
+    return total > 0 ? this.formatHomepagePrice(total) : (this.hp?.hero?.priceValue || '');
+  }
+
   get boatImage(): string {
     return this.hp?.boat?.image || this.content?.boatHeroImage || this.content?.heroImage || '';
   }
@@ -787,7 +823,129 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   get pricingRows(): any[] {
-    return Array.isArray(this.hp?.pricing?.rows) ? this.hp.pricing.rows : this.EMPTY_ARRAY;
+    const today = this.localIsoDate(new Date());
+    const pricingCacheKey = JSON.stringify({
+      language: this.currentLanguage,
+      today,
+      day: this.pricingModel?.day,
+      evening: this.pricingModel?.evening,
+      halfDay: this.pricingModel?.halfDay,
+      skipperPrice: this.pricingModel?.skipperPrice,
+      seasonalMultipliers: this.pricingModel?.seasonalMultipliers || [],
+      specialDates: this.pricingModel?.specialDates || [],
+      quoteRows: this.hp?.pricing?.rows || [],
+    });
+    if (pricingCacheKey === this.cachedPricingRowsKey) return this.cachedPricingRows;
+
+    const configuredRows = Array.isArray(this.hp?.pricing?.rows) ? this.hp.pricing.rows : this.EMPTY_ARRAY;
+    const quoteRow = configuredRows.find((row: any) => {
+      const marker = String(row?.experience || '').toLowerCase();
+      return marker.includes('sunset') || marker.includes('coucher') || marker.includes('puesta')
+        || marker.includes('tramonto') || marker.includes('sonnenuntergang')
+        || marker.includes('zonsondergang') || marker.includes('закат');
+    });
+
+    const multiplier = this.getHomepagePricingMultiplier();
+    const dayBoat = this.roundCurrency(Number(this.pricingModel?.day || 0) * multiplier);
+    const eveningBase = Number(this.pricingModel?.evening || this.pricingModel?.halfDay || 0);
+    const eveningBoat = this.roundCurrency(eveningBase * multiplier);
+    const skipper = this.roundCurrency(Number(this.pricingModel?.skipperPrice || 0));
+
+    const rows = [
+      {
+        key: 'evening',
+        experience: this.homePricingExperienceLabel('evening'),
+        boat: this.formatHomepagePrice(eveningBoat),
+        skipper: this.formatHomepagePrice(skipper),
+        total: this.formatHomepagePrice(eveningBoat + skipper),
+      },
+      {
+        key: 'day',
+        experience: this.homePricingExperienceLabel('day'),
+        boat: this.formatHomepagePrice(dayBoat),
+        skipper: this.formatHomepagePrice(skipper),
+        total: this.formatHomepagePrice(dayBoat + skipper),
+      },
+      quoteRow || {
+        key: 'sunset',
+        experience: this.homePricingExperienceLabel('sunset'),
+        boat: this.homePricingQuoteLabel(),
+        skipper: this.homePricingQuoteLabel(),
+        total: this.homePricingQuoteLabel(),
+      },
+    ];
+    this.cachedPricingRowsKey = pricingCacheKey;
+    this.cachedPricingRows = rows;
+    return this.cachedPricingRows;
+  }
+
+  private async loadPricingModel(): Promise<void> {
+    try {
+      this.pricingModel = await this.bookingApi.getPricingModel();
+    } catch {
+      this.pricingModel = this.bookingApi.getDefaultPricingModel();
+    } finally {
+      this.pricingModelReady = true;
+    }
+  }
+
+  private getHomepagePricingMultiplier(date = new Date()): number {
+    const isoDate = this.localIsoDate(date);
+    const special = (this.pricingModel?.specialDates || []).find((item: any) => item?.date === isoDate);
+    if (special) {
+      if (Number(special.price) > 0) return Number(special.price) / Math.max(1, Number(this.pricingModel?.day || 1));
+      if (Number(special.multiplier) > 0) return Number(special.multiplier);
+    }
+
+    const activeSeason = (this.pricingModel?.seasonalMultipliers || []).find((item: any) => {
+      return !!item?.startDate && !!item?.endDate && isoDate >= item.startDate && isoDate <= item.endDate;
+    });
+    return Number(activeSeason?.multiplier || 1) > 0 ? Number(activeSeason?.multiplier || 1) : 1;
+  }
+
+  private localIsoDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  private roundCurrency(value: number): number {
+    return Math.round((Number(value || 0) + Number.EPSILON) * 100) / 100;
+  }
+
+  private formatHomepagePrice(value: number): string {
+    try {
+      return new Intl.NumberFormat(this.currentLanguage || 'fr', {
+        style: 'currency',
+        currency: 'EUR',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(value);
+    } catch {
+      return `${Math.round(value)} €`;
+    }
+  }
+
+  private homePricingExperienceLabel(period: 'day' | 'evening' | 'sunset'): string {
+    const labels: Record<string, Record<string, string>> = {
+      fr: { day: 'Journée complète', evening: 'Soirée', sunset: 'Coucher de soleil' },
+      en: { day: 'Full day', evening: 'Evening', sunset: 'Sunset' },
+      es: { day: 'Día completo', evening: 'Noche', sunset: 'Puesta de sol' },
+      it: { day: 'Giornata intera', evening: 'Serata', sunset: 'Tramonto' },
+      de: { day: 'Ganzer Tag', evening: 'Abend', sunset: 'Sonnenuntergang' },
+      nl: { day: 'Volledige dag', evening: 'Avond', sunset: 'Zonsondergang' },
+      ru: { day: 'Полный день', evening: 'Вечер', sunset: 'Закат' },
+    };
+    return (labels[this.currentLanguage] || labels.fr)[period];
+  }
+
+  private homePricingQuoteLabel(): string {
+    const labels: Record<string, string> = {
+      fr: 'Sur devis', en: 'On request', es: 'Bajo presupuesto', it: 'Su richiesta',
+      de: 'Auf Anfrage', nl: 'Op aanvraag', ru: 'По запросу',
+    };
+    return labels[this.currentLanguage] || labels.fr;
   }
 
   get pricingIncluded(): string[] {

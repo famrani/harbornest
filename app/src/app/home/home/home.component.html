@@ -71,9 +71,9 @@
 
       <div class="hero-visual hero-card">
         <img [src]="heroImage" [alt]="hp.hero?.imageAlt || content.brand" />
-        <div class="hero-price-card" *ngIf="hp.hero?.priceText || hp.hero?.priceValue">
+        <div class="hero-price-card" *ngIf="hp.hero?.priceText || heroPriceValue">
           <span>{{ hp.hero?.priceText }}</span>
-          <strong>{{ hp.hero?.priceValue }}</strong>
+          <strong>{{ heroPriceValue }}</strong>
         </div>
       </div>
     </div>

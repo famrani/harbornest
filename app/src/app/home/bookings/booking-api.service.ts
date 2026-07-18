@@ -160,7 +160,7 @@ export class BookingApiService {
 
 
   getDefaultPricingModel(): AlegriaPricingModel {
-    return { day: 1200, halfDay: 800, sunset: 600, evening: 900, skipperPrice: 300, cleaningPrice: 150,
+    return { day: 1200, halfDay: 900, sunset: 600, evening: 900, skipperPrice: 450, cleaningPrice: 150,
       nominalGuests: 8,
       extraGuestPrice: 60,
       minGuests: 1,

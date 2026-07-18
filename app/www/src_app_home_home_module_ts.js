@@ -13439,7 +13439,7 @@ GuestContentService = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_ang
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<ng-container *ngIf=\"contentReady\">\n  <ng-container *ngIf=\"isAdmin && adminGroups.length; else customerHome\">\n    <section class=\"admin-home-hero\">\n      <div class=\"container admin-hero-grid\">\n        <div>\n          <span class=\"eyebrow\">{{ adminHome?.eyebrow }}</span>\n          <h1>{{ adminHome?.title }}<ng-container *ngIf=\"userFirstName\"> {{ userFirstName }}</ng-container></h1>\n          <p>{{ adminHome?.intro }}</p>\n        </div>\n        <div class=\"admin-hero-actions\" *ngIf=\"adminHeroActions.length\">\n          <a class=\"btn btn-primary\" *ngFor=\"let action of adminHeroActions\" [routerLink]=\"action.route\">\n            {{ action.label }}\n          </a>\n        </div>\n      </div>\n    </section>\n\n\n    <section class=\"section admin-dashboard-section\">\n      <div class=\"container\">\n        <div class=\"section-head centered\">\n          <span class=\"eyebrow\">{{ adminHome?.sectionsEyebrow }}</span>\n          <h2>{{ adminHome?.sectionsTitle }}</h2>\n          <p>{{ adminHome?.sectionsText }}</p>\n        </div>\n\n        <div class=\"admin-groups-grid\">\n          <article class=\"admin-group-card\" *ngFor=\"let group of adminGroups\" [class.admin-group-featured]=\"group.featured\">\n            <div class=\"admin-group-head\">\n              <span class=\"admin-group-icon\">{{ group.icon }}</span>\n              <div>\n                <h3>{{ group.title }}</h3>\n                <p>{{ group.text }}</p>\n              </div>\n            </div>\n\n            <div class=\"admin-links-grid\" *ngIf=\"group.items?.length\">\n              <a class=\"admin-link-card\" *ngFor=\"let item of group.items\" [routerLink]=\"item.route\">\n                <strong>{{ item.title }}</strong>\n                <small>{{ item.text }}</small>\n              </a>\n            </div>\n          </article>\n        </div>\n      </div>\n    </section>\n  </ng-container>\n\n  <ng-template #customerHome>\n  <section class=\"hero hero-redesign\">\n    <div class=\"container hero-grid\">\n      <div class=\"hero-copy\">\n        <span class=\"eyebrow\">{{ hp.hero?.eyebrow }}</span>\n        <h1>{{ hp.hero?.title }}</h1>\n        <p>{{ hp.hero?.intro }}</p>\n\n        <div class=\"hero-actions\">\n          <a [routerLink]=\"hp.hero?.primaryRoute || '/sorties'\" class=\"btn btn-primary btn-equal\">\n            {{ hp.hero?.primaryCta }}\n          </a>\n\n          <a *ngIf=\"canShowOnlineBookingButton\" [routerLink]=\"hp.hero?.secondaryRoute || '/reserver'\" class=\"btn btn-secondary btn-equal\">\n            {{ hp.hero?.secondaryCta }}\n          </a>\n        </div>\n\n        <ul class=\"hero-points\" *ngIf=\"hp.hero?.badges?.length\">\n          <li *ngFor=\"let point of hp.hero.badges\">{{ point }}</li>\n        </ul>\n      </div>\n\n      <div class=\"hero-visual hero-card\">\n        <img [src]=\"heroImage\" [alt]=\"hp.hero?.imageAlt || content.brand\" />\n        <div class=\"hero-price-card\" *ngIf=\"hp.hero?.priceText || hp.hero?.priceValue\">\n          <span>{{ hp.hero?.priceText }}</span>\n          <strong>{{ hp.hero?.priceValue }}</strong>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section quick-actions-section\" *ngIf=\"quickActions.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.quickActions?.eyebrow }}</span>\n        <h2>{{ hp.quickActions?.title }}</h2>\n        <p>{{ hp.quickActions?.text }}</p>\n      </div>\n\n      <div class=\"action-grid\">\n        <a class=\"action-card\" *ngFor=\"let action of quickActions\" href=\"\" (click)=\"onProtectedHomeAction($event, action)\">\n          <span class=\"action-icon\">{{ action.icon }}</span>\n          <strong>{{ action.title }}</strong>\n          <small>{{ action.text }}</small>\n        </a>\n      </div>\n    </div>\n  </section>\n\n\n  <section class=\"section booking-process-teaser-section\" *ngIf=\"bookingProcessTeaser\">\n    <div class=\"container booking-process-teaser\">\n      <div class=\"booking-process-teaser-copy\">\n        <span class=\"eyebrow\">{{ bookingProcessTeaser.eyebrow }}</span>\n        <h2>{{ bookingProcessTeaser.title }}</h2>\n        <p>{{ bookingProcessTeaser.text }}</p>\n        <a [routerLink]=\"bookingProcessTeaser.route || '/booking-process'\" class=\"btn btn-secondary\">\n          {{ bookingProcessTeaser.cta }}\n        </a>\n      </div>\n      <div class=\"booking-process-mini-steps\" *ngIf=\"bookingProcessMiniSteps.length\">\n        <article *ngFor=\"let step of bookingProcessMiniSteps; let i = index\">\n          <span>{{ i + 1 }}</span>\n          <strong>{{ step.title }}</strong>\n          <small>{{ step.text }}</small>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section dashboard-section\" *ngIf=\"dashboardCards.length\">\n    <div class=\"container customer-dashboard\">\n      <div>\n        <span class=\"eyebrow\">{{ dashboard.eyebrow }}</span>\n        <h2>{{ dashboard.title }}<ng-container *ngIf=\"userFirstName\"> {{ userFirstName }}</ng-container></h2>\n        <p>{{ dashboard.text }}</p>\n      </div>\n\n      <div class=\"dashboard-cards\">\n        <a class=\"dashboard-card\" *ngFor=\"let card of dashboardCards\" [routerLink]=\"card.route\">\n          <span>{{ card.icon }}</span>\n          <strong>{{ card.title }}</strong>\n          <small>{{ card.text }}</small>\n        </a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section\" *ngIf=\"experiences.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.experiences?.eyebrow }}</span>\n        <h2>{{ hp.experiences?.title }}</h2>\n        <p>{{ hp.experiences?.text }}</p>\n      </div>\n\n      <div class=\"cards-grid experience-grid\">\n        <article class=\"card experience-card\" *ngFor=\"let experience of experiences\">\n          <img [src]=\"experience.image\" [alt]=\"experience.title\" [routerLink]=\"experience.route || ['/sorties', experience.slug]\" />\n          <div class=\"card-body\">\n            <h3>{{ experience.title }}</h3>\n            <p>{{ experience.description }}</p>\n            <div class=\"meta\" *ngIf=\"experience.meta\">{{ experience.meta }}</div>\n            <div class=\"meta price\" *ngIf=\"experience.price\">{{ experience.price }}</div>\n            <a [routerLink]=\"experience.route || ['/sorties', experience.slug]\" class=\"text-link\">{{ hp.experiences?.cardCta }}</a>\n          </div>\n        </article>\n      </div>\n\n      <div class=\"home-all-tours-cta\" *ngIf=\"hp.experiences?.cta\">\n        <a [routerLink]=\"hp.experiences?.ctaRoute || '/sorties'\" class=\"btn btn-secondary\">{{ hp.experiences.cta }}</a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section section-light pricing-section\" *ngIf=\"pricingRows.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.pricing?.eyebrow }}</span>\n        <h2>{{ hp.pricing?.title }}</h2>\n        <p>{{ hp.pricing?.text }}</p>\n      </div>\n\n      <div class=\"pricing-table-wrap\">\n        <table class=\"pricing-table\">\n          <thead>\n            <tr>\n              <th>{{ hp.pricing?.experienceLabel }}</th>\n              <th>{{ hp.pricing?.boatLabel }}</th>\n              <th>{{ hp.pricing?.skipperLabel }}</th>\n              <th>{{ hp.pricing?.totalLabel }}</th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr *ngFor=\"let row of pricingRows\">\n              <td>{{ row.experience }}</td>\n              <td>{{ row.boat }}</td>\n              <td>{{ row.skipper }}</td>\n              <td><strong>{{ row.total }}</strong></td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"pricing-notes\">\n        <div *ngIf=\"pricingIncluded.length\">\n          <h3>{{ hp.pricing?.includedTitle }}</h3>\n          <ul class=\"check-list compact\">\n            <li *ngFor=\"let item of pricingIncluded\">{{ item }}</li>\n          </ul>\n        </div>\n        <div *ngIf=\"pricingOptions.length\">\n          <h3>{{ hp.pricing?.optionsTitle }}</h3>\n          <ul class=\"check-list compact\">\n            <li *ngFor=\"let item of pricingOptions\">{{ item }}</li>\n          </ul>\n        </div>\n      </div>\n\n      <div class=\"booking-process-actions\" *ngIf=\"hp.pricing?.cta\">\n        <a [routerLink]=\"hp.pricing?.ctaRoute || '/reserver'\" class=\"btn btn-primary\">{{ hp.pricing.cta }}</a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section destinations-section\" *ngIf=\"destinations.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.destinations?.eyebrow }}</span>\n        <h2>{{ hp.destinations?.title }}</h2>\n        <p>{{ hp.destinations?.text }}</p>\n      </div>\n\n      <div class=\"destination-grid\">\n        <article class=\"destination-card\" *ngFor=\"let destination of destinations\">\n          <span>{{ destination.tag }}</span>\n          <h3>{{ destination.title }}</h3>\n          <p>{{ destination.text }}</p>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section section-light journey-section\" *ngIf=\"journeySteps.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.journey?.eyebrow }}</span>\n        <h2>{{ hp.journey?.title }}</h2>\n        <p>{{ hp.journey?.text }}</p>\n      </div>\n\n      <div class=\"journey-grid\">\n        <article class=\"journey-step\" *ngFor=\"let step of journeySteps; let i = index\">\n          <span class=\"step-number\">{{ i + 1 }}</span>\n          <h3>{{ step.title }}</h3>\n          <p>{{ step.text }}</p>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section section-light\" *ngIf=\"hp.boat\">\n    <div class=\"container split-grid\">\n      <div>\n        <span class=\"eyebrow\">{{ hp.boat?.eyebrow }}</span>\n        <h2>{{ hp.boat?.title }}</h2>\n        <p>{{ hp.boat?.text }}</p>\n        <ul class=\"check-list\" *ngIf=\"boatHighlights.length\">\n          <li *ngFor=\"let item of boatHighlights\">{{ item }}</li>\n        </ul>\n        <a [routerLink]=\"hp.boat?.ctaRoute || '/bateau'\" class=\"btn btn-secondary\" *ngIf=\"hp.boat?.cta\">{{ hp.boat.cta }}</a>\n      </div>\n\n      <div class=\"boat-card\">\n        <img [src]=\"boatImage\" [alt]=\"hp.boat?.imageAlt || content.brand\" />\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section reviews-section\" *ngIf=\"reviews.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.reviews?.eyebrow }}</span>\n        <h2>{{ hp.reviews?.title }}</h2>\n        <p>{{ hp.reviews?.text }}</p>\n      </div>\n\n      <div class=\"review-grid\">\n        <article class=\"review-card\" *ngFor=\"let review of reviews\">\n          <div class=\"stars\">{{ review.stars }}</div>\n          <p>{{ review.quote }}</p>\n          <strong>{{ review.name }}</strong>\n          <small>{{ review.context }}</small>\n        </article>\n      </div>\n\n      <div class=\"home-all-tours-cta\" *ngIf=\"hp.reviews?.cta\">\n        <a [routerLink]=\"hp.reviews?.ctaRoute || '/feedback'\" class=\"btn btn-secondary\">{{ hp.reviews.cta }}</a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section faq-section\" *ngIf=\"faqItems.length\">\n    <div class=\"container faq-wrap\">\n      <div class=\"section-head\">\n        <span class=\"eyebrow\">{{ hp.faq?.eyebrow }}</span>\n        <h2>{{ hp.faq?.title }}</h2>\n        <p>{{ hp.faq?.text }}</p>\n        <a [routerLink]=\"hp.faq?.ctaRoute || '/faq'\" class=\"btn btn-secondary\" *ngIf=\"hp.faq?.cta\">{{ hp.faq.cta }}</a>\n      </div>\n\n      <div class=\"faq-list\">\n        <article class=\"faq-item\" *ngFor=\"let item of faqItems\">\n          <h3>{{ item.question }}</h3>\n          <p>{{ item.answer }}</p>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section\" *ngIf=\"hp.finalCta\">\n    <div class=\"container contact-banner\">\n      <div>\n        <span class=\"eyebrow\">{{ hp.finalCta?.eyebrow }}</span>\n        <h2>{{ hp.finalCta?.title }}</h2>\n        <p>{{ hp.finalCta?.text }}</p>\n      </div>\n      <div class=\"contact-actions\">\n        <a [routerLink]=\"hp.finalCta?.primaryRoute || '/reserver'\" class=\"btn btn-primary\" *ngIf=\"hp.finalCta?.primaryCta\">{{ hp.finalCta.primaryCta }}</a>\n        <a [routerLink]=\"hp.finalCta?.secondaryRoute || '/contact'\" class=\"btn btn-secondary\" *ngIf=\"hp.finalCta?.secondaryCta\">{{ hp.finalCta.secondaryCta }}</a>\n      </div>\n    </div>\n  </section>\n\n  </ng-template>\n\n  <div class=\"auth-choice-backdrop\" *ngIf=\"showAuthChoiceModal\" (click)=\"closeAuthChoiceModal()\">\n    <div class=\"auth-choice-modal\" role=\"dialog\" aria-modal=\"true\" [attr.aria-label]=\"authModalTitle\" (click)=\"$event.stopPropagation()\">\n      <button type=\"button\" class=\"auth-choice-close\" (click)=\"closeAuthChoiceModal()\" [attr.aria-label]=\"authModalCloseLabel\">×</button>\n      <span class=\"eyebrow\">{{ authModal?.eyebrow }}</span>\n      <h2>{{ authModalTitle }}</h2>\n      <p>{{ authModalText }}</p>\n      <div class=\"auth-choice-actions\">\n        <button type=\"button\" class=\"btn btn-primary\" (click)=\"goToLogin()\">{{ authModalLoginLabel }}</button>\n        <button type=\"button\" class=\"btn btn-secondary\" (click)=\"goToSignup()\">{{ authModalSignupLabel }}</button>\n      </div>\n      <button type=\"button\" class=\"auth-choice-cancel\" (click)=\"closeAuthChoiceModal()\">{{ authModalCancelLabel }}</button>\n    </div>\n  </div>\n\n</ng-container>\n";
+module.exports = "<ng-container *ngIf=\"contentReady\">\n  <ng-container *ngIf=\"isAdmin && adminGroups.length; else customerHome\">\n    <section class=\"admin-home-hero\">\n      <div class=\"container admin-hero-grid\">\n        <div>\n          <span class=\"eyebrow\">{{ adminHome?.eyebrow }}</span>\n          <h1>{{ adminHome?.title }}<ng-container *ngIf=\"userFirstName\"> {{ userFirstName }}</ng-container></h1>\n          <p>{{ adminHome?.intro }}</p>\n        </div>\n        <div class=\"admin-hero-actions\" *ngIf=\"adminHeroActions.length\">\n          <a class=\"btn btn-primary\" *ngFor=\"let action of adminHeroActions\" [routerLink]=\"action.route\">\n            {{ action.label }}\n          </a>\n        </div>\n      </div>\n    </section>\n\n\n    <section class=\"section admin-dashboard-section\">\n      <div class=\"container\">\n        <div class=\"section-head centered\">\n          <span class=\"eyebrow\">{{ adminHome?.sectionsEyebrow }}</span>\n          <h2>{{ adminHome?.sectionsTitle }}</h2>\n          <p>{{ adminHome?.sectionsText }}</p>\n        </div>\n\n        <div class=\"admin-groups-grid\">\n          <article class=\"admin-group-card\" *ngFor=\"let group of adminGroups\" [class.admin-group-featured]=\"group.featured\">\n            <div class=\"admin-group-head\">\n              <span class=\"admin-group-icon\">{{ group.icon }}</span>\n              <div>\n                <h3>{{ group.title }}</h3>\n                <p>{{ group.text }}</p>\n              </div>\n            </div>\n\n            <div class=\"admin-links-grid\" *ngIf=\"group.items?.length\">\n              <a class=\"admin-link-card\" *ngFor=\"let item of group.items\" [routerLink]=\"item.route\">\n                <strong>{{ item.title }}</strong>\n                <small>{{ item.text }}</small>\n              </a>\n            </div>\n          </article>\n        </div>\n      </div>\n    </section>\n  </ng-container>\n\n  <ng-template #customerHome>\n  <section class=\"hero hero-redesign\">\n    <div class=\"container hero-grid\">\n      <div class=\"hero-copy\">\n        <span class=\"eyebrow\">{{ hp.hero?.eyebrow }}</span>\n        <h1>{{ hp.hero?.title }}</h1>\n        <p>{{ hp.hero?.intro }}</p>\n\n        <div class=\"hero-actions\">\n          <a [routerLink]=\"hp.hero?.primaryRoute || '/sorties'\" class=\"btn btn-primary btn-equal\">\n            {{ hp.hero?.primaryCta }}\n          </a>\n\n          <a *ngIf=\"canShowOnlineBookingButton\" [routerLink]=\"hp.hero?.secondaryRoute || '/reserver'\" class=\"btn btn-secondary btn-equal\">\n            {{ hp.hero?.secondaryCta }}\n          </a>\n        </div>\n\n        <ul class=\"hero-points\" *ngIf=\"hp.hero?.badges?.length\">\n          <li *ngFor=\"let point of hp.hero.badges\">{{ point }}</li>\n        </ul>\n      </div>\n\n      <div class=\"hero-visual hero-card\">\n        <img [src]=\"heroImage\" [alt]=\"hp.hero?.imageAlt || content.brand\" />\n        <div class=\"hero-price-card\" *ngIf=\"hp.hero?.priceText || heroPriceValue\">\n          <span>{{ hp.hero?.priceText }}</span>\n          <strong>{{ heroPriceValue }}</strong>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section quick-actions-section\" *ngIf=\"quickActions.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.quickActions?.eyebrow }}</span>\n        <h2>{{ hp.quickActions?.title }}</h2>\n        <p>{{ hp.quickActions?.text }}</p>\n      </div>\n\n      <div class=\"action-grid\">\n        <a class=\"action-card\" *ngFor=\"let action of quickActions\" href=\"\" (click)=\"onProtectedHomeAction($event, action)\">\n          <span class=\"action-icon\">{{ action.icon }}</span>\n          <strong>{{ action.title }}</strong>\n          <small>{{ action.text }}</small>\n        </a>\n      </div>\n    </div>\n  </section>\n\n\n  <section class=\"section booking-process-teaser-section\" *ngIf=\"bookingProcessTeaser\">\n    <div class=\"container booking-process-teaser\">\n      <div class=\"booking-process-teaser-copy\">\n        <span class=\"eyebrow\">{{ bookingProcessTeaser.eyebrow }}</span>\n        <h2>{{ bookingProcessTeaser.title }}</h2>\n        <p>{{ bookingProcessTeaser.text }}</p>\n        <a [routerLink]=\"bookingProcessTeaser.route || '/booking-process'\" class=\"btn btn-secondary\">\n          {{ bookingProcessTeaser.cta }}\n        </a>\n      </div>\n      <div class=\"booking-process-mini-steps\" *ngIf=\"bookingProcessMiniSteps.length\">\n        <article *ngFor=\"let step of bookingProcessMiniSteps; let i = index\">\n          <span>{{ i + 1 }}</span>\n          <strong>{{ step.title }}</strong>\n          <small>{{ step.text }}</small>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section dashboard-section\" *ngIf=\"dashboardCards.length\">\n    <div class=\"container customer-dashboard\">\n      <div>\n        <span class=\"eyebrow\">{{ dashboard.eyebrow }}</span>\n        <h2>{{ dashboard.title }}<ng-container *ngIf=\"userFirstName\"> {{ userFirstName }}</ng-container></h2>\n        <p>{{ dashboard.text }}</p>\n      </div>\n\n      <div class=\"dashboard-cards\">\n        <a class=\"dashboard-card\" *ngFor=\"let card of dashboardCards\" [routerLink]=\"card.route\">\n          <span>{{ card.icon }}</span>\n          <strong>{{ card.title }}</strong>\n          <small>{{ card.text }}</small>\n        </a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section\" *ngIf=\"experiences.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.experiences?.eyebrow }}</span>\n        <h2>{{ hp.experiences?.title }}</h2>\n        <p>{{ hp.experiences?.text }}</p>\n      </div>\n\n      <div class=\"cards-grid experience-grid\">\n        <article class=\"card experience-card\" *ngFor=\"let experience of experiences\">\n          <img [src]=\"experience.image\" [alt]=\"experience.title\" [routerLink]=\"experience.route || ['/sorties', experience.slug]\" />\n          <div class=\"card-body\">\n            <h3>{{ experience.title }}</h3>\n            <p>{{ experience.description }}</p>\n            <div class=\"meta\" *ngIf=\"experience.meta\">{{ experience.meta }}</div>\n            <div class=\"meta price\" *ngIf=\"experience.price\">{{ experience.price }}</div>\n            <a [routerLink]=\"experience.route || ['/sorties', experience.slug]\" class=\"text-link\">{{ hp.experiences?.cardCta }}</a>\n          </div>\n        </article>\n      </div>\n\n      <div class=\"home-all-tours-cta\" *ngIf=\"hp.experiences?.cta\">\n        <a [routerLink]=\"hp.experiences?.ctaRoute || '/sorties'\" class=\"btn btn-secondary\">{{ hp.experiences.cta }}</a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section section-light pricing-section\" *ngIf=\"pricingRows.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.pricing?.eyebrow }}</span>\n        <h2>{{ hp.pricing?.title }}</h2>\n        <p>{{ hp.pricing?.text }}</p>\n      </div>\n\n      <div class=\"pricing-table-wrap\">\n        <table class=\"pricing-table\">\n          <thead>\n            <tr>\n              <th>{{ hp.pricing?.experienceLabel }}</th>\n              <th>{{ hp.pricing?.boatLabel }}</th>\n              <th>{{ hp.pricing?.skipperLabel }}</th>\n              <th>{{ hp.pricing?.totalLabel }}</th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr *ngFor=\"let row of pricingRows\">\n              <td>{{ row.experience }}</td>\n              <td>{{ row.boat }}</td>\n              <td>{{ row.skipper }}</td>\n              <td><strong>{{ row.total }}</strong></td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"pricing-notes\">\n        <div *ngIf=\"pricingIncluded.length\">\n          <h3>{{ hp.pricing?.includedTitle }}</h3>\n          <ul class=\"check-list compact\">\n            <li *ngFor=\"let item of pricingIncluded\">{{ item }}</li>\n          </ul>\n        </div>\n        <div *ngIf=\"pricingOptions.length\">\n          <h3>{{ hp.pricing?.optionsTitle }}</h3>\n          <ul class=\"check-list compact\">\n            <li *ngFor=\"let item of pricingOptions\">{{ item }}</li>\n          </ul>\n        </div>\n      </div>\n\n      <div class=\"booking-process-actions\" *ngIf=\"hp.pricing?.cta\">\n        <a [routerLink]=\"hp.pricing?.ctaRoute || '/reserver'\" class=\"btn btn-primary\">{{ hp.pricing.cta }}</a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section destinations-section\" *ngIf=\"destinations.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.destinations?.eyebrow }}</span>\n        <h2>{{ hp.destinations?.title }}</h2>\n        <p>{{ hp.destinations?.text }}</p>\n      </div>\n\n      <div class=\"destination-grid\">\n        <article class=\"destination-card\" *ngFor=\"let destination of destinations\">\n          <span>{{ destination.tag }}</span>\n          <h3>{{ destination.title }}</h3>\n          <p>{{ destination.text }}</p>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section section-light journey-section\" *ngIf=\"journeySteps.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.journey?.eyebrow }}</span>\n        <h2>{{ hp.journey?.title }}</h2>\n        <p>{{ hp.journey?.text }}</p>\n      </div>\n\n      <div class=\"journey-grid\">\n        <article class=\"journey-step\" *ngFor=\"let step of journeySteps; let i = index\">\n          <span class=\"step-number\">{{ i + 1 }}</span>\n          <h3>{{ step.title }}</h3>\n          <p>{{ step.text }}</p>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section section-light\" *ngIf=\"hp.boat\">\n    <div class=\"container split-grid\">\n      <div>\n        <span class=\"eyebrow\">{{ hp.boat?.eyebrow }}</span>\n        <h2>{{ hp.boat?.title }}</h2>\n        <p>{{ hp.boat?.text }}</p>\n        <ul class=\"check-list\" *ngIf=\"boatHighlights.length\">\n          <li *ngFor=\"let item of boatHighlights\">{{ item }}</li>\n        </ul>\n        <a [routerLink]=\"hp.boat?.ctaRoute || '/bateau'\" class=\"btn btn-secondary\" *ngIf=\"hp.boat?.cta\">{{ hp.boat.cta }}</a>\n      </div>\n\n      <div class=\"boat-card\">\n        <img [src]=\"boatImage\" [alt]=\"hp.boat?.imageAlt || content.brand\" />\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section reviews-section\" *ngIf=\"reviews.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.reviews?.eyebrow }}</span>\n        <h2>{{ hp.reviews?.title }}</h2>\n        <p>{{ hp.reviews?.text }}</p>\n      </div>\n\n      <div class=\"review-grid\">\n        <article class=\"review-card\" *ngFor=\"let review of reviews\">\n          <div class=\"stars\">{{ review.stars }}</div>\n          <p>{{ review.quote }}</p>\n          <strong>{{ review.name }}</strong>\n          <small>{{ review.context }}</small>\n        </article>\n      </div>\n\n      <div class=\"home-all-tours-cta\" *ngIf=\"hp.reviews?.cta\">\n        <a [routerLink]=\"hp.reviews?.ctaRoute || '/feedback'\" class=\"btn btn-secondary\">{{ hp.reviews.cta }}</a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section faq-section\" *ngIf=\"faqItems.length\">\n    <div class=\"container faq-wrap\">\n      <div class=\"section-head\">\n        <span class=\"eyebrow\">{{ hp.faq?.eyebrow }}</span>\n        <h2>{{ hp.faq?.title }}</h2>\n        <p>{{ hp.faq?.text }}</p>\n        <a [routerLink]=\"hp.faq?.ctaRoute || '/faq'\" class=\"btn btn-secondary\" *ngIf=\"hp.faq?.cta\">{{ hp.faq.cta }}</a>\n      </div>\n\n      <div class=\"faq-list\">\n        <article class=\"faq-item\" *ngFor=\"let item of faqItems\">\n          <h3>{{ item.question }}</h3>\n          <p>{{ item.answer }}</p>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section\" *ngIf=\"hp.finalCta\">\n    <div class=\"container contact-banner\">\n      <div>\n        <span class=\"eyebrow\">{{ hp.finalCta?.eyebrow }}</span>\n        <h2>{{ hp.finalCta?.title }}</h2>\n        <p>{{ hp.finalCta?.text }}</p>\n      </div>\n      <div class=\"contact-actions\">\n        <a [routerLink]=\"hp.finalCta?.primaryRoute || '/reserver'\" class=\"btn btn-primary\" *ngIf=\"hp.finalCta?.primaryCta\">{{ hp.finalCta.primaryCta }}</a>\n        <a [routerLink]=\"hp.finalCta?.secondaryRoute || '/contact'\" class=\"btn btn-secondary\" *ngIf=\"hp.finalCta?.secondaryCta\">{{ hp.finalCta.secondaryCta }}</a>\n      </div>\n    </div>\n  </section>\n\n  </ng-template>\n\n  <div class=\"auth-choice-backdrop\" *ngIf=\"showAuthChoiceModal\" (click)=\"closeAuthChoiceModal()\">\n    <div class=\"auth-choice-modal\" role=\"dialog\" aria-modal=\"true\" [attr.aria-label]=\"authModalTitle\" (click)=\"$event.stopPropagation()\">\n      <button type=\"button\" class=\"auth-choice-close\" (click)=\"closeAuthChoiceModal()\" [attr.aria-label]=\"authModalCloseLabel\">×</button>\n      <span class=\"eyebrow\">{{ authModal?.eyebrow }}</span>\n      <h2>{{ authModalTitle }}</h2>\n      <p>{{ authModalText }}</p>\n      <div class=\"auth-choice-actions\">\n        <button type=\"button\" class=\"btn btn-primary\" (click)=\"goToLogin()\">{{ authModalLoginLabel }}</button>\n        <button type=\"button\" class=\"btn btn-secondary\" (click)=\"goToSignup()\">{{ authModalSignupLabel }}</button>\n      </div>\n      <button type=\"button\" class=\"auth-choice-cancel\" (click)=\"closeAuthChoiceModal()\">{{ authModalCancelLabel }}</button>\n    </div>\n  </div>\n\n</ng-container>\n";
 
 /***/ }),
 
@@ -13661,17 +13661,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   HomeComponent: () => (/* binding */ HomeComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _home_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home.component.html?ngResource */ 51770);
 /* harmony import */ var _home_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./home.component.scss?ngResource */ 58009);
 /* harmony import */ var _home_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_home_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/core */ 37580);
 /* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../site-content */ 14009);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/language.service */ 48756);
 /* harmony import */ var _outings_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../outings-data.service */ 7127);
 /* harmony import */ var _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../site-content-service/site-content.service */ 73196);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! godigital-lib */ 83);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../bookings/booking-api.service */ 74854);
+
 
 
 
@@ -13689,6 +13691,7 @@ let HomeComponent = class HomeComponent {
   siteContentService;
   mainSvc;
   router;
+  bookingApi;
   content = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
   allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
   currentLanguage = 'fr';
@@ -13705,12 +13708,34 @@ let HomeComponent = class HomeComponent {
   cachedQuickActionsSourceRef = null;
   cachedQuickActionsLanguage = null;
   cachedQuickActions = [];
+  cachedPricingRowsKey = '';
+  cachedPricingRows = [];
   languageSub;
   accountSub;
   EMPTY_ARRAY = [];
   EMPTY_OBJECT = {};
   loggedUser = null;
   contentReady = false;
+  pricingModel = {
+    day: 1200,
+    halfDay: 900,
+    sunset: 600,
+    evening: 900,
+    skipperPrice: 450,
+    cleaningPrice: 150,
+    nominalGuests: 8,
+    extraGuestPrice: 60,
+    minGuests: 1,
+    maxGuests: 12,
+    seasonalMultipliers: [{
+      startDate: '2026-07-01',
+      endDate: '2026-08-31',
+      multiplier: 1.20,
+      label: 'High season'
+    }],
+    specialDates: []
+  };
+  pricingModelReady = false;
   pendingProtectedRoute = '/login';
   showAuthChoiceModal = false;
   authModalFallbacks = {
@@ -14113,15 +14138,17 @@ let HomeComponent = class HomeComponent {
       }]
     }
   };
-  constructor(languageService, outingsData, siteContentService, mainSvc, router) {
+  constructor(languageService, outingsData, siteContentService, mainSvc, router, bookingApi) {
     this.languageService = languageService;
     this.outingsData = outingsData;
     this.siteContentService = siteContentService;
     this.mainSvc = mainSvc;
     this.router = router;
+    this.bookingApi = bookingApi;
   }
   ngOnInit() {
     this.loadSiteContent();
+    this.loadPricingModel();
     this.languageSub = this.languageService.language$.subscribe(language => {
       this.currentLanguage = language;
       this.applyLanguageContent(language);
@@ -14429,6 +14456,19 @@ let HomeComponent = class HomeComponent {
   get heroImage() {
     return this.hp?.hero?.image || this.content?.heroImage || '';
   }
+  /**
+   * Canonical "starting from" price shown in the hero.
+   * It uses the same pricing model and seasonal multiplier as the pricing table,
+   * so the hero can no longer display a stale Firebase value such as 799 €.
+   */
+  get heroPriceValue() {
+    const multiplier = this.getHomepagePricingMultiplier();
+    const eveningBase = Number(this.pricingModel?.evening || this.pricingModel?.halfDay || 0);
+    const eveningBoat = this.roundCurrency(eveningBase * multiplier);
+    const skipper = this.roundCurrency(Number(this.pricingModel?.skipperPrice || 0));
+    const total = eveningBoat + skipper;
+    return total > 0 ? this.formatHomepagePrice(total) : this.hp?.hero?.priceValue || '';
+  }
   get boatImage() {
     return this.hp?.boat?.image || this.content?.boatHeroImage || this.content?.heroImage || '';
   }
@@ -14627,7 +14667,148 @@ let HomeComponent = class HomeComponent {
     return this.cachedExperienceItems;
   }
   get pricingRows() {
-    return Array.isArray(this.hp?.pricing?.rows) ? this.hp.pricing.rows : this.EMPTY_ARRAY;
+    const today = this.localIsoDate(new Date());
+    const pricingCacheKey = JSON.stringify({
+      language: this.currentLanguage,
+      today,
+      day: this.pricingModel?.day,
+      evening: this.pricingModel?.evening,
+      halfDay: this.pricingModel?.halfDay,
+      skipperPrice: this.pricingModel?.skipperPrice,
+      seasonalMultipliers: this.pricingModel?.seasonalMultipliers || [],
+      specialDates: this.pricingModel?.specialDates || [],
+      quoteRows: this.hp?.pricing?.rows || []
+    });
+    if (pricingCacheKey === this.cachedPricingRowsKey) return this.cachedPricingRows;
+    const configuredRows = Array.isArray(this.hp?.pricing?.rows) ? this.hp.pricing.rows : this.EMPTY_ARRAY;
+    const quoteRow = configuredRows.find(row => {
+      const marker = String(row?.experience || '').toLowerCase();
+      return marker.includes('sunset') || marker.includes('coucher') || marker.includes('puesta') || marker.includes('tramonto') || marker.includes('sonnenuntergang') || marker.includes('zonsondergang') || marker.includes('закат');
+    });
+    const multiplier = this.getHomepagePricingMultiplier();
+    const dayBoat = this.roundCurrency(Number(this.pricingModel?.day || 0) * multiplier);
+    const eveningBase = Number(this.pricingModel?.evening || this.pricingModel?.halfDay || 0);
+    const eveningBoat = this.roundCurrency(eveningBase * multiplier);
+    const skipper = this.roundCurrency(Number(this.pricingModel?.skipperPrice || 0));
+    const rows = [{
+      key: 'evening',
+      experience: this.homePricingExperienceLabel('evening'),
+      boat: this.formatHomepagePrice(eveningBoat),
+      skipper: this.formatHomepagePrice(skipper),
+      total: this.formatHomepagePrice(eveningBoat + skipper)
+    }, {
+      key: 'day',
+      experience: this.homePricingExperienceLabel('day'),
+      boat: this.formatHomepagePrice(dayBoat),
+      skipper: this.formatHomepagePrice(skipper),
+      total: this.formatHomepagePrice(dayBoat + skipper)
+    }, quoteRow || {
+      key: 'sunset',
+      experience: this.homePricingExperienceLabel('sunset'),
+      boat: this.homePricingQuoteLabel(),
+      skipper: this.homePricingQuoteLabel(),
+      total: this.homePricingQuoteLabel()
+    }];
+    this.cachedPricingRowsKey = pricingCacheKey;
+    this.cachedPricingRows = rows;
+    return this.cachedPricingRows;
+  }
+  loadPricingModel() {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      try {
+        _this3.pricingModel = yield _this3.bookingApi.getPricingModel();
+      } catch {
+        _this3.pricingModel = _this3.bookingApi.getDefaultPricingModel();
+      } finally {
+        _this3.pricingModelReady = true;
+      }
+    })();
+  }
+  getHomepagePricingMultiplier(date = new Date()) {
+    const isoDate = this.localIsoDate(date);
+    const special = (this.pricingModel?.specialDates || []).find(item => item?.date === isoDate);
+    if (special) {
+      if (Number(special.price) > 0) return Number(special.price) / Math.max(1, Number(this.pricingModel?.day || 1));
+      if (Number(special.multiplier) > 0) return Number(special.multiplier);
+    }
+    const activeSeason = (this.pricingModel?.seasonalMultipliers || []).find(item => {
+      return !!item?.startDate && !!item?.endDate && isoDate >= item.startDate && isoDate <= item.endDate;
+    });
+    return Number(activeSeason?.multiplier || 1) > 0 ? Number(activeSeason?.multiplier || 1) : 1;
+  }
+  localIsoDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  roundCurrency(value) {
+    return Math.round((Number(value || 0) + Number.EPSILON) * 100) / 100;
+  }
+  formatHomepagePrice(value) {
+    try {
+      return new Intl.NumberFormat(this.currentLanguage || 'fr', {
+        style: 'currency',
+        currency: 'EUR',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(value);
+    } catch {
+      return `${Math.round(value)} €`;
+    }
+  }
+  homePricingExperienceLabel(period) {
+    const labels = {
+      fr: {
+        day: 'Journée complète',
+        evening: 'Soirée',
+        sunset: 'Coucher de soleil'
+      },
+      en: {
+        day: 'Full day',
+        evening: 'Evening',
+        sunset: 'Sunset'
+      },
+      es: {
+        day: 'Día completo',
+        evening: 'Noche',
+        sunset: 'Puesta de sol'
+      },
+      it: {
+        day: 'Giornata intera',
+        evening: 'Serata',
+        sunset: 'Tramonto'
+      },
+      de: {
+        day: 'Ganzer Tag',
+        evening: 'Abend',
+        sunset: 'Sonnenuntergang'
+      },
+      nl: {
+        day: 'Volledige dag',
+        evening: 'Avond',
+        sunset: 'Zonsondergang'
+      },
+      ru: {
+        day: 'Полный день',
+        evening: 'Вечер',
+        sunset: 'Закат'
+      }
+    };
+    return (labels[this.currentLanguage] || labels.fr)[period];
+  }
+  homePricingQuoteLabel() {
+    const labels = {
+      fr: 'Sur devis',
+      en: 'On request',
+      es: 'Bajo presupuesto',
+      it: 'Su richiesta',
+      de: 'Auf Anfrage',
+      nl: 'Op aanvraag',
+      ru: 'По запросу'
+    };
+    return labels[this.currentLanguage] || labels.fr;
   }
   get pricingIncluded() {
     return Array.isArray(this.hp?.pricing?.included) ? this.hp.pricing.included : this.EMPTY_ARRAY;
@@ -14747,12 +14928,14 @@ let HomeComponent = class HomeComponent {
   }, {
     type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_6__.SiteContentService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.ServicesService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_8__.ServicesService
   }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_8__.Router
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_9__.Router
+  }, {
+    type: _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_7__.BookingApiService
   }];
 };
-HomeComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_9__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_10__.Component)({
+HomeComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_10__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_11__.Component)({
   selector: 'app-home',
   template: _home_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_home_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
@@ -23105,10 +23288,10 @@ let OnlineBookingComponent = class OnlineBookingComponent {
   createdBookingId = '';
   pricingModel = {
     day: 1200,
-    halfDay: 800,
+    halfDay: 900,
     sunset: 600,
     evening: 900,
-    skipperPrice: 300,
+    skipperPrice: 450,
     cleaningPrice: 150,
     nominalGuests: 8,
     extraGuestPrice: 60,
@@ -23811,10 +23994,10 @@ let BookingApiService = class BookingApiService {
   getDefaultPricingModel() {
     return {
       day: 1200,
-      halfDay: 800,
+      halfDay: 900,
       sunset: 600,
       evening: 900,
-      skipperPrice: 300,
+      skipperPrice: 450,
       cleaningPrice: 150,
       nominalGuests: 8,
       extraGuestPrice: 60,
@@ -25520,10 +25703,10 @@ let AdminPricingModelComponent = class AdminPricingModelComponent {
   languageService;
   model = {
     day: 1200,
-    halfDay: 800,
+    halfDay: 900,
     sunset: 600,
     evening: 900,
-    skipperPrice: 300,
+    skipperPrice: 450,
     cleaningPrice: 150,
     nominalGuests: 8,
     extraGuestPrice: 60,
