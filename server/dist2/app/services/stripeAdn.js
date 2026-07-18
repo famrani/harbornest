@@ -918,7 +918,7 @@ class StripeService {
             if (sessionBookingId !== bookingId) {
                 return res.status(400).json({ error: 'Checkout session does not belong to this booking' });
             }
-            if (paymentType && paymentType !== 'balance' && paymentType !== 'remaining') {
+            if (paymentType && paymentType !== 'balance' && paymentType !== 'remaining' && paymentType !== 'alegria_balance') {
                 return res.status(400).json({ error: `Checkout session is not a balance payment session (${paymentType})` });
             }
             const paymentIntent = typeof session.payment_intent === 'string'
@@ -966,6 +966,15 @@ class StripeService {
                     remainingPaid: true,
                     remainingStatus: 'paid',
                     balancePaymentStatus: 'paid',
+                    balancePaymentMethod: 'Stripe',
+                    alegriaPaid: true,
+                    alegriaPaymentStatus: 'paid',
+                    alegriaPaymentMethod: 'Stripe',
+                    balancePaidAmount: amount ? amount / 100 : 0,
+                    alegriaPaidAmount: amount ? amount / 100 : 0,
+                    remainingFeesAmount: 0,
+                    remainingOnboardAmount: 0,
+                    remainingAlegriaRevenue: 0,
                     balancePaidAt: now,
                     bookingStatus: 'payment_done',
                     paymentStatus: 'full_payment_done',
@@ -1787,7 +1796,8 @@ class StripeService {
                 case 'checkout.session.completed': {
                     const session = event.data.object;
                     const bookingId = (session.metadata && session.metadata['bookingId']) || null;
-                    const paymentType = (session.metadata && session.metadata['paymentType']) || null;
+                    const rawPaymentType = (session.metadata && (session.metadata['paymentType'] || session.metadata['checkoutType'] || session.metadata['paymentPurpose'])) || null;
+                    const paymentType = String(rawPaymentType || '').toLowerCase().trim() || null;
                     const paymentId = (session.metadata && session.metadata['paymentId']) || null;
                     const standalonePayment = !!(session.metadata && session.metadata['standalonePayment'] === 'true');
                     const customerUserId = (session.metadata && session.metadata['customerUserId']) || null;
@@ -1904,14 +1914,71 @@ class StripeService {
                             modifiedTS: now,
                             updatedAt: now,
                         };
-                        if (paymentType === 'balance') {
-                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/balance`).update(updatePayload);
+                        const isDepositPayment = ['deposit', 'deposit_authorization', 'deposit_payment'].includes(String(paymentType || ''));
+                        const isWarrantyPayment = ['warranty', 'security_deposit', 'setup'].includes(String(paymentType || ''));
+                        const isAdditionalPayment = ['ad_hoc', 'additional', 'extra_service', 'tip'].includes(String(paymentType || ''));
+                        const isSkipperPayment = ['skipper_fee', 'skipper', 'skipper_payment'].includes(String(paymentType || ''));
+                        const isBalancePayment = ['balance', 'alegria_balance', 'remaining', 'remaining_balance', 'boat_balance', 'alegria'].includes(String(paymentType || ''))
+                            || (!paymentType && !!bookingId && !isDepositPayment && !isWarrantyPayment && !isAdditionalPayment && !isSkipperPayment);
+                        if (isBalancePayment) {
+                            const paidAmountEuros = Number(session.amount_total || 0) / 100;
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/balance`).update({
+                                ...updatePayload,
+                                paid: true,
+                                paymentStatus: 'paid',
+                                paymentType: 'balance',
+                                method: 'Stripe',
+                                amountEuros: paidAmountEuros,
+                            });
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/alegria`).update({
+                                ...updatePayload,
+                                paid: true,
+                                paymentStatus: 'paid',
+                                paymentType: 'alegria_balance',
+                                method: 'Stripe',
+                                amountEuros: paidAmountEuros,
+                            });
                             await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
                                 balanceStatus: 'paid',
                                 balancePaid: true,
+                                remainingPaid: true,
+                                remainingStatus: 'paid',
+                                balancePaymentStatus: 'paid',
+                                balancePaymentMethod: 'Stripe',
+                                alegriaPaid: true,
+                                alegriaPaymentStatus: 'paid',
+                                alegriaPaymentMethod: 'Stripe',
+                                balancePaidAmount: paidAmountEuros,
+                                alegriaPaidAmount: paidAmountEuros,
+                                remainingFeesAmount: 0,
+                                remainingOnboardAmount: 0,
+                                remainingAlegriaRevenue: 0,
                                 bookingStatus: 'payment_done',
                                 paymentStatus: 'full_payment_done',
+                                paymentStatusLabel: 'balance_paid',
                                 modifiedTS: now,
+                                updatedAt: now,
+                            });
+                        }
+                        else if (isSkipperPayment) {
+                            const paidAmountEuros = Number(session.amount_total || 0) / 100;
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/skipper`).update({
+                                ...updatePayload,
+                                paid: true,
+                                paymentStatus: 'paid',
+                                paymentType: 'skipper_fee',
+                                method: 'Stripe',
+                                amountEuros: paidAmountEuros,
+                            });
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
+                                skipperPaid: true,
+                                skipperStatus: 'paid',
+                                skipperPaymentStatus: 'paid',
+                                skipperPaymentMethod: 'Stripe',
+                                skipperPaidAmount: paidAmountEuros,
+                                skipperPaidAt: now,
+                                modifiedTS: now,
+                                updatedAt: now,
                             });
                         }
                         else if (paymentType === 'extra_service') {
@@ -1946,14 +2013,52 @@ class StripeService {
                 }
                 case 'payment_intent.succeeded': {
                     const pi = event.data.object;
-                    const bookingId = (pi.metadata && pi.metadata['bookingId']) || null;
+                    const metadata = pi.metadata || {};
+                    const bookingId = metadata['bookingId'] || null;
+                    const paymentType = String(metadata['paymentType'] || metadata['checkoutType'] || metadata['paymentPurpose'] || '').toLowerCase().trim();
                     if (bookingId) {
-                        await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
-                            status: 'confirmed',
-                            updatedAt: Date.now(),
-                            paymentStatus: 'charge_succeeded',
-                            paymentPaymentIntentId: pi.id,
-                        });
+                        const now = Date.now();
+                        const amountEuros = Number(pi.amount_received || pi.amount || 0) / 100;
+                        const isDeposit = ['deposit', 'deposit_authorization', 'deposit_payment'].includes(paymentType);
+                        const isWarranty = ['warranty', 'security_deposit', 'setup'].includes(paymentType);
+                        const isAdditional = ['ad_hoc', 'additional', 'extra_service', 'tip'].includes(paymentType);
+                        const isSkipper = ['skipper_fee', 'skipper', 'skipper_payment'].includes(paymentType);
+                        const isBalance = ['balance', 'alegria_balance', 'remaining', 'remaining_balance', 'boat_balance', 'alegria'].includes(paymentType)
+                            || (!paymentType && !isDeposit && !isWarranty && !isAdditional && !isSkipper);
+                        if (isBalance) {
+                            const common = {
+                                status: 'paid', paid: true, paymentStatus: 'paid', method: 'Stripe',
+                                paymentIntentId: pi.id, stripePaymentIntentId: pi.id,
+                                amount: pi.amount_received || pi.amount || null, amountEuros,
+                                currency: pi.currency || 'eur', paidAt: now, modifiedTS: now, updatedAt: now,
+                            };
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/balance`).update({ ...common, paymentType: 'balance' });
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/alegria`).update({ ...common, paymentType: 'alegria_balance' });
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
+                                balancePaid: true, balanceStatus: 'paid', balancePaymentStatus: 'paid', balancePaymentMethod: 'Stripe',
+                                remainingPaid: true, remainingStatus: 'paid', alegriaPaid: true, alegriaPaymentStatus: 'paid', alegriaPaymentMethod: 'Stripe',
+                                balancePaidAmount: amountEuros, alegriaPaidAmount: amountEuros,
+                                remainingFeesAmount: 0, remainingOnboardAmount: 0, remainingAlegriaRevenue: 0,
+                                bookingStatus: 'payment_done', paymentStatus: 'full_payment_done', paymentStatusLabel: 'balance_paid',
+                                paymentPaymentIntentId: pi.id, modifiedTS: now, updatedAt: now,
+                            });
+                        }
+                        else if (isSkipper) {
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}/payments/skipper`).update({
+                                status: 'paid', paid: true, paymentStatus: 'paid', method: 'Stripe', paymentType: 'skipper_fee',
+                                paymentIntentId: pi.id, stripePaymentIntentId: pi.id, amount: pi.amount_received || pi.amount || null,
+                                amountEuros, currency: pi.currency || 'eur', paidAt: now, modifiedTS: now, updatedAt: now,
+                            });
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
+                                skipperPaid: true, skipperStatus: 'paid', skipperPaymentStatus: 'paid', skipperPaymentMethod: 'Stripe',
+                                skipperPaidAmount: amountEuros, skipperPaidAt: now, modifiedTS: now, updatedAt: now,
+                            });
+                        }
+                        else {
+                            await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).update({
+                                paymentPaymentIntentId: pi.id, modifiedTS: now, updatedAt: now,
+                            });
+                        }
                     }
                     break;
                 }

@@ -5,7 +5,7 @@ import { SITE_CONTENT } from '../site-content';
 import { SiteContentService } from '../site-content-service/site-content.service';
 import { BookingApiService } from '../bookings/booking-api.service';
 import { BookingFinancialService } from '../bookings/booking-financial.service';
-import { BookingWorkflowService } from '../bookings/booking-workflow.service';
+import { BookingStateService } from '../bookings/booking-state.service';
 
 type MoneyRow = {
   label: string;
@@ -134,7 +134,7 @@ export class BookingDetailComponent implements OnInit {
     private siteContentService: SiteContentService,
     private bookingApi: BookingApiService,
     private bookingFinancial: BookingFinancialService,
-    private bookingWorkflow: BookingWorkflowService,
+    private bookingStateService: BookingStateService,
   ) {}
 
   ngOnInit(): void {
@@ -830,20 +830,16 @@ export class BookingDetailComponent implements OnInit {
     const alegriaPaidAmount = f.alegriaPaid;
     const remainingAlegriaRevenue = alegriaRemainingComputed;
 
-    const workflow = this.bookingWorkflow.build(booking, f);
-    // Terms are accepted during offer acceptance. Some booking copies do not retain
-    // the full offer audit fields, so use the robust local detector instead of the
-    // stricter workflow service to avoid hiding customer payment actions.
-    const termsAccepted = this.isTermsAccepted(booking);
-    const alegriaPaymentComplete = remainingAlegriaRevenue <= 0;
-    const skipperPaymentComplete = remainingSkipperFee <= 0;
-    const warrantyComplete = this.isWarrantyComplete(booking);
-    const completionChecks = [termsAccepted, alegriaPaymentComplete, skipperPaymentComplete, warrantyComplete];
-    const bookingCompletionPercent = Math.round((completionChecks.filter(Boolean).length / completionChecks.length) * 100);
-    const customerJourneyComplete = termsAccepted && alegriaPaymentComplete && skipperPaymentComplete && warrantyComplete;
-    const customerJourneyStatus = this.t(customerJourneyComplete ? 'bookingConfirmed' : workflow.statusKey);
-    const bookingStatusBadge = this.t(workflow.statusKey);
-    const paymentStatusBadge = this.t(workflow.paymentKey);
+    const canonicalState = this.bookingStateService.resolve(booking);
+    const termsAccepted = canonicalState.termsAccepted;
+    const alegriaPaymentComplete = canonicalState.alegriaPaymentComplete;
+    const skipperPaymentComplete = canonicalState.skipperPaymentComplete;
+    const warrantyComplete = canonicalState.warrantyComplete;
+    const bookingCompletionPercent = canonicalState.progress;
+    const customerJourneyComplete = canonicalState.confirmed || canonicalState.completed;
+    const customerJourneyStatus = this.t(canonicalState.statusKey);
+    const bookingStatusBadge = this.t(canonicalState.statusKey);
+    const paymentStatusBadge = this.t(canonicalState.paymentKey);
     const customerPaidDirectly = totalOnboardCollections;
     const paymentHistoryRows = this.buildPaymentHistoryRows(booking, depositPaidAmount, rawBoatBalance, balancePaid, skipperCost, skipperPaid);
 
@@ -1165,9 +1161,26 @@ export class BookingDetailComponent implements OnInit {
     }
   }
 
+  private pendingAlegriaCashAmount(): number {
+    const booking: any = this.vm?.display || {};
+    const payments = booking.payments || {};
+    return this.firstPositive(
+      payments.alegria?.amountDue,
+      payments.balance?.amountDue,
+      booking.alegriaCashSelectedAmount,
+      booking.balanceAmount,
+      booking.remainingAlegriaRevenue,
+      booking.remainingFeesAmount,
+      this.vm?.remainingAlegriaRevenue,
+    );
+  }
+
   canConfirmAlegriaCashReceived(): boolean {
     if (!this.vm || this.editMode) return false;
-    return this.vm.isAdmin && this.vm.remainingAlegriaRevenue > 0 && this.isAlegriaCashSelected();
+    const booking: any = this.vm.display || {};
+    const alreadyPaid = booking.alegriaCashReceived === true || booking.balancePaid === true ||
+      String(booking.alegriaPaymentStatus || booking.balanceStatus || booking.payments?.alegria?.status || '').toLowerCase() === 'paid';
+    return (this.vm.isAdmin || this.isCurrentUserAdmin()) && !alreadyPaid && this.pendingAlegriaCashAmount() > 0;
   }
 
   async confirmAlegriaCashReceived(): Promise<void> {
@@ -1179,7 +1192,7 @@ export class BookingDetailComponent implements OnInit {
     this.payingAlegria = true;
     this.error = '';
     const now = Date.now();
-    const amount = this.vm.remainingAlegriaRevenue;
+    const amount = this.pendingAlegriaCashAmount();
     const payments = { ...(booking.payments || {}) };
 
     try {
@@ -1224,9 +1237,25 @@ export class BookingDetailComponent implements OnInit {
     }
   }
 
+  private pendingSkipperCashAmount(): number {
+    const booking: any = this.vm?.display || {};
+    const payments = booking.payments || {};
+    return this.firstPositive(
+      payments.skipper?.amountDue,
+      payments.direct?.skipperCashAmount,
+      booking.skipperCashAmount,
+      booking.proposalSkipperPrice,
+      this.vm?.remainingSkipperFee,
+      this.vm?.skipperCost,
+    );
+  }
+
   canConfirmSkipperPaid(): boolean {
     if (!this.vm || this.editMode) return false;
-    return this.vm.isAdmin && this.vm.remainingSkipperFee > 0;
+    const booking: any = this.vm.display || {};
+    const alreadyPaid = booking.skipperPaid === true ||
+      String(booking.skipperStatus || booking.skipperPaymentStatus || booking.payments?.skipper?.status || booking.payments?.direct?.skipperStatus || '').toLowerCase() === 'paid';
+    return (this.vm.isAdmin || this.isCurrentUserAdmin()) && !alreadyPaid && this.pendingSkipperCashAmount() > 0;
   }
 
   async confirmSkipperPaid(): Promise<void> {
@@ -1243,7 +1272,7 @@ export class BookingDetailComponent implements OnInit {
       ...(payments.direct || {}),
       skipperPaid: true,
       skipperStatus: 'paid',
-      skipperCashAmount: this.vm.skipperCost,
+      skipperCashAmount: this.pendingSkipperCashAmount(),
       skipperPaidAt: now,
     };
 
@@ -1252,6 +1281,9 @@ export class BookingDetailComponent implements OnInit {
         skipperPaid: true,
         skipperStatus: 'paid',
         skipperPaidAt: now,
+        skipperPaymentMethod: 'cash',
+        skipperPaymentStatus: 'paid',
+        skipperPaidAmount: this.pendingSkipperCashAmount(),
         payments,
       } as any);
       await this.loadBooking();

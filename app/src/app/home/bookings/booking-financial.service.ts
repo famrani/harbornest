@@ -63,6 +63,11 @@ export class BookingFinancialService {
     };
 
     const amountOf = (record: any) => {
+      // Stripe always returns amount_total / amount_received in cents. Prefer those
+      // unambiguous fields so a €9 balance stored as 900 is never interpreted as €900.
+      const cents = this.n(record?.amount_total, record?.amountTotal, record?.amount_received, record?.amountReceived);
+      if (cents > 0) return cents / 100;
+
       const amount = this.n(
         record?.amount,
         record?.balanceAmount,
@@ -70,13 +75,13 @@ export class BookingFinancialService {
         record?.extraServiceAmount,
         record?.skipperAmount,
         record?.depositAmount,
-        record?.amount_total,
-        record?.amountTotal,
         record?.total,
         record?.metadata?.amount,
         record?.metadata?.balanceAmount,
       );
-      return amount > 10000 ? amount / 100 : amount;
+      const stripeBacked = !!(record?.stripeCheckoutSessionId || record?.checkoutSessionId || record?.stripePaymentIntentId || record?.paymentIntentId)
+        || String(record?.method || record?.source || '').toLowerCase().includes('stripe');
+      return stripeBacked && amount > 0 ? amount / 100 : amount;
     };
 
     const sum = records.filter(matches).reduce((total: number, record: any) => total + amountOf(record), 0);

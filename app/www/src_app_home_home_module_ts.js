@@ -3350,17 +3350,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   MyBookingsComponent: () => (/* binding */ MyBookingsComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _my_bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./my-bookings.component.html?ngResource */ 67710);
 /* harmony import */ var _my_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./my-bookings.component.scss?ngResource */ 95938);
 /* harmony import */ var _my_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_my_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../bookings/booking-api.service */ 74854);
 /* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../site-content */ 14009);
 /* harmony import */ var _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../site-content-service/site-content.service */ 73196);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+/* harmony import */ var _bookings_booking_state_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../bookings/booking-state.service */ 81235);
+
 
 
 
@@ -3378,6 +3380,7 @@ let MyBookingsComponent = class MyBookingsComponent {
   router;
   siteContentService;
   languageService;
+  bookingStateService;
   bookings = [];
   loading = true;
   searchTerm = '';
@@ -3395,11 +3398,23 @@ let MyBookingsComponent = class MyBookingsComponent {
   localFallbackText = {
     fr: {
       upcoming: 'À venir',
-      past: 'Passées'
+      past: 'Passées',
+      waitingForCustomer: 'En attente du client',
+      bookingConfirmed: 'Réservation confirmée',
+      completed: 'Sortie terminée',
+      cancelled: 'Annulée',
+      fullyPaid: 'Entièrement payé',
+      paymentPending: 'Paiement en attente'
     },
     en: {
       upcoming: 'Upcoming',
-      past: 'Past'
+      past: 'Past',
+      waitingForCustomer: 'Waiting for customer',
+      bookingConfirmed: 'Booking confirmed',
+      completed: 'Outing completed',
+      cancelled: 'Cancelled',
+      fullyPaid: 'Fully paid',
+      paymentPending: 'Payment pending'
     },
     es: {
       upcoming: 'Próximas',
@@ -3423,12 +3438,13 @@ let MyBookingsComponent = class MyBookingsComponent {
     }
   };
   tabKeys = new Set(['upcoming', 'past']);
-  constructor(bookingApi, mainSvc, router, siteContentService, languageService) {
+  constructor(bookingApi, mainSvc, router, siteContentService, languageService, bookingStateService) {
     this.bookingApi = bookingApi;
     this.mainSvc = mainSvc;
     this.router = router;
     this.siteContentService = siteContentService;
     this.languageService = languageService;
+    this.bookingStateService = bookingStateService;
   }
   ngOnInit() {
     this.languageSub = this.languageService.language$.subscribe(language => {
@@ -3595,11 +3611,17 @@ let MyBookingsComponent = class MyBookingsComponent {
     });
   }
   getBookingProgress(booking) {
-    // A completed/closed outing is always 100%, even when legacy records do not
-    // contain every intermediate workflow flag (terms, warranty, balance, etc.).
-    if (this.isBookingCompleted(booking)) return 100;
-    const steps = [this.isDepositPaid(booking), this.isTermsAccepted(booking), this.isWarrantySecured(booking), this.isBalancePaid(booking)];
-    return Math.round(steps.filter(Boolean).length / steps.length * 100);
+    return this.bookingStateService.resolve(booking).progress;
+  }
+  isSkipperPaid(booking) {
+    const anyBooking = booking || {};
+    const skipperPayment = anyBooking?.payments?.skipper || {};
+    const directPayment = anyBooking?.payments?.direct || {};
+    const skipperCost = Number(anyBooking.skipperPrice ?? anyBooking.proposalSkipperPrice ?? anyBooking.skipperAmount ?? anyBooking.skipperCashAmount ?? anyBooking.raw?.skipperPrice ?? anyBooking.raw?.proposalSkipperPrice ?? 0) || 0;
+    // A booking with no skipper fee has no outstanding skipper milestone.
+    if (skipperCost <= 0) return true;
+    const paidAmount = Number(anyBooking.skipperPaidAmount ?? anyBooking.paidSkipperAmount ?? skipperPayment.amountPaid ?? skipperPayment.paidAmount ?? directPayment.skipperPaidAmount ?? 0) || 0;
+    return anyBooking.skipperPaid === true || directPayment.skipperPaid === true || this.isCompletedStatusValue(anyBooking.skipperStatus) || this.isCompletedStatusValue(anyBooking.skipperPaymentStatus) || this.isCompletedStatusValue(skipperPayment.paid) || this.isCompletedStatusValue(skipperPayment.status) || this.isCompletedStatusValue(skipperPayment.paymentStatus) || this.isCompletedStatusValue(directPayment.skipperStatus) || paidAmount >= skipperCost;
   }
   isBookingCompleted(booking) {
     const b = booking || {};
@@ -3618,7 +3640,7 @@ let MyBookingsComponent = class MyBookingsComponent {
     const acceptedBy = anyBooking.termsAcceptedBy || anyBooking.tncAcceptedBy || anyBooking.acceptedTermsBy || anyBooking.workflow?.termsAcceptedBy || anyBooking.bookingWorkflow?.termsAcceptedBy || anyBooking?.documents?.termsAcceptedBy || anyBooking?.terms?.acceptedBy;
     const source = String(anyBooking.termsAcceptedSource || anyBooking.tncAcceptedSource || anyBooking.acceptedTermsSource || anyBooking.workflow?.termsAcceptedSource || anyBooking.bookingWorkflow?.termsAcceptedSource || anyBooking?.documents?.termsAcceptedSource || anyBooking?.terms?.source || '').toLowerCase();
     const formalCustomerMarker = anyBooking.customerTermsAccepted === true || source.includes('customer') || source.includes('client') || source.includes('offer') || source.includes('portal') || !!acceptedBy;
-    return explicitAccepted === true && !!explicitTimestamp && formalCustomerMarker;
+    return explicitAccepted === true && (!!explicitTimestamp || formalCustomerMarker);
   }
   isCompletedStatusValue(value) {
     if (value === true) return true;
@@ -3634,7 +3656,9 @@ let MyBookingsComponent = class MyBookingsComponent {
     const anyBooking = booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
     const normalizedStatus = String(rawStatus).toLowerCase().trim();
-    return rawStatus === false || normalizedStatus === 'false' || normalizedStatus === 'cancelled' || normalizedStatus === 'canceled' || normalizedStatus === 'deleted' || anyBooking.cancelled === true || anyBooking.canceled === true;
+    // Legacy records frequently use bookingStatus=false for an offer that is
+    // still awaiting confirmation. Only explicit cancellation markers cancel it.
+    return normalizedStatus === 'cancelled' || normalizedStatus === 'canceled' || normalizedStatus === 'deleted' || anyBooking.cancelled === true || anyBooking.canceled === true;
   }
   getBookingOutingTime(booking) {
     const rawDate = String(booking?.outingDate || booking?.date || booking?.bookingDate || '').trim();
@@ -3660,41 +3684,21 @@ let MyBookingsComponent = class MyBookingsComponent {
     today.setHours(0, 0, 0, 0);
     return outingTime <= today.getTime();
   }
-  isBookingCancelledByDate(booking) {
-    const anyBooking = booking || {};
-    const bookingStatus = anyBooking.bookingStatus;
-    const status = String(anyBooking.status || '').toLowerCase().trim();
-    const requestStatus = String(anyBooking.bookingRequestStatus || '').toLowerCase().trim();
-    // Legacy Firebase records use bookingStatus: true to mean confirmed/executed.
-    // A past date must never turn those bookings into cancelled bookings.
-    if (bookingStatus === true || bookingStatus === 'true' || status === 'confirmed' || requestStatus === 'confirmed') return false;
-    if (this.isBalancePaid(booking)) return false;
-    return this.isBookingDatePastOrToday(booking) && !this.isBalancePaid(booking);
+  isBookingCancelledByDate(_booking) {
+    // A date in the past is not a cancellation signal. Historical and completed
+    // bookings remain valid unless Firebase contains an explicit cancellation.
+    return false;
   }
   getDerivedBookingStatus(booking) {
-    const anyBooking = booking || {};
-    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
-    // The outing lifecycle takes precedence over the payment workflow in summaries.
-    if (this.isBookingCompleted(booking)) return 'completed';
-    // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
-    if (this.isBalancePaid(booking)) return 'payment_done';
-    if (rawStatus === true || rawStatus === 'true' || rawStatus === 'confirmed' || anyBooking.confirmed === true || anyBooking.bookingConfirmed === true) {
-      return 'confirmed';
-    }
-    if (this.isDepositPaid(booking) && this.isTermsAccepted(booking)) return 'confirmed';
-    if (this.isBookingCancelledByDate(booking) || this.isCancelledBooking(booking)) return 'cancelled';
-    if (rawStatus === 'payment_done' || rawStatus === 'full_payment_done' || rawStatus === 'paid' || rawStatus === 'completed') {
-      return 'payment_done';
-    }
+    const state = this.bookingStateService.resolve(booking);
+    if (state.cancelled) return 'cancelled';
+    if (state.completed) return 'completed';
+    if (state.confirmed) return 'confirmed';
     return 'not_confirmed';
   }
   getStatusLabel(booking) {
-    const status = this.getDerivedBookingStatus(booking);
-    if (status === 'completed') return this.t('outingCompleted');
-    if (status === 'cancelled') return this.t('cancelled');
-    if (status === 'payment_done') return this.t('paymentDone');
-    if (status === 'confirmed') return this.t('confirmed');
-    return this.t('notConfirmed');
+    const state = this.bookingStateService.resolve(booking);
+    return this.t(state.statusKey);
   }
   getWarrantyChoice(booking) {
     const anyBooking = booking;
@@ -3730,7 +3734,7 @@ let MyBookingsComponent = class MyBookingsComponent {
     const topLevelMeansBalancePaid = anyBooking.paymentStatus === true || ['balance_paid', 'remaining_paid', 'full_payment_done', 'balance_payment_done', 'remaining_payment_done'].includes(topLevelPaymentStatus);
     // Do not treat generic paymentStatus='paid' as the 90% balance.
     // In older bookings it only means the 10% deposit has been paid.
-    return topLevelMeansBalancePaid || this.isBalanceCompletedStatusValue(anyBooking.balancePaid) || this.isBalanceCompletedStatusValue(anyBooking.balanceStatus) || this.isBalanceCompletedStatusValue(anyBooking.balancePaymentStatus) || this.isBalanceCompletedStatusValue(anyBooking.remainingPaid) || this.isBalanceCompletedStatusValue(anyBooking.remainingStatus) || this.isBalanceCompletedStatusValue(anyBooking.remainingPaymentStatus) || this.isBalanceCompletedStatusValue(balancePayment.paid) || this.isBalanceCompletedStatusValue(balancePayment.status) || this.isBalanceCompletedStatusValue(balancePayment.paymentStatus) || this.isBalanceCompletedStatusValue(remainingPayment.paid) || this.isBalanceCompletedStatusValue(remainingPayment.status) || this.isBalanceCompletedStatusValue(remainingPayment.paymentStatus);
+    return topLevelMeansBalancePaid || this.isBalanceCompletedStatusValue(anyBooking.balancePaid) || this.isBalanceCompletedStatusValue(anyBooking.balanceStatus) || this.isBalanceCompletedStatusValue(anyBooking.balancePaymentStatus) || this.isBalanceCompletedStatusValue(anyBooking.remainingPaid) || this.isBalanceCompletedStatusValue(anyBooking.remainingStatus) || this.isBalanceCompletedStatusValue(anyBooking.remainingPaymentStatus) || this.isBalanceCompletedStatusValue(balancePayment.paid) || this.isBalanceCompletedStatusValue(balancePayment.status) || this.isBalanceCompletedStatusValue(balancePayment.paymentStatus) || this.isBalanceCompletedStatusValue(remainingPayment.paid) || this.isBalanceCompletedStatusValue(remainingPayment.status) || this.isBalanceCompletedStatusValue(remainingPayment.paymentStatus) || this.isBalanceCompletedStatusValue(anyBooking.alegriaPaid) || this.isBalanceCompletedStatusValue(anyBooking.alegriaPaymentStatus) || this.isBalanceCompletedStatusValue(anyBooking.payments?.alegria?.paid) || this.isBalanceCompletedStatusValue(anyBooking.payments?.alegria?.status) || this.isBalanceCompletedStatusValue(anyBooking.payments?.alegria?.paymentStatus);
   }
   getDepositAmount(booking) {
     const total = Number(booking.totalPrice || 0);
@@ -3844,16 +3848,18 @@ let MyBookingsComponent = class MyBookingsComponent {
   static ctorParameters = () => [{
     type: _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_3__.BookingApiService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.ServicesService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_8__.ServicesService
   }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_8__.Router
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_9__.Router
   }, {
     type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__.SiteContentService
   }, {
     type: _services_language_service__WEBPACK_IMPORTED_MODULE_6__.LanguageService
+  }, {
+    type: _bookings_booking_state_service__WEBPACK_IMPORTED_MODULE_7__.BookingStateService
   }];
 };
-MyBookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_9__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_10__.Component)({
+MyBookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_10__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_11__.Component)({
   selector: 'app-my-bookings',
   template: _my_bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_my_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
@@ -7785,8 +7791,13 @@ let BookingFinancialService = class BookingFinancialService {
       return text.includes(type);
     };
     const amountOf = record => {
-      const amount = this.n(record?.amount, record?.balanceAmount, record?.remainingAmount, record?.extraServiceAmount, record?.skipperAmount, record?.depositAmount, record?.amount_total, record?.amountTotal, record?.total, record?.metadata?.amount, record?.metadata?.balanceAmount);
-      return amount > 10000 ? amount / 100 : amount;
+      // Stripe always returns amount_total / amount_received in cents. Prefer those
+      // unambiguous fields so a €9 balance stored as 900 is never interpreted as €900.
+      const cents = this.n(record?.amount_total, record?.amountTotal, record?.amount_received, record?.amountReceived);
+      if (cents > 0) return cents / 100;
+      const amount = this.n(record?.amount, record?.balanceAmount, record?.remainingAmount, record?.extraServiceAmount, record?.skipperAmount, record?.depositAmount, record?.total, record?.metadata?.amount, record?.metadata?.balanceAmount);
+      const stripeBacked = !!(record?.stripeCheckoutSessionId || record?.checkoutSessionId || record?.stripePaymentIntentId || record?.paymentIntentId) || String(record?.method || record?.source || '').toLowerCase().includes('stripe');
+      return stripeBacked && amount > 0 ? amount / 100 : amount;
     };
     const sum = records.filter(matches).reduce((total, record) => total + amountOf(record), 0);
     if (sum > 0) return sum;
@@ -26247,6 +26258,98 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 /***/ }),
 
+/***/ 81235:
+/*!********************************************************!*\
+  !*** ./src/app/home/bookings/booking-state.service.ts ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BookingStateService: () => (/* binding */ BookingStateService)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _booking_financial_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./booking-financial.service */ 25909);
+/* harmony import */ var _booking_workflow_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./booking-workflow.service */ 32223);
+
+
+
+
+let BookingStateService = class BookingStateService {
+  financialService;
+  workflowService;
+  constructor(financialService, workflowService) {
+    this.financialService = financialService;
+    this.workflowService = workflowService;
+  }
+  resolve(booking) {
+    const financial = this.financialService.build(booking || {});
+    const workflow = this.workflowService.build(booking || {}, financial);
+    const cancelled = this.isCancelled(booking);
+    const completed = !cancelled && this.isCompleted(booking);
+    const termsAccepted = workflow.termsAccepted;
+    const alegriaPaymentComplete = this.isAlegriaPaid(booking, financial.alegriaRemaining);
+    const skipperPaymentComplete = this.isSkipperPaid(booking, financial.skipperAmount, financial.skipperRemaining);
+    const warrantyComplete = workflow.warrantyComplete;
+    const fullyPaid = alegriaPaymentComplete && skipperPaymentComplete;
+    const confirmed = termsAccepted && fullyPaid && warrantyComplete;
+    const checks = [termsAccepted, alegriaPaymentComplete, skipperPaymentComplete, warrantyComplete];
+    const progress = cancelled ? 0 : completed ? 100 : Math.round(checks.filter(Boolean).length / checks.length * 100);
+    const statusKey = cancelled ? 'cancelled' : completed ? 'completed' : confirmed ? 'bookingConfirmed' : 'waitingForCustomer';
+    return {
+      statusKey,
+      paymentKey: fullyPaid ? 'fullyPaid' : 'paymentPending',
+      warrantyKey: warrantyComplete ? 'warrantyComplete' : 'warrantyPending',
+      progress,
+      termsAccepted,
+      alegriaPaymentComplete,
+      skipperPaymentComplete,
+      warrantyComplete,
+      fullyPaid,
+      confirmed,
+      completed,
+      cancelled
+    };
+  }
+  isCancelled(booking) {
+    const values = [booking?.bookingStatus, booking?.status, booking?.outingStatus, booking?.workflow?.status, booking?.bookingWorkflow?.status, booking?.raw?.bookingStatus, booking?.raw?.status].map(value => String(value ?? '').toLowerCase().trim());
+    return booking?.cancelled === true || booking?.canceled === true || values.some(value => value === 'cancelled' || value === 'canceled' || value === 'deleted');
+  }
+  isCompleted(booking) {
+    const values = [booking?.bookingStatus, booking?.status, booking?.outingStatus, booking?.workflow?.status, booking?.bookingWorkflow?.status, booking?.raw?.bookingStatus, booking?.raw?.status].map(value => String(value ?? '').toLowerCase().trim());
+    const completed = new Set(['completed', 'complete', 'closed', 'terminated', 'finished', 'done', 'outing_completed', 'booking_completed']);
+    return booking?.completed === true || booking?.outingCompleted === true || booking?.workflow?.outingCompleted === true || booking?.bookingWorkflow?.outingCompleted === true || values.some(value => completed.has(value));
+  }
+  isAlegriaPaid(booking, calculatedRemaining) {
+    if (calculatedRemaining <= 0) return true;
+    const payments = booking?.payments || {};
+    const values = [booking?.balancePaid, booking?.balanceStatus, booking?.balancePaymentStatus, booking?.remainingPaid, booking?.remainingStatus, booking?.remainingPaymentStatus, booking?.alegriaPaid, booking?.alegriaPaymentStatus, payments?.balance?.paid, payments?.balance?.status, payments?.balance?.paymentStatus, payments?.remaining?.paid, payments?.remaining?.status, payments?.remaining?.paymentStatus, payments?.alegria?.paid, payments?.alegria?.status, payments?.alegria?.paymentStatus];
+    return values.some(value => this.isPaidValue(value)) || booking?.paymentStatus === true || ['balance_paid', 'remaining_paid', 'full_payment_done', 'balance_payment_done', 'remaining_payment_done'].includes(String(booking?.paymentStatus || '').toLowerCase().trim());
+  }
+  isSkipperPaid(booking, skipperAmount, calculatedRemaining) {
+    if (skipperAmount <= 0 || calculatedRemaining <= 0) return true;
+    const payments = booking?.payments || {};
+    return [booking?.skipperPaid, booking?.skipperStatus, booking?.skipperPaymentStatus, payments?.skipper?.paid, payments?.skipper?.status, payments?.skipper?.paymentStatus, payments?.direct?.skipperPaid, payments?.direct?.skipperStatus].some(value => this.isPaidValue(value));
+  }
+  isPaidValue(value) {
+    if (value === true) return true;
+    return ['true', 'paid', 'completed', 'complete', 'done', 'confirmed', 'succeeded', 'success', 'payment_done', 'full_payment_done', 'balance_paid', 'remaining_paid', 'cash_received'].includes(String(value ?? '').toLowerCase().trim());
+  }
+  static ctorParameters = () => [{
+    type: _booking_financial_service__WEBPACK_IMPORTED_MODULE_0__.BookingFinancialService
+  }, {
+    type: _booking_workflow_service__WEBPACK_IMPORTED_MODULE_1__.BookingWorkflowService
+  }];
+};
+BookingStateService = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Injectable)({
+  providedIn: 'root'
+})], BookingStateService);
+
+
+/***/ }),
+
 /***/ 81398:
 /*!*******************************************************!*\
   !*** ./src/app/home/my-offers/my-offers.component.ts ***!
@@ -26860,7 +26963,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../site-content-service/site-content.service */ 73196);
 /* harmony import */ var _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../bookings/booking-api.service */ 74854);
 /* harmony import */ var _bookings_booking_financial_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../bookings/booking-financial.service */ 25909);
-/* harmony import */ var _bookings_booking_workflow_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../bookings/booking-workflow.service */ 32223);
+/* harmony import */ var _bookings_booking_state_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../bookings/booking-state.service */ 81235);
 
 
 
@@ -26880,7 +26983,7 @@ let BookingDetailComponent = class BookingDetailComponent {
   siteContentService;
   bookingApi;
   bookingFinancial;
-  bookingWorkflow;
+  bookingStateService;
   bookingId = '';
   loading = false;
   notFound = false;
@@ -26917,14 +27020,14 @@ let BookingDetailComponent = class BookingDetailComponent {
   currentLanguage = 'fr';
   financeText = _site_content__WEBPACK_IMPORTED_MODULE_4__.SITE_CONTENT.fr?.bookingFinance || {};
   siteContentAll = _site_content__WEBPACK_IMPORTED_MODULE_4__.SITE_CONTENT;
-  constructor(route, router, languageService, siteContentService, bookingApi, bookingFinancial, bookingWorkflow) {
+  constructor(route, router, languageService, siteContentService, bookingApi, bookingFinancial, bookingStateService) {
     this.route = route;
     this.router = router;
     this.languageService = languageService;
     this.siteContentService = siteContentService;
     this.bookingApi = bookingApi;
     this.bookingFinancial = bookingFinancial;
-    this.bookingWorkflow = bookingWorkflow;
+    this.bookingStateService = bookingStateService;
   }
   ngOnInit() {
     this.bookingId = this.route.snapshot.paramMap.get('bookingId') || this.route.snapshot.paramMap.get('id') || '';
@@ -27600,20 +27703,16 @@ let BookingDetailComponent = class BookingDetailComponent {
     const alegriaRevenueTotal = f.alegriaRevenue;
     const alegriaPaidAmount = f.alegriaPaid;
     const remainingAlegriaRevenue = alegriaRemainingComputed;
-    const workflow = this.bookingWorkflow.build(booking, f);
-    // Terms are accepted during offer acceptance. Some booking copies do not retain
-    // the full offer audit fields, so use the robust local detector instead of the
-    // stricter workflow service to avoid hiding customer payment actions.
-    const termsAccepted = this.isTermsAccepted(booking);
-    const alegriaPaymentComplete = remainingAlegriaRevenue <= 0;
-    const skipperPaymentComplete = remainingSkipperFee <= 0;
-    const warrantyComplete = this.isWarrantyComplete(booking);
-    const completionChecks = [termsAccepted, alegriaPaymentComplete, skipperPaymentComplete, warrantyComplete];
-    const bookingCompletionPercent = Math.round(completionChecks.filter(Boolean).length / completionChecks.length * 100);
-    const customerJourneyComplete = termsAccepted && alegriaPaymentComplete && skipperPaymentComplete && warrantyComplete;
-    const customerJourneyStatus = this.t(customerJourneyComplete ? 'bookingConfirmed' : workflow.statusKey);
-    const bookingStatusBadge = this.t(workflow.statusKey);
-    const paymentStatusBadge = this.t(workflow.paymentKey);
+    const canonicalState = this.bookingStateService.resolve(booking);
+    const termsAccepted = canonicalState.termsAccepted;
+    const alegriaPaymentComplete = canonicalState.alegriaPaymentComplete;
+    const skipperPaymentComplete = canonicalState.skipperPaymentComplete;
+    const warrantyComplete = canonicalState.warrantyComplete;
+    const bookingCompletionPercent = canonicalState.progress;
+    const customerJourneyComplete = canonicalState.confirmed || canonicalState.completed;
+    const customerJourneyStatus = this.t(canonicalState.statusKey);
+    const bookingStatusBadge = this.t(canonicalState.statusKey);
+    const paymentStatusBadge = this.t(canonicalState.paymentKey);
     const customerPaidDirectly = totalOnboardCollections;
     const paymentHistoryRows = this.buildPaymentHistoryRows(booking, depositPaidAmount, rawBoatBalance, balancePaid, skipperCost, skipperPaid);
     return {
@@ -27880,9 +27979,16 @@ let BookingDetailComponent = class BookingDetailComponent {
       }
     })();
   }
+  pendingAlegriaCashAmount() {
+    const booking = this.vm?.display || {};
+    const payments = booking.payments || {};
+    return this.firstPositive(payments.alegria?.amountDue, payments.balance?.amountDue, booking.alegriaCashSelectedAmount, booking.balanceAmount, booking.remainingAlegriaRevenue, booking.remainingFeesAmount, this.vm?.remainingAlegriaRevenue);
+  }
   canConfirmAlegriaCashReceived() {
     if (!this.vm || this.editMode) return false;
-    return this.vm.isAdmin && this.vm.remainingAlegriaRevenue > 0 && this.isAlegriaCashSelected();
+    const booking = this.vm.display || {};
+    const alreadyPaid = booking.alegriaCashReceived === true || booking.balancePaid === true || String(booking.alegriaPaymentStatus || booking.balanceStatus || booking.payments?.alegria?.status || '').toLowerCase() === 'paid';
+    return (this.vm.isAdmin || this.isCurrentUserAdmin()) && !alreadyPaid && this.pendingAlegriaCashAmount() > 0;
   }
   confirmAlegriaCashReceived() {
     var _this11 = this;
@@ -27894,7 +28000,7 @@ let BookingDetailComponent = class BookingDetailComponent {
       _this11.payingAlegria = true;
       _this11.error = '';
       const now = Date.now();
-      const amount = _this11.vm.remainingAlegriaRevenue;
+      const amount = _this11.pendingAlegriaCashAmount();
       const payments = {
         ...(booking.payments || {})
       };
@@ -27940,9 +28046,16 @@ let BookingDetailComponent = class BookingDetailComponent {
       }
     })();
   }
+  pendingSkipperCashAmount() {
+    const booking = this.vm?.display || {};
+    const payments = booking.payments || {};
+    return this.firstPositive(payments.skipper?.amountDue, payments.direct?.skipperCashAmount, booking.skipperCashAmount, booking.proposalSkipperPrice, this.vm?.remainingSkipperFee, this.vm?.skipperCost);
+  }
   canConfirmSkipperPaid() {
     if (!this.vm || this.editMode) return false;
-    return this.vm.isAdmin && this.vm.remainingSkipperFee > 0;
+    const booking = this.vm.display || {};
+    const alreadyPaid = booking.skipperPaid === true || String(booking.skipperStatus || booking.skipperPaymentStatus || booking.payments?.skipper?.status || booking.payments?.direct?.skipperStatus || '').toLowerCase() === 'paid';
+    return (this.vm.isAdmin || this.isCurrentUserAdmin()) && !alreadyPaid && this.pendingSkipperCashAmount() > 0;
   }
   confirmSkipperPaid() {
     var _this12 = this;
@@ -27961,7 +28074,7 @@ let BookingDetailComponent = class BookingDetailComponent {
         ...(payments.direct || {}),
         skipperPaid: true,
         skipperStatus: 'paid',
-        skipperCashAmount: _this12.vm.skipperCost,
+        skipperCashAmount: _this12.pendingSkipperCashAmount(),
         skipperPaidAt: now
       };
       try {
@@ -27969,6 +28082,9 @@ let BookingDetailComponent = class BookingDetailComponent {
           skipperPaid: true,
           skipperStatus: 'paid',
           skipperPaidAt: now,
+          skipperPaymentMethod: 'cash',
+          skipperPaymentStatus: 'paid',
+          skipperPaidAmount: _this12.pendingSkipperCashAmount(),
           payments
         });
         yield _this12.loadBooking();
@@ -29714,7 +29830,7 @@ let BookingDetailComponent = class BookingDetailComponent {
   }, {
     type: _bookings_booking_financial_service__WEBPACK_IMPORTED_MODULE_7__.BookingFinancialService
   }, {
-    type: _bookings_booking_workflow_service__WEBPACK_IMPORTED_MODULE_8__.BookingWorkflowService
+    type: _bookings_booking_state_service__WEBPACK_IMPORTED_MODULE_8__.BookingStateService
   }];
 };
 BookingDetailComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_10__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_11__.Component)({

@@ -6,6 +6,7 @@ import { BookingApiService, AlegriaBooking } from '../bookings/booking-api.servi
 import { SITE_CONTENT } from '../site-content';
 import { SiteContentService } from '../site-content-service/site-content.service';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
+import { BookingStateService } from '../bookings/booking-state.service';
 
 @Component({
   selector: 'app-my-bookings',
@@ -28,8 +29,8 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
   pageText: any = (SITE_CONTENT as any).fr?.bookingManagement || {};
   private languageSub?: Subscription;
   private readonly localFallbackText: Record<string, Record<string, string>> = {
-    fr: { upcoming: 'À venir', past: 'Passées' },
-    en: { upcoming: 'Upcoming', past: 'Past' },
+    fr: { upcoming: 'À venir', past: 'Passées', waitingForCustomer: 'En attente du client', bookingConfirmed: 'Réservation confirmée', completed: 'Sortie terminée', cancelled: 'Annulée', fullyPaid: 'Entièrement payé', paymentPending: 'Paiement en attente' },
+    en: { upcoming: 'Upcoming', past: 'Past', waitingForCustomer: 'Waiting for customer', bookingConfirmed: 'Booking confirmed', completed: 'Outing completed', cancelled: 'Cancelled', fullyPaid: 'Fully paid', paymentPending: 'Payment pending' },
     es: { upcoming: 'Próximas', past: 'Pasadas' },
     it: { upcoming: 'In arrivo', past: 'Passate' },
     de: { upcoming: 'Bevorstehend', past: 'Vergangen' },
@@ -43,7 +44,8 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
     private mainSvc: ServicesService,
     private router: Router,
     private siteContentService: SiteContentService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private bookingStateService: BookingStateService
   ) {}
 
   ngOnInit(): void {
@@ -260,17 +262,44 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
   }
 
   getBookingProgress(booking: AlegriaBooking): number {
-    // A completed/closed outing is always 100%, even when legacy records do not
-    // contain every intermediate workflow flag (terms, warranty, balance, etc.).
-    if (this.isBookingCompleted(booking)) return 100;
+    return this.bookingStateService.resolve(booking).progress;
+  }
 
-    const steps = [
-      this.isDepositPaid(booking),
-      this.isTermsAccepted(booking),
-      this.isWarrantySecured(booking),
-      this.isBalancePaid(booking),
-    ];
-    return Math.round((steps.filter(Boolean).length / steps.length) * 100);
+  isSkipperPaid(booking: AlegriaBooking): boolean {
+    const anyBooking: any = booking || {};
+    const skipperPayment = anyBooking?.payments?.skipper || {};
+    const directPayment = anyBooking?.payments?.direct || {};
+    const skipperCost = Number(
+      anyBooking.skipperPrice ??
+      anyBooking.proposalSkipperPrice ??
+      anyBooking.skipperAmount ??
+      anyBooking.skipperCashAmount ??
+      anyBooking.raw?.skipperPrice ??
+      anyBooking.raw?.proposalSkipperPrice ??
+      0
+    ) || 0;
+
+    // A booking with no skipper fee has no outstanding skipper milestone.
+    if (skipperCost <= 0) return true;
+
+    const paidAmount = Number(
+      anyBooking.skipperPaidAmount ??
+      anyBooking.paidSkipperAmount ??
+      skipperPayment.amountPaid ??
+      skipperPayment.paidAmount ??
+      directPayment.skipperPaidAmount ??
+      0
+    ) || 0;
+
+    return anyBooking.skipperPaid === true ||
+      directPayment.skipperPaid === true ||
+      this.isCompletedStatusValue(anyBooking.skipperStatus) ||
+      this.isCompletedStatusValue(anyBooking.skipperPaymentStatus) ||
+      this.isCompletedStatusValue(skipperPayment.paid) ||
+      this.isCompletedStatusValue(skipperPayment.status) ||
+      this.isCompletedStatusValue(skipperPayment.paymentStatus) ||
+      this.isCompletedStatusValue(directPayment.skipperStatus) ||
+      paidAmount >= skipperCost;
   }
 
   isBookingCompleted(booking: AlegriaBooking): boolean {
@@ -359,7 +388,7 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
       source.includes('portal') ||
       !!acceptedBy;
 
-    return explicitAccepted === true && !!explicitTimestamp && formalCustomerMarker;
+    return explicitAccepted === true && (!!explicitTimestamp || formalCustomerMarker);
   }
 
   isCompletedStatusValue(value: any): boolean {
@@ -405,9 +434,9 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
     const anyBooking: any = booking || {};
     const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
     const normalizedStatus = String(rawStatus).toLowerCase().trim();
-    return rawStatus === false ||
-      normalizedStatus === 'false' ||
-      normalizedStatus === 'cancelled' ||
+    // Legacy records frequently use bookingStatus=false for an offer that is
+    // still awaiting confirmation. Only explicit cancellation markers cancel it.
+    return normalizedStatus === 'cancelled' ||
       normalizedStatus === 'canceled' ||
       normalizedStatus === 'deleted' ||
       anyBooking.cancelled === true ||
@@ -445,62 +474,23 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
     return outingTime <= today.getTime();
   }
 
-  isBookingCancelledByDate(booking: AlegriaBooking): boolean {
-    const anyBooking: any = booking || {};
-    const bookingStatus = anyBooking.bookingStatus;
-    const status = String(anyBooking.status || '').toLowerCase().trim();
-    const requestStatus = String(anyBooking.bookingRequestStatus || '').toLowerCase().trim();
-
-    // Legacy Firebase records use bookingStatus: true to mean confirmed/executed.
-    // A past date must never turn those bookings into cancelled bookings.
-    if (bookingStatus === true || bookingStatus === 'true' || status === 'confirmed' || requestStatus === 'confirmed') return false;
-    if (this.isBalancePaid(booking)) return false;
-    return this.isBookingDatePastOrToday(booking) && !this.isBalancePaid(booking);
+  isBookingCancelledByDate(_booking: AlegriaBooking): boolean {
+    // A date in the past is not a cancellation signal. Historical and completed
+    // bookings remain valid unless Firebase contains an explicit cancellation.
+    return false;
   }
 
   getDerivedBookingStatus(booking: AlegriaBooking): string {
-    const anyBooking: any = booking || {};
-    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
-
-    // The outing lifecycle takes precedence over the payment workflow in summaries.
-    if (this.isBookingCompleted(booking)) return 'completed';
-
-    // Remaining 90% has its own status. A top-level paymentStatus === true means the remaining payment is completed.
-    if (this.isBalancePaid(booking)) return 'payment_done';
-
-    if (
-      rawStatus === true ||
-      rawStatus === 'true' ||
-      rawStatus === 'confirmed' ||
-      anyBooking.confirmed === true ||
-      anyBooking.bookingConfirmed === true
-    ) {
-      return 'confirmed';
-    }
-
-    if (this.isDepositPaid(booking) && this.isTermsAccepted(booking)) return 'confirmed';
-
-    if (this.isBookingCancelledByDate(booking) || this.isCancelledBooking(booking)) return 'cancelled';
-
-    if (
-      rawStatus === 'payment_done' ||
-      rawStatus === 'full_payment_done' ||
-      rawStatus === 'paid' ||
-      rawStatus === 'completed'
-    ) {
-      return 'payment_done';
-    }
-
+    const state = this.bookingStateService.resolve(booking);
+    if (state.cancelled) return 'cancelled';
+    if (state.completed) return 'completed';
+    if (state.confirmed) return 'confirmed';
     return 'not_confirmed';
   }
 
   getStatusLabel(booking: AlegriaBooking): string {
-    const status = this.getDerivedBookingStatus(booking);
-    if (status === 'completed') return this.t('outingCompleted');
-    if (status === 'cancelled') return this.t('cancelled');
-    if (status === 'payment_done') return this.t('paymentDone');
-    if (status === 'confirmed') return this.t('confirmed');
-    return this.t('notConfirmed');
+    const state = this.bookingStateService.resolve(booking);
+    return this.t(state.statusKey);
   }
 
   getWarrantyChoice(booking: AlegriaBooking): string {
@@ -568,7 +558,12 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
       this.isBalanceCompletedStatusValue(balancePayment.paymentStatus) ||
       this.isBalanceCompletedStatusValue(remainingPayment.paid) ||
       this.isBalanceCompletedStatusValue(remainingPayment.status) ||
-      this.isBalanceCompletedStatusValue(remainingPayment.paymentStatus);
+      this.isBalanceCompletedStatusValue(remainingPayment.paymentStatus) ||
+      this.isBalanceCompletedStatusValue(anyBooking.alegriaPaid) ||
+      this.isBalanceCompletedStatusValue(anyBooking.alegriaPaymentStatus) ||
+      this.isBalanceCompletedStatusValue(anyBooking.payments?.alegria?.paid) ||
+      this.isBalanceCompletedStatusValue(anyBooking.payments?.alegria?.status) ||
+      this.isBalanceCompletedStatusValue(anyBooking.payments?.alegria?.paymentStatus);
   }
 
   getDepositAmount(booking: AlegriaBooking): number {
