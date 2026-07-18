@@ -7,12 +7,14 @@ import { StatusBar } from '@awesome-cordova-plugins/status-bar/ngx';
 import { Router, NavigationEnd } from '@angular/router';
 import * as AOS from 'aos';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 import { UtilsService, } from 'godigital-lib';
 import { ServicesService, UsersService, OBJECTNAME } from 'godigital-lib';
 import { LocalUtilsService } from './services/services.service';
 import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
+import { PendingOfferLoginModalService } from './services/pending-offer-login-modal.service';
 
 declare let what3words: any;
 
@@ -22,6 +24,8 @@ declare let what3words: any;
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  private loggedUserSub?: Subscription;
+  private lastLoginIdentity = '';
   constructor(
     public router: Router,
     public platform: Platform,
@@ -34,6 +38,7 @@ export class AppComponent implements OnInit {
     public spinner: NgxSpinnerService,
     public geolocation: Geolocation,
     public fb: FormBuilder,
+    private pendingOfferLoginModal: PendingOfferLoginModalService,
     @Inject(DOCUMENT) private document: Document,
   ) {
   }
@@ -44,6 +49,33 @@ export class AppComponent implements OnInit {
     this.mainSvc.setLanguage(this.localUtilsSvc.language);
 
     this.initializeApp();
+  }
+
+  private watchLoggedUser(): void {
+    const svc: any = this.mainSvc as any;
+    const userObservable = typeof svc.getLoggedUser === 'function'
+      ? svc.getLoggedUser()
+      : typeof svc.getUser === 'function'
+        ? svc.getUser()
+        : svc.bnUserO;
+
+    if (userObservable && typeof userObservable.subscribe === 'function') {
+      this.loggedUserSub?.unsubscribe();
+      this.loggedUserSub = userObservable.subscribe((user: any) => this.handleLoggedUser(user || svc.bnUser || svc.currentUser));
+    } else {
+      this.handleLoggedUser(svc.bnUser || svc.currentUser);
+    }
+  }
+
+  private handleLoggedUser(user: any): void {
+    if (!user) {
+      this.lastLoginIdentity = '';
+      return;
+    }
+    const identity = String(user.userId || user.uid || user.id || user.email || '').trim();
+    if (!identity || identity === this.lastLoginIdentity) return;
+    this.lastLoginIdentity = identity;
+    setTimeout(() => this.pendingOfferLoginModal.checkAfterLogin(user), 250);
   }
 
   async initializeApp() {
@@ -68,6 +100,7 @@ export class AppComponent implements OnInit {
           if (this.platform.is('cordova')) {
             this.splashScreen.hide();
           }
+          this.watchLoggedUser();
           value2 = this.utilSvc.getUid();
           try {
             if (value2) {

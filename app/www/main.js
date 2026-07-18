@@ -12134,28 +12134,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AppComponent: () => (/* binding */ AppComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _app_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./app.component.html?ngResource */ 61584);
 /* harmony import */ var _app_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app.component.css?ngResource */ 90309);
 /* harmony import */ var _app_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_app_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/common */ 19770);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @ionic/angular */ 4059);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/common */ 19770);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @ionic/angular */ 4059);
 /* harmony import */ var _awesome_cordova_plugins_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @awesome-cordova-plugins/splash-screen/ngx */ 28293);
 /* harmony import */ var _awesome_cordova_plugins_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @awesome-cordova-plugins/status-bar/ngx */ 61203);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/router */ 50085);
 /* harmony import */ var aos__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! aos */ 37502);
 /* harmony import */ var aos__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(aos__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ngx-spinner */ 61249);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ngx-spinner */ 61249);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _services_services_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./services/services.service */ 92030);
 /* harmony import */ var _awesome_cordova_plugins_geolocation_ngx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @awesome-cordova-plugins/geolocation/ngx */ 86241);
+/* harmony import */ var _services_pending_offer_login_modal_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./services/pending-offer-login-modal.service */ 96026);
 
 
 
 
 /* eslint-disable @typescript-eslint/naming-convention */
+
 
 
 
@@ -12181,8 +12183,11 @@ let AppComponent = class AppComponent {
   spinner;
   geolocation;
   fb;
+  pendingOfferLoginModal;
   document;
-  constructor(router, platform, splashScreen, statusBar, mainSvc, localUtilsSvc, usersSvc, utilSvc, spinner, geolocation, fb, document) {
+  loggedUserSub;
+  lastLoginIdentity = '';
+  constructor(router, platform, splashScreen, statusBar, mainSvc, localUtilsSvc, usersSvc, utilSvc, spinner, geolocation, fb, pendingOfferLoginModal, document) {
     this.router = router;
     this.platform = platform;
     this.splashScreen = splashScreen;
@@ -12194,6 +12199,7 @@ let AppComponent = class AppComponent {
     this.spinner = spinner;
     this.geolocation = geolocation;
     this.fb = fb;
+    this.pendingOfferLoginModal = pendingOfferLoginModal;
     this.document = document;
   }
   ngOnInit() {
@@ -12201,6 +12207,26 @@ let AppComponent = class AppComponent {
     this.localUtilsSvc.language = this.utilSvc.getLanguage() ?? 'en';
     this.mainSvc.setLanguage(this.localUtilsSvc.language);
     this.initializeApp();
+  }
+  watchLoggedUser() {
+    const svc = this.mainSvc;
+    const userObservable = typeof svc.getLoggedUser === 'function' ? svc.getLoggedUser() : typeof svc.getUser === 'function' ? svc.getUser() : svc.bnUserO;
+    if (userObservable && typeof userObservable.subscribe === 'function') {
+      this.loggedUserSub?.unsubscribe();
+      this.loggedUserSub = userObservable.subscribe(user => this.handleLoggedUser(user || svc.bnUser || svc.currentUser));
+    } else {
+      this.handleLoggedUser(svc.bnUser || svc.currentUser);
+    }
+  }
+  handleLoggedUser(user) {
+    if (!user) {
+      this.lastLoginIdentity = '';
+      return;
+    }
+    const identity = String(user.userId || user.uid || user.id || user.email || '').trim();
+    if (!identity || identity === this.lastLoginIdentity) return;
+    this.lastLoginIdentity = identity;
+    setTimeout(() => this.pendingOfferLoginModal.checkAfterLogin(user), 250);
   }
   initializeApp() {
     var _this = this;
@@ -12222,6 +12248,7 @@ let AppComponent = class AppComponent {
           if (_this.platform.is('cordova')) {
             _this.splashScreen.hide();
           }
+          _this.watchLoggedUser();
           value2 = _this.utilSvc.getUid();
           try {
             if (value2) {
@@ -12235,40 +12262,1607 @@ let AppComponent = class AppComponent {
     })();
   }
   static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_8__.Router
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_9__.Router
   }, {
-    type: _ionic_angular__WEBPACK_IMPORTED_MODULE_9__.Platform
+    type: _ionic_angular__WEBPACK_IMPORTED_MODULE_10__.Platform
   }, {
     type: _awesome_cordova_plugins_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__.SplashScreen
   }, {
     type: _awesome_cordova_plugins_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__.StatusBar
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_10__.ServicesService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_11__.ServicesService
   }, {
     type: _services_services_service__WEBPACK_IMPORTED_MODULE_6__.LocalUtilsService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_10__.UsersService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_11__.UsersService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_10__.UtilsService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_11__.UtilsService
   }, {
-    type: ngx_spinner__WEBPACK_IMPORTED_MODULE_11__.NgxSpinnerService
+    type: ngx_spinner__WEBPACK_IMPORTED_MODULE_12__.NgxSpinnerService
   }, {
     type: _awesome_cordova_plugins_geolocation_ngx__WEBPACK_IMPORTED_MODULE_7__.Geolocation
   }, {
-    type: _angular_forms__WEBPACK_IMPORTED_MODULE_12__.FormBuilder
+    type: _angular_forms__WEBPACK_IMPORTED_MODULE_13__.FormBuilder
+  }, {
+    type: _services_pending_offer_login_modal_service__WEBPACK_IMPORTED_MODULE_8__.PendingOfferLoginModalService
   }, {
     type: Document,
     decorators: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_13__.Inject,
-      args: [_angular_common__WEBPACK_IMPORTED_MODULE_14__.DOCUMENT]
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_14__.Inject,
+      args: [_angular_common__WEBPACK_IMPORTED_MODULE_15__.DOCUMENT]
     }]
   }];
 };
-AppComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_15__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_13__.Component)({
+AppComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_16__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_14__.Component)({
   selector: 'app-root',
   template: _app_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_app_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
 })], AppComponent);
+
+
+/***/ }),
+
+/***/ 21551:
+/*!****************************************************!*\
+  !*** ./src/app/home/bookings/offer-api.service.ts ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   OfferApiService: () => (/* binding */ OfferApiService)
+/* harmony export */ });
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ 95429);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 59452);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 43942);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ 61318);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! godigital-lib */ 83);
+
+
+
+
+
+
+
+let OfferApiService = class OfferApiService {
+  http;
+  utilsSvc;
+  offersCollection = 'bnProposals';
+  bookingsCollection = 'bnBookings';
+  firebaseUrl = 'https://adn-dev-4d05d.firebaseio.com';
+  constructor(http, utilsSvc) {
+    this.http = http;
+    this.utilsSvc = utilsSvc;
+  }
+  getOffers() {
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.readCollection(this.offersCollection)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)([])));
+  }
+  getOffer(id) {
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.readOfferWithPaymentState(id)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)(undefined)));
+  }
+  validateOfferInput(input) {
+    const errors = [];
+    const source = String(input.source || '').toLowerCase();
+    const bookingSource = String(input.bookingSource || '').toLowerCase();
+    const isExternalBooking = bookingSource === 'external' || ['external', 'samboat', 'clickandboat', 'click_and_boat', 'platform', 'airbnb', 'manual_external'].includes(source);
+    const email = String(input.customerEmail || '').trim();
+    const phone = String(input.customerPhone || '').trim();
+    if (!String(input.customerName || '').trim()) errors.push('Customer name is required.');
+    if (!email) errors.push('Customer email is required.');else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email)) errors.push('Customer email is invalid.');
+    if (!phone) errors.push('Customer phone is required.');else {
+      const digits = phone.replace(/[^\d]/g, '');
+      if (digits.length < 8 || digits.length > 15 || !/^[+()\d\s.-]+$/.test(phone)) errors.push('Customer phone is invalid.');
+    }
+    if (!String(input.outingType || '').trim()) errors.push('Outing type is required.');
+    if (!String(input.outingDate || '').trim()) errors.push('Outing date is required.');else if (Number.isNaN(Date.parse(String(input.outingDate)))) errors.push('Outing date is invalid.');
+    if (!String(input.departureTime || '').trim()) errors.push('Departure time is required.');
+    if (!String(input.arrivalTime || '').trim()) errors.push('Return time is required.');
+    if (!isExternalBooking && Number(input.passengers || 0) <= 0) errors.push('Passengers must be greater than zero.');
+    if (!isExternalBooking && Number(input.totalAmount || 0) <= 0) errors.push('Total amount must be greater than zero.');
+    if (Number(input.warrantyAmount || 0) < 0) errors.push('Warranty amount cannot be negative.');
+    if (!isExternalBooking && !String(input.offerMessage || '').trim()) errors.push('Offer message is required.');
+    if (errors.length) throw new Error(errors.join(' '));
+  }
+  getSkipperCashAmount(input) {
+    return Number(input.proposalSkipperPrice ?? input.estimatedSkipperPrice ?? input.skipperPrice ?? 0) || 0;
+  }
+  getOnlinePayableAmount(input) {
+    const explicitOnline = Number(input.onlinePayableAmount ?? input.appPayableAmount ?? 0) || 0;
+    if (explicitOnline > 0) return Math.round(explicitOnline * 100) / 100;
+    const boatPrice = Number(input.proposalBoatPrice ?? input.estimatedBoatPrice ?? 0) || 0;
+    const fuelPrice = Number(input.proposalFuelPrice ?? input.fuelPrice ?? input.fuelAmount ?? input.offerCleaningPrice ?? input.estimatedCleaningPrice ?? 0) || 0;
+    const extraServicesPrice = Number(input.proposalExtraServicesPrice ?? input.extraServicesPrice ?? input.extrasAmount ?? input.extraServicesAmount ?? 0) || 0;
+    const componentOnline = boatPrice + fuelPrice + extraServicesPrice;
+    if (componentOnline > 0) return Math.round(componentOnline * 100) / 100;
+    const total = Number(input.totalAmount ?? input.totalPrice ?? 0) || 0;
+    const skipperCashAmount = this.getSkipperCashAmount(input);
+    return Math.max(0, Math.round((total - skipperCashAmount) * 100) / 100);
+  }
+  saveOffer(input) {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this.validateOfferInput(input);
+      const now = Date.now();
+      const offerId = input.offerId || `offer_${now}_${Math.random().toString(36).slice(2, 8)}`;
+      const skipperCashAmount = _this.getSkipperCashAmount(input);
+      const proposalBoatPrice = Number(input.proposalBoatPrice ?? input.estimatedBoatPrice ?? 0) || 0;
+      const proposalFuelPrice = Number(input.proposalFuelPrice ?? input.fuelPrice ?? input.fuelAmount ?? input.offerCleaningPrice ?? input.estimatedCleaningPrice ?? 0) || 0;
+      const proposalExtraServicesPrice = Number(input.proposalExtraServicesPrice ?? input.extraServicesPrice ?? input.extrasAmount ?? input.extraServicesAmount ?? 0) || 0;
+      const computedTotalAmount = proposalBoatPrice + proposalFuelPrice + proposalExtraServicesPrice + skipperCashAmount;
+      const totalAmount = computedTotalAmount > 0 ? Math.round(computedTotalAmount * 100) / 100 : Number(input.totalAmount || 0);
+      const onlinePayableAmount = _this.getOnlinePayableAmount({
+        ...input,
+        proposalBoatPrice,
+        proposalFuelPrice,
+        proposalExtraServicesPrice
+      });
+      const depositRate = 0.10;
+      const depositAmount = Math.round(onlinePayableAmount * depositRate * 100) / 100;
+      const balanceAmount = Math.round((onlinePayableAmount - depositAmount) * 100) / 100;
+      const offer = {
+        offerId,
+        source: input.source || 'direct',
+        bookingSource: input.bookingSource || '',
+        externalPlatform: input.externalPlatform || input.source || '',
+        externalPlatformName: input.externalPlatformName || '',
+        externalPlatformBookingRef: input.externalPlatformBookingRef || '',
+        platformBookingReference: input.platformBookingReference || input.externalPlatformBookingRef || '',
+        platformReservationNumber: input.platformReservationNumber || input.externalPlatformBookingRef || '',
+        externalPlatformListingName: input.externalPlatformListingName || '',
+        externalPlatformUrl: input.externalPlatformUrl || '',
+        externalPlatformPaidAmount: Number(input.externalPlatformPaidAmount || 0),
+        externalPlatformNetOwnerAmount: Number(input.externalPlatformNetOwnerAmount || 0),
+        externalPlatformTotalClientAmount: Number(input.externalPlatformTotalClientAmount || 0),
+        externalPlatformRemainingOwnerAmount: Number(input.externalPlatformRemainingOwnerAmount || 0),
+        externalPortAmount: Number(input.externalPortAmount || 0),
+        externalDocuments: input.externalDocuments || '',
+        externalPaymentItems: Array.isArray(input.externalPaymentItems) ? input.externalPaymentItems : [],
+        externalCashOnBoardAmount: Number(input.externalCashOnBoardAmount || 0),
+        externalTotalRemainingAmount: Number(input.externalTotalRemainingAmount || 0),
+        status: input.status || 'draft',
+        customerName: input.customerName || '',
+        customerEmail: input.customerEmail || '',
+        customerPhone: input.customerPhone || '',
+        outingType: input.outingType || '',
+        outingDate: input.outingDate || '',
+        departureTime: input.departureTime || '',
+        arrivalTime: input.arrivalTime || '',
+        startMarina: input.startMarina || input.marina || '',
+        destination: input.destination || '',
+        selectedOptions: Array.isArray(input.selectedOptions) ? input.selectedOptions : [],
+        timePeriod: input.timePeriod || '',
+        bookingRequestStatus: input.bookingRequestStatus || 'request_submitted',
+        passengers: Number(input.passengers || 0) || undefined,
+        totalAmount,
+        skipperCashAmount: skipperCashAmount,
+        onlinePayableAmount: onlinePayableAmount,
+        appPayableAmount: onlinePayableAmount,
+        ...(Number(input.offerCleaningPrice || 0) > 0 && proposalFuelPrice <= 0 ? {
+          offerCleaningPrice: Number(input.offerCleaningPrice || 0)
+        } : {}),
+        proposalFuelPrice: proposalFuelPrice || undefined,
+        fuelPrice: proposalFuelPrice || undefined,
+        fuelAmount: proposalFuelPrice || undefined,
+        estimatedOptionsPrice: input.estimatedOptionsPrice || null,
+        estimatedBoatPrice: input.estimatedBoatPrice || null,
+        estimatedPrice: input.estimatedPrice ?? totalAmount,
+        estimatedBasePrice: input.estimatedBasePrice || null,
+        estimatedCalendarMultiplier: input.estimatedCalendarMultiplier || null,
+        estimatedExtraGuestsAmount: input.estimatedExtraGuestsAmount || null,
+        estimatedExtraGuestCount: input.estimatedExtraGuestCount || null,
+        estimatedSkipperPrice: input.estimatedSkipperPrice || null,
+        estimatedCleaningPrice: input.estimatedCleaningPrice || null,
+        proposalBoatPrice: proposalBoatPrice || undefined,
+        proposalSkipperPrice: skipperCashAmount || undefined,
+        proposalExtraServicesPrice: proposalExtraServicesPrice || undefined,
+        bookingPricePeriod: input.bookingPricePeriod || '',
+        bookingPricePeriodLabel: input.bookingPricePeriodLabel || '',
+        startTime: input.startTime || input.departureTime || '',
+        endTime: input.endTime || input.arrivalTime || '',
+        durationHours: input.durationHours || null,
+        requestNeedsAdminOffer: input.requestNeedsAdminOffer === true,
+        pricingToBeFinalizedByAdmin: input.pricingToBeFinalizedByAdmin === true,
+        createdByAdmin: input.createdByAdmin === true,
+        requestOrigin: input.requestOrigin || '',
+        depositRate,
+        depositAmount,
+        balanceAmount,
+        warrantyAmount: Number(input.warrantyAmount || 500),
+        warrantyPaymentChoice: input.warrantyPaymentChoice,
+        tncAccepted: input.tncAccepted === true,
+        tncAcceptedAt: input.tncAccepted === true ? input.tncAcceptedAt || now : null,
+        workflow: {
+          offerIssued: input.status === 'sent' || input.offerIssued === true || input.issued === true,
+          termsAccepted: input.tncAccepted === true,
+          depositPaid: input.depositPaid === true,
+          alegriaPaid: false,
+          skipperPaid: false,
+          warrantyCompleted: input.warrantyStatus === 'card_registered' || input.warrantyPaymentChoice === 'cash_on_board',
+          bookingConfirmed: false
+        },
+        validUntil: input.validUntil || now + 24 * 60 * 60 * 1000,
+        offerMessage: input.offerMessage || '',
+        comments: input.comments || '',
+        depositStatus: input.depositStatus || 'pending',
+        depositPaid: input.depositPaid === true,
+        depositPaidAmount: input.depositPaid === true ? Number(input.depositPaidAmount || depositAmount || 0) : 0,
+        paidDepositAmount: input.depositPaid === true ? Number(input.paidDepositAmount || input.depositPaidAmount || depositAmount || 0) : 0,
+        paymentStatus: input.paymentStatus || 'pending',
+        warrantyStatus: input.warrantyStatus || 'not_selected',
+        createdTS: input.createdTS || now,
+        modifiedTS: now,
+        acceptedTS: input.acceptedTS,
+        customerUid: input.customerUid || '',
+        customerAuthProvider: input.customerAuthProvider || '',
+        customerAccountCreated: input.customerAccountCreated === true,
+        customerAccountCreatedAt: input.customerAccountCreatedAt,
+        customerLastLoginAt: input.customerLastLoginAt,
+        raw: input.raw || input
+      };
+      yield _this.writeItem(_this.offersCollection, offerId, offer);
+      return offer;
+    })();
+  }
+  markTermsAccepted(offerId) {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const current = yield _this2.readItem(_this2.offersCollection, offerId);
+      if (!current) throw new Error('Offer not found');
+      if (current.validUntil && Date.now() > current.validUntil) {
+        yield _this2.patchOffer(offerId, {
+          status: 'expired'
+        });
+        throw new Error('Offer expired');
+      }
+      const now = Date.now();
+      const acceptedAt = current.tncAcceptedAt || current.termsAcceptedAt || now;
+      const acceptedBy = current.customerUid || current.customerEmail || current.email || 'customer';
+      const updated = {
+        ...current,
+        tncAccepted: true,
+        termsAccepted: true,
+        customerTermsAccepted: true,
+        tncAcceptedAt: acceptedAt,
+        termsAcceptedAt: acceptedAt,
+        tncAcceptedBy: acceptedBy,
+        termsAcceptedBy: acceptedBy,
+        tncAcceptedSource: 'customer_portal',
+        termsAcceptedSource: 'customer_portal',
+        terms: {
+          ...(current.terms || {}),
+          accepted: true,
+          acceptedAt,
+          acceptedBy,
+          source: 'customer_portal'
+        },
+        documents: {
+          ...(current.documents || {}),
+          termsAccepted: true,
+          termsAcceptedAt: acceptedAt,
+          termsAcceptedBy: acceptedBy,
+          termsAcceptedSource: 'customer_portal'
+        },
+        workflow: {
+          ...(current.workflow || {}),
+          termsAccepted: true,
+          termsAcceptedAt: acceptedAt,
+          termsAcceptedBy: acceptedBy,
+          termsAcceptedSource: 'customer_portal'
+        },
+        bookingWorkflow: {
+          ...(current.bookingWorkflow || {}),
+          termsAccepted: true,
+          termsAcceptedAt: acceptedAt,
+          termsAcceptedBy: acceptedBy,
+          termsAcceptedSource: 'customer_portal'
+        },
+        modifiedTS: now
+      };
+      yield _this2.writeItem(_this2.offersCollection, offerId, updated);
+      // Keep the canonical booking synchronized when it already exists. Payments
+      // are validated from bnBookings, while terms are accepted from the offer UI.
+      const bookingId = String(current.relatedBookingId || current.bookingId || offerId).trim();
+      if (bookingId) {
+        const existingBooking = yield _this2.readItem(_this2.bookingsCollection, bookingId).catch(() => undefined);
+        if (existingBooking) {
+          yield _this2.writeItem(_this2.bookingsCollection, bookingId, {
+            ...existingBooking,
+            termsAccepted: true,
+            tncAccepted: true,
+            customerTermsAccepted: true,
+            termsAcceptedAt: acceptedAt,
+            tncAcceptedAt: acceptedAt,
+            termsAcceptedBy: acceptedBy,
+            tncAcceptedBy: acceptedBy,
+            termsAcceptedSource: 'customer_portal',
+            tncAcceptedSource: 'customer_portal',
+            terms: {
+              ...(existingBooking.terms || {}),
+              accepted: true,
+              acceptedAt,
+              acceptedBy,
+              source: 'customer_portal'
+            },
+            documents: {
+              ...(existingBooking.documents || {}),
+              termsAccepted: true,
+              termsAcceptedAt: acceptedAt,
+              termsAcceptedBy: acceptedBy,
+              termsAcceptedSource: 'customer_portal'
+            },
+            workflow: {
+              ...(existingBooking.workflow || {}),
+              termsAccepted: true,
+              termsAcceptedAt: acceptedAt,
+              termsAcceptedBy: acceptedBy,
+              termsAcceptedSource: 'customer_portal'
+            },
+            bookingWorkflow: {
+              ...(existingBooking.bookingWorkflow || {}),
+              termsAccepted: true,
+              termsAcceptedAt: acceptedAt,
+              termsAcceptedBy: acceptedBy,
+              termsAcceptedSource: 'customer_portal'
+            },
+            modifiedTS: now
+          });
+        }
+      }
+      return updated;
+    })();
+  }
+  setWarrantyChoice(offerId, warrantyPaymentChoice) {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const current = yield _this3.readItem(_this3.offersCollection, offerId);
+      if (!current) throw new Error('Offer not found');
+      const patch = {
+        warrantyPaymentChoice,
+        warrantyStatus: warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : 'not_selected',
+        warrantyRegistered: warrantyPaymentChoice === 'cash_on_board' ? true : current.warrantyRegistered === true,
+        modifiedTS: Date.now()
+      };
+      yield _this3.patchOffer(offerId, patch);
+      return {
+        ...current,
+        ...patch
+      };
+    })();
+  }
+  finalizeOfferWizard(offerId, warrantyPaymentChoice) {
+    var _this4 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const hydrated = yield _this4.readOfferWithPaymentState(offerId);
+      if (!hydrated) throw new Error('Offer not found');
+      const depositPaid = hydrated.depositPaid === true || hydrated.depositStatus === 'paid' || hydrated.paymentStatus === 'paid' || hydrated.paymentStatus === 'charge_succeeded';
+      const warrantyOk = warrantyPaymentChoice === 'cash_on_board' || hydrated.warrantyRegistered === true || hydrated.warrantyStatus === 'card_registered' || hydrated.warrantyStatus === 'warranty_card_saved';
+      if (!hydrated.tncAccepted) throw new Error('Terms and Conditions must be accepted first.');
+      if (!depositPaid) throw new Error('Deposit must be paid first.');
+      if (!warrantyOk) throw new Error('Warranty card must be registered or cash warranty accepted first.');
+      const bookingId = hydrated.relatedBookingId || hydrated.offerId;
+      const accepted = {
+        ...hydrated,
+        status: 'accepted',
+        relatedBookingId: bookingId,
+        warrantyPaymentChoice,
+        warrantyStatus: warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : hydrated.warrantyStatus || 'card_registered',
+        warrantyRegistered: warrantyPaymentChoice === 'cash_on_board' ? true : hydrated.warrantyRegistered === true,
+        depositPaid: true,
+        depositStatus: 'paid',
+        depositPaidAmount: Number(hydrated.depositAmount || 0),
+        paidDepositAmount: Number(hydrated.depositAmount || 0),
+        paymentStatus: 'paid',
+        acceptedTS: Date.now(),
+        bookingRequestStatus: 'confirmed',
+        modifiedTS: Date.now()
+      };
+      yield _this4.createBookingFromOffer(accepted);
+      yield _this4.deleteOffer(offerId);
+      yield _this4.notifyBookingConfirmed(bookingId).toPromise().catch(error => {
+        console.warn('Booking confirmation email notification failed', error);
+      });
+      return {
+        bookingId
+      };
+    })();
+  }
+  parseOfferOutingDate(value) {
+    const rawDate = String(value || '').trim();
+    if (!rawDate) return 0;
+    let normalized = rawDate;
+    const frenchDate = rawDate.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (frenchDate) {
+      const day = frenchDate[1].padStart(2, '0');
+      const month = frenchDate[2].padStart(2, '0');
+      const year = frenchDate[3].length === 2 ? `20${frenchDate[3]}` : frenchDate[3];
+      normalized = `${year}-${month}-${day}`;
+    }
+    const timestamp = Date.parse(normalized);
+    if (Number.isNaN(timestamp)) return 0;
+    const date = new Date(timestamp);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  }
+  isOutingDateTodayOrPast(offer) {
+    const outingTime = this.parseOfferOutingDate(offer.outingDate || offer.date);
+    if (!outingTime) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return outingTime <= today.getTime();
+  }
+  assertOfferCanBeRenewed(offer) {
+    if (this.isOutingDateTodayOrPast(offer)) {
+      throw new Error('This offer cannot be renewed because the outing date is today or already past.');
+    }
+  }
+  notifyBookingRequestCreated(offerId, payload = {}) {
+    return this.http.post(`${this.baseUrl}/api/offers/${encodeURIComponent(offerId)}/notify-request-created`, payload, {
+      withCredentials: true
+    });
+  }
+  notifyOfferSent(offerId, payload = {}) {
+    return this.http.post(`${this.baseUrl}/api/offers/${encodeURIComponent(offerId)}/notify-sent`, payload, {
+      withCredentials: true
+    });
+  }
+  notifyOfferWhatsapp(offerId, payload = {}) {
+    return this.http.post(`${this.baseUrl}/api/offers/${encodeURIComponent(offerId)}/notify-whatsapp`, payload, {
+      withCredentials: true
+    });
+  }
+  notifyBookingConfirmed(bookingId) {
+    return this.http.post(`${this.baseUrl}/api/bookings/${encodeURIComponent(bookingId)}/notify-confirmed`, {}, {
+      withCredentials: true
+    });
+  }
+  markSent(offer) {
+    var _this5 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this5.assertOfferCanBeRenewed(offer);
+      const refreshed = yield _this5.readItem(_this5.offersCollection, offer.offerId).catch(() => offer);
+      const offerToSend = {
+        ...offer,
+        ...(refreshed || {})
+      };
+      yield _this5.patchOffer(offer.offerId, {
+        status: 'sent',
+        offerStatus: 'sent',
+        bookingRequestStatus: 'offer_issued',
+        offerIssued: true,
+        issued: true,
+        offerIssuedAt: Date.now(),
+        requestNeedsAdminOffer: false,
+        pricingToBeFinalizedByAdmin: false,
+        validUntil: Date.now() + 24 * 60 * 60 * 1000,
+        offerLink: _this5.buildOfferLink(offer.offerId),
+        tncAccepted: refreshed?.tncAccepted === true && !!refreshed?.tncAcceptedAt,
+        termsAccepted: refreshed?.tncAccepted === true && !!refreshed?.tncAcceptedAt,
+        tncAcceptedAt: refreshed?.tncAccepted === true ? refreshed?.tncAcceptedAt || null : null,
+        termsAcceptedAt: refreshed?.tncAccepted === true ? refreshed?.termsAcceptedAt || refreshed?.tncAcceptedAt || null : null,
+        customerTermsAccepted: refreshed?.customerTermsAccepted === true,
+        tncAcceptedBy: refreshed?.tncAcceptedBy || refreshed?.termsAcceptedBy || null,
+        termsAcceptedBy: refreshed?.termsAcceptedBy || refreshed?.tncAcceptedBy || null,
+        tncAcceptedSource: refreshed?.tncAcceptedSource || refreshed?.termsAcceptedSource || null,
+        termsAcceptedSource: refreshed?.termsAcceptedSource || refreshed?.tncAcceptedSource || null,
+        terms: {
+          ...(refreshed?.terms || {})
+        },
+        documents: {
+          ...(refreshed?.documents || {})
+        },
+        workflow: {
+          ...(refreshed?.workflow || {}),
+          offerIssued: true
+        },
+        bookingWorkflow: {
+          ...(refreshed?.bookingWorkflow || {}),
+          offerIssued: true
+        }
+      });
+      yield _this5.sendOfferNotifications({
+        ...offerToSend,
+        status: 'sent',
+        offerStatus: 'sent',
+        bookingRequestStatus: 'offer_issued',
+        offerIssued: true,
+        issued: true,
+        requestNeedsAdminOffer: false,
+        pricingToBeFinalizedByAdmin: false,
+        offerLink: _this5.buildOfferLink(offer.offerId)
+      });
+    })();
+  }
+  sendOfferNotifications(offer) {
+    var _this6 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const offerId = offer.offerId;
+      if (!offerId) return;
+      const now = Date.now();
+      const link = String(offer.offerLink || _this6.buildOfferLink(offerId));
+      const payload = _this6.buildOfferNotificationPayload(offer, link);
+      yield _this6.queueOfferNotification(offer, 'email', payload, now).catch(error => {
+        console.warn('Offer email queue write failed', error);
+      });
+      yield _this6.queueOfferNotification(offer, 'whatsapp', payload, now).catch(error => {
+        console.warn('Offer WhatsApp queue write failed', error);
+      });
+      const patch = {
+        status: 'sent',
+        validUntil: offer.validUntil || now + 24 * 60 * 60 * 1000,
+        offerLink: link,
+        offerNotificationStatus: 'queued',
+        offerEmailNotificationStatus: 'queued',
+        offerWhatsappNotificationStatus: 'queued',
+        offerNotificationQueuedAt: now,
+        modifiedTS: now
+      };
+      yield _this6.patchOffer(offerId, patch).catch(error => {
+        console.warn('Offer notification status patch failed', error);
+      });
+      yield _this6.notifyOfferSent(offerId, {
+        ...payload,
+        channel: 'email',
+        channels: ['email', 'whatsapp']
+      }).toPromise().then(() => {
+        return _this6.patchOffer(offerId, {
+          offerEmailNotificationStatus: 'sent',
+          offerNotificationSentAt: Date.now()
+        });
+      }).catch(error => {
+        console.warn('Offer email notification failed', error);
+      });
+      yield _this6.notifyOfferWhatsapp(offerId, {
+        ...payload,
+        channel: 'whatsapp',
+        channels: ['email', 'whatsapp']
+      }).toPromise().then(() => {
+        return _this6.patchOffer(offerId, {
+          offerWhatsappNotificationStatus: 'sent',
+          offerNotificationSentAt: Date.now()
+        });
+      }).catch(error => {
+        console.warn('Offer WhatsApp notification endpoint failed; notification remains queued in Firebase', error);
+      });
+    })();
+  }
+  acceptOffer(offerId, warrantyPaymentChoice) {
+    var _this7 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      // Backward-compatible wrapper: in the new wizard, accepting only records T&C + warranty choice.
+      const offer = yield _this7.markTermsAccepted(offerId);
+      return _this7.setWarrantyChoice(offerId, warrantyPaymentChoice).then(updated => ({
+        ...offer,
+        ...updated
+      }));
+    })();
+  }
+  renewOffer(offerId) {
+    var _this8 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const current = yield _this8.readItem(_this8.offersCollection, offerId);
+      if (!current) throw new Error('Offer not found');
+      _this8.assertOfferCanBeRenewed(current);
+      const renewed = {
+        ...current,
+        status: 'sent',
+        validUntil: Date.now() + 24 * 60 * 60 * 1000,
+        modifiedTS: Date.now()
+      };
+      yield _this8.writeItem(_this8.offersCollection, offerId, renewed);
+      return renewed;
+    })();
+  }
+  canCustomerManageRequest(offer) {
+    if (!offer) return false;
+    const status = String(offer.status || offer.bookingRequestStatus || '').toLowerCase();
+    const issued = offer.offerIssued === true || offer.issued === true || ['sent', 'issued', 'offer_issued', 'accepted'].includes(status);
+    const origin = String(offer.offerOrigin || offer.source || '').toLowerCase();
+    const isRequest = status === 'request' || status === 'offer_requested' || status === 'pending_admin' || offer.requestNeedsAdminOffer === true || origin === 'customer_request';
+    return isRequest && !issued && !['cancelled_by_customer', 'cancelled', 'deleted'].includes(status);
+  }
+  updateCustomerOfferRequest(offerId, patch) {
+    var _this9 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      yield _this9.patchOffer(offerId, {
+        ...patch,
+        status: 'request',
+        bookingRequestStatus: 'request_updated_by_customer',
+        requestUpdatedByCustomerAt: Date.now(),
+        requestNeedsAdminOffer: true,
+        pricingToBeFinalizedByAdmin: true
+      });
+      _this9.http.post(`${_this9.baseUrl}/api/offers/${encodeURIComponent(offerId)}/notify-request-updated`, {
+        payload: patch
+      }, {
+        withCredentials: true
+      }).subscribe({
+        next: () => {},
+        error: () => {}
+      });
+    })();
+  }
+  cancelCustomerOfferRequest(offerId) {
+    var _this10 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      yield _this10.patchOffer(offerId, {
+        status: 'cancelled_by_customer',
+        bookingRequestStatus: 'cancelled_by_customer',
+        requestCancelledByCustomerAt: Date.now(),
+        requestNeedsAdminOffer: false,
+        pricingToBeFinalizedByAdmin: false
+      });
+      _this10.http.post(`${_this10.baseUrl}/api/offers/${encodeURIComponent(offerId)}/notify-request-cancelled`, {}, {
+        withCredentials: true
+      }).subscribe({
+        next: () => {},
+        error: () => {}
+      });
+    })();
+  }
+  deleteOffer(offerId) {
+    var _this11 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      yield _this11.deleteItem(_this11.offersCollection, offerId);
+    })();
+  }
+  createManualHistoricalBookingRecord(input) {
+    var _this12 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const now = Date.now();
+      const bookingId = String(input.bookingId || `booking_${now}_${Math.random().toString(36).slice(2, 8)}`);
+      const source = String(input.source || 'direct').toLowerCase();
+      const isExternal = source !== 'direct';
+      const skipperCashAmount = Number(input.skipperCashAmount || input.proposalSkipperPrice || 0) || 0;
+      // Historical records are archive-only: no customer payment remains to be collected.
+      const onlinePayableAmount = 0;
+      const cashOnBoardAmount = 0;
+      const platformPaidAmount = Number(input.externalPlatformPaidAmount || 0) || 0;
+      const platformTotalClientAmount = Number(input.externalPlatformTotalClientAmount || 0) || 0;
+      const directTotal = Number(input.totalAmount || input.totalPrice || 0) || 0;
+      const totalPrice = directTotal || platformTotalClientAmount || platformPaidAmount + onlinePayableAmount + cashOnBoardAmount;
+      const boatPrice = Number(input.proposalBoatPrice || input.estimatedBoatPrice || Math.max(0, totalPrice - skipperCashAmount)) || 0;
+      const booking = {
+        bookingId,
+        offerId: bookingId,
+        relatedBookingId: bookingId,
+        ownerId: 'alegria',
+        source,
+        bookingSource: isExternal ? 'external' : 'direct',
+        boatId: String(input.boatId || 'alegria'),
+        boatName: String(input.boatName || 'Alegria'),
+        boatType: String(input.boatType || 'Catamaran'),
+        boatManufacturer: String(input.boatManufacturer || ''),
+        boatModel: String(input.boatModel || ''),
+        boatYear: input.boatYear || null,
+        boatRegistrationNumber: String(input.boatRegistrationNumber || ''),
+        startMarina: String(input.startMarina || ''),
+        externalPlatform: isExternal ? source : '',
+        externalPlatformName: source === 'other' ? String(input.externalPlatformName || '') : '',
+        externalPlatformBookingRef: isExternal ? String(input.externalPlatformBookingRef || input.platformBookingReference || input.platformReservationNumber || bookingId) : '',
+        platformBookingReference: isExternal ? String(input.externalPlatformBookingRef || input.platformBookingReference || '') : '',
+        platformReservationNumber: isExternal ? String(input.externalPlatformBookingRef || input.platformReservationNumber || '') : '',
+        externalPlatformListingName: String(input.externalPlatformListingName || ''),
+        externalPlatformUrl: String(input.externalPlatformUrl || ''),
+        externalPlatformPaidAmount: platformPaidAmount,
+        externalPlatformNetOwnerAmount: Number(input.externalPlatformNetOwnerAmount || 0) || 0,
+        externalPlatformTotalClientAmount: platformTotalClientAmount,
+        externalPlatformRemainingOwnerAmount: Number(input.externalPlatformRemainingOwnerAmount || 0) || 0,
+        externalPortAmount: Number(input.externalPortAmount || 0) || 0,
+        externalDocuments: String(input.externalDocuments || ''),
+        platformBookingUrl: String(input.platformBookingUrl || input.externalPlatformBookingUrl || ''),
+        externalPlatformBookingUrl: String(input.externalPlatformBookingUrl || input.platformBookingUrl || ''),
+        boatClickAndBoatUrl: String(input.boatClickAndBoatUrl || input.clickAndBoatUrl || ''),
+        cateringAmount: Number(input.cateringAmount || 0) || 0,
+        tipsAmount: Number(input.tipsAmount || input.tipAmount || 0) || 0,
+        cleaningCashAmount: Number(input.cleaningCashAmount || 0) || 0,
+        drinksAmount: Number(input.drinksAmount || 0) || 0,
+        waterToysAmount: Number(input.waterToysAmount || 0) || 0,
+        otherOnboardAmount: Number(input.otherOnboardAmount || 0) || 0,
+        customerName: String(input.customerName || ''),
+        email: String(input.customerEmail || input.email || ''),
+        phone: String(input.customerPhone || input.phone || ''),
+        outingType: String(input.outingType || 'Journée en mer'),
+        outingDate: String(input.outingDate || ''),
+        departureTime: String(input.departureTime || ''),
+        arrivalTime: String(input.arrivalTime || ''),
+        passengers: Number(input.passengers || 0) || 0,
+        comments: String(input.comments || input.offerMessage || ''),
+        totalPrice,
+        totalAmount: totalPrice,
+        estimatedPrice: totalPrice,
+        estimatedBoatPrice: boatPrice,
+        estimatedSkipperPrice: skipperCashAmount,
+        estimatedOptionsPrice: Number(input.estimatedOptionsPrice || 0) || 0,
+        estimatedExtraGuestsAmount: Number(input.estimatedExtraGuestsAmount || 0) || 0,
+        proposalBoatPrice: boatPrice,
+        proposalSkipperPrice: skipperCashAmount,
+        proposalExtraServicesPrice: Number(input.proposalExtraServicesPrice || input.externalExtraServicesOnboardAmount || 0) || 0,
+        skipperCashAmount,
+        onlinePayableAmount,
+        appPayableAmount: onlinePayableAmount,
+        depositAmount: 0,
+        balanceAmount: onlinePayableAmount,
+        remainingFeesAmount: onlinePayableAmount,
+        remainingOnboardAmount: onlinePayableAmount,
+        externalOnboardAmount: 0,
+        externalRemainingOnboardAmount: 0,
+        externalExtraServicesOnboardAmount: 0,
+        externalCashOnBoardAmount: 0,
+        externalTotalRemainingAmount: 0,
+        depositPaid: true,
+        depositStatus: 'not_required',
+        balancePaid: true,
+        balanceStatus: 'paid',
+        paymentStatus: true,
+        bookingStatus: input.bookingStatus || 'completed',
+        status: input.status || 'completed',
+        bookingRequestStatus: input.bookingRequestStatus || 'confirmed',
+        offerStatus: 'accepted',
+        termsAccepted: false,
+        tncAccepted: false,
+        termsAcceptedAt: null,
+        tncAcceptedAt: null,
+        warrantyAmount: Number(input.warrantyAmount || 500) || 0,
+        warrantyMethod: input.warrantyPaymentChoice || input.warrantyMethod || 'cash_on_board',
+        warrantyPaymentChoice: input.warrantyPaymentChoice || input.warrantyMethod || 'cash_on_board',
+        warrantyStatus: input.warrantyPaymentChoice === 'stripe_card' ? 'card_registered' : 'cash_selected',
+        warrantyRegistered: true,
+        customerUid: input.customerUid || '',
+        customerAccountCreated: false,
+        customerAuthProvider: input.customerAuthProvider || '',
+        stripeCheckoutSessionId: '',
+        paymentPaymentIntentId: '',
+        bookingConfirmationEmailLanguage: 'fr',
+        bookingConfirmationEmailSentAt: null,
+        bookingConfirmationEmailSentTo: String(input.customerEmail || input.email || ''),
+        bookingConfirmationEmailTemplateKey: 'bookingConfirmed',
+        createdTS: input.createdTS || now,
+        modifiedTS: now,
+        updatedAt: now,
+        payments: {
+          deposit: {
+            amount: 0,
+            paid: true,
+            status: 'not_required',
+            depositPaid: true,
+            depositStatus: 'not_required',
+            paymentStatus: 'not_required',
+            paidAt: now,
+            source: 'manual_historical_import'
+          },
+          balance: {
+            amount: Math.round(onlinePayableAmount * 100),
+            amount_total: Math.round(onlinePayableAmount * 100),
+            bookingId,
+            currency: 'eur',
+            customerEmail: String(input.customerEmail || input.email || ''),
+            customerName: String(input.customerName || ''),
+            customerPhone: String(input.customerPhone || input.phone || ''),
+            modifiedTS: now,
+            outingDate: String(input.outingDate || ''),
+            outingType: String(input.outingType || 'Journée en mer'),
+            ownerId: 'alegria',
+            paymentType: 'balance',
+            status: input.balancePaid === false ? 'pending' : 'paid',
+            source: 'manual_historical_import'
+          }
+        },
+        raw: {
+          ...input,
+          bookingId,
+          source,
+          bookingSource: isExternal ? 'external' : 'direct',
+          importedManually: true,
+          importedAt: now
+        }
+      };
+      if (isExternal) {
+        booking.payments.platform = {
+          source,
+          reference: String(input.externalPlatformBookingRef || ''),
+          paidAmount: platformPaidAmount,
+          netOwnerAmount: Number(input.externalPlatformNetOwnerAmount || 0) || 0,
+          totalClientAmount: platformTotalClientAmount,
+          remainingOwnerAmount: Number(input.externalPlatformRemainingOwnerAmount || 0) || 0,
+          portAmount: Number(input.externalPortAmount || 0) || 0,
+          status: 'recorded',
+          recordedAt: now
+        };
+      }
+      yield _this12.writeItem(_this12.bookingsCollection, bookingId, booking);
+      return booking;
+    })();
+  }
+  createExternalBookingRecord(offer) {
+    var _this13 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const now = Date.now();
+      const anyOffer = offer || {};
+      const bookingId = String(anyOffer.relatedBookingId || anyOffer.offerId || `external_${now}_${Math.random().toString(36).slice(2, 8)}`);
+      const onlinePayable = Number(anyOffer.externalRemainingOnboardAmount || anyOffer.totalAmount || anyOffer.onlinePayableAmount || 0) || 0;
+      const cashOnBoard = Number(anyOffer.externalCashOnBoardAmount || anyOffer.skipperCashAmount || anyOffer.proposalSkipperPrice || 0) || 0;
+      const totalRemaining = Number(anyOffer.externalTotalRemainingAmount || onlinePayable + cashOnBoard) || 0;
+      const depositAmount = Number(anyOffer.depositAmount || Math.round(onlinePayable * 0.10 * 100) / 100) || 0;
+      const balanceAmount = Number(anyOffer.balanceAmount || Math.max(0, Math.round((onlinePayable - depositAmount) * 100) / 100)) || 0;
+      const booking = {
+        ...anyOffer,
+        bookingId,
+        offerId: anyOffer.offerId || bookingId,
+        relatedOfferId: anyOffer.offerId || bookingId,
+        ownerId: 'alegria',
+        bookingSource: 'external',
+        source: anyOffer.source || anyOffer.externalPlatform || 'clickandboat',
+        externalPlatform: anyOffer.externalPlatform || anyOffer.source || 'clickandboat',
+        externalPlatformName: anyOffer.externalPlatformName || '',
+        externalPlatformBookingRef: anyOffer.externalPlatformBookingRef || anyOffer.platformBookingReference || anyOffer.platformReservationNumber || '',
+        platformBookingReference: anyOffer.platformBookingReference || anyOffer.externalPlatformBookingRef || '',
+        platformReservationNumber: anyOffer.platformReservationNumber || anyOffer.externalPlatformBookingRef || '',
+        customerName: anyOffer.customerName || '',
+        email: anyOffer.customerEmail || anyOffer.email || '',
+        phone: anyOffer.customerPhone || anyOffer.phone || '',
+        outingType: anyOffer.outingType || '',
+        outingDate: anyOffer.outingDate || '',
+        departureTime: anyOffer.departureTime || '',
+        arrivalTime: anyOffer.arrivalTime || '',
+        passengers: Number(anyOffer.passengers || 0) || 0,
+        totalPrice: totalRemaining,
+        totalAmount: totalRemaining,
+        onlinePayableAmount: onlinePayable,
+        appPayableAmount: onlinePayable,
+        skipperCashAmount: cashOnBoard,
+        externalRemainingOnboardAmount: onlinePayable,
+        externalCashOnBoardAmount: cashOnBoard,
+        externalTotalRemainingAmount: totalRemaining,
+        depositAmount,
+        balanceAmount,
+        remainingFeesAmount: balanceAmount,
+        remainingOnboardAmount: balanceAmount,
+        depositPaid: false,
+        depositStatus: 'pending',
+        paymentStatus: 'awaiting_deposit',
+        balancePaid: false,
+        bookingStatus: 'external_platform_pending',
+        status: 'external_platform_pending',
+        bookingRequestStatus: 'external_platform_pending',
+        warrantyAmount: Number(anyOffer.warrantyAmount || 500),
+        warrantyStatus: 'not_selected',
+        warrantyRegistered: false,
+        termsAccepted: false,
+        termsAcceptedAt: null,
+        createdTS: anyOffer.createdTS || now,
+        modifiedTS: now,
+        payments: {
+          ...(anyOffer.payments || {}),
+          platform: {
+            source: anyOffer.externalPlatform || anyOffer.source || 'clickandboat',
+            reference: anyOffer.externalPlatformBookingRef || anyOffer.platformBookingReference || '',
+            paidAmount: Number(anyOffer.externalPlatformPaidAmount || 0),
+            netOwnerAmount: Number(anyOffer.externalPlatformNetOwnerAmount || 0),
+            totalClientAmount: Number(anyOffer.externalPlatformTotalClientAmount || 0),
+            remainingOwnerAmount: Number(anyOffer.externalPlatformRemainingOwnerAmount || 0),
+            portAmount: Number(anyOffer.externalPortAmount || 0),
+            status: 'recorded',
+            recordedAt: now
+          }
+        },
+        raw: anyOffer
+      };
+      yield _this13.writeItem(_this13.bookingsCollection, bookingId, booking);
+    })();
+  }
+  createExternalBooking(input) {
+    var _this14 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const remainingOnboardAmount = Number(input.externalRemainingOnboardAmount || input.remainingOnboardAmount || 0);
+      const extraServicesOnboardAmount = Number(input.externalExtraServicesOnboardAmount || input.extraServicesOnboardAmount || 0);
+      const onboardAmount = Number(input.totalAmount || remainingOnboardAmount + extraServicesOnboardAmount || 0);
+      const warrantyAmount = Number(input.warrantyAmount ?? 500);
+      const platformSource = String(input.source || 'samboat');
+      const externalPlatformName = platformSource === 'other' ? String(input.externalPlatformName || input.otherPlatformName || '').trim() : '';
+      const externalPlatformBookingRef = String(input.externalPlatformBookingRef || input.platformBookingReference || input.platformReservationNumber || input.externalReservationReference || '').trim();
+      const saved = yield _this14.saveOffer({
+        ...input,
+        source: platformSource,
+        bookingSource: 'external',
+        externalPlatform: platformSource,
+        externalPlatformName,
+        externalPlatformBookingRef,
+        platformBookingReference: externalPlatformBookingRef,
+        platformReservationNumber: externalPlatformBookingRef,
+        externalPlatformListingName: input.externalPlatformListingName || '',
+        externalPlatformUrl: input.externalPlatformUrl || '',
+        externalPlatformPaidAmount: Number(input.externalPlatformPaidAmount || 0),
+        externalPlatformNetOwnerAmount: Number(input.externalPlatformNetOwnerAmount || 0),
+        externalPlatformTotalClientAmount: Number(input.externalPlatformTotalClientAmount || 0),
+        externalPlatformRemainingOwnerAmount: Number(input.externalPlatformRemainingOwnerAmount || 0),
+        externalPortAmount: Number(input.externalPortAmount || 0),
+        externalDocuments: input.externalDocuments || '',
+        externalPaymentItems: Array.isArray(input.externalPaymentItems) ? input.externalPaymentItems : [],
+        externalOnboardAmount: onboardAmount,
+        externalRemainingOnboardAmount: remainingOnboardAmount,
+        externalExtraServicesOnboardAmount: extraServicesOnboardAmount,
+        externalCashOnBoardAmount: Number(input.externalCashOnBoardAmount || 0),
+        externalTotalRemainingAmount: Number(input.externalTotalRemainingAmount || remainingOnboardAmount + Number(input.externalCashOnBoardAmount || 0)),
+        proposalExtraServicesPrice: extraServicesOnboardAmount,
+        offerMessage: input.offerMessage || 'Please accept the T&C, pay the deposit for the amount due on board, and select your warranty mode.',
+        passengers: Number(input.passengers || 0),
+        totalAmount: onboardAmount,
+        warrantyAmount,
+        status: 'sent',
+        depositStatus: 'pending',
+        depositPaid: false,
+        paymentStatus: 'awaiting_deposit',
+        warrantyStatus: 'not_selected',
+        warrantyRegistered: false,
+        tncAccepted: false,
+        tncAcceptedAt: null,
+        acceptedTS: undefined,
+        validUntil: input.validUntil || Date.now() + 30 * 24 * 60 * 60 * 1000,
+        relatedBookingId: input.relatedBookingId || input.offerId
+      });
+      const visible = !saved.relatedBookingId ? {
+        ...saved,
+        relatedBookingId: saved.offerId
+      } : saved;
+      if (!saved.relatedBookingId) {
+        yield _this14.patchOffer(saved.offerId, {
+          relatedBookingId: saved.offerId
+        });
+      }
+      yield _this14.createExternalBookingRecord(visible).catch(error => {
+        console.warn('Unable to create external booking record in bnBookings', error);
+      });
+      return visible;
+    })();
+  }
+  attachCustomerAccount(offerId, payload) {
+    var _this15 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      yield _this15.patchOffer(offerId, {
+        customerUid: payload.customerUid,
+        customerAuthProvider: payload.customerAuthProvider,
+        customerAccountCreated: payload.customerAccountCreated === true,
+        customerAccountCreatedAt: Date.now(),
+        customerLastLoginAt: Date.now()
+      });
+    })();
+  }
+  patchOffer(id, patch) {
+    var _this16 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const current = yield _this16.readItem(_this16.offersCollection, id);
+      if (!current) throw new Error('Offer not found');
+      yield _this16.writeItem(_this16.offersCollection, id, {
+        ...current,
+        ...patch,
+        modifiedTS: Date.now()
+      });
+    })();
+  }
+  markDepositPaidFromStripeReturn(offerId, payload = {}) {
+    var _this17 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const current = yield _this17.readItem(_this17.offersCollection, offerId);
+      if (!current) {
+        throw new Error('Offer not found');
+      }
+      const patch = {
+        depositPaid: true,
+        depositStatus: 'paid',
+        depositPaidAmount: Number(current.depositAmount || 0),
+        paidDepositAmount: Number(current.depositAmount || 0),
+        paymentStatus: 'paid',
+        stripeCheckoutSessionId: payload.sessionId || payload.checkoutSessionId || current.stripeCheckoutSessionId || '',
+        stripePaymentIntentId: payload.paymentIntentId || current.stripePaymentIntentId || '',
+        modifiedTS: Date.now()
+      };
+      yield _this17.patchOffer(offerId, patch);
+      yield _this17.patchBookingDepositState(offerId, {
+        ...current,
+        ...patch
+      }, payload).catch(() => undefined);
+      return {
+        ...current,
+        ...patch
+      };
+    })();
+  }
+  patchBookingDepositState(offerId, offer, payload = {}) {
+    var _this18 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const bookingId = offer.relatedBookingId || offerId;
+      const existing = yield _this18.readItem(_this18.bookingsCollection, bookingId).catch(() => undefined);
+      const payment = {
+        ...(existing?.payments?.deposit || {}),
+        paid: true,
+        depositPaid: true,
+        status: 'paid',
+        depositStatus: 'paid',
+        paymentStatus: 'paid',
+        amount: Number(offer.depositAmount || 0),
+        checkoutSessionId: payload.sessionId || payload.checkoutSessionId || offer.stripeCheckoutSessionId || '',
+        stripeCheckoutSessionId: payload.sessionId || payload.checkoutSessionId || offer.stripeCheckoutSessionId || '',
+        stripePaymentIntentId: payload.paymentIntentId || offer.stripePaymentIntentId || '',
+        paidAt: existing?.payments?.deposit?.paidAt || Date.now(),
+        source: 'stripe_return'
+      };
+      const proposalBoatPrice = Number(offer.proposalBoatPrice ?? offer.estimatedBoatPrice ?? 0) || 0;
+      const proposalFuelPrice = Number(offer.proposalFuelPrice ?? offer.fuelPrice ?? offer.fuelAmount ?? offer.offerCleaningPrice ?? offer.estimatedCleaningPrice ?? 0) || 0;
+      const skipperCashAmount = Number(offer.skipperCashAmount ?? offer.proposalSkipperPrice ?? offer.estimatedSkipperPrice ?? 0) || 0;
+      const computedTotalAmount = proposalBoatPrice + proposalFuelPrice + skipperCashAmount + Number(offer.proposalExtraServicesPrice || 0);
+      const onlinePlusSkipperAmount = Number(offer.onlinePayableAmount || 0) + skipperCashAmount;
+      const totalAmount = Number(offer.totalAmount ?? offer.totalPrice ?? (onlinePlusSkipperAmount || computedTotalAmount)) || 0;
+      const onlinePayableAmount = Number(offer.onlinePayableAmount ?? offer.appPayableAmount ?? Math.max(0, totalAmount - skipperCashAmount)) || 0;
+      const balanceAmount = Number(offer.balanceAmount ?? offer.remainingFeesAmount ?? Math.max(0, onlinePayableAmount - Number(offer.depositAmount || 0))) || 0;
+      yield _this18.writeItem(_this18.bookingsCollection, bookingId, {
+        ...(existing || {}),
+        bookingId,
+        offerId,
+        ownerId: 'alegria',
+        source: offer.source || existing?.source || 'direct',
+        bookingSource: offer.source === 'direct' || !offer.source ? 'direct' : existing?.bookingSource || 'external',
+        customerName: offer.customerName || existing?.customerName || '',
+        email: offer.customerEmail || existing?.email || '',
+        phone: offer.customerPhone || existing?.phone || '',
+        customerEmail: offer.customerEmail || existing?.customerEmail || existing?.email || '',
+        outingType: offer.outingType || existing?.outingType || '',
+        outingDate: offer.outingDate || existing?.outingDate || '',
+        departureTime: offer.departureTime || existing?.departureTime || '',
+        arrivalTime: offer.arrivalTime || existing?.arrivalTime || '',
+        totalAmount,
+        totalPrice: totalAmount,
+        proposalBoatPrice,
+        proposalFuelPrice,
+        fuelPrice: proposalFuelPrice,
+        fuelAmount: proposalFuelPrice,
+        skipperCashAmount,
+        proposalSkipperPrice: skipperCashAmount,
+        onlinePayableAmount,
+        appPayableAmount: onlinePayableAmount,
+        balanceAmount,
+        remainingFeesAmount: balanceAmount,
+        remainingOnboardAmount: balanceAmount,
+        depositAmount: Number(offer.depositAmount || existing?.depositAmount || 0),
+        depositPaid: true,
+        depositStatus: 'paid',
+        depositPaidAmount: Number(offer.depositAmount || existing?.depositAmount || 0),
+        paidDepositAmount: Number(offer.depositAmount || existing?.depositAmount || 0),
+        paymentStatus: 'paid',
+        stripeCheckoutSessionId: payment.stripeCheckoutSessionId,
+        stripePaymentIntentId: payment.stripePaymentIntentId,
+        modifiedTS: Date.now(),
+        payments: {
+          ...(existing?.payments || {}),
+          deposit: payment
+        }
+      });
+    })();
+  }
+  createDepositCheckout(offer) {
+    return this.http.post(`${this.baseUrl}/pay/outing-deposit-checkout`, {
+      bookingId: offer.offerId,
+      ownerId: 'alegria',
+      customerName: offer.customerName,
+      customerEmail: offer.customerEmail,
+      customerPhone: offer.customerPhone,
+      outingDate: offer.outingDate,
+      outingType: offer.outingType,
+      amount: offer.depositAmount,
+      depositAmount: offer.depositAmount,
+      totalAmount: offer.onlinePayableAmount || offer.appPayableAmount || Math.max(0, Number(offer.totalAmount || 0) - Number(offer.proposalSkipperPrice || offer.estimatedSkipperPrice || 0)),
+      skipperCashAmount: offer.proposalSkipperPrice || offer.estimatedSkipperPrice || 0,
+      paymentType: 'deposit',
+      currency: 'eur',
+      successUrl: `${window.location.origin}/offer/${offer.offerId}?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancelUrl: `${window.location.origin}/offer/${offer.offerId}?payment=cancelled`
+    }, {
+      withCredentials: true
+    });
+  }
+  markWarrantyRegisteredFromStripeReturn(offerId, payload = {}) {
+    var _this19 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const current = yield _this19.readItem(_this19.offersCollection, offerId);
+      if (!current) throw new Error('Offer not found');
+      const sessionId = String(payload.sessionId || payload.session_id || payload.checkoutSessionId || '').trim();
+      let backendResult = {};
+      if (sessionId) {
+        try {
+          backendResult = yield _this19.completeWarrantySetup(offerId, sessionId, 'alegria').toPromise();
+        } catch {
+          // Keep the local fallback below, but without a payment method the admin screen will clearly show that the card is not chargeable.
+          backendResult = {};
+        }
+      }
+      const paymentMethodId = backendResult?.paymentMethodId || payload.paymentMethodId || '';
+      const setupIntentId = backendResult?.setupIntentId || payload.setupIntentId || payload.setup_intent || current.warrantySetupIntentId || '';
+      const stripeCustomerId = backendResult?.stripeCustomerId || payload.stripeCustomerId || '';
+      const cardLast4 = backendResult?.cardLast4 || payload.cardLast4 || '';
+      const cardBrand = backendResult?.cardBrand || payload.cardBrand || '';
+      const patch = {
+        warrantyPaymentChoice: 'stripe_card',
+        warrantyMethod: 'stripe_card',
+        warrantyRegistered: !!paymentMethodId,
+        warrantyStatus: paymentMethodId ? 'card_registered' : 'card_selected',
+        warrantySetupIntentId: setupIntentId,
+        warrantyPaymentMethodId: paymentMethodId,
+        warrantyCardLast4: cardLast4,
+        modifiedTS: Date.now()
+      };
+      yield _this19.patchOffer(offerId, patch);
+      const bookingId = current.relatedBookingId || offerId;
+      const existing = yield _this19.readItem(_this19.bookingsCollection, bookingId).catch(() => undefined);
+      yield _this19.writeItem(_this19.bookingsCollection, bookingId, {
+        ...(existing || {}),
+        bookingId,
+        offerId,
+        warrantyPaymentChoice: 'stripe_card',
+        warrantyMethod: 'stripe_card',
+        warrantyRegistered: !!paymentMethodId,
+        warrantyStatus: paymentMethodId ? 'card_registered' : 'card_selected',
+        warrantySetupIntentId: setupIntentId,
+        warrantyPaymentMethodId: paymentMethodId,
+        stripeCustomerId,
+        warrantyStripeCustomerId: stripeCustomerId,
+        warrantyCardLast4: cardLast4,
+        warrantyCardBrand: cardBrand,
+        modifiedTS: Date.now(),
+        payments: {
+          ...(existing?.payments || {}),
+          warranty: {
+            ...(existing?.payments?.warranty || {}),
+            paymentType: 'warranty',
+            status: paymentMethodId ? 'warranty_card_saved' : 'card_selected',
+            warrantyRegistered: !!paymentMethodId,
+            method: 'stripe_card',
+            warrantyPaymentChoice: 'stripe_card',
+            setupIntentId,
+            paymentMethodId,
+            warrantyPaymentMethodId: paymentMethodId,
+            stripeCustomerId,
+            cardLast4,
+            cardBrand,
+            amount: Number(current.warrantyAmount || 500),
+            updatedAt: Date.now()
+          }
+        }
+      });
+      return {
+        ...current,
+        ...patch
+      };
+    })();
+  }
+  createWarrantySetup(offer) {
+    const payload = {
+      bookingId: offer.offerId,
+      offerId: offer.offerId,
+      ownerId: 'alegria',
+      customerName: offer.customerName,
+      customerEmail: offer.customerEmail,
+      customerPhone: offer.customerPhone,
+      outingDate: offer.outingDate,
+      outingType: offer.outingType,
+      warrantyAmount: offer.warrantyAmount || 500,
+      amount: offer.warrantyAmount || 500,
+      paymentType: 'warranty',
+      checkoutType: 'warranty_setup',
+      currency: 'eur',
+      successUrl: `${window.location.origin}/offer/${offer.offerId}?warranty=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancelUrl: `${window.location.origin}/offer/${offer.offerId}?warranty=cancelled`
+    };
+    return this.postFirstAvailable([`${this.baseUrl}/pay/outing-warranty-checkout`, `${this.baseUrl}/api/payments/create-warranty-checkout-session`, `${this.baseUrl}/api/payments/create-warranty-setup-session`, `${this.baseUrl}/stripe/warranty-setup`, `${this.baseUrl}/stripe/warranty-checkout`], payload);
+  }
+  completeWarrantySetup(offerId, sessionId, ownerId = 'alegria') {
+    const payload = {
+      bookingId: offerId,
+      offerId,
+      ownerId,
+      checkoutSessionId: sessionId,
+      sessionId
+    };
+    return this.postFirstAvailable([`${this.baseUrl}/pay/outing-warranty-complete`, `${this.baseUrl}/api/payments/complete-warranty-setup`, `${this.baseUrl}/stripe/warranty-complete`], payload);
+  }
+  chargeWarranty(offer, amount, reason) {
+    const payload = {
+      bookingId: offer.offerId,
+      ownerId: 'alegria',
+      amount,
+      reason,
+      currency: 'eur'
+    };
+    return this.postFirstAvailable([`${this.baseUrl}/pay/outing-warranty-charge`, `${this.baseUrl}/api/payments/charge-warranty`, `${this.baseUrl}/stripe/warranty-charge`], payload);
+  }
+  createBookingFromOffer(p) {
+    var _this20 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const anyP = p || {};
+      const raw = anyP.raw || {};
+      const firstPositive = (...values) => {
+        for (const value of values) {
+          const n = Number(value);
+          if (Number.isFinite(n) && n > 0) return n;
+        }
+        return 0;
+      };
+      const source = String(anyP.source || raw.source || 'direct').toLowerCase();
+      const isDirectAlegria = source === 'direct' || source === 'alegria' || source === '';
+      const proposalBoatPrice = firstPositive(anyP.proposalBoatPrice, anyP.estimatedBoatPrice, raw.proposalBoatPrice, raw.estimatedBoatPrice, raw.estimatedBasePrice);
+      const proposalFuelPrice = firstPositive(anyP.proposalFuelPrice, anyP.fuelPrice, anyP.fuelAmount, anyP.offerCleaningPrice, anyP.estimatedCleaningPrice, raw.proposalFuelPrice, raw.fuelPrice, raw.fuelAmount, raw.offerCleaningPrice, raw.estimatedCleaningPrice);
+      const proposalSkipperPrice = firstPositive(anyP.proposalSkipperPrice, anyP.estimatedSkipperPrice, anyP.skipperCashAmount, raw.proposalSkipperPrice, raw.estimatedSkipperPrice);
+      const proposalExtraServicesPrice = firstPositive(anyP.proposalExtraServicesPrice, anyP.estimatedExtraGuestsAmount, anyP.estimatedOptionsPrice, raw.proposalExtraServicesPrice, raw.estimatedExtraGuestsAmount, raw.estimatedOptionsPrice);
+      const computedTotal = proposalBoatPrice + proposalFuelPrice + proposalSkipperPrice + proposalExtraServicesPrice;
+      const totalAmount = firstPositive(anyP.totalAmount, anyP.totalPrice, anyP.estimatedPrice, raw.totalAmount, raw.totalPrice, raw.estimatedPrice, computedTotal);
+      const skipperCashAmount = firstPositive(anyP.skipperCashAmount, proposalSkipperPrice, raw.skipperCashAmount);
+      // Alegria direct workflow: skipper is not paid online. Only the boat/app amount is paid online.
+      const onlinePayableAmount = firstPositive(anyP.onlinePayableAmount, anyP.appPayableAmount, raw.onlinePayableAmount, raw.appPayableAmount, Math.max(0, totalAmount - skipperCashAmount));
+      const depositAmount = firstPositive(anyP.depositAmount, raw.depositAmount, Math.round(onlinePayableAmount * 0.10 * 100) / 100);
+      const balanceAmount = firstPositive(anyP.balanceAmount, anyP.remainingFeesAmount, raw.balanceAmount, raw.remainingFeesAmount, Math.max(0, Math.round((onlinePayableAmount - depositAmount) * 100) / 100));
+      yield _this20.writeItem(_this20.bookingsCollection, p.offerId, {
+        bookingId: p.relatedBookingId || p.offerId,
+        offerId: p.offerId,
+        relatedBookingId: p.relatedBookingId || p.offerId,
+        source: isDirectAlegria ? 'direct' : source,
+        bookingSource: isDirectAlegria ? 'direct' : p.bookingSource || 'external',
+        externalPlatform: isDirectAlegria ? '' : p.externalPlatform || source,
+        externalOnboardAmount: isDirectAlegria ? 0 : p.externalOnboardAmount || totalAmount || 0,
+        externalRemainingOnboardAmount: isDirectAlegria ? 0 : p.externalRemainingOnboardAmount || 0,
+        externalExtraServicesOnboardAmount: isDirectAlegria ? 0 : p.externalExtraServicesOnboardAmount || 0,
+        customerName: p.customerName,
+        email: p.customerEmail,
+        phone: p.customerPhone || '',
+        outingType: p.outingType,
+        outingDate: p.outingDate,
+        departureTime: p.departureTime || '',
+        arrivalTime: p.arrivalTime || '',
+        passengers: p.passengers || null,
+        proposalBoatPrice,
+        proposalFuelPrice,
+        fuelPrice: proposalFuelPrice,
+        fuelAmount: proposalFuelPrice,
+        proposalSkipperPrice,
+        proposalExtraServicesPrice,
+        estimatedBoatPrice: p.estimatedBoatPrice ?? proposalBoatPrice,
+        ...(p.estimatedCleaningPrice ? {
+          estimatedCleaningPrice: p.estimatedCleaningPrice
+        } : {}),
+        estimatedSkipperPrice: p.estimatedSkipperPrice ?? proposalSkipperPrice,
+        estimatedExtraGuestsAmount: p.estimatedExtraGuestsAmount ?? 0,
+        estimatedOptionsPrice: p.estimatedOptionsPrice ?? 0,
+        estimatedPrice: p.estimatedPrice ?? totalAmount,
+        totalPrice: totalAmount,
+        totalAmount,
+        skipperCashAmount,
+        onlinePayableAmount,
+        appPayableAmount: onlinePayableAmount,
+        depositAmount,
+        balanceAmount,
+        remainingOnboardAmount: balanceAmount,
+        extraServicesOnboardAmount: 0,
+        remainingFeesAmount: balanceAmount,
+        warrantyAmount: p.warrantyAmount || 500,
+        depositStatus: p.depositStatus || (p.depositPaid ? 'paid' : 'pending'),
+        depositPaid: p.depositPaid === true || p.depositStatus === 'paid',
+        paymentStatus: p.paymentStatus || (p.depositPaid === true || p.depositStatus === 'paid' ? 'paid' : 'pending'),
+        warrantyStatus: p.warrantyStatus || (p.warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : 'card_registered'),
+        warrantyRegistered: p.warrantyRegistered === true || p.warrantyPaymentChoice === 'cash_on_board',
+        warrantyPaymentChoice: p.warrantyPaymentChoice || null,
+        customerUid: p.customerUid || '',
+        customerAuthProvider: p.customerAuthProvider || '',
+        customerAccountCreated: p.customerAccountCreated === true,
+        bookingStatus: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? 'confirmed' : 'not_confirmed',
+        status: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? 'confirmed' : 'not_confirmed',
+        bookingRequestStatus: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? 'confirmed' : 'not_confirmed',
+        offerStatus: 'accepted',
+        termsAccepted: p.tncAccepted === true && !!p.tncAcceptedAt,
+        tncAccepted: p.tncAccepted === true && !!p.tncAcceptedAt,
+        customerTermsAccepted: p.customerTermsAccepted === true,
+        tncAcceptedAt: p.tncAccepted === true ? p.tncAcceptedAt : null,
+        termsAcceptedAt: p.tncAccepted === true ? p.termsAcceptedAt || p.tncAcceptedAt : null,
+        tncAcceptedBy: p.tncAcceptedBy || p.termsAcceptedBy || '',
+        termsAcceptedBy: p.termsAcceptedBy || p.tncAcceptedBy || '',
+        tncAcceptedSource: p.tncAcceptedSource || p.termsAcceptedSource || '',
+        termsAcceptedSource: p.termsAcceptedSource || p.tncAcceptedSource || '',
+        terms: {
+          ...(p.terms || {})
+        },
+        documents: {
+          ...(p.documents || {})
+        },
+        workflow: {
+          offerIssued: true,
+          termsAccepted: p.tncAccepted === true && !!p.tncAcceptedAt,
+          termsAcceptedAt: p.tncAccepted === true ? p.termsAcceptedAt || p.tncAcceptedAt : null,
+          termsAcceptedBy: p.termsAcceptedBy || p.tncAcceptedBy || '',
+          termsAcceptedSource: p.termsAcceptedSource || p.tncAcceptedSource || '',
+          depositPaid: p.depositPaid === true || p.depositStatus === 'paid',
+          alegriaPaid: false,
+          skipperPaid: false,
+          warrantyCompleted: p.warrantyRegistered === true || p.warrantyPaymentChoice === 'cash_on_board',
+          bookingConfirmed: p.tncAccepted === true && (p.depositPaid === true || p.depositStatus === 'paid') && (p.warrantyRegistered === true || p.warrantyPaymentChoice === 'cash_on_board')
+        },
+        bookingWorkflow: {
+          offerIssued: true,
+          termsAccepted: p.tncAccepted === true && !!p.tncAcceptedAt,
+          termsAcceptedAt: p.tncAccepted === true ? p.termsAcceptedAt || p.tncAcceptedAt : null,
+          termsAcceptedBy: p.termsAcceptedBy || p.tncAcceptedBy || '',
+          termsAcceptedSource: p.termsAcceptedSource || p.tncAcceptedSource || '',
+          depositPaid: p.depositPaid === true || p.depositStatus === 'paid',
+          alegriaPaid: false,
+          skipperPaid: false,
+          warrantyCompleted: p.warrantyRegistered === true || p.warrantyPaymentChoice === 'cash_on_board',
+          bookingConfirmed: p.tncAccepted === true && (p.depositPaid === true || p.depositStatus === 'paid') && (p.warrantyRegistered === true || p.warrantyPaymentChoice === 'cash_on_board')
+        },
+        comments: p.comments || '',
+        payments: {
+          deposit: {
+            paymentType: 'deposit',
+            amount: depositAmount,
+            bookingId: p.relatedBookingId || p.offerId,
+            customerEmail: p.customerEmail || '',
+            customerName: p.customerName || '',
+            customerPhone: p.customerPhone || '',
+            outingDate: p.outingDate || '',
+            outingType: p.outingType || '',
+            paid: p.depositPaid === true || p.depositStatus === 'paid',
+            status: p.depositPaid === true || p.depositStatus === 'paid' ? 'paid' : 'pending',
+            depositPaid: p.depositPaid === true || p.depositStatus === 'paid',
+            depositStatus: p.depositPaid === true || p.depositStatus === 'paid' ? 'paid' : 'pending',
+            stripeCheckoutSessionId: p.stripeCheckoutSessionId || '',
+            stripePaymentIntentId: p.stripePaymentIntentId || '',
+            source: 'offer_finalization',
+            updatedAt: Date.now()
+          },
+          direct: {
+            skipperCashAmount,
+            skipperStatus: skipperCashAmount > 0 ? 'to_be_paid_onboard' : 'not_applicable',
+            skipperPaid: false,
+            recordedAt: Date.now()
+          }
+        },
+        createdTS: p.createdTS,
+        modifiedTS: Date.now(),
+        raw: p
+      });
+    })();
+  }
+  postFirstAvailable(endpoints, payload) {
+    return new rxjs__WEBPACK_IMPORTED_MODULE_4__.Observable(observer => {
+      let index = 0;
+      const tryNext = lastError => {
+        if (index >= endpoints.length) {
+          observer.error(lastError || new Error('No payment endpoint is available.'));
+          return;
+        }
+        this.http.post(endpoints[index++], payload).subscribe({
+          next: response => {
+            observer.next(response);
+            observer.complete();
+          },
+          error: error => tryNext(error)
+        });
+      };
+      tryNext();
+    });
+  }
+  get baseUrl() {
+    return this.resolvedBackendUrl;
+  }
+  get resolvedBackendUrl() {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
+      return 'https://localhost:2000';
+    }
+    return window.location.origin;
+  }
+  buildOfferLink(offerId) {
+    const origin = typeof window !== 'undefined' && window.location?.origin ? window.location.origin : '';
+    return `${origin}/offer/${encodeURIComponent(offerId)}`;
+  }
+  buildOfferNotificationPayload(offer, offerLink) {
+    const money = value => `${Number(value || 0).toLocaleString('fr-FR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    })} €`;
+    const boatPrice = Number(offer.proposalBoatPrice ?? offer.estimatedBoatPrice ?? 0) || 0;
+    const fuelPrice = Number(offer.proposalFuelPrice ?? offer.fuelPrice ?? offer.fuelAmount ?? 0) || 0;
+    const extraServicesPrice = Number(offer.proposalExtraServicesPrice ?? 0) || 0;
+    const skipperCashAmount = Number(offer.skipperCashAmount ?? offer.proposalSkipperPrice ?? 0) || 0;
+    const computedTotal = boatPrice + fuelPrice + extraServicesPrice + skipperCashAmount;
+    const totalAmount = Number(offer.totalAmount || computedTotal || 0);
+    const onlinePayableAmount = Number(offer.onlinePayableAmount ?? offer.appPayableAmount ?? Math.max(0, totalAmount - skipperCashAmount)) || 0;
+    const depositAmount = Number(offer.depositAmount || Math.round(onlinePayableAmount * 0.10 * 100) / 100 || 0);
+    const balanceAmount = Number(offer.balanceAmount || Math.max(0, Math.round((onlinePayableAmount - depositAmount) * 100) / 100) || 0);
+    const warrantyAmount = Number(offer.warrantyAmount || 500);
+    const customerName = String(offer.customerName || '').trim();
+    const outingType = String(offer.outingType || 'Journée en mer').trim();
+    const outingDate = String(offer.outingDate || '').trim();
+    const departureTime = String(offer.departureTime || '').trim();
+    const arrivalTime = String(offer.arrivalTime || '').trim();
+    const summaryHtml = ['<div style="margin:18px 0;padding:14px 16px;border:1px solid #e6ded2;border-radius:12px;background:#fbf8f2;">', '<p style="margin:0 0 10px;font-weight:700;">Synthèse financière</p>', `<p style="margin:4px 0;"><strong>Sortie bateau :</strong> ${money(boatPrice)}</p>`, fuelPrice ? `<p style="margin:4px 0;"><strong>Carburant :</strong> ${money(fuelPrice)}</p>` : '', extraServicesPrice ? `<p style="margin:4px 0;"><strong>Extras / services :</strong> ${money(extraServicesPrice)}</p>` : '', skipperCashAmount ? `<p style="margin:4px 0;"><strong>Skipper à régler directement :</strong> ${money(skipperCashAmount)}</p>` : '', `<p style="margin:10px 0 0;padding-top:10px;border-top:1px solid #e6ded2;"><strong>Coût total client :</strong> ${money(totalAmount)}</p>`, '</div>', '<div style="margin:18px 0;padding:14px 16px;border:1px solid #d7eadf;border-radius:12px;background:#f1fbf5;">', '<p style="margin:0 0 10px;font-weight:700;">À payer à Alegria</p>', `<p style="margin:4px 0;"><strong>Montant payable à Alegria :</strong> ${money(onlinePayableAmount)}</p>`, `<p style="margin:4px 0;"><strong>Acompte 10 % :</strong> ${money(depositAmount)}</p>`, `<p style="margin:4px 0;"><strong>Solde Alegria :</strong> ${money(balanceAmount)}</p>`, '</div>', skipperCashAmount ? `<div style="margin:18px 0;padding:14px 16px;border:1px solid #f2dfb9;border-radius:12px;background:#fff9ed;"><p style="margin:0 0 10px;font-weight:700;">À payer au skipper</p><p style="margin:4px 0;"><strong>Skipper :</strong> ${money(skipperCashAmount)}</p></div>` : '', `<div style="margin:18px 0;padding:14px 16px;border:1px solid #e1d8f2;border-radius:12px;background:#faf7ff;"><p style="margin:0 0 10px;font-weight:700;">Garantie</p><p style="margin:4px 0;"><strong>Montant :</strong> ${money(warrantyAmount)}</p></div>`].filter(Boolean).join('');
+    const plainFinancialSummary = [`Sortie bateau : ${money(boatPrice)}`, fuelPrice ? `Carburant : ${money(fuelPrice)}` : '', extraServicesPrice ? `Extras / services : ${money(extraServicesPrice)}` : '', skipperCashAmount ? `Skipper à régler directement : ${money(skipperCashAmount)}` : '', `Coût total client : ${money(totalAmount)}`, '', `À payer à Alegria : ${money(onlinePayableAmount)}`, `Acompte 10 % : ${money(depositAmount)}`, `Solde Alegria : ${money(balanceAmount)}`, skipperCashAmount ? `À payer au skipper : ${money(skipperCashAmount)}` : '', `Garantie : ${money(warrantyAmount)}`].filter(Boolean).join('\n');
+    const skipperHtml = skipperCashAmount ? `<p style="margin:4px 0;"><strong>Skipper à régler directement :</strong> ${money(skipperCashAmount)}</p>` : '';
+    const skipperSectionHtml = skipperCashAmount ? `<div style="margin:18px 0;padding:14px 16px;border:1px solid #f2dfb9;border-radius:12px;background:#fff9ed;"><p style="margin:0 0 10px;font-weight:700;">À payer au skipper</p><p style="margin:4px 0;"><strong>Honoraires skipper :</strong> ${money(skipperCashAmount)}</p><p style="margin:4px 0;color:#526173;">À régler directement au skipper le jour de la sortie.</p></div>` : '';
+    const whatsappText = [`Bonjour ${customerName || ''} 👋`, `Votre offre Alegria Boat pour ${outingType}${outingDate ? ` le ${outingDate}` : ''} est prête.`, '', `💙 À payer à Alegria : ${money(onlinePayableAmount)}`, `• Acompte 10 % : ${money(depositAmount)}`, `• Solde Alegria : ${money(balanceAmount)}`, skipperCashAmount ? `👨‍✈️ À payer au skipper : ${money(skipperCashAmount)}` : '', `🛡 Garantie : ${money(warrantyAmount)}`, '', `Coût total client : ${money(totalAmount)}`, '', `Consulter et accepter la offre : ${offerLink}`].filter(Boolean).join('\n');
+    return {
+      offerId: offer.offerId,
+      offerLink,
+      offerUrl: offerLink,
+      customerName,
+      customerEmail: String(offer.customerEmail || '').trim(),
+      customerPhone: String(offer.customerPhone || '').trim(),
+      customerWhatsapp: this.normalizeWhatsappPhone(offer.customerPhone),
+      outingType,
+      outingDate,
+      departureTime,
+      arrivalTime,
+      passengers: offer.passengers || null,
+      boatPrice,
+      boatPriceFormatted: money(boatPrice),
+      fuelPrice,
+      fuelPriceFormatted: money(fuelPrice),
+      extraServicesPrice,
+      extraServicesPriceFormatted: money(extraServicesPrice),
+      skipperCashAmount,
+      skipperAmount: skipperCashAmount,
+      skipperPrice: skipperCashAmount,
+      skipperFee: skipperCashAmount,
+      skipperAmountFormatted: money(skipperCashAmount),
+      skipperPriceFormatted: money(skipperCashAmount),
+      skipperFeeFormatted: money(skipperCashAmount),
+      proposalSkipperPrice: skipperCashAmount,
+      proposalSkipperPriceFormatted: money(skipperCashAmount),
+      onlinePayableAmount,
+      onlinePayableAmountFormatted: money(onlinePayableAmount),
+      alegriaAmount: onlinePayableAmount,
+      alegriaAmountFormatted: money(onlinePayableAmount),
+      totalAmount,
+      totalAmountFormatted: money(totalAmount),
+      totalCustomerCost: totalAmount,
+      totalCustomerCostFormatted: money(totalAmount),
+      depositAmount,
+      depositAmountFormatted: money(depositAmount),
+      balanceAmount,
+      balanceAmountFormatted: money(balanceAmount),
+      warrantyAmount,
+      warrantyAmountFormatted: money(warrantyAmount),
+      summaryHtml,
+      plainFinancialSummary,
+      financialSummaryText: plainFinancialSummary,
+      skipperHtml,
+      skipperSectionHtml,
+      skipperLineHtml: skipperHtml,
+      toPaySkipperHtml: skipperSectionHtml,
+      emailBodyHtml: summaryHtml,
+      subject: `Votre offre Alegria Boat - ${outingType}`,
+      whatsappText,
+      emailTemplate: 'offerReady',
+      whatsappTemplate: 'offerReady',
+      createdTS: Date.now(),
+      ownerId: 'alegria'
+    };
+  }
+  normalizeWhatsappPhone(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    const plusPrefixed = raw.startsWith('+');
+    const digits = raw.replace(/[^\d]/g, '');
+    if (!digits) return '';
+    if (plusPrefixed) return digits;
+    if (digits.startsWith('00')) return digits.slice(2);
+    if (digits.startsWith('0') && digits.length === 10) return `33${digits.slice(1)}`;
+    return digits;
+  }
+  queueOfferNotification(offer, channel, payload, now) {
+    var _this21 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const offerId = offer.offerId;
+      const id = `${offerId}_${channel}_${now}`;
+      const destination = channel === 'email' ? payload.customerEmail : payload.customerWhatsapp;
+      if (!destination) return;
+      yield _this21.writeItem('bnNotifications', id, {
+        notificationId: id,
+        type: 'offer_sent',
+        channel,
+        status: 'queued',
+        offerId,
+        bookingId: offer.relatedBookingId || '',
+        destination,
+        payload,
+        createdTS: now,
+        modifiedTS: now,
+        source: 'admin_offer',
+        ownerId: 'alegria'
+      });
+    })();
+  }
+  readOfferWithPaymentState(id) {
+    var _this22 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const offer = yield _this22.readItem(_this22.offersCollection, id);
+      if (!offer) return undefined;
+      if (offer.status === 'accepted') {
+        const existingBooking = yield _this22.readItem(_this22.bookingsCollection, offer.relatedBookingId || offer.offerId).catch(() => undefined);
+        if (!existingBooking) {
+          yield _this22.createBookingFromOffer({
+            ...offer,
+            relatedBookingId: offer.relatedBookingId || offer.offerId
+          });
+          yield _this22.patchOffer(offer.offerId, {
+            relatedBookingId: offer.relatedBookingId || offer.offerId
+          }).catch(() => undefined);
+        }
+      }
+      const canonicalBooking = yield _this22.readItem(_this22.bookingsCollection, offer.relatedBookingId || offer.offerId).catch(() => undefined);
+      const depositPayment = canonicalBooking?.payments?.deposit || canonicalBooking?.payment || null;
+      const warrantyPayment = canonicalBooking?.payments?.warranty || null;
+      const warrantyCharge = canonicalBooking?.payments?.warrantyCharge || null;
+      const depositPaid = offer.depositPaid === true || offer.depositStatus === 'paid' || offer.paymentStatus === 'paid' || canonicalBooking?.depositPaid === true || canonicalBooking?.depositStatus === 'paid' || canonicalBooking?.paymentStatus === 'paid' || canonicalBooking?.paymentStatus === 'charge_succeeded' || depositPayment?.depositPaid === true || depositPayment?.paid === true || depositPayment?.status === 'paid' || depositPayment?.status === 'deposit_paid';
+      return {
+        ...offer,
+        relatedBookingId: offer.relatedBookingId || offer.offerId,
+        depositPaid,
+        depositStatus: depositPaid ? 'paid' : offer.depositStatus || depositPayment?.status || 'pending',
+        paymentStatus: depositPaid ? 'paid' : offer.paymentStatus || canonicalBooking?.paymentStatus || depositPayment?.status || '',
+        stripeCheckoutSessionId: offer.stripeCheckoutSessionId || canonicalBooking?.stripeCheckoutSessionId || depositPayment?.stripeCheckoutSessionId || depositPayment?.checkoutSessionId || '',
+        stripePaymentIntentId: offer.stripePaymentIntentId || canonicalBooking?.stripePaymentIntentId || depositPayment?.stripePaymentIntentId || depositPayment?.paymentIntentId || '',
+        warrantyStatus: offer.warrantyStatus || canonicalBooking?.warrantyStatus || warrantyPayment?.warrantyStatus || warrantyPayment?.status || 'not_selected',
+        warrantyRegistered: offer.warrantyRegistered === true || canonicalBooking?.warrantyRegistered === true || warrantyPayment?.warrantyRegistered === true || warrantyPayment?.status === 'warranty_card_saved' || warrantyPayment?.status === 'card_registered',
+        warrantyPaymentMethodId: offer.warrantyPaymentMethodId || canonicalBooking?.warrantyPaymentMethodId || warrantyPayment?.paymentMethodId || '',
+        warrantySetupIntentId: offer.warrantySetupIntentId || canonicalBooking?.warrantySetupIntentId || warrantyPayment?.setupIntentId || '',
+        warrantyChargeAmount: offer.warrantyChargeAmount || canonicalBooking?.warrantyChargedAmount || warrantyCharge?.warrantyChargeAmount || 0,
+        warrantyChargeReason: offer.warrantyChargeReason || canonicalBooking?.warrantyChargeReason || warrantyCharge?.warrantyChargeReason || '',
+        warrantyChargeStatus: offer.warrantyChargeStatus || canonicalBooking?.warrantyStatus || warrantyCharge?.status || ''
+      };
+    })();
+  }
+  readCollection(collection) {
+    var _this23 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const value = yield _this23.http.get(`${_this23.firebaseUrl}/${collection}.json`).toPromise();
+      if (!value) return [];
+      return Object.keys(value).map(key => ({
+        ...value[key],
+        offerId: value[key]?.offerId || key
+      }));
+    })();
+  }
+  readItem(collection, id) {
+    var _this24 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const value = yield _this24.http.get(`${_this24.firebaseUrl}/${collection}/${id}.json`).toPromise();
+      return value ? {
+        ...value,
+        offerId: value.offerId || id
+      } : undefined;
+    })();
+  }
+  deleteItem(collection, id) {
+    var _this25 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      yield _this25.http.delete(`${_this25.firebaseUrl}/${collection}/${id}.json`).toPromise();
+    })();
+  }
+  writeItem(collection, id, value) {
+    var _this26 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      yield _this26.http.put(`${_this26.firebaseUrl}/${collection}/${id}.json`, value).toPromise();
+    })();
+  }
+  static ctorParameters = () => [{
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_5__.HttpClient
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_6__.UtilsService
+  }];
+};
+OfferApiService = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Injectable)({
+  providedIn: 'root'
+})], OfferApiService);
 
 
 /***/ }),
@@ -15392,6 +16986,123 @@ AppRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([(0,_angula
   })],
   exports: [_angular_router__WEBPACK_IMPORTED_MODULE_4__.RouterModule]
 })], AppRoutingModule);
+
+
+/***/ }),
+
+/***/ 96026:
+/*!***************************************************************!*\
+  !*** ./src/app/services/pending-offer-login-modal.service.ts ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   PendingOfferLoginModalService: () => (/* binding */ PendingOfferLoginModalService)
+/* harmony export */ });
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert2 */ 37581);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 56196);
+/* harmony import */ var _home_bookings_offer_api_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../home/bookings/offer-api.service */ 21551);
+/* harmony import */ var _language_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./language.service */ 48756);
+
+
+
+
+
+
+
+
+let PendingOfferLoginModalService = class PendingOfferLoginModalService {
+  offerApi;
+  router;
+  languageService;
+  checking = false;
+  constructor(offerApi, router, languageService) {
+    this.offerApi = offerApi;
+    this.router = router;
+    this.languageService = languageService;
+  }
+  checkAfterLogin(user) {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!user || _this.checking) return;
+      const role = String(user.role || user.userRole || '').toLowerCase();
+      const isAdmin = role === 'admin' || role === 'owner' || role === 'superadmin';
+      const userId = String(user.userId || user.uid || user.id || '').trim();
+      const email = String(user.email || '').trim().toLowerCase();
+      const identity = userId || email;
+      if (!identity) return;
+      _this.checking = true;
+      try {
+        const offers = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this.offerApi.getOffers());
+        const pending = isAdmin ? (offers || []).filter(offer => _this.isAdminPending(offer)) : (offers || []).filter(offer => _this.isCustomerPending(offer, userId, email));
+        if (!pending.length) return;
+        const signature = pending.map(offer => `${offer.offerId}:${offer.modifiedTS || offer.createdTS || 0}`).sort().join('|');
+        const storageKey = `alegria-pending-offer-modal:${isAdmin ? 'admin' : 'customer'}:${identity}`;
+        if (sessionStorage.getItem(storageKey) === signature) return;
+        sessionStorage.setItem(storageKey, signature);
+        yield _this.showModal(isAdmin, pending.length);
+      } catch (error) {
+        console.warn('Unable to check pending offers after login.', error);
+      } finally {
+        _this.checking = false;
+      }
+    })();
+  }
+  isAdminPending(offer) {
+    const status = String(offer.status || '').toLowerCase();
+    return status === 'request' || offer.requestNeedsAdminOffer === true;
+  }
+  isCustomerPending(offer, userId, email) {
+    const status = String(offer.status || '').toLowerCase();
+    const belongsToUser = !!userId && String(offer.customerUid || '').trim() === userId || !!email && String(offer.customerEmail || '').trim().toLowerCase() === email;
+    const waitingForCustomer = ['sent', 'pending', 'published', 'offered'].includes(status);
+    const expired = !!offer.validUntil && Date.now() > Number(offer.validUntil);
+    return belongsToUser && waitingForCustomer && !expired && !offer.relatedBookingId;
+  }
+  showModal(isAdmin, count) {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const language = _this2.languageService.currentLanguage || 'fr';
+      const fr = language === 'fr';
+      const plural = count > 1;
+      const title = isAdmin ? fr ? `${count} demande${plural ? 's' : ''} d’offre à traiter` : `${count} offer request${plural ? 's' : ''} to process` : fr ? `${count} offre${plural ? 's' : ''} en attente de votre réponse` : `${count} offer${plural ? 's' : ''} awaiting your response`;
+      const text = isAdmin ? fr ? 'Une ou plusieurs demandes client nécessitent la préparation et l’envoi d’une offre.' : 'One or more customer requests require an offer to be prepared and sent.' : fr ? 'Consultez votre offre pour l’accepter, la refuser ou poursuivre votre réservation.' : 'Review your offer to accept it, decline it, or continue your booking.';
+      const result = yield sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
+        icon: 'info',
+        title,
+        text,
+        confirmButtonText: fr ? 'Voir maintenant' : 'View now',
+        cancelButtonText: fr ? 'Plus tard' : 'Later',
+        showCancelButton: true,
+        reverseButtons: true,
+        allowOutsideClick: true,
+        customClass: {
+          confirmButton: 'alegria-modal-confirm'
+        }
+      });
+      if (result.isConfirmed) {
+        yield _this2.router.navigate([isAdmin ? '/admin/offers' : '/my-offers']);
+      }
+    })();
+  }
+  static ctorParameters = () => [{
+    type: _home_bookings_offer_api_service__WEBPACK_IMPORTED_MODULE_2__.OfferApiService
+  }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_5__.Router
+  }, {
+    type: _language_service__WEBPACK_IMPORTED_MODULE_3__.LanguageService
+  }];
+};
+PendingOfferLoginModalService = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Injectable)({
+  providedIn: 'root'
+})], PendingOfferLoginModalService);
 
 
 /***/ }),
