@@ -113,26 +113,29 @@
         </section>
 
         <section class="edit-section customer-cost-edit">
-          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.4_customer_cost') }}</h3>
-          <p class="section-help">{{ tText('auto.home.booking-detail.booking-detail.component.this_is_what_the_client_paid_or_was_charged_in_tot') }}</p>
-          <div class="edit-grid">
-            <label>{{ tText('auto.home.booking-detail.booking-detail.component.total_cost_to_client') }}<input name="totalAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.totalAmount" /></label>
-            <label>{{ tText('auto.home.booking-detail.booking-detail.component.amount_paid_by_customer_on_platform') }}<input name="externalPlatformTotalClientAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.externalPlatformTotalClientAmount" /></label>
+          <h3>{{ t('outingPrice') }}</h3>
+          <div class="edit-grid pricing-edit-grid">
+            <label>{{ t('boatRental') }}<input name="boatOutingCost" type="number" min="0" step="0.01" [(ngModel)]="editForm.boatOutingCost" (ngModelChange)="recalculateEditCustomerTotal()" /></label>
+            <label>{{ t('skipper') }}<input name="skipperCashAmountCustomerCost" type="number" min="0" step="0.01" [(ngModel)]="editForm.skipperCashAmount" (ngModelChange)="recalculateEditCustomerTotal()" /></label>
+            <label>{{ t('fuel') }}<input name="fuelAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.fuelAmount" (ngModelChange)="recalculateEditCustomerTotal()" /></label>
+            <label>{{ t('portFeesLabel') }}<input name="portFeesAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.portFeesAmount" (ngModelChange)="recalculateEditCustomerTotal()" /></label>
+            <label>{{ t('catering') }}<input name="cateringAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.cateringAmount" (ngModelChange)="recalculateEditCustomerTotal()" /></label>
+            <label>{{ t('drinks') }}<input name="drinksAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.drinksAmount" (ngModelChange)="recalculateEditCustomerTotal()" /></label>
+            <label>{{ t('waterToys') }}<input name="waterToysAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.waterToysAmount" (ngModelChange)="recalculateEditCustomerTotal()" /></label>
+            <label>{{ t('tips') }}<input name="tipsAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.tipsAmount" (ngModelChange)="recalculateEditCustomerTotal()" /></label>
+            <label>{{ t('otherPricing') }}<input name="otherOnboardAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.otherOnboardAmount" (ngModelChange)="recalculateEditCustomerTotal()" /></label>
+            <label class="pricing-total-field">{{ t('totalOutingPrice') }}<input name="totalAmount" type="number" [(ngModel)]="editForm.totalAmount" readonly /></label>
           </div>
         </section>
 
         <section class="edit-section revenue-edit">
-          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.5_alegria_revenue_and_onboard_collections') }}</h3>
-          <p class="section-help">{{ tText('auto.home.booking-detail.booking-detail.component.this_is_what_alegria_receives_platform_payout_plus') }}</p>
+          <h3>{{ t('commission') }}</h3>
           <div class="edit-grid">
-            <label>{{ tText('auto.home.booking-detail.booking-detail.component.platform_payout_to_alegria') }}<input name="externalPlatformPaidAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.externalPlatformPaidAmount" /></label>
-            <label>{{ tText('auto.home.booking-detail.booking-detail.component.skipper_fee') }}<input name="skipperCashAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.skipperCashAmount" /></label>
-            <label>{{ tText('auto.home.booking-detail.booking-detail.component.catering') }}<input name="cateringAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.cateringAmount" /></label>
-            <label>{{ tText('auto.home.booking-detail.booking-detail.component.tip') }}<input name="tipsAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.tipsAmount" /></label>
-            <label>{{ tText('auto.home.booking-detail.booking-detail.component.cleaning_fuel') }}<input name="cleaningCashAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.cleaningCashAmount" /></label>
-            <label>{{ tText('auto.home.booking-detail.booking-detail.component.drinks') }}<input name="drinksAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.drinksAmount" /></label>
-            <label>{{ tText('auto.home.booking-detail.booking-detail.component.water_toys') }}<input name="waterToysAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.waterToysAmount" /></label>
-            <label>{{ tText('auto.home.booking-detail.booking-detail.component.other_onboard') }}<input name="otherOnboardAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.otherOnboardAmount" /></label>
+            <label>{{ t('rentalCommission') }}<input name="rentalCommissionAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.rentalCommissionAmount" (ngModelChange)="recalculateEditCustomerTotal()" [readonly]="!editForm.source || editForm.source === 'direct' || editForm.source === 'alegria'" /></label>
+            <label>{{ t('serviceFeesLabel') }}<input name="serviceFeesAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.serviceFeesAmount" (ngModelChange)="recalculateEditCustomerTotal()" [readonly]="!editForm.source || editForm.source === 'direct' || editForm.source === 'alegria'" /></label>
+            <label class="pricing-total-field">{{ t('totalCommission') }}<input name="totalCommission" type="number" [(ngModel)]="editForm.totalCommission" readonly /></label>
+            <label class="pricing-total-field">{{ t('alegriaRevenue') }}<input name="alegriaRevenueTotal" type="number" [(ngModel)]="editForm.alegriaRevenueTotal" readonly /></label>
+            <label class="pricing-total-field">{{ t('skipperRevenue') }}<input name="skipperRevenueTotal" type="number" [(ngModel)]="editForm.skipperRevenueTotal" readonly /></label>
           </div>
         </section>
 
@@ -237,89 +240,66 @@
 
       <section class="customer-finance-simple booking-customer-clean" *ngIf="!editMode">
         <article class="cockpit-section finance-panel finance-summary-panel">
-          <h2>{{ t('financialSummary') }}</h2>
+          <h2>{{ t('outingPrice') }}</h2>
           <div class="finance-table compact">
-            <div class="finance-line" *ngIf="vm.boatOutingCost > 0"><span>{{ t('boatOuting') }}</span><strong>{{ formatMoney(vm.boatOutingCost) }}</strong></div>
-            <div class="finance-line" *ngIf="vm.fuelCost > 0"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.fuelCost) }}</strong></div>
-            <div class="finance-line" *ngIf="vm.extraServicesCost > 0"><span>{{ t('extraServices') }}</span><strong>{{ formatMoney(vm.extraServicesCost) }}</strong></div>
-            <div class="finance-line" *ngIf="vm.skipperCost > 0"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.skipperCost) }}</strong></div>
-            <div class="finance-line finance-total"><span>{{ t('totalCustomerCost') }}</span><strong>{{ formatMoney(vm.totalCustomerCost) }}</strong></div>
+            <div class="finance-line"><span>{{ t('boatRental') }}</span><strong>{{ formatMoney(vm.boatRentalAmount) }}</strong></div>
+            <div class="finance-line"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.skipperCost) }}</strong></div>
+            <div class="finance-line"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.fuelCost) }}</strong></div>
+            <div class="finance-line"><span>{{ t('portFeesLabel') }}</span><strong>{{ formatMoney(vm.portFeesAmount) }}</strong></div>
+            <div class="finance-line"><span>{{ t('catering') }}</span><strong>{{ formatMoney(vm.cateringAmount) }}</strong></div>
+            <div class="finance-line"><span>{{ t('drinks') }}</span><strong>{{ formatMoney(vm.drinksAmount) }}</strong></div>
+            <div class="finance-line"><span>{{ t('waterToys') }}</span><strong>{{ formatMoney(vm.waterToysAmount) }}</strong></div>
+            <div class="finance-line"><span>{{ t('tips') }}</span><strong>{{ formatMoney(vm.tipsAmount) }}</strong></div>
+            <div class="finance-line"><span>{{ t('otherPricing') }}</span><strong>{{ formatMoney(vm.otherAmount) }}</strong></div>
+            <div class="finance-line finance-total"><span>{{ t('totalOutingPrice') }}</span><strong>{{ formatMoney(vm.totalOutingPrice) }}</strong></div>
+          </div>
+        </article>
+
+        <article class="cockpit-section finance-panel alegria-panel">
+          <h2>{{ t('commission') }}</h2>
+          <div class="finance-table compact">
+            <div class="finance-line negative-line"><span>{{ t('rentalCommission') }}</span><strong>{{ formatMoney(vm.rentalCommissionAmount) }}</strong></div>
+            <div class="finance-line negative-line"><span>{{ t('serviceFeesLabel') }}</span><strong>{{ formatMoney(vm.serviceFeesAmount) }}</strong></div>
+            <div class="finance-line finance-total"><span>{{ t('totalCommission') }}</span><strong>{{ formatMoney(vm.totalCommission) }}</strong></div>
           </div>
         </article>
 
         <article class="cockpit-section finance-panel alegria-panel">
           <h2>{{ t('alegriaRevenue') }}</h2>
-          <p class="finance-subtitle">{{ t('alegriaRevenueHelp') }}</p>
+          <p class="finance-subtitle">{{ t('totalOutingPrice') }} − {{ t('totalCommission') }} − {{ t('skipper') }}</p>
           <div class="finance-table compact">
-            <ng-container *ngIf="vm.isExternalBooking || vm.isHistoricalBooking; else directAlegriaRevenue">
-              <div class="finance-line" *ngIf="vm.collectedViaPlatform > 0"><span>{{ t('platformPayoutToAlegria') }}</span><strong>{{ formatMoney(vm.collectedViaPlatform) }}</strong></div>
-              <div class="finance-line" *ngIf="vm.totalDirectCatering > 0"><span>{{ t('catering') }}</span><strong>{{ formatMoney(vm.totalDirectCatering) }}</strong></div>
-              <div class="finance-line" *ngIf="vm.totalDirectTips > 0"><span>{{ t('tips') }}</span><strong>{{ formatMoney(vm.totalDirectTips) }}</strong></div>
-              <div class="finance-line" *ngIf="vm.totalDirectCleaningFuel > 0"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.totalDirectCleaningFuel) }}</strong></div>
-              <div class="finance-line" *ngIf="vm.totalDirectDrinks > 0"><span>{{ tText('auto.home.booking-detail.booking-detail.component.drinks_cd3fe5') }}</span><strong>{{ formatMoney(vm.totalDirectDrinks) }}</strong></div>
-              <div class="finance-line" *ngIf="vm.totalDirectWaterToys > 0"><span>{{ tText('auto.home.booking-detail.booking-detail.component.water_toys_966ae2') }}</span><strong>{{ formatMoney(vm.totalDirectWaterToys) }}</strong></div>
-              <div class="finance-line" *ngIf="vm.totalDirectOther > 0"><span>{{ tText('auto.home.booking-detail.booking-detail.component.other') }}</span><strong>{{ formatMoney(vm.totalDirectOther) }}</strong></div>
-            </ng-container>
-            <ng-template #directAlegriaRevenue>
-              <div class="finance-line" *ngIf="vm.boatOutingCost > 0"><span>{{ t('boatOuting') }}</span><strong>{{ formatMoney(vm.boatOutingCost) }}</strong></div>
-              <div class="finance-line" *ngIf="vm.fuelCost > 0"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.fuelCost) }}</strong></div>
-              <div class="finance-line" *ngIf="vm.extraServicesCost > 0"><span>{{ t('extraServices') }}</span><strong>{{ formatMoney(vm.extraServicesCost) }}</strong></div>
-            </ng-template>
             <div class="finance-line finance-total"><span>{{ t('alegriaRevenue') }}</span><strong>{{ formatMoney(vm.alegriaRevenueTotal) }}</strong></div>
             <div class="finance-line paid-line" *ngIf="vm.alegriaPaidAmount > 0"><span>{{ t('alreadyPaid') }}</span><strong>{{ formatMoney(vm.alegriaPaidAmount) }}</strong></div>
             <div class="finance-line outstanding-line" *ngIf="vm.remainingAlegriaRevenue > 0"><span>{{ t('leftToPay') }}</span><strong>{{ formatMoney(vm.remainingAlegriaRevenue) }}</strong></div>
-            <div class="finance-line paid-line" *ngIf="vm.remainingAlegriaRevenue <= 0"><span>{{ t('status') }}</span><strong>✓ {{ t('paid') }}</strong></div>
           </div>
-          <button class="btn btn-primary finance-action" type="button" *ngIf="canPayDepositOnline()" [disabled]="payingAlegria" (click)="payDepositOnline()">
-            {{ payingAlegria ? t('redirecting') : t('payDepositNow') }}
-          </button>
-          <div class="payment-method-box" *ngIf="vm.remainingAlegriaRevenue > 0">
-            <h3>{{ t('paymentMethodChoice') }}</h3>
-            <div class="payment-method-actions">
-              <button class="btn btn-primary finance-action" type="button" *ngIf="vm.remainingAlegriaRevenue > 0" [disabled]="payingAlegria || selectingAlegriaCash || isAlegriaCashSelected()" (click)="payAlegriaOnline()">
-                {{ payingAlegria ? t('redirecting') : (t('payByCard') + ' · ' + formatMoney(vm.remainingAlegriaRevenue)) }}
-              </button>
-              <button class="btn btn-secondary finance-action" type="button" [class.selected-method]="isAlegriaCashSelected()" [disabled]="selectingAlegriaCash || payingAlegria" (click)="selectAlegriaCash()">
-                {{ selectingAlegriaCash ? t('saving') : (t('payByCash') + ' · ' + formatMoney(vm.remainingAlegriaRevenue)) }}
-              </button>
-            </div>
-            <div class="finance-line payment-status-line" *ngIf="isAlegriaCashSelected()">
-              <span>{{ t('status') }}</span><strong>{{ t('cashPendingConfirmation') }}</strong>
-            </div>
-            <p class="payment-method-help">{{ isAlegriaCashSelected() ? t('cashPaymentSelected') : t('cashPaymentHelpAlegria') }}</p>
-            <button class="btn btn-secondary finance-action" type="button" *ngIf="canConfirmAlegriaCashReceived()" [disabled]="payingAlegria" (click)="confirmAlegriaCashReceived()">
-              {{ payingAlegria ? t('saving') : t('confirmAlegriaCashReceived') }}
-            </button>
+          <div class="warranty-actions" *ngIf="vm.remainingAlegriaRevenue > 0">
+            <button class="btn btn-primary finance-action" type="button" *ngIf="canPayAlegriaOnline()" [disabled]="payingAlegria" (click)="payAlegriaOnline()">{{ payingAlegria ? t('redirecting') : t('payByCard') }}</button>
+            <button class="btn btn-secondary finance-action" type="button" *ngIf="!isAlegriaCashSelected()" [disabled]="selectingAlegriaCash" (click)="selectAlegriaCash()">{{ selectingAlegriaCash ? t('saving') : t('payByCash') }}</button>
+            <label class="cash-amount-entry" *ngIf="canConfirmAlegriaCashReceived()">{{ t('amount') }}
+              <input type="number" min="0.01" [max]="vm.remainingAlegriaRevenue" step="0.01" [(ngModel)]="adminAlegriaCashAmount" name="adminAlegriaCashAmount" [placeholder]="formatMoney(vm.remainingAlegriaRevenue)" />
+            </label>
+            <button class="btn btn-success finance-action" type="button" *ngIf="canConfirmAlegriaCashReceived()" [disabled]="payingAlegria || !adminAlegriaCashAmount" (click)="confirmAlegriaCashReceived()">{{ t('confirmAlegriaCashReceived') }}</button>
           </div>
         </article>
 
         <article class="cockpit-section finance-panel skipper-panel">
           <h2>{{ t('skipperRevenue') }}</h2>
-          <p class="finance-subtitle">{{ t('skipperRevenueHelp') }}</p>
+          <p class="finance-subtitle">{{ t('skipper') }} + {{ t('tips') }}</p>
           <div class="finance-table compact">
-            <div class="finance-line finance-total"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.skipperCost) }}</strong></div>
+            <div class="finance-line"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.skipperCost) }}</strong></div>
+            <div class="finance-line"><span>{{ t('tips') }}</span><strong>{{ formatMoney(vm.tipsAmount) }}</strong></div>
+            <div class="finance-line finance-total"><span>{{ t('skipperRevenue') }}</span><strong>{{ formatMoney(vm.skipperRevenueTotal) }}</strong></div>
             <div class="finance-line paid-line" *ngIf="vm.skipperPaidAmount > 0"><span>{{ t('alreadyPaid') }}</span><strong>{{ formatMoney(vm.skipperPaidAmount) }}</strong></div>
             <div class="finance-line outstanding-line" *ngIf="vm.remainingSkipperFee > 0"><span>{{ t('leftToPay') }}</span><strong>{{ formatMoney(vm.remainingSkipperFee) }}</strong></div>
-            <div class="finance-line paid-line" *ngIf="vm.remainingSkipperFee <= 0"><span>{{ t('status') }}</span><strong>✓ {{ t('skipperPaid') }}</strong></div>
           </div>
-          <div class="payment-method-box" *ngIf="vm.remainingSkipperFee > 0 && !vm.isAdmin">
-            <h3>{{ t('paymentMethodChoice') }}</h3>
-            <div class="payment-method-actions">
-              <button class="btn btn-primary finance-action" type="button" *ngIf="vm.remainingSkipperFee > 0" [disabled]="payingSkipper || selectingSkipperCash || isSkipperCashSelected()" (click)="paySkipperOnline()">
-                {{ payingSkipper ? t('redirecting') : (t('payByCard') + ' · ' + formatMoney(vm.remainingSkipperFee)) }}
-              </button>
-              <button class="btn btn-secondary finance-action" type="button" [class.selected-method]="isSkipperCashSelected()" [disabled]="selectingSkipperCash || payingSkipper" (click)="selectSkipperCash()">
-                {{ selectingSkipperCash ? t('saving') : (t('payByCash') + ' · ' + formatMoney(vm.remainingSkipperFee)) }}
-              </button>
-            </div>
-            <div class="finance-line payment-status-line" *ngIf="isSkipperCashSelected()">
-              <span>{{ t('status') }}</span><strong>{{ t('cashPendingConfirmation') }}</strong>
-            </div>
-            <p class="payment-method-help">{{ isSkipperCashSelected() ? t('cashPaymentSelected') : t('cashPaymentHelpSkipper') }}</p>
+          <div class="warranty-actions" *ngIf="vm.remainingSkipperFee > 0">
+            <button class="btn btn-primary finance-action" type="button" *ngIf="canPaySkipperOnline()" [disabled]="payingSkipper" (click)="paySkipperOnline()">{{ payingSkipper ? t('redirecting') : t('payByCard') }}</button>
+            <button class="btn btn-secondary finance-action" type="button" *ngIf="!isSkipperCashSelected()" [disabled]="selectingSkipperCash" (click)="selectSkipperCash()">{{ selectingSkipperCash ? t('saving') : t('payByCash') }}</button>
+            <label class="cash-amount-entry" *ngIf="canConfirmSkipperPaid()">{{ t('amount') }}
+              <input type="number" min="0.01" [max]="vm.remainingSkipperFee" step="0.01" [(ngModel)]="adminSkipperCashAmount" name="adminSkipperCashAmount" [placeholder]="formatMoney(vm.remainingSkipperFee)" />
+            </label>
+            <button class="btn btn-success finance-action" type="button" *ngIf="canConfirmSkipperPaid()" [disabled]="payingSkipper || !adminSkipperCashAmount" (click)="confirmSkipperPaid()">{{ t('confirmSkipperPaid') }}</button>
           </div>
-          <button class="btn btn-secondary finance-action" type="button" *ngIf="canConfirmSkipperPaid()" [disabled]="payingSkipper" (click)="confirmSkipperPaid()">
-            {{ payingSkipper ? t('saving') : t('confirmSkipperPaid') }}
-          </button>
         </article>
 
         <article class="cockpit-section finance-panel warranty-panel warranty-overview-card">

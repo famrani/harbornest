@@ -92,9 +92,18 @@ export class BookingWorkflowService {
     const method = String(booking?.warrantyPaymentChoice || booking?.warrantyMethod || '').toLowerCase();
     const status = String(booking?.warrantyStatus || '').toLowerCase();
     if (method.includes('card') || method.includes('stripe')) {
-      return status.includes('card_registered') || status.includes('warranty_card_saved') || !!booking?.warrantyPaymentMethodId || !!booking?.warrantySetupIntentId;
+      const warrantyPayment = booking?.payments?.warranty || {};
+      const paymentMethodId = booking?.warrantyPaymentMethodId || booking?.paymentMethodId || warrantyPayment?.paymentMethodId || warrantyPayment?.warrantyPaymentMethodId;
+      const setupIntentId = booking?.warrantySetupIntentId || booking?.setupIntentId || warrantyPayment?.setupIntentId || warrantyPayment?.warrantySetupIntentId;
+      const proofStatus = String(warrantyPayment?.status || '').toLowerCase();
+      return !!paymentMethodId && (
+        !!setupIntentId ||
+        proofStatus.includes('card_registered') ||
+        proofStatus.includes('warranty_card_saved') ||
+        proofStatus.includes('setup_succeeded')
+      );
     }
-    if (method.includes('cash')) return status.includes('cash_selected') || status.includes('cash_received') || booking?.warrantyCashSelected === true;
+    if (method.includes('cash')) return status.includes('cash_received') || booking?.warrantyCashReceived === true || booking?.warrantyCashConfirmed === true;
     return false;
   }
 

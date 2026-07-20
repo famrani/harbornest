@@ -731,12 +731,19 @@ export class StripeService {
 
             await this.assertTermsAcceptedBeforeCustomerAction(bookingId);
 
-            const amount = this.normalizeAmountToCents(rawDepositAmount);
+            let amount = this.normalizeAmountToCents(rawDepositAmount);
             if (!amount) {
                 return res.status(400).json({
                     error: 'depositAmount or amount must be greater than 0',
                     received: { depositAmount: body.depositAmount, amount: body.amount, deposit: body.deposit }
                 });
+            }
+
+            // Stripe card payments in EUR must meet the processor minimum.
+            // Small test offers can produce a 10% deposit below that threshold,
+            // so use the minimum charge rather than returning an opaque Stripe 400.
+            if (currency === 'eur' && amount < 50) {
+                amount = 50;
             }
 
             if (!successUrl || !cancelUrl) {
@@ -854,10 +861,14 @@ export class StripeService {
      */
     async createOutingWarrantySetupCheckout(req: Request, res: Response) {
         try {
-            const {
+            let {
                 ownerId,
                 bookingId,
+                offerId,
+                proposalId,
+                relatedBookingId,
                 warrantyAmount,
+                amount: amountAlias,
                 currency = 'eur',
                 customerEmail,
                 customerName,
@@ -868,29 +879,68 @@ export class StripeService {
                 cancelUrl,
             } = req.body || {};
 
-            const safeCustomerEmail = this.isValidEmailForStripe(customerEmail) ? String(customerEmail).trim() : '';
-
-            if (!ownerId || !bookingId) {
-                return res.status(400).json({ error: 'ownerId and bookingId are required' });
+            bookingId = String(bookingId || offerId || proposalId || relatedBookingId || '').trim();
+            if (!bookingId) {
+                return res.status(400).json({ error: 'bookingId, offerId or proposalId is required' });
             }
 
-            await this.assertTermsAcceptedBeforeCustomerAction(bookingId);
+            // Load the booking once so legacy/imported records can supply missing
+            // owner, amount and customer context.
+            const bookingSnap = await this.stbDbSvc.db.ref(`/bnBookings/${bookingId}`).once('value');
+            let booking = bookingSnap.val() || null;
 
-            const amount = this.normalizeAmountToCents(warrantyAmount);
+            if (!booking) {
+                const lookupFields = ['bookingId', 'offerId', 'proposalId', 'relatedBookingId'];
+                for (const field of lookupFields) {
+                    const snap = await this.stbDbSvc.db.ref('/bnBookings').orderByChild(field).equalTo(bookingId).once('value');
+                    const matches = snap.val() || {};
+                    const firstKey = Object.keys(matches)[0];
+                    if (firstKey) {
+                        booking = matches[firstKey];
+                        break;
+                    }
+                }
+            }
+
+            ownerId = ownerId || booking?.ownerId || booking?.raw?.ownerId || booking?.owner || 'alegria';
+            customerEmail = customerEmail || booking?.customerEmail || booking?.email || booking?.raw?.customerEmail;
+            customerName = customerName || booking?.customerName || booking?.raw?.customerName;
+            customerPhone = customerPhone || booking?.customerPhone || booking?.phone || booking?.raw?.customerPhone;
+            outingType = outingType || booking?.outingType || booking?.raw?.outingType;
+            outingDate = outingDate || booking?.outingDate || booking?.raw?.outingDate;
+
+            // Normal customer bookings still require explicit acceptance. Imported
+            // or externally confirmed bookings may register a warranty card even
+            // when their legacy T&C flags were not populated.
+            const source = String(booking?.bookingSource || booking?.source || booking?.externalPlatform || booking?.raw?.bookingSource || '').toLowerCase();
+            const status = String(booking?.bookingStatus || booking?.status || booking?.bookingRequestStatus || '').toLowerCase();
+            const importedOrExternal = booking?.importedManually === true || booking?.raw?.importedManually === true ||
+                source === 'external' || source === 'direct' || !!booking?.externalPlatformBookingRef || !!booking?.platformBookingReference;
+            const alreadyConfirmed = ['confirmed', 'completed', 'accepted'].includes(status) ||
+                String(booking?.bookingRequestStatus || '').toLowerCase() === 'confirmed';
+
+            if (!(importedOrExternal && alreadyConfirmed)) {
+                await this.assertTermsAcceptedBeforeCustomerAction(bookingId);
+            }
+
+            const rawWarrantyAmount = warrantyAmount ?? amountAlias ?? booking?.warrantyAmount ?? booking?.cautionAmount ?? booking?.securityDepositAmount ?? booking?.raw?.warrantyAmount;
+            const amount = this.normalizeAmountToCents(rawWarrantyAmount);
             if (!amount) return res.status(400).json({ error: 'warrantyAmount must be greater than 0' });
-            if (!successUrl || !cancelUrl) return res.status(400).json({ error: 'successUrl and cancelUrl are required' });
 
+            // Local and legacy clients do not always send callback URLs. Use the
+            // request origin as a safe fallback while preserving explicit URLs.
+            const origin = String(req.headers.origin || `${req.protocol}://${req.get('host')}` || '').replace(/\/$/, '');
+            successUrl = successUrl || `${origin}/payment-success`;
+            cancelUrl = cancelUrl || `${origin}/payment-cancel`;
+
+            const safeCustomerEmail = this.isValidEmailForStripe(customerEmail) ? String(customerEmail).trim() : '';
             const stripe = await this.getStripeForOwner(ownerId);
             const customer = safeCustomerEmail
                 ? await stripe.customers.create({
                     email: safeCustomerEmail,
                     name: customerName,
                     phone: customerPhone,
-                    metadata: {
-                        bookingId,
-                        ownerId,
-                        source: 'alegria-warranty',
-                    },
+                    metadata: { bookingId, ownerId, source: 'alegria-warranty' },
                 }).catch(() => null)
                 : null;
 
@@ -906,36 +956,21 @@ export class StripeService {
                 cancel_url: this.appendCheckoutParams(cancelUrl, { bookingId, paymentType: 'warranty', payment: 'cancelled' }),
                 setup_intent_data: {
                     metadata: {
-                        paymentId,
-                        bookingId,
-                        ownerId,
-                        paymentType: 'warranty',
-                        warrantyAmount: String(amount),
-                        currency,
-                        outingType: outingType || '',
-                        outingDate: outingDate || '',
+                        paymentId, bookingId, ownerId, paymentType: 'warranty',
+                        warrantyAmount: String(amount), currency,
+                        outingType: outingType || '', outingDate: outingDate || '',
                     },
                 },
                 metadata: {
-                    paymentId,
-                    bookingId,
-                    ownerId,
-                    paymentType: 'warranty',
-                    warrantyAmount: String(amount),
-                    currency,
-                    outingType: outingType || '',
-                    outingDate: outingDate || '',
+                    paymentId, bookingId, ownerId, paymentType: 'warranty',
+                    warrantyAmount: String(amount), currency,
+                    outingType: outingType || '', outingDate: outingDate || '',
                 },
             });
 
             const now = Date.now();
             const payload = {
-                paymentId,
-                ownerId,
-                bookingId,
-                paymentType: 'warranty',
-                amount,
-                currency,
+                paymentId, ownerId, bookingId, paymentType: 'warranty', amount, currency,
                 status: 'setup_checkout_created',
                 stripeCheckoutSessionId: session.id,
                 stripeCustomerId: customer?.id || null,
@@ -954,7 +989,11 @@ export class StripeService {
             return res.json({ ok: true, url: session.url, id: session.id, paymentId });
         } catch (e: any) {
             console.error('[createOutingWarrantySetupCheckout] error:', e);
-            return res.status(400).json({ error: e?.message || 'Failed to create warranty setup session' });
+            return res.status(400).json({
+                error: e?.message || 'Failed to create warranty setup session',
+                code: e?.code || null,
+                type: e?.type || null
+            });
         }
     }
 

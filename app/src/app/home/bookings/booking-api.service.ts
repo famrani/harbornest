@@ -501,8 +501,10 @@ export class BookingApiService {
 
   createWarrantySetup(payload: {
     bookingId: string;
+    offerId?: string;
     ownerId: string;
     warrantyAmount: number;
+    amount?: number;
     currency?: string;
     customerEmail?: string;
     customerName?: string;
@@ -517,12 +519,29 @@ export class BookingApiService {
     successUrl: string;
     cancelUrl: string;
   }): Observable<any> {
+    // Keep the payload compatible with both the legacy endpoint and the newer
+    // warranty SetupIntent handlers. Some backend versions require the generic
+    // amount/offerId/paymentType aliases even for a booking-based warranty.
+    const amount = Number(payload.warrantyAmount ?? payload.amount ?? 0);
+    const enrichedPayload = {
+      ...payload,
+      bookingId: payload.bookingId,
+      offerId: payload.offerId || payload.bookingId,
+      warrantyAmount: amount,
+      amount,
+      ownerId: payload.ownerId || 'alegria',
+      currency: payload.currency || 'eur',
+      paymentType: 'warranty',
+      checkoutType: 'warranty_setup',
+    };
+
     return this.postFirstAvailable([
       `${this.baseUrl}/pay/outing-warranty-checkout`,
       `${this.baseUrl}/api/payments/create-warranty-checkout-session`,
       `${this.baseUrl}/api/payments/create-warranty-setup-session`,
       `${this.baseUrl}/stripe/warranty-setup`,
-    ], payload);
+      `${this.baseUrl}/stripe/warranty-checkout`,
+    ], enrichedPayload);
   }
 
 
@@ -1516,6 +1535,24 @@ export class BookingApiService {
       balancePayment.paid === true ||
       balancePayment.status === 'paid';
 
+    const warrantyPaymentMethodId =
+      item.warrantyPaymentMethodId || item.paymentMethodId ||
+      nestedRaw.warrantyPaymentMethodId || nestedRaw.paymentMethodId ||
+      nestedRawRaw.warrantyPaymentMethodId || nestedRawRaw.paymentMethodId ||
+      warrantyPayment.paymentMethodId || warrantyPayment.warrantyPaymentMethodId || '';
+    const warrantySetupIntentId =
+      item.warrantySetupIntentId || item.setupIntentId ||
+      nestedRaw.warrantySetupIntentId || nestedRaw.setupIntentId ||
+      nestedRawRaw.warrantySetupIntentId || nestedRawRaw.setupIntentId ||
+      warrantyPayment.setupIntentId || warrantyPayment.warrantySetupIntentId || '';
+    const warrantyProofStatus = String(warrantyPayment.status || warrantyPayment.warrantyStatus || '').toLowerCase();
+    const warrantyCardProven = !!warrantyPaymentMethodId && (
+      !!warrantySetupIntentId ||
+      warrantyProofStatus === 'card_registered' ||
+      warrantyProofStatus === 'warranty_card_saved' ||
+      warrantyProofStatus === 'setup_succeeded'
+    );
+
     return {
       bookingId: item.bookingId || item.id || item.reference || '',
       ownerId: item.ownerId || item.owner || item.hostId || '',
@@ -1546,7 +1583,7 @@ export class BookingApiService {
       extrasAmount: Number(item.extrasAmount || payments?.extras?.amount || 0),
       depositStatus: depositPaid ? 'paid' : (item.depositStatus ?? depositPayment.status ?? item.depositPaid ?? false),
       depositPaid,
-      warrantyStatus: item.warrantyStatus ?? warrantyPayment.status ?? item.warrantyRegistered ?? false,
+      warrantyStatus: warrantyCardProven ? 'card_registered' : (item.warrantyStatus === 'cash_selected' || item.warrantyStatus === 'cash_received' ? item.warrantyStatus : 'pending'),
       payments,
       paymentStatus: payments,
       bookingStatus: item.bookingStatus || item.status || 'requested',
@@ -1557,7 +1594,7 @@ export class BookingApiService {
       warrantyMethod: item.warrantyMethod || nestedRaw.warrantyMethod || nestedRawRaw.warrantyMethod || item.warrantyPaymentChoice || nestedRaw.warrantyPaymentChoice || nestedRawRaw.warrantyPaymentChoice || '',
       warrantySelected: item.warrantySelected === true || !!item.warrantyPaymentChoice || !!nestedRaw.warrantyPaymentChoice || !!nestedRawRaw.warrantyPaymentChoice || !!item.warrantyMethod || !!nestedRaw.warrantyMethod || !!nestedRawRaw.warrantyMethod,
       warrantySelectedAt: item.warrantySelectedAt || nestedRaw.warrantySelectedAt || nestedRawRaw.warrantySelectedAt || null,
-      warrantyRegistered: (item.warrantyPaymentChoice || nestedRaw.warrantyPaymentChoice || nestedRawRaw.warrantyPaymentChoice) === 'cash_on_board' || (item.warrantyStatus || nestedRaw.warrantyStatus || nestedRawRaw.warrantyStatus) === 'cash_selected' ? false : (item.warrantyRegistered === true || nestedRaw.warrantyRegistered === true || nestedRawRaw.warrantyRegistered === true || item.warrantyStatus === 'card_registered' || item.warrantyStatus === 'warranty_card_saved' || nestedRaw.warrantyStatus === 'card_registered' || nestedRaw.warrantyStatus === 'warranty_card_saved'),
+      warrantyRegistered: warrantyCardProven,
       warrantyCashSelected: item.warrantyPaymentChoice === 'cash_on_board' || nestedRaw.warrantyPaymentChoice === 'cash_on_board' || nestedRawRaw.warrantyPaymentChoice === 'cash_on_board' || item.warrantyMethod === 'cash' || nestedRaw.warrantyMethod === 'cash' || nestedRawRaw.warrantyMethod === 'cash' || item.warrantyStatus === 'cash_selected' || nestedRaw.warrantyStatus === 'cash_selected' || nestedRawRaw.warrantyStatus === 'cash_selected',
       damageReported: item.damageReported === true || item.warrantyStatus === 'charged' || item.warrantyCashDamageAmount > 0,
       damageCharged: item.damageCharged === true || item.warrantyStatus === 'charged' || item.warrantyCashDamageAmount > 0,

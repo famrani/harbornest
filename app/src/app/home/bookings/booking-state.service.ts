@@ -40,7 +40,9 @@ export class BookingStateService {
     const confirmed = termsAccepted && fullyPaid && warrantyComplete;
 
     const checks = [termsAccepted, alegriaPaymentComplete, skipperPaymentComplete, warrantyComplete];
-    const progress = cancelled ? 0 : completed ? 100 : Math.round((checks.filter(Boolean).length / checks.length) * 100);
+    // Completion of the outing must not hide unpaid financial steps.
+    // A completed/closed outing can still have outstanding Alegria or skipper fees.
+    const progress = cancelled ? 0 : Math.round((checks.filter(Boolean).length / checks.length) * 100);
     const statusKey: CanonicalBookingStatus = cancelled
       ? 'cancelled'
       : completed
@@ -95,46 +97,16 @@ export class BookingStateService {
       booking?.bookingWorkflow?.outingCompleted === true || values.some((value) => completed.has(value));
   }
 
-  private isAlegriaPaid(booking: any, calculatedRemaining: number): boolean {
-    if (calculatedRemaining <= 0) return true;
-    const payments = booking?.payments || {};
-    const values = [
-      booking?.balancePaid,
-      booking?.balanceStatus,
-      booking?.balancePaymentStatus,
-      booking?.remainingPaid,
-      booking?.remainingStatus,
-      booking?.remainingPaymentStatus,
-      booking?.alegriaPaid,
-      booking?.alegriaPaymentStatus,
-      payments?.balance?.paid,
-      payments?.balance?.status,
-      payments?.balance?.paymentStatus,
-      payments?.remaining?.paid,
-      payments?.remaining?.status,
-      payments?.remaining?.paymentStatus,
-      payments?.alegria?.paid,
-      payments?.alegria?.status,
-      payments?.alegria?.paymentStatus,
-    ];
-    return values.some((value) => this.isPaidValue(value)) || booking?.paymentStatus === true || [
-      'balance_paid', 'remaining_paid', 'full_payment_done', 'balance_payment_done', 'remaining_payment_done'
-    ].includes(String(booking?.paymentStatus || '').toLowerCase().trim());
+  private isAlegriaPaid(_booking: any, calculatedRemaining: number): boolean {
+    // The banner must reflect the canonical financial balance, not historical/imported
+    // booleans such as balancePaid or paymentStatus. Mixed cash/card payments are already
+    // included by BookingFinancialService in alegriaRemaining.
+    return calculatedRemaining <= 0.009;
   }
 
-  private isSkipperPaid(booking: any, skipperAmount: number, calculatedRemaining: number): boolean {
-    if (skipperAmount <= 0 || calculatedRemaining <= 0) return true;
-    const payments = booking?.payments || {};
-    return [
-      booking?.skipperPaid,
-      booking?.skipperStatus,
-      booking?.skipperPaymentStatus,
-      payments?.skipper?.paid,
-      payments?.skipper?.status,
-      payments?.skipper?.paymentStatus,
-      payments?.direct?.skipperPaid,
-      payments?.direct?.skipperStatus,
-    ].some((value) => this.isPaidValue(value));
+  private isSkipperPaid(_booking: any, skipperAmount: number, calculatedRemaining: number): boolean {
+    // Same rule as Alegria: paid only when the canonical skipper balance is zero.
+    return skipperAmount <= 0.009 || calculatedRemaining <= 0.009;
   }
 
   private isPaidValue(value: any): boolean {

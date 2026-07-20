@@ -41,6 +41,8 @@ type BookingVm = {
   totalDirectWaterToys: number;
   totalDirectOther: number;
   boatOutingCost: number;
+  platformCost: number;
+  platformFees: number;
   skipperCost: number;
   extraServicesCost: number;
   fuelCost: number;
@@ -68,6 +70,18 @@ type BookingVm = {
   stripePaymentRecords: any[];
   totalOnboardCollections: number;
   alegriaRevenueTotal: number;
+  boatRentalAmount: number;
+  portFeesAmount: number;
+  cateringAmount: number;
+  drinksAmount: number;
+  waterToysAmount: number;
+  tipsAmount: number;
+  otherAmount: number;
+  rentalCommissionAmount: number;
+  serviceFeesAmount: number;
+  totalCommission: number;
+  totalOutingPrice: number;
+  skipperRevenueTotal: number;
   customerPaidThroughPlatform: number;
   customerPaidDirectly: number;
   display: any;
@@ -104,6 +118,8 @@ export class BookingDetailComponent implements OnInit {
   editForm: any = {};
 
   extraPaymentAmount: number | null = null;
+  adminAlegriaCashAmount: number | null = null;
+  adminSkipperCashAmount: number | null = null;
   extraPaymentDescription = '';
   extraPaymentKind: 'tip' | 'extra_service' | 'damage_charge' = 'tip';
   payingExtra = false;
@@ -368,17 +384,23 @@ export class BookingDetailComponent implements OnInit {
       platformBookingReference: b.platformBookingReference || b.externalPlatformBookingRef || '',
       externalPlatformUrl: b.externalPlatformUrl || '',
       platformBookingUrl: b.platformBookingUrl || b.externalPlatformBookingUrl || '',
+      boatOutingCost: this.number(this.vm?.boatRentalAmount || this.vm?.boatOutingCost || b.pricing?.boatRentalAmount || b.boatRentalAmount || b.proposalBoatPrice || b.boatPrice || b.estimatedBoatPrice),
+      fuelAmount: this.number(this.vm?.fuelCost || b.pricing?.fuelAmount || b.fuelAmount || b.proposalFuelPrice || b.cleaningCashAmount),
+      portFeesAmount: this.number(this.vm?.portFeesAmount || b.pricing?.portFeesAmount || b.portFeesAmount || b.harborFeesAmount),
+      serviceFeesAmount: this.number(this.vm?.serviceFeesAmount || b.pricing?.serviceFeesAmount || b.serviceFeesAmount || b.platformServiceFees),
+      rentalCommissionAmount: this.number(this.vm?.rentalCommissionAmount || b.pricing?.rentalCommissionAmount || b.rentalCommissionAmount || b.platformCommissionAmount || b.platformFees),
       totalAmount: b.totalAmount || b.totalPrice || 0,
       totalPrice: b.totalPrice || b.totalAmount || 0,
       externalPlatformTotalClientAmount: b.externalPlatformTotalClientAmount || b.payments?.platform?.totalClientAmount || b.raw?.externalPlatformTotalClientAmount || b.raw?.payments?.platform?.totalClientAmount || 0,
       externalPlatformPaidAmount: b.externalPlatformPaidAmount || b.payments?.platform?.paidAmount || b.raw?.externalPlatformPaidAmount || 0,
+      platformFees: b.platformFees || b.platformFeeAmount || b.externalPlatformFees || b.payments?.platform?.fees || Math.max(0, this.number(b.externalPlatformTotalClientAmount || b.payments?.platform?.totalClientAmount) - this.number(b.externalPlatformPaidAmount || b.payments?.platform?.paidAmount)),
       skipperCashAmount: b.skipperCashAmount || 0,
       cateringAmount: b.cateringAmount || 0,
       tipsAmount: b.tipsAmount || 0,
       cleaningCashAmount: b.cleaningCashAmount || 0,
       drinksAmount: b.drinksAmount || 0,
       waterToysAmount: b.waterToysAmount || 0,
-      otherOnboardAmount: b.otherOnboardAmount || 0,
+      otherOnboardAmount: b.pricing?.otherAmount || b.otherOnboardAmount || b.otherAmount || 0,
       warrantyAmount: b.warrantyAmount || 0,
       warrantyStatus: b.warrantyStatus || 'not_requested',
       warrantyPaymentChoice: b.warrantyPaymentChoice || b.warrantyMethod || 'cash',
@@ -387,6 +409,28 @@ export class BookingDetailComponent implements OnInit {
       paymentStatusLabel: b.paymentStatusLabel || b.balanceStatus || 'fully_paid',
       comments: b.comments || '',
     };
+    this.recalculateEditCustomerTotal();
+  }
+
+  recalculateEditCustomerTotal(): void {
+    if (!this.editForm) return;
+    const source = String(this.editForm.source || this.editForm.externalPlatform || '').toLowerCase();
+    const direct = !source || source === 'direct' || source === 'alegria' || source === 'direct alegria';
+    if (direct) {
+      this.editForm.rentalCommissionAmount = 0;
+      this.editForm.serviceFeesAmount = 0;
+    }
+    const values = [
+      this.editForm.boatOutingCost, this.editForm.skipperCashAmount, this.editForm.fuelAmount,
+      this.editForm.portFeesAmount, this.editForm.cateringAmount, this.editForm.drinksAmount,
+      this.editForm.waterToysAmount, this.editForm.tipsAmount, this.editForm.otherOnboardAmount,
+    ].map((value: any) => this.number(value));
+    this.editForm.totalAmount = Math.round(values.reduce((sum: number, value: number) => sum + value, 0) * 100) / 100;
+    this.editForm.totalPrice = this.editForm.totalAmount;
+    this.editForm.totalCommission = Math.round((this.number(this.editForm.rentalCommissionAmount) + this.number(this.editForm.serviceFeesAmount)) * 100) / 100;
+    this.editForm.alegriaRevenueTotal = Math.max(0, Math.round((this.editForm.totalAmount - this.editForm.totalCommission - this.number(this.editForm.skipperCashAmount)) * 100) / 100);
+    this.editForm.skipperRevenueTotal = Math.round((this.number(this.editForm.skipperCashAmount) + this.number(this.editForm.tipsAmount)) * 100) / 100;
+    if (!direct) this.editForm.externalPlatformTotalClientAmount = this.number(this.editForm.boatOutingCost);
   }
 
   cancelEdit(): void {
@@ -420,18 +464,27 @@ export class BookingDetailComponent implements OnInit {
       const existing = this.vm?.display || {};
       const raw = existing.raw || {};
       const bookingId = this.editForm.bookingId || this.bookingId;
+      const boatOutingCost = this.number(this.editForm.boatOutingCost);
       const platformPaid = this.number(this.editForm.externalPlatformPaidAmount);
+      const sourceKey = String(this.editForm.source || this.editForm.externalPlatform || existing.source || '').toLowerCase();
+      const directBooking = !sourceKey || ['direct', 'alegria', 'direct alegria'].includes(sourceKey);
       const skipper = this.number(this.editForm.skipperCashAmount);
+      const fuel = this.number(this.editForm.fuelAmount);
+      const portFees = this.number(this.editForm.portFeesAmount);
       const catering = this.number(this.editForm.cateringAmount);
       const tips = this.number(this.editForm.tipsAmount);
-      const cleaning = this.number(this.editForm.cleaningCashAmount);
       const drinks = this.number(this.editForm.drinksAmount);
       const waterToys = this.number(this.editForm.waterToysAmount);
       const other = this.number(this.editForm.otherOnboardAmount);
-      const directTotal = skipper + catering + tips + cleaning + drinks + waterToys + other;
-      const platformCustomerAmount = this.number(this.editForm.externalPlatformTotalClientAmount);
+      const rentalCommission = directBooking ? 0 : this.number(this.editForm.rentalCommissionAmount);
+      const serviceFees = directBooking ? 0 : this.number(this.editForm.serviceFeesAmount);
+      const platformFees = rentalCommission + serviceFees;
+      const directTotal = skipper + fuel + portFees + catering + tips + drinks + waterToys + other;
+      const platformCustomerAmount = directBooking ? 0 : boatOutingCost;
       const totalCollected = platformPaid + directTotal;
-      const totalClientCost = this.number(this.editForm.totalAmount || (platformCustomerAmount + directTotal) || totalCollected);
+      const totalClientCost = boatOutingCost + directTotal;
+      const alegriaRevenue = Math.max(0, totalClientCost - platformFees - skipper);
+      const skipperRevenueTotal = skipper + tips;
       const paymentStatusLabel = this.editForm.paymentStatusLabel || 'fully_paid';
       const normalizedPlatformName = this.normalizedPlatformName(this.editForm.source || this.editForm.externalPlatform || existing.source, this.editForm.externalPlatformName);
 
@@ -443,14 +496,29 @@ export class BookingDetailComponent implements OnInit {
         externalPlatform: this.editForm.source || this.editForm.externalPlatform || existing.externalPlatform || existing.source || '',
         offerId: existing.offerId || bookingId,
         relatedBookingId: existing.relatedBookingId || bookingId,
+        proposalBoatPrice: boatOutingCost,
+        boatPrice: boatOutingCost,
+        estimatedBoatPrice: boatOutingCost,
+        totalCustomerCost: totalClientCost,
+        customerTotal: totalClientCost,
+        totalCustomerPrice: totalClientCost,
         totalAmount: totalClientCost,
         totalPrice: totalClientCost,
         externalPlatformTotalClientAmount: platformCustomerAmount,
         externalPlatformPaidAmount: platformPaid,
+        platformFees,
+        platformFeeAmount: platformFees,
+        externalPlatformFees: platformFees,
+        rentalCommissionAmount: rentalCommission,
+        serviceFeesAmount: serviceFees,
+        totalCommission: platformFees,
+        boatRentalAmount: boatOutingCost,
+        fuelAmount: fuel,
+        portFeesAmount: portFees,
         skipperCashAmount: skipper,
         cateringAmount: catering,
         tipsAmount: tips,
-        cleaningCashAmount: cleaning,
+        cleaningCashAmount: fuel,
         drinksAmount: drinks,
         waterToysAmount: waterToys,
         otherOnboardAmount: other,
@@ -458,7 +526,15 @@ export class BookingDetailComponent implements OnInit {
         totalOnboardCollections: directTotal,
         customerPaidThroughPlatform: platformCustomerAmount,
         customerPaidDirectly: directTotal,
-        alegriaRevenueTotal: totalCollected,
+        alegriaRevenueTotal: alegriaRevenue,
+        skipperRevenueTotal,
+        totalOutingPrice: totalClientCost,
+        pricing: {
+          boatRentalAmount: boatOutingCost, skipperAmount: skipper, fuelAmount: fuel, portFeesAmount: portFees,
+          cateringAmount: catering, drinksAmount: drinks, waterToysAmount: waterToys, tipsAmount: tips, otherAmount: other,
+          rentalCommissionAmount: rentalCommission, serviceFeesAmount: serviceFees, totalCommission: platformFees,
+          totalOutingPrice: totalClientCost, alegriaRevenue, skipperRevenue: skipperRevenueTotal,
+        },
         remainingFeesAmount: 0,
         remainingOnboardAmount: 0,
         externalTotalRemainingAmount: 0,
@@ -486,6 +562,8 @@ export class BookingDetailComponent implements OnInit {
             reference: this.editForm.externalPlatformBookingRef || this.editForm.platformBookingReference || '',
             paidAmount: platformPaid,
             totalClientAmount: platformCustomerAmount,
+            fees: platformFees,
+            feeAmount: platformFees,
             status: 'recorded',
             recordedAt: now,
           },
@@ -493,11 +571,13 @@ export class BookingDetailComponent implements OnInit {
             skipperCashAmount: skipper,
             cateringAmount: catering,
             tipsAmount: tips,
-            cleaningCashAmount: cleaning,
+            cleaningCashAmount: fuel,
             drinksAmount: drinks,
             waterToysAmount: waterToys,
             otherOnboardAmount: other,
-            totalDirectAmount: skipper + catering + tips + cleaning + drinks + waterToys + other,
+            fuelAmount: fuel,
+            portFeesAmount: portFees,
+            totalDirectAmount: directTotal,
             status: 'recorded',
             recordedAt: now,
           },
@@ -506,8 +586,25 @@ export class BookingDetailComponent implements OnInit {
           ...raw,
           ...this.editForm,
           externalPlatformName: normalizedPlatformName,
+          proposalBoatPrice: boatOutingCost,
+          boatPrice: boatOutingCost,
+          estimatedBoatPrice: boatOutingCost,
+          totalCustomerCost: totalClientCost,
+          customerTotal: totalClientCost,
+          totalCustomerPrice: totalClientCost,
+          totalAmount: totalClientCost,
+          totalPrice: totalClientCost,
           externalPlatformTotalClientAmount: platformCustomerAmount,
           externalPlatformPaidAmount: platformPaid,
+        platformFees,
+        platformFeeAmount: platformFees,
+        externalPlatformFees: platformFees,
+        rentalCommissionAmount: rentalCommission,
+        serviceFeesAmount: serviceFees,
+        totalCommission: platformFees,
+        boatRentalAmount: boatOutingCost,
+        fuelAmount: fuel,
+        portFeesAmount: portFees,
           importedManually: raw.importedManually !== false,
           entryMode: raw.entryMode || 'historical',
           editedAt: now,
@@ -708,6 +805,9 @@ export class BookingDetailComponent implements OnInit {
       passengers: this.number(input.passengers || raw.passengers || deepRaw.passengers),
       totalAmount,
       totalPrice: totalAmount,
+      totalCustomerCost: totalAmount,
+      customerTotal: totalAmount,
+      totalCustomerPrice: totalAmount,
       skipperCashAmount,
       skipperPaid: input.skipperPaid === true || raw.skipperPaid === true || directPayments.skipperPaid === true,
       skipperStatus: input.skipperStatus || raw.skipperStatus || directPayments.skipperStatus || (skipperCashAmount > 0 ? 'to_be_paid_onboard' : 'not_applicable'),
@@ -782,15 +882,15 @@ export class BookingDetailComponent implements OnInit {
     let skipperCost = f.skipperAmount;
     let fuelCost = f.fuelAmount;
     let extraServicesCost = f.extraServicesAmount;
-    let boatOutingCost = f.boatAmount;
-    let totalCustomerCost = f.customerTotal;
+    let boatOutingCost = f.platformCost;
+    let totalCustomerCost = f.totalCustomerPrice;
 
     const stripeDepositPaidAmount = this.paidStripeAmountFor(booking, 'deposit');
     const depositPaidAmount = this.isDepositPaid(booking)
       ? (stripeDepositPaidAmount || this.number(booking.depositPaidAmount || booking.paidDepositAmount || booking.depositAmount || booking.payments?.deposit?.amount || (booking.payments?.deposit?.amount_total ? Number(booking.payments.deposit.amount_total) / 100 : 0)))
       : 0;
 
-    const rawBoatBalance = Math.max(0, f.alegriaRevenue - depositPaidAmount);
+    const rawBoatBalance = Math.max(0, f.alegriaPayableRevenue - depositPaidAmount);
     const explicitBalanceDue = this.firstPositive(
       booking.balanceAmount, booking.remainingFeesAmount, booking.remainingOnboardAmount, booking.remainingBoatBalance, booking.remainingAlegriaRevenue,
       booking.raw?.balanceAmount, booking.raw?.remainingFeesAmount, booking.raw?.remainingOnboardAmount, booking.raw?.remainingBoatBalance, booking.raw?.remainingAlegriaRevenue
@@ -822,7 +922,7 @@ export class BookingDetailComponent implements OnInit {
     const remainingFuelCost = 0;
     const remainingExtraServices = 0;
     const totalRemainingCustomer = alegriaRemainingComputed + skipperRemainingComputed;
-    const totalClientCost = f.customerTotal;
+    const totalClientCost = f.totalCustomerPrice;
     const totalCollected = this.number(booking.totalCollectedAmount || booking.raw?.totalCollectedAmount) || collectedViaPlatform + collectedDirectTotal;
     const totalRemaining = isHistoricalBooking ? 0 : totalRemainingCustomer;
     const totalOnboardCollections = onboardBoatBalanceCollected + onboardSkipperCollected + totalDirectCatering + totalDirectTips + totalDirectCleaningFuel + totalDirectDrinks + totalDirectWaterToys + totalDirectOther;
@@ -869,6 +969,8 @@ export class BookingDetailComponent implements OnInit {
       totalDirectWaterToys,
       totalDirectOther,
       boatOutingCost,
+      platformCost: f.platformCost,
+      platformFees: f.platformFees,
       skipperCost,
       extraServicesCost,
       fuelCost,
@@ -896,6 +998,18 @@ export class BookingDetailComponent implements OnInit {
       stripePaymentRecords,
       totalOnboardCollections,
       alegriaRevenueTotal,
+      boatRentalAmount: f.boatRentalAmount,
+      portFeesAmount: f.portFeesAmount,
+      cateringAmount: f.cateringAmount,
+      drinksAmount: f.drinksAmount,
+      waterToysAmount: f.waterToysAmount,
+      tipsAmount: f.tipsAmount,
+      otherAmount: f.otherAmount,
+      rentalCommissionAmount: f.rentalCommissionAmount,
+      serviceFeesAmount: f.serviceFeesAmount,
+      totalCommission: f.totalCommission,
+      totalOutingPrice: f.totalOutingPrice,
+      skipperRevenueTotal: f.skipperRevenue,
       customerPaidThroughPlatform,
       customerPaidDirectly,
       display: booking,
@@ -1010,8 +1124,16 @@ export class BookingDetailComponent implements OnInit {
     termsAcceptedAt: number | string | null;
     tncAcceptedAt: number | string | null;
   } {
-    const accepted = this.vm?.termsAccepted === true;
     const booking: any = this.vm?.display || {};
+    // Imported/external bookings can be confirmed without carrying the legacy
+    // tncAccepted boolean. The workflow already shows the terms step as complete,
+    // so preserve that canonical state when creating the warranty SetupIntent.
+    const accepted = this.vm?.termsAccepted === true
+      || booking.termsAccepted === true
+      || booking.tncAccepted === true
+      || booking.customerTermsAccepted === true
+      || ['confirmed', 'completed'].includes(String(booking.bookingRequestStatus || booking.bookingStatus || booking.status || '').toLowerCase())
+      || ['accepted', 'confirmed'].includes(String(booking.offerStatus || '').toLowerCase());
     const acceptedAt = booking.termsAcceptedAt
       || booking.tncAcceptedAt
       || booking.acceptedTermsAt
@@ -1090,7 +1212,7 @@ export class BookingDetailComponent implements OnInit {
 
   canPayAlegriaOnline(): boolean {
     if (!this.vm || this.editMode) return false;
-    return this.vm.remainingAlegriaRevenue > 0 && !this.isAlegriaCashSelected();
+    return this.vm.remainingAlegriaRevenue > 0;
   }
 
   payAlegriaOnline(): void {
@@ -1177,10 +1299,11 @@ export class BookingDetailComponent implements OnInit {
 
   canConfirmAlegriaCashReceived(): boolean {
     if (!this.vm || this.editMode) return false;
-    const booking: any = this.vm.display || {};
-    const alreadyPaid = booking.alegriaCashReceived === true || booking.balancePaid === true ||
-      String(booking.alegriaPaymentStatus || booking.balanceStatus || booking.payments?.alegria?.status || '').toLowerCase() === 'paid';
-    return (this.vm.isAdmin || this.isCurrentUserAdmin()) && !alreadyPaid && this.pendingAlegriaCashAmount() > 0;
+    // The amount still due is the single source of truth. Legacy flags such as
+    // balancePaid may describe an old payment phase and must not hide the admin
+    // cash-entry control when a boat/Alegria balance remains outstanding.
+    return (this.vm.isAdmin || this.isCurrentUserAdmin()) &&
+      Number(this.vm.remainingAlegriaRevenue || 0) > 0.009;
   }
 
   async confirmAlegriaCashReceived(): Promise<void> {
@@ -1189,45 +1312,57 @@ export class BookingDetailComponent implements OnInit {
     const bookingId = this.vm.bookingId || booking.bookingId || this.bookingId;
     if (!bookingId) return;
 
+    const remaining = Math.max(0, Number(this.vm.remainingAlegriaRevenue || 0));
+    const amount = Math.min(remaining, Math.max(0, Number(this.adminAlegriaCashAmount || 0)));
+    if (amount <= 0) {
+      this.error = this.t('enterValidAmount');
+      return;
+    }
+
     this.payingAlegria = true;
     this.error = '';
     const now = Date.now();
-    const amount = this.pendingAlegriaCashAmount();
     const payments = { ...(booking.payments || {}) };
+    const previousCash = Number(booking.alegriaCashReceivedAmount || payments.alegria?.cashAmountPaid || 0) || 0;
+    const cumulativeCash = Math.round((previousCash + amount) * 100) / 100;
+    const fullyPaid = amount >= remaining - 0.009;
 
     try {
       await this.bookingApi.updateBooking(bookingId, {
-        balancePaid: true,
-        balanceStatus: 'paid',
-        balancePaidAmount: amount,
+        balancePaid: fullyPaid,
+        balanceStatus: fullyPaid ? 'paid' : 'partially_paid',
+        balancePaidAmount: Math.round((Number(booking.balancePaidAmount || 0) + amount) * 100) / 100,
         balancePaidAt: now,
-        alegriaPaymentMethod: 'cash',
-        balancePaymentMethod: 'cash',
-        alegriaPaymentStatus: 'paid',
-        balancePaymentStatus: 'paid',
-        alegriaCashReceived: true,
-        alegriaCashReceivedAmount: amount,
+        alegriaPaymentMethod: this.vm.alegriaPaidAmount > 0 ? 'mixed' : 'cash',
+        balancePaymentMethod: this.vm.alegriaPaidAmount > 0 ? 'mixed' : 'cash',
+        alegriaPaymentStatus: fullyPaid ? 'paid' : 'partially_paid',
+        balancePaymentStatus: fullyPaid ? 'paid' : 'partially_paid',
+        alegriaCashReceived: cumulativeCash > 0,
+        alegriaCashReceivedAmount: cumulativeCash,
         alegriaCashReceivedAt: now,
         payments: {
           ...payments,
           alegria: {
             ...(payments.alegria || {}),
-            method: 'cash',
-            status: 'paid',
-            paid: true,
-            amountPaid: amount,
+            method: this.vm.alegriaPaidAmount > 0 ? 'mixed' : 'cash',
+            status: fullyPaid ? 'paid' : 'partially_paid',
+            paid: fullyPaid,
+            cashAmountPaid: cumulativeCash,
+            amountPaid: Math.round((Number(this.vm.alegriaPaidAmount || 0) + amount) * 100) / 100,
             receivedAt: now,
           },
           balance: {
             ...(payments.balance || {}),
-            method: 'cash',
-            status: 'paid',
-            paid: true,
-            amount: amount,
+            method: this.vm.alegriaPaidAmount > 0 ? 'mixed' : 'cash',
+            status: fullyPaid ? 'paid' : 'partially_paid',
+            paid: fullyPaid,
+            cashAmountPaid: cumulativeCash,
+            amountPaid: Math.round((Number(this.vm.alegriaPaidAmount || 0) + amount) * 100) / 100,
             paidAt: now,
           },
         },
       } as any);
+      this.adminAlegriaCashAmount = null;
       this.actionMessage = this.t('alegriaCashReceivedConfirmed');
       await this.loadBooking();
     } catch (error: any) {
@@ -1260,32 +1395,53 @@ export class BookingDetailComponent implements OnInit {
 
   async confirmSkipperPaid(): Promise<void> {
     if (!this.vm || !this.canConfirmSkipperPaid() || this.payingSkipper) return;
-    const booking = this.vm.display || {};
+    const booking: any = this.vm.display || {};
     const bookingId = this.vm.bookingId || booking.bookingId || this.bookingId;
     if (!bookingId) return;
+
+    const remaining = Math.max(0, Number(this.vm.remainingSkipperFee || 0));
+    const amount = Math.min(remaining, Math.max(0, Number(this.adminSkipperCashAmount || 0)));
+    if (amount <= 0) {
+      this.error = this.t('enterValidAmount');
+      return;
+    }
 
     this.payingSkipper = true;
     this.error = '';
     const now = Date.now();
     const payments = { ...(booking.payments || {}) };
+    const previousCash = Number(booking.skipperCashReceivedAmount || payments.skipper?.cashAmountPaid || payments.direct?.skipperCashPaidAmount || 0) || 0;
+    const cumulativeCash = Math.round((previousCash + amount) * 100) / 100;
+    const fullyPaid = amount >= remaining - 0.009;
     payments.direct = {
       ...(payments.direct || {}),
-      skipperPaid: true,
-      skipperStatus: 'paid',
-      skipperCashAmount: this.pendingSkipperCashAmount(),
+      skipperPaid: fullyPaid,
+      skipperStatus: fullyPaid ? 'paid' : 'partially_paid',
+      skipperCashPaidAmount: cumulativeCash,
       skipperPaidAt: now,
+    };
+    payments.skipper = {
+      ...(payments.skipper || {}),
+      method: this.vm.skipperPaidAmount > 0 ? 'mixed' : 'cash',
+      status: fullyPaid ? 'paid' : 'partially_paid',
+      paid: fullyPaid,
+      cashAmountPaid: cumulativeCash,
+      amountPaid: Math.round((Number(this.vm.skipperPaidAmount || 0) + amount) * 100) / 100,
+      paidAt: now,
     };
 
     try {
       await this.bookingApi.updateBooking(bookingId, {
-        skipperPaid: true,
-        skipperStatus: 'paid',
+        skipperPaid: fullyPaid,
+        skipperStatus: fullyPaid ? 'paid' : 'partially_paid',
         skipperPaidAt: now,
-        skipperPaymentMethod: 'cash',
-        skipperPaymentStatus: 'paid',
-        skipperPaidAmount: this.pendingSkipperCashAmount(),
+        skipperPaymentMethod: this.vm.skipperPaidAmount > 0 ? 'mixed' : 'cash',
+        skipperPaymentStatus: fullyPaid ? 'paid' : 'partially_paid',
+        skipperPaidAmount: Math.round((Number(this.vm.skipperPaidAmount || 0) + amount) * 100) / 100,
+        skipperCashReceivedAmount: cumulativeCash,
         payments,
       } as any);
+      this.adminSkipperCashAmount = null;
       await this.loadBooking();
     } catch (error: any) {
       this.error = error?.message || this.t('saveError');
@@ -1293,6 +1449,7 @@ export class BookingDetailComponent implements OnInit {
       this.payingSkipper = false;
     }
   }
+
 
 
   isAlegriaCashSelected(): boolean {
@@ -1408,7 +1565,7 @@ export class BookingDetailComponent implements OnInit {
 
   canPaySkipperOnline(): boolean {
     if (!this.vm || this.editMode) return false;
-    return this.vm.remainingSkipperFee > 0 && !this.isSkipperCashSelected();
+    return this.vm.remainingSkipperFee > 0;
   }
 
   paySkipperOnline(): void {
@@ -1856,8 +2013,10 @@ export class BookingDetailComponent implements OnInit {
     this.bookingApi.createWarrantySetup({
       ...this.termsAcceptanceMetadata(),
       bookingId,
+      offerId: booking.offerId || bookingId,
       ownerId: booking.ownerId || 'alegria',
       warrantyAmount: this.warrantyAmount(),
+      amount: this.warrantyAmount(),
       currency: 'eur',
       customerEmail: booking.email || booking.customerEmail || '',
       customerName: booking.customerName || booking.displayName || '',
@@ -1927,7 +2086,16 @@ export class BookingDetailComponent implements OnInit {
     // The currently selected warranty method wins. If the customer switches to cash,
     // an older saved card must not keep the UI stuck on "card registered".
     if (method.includes('cash') || status.includes('cash')) return false;
-    return status.includes('card_registered') || status.includes('warranty_card_saved') || status.includes('setup_succeeded') || !!booking?.warrantyPaymentMethodId || !!booking?.warrantySetupIntentId || method.includes('stripe_card_registered');
+    const warrantyPayment = booking?.payments?.warranty || {};
+    const paymentMethodId = booking?.warrantyPaymentMethodId || booking?.paymentMethodId || warrantyPayment?.paymentMethodId || warrantyPayment?.warrantyPaymentMethodId;
+    const setupIntentId = booking?.warrantySetupIntentId || booking?.setupIntentId || warrantyPayment?.setupIntentId || warrantyPayment?.warrantySetupIntentId;
+    const proofStatus = String(warrantyPayment?.status || '').toLowerCase();
+    return !!paymentMethodId && (
+      !!setupIntentId ||
+      proofStatus.includes('warranty_card_saved') ||
+      proofStatus.includes('setup_succeeded') ||
+      proofStatus.includes('card_registered')
+    );
   }
 
   private isCashWarrantySelected(booking: any): boolean {
@@ -1940,7 +2108,8 @@ export class BookingDetailComponent implements OnInit {
     if (this.isWarrantyReleased(booking)) return true;
     const amount = this.number(booking?.warrantyAmount || booking?.cautionAmount || booking?.securityDepositAmount || 500);
     if (amount <= 0) return true;
-    return this.hasWarrantyCardRegistered(booking) || this.isCashWarrantySelected(booking);
+    const status = String(booking?.warrantyStatus || '').toLowerCase();
+    return this.hasWarrantyCardRegistered(booking) || status.includes('cash_received') || booking?.warrantyCashReceived === true || booking?.warrantyCashConfirmed === true;
   }
 
   private isTermsAccepted(booking: any): boolean {
@@ -2147,12 +2316,30 @@ export class BookingDetailComponent implements OnInit {
 
   t(key: string): string {
     const staticFallbacks: Record<string, Record<string, string>> = {
+      outingPrice: { en: 'Outing price', fr: 'Prix de la sortie', es: 'Precio de la salida', it: 'Prezzo uscita', de: 'Ausflugspreis', nl: 'Prijs van de uitstap', ru: 'Стоимость выхода' },
+      boatRental: { en: 'Boat rental', fr: 'Location bateau', es: 'Alquiler del barco', it: 'Noleggio barca', de: 'Bootsmiete', nl: 'Bootverhuur', ru: 'Аренда лодки' },
+      fuel: { en: 'Fuel', fr: 'Carburant', es: 'Combustible', it: 'Carburante', de: 'Kraftstoff', nl: 'Brandstof', ru: 'Топливо' },
+      portFeesLabel: { en: 'Port fees', fr: 'Frais de port', es: 'Tasas portuarias', it: 'Spese portuali', de: 'Hafengebühren', nl: 'Havengelden', ru: 'Портовые сборы' },
+      drinks: { en: 'Drinks', fr: 'Boissons', es: 'Bebidas', it: 'Bevande', de: 'Getränke', nl: 'Dranken', ru: 'Напитки' },
+      waterToys: { en: 'Water toys', fr: 'Jouets nautiques', es: 'Juguetes acuáticos', it: 'Giochi nautici', de: 'Wasserspielzeug', nl: 'Waterspeelgoed', ru: 'Водные игрушки' },
+      tips: { en: 'Tips', fr: 'Pourboires', es: 'Propinas', it: 'Mance', de: 'Trinkgeld', nl: 'Fooien', ru: 'Чаевые' },
+      otherPricing: { en: 'Other', fr: 'Autres', es: 'Otros', it: 'Altro', de: 'Sonstiges', nl: 'Overig', ru: 'Другое' },
+      totalOutingPrice: { en: 'Total outing price', fr: 'Total prix de la sortie', es: 'Precio total de la salida', it: 'Prezzo totale uscita', de: 'Gesamtpreis Ausflug', nl: 'Totale prijs uitstap', ru: 'Итоговая стоимость' },
+      commission: { en: 'Commission', fr: 'Commission', es: 'Comisión', it: 'Commissione', de: 'Provision', nl: 'Commissie', ru: 'Комиссия' },
+      rentalCommission: { en: 'Commission on rental', fr: 'Commission sur la location', es: 'Comisión sobre el alquiler', it: 'Commissione sul noleggio', de: 'Provision auf Miete', nl: 'Commissie op verhuur', ru: 'Комиссия с аренды' },
+      serviceFeesLabel: { en: 'Service fees', fr: 'Frais de service', es: 'Gastos de servicio', it: 'Spese di servizio', de: 'Servicegebühren', nl: 'Servicekosten', ru: 'Сервисные сборы' },
+      totalCommission: { en: 'Total commission', fr: 'Total commission', es: 'Comisión total', it: 'Commissione totale', de: 'Gesamtprovision', nl: 'Totale commissie', ru: 'Общая комиссия' },
       financialSummary: { en: 'Financial summary', fr: 'Synthèse financière', es: 'Resumen financiero', it: 'Riepilogo finanziario', de: 'Finanzübersicht', nl: 'Financieel overzicht', ru: 'Финансовая сводка' },
       alegriaRevenue: { en: 'Alegria revenue', fr: 'Revenu Alegria', es: 'Ingresos Alegria', it: 'Ricavo Alegria', de: 'Alegria-Umsatz', nl: 'Alegria-inkomsten', ru: 'Доход Alegria' },
       alegriaRevenueHelp: { en: 'All booking revenue excluding skipper fees.', fr: 'Tous les postes de revenu hors skipper.', es: 'Todos los ingresos excepto el skipper.', it: 'Tutti i ricavi escluso lo skipper.', de: 'Alle Umsätze ohne Skippergebühr.', nl: 'Alle inkomsten behalve skipperkosten.', ru: 'Все доходы, кроме оплаты шкипера.' },
       skipperRevenue: { en: 'Skipper revenue', fr: 'Revenu skipper', es: 'Ingresos skipper', it: 'Ricavo skipper', de: 'Skipper-Umsatz', nl: 'Skipper-inkomsten', ru: 'Доход шкипера' },
       skipperRevenueHelp: { en: 'Paid separately to the skipper, usually in cash onboard.', fr: 'À régler séparément au skipper, généralement en espèces à bord.', es: 'A pagar por separado al skipper, normalmente en efectivo a bordo.', it: 'Da pagare separatamente allo skipper, di solito in contanti a bordo.', de: 'Separat an den Skipper zu zahlen, meist bar an Bord.', nl: 'Apart te betalen aan de skipper, meestal contant aan boord.', ru: 'Оплачивается отдельно шкиперу, обычно наличными на борту.' },
       platformPayoutToAlegria: { en: 'Platform payout to Alegria', fr: 'Reversement plateforme à Alegria', es: 'Pago de la plataforma a Alegria', it: 'Versamento piattaforma ad Alegria', de: 'Plattform-Auszahlung an Alegria', nl: 'Platformuitbetaling aan Alegria', ru: 'Выплата платформы Alegria' },
+      boatOuting: { en: 'Boat cost', fr: 'Coût bateau', es: 'Coste del barco', it: 'Costo barca', de: 'Bootskosten', nl: 'Bootkosten', ru: 'Стоимость лодки' },
+      platformCost: { en: 'Platform cost', fr: 'Coût plateforme', es: 'Coste de plataforma', it: 'Costo piattaforma', de: 'Plattformkosten', nl: 'Platformkosten', ru: 'Стоимость платформы' },
+      platformFees: { en: 'Platform fees', fr: 'Frais plateforme', es: 'Comisiones de plataforma', it: 'Commissioni piattaforma', de: 'Plattformgebühren', nl: 'Platformkosten', ru: 'Комиссия платформы' },
+      rest: { en: 'Rest', fr: 'Reste', es: 'Resto', it: 'Resto', de: 'Rest', nl: 'Overig', ru: 'Остальное' },
+      totalAlegriaRevenue: { en: 'TOTAL ALEGRIA REVENUE', fr: 'REVENU TOTAL ALEGRIA', es: 'INGRESOS TOTALES ALEGRIA', it: 'RICAVO TOTALE ALEGRIA', de: 'GESAMTUMSATZ ALEGRIA', nl: 'TOTALE OPBRENGST ALEGRIA', ru: 'ОБЩИЙ ДОХОД ALEGRIA' },
       remainingToPayAlegria: { en: 'Remaining to pay to Alegria', fr: 'Reste à payer à Alegria', es: 'Pendiente de pagar a Alegria', it: 'Resto da pagare ad Alegria', de: 'Noch an Alegria zu zahlen', nl: 'Nog te betalen aan Alegria', ru: 'Осталось оплатить Alegria' },
       remainingToPaySkipper: { en: 'Remaining to pay to the skipper', fr: 'Reste à payer au skipper', es: 'Pendiente de pagar al skipper', it: 'Resto da pagare allo skipper', de: 'Noch an den Skipper zu zahlen', nl: 'Nog te betalen aan de skipper', ru: 'Осталось оплатить шкиперу' },
       skipperCashOnboard: { en: 'To be paid in cash onboard directly to the skipper.', fr: 'À régler en espèces à bord directement au skipper.', es: 'A pagar en efectivo a bordo directamente al skipper.', it: 'Da pagare in contanti a bordo direttamente allo skipper.', de: 'An Bord in bar direkt an den Skipper zu zahlen.', nl: 'Aan boord contant rechtstreeks aan de skipper te betalen.', ru: 'Оплачивается наличными на борту напрямую шкиперу.' },
@@ -2235,6 +2422,7 @@ export class BookingDetailComponent implements OnInit {
       paymentMethodChoice: { en: 'Choose how to pay', fr: 'Choisissez votre mode de paiement', es: 'Elija cómo pagar', it: 'Scegli come pagare', de: 'Zahlungsart wählen', nl: 'Kies hoe u betaalt', ru: 'Выберите способ оплаты' },
       payByCard: { en: 'Pay by card', fr: 'Payer par carte', es: 'Pagar con tarjeta', it: 'Paga con carta', de: 'Mit Karte zahlen', nl: 'Met kaart betalen', ru: 'Оплатить картой' },
       payByCash: { en: 'Pay in cash', fr: 'Payer en espèces', es: 'Pagar en efectivo', it: 'Paga in contanti', de: 'Bar bezahlen', nl: 'Contant betalen', ru: 'Оплатить наличными' },
+      enterValidAmount: { en: 'Enter a valid amount.', fr: 'Saisissez un montant valide.', es: 'Introduzca un importe válido.', it: 'Inserisci un importo valido.', de: 'Geben Sie einen gültigen Betrag ein.', nl: 'Voer een geldig bedrag in.', ru: 'Введите корректную сумму.' },
       confirmAlegriaCashReceived: { en: 'Confirm cash received by Alegria', fr: 'Confirmer la réception des espèces par Alegria', es: 'Confirmar el efectivo recibido por Alegria', it: 'Conferma contanti ricevuti da Alegria', de: 'Bargeldeingang bei Alegria bestätigen', nl: 'Ontvangst contant geld door Alegria bevestigen', ru: 'Подтвердить получение наличных Alegria' },
       alegriaCashReceivedConfirmed: { en: 'Cash payment received by Alegria has been confirmed.', fr: 'La réception du paiement en espèces par Alegria a été confirmée.', es: 'Se confirmó la recepción del pago en efectivo por Alegria.', it: 'La ricezione del pagamento in contanti da parte di Alegria è stata confermata.', de: 'Der Bargeldeingang bei Alegria wurde bestätigt.', nl: 'De ontvangst van de contante betaling door Alegria is bevestigd.', ru: 'Получение наличной оплаты Alegria подтверждено.' },
       cashPaymentSelected: { en: 'Cash payment selected. The payment will be confirmed when the cash is received.', fr: 'Paiement en espèces sélectionné. Le paiement sera confirmé lors de la remise des espèces.', es: 'Pago en efectivo seleccionado. El pago se confirmará al recibir el efectivo.', it: 'Pagamento in contanti selezionato. Il pagamento sarà confermato alla consegna del contante.', de: 'Barzahlung ausgewählt. Die Zahlung wird beim Erhalt des Bargelds bestätigt.', nl: 'Contante betaling geselecteerd. De betaling wordt bevestigd zodra het geld is ontvangen.', ru: 'Выбрана оплата наличными. Платёж будет подтверждён после получения наличных.' },
@@ -2303,12 +2491,10 @@ export class BookingDetailComponent implements OnInit {
   }
 
   private isHistoricalRecord(value: any): boolean {
-    return value?.status === 'completed' ||
-      value?.bookingStatus === 'completed' ||
-      value?.raw?.importedManually === true ||
-      value?.raw?.entryMode === 'historical' ||
-      value?.raw?.raw?.entryMode === 'historical' ||
-      value?.payments?.deposit?.source === 'manual_historical_import';
+    // "Completed" describes the outing lifecycle, not the financial lifecycle.
+    // Only records explicitly imported as historical are allowed to bypass payment steps.
+    const entryMode = String(value?.entryMode || value?.raw?.entryMode || value?.raw?.raw?.entryMode || '').toLowerCase();
+    return entryMode === 'historical';
   }
 
   private isCurrentUserAdmin(): boolean {

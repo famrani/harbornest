@@ -146,7 +146,7 @@
         </span>
 
         <span class="booking-price">
-          <strong>€{{ booking.totalPrice || 0 }}</strong>
+          <strong>€{{ getCustomerTotal(booking) }}</strong>
           <small>{{ t('totalPrice') }}</small>
         </span>
 
@@ -165,7 +165,7 @@
         <h2>{{ t('recordRemainingPayment') }}</h2>
         <p>
           <strong>{{ selectedBalanceBooking.customerName }}</strong><br />
-          Total: €{{ selectedBalanceBooking.totalPrice || 0 }}<br />
+          Total: €{{ getCustomerTotal(selectedBalanceBooking) }}<br />
           Deposit 10%: €{{ getDepositAmount(selectedBalanceBooking) }} · {{ isDepositPaid(selectedBalanceBooking) ? t('depositPaid') : t('depositPending') }}<br />
           Warranty mode: {{ getWarrantyModeLabel(selectedBalanceBooking) }}<br />
           {{ t('stripeWarrantyCard') }}: {{ getWarrantyCardLabel(selectedBalanceBooking) }}<br />

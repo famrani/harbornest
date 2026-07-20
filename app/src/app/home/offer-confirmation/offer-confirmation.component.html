@@ -184,13 +184,10 @@
           <section class="wizard-panel" *ngIf="wizardStep === 2">
             <h2>{{ text('payDepositTitle') }}</h2>
             <p>{{ depositMessage }}</p>
-            <p class="muted">{{ priceTitle('deposit') }}: <strong>€{{ offer.depositAmount }}</strong></p>
+            <p class="muted">{{ priceTitle('deposit') }}: <strong>€{{ cardDepositAmount | number:'1.2-2' }}</strong></p>
             <p class="muted" *ngIf="skipperCashAmount > 0">{{ priceTitle('skipperCash') }}: <strong>€{{ skipperCashAmount }}</strong></p>
 
             <div class="wizard-actions">
-              <button class="btn btn-secondary" type="button" (click)="goToWizardStep(1)">
-                {{ text('previousStepButton') || 'Previous step' }}
-              </button>
               <button class="btn btn-primary" type="button" [disabled]="payingDeposit" (click)="payDeposit()">
                 {{ payingDeposit ? text('redirecting') : text('payDepositButton') }}
               </button>
@@ -200,12 +197,6 @@
           <section class="wizard-panel" *ngIf="wizardStep === 3">
             <h2>{{ text('warrantyTitle') }}</h2>
             <p>{{ text('warrantyWizardIntro') }}</p>
-
-            <div class="wizard-actions wizard-actions-top">
-              <button class="btn btn-secondary" type="button" (click)="goToWizardStep(2)">
-                {{ text('previousStepButton') || 'Previous step' }}
-              </button>
-            </div>
 
             <div class="warranty-options">
               <label class="radio-card">

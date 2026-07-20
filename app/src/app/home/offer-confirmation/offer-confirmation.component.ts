@@ -1061,6 +1061,12 @@ export class OfferConfirmationComponent implements OnInit {
     });
   }
 
+
+  get cardDepositAmount(): number {
+    const configured = Number(this.offer?.depositAmount || 0);
+    return configured > 0 ? Math.max(0.50, configured) : 0;
+  }
+
   payDeposit(): void {
     if (!this.offer || !this.offerAccessReady || !this.offerCanStartCustomerWorkflow) return;
     this.rememberOfferAccess();

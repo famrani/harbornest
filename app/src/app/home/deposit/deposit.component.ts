@@ -305,17 +305,15 @@ export class DepositComponent implements OnInit, OnDestroy {
     if (this.cashWarrantySelected) return false;
     const anyBooking: any = this.booking || {};
     const warrantyPayment = anyBooking?.payments?.warranty || {};
-    return anyBooking.warrantyRegistered === true ||
-      anyBooking.warrantyStatus === 'card_registered' ||
-      anyBooking.warrantyStatus === 'warranty_card_saved' ||
-      anyBooking.warrantyStatus === 'warranty_card_registered' ||
-      !!anyBooking.warrantySetupIntentId ||
-      !!anyBooking.warrantyPaymentMethodId ||
-      warrantyPayment.warrantyRegistered === true ||
-      warrantyPayment.status === 'card_registered' ||
-      warrantyPayment.status === 'warranty_card_saved' ||
-      !!warrantyPayment.setupIntentId ||
-      !!warrantyPayment.paymentMethodId;
+    const paymentMethodId = anyBooking.warrantyPaymentMethodId || anyBooking.paymentMethodId || warrantyPayment.paymentMethodId || warrantyPayment.warrantyPaymentMethodId;
+    const setupIntentId = anyBooking.warrantySetupIntentId || anyBooking.setupIntentId || warrantyPayment.setupIntentId || warrantyPayment.warrantySetupIntentId;
+    const status = String(warrantyPayment.status || '').toLowerCase();
+    return !!paymentMethodId && (
+      !!setupIntentId ||
+      status === 'card_registered' ||
+      status === 'warranty_card_saved' ||
+      status === 'setup_succeeded'
+    );
   }
 
   get showWarrantyRegistration(): boolean {

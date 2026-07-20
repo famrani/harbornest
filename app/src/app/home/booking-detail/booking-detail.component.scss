@@ -1340,3 +1340,23 @@
   color: #fff;
   border-color: #176b47;
 }
+
+/* Release 97.1 — keep edit pricing aligned with the booking financial view. */
+.pricing-edit-grid .pricing-total-field {
+  font-weight: 700;
+}
+
+.pricing-edit-grid .pricing-total-field input {
+  font-weight: 700;
+}
+
+.cash-amount-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-weight: 600;
+}
+.cash-amount-entry input {
+  width: 9rem;
+  min-height: 2.5rem;
+}

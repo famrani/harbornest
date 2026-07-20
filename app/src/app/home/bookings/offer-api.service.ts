@@ -1049,16 +1049,20 @@ export class OfferApiService {
   }
 
   createDepositCheckout(offer: AlegriaOffer): Observable<any> {
+    const configuredDeposit = Number(offer.depositAmount || 0);
+    const cardDepositAmount = configuredDeposit > 0 ? Math.max(0.50, configuredDeposit) : 0;
     return this.http.post<any>(`${this.baseUrl}/pay/outing-deposit-checkout`, {
       bookingId: offer.offerId,
+      offerId: offer.offerId,
       ownerId: 'alegria',
       customerName: offer.customerName,
       customerEmail: offer.customerEmail,
       customerPhone: offer.customerPhone,
       outingDate: offer.outingDate,
       outingType: offer.outingType,
-      amount: offer.depositAmount,
-      depositAmount: offer.depositAmount,
+      amount: cardDepositAmount,
+      depositAmount: cardDepositAmount,
+      requestedDepositAmount: configuredDeposit,
       totalAmount: (offer as any).onlinePayableAmount || (offer as any).appPayableAmount || Math.max(0, Number(offer.totalAmount || 0) - Number((offer as any).proposalSkipperPrice || (offer as any).estimatedSkipperPrice || 0)),
       skipperCashAmount: (offer as any).proposalSkipperPrice || (offer as any).estimatedSkipperPrice || 0,
       paymentType: 'deposit',

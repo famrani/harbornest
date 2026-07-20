@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServicesService } from 'godigital-lib';
 import { BookingApiService, AlegriaBooking } from './booking-api.service';
+import { BookingFinancialService } from './booking-financial.service';
 import { SITE_CONTENT } from '../site-content';
 import { SiteContentService } from '../site-content-service/site-content.service';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
@@ -71,7 +72,8 @@ export class BookingsComponent implements OnInit, OnDestroy {
     private router: Router,
     private mainSvc: ServicesService,
     private siteContentService: SiteContentService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private bookingFinancial: BookingFinancialService
   ) {}
 
   ngOnInit(): void {
@@ -262,8 +264,8 @@ export class BookingsComponent implements OnInit, OnDestroy {
           right = this.getStatusLabel(b);
           break;
         case 'total':
-          left = Number(a.totalPrice || 0);
-          right = Number(b.totalPrice || 0);
+          left = this.getCustomerTotal(a);
+          right = this.getCustomerTotal(b);
           break;
         case 'balance':
           left = this.getBalanceAmount(a);
@@ -503,13 +505,17 @@ export class BookingsComponent implements OnInit, OnDestroy {
     this.router.navigate(['/admin/bookings', booking.bookingId]);
   }
 
+  getCustomerTotal(booking: AlegriaBooking): number {
+    return this.bookingFinancial.build(booking).totalCustomerPrice;
+  }
+
   getDepositAmount(booking: AlegriaBooking): number {
-    const total = Number(booking.totalPrice || 0);
+    const total = this.getCustomerTotal(booking);
     return Number(booking.depositAmount || (total ? Math.round(total * 0.1 * 100) / 100 : 0));
   }
 
   getBalanceAmount(booking: AlegriaBooking): number {
-    const total = Number(booking.totalPrice || 0);
+    const total = this.getCustomerTotal(booking);
     const deposit = this.getDepositAmount(booking);
     return Number((booking as any).balanceAmount || Math.max(0, Math.round((total - deposit) * 100) / 100));
   }
@@ -585,13 +591,19 @@ export class BookingsComponent implements OnInit, OnDestroy {
     const warrantyPayment = anyBooking?.payments?.warranty || {};
     const legacyPayment = anyBooking?.payment || {};
 
-    return this.isCompletedStatusValue(anyBooking.warrantyStatus) ||
-      this.isCompletedStatusValue(anyBooking.warrantyRegistered) ||
-      this.isCompletedStatusValue(legacyPayment.warrantyStatus) ||
-      this.isCompletedStatusValue(legacyPayment.warrantyRegistered) ||
-      this.isCompletedStatusValue(warrantyPayment.warrantyStatus) ||
-      this.isCompletedStatusValue(warrantyPayment.warrantyRegistered) ||
-      this.isCompletedStatusValue(warrantyPayment.status);
+    const paymentMethodId = anyBooking.warrantyPaymentMethodId || anyBooking.paymentMethodId ||
+      legacyPayment.warrantyPaymentMethodId || legacyPayment.paymentMethodId ||
+      warrantyPayment.warrantyPaymentMethodId || warrantyPayment.paymentMethodId;
+    const setupIntentId = anyBooking.warrantySetupIntentId || anyBooking.setupIntentId ||
+      legacyPayment.warrantySetupIntentId || legacyPayment.setupIntentId ||
+      warrantyPayment.warrantySetupIntentId || warrantyPayment.setupIntentId;
+    const status = String(warrantyPayment.status || warrantyPayment.warrantyStatus || '').toLowerCase();
+    return !!paymentMethodId && (
+      !!setupIntentId ||
+      status === 'card_registered' ||
+      status === 'warranty_card_saved' ||
+      status === 'setup_succeeded'
+    );
   }
 
 

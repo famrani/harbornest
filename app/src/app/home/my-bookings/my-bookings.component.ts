@@ -514,13 +514,19 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
     const warrantyPayment = anyBooking?.payments?.warranty || {};
     const legacyPayment = anyBooking?.payment || {};
 
-    return this.isCompletedStatusValue(anyBooking.warrantyStatus) ||
-      this.isCompletedStatusValue(anyBooking.warrantyRegistered) ||
-      this.isCompletedStatusValue(legacyPayment.warrantyStatus) ||
-      this.isCompletedStatusValue(legacyPayment.warrantyRegistered) ||
-      this.isCompletedStatusValue(warrantyPayment.warrantyStatus) ||
-      this.isCompletedStatusValue(warrantyPayment.warrantyRegistered) ||
-      this.isCompletedStatusValue(warrantyPayment.status);
+    const paymentMethodId = anyBooking.warrantyPaymentMethodId || anyBooking.paymentMethodId ||
+      legacyPayment.warrantyPaymentMethodId || legacyPayment.paymentMethodId ||
+      warrantyPayment.warrantyPaymentMethodId || warrantyPayment.paymentMethodId;
+    const setupIntentId = anyBooking.warrantySetupIntentId || anyBooking.setupIntentId ||
+      legacyPayment.warrantySetupIntentId || legacyPayment.setupIntentId ||
+      warrantyPayment.warrantySetupIntentId || warrantyPayment.setupIntentId;
+    const status = String(warrantyPayment.status || warrantyPayment.warrantyStatus || '').toLowerCase();
+    return !!paymentMethodId && (
+      !!setupIntentId ||
+      status === 'card_registered' ||
+      status === 'warranty_card_saved' ||
+      status === 'setup_succeeded'
+    );
   }
 
   getWarrantyCardLabel(booking: AlegriaBooking): string {

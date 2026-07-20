@@ -714,12 +714,15 @@ export class AccountSummaryComponent implements OnInit {
     if (this.isCashWarrantySelected(booking)) return false;
     const anyBooking: any = booking;
     const warrantyPayment = anyBooking?.payments?.warranty || {};
-    return anyBooking.warrantyRegistered === true ||
-      anyBooking.warrantyStatus === 'card_registered' ||
-      anyBooking.warrantyStatus === 'warranty_card_saved' ||
-      warrantyPayment.warrantyRegistered === true ||
-      warrantyPayment.status === 'card_registered' ||
-      warrantyPayment.status === 'warranty_card_saved';
+    const paymentMethodId = anyBooking.warrantyPaymentMethodId || anyBooking.paymentMethodId || warrantyPayment.paymentMethodId || warrantyPayment.warrantyPaymentMethodId;
+    const setupIntentId = anyBooking.warrantySetupIntentId || anyBooking.setupIntentId || warrantyPayment.setupIntentId || warrantyPayment.warrantySetupIntentId;
+    const status = String(warrantyPayment.status || '').toLowerCase();
+    return !!paymentMethodId && (
+      !!setupIntentId ||
+      status === 'card_registered' ||
+      status === 'warranty_card_saved' ||
+      status === 'setup_succeeded'
+    );
   }
 
   isCashWarrantySelected(booking: AlegriaBooking): boolean {

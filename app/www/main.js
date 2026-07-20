@@ -13344,16 +13344,20 @@ let OfferApiService = class OfferApiService {
     })();
   }
   createDepositCheckout(offer) {
+    const configuredDeposit = Number(offer.depositAmount || 0);
+    const cardDepositAmount = configuredDeposit > 0 ? Math.max(0.50, configuredDeposit) : 0;
     return this.http.post(`${this.baseUrl}/pay/outing-deposit-checkout`, {
       bookingId: offer.offerId,
+      offerId: offer.offerId,
       ownerId: 'alegria',
       customerName: offer.customerName,
       customerEmail: offer.customerEmail,
       customerPhone: offer.customerPhone,
       outingDate: offer.outingDate,
       outingType: offer.outingType,
-      amount: offer.depositAmount,
-      depositAmount: offer.depositAmount,
+      amount: cardDepositAmount,
+      depositAmount: cardDepositAmount,
+      requestedDepositAmount: configuredDeposit,
       totalAmount: offer.onlinePayableAmount || offer.appPayableAmount || Math.max(0, Number(offer.totalAmount || 0) - Number(offer.proposalSkipperPrice || offer.estimatedSkipperPrice || 0)),
       skipperCashAmount: offer.proposalSkipperPrice || offer.estimatedSkipperPrice || 0,
       paymentType: 'deposit',

@@ -1,13 +1,33 @@
 import { Injectable } from '@angular/core';
 
 export interface BookingFinancialModel {
+  /** Authoritative amount charged to the customer for the complete outing. */
+  totalCustomerPrice: number;
+  /** Amount charged through an external platform, when applicable. */
+  paidOnPlatform: number;
+  platformCost: number;
+  platformFees: number;
   boatAmount: number;
   fuelAmount: number;
   extraServicesAmount: number;
   skipperAmount: number;
   customerTotal: number;
+  /** Alegria net revenue: boat cost minus platform cost/fees. */
   alegriaRevenue: number;
+  /** Amount payable to Alegria directly, excluding the skipper amount paid separately. */
+  alegriaPayableRevenue: number;
   skipperRevenue: number;
+  boatRentalAmount: number;
+  portFeesAmount: number;
+  cateringAmount: number;
+  drinksAmount: number;
+  waterToysAmount: number;
+  tipsAmount: number;
+  otherAmount: number;
+  rentalCommissionAmount: number;
+  serviceFeesAmount: number;
+  totalCommission: number;
+  totalOutingPrice: number;
   alegriaPaid: number;
   skipperPaid: number;
   alegriaRemaining: number;
@@ -103,6 +123,12 @@ export class BookingFinancialService {
 
     const platformPaidToAlegria = this.n(booking?.externalPlatformPaidAmount, payments?.platform?.paidAmount, booking?.raw?.externalPlatformPaidAmount, booking?.raw?.payments?.platform?.paidAmount);
     const totalCustomerOnPlatform = this.n(booking?.externalPlatformTotalClientAmount, payments?.platform?.totalClientAmount, booking?.raw?.externalPlatformTotalClientAmount, booking?.raw?.payments?.platform?.totalClientAmount);
+    const explicitPlatformFees = this.n(
+      booking?.platformFees, booking?.platformFeeAmount, booking?.externalPlatformFees,
+      payments?.platform?.fees, payments?.platform?.feeAmount,
+      booking?.raw?.platformFees, booking?.raw?.platformFeeAmount, booking?.raw?.externalPlatformFees,
+      booking?.raw?.payments?.platform?.fees, booking?.raw?.payments?.platform?.feeAmount,
+    );
 
     const skipperAmount = this.n(booking?.skipperCashAmount, booking?.proposalSkipperPrice, payments?.direct?.skipperCashAmount, booking?.raw?.skipperCashAmount, booking?.raw?.proposalSkipperPrice);
     const catering = this.n(booking?.cateringAmount, payments?.direct?.cateringAmount, booking?.raw?.cateringAmount);
@@ -117,10 +143,32 @@ export class BookingFinancialService {
     const extraServicesAmount = external ? catering + tips + drinks + waterToys + other : explicitExtras;
 
     let boatAmount = this.n(booking?.proposalBoatPrice, booking?.boatPrice, booking?.estimatedBoatPrice, booking?.raw?.proposalBoatPrice, booking?.raw?.boatPrice);
-    let customerTotal = this.n(booking?.totalAmount, booking?.totalPrice, booking?.totalCustomerCost, booking?.customerTotal, booking?.raw?.totalAmount, booking?.raw?.totalPrice);
+    // A booking may contain a legacy totalPrice (platform-only) and a corrected
+    // totalAmount / totalCustomerCost (complete customer cost). Never let the
+    // first legacy field win: keep the largest explicit customer-facing total.
+    const explicitCustomerTotals = [
+      booking?.totalCustomerCost,
+      booking?.customerTotal,
+      booking?.totalCustomerPrice,
+      booking?.totalAmount,
+      booking?.totalPrice,
+      booking?.raw?.totalCustomerCost,
+      booking?.raw?.customerTotal,
+      booking?.raw?.totalCustomerPrice,
+      booking?.raw?.totalAmount,
+      booking?.raw?.totalPrice,
+    ]
+      .map((value) => Number(value))
+      .filter((value) => Number.isFinite(value) && value > 0);
+    let customerTotal = explicitCustomerTotals.length ? Math.max(...explicitCustomerTotals) : 0;
 
     if (external) {
-      customerTotal = customerTotal || totalCustomerOnPlatform + skipperAmount + fuel + extraServicesAmount;
+      // The platform total is only the amount charged by the marketplace. The complete
+      // customer cost also includes fees collected directly (skipper, fuel, extras).
+      // Keep the largest explicit total to support edited/imported bookings where a
+      // legacy totalPrice still contains only the platform amount.
+      const completeExternalTotal = totalCustomerOnPlatform + skipperAmount + fuel + extraServicesAmount;
+      customerTotal = Math.max(customerTotal, completeExternalTotal);
       boatAmount = Math.max(0, customerTotal - skipperAmount - fuel - extraServicesAmount);
     } else {
       const onlinePayable = this.n(booking?.onlinePayableAmount, booking?.appPayableAmount);
@@ -128,32 +176,101 @@ export class BookingFinancialService {
       customerTotal = boatAmount + fuel + extraServicesAmount + skipperAmount;
     }
 
-    const alegriaRevenue = external
-      ? platformPaidToAlegria + fuel + extraServicesAmount
-      : boatAmount + fuel + extraServicesAmount;
-    const skipperRevenue = skipperAmount;
+    // Canonical outing pricing model used by view, edit and summaries.
+    // Total outing price = rental + skipper + fuel + port + catering + drinks + toys + tips + other.
+    // Total commission = commission on rental + service fees.
+    // Alegria revenue = total outing price - total commission - skipper.
+    // Skipper revenue = skipper + tips.
+    const directBooking = !external || ['direct', 'alegria', 'direct alegria'].includes(String(booking?.source || booking?.bookingSource || booking?.externalPlatform || '').toLowerCase());
+    const boatRentalAmount = this.n(
+      booking?.pricing?.boatRentalAmount, booking?.boatRentalAmount, booking?.rentalAmount,
+      booking?.proposalBoatPrice, booking?.boatPrice, booking?.estimatedBoatPrice,
+      booking?.raw?.pricing?.boatRentalAmount, booking?.raw?.boatRentalAmount, booking?.raw?.proposalBoatPrice,
+      totalCustomerOnPlatform
+    );
+    const portFeesAmount = this.n(booking?.pricing?.portFeesAmount, booking?.portFeesAmount, booking?.harborFeesAmount, booking?.raw?.pricing?.portFeesAmount, booking?.raw?.portFeesAmount);
+    const cateringAmount = this.n(booking?.pricing?.cateringAmount, booking?.cateringAmount, payments?.direct?.cateringAmount, booking?.raw?.cateringAmount);
+    const drinksAmount = this.n(booking?.pricing?.drinksAmount, booking?.drinksAmount, payments?.direct?.drinksAmount, booking?.raw?.drinksAmount);
+    const waterToysAmount = this.n(booking?.pricing?.waterToysAmount, booking?.waterToysAmount, payments?.direct?.waterToysAmount, booking?.raw?.waterToysAmount);
+    const tipsAmount = this.n(booking?.pricing?.tipsAmount, booking?.tipsAmount, booking?.tipAmount, payments?.direct?.tipsAmount, booking?.raw?.tipsAmount);
+    const otherAmount = this.n(booking?.pricing?.otherAmount, booking?.otherOnboardAmount, booking?.otherAmount, payments?.direct?.otherOnboardAmount, booking?.raw?.otherOnboardAmount);
+    const canonicalFuelAmount = this.n(booking?.pricing?.fuelAmount, booking?.fuelAmount, booking?.proposalFuelPrice, booking?.fuelPrice, booking?.cleaningCashAmount, booking?.raw?.fuelAmount, booking?.raw?.cleaningCashAmount);
+    const rentalCommissionAmount = directBooking ? 0 : this.n(
+      booking?.pricing?.rentalCommissionAmount, booking?.rentalCommissionAmount, booking?.platformCommissionAmount,
+      booking?.raw?.pricing?.rentalCommissionAmount, booking?.raw?.rentalCommissionAmount,
+      explicitPlatformFees, Math.max(0, boatRentalAmount - platformPaidToAlegria)
+    );
+    const serviceFeesAmount = directBooking ? 0 : this.n(
+      booking?.pricing?.serviceFeesAmount, booking?.serviceFeesAmount, booking?.platformServiceFees,
+      booking?.raw?.pricing?.serviceFeesAmount, booking?.raw?.serviceFeesAmount
+    );
+    const totalOutingPrice = boatRentalAmount + skipperAmount + canonicalFuelAmount + portFeesAmount + cateringAmount + drinksAmount + waterToysAmount + tipsAmount + otherAmount;
+    const totalCommission = rentalCommissionAmount + serviceFeesAmount;
+    customerTotal = totalOutingPrice;
+    boatAmount = boatRentalAmount;
+    const platformFees = totalCommission;
+    const platformCost = totalCommission;
+    const alegriaPayableRevenue = Math.max(0, totalOutingPrice - totalCommission - skipperAmount);
+    const alegriaRevenue = alegriaPayableRevenue;
+    const skipperRevenue = skipperAmount + tipsAmount;
     const depositPaid = (booking?.depositPaid === true || booking?.depositStatus === 'paid' || payments?.deposit?.paid === true || payments?.deposit?.status === 'paid')
       ? (this.paidFromStripe(booking, 'deposit') || this.n(booking?.depositPaidAmount, booking?.paidDepositAmount, booking?.depositAmount, payments?.deposit?.amount))
       : 0;
-    const alegriaBalancePaid = this.paidFromStripe(booking, 'alegria') || this.n(booking?.alegriaPaidAmount, payments?.alegria?.amount, payments?.balance?.amount);
-    const alegriaPaid = Math.min(alegriaRevenue, external ? platformPaidToAlegria + alegriaBalancePaid : depositPaid + alegriaBalancePaid);
-    const skipperStripePaid = this.paidFromStripe(booking, 'skipper');
-    const skipperPaid = (booking?.skipperPaid === true || booking?.skipperStatus === 'paid' || booking?.skipperPaymentStatus === 'paid' || payments?.skipper?.paid === true || payments?.skipper?.status === 'paid' || payments?.direct?.skipperPaid === true)
-      ? (skipperStripePaid || this.n(booking?.skipperPaidAmount, payments?.skipper?.amount, skipperAmount))
-      : skipperStripePaid;
+    const hasStripeRecords = Array.isArray(booking?.stripePaymentRecords) && booking.stripePaymentRecords.some((record: any) =>
+      !!(record?.stripeCheckoutSessionId || record?.checkoutSessionId || record?.stripePaymentIntentId || record?.paymentIntentId)
+    );
+    const alegriaStripeOrLegacyPaid = this.paidFromStripe(booking, 'alegria');
+    const alegriaCashPaid = this.n(booking?.alegriaCashReceivedAmount, payments?.alegria?.cashAmountPaid, payments?.balance?.cashAmountPaid);
+    const alegriaBalancePaid = hasStripeRecords
+      ? alegriaStripeOrLegacyPaid + alegriaCashPaid
+      : Math.max(alegriaStripeOrLegacyPaid, alegriaCashPaid, this.n(booking?.alegriaPaidAmount, payments?.alegria?.amountPaid, payments?.balance?.amountPaid));
+    const alegriaPaid = Math.min(alegriaPayableRevenue, external ? platformPaidToAlegria + alegriaBalancePaid : depositPaid + alegriaBalancePaid);
+    const skipperStripeOrLegacyPaid = this.paidFromStripe(booking, 'skipper');
+    const skipperCashPaid = this.n(booking?.skipperCashReceivedAmount, payments?.skipper?.cashAmountPaid, payments?.direct?.skipperCashPaidAmount);
+    const skipperPaid = Math.min(skipperRevenue, hasStripeRecords
+      ? skipperStripeOrLegacyPaid + skipperCashPaid
+      : Math.max(skipperStripeOrLegacyPaid, skipperCashPaid, this.n(booking?.skipperPaidAmount, payments?.skipper?.amountPaid)));
 
     const round = (value: number) => Math.max(0, Math.round(value * 100) / 100);
-    const alegriaRemaining = round(alegriaRevenue - alegriaPaid);
+    const alegriaRemaining = round(alegriaPayableRevenue - alegriaPaid);
     const skipperRemaining = round(skipperRevenue - skipperPaid);
 
+    const totalCustomerPrice = round(customerTotal);
+
+    // Development-time guard: all screens should consume this same value.
+    const legacyDisplayedTotal = this.n(booking?.totalPrice, booking?.raw?.totalPrice);
+    if (legacyDisplayedTotal > 0 && Math.abs(legacyDisplayedTotal - totalCustomerPrice) > 0.009) {
+      console.warn('[BookingFinancialService] Financial inconsistency detected', {
+        bookingId: booking?.bookingId || booking?.raw?.bookingId,
+        canonicalCustomerTotal: totalCustomerPrice,
+        legacyTotalPrice: legacyDisplayedTotal,
+      });
+    }
+
     return {
-      boatAmount,
-      fuelAmount: fuel,
-      extraServicesAmount,
+      totalCustomerPrice,
+      paidOnPlatform: round(totalCustomerOnPlatform),
+      platformCost: round(platformCost),
+      platformFees: round(platformFees),
+      boatAmount: round(boatAmount),
+      fuelAmount: round(canonicalFuelAmount),
+      extraServicesAmount: round(portFeesAmount + cateringAmount + drinksAmount + waterToysAmount + tipsAmount + otherAmount),
       skipperAmount,
-      customerTotal,
-      alegriaRevenue,
-      skipperRevenue,
+      customerTotal: totalCustomerPrice,
+      alegriaRevenue: round(alegriaRevenue),
+      alegriaPayableRevenue: round(alegriaPayableRevenue),
+      skipperRevenue: round(skipperRevenue),
+      boatRentalAmount: round(boatRentalAmount),
+      portFeesAmount: round(portFeesAmount),
+      cateringAmount: round(cateringAmount),
+      drinksAmount: round(drinksAmount),
+      waterToysAmount: round(waterToysAmount),
+      tipsAmount: round(tipsAmount),
+      otherAmount: round(otherAmount),
+      rentalCommissionAmount: round(rentalCommissionAmount),
+      serviceFeesAmount: round(serviceFeesAmount),
+      totalCommission: round(totalCommission),
+      totalOutingPrice: round(totalOutingPrice),
       alegriaPaid,
       skipperPaid,
       alegriaRemaining,
