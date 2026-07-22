@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     halfDay: 900,
     sunset: 600,
     evening: 900,
-    skipperPrice: 450,
+    skipperPrice: 300,
     cleaningPrice: 150,
     nominalGuests: 8,
     extraGuestPrice: 60,

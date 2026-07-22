@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./admin-pricing-model.component.scss'],
 })
 export class AdminPricingModelComponent implements OnInit, OnDestroy {
-  model: AlegriaPricingModel = { day: 1200, halfDay: 900, sunset: 600, evening: 900, skipperPrice: 450, cleaningPrice: 150, nominalGuests: 8, extraGuestPrice: 60, minGuests: 1, maxGuests: 12, seasonalMultipliers: [], specialDates: [] };
+  model: AlegriaPricingModel = { day: 1200, halfDay: 900, sunset: 600, evening: 900, skipperPrice: 300, cleaningPrice: 150, nominalGuests: 8, extraGuestPrice: 60, minGuests: 1, maxGuests: 12, seasonalMultipliers: [], specialDates: [] };
   saving = false;
   message = '';
   error = '';

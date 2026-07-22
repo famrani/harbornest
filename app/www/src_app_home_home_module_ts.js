@@ -3681,6 +3681,16 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
           // Direct Firebase fallback for deployments where /api is not proxied.
           yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this7.http.put(`${_this7.firebaseDatabaseUrl}/cmsContent/${sectionId}.json`, _this7.content).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.timeout)(6000)));
         }
+        // Pricing is operational data as well as CMS data. Keep the legacy
+        // bnPricingModel node synchronized so the homepage, offer flow and
+        // dedicated pricing screen all consume the same values.
+        if (_this7.active.id === 'pricing' && _this7.content?.model?.alegria) {
+          const pricingPayload = {
+            ..._this7.content.model.alegria,
+            updatedAt: Date.now()
+          };
+          yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this7.http.put(`${_this7.firebaseDatabaseUrl}/bnPricingModel/alegria.json`, pricingPayload).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.timeout)(6000)));
+        }
         // Keep JSON generation lazy after save as well.
         _this7.jsonText = _this7.advancedMode ? JSON.stringify(_this7.content, null, 2) : '';
         _this7.dirty = false;
@@ -13763,7 +13773,7 @@ let HomeComponent = class HomeComponent {
     halfDay: 900,
     sunset: 600,
     evening: 900,
-    skipperPrice: 450,
+    skipperPrice: 300,
     cleaningPrice: 150,
     nominalGuests: 8,
     extraGuestPrice: 60,
@@ -23367,7 +23377,7 @@ let OnlineBookingComponent = class OnlineBookingComponent {
     halfDay: 900,
     sunset: 600,
     evening: 900,
-    skipperPrice: 450,
+    skipperPrice: 300,
     cleaningPrice: 150,
     nominalGuests: 8,
     extraGuestPrice: 60,
@@ -24073,7 +24083,7 @@ let BookingApiService = class BookingApiService {
       halfDay: 900,
       sunset: 600,
       evening: 900,
-      skipperPrice: 450,
+      skipperPrice: 300,
       cleaningPrice: 150,
       nominalGuests: 8,
       extraGuestPrice: 60,
@@ -24091,11 +24101,17 @@ let BookingApiService = class BookingApiService {
   getPricingModel() {
     var _this = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      // The CMS pricing editor stores the operational model under
+      // /cmsContent/pricing/model/alegria. Older releases only read
+      // /bnPricingModel/alegria, which allowed the two copies to diverge.
+      // Merge the CMS model last so the latest value edited in Site Content is
+      // immediately reflected on the homepage and in the booking flow.
       try {
-        const raw = yield _this.readFirebasePath('/bnPricingModel/alegria');
+        const [operational, cms] = yield Promise.all([_this.readFirebasePath('/bnPricingModel/alegria').catch(() => null), _this.readFirebasePath('/cmsContent/pricing/model/alegria').catch(() => null)]);
         return {
           ..._this.getDefaultPricingModel(),
-          ...(raw || {})
+          ...(operational || {}),
+          ...(cms || {})
         };
       } catch {
         return _this.getDefaultPricingModel();
@@ -24110,22 +24126,39 @@ let BookingApiService = class BookingApiService {
         ...(model || {}),
         updatedAt: Date.now()
       };
+      const cmsPayload = {
+        model: {
+          alegria: payload
+        },
+        modifiedAt: Date.now(),
+        modifiedBy: 'admin',
+        note: 'Operational pricing synchronized with bnPricingModel.'
+      };
       const store = _this2.storeDb;
       const util = _this2.utilsSvc;
       for (const db of _this2.getRealtimeDatabaseCandidates(store, util)) {
         try {
           yield db.ref(_this2.pricingModelPath).set(payload);
+          try {
+            yield db.ref('cmsContent/pricing').set(cmsPayload);
+          } catch {}
           return;
         } catch {}
       }
       for (const baseUrl of _this2.restDatabaseUrls) {
         try {
           yield _this2.http.put(`${baseUrl.replace(/\/+$/, '')}/${_this2.pricingModelPath}.json`, payload).toPromise();
+          try {
+            yield _this2.http.put(`${baseUrl.replace(/\/+$/, '')}/cmsContent/pricing.json`, cmsPayload).toPromise();
+          } catch {}
           return;
         } catch {}
       }
       if (typeof store.updateObject === 'function') {
         yield store.updateObject('bnPricingModel', payload, 'alegria');
+        try {
+          yield store.updateObject('cmsContent', cmsPayload, 'pricing');
+        } catch {}
         return;
       }
       throw new Error('Unable to save pricing model.');
@@ -25801,7 +25834,7 @@ let AdminPricingModelComponent = class AdminPricingModelComponent {
     halfDay: 900,
     sunset: 600,
     evening: 900,
-    skipperPrice: 450,
+    skipperPrice: 300,
     cleaningPrice: 150,
     nominalGuests: 8,
     extraGuestPrice: 60,

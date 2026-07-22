@@ -417,6 +417,17 @@ export class AdminSiteContentComponent implements OnInit {
             .pipe(timeout(6000))
         );
       }
+      // Pricing is operational data as well as CMS data. Keep the legacy
+      // bnPricingModel node synchronized so the homepage, offer flow and
+      // dedicated pricing screen all consume the same values.
+      if (this.active.id === 'pricing' && this.content?.model?.alegria) {
+        const pricingPayload = { ...this.content.model.alegria, updatedAt: Date.now() };
+        await firstValueFrom(
+          this.http.put(`${this.firebaseDatabaseUrl}/bnPricingModel/alegria.json`, pricingPayload)
+            .pipe(timeout(6000))
+        );
+      }
+
       // Keep JSON generation lazy after save as well.
       this.jsonText = this.advancedMode ? JSON.stringify(this.content, null, 2) : '';
       this.dirty = false;

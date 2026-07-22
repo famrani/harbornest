@@ -160,7 +160,7 @@ export class BookingApiService {
 
 
   getDefaultPricingModel(): AlegriaPricingModel {
-    return { day: 1200, halfDay: 900, sunset: 600, evening: 900, skipperPrice: 450, cleaningPrice: 150,
+    return { day: 1200, halfDay: 900, sunset: 600, evening: 900, skipperPrice: 300, cleaningPrice: 150,
       nominalGuests: 8,
       extraGuestPrice: 60,
       minGuests: 1,
@@ -173,9 +173,21 @@ export class BookingApiService {
   }
 
   async getPricingModel(): Promise<AlegriaPricingModel> {
+    // The CMS pricing editor stores the operational model under
+    // /cmsContent/pricing/model/alegria. Older releases only read
+    // /bnPricingModel/alegria, which allowed the two copies to diverge.
+    // Merge the CMS model last so the latest value edited in Site Content is
+    // immediately reflected on the homepage and in the booking flow.
     try {
-      const raw = await this.readFirebasePath('/bnPricingModel/alegria');
-      return { ...this.getDefaultPricingModel(), ...(raw || {}) };
+      const [operational, cms] = await Promise.all([
+        this.readFirebasePath('/bnPricingModel/alegria').catch(() => null),
+        this.readFirebasePath('/cmsContent/pricing/model/alegria').catch(() => null),
+      ]);
+      return {
+        ...this.getDefaultPricingModel(),
+        ...(operational || {}),
+        ...(cms || {}),
+      };
     } catch {
       return this.getDefaultPricingModel();
     }
@@ -183,12 +195,14 @@ export class BookingApiService {
 
   async savePricingModel(model: AlegriaPricingModel): Promise<void> {
     const payload = { ...this.getDefaultPricingModel(), ...(model || {}), updatedAt: Date.now() };
+    const cmsPayload = { model: { alegria: payload }, modifiedAt: Date.now(), modifiedBy: 'admin', note: 'Operational pricing synchronized with bnPricingModel.' };
     const store: any = this.storeDb as any;
     const util: any = this.utilsSvc as any;
 
     for (const db of this.getRealtimeDatabaseCandidates(store, util)) {
       try {
         await db.ref(this.pricingModelPath).set(payload);
+        try { await db.ref('cmsContent/pricing').set(cmsPayload); } catch {}
         return;
       } catch {}
     }
@@ -196,12 +210,14 @@ export class BookingApiService {
     for (const baseUrl of this.restDatabaseUrls) {
       try {
         await this.http.put(`${baseUrl.replace(/\/+$/, '')}/${this.pricingModelPath}.json`, payload).toPromise();
+        try { await this.http.put(`${baseUrl.replace(/\/+$/, '')}/cmsContent/pricing.json`, cmsPayload).toPromise(); } catch {}
         return;
       } catch {}
     }
 
     if (typeof store.updateObject === 'function') {
       await store.updateObject('bnPricingModel', payload, 'alegria');
+      try { await store.updateObject('cmsContent', cmsPayload, 'pricing'); } catch {}
       return;
     }
 
