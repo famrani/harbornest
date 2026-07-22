@@ -37,6 +37,7 @@ import { OnlineBookingComponent } from './online-booking/online-booking.componen
 import { AdminPricingModelComponent } from './admin-pricing-model/admin-pricing-model.component';
 import { AdminFleetComponent } from './admin-fleet/admin-fleet.component';
 import { SeaToysComponent } from './sea-toys/sea-toys.component';
+import { AdminSiteContentComponent } from './admin-site-content/admin-site-content.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -85,6 +86,8 @@ const routes: Routes = [
   { path: 'admin/proposals', redirectTo: 'admin/offers', pathMatch: 'full' },
   { path: 'offer/:offerId', component: OfferConfirmationComponent },
   { path: 'proposal/:proposalId', redirectTo: 'offer/:proposalId' },
+  { path: 'admin/site-content', component: AdminSiteContentComponent },
+  { path: 'admin/content', component: AdminSiteContentComponent },
   { path: 'admin/pricing-model', component: AdminPricingModelComponent },
   { path: 'admin/fleet', component: AdminFleetComponent },
   { path: 'admin/external-bookings', component: BookingsComponent },

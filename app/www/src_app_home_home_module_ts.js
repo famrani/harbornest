@@ -352,6 +352,716 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 /***/ }),
 
+/***/ 3866:
+/*!**************************************************************************************!*\
+  !*** ./src/app/home/admin-site-content/admin-site-content.component.scss?ngResource ***!
+  \**************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `:host {
+  display: block;
+  background: #f5f1e9;
+  min-height: 100vh;
+}
+
+.cms-shell {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 28px;
+  font-family: Inter, Arial, sans-serif;
+  color: #113b49;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.topbar h1 {
+  margin: 4px 0 7px;
+  font-size: 34px;
+}
+
+.topbar p {
+  margin: 0;
+  color: #657a82;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  color: #0a6079;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.unsaved {
+  font-size: 12px;
+  color: #b46a12;
+}
+
+.back {
+  color: #0a536b;
+  text-decoration: none;
+  font-weight: 750;
+  background: #fff;
+  border: 1px solid #d8e3e6;
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+
+.cms-layout {
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  gap: 22px;
+}
+
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: sticky;
+  top: 18px;
+  align-self: start;
+}
+
+.side-nav button {
+  display: flex;
+  gap: 12px;
+  text-align: left;
+  border: 1px solid #dce7eb;
+  background: #fff;
+  border-radius: 13px;
+  padding: 13px;
+  cursor: pointer;
+  color: #163d4b;
+  transition: 0.15s;
+}
+
+.side-nav button:hover {
+  transform: translateX(2px);
+  border-color: #8eb6c2;
+}
+
+.side-nav button.active {
+  border-color: #0a6079;
+  background: #e8f4f6;
+  box-shadow: 0 6px 16px rgba(10, 83, 107, 0.08);
+}
+
+.nav-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: #f0f5f6;
+  font-weight: 900;
+}
+
+.side-nav strong, .side-nav small {
+  display: block;
+}
+
+.side-nav small {
+  margin-top: 3px;
+  color: #687d85;
+  line-height: 1.25;
+  font-size: 11px;
+}
+
+main {
+  background: #fff;
+  border: 1px solid #dce7eb;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 10px 35px rgba(12, 52, 68, 0.07);
+  min-width: 0;
+}
+
+.editor-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  border-bottom: 1px solid #e8eef0;
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+}
+
+.editor-head h2 {
+  margin: 0 0 5px;
+  font-size: 25px;
+}
+
+.editor-head p {
+  margin: 0;
+  color: #6b7f87;
+}
+
+.actions {
+  display: flex;
+  gap: 9px;
+}
+
+.actions button, .add, .secondary, .primary {
+  border-radius: 10px;
+  padding: 10px 15px;
+  font-weight: 750;
+  cursor: pointer;
+  border: 1px solid #b9cbd2;
+}
+
+.secondary {
+  background: #fff;
+  color: #294d59;
+}
+
+.primary {
+  background: #0a536b !important;
+  color: #fff !important;
+  border-color: #0a536b !important;
+}
+
+.primary:disabled {
+  opacity: 0.55;
+}
+
+.notice {
+  padding: 11px 13px;
+  border-radius: 10px;
+  margin: 12px 0;
+}
+
+.success {
+  background: #e7f7ee;
+  color: #17663c;
+}
+
+.error {
+  background: #fff0f0;
+  color: #9a2020;
+}
+
+.loading {
+  padding: 60px;
+  text-align: center;
+}
+
+.language-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f2f7f8;
+  border: 1px solid #dbe9ec;
+  border-radius: 12px;
+  padding: 11px 14px;
+  margin-bottom: 18px;
+}
+
+.language-bar label {
+  font-weight: 800;
+}
+
+.language-bar select {
+  width: 170px;
+}
+
+.language-bar span {
+  font-size: 12px;
+  color: #61747c;
+}
+
+.panel {
+  border: 1px solid #dde8eb;
+  border-radius: 14px;
+  padding: 18px;
+  background: #fcfefe;
+}
+
+.panel h3, .collection-head h3 {
+  margin: 0 0 4px;
+}
+
+.section-help, .collection-head p {
+  margin: 0;
+  color: #6b7d84;
+  font-size: 13px;
+}
+
+.subheading {
+  margin-top: 24px !important;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.pricing-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.form-grid .wide {
+  grid-column: 1/-1;
+}
+
+label span, .field-block > label > span, .repeat-card label span {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 800;
+  color: #5e747d;
+  margin-bottom: 6px;
+}
+
+input, textarea, select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #cbdadd;
+  border-radius: 9px;
+  padding: 10px 11px;
+  background: #fff;
+  color: #173e4b;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+  line-height: 1.45;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: 2px solid rgba(10, 96, 121, 0.16);
+  border-color: #0a6079;
+}
+
+.repeat-card.compact {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid #e1eaec;
+  padding: 13px;
+  border-radius: 11px;
+  margin-top: 10px;
+}
+
+.collection-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.add {
+  background: #0a6079;
+  color: #fff;
+  border-color: #0a6079;
+}
+
+.outing-card {
+  border: 1px solid #dbe6e9;
+  border-radius: 15px;
+  padding: 17px;
+  margin-bottom: 14px;
+  background: #fff;
+  box-shadow: 0 4px 13px rgba(20, 58, 70, 0.035);
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: center;
+  border-bottom: 1px solid #edf2f3;
+  padding-bottom: 12px;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.order {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  background: #0a536b;
+  color: #fff;
+  border-radius: 50%;
+  font-weight: 800;
+}
+
+.title-input {
+  font-weight: 800;
+  font-size: 18px;
+  border-color: transparent;
+  background: #f7fafb;
+}
+
+.card-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-tools button {
+  border: 1px solid #d3dfe2;
+  background: #fff;
+  border-radius: 7px;
+  padding: 7px 9px;
+  cursor: pointer;
+}
+
+.danger-link {
+  color: #ad3030 !important;
+}
+
+.switch {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  margin: 0 !important;
+}
+
+.switch input {
+  display: none;
+}
+
+.switch span {
+  width: 35px;
+  height: 20px;
+  border-radius: 20px;
+  background: #c5d1d4;
+  position: relative;
+  margin: 0 !important;
+}
+
+.switch span:after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  left: 2px;
+  top: 2px;
+  transition: 0.2s;
+}
+
+.switch input:checked + span {
+  background: #22845a;
+}
+
+.switch input:checked + span:after {
+  left: 17px;
+}
+
+.list-editor {
+  margin-top: 15px;
+  background: #f8fbfb;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.list-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.list-title button, .array-head button {
+  border: 0;
+  background: transparent;
+  color: #0a6079;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 7px;
+}
+
+.list-row > span {
+  color: #22845a;
+}
+
+.list-row button, .array-item .remove {
+  border: 0;
+  background: #fff0f0;
+  color: #ad3030;
+  border-radius: 7px;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+}
+
+.service-card {
+  display: grid;
+  grid-template-columns: 45px 1fr 120px 160px 35px;
+  gap: 12px;
+  align-items: end;
+  border: 1px solid #dbe6e9;
+  border-radius: 13px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+.service-fields {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+}
+
+.icon-danger {
+  border: 0;
+  background: #fff0f0;
+  color: #a72c2c;
+  border-radius: 8px;
+  height: 40px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.visual-editor {
+  padding: 20px;
+}
+
+.object-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.object-grid.nested {
+  padding: 12px;
+  background: #f8fbfb;
+  border-radius: 10px;
+}
+
+.field-block.full, .nested-section, .array-section {
+  grid-column: 1/-1;
+}
+
+.nested-section {
+  border-top: 1px solid #e2eaec;
+  margin-top: 8px;
+  padding-top: 14px;
+}
+
+.nested-section h4, .array-head h4 {
+  margin: 0;
+  color: #174657;
+}
+
+.array-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.array-item {
+  display: flex;
+  gap: 8px;
+  align-items: start;
+  margin: 7px 0;
+}
+
+.array-item > .object-grid {
+  flex: 1;
+}
+
+.boolean-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+.add-field {
+  margin-top: 16px;
+  border: 1px dashed #8fb2bd;
+  background: #f2f8f9;
+  color: #0a6079;
+  border-radius: 9px;
+  padding: 9px 12px;
+  font-weight: 700;
+}
+
+.json-editor {
+  width: 100%;
+  min-height: 650px;
+  font: 13px/1.55 Menlo, Monaco, monospace;
+  background: #102c35;
+  color: #dceff3;
+  border-color: #102c35;
+}
+
+.hint {
+  font-size: 12px;
+  color: #667b83;
+}
+
+.empty {
+  padding: 45px;
+  text-align: center;
+  border: 1px dashed #c7d7db;
+  border-radius: 12px;
+  color: #73858c;
+}
+
+@media (max-width: 1050px) {
+  .cms-layout {
+    grid-template-columns: 240px 1fr;
+  }
+  .pricing-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .service-card {
+    grid-template-columns: 40px 1fr 100px;
+  }
+  .service-card .category {
+    grid-column: 2;
+  }
+  .service-card .icon-danger {
+    grid-column: 3;
+    grid-row: 2;
+  }
+  .card-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .card-tools {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 760px) {
+  .cms-shell {
+    padding: 14px;
+  }
+  .cms-layout {
+    grid-template-columns: 1fr;
+  }
+  .side-nav {
+    position: static;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .topbar, .editor-head, .collection-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .form-grid, .pricing-grid, .object-grid {
+    grid-template-columns: 1fr;
+  }
+  .repeat-card.compact {
+    grid-template-columns: 1fr 1fr;
+  }
+  .service-card {
+    grid-template-columns: 35px 1fr;
+  }
+  .service-fields {
+    grid-template-columns: 1fr;
+  }
+  .service-card .price, .service-card .category {
+    grid-column: 2;
+  }
+  .actions {
+    flex-wrap: wrap;
+  }
+}
+.language-bar {
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.language-picker, .translation-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.translation-actions {
+  margin-left: auto;
+}
+
+.overwrite-option {
+  display: flex !important;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  margin: 0 !important;
+}
+
+.overwrite-option input {
+  width: auto;
+}
+
+.translate-button {
+  border: 1px solid #0a6079;
+  background: #e6f4f7;
+  color: #0a536b;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.translate-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+@media (max-width: 760px) {
+  .language-picker, .translation-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .translation-actions {
+    margin-left: 0;
+  }
+  .translate-button {
+    width: 100%;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-site-content/admin-site-content.component.scss"],"names":[],"mappings":"AAAA;EAAM,cAAA;EAAc,mBAAA;EAAmB,iBAAA;AAIvC;;AAJwD;EAAW,iBAAA;EAAiB,cAAA;EAAc,aAAA;EAAa,qCAAA;EAAmC,cAAA;AAYlJ;;AAZgK;EAAQ,aAAA;EAAa,8BAAA;EAA8B,SAAA;EAAS,uBAAA;EAAuB,mBAAA;AAoBnP;;AApBsQ;EAAW,iBAAA;EAAiB,eAAA;AAyBlS;;AAzBiT;EAAU,SAAA;EAAS,cAAA;AA8BpU;;AA9BkV;EAAS,eAAA;EAAe,gBAAA;EAAgB,sBAAA;EAAqB,cAAA;AAqC/Y;;AArC6Z;EAAa,aAAA;EAAa,mBAAA;EAAmB,SAAA;AA2C1c;;AA3Cmd;EAAS,eAAA;EAAe,cAAA;AAgD3e;;AAhDyf;EAAM,cAAA;EAAc,qBAAA;EAAqB,gBAAA;EAAgB,gBAAA;EAAgB,yBAAA;EAAyB,kBAAA;EAAkB,mBAAA;AA0D7mB;;AA1DgoB;EAAY,aAAA;EAAa,2CAAA;EAA0C,SAAA;AAgEnsB;;AAhE4sB;EAAU,aAAA;EAAa,sBAAA;EAAsB,QAAA;EAAQ,gBAAA;EAAgB,SAAA;EAAS,iBAAA;AAyE1xB;;AAzE2yB;EAAiB,aAAA;EAAa,SAAA;EAAS,gBAAA;EAAgB,yBAAA;EAAyB,gBAAA;EAAgB,mBAAA;EAAmB,aAAA;EAAa,eAAA;EAAe,cAAA;EAAc,iBAAA;AAsFx8B;;AAtFw9B;EAAuB,0BAAA;EAA0B,qBAAA;AA2FzgC;;AA3F8hC;EAAwB,qBAAA;EAAqB,mBAAA;EAAmB,8CAAA;AAiG9lC;;AAjGwoC;EAAU,aAAA;EAAa,mBAAA;EAAmB,cAAA;EAAc,YAAA;EAAY,kBAAA;EAAkB,mBAAA;EAAmB,gBAAA;AA2GjvC;;AA3GiwC;EAAiC,cAAA;AA+GlyC;;AA/GgzC;EAAgB,eAAA;EAAe,cAAA;EAAc,iBAAA;EAAiB,eAAA;AAsH92C;;AAtH63C;EAAK,gBAAA;EAAgB,yBAAA;EAAyB,mBAAA;EAAmB,aAAA;EAAa,8CAAA;EAA0C,YAAA;AA+Hr/C;;AA/HigD;EAAa,aAAA;EAAa,8BAAA;EAA8B,SAAA;EAAS,mBAAA;EAAmB,gCAAA;EAAgC,oBAAA;EAAoB,mBAAA;AAyIzoD;;AAzI4pD;EAAgB,eAAA;EAAe,eAAA;AA8I3rD;;AA9I0sD;EAAe,SAAA;EAAS,cAAA;AAmJluD;;AAnJgvD;EAAS,aAAA;EAAa,QAAA;AAwJtwD;;AAxJ8wD;EAAyC,mBAAA;EAAmB,kBAAA;EAAkB,gBAAA;EAAgB,eAAA;EAAe,yBAAA;AAgK33D;;AAhKo5D;EAAW,gBAAA;EAAgB,cAAA;AAqK/6D;;AArK67D;EAAS,8BAAA;EAA6B,sBAAA;EAAqB,gCAAA;AA2Kx/D;;AA3KuhE;EAAkB,aAAA;AA+KziE;;AA/KqjE;EAAQ,kBAAA;EAAkB,mBAAA;EAAmB,cAAA;AAqLlmE;;AArLgnE;EAAS,mBAAA;EAAmB,cAAA;AA0L5oE;;AA1L0pE;EAAO,mBAAA;EAAmB,cAAA;AA+LprE;;AA/LksE;EAAS,aAAA;EAAa,kBAAA;AAoMxtE;;AApM0uE;EAAc,aAAA;EAAa,mBAAA;EAAmB,SAAA;EAAS,mBAAA;EAAmB,yBAAA;EAAyB,mBAAA;EAAmB,kBAAA;EAAkB,mBAAA;AA+Ml3E;;AA/Mq4E;EAAoB,gBAAA;AAmNz5E;;AAnNy6E;EAAqB,YAAA;AAuN97E;;AAvN08E;EAAmB,eAAA;EAAe,cAAA;AA4N5+E;;AA5N0/E;EAAO,yBAAA;EAAyB,mBAAA;EAAmB,aAAA;EAAa,mBAAA;AAmO1jF;;AAnO6kF;EAA8B,eAAA;AAuO3mF;;AAvO0nF;EAAiC,SAAA;EAAS,cAAA;EAAc,eAAA;AA6OlrF;;AA7OisF;EAAY,2BAAA;AAiP7sF;;AAjPuuF;EAAW,aAAA;EAAa,gDAAA;EAA8C,SAAA;EAAS,gBAAA;AAwPtzF;;AAxPs0F;EAAc,gDAAA;AA4Pp1F;;AA5Pk4F;EAAiB,iBAAA;AAgQn5F;;AAhQo6F;EAA2D,cAAA;EAAc,eAAA;EAAe,yBAAA;EAAyB,sBAAA;EAAqB,gBAAA;EAAgB,cAAA;EAAc,kBAAA;AA0QxkG;;AA1Q0lG;EAAsB,WAAA;EAAW,sBAAA;EAAsB,yBAAA;EAAyB,kBAAA;EAAkB,kBAAA;EAAkB,gBAAA;EAAgB,cAAA;EAAc,aAAA;AAqR5uG;;AArRyvG;EAAS,gBAAA;EAAgB,iBAAA;AA0RlxG;;AA1RmyG;EAAwC,0CAAA;EAAsC,qBAAA;AA+Rj3G;;AA/Rs4G;EAAqB,aAAA;EAAa,sCAAA;EAAsC,SAAA;EAAS,gBAAA;EAAgB,yBAAA;EAAyB,aAAA;EAAa,mBAAA;EAAmB,gBAAA;AA0ShiH;;AA1SgjH;EAAiB,aAAA;EAAa,8BAAA;EAA8B,mBAAA;EAAmB,mBAAA;AAiT/nH;;AAjTkpH;EAAK,mBAAA;EAAmB,WAAA;EAAW,qBAAA;AAuTrrH;;AAvT0sH;EAAa,yBAAA;EAAyB,mBAAA;EAAmB,aAAA;EAAa,mBAAA;EAAmB,gBAAA;EAAgB,8CAAA;AAgUnzH;;AAhU61H;EAAW,aAAA;EAAa,8BAAA;EAA8B,SAAA;EAAS,mBAAA;EAAmB,gCAAA;EAAgC,oBAAA;AAyU/8H;;AAzUm+H;EAAY,aAAA;EAAa,mBAAA;EAAmB,SAAA;EAAS,OAAA;AAgVxhI;;AAhV+hI;EAAO,aAAA;EAAa,mBAAA;EAAmB,WAAA;EAAW,YAAA;EAAY,mBAAA;EAAmB,WAAA;EAAW,kBAAA;EAAkB,gBAAA;AA2V7oI;;AA3V6pI;EAAa,gBAAA;EAAgB,eAAA;EAAe,yBAAA;EAAyB,mBAAA;AAkWluI;;AAlWqvI;EAAY,aAAA;EAAa,mBAAA;EAAmB,QAAA;AAwWjyI;;AAxWyyI;EAAmB,yBAAA;EAAyB,gBAAA;EAAgB,kBAAA;EAAkB,gBAAA;EAAgB,eAAA;AAgXv4I;;AAhXs5I;EAAa,yBAAA;AAoXn6I;;AApX27I;EAAQ,+BAAA;EAA8B,mBAAA;EAAmB,QAAA;EAAQ,0BAAA;EAAyB,+BAAA;EAA8B,4BAAA;EAA2B,oBAAA;AA8X9kJ;;AA9XimJ;EAAc,aAAA;AAkY/mJ;;AAlY4nJ;EAAa,WAAA;EAAW,YAAA;EAAY,mBAAA;EAAmB,mBAAA;EAAmB,kBAAA;EAAkB,oBAAA;AA2YxtJ;;AA3Y2uJ;EAAmB,WAAA;EAAW,kBAAA;EAAkB,WAAA;EAAW,YAAA;EAAY,iBAAA;EAAiB,kBAAA;EAAkB,SAAA;EAAS,QAAA;EAAQ,gBAAA;AAuZt2J;;AAvZq3J;EAA2B,mBAAA;AA2Zh5J;;AA3Zm6J;EAAiC,UAAA;AA+Zp8J;;AA/Z88J;EAAa,gBAAA;EAAgB,mBAAA;EAAmB,mBAAA;EAAmB,aAAA;AAsajhK;;AAta8hK;EAAY,aAAA;EAAa,8BAAA;EAA8B,mBAAA;EAAmB,kBAAA;AA6axmK;;AA7a0nK;EAAsC,SAAA;EAAS,uBAAA;EAAuB,cAAA;EAAc,gBAAA;EAAgB,eAAA;AAqb9tK;;AArb6uK;EAAU,aAAA;EAAa,mBAAA;EAAmB,QAAA;EAAQ,eAAA;AA4b/xK;;AA5b8yK;EAAe,cAAA;AAgc7zK;;AAhc20K;EAAqC,SAAA;EAAS,mBAAA;EAAmB,cAAA;EAAc,kBAAA;EAAkB,WAAA;EAAW,YAAA;EAAY,eAAA;AA0cn8K;;AA1ck9K;EAAc,aAAA;EAAa,gDAAA;EAAgD,SAAA;EAAS,gBAAA;EAAgB,yBAAA;EAAyB,mBAAA;EAAmB,aAAA;EAAa,mBAAA;AAqd/mL;;AArdkoL;EAAgB,aAAA;EAAa,8BAAA;EAA8B,SAAA;AA2d7rL;;AA3dssL;EAAa,SAAA;EAAS,mBAAA;EAAmB,cAAA;EAAc,kBAAA;EAAkB,YAAA;EAAY,eAAA;EAAe,eAAA;AAqe1yL;;AAreyzL;EAAe,aAAA;AAyex0L;;AAzeq1L;EAAa,aAAA;EAAa,gDAAA;EAA8C,SAAA;AA+e75L;;AA/es6L;EAAoB,aAAA;EAAa,mBAAA;EAAmB,mBAAA;AAqf19L;;AArf6+L;EAAiD,iBAAA;AAyf9hM;;AAzf+iM;EAAgB,6BAAA;EAA6B,eAAA;EAAe,iBAAA;AA+f3mM;;AA/f4nM;EAAkC,SAAA;EAAS,cAAA;AAogBvqM;;AApgBqrM;EAAY,aAAA;EAAa,8BAAA;EAA8B,mBAAA;EAAmB,kBAAA;AA2gB/vM;;AA3gBixM;EAAY,aAAA;EAAa,QAAA;EAAQ,kBAAA;EAAkB,aAAA;AAkhBp0M;;AAlhBi1M;EAAyB,OAAA;AAshB12M;;AAthBi3M;EAAa,aAAA;EAAa,mBAAA;EAAmB,QAAA;EAAQ,YAAA;EAAY,+BAAA;EAA8B,4BAAA;AA+hBh9M;;AA/hB2+M;EAAW,gBAAA;EAAgB,0BAAA;EAA0B,mBAAA;EAAmB,cAAA;EAAc,kBAAA;EAAkB,iBAAA;EAAiB,gBAAA;AAyiBpmN;;AAziBonN;EAAa,WAAA;EAAW,iBAAA;EAAiB,wCAAA;EAAsC,mBAAA;EAAmB,cAAA;EAAc,qBAAA;AAkjBpuN;;AAljByvN;EAAM,eAAA;EAAe,cAAA;AAujB9wN;;AAvjB4xN;EAAO,aAAA;EAAa,kBAAA;EAAkB,0BAAA;EAA0B,mBAAA;EAAmB,cAAA;AA+jB/2N;;AA/jB63N;EAAyB;IAAY,gCAAA;EAokBh6N;EApkBg8N;IAAc,qCAAA;EAukB98N;EAvkBk/N;IAAc,qCAAA;EA0kBhgO;EA1kBqiO;IAAwB,cAAA;EA6kB7jO;EA7kB2kO;IAA2B,cAAA;IAAc,WAAA;EAilBpnO;EAjlB+nO;IAAW,uBAAA;IAAuB,sBAAA;EAqlBjqO;EArlBurO;IAAY,eAAA;EAwlBnsO;AACF;AAzlBqtO;EAAwB;IAAW,aAAA;EA6lBtvO;EA7lBmwO;IAAY,0BAAA;EAgmB/wO;EAhmByyO;IAAU,gBAAA;IAAgB,aAAA;IAAa,8BAAA;EAqmBh1O;EArmB82O;IAAsC,sBAAA;IAAsB,oBAAA;EAymB16O;EAzmB87O;IAAsC,0BAAA;EA4mBp+O;EA5mB8/O;IAAqB,8BAAA;EA+mBnhP;EA/mBijP;IAAc,+BAAA;EAknB/jP;EAlnB8lP;IAAgB,0BAAA;EAqnB9mP;EArnBwoP;IAA6C,cAAA;EAwnBrrP;EAxnBmsP;IAAS,eAAA;EA2nB5sP;AACF;AA3nBA;EAAc,8BAAA;EAA8B,eAAA;AA+nB5C;;AA/nB2D;EAAsC,aAAA;EAAa,mBAAA;EAAmB,SAAA;AAqoBjI;;AAroB0I;EAAqB,iBAAA;AAyoB/J;;AAzoBgL;EAAkB,wBAAA;EAAuB,mBAAA;EAAmB,QAAA;EAAQ,0BAAA;EAAyB,+BAAA;EAA8B,4BAAA;EAA2B,oBAAA;AAmpBtU;;AAnpByV;EAAwB,WAAA;AAupBjX;;AAvpB4X;EAAkB,yBAAA;EAAyB,mBAAA;EAAmB,cAAA;EAAc,mBAAA;EAAmB,kBAAA;EAAkB,gBAAA;EAAgB,eAAA;AAiqB7f;;AAjqB4gB;EAA2B,YAAA;EAAW,eAAA;AAsqBljB;;AAtqBikB;EAAwB;IAAsC,oBAAA;IAAoB,sBAAA;EA4qBjpB;EA5qBuqB;IAAqB,cAAA;EA+qB5rB;EA/qB0sB;IAAkB,WAAA;EAkrB5tB;AACF","sourcesContent":[":host{display:block;background:#f5f1e9;min-height:100vh}.cms-shell{max-width:1440px;margin:0 auto;padding:28px;font-family:Inter,Arial,sans-serif;color:#113b49}.topbar{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:24px}.topbar h1{margin:4px 0 7px;font-size:34px}.topbar p{margin:0;color:#657a82}.eyebrow{font-size:11px;font-weight:900;letter-spacing:.18em;color:#0a6079}.top-actions{display:flex;align-items:center;gap:18px}.unsaved{font-size:12px;color:#b46a12}.back{color:#0a536b;text-decoration:none;font-weight:750;background:#fff;border:1px solid #d8e3e6;padding:10px 14px;border-radius:10px}.cms-layout{display:grid;grid-template-columns:290px minmax(0,1fr);gap:22px}.side-nav{display:flex;flex-direction:column;gap:8px;position:sticky;top:18px;align-self:start}.side-nav button{display:flex;gap:12px;text-align:left;border:1px solid #dce7eb;background:#fff;border-radius:13px;padding:13px;cursor:pointer;color:#163d4b;transition:.15s}.side-nav button:hover{transform:translateX(2px);border-color:#8eb6c2}.side-nav button.active{border-color:#0a6079;background:#e8f4f6;box-shadow:0 6px 16px rgba(10,83,107,.08)}.nav-icon{display:grid;place-items:center;flex:0 0 32px;height:32px;border-radius:9px;background:#f0f5f6;font-weight:900}.side-nav strong,.side-nav small{display:block}.side-nav small{margin-top:3px;color:#687d85;line-height:1.25;font-size:11px}main{background:#fff;border:1px solid #dce7eb;border-radius:18px;padding:22px;box-shadow:0 10px 35px rgba(12,52,68,.07);min-width:0}.editor-head{display:flex;justify-content:space-between;gap:16px;align-items:center;border-bottom:1px solid #e8eef0;padding-bottom:18px;margin-bottom:18px}.editor-head h2{margin:0 0 5px;font-size:25px}.editor-head p{margin:0;color:#6b7f87}.actions{display:flex;gap:9px}.actions button,.add,.secondary,.primary{border-radius:10px;padding:10px 15px;font-weight:750;cursor:pointer;border:1px solid #b9cbd2}.secondary{background:#fff;color:#294d59}.primary{background:#0a536b!important;color:#fff!important;border-color:#0a536b!important}.primary:disabled{opacity:.55}.notice{padding:11px 13px;border-radius:10px;margin:12px 0}.success{background:#e7f7ee;color:#17663c}.error{background:#fff0f0;color:#9a2020}.loading{padding:60px;text-align:center}.language-bar{display:flex;align-items:center;gap:12px;background:#f2f7f8;border:1px solid #dbe9ec;border-radius:12px;padding:11px 14px;margin-bottom:18px}.language-bar label{font-weight:800}.language-bar select{width:170px}.language-bar span{font-size:12px;color:#61747c}.panel{border:1px solid #dde8eb;border-radius:14px;padding:18px;background:#fcfefe}.panel h3,.collection-head h3{margin:0 0 4px}.section-help,.collection-head p{margin:0;color:#6b7d84;font-size:13px}.subheading{margin-top:24px!important}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}.pricing-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.form-grid .wide{grid-column:1/-1}label span,.field-block>label>span,.repeat-card label span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.04em;font-weight:800;color:#5e747d;margin-bottom:6px}input,textarea,select{width:100%;box-sizing:border-box;border:1px solid #cbdadd;border-radius:9px;padding:10px 11px;background:#fff;color:#173e4b;font:inherit}textarea{resize:vertical;line-height:1.45}input:focus,textarea:focus,select:focus{outline:2px solid rgba(10,96,121,.16);border-color:#0a6079}.repeat-card.compact{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;background:#fff;border:1px solid #e1eaec;padding:13px;border-radius:11px;margin-top:10px}.collection-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.add{background:#0a6079;color:#fff;border-color:#0a6079}.outing-card{border:1px solid #dbe6e9;border-radius:15px;padding:17px;margin-bottom:14px;background:#fff;box-shadow:0 4px 13px rgba(20,58,70,.035)}.card-head{display:flex;justify-content:space-between;gap:15px;align-items:center;border-bottom:1px solid #edf2f3;padding-bottom:12px}.card-title{display:flex;align-items:center;gap:10px;flex:1}.order{display:grid;place-items:center;width:30px;height:30px;background:#0a536b;color:#fff;border-radius:50%;font-weight:800}.title-input{font-weight:800;font-size:18px;border-color:transparent;background:#f7fafb}.card-tools{display:flex;align-items:center;gap:6px}.card-tools button{border:1px solid #d3dfe2;background:#fff;border-radius:7px;padding:7px 9px;cursor:pointer}.danger-link{color:#ad3030!important}.switch{display:inline-flex!important;align-items:center;gap:7px;font-size:12px!important;text-transform:none!important;letter-spacing:0!important;margin:0!important}.switch input{display:none}.switch span{width:35px;height:20px;border-radius:20px;background:#c5d1d4;position:relative;margin:0!important}.switch span:after{content:\"\";position:absolute;width:16px;height:16px;background:white;border-radius:50%;left:2px;top:2px;transition:.2s}.switch input:checked+span{background:#22845a}.switch input:checked+span:after{left:17px}.list-editor{margin-top:15px;background:#f8fbfb;border-radius:10px;padding:12px}.list-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.list-title button,.array-head button{border:0;background:transparent;color:#0a6079;font-weight:800;cursor:pointer}.list-row{display:flex;align-items:center;gap:8px;margin-top:7px}.list-row>span{color:#22845a}.list-row button,.array-item .remove{border:0;background:#fff0f0;color:#ad3030;border-radius:7px;width:30px;height:30px;font-size:20px}.service-card{display:grid;grid-template-columns:45px 1fr 120px 160px 35px;gap:12px;align-items:end;border:1px solid #dbe6e9;border-radius:13px;padding:14px;margin-bottom:10px}.service-fields{display:grid;grid-template-columns:1fr 2fr;gap:10px}.icon-danger{border:0;background:#fff0f0;color:#a72c2c;border-radius:8px;height:40px;font-size:22px;cursor:pointer}.visual-editor{padding:20px}.object-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.object-grid.nested{padding:12px;background:#f8fbfb;border-radius:10px}.field-block.full,.nested-section,.array-section{grid-column:1/-1}.nested-section{border-top:1px solid #e2eaec;margin-top:8px;padding-top:14px}.nested-section h4,.array-head h4{margin:0;color:#174657}.array-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.array-item{display:flex;gap:8px;align-items:start;margin:7px 0}.array-item>.object-grid{flex:1}.boolean-row{display:flex;align-items:center;gap:8px;height:40px;text-transform:none!important;letter-spacing:0!important}.add-field{margin-top:16px;border:1px dashed #8fb2bd;background:#f2f8f9;color:#0a6079;border-radius:9px;padding:9px 12px;font-weight:700}.json-editor{width:100%;min-height:650px;font:13px/1.55 Menlo,Monaco,monospace;background:#102c35;color:#dceff3;border-color:#102c35}.hint{font-size:12px;color:#667b83}.empty{padding:45px;text-align:center;border:1px dashed #c7d7db;border-radius:12px;color:#73858c}@media(max-width:1050px){.cms-layout{grid-template-columns:240px 1fr}.pricing-grid{grid-template-columns:repeat(2,1fr)}.service-card{grid-template-columns:40px 1fr 100px}.service-card .category{grid-column:2}.service-card .icon-danger{grid-column:3;grid-row:2}.card-head{align-items:flex-start;flex-direction:column}.card-tools{flex-wrap:wrap}}@media(max-width:760px){.cms-shell{padding:14px}.cms-layout{grid-template-columns:1fr}.side-nav{position:static;display:grid;grid-template-columns:1fr 1fr}.topbar,.editor-head,.collection-head{flex-direction:column;align-items:stretch}.form-grid,.pricing-grid,.object-grid{grid-template-columns:1fr}.repeat-card.compact{grid-template-columns:1fr 1fr}.service-card{grid-template-columns:35px 1fr}.service-fields{grid-template-columns:1fr}.service-card .price,.service-card .category{grid-column:2}.actions{flex-wrap:wrap}}\n.language-bar{justify-content:space-between;flex-wrap:wrap}.language-picker,.translation-actions{display:flex;align-items:center;gap:10px}.translation-actions{margin-left:auto}.overwrite-option{display:flex!important;align-items:center;gap:7px;font-size:12px!important;text-transform:none!important;letter-spacing:0!important;margin:0!important}.overwrite-option input{width:auto}.translate-button{border:1px solid #0a6079;background:#e6f4f7;color:#0a536b;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer}.translate-button:disabled{opacity:.6;cursor:default}@media(max-width:760px){.language-picker,.translation-actions{align-items:stretch;flex-direction:column}.translation-actions{margin-left:0}.translate-button{width:100%}}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
 /***/ 4178:
 /*!******************************************************************************!*\
   !*** ./src/app/home/online-booking/online-booking.component.html?ngResource ***!
@@ -2174,6 +2884,825 @@ p, li, input, textarea, select, .card-body, .term-section {
 }`, "",{"version":3,"sources":["webpack://./src/app/home/tours/full-day/full-day.component.scss"],"names":[],"mappings":"AAEA;EACE,+BAAA;EACA,cAAA;AAAF;;AAGA;EACE,gBAAA;AAAF;;AAGA;;EAEE,eAAA;AAAF;;AAGA;EACE,qDAAA;AAAF;;AAGA;EACE,mBAAA;AAAF;;AAGA;EACE,qBAAA;EACA,qBAAA;EACA,kBAAA;EACA,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,cAAA;AAAF;;AAGA;EACE,qCAAA;EACA,iBAAA;EACA,kBAAA;EACA,cAAA;AAAF;;AAGA;EACE,aAAA;EACA,qBAAA;EACA,cAAA;EACA,iBAAA;AAAF;;AAGA;EACE,cAAA;EACA,gBAAA;EACA,kBAAA;AAAF;;AAGA;EACE,kBAAA;EACA,cAAA;EACA,gBAAA;EACA,qBAAA;AAAF;;AAGA;EACE,oBAAA;EACA,gBAAA;EACA,wBAAA;EACA,oBAAA;EACA,kCAAA;EACA,cAAA;EACA,kBAAA;EACA,gBAAA;AAAF;;AAGA;;EAEE,aAAA;EACA,oCAAA;EACA,WAAA;EACA,kBAAA;AAAF;;AAGA;EACE,WAAA;EACA,iBAAA;EACA,iBAAA;EACA,mBAAA;EACA,cAAA;AAAF;;AAGA;;EAEE,gBAAA;EACA,mBAAA;EACA,mBAAA;EACA,eAAA;EACA,8CAAA;AAAF;;AAGA;EACE,aAAA;EACA,eAAA;EACA,SAAA;EACA,gBAAA;EACA,cAAA;AAAF;;AAGA;;EAEE,SAAA;EACA,oBAAA;AAAF;;AAGA;;EAEE,sBAAA;AAAF;;AAGA;EACE,oBAAA;EACA,qBAAA;EACA,mBAAA;EACA,WAAA;EACA,uBAAA;EACA,oBAAA;EACA,gBAAA;EACA,iBAAA;EACA,kBAAA;AAAF;;AAGA;EACE;;IAEE,0BAAA;EAAF;EAGA;IACE,iBAAA;EADF;AACF;AAKA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AAHF;;AAMA;EACE,WAAA;EACA,iBAAA;EACA,iBAAA;EACA,mBAAA;EACA,cAAA;EACA,8CAAA;AAHF;;AAMA;EACE;IACE,gDAAA;EAHF;AACF;AAOA;EACE,aAAA;EACA,gDAAA;EACA,SAAA;AALF;;AAQA;EACE,gBAAA;EACA,mBAAA;EACA,eAAA;EACA,8CAAA;AALF;;AAQA;EACE,iBAAA;AALF;;AAQA;EACE;IACE,0BAAA;EALF;AACF;AASA,6BAAA;AACA;EACE,uBAAA;EACA,wBAAA;EACA,8BAAA;EACA,yBAAA;EACA,uBAAA;EACA,uBAAA;EACA,wBAAA;AAPF;;AAUA;EACE,+CAAA;EACA,0BAAA;EACA,wBAAA;AAPF;;AAUA;EACE,yCAAA;AAPF;;AAUA;EACE,sCAAA;EACA,0BAAA;AAPF;;AAUA;EACE,2BAAA;AAPF;;AAUA;EACE,4CAAA;EACA,sBAAA;EACA,gDAAA;AAPF;;AAUA;EACE,sCAAA;EACA,0BAAA;AAPF;;AAUA;EACE,oCAAA;EACA,cAAA;EACA,0CAAA;AAPF;;AAUA;EACE,6DAAA;AAPF;;AAUA;EACE,+BAAA;AAPF","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@500;600;700&family=Lato:wght@300;400;700&display=swap');\n\n.container {\n  width: min(1120px, calc(100% - 2rem));\n  margin: 0 auto;\n}\n\n.narrow {\n  max-width: 760px;\n}\n\n.page-hero,\n.section {\n  padding: 4rem 0;\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #ffffff, #fbf8f2);\n}\n\n.section-light {\n  background: #ffffff;\n}\n\n.eyebrow {\n  display: inline-block;\n  margin-bottom: 0.9rem;\n  font-size: 0.82rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: #0b6e8f;\n}\n\nh1 {\n  font-size: clamp(1.8rem, 3vw, 2.8rem);\n  line-height: 1.08;\n  margin: 0 0 0.9rem;\n  color: #08263a;\n}\n\nh2 {\n  margin-top: 0;\n  margin-bottom: 0.9rem;\n  color: #08263a;\n  font-size: 1.4rem;\n}\n\np, li {\n  color: #475569;\n  line-height: 1.7;\n  font-size: 0.96rem;\n}\n\n.subtitle {\n  font-size: 1.06rem;\n  color: #08263a;\n  font-weight: 600;\n  margin-bottom: 0.7rem;\n}\n\n.price-pill {\n  display: inline-flex;\n  margin-top: 1rem;\n  padding: 0.65rem 0.95rem;\n  border-radius: 999px;\n  background: rgba(2, 132, 199, 0.1);\n  color: #0b6e8f;\n  font-size: 0.88rem;\n  font-weight: 700;\n}\n\n.detail-grid,\n.two-col {\n  display: grid;\n  grid-template-columns: 1.02fr 0.98fr;\n  gap: 1.6rem;\n  align-items: start;\n}\n\n.image-col img {\n  width: 100%;\n  min-height: 340px;\n  object-fit: cover;\n  border-radius: 24px;\n  display: block;\n}\n\n.meta-box,\n.cta-card {\n  margin-top: 1rem;\n  background: #ffffff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.meta-box {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  font-weight: 600;\n  color: #08263a;\n}\n\n.bullet-list,\n.program-list {\n  margin: 0;\n  padding-left: 1.2rem;\n}\n\n.bullet-list li,\n.program-list li {\n  margin-bottom: 0.55rem;\n}\n\n.btn {\n  display: inline-flex;\n  text-decoration: none;\n  background: #08263a;\n  color: #fff;\n  padding: 0.9rem 1.15rem;\n  border-radius: 999px;\n  font-weight: 700;\n  font-size: 0.9rem;\n  margin-top: 0.8rem;\n}\n\n@media (max-width: 860px) {\n  .detail-grid,\n  .two-col {\n    grid-template-columns: 1fr;\n  }\n\n  .image-col img {\n    min-height: 250px;\n  }\n}\n\n\n.gallery-grid {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.gallery-grid img {\n  width: 100%;\n  aspect-ratio: 1 / 1;\n  object-fit: cover;\n  border-radius: 18px;\n  display: block;\n  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);\n}\n\n@media (max-width: 860px) {\n  .gallery-grid {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n\n\n.offering-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 1rem;\n}\n\n.offer-card {\n  background: #fff;\n  border-radius: 20px;\n  padding: 1.2rem;\n  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);\n}\n\n.offer-card h2 {\n  font-size: 1.1rem;\n}\n\n@media (max-width: 860px) {\n  .offering-grid {\n    grid-template-columns: 1fr;\n  }\n}\n\n\n/* Charte graphique Alegria */\n:host {\n  --alegria-deep: #08263a;\n  --alegria-ocean: #0b6e8f;\n  --alegria-ocean-light: #e8f4f7;\n  --alegria-orange: #f28c28;\n  --alegria-sand: #fbf8f2;\n  --alegria-text: #2f3a45;\n  --alegria-muted: #667085;\n}\n\nh1, h2, h3, .brand-text strong, .title, .page-title {\n  font-family: 'Playfair Display', Georgia, serif;\n  color: var(--alegria-deep);\n  letter-spacing: -0.015em;\n}\n\n.eyebrow, .main-nav a, .btn, button, label, .meta, .price-pill, .language-switcher select, .text-link {\n  font-family: 'Raleway', Arial, sans-serif;\n}\n\np, li, input, textarea, select, .card-body, .term-section {\n  font-family: 'Lato', Arial, sans-serif;\n  color: var(--alegria-text);\n}\n\n.eyebrow, .text-link, a:not(.btn):not(.brand):not(.cta-link) {\n  color: var(--alegria-ocean);\n}\n\n.btn-primary, .cta-link, .btn-book {\n  background: var(--alegria-orange) !important;\n  color: #fff !important;\n  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.22);\n}\n\n.btn-secondary, .btn:not(.btn-primary):not(.btn-book) {\n  background: var(--alegria-ocean-light);\n  color: var(--alegria-deep);\n}\n\n.price-pill {\n  background: rgba(242, 140, 40, 0.13);\n  color: #9a4d08;\n  border: 1px solid rgba(242, 140, 40, 0.28);\n}\n\n.page-hero {\n  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);\n}\n\n.section-light {\n  background: var(--alegria-sand);\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
+/***/ 13586:
+/*!**************************************************************************************!*\
+  !*** ./src/app/home/admin-site-content/admin-site-content.component.html?ngResource ***!
+  \**************************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<div class=\"cms-shell\">\n  <header class=\"topbar\">\n    <div><span class=\"eyebrow\">ALEGRIA CMS</span><h1>{{t('title')}}</h1><p>{{t('intro')}}</p></div>\n    <div class=\"top-actions\"><span *ngIf=\"dirty\" class=\"unsaved\">● {{t('unsaved')}}</span><a routerLink=\"/home\" class=\"back\">{{t('back')}}</a></div>\n  </header>\n\n  <div class=\"cms-layout\">\n    <nav class=\"side-nav\">\n      <button *ngFor=\"let section of sections; trackBy: trackSection\" (click)=\"select(section)\" [class.active]=\"active.id === section.id\">\n        <span class=\"nav-icon\">{{section.icon}}</span><span><strong>{{ section.label }}</strong><small>{{ section.description }}</small></span>\n      </button>\n    </nav>\n\n    <main>\n      <div class=\"editor-head\">\n        <div><h2>{{ active.label }}</h2><p>{{ active.description }}</p></div>\n        <div class=\"actions\"><button class=\"secondary\" (click)=\"toggleAdvanced()\">{{advancedMode ? t('visual') : t('advanced')}}</button><button class=\"primary\" (click)=\"save()\" [disabled]=\"saving || loading\">{{ saving ? t('saving') : t('save') }}</button></div>\n      </div>\n      <div *ngIf=\"message\" class=\"notice success\">✓ {{ message }}</div>\n      <div *ngIf=\"error\" class=\"notice error\">{{ error }}</div>\n      <div *ngIf=\"loading\" class=\"loading\">{{t('loading')}}</div>\n\n      <ng-container *ngIf=\"!loading && !advancedMode\">\n        <div class=\"language-bar\" *ngIf=\"active.id !== 'pricing'\">\n          <div class=\"language-picker\">\n            <label for=\"cms-language\">{{t('language')}}</label>\n            <select id=\"cms-language\" [(ngModel)]=\"language\" (ngModelChange)=\"changeLanguage($event)\">\n              <option *ngFor=\"let l of languages\" [value]=\"l.id\">{{l.label}}</option>\n            </select>\n            <span>{{t('editing')}} <strong>{{language.toUpperCase()}}</strong>.</span>\n          </div>\n          <div class=\"translation-actions\">\n            <label class=\"overwrite-option\"><input type=\"checkbox\" [(ngModel)]=\"overwriteTranslations\"> {{t('overwrite')}}</label>\n            <button class=\"translate-button\" (click)=\"translateToAllLanguages()\" [disabled]=\"translating || loading\">\n              {{ translating ? t('translating') : t('translateAll') }} <span *ngIf=\"translationProgress\">{{translationProgress}}</span>\n            </button>\n          </div>\n        </div>\n\n        <!-- Tarification -->\n        <section *ngIf=\"active.id === 'pricing'\" class=\"panel\">\n          <h3>{{t('defaultPricing')}}</h3><p class=\"section-help\">{{t('pricingHelp')}}</p>\n          <div class=\"form-grid pricing-grid\">\n            <label><span>Journée (€)</span><input type=\"number\" [(ngModel)]=\"pricing.day\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Demi-journée (€)</span><input type=\"number\" [(ngModel)]=\"pricing.halfDay\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Soirée (€)</span><input type=\"number\" [(ngModel)]=\"pricing.evening\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Coucher de soleil (€)</span><input type=\"number\" [(ngModel)]=\"pricing.sunset\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Skipper (€)</span><input type=\"number\" [(ngModel)]=\"pricing.skipperPrice\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Carburant / nettoyage (€)</span><input type=\"number\" [(ngModel)]=\"pricing.cleaningPrice\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Passager supplémentaire (€)</span><input type=\"number\" [(ngModel)]=\"pricing.extraGuestPrice\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Passagers inclus</span><input type=\"number\" [(ngModel)]=\"pricing.nominalGuests\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Capacité maximale</span><input type=\"number\" [(ngModel)]=\"pricing.maxGuests\" (ngModelChange)=\"markDirty()\"></label>\n          </div>\n          <h3 class=\"subheading\">Saisonnalité</h3>\n          <div class=\"repeat-card compact\" *ngFor=\"let season of pricing.seasonalMultipliers; let i=index\">\n            <label><span>Nom</span><input [(ngModel)]=\"season.label\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Début</span><input type=\"date\" [(ngModel)]=\"season.startDate\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Fin</span><input type=\"date\" [(ngModel)]=\"season.endDate\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Coefficient</span><input type=\"number\" step=\"0.05\" [(ngModel)]=\"season.multiplier\" (ngModelChange)=\"markDirty()\"></label>\n          </div>\n        </section>\n\n        <!-- Sorties -->\n        <section *ngIf=\"active.id === 'outings'\" class=\"collection-section\">\n          <div class=\"collection-head\"><div><h3>{{t('outings')}}</h3><p>{{t('outingsHelp')}}</p></div><button class=\"add\" (click)=\"addOuting()\">+ {{t('addOuting')}}</button></div>\n          <article class=\"outing-card\" *ngFor=\"let item of outings; let i=index\">\n            <div class=\"card-head\"><div class=\"card-title\"><span class=\"order\">{{i+1}}</span><input class=\"title-input\" [(ngModel)]=\"outingLanguage(item).title\" (ngModelChange)=\"markDirty()\"></div><div class=\"card-tools\"><label class=\"switch\"><input type=\"checkbox\" [(ngModel)]=\"item.active\" (ngModelChange)=\"markDirty()\"><span></span> Visible</label><button (click)=\"moveOuting(i,-1)\" [disabled]=\"i===0\">↑</button><button (click)=\"moveOuting(i,1)\" [disabled]=\"i===outings.length-1\">↓</button><button (click)=\"duplicateOuting(i)\">Dupliquer</button><button class=\"danger-link\" (click)=\"removeOuting(i)\">Supprimer</button></div></div>\n            <div class=\"form-grid\">\n              <label class=\"wide\"><span>Description</span><textarea rows=\"4\" [(ngModel)]=\"outingLanguage(item).description\" (ngModelChange)=\"markDirty()\"></textarea></label>\n              <label><span>Durée</span><input [(ngModel)]=\"outingLanguage(item).duration\" (ngModelChange)=\"markDirty()\"></label>\n              <label><span>Passagers</span><input [(ngModel)]=\"outingLanguage(item).guests\" (ngModelChange)=\"markDirty()\"></label>\n              <label><span>Prix affiché</span><input [(ngModel)]=\"outingLanguage(item).priceLabel\" (ngModelChange)=\"markDirty()\"></label>\n              <label><span>Catégorie</span><select [(ngModel)]=\"item.category\" (ngModelChange)=\"markDirty()\"><option value=\"day\">Journée</option><option value=\"half-day\">Demi-journée</option><option value=\"sunset\">Coucher de soleil</option><option value=\"evening\">Soirée</option><option value=\"corporate\">Entreprise</option></select></label>\n            </div>\n            <div class=\"list-editor\"><div class=\"list-title\"><strong>Points forts</strong><button (click)=\"addHighlight(item)\">+ Ajouter</button></div><div class=\"list-row\" *ngFor=\"let h of outingLanguage(item).highlights; let hi=index\"><span>☑</span><input [(ngModel)]=\"outingLanguage(item).highlights[hi]\" (ngModelChange)=\"markDirty()\"><button (click)=\"removeHighlight(item,hi)\">×</button></div></div>\n          </article>\n          <div class=\"empty\" *ngIf=\"outings.length===0\">Aucune sortie. Cliquez sur « Ajouter une sortie ».</div>\n        </section>\n\n        <!-- Services -->\n        <section *ngIf=\"active.id === 'sea-toys'\" class=\"collection-section\">\n          <div class=\"collection-head\"><div><h3>{{t('services')}}</h3><p>{{t('servicesHelp')}}</p></div><button class=\"add\" (click)=\"addService()\">+ {{t('addService')}}</button></div>\n          <article class=\"service-card\" *ngFor=\"let service of services\">\n            <div class=\"service-active\"><label class=\"switch\"><input type=\"checkbox\" [(ngModel)]=\"service.active\" (ngModelChange)=\"markDirty()\"><span></span></label></div>\n            <div class=\"service-fields\"><label><span>Nom</span><input [(ngModel)]=\"serviceLanguage(service).title\" (ngModelChange)=\"markDirty()\"></label><label><span>Description</span><input [(ngModel)]=\"serviceLanguage(service).description\" (ngModelChange)=\"markDirty()\"></label></div>\n            <label class=\"price\"><span>Prix (€)</span><input type=\"number\" [(ngModel)]=\"service.amount\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"category\"><span>Catégorie</span><select [(ngModel)]=\"service.category\" (ngModelChange)=\"markDirty()\"><option value=\"toy\">Jouet nautique</option><option value=\"food\">Catering</option><option value=\"drinks\">Boissons</option><option value=\"other\">Autre</option></select></label>\n            <button class=\"icon-danger\" (click)=\"removeService(service)\">×</button>\n          </article>\n        </section>\n\n        <!-- Dedicated lightweight homepage editor. The complete homepage translation tree\n             is intentionally not rendered recursively because it can contain thousands of\n             bindings and freeze the browser. Advanced JSON remains available for power users. -->\n        <section *ngIf=\"active.id === 'homepage'\" class=\"panel visual-editor\">\n          <div class=\"form-grid\">\n            <label class=\"wide\"><span>Titre principal</span><input [(ngModel)]=\"homepageModel.title\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Introduction</span><textarea rows=\"4\" [(ngModel)]=\"homepageModel.intro\" (ngModelChange)=\"markDirty()\"></textarea></label>\n            <label><span>Sur-titre</span><input [(ngModel)]=\"homepageModel.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Bouton principal</span><input [(ngModel)]=\"homepageModel.primaryCta\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Bouton secondaire</span><input [(ngModel)]=\"homepageModel.secondaryCta\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Bouton réservation</span><input [(ngModel)]=\"homepageModel.onlineBookingCta\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Titre section sorties</span><input [(ngModel)]=\"homepageModel.sectionTitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Texte section sorties</span><textarea rows=\"3\" [(ngModel)]=\"homepageModel.sectionText\" (ngModelChange)=\"markDirty()\"></textarea></label>\n            <label class=\"wide\"><span>Titre section bateau</span><input [(ngModel)]=\"homepageModel.boatTitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Texte section bateau</span><textarea rows=\"3\" [(ngModel)]=\"homepageModel.boatText\" (ngModelChange)=\"markDirty()\"></textarea></label>\n            <label class=\"wide\"><span>Titre contact</span><input [(ngModel)]=\"homepageModel.contactTitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Texte contact</span><textarea rows=\"3\" [(ngModel)]=\"homepageModel.contactText\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          </div>\n          <p class=\"hint\">Les blocs avancés de la page d’accueil restent accessibles via « Mode avancé JSON ».</p>\n        </section>\n\n        <!-- Non-recursive editor: avoids any possibility of recursive template freezes. -->\n        <section *ngIf=\"active.id === 'boat'\" class=\"panel visual-editor\">\n          <div class=\"form-grid\">\n            <label class=\"wide\"><span>Nom du bateau</span><input [(ngModel)]=\"content.name\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Titre</span><input [(ngModel)]=\"localizedRoot.title\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Sous-titre</span><input [(ngModel)]=\"localizedRoot.subtitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Description</span><textarea rows=\"7\" [(ngModel)]=\"localizedRoot.description\" (ngModelChange)=\"markDirty()\"></textarea></label>\n            <label><span>Capacité</span><input type=\"number\" [(ngModel)]=\"content.capacity\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Marina</span><input [(ngModel)]=\"content.marina\" (ngModelChange)=\"markDirty()\"></label>\n          </div>\n        </section>\n\n        <section *ngIf=\"active.id === 'destinations' || active.id === 'faq' || active.id === 'reviews' || active.id === 'terms' || active.id === 'contact'\" class=\"panel visual-editor\">\n          <div class=\"form-grid\">\n            <label class=\"wide\"><span>Titre</span><input [(ngModel)]=\"localizedRoot.title\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Description / contenu</span><textarea rows=\"12\" [(ngModel)]=\"localizedRoot.description\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          </div>\n          <p class=\"hint\">Les structures détaillées restent accessibles dans le mode JSON avancé.</p>\n        </section>\n      </ng-container>\n\n      <textarea *ngIf=\"!loading && advancedMode\" class=\"json-editor\" [(ngModel)]=\"jsonText\" (ngModelChange)=\"markDirty()\" spellcheck=\"false\" aria-label=\"Contenu JSON\"></textarea>\n      <p *ngIf=\"advancedMode\" class=\"hint\">{{t('jsonHint')}}</p>\n    </main>\n  </div>\n</div>\n";
+
+/***/ }),
+
+/***/ 14374:
+/*!*************************************************************************!*\
+  !*** ./src/app/home/admin-site-content/admin-site-content.component.ts ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AdminSiteContentComponent: () => (/* binding */ AdminSiteContentComponent)
+/* harmony export */ });
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _admin_site_content_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin-site-content.component.html?ngResource */ 13586);
+/* harmony import */ var _admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./admin-site-content.component.scss?ngResource */ 3866);
+/* harmony import */ var _admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 56196);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ 72354);
+/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+
+
+
+
+
+
+
+
+let AdminSiteContentComponent = class AdminSiteContentComponent {
+  http;
+  languageService;
+  firebaseDatabaseUrl = 'https://adn-dev-4d05d.firebaseio.com';
+  get apiBase() {
+    if (typeof window === 'undefined') return '/api/admin/content';
+    const hostname = window.location.hostname;
+    const backendOrigin = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0' ? 'https://localhost:2000' : window.location.origin;
+    return `${backendOrigin}/api/admin/content`;
+  }
+  languages = [{
+    id: 'fr',
+    label: 'Français'
+  }, {
+    id: 'en',
+    label: 'English'
+  }, {
+    id: 'es',
+    label: 'Español'
+  }, {
+    id: 'it',
+    label: 'Italiano'
+  }, {
+    id: 'de',
+    label: 'Deutsch'
+  }, {
+    id: 'nl',
+    label: 'Nederlands'
+  }, {
+    id: 'ru',
+    label: 'Русский'
+  }];
+  sectionsFr = [{
+    id: 'homepage',
+    label: 'Page d’accueil',
+    description: 'Hero, textes, boutons et médias.',
+    icon: '⌂'
+  }, {
+    id: 'boat',
+    label: 'Bateau',
+    description: 'Description, caractéristiques, équipements et galerie.',
+    icon: '⛵'
+  }, {
+    id: 'outings',
+    label: 'Sorties',
+    description: 'Descriptions, durées, inclusions et visibilité.',
+    icon: '☀'
+  }, {
+    id: 'pricing',
+    label: 'Tarification',
+    description: 'Prix par défaut et prix par type de sortie.',
+    icon: '€'
+  }, {
+    id: 'sea-toys',
+    label: 'Services & jouets',
+    description: 'Catalogue, prix, photos et disponibilité.',
+    icon: '⚓'
+  }, {
+    id: 'destinations',
+    label: 'Destinations',
+    description: 'Lieux, descriptions, cartes et photos.',
+    icon: '⌖'
+  }, {
+    id: 'faq',
+    label: 'FAQ',
+    description: 'Questions, réponses, ordre et visibilité.',
+    icon: '?'
+  }, {
+    id: 'reviews',
+    label: 'Avis',
+    description: 'Avis mis en avant sur le site.',
+    icon: '★'
+  }, {
+    id: 'terms',
+    label: 'Conditions générales',
+    description: 'Contenu multilingue des CGV.',
+    icon: '§'
+  }, {
+    id: 'contact',
+    label: 'Contact',
+    description: 'Coordonnées, marina et réseaux sociaux.',
+    icon: '✉'
+  }];
+  active = this.sectionsFr[1]; // Start with the smaller Boat section; Homepage is rendered by a dedicated editor.
+  content = {};
+  jsonText = '';
+  language = 'fr';
+  loading = false;
+  saving = false;
+  translating = false;
+  translationProgress = '';
+  overwriteTranslations = true;
+  advancedMode = false;
+  dirty = false;
+  message = '';
+  error = '';
+  currentLanguage = 'fr';
+  uiText = {
+    fr: {
+      title: 'Contenu du site',
+      intro: 'Modifiez vos pages avec des formulaires simples, sans toucher au code.',
+      unsaved: 'Modifications non enregistrées',
+      back: 'Retour au tableau de bord',
+      visual: 'Revenir au formulaire',
+      advanced: 'Mode avancé JSON',
+      saving: 'Enregistrement…',
+      save: 'Enregistrer',
+      loading: 'Chargement…',
+      language: 'Langue',
+      editing: 'Vous modifiez actuellement la version',
+      defaultPricing: 'Tarifs par défaut',
+      pricingHelp: 'Ces montants préremplissent vos offres. Ils restent modifiables pour chaque réservation.',
+      outings: 'Vos sorties',
+      outingsHelp: 'Une carte correspond à une expérience proposée sur le site.',
+      addOuting: 'Ajouter une sortie',
+      services: 'Services et options',
+      servicesHelp: 'Ajoutez les jouets nautiques, boissons, catering ou autres options.',
+      addService: 'Ajouter un service',
+      success: 'Modifications enregistrées avec succès.',
+      loadError: 'Impossible de charger cette rubrique.',
+      saveError: 'Enregistrement impossible.',
+      jsonHint: 'Mode réservé aux utilisateurs avancés. Une erreur de syntaxe empêchera l’enregistrement.',
+      translateAll: 'Traduire vers toutes les langues',
+      translating: 'Traduction…',
+      overwrite: 'Remplacer les traductions existantes',
+      translated: 'Traductions générées. Vérifiez-les puis enregistrez.',
+      translateError: 'La traduction automatique a échoué.'
+    },
+    en: {
+      title: 'Website content',
+      intro: 'Edit your pages with simple forms, without touching the code.',
+      unsaved: 'Unsaved changes',
+      back: 'Back to dashboard',
+      visual: 'Back to form',
+      advanced: 'Advanced JSON mode',
+      saving: 'Saving…',
+      save: 'Save',
+      loading: 'Loading…',
+      language: 'Language',
+      editing: 'You are currently editing the',
+      defaultPricing: 'Default pricing',
+      pricingHelp: 'These amounts prefill your offers and remain editable for each booking.',
+      outings: 'Your outings',
+      outingsHelp: 'Each card represents an experience offered on the website.',
+      addOuting: 'Add an outing',
+      services: 'Services and options',
+      servicesHelp: 'Add water toys, drinks, catering, or other options.',
+      addService: 'Add a service',
+      success: 'Changes saved successfully.',
+      loadError: 'Unable to load this section.',
+      saveError: 'Unable to save.',
+      jsonHint: 'Advanced users only. A syntax error will prevent saving.',
+      translateAll: 'Translate into all languages',
+      translating: 'Translating…',
+      overwrite: 'Replace existing translations',
+      translated: 'Translations generated. Review them, then save.',
+      translateError: 'Automatic translation failed.'
+    },
+    es: {
+      title: 'Contenido del sitio',
+      intro: 'Modifique sus páginas con formularios sencillos, sin tocar el código.',
+      unsaved: 'Cambios sin guardar',
+      back: 'Volver al panel',
+      visual: 'Volver al formulario',
+      advanced: 'Modo JSON avanzado',
+      saving: 'Guardando…',
+      save: 'Guardar',
+      loading: 'Cargando…',
+      language: 'Idioma',
+      editing: 'Está editando actualmente la versión',
+      defaultPricing: 'Precios predeterminados',
+      pricingHelp: 'Estos importes rellenan sus ofertas y pueden modificarse en cada reserva.',
+      outings: 'Sus salidas',
+      outingsHelp: 'Cada tarjeta corresponde a una experiencia ofrecida en el sitio.',
+      addOuting: 'Añadir una salida',
+      services: 'Servicios y opciones',
+      servicesHelp: 'Añada juguetes acuáticos, bebidas, catering u otras opciones.',
+      addService: 'Añadir un servicio',
+      success: 'Cambios guardados correctamente.',
+      loadError: 'No se puede cargar esta sección.',
+      saveError: 'No se puede guardar.',
+      jsonHint: 'Modo para usuarios avanzados. Un error de sintaxis impedirá guardar.'
+    },
+    it: {
+      title: 'Contenuti del sito',
+      intro: 'Modifica le pagine con moduli semplici, senza intervenire sul codice.',
+      unsaved: 'Modifiche non salvate',
+      back: 'Torna alla dashboard',
+      visual: 'Torna al modulo',
+      advanced: 'Modalità JSON avanzata',
+      saving: 'Salvataggio…',
+      save: 'Salva',
+      loading: 'Caricamento…',
+      language: 'Lingua',
+      editing: 'Stai modificando la versione',
+      defaultPricing: 'Tariffe predefinite',
+      pricingHelp: 'Questi importi precompilano le offerte e restano modificabili per ogni prenotazione.',
+      outings: 'Le tue uscite',
+      outingsHelp: 'Ogni scheda rappresenta un’esperienza proposta sul sito.',
+      addOuting: 'Aggiungi uscita',
+      services: 'Servizi e opzioni',
+      servicesHelp: 'Aggiungi giochi acquatici, bevande, catering o altre opzioni.',
+      addService: 'Aggiungi servizio',
+      success: 'Modifiche salvate.',
+      loadError: 'Impossibile caricare questa sezione.',
+      saveError: 'Salvataggio impossibile.',
+      jsonHint: 'Modalità per utenti avanzati. Un errore di sintassi impedirà il salvataggio.'
+    },
+    de: {
+      title: 'Website-Inhalte',
+      intro: 'Bearbeiten Sie Ihre Seiten mit einfachen Formularen, ohne den Code zu ändern.',
+      unsaved: 'Nicht gespeicherte Änderungen',
+      back: 'Zurück zum Dashboard',
+      visual: 'Zurück zum Formular',
+      advanced: 'Erweiterter JSON-Modus',
+      saving: 'Speichern…',
+      save: 'Speichern',
+      loading: 'Laden…',
+      language: 'Sprache',
+      editing: 'Sie bearbeiten derzeit die Version',
+      defaultPricing: 'Standardpreise',
+      pricingHelp: 'Diese Beträge füllen Angebote vor und können pro Buchung geändert werden.',
+      outings: 'Ihre Ausfahrten',
+      outingsHelp: 'Jede Karte entspricht einem auf der Website angebotenen Erlebnis.',
+      addOuting: 'Ausfahrt hinzufügen',
+      services: 'Services und Optionen',
+      servicesHelp: 'Wasserspielzeug, Getränke, Catering oder andere Optionen hinzufügen.',
+      addService: 'Service hinzufügen',
+      success: 'Änderungen gespeichert.',
+      loadError: 'Dieser Bereich konnte nicht geladen werden.',
+      saveError: 'Speichern nicht möglich.',
+      jsonHint: 'Nur für fortgeschrittene Benutzer. Ein Syntaxfehler verhindert das Speichern.'
+    },
+    nl: {
+      title: 'Website-inhoud',
+      intro: 'Bewerk uw pagina’s met eenvoudige formulieren, zonder de code te wijzigen.',
+      unsaved: 'Niet-opgeslagen wijzigingen',
+      back: 'Terug naar dashboard',
+      visual: 'Terug naar formulier',
+      advanced: 'Geavanceerde JSON-modus',
+      saving: 'Opslaan…',
+      save: 'Opslaan',
+      loading: 'Laden…',
+      language: 'Taal',
+      editing: 'U bewerkt momenteel de versie',
+      defaultPricing: 'Standaardprijzen',
+      pricingHelp: 'Deze bedragen vullen offertes vooraf in en blijven per boeking aanpasbaar.',
+      outings: 'Uw uitstapjes',
+      outingsHelp: 'Elke kaart staat voor een ervaring die op de website wordt aangeboden.',
+      addOuting: 'Uitstapje toevoegen',
+      services: 'Diensten en opties',
+      servicesHelp: 'Voeg waterspeelgoed, drankjes, catering of andere opties toe.',
+      addService: 'Dienst toevoegen',
+      success: 'Wijzigingen opgeslagen.',
+      loadError: 'Deze rubriek kan niet worden geladen.',
+      saveError: 'Opslaan mislukt.',
+      jsonHint: 'Alleen voor gevorderde gebruikers. Een syntaxisfout voorkomt opslaan.'
+    },
+    ru: {
+      title: 'Содержимое сайта',
+      intro: 'Редактируйте страницы с помощью простых форм, не изменяя код.',
+      unsaved: 'Есть несохранённые изменения',
+      back: 'Вернуться к панели',
+      visual: 'Вернуться к форме',
+      advanced: 'Расширенный режим JSON',
+      saving: 'Сохранение…',
+      save: 'Сохранить',
+      loading: 'Загрузка…',
+      language: 'Язык',
+      editing: 'Сейчас редактируется версия',
+      defaultPricing: 'Цены по умолчанию',
+      pricingHelp: 'Эти суммы подставляются в предложения и могут быть изменены для каждого бронирования.',
+      outings: 'Ваши прогулки',
+      outingsHelp: 'Каждая карточка представляет услугу, предлагаемую на сайте.',
+      addOuting: 'Добавить прогулку',
+      services: 'Услуги и опции',
+      servicesHelp: 'Добавьте водные игрушки, напитки, кейтеринг и другие опции.',
+      addService: 'Добавить услугу',
+      success: 'Изменения сохранены.',
+      loadError: 'Не удалось загрузить раздел.',
+      saveError: 'Не удалось сохранить.',
+      jsonHint: 'Режим для опытных пользователей. Ошибка синтаксиса помешает сохранению.'
+    }
+  };
+  constructor(http, languageService) {
+    this.http = http;
+    this.languageService = languageService;
+  }
+  ngOnInit() {
+    this.currentLanguage = this.languageService.currentLanguage || 'fr';
+    this.languageService.language$.subscribe(lang => this.currentLanguage = lang);
+    // Render the route first. Loading starts only after Angular has painted the shell.
+    setTimeout(() => {
+      void this.select(this.active, true);
+    }, 0);
+  }
+  t(key) {
+    return this.uiText[this.currentLanguage]?.[key] || this.uiText.en[key] || key;
+  }
+  trackSection(_index, section) {
+    return section.id;
+  }
+  get sections() {
+    const translations = {
+      en: ['Homepage', 'Boat', 'Outings', 'Pricing', 'Services & toys', 'Destinations', 'FAQ', 'Reviews', 'Terms & conditions', 'Contact'],
+      es: ['Página de inicio', 'Barco', 'Salidas', 'Precios', 'Servicios y juguetes', 'Destinos', 'FAQ', 'Opiniones', 'Términos y condiciones', 'Contacto'],
+      it: ['Homepage', 'Barca', 'Uscite', 'Tariffe', 'Servizi e giochi', 'Destinazioni', 'FAQ', 'Recensioni', 'Termini e condizioni', 'Contatti'],
+      de: ['Startseite', 'Boot', 'Ausfahrten', 'Preise', 'Services & Spielzeug', 'Ziele', 'FAQ', 'Bewertungen', 'AGB', 'Kontakt'],
+      nl: ['Homepage', 'Boot', 'Uitstapjes', 'Prijzen', 'Diensten & speelgoed', 'Bestemmingen', 'FAQ', 'Beoordelingen', 'Voorwaarden', 'Contact'],
+      ru: ['Главная', 'Лодка', 'Прогулки', 'Цены', 'Услуги и игрушки', 'Направления', 'FAQ', 'Отзывы', 'Условия', 'Контакты']
+    };
+    const labels = translations[this.currentLanguage] || this.sectionsFr.map(s => s.label);
+    return this.sectionsFr.map((section, index) => ({
+      ...section,
+      label: labels[index] || section.label
+    }));
+  }
+  select(section, initial = false) {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!initial && _this.dirty && !confirm('Des modifications ne sont pas enregistrées. Continuer ?')) return;
+      _this.active = section;
+      _this.loading = true;
+      _this.message = '';
+      _this.error = '';
+      _this.advancedMode = false;
+      try {
+        _this.content = yield _this.loadSection(section.id);
+        // JSON serialization is deliberately lazy. Some CMS sections are large and
+        // serializing them during route activation can freeze the browser.
+        _this.jsonText = '';
+        _this.dirty = false;
+      } catch (e) {
+        _this.content = {};
+        _this.jsonText = '';
+        _this.error = e?.error?.message || _this.t('loadError');
+      } finally {
+        _this.loading = false;
+      }
+    })();
+  }
+  loadSection(sectionId) {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const encodedId = encodeURIComponent(sectionId);
+      // Firebase is read first because the imported dump is the content source and
+      // does not depend on backend route/proxy configuration.
+      try {
+        const value = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this2.http.get(`${_this2.firebaseDatabaseUrl}/cmsContent/${encodedId}.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.timeout)(3000)));
+        if (value && typeof value === 'object') return value;
+      } catch {}
+      // Backend fallback. A strict timeout guarantees that the view never hangs.
+      try {
+        return (yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this2.http.get(`${_this2.apiBase}/${encodedId}`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.timeout)(3000)))) || {};
+      } catch {
+        // A missing backend must never prevent the editor shell from opening.
+        return {};
+      }
+    })();
+  }
+  changeLanguage(nextLanguage) {
+    const previousLanguage = this.language;
+    if (nextLanguage === previousLanguage) return;
+    if (this.active.id !== 'outings' && this.active.id !== 'sea-toys' && (!this.content.i18n || typeof this.content.i18n !== 'object')) {
+      this.content.i18n = {};
+      this.content.i18n[previousLanguage] = this.extractTranslatableRoot(this.content);
+    }
+    this.language = nextLanguage;
+  }
+  get localizedRoot() {
+    if (this.content?.i18n) {
+      if (!this.content.i18n[this.language]) this.content.i18n[this.language] = {};
+      return this.content.i18n[this.language];
+    }
+    return this.content;
+  }
+  get homepageModel() {
+    const root = this.localizedRoot;
+    if (!root.home || typeof root.home !== 'object') root.home = {};
+    return root.home;
+  }
+  get genericEditableRoot() {
+    // Never recursively render the full homepage translation tree (brand/common/portal).
+    // It is large enough to freeze Angular's recursive template. Homepage has its own compact form.
+    return this.active.id === 'homepage' ? this.homepageModel : this.localizedRoot;
+  }
+  get outings() {
+    return Array.isArray(this.content?.items) ? this.content.items : [];
+  }
+  get services() {
+    const items = this.content?.items || {};
+    return Array.isArray(items) ? items : Object.keys(items).map(k => items[k]);
+  }
+  get pricing() {
+    if (!this.content.model) this.content.model = {};
+    if (!this.content.model.alegria) this.content.model.alegria = {};
+    return this.content.model.alegria;
+  }
+  markDirty() {
+    this.dirty = true;
+    this.message = '';
+  }
+  keys(obj) {
+    return obj && typeof obj === 'object' ? Object.keys(obj) : [];
+  }
+  isArray(v) {
+    return Array.isArray(v);
+  }
+  isObject(v) {
+    return v !== null && typeof v === 'object' && !Array.isArray(v);
+  }
+  isBoolean(v) {
+    return typeof v === 'boolean';
+  }
+  isNumber(v) {
+    return typeof v === 'number';
+  }
+  isLongText(key, value) {
+    return typeof value === 'string' && (value.length > 90 || /description|intro|text|content|answer|terms|conditions|message/i.test(key));
+  }
+  label(key) {
+    const known = {
+      title: 'Titre',
+      subtitle: 'Sous-titre',
+      description: 'Description',
+      intro: 'Introduction',
+      visible: 'Visible',
+      active: 'Actif',
+      name: 'Nom',
+      amount: 'Prix',
+      category: 'Catégorie',
+      duration: 'Durée',
+      guests: 'Nombre de passagers',
+      priceLabel: 'Libellé du prix',
+      highlights: 'Points forts',
+      reasons: 'Raisons',
+      occasions: 'Occasions',
+      cta: 'Texte du bouton',
+      eyebrow: 'Sur-titre',
+      day: 'Journée',
+      halfDay: 'Demi-journée',
+      evening: 'Soirée',
+      sunset: 'Coucher de soleil',
+      skipperPrice: 'Skipper',
+      cleaningPrice: 'Carburant / nettoyage',
+      extraGuestPrice: 'Passager supplémentaire',
+      maxGuests: 'Maximum de passagers',
+      minGuests: 'Minimum de passagers',
+      nominalGuests: 'Passagers inclus',
+      startDate: 'Date de début',
+      endDate: 'Date de fin',
+      multiplier: 'Coefficient',
+      label: 'Libellé',
+      sortOrder: 'Ordre d’affichage',
+      currency: 'Devise',
+      address: 'Adresse',
+      phone: 'Téléphone',
+      email: 'E-mail'
+    };
+    if (known[key]) return known[key];
+    return key.replace(/([A-Z])/g, ' $1').replace(/[_-]/g, ' ').replace(/^./, c => c.toUpperCase());
+  }
+  addOuting() {
+    if (!Array.isArray(this.content.items)) this.content.items = [];
+    const item = {
+      id: `outing_${Date.now()}`,
+      active: true,
+      category: 'day'
+    };
+    this.languages.forEach(l => item[l.id] = {
+      title: 'Nouvelle sortie',
+      description: '',
+      duration: '',
+      guests: '',
+      priceLabel: '',
+      highlights: []
+    });
+    this.content.items.push(item);
+    this.markDirty();
+  }
+  duplicateOuting(index) {
+    const clone = JSON.parse(JSON.stringify(this.outings[index]));
+    clone.id = `${clone.id || 'outing'}_copy_${Date.now()}`;
+    this.content.items.splice(index + 1, 0, clone);
+    this.markDirty();
+  }
+  removeOuting(index) {
+    if (confirm('Supprimer cette sortie ?')) {
+      this.content.items.splice(index, 1);
+      this.markDirty();
+    }
+  }
+  moveOuting(index, delta) {
+    const next = index + delta;
+    if (next < 0 || next >= this.outings.length) return;
+    const [item] = this.content.items.splice(index, 1);
+    this.content.items.splice(next, 0, item);
+    this.markDirty();
+  }
+  outingLanguage(item) {
+    if (!item[this.language]) item[this.language] = {
+      title: '',
+      description: '',
+      duration: '',
+      guests: '',
+      priceLabel: '',
+      highlights: []
+    };
+    return item[this.language];
+  }
+  addHighlight(item) {
+    const l = this.outingLanguage(item);
+    if (!Array.isArray(l.highlights)) l.highlights = [];
+    l.highlights.push('');
+    this.markDirty();
+  }
+  removeHighlight(item, index) {
+    this.outingLanguage(item).highlights.splice(index, 1);
+    this.markDirty();
+  }
+  serviceLanguage(service) {
+    if (!service.i18n || typeof service.i18n !== 'object') {
+      service.i18n = {};
+      service.i18n[this.language] = {
+        title: service.title || service.name || '',
+        description: service.description || ''
+      };
+    }
+    if (!service.i18n[this.language]) service.i18n[this.language] = {
+      title: '',
+      description: ''
+    };
+    return service.i18n[this.language];
+  }
+  addService() {
+    if (!this.content.items || Array.isArray(this.content.items)) this.content.items = {};
+    const id = `service_${Date.now()}`;
+    this.content.items[id] = {
+      id,
+      name: 'Nouveau service',
+      title: 'Nouveau service',
+      description: '',
+      amount: 0,
+      currency: 'eur',
+      category: 'other',
+      active: true,
+      sortOrder: Object.keys(this.content.items).length * 10
+    };
+    this.markDirty();
+  }
+  removeService(service) {
+    if (confirm('Supprimer ce service ?')) {
+      delete this.content.items[service.id];
+      this.markDirty();
+    }
+  }
+  addArrayItem(parent, key) {
+    if (!Array.isArray(parent[key])) parent[key] = [];
+    const existing = parent[key][0];
+    parent[key].push(this.isObject(existing) ? {} : '');
+    this.markDirty();
+  }
+  removeArrayItem(arr, index) {
+    arr.splice(index, 1);
+    this.markDirty();
+  }
+  addField(obj) {
+    const key = prompt('Nom technique du nouveau champ (sans espaces) :');
+    if (!key || obj[key] !== undefined) return;
+    obj[key] = '';
+    this.markDirty();
+  }
+  toggleAdvanced() {
+    if (!this.advancedMode) {
+      try {
+        this.jsonText = JSON.stringify(this.content || {}, null, 2);
+      } catch {
+        this.error = 'Ce contenu ne peut pas être affiché en JSON.';
+        return;
+      }
+    } else {
+      try {
+        this.content = JSON.parse(this.jsonText || '{}');
+        this.error = '';
+      } catch {
+        this.error = 'Le JSON contient une erreur. Corrigez-la avant de revenir au mode visuel.';
+        return;
+      }
+    }
+    this.advancedMode = !this.advancedMode;
+  }
+  translateToAllLanguages() {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (_this3.translating || _this3.loading) return;
+      if (_this3.advancedMode) {
+        try {
+          _this3.content = JSON.parse(_this3.jsonText || '{}');
+        } catch {
+          _this3.error = 'Le JSON contient une erreur de syntaxe.';
+          return;
+        }
+      }
+      _this3.translating = true;
+      _this3.translationProgress = '';
+      _this3.message = '';
+      _this3.error = '';
+      try {
+        const sourceLanguage = _this3.language;
+        const targets = _this3.languages.map(l => l.id).filter(l => l !== sourceLanguage);
+        let completed = 0;
+        for (const targetLanguage of targets) {
+          _this3.translationProgress = `${completed + 1}/${targets.length} · ${targetLanguage.toUpperCase()}`;
+          yield _this3.translateSectionLanguage(sourceLanguage, targetLanguage);
+          completed++;
+        }
+        _this3.dirty = true;
+        _this3.message = _this3.t('translated');
+        if (_this3.advancedMode) _this3.jsonText = JSON.stringify(_this3.content, null, 2);
+      } catch (e) {
+        _this3.error = e?.message || _this3.t('translateError');
+      } finally {
+        _this3.translating = false;
+        _this3.translationProgress = '';
+      }
+    })();
+  }
+  translateSectionLanguage(sourceLanguage, targetLanguage) {
+    var _this4 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (_this4.active.id === 'outings') {
+        for (const item of _this4.outings) {
+          const source = item?.[sourceLanguage] || {};
+          const existing = item?.[targetLanguage] || {};
+          item[targetLanguage] = yield _this4.translateObject(source, sourceLanguage, targetLanguage, existing);
+        }
+        return;
+      }
+      if (_this4.active.id === 'sea-toys') {
+        for (const service of _this4.services) {
+          const source = service?.i18n?.[sourceLanguage] || {
+            title: service.title || service.name || '',
+            description: service.description || ''
+          };
+          if (!service.i18n) service.i18n = {};
+          service.i18n[targetLanguage] = yield _this4.translateObject(source, sourceLanguage, targetLanguage, service.i18n[targetLanguage] || {});
+        }
+        return;
+      }
+      if (!_this4.content.i18n || typeof _this4.content.i18n !== 'object') {
+        _this4.content.i18n = {};
+        _this4.content.i18n[sourceLanguage] = _this4.extractTranslatableRoot(_this4.content);
+      }
+      const source = _this4.content.i18n[sourceLanguage] || {};
+      const existing = _this4.content.i18n[targetLanguage] || {};
+      _this4.content.i18n[targetLanguage] = yield _this4.translateObject(source, sourceLanguage, targetLanguage, existing);
+    })();
+  }
+  extractTranslatableRoot(value) {
+    const excluded = new Set(['i18n', 'id', 'active', 'visible', 'amount', 'price', 'currency', 'capacity', 'sortOrder', 'latitude', 'longitude']);
+    const output = {};
+    Object.keys(value || {}).forEach(key => {
+      if (excluded.has(key)) return;
+      const current = value[key];
+      if (typeof current === 'string' || Array.isArray(current) || current && typeof current === 'object') {
+        output[key] = this.clone(current);
+      }
+    });
+    return output;
+  }
+  translateObject(source, sourceLanguage, targetLanguage, existing) {
+    var _this5 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (typeof source === 'string') {
+        if (!_this5.shouldTranslate(source)) return source;
+        if (!_this5.overwriteTranslations && typeof existing === 'string' && existing.trim()) return existing;
+        return _this5.translateText(source, sourceLanguage, targetLanguage);
+      }
+      if (Array.isArray(source)) {
+        const result = [];
+        for (let i = 0; i < source.length; i++) {
+          result.push(yield _this5.translateObject(source[i], sourceLanguage, targetLanguage, Array.isArray(existing) ? existing[i] : undefined));
+        }
+        return result;
+      }
+      if (!source || typeof source !== 'object') return source;
+      const result = _this5.clone(existing && typeof existing === 'object' ? existing : {});
+      for (const key of Object.keys(source)) {
+        if (_this5.isTechnicalKey(key)) {
+          result[key] = _this5.clone(source[key]);
+        } else {
+          result[key] = yield _this5.translateObject(source[key], sourceLanguage, targetLanguage, result[key]);
+        }
+      }
+      return result;
+    })();
+  }
+  translateText(text, sourceLanguage, targetLanguage) {
+    var _this6 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      try {
+        const response = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this6.http.post(`${_this6.apiBase}/translate`, {
+          text,
+          sourceLanguage,
+          targetLanguage
+        }).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.timeout)(8000)));
+        if (typeof response?.translation === 'string' && response.translation.trim()) return response.translation;
+        if (typeof response?.translatedText === 'string' && response.translatedText.trim()) return response.translatedText;
+      } catch {}
+      const url = 'https://translate.googleapis.com/translate_a/single';
+      const response = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this6.http.get(url, {
+        params: {
+          client: 'gtx',
+          sl: sourceLanguage,
+          tl: targetLanguage,
+          dt: 't',
+          q: text
+        }
+      }).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.timeout)(10000)));
+      const translated = Array.isArray(response?.[0]) ? response[0].map(part => part?.[0] || '').join('') : '';
+      if (!translated) throw new Error(_this6.t('translateError'));
+      return translated;
+    })();
+  }
+  shouldTranslate(value) {
+    const text = String(value || '').trim();
+    if (!text || text.length < 2) return false;
+    if (/^(https?:\/\/|mailto:|tel:|\/|#)/i.test(text)) return false;
+    if (/^[\w.+-]+@[\w.-]+\.[a-z]{2,}$/i.test(text)) return false;
+    if (/^[A-Z0-9_./:-]+$/.test(text) && !/\s/.test(text)) return false;
+    return true;
+  }
+  isTechnicalKey(key) {
+    return /^(id|key|slug|url|href|src|image|imageUrl|icon|email|phone|currency|category|type|route|path|code|active|visible|sortOrder|amount|price|latitude|longitude)$/i.test(key);
+  }
+  clone(value) {
+    return value === undefined ? value : JSON.parse(JSON.stringify(value));
+  }
+  save() {
+    var _this7 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this7.saving = true;
+      _this7.message = '';
+      _this7.error = '';
+      try {
+        if (_this7.advancedMode) _this7.content = JSON.parse(_this7.jsonText || '{}');
+        const sectionId = encodeURIComponent(_this7.active.id);
+        try {
+          yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this7.http.put(`${_this7.apiBase}/${sectionId}`, _this7.content).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.timeout)(6000)));
+        } catch {
+          // Direct Firebase fallback for deployments where /api is not proxied.
+          yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this7.http.put(`${_this7.firebaseDatabaseUrl}/cmsContent/${sectionId}.json`, _this7.content).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.timeout)(6000)));
+        }
+        // Keep JSON generation lazy after save as well.
+        _this7.jsonText = _this7.advancedMode ? JSON.stringify(_this7.content, null, 2) : '';
+        _this7.dirty = false;
+        _this7.message = _this7.t('success');
+      } catch (e) {
+        _this7.error = e instanceof SyntaxError ? 'Le JSON contient une erreur de syntaxe.' : e?.error?.message || _this7.t('saveError');
+      } finally {
+        _this7.saving = false;
+      }
+    })();
+  }
+  static ctorParameters = () => [{
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__.HttpClient
+  }, {
+    type: _services_language_service__WEBPACK_IMPORTED_MODULE_3__.LanguageService
+  }];
+};
+AdminSiteContentComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
+  selector: 'app-admin-site-content',
+  template: _admin_site_content_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
+  styles: [(_admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
+})], AdminSiteContentComponent);
 
 
 /***/ }),
@@ -10331,12 +11860,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeModule: () => (/* binding */ HomeModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! @angular/router */ 99585);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! @ionic/angular */ 21507);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! @ionic/angular */ 21507);
 /* harmony import */ var _home_router_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home.router.module */ 61506);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
@@ -10375,6 +11904,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _admin_pricing_model_admin_pricing_model_component__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./admin-pricing-model/admin-pricing-model.component */ 80254);
 /* harmony import */ var _admin_fleet_admin_fleet_component__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./admin-fleet/admin-fleet.component */ 27786);
 /* harmony import */ var _site_text_pipe__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./site-text.pipe */ 99343);
+/* harmony import */ var _admin_site_content_admin_site_content_component__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./admin-site-content/admin-site-content.component */ 14374);
+
 
 
 
@@ -10420,9 +11951,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let HomeModule = class HomeModule {};
-HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_38__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_39__.NgModule)({
-  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent, _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__.SafetyInstructionsComponent, _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_13__.DepositComponent, _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__.AccountSummaryComponent, _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_15__.MyProfileComponent, _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__.MyFeedbacksComponent, _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.AdminFeedbacksComponent, _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingsComponent, _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_19__.AdminOutingDetailComponent, _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__.AdminManageOutingsComponent, _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_21__.GuestFaqComponent, _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__.GuestJourneyComponent, _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__.BookingsComponent, _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__.MyBookingsComponent, _my_offers_my_offers_component__WEBPACK_IMPORTED_MODULE_25__.MyOffersComponent, _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_26__.BookingDetailComponent, _booking_invoice_booking_invoice_component__WEBPACK_IMPORTED_MODULE_27__.BookingInvoiceComponent, _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_28__.AdminWarrantyChargeComponent, _admin_offers_admin_offers_component__WEBPACK_IMPORTED_MODULE_29__.AdminOffersComponent, _offer_confirmation_offer_confirmation_component__WEBPACK_IMPORTED_MODULE_30__.OfferConfirmationComponent, _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_31__.AdminExternalBookingsComponent, _booking_process_booking_process_component__WEBPACK_IMPORTED_MODULE_32__.BookingProcessComponent, _online_booking_online_booking_component__WEBPACK_IMPORTED_MODULE_33__.OnlineBookingComponent, _admin_pricing_model_admin_pricing_model_component__WEBPACK_IMPORTED_MODULE_35__.AdminPricingModelComponent, _admin_fleet_admin_fleet_component__WEBPACK_IMPORTED_MODULE_36__.AdminFleetComponent, _sea_toys_sea_toys_component__WEBPACK_IMPORTED_MODULE_34__.SeaToysComponent],
-  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_40__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_41__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_42__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_43__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule, _site_text_pipe__WEBPACK_IMPORTED_MODULE_37__.SiteTextPipe]
+HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_39__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_40__.NgModule)({
+  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent, _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__.SafetyInstructionsComponent, _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_13__.DepositComponent, _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__.AccountSummaryComponent, _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_15__.MyProfileComponent, _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__.MyFeedbacksComponent, _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.AdminFeedbacksComponent, _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingsComponent, _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_19__.AdminOutingDetailComponent, _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__.AdminManageOutingsComponent, _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_21__.GuestFaqComponent, _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__.GuestJourneyComponent, _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__.BookingsComponent, _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__.MyBookingsComponent, _my_offers_my_offers_component__WEBPACK_IMPORTED_MODULE_25__.MyOffersComponent, _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_26__.BookingDetailComponent, _booking_invoice_booking_invoice_component__WEBPACK_IMPORTED_MODULE_27__.BookingInvoiceComponent, _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_28__.AdminWarrantyChargeComponent, _admin_offers_admin_offers_component__WEBPACK_IMPORTED_MODULE_29__.AdminOffersComponent, _offer_confirmation_offer_confirmation_component__WEBPACK_IMPORTED_MODULE_30__.OfferConfirmationComponent, _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_31__.AdminExternalBookingsComponent, _booking_process_booking_process_component__WEBPACK_IMPORTED_MODULE_32__.BookingProcessComponent, _online_booking_online_booking_component__WEBPACK_IMPORTED_MODULE_33__.OnlineBookingComponent, _admin_pricing_model_admin_pricing_model_component__WEBPACK_IMPORTED_MODULE_35__.AdminPricingModelComponent, _admin_fleet_admin_fleet_component__WEBPACK_IMPORTED_MODULE_36__.AdminFleetComponent, _sea_toys_sea_toys_component__WEBPACK_IMPORTED_MODULE_34__.SeaToysComponent, _admin_site_content_admin_site_content_component__WEBPACK_IMPORTED_MODULE_38__.AdminSiteContentComponent],
+  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_41__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_42__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_43__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_44__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule, _site_text_pipe__WEBPACK_IMPORTED_MODULE_37__.SiteTextPipe]
 })], HomeModule);
 
 
@@ -15526,9 +17057,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeRoutingModule: () => (/* binding */ HomeRoutingModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! @angular/router */ 99585);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
 /* harmony import */ var _boat_boat_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./boat/boat.component */ 36424);
@@ -15565,6 +17096,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _admin_pricing_model_admin_pricing_model_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./admin-pricing-model/admin-pricing-model.component */ 80254);
 /* harmony import */ var _admin_fleet_admin_fleet_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./admin-fleet/admin-fleet.component */ 27786);
 /* harmony import */ var _sea_toys_sea_toys_component__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./sea-toys/sea-toys.component */ 48286);
+/* harmony import */ var _admin_site_content_admin_site_content_component__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./admin-site-content/admin-site-content.component */ 14374);
+
 
 
 
@@ -15754,6 +17287,12 @@ const routes = [{
   path: 'proposal/:proposalId',
   redirectTo: 'offer/:proposalId'
 }, {
+  path: 'admin/site-content',
+  component: _admin_site_content_admin_site_content_component__WEBPACK_IMPORTED_MODULE_36__.AdminSiteContentComponent
+}, {
+  path: 'admin/content',
+  component: _admin_site_content_admin_site_content_component__WEBPACK_IMPORTED_MODULE_36__.AdminSiteContentComponent
+}, {
   path: 'admin/pricing-model',
   component: _admin_pricing_model_admin_pricing_model_component__WEBPACK_IMPORTED_MODULE_33__.AdminPricingModelComponent
 }, {
@@ -15773,9 +17312,9 @@ const routes = [{
   component: _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_27__.AdminWarrantyChargeComponent
 }];
 let HomeRoutingModule = class HomeRoutingModule {};
-HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_36__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_37__.NgModule)({
-  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_38__.RouterModule.forChild(routes)],
-  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_38__.RouterModule]
+HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_37__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_38__.NgModule)({
+  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_39__.RouterModule.forChild(routes)],
+  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_39__.RouterModule]
 })], HomeRoutingModule);
 
 

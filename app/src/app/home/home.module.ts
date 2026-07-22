@@ -42,6 +42,7 @@ import { SeaToysComponent } from './sea-toys/sea-toys.component';
 import { AdminPricingModelComponent } from './admin-pricing-model/admin-pricing-model.component';
 import { AdminFleetComponent } from './admin-fleet/admin-fleet.component';
 import { SiteTextPipe } from './site-text.pipe';
+import { AdminSiteContentComponent } from './admin-site-content/admin-site-content.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { SiteTextPipe } from './site-text.pipe';
     AdminPricingModelComponent,
     AdminFleetComponent,
     SeaToysComponent,
+    AdminSiteContentComponent,
   ],
   imports: [
     CommonModule,

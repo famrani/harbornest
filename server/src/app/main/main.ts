@@ -10,6 +10,7 @@ import { UsersService } from '../services/users.service';
 import { MailerService } from '../services/mailer.service';
 import { BoatownersService } from '../services/boatowners.service';
 import { FeedbacksService } from '../services/feedbacks.service';
+import { ContentService } from '../services/content.service';
 
 config(); // Load .env file
 
@@ -29,9 +30,10 @@ export class MainComponent {
     private usersSvc = new UsersService(this.storeDbSvc);
     private boatownersSvc = new BoatownersService(this.storeDbSvc);
     private feedbacksSvc = new FeedbacksService(this.storeDbSvc);
+    private contentSvc = new ContentService(this.storeDbSvc);
     private bookingsSvc = new BookingsService(this.mailerSvc, this.storeDbSvc, this.stripeSvc);
 
-    private webServerComponent = new WebServerComponent(this.utilSvc, this.stripeSvc, this.bookingsSvc, this.usersSvc, this.boatownersSvc, this.feedbacksSvc);
+    private webServerComponent = new WebServerComponent(this.utilSvc, this.stripeSvc, this.bookingsSvc, this.usersSvc, this.boatownersSvc, this.feedbacksSvc, this.contentSvc);
 
     public version: string | undefined;
 

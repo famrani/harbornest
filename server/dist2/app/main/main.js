@@ -13,6 +13,7 @@ const users_service_1 = require("../services/users.service");
 const mailer_service_1 = require("../services/mailer.service");
 const boatowners_service_1 = require("../services/boatowners.service");
 const feedbacks_service_1 = require("../services/feedbacks.service");
+const content_service_1 = require("../services/content.service");
 (0, dotenv_1.config)(); // Load .env file
 class MainComponent {
     constructor() {
@@ -30,8 +31,9 @@ class MainComponent {
         this.usersSvc = new users_service_1.UsersService(this.storeDbSvc);
         this.boatownersSvc = new boatowners_service_1.BoatownersService(this.storeDbSvc);
         this.feedbacksSvc = new feedbacks_service_1.FeedbacksService(this.storeDbSvc);
+        this.contentSvc = new content_service_1.ContentService(this.storeDbSvc);
         this.bookingsSvc = new booking_service_1.BookingsService(this.mailerSvc, this.storeDbSvc, this.stripeSvc);
-        this.webServerComponent = new webServer_component_1.WebServerComponent(this.utilSvc, this.stripeSvc, this.bookingsSvc, this.usersSvc, this.boatownersSvc, this.feedbacksSvc);
+        this.webServerComponent = new webServer_component_1.WebServerComponent(this.utilSvc, this.stripeSvc, this.bookingsSvc, this.usersSvc, this.boatownersSvc, this.feedbacksSvc, this.contentSvc);
         this.utilSvc.getParams();
         this.initBackend();
     }
