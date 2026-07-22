@@ -15,6 +15,8 @@ import { ServicesService, UsersService, OBJECTNAME } from 'godigital-lib';
 import { LocalUtilsService } from './services/services.service';
 import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 import { PendingOfferLoginModalService } from './services/pending-offer-login-modal.service';
+import { SeoService } from './services/seo.service';
+import { filter } from 'rxjs/operators';
 
 declare let what3words: any;
 
@@ -39,6 +41,7 @@ export class AppComponent implements OnInit {
     public geolocation: Geolocation,
     public fb: FormBuilder,
     private pendingOfferLoginModal: PendingOfferLoginModalService,
+    private seo: SeoService,
     @Inject(DOCUMENT) private document: Document,
   ) {
   }
@@ -47,6 +50,12 @@ export class AppComponent implements OnInit {
     AOS.init();
     this.localUtilsSvc.language = this.utilSvc.getLanguage() ?? 'en';
     this.mainSvc.setLanguage(this.localUtilsSvc.language);
+
+    this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd)).subscribe(event => {
+      this.seo.update(event.urlAfterRedirects);
+      this.document.documentElement.lang = this.localUtilsSvc.language || 'fr';
+    });
+    this.seo.update(this.router.url || '/');
 
     this.initializeApp();
   }

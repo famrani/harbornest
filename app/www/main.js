@@ -12134,29 +12134,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AppComponent: () => (/* binding */ AppComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _app_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./app.component.html?ngResource */ 61584);
 /* harmony import */ var _app_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app.component.css?ngResource */ 90309);
 /* harmony import */ var _app_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_app_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/common */ 19770);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @ionic/angular */ 4059);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @angular/common */ 19770);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @ionic/angular */ 4059);
 /* harmony import */ var _awesome_cordova_plugins_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @awesome-cordova-plugins/splash-screen/ngx */ 28293);
 /* harmony import */ var _awesome_cordova_plugins_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @awesome-cordova-plugins/status-bar/ngx */ 61203);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/router */ 50085);
 /* harmony import */ var aos__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! aos */ 37502);
 /* harmony import */ var aos__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(aos__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ngx-spinner */ 61249);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ngx-spinner */ 61249);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _services_services_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./services/services.service */ 92030);
 /* harmony import */ var _awesome_cordova_plugins_geolocation_ngx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @awesome-cordova-plugins/geolocation/ngx */ 86241);
 /* harmony import */ var _services_pending_offer_login_modal_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./services/pending-offer-login-modal.service */ 96026);
+/* harmony import */ var _services_seo_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./services/seo.service */ 52251);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs/operators */ 51567);
 
 
 
 
 /* eslint-disable @typescript-eslint/naming-convention */
+
+
 
 
 
@@ -12184,10 +12188,11 @@ let AppComponent = class AppComponent {
   geolocation;
   fb;
   pendingOfferLoginModal;
+  seo;
   document;
   loggedUserSub;
   lastLoginIdentity = '';
-  constructor(router, platform, splashScreen, statusBar, mainSvc, localUtilsSvc, usersSvc, utilSvc, spinner, geolocation, fb, pendingOfferLoginModal, document) {
+  constructor(router, platform, splashScreen, statusBar, mainSvc, localUtilsSvc, usersSvc, utilSvc, spinner, geolocation, fb, pendingOfferLoginModal, seo, document) {
     this.router = router;
     this.platform = platform;
     this.splashScreen = splashScreen;
@@ -12200,12 +12205,18 @@ let AppComponent = class AppComponent {
     this.geolocation = geolocation;
     this.fb = fb;
     this.pendingOfferLoginModal = pendingOfferLoginModal;
+    this.seo = seo;
     this.document = document;
   }
   ngOnInit() {
     aos__WEBPACK_IMPORTED_MODULE_5__.init();
     this.localUtilsSvc.language = this.utilSvc.getLanguage() ?? 'en';
     this.mainSvc.setLanguage(this.localUtilsSvc.language);
+    this.router.events.pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_10__.filter)(event => event instanceof _angular_router__WEBPACK_IMPORTED_MODULE_11__.NavigationEnd)).subscribe(event => {
+      this.seo.update(event.urlAfterRedirects);
+      this.document.documentElement.lang = this.localUtilsSvc.language || 'fr';
+    });
+    this.seo.update(this.router.url || '/');
     this.initializeApp();
   }
   watchLoggedUser() {
@@ -12262,38 +12273,40 @@ let AppComponent = class AppComponent {
     })();
   }
   static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_9__.Router
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_11__.Router
   }, {
-    type: _ionic_angular__WEBPACK_IMPORTED_MODULE_10__.Platform
+    type: _ionic_angular__WEBPACK_IMPORTED_MODULE_12__.Platform
   }, {
     type: _awesome_cordova_plugins_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__.SplashScreen
   }, {
     type: _awesome_cordova_plugins_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__.StatusBar
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_11__.ServicesService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_13__.ServicesService
   }, {
     type: _services_services_service__WEBPACK_IMPORTED_MODULE_6__.LocalUtilsService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_11__.UsersService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_13__.UsersService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_11__.UtilsService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_13__.UtilsService
   }, {
-    type: ngx_spinner__WEBPACK_IMPORTED_MODULE_12__.NgxSpinnerService
+    type: ngx_spinner__WEBPACK_IMPORTED_MODULE_14__.NgxSpinnerService
   }, {
     type: _awesome_cordova_plugins_geolocation_ngx__WEBPACK_IMPORTED_MODULE_7__.Geolocation
   }, {
-    type: _angular_forms__WEBPACK_IMPORTED_MODULE_13__.FormBuilder
+    type: _angular_forms__WEBPACK_IMPORTED_MODULE_15__.FormBuilder
   }, {
     type: _services_pending_offer_login_modal_service__WEBPACK_IMPORTED_MODULE_8__.PendingOfferLoginModalService
   }, {
+    type: _services_seo_service__WEBPACK_IMPORTED_MODULE_9__.SeoService
+  }, {
     type: Document,
     decorators: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_14__.Inject,
-      args: [_angular_common__WEBPACK_IMPORTED_MODULE_15__.DOCUMENT]
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_16__.Inject,
+      args: [_angular_common__WEBPACK_IMPORTED_MODULE_17__.DOCUMENT]
     }]
   }];
 };
-AppComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_16__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_14__.Component)({
+AppComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_18__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_16__.Component)({
   selector: 'app-root',
   template: _app_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_app_component_css_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
@@ -15839,6 +15852,240 @@ LayoutnoneComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_ang
   template: _layoutnone_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
   styles: [(_layoutnone_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
 })], LayoutnoneComponent);
+
+
+/***/ }),
+
+/***/ 52251:
+/*!*****************************************!*\
+  !*** ./src/app/services/seo.service.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SeoService: () => (/* binding */ SeoService)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ 19770);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/platform-browser */ 80436);
+
+
+
+
+let SeoService = class SeoService {
+  title;
+  meta;
+  document;
+  origin = 'https://alegriaboat.eu';
+  defaultImage = `${this.origin}/assets/img/home/home-hero-generic.jpg`;
+  pages = {
+    '/': {
+      title: 'Location de catamaran à Antibes | Alegria Boat',
+      description: 'Privatisez Alegria, catamaran Bali 4.1 avec skipper, pour une journée en mer, une soirée ou un coucher de soleil sur la Côte d’Azur.'
+    },
+    '/home': {
+      title: 'Location de catamaran à Antibes | Alegria Boat',
+      description: 'Privatisez Alegria, catamaran Bali 4.1 avec skipper, pour une journée en mer, une soirée ou un coucher de soleil sur la Côte d’Azur.'
+    },
+    '/sorties': {
+      title: 'Sorties en catamaran Côte d’Azur | Alegria Boat',
+      description: 'Découvrez nos sorties privées en catamaran depuis Antibes : journée en mer, coucher de soleil, fête et sortie d’entreprise.'
+    },
+    '/sorties/journee-en-mer': {
+      title: 'Journée en catamaran depuis Antibes | Alegria Boat',
+      description: 'Une journée privée à bord du catamaran Alegria avec skipper, baignade et découverte de la Côte d’Azur.'
+    },
+    '/sorties/coucher-de-soleil': {
+      title: 'Coucher de soleil en catamaran à Antibes | Alegria Boat',
+      description: 'Vivez un coucher de soleil privé en catamaran au départ d’Antibes.'
+    },
+    '/sorties/party': {
+      title: 'EVJF, anniversaire et fête en catamaran | Alegria Boat',
+      description: 'Organisez une sortie festive et privée en catamaran sur la Côte d’Azur.'
+    },
+    '/sorties/sortie-entreprise': {
+      title: 'Sortie d’entreprise en catamaran | Alegria Boat',
+      description: 'Privatisez Alegria pour un événement d’entreprise ou un moment d’équipe sur la Côte d’Azur.'
+    },
+    '/bateau': {
+      title: 'Catamaran Bali 4.1 Alegria | Location à Antibes',
+      description: 'Découvrez Alegria, notre catamaran Bali 4.1 confortable et spacieux disponible à la privatisation.'
+    },
+    '/bateau/jouets-nautiques': {
+      title: 'Paddle, snorkeling et jouets nautiques | Alegria Boat',
+      description: 'Découvrez les équipements et jouets nautiques disponibles pendant votre sortie en catamaran.'
+    },
+    '/galerie': {
+      title: 'Photos du catamaran Alegria | Côte d’Azur',
+      description: 'Découvrez en images le catamaran Alegria et les sorties en mer proposées depuis Antibes.'
+    },
+    '/reserver': {
+      title: 'Demander une offre de location de catamaran | Alegria Boat',
+      description: 'Demandez une offre personnalisée pour privatiser le catamaran Alegria sur la Côte d’Azur.'
+    },
+    '/contact': {
+      title: 'Contacter Alegria Boat | Location de catamaran Antibes',
+      description: 'Contactez Alegria Boat pour préparer votre sortie privée en catamaran.'
+    },
+    '/faq': {
+      title: 'Questions fréquentes | Alegria Boat',
+      description: 'Réponses aux questions fréquentes sur la réservation, le skipper, les paiements et votre sortie en catamaran.'
+    },
+    '/how-it-works': {
+      title: 'Comment réserver une sortie | Alegria Boat',
+      description: 'Découvrez les étapes pour demander une offre, confirmer, payer et profiter de votre sortie en mer.'
+    },
+    '/terms': {
+      title: 'Conditions générales | Alegria Boat',
+      description: 'Consultez les conditions générales applicables aux réservations Alegria Boat.'
+    },
+    '/safety': {
+      title: 'Consignes de sécurité | Alegria Boat',
+      description: 'Consignes essentielles pour profiter de votre sortie en catamaran en toute sécurité.'
+    }
+  };
+  constructor(title, meta, document) {
+    this.title = title;
+    this.meta = meta;
+    this.document = document;
+  }
+  update(pathname) {
+    const path = (pathname.split('?')[0].split('#')[0] || '/').replace(/\/$/, '') || '/';
+    const privatePage = path.startsWith('/admin') || path.startsWith('/my-') || path.startsWith('/bookings/') || path.startsWith('/payment/') || path.startsWith('/offer/');
+    const page = this.pages[path] || {
+      title: privatePage ? 'Alegria Boat' : 'Alegria Boat | Catamaran Côte d’Azur',
+      description: 'Location et privatisation du catamaran Alegria au départ d’Antibes.',
+      noindex: privatePage
+    };
+    const canonical = `${this.origin}${path === '/' ? '/' : path}`;
+    const image = page.image || this.defaultImage;
+    this.title.setTitle(page.title);
+    this.meta.updateTag({
+      name: 'description',
+      content: page.description
+    });
+    this.meta.updateTag({
+      name: 'robots',
+      content: page.noindex || privatePage ? 'noindex,nofollow' : 'index,follow,max-image-preview:large'
+    });
+    this.meta.updateTag({
+      property: 'og:type',
+      content: 'website'
+    });
+    this.meta.updateTag({
+      property: 'og:site_name',
+      content: 'Alegria Boat'
+    });
+    this.meta.updateTag({
+      property: 'og:title',
+      content: page.title
+    });
+    this.meta.updateTag({
+      property: 'og:description',
+      content: page.description
+    });
+    this.meta.updateTag({
+      property: 'og:url',
+      content: canonical
+    });
+    this.meta.updateTag({
+      property: 'og:image',
+      content: image
+    });
+    this.meta.updateTag({
+      name: 'twitter:card',
+      content: 'summary_large_image'
+    });
+    this.meta.updateTag({
+      name: 'twitter:title',
+      content: page.title
+    });
+    this.meta.updateTag({
+      name: 'twitter:description',
+      content: page.description
+    });
+    this.meta.updateTag({
+      name: 'twitter:image',
+      content: image
+    });
+    this.setLink('canonical', canonical);
+    this.setJsonLd(path, canonical, page);
+  }
+  setLink(rel, href) {
+    let link = this.document.head.querySelector(`link[rel="${rel}"]`);
+    if (!link) {
+      link = this.document.createElement('link');
+      link.rel = rel;
+      this.document.head.appendChild(link);
+    }
+    link.href = href;
+  }
+  setJsonLd(path, url, page) {
+    const id = 'alegria-jsonld';
+    this.document.getElementById(id)?.remove();
+    const script = this.document.createElement('script');
+    script.id = id;
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [{
+        '@type': 'Organization',
+        '@id': `${this.origin}/#organization`,
+        name: 'Alegria Boat',
+        url: this.origin,
+        logo: `${this.origin}/assets/img/home/catamaran.png`
+      }, {
+        '@type': 'WebSite',
+        '@id': `${this.origin}/#website`,
+        url: this.origin,
+        name: 'Alegria Boat',
+        publisher: {
+          '@id': `${this.origin}/#organization`
+        },
+        inLanguage: ['fr', 'en', 'es', 'it', 'de', 'nl', 'ru']
+      }, {
+        '@type': 'WebPage',
+        '@id': `${url}#webpage`,
+        url,
+        name: page.title,
+        description: page.description,
+        isPartOf: {
+          '@id': `${this.origin}/#website`
+        },
+        about: {
+          '@id': `${this.origin}/#organization`
+        },
+        inLanguage: this.document.documentElement.lang || 'fr'
+      }, ...(path === '/' ? [{
+        '@type': 'LocalBusiness',
+        name: 'Alegria Boat',
+        url: this.origin,
+        image: this.defaultImage,
+        areaServed: 'Côte d’Azur',
+        description: page.description,
+        priceRange: '€€€'
+      }] : [])]
+    });
+    this.document.head.appendChild(script);
+  }
+  static ctorParameters = () => [{
+    type: _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__.Title
+  }, {
+    type: _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__.Meta
+  }, {
+    type: Document,
+    decorators: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_1__.Inject,
+      args: [_angular_common__WEBPACK_IMPORTED_MODULE_2__.DOCUMENT]
+    }]
+  }];
+};
+SeoService = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_1__.Injectable)({
+  providedIn: 'root'
+})], SeoService);
 
 
 /***/ }),
