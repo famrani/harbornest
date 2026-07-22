@@ -1,0 +1,54 @@
+<section class="calendar-page container">
+  <div class="page-heading">
+    <div>
+      <p class="eyebrow">{{ t('eyebrow') }}</p>
+      <h1>{{ t('title') }}</h1>
+      <p>{{ t('intro') }}</p>
+    </div>
+    <button class="refresh-button" type="button" (click)="loadCalendar()" [disabled]="loading">{{ loading ? t('loading') : t('refresh') }}</button>
+  </div>
+
+  <div class="summary-grid">
+    <article><span>{{ t('usedDays') }}</span><strong>{{ usedDaysThisMonth }}</strong></article>
+    <article><span>{{ t('pastOutings') }}</span><strong>{{ pastUses }}</strong></article>
+    <article><span>{{ t('futureOutings') }}</span><strong>{{ futureUses }}</strong></article>
+  </div>
+
+  <div class="calendar-toolbar">
+    <button type="button" (click)="previousMonth()" [attr.aria-label]="t('previousMonth')">‹</button>
+    <div><h2>{{ monthLabel }}</h2><button class="today-link" type="button" (click)="goToday()">{{ t('today') }}</button></div>
+    <button type="button" (click)="nextMonth()" [attr.aria-label]="t('nextMonth')">›</button>
+  </div>
+
+  <label class="cancelled-toggle"><input type="checkbox" [checked]="showCancelled" (change)="toggleCancelled()" /> {{ t('showCancelled') }}</label>
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <div class="legend" [attr.aria-label]="t('legend')">
+    <span><i class="past"></i> {{ t('pastUse') }}</span>
+    <span><i class="today"></i> {{ t('today') }}</span>
+    <span><i class="future"></i> {{ t('futureBooking') }}</span>
+    <span *ngIf="showCancelled"><i class="cancelled"></i> {{ t('cancelled') }}</span>
+  </div>
+
+  <div class="calendar-shell" [class.loading]="loading">
+    <div class="weekday" *ngFor="let weekday of weekdays">{{ weekday }}</div>
+    <button type="button" class="day-cell" *ngFor="let cell of cells; trackBy: trackCell"
+      [class.empty]="!cell.inMonth" [class.selected]="cell.iso === selectedDate" [class.occupied]="cell.uses.length"
+      (click)="selectDay(cell)" [disabled]="!cell.inMonth">
+      <span class="day-number">{{ cell.day }}</span>
+      <span class="events" *ngIf="cell.uses.length">
+        <span class="event" *ngFor="let use of cell.uses | slice:0:2" [class]="'event ' + use.status">{{ use.title }}</span>
+        <small *ngIf="cell.uses.length > 2">+{{ cell.uses.length - 2 }} {{ t('other') }}</small>
+      </span>
+    </button>
+  </div>
+
+  <section class="day-details" *ngIf="selectedDate">
+    <h2>{{ selectedDateLabel }}</h2>
+    <p *ngIf="!selectedUses.length">{{ t('noUse') }}</p>
+    <article *ngFor="let use of selectedUses" [class]="'usage-card ' + use.status">
+      <div><span class="status">{{ statusLabel(use.status) }}</span><h3>{{ use.title }}</h3><p *ngIf="use.customer">{{ use.customer }}</p><small>{{ use.details }}</small></div>
+      <a *ngIf="use.route" [routerLink]="use.route">{{ t('viewDetails') }}</a>
+    </article>
+  </section>
+</section>

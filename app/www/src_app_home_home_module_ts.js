@@ -365,697 +365,428 @@ var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOUR
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `:host {
   display: block;
-  background: #f5f1e9;
-  min-height: 100vh;
 }
 
 .cms-shell {
-  max-width: 1440px;
+  padding: 24px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 28px;
-  font-family: Inter, Arial, sans-serif;
-  color: #113b49;
+  color: #16324a;
 }
 
-.topbar {
+.cms-header {
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
   align-items: flex-start;
-  margin-bottom: 24px;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
 }
 
-.topbar h1 {
-  margin: 4px 0 7px;
-  font-size: 34px;
+.cms-header h1 {
+  margin: 2px 0 6px;
+  font-size: 30px;
 }
 
-.topbar p {
+.cms-header p {
   margin: 0;
-  color: #657a82;
+  color: #617386;
 }
 
 .eyebrow {
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.18em;
-  color: #0a6079;
-}
-
-.top-actions {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.unsaved {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   font-size: 12px;
-  color: #b46a12;
+  font-weight: 700;
+  color: #167f8e !important;
 }
 
-.back {
-  color: #0a536b;
-  text-decoration: none;
-  font-weight: 750;
-  background: #fff;
-  border: 1px solid #d8e3e6;
+.header-actions, .editor-actions, .json-actions, .editor-footer {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+button {
+  border: 0;
+  border-radius: 9px;
   padding: 10px 14px;
-  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 650;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.primary {
+  background: #167f8e;
+  color: #fff;
+}
+
+.secondary {
+  background: #eef3f6;
+  color: #25445e;
+  border: 1px solid #d6e0e6;
+}
+
+.dirty-badge, .language-chip {
+  border-radius: 999px;
+  padding: 5px 9px;
+  background: #fff3cd;
+  color: #7a5a00;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status {
+  padding: 12px 14px;
+  border-radius: 9px;
+  margin-bottom: 14px;
+}
+
+.status.success {
+  background: #eaf7ee;
+  color: #216b39;
+}
+
+.status.error {
+  background: #fdecec;
+  color: #9a2c2c;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.metrics article {
+  border: 1px solid #dbe4ea;
+  border-radius: 12px;
+  padding: 14px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.metrics strong {
+  font-size: 25px;
+}
+
+.metrics span {
+  color: #6b7c8b;
+  font-size: 13px;
 }
 
 .cms-layout {
   display: grid;
-  grid-template-columns: 290px minmax(0, 1fr);
-  gap: 22px;
+  grid-template-columns: 270px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
 }
 
-.side-nav {
+.section-nav {
+  border: 1px solid #dbe4ea;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+  position: sticky;
+  top: 12px;
+  max-height: calc(100vh - 30px);
+  overflow-y: auto;
+}
+
+.nav-title {
+  padding: 15px;
+  border-bottom: 1px solid #e5ebef;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  position: sticky;
-  top: 18px;
-  align-self: start;
 }
 
-.side-nav button {
-  display: flex;
-  gap: 12px;
-  text-align: left;
-  border: 1px solid #dce7eb;
-  background: #fff;
-  border-radius: 13px;
-  padding: 13px;
-  cursor: pointer;
-  color: #163d4b;
-  transition: 0.15s;
-}
-
-.side-nav button:hover {
-  transform: translateX(2px);
-  border-color: #8eb6c2;
-}
-
-.side-nav button.active {
-  border-color: #0a6079;
-  background: #e8f4f6;
-  box-shadow: 0 6px 16px rgba(10, 83, 107, 0.08);
-}
-
-.nav-icon {
-  display: grid;
-  place-items: center;
-  flex: 0 0 32px;
-  height: 32px;
-  border-radius: 9px;
-  background: #f0f5f6;
-  font-weight: 900;
-}
-
-.side-nav strong, .side-nav small {
-  display: block;
-}
-
-.side-nav small {
+.nav-title small {
+  color: #778895;
   margin-top: 3px;
-  color: #687d85;
-  line-height: 1.25;
-  font-size: 11px;
 }
 
-main {
+.section-nav button {
+  width: 100%;
+  border-radius: 0;
   background: #fff;
-  border: 1px solid #dce7eb;
-  border-radius: 18px;
-  padding: 22px;
-  box-shadow: 0 10px 35px rgba(12, 52, 68, 0.07);
-  min-width: 0;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid #edf1f4;
+  padding: 12px 14px;
 }
 
-.editor-head {
+.section-nav button:hover, .section-nav button.active {
+  background: #eaf5f6;
+}
+
+.section-nav button.active {
+  box-shadow: inset 4px 0 #167f8e;
+}
+
+.section-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.section-meta {
+  color: #7c8b96;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.editor {
+  min-width: 0;
+  border: 1px solid #dbe4ea;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.editor-title {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  align-items: center;
-  border-bottom: 1px solid #e8eef0;
-  padding-bottom: 18px;
-  margin-bottom: 18px;
-}
-
-.editor-head h2 {
-  margin: 0 0 5px;
-  font-size: 25px;
-}
-
-.editor-head p {
-  margin: 0;
-  color: #6b7f87;
-}
-
-.actions {
-  display: flex;
-  gap: 9px;
-}
-
-.actions button, .add, .secondary, .primary {
-  border-radius: 10px;
-  padding: 10px 15px;
-  font-weight: 750;
-  cursor: pointer;
-  border: 1px solid #b9cbd2;
-}
-
-.secondary {
-  background: #fff;
-  color: #294d59;
-}
-
-.primary {
-  background: #0a536b !important;
-  color: #fff !important;
-  border-color: #0a536b !important;
-}
-
-.primary:disabled {
-  opacity: 0.55;
-}
-
-.notice {
-  padding: 11px 13px;
-  border-radius: 10px;
-  margin: 12px 0;
-}
-
-.success {
-  background: #e7f7ee;
-  color: #17663c;
-}
-
-.error {
-  background: #fff0f0;
-  color: #9a2020;
-}
-
-.loading {
-  padding: 60px;
-  text-align: center;
-}
-
-.language-bar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #f2f7f8;
-  border: 1px solid #dbe9ec;
-  border-radius: 12px;
-  padding: 11px 14px;
-  margin-bottom: 18px;
-}
-
-.language-bar label {
-  font-weight: 800;
-}
-
-.language-bar select {
-  width: 170px;
-}
-
-.language-bar span {
-  font-size: 12px;
-  color: #61747c;
-}
-
-.panel {
-  border: 1px solid #dde8eb;
-  border-radius: 14px;
   padding: 18px;
-  background: #fcfefe;
+  border-bottom: 1px solid #e4eaee;
 }
 
-.panel h3, .collection-head h3 {
-  margin: 0 0 4px;
+.editor-title h2 {
+  margin: 3px 0 0;
 }
 
-.section-help, .collection-head p {
+.path {
   margin: 0;
-  color: #6b7d84;
+  color: #7a8994;
   font-size: 13px;
 }
 
-.subheading {
-  margin-top: 24px !important;
-}
-
-.form-grid {
+.toolbar {
+  padding: 14px 18px;
+  background: #f8fafb;
+  border-bottom: 1px solid #e5ebef;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 16px;
-}
-
-.pricing-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.form-grid .wide {
-  grid-column: 1/-1;
-}
-
-label span, .field-block > label > span, .repeat-card label span {
-  display: block;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-weight: 800;
-  color: #5e747d;
-  margin-bottom: 6px;
-}
-
-input, textarea, select {
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid #cbdadd;
-  border-radius: 9px;
-  padding: 10px 11px;
-  background: #fff;
-  color: #173e4b;
-  font: inherit;
-}
-
-textarea {
-  resize: vertical;
-  line-height: 1.45;
-}
-
-input:focus, textarea:focus, select:focus {
-  outline: 2px solid rgba(10, 96, 121, 0.16);
-  border-color: #0a6079;
-}
-
-.repeat-card.compact {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 12px;
-  background: #fff;
-  border: 1px solid #e1eaec;
-  padding: 13px;
-  border-radius: 11px;
-  margin-top: 10px;
-}
-
-.collection-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-}
-
-.add {
-  background: #0a6079;
-  color: #fff;
-  border-color: #0a6079;
-}
-
-.outing-card {
-  border: 1px solid #dbe6e9;
-  border-radius: 15px;
-  padding: 17px;
-  margin-bottom: 14px;
-  background: #fff;
-  box-shadow: 0 4px 13px rgba(20, 58, 70, 0.035);
-}
-
-.card-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  align-items: center;
-  border-bottom: 1px solid #edf2f3;
-  padding-bottom: 12px;
-}
-
-.card-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-}
-
-.order {
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  background: #0a536b;
-  color: #fff;
-  border-radius: 50%;
-  font-weight: 800;
-}
-
-.title-input {
-  font-weight: 800;
-  font-size: 18px;
-  border-color: transparent;
-  background: #f7fafb;
-}
-
-.card-tools {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.card-tools button {
-  border: 1px solid #d3dfe2;
-  background: #fff;
-  border-radius: 7px;
-  padding: 7px 9px;
-  cursor: pointer;
-}
-
-.danger-link {
-  color: #ad3030 !important;
-}
-
-.switch {
-  display: inline-flex !important;
-  align-items: center;
-  gap: 7px;
-  font-size: 12px !important;
-  text-transform: none !important;
-  letter-spacing: 0 !important;
-  margin: 0 !important;
-}
-
-.switch input {
-  display: none;
-}
-
-.switch span {
-  width: 35px;
-  height: 20px;
-  border-radius: 20px;
-  background: #c5d1d4;
-  position: relative;
-  margin: 0 !important;
-}
-
-.switch span:after {
-  content: "";
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  background: white;
-  border-radius: 50%;
-  left: 2px;
-  top: 2px;
-  transition: 0.2s;
-}
-
-.switch input:checked + span {
-  background: #22845a;
-}
-
-.switch input:checked + span:after {
-  left: 17px;
-}
-
-.list-editor {
-  margin-top: 15px;
-  background: #f8fbfb;
-  border-radius: 10px;
-  padding: 12px;
-}
-
-.list-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.list-title button, .array-head button {
-  border: 0;
-  background: transparent;
-  color: #0a6079;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.list-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 7px;
-}
-
-.list-row > span {
-  color: #22845a;
-}
-
-.list-row button, .array-item .remove {
-  border: 0;
-  background: #fff0f0;
-  color: #ad3030;
-  border-radius: 7px;
-  width: 30px;
-  height: 30px;
-  font-size: 20px;
-}
-
-.service-card {
-  display: grid;
-  grid-template-columns: 45px 1fr 120px 160px 35px;
+  grid-template-columns: minmax(260px, 1fr) 190px auto;
   gap: 12px;
   align-items: end;
-  border: 1px solid #dbe6e9;
-  border-radius: 13px;
-  padding: 14px;
-  margin-bottom: 10px;
 }
 
-.service-fields {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 10px;
-}
-
-.icon-danger {
-  border: 0;
-  background: #fff0f0;
-  color: #a72c2c;
-  border-radius: 8px;
-  height: 40px;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-.visual-editor {
-  padding: 20px;
-}
-
-.object-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.object-grid.nested {
-  padding: 12px;
-  background: #f8fbfb;
-  border-radius: 10px;
-}
-
-.field-block.full, .nested-section, .array-section {
-  grid-column: 1/-1;
-}
-
-.nested-section {
-  border-top: 1px solid #e2eaec;
-  margin-top: 8px;
-  padding-top: 14px;
-}
-
-.nested-section h4, .array-head h4 {
-  margin: 0;
-  color: #174657;
-}
-
-.array-head {
+.toolbar label, .field-value {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.array-item {
-  display: flex;
-  gap: 8px;
-  align-items: start;
-  margin: 7px 0;
-}
-
-.array-item > .object-grid {
-  flex: 1;
-}
-
-.boolean-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 40px;
-  text-transform: none !important;
-  letter-spacing: 0 !important;
-}
-
-.add-field {
-  margin-top: 16px;
-  border: 1px dashed #8fb2bd;
-  background: #f2f8f9;
-  color: #0a6079;
-  border-radius: 9px;
-  padding: 9px 12px;
-  font-weight: 700;
-}
-
-.json-editor {
-  width: 100%;
-  min-height: 650px;
-  font: 13px/1.55 Menlo, Monaco, monospace;
-  background: #102c35;
-  color: #dceff3;
-  border-color: #102c35;
-}
-
-.hint {
+.toolbar label > span {
   font-size: 12px;
-  color: #667b83;
+  color: #647786;
+  font-weight: 650;
 }
 
-.empty {
-  padding: 45px;
-  text-align: center;
-  border: 1px dashed #c7d7db;
-  border-radius: 12px;
-  color: #73858c;
+.toolbar input, .toolbar select, .field-value input, .field-value textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccd8df;
+  border-radius: 8px;
+  padding: 10px 11px;
+  font: inherit;
+  color: inherit;
+  background: #fff;
 }
 
-@media (max-width: 1050px) {
-  .cms-layout {
-    grid-template-columns: 240px 1fr;
-  }
-  .pricing-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .service-card {
-    grid-template-columns: 40px 1fr 100px;
-  }
-  .service-card .category {
-    grid-column: 2;
-  }
-  .service-card .icon-danger {
-    grid-column: 3;
-    grid-row: 2;
-  }
-  .card-head {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-  .card-tools {
-    flex-wrap: wrap;
-  }
-}
-@media (max-width: 760px) {
-  .cms-shell {
-    padding: 14px;
-  }
-  .cms-layout {
-    grid-template-columns: 1fr;
-  }
-  .side-nav {
-    position: static;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-  .topbar, .editor-head, .collection-head {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .form-grid, .pricing-grid, .object-grid {
-    grid-template-columns: 1fr;
-  }
-  .repeat-card.compact {
-    grid-template-columns: 1fr 1fr;
-  }
-  .service-card {
-    grid-template-columns: 35px 1fr;
-  }
-  .service-fields {
-    grid-template-columns: 1fr;
-  }
-  .service-card .price, .service-card .category {
-    grid-column: 2;
-  }
-  .actions {
-    flex-wrap: wrap;
-  }
-}
-.language-bar {
-  justify-content: space-between;
-  flex-wrap: wrap;
+.checkbox {
+  flex-direction: row !important;
+  align-items: center;
+  padding-bottom: 9px;
 }
 
-.language-picker, .translation-actions {
+.checkbox input {
+  width: auto !important;
+}
+
+.fields-table {
+  width: 100%;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 35%) minmax(260px, 1fr) 38px;
+  gap: 14px;
+  align-items: start;
+  padding: 13px 18px;
+  border-bottom: 1px solid #edf1f4;
+}
+
+.field-row:hover {
+  background: #fbfcfd;
+}
+
+.field-key {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 5px 8px;
+}
+
+.field-key strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.field-key code {
+  grid-column: 1/-1;
+  color: #768691;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+
+.language-chip {
+  justify-self: start;
+  background: #eaf5f6;
+  color: #16717d;
+  padding: 3px 7px;
+}
+
+.field-value textarea {
+  resize: vertical;
+}
+
+.boolean-control {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  padding-top: 9px;
 }
 
-.translation-actions {
-  margin-left: auto;
-}
-
-.overwrite-option {
-  display: flex !important;
-  align-items: center;
-  gap: 7px;
-  font-size: 12px !important;
-  text-transform: none !important;
-  letter-spacing: 0 !important;
-  margin: 0 !important;
-}
-
-.overwrite-option input {
+.boolean-control input {
   width: auto;
 }
 
-.translate-button {
-  border: 1px solid #0a6079;
-  background: #e6f4f7;
-  color: #0a536b;
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-weight: 800;
-  cursor: pointer;
+.delete {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  background: #fff0f0;
+  color: #a52c2c;
+  font-size: 20px;
 }
 
-.translate-button:disabled {
-  opacity: 0.6;
-  cursor: default;
+.json-panel {
+  padding: 18px;
 }
 
-@media (max-width: 760px) {
-  .language-picker, .translation-actions {
-    align-items: stretch;
+.json-panel p {
+  color: #647786;
+}
+
+.json-panel textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 600px;
+  border: 1px solid #ccd8df;
+  border-radius: 9px;
+  padding: 14px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+}
+
+.editor-footer {
+  justify-content: flex-end;
+  padding: 16px 18px;
+  background: #f8fafb;
+  border-top: 1px solid #e5ebef;
+}
+
+.loading, .empty-state, .empty-nav {
+  padding: 30px;
+  text-align: center;
+  color: #71828e;
+}
+
+@media (max-width: 1000px) {
+  .metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .cms-layout {
+    grid-template-columns: 1fr;
+  }
+  .section-nav {
+    position: static;
+    max-height: 300px;
+  }
+  .toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 700px) {
+  .cms-shell {
+    padding: 12px;
+  }
+  .cms-header, .editor-title {
     flex-direction: column;
   }
-  .translation-actions {
-    margin-left: 0;
+  .metrics {
+    grid-template-columns: 1fr 1fr;
   }
-  .translate-button {
-    width: 100%;
+  .toolbar {
+    grid-template-columns: 1fr;
   }
-}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-site-content/admin-site-content.component.scss"],"names":[],"mappings":"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","sourcesContent":[":host{display:block;background:#f5f1e9;min-height:100vh}.cms-shell{max-width:1440px;margin:0 auto;padding:28px;font-family:Inter,Arial,sans-serif;color:#113b49}.topbar{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:24px}.topbar h1{margin:4px 0 7px;font-size:34px}.topbar p{margin:0;color:#657a82}.eyebrow{font-size:11px;font-weight:900;letter-spacing:.18em;color:#0a6079}.top-actions{display:flex;align-items:center;gap:18px}.unsaved{font-size:12px;color:#b46a12}.back{color:#0a536b;text-decoration:none;font-weight:750;background:#fff;border:1px solid #d8e3e6;padding:10px 14px;border-radius:10px}.cms-layout{display:grid;grid-template-columns:290px minmax(0,1fr);gap:22px}.side-nav{display:flex;flex-direction:column;gap:8px;position:sticky;top:18px;align-self:start}.side-nav button{display:flex;gap:12px;text-align:left;border:1px solid #dce7eb;background:#fff;border-radius:13px;padding:13px;cursor:pointer;color:#163d4b;transition:.15s}.side-nav button:hover{transform:translateX(2px);border-color:#8eb6c2}.side-nav button.active{border-color:#0a6079;background:#e8f4f6;box-shadow:0 6px 16px rgba(10,83,107,.08)}.nav-icon{display:grid;place-items:center;flex:0 0 32px;height:32px;border-radius:9px;background:#f0f5f6;font-weight:900}.side-nav strong,.side-nav small{display:block}.side-nav small{margin-top:3px;color:#687d85;line-height:1.25;font-size:11px}main{background:#fff;border:1px solid #dce7eb;border-radius:18px;padding:22px;box-shadow:0 10px 35px rgba(12,52,68,.07);min-width:0}.editor-head{display:flex;justify-content:space-between;gap:16px;align-items:center;border-bottom:1px solid #e8eef0;padding-bottom:18px;margin-bottom:18px}.editor-head h2{margin:0 0 5px;font-size:25px}.editor-head p{margin:0;color:#6b7f87}.actions{display:flex;gap:9px}.actions button,.add,.secondary,.primary{border-radius:10px;padding:10px 15px;font-weight:750;cursor:pointer;border:1px solid #b9cbd2}.secondary{background:#fff;color:#294d59}.primary{background:#0a536b!important;color:#fff!important;border-color:#0a536b!important}.primary:disabled{opacity:.55}.notice{padding:11px 13px;border-radius:10px;margin:12px 0}.success{background:#e7f7ee;color:#17663c}.error{background:#fff0f0;color:#9a2020}.loading{padding:60px;text-align:center}.language-bar{display:flex;align-items:center;gap:12px;background:#f2f7f8;border:1px solid #dbe9ec;border-radius:12px;padding:11px 14px;margin-bottom:18px}.language-bar label{font-weight:800}.language-bar select{width:170px}.language-bar span{font-size:12px;color:#61747c}.panel{border:1px solid #dde8eb;border-radius:14px;padding:18px;background:#fcfefe}.panel h3,.collection-head h3{margin:0 0 4px}.section-help,.collection-head p{margin:0;color:#6b7d84;font-size:13px}.subheading{margin-top:24px!important}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}.pricing-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.form-grid .wide{grid-column:1/-1}label span,.field-block>label>span,.repeat-card label span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.04em;font-weight:800;color:#5e747d;margin-bottom:6px}input,textarea,select{width:100%;box-sizing:border-box;border:1px solid #cbdadd;border-radius:9px;padding:10px 11px;background:#fff;color:#173e4b;font:inherit}textarea{resize:vertical;line-height:1.45}input:focus,textarea:focus,select:focus{outline:2px solid rgba(10,96,121,.16);border-color:#0a6079}.repeat-card.compact{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;background:#fff;border:1px solid #e1eaec;padding:13px;border-radius:11px;margin-top:10px}.collection-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.add{background:#0a6079;color:#fff;border-color:#0a6079}.outing-card{border:1px solid #dbe6e9;border-radius:15px;padding:17px;margin-bottom:14px;background:#fff;box-shadow:0 4px 13px rgba(20,58,70,.035)}.card-head{display:flex;justify-content:space-between;gap:15px;align-items:center;border-bottom:1px solid #edf2f3;padding-bottom:12px}.card-title{display:flex;align-items:center;gap:10px;flex:1}.order{display:grid;place-items:center;width:30px;height:30px;background:#0a536b;color:#fff;border-radius:50%;font-weight:800}.title-input{font-weight:800;font-size:18px;border-color:transparent;background:#f7fafb}.card-tools{display:flex;align-items:center;gap:6px}.card-tools button{border:1px solid #d3dfe2;background:#fff;border-radius:7px;padding:7px 9px;cursor:pointer}.danger-link{color:#ad3030!important}.switch{display:inline-flex!important;align-items:center;gap:7px;font-size:12px!important;text-transform:none!important;letter-spacing:0!important;margin:0!important}.switch input{display:none}.switch span{width:35px;height:20px;border-radius:20px;background:#c5d1d4;position:relative;margin:0!important}.switch span:after{content:\"\";position:absolute;width:16px;height:16px;background:white;border-radius:50%;left:2px;top:2px;transition:.2s}.switch input:checked+span{background:#22845a}.switch input:checked+span:after{left:17px}.list-editor{margin-top:15px;background:#f8fbfb;border-radius:10px;padding:12px}.list-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.list-title button,.array-head button{border:0;background:transparent;color:#0a6079;font-weight:800;cursor:pointer}.list-row{display:flex;align-items:center;gap:8px;margin-top:7px}.list-row>span{color:#22845a}.list-row button,.array-item .remove{border:0;background:#fff0f0;color:#ad3030;border-radius:7px;width:30px;height:30px;font-size:20px}.service-card{display:grid;grid-template-columns:45px 1fr 120px 160px 35px;gap:12px;align-items:end;border:1px solid #dbe6e9;border-radius:13px;padding:14px;margin-bottom:10px}.service-fields{display:grid;grid-template-columns:1fr 2fr;gap:10px}.icon-danger{border:0;background:#fff0f0;color:#a72c2c;border-radius:8px;height:40px;font-size:22px;cursor:pointer}.visual-editor{padding:20px}.object-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.object-grid.nested{padding:12px;background:#f8fbfb;border-radius:10px}.field-block.full,.nested-section,.array-section{grid-column:1/-1}.nested-section{border-top:1px solid #e2eaec;margin-top:8px;padding-top:14px}.nested-section h4,.array-head h4{margin:0;color:#174657}.array-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.array-item{display:flex;gap:8px;align-items:start;margin:7px 0}.array-item>.object-grid{flex:1}.boolean-row{display:flex;align-items:center;gap:8px;height:40px;text-transform:none!important;letter-spacing:0!important}.add-field{margin-top:16px;border:1px dashed #8fb2bd;background:#f2f8f9;color:#0a6079;border-radius:9px;padding:9px 12px;font-weight:700}.json-editor{width:100%;min-height:650px;font:13px/1.55 Menlo,Monaco,monospace;background:#102c35;color:#dceff3;border-color:#102c35}.hint{font-size:12px;color:#667b83}.empty{padding:45px;text-align:center;border:1px dashed #c7d7db;border-radius:12px;color:#73858c}@media(max-width:1050px){.cms-layout{grid-template-columns:240px 1fr}.pricing-grid{grid-template-columns:repeat(2,1fr)}.service-card{grid-template-columns:40px 1fr 100px}.service-card .category{grid-column:2}.service-card .icon-danger{grid-column:3;grid-row:2}.card-head{align-items:flex-start;flex-direction:column}.card-tools{flex-wrap:wrap}}@media(max-width:760px){.cms-shell{padding:14px}.cms-layout{grid-template-columns:1fr}.side-nav{position:static;display:grid;grid-template-columns:1fr 1fr}.topbar,.editor-head,.collection-head{flex-direction:column;align-items:stretch}.form-grid,.pricing-grid,.object-grid{grid-template-columns:1fr}.repeat-card.compact{grid-template-columns:1fr 1fr}.service-card{grid-template-columns:35px 1fr}.service-fields{grid-template-columns:1fr}.service-card .price,.service-card .category{grid-column:2}.actions{flex-wrap:wrap}}\n.language-bar{justify-content:space-between;flex-wrap:wrap}.language-picker,.translation-actions{display:flex;align-items:center;gap:10px}.translation-actions{margin-left:auto}.overwrite-option{display:flex!important;align-items:center;gap:7px;font-size:12px!important;text-transform:none!important;letter-spacing:0!important;margin:0!important}.overwrite-option input{width:auto}.translate-button{border:1px solid #0a6079;background:#e6f4f7;color:#0a536b;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer}.translate-button:disabled{opacity:.6;cursor:default}@media(max-width:760px){.language-picker,.translation-actions{align-items:stretch;flex-direction:column}.translation-actions{margin-left:0}.translate-button{width:100%}}\n"],"sourceRoot":""}]);
+  .field-row {
+    grid-template-columns: 1fr 38px;
+  }
+  .field-key {
+    grid-column: 1/-1;
+  }
+  .field-value {
+    grid-column: 1;
+  }
+  .delete {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}
+.source-selector {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid #d9e2ec;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.source-selector label {
+  display: grid;
+  gap: 6px;
+  min-width: 280px;
+}
+
+.source-selector select {
+  min-height: 42px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0 12px;
+  background: #fff;
+}
+
+.source-selector small {
+  color: #64748b;
+  padding-bottom: 10px;
+}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-site-content/admin-site-content.component.scss"],"names":[],"mappings":"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","sourcesContent":[":host { display:block; }\n.cms-shell { padding:24px; max-width:1600px; margin:0 auto; color:#16324a; }\n.cms-header { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; margin-bottom:18px; }\n.cms-header h1 { margin:2px 0 6px; font-size:30px; }\n.cms-header p { margin:0; color:#617386; }\n.eyebrow { text-transform:uppercase; letter-spacing:.08em; font-size:12px; font-weight:700; color:#167f8e!important; }\n.header-actions,.editor-actions,.json-actions,.editor-footer { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }\nbutton { border:0; border-radius:9px; padding:10px 14px; cursor:pointer; font-weight:650; }\nbutton:disabled { opacity:.5; cursor:not-allowed; }\n.primary { background:#167f8e; color:#fff; }\n.secondary { background:#eef3f6; color:#25445e; border:1px solid #d6e0e6; }\n.dirty-badge,.language-chip { border-radius:999px; padding:5px 9px; background:#fff3cd; color:#7a5a00; font-size:12px; font-weight:700; }\n.status { padding:12px 14px; border-radius:9px; margin-bottom:14px; }\n.status.success { background:#eaf7ee; color:#216b39; }\n.status.error { background:#fdecec; color:#9a2c2c; }\n.metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:18px; }\n.metrics article { border:1px solid #dbe4ea; border-radius:12px; padding:14px; background:#fff; display:flex; flex-direction:column; }\n.metrics strong { font-size:25px; }\n.metrics span { color:#6b7c8b; font-size:13px; }\n.cms-layout { display:grid; grid-template-columns:270px minmax(0,1fr); gap:18px; align-items:start; }\n.section-nav { border:1px solid #dbe4ea; border-radius:12px; background:#fff; overflow:hidden; position:sticky; top:12px; max-height:calc(100vh - 30px); overflow-y:auto; }\n.nav-title { padding:15px; border-bottom:1px solid #e5ebef; display:flex; flex-direction:column; }\n.nav-title small { color:#778895; margin-top:3px; }\n.section-nav button { width:100%; border-radius:0; background:#fff; text-align:left; display:flex; justify-content:space-between; gap:10px; border-bottom:1px solid #edf1f4; padding:12px 14px; }\n.section-nav button:hover,.section-nav button.active { background:#eaf5f6; }\n.section-nav button.active { box-shadow:inset 4px 0 #167f8e; }\n.section-name { overflow:hidden; text-overflow:ellipsis; }\n.section-meta { color:#7c8b96; font-size:12px; white-space:nowrap; }\n.editor { min-width:0; border:1px solid #dbe4ea; border-radius:12px; background:#fff; overflow:hidden; }\n.editor-title { display:flex; justify-content:space-between; gap:16px; padding:18px; border-bottom:1px solid #e4eaee; }\n.editor-title h2 { margin:3px 0 0; }\n.path { margin:0; color:#7a8994; font-size:13px; }\n.toolbar { padding:14px 18px; background:#f8fafb; border-bottom:1px solid #e5ebef; display:grid; grid-template-columns:minmax(260px,1fr) 190px auto; gap:12px; align-items:end; }\n.toolbar label,.field-value { display:flex; flex-direction:column; gap:5px; }\n.toolbar label>span { font-size:12px; color:#647786; font-weight:650; }\n.toolbar input,.toolbar select,.field-value input,.field-value textarea { width:100%; box-sizing:border-box; border:1px solid #ccd8df; border-radius:8px; padding:10px 11px; font:inherit; color:inherit; background:#fff; }\n.checkbox { flex-direction:row!important; align-items:center; padding-bottom:9px; }\n.checkbox input { width:auto!important; }\n.fields-table { width:100%; }\n.field-row { display:grid; grid-template-columns:minmax(220px,35%) minmax(260px,1fr) 38px; gap:14px; align-items:start; padding:13px 18px; border-bottom:1px solid #edf1f4; }\n.field-row:hover { background:#fbfcfd; }\n.field-key { min-width:0; display:grid; grid-template-columns:auto 1fr; align-items:center; gap:5px 8px; }\n.field-key strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }\n.field-key code { grid-column:1 / -1; color:#768691; white-space:normal; overflow-wrap:anywhere; font-size:12px; }\n.language-chip { justify-self:start; background:#eaf5f6; color:#16717d; padding:3px 7px; }\n.field-value textarea { resize:vertical; }\n.boolean-control { display:flex; flex-direction:row; align-items:center; gap:8px; padding-top:9px; }\n.boolean-control input { width:auto; }\n.delete { width:34px; height:34px; padding:0; border-radius:50%; background:#fff0f0; color:#a52c2c; font-size:20px; }\n.json-panel { padding:18px; }\n.json-panel p { color:#647786; }\n.json-panel textarea { box-sizing:border-box; width:100%; min-height:600px; border:1px solid #ccd8df; border-radius:9px; padding:14px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13px; }\n.editor-footer { justify-content:flex-end; padding:16px 18px; background:#f8fafb; border-top:1px solid #e5ebef; }\n.loading,.empty-state,.empty-nav { padding:30px; text-align:center; color:#71828e; }\n@media (max-width:1000px) { .metrics{grid-template-columns:repeat(2,1fr)} .cms-layout{grid-template-columns:1fr} .section-nav{position:static;max-height:300px} .toolbar{grid-template-columns:1fr 1fr} }\n@media (max-width:700px) { .cms-shell{padding:12px} .cms-header,.editor-title{flex-direction:column} .metrics{grid-template-columns:1fr 1fr} .toolbar{grid-template-columns:1fr} .field-row{grid-template-columns:1fr 38px} .field-key{grid-column:1 / -1} .field-value{grid-column:1} .delete{grid-column:2;grid-row:2} }\n\n.source-selector {\n  display: flex;\n  align-items: flex-end;\n  gap: 16px;\n  flex-wrap: wrap;\n  margin: 16px 0;\n  padding: 16px;\n  border: 1px solid #d9e2ec;\n  border-radius: 14px;\n  background: #fff;\n}\n\n.source-selector label {\n  display: grid;\n  gap: 6px;\n  min-width: 280px;\n}\n\n.source-selector select {\n  min-height: 42px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  padding: 0 12px;\n  background: #fff;\n}\n\n.source-selector small {\n  color: #64748b;\n  padding-bottom: 10px;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -2895,7 +2626,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<div class=\"cms-shell\">\n  <header class=\"topbar\">\n    <div><span class=\"eyebrow\">ALEGRIA CMS</span><h1>{{t('title')}}</h1><p>{{t('intro')}}</p></div>\n    <div class=\"top-actions\"><span *ngIf=\"dirty\" class=\"unsaved\">● {{t('unsaved')}}</span><a routerLink=\"/home\" class=\"back\">{{t('back')}}</a></div>\n  </header>\n\n  <div class=\"cms-layout\">\n    <nav class=\"side-nav\">\n      <button *ngFor=\"let section of sections; trackBy: trackSection\" (click)=\"select(section)\" [class.active]=\"active.id === section.id\">\n        <span class=\"nav-icon\">{{section.icon}}</span><span><strong>{{ section.label }}</strong><small>{{ section.description }}</small></span>\n      </button>\n    </nav>\n\n    <main>\n      <div class=\"editor-head\">\n        <div><h2>{{ active.label }}</h2><p>{{ active.description }}</p></div>\n        <div class=\"actions\"><button class=\"secondary\" (click)=\"toggleAdvanced()\">{{advancedMode ? t('visual') : t('advanced')}}</button><button class=\"primary\" (click)=\"save()\" [disabled]=\"saving || loading\">{{ saving ? t('saving') : t('save') }}</button></div>\n      </div>\n      <div *ngIf=\"message\" class=\"notice success\">✓ {{ message }}</div>\n      <div *ngIf=\"error\" class=\"notice error\">{{ error }}</div>\n      <div *ngIf=\"loading\" class=\"loading\">{{t('loading')}}</div>\n\n      <ng-container *ngIf=\"!loading && !advancedMode\">\n        <div class=\"language-bar\" *ngIf=\"active.id !== 'pricing'\">\n          <div class=\"language-picker\">\n            <label for=\"cms-language\">{{t('language')}}</label>\n            <select id=\"cms-language\" [(ngModel)]=\"language\" (ngModelChange)=\"changeLanguage($event)\">\n              <option *ngFor=\"let l of languages\" [value]=\"l.id\">{{l.label}}</option>\n            </select>\n            <span>{{t('editing')}} <strong>{{language.toUpperCase()}}</strong>.</span>\n          </div>\n          <div class=\"translation-actions\">\n            <label class=\"overwrite-option\"><input type=\"checkbox\" [(ngModel)]=\"overwriteTranslations\"> {{t('overwrite')}}</label>\n            <button class=\"translate-button\" (click)=\"translateToAllLanguages()\" [disabled]=\"translating || loading\">\n              {{ translating ? t('translating') : t('translateAll') }} <span *ngIf=\"translationProgress\">{{translationProgress}}</span>\n            </button>\n          </div>\n        </div>\n\n        <!-- Tarification -->\n        <section *ngIf=\"active.id === 'pricing'\" class=\"panel\">\n          <h3>{{t('defaultPricing')}}</h3><p class=\"section-help\">{{t('pricingHelp')}}</p>\n          <div class=\"form-grid pricing-grid\">\n            <label><span>Journée (€)</span><input type=\"number\" [(ngModel)]=\"pricing.day\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Demi-journée (€)</span><input type=\"number\" [(ngModel)]=\"pricing.halfDay\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Soirée (€)</span><input type=\"number\" [(ngModel)]=\"pricing.evening\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Coucher de soleil (€)</span><input type=\"number\" [(ngModel)]=\"pricing.sunset\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Skipper (€)</span><input type=\"number\" [(ngModel)]=\"pricing.skipperPrice\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Carburant / nettoyage (€)</span><input type=\"number\" [(ngModel)]=\"pricing.cleaningPrice\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Passager supplémentaire (€)</span><input type=\"number\" [(ngModel)]=\"pricing.extraGuestPrice\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Passagers inclus</span><input type=\"number\" [(ngModel)]=\"pricing.nominalGuests\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Capacité maximale</span><input type=\"number\" [(ngModel)]=\"pricing.maxGuests\" (ngModelChange)=\"markDirty()\"></label>\n          </div>\n          <h3 class=\"subheading\">Saisonnalité</h3>\n          <div class=\"repeat-card compact\" *ngFor=\"let season of pricing.seasonalMultipliers; let i=index\">\n            <label><span>Nom</span><input [(ngModel)]=\"season.label\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Début</span><input type=\"date\" [(ngModel)]=\"season.startDate\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Fin</span><input type=\"date\" [(ngModel)]=\"season.endDate\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Coefficient</span><input type=\"number\" step=\"0.05\" [(ngModel)]=\"season.multiplier\" (ngModelChange)=\"markDirty()\"></label>\n          </div>\n        </section>\n\n        <!-- Sorties -->\n        <section *ngIf=\"active.id === 'outings'\" class=\"collection-section\">\n          <div class=\"collection-head\"><div><h3>{{t('outings')}}</h3><p>{{t('outingsHelp')}}</p></div><button class=\"add\" (click)=\"addOuting()\">+ {{t('addOuting')}}</button></div>\n          <article class=\"outing-card\" *ngFor=\"let item of outings; let i=index\">\n            <div class=\"card-head\"><div class=\"card-title\"><span class=\"order\">{{i+1}}</span><input class=\"title-input\" [(ngModel)]=\"outingLanguage(item).title\" (ngModelChange)=\"markDirty()\"></div><div class=\"card-tools\"><label class=\"switch\"><input type=\"checkbox\" [(ngModel)]=\"item.active\" (ngModelChange)=\"markDirty()\"><span></span> Visible</label><button (click)=\"moveOuting(i,-1)\" [disabled]=\"i===0\">↑</button><button (click)=\"moveOuting(i,1)\" [disabled]=\"i===outings.length-1\">↓</button><button (click)=\"duplicateOuting(i)\">Dupliquer</button><button class=\"danger-link\" (click)=\"removeOuting(i)\">Supprimer</button></div></div>\n            <div class=\"form-grid\">\n              <label class=\"wide\"><span>Description</span><textarea rows=\"4\" [(ngModel)]=\"outingLanguage(item).description\" (ngModelChange)=\"markDirty()\"></textarea></label>\n              <label><span>Durée</span><input [(ngModel)]=\"outingLanguage(item).duration\" (ngModelChange)=\"markDirty()\"></label>\n              <label><span>Passagers</span><input [(ngModel)]=\"outingLanguage(item).guests\" (ngModelChange)=\"markDirty()\"></label>\n              <label><span>Prix affiché</span><input [(ngModel)]=\"outingLanguage(item).priceLabel\" (ngModelChange)=\"markDirty()\"></label>\n              <label><span>Catégorie</span><select [(ngModel)]=\"item.category\" (ngModelChange)=\"markDirty()\"><option value=\"day\">Journée</option><option value=\"half-day\">Demi-journée</option><option value=\"sunset\">Coucher de soleil</option><option value=\"evening\">Soirée</option><option value=\"corporate\">Entreprise</option></select></label>\n            </div>\n            <div class=\"list-editor\"><div class=\"list-title\"><strong>Points forts</strong><button (click)=\"addHighlight(item)\">+ Ajouter</button></div><div class=\"list-row\" *ngFor=\"let h of outingLanguage(item).highlights; let hi=index\"><span>☑</span><input [(ngModel)]=\"outingLanguage(item).highlights[hi]\" (ngModelChange)=\"markDirty()\"><button (click)=\"removeHighlight(item,hi)\">×</button></div></div>\n          </article>\n          <div class=\"empty\" *ngIf=\"outings.length===0\">Aucune sortie. Cliquez sur « Ajouter une sortie ».</div>\n        </section>\n\n        <!-- Services -->\n        <section *ngIf=\"active.id === 'sea-toys'\" class=\"collection-section\">\n          <div class=\"collection-head\"><div><h3>{{t('services')}}</h3><p>{{t('servicesHelp')}}</p></div><button class=\"add\" (click)=\"addService()\">+ {{t('addService')}}</button></div>\n          <article class=\"service-card\" *ngFor=\"let service of services\">\n            <div class=\"service-active\"><label class=\"switch\"><input type=\"checkbox\" [(ngModel)]=\"service.active\" (ngModelChange)=\"markDirty()\"><span></span></label></div>\n            <div class=\"service-fields\"><label><span>Nom</span><input [(ngModel)]=\"serviceLanguage(service).title\" (ngModelChange)=\"markDirty()\"></label><label><span>Description</span><input [(ngModel)]=\"serviceLanguage(service).description\" (ngModelChange)=\"markDirty()\"></label></div>\n            <label class=\"price\"><span>Prix (€)</span><input type=\"number\" [(ngModel)]=\"service.amount\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"category\"><span>Catégorie</span><select [(ngModel)]=\"service.category\" (ngModelChange)=\"markDirty()\"><option value=\"toy\">Jouet nautique</option><option value=\"food\">Catering</option><option value=\"drinks\">Boissons</option><option value=\"other\">Autre</option></select></label>\n            <button class=\"icon-danger\" (click)=\"removeService(service)\">×</button>\n          </article>\n        </section>\n\n        <!-- Dedicated lightweight homepage editor. The complete homepage translation tree\n             is intentionally not rendered recursively because it can contain thousands of\n             bindings and freeze the browser. Advanced JSON remains available for power users. -->\n        <section *ngIf=\"active.id === 'homepage'\" class=\"panel visual-editor\">\n          <div class=\"form-grid\">\n            <label class=\"wide\"><span>Titre principal</span><input [(ngModel)]=\"homepageModel.title\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Introduction</span><textarea rows=\"4\" [(ngModel)]=\"homepageModel.intro\" (ngModelChange)=\"markDirty()\"></textarea></label>\n            <label><span>Sur-titre</span><input [(ngModel)]=\"homepageModel.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Bouton principal</span><input [(ngModel)]=\"homepageModel.primaryCta\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Bouton secondaire</span><input [(ngModel)]=\"homepageModel.secondaryCta\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Bouton réservation</span><input [(ngModel)]=\"homepageModel.onlineBookingCta\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Titre section sorties</span><input [(ngModel)]=\"homepageModel.sectionTitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Texte section sorties</span><textarea rows=\"3\" [(ngModel)]=\"homepageModel.sectionText\" (ngModelChange)=\"markDirty()\"></textarea></label>\n            <label class=\"wide\"><span>Titre section bateau</span><input [(ngModel)]=\"homepageModel.boatTitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Texte section bateau</span><textarea rows=\"3\" [(ngModel)]=\"homepageModel.boatText\" (ngModelChange)=\"markDirty()\"></textarea></label>\n            <label class=\"wide\"><span>Titre contact</span><input [(ngModel)]=\"homepageModel.contactTitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Texte contact</span><textarea rows=\"3\" [(ngModel)]=\"homepageModel.contactText\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          </div>\n          <p class=\"hint\">Les blocs avancés de la page d’accueil restent accessibles via « Mode avancé JSON ».</p>\n        </section>\n\n        <!-- Non-recursive editor: avoids any possibility of recursive template freezes. -->\n        <section *ngIf=\"active.id === 'boat'\" class=\"panel visual-editor\">\n          <div class=\"form-grid\">\n            <label class=\"wide\"><span>Nom du bateau</span><input [(ngModel)]=\"content.name\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Titre</span><input [(ngModel)]=\"localizedRoot.title\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Sous-titre</span><input [(ngModel)]=\"localizedRoot.subtitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Description</span><textarea rows=\"7\" [(ngModel)]=\"localizedRoot.description\" (ngModelChange)=\"markDirty()\"></textarea></label>\n            <label><span>Capacité</span><input type=\"number\" [(ngModel)]=\"content.capacity\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Marina</span><input [(ngModel)]=\"content.marina\" (ngModelChange)=\"markDirty()\"></label>\n          </div>\n        </section>\n\n        <section *ngIf=\"active.id === 'destinations' || active.id === 'faq' || active.id === 'reviews' || active.id === 'terms' || active.id === 'contact'\" class=\"panel visual-editor\">\n          <div class=\"form-grid\">\n            <label class=\"wide\"><span>Titre</span><input [(ngModel)]=\"localizedRoot.title\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Description / contenu</span><textarea rows=\"12\" [(ngModel)]=\"localizedRoot.description\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          </div>\n          <p class=\"hint\">Les structures détaillées restent accessibles dans le mode JSON avancé.</p>\n        </section>\n      </ng-container>\n\n      <textarea *ngIf=\"!loading && advancedMode\" class=\"json-editor\" [(ngModel)]=\"jsonText\" (ngModelChange)=\"markDirty()\" spellcheck=\"false\" aria-label=\"Contenu JSON\"></textarea>\n      <p *ngIf=\"advancedMode\" class=\"hint\">{{t('jsonHint')}}</p>\n    </main>\n  </div>\n</div>\n";
+module.exports = "<div class=\"cms-shell\">\n  <header class=\"cms-header\">\n    <div>\n      <p class=\"eyebrow\">Administration Firebase</p>\n      <h1>Contenu du site</h1>\n      <p>Exploration automatique de tous les éléments présents dans <code>siteContent</code> et <code>cmsContent</code>.</p>\n    </div>\n    <div class=\"header-actions\">\n      <span class=\"dirty-badge\" *ngIf=\"dirty\">Modifications non enregistrées</span>\n      <button type=\"button\" class=\"secondary\" (click)=\"loadAllContent()\" [disabled]=\"loading || saving\">Actualiser</button>\n      <button type=\"button\" class=\"primary\" (click)=\"saveSection()\" [disabled]=\"!dirty || loading || saving\">\n        {{ saving ? 'Enregistrement…' : 'Enregistrer la rubrique' }}\n      </button>\n    </div>\n  </header>\n\n  <div class=\"status success\" *ngIf=\"message\">{{ message }}</div>\n  <div class=\"status error\" *ngIf=\"error\">{{ error }}</div>\n\n  <section class=\"source-selector\" *ngIf=\"!loading\">\n    <label>\n      <span>Source Firebase</span>\n      <select [ngModel]=\"selectedRoot\" (ngModelChange)=\"changeRoot($event)\">\n        <option *ngFor=\"let root of roots\" [value]=\"root.id\">{{ root.label }}</option>\n      </select>\n    </label>\n    <small *ngIf=\"selectedRoot === 'siteContent'\">Structure Firebase par langue, présentée ici par rubrique pour faciliter l’édition multilingue.</small>\n    <small *ngIf=\"selectedRoot === 'cmsContent'\">Contenu complémentaire et modèles CMS.</small>\n  </section>\n\n  <section class=\"metrics\" *ngIf=\"!loading\">\n    <article><strong>{{ sections.length }}</strong><span>rubriques découvertes</span></article>\n    <article><strong>{{ totalLeafCount }}</strong><span>champs Firebase</span></article>\n    <article><strong>{{ allLeaves.length }}</strong><span>champs dans la rubrique</span></article>\n    <article><strong>{{ visibleLeaves.length }}</strong><span>champs affichés</span></article>\n  </section>\n\n  <div class=\"loading\" *ngIf=\"loading\">Chargement complet de siteContent et cmsContent…</div>\n\n  <div class=\"cms-layout\" *ngIf=\"!loading\">\n    <aside class=\"section-nav\">\n      <div class=\"nav-title\">\n        <strong>Rubriques Firebase</strong>\n        <small>Détectées automatiquement</small>\n      </div>\n      <button\n        type=\"button\"\n        *ngFor=\"let section of sections; trackBy: trackSection\"\n        [class.active]=\"section.key === selectedSectionKey\"\n        (click)=\"selectSection(section.key)\">\n        <span class=\"section-name\">{{ section.label }}</span>\n        <span class=\"section-meta\">{{ section.leaves }} champs</span>\n      </button>\n      <div class=\"empty-nav\" *ngIf=\"sections.length === 0\">Aucune rubrique dans la source sélectionnée.</div>\n    </aside>\n\n    <main class=\"editor\" *ngIf=\"selectedSectionKey\">\n      <div class=\"editor-title\">\n        <div>\n          <p class=\"path\">{{ selectedRoot }} / {{ selectedSectionKey }}</p>\n          <h2>{{ selectedSectionLabel }}</h2>\n        </div>\n        <div class=\"editor-actions\">\n          <button type=\"button\" class=\"secondary\" (click)=\"addField()\">+ Ajouter un champ</button>\n          <button type=\"button\" class=\"secondary\" (click)=\"exportSection()\">Exporter JSON</button>\n          <button type=\"button\" class=\"secondary\" (click)=\"toggleJsonMode()\">\n            {{ jsonMode ? 'Revenir au formulaire' : 'Mode JSON' }}\n          </button>\n        </div>\n      </div>\n\n      <ng-container *ngIf=\"!jsonMode\">\n        <div class=\"toolbar\">\n          <label class=\"search\">\n            <span>Rechercher dans les clés et les valeurs</span>\n            <input type=\"search\" [(ngModel)]=\"searchText\" placeholder=\"Ex. skipper, title, WhatsApp…\">\n          </label>\n          <label *ngIf=\"translatedSection\">\n            <span>Langue</span>\n            <select [(ngModel)]=\"selectedLanguage\">\n              <option *ngFor=\"let language of languages\" [value]=\"language.id\">{{ language.label }}</option>\n            </select>\n          </label>\n          <label class=\"checkbox\" *ngIf=\"translatedSection && selectedLanguage !== 'all'\">\n            <input type=\"checkbox\" [(ngModel)]=\"showOnlyMissingTranslations\">\n            <span>Uniquement les traductions vides</span>\n          </label>\n        </div>\n\n        <div class=\"fields-table\" *ngIf=\"visibleLeaves.length; else noFields\">\n          <div class=\"field-row\" *ngFor=\"let field of visibleLeaves; trackBy: trackField\">\n            <div class=\"field-key\">\n              <strong>{{ field.label }}</strong>\n              <code>{{ field.relativePath.join(' / ') }}</code>\n              <span class=\"language-chip\" *ngIf=\"field.language\">{{ field.language.toUpperCase() }}</span>\n            </div>\n\n            <div class=\"field-value\">\n              <label *ngIf=\"field.type === 'boolean'\" class=\"boolean-control\">\n                <input type=\"checkbox\" [ngModel]=\"field.value\" (ngModelChange)=\"updateField(field, $event)\">\n                <span>{{ field.value ? 'Activé' : 'Désactivé' }}</span>\n              </label>\n\n              <input\n                *ngIf=\"field.type === 'number'\"\n                type=\"number\"\n                [ngModel]=\"field.value\"\n                (ngModelChange)=\"updateField(field, $event)\">\n\n              <textarea\n                *ngIf=\"field.type === 'string' && isLongString(field.value)\"\n                rows=\"4\"\n                [ngModel]=\"field.value\"\n                (ngModelChange)=\"updateField(field, $event)\"></textarea>\n\n              <input\n                *ngIf=\"field.type === 'string' && !isLongString(field.value)\"\n                type=\"text\"\n                [ngModel]=\"field.value\"\n                (ngModelChange)=\"updateField(field, $event)\">\n\n              <input\n                *ngIf=\"field.type === 'null'\"\n                type=\"text\"\n                placeholder=\"Valeur vide\"\n                [ngModel]=\"field.value\"\n                (ngModelChange)=\"updateField(field, $event)\">\n            </div>\n\n            <button type=\"button\" class=\"delete\" (click)=\"deleteField(field)\" title=\"Supprimer ce champ\">×</button>\n          </div>\n        </div>\n\n        <ng-template #noFields>\n          <div class=\"empty-state\">Aucun champ ne correspond aux filtres sélectionnés.</div>\n        </ng-template>\n      </ng-container>\n\n      <section class=\"json-panel\" *ngIf=\"jsonMode\">\n        <p>Cette vue contient la rubrique complète, y compris les tableaux et les objets imbriqués.</p>\n        <textarea [(ngModel)]=\"jsonText\" (ngModelChange)=\"markDirty()\" spellcheck=\"false\"></textarea>\n        <div class=\"json-actions\">\n          <button type=\"button\" class=\"secondary\" (click)=\"applyJson()\">Vérifier et appliquer</button>\n        </div>\n      </section>\n\n      <footer class=\"editor-footer\">\n        <button type=\"button\" class=\"secondary\" (click)=\"resetSection()\" [disabled]=\"!dirty\">Annuler les modifications</button>\n        <button type=\"button\" class=\"primary\" (click)=\"saveSection()\" [disabled]=\"!dirty || saving\">\n          {{ saving ? 'Enregistrement…' : 'Enregistrer dans Firebase' }}\n        </button>\n      </footer>\n    </main>\n  </div>\n</div>\n";
 
 /***/ }),
 
@@ -2911,16 +2642,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AdminSiteContentComponent: () => (/* binding */ AdminSiteContentComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _admin_site_content_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin-site-content.component.html?ngResource */ 13586);
 /* harmony import */ var _admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./admin-site-content.component.scss?ngResource */ 3866);
 /* harmony import */ var _admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ 93262);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 56196);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ 72354);
-/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/language.service */ 48756);
-
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 56196);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 72354);
 
 
 
@@ -2930,15 +2659,11 @@ __webpack_require__.r(__webpack_exports__);
 
 let AdminSiteContentComponent = class AdminSiteContentComponent {
   http;
-  languageService;
   firebaseDatabaseUrl = 'https://adn-dev-4d05d.firebaseio.com';
-  get apiBase() {
-    if (typeof window === 'undefined') return '/api/admin/content';
-    const hostname = window.location.hostname;
-    const backendOrigin = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0' ? 'https://localhost:2000' : window.location.origin;
-    return `${backendOrigin}/api/admin/content`;
-  }
   languages = [{
+    id: 'all',
+    label: 'Toutes'
+  }, {
     id: 'fr',
     label: 'Français'
   }, {
@@ -2960,755 +2685,344 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
     id: 'ru',
     label: 'Русский'
   }];
-  sectionsFr = [{
-    id: 'homepage',
-    label: 'Page d’accueil',
-    description: 'Hero, textes, boutons et médias.',
-    icon: '⌂'
+  roots = [{
+    id: 'siteContent',
+    label: 'Site content (contenu principal)'
   }, {
-    id: 'boat',
-    label: 'Bateau',
-    description: 'Description, caractéristiques, équipements et galerie.',
-    icon: '⛵'
-  }, {
-    id: 'outings',
-    label: 'Sorties',
-    description: 'Descriptions, durées, inclusions et visibilité.',
-    icon: '☀'
-  }, {
-    id: 'pricing',
-    label: 'Tarification',
-    description: 'Prix par défaut et prix par type de sortie.',
-    icon: '€'
-  }, {
-    id: 'sea-toys',
-    label: 'Services & jouets',
-    description: 'Catalogue, prix, photos et disponibilité.',
-    icon: '⚓'
-  }, {
-    id: 'destinations',
-    label: 'Destinations',
-    description: 'Lieux, descriptions, cartes et photos.',
-    icon: '⌖'
-  }, {
-    id: 'faq',
-    label: 'FAQ',
-    description: 'Questions, réponses, ordre et visibilité.',
-    icon: '?'
-  }, {
-    id: 'reviews',
-    label: 'Avis',
-    description: 'Avis mis en avant sur le site.',
-    icon: '★'
-  }, {
-    id: 'terms',
-    label: 'Conditions générales',
-    description: 'Contenu multilingue des CGV.',
-    icon: '§'
-  }, {
-    id: 'contact',
-    label: 'Contact',
-    description: 'Coordonnées, marina et réseaux sociaux.',
-    icon: '✉'
+    id: 'cmsContent',
+    label: 'CMS content (contenu complémentaire)'
   }];
-  active = this.sectionsFr[1]; // Start with the smaller Boat section; Homepage is rendered by a dedicated editor.
+  selectedRoot = 'siteContent';
   content = {};
-  jsonText = '';
-  language = 'fr';
+  originalContent = {};
+  rawSiteContent = {};
+  sections = [];
+  selectedSectionKey = '';
+  selectedLanguage = 'all';
+  searchText = '';
   loading = false;
   saving = false;
-  translating = false;
-  translationProgress = '';
-  overwriteTranslations = true;
-  advancedMode = false;
   dirty = false;
   message = '';
   error = '';
-  currentLanguage = 'fr';
-  uiText = {
-    fr: {
-      title: 'Contenu du site',
-      intro: 'Modifiez vos pages avec des formulaires simples, sans toucher au code.',
-      unsaved: 'Modifications non enregistrées',
-      back: 'Retour au tableau de bord',
-      visual: 'Revenir au formulaire',
-      advanced: 'Mode avancé JSON',
-      saving: 'Enregistrement…',
-      save: 'Enregistrer',
-      loading: 'Chargement…',
-      language: 'Langue',
-      editing: 'Vous modifiez actuellement la version',
-      defaultPricing: 'Tarifs par défaut',
-      pricingHelp: 'Ces montants préremplissent vos offres. Ils restent modifiables pour chaque réservation.',
-      outings: 'Vos sorties',
-      outingsHelp: 'Une carte correspond à une expérience proposée sur le site.',
-      addOuting: 'Ajouter une sortie',
-      services: 'Services et options',
-      servicesHelp: 'Ajoutez les jouets nautiques, boissons, catering ou autres options.',
-      addService: 'Ajouter un service',
-      success: 'Modifications enregistrées avec succès.',
-      loadError: 'Impossible de charger cette rubrique.',
-      saveError: 'Enregistrement impossible.',
-      jsonHint: 'Mode réservé aux utilisateurs avancés. Une erreur de syntaxe empêchera l’enregistrement.',
-      translateAll: 'Traduire vers toutes les langues',
-      translating: 'Traduction…',
-      overwrite: 'Remplacer les traductions existantes',
-      translated: 'Traductions générées. Vérifiez-les puis enregistrez.',
-      translateError: 'La traduction automatique a échoué.'
-    },
-    en: {
-      title: 'Website content',
-      intro: 'Edit your pages with simple forms, without touching the code.',
-      unsaved: 'Unsaved changes',
-      back: 'Back to dashboard',
-      visual: 'Back to form',
-      advanced: 'Advanced JSON mode',
-      saving: 'Saving…',
-      save: 'Save',
-      loading: 'Loading…',
-      language: 'Language',
-      editing: 'You are currently editing the',
-      defaultPricing: 'Default pricing',
-      pricingHelp: 'These amounts prefill your offers and remain editable for each booking.',
-      outings: 'Your outings',
-      outingsHelp: 'Each card represents an experience offered on the website.',
-      addOuting: 'Add an outing',
-      services: 'Services and options',
-      servicesHelp: 'Add water toys, drinks, catering, or other options.',
-      addService: 'Add a service',
-      success: 'Changes saved successfully.',
-      loadError: 'Unable to load this section.',
-      saveError: 'Unable to save.',
-      jsonHint: 'Advanced users only. A syntax error will prevent saving.',
-      translateAll: 'Translate into all languages',
-      translating: 'Translating…',
-      overwrite: 'Replace existing translations',
-      translated: 'Translations generated. Review them, then save.',
-      translateError: 'Automatic translation failed.'
-    },
-    es: {
-      title: 'Contenido del sitio',
-      intro: 'Modifique sus páginas con formularios sencillos, sin tocar el código.',
-      unsaved: 'Cambios sin guardar',
-      back: 'Volver al panel',
-      visual: 'Volver al formulario',
-      advanced: 'Modo JSON avanzado',
-      saving: 'Guardando…',
-      save: 'Guardar',
-      loading: 'Cargando…',
-      language: 'Idioma',
-      editing: 'Está editando actualmente la versión',
-      defaultPricing: 'Precios predeterminados',
-      pricingHelp: 'Estos importes rellenan sus ofertas y pueden modificarse en cada reserva.',
-      outings: 'Sus salidas',
-      outingsHelp: 'Cada tarjeta corresponde a una experiencia ofrecida en el sitio.',
-      addOuting: 'Añadir una salida',
-      services: 'Servicios y opciones',
-      servicesHelp: 'Añada juguetes acuáticos, bebidas, catering u otras opciones.',
-      addService: 'Añadir un servicio',
-      success: 'Cambios guardados correctamente.',
-      loadError: 'No se puede cargar esta sección.',
-      saveError: 'No se puede guardar.',
-      jsonHint: 'Modo para usuarios avanzados. Un error de sintaxis impedirá guardar.'
-    },
-    it: {
-      title: 'Contenuti del sito',
-      intro: 'Modifica le pagine con moduli semplici, senza intervenire sul codice.',
-      unsaved: 'Modifiche non salvate',
-      back: 'Torna alla dashboard',
-      visual: 'Torna al modulo',
-      advanced: 'Modalità JSON avanzata',
-      saving: 'Salvataggio…',
-      save: 'Salva',
-      loading: 'Caricamento…',
-      language: 'Lingua',
-      editing: 'Stai modificando la versione',
-      defaultPricing: 'Tariffe predefinite',
-      pricingHelp: 'Questi importi precompilano le offerte e restano modificabili per ogni prenotazione.',
-      outings: 'Le tue uscite',
-      outingsHelp: 'Ogni scheda rappresenta un’esperienza proposta sul sito.',
-      addOuting: 'Aggiungi uscita',
-      services: 'Servizi e opzioni',
-      servicesHelp: 'Aggiungi giochi acquatici, bevande, catering o altre opzioni.',
-      addService: 'Aggiungi servizio',
-      success: 'Modifiche salvate.',
-      loadError: 'Impossibile caricare questa sezione.',
-      saveError: 'Salvataggio impossibile.',
-      jsonHint: 'Modalità per utenti avanzati. Un errore di sintassi impedirà il salvataggio.'
-    },
-    de: {
-      title: 'Website-Inhalte',
-      intro: 'Bearbeiten Sie Ihre Seiten mit einfachen Formularen, ohne den Code zu ändern.',
-      unsaved: 'Nicht gespeicherte Änderungen',
-      back: 'Zurück zum Dashboard',
-      visual: 'Zurück zum Formular',
-      advanced: 'Erweiterter JSON-Modus',
-      saving: 'Speichern…',
-      save: 'Speichern',
-      loading: 'Laden…',
-      language: 'Sprache',
-      editing: 'Sie bearbeiten derzeit die Version',
-      defaultPricing: 'Standardpreise',
-      pricingHelp: 'Diese Beträge füllen Angebote vor und können pro Buchung geändert werden.',
-      outings: 'Ihre Ausfahrten',
-      outingsHelp: 'Jede Karte entspricht einem auf der Website angebotenen Erlebnis.',
-      addOuting: 'Ausfahrt hinzufügen',
-      services: 'Services und Optionen',
-      servicesHelp: 'Wasserspielzeug, Getränke, Catering oder andere Optionen hinzufügen.',
-      addService: 'Service hinzufügen',
-      success: 'Änderungen gespeichert.',
-      loadError: 'Dieser Bereich konnte nicht geladen werden.',
-      saveError: 'Speichern nicht möglich.',
-      jsonHint: 'Nur für fortgeschrittene Benutzer. Ein Syntaxfehler verhindert das Speichern.'
-    },
-    nl: {
-      title: 'Website-inhoud',
-      intro: 'Bewerk uw pagina’s met eenvoudige formulieren, zonder de code te wijzigen.',
-      unsaved: 'Niet-opgeslagen wijzigingen',
-      back: 'Terug naar dashboard',
-      visual: 'Terug naar formulier',
-      advanced: 'Geavanceerde JSON-modus',
-      saving: 'Opslaan…',
-      save: 'Opslaan',
-      loading: 'Laden…',
-      language: 'Taal',
-      editing: 'U bewerkt momenteel de versie',
-      defaultPricing: 'Standaardprijzen',
-      pricingHelp: 'Deze bedragen vullen offertes vooraf in en blijven per boeking aanpasbaar.',
-      outings: 'Uw uitstapjes',
-      outingsHelp: 'Elke kaart staat voor een ervaring die op de website wordt aangeboden.',
-      addOuting: 'Uitstapje toevoegen',
-      services: 'Diensten en opties',
-      servicesHelp: 'Voeg waterspeelgoed, drankjes, catering of andere opties toe.',
-      addService: 'Dienst toevoegen',
-      success: 'Wijzigingen opgeslagen.',
-      loadError: 'Deze rubriek kan niet worden geladen.',
-      saveError: 'Opslaan mislukt.',
-      jsonHint: 'Alleen voor gevorderde gebruikers. Een syntaxisfout voorkomt opslaan.'
-    },
-    ru: {
-      title: 'Содержимое сайта',
-      intro: 'Редактируйте страницы с помощью простых форм, не изменяя код.',
-      unsaved: 'Есть несохранённые изменения',
-      back: 'Вернуться к панели',
-      visual: 'Вернуться к форме',
-      advanced: 'Расширенный режим JSON',
-      saving: 'Сохранение…',
-      save: 'Сохранить',
-      loading: 'Загрузка…',
-      language: 'Язык',
-      editing: 'Сейчас редактируется версия',
-      defaultPricing: 'Цены по умолчанию',
-      pricingHelp: 'Эти суммы подставляются в предложения и могут быть изменены для каждого бронирования.',
-      outings: 'Ваши прогулки',
-      outingsHelp: 'Каждая карточка представляет услугу, предлагаемую на сайте.',
-      addOuting: 'Добавить прогулку',
-      services: 'Услуги и опции',
-      servicesHelp: 'Добавьте водные игрушки, напитки, кейтеринг и другие опции.',
-      addService: 'Добавить услугу',
-      success: 'Изменения сохранены.',
-      loadError: 'Не удалось загрузить раздел.',
-      saveError: 'Не удалось сохранить.',
-      jsonHint: 'Режим для опытных пользователей. Ошибка синтаксиса помешает сохранению.'
-    }
-  };
-  constructor(http, languageService) {
+  jsonMode = false;
+  jsonText = '';
+  showOnlyMissingTranslations = false;
+  constructor(http) {
     this.http = http;
-    this.languageService = languageService;
   }
   ngOnInit() {
-    this.currentLanguage = this.languageService.currentLanguage || 'fr';
-    this.languageService.language$.subscribe(lang => this.currentLanguage = lang);
-    // Render the route first. Loading starts only after Angular has painted the shell.
-    setTimeout(() => {
-      void this.select(this.active, true);
-    }, 0);
-  }
-  t(key) {
-    return this.uiText[this.currentLanguage]?.[key] || this.uiText.en[key] || key;
-  }
-  trackSection(_index, section) {
-    return section.id;
-  }
-  get sections() {
-    const translations = {
-      en: ['Homepage', 'Boat', 'Outings', 'Pricing', 'Services & toys', 'Destinations', 'FAQ', 'Reviews', 'Terms & conditions', 'Contact'],
-      es: ['Página de inicio', 'Barco', 'Salidas', 'Precios', 'Servicios y juguetes', 'Destinos', 'FAQ', 'Opiniones', 'Términos y condiciones', 'Contacto'],
-      it: ['Homepage', 'Barca', 'Uscite', 'Tariffe', 'Servizi e giochi', 'Destinazioni', 'FAQ', 'Recensioni', 'Termini e condizioni', 'Contatti'],
-      de: ['Startseite', 'Boot', 'Ausfahrten', 'Preise', 'Services & Spielzeug', 'Ziele', 'FAQ', 'Bewertungen', 'AGB', 'Kontakt'],
-      nl: ['Homepage', 'Boot', 'Uitstapjes', 'Prijzen', 'Diensten & speelgoed', 'Bestemmingen', 'FAQ', 'Beoordelingen', 'Voorwaarden', 'Contact'],
-      ru: ['Главная', 'Лодка', 'Прогулки', 'Цены', 'Услуги и игрушки', 'Направления', 'FAQ', 'Отзывы', 'Условия', 'Контакты']
-    };
-    const labels = translations[this.currentLanguage] || this.sectionsFr.map(s => s.label);
-    return this.sectionsFr.map((section, index) => ({
-      ...section,
-      label: labels[index] || section.label
-    }));
-  }
-  select(section, initial = false) {
     var _this = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!initial && _this.dirty && !confirm('Des modifications ne sont pas enregistrées. Continuer ?')) return;
-      _this.active = section;
-      _this.loading = true;
-      _this.message = '';
-      _this.error = '';
-      _this.advancedMode = false;
-      try {
-        _this.content = yield _this.loadSection(section.id);
-        // JSON serialization is deliberately lazy. Some CMS sections are large and
-        // serializing them during route activation can freeze the browser.
-        _this.jsonText = '';
-        _this.dirty = false;
-      } catch (e) {
-        _this.content = {};
-        _this.jsonText = '';
-        _this.error = e?.error?.message || _this.t('loadError');
-      } finally {
-        _this.loading = false;
-      }
+      yield _this.loadAllContent();
     })();
   }
-  loadSection(sectionId) {
+  get selectedSection() {
+    return this.selectedSectionKey ? this.content?.[this.selectedSectionKey] : null;
+  }
+  get selectedSectionLabel() {
+    return this.humanize(this.selectedSectionKey || this.selectedRoot);
+  }
+  get allLeaves() {
+    if (!this.selectedSectionKey) return [];
+    return this.flattenLeaves(this.selectedSection, [this.selectedSectionKey], []);
+  }
+  get visibleLeaves() {
+    const query = this.searchText.trim().toLowerCase();
+    const fields = this.allLeaves.filter(field => {
+      if (this.selectedLanguage !== 'all' && field.language && field.language !== this.selectedLanguage) return false;
+      if (this.selectedLanguage !== 'all' && this.hasLanguageBranches(this.selectedSection) && !field.language) return false;
+      if (this.showOnlyMissingTranslations && !this.isMissingTranslation(field)) return false;
+      if (!query) return true;
+      const haystack = `${field.relativePath.join(' ')} ${field.label} ${String(field.value ?? '')}`.toLowerCase();
+      return haystack.includes(query);
+    });
+    return fields;
+  }
+  get totalLeafCount() {
+    return this.sections.reduce((sum, section) => sum + section.leaves, 0);
+  }
+  get translatedSection() {
+    return this.hasLanguageBranches(this.selectedSection);
+  }
+  loadAllContent() {
     var _this2 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const encodedId = encodeURIComponent(sectionId);
-      // Firebase is read first because the imported dump is the content source and
-      // does not depend on backend route/proxy configuration.
+      _this2.loading = true;
+      _this2.message = '';
+      _this2.error = '';
       try {
-        const value = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this2.http.get(`${_this2.firebaseDatabaseUrl}/cmsContent/${encodedId}.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.timeout)(3000)));
-        if (value && typeof value === 'object') return value;
-      } catch {}
-      // Backend fallback. A strict timeout guarantees that the view never hangs.
-      try {
-        return (yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this2.http.get(`${_this2.apiBase}/${encodedId}`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.timeout)(3000)))) || {};
-      } catch {
-        // A missing backend must never prevent the editor shell from opening.
-        return {};
+        const [cmsData, siteData] = yield Promise.all([(0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)(_this2.http.get(`${_this2.firebaseDatabaseUrl}/cmsContent.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_4__.timeout)(15000))), (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)(_this2.http.get(`${_this2.firebaseDatabaseUrl}/siteContent.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_4__.timeout)(15000)))]);
+        _this2.rawSiteContent = siteData || {};
+        _this2.content = _this2.selectedRoot === 'siteContent' ? _this2.transposeSiteContent(_this2.rawSiteContent) : cmsData || {};
+        _this2.originalContent = _this2.clone(_this2.content);
+        _this2.rebuildSections();
+        if (!_this2.selectedSectionKey || !_this2.content[_this2.selectedSectionKey]) {
+          _this2.selectedSectionKey = _this2.sections[0]?.key || '';
+        }
+        _this2.refreshJson();
+        _this2.dirty = false;
+      } catch (e) {
+        _this2.error = e?.error?.message || 'Impossible de charger le contenu du site depuis Firebase.';
+      } finally {
+        _this2.loading = false;
       }
     })();
   }
-  changeLanguage(nextLanguage) {
-    const previousLanguage = this.language;
-    if (nextLanguage === previousLanguage) return;
-    if (this.active.id !== 'outings' && this.active.id !== 'sea-toys' && (!this.content.i18n || typeof this.content.i18n !== 'object')) {
-      this.content.i18n = {};
-      this.content.i18n[previousLanguage] = this.extractTranslatableRoot(this.content);
-    }
-    this.language = nextLanguage;
+  changeRoot(root) {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (root === _this3.selectedRoot) return;
+      if (_this3.dirty && !confirm('Des modifications ne sont pas enregistrées. Changer de source malgré tout ?')) return;
+      _this3.selectedRoot = root;
+      _this3.selectedSectionKey = '';
+      yield _this3.loadAllContent();
+    })();
   }
-  get localizedRoot() {
-    if (this.content?.i18n) {
-      if (!this.content.i18n[this.language]) this.content.i18n[this.language] = {};
-      return this.content.i18n[this.language];
-    }
-    return this.content;
-  }
-  get homepageModel() {
-    const root = this.localizedRoot;
-    if (!root.home || typeof root.home !== 'object') root.home = {};
-    return root.home;
-  }
-  get genericEditableRoot() {
-    // Never recursively render the full homepage translation tree (brand/common/portal).
-    // It is large enough to freeze Angular's recursive template. Homepage has its own compact form.
-    return this.active.id === 'homepage' ? this.homepageModel : this.localizedRoot;
-  }
-  get outings() {
-    return Array.isArray(this.content?.items) ? this.content.items : [];
-  }
-  get services() {
-    const items = this.content?.items || {};
-    return Array.isArray(items) ? items : Object.keys(items).map(k => items[k]);
-  }
-  get pricing() {
-    if (!this.content.model) this.content.model = {};
-    if (!this.content.model.alegria) this.content.model.alegria = {};
-    return this.content.model.alegria;
+  selectSection(key) {
+    if (this.dirty && !confirm('Des modifications ne sont pas enregistrées. Changer de rubrique malgré tout ?')) return;
+    this.selectedSectionKey = key;
+    this.selectedLanguage = 'all';
+    this.searchText = '';
+    this.showOnlyMissingTranslations = false;
+    this.jsonMode = false;
+    this.dirty = false;
+    this.refreshJson();
   }
   markDirty() {
     this.dirty = true;
     this.message = '';
   }
-  keys(obj) {
-    return obj && typeof obj === 'object' ? Object.keys(obj) : [];
-  }
-  isArray(v) {
-    return Array.isArray(v);
-  }
-  isObject(v) {
-    return v !== null && typeof v === 'object' && !Array.isArray(v);
-  }
-  isBoolean(v) {
-    return typeof v === 'boolean';
-  }
-  isNumber(v) {
-    return typeof v === 'number';
-  }
-  isLongText(key, value) {
-    return typeof value === 'string' && (value.length > 90 || /description|intro|text|content|answer|terms|conditions|message/i.test(key));
-  }
-  label(key) {
-    const known = {
-      title: 'Titre',
-      subtitle: 'Sous-titre',
-      description: 'Description',
-      intro: 'Introduction',
-      visible: 'Visible',
-      active: 'Actif',
-      name: 'Nom',
-      amount: 'Prix',
-      category: 'Catégorie',
-      duration: 'Durée',
-      guests: 'Nombre de passagers',
-      priceLabel: 'Libellé du prix',
-      highlights: 'Points forts',
-      reasons: 'Raisons',
-      occasions: 'Occasions',
-      cta: 'Texte du bouton',
-      eyebrow: 'Sur-titre',
-      day: 'Journée',
-      halfDay: 'Demi-journée',
-      evening: 'Soirée',
-      sunset: 'Coucher de soleil',
-      skipperPrice: 'Skipper',
-      cleaningPrice: 'Carburant / nettoyage',
-      extraGuestPrice: 'Passager supplémentaire',
-      maxGuests: 'Maximum de passagers',
-      minGuests: 'Minimum de passagers',
-      nominalGuests: 'Passagers inclus',
-      startDate: 'Date de début',
-      endDate: 'Date de fin',
-      multiplier: 'Coefficient',
-      label: 'Libellé',
-      sortOrder: 'Ordre d’affichage',
-      currency: 'Devise',
-      address: 'Adresse',
-      phone: 'Téléphone',
-      email: 'E-mail'
-    };
-    if (known[key]) return known[key];
-    return key.replace(/([A-Z])/g, ' $1').replace(/[_-]/g, ' ').replace(/^./, c => c.toUpperCase());
-  }
-  addOuting() {
-    if (!Array.isArray(this.content.items)) this.content.items = [];
-    const item = {
-      id: `outing_${Date.now()}`,
-      active: true,
-      category: 'day'
-    };
-    this.languages.forEach(l => item[l.id] = {
-      title: 'Nouvelle sortie',
-      description: '',
-      duration: '',
-      guests: '',
-      priceLabel: '',
-      highlights: []
-    });
-    this.content.items.push(item);
+  updateField(field, rawValue) {
+    let value = rawValue;
+    if (field.type === 'number') value = rawValue === '' ? 0 : Number(rawValue);
+    if (field.type === 'boolean') value = !!rawValue;
+    this.setAtPath(this.content, field.path, value);
+    field.value = value;
     this.markDirty();
   }
-  duplicateOuting(index) {
-    const clone = JSON.parse(JSON.stringify(this.outings[index]));
-    clone.id = `${clone.id || 'outing'}_copy_${Date.now()}`;
-    this.content.items.splice(index + 1, 0, clone);
+  addField() {
+    const path = prompt('Chemin relatif du nouveau champ, par exemple hero/title ou i18n/fr/title :');
+    if (!path) return;
+    const parts = path.split('/').map(p => p.trim()).filter(Boolean);
+    if (!parts.length) return;
+    const fullPath = [this.selectedSectionKey, ...parts];
+    if (this.getAtPath(this.content, fullPath) !== undefined) {
+      this.error = 'Ce champ existe déjà.';
+      return;
+    }
+    this.setAtPath(this.content, fullPath, '');
     this.markDirty();
   }
-  removeOuting(index) {
-    if (confirm('Supprimer cette sortie ?')) {
-      this.content.items.splice(index, 1);
+  deleteField(field) {
+    if (!confirm(`Supprimer définitivement « ${field.relativePath.join(' / ')} » ?`)) return;
+    this.deleteAtPath(this.content, field.path);
+    this.markDirty();
+  }
+  toggleJsonMode() {
+    if (!this.jsonMode) {
+      this.refreshJson();
+      this.jsonMode = true;
+      return;
+    }
+    try {
+      this.content[this.selectedSectionKey] = JSON.parse(this.jsonText || '{}');
+      this.jsonMode = false;
       this.markDirty();
+    } catch {
+      this.error = 'Le JSON contient une erreur de syntaxe.';
     }
   }
-  moveOuting(index, delta) {
-    const next = index + delta;
-    if (next < 0 || next >= this.outings.length) return;
-    const [item] = this.content.items.splice(index, 1);
-    this.content.items.splice(next, 0, item);
-    this.markDirty();
-  }
-  outingLanguage(item) {
-    if (!item[this.language]) item[this.language] = {
-      title: '',
-      description: '',
-      duration: '',
-      guests: '',
-      priceLabel: '',
-      highlights: []
-    };
-    return item[this.language];
-  }
-  addHighlight(item) {
-    const l = this.outingLanguage(item);
-    if (!Array.isArray(l.highlights)) l.highlights = [];
-    l.highlights.push('');
-    this.markDirty();
-  }
-  removeHighlight(item, index) {
-    this.outingLanguage(item).highlights.splice(index, 1);
-    this.markDirty();
-  }
-  serviceLanguage(service) {
-    if (!service.i18n || typeof service.i18n !== 'object') {
-      service.i18n = {};
-      service.i18n[this.language] = {
-        title: service.title || service.name || '',
-        description: service.description || ''
-      };
-    }
-    if (!service.i18n[this.language]) service.i18n[this.language] = {
-      title: '',
-      description: ''
-    };
-    return service.i18n[this.language];
-  }
-  addService() {
-    if (!this.content.items || Array.isArray(this.content.items)) this.content.items = {};
-    const id = `service_${Date.now()}`;
-    this.content.items[id] = {
-      id,
-      name: 'Nouveau service',
-      title: 'Nouveau service',
-      description: '',
-      amount: 0,
-      currency: 'eur',
-      category: 'other',
-      active: true,
-      sortOrder: Object.keys(this.content.items).length * 10
-    };
-    this.markDirty();
-  }
-  removeService(service) {
-    if (confirm('Supprimer ce service ?')) {
-      delete this.content.items[service.id];
+  applyJson() {
+    try {
+      this.content[this.selectedSectionKey] = JSON.parse(this.jsonText || '{}');
       this.markDirty();
+      this.message = 'JSON appliqué localement. Cliquez sur Enregistrer pour publier.';
+    } catch {
+      this.error = 'Le JSON contient une erreur de syntaxe.';
     }
   }
-  addArrayItem(parent, key) {
-    if (!Array.isArray(parent[key])) parent[key] = [];
-    const existing = parent[key][0];
-    parent[key].push(this.isObject(existing) ? {} : '');
-    this.markDirty();
+  resetSection() {
+    if (!confirm('Annuler toutes les modifications non enregistrées de cette rubrique ?')) return;
+    this.content[this.selectedSectionKey] = this.clone(this.originalContent[this.selectedSectionKey]);
+    this.dirty = false;
+    this.refreshJson();
+    this.message = 'Modifications locales annulées.';
   }
-  removeArrayItem(arr, index) {
-    arr.splice(index, 1);
-    this.markDirty();
-  }
-  addField(obj) {
-    const key = prompt('Nom technique du nouveau champ (sans espaces) :');
-    if (!key || obj[key] !== undefined) return;
-    obj[key] = '';
-    this.markDirty();
-  }
-  toggleAdvanced() {
-    if (!this.advancedMode) {
-      try {
-        this.jsonText = JSON.stringify(this.content || {}, null, 2);
-      } catch {
-        this.error = 'Ce contenu ne peut pas être affiché en JSON.';
-        return;
-      }
-    } else {
-      try {
-        this.content = JSON.parse(this.jsonText || '{}');
-        this.error = '';
-      } catch {
-        this.error = 'Le JSON contient une erreur. Corrigez-la avant de revenir au mode visuel.';
-        return;
-      }
-    }
-    this.advancedMode = !this.advancedMode;
-  }
-  translateToAllLanguages() {
-    var _this3 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (_this3.translating || _this3.loading) return;
-      if (_this3.advancedMode) {
-        try {
-          _this3.content = JSON.parse(_this3.jsonText || '{}');
-        } catch {
-          _this3.error = 'Le JSON contient une erreur de syntaxe.';
-          return;
-        }
-      }
-      _this3.translating = true;
-      _this3.translationProgress = '';
-      _this3.message = '';
-      _this3.error = '';
-      try {
-        const sourceLanguage = _this3.language;
-        const targets = _this3.languages.map(l => l.id).filter(l => l !== sourceLanguage);
-        let completed = 0;
-        for (const targetLanguage of targets) {
-          _this3.translationProgress = `${completed + 1}/${targets.length} · ${targetLanguage.toUpperCase()}`;
-          yield _this3.translateSectionLanguage(sourceLanguage, targetLanguage);
-          completed++;
-        }
-        _this3.dirty = true;
-        _this3.message = _this3.t('translated');
-        if (_this3.advancedMode) _this3.jsonText = JSON.stringify(_this3.content, null, 2);
-      } catch (e) {
-        _this3.error = e?.message || _this3.t('translateError');
-      } finally {
-        _this3.translating = false;
-        _this3.translationProgress = '';
-      }
-    })();
-  }
-  translateSectionLanguage(sourceLanguage, targetLanguage) {
+  saveSection() {
     var _this4 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (_this4.active.id === 'outings') {
-        for (const item of _this4.outings) {
-          const source = item?.[sourceLanguage] || {};
-          const existing = item?.[targetLanguage] || {};
-          item[targetLanguage] = yield _this4.translateObject(source, sourceLanguage, targetLanguage, existing);
-        }
-        return;
-      }
-      if (_this4.active.id === 'sea-toys') {
-        for (const service of _this4.services) {
-          const source = service?.i18n?.[sourceLanguage] || {
-            title: service.title || service.name || '',
-            description: service.description || ''
-          };
-          if (!service.i18n) service.i18n = {};
-          service.i18n[targetLanguage] = yield _this4.translateObject(source, sourceLanguage, targetLanguage, service.i18n[targetLanguage] || {});
-        }
-        return;
-      }
-      if (!_this4.content.i18n || typeof _this4.content.i18n !== 'object') {
-        _this4.content.i18n = {};
-        _this4.content.i18n[sourceLanguage] = _this4.extractTranslatableRoot(_this4.content);
-      }
-      const source = _this4.content.i18n[sourceLanguage] || {};
-      const existing = _this4.content.i18n[targetLanguage] || {};
-      _this4.content.i18n[targetLanguage] = yield _this4.translateObject(source, sourceLanguage, targetLanguage, existing);
-    })();
-  }
-  extractTranslatableRoot(value) {
-    const excluded = new Set(['i18n', 'id', 'active', 'visible', 'amount', 'price', 'currency', 'capacity', 'sortOrder', 'latitude', 'longitude']);
-    const output = {};
-    Object.keys(value || {}).forEach(key => {
-      if (excluded.has(key)) return;
-      const current = value[key];
-      if (typeof current === 'string' || Array.isArray(current) || current && typeof current === 'object') {
-        output[key] = this.clone(current);
-      }
-    });
-    return output;
-  }
-  translateObject(source, sourceLanguage, targetLanguage, existing) {
-    var _this5 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (typeof source === 'string') {
-        if (!_this5.shouldTranslate(source)) return source;
-        if (!_this5.overwriteTranslations && typeof existing === 'string' && existing.trim()) return existing;
-        return _this5.translateText(source, sourceLanguage, targetLanguage);
-      }
-      if (Array.isArray(source)) {
-        const result = [];
-        for (let i = 0; i < source.length; i++) {
-          result.push(yield _this5.translateObject(source[i], sourceLanguage, targetLanguage, Array.isArray(existing) ? existing[i] : undefined));
-        }
-        return result;
-      }
-      if (!source || typeof source !== 'object') return source;
-      const result = _this5.clone(existing && typeof existing === 'object' ? existing : {});
-      for (const key of Object.keys(source)) {
-        if (_this5.isTechnicalKey(key)) {
-          result[key] = _this5.clone(source[key]);
-        } else {
-          result[key] = yield _this5.translateObject(source[key], sourceLanguage, targetLanguage, result[key]);
-        }
-      }
-      return result;
-    })();
-  }
-  translateText(text, sourceLanguage, targetLanguage) {
-    var _this6 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this4.selectedSectionKey) return;
+      _this4.saving = true;
+      _this4.message = '';
+      _this4.error = '';
       try {
-        const response = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this6.http.post(`${_this6.apiBase}/translate`, {
-          text,
-          sourceLanguage,
-          targetLanguage
-        }).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.timeout)(8000)));
-        if (typeof response?.translation === 'string' && response.translation.trim()) return response.translation;
-        if (typeof response?.translatedText === 'string' && response.translatedText.trim()) return response.translatedText;
-      } catch {}
-      const url = 'https://translate.googleapis.com/translate_a/single';
-      const response = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this6.http.get(url, {
-        params: {
-          client: 'gtx',
-          sl: sourceLanguage,
-          tl: targetLanguage,
-          dt: 't',
-          q: text
+        if (_this4.jsonMode) {
+          _this4.content[_this4.selectedSectionKey] = JSON.parse(_this4.jsonText || '{}');
         }
-      }).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.timeout)(10000)));
-      const translated = Array.isArray(response?.[0]) ? response[0].map(part => part?.[0] || '').join('') : '';
-      if (!translated) throw new Error(_this6.t('translateError'));
-      return translated;
+        const key = encodeURIComponent(_this4.selectedSectionKey);
+        if (_this4.selectedRoot === 'siteContent') {
+          const section = _this4.content[_this4.selectedSectionKey] || {};
+          const languageIds = _this4.languages.filter(language => language.id !== 'all').map(language => language.id);
+          yield Promise.all(languageIds.map(language => {
+            const value = section[language] === undefined ? null : section[language];
+            return (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)(_this4.http.put(`${_this4.firebaseDatabaseUrl}/siteContent/${language}/${key}.json`, value).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_4__.timeout)(15000)));
+          }));
+          _this4.rawSiteContent = _this4.untransposeSiteContent(_this4.content);
+        } else {
+          yield (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)(_this4.http.put(`${_this4.firebaseDatabaseUrl}/cmsContent/${key}.json`, _this4.content[_this4.selectedSectionKey]).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_4__.timeout)(15000)));
+        }
+        _this4.originalContent[_this4.selectedSectionKey] = _this4.clone(_this4.content[_this4.selectedSectionKey]);
+        _this4.rebuildSections();
+        _this4.refreshJson();
+        _this4.dirty = false;
+        _this4.message = `Rubrique « ${_this4.selectedSectionLabel} » enregistrée dans ${_this4.selectedRoot}.`;
+      } catch (e) {
+        _this4.error = e instanceof SyntaxError ? 'Le JSON contient une erreur de syntaxe.' : e?.error?.message || 'Enregistrement impossible dans Firebase.';
+      } finally {
+        _this4.saving = false;
+      }
     })();
   }
-  shouldTranslate(value) {
-    const text = String(value || '').trim();
-    if (!text || text.length < 2) return false;
-    if (/^(https?:\/\/|mailto:|tel:|\/|#)/i.test(text)) return false;
-    if (/^[\w.+-]+@[\w.-]+\.[a-z]{2,}$/i.test(text)) return false;
-    if (/^[A-Z0-9_./:-]+$/.test(text) && !/\s/.test(text)) return false;
-    return true;
+  exportSection() {
+    const data = JSON.stringify(this.selectedSection, null, 2);
+    const blob = new Blob([data], {
+      type: 'application/json'
+    });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `${this.selectedRoot}-${this.selectedSectionKey}.json`;
+    anchor.click();
+    URL.revokeObjectURL(url);
   }
-  isTechnicalKey(key) {
-    return /^(id|key|slug|url|href|src|image|imageUrl|icon|email|phone|currency|category|type|route|path|code|active|visible|sortOrder|amount|price|latitude|longitude)$/i.test(key);
+  isLongString(value) {
+    return String(value ?? '').length > 100;
+  }
+  trackSection(_index, section) {
+    return section.key;
+  }
+  trackField(_index, field) {
+    return field.path.join('/');
+  }
+  rebuildSections() {
+    this.sections = Object.keys(this.content || {}).sort((a, b) => a.localeCompare(b)).map(key => ({
+      key,
+      label: this.humanize(key),
+      type: this.valueType(this.content[key]),
+      children: this.directChildCount(this.content[key]),
+      leaves: this.countLeaves(this.content[key])
+    }));
+  }
+  flattenLeaves(value, absolutePath, relativePath, language = null) {
+    const type = this.valueType(value);
+    if (type !== 'object' && type !== 'array') {
+      return [{
+        path: absolutePath,
+        relativePath,
+        label: this.humanize(relativePath[relativePath.length - 1] || absolutePath[absolutePath.length - 1]),
+        value,
+        type: type,
+        language
+      }];
+    }
+    const result = [];
+    const entries = Array.isArray(value) ? value.map((item, index) => [String(index), item]) : Object.entries(value || {});
+    for (const [key, child] of entries) {
+      const detectedLanguage = this.isLanguageKey(key) && this.isLanguageContainer(relativePath, value) ? key : language;
+      result.push(...this.flattenLeaves(child, [...absolutePath, key], [...relativePath, key], detectedLanguage));
+    }
+    return result;
+  }
+  isLanguageContainer(relativePath, parent) {
+    const last = relativePath[relativePath.length - 1];
+    if (last === 'i18n' || last === 'translations' || last === 'languages') return true;
+    const keys = Object.keys(parent || {});
+    return keys.filter(key => this.isLanguageKey(key)).length >= 2;
+  }
+  hasLanguageBranches(value) {
+    if (!value || typeof value !== 'object') return false;
+    if (value.i18n && typeof value.i18n === 'object') return true;
+    const keys = Object.keys(value);
+    if (keys.filter(key => this.isLanguageKey(key)).length >= 2) return true;
+    return keys.some(key => this.hasLanguageBranches(value[key]));
+  }
+  isLanguageKey(key) {
+    return ['fr', 'en', 'es', 'it', 'de', 'nl', 'ru'].includes(key);
+  }
+  isMissingTranslation(field) {
+    if (!field.language || this.selectedLanguage === 'all') return false;
+    return field.language === this.selectedLanguage && (field.value === null || field.value === undefined || String(field.value).trim() === '');
+  }
+  transposeSiteContent(raw) {
+    const result = {};
+    for (const language of Object.keys(raw || {})) {
+      const languageContent = raw[language] || {};
+      for (const sectionKey of Object.keys(languageContent)) {
+        if (!result[sectionKey]) result[sectionKey] = {};
+        result[sectionKey][language] = languageContent[sectionKey];
+      }
+    }
+    return result;
+  }
+  untransposeSiteContent(transposed) {
+    const result = {};
+    for (const sectionKey of Object.keys(transposed || {})) {
+      const section = transposed[sectionKey] || {};
+      for (const language of Object.keys(section)) {
+        if (!result[language]) result[language] = {};
+        result[language][sectionKey] = section[language];
+      }
+    }
+    return result;
+  }
+  countLeaves(value) {
+    const type = this.valueType(value);
+    if (type !== 'object' && type !== 'array') return 1;
+    return Object.values(value || {}).reduce((sum, child) => sum + this.countLeaves(child), 0);
+  }
+  directChildCount(value) {
+    return value && typeof value === 'object' ? Object.keys(value).length : 0;
+  }
+  valueType(value) {
+    if (value === null || value === undefined) return 'null';
+    if (Array.isArray(value)) return 'array';
+    return typeof value;
+  }
+  humanize(value) {
+    return String(value || '').replace(/[-_]+/g, ' ').replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/^./, char => char.toUpperCase());
+  }
+  getAtPath(root, path) {
+    return path.reduce((current, key) => current == null ? undefined : current[key], root);
+  }
+  setAtPath(root, path, value) {
+    let current = root;
+    for (let i = 0; i < path.length - 1; i++) {
+      const key = path[i];
+      const nextKey = path[i + 1];
+      if (current[key] == null || typeof current[key] !== 'object') {
+        current[key] = /^\d+$/.test(nextKey) ? [] : {};
+      }
+      current = current[key];
+    }
+    current[path[path.length - 1]] = value;
+  }
+  deleteAtPath(root, path) {
+    const parent = this.getAtPath(root, path.slice(0, -1));
+    const key = path[path.length - 1];
+    if (Array.isArray(parent)) parent.splice(Number(key), 1);else if (parent && typeof parent === 'object') delete parent[key];
+  }
+  refreshJson() {
+    this.jsonText = JSON.stringify(this.selectedSection ?? {}, null, 2);
   }
   clone(value) {
     return value === undefined ? value : JSON.parse(JSON.stringify(value));
   }
-  save() {
-    var _this7 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this7.saving = true;
-      _this7.message = '';
-      _this7.error = '';
-      try {
-        if (_this7.advancedMode) _this7.content = JSON.parse(_this7.jsonText || '{}');
-        const sectionId = encodeURIComponent(_this7.active.id);
-        try {
-          yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this7.http.put(`${_this7.apiBase}/${sectionId}`, _this7.content).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.timeout)(6000)));
-        } catch {
-          // Direct Firebase fallback for deployments where /api is not proxied.
-          yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this7.http.put(`${_this7.firebaseDatabaseUrl}/cmsContent/${sectionId}.json`, _this7.content).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.timeout)(6000)));
-        }
-        // Pricing is operational data as well as CMS data. Keep the legacy
-        // bnPricingModel node synchronized so the homepage, offer flow and
-        // dedicated pricing screen all consume the same values.
-        if (_this7.active.id === 'pricing' && _this7.content?.model?.alegria) {
-          const pricingPayload = {
-            ..._this7.content.model.alegria,
-            updatedAt: Date.now()
-          };
-          yield (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.firstValueFrom)(_this7.http.put(`${_this7.firebaseDatabaseUrl}/bnPricingModel/alegria.json`, pricingPayload).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.timeout)(6000)));
-        }
-        // Keep JSON generation lazy after save as well.
-        _this7.jsonText = _this7.advancedMode ? JSON.stringify(_this7.content, null, 2) : '';
-        _this7.dirty = false;
-        _this7.message = _this7.t('success');
-      } catch (e) {
-        _this7.error = e instanceof SyntaxError ? 'Le JSON contient une erreur de syntaxe.' : e?.error?.message || _this7.t('saveError');
-      } finally {
-        _this7.saving = false;
-      }
-    })();
-  }
   static ctorParameters = () => [{
-    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__.HttpClient
-  }, {
-    type: _services_language_service__WEBPACK_IMPORTED_MODULE_3__.LanguageService
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_5__.HttpClient
   }];
 };
-AdminSiteContentComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
+AdminSiteContentComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
   selector: 'app-admin-site-content',
   template: _admin_site_content_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
@@ -11870,12 +11184,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeModule: () => (/* binding */ HomeModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! @angular/forms */ 34456);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! @angular/router */ 99585);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! @ionic/angular */ 21507);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! @angular/forms */ 34456);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! @ionic/angular */ 21507);
 /* harmony import */ var _home_router_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home.router.module */ 61506);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
@@ -11915,6 +11229,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _admin_fleet_admin_fleet_component__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./admin-fleet/admin-fleet.component */ 27786);
 /* harmony import */ var _site_text_pipe__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./site-text.pipe */ 99343);
 /* harmony import */ var _admin_site_content_admin_site_content_component__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./admin-site-content/admin-site-content.component */ 14374);
+/* harmony import */ var _admin_boat_calendar_admin_boat_calendar_component__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./admin-boat-calendar/admin-boat-calendar.component */ 74942);
+
 
 
 
@@ -11961,9 +11277,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let HomeModule = class HomeModule {};
-HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_39__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_40__.NgModule)({
-  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent, _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__.SafetyInstructionsComponent, _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_13__.DepositComponent, _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__.AccountSummaryComponent, _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_15__.MyProfileComponent, _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__.MyFeedbacksComponent, _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.AdminFeedbacksComponent, _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingsComponent, _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_19__.AdminOutingDetailComponent, _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__.AdminManageOutingsComponent, _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_21__.GuestFaqComponent, _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__.GuestJourneyComponent, _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__.BookingsComponent, _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__.MyBookingsComponent, _my_offers_my_offers_component__WEBPACK_IMPORTED_MODULE_25__.MyOffersComponent, _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_26__.BookingDetailComponent, _booking_invoice_booking_invoice_component__WEBPACK_IMPORTED_MODULE_27__.BookingInvoiceComponent, _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_28__.AdminWarrantyChargeComponent, _admin_offers_admin_offers_component__WEBPACK_IMPORTED_MODULE_29__.AdminOffersComponent, _offer_confirmation_offer_confirmation_component__WEBPACK_IMPORTED_MODULE_30__.OfferConfirmationComponent, _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_31__.AdminExternalBookingsComponent, _booking_process_booking_process_component__WEBPACK_IMPORTED_MODULE_32__.BookingProcessComponent, _online_booking_online_booking_component__WEBPACK_IMPORTED_MODULE_33__.OnlineBookingComponent, _admin_pricing_model_admin_pricing_model_component__WEBPACK_IMPORTED_MODULE_35__.AdminPricingModelComponent, _admin_fleet_admin_fleet_component__WEBPACK_IMPORTED_MODULE_36__.AdminFleetComponent, _sea_toys_sea_toys_component__WEBPACK_IMPORTED_MODULE_34__.SeaToysComponent, _admin_site_content_admin_site_content_component__WEBPACK_IMPORTED_MODULE_38__.AdminSiteContentComponent],
-  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_41__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_42__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_43__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_44__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule, _site_text_pipe__WEBPACK_IMPORTED_MODULE_37__.SiteTextPipe]
+HomeModule = (0,tslib__WEBPACK_IMPORTED_MODULE_40__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_41__.NgModule)({
+  declarations: [_home_home_component__WEBPACK_IMPORTED_MODULE_1__.HomeComponent, _outings_outings_component__WEBPACK_IMPORTED_MODULE_2__.OutingsComponent, _boat_boat_component__WEBPACK_IMPORTED_MODULE_3__.BoatComponent, _gallery_gallery_component__WEBPACK_IMPORTED_MODULE_4__.GalleryComponent, _contact_contact_component__WEBPACK_IMPORTED_MODULE_5__.ContactComponent, _crew_crew_component__WEBPACK_IMPORTED_MODULE_6__.CrewComponent, _tours_full_day_full_day_component__WEBPACK_IMPORTED_MODULE_7__.FullDayComponent, _tours_sunset_cruise_sunset_cruise_component__WEBPACK_IMPORTED_MODULE_8__.SunsetCruiseComponent, _tours_evjf_evg_evjf_evg_component__WEBPACK_IMPORTED_MODULE_9__.EvjfEvgComponent, _tours_business_outing_business_outing_component__WEBPACK_IMPORTED_MODULE_10__.BusinessOutingComponent, _terms_terms_component__WEBPACK_IMPORTED_MODULE_11__.TermsComponent, _safety_instructions_safety_instructions_component__WEBPACK_IMPORTED_MODULE_12__.SafetyInstructionsComponent, _deposit_deposit_component__WEBPACK_IMPORTED_MODULE_13__.DepositComponent, _account_summary_account_summary_component__WEBPACK_IMPORTED_MODULE_14__.AccountSummaryComponent, _my_profile_my_profile_component__WEBPACK_IMPORTED_MODULE_15__.MyProfileComponent, _my_feedbacks_my_feedbacks_component__WEBPACK_IMPORTED_MODULE_16__.MyFeedbacksComponent, _admin_feedbacks_admin_feedbacks_component__WEBPACK_IMPORTED_MODULE_17__.AdminFeedbacksComponent, _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingsComponent, _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_19__.AdminOutingDetailComponent, _admin_manage_outings_admin_manage_outings_component__WEBPACK_IMPORTED_MODULE_20__.AdminManageOutingsComponent, _guest_faq_guest_faq_component__WEBPACK_IMPORTED_MODULE_21__.GuestFaqComponent, _guest_journey_guest_journey_component__WEBPACK_IMPORTED_MODULE_22__.GuestJourneyComponent, _bookings_bookings_component__WEBPACK_IMPORTED_MODULE_23__.BookingsComponent, _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_24__.MyBookingsComponent, _my_offers_my_offers_component__WEBPACK_IMPORTED_MODULE_25__.MyOffersComponent, _booking_detail_booking_detail_component__WEBPACK_IMPORTED_MODULE_26__.BookingDetailComponent, _booking_invoice_booking_invoice_component__WEBPACK_IMPORTED_MODULE_27__.BookingInvoiceComponent, _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_28__.AdminWarrantyChargeComponent, _admin_offers_admin_offers_component__WEBPACK_IMPORTED_MODULE_29__.AdminOffersComponent, _offer_confirmation_offer_confirmation_component__WEBPACK_IMPORTED_MODULE_30__.OfferConfirmationComponent, _admin_external_bookings_admin_external_bookings_component__WEBPACK_IMPORTED_MODULE_31__.AdminExternalBookingsComponent, _booking_process_booking_process_component__WEBPACK_IMPORTED_MODULE_32__.BookingProcessComponent, _online_booking_online_booking_component__WEBPACK_IMPORTED_MODULE_33__.OnlineBookingComponent, _admin_pricing_model_admin_pricing_model_component__WEBPACK_IMPORTED_MODULE_35__.AdminPricingModelComponent, _admin_fleet_admin_fleet_component__WEBPACK_IMPORTED_MODULE_36__.AdminFleetComponent, _sea_toys_sea_toys_component__WEBPACK_IMPORTED_MODULE_34__.SeaToysComponent, _admin_site_content_admin_site_content_component__WEBPACK_IMPORTED_MODULE_38__.AdminSiteContentComponent, _admin_boat_calendar_admin_boat_calendar_component__WEBPACK_IMPORTED_MODULE_39__.AdminBoatCalendarComponent],
+  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_42__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_43__.FormsModule, _angular_router__WEBPACK_IMPORTED_MODULE_44__.RouterModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_45__.IonicModule, _home_router_module__WEBPACK_IMPORTED_MODULE_0__.HomeRoutingModule, _site_text_pipe__WEBPACK_IMPORTED_MODULE_37__.SiteTextPipe]
 })], HomeModule);
 
 
@@ -12397,6 +11713,17 @@ BusinessOutingComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,
 
 "use strict";
 module.exports = "<section class=\"journey-page\">\n  <div class=\"container journey-container\">\n    <div class=\"journey-hero\">\n      <span class=\"eyebrow\">{{ content.eyebrow }}</span>\n      <h1>{{ content.title }}</h1>\n      <p>{{ content.intro }}</p>\n\n      <div class=\"address-card\">\n        <span>{{ content.addressLabel }}</span>\n        <strong>{{ content.address }}</strong>\n        <p>{{ content.mapNote }}</p>\n      </div>\n    </div>\n\n    <div class=\"journey-timeline\" *ngIf=\"!loading\">\n      <article class=\"journey-step\" *ngFor=\"let step of content.steps; let i = index\">\n        <div class=\"step-number\">\n          <span>{{ i + 1 }}</span>\n        </div>\n        <div class=\"step-card\">\n          <div class=\"step-title\">\n            <span class=\"step-icon\">{{ step.icon }}</span>\n            <h2>{{ step.title }}</h2>\n          </div>\n          <p>{{ step.text }}</p>\n          <ul>\n            <li *ngFor=\"let bullet of step.bullets\">{{ bullet }}</li>\n          </ul>\n        </div>\n      </article>\n    </div>\n\n    <div class=\"final-note\">\n      {{ content.finalNote }}\n    </div>\n  </div>\n</section>\n";
+
+/***/ }),
+
+/***/ 50474:
+/*!****************************************************************************************!*\
+  !*** ./src/app/home/admin-boat-calendar/admin-boat-calendar.component.html?ngResource ***!
+  \****************************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<section class=\"calendar-page container\">\n  <div class=\"page-heading\">\n    <div>\n      <p class=\"eyebrow\">{{ t('eyebrow') }}</p>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n    <button class=\"refresh-button\" type=\"button\" (click)=\"loadCalendar()\" [disabled]=\"loading\">{{ loading ? t('loading') : t('refresh') }}</button>\n  </div>\n\n  <div class=\"summary-grid\">\n    <article><span>{{ t('usedDays') }}</span><strong>{{ usedDaysThisMonth }}</strong></article>\n    <article><span>{{ t('pastOutings') }}</span><strong>{{ pastUses }}</strong></article>\n    <article><span>{{ t('futureOutings') }}</span><strong>{{ futureUses }}</strong></article>\n  </div>\n\n  <div class=\"calendar-toolbar\">\n    <button type=\"button\" (click)=\"previousMonth()\" [attr.aria-label]=\"t('previousMonth')\">‹</button>\n    <div><h2>{{ monthLabel }}</h2><button class=\"today-link\" type=\"button\" (click)=\"goToday()\">{{ t('today') }}</button></div>\n    <button type=\"button\" (click)=\"nextMonth()\" [attr.aria-label]=\"t('nextMonth')\">›</button>\n  </div>\n\n  <label class=\"cancelled-toggle\"><input type=\"checkbox\" [checked]=\"showCancelled\" (change)=\"toggleCancelled()\" /> {{ t('showCancelled') }}</label>\n  <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n\n  <div class=\"legend\" [attr.aria-label]=\"t('legend')\">\n    <span><i class=\"past\"></i> {{ t('pastUse') }}</span>\n    <span><i class=\"today\"></i> {{ t('today') }}</span>\n    <span><i class=\"future\"></i> {{ t('futureBooking') }}</span>\n    <span *ngIf=\"showCancelled\"><i class=\"cancelled\"></i> {{ t('cancelled') }}</span>\n  </div>\n\n  <div class=\"calendar-shell\" [class.loading]=\"loading\">\n    <div class=\"weekday\" *ngFor=\"let weekday of weekdays\">{{ weekday }}</div>\n    <button type=\"button\" class=\"day-cell\" *ngFor=\"let cell of cells; trackBy: trackCell\"\n      [class.empty]=\"!cell.inMonth\" [class.selected]=\"cell.iso === selectedDate\" [class.occupied]=\"cell.uses.length\"\n      (click)=\"selectDay(cell)\" [disabled]=\"!cell.inMonth\">\n      <span class=\"day-number\">{{ cell.day }}</span>\n      <span class=\"events\" *ngIf=\"cell.uses.length\">\n        <span class=\"event\" *ngFor=\"let use of cell.uses | slice:0:2\" [class]=\"'event ' + use.status\">{{ use.title }}</span>\n        <small *ngIf=\"cell.uses.length > 2\">+{{ cell.uses.length - 2 }} {{ t('other') }}</small>\n      </span>\n    </button>\n  </div>\n\n  <section class=\"day-details\" *ngIf=\"selectedDate\">\n    <h2>{{ selectedDateLabel }}</h2>\n    <p *ngIf=\"!selectedUses.length\">{{ t('noUse') }}</p>\n    <article *ngFor=\"let use of selectedUses\" [class]=\"'usage-card ' + use.status\">\n      <div><span class=\"status\">{{ statusLabel(use.status) }}</span><h3>{{ use.title }}</h3><p *ngIf=\"use.customer\">{{ use.customer }}</p><small>{{ use.details }}</small></div>\n      <a *ngIf=\"use.route\" [routerLink]=\"use.route\">{{ t('viewDetails') }}</a>\n    </article>\n  </section>\n</section>\n";
 
 /***/ }),
 
@@ -17067,9 +16394,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HomeRoutingModule: () => (/* binding */ HomeRoutingModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! @angular/router */ 99585);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! @angular/router */ 99585);
 /* harmony import */ var _home_home_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./home/home.component */ 52702);
 /* harmony import */ var _outings_outings_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./outings/outings.component */ 76582);
 /* harmony import */ var _boat_boat_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./boat/boat.component */ 36424);
@@ -17107,6 +16434,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _admin_fleet_admin_fleet_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./admin-fleet/admin-fleet.component */ 27786);
 /* harmony import */ var _sea_toys_sea_toys_component__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./sea-toys/sea-toys.component */ 48286);
 /* harmony import */ var _admin_site_content_admin_site_content_component__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./admin-site-content/admin-site-content.component */ 14374);
+/* harmony import */ var _admin_boat_calendar_admin_boat_calendar_component__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./admin-boat-calendar/admin-boat-calendar.component */ 74942);
+
 
 
 
@@ -17278,6 +16607,9 @@ const routes = [{
   path: 'admin/outings',
   component: _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_17__.AdminOutingsComponent
 }, {
+  path: 'admin/calendar',
+  component: _admin_boat_calendar_admin_boat_calendar_component__WEBPACK_IMPORTED_MODULE_37__.AdminBoatCalendarComponent
+}, {
   path: 'admin/outings/:outingId',
   component: _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingDetailComponent
 }, {
@@ -17322,9 +16654,9 @@ const routes = [{
   component: _admin_warranty_charge_admin_warranty_charge_component__WEBPACK_IMPORTED_MODULE_27__.AdminWarrantyChargeComponent
 }];
 let HomeRoutingModule = class HomeRoutingModule {};
-HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_37__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_38__.NgModule)({
-  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_39__.RouterModule.forChild(routes)],
-  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_39__.RouterModule]
+HomeRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_38__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_39__.NgModule)({
+  imports: [_angular_router__WEBPACK_IMPORTED_MODULE_40__.RouterModule.forChild(routes)],
+  exports: [_angular_router__WEBPACK_IMPORTED_MODULE_40__.RouterModule]
 })], HomeRoutingModule);
 
 
@@ -21212,6 +20544,332 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 "use strict";
 module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head bookings-page-head\">\n      <div>\n        <span class=\"eyebrow\">{{ t('myEyebrow') }}</span>\n        <h1>{{ t('myTitle') }}</h1>\n        <p>{{ t('myIntro') }}</p>\n      </div>\n    </div>\n\n    <p *ngIf=\"loading\" class=\"muted\">{{ t('loadingBookings') }}</p>\n\n    <div *ngIf=\"!loading && bookings.length === 0\" class=\"empty-card\">\n      {{ t('noClientBookings') }}\n    </div>\n\n    <div class=\"booking-tabs\" *ngIf=\"!loading && bookings.length\">\n      <button type=\"button\" [class.active]=\"activeDateTab === 'upcoming'\" (click)=\"setDateTab('upcoming')\">{{ t('upcoming') }}<span>{{ upcomingBookingsCount }}</span>\n      </button>\n      <button type=\"button\" [class.active]=\"activeDateTab === 'past'\" (click)=\"setDateTab('past')\">{{ t('past') }}<span>{{ pastBookingsCount }}</span>\n      </button>\n    </div>\n\n    <div class=\"booking-toolbar-grid\" *ngIf=\"!loading && bookings.length\">\n      <label>\n        <span>{{ t('search') }}</span>\n        <input type=\"search\" [(ngModel)]=\"searchTerm\" [placeholder]=\"t('searchPlaceholder')\" />\n      </label>\n\n      <label>\n        <span>{{ t('status') }}</span>\n        <select [(ngModel)]=\"statusFilter\">\n          <option value=\"all\">{{ t('allStatuses') }}</option>\n          <option value=\"not_confirmed\">{{ t('notConfirmed') }}</option>\n          <option value=\"confirmed\">{{ t('confirmed') }}</option>\n          <option value=\"payment_done\">{{ t('paymentDone') }}</option>\n          <option value=\"completed\">{{ t('outingCompleted') }}</option>\n        </select>\n      </label>\n\n      <label>\n        <span>{{ t('warranty') }}</span>\n        <select [(ngModel)]=\"warrantyFilter\">\n          <option value=\"all\">{{ t('allWarranties') }}</option>\n          <option value=\"not_selected\">{{ t('notSelected') }}</option>\n          <option value=\"cash\">{{ t('cashSelected') }}</option>\n          <option value=\"card_selected\">{{ t('cardSelected') }}</option>\n          <option value=\"card_registered\">{{ t('cardRegistered') }}</option>\n        </select>\n      </label>\n\n      <label>\n        <span>{{ t('orderBy') }}</span>\n        <select [(ngModel)]=\"sortField\">\n          <option value=\"date\">{{ t('date') }}</option>\n          <option value=\"customer\">{{ t('customer') }}</option>\n          <option value=\"status\">{{ t('status') }}</option>\n          <option value=\"total\">{{ t('totalPrice') }}</option>\n          <option value=\"balance\">{{ t('remaining90') }}</option>\n        </select>\n      </label>\n\n      <label>\n        <span>{{ t('direction') }}</span>\n        <select [(ngModel)]=\"sortDirection\">\n          <option value=\"asc\">{{ t('ascending') }}</option>\n          <option value=\"desc\">{{ t('descending') }}</option>\n        </select>\n      </label>\n\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetFilters()\">{{ t('resetFilters') }}</button>\n    </div>\n\n    <p class=\"muted\" *ngIf=\"!loading && bookings.length\">\n      {{ t('showingBookings') }} <strong>{{ filteredBookings.length }}</strong> {{ activeDateTab === 'upcoming' ? t('upcoming') : t('past') }} {{ t('bookingsOutOf') }} <strong>{{ bookings.length }}</strong>.\n    </p>\n\n    <div class=\"bookings-list\" *ngIf=\"!loading && filteredBookings.length\">\n      <button class=\"booking-list-row\" type=\"button\" *ngFor=\"let booking of filteredBookings\" (click)=\"openBooking(booking)\">\n        <button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal(booking, $event)\">\n          {{ getStatusLabel(booking) }}\n        </button>\n\n        <span class=\"booking-main\">\n          <span class=\"booking-icon\">⛵</span>\n          <span>\n            <strong>{{ booking.outingType || t('outing') }}</strong>\n            <small>{{ booking.outingDate || t('dateNotSet') }} <ng-container *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</ng-container></small>\n          </span>\n        </span>\n\n        <span class=\"booking-customer\">\n          <strong>👤 {{ getCustomerDisplayName(booking) }}</strong>\n          <small>{{ booking.passengers || '-' }} {{ t('passengers') }} · {{ booking.email || t('noEmail') }}</small>\n        </span>\n\n        <span class=\"booking-price\">\n          <strong>€{{ booking.totalPrice || booking.totalAmount || 0 }}</strong>\n          <small>{{ t('totalPrice') }}</small>\n          <span class=\"booking-progress\"><i [style.width.%]=\"getBookingProgress(booking)\"></i></span>\n          <small>{{ getBookingProgress(booking) }}%</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <button type=\"button\" class=\"mini-btn\"\n            *ngIf=\"shouldShowPaymentButton(booking) && !isBalancePaid(booking)\"\n            (click)=\"payBooking(booking, $event)\">\n            {{ getPaymentButtonLabel(booking) }}\n          </button>\n          <span class=\"row-chevron\">›</span>\n        </span>\n      </button>\n    </div>\n\n    <div class=\"empty-card\" *ngIf=\"!loading && bookings.length && filteredBookings.length === 0\">\n      {{ t('noBookingMatch') }}\n    </div>\n  </div>\n\n    <div class=\"status-modal-backdrop\" *ngIf=\"selectedStatusBooking\" (click)=\"closeStatusModal()\">\n      <section class=\"status-modal\" (click)=\"$event.stopPropagation()\">\n        <button class=\"modal-close\" type=\"button\" (click)=\"closeStatusModal()\">×</button>\n        <span class=\"eyebrow\">{{ t('bookingStatus') }}</span>\n        <h2>{{ getStatusLabel(selectedStatusBooking) }}</h2>\n        <p>{{ getStatusSummaryText(selectedStatusBooking) }}</p>\n\n        <div class=\"status-timeline\">\n          <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isDepositPaid(selectedStatusBooking))\">\n            <strong>{{ t('deposit10') }}</strong>\n            <span>{{ isDepositPaid(selectedStatusBooking) ? t('completed') : t('pending') }}</span>\n          </div>\n          <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isTermsAccepted(selectedStatusBooking))\">\n            <strong>{{ t('tc') }}</strong>\n            <span>{{ isTermsAccepted(selectedStatusBooking) ? t('accepted') : t('notAccepted') }}</span>\n          </div>\n          <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isWarrantySecured(selectedStatusBooking))\">\n            <strong>{{ t('warrantyMode') }}</strong>\n            <span>{{ getWarrantyModeLabel(selectedStatusBooking) }} · {{ getWarrantyCardLabel(selectedStatusBooking) }}</span>\n          </div>\n          <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isBalancePaid(selectedStatusBooking))\">\n            <strong>{{ t('remaining90') }}</strong>\n            <span>{{ isBalancePaid(selectedStatusBooking) ? t('completed') : t('pending') }}</span>\n          </div>\n          <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getDamageStatusLabel(selectedStatusBooking).includes('recorded'))\">\n            <strong>{{ t('damage') }}</strong>\n            <span>{{ getDamageStatusLabel(selectedStatusBooking) }}</span>\n          </div>\n        </div>\n\n        <div class=\"modal-actions\">\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeStatusModal()\">{{ t('close') }}</button>\n          <button class=\"btn btn-primary\" type=\"button\" (click)=\"openBooking(selectedStatusBooking)\">{{ t('openBooking') }}</button>\n        </div>\n      </section>\n    </div>\n\n</section>\n";
+
+/***/ }),
+
+/***/ 68326:
+/*!****************************************************************************************!*\
+  !*** ./src/app/home/admin-boat-calendar/admin-boat-calendar.component.scss?ngResource ***!
+  \****************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 53142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 35950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.calendar-page {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+  color: #253746;
+}
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.page-heading h1 {
+  margin: 0.2rem 0 0.5rem;
+}
+
+.page-heading p {
+  max-width: 760px;
+  margin: 0;
+  color: #60717e;
+}
+
+.eyebrow {
+  color: #b47c35 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+.refresh-button, .calendar-toolbar button {
+  border: 1px solid #d7c9b5;
+  background: #fff;
+  border-radius: 10px;
+  padding: 0.65rem 1rem;
+  cursor: pointer;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+.summary-grid article {
+  border: 1px solid #e6ded2;
+  border-radius: 14px;
+  padding: 1rem;
+  background: #fbf8f2;
+}
+
+.summary-grid span {
+  display: block;
+  color: #6d7880;
+  font-size: 0.9rem;
+}
+
+.summary-grid strong {
+  display: block;
+  font-size: 1.8rem;
+  margin-top: 0.2rem;
+}
+
+.calendar-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.calendar-toolbar > div {
+  min-width: 230px;
+  text-align: center;
+}
+
+.calendar-toolbar h2 {
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.today-link {
+  border: 0 !important;
+  padding: 0.2rem !important;
+  color: #8f642d;
+  background: transparent !important;
+}
+
+.cancelled-toggle {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0.75rem 0;
+  color: #5f6c75;
+  font-size: 0.85rem;
+}
+
+.legend span {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.legend i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend .past, .event.past {
+  background: #e6ded2;
+}
+
+.legend .today, .event.today {
+  background: #f4d38a;
+}
+
+.legend .future, .event.future {
+  background: #d8eee1;
+}
+
+.legend .cancelled, .event.cancelled {
+  background: #f0d7d7;
+}
+
+.calendar-shell {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  border-top: 1px solid #ded7cc;
+  border-left: 1px solid #ded7cc;
+  transition: opacity 0.2s;
+}
+
+.calendar-shell.loading {
+  opacity: 0.55;
+}
+
+.weekday {
+  padding: 0.65rem 0.35rem;
+  text-align: center;
+  font-weight: 700;
+  background: #f5f1ea;
+  border-right: 1px solid #ded7cc;
+  border-bottom: 1px solid #ded7cc;
+}
+
+.day-cell {
+  min-height: 120px;
+  text-align: left;
+  vertical-align: top;
+  border: 0;
+  border-right: 1px solid #ded7cc;
+  border-bottom: 1px solid #ded7cc;
+  background: #fff;
+  padding: 0.55rem;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.day-cell:hover, .day-cell.selected {
+  background: #fff9ed;
+  box-shadow: inset 0 0 0 2px #c79755;
+}
+
+.day-cell.empty {
+  background: #f8f8f8;
+  cursor: default;
+}
+
+.day-number {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.events {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.event {
+  display: block;
+  border-radius: 6px;
+  padding: 0.25rem 0.35rem;
+  font-size: 0.72rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #34424b;
+}
+
+.events small {
+  font-size: 0.7rem;
+  color: #697781;
+}
+
+.day-details {
+  margin-top: 1.5rem;
+  border-top: 1px solid #e2dbd2;
+  padding-top: 1rem;
+}
+
+.day-details h2 {
+  text-transform: capitalize;
+}
+
+.usage-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  border-left: 5px solid #d7cabb;
+  padding: 1rem;
+  margin: 0.75rem 0;
+  background: #fafafa;
+  border-radius: 10px;
+}
+
+.usage-card.future {
+  border-color: #6fa981;
+  background: #f2faf5;
+}
+
+.usage-card.today {
+  border-color: #d1a54a;
+  background: #fff9e9;
+}
+
+.usage-card.cancelled {
+  border-color: #b98686;
+  opacity: 0.75;
+}
+
+.usage-card h3, .usage-card p {
+  margin: 0.2rem 0;
+}
+
+.usage-card small {
+  color: #64727b;
+}
+
+.usage-card a {
+  color: #865d2d;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.status {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #66747c;
+}
+
+.error {
+  color: #a52b2b;
+  background: #fff0f0;
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+
+@media (max-width: 760px) {
+  .page-heading {
+    flex-direction: column;
+  }
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+  .weekday {
+    font-size: 0.72rem;
+    padding: 0.45rem 0.1rem;
+  }
+  .day-cell {
+    min-height: 78px;
+    padding: 0.3rem;
+  }
+  .event {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    padding: 0;
+    font-size: 0;
+  }
+  .events {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .events small {
+    display: none;
+  }
+  .usage-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-boat-calendar/admin-boat-calendar.component.scss"],"names":[],"mappings":"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","sourcesContent":[".calendar-page { padding-top: 2rem; padding-bottom: 4rem; color: #253746; }\n.page-heading { display:flex; justify-content:space-between; gap:1.5rem; align-items:flex-start; margin-bottom:1.5rem; }\n.page-heading h1 { margin:.2rem 0 .5rem; }\n.page-heading p { max-width:760px; margin:0; color:#60717e; }\n.eyebrow { color:#b47c35 !important; text-transform:uppercase; letter-spacing:.08em; font-weight:700; font-size:.78rem; }\n.refresh-button,.calendar-toolbar button { border:1px solid #d7c9b5; background:#fff; border-radius:10px; padding:.65rem 1rem; cursor:pointer; }\n.summary-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; margin:1.25rem 0; }\n.summary-grid article { border:1px solid #e6ded2; border-radius:14px; padding:1rem; background:#fbf8f2; }\n.summary-grid span { display:block; color:#6d7880; font-size:.9rem; }\n.summary-grid strong { display:block; font-size:1.8rem; margin-top:.2rem; }\n.calendar-toolbar { display:flex; align-items:center; justify-content:center; gap:1.25rem; margin:1.5rem 0 .75rem; }\n.calendar-toolbar > div { min-width:230px; text-align:center; }\n.calendar-toolbar h2 { margin:0; text-transform:capitalize; }\n.today-link { border:0 !important; padding:.2rem !important; color:#8f642d; background:transparent !important; }\n.cancelled-toggle { display:flex; gap:.5rem; align-items:center; justify-content:flex-end; margin-bottom:.75rem; font-size:.9rem; }\n.legend { display:flex; flex-wrap:wrap; gap:1rem; margin:.75rem 0; color:#5f6c75; font-size:.85rem; }\n.legend span { display:flex; align-items:center; gap:.35rem; }\n.legend i { width:11px; height:11px; border-radius:50%; display:inline-block; }\n.legend .past,.event.past { background:#e6ded2; }\n.legend .today,.event.today { background:#f4d38a; }\n.legend .future,.event.future { background:#d8eee1; }\n.legend .cancelled,.event.cancelled { background:#f0d7d7; }\n.calendar-shell { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); border-top:1px solid #ded7cc; border-left:1px solid #ded7cc; transition:opacity .2s; }\n.calendar-shell.loading { opacity:.55; }\n.weekday { padding:.65rem .35rem; text-align:center; font-weight:700; background:#f5f1ea; border-right:1px solid #ded7cc; border-bottom:1px solid #ded7cc; }\n.day-cell { min-height:120px; text-align:left; vertical-align:top; border:0; border-right:1px solid #ded7cc; border-bottom:1px solid #ded7cc; background:#fff; padding:.55rem; cursor:pointer; overflow:hidden; }\n.day-cell:hover,.day-cell.selected { background:#fff9ed; box-shadow:inset 0 0 0 2px #c79755; }\n.day-cell.empty { background:#f8f8f8; cursor:default; }\n.day-number { display:block; font-weight:700; margin-bottom:.35rem; }\n.events { display:flex; flex-direction:column; gap:.25rem; }\n.event { display:block; border-radius:6px; padding:.25rem .35rem; font-size:.72rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#34424b; }\n.events small { font-size:.7rem; color:#697781; }\n.day-details { margin-top:1.5rem; border-top:1px solid #e2dbd2; padding-top:1rem; }\n.day-details h2 { text-transform:capitalize; }\n.usage-card { display:flex; justify-content:space-between; gap:1rem; align-items:center; border-left:5px solid #d7cabb; padding:1rem; margin:.75rem 0; background:#fafafa; border-radius:10px; }\n.usage-card.future { border-color:#6fa981; background:#f2faf5; }\n.usage-card.today { border-color:#d1a54a; background:#fff9e9; }\n.usage-card.cancelled { border-color:#b98686; opacity:.75; }\n.usage-card h3,.usage-card p { margin:.2rem 0; }\n.usage-card small { color:#64727b; }\n.usage-card a { color:#865d2d; white-space:nowrap; font-weight:700; }\n.status { font-size:.75rem; text-transform:uppercase; letter-spacing:.04em; color:#66747c; }\n.error { color:#a52b2b; background:#fff0f0; padding:.75rem; border-radius:8px; }\n@media (max-width:760px) {\n  .page-heading { flex-direction:column; }\n  .summary-grid { grid-template-columns:1fr; }\n  .weekday { font-size:.72rem; padding:.45rem .1rem; }\n  .day-cell { min-height:78px; padding:.3rem; }\n  .event { width:9px; height:9px; border-radius:50%; padding:0; font-size:0; }\n  .events { flex-direction:row; flex-wrap:wrap; }\n  .events small { display:none; }\n  .usage-card { align-items:flex-start; flex-direction:column; }\n}\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
 
 /***/ }),
 
@@ -25266,6 +24924,477 @@ let BookingApiService = class BookingApiService {
 BookingApiService = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.Injectable)({
   providedIn: 'root'
 })], BookingApiService);
+
+
+/***/ }),
+
+/***/ 74942:
+/*!***************************************************************************!*\
+  !*** ./src/app/home/admin-boat-calendar/admin-boat-calendar.component.ts ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AdminBoatCalendarComponent: () => (/* binding */ AdminBoatCalendarComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _admin_boat_calendar_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./admin-boat-calendar.component.html?ngResource */ 50474);
+/* harmony import */ var _admin_boat_calendar_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin-boat-calendar.component.scss?ngResource */ 68326);
+/* harmony import */ var _admin_boat_calendar_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_admin_boat_calendar_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 61873);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ 59452);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ 61318);
+/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+
+
+
+
+
+
+
+
+const DEFAULT_CALENDAR_TEXTS = {
+  fr: {
+    eyebrow: 'Disponibilité et utilisation',
+    title: 'Calendrier d’Alegria',
+    intro: 'Les journées passées proviennent du journal de bord et des réservations. Les journées futures proviennent des réservations enregistrées.',
+    refresh: 'Actualiser',
+    loading: 'Chargement…',
+    usedDays: 'Jours occupés ce mois',
+    pastOutings: 'Sorties passées',
+    futureOutings: 'Sorties à venir',
+    today: 'Aujourd’hui',
+    previousMonth: 'Mois précédent',
+    nextMonth: 'Mois suivant',
+    showCancelled: 'Afficher les réservations annulées',
+    legend: 'Légende',
+    pastUse: 'Utilisation passée',
+    futureBooking: 'Réservation à venir',
+    cancelled: 'Annulée',
+    completed: 'Terminée',
+    upcoming: 'À venir',
+    noUse: 'Aucune utilisation enregistrée ce jour-là.',
+    viewDetails: 'Voir le détail',
+    other: 'autre(s)',
+    loadError: 'Impossible de charger le calendrier.',
+    catamaranOuting: 'Sortie catamaran',
+    logbook: 'Journal de bord',
+    passengers: 'passagers',
+    logClosed: 'Journal clôturé',
+    logOpen: 'Journal ouvert'
+  },
+  en: {
+    eyebrow: 'Availability and usage',
+    title: 'Alegria calendar',
+    intro: 'Past days come from the logbook and bookings. Future days come from registered bookings.',
+    refresh: 'Refresh',
+    loading: 'Loading…',
+    usedDays: 'Days used this month',
+    pastOutings: 'Past outings',
+    futureOutings: 'Upcoming outings',
+    today: 'Today',
+    previousMonth: 'Previous month',
+    nextMonth: 'Next month',
+    showCancelled: 'Show cancelled bookings',
+    legend: 'Legend',
+    pastUse: 'Past usage',
+    futureBooking: 'Upcoming booking',
+    cancelled: 'Cancelled',
+    completed: 'Completed',
+    upcoming: 'Upcoming',
+    noUse: 'No usage recorded for this day.',
+    viewDetails: 'View details',
+    other: 'more',
+    loadError: 'Unable to load the calendar.',
+    catamaranOuting: 'Catamaran outing',
+    logbook: 'Logbook',
+    passengers: 'passengers',
+    logClosed: 'Log closed',
+    logOpen: 'Log open'
+  },
+  es: {
+    eyebrow: 'Disponibilidad y uso',
+    title: 'Calendario de Alegria',
+    intro: 'Los días pasados proceden del diario de a bordo y de las reservas. Los días futuros proceden de las reservas registradas.',
+    refresh: 'Actualizar',
+    loading: 'Cargando…',
+    usedDays: 'Días ocupados este mes',
+    pastOutings: 'Salidas pasadas',
+    futureOutings: 'Próximas salidas',
+    today: 'Hoy',
+    previousMonth: 'Mes anterior',
+    nextMonth: 'Mes siguiente',
+    showCancelled: 'Mostrar reservas canceladas',
+    legend: 'Leyenda',
+    pastUse: 'Uso pasado',
+    futureBooking: 'Próxima reserva',
+    cancelled: 'Cancelada',
+    completed: 'Finalizada',
+    upcoming: 'Próxima',
+    noUse: 'No hay ningún uso registrado para este día.',
+    viewDetails: 'Ver detalle',
+    other: 'más',
+    loadError: 'No se puede cargar el calendario.',
+    catamaranOuting: 'Salida en catamarán',
+    logbook: 'Diario de a bordo',
+    passengers: 'pasajeros',
+    logClosed: 'Diario cerrado',
+    logOpen: 'Diario abierto'
+  },
+  it: {
+    eyebrow: 'Disponibilità e utilizzo',
+    title: 'Calendario di Alegria',
+    intro: 'I giorni passati provengono dal giornale di bordo e dalle prenotazioni. I giorni futuri provengono dalle prenotazioni registrate.',
+    refresh: 'Aggiorna',
+    loading: 'Caricamento…',
+    usedDays: 'Giorni occupati questo mese',
+    pastOutings: 'Uscite passate',
+    futureOutings: 'Uscite future',
+    today: 'Oggi',
+    previousMonth: 'Mese precedente',
+    nextMonth: 'Mese successivo',
+    showCancelled: 'Mostra prenotazioni annullate',
+    legend: 'Legenda',
+    pastUse: 'Utilizzo passato',
+    futureBooking: 'Prenotazione futura',
+    cancelled: 'Annullata',
+    completed: 'Completata',
+    upcoming: 'In programma',
+    noUse: 'Nessun utilizzo registrato per questo giorno.',
+    viewDetails: 'Vedi dettagli',
+    other: 'altro/i',
+    loadError: 'Impossibile caricare il calendario.',
+    catamaranOuting: 'Uscita in catamarano',
+    logbook: 'Giornale di bordo',
+    passengers: 'passeggeri',
+    logClosed: 'Giornale chiuso',
+    logOpen: 'Giornale aperto'
+  },
+  de: {
+    eyebrow: 'Verfügbarkeit und Nutzung',
+    title: 'Alegria-Kalender',
+    intro: 'Vergangene Tage stammen aus Logbuch und Buchungen. Zukünftige Tage stammen aus eingetragenen Buchungen.',
+    refresh: 'Aktualisieren',
+    loading: 'Laden…',
+    usedDays: 'Belegte Tage in diesem Monat',
+    pastOutings: 'Vergangene Ausfahrten',
+    futureOutings: 'Kommende Ausfahrten',
+    today: 'Heute',
+    previousMonth: 'Vorheriger Monat',
+    nextMonth: 'Nächster Monat',
+    showCancelled: 'Stornierte Buchungen anzeigen',
+    legend: 'Legende',
+    pastUse: 'Vergangene Nutzung',
+    futureBooking: 'Kommende Buchung',
+    cancelled: 'Storniert',
+    completed: 'Abgeschlossen',
+    upcoming: 'Bevorstehend',
+    noUse: 'Für diesen Tag ist keine Nutzung erfasst.',
+    viewDetails: 'Details anzeigen',
+    other: 'weitere',
+    loadError: 'Kalender konnte nicht geladen werden.',
+    catamaranOuting: 'Katamaran-Ausfahrt',
+    logbook: 'Logbuch',
+    passengers: 'Passagiere',
+    logClosed: 'Logbuch geschlossen',
+    logOpen: 'Logbuch geöffnet'
+  },
+  nl: {
+    eyebrow: 'Beschikbaarheid en gebruik',
+    title: 'Alegria-kalender',
+    intro: 'Dagen in het verleden komen uit het logboek en de boekingen. Toekomstige dagen komen uit geregistreerde boekingen.',
+    refresh: 'Vernieuwen',
+    loading: 'Laden…',
+    usedDays: 'Bezette dagen deze maand',
+    pastOutings: 'Voorbije uitstapjes',
+    futureOutings: 'Komende uitstapjes',
+    today: 'Vandaag',
+    previousMonth: 'Vorige maand',
+    nextMonth: 'Volgende maand',
+    showCancelled: 'Geannuleerde boekingen tonen',
+    legend: 'Legenda',
+    pastUse: 'Gebruik in het verleden',
+    futureBooking: 'Komende boeking',
+    cancelled: 'Geannuleerd',
+    completed: 'Voltooid',
+    upcoming: 'Komend',
+    noUse: 'Voor deze dag is geen gebruik geregistreerd.',
+    viewDetails: 'Details bekijken',
+    other: 'meer',
+    loadError: 'De kalender kon niet worden geladen.',
+    catamaranOuting: 'Catamarantocht',
+    logbook: 'Logboek',
+    passengers: 'passagiers',
+    logClosed: 'Logboek gesloten',
+    logOpen: 'Logboek open'
+  },
+  ru: {
+    eyebrow: 'Доступность и использование',
+    title: 'Календарь Alegria',
+    intro: 'Прошедшие дни формируются из журнала и бронирований. Будущие дни — из зарегистрированных бронирований.',
+    refresh: 'Обновить',
+    loading: 'Загрузка…',
+    usedDays: 'Занятые дни в этом месяце',
+    pastOutings: 'Прошедшие выходы',
+    futureOutings: 'Предстоящие выходы',
+    today: 'Сегодня',
+    previousMonth: 'Предыдущий месяц',
+    nextMonth: 'Следующий месяц',
+    showCancelled: 'Показывать отменённые бронирования',
+    legend: 'Обозначения',
+    pastUse: 'Прошедшее использование',
+    futureBooking: 'Предстоящее бронирование',
+    cancelled: 'Отменено',
+    completed: 'Завершено',
+    upcoming: 'Предстоит',
+    noUse: 'На этот день использование не зарегистрировано.',
+    viewDetails: 'Подробнее',
+    other: 'ещё',
+    loadError: 'Не удалось загрузить календарь.',
+    catamaranOuting: 'Выход на катамаране',
+    logbook: 'Судовой журнал',
+    passengers: 'пассажиров',
+    logClosed: 'Журнал закрыт',
+    logOpen: 'Журнал открыт'
+  }
+};
+let AdminBoatCalendarComponent = class AdminBoatCalendarComponent {
+  http;
+  languageService;
+  databaseUrl = 'https://adn-dev-4d05d.firebaseio.com';
+  currentLanguage = 'fr';
+  firebaseTexts = {};
+  currentMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  cells = [];
+  uses = [];
+  selectedDate = '';
+  loading = false;
+  error = '';
+  showCancelled = false;
+  constructor(http, languageService) {
+    this.http = http;
+    this.languageService = languageService;
+  }
+  ngOnInit() {
+    this.currentLanguage = this.languageService.currentLanguage || 'fr';
+    this.languageService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      this.buildCalendar();
+    });
+    this.loadCalendar();
+  }
+  t(key) {
+    return this.firebaseTexts[this.currentLanguage]?.[key] || this.firebaseTexts.en?.[key] || DEFAULT_CALENDAR_TEXTS[this.currentLanguage]?.[key] || DEFAULT_CALENDAR_TEXTS.en[key] || key;
+  }
+  get locale() {
+    const locales = {
+      fr: 'fr-FR',
+      en: 'en-GB',
+      es: 'es-ES',
+      it: 'it-IT',
+      de: 'de-DE',
+      nl: 'nl-NL',
+      ru: 'ru-RU'
+    };
+    return locales[this.currentLanguage] || 'en-GB';
+  }
+  get weekdays() {
+    const formatter = new Intl.DateTimeFormat(this.locale, {
+      weekday: 'short'
+    });
+    const monday = new Date(2026, 0, 5);
+    return Array.from({
+      length: 7
+    }, (_, index) => formatter.format(new Date(2026, 0, 5 + index)).replace('.', ''));
+  }
+  get monthLabel() {
+    return new Intl.DateTimeFormat(this.locale, {
+      month: 'long',
+      year: 'numeric'
+    }).format(this.currentMonth);
+  }
+  get selectedDateLabel() {
+    if (!this.selectedDate) return '';
+    const parts = this.selectedDate.split('-').map(Number);
+    return new Intl.DateTimeFormat(this.locale, {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(new Date(parts[0], parts[1] - 1, parts[2]));
+  }
+  get selectedUses() {
+    return this.visibleUses.filter(item => this.dateRangeContains(item, this.selectedDate));
+  }
+  get visibleUses() {
+    return this.showCancelled ? this.uses : this.uses.filter(item => item.status !== 'cancelled');
+  }
+  get usedDaysThisMonth() {
+    return this.cells.filter(cell => cell.inMonth && cell.uses.length > 0).length;
+  }
+  get futureUses() {
+    return this.visibleUses.filter(item => item.status === 'future' || item.status === 'today').length;
+  }
+  get pastUses() {
+    return this.visibleUses.filter(item => item.status === 'past').length;
+  }
+  previousMonth() {
+    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1, 1);
+    this.buildCalendar();
+  }
+  nextMonth() {
+    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, 1);
+    this.buildCalendar();
+  }
+  goToday() {
+    const now = new Date();
+    this.currentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    this.selectedDate = this.toIso(now);
+    this.buildCalendar();
+  }
+  selectDay(cell) {
+    if (cell.date) this.selectedDate = cell.iso;
+  }
+  toggleCancelled() {
+    this.showCancelled = !this.showCancelled;
+    this.buildCalendar();
+  }
+  loadCalendar() {
+    this.loading = true;
+    this.error = '';
+    (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.forkJoin)({
+      bookings: this.http.get(`${this.databaseUrl}/bnBookings.json`).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_4__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.of)({}))),
+      outings: this.http.get(`${this.databaseUrl}/bnAdminOutings.json`).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_4__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.of)({}))),
+      content: this.http.get(`${this.databaseUrl}/cmsContent/calendar.json`).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_4__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.of)({})))
+    }).subscribe({
+      next: ({
+        bookings,
+        outings,
+        content
+      }) => {
+        this.firebaseTexts = content?.i18n || {};
+        this.uses = [...this.mapBookings(bookings), ...this.mapOutings(outings)].sort((a, b) => a.date.localeCompare(b.date));
+        this.buildCalendar();
+        this.loading = false;
+      },
+      error: error => {
+        this.error = error?.message || this.t('loadError');
+        this.loading = false;
+        this.buildCalendar();
+      }
+    });
+  }
+  trackCell(index, cell) {
+    return cell.iso || `empty-${index}`;
+  }
+  statusLabel(status) {
+    return status === 'past' ? this.t('completed') : status === 'today' ? this.t('today') : status === 'future' ? this.t('upcoming') : this.t('cancelled');
+  }
+  mapBookings(raw) {
+    return Object.entries(raw || {}).map(([key, value]) => {
+      const date = this.normalizeDate(value?.outingDate || value?.date || value?.departureDate || value?.startDate);
+      if (!date) return null;
+      const bookingStatus = String(value?.bookingStatus ?? value?.status ?? '').toLowerCase();
+      const cancelled = ['cancelled', 'canceled', 'declined', 'rejected', 'deleted'].some(word => bookingStatus.includes(word)) || value?.deleted === true;
+      const customer = value?.customerName || [value?.firstname, value?.lastname].filter(Boolean).join(' ') || value?.email || '';
+      return {
+        id: value?.bookingId || key,
+        date,
+        endDate: this.normalizeDate(value?.arrivalDate || value?.endDate) || date,
+        title: value?.outingType || value?.experience || value?.title || this.t('catamaranOuting'),
+        customer,
+        status: cancelled ? 'cancelled' : this.temporalStatus(date),
+        source: 'booking',
+        details: [value?.departureTime, value?.destination, value?.passengers ? `${value.passengers} ${this.t('passengers')}` : ''].filter(Boolean).join(' · '),
+        route: `/admin/bookings/${value?.bookingId || key}`
+      };
+    }).filter(Boolean);
+  }
+  mapOutings(raw) {
+    return Object.entries(raw || {}).map(([key, value]) => {
+      const date = this.normalizeDate(value?.departureDate || value?.outingDate || value?.date);
+      if (!date || value?.deleted) return null;
+      return {
+        id: value?.outingId || key,
+        date,
+        endDate: this.normalizeDate(value?.arrivalDate) || date,
+        title: value?.outingType || this.t('logbook'),
+        customer: value?.customerName || '',
+        status: this.temporalStatus(date),
+        source: 'outing',
+        details: [value?.departureTime, value?.destination, value?.passengers ? `${value.passengers} ${this.t('passengers')}` : '', value?.status === 'closed' ? this.t('logClosed') : this.t('logOpen')].filter(Boolean).join(' · '),
+        route: `/admin/outings/${value?.outingId || key}`
+      };
+    }).filter(Boolean);
+  }
+  buildCalendar() {
+    const year = this.currentMonth.getFullYear();
+    const month = this.currentMonth.getMonth();
+    const first = new Date(year, month, 1);
+    const last = new Date(year, month + 1, 0);
+    const mondayOffset = (first.getDay() + 6) % 7;
+    const total = Math.ceil((mondayOffset + last.getDate()) / 7) * 7;
+    const cells = [];
+    for (let i = 0; i < total; i += 1) {
+      const dayNumber = i - mondayOffset + 1;
+      if (dayNumber < 1 || dayNumber > last.getDate()) {
+        cells.push({
+          date: null,
+          iso: '',
+          day: null,
+          inMonth: false,
+          uses: []
+        });
+        continue;
+      }
+      const date = new Date(year, month, dayNumber);
+      const iso = this.toIso(date);
+      cells.push({
+        date,
+        iso,
+        day: dayNumber,
+        inMonth: true,
+        uses: this.visibleUses.filter(item => this.dateRangeContains(item, iso))
+      });
+    }
+    this.cells = cells;
+  }
+  dateRangeContains(item, iso) {
+    return !!iso && iso >= item.date && iso <= (item.endDate || item.date);
+  }
+  temporalStatus(date) {
+    const today = this.toIso(new Date());
+    return date < today ? 'past' : date === today ? 'today' : 'future';
+  }
+  normalizeDate(value) {
+    if (!value) return '';
+    if (typeof value === 'number') return this.toIso(new Date(value));
+    const text = String(value).trim();
+    const iso = text.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (iso) return `${iso[1]}-${iso[2]}-${iso[3]}`;
+    const french = text.match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})$/);
+    if (french) return `${french[3]}-${french[2].padStart(2, '0')}-${french[1].padStart(2, '0')}`;
+    const parsed = new Date(text);
+    return Number.isNaN(parsed.getTime()) ? '' : this.toIso(parsed);
+  }
+  toIso(date) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  }
+  static ctorParameters = () => [{
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__.HttpClient
+  }, {
+    type: _services_language_service__WEBPACK_IMPORTED_MODULE_2__.LanguageService
+  }];
+};
+AdminBoatCalendarComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
+  selector: 'app-admin-boat-calendar',
+  template: _admin_boat_calendar_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  styles: [(_admin_boat_calendar_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], AdminBoatCalendarComponent);
 
 
 /***/ }),

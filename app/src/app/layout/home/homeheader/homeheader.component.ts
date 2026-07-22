@@ -56,6 +56,7 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
       'nav.payments': 'Paiements',
       'nav.operations': 'Opérations',
       'nav.boatLogManager': 'Gestion du journal de bord',
+      'nav.calendar': 'Calendrier du catamaran',
       'nav.fleet': 'Flotte / bateaux',
       'nav.managePublicOutings': 'Gérer les sorties publiques',
       'nav.pricingModel': 'Modèle tarifaire',
@@ -97,6 +98,7 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
       'nav.payments': 'Payments',
       'nav.operations': 'Operations',
       'nav.boatLogManager': 'Boat log manager',
+      'nav.calendar': 'Catamaran calendar',
       'nav.fleet': 'Fleet / boats',
       'nav.managePublicOutings': 'Manage public outings',
       'nav.pricingModel': 'Pricing model',
@@ -138,6 +140,7 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
       'nav.payments': 'Pagos',
       'nav.operations': 'Operaciones',
       'nav.boatLogManager': 'Gestor de bitácora',
+      'nav.calendar': 'Calendario del catamarán',
       'nav.fleet': 'Flota / barcos',
       'nav.managePublicOutings': 'Gestionar salidas públicas',
       'nav.pricingModel': 'Modelo de precios',
@@ -179,6 +182,7 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
       'nav.payments': 'Pagamenti',
       'nav.operations': 'Operazioni',
       'nav.boatLogManager': 'Gestione diario di bordo',
+      'nav.calendar': 'Calendario del catamarano',
       'nav.fleet': 'Flotta / barche',
       'nav.managePublicOutings': 'Gestire le uscite pubbliche',
       'nav.pricingModel': 'Modello tariffario',
@@ -220,6 +224,7 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
       'nav.payments': 'Zahlungen',
       'nav.operations': 'Betrieb',
       'nav.boatLogManager': 'Logbuchverwaltung',
+      'nav.calendar': 'Katamaran-Kalender',
       'nav.fleet': 'Flotte / Boote',
       'nav.managePublicOutings': 'Öffentliche Ausflüge verwalten',
       'nav.pricingModel': 'Preismodell',
@@ -261,6 +266,7 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
       'nav.payments': 'Betalingen',
       'nav.operations': 'Operaties',
       'nav.boatLogManager': 'Logboekbeheer',
+      'nav.calendar': 'Catamaran-kalender',
       'nav.fleet': 'Vloot / boten',
       'nav.managePublicOutings': 'Publieke uitstappen beheren',
       'nav.pricingModel': 'Prijsmodel',
@@ -302,6 +308,7 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
       'nav.payments': 'Платежи',
       'nav.operations': 'Операции',
       'nav.boatLogManager': 'Управление судовым журналом',
+      'nav.calendar': 'Календарь катамарана',
       'nav.fleet': 'Флот / лодки',
       'nav.managePublicOutings': 'Управление публичными прогулками',
       'nav.pricingModel': 'Тарифная модель',
@@ -499,6 +506,7 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
   get externalBookingsLabel(): string { return this.reservationsLabel; }
   get boatLogsSectionLabel(): string { return this.boatLogManagerLabel; }
   get boatLogManagerLabel(): string { return this.t('nav.boatLogManager'); }
+  get calendarLabel(): string { return this.t('nav.calendar'); }
   get publicOutingInfoSectionLabel(): string { return this.managePublicOutingsLabel; }
   get managePublicOutingsLabel(): string { return this.t('nav.managePublicOutings'); }
   get accountSectionLabel(): string { return this.t('nav.account'); }

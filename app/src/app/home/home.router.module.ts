@@ -38,6 +38,7 @@ import { AdminPricingModelComponent } from './admin-pricing-model/admin-pricing-
 import { AdminFleetComponent } from './admin-fleet/admin-fleet.component';
 import { SeaToysComponent } from './sea-toys/sea-toys.component';
 import { AdminSiteContentComponent } from './admin-site-content/admin-site-content.component';
+import { AdminBoatCalendarComponent } from './admin-boat-calendar/admin-boat-calendar.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -80,6 +81,7 @@ const routes: Routes = [
   { path: 'admin/booking-detail-v2/:bookingId', component: BookingDetailComponent },
   { path: 'admin/payments', component: AccountSummaryComponent, data: { section: 'payments', admin: true } },
   { path: 'admin/outings', component: AdminOutingsComponent },
+  { path: 'admin/calendar', component: AdminBoatCalendarComponent },
   { path: 'admin/outings/:outingId', component: AdminOutingDetailComponent },
   { path: 'admin/manage-outings', component: AdminManageOutingsComponent },
   { path: 'admin/offers', component: AdminOffersComponent },

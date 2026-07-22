@@ -1,138 +1,155 @@
 <div class="cms-shell">
-  <header class="topbar">
-    <div><span class="eyebrow">ALEGRIA CMS</span><h1>{{t('title')}}</h1><p>{{t('intro')}}</p></div>
-    <div class="top-actions"><span *ngIf="dirty" class="unsaved">● {{t('unsaved')}}</span><a routerLink="/home" class="back">{{t('back')}}</a></div>
+  <header class="cms-header">
+    <div>
+      <p class="eyebrow">Administration Firebase</p>
+      <h1>Contenu du site</h1>
+      <p>Exploration automatique de tous les éléments présents dans <code>siteContent</code> et <code>cmsContent</code>.</p>
+    </div>
+    <div class="header-actions">
+      <span class="dirty-badge" *ngIf="dirty">Modifications non enregistrées</span>
+      <button type="button" class="secondary" (click)="loadAllContent()" [disabled]="loading || saving">Actualiser</button>
+      <button type="button" class="primary" (click)="saveSection()" [disabled]="!dirty || loading || saving">
+        {{ saving ? 'Enregistrement…' : 'Enregistrer la rubrique' }}
+      </button>
+    </div>
   </header>
 
-  <div class="cms-layout">
-    <nav class="side-nav">
-      <button *ngFor="let section of sections; trackBy: trackSection" (click)="select(section)" [class.active]="active.id === section.id">
-        <span class="nav-icon">{{section.icon}}</span><span><strong>{{ section.label }}</strong><small>{{ section.description }}</small></span>
-      </button>
-    </nav>
+  <div class="status success" *ngIf="message">{{ message }}</div>
+  <div class="status error" *ngIf="error">{{ error }}</div>
 
-    <main>
-      <div class="editor-head">
-        <div><h2>{{ active.label }}</h2><p>{{ active.description }}</p></div>
-        <div class="actions"><button class="secondary" (click)="toggleAdvanced()">{{advancedMode ? t('visual') : t('advanced')}}</button><button class="primary" (click)="save()" [disabled]="saving || loading">{{ saving ? t('saving') : t('save') }}</button></div>
+  <section class="source-selector" *ngIf="!loading">
+    <label>
+      <span>Source Firebase</span>
+      <select [ngModel]="selectedRoot" (ngModelChange)="changeRoot($event)">
+        <option *ngFor="let root of roots" [value]="root.id">{{ root.label }}</option>
+      </select>
+    </label>
+    <small *ngIf="selectedRoot === 'siteContent'">Structure Firebase par langue, présentée ici par rubrique pour faciliter l’édition multilingue.</small>
+    <small *ngIf="selectedRoot === 'cmsContent'">Contenu complémentaire et modèles CMS.</small>
+  </section>
+
+  <section class="metrics" *ngIf="!loading">
+    <article><strong>{{ sections.length }}</strong><span>rubriques découvertes</span></article>
+    <article><strong>{{ totalLeafCount }}</strong><span>champs Firebase</span></article>
+    <article><strong>{{ allLeaves.length }}</strong><span>champs dans la rubrique</span></article>
+    <article><strong>{{ visibleLeaves.length }}</strong><span>champs affichés</span></article>
+  </section>
+
+  <div class="loading" *ngIf="loading">Chargement complet de siteContent et cmsContent…</div>
+
+  <div class="cms-layout" *ngIf="!loading">
+    <aside class="section-nav">
+      <div class="nav-title">
+        <strong>Rubriques Firebase</strong>
+        <small>Détectées automatiquement</small>
       </div>
-      <div *ngIf="message" class="notice success">✓ {{ message }}</div>
-      <div *ngIf="error" class="notice error">{{ error }}</div>
-      <div *ngIf="loading" class="loading">{{t('loading')}}</div>
+      <button
+        type="button"
+        *ngFor="let section of sections; trackBy: trackSection"
+        [class.active]="section.key === selectedSectionKey"
+        (click)="selectSection(section.key)">
+        <span class="section-name">{{ section.label }}</span>
+        <span class="section-meta">{{ section.leaves }} champs</span>
+      </button>
+      <div class="empty-nav" *ngIf="sections.length === 0">Aucune rubrique dans la source sélectionnée.</div>
+    </aside>
 
-      <ng-container *ngIf="!loading && !advancedMode">
-        <div class="language-bar" *ngIf="active.id !== 'pricing'">
-          <div class="language-picker">
-            <label for="cms-language">{{t('language')}}</label>
-            <select id="cms-language" [(ngModel)]="language" (ngModelChange)="changeLanguage($event)">
-              <option *ngFor="let l of languages" [value]="l.id">{{l.label}}</option>
+    <main class="editor" *ngIf="selectedSectionKey">
+      <div class="editor-title">
+        <div>
+          <p class="path">{{ selectedRoot }} / {{ selectedSectionKey }}</p>
+          <h2>{{ selectedSectionLabel }}</h2>
+        </div>
+        <div class="editor-actions">
+          <button type="button" class="secondary" (click)="addField()">+ Ajouter un champ</button>
+          <button type="button" class="secondary" (click)="exportSection()">Exporter JSON</button>
+          <button type="button" class="secondary" (click)="toggleJsonMode()">
+            {{ jsonMode ? 'Revenir au formulaire' : 'Mode JSON' }}
+          </button>
+        </div>
+      </div>
+
+      <ng-container *ngIf="!jsonMode">
+        <div class="toolbar">
+          <label class="search">
+            <span>Rechercher dans les clés et les valeurs</span>
+            <input type="search" [(ngModel)]="searchText" placeholder="Ex. skipper, title, WhatsApp…">
+          </label>
+          <label *ngIf="translatedSection">
+            <span>Langue</span>
+            <select [(ngModel)]="selectedLanguage">
+              <option *ngFor="let language of languages" [value]="language.id">{{ language.label }}</option>
             </select>
-            <span>{{t('editing')}} <strong>{{language.toUpperCase()}}</strong>.</span>
-          </div>
-          <div class="translation-actions">
-            <label class="overwrite-option"><input type="checkbox" [(ngModel)]="overwriteTranslations"> {{t('overwrite')}}</label>
-            <button class="translate-button" (click)="translateToAllLanguages()" [disabled]="translating || loading">
-              {{ translating ? t('translating') : t('translateAll') }} <span *ngIf="translationProgress">{{translationProgress}}</span>
-            </button>
+          </label>
+          <label class="checkbox" *ngIf="translatedSection && selectedLanguage !== 'all'">
+            <input type="checkbox" [(ngModel)]="showOnlyMissingTranslations">
+            <span>Uniquement les traductions vides</span>
+          </label>
+        </div>
+
+        <div class="fields-table" *ngIf="visibleLeaves.length; else noFields">
+          <div class="field-row" *ngFor="let field of visibleLeaves; trackBy: trackField">
+            <div class="field-key">
+              <strong>{{ field.label }}</strong>
+              <code>{{ field.relativePath.join(' / ') }}</code>
+              <span class="language-chip" *ngIf="field.language">{{ field.language.toUpperCase() }}</span>
+            </div>
+
+            <div class="field-value">
+              <label *ngIf="field.type === 'boolean'" class="boolean-control">
+                <input type="checkbox" [ngModel]="field.value" (ngModelChange)="updateField(field, $event)">
+                <span>{{ field.value ? 'Activé' : 'Désactivé' }}</span>
+              </label>
+
+              <input
+                *ngIf="field.type === 'number'"
+                type="number"
+                [ngModel]="field.value"
+                (ngModelChange)="updateField(field, $event)">
+
+              <textarea
+                *ngIf="field.type === 'string' && isLongString(field.value)"
+                rows="4"
+                [ngModel]="field.value"
+                (ngModelChange)="updateField(field, $event)"></textarea>
+
+              <input
+                *ngIf="field.type === 'string' && !isLongString(field.value)"
+                type="text"
+                [ngModel]="field.value"
+                (ngModelChange)="updateField(field, $event)">
+
+              <input
+                *ngIf="field.type === 'null'"
+                type="text"
+                placeholder="Valeur vide"
+                [ngModel]="field.value"
+                (ngModelChange)="updateField(field, $event)">
+            </div>
+
+            <button type="button" class="delete" (click)="deleteField(field)" title="Supprimer ce champ">×</button>
           </div>
         </div>
 
-        <!-- Tarification -->
-        <section *ngIf="active.id === 'pricing'" class="panel">
-          <h3>{{t('defaultPricing')}}</h3><p class="section-help">{{t('pricingHelp')}}</p>
-          <div class="form-grid pricing-grid">
-            <label><span>Journée (€)</span><input type="number" [(ngModel)]="pricing.day" (ngModelChange)="markDirty()"></label>
-            <label><span>Demi-journée (€)</span><input type="number" [(ngModel)]="pricing.halfDay" (ngModelChange)="markDirty()"></label>
-            <label><span>Soirée (€)</span><input type="number" [(ngModel)]="pricing.evening" (ngModelChange)="markDirty()"></label>
-            <label><span>Coucher de soleil (€)</span><input type="number" [(ngModel)]="pricing.sunset" (ngModelChange)="markDirty()"></label>
-            <label><span>Skipper (€)</span><input type="number" [(ngModel)]="pricing.skipperPrice" (ngModelChange)="markDirty()"></label>
-            <label><span>Carburant / nettoyage (€)</span><input type="number" [(ngModel)]="pricing.cleaningPrice" (ngModelChange)="markDirty()"></label>
-            <label><span>Passager supplémentaire (€)</span><input type="number" [(ngModel)]="pricing.extraGuestPrice" (ngModelChange)="markDirty()"></label>
-            <label><span>Passagers inclus</span><input type="number" [(ngModel)]="pricing.nominalGuests" (ngModelChange)="markDirty()"></label>
-            <label><span>Capacité maximale</span><input type="number" [(ngModel)]="pricing.maxGuests" (ngModelChange)="markDirty()"></label>
-          </div>
-          <h3 class="subheading">Saisonnalité</h3>
-          <div class="repeat-card compact" *ngFor="let season of pricing.seasonalMultipliers; let i=index">
-            <label><span>Nom</span><input [(ngModel)]="season.label" (ngModelChange)="markDirty()"></label>
-            <label><span>Début</span><input type="date" [(ngModel)]="season.startDate" (ngModelChange)="markDirty()"></label>
-            <label><span>Fin</span><input type="date" [(ngModel)]="season.endDate" (ngModelChange)="markDirty()"></label>
-            <label><span>Coefficient</span><input type="number" step="0.05" [(ngModel)]="season.multiplier" (ngModelChange)="markDirty()"></label>
-          </div>
-        </section>
-
-        <!-- Sorties -->
-        <section *ngIf="active.id === 'outings'" class="collection-section">
-          <div class="collection-head"><div><h3>{{t('outings')}}</h3><p>{{t('outingsHelp')}}</p></div><button class="add" (click)="addOuting()">+ {{t('addOuting')}}</button></div>
-          <article class="outing-card" *ngFor="let item of outings; let i=index">
-            <div class="card-head"><div class="card-title"><span class="order">{{i+1}}</span><input class="title-input" [(ngModel)]="outingLanguage(item).title" (ngModelChange)="markDirty()"></div><div class="card-tools"><label class="switch"><input type="checkbox" [(ngModel)]="item.active" (ngModelChange)="markDirty()"><span></span> Visible</label><button (click)="moveOuting(i,-1)" [disabled]="i===0">↑</button><button (click)="moveOuting(i,1)" [disabled]="i===outings.length-1">↓</button><button (click)="duplicateOuting(i)">Dupliquer</button><button class="danger-link" (click)="removeOuting(i)">Supprimer</button></div></div>
-            <div class="form-grid">
-              <label class="wide"><span>Description</span><textarea rows="4" [(ngModel)]="outingLanguage(item).description" (ngModelChange)="markDirty()"></textarea></label>
-              <label><span>Durée</span><input [(ngModel)]="outingLanguage(item).duration" (ngModelChange)="markDirty()"></label>
-              <label><span>Passagers</span><input [(ngModel)]="outingLanguage(item).guests" (ngModelChange)="markDirty()"></label>
-              <label><span>Prix affiché</span><input [(ngModel)]="outingLanguage(item).priceLabel" (ngModelChange)="markDirty()"></label>
-              <label><span>Catégorie</span><select [(ngModel)]="item.category" (ngModelChange)="markDirty()"><option value="day">Journée</option><option value="half-day">Demi-journée</option><option value="sunset">Coucher de soleil</option><option value="evening">Soirée</option><option value="corporate">Entreprise</option></select></label>
-            </div>
-            <div class="list-editor"><div class="list-title"><strong>Points forts</strong><button (click)="addHighlight(item)">+ Ajouter</button></div><div class="list-row" *ngFor="let h of outingLanguage(item).highlights; let hi=index"><span>☑</span><input [(ngModel)]="outingLanguage(item).highlights[hi]" (ngModelChange)="markDirty()"><button (click)="removeHighlight(item,hi)">×</button></div></div>
-          </article>
-          <div class="empty" *ngIf="outings.length===0">Aucune sortie. Cliquez sur « Ajouter une sortie ».</div>
-        </section>
-
-        <!-- Services -->
-        <section *ngIf="active.id === 'sea-toys'" class="collection-section">
-          <div class="collection-head"><div><h3>{{t('services')}}</h3><p>{{t('servicesHelp')}}</p></div><button class="add" (click)="addService()">+ {{t('addService')}}</button></div>
-          <article class="service-card" *ngFor="let service of services">
-            <div class="service-active"><label class="switch"><input type="checkbox" [(ngModel)]="service.active" (ngModelChange)="markDirty()"><span></span></label></div>
-            <div class="service-fields"><label><span>Nom</span><input [(ngModel)]="serviceLanguage(service).title" (ngModelChange)="markDirty()"></label><label><span>Description</span><input [(ngModel)]="serviceLanguage(service).description" (ngModelChange)="markDirty()"></label></div>
-            <label class="price"><span>Prix (€)</span><input type="number" [(ngModel)]="service.amount" (ngModelChange)="markDirty()"></label>
-            <label class="category"><span>Catégorie</span><select [(ngModel)]="service.category" (ngModelChange)="markDirty()"><option value="toy">Jouet nautique</option><option value="food">Catering</option><option value="drinks">Boissons</option><option value="other">Autre</option></select></label>
-            <button class="icon-danger" (click)="removeService(service)">×</button>
-          </article>
-        </section>
-
-        <!-- Dedicated lightweight homepage editor. The complete homepage translation tree
-             is intentionally not rendered recursively because it can contain thousands of
-             bindings and freeze the browser. Advanced JSON remains available for power users. -->
-        <section *ngIf="active.id === 'homepage'" class="panel visual-editor">
-          <div class="form-grid">
-            <label class="wide"><span>Titre principal</span><input [(ngModel)]="homepageModel.title" (ngModelChange)="markDirty()"></label>
-            <label class="wide"><span>Introduction</span><textarea rows="4" [(ngModel)]="homepageModel.intro" (ngModelChange)="markDirty()"></textarea></label>
-            <label><span>Sur-titre</span><input [(ngModel)]="homepageModel.eyebrow" (ngModelChange)="markDirty()"></label>
-            <label><span>Bouton principal</span><input [(ngModel)]="homepageModel.primaryCta" (ngModelChange)="markDirty()"></label>
-            <label><span>Bouton secondaire</span><input [(ngModel)]="homepageModel.secondaryCta" (ngModelChange)="markDirty()"></label>
-            <label><span>Bouton réservation</span><input [(ngModel)]="homepageModel.onlineBookingCta" (ngModelChange)="markDirty()"></label>
-            <label class="wide"><span>Titre section sorties</span><input [(ngModel)]="homepageModel.sectionTitle" (ngModelChange)="markDirty()"></label>
-            <label class="wide"><span>Texte section sorties</span><textarea rows="3" [(ngModel)]="homepageModel.sectionText" (ngModelChange)="markDirty()"></textarea></label>
-            <label class="wide"><span>Titre section bateau</span><input [(ngModel)]="homepageModel.boatTitle" (ngModelChange)="markDirty()"></label>
-            <label class="wide"><span>Texte section bateau</span><textarea rows="3" [(ngModel)]="homepageModel.boatText" (ngModelChange)="markDirty()"></textarea></label>
-            <label class="wide"><span>Titre contact</span><input [(ngModel)]="homepageModel.contactTitle" (ngModelChange)="markDirty()"></label>
-            <label class="wide"><span>Texte contact</span><textarea rows="3" [(ngModel)]="homepageModel.contactText" (ngModelChange)="markDirty()"></textarea></label>
-          </div>
-          <p class="hint">Les blocs avancés de la page d’accueil restent accessibles via « Mode avancé JSON ».</p>
-        </section>
-
-        <!-- Non-recursive editor: avoids any possibility of recursive template freezes. -->
-        <section *ngIf="active.id === 'boat'" class="panel visual-editor">
-          <div class="form-grid">
-            <label class="wide"><span>Nom du bateau</span><input [(ngModel)]="content.name" (ngModelChange)="markDirty()"></label>
-            <label class="wide"><span>Titre</span><input [(ngModel)]="localizedRoot.title" (ngModelChange)="markDirty()"></label>
-            <label class="wide"><span>Sous-titre</span><input [(ngModel)]="localizedRoot.subtitle" (ngModelChange)="markDirty()"></label>
-            <label class="wide"><span>Description</span><textarea rows="7" [(ngModel)]="localizedRoot.description" (ngModelChange)="markDirty()"></textarea></label>
-            <label><span>Capacité</span><input type="number" [(ngModel)]="content.capacity" (ngModelChange)="markDirty()"></label>
-            <label><span>Marina</span><input [(ngModel)]="content.marina" (ngModelChange)="markDirty()"></label>
-          </div>
-        </section>
-
-        <section *ngIf="active.id === 'destinations' || active.id === 'faq' || active.id === 'reviews' || active.id === 'terms' || active.id === 'contact'" class="panel visual-editor">
-          <div class="form-grid">
-            <label class="wide"><span>Titre</span><input [(ngModel)]="localizedRoot.title" (ngModelChange)="markDirty()"></label>
-            <label class="wide"><span>Description / contenu</span><textarea rows="12" [(ngModel)]="localizedRoot.description" (ngModelChange)="markDirty()"></textarea></label>
-          </div>
-          <p class="hint">Les structures détaillées restent accessibles dans le mode JSON avancé.</p>
-        </section>
+        <ng-template #noFields>
+          <div class="empty-state">Aucun champ ne correspond aux filtres sélectionnés.</div>
+        </ng-template>
       </ng-container>
 
-      <textarea *ngIf="!loading && advancedMode" class="json-editor" [(ngModel)]="jsonText" (ngModelChange)="markDirty()" spellcheck="false" aria-label="Contenu JSON"></textarea>
-      <p *ngIf="advancedMode" class="hint">{{t('jsonHint')}}</p>
+      <section class="json-panel" *ngIf="jsonMode">
+        <p>Cette vue contient la rubrique complète, y compris les tableaux et les objets imbriqués.</p>
+        <textarea [(ngModel)]="jsonText" (ngModelChange)="markDirty()" spellcheck="false"></textarea>
+        <div class="json-actions">
+          <button type="button" class="secondary" (click)="applyJson()">Vérifier et appliquer</button>
+        </div>
+      </section>
+
+      <footer class="editor-footer">
+        <button type="button" class="secondary" (click)="resetSection()" [disabled]="!dirty">Annuler les modifications</button>
+        <button type="button" class="primary" (click)="saveSection()" [disabled]="!dirty || saving">
+          {{ saving ? 'Enregistrement…' : 'Enregistrer dans Firebase' }}
+        </button>
+      </footer>
     </main>
   </div>
 </div>
