@@ -20,7 +20,9 @@ export class MainComponent {
         OBJECTNAME.bnLocations,
         OBJECTNAME.bnBookings,
         OBJECTNAME.guestInfo,
-        OBJECTNAME.bnExtraServices,
+        OBJECTNAME.bnFleet,
+        OBJECTNAME.bnSkippers,
+        OBJECTNAME.bnPricingModel,
     ];
 
     private utilSvc = new UtilsService();

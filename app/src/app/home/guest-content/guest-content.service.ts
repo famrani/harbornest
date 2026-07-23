@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { SiteLanguage } from '../../services/language.service';
+import { BoatContextService } from '../../services/boat-context.service';
 
 export interface GuestFaqItem {
   question: string;
@@ -1231,14 +1232,14 @@ export class GuestContentService {
 
   private cached?: GuestInfoFirebaseContent;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private boatContext: BoatContextService) {}
 
   async getContent(forceRefresh = false): Promise<GuestInfoFirebaseContent> {
     if (this.cached && !forceRefresh) return this.cached;
 
     for (const baseUrl of this.restDatabaseUrls) {
       try {
-        const url = `${baseUrl}/guestInfo.json`;
+        const url = `${baseUrl}/guestInfo/${encodeURIComponent(this.boatContext.boatId)}.json`;
         const value = await firstValueFrom(this.http.get<any | null>(url));
         const content = this.unwrapGuestInfo(value);
         if (content?.guestFaq || content?.guestJourney || content?.offerInfo || content?.bookingInfo) {

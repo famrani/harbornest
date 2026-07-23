@@ -59,7 +59,7 @@
             {{ hp.hero?.primaryCta }}
           </a>
 
-          <a *ngIf="canShowOnlineBookingButton" [routerLink]="hp.hero?.secondaryRoute || '/reserver'" class="btn btn-secondary btn-equal">
+          <a *ngIf="canShowOnlineBookingButton" routerLink="/calendar" class="btn btn-secondary btn-equal">
             {{ hp.hero?.secondaryCta }}
           </a>
         </div>

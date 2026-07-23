@@ -19,6 +19,8 @@ interface CustomerFeedback {
   createdTS?: number;
   modifiedTS?: number;
   status?: string;
+  boatId?: string;
+  skipperId?: string;
 }
 
 @Component({

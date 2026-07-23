@@ -743,7 +743,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
       if (extracted) return extracted;
     }
 
-    // 2) Try godigital-lib signatures. The current data lives at ROOT /bnAdminOutings.
+    // 2) Try the supported godigital-lib signatures for bnBookings.
     if (typeof store.getObject === 'function') {
       const candidates = [
         () => store.getObject(collectionName),
@@ -801,6 +801,13 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
     if (value[collectionName]) return this.extractAdminOutings(value[collectionName]);
     if (value['1000']?.[collectionName]) return this.extractAdminOutings(value['1000'][collectionName]);
     if (typeof value === 'object') {
+      const embedded: any = {};
+      Object.keys(value).forEach((key) => {
+        if (value[key]?.operationalLog) {
+          embedded[key] = { ...value[key].operationalLog, outingId: value[key].operationalLog.outingId || key };
+        }
+      });
+      if (Object.keys(embedded).length) return embedded;
       const keys = Object.keys(value).filter((key) => !!value[key]);
       const looksLikeMap = keys.some((key) => key.startsWith('outing_') || value[key]?.outingId || value[key]?.departureDate || value[key]?.outingType);
       return looksLikeMap && keys.length ? value : null;
@@ -1025,16 +1032,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
   }
 
   async deleteFromFirebase(id: string, outing: AdminOuting): Promise<void> {
-    const store: any = this.storeDb as any;
-    const util: any = this.utilSvc as any;
-    if (typeof store.deleteObject === 'function') {
-      try { await store.deleteObject(util.backendFBstoreId, util.mdb, this.outingsCollectionName, id); return; }
-      catch { await store.deleteObject(this.outingsCollectionName, id); return; }
-    }
-    if (typeof store.removeObject === 'function') {
-      try { await store.removeObject(util.backendFBstoreId, util.mdb, this.outingsCollectionName, id); return; }
-      catch { await store.removeObject(this.outingsCollectionName, id); return; }
-    }
+    // Never delete the booking itself; only tombstone its embedded logbook.
     await this.saveToFirebase(id, { ...outing, status: 'closed', deleted: true, deletedTS: Date.now() } as any);
   }
 
@@ -1050,7 +1048,15 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
 
     for (const db of dbCandidates) {
       try {
-        await db.ref(`${this.outingsCollectionName}/${id}`).update(payload);
+        await db.ref(`${this.outingsCollectionName}/${id}`).update({
+          bookingId: id,
+          boatId: (payload as any).boatId || 'alegria',
+          outingDate: payload.departureDate || null,
+          outingType: payload.outingType || null,
+          operationalOnly: true,
+          operationalLog: payload,
+          modifiedTS: Date.now(),
+        });
         return true;
       } catch {}
     }
@@ -1061,7 +1067,15 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
     for (const baseUrl of this.restDatabaseUrls) {
       try {
         const url = `${baseUrl.replace(/\/+$/, '')}/${this.outingsCollectionName}/${id}.json`;
-        await this.http.patch<any>(url, payload).toPromise();
+        await this.http.patch<any>(url, {
+          bookingId: id,
+          boatId: (payload as any).boatId || 'alegria',
+          outingDate: payload.departureDate || null,
+          outingType: payload.outingType || null,
+          operationalOnly: true,
+          operationalLog: payload,
+          modifiedTS: Date.now(),
+        }).toPromise();
         return true;
       } catch {}
     }
@@ -1072,8 +1086,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
     const store: any = this.storeDb as any;
     const util: any = this.utilSvc as any;
 
-    // Current Firebase structure uses root /bnAdminOutings.
-    // Prefer direct root writes so checklist done/doneBy/doneAt are effectively persisted.
+    // Operational logs are embedded in their canonical bnBookings record.
     if (await this.writeRootAdminOutingViaSdk(id, payload)) return;
 
     if (typeof store.updateObject === 'function') {
@@ -1100,7 +1113,7 @@ export class AdminOutingsComponent implements OnInit, OnDestroy {
   }
 
   get outingsCollectionName(): string {
-    return 'bnAdminOutings';
+    return 'bnBookings';
   }
 
   formatOutingDate(outing: AdminOuting): string {

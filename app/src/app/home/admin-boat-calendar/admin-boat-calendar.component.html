@@ -46,8 +46,12 @@
   <section class="day-details" *ngIf="selectedDate">
     <h2>{{ selectedDateLabel }}</h2>
     <p *ngIf="!selectedUses.length">{{ t('noUse') }}</p>
+    <button *ngIf="selectedDateAvailable" type="button" class="refresh-button" (click)="openOfferForDate()">
+      {{ isAdmin ? t('createOffer') : t('requestOffer') }}
+    </button>
+    <p *ngIf="selectedDateUnavailableToCustomer">{{ t('unavailable') }}</p>
     <article *ngFor="let use of selectedUses" [class]="'usage-card ' + use.status">
-      <div><span class="status">{{ statusLabel(use.status) }}</span><h3>{{ use.title }}</h3><p *ngIf="use.customer">{{ use.customer }}</p><small>{{ use.details }}</small></div>
+      <div><span class="status">{{ statusLabel(use.status) }}</span><h3>{{ use.ownedByCurrentUser && !isAdmin ? t('myBooking') : use.title }}</h3><p *ngIf="use.customer">{{ use.customer }}</p><small>{{ use.details }}</small></div>
       <a *ngIf="use.route" [routerLink]="use.route">{{ t('viewDetails') }}</a>
     </article>
   </section>

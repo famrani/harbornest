@@ -1,60 +1,51 @@
 import { Request, Response, Router } from 'express';
 import { StoreDbService } from './firebase.service';
 
+/** Admin API for the canonical multi-boat site content tree. */
 export class ContentService {
-  private readonly root = 'cmsContent';
+  private readonly root = 'siteContent';
   constructor(private store: StoreDbService) {}
 
   setRoutes(router: Router): void {
-    router.get('/api/admin/content', async (_req: Request, res: Response) => {
+    router.get('/api/admin/content/:boatId', async (req: Request, res: Response) => {
       try {
-        const content = await this.store.getObject(this.root);
-        res.status(200).json(content || {});
-      } catch (error: any) {
-        res.status(500).json({ error: 'content_read_failed', message: error?.message || String(error) });
-      }
-    });
-
-    router.get('/api/admin/content/:section', async (req: Request, res: Response) => {
-      try {
-        const section = this.safeSection(req.params.section);
-        const content = await this.store.getObject(`${this.root}/${section}`);
-        res.status(200).json(content || {});
+        const boatId = this.safeId(req.params.boatId);
+        res.status(200).json((await this.store.getObject(`${this.root}/${boatId}`)) || {});
       } catch (error: any) {
         res.status(400).json({ error: 'content_read_failed', message: error?.message || String(error) });
       }
     });
 
-    router.put('/api/admin/content/:section', async (req: Request, res: Response) => {
+    router.get('/api/admin/content/:boatId/:language/:section', async (req: Request, res: Response) => {
       try {
-        const section = this.safeSection(req.params.section);
-        if (!req.body || typeof req.body !== 'object' || Array.isArray(req.body)) {
-          return res.status(400).json({ error: 'invalid_content_payload' });
-        }
-        const value = { ...req.body, modifiedAt: Date.now(), modifiedBy: String(req.body.modifiedBy || 'admin') };
-        await this.store.setObject(`${this.root}/${section}`, value);
-        res.status(200).json({ ok: true, section, value });
+        const path = this.contentPath(req.params.boatId, req.params.language, req.params.section);
+        res.status(200).json((await this.store.getObject(path)) || {});
       } catch (error: any) {
-        res.status(400).json({ error: 'content_write_failed', message: error?.message || String(error) });
+        res.status(400).json({ error: 'content_read_failed', message: error?.message || String(error) });
       }
     });
 
-    router.patch('/api/admin/content/:section', async (req: Request, res: Response) => {
+    router.put('/api/admin/content/:boatId/:language/:section', async (req: Request, res: Response) => {
       try {
-        const section = this.safeSection(req.params.section);
-        const current = (await this.store.getObject(`${this.root}/${section}`)) || {};
-        const value = { ...current, ...(req.body || {}), modifiedAt: Date.now(), modifiedBy: String(req.body?.modifiedBy || 'admin') };
-        await this.store.setObject(`${this.root}/${section}`, value);
-        res.status(200).json({ ok: true, section, value });
+        if (req.body === undefined) return res.status(400).json({ error: 'invalid_content_payload' });
+        const path = this.contentPath(req.params.boatId, req.params.language, req.params.section);
+        await this.store.setObject(path, req.body);
+        res.status(200).json({ ok: true, path });
       } catch (error: any) {
         res.status(400).json({ error: 'content_write_failed', message: error?.message || String(error) });
       }
     });
   }
 
-  private safeSection(value: string): string {
-    const section = String(value || '').trim();
-    if (!/^[a-z0-9-]{2,40}$/i.test(section)) throw new Error('invalid_section');
-    return section;
+  private contentPath(boatId: string, language: string, section: string): string {
+    const lang = String(language || '').toLowerCase();
+    if (!['fr', 'en', 'es', 'it', 'de', 'nl', 'ru'].includes(lang)) throw new Error('invalid_language');
+    return `${this.root}/${this.safeId(boatId)}/${lang}/${this.safeId(section)}`;
+  }
+
+  private safeId(value: string): string {
+    const id = String(value || '').trim().toLowerCase();
+    if (!/^[a-z0-9_-]{2,80}$/.test(id)) throw new Error('invalid_identifier');
+    return id;
   }
 }

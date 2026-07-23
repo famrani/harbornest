@@ -1,6 +1,6 @@
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OfferApiService, AlegriaOffer } from '../bookings/offer-api.service';
 import { SITE_CONTENT } from '../site-content';
 import { SiteContentService } from '../site-content-service/site-content.service';
@@ -29,17 +29,31 @@ export class AdminOffersComponent implements OnInit, OnDestroy {
   constructor(
     private offerApi: OfferApiService,
     private router: Router,
+    private route: ActivatedRoute,
     private siteContentService: SiteContentService,
     private languageService: LanguageService,
   ) {}
 
   ngOnInit(): void {
+    this.prefillFromCalendar();
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.currentLanguage = language;
       this.loadPageText(language);
     });
     this.loadPageText(this.currentLanguage);
     this.load();
+  }
+
+  private prefillFromCalendar(): void {
+    const date = String(this.route.snapshot.queryParamMap.get('date') || '').trim();
+    const create = this.route.snapshot.queryParamMap.get('create');
+    if (create !== '1' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+    this.form = {
+      ...this.emptyForm(),
+      outingDate: date,
+      source: 'direct',
+      status: 'draft',
+    };
   }
 
   ngOnDestroy(): void { this.languageSub?.unsubscribe(); }

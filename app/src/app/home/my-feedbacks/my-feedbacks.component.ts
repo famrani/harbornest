@@ -23,6 +23,8 @@ interface CustomerFeedback {
   modifiedTS?: number;
   status?: string;
   bookingId?: string;
+  boatId?: string;
+  skipperId?: string;
 }
 
 @Component({
@@ -386,6 +388,8 @@ export class MyFeedbacksComponent implements OnInit, OnDestroy {
         rate: Number(this.feedback.rating),
         description: this.feedback.comments,
         bookingId: this.feedback.bookingId,
+        boatId: selectedBooking.boatId || 'alegria',
+        skipperId: selectedBooking.skipperId || '',
         createdTS: Date.now(),
         modifiedTS: Date.now(),
         status: 'submitted',

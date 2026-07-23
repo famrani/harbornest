@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, from, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { StoreDbService, UtilsService } from 'godigital-lib';
+import { BoatContextService } from '../../services/boat-context.service';
 
 export interface AlegriaPricingModel {
   day: number;
@@ -97,6 +98,7 @@ export interface AlegriaBooking {
   warrantyStatus?: string | boolean;
   bookingStatus?: string | boolean;
   ownerId?: string;
+  skipperId?: string;
   customerPhone?: string;
   payments?: any;
   paymentStatus?: any;
@@ -145,7 +147,7 @@ export interface AlegriaBooking {
 @Injectable({ providedIn: 'root' })
 export class BookingApiService {
   private readonly collectionName = 'bnBookings';
-  private readonly pricingModelPath = 'bnPricingModel/alegria';
+  private get pricingModelPath(): string { return `bnPricingModel/${this.boatContext.boatId}`; }
 
   private readonly restDatabaseUrls = [    'https://adn-dev-4d05d.firebaseio.com',
   ];
@@ -155,7 +157,8 @@ export class BookingApiService {
   constructor(
     private http: HttpClient,
     private utilsSvc: UtilsService,
-    private storeDb: StoreDbService
+    private storeDb: StoreDbService,
+    private boatContext: BoatContextService,
   ) {}
 
 
@@ -173,15 +176,11 @@ export class BookingApiService {
   }
 
   async getPricingModel(): Promise<AlegriaPricingModel> {
-    // The CMS pricing editor stores the operational model under
-    // /cmsContent/pricing/model/alegria. Older releases only read
-    // /bnPricingModel/alegria, which allowed the two copies to diverge.
-    // Merge the CMS model last so the latest value edited in Site Content is
-    // immediately reflected on the homepage and in the booking flow.
+    // One pricing source per boat.
     try {
       const [operational, cms] = await Promise.all([
-        this.readFirebasePath('/bnPricingModel/alegria').catch(() => null),
-        this.readFirebasePath('/cmsContent/pricing/model/alegria').catch(() => null),
+        this.readFirebasePath(`/bnPricingModel/${this.boatContext.boatId}`).catch(() => null),
+        Promise.resolve(null),
       ]);
       return {
         ...this.getDefaultPricingModel(),
@@ -195,14 +194,12 @@ export class BookingApiService {
 
   async savePricingModel(model: AlegriaPricingModel): Promise<void> {
     const payload = { ...this.getDefaultPricingModel(), ...(model || {}), updatedAt: Date.now() };
-    const cmsPayload = { model: { alegria: payload }, modifiedAt: Date.now(), modifiedBy: 'admin', note: 'Operational pricing synchronized with bnPricingModel.' };
     const store: any = this.storeDb as any;
     const util: any = this.utilsSvc as any;
 
     for (const db of this.getRealtimeDatabaseCandidates(store, util)) {
       try {
         await db.ref(this.pricingModelPath).set(payload);
-        try { await db.ref('cmsContent/pricing').set(cmsPayload); } catch {}
         return;
       } catch {}
     }
@@ -210,14 +207,12 @@ export class BookingApiService {
     for (const baseUrl of this.restDatabaseUrls) {
       try {
         await this.http.put(`${baseUrl.replace(/\/+$/, '')}/${this.pricingModelPath}.json`, payload).toPromise();
-        try { await this.http.put(`${baseUrl.replace(/\/+$/, '')}/cmsContent/pricing.json`, cmsPayload).toPromise(); } catch {}
         return;
       } catch {}
     }
 
     if (typeof store.updateObject === 'function') {
-      await store.updateObject('bnPricingModel', payload, 'alegria');
-      try { await store.updateObject('cmsContent', cmsPayload, 'pricing'); } catch {}
+      await store.updateObject('bnPricingModel', payload, this.boatContext.boatId);
       return;
     }
 
@@ -282,7 +277,9 @@ export class BookingApiService {
       paymentStatus: anyInput.paymentStatus ?? (isDepositPaid ? 'paid' : 'pending'),
       balancePaid: anyInput.balancePaid === true || anyInput.balanceStatus === 'paid',
       warrantyStatus: input.warrantyStatus || false,
-      ownerId: input.ownerId || 'alegria',
+      boatId: input.boatId || this.boatContext.boatId,
+      ownerId: input.ownerId || this.boatContext.boatId,
+      skipperId: anyInput.skipperId || '',
       createdTS: anyInput.createdTS || now,
       modifiedTS: now,
     } as any;
@@ -906,7 +903,7 @@ export class BookingApiService {
 
 
 
-  acceptBookingRequest(bookingId: string, ownerId = 'alegria', note = ''): Observable<any> {
+  acceptBookingRequest(bookingId: string, ownerId = this.boatContext.boatId, note = ''): Observable<any> {
     const payload = { bookingId, ownerId, note };
     return this.postFirstAvailable([
       `${this.baseUrl}/pay/outing-booking-accept`,
@@ -914,7 +911,7 @@ export class BookingApiService {
     ], payload);
   }
 
-  rejectBookingRequest(bookingId: string, reason: string, ownerId = 'alegria'): Observable<any> {
+  rejectBookingRequest(bookingId: string, reason: string, ownerId = this.boatContext.boatId): Observable<any> {
     const payload = { bookingId, ownerId, reason };
     return this.postFirstAvailable([
       `${this.baseUrl}/pay/outing-booking-reject`,
@@ -923,9 +920,9 @@ export class BookingApiService {
   }
 
   getExtraServicesCatalog(): Observable<any[]> {
-    return from(this.readFirebasePath('/bnExtraServices')).pipe(
+    return from(this.readFirebasePath(`/bnFleet/${this.boatContext.boatId}/extraServices`)).pipe(
       map((raw: any) => {
-        const catalog = this.unwrapFirebaseNamedObject(raw, 'bnExtraServices');
+        const catalog = this.unwrapFirebaseNamedObject(raw, 'extraServices');
         return this.normalizeArray(catalog)
           .filter((item: any) => item && item.active !== false)
           .sort((a: any, b: any) => Number(a.sortOrder ?? 999) - Number(b.sortOrder ?? 999));
@@ -1253,6 +1250,7 @@ export class BookingApiService {
   private async getBookingsFromFirebase(email?: string): Promise<AlegriaBooking[]> {
     const raw = await this.readBookingsRaw();
     const bookings = this.normalizeBookings(raw)
+      .filter((booking) => String((booking as any).boatId || 'alegria') === this.boatContext.boatId)
       .filter((booking) => String((booking as any).bookingStatus || (booking as any).status || '').toLowerCase() !== 'deleted')
       .filter((booking) => String((booking as any).bookingRequestStatus || (booking as any).status || '').toLowerCase() !== 'cancelled_by_customer')
       .sort((a, b) => String(b.outingDate || '').localeCompare(String(a.outingDate || '')) || String(b.departureTime || '').localeCompare(String(a.departureTime || '')));
@@ -1443,11 +1441,7 @@ export class BookingApiService {
       return raw;
     }
 
-    // Firebase exports may contain either:
-    //   /bnExtraServices/{serviceId}
-    // or the imported wrapper:
-    //   /bnExtraServices/bnExtraServices/{serviceId}
-    // Same principle is used for guestInfo.
+    // Handles both a direct object and a named wrapper from legacy imports.
     if (raw[key] && typeof raw[key] === 'object') {
       return raw[key];
     }

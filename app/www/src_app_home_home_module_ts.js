@@ -148,7 +148,7 @@ BookingInvoiceComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,
 /***/ ((module) => {
 
 "use strict";
-module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/contact\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
+module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/calendar\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -368,55 +368,54 @@ ___CSS_LOADER_EXPORT___.push([module.id, `:host {
 }
 
 .cms-shell {
-  padding: 24px;
-  max-width: 1600px;
+  max-width: 1180px;
   margin: 0 auto;
-  color: #16324a;
+  padding: 24px;
+  color: #17354c;
 }
 
 .cms-header {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
   gap: 24px;
+  align-items: flex-start;
   margin-bottom: 18px;
 }
 
 .cms-header h1 {
-  margin: 2px 0 6px;
+  margin: 4px 0 6px;
   font-size: 30px;
 }
 
 .cms-header p {
   margin: 0;
-  color: #617386;
+  color: #637789;
 }
 
 .eyebrow {
+  color: #167f8e !important;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 12px;
-  font-weight: 700;
-  color: #167f8e !important;
+  font-weight: 750;
 }
 
-.header-actions, .editor-actions, .json-actions, .editor-footer {
+.header-actions {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  align-items: center;
 }
 
 button {
   border: 0;
-  border-radius: 9px;
-  padding: 10px 14px;
+  border-radius: 10px;
+  padding: 11px 15px;
   cursor: pointer;
-  font-weight: 650;
+  font-weight: 700;
 }
 
 button:disabled {
-  opacity: 0.5;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
@@ -428,21 +427,18 @@ button:disabled {
 .secondary {
   background: #eef3f6;
   color: #25445e;
-  border: 1px solid #d6e0e6;
+  border: 1px solid #d4dfe6;
 }
 
-.dirty-badge, .language-chip {
-  border-radius: 999px;
-  padding: 5px 9px;
-  background: #fff3cd;
-  color: #7a5a00;
-  font-size: 12px;
-  font-weight: 700;
+.translate {
+  background: #fff4d6;
+  color: #795600;
+  border: 1px solid #f0d28a;
 }
 
 .status {
   padding: 12px 14px;
-  border-radius: 9px;
+  border-radius: 10px;
   margin-bottom: 14px;
 }
 
@@ -456,337 +452,217 @@ button:disabled {
   color: #9a2c2c;
 }
 
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 18px;
+.loading {
+  padding: 40px;
+  text-align: center;
+  color: #6d7f8c;
 }
 
-.metrics article {
-  border: 1px solid #dbe4ea;
-  border-radius: 12px;
-  padding: 14px;
-  background: #fff;
+.profile-bar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  padding: 16px;
+  background: #f7fafb;
+  border: 1px solid #dbe5ea;
+  border-radius: 14px;
+  margin-bottom: 16px;
+}
+
+label {
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
 
-.metrics strong {
-  font-size: 25px;
-}
-
-.metrics span {
-  color: #6b7c8b;
+label > span {
   font-size: 13px;
+  font-weight: 700;
+  color: #435d70;
 }
 
-.cms-layout {
-  display: grid;
-  grid-template-columns: 270px minmax(0, 1fr);
-  gap: 18px;
-  align-items: start;
+label small {
+  color: #718493;
 }
 
-.section-nav {
-  border: 1px solid #dbe4ea;
-  border-radius: 12px;
-  background: #fff;
-  overflow: hidden;
-  position: sticky;
-  top: 12px;
-  max-height: calc(100vh - 30px);
-  overflow-y: auto;
-}
-
-.nav-title {
-  padding: 15px;
-  border-bottom: 1px solid #e5ebef;
-  display: flex;
-  flex-direction: column;
-}
-
-.nav-title small {
-  color: #778895;
-  margin-top: 3px;
-}
-
-.section-nav button {
-  width: 100%;
-  border-radius: 0;
-  background: #fff;
-  text-align: left;
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  border-bottom: 1px solid #edf1f4;
-  padding: 12px 14px;
-}
-
-.section-nav button:hover, .section-nav button.active {
-  background: #eaf5f6;
-}
-
-.section-nav button.active {
-  box-shadow: inset 4px 0 #167f8e;
-}
-
-.section-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.section-meta {
-  color: #7c8b96;
-  font-size: 12px;
-  white-space: nowrap;
-}
-
-.editor {
-  min-width: 0;
-  border: 1px solid #dbe4ea;
-  border-radius: 12px;
-  background: #fff;
-  overflow: hidden;
-}
-
-.editor-title {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 18px;
-  border-bottom: 1px solid #e4eaee;
-}
-
-.editor-title h2 {
-  margin: 3px 0 0;
-}
-
-.path {
-  margin: 0;
-  color: #7a8994;
-  font-size: 13px;
-}
-
-.toolbar {
-  padding: 14px 18px;
-  background: #f8fafb;
-  border-bottom: 1px solid #e5ebef;
-  display: grid;
-  grid-template-columns: minmax(260px, 1fr) 190px auto;
-  gap: 12px;
-  align-items: end;
-}
-
-.toolbar label, .field-value {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.toolbar label > span {
-  font-size: 12px;
-  color: #647786;
-  font-weight: 650;
-}
-
-.toolbar input, .toolbar select, .field-value input, .field-value textarea {
+input, textarea, select {
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid #ccd8df;
-  border-radius: 8px;
+  border: 1px solid #cbd8df;
+  border-radius: 9px;
   padding: 10px 11px;
   font: inherit;
   color: inherit;
   background: #fff;
 }
 
-.checkbox {
-  flex-direction: row !important;
-  align-items: center;
-  padding-bottom: 9px;
-}
-
-.checkbox input {
-  width: auto !important;
-}
-
-.fields-table {
-  width: 100%;
-}
-
-.field-row {
-  display: grid;
-  grid-template-columns: minmax(220px, 35%) minmax(260px, 1fr) 38px;
-  gap: 14px;
-  align-items: start;
-  padding: 13px 18px;
-  border-bottom: 1px solid #edf1f4;
-}
-
-.field-row:hover {
-  background: #fbfcfd;
-}
-
-.field-key {
-  min-width: 0;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 5px 8px;
-}
-
-.field-key strong {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.field-key code {
-  grid-column: 1/-1;
-  color: #768691;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  font-size: 12px;
-}
-
-.language-chip {
-  justify-self: start;
-  background: #eaf5f6;
-  color: #16717d;
-  padding: 3px 7px;
-}
-
-.field-value textarea {
+textarea {
   resize: vertical;
 }
 
-.boolean-control {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
-  padding-top: 9px;
+  margin-bottom: 14px;
 }
 
-.boolean-control input {
-  width: auto;
+.tabs button {
+  background: #edf3f6;
+  color: #355267;
 }
 
-.delete {
-  width: 34px;
-  height: 34px;
+.tabs button.active {
+  background: #103f5d;
+  color: #fff;
+}
+
+.editor-card {
+  border: 1px solid #d9e4ea;
+  border-radius: 14px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.editor-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding: 19px 20px;
+  border-bottom: 1px solid #e4ebef;
+}
+
+.editor-heading h2 {
+  margin: 0 0 4px;
+}
+
+.editor-heading p {
+  margin: 0;
+  color: #6d7f8c;
+}
+
+.section-body {
+  padding: 20px;
+}
+
+.form-grid {
+  display: grid;
+  gap: 15px;
+}
+
+.form-grid.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.form-grid.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.form-grid .wide {
+  grid-column: 1/-1;
+}
+
+.item-card {
+  border: 1px solid #dde7ec;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 18px;
+  background: #fbfcfd;
+}
+
+.item-title, .list-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 13px;
+}
+
+.item-title h3, .list-heading h3 {
+  margin: 0;
+}
+
+.danger-link {
+  background: transparent;
+  color: #a22f2f;
+  padding: 6px 8px;
+}
+
+.add-button {
+  margin-top: 16px;
+}
+
+.simple-list {
+  margin-top: 22px;
+  border-top: 1px solid #e5ecef;
+  padding-top: 18px;
+}
+
+.list-row {
+  display: grid;
+  grid-template-columns: 1fr 38px;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.icon-danger {
+  width: 38px;
+  height: 38px;
   padding: 0;
   border-radius: 50%;
   background: #fff0f0;
-  color: #a52c2c;
+  color: #a22f2f;
   font-size: 20px;
 }
 
-.json-panel {
-  padding: 18px;
-}
-
-.json-panel p {
-  color: #647786;
-}
-
-.json-panel textarea {
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 600px;
-  border: 1px solid #ccd8df;
-  border-radius: 9px;
-  padding: 14px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 13px;
+.help-box {
+  margin: 20px 0 0;
+  padding: 13px 15px;
+  background: #eef7f8;
+  border-radius: 10px;
+  color: #416471;
 }
 
 .editor-footer {
+  display: flex;
   justify-content: flex-end;
-  padding: 16px 18px;
-  background: #f8fafb;
-  border-top: 1px solid #e5ebef;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: #f7fafb;
+  border-top: 1px solid #e3ebef;
 }
 
-.loading, .empty-state, .empty-nav {
-  padding: 30px;
-  text-align: center;
-  color: #71828e;
+.editor-footer span {
+  margin-right: auto;
+  color: #8a6500;
+  font-weight: 700;
+  font-size: 13px;
 }
 
-@media (max-width: 1000px) {
-  .metrics {
-    grid-template-columns: repeat(2, 1fr);
+@media (max-width: 850px) {
+  .profile-bar, .form-grid.three {
+    grid-template-columns: 1fr 1fr;
   }
-  .cms-layout {
-    grid-template-columns: 1fr;
-  }
-  .section-nav {
-    position: static;
-    max-height: 300px;
-  }
-  .toolbar {
+  .tabs {
     grid-template-columns: 1fr 1fr;
   }
 }
-@media (max-width: 700px) {
+@media (max-width: 620px) {
   .cms-shell {
     padding: 12px;
   }
-  .cms-header, .editor-title {
+  .cms-header, .editor-heading {
     flex-direction: column;
   }
-  .metrics {
-    grid-template-columns: 1fr 1fr;
-  }
-  .toolbar {
+  .profile-bar, .form-grid.two, .form-grid.three {
     grid-template-columns: 1fr;
   }
-  .field-row {
-    grid-template-columns: 1fr 38px;
+  .tabs {
+    grid-template-columns: 1fr;
   }
-  .field-key {
-    grid-column: 1/-1;
-  }
-  .field-value {
-    grid-column: 1;
-  }
-  .delete {
-    grid-column: 2;
-    grid-row: 2;
-  }
-}
-.source-selector {
-  display: flex;
-  align-items: flex-end;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin: 16px 0;
-  padding: 16px;
-  border: 1px solid #d9e2ec;
-  border-radius: 14px;
-  background: #fff;
-}
-
-.source-selector label {
-  display: grid;
-  gap: 6px;
-  min-width: 280px;
-}
-
-.source-selector select {
-  min-height: 42px;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  padding: 0 12px;
-  background: #fff;
-}
-
-.source-selector small {
-  color: #64748b;
-  padding-bottom: 10px;
-}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-site-content/admin-site-content.component.scss"],"names":[],"mappings":"AAAA;EAAQ,cAAA;AAER;;AADA;EAAa,aAAA;EAAc,iBAAA;EAAkB,cAAA;EAAe,cAAA;AAQ5D;;AAPA;EAAc,aAAA;EAAc,uBAAA;EAAwB,8BAAA;EAA+B,SAAA;EAAU,mBAAA;AAe7F;;AAdA;EAAiB,iBAAA;EAAkB,eAAA;AAmBnC;;AAlBA;EAAgB,SAAA;EAAU,cAAA;AAuB1B;;AAtBA;EAAW,yBAAA;EAA0B,sBAAA;EAAsB,eAAA;EAAgB,gBAAA;EAAiB,yBAAA;AA8B5F;;AA7BA;EAA+D,aAAA;EAAc,SAAA;EAAU,eAAA;EAAgB,mBAAA;AAoCvG;;AAnCA;EAAS,SAAA;EAAU,kBAAA;EAAmB,kBAAA;EAAmB,eAAA;EAAgB,gBAAA;AA2CzE;;AA1CA;EAAkB,YAAA;EAAY,mBAAA;AA+C9B;;AA9CA;EAAW,mBAAA;EAAoB,WAAA;AAmD/B;;AAlDA;EAAa,mBAAA;EAAoB,cAAA;EAAe,yBAAA;AAwDhD;;AAvDA;EAA8B,oBAAA;EAAqB,gBAAA;EAAiB,mBAAA;EAAoB,cAAA;EAAe,eAAA;EAAgB,gBAAA;AAgEvH;;AA/DA;EAAU,kBAAA;EAAmB,kBAAA;EAAmB,mBAAA;AAqEhD;;AApEA;EAAkB,mBAAA;EAAoB,cAAA;AAyEtC;;AAxEA;EAAgB,mBAAA;EAAoB,cAAA;AA6EpC;;AA5EA;EAAW,aAAA;EAAc,gDAAA;EAA+C,SAAA;EAAU,mBAAA;AAmFlF;;AAlFA;EAAmB,yBAAA;EAA0B,mBAAA;EAAoB,aAAA;EAAc,gBAAA;EAAiB,aAAA;EAAc,sBAAA;AA2F9G;;AA1FA;EAAkB,eAAA;AA8FlB;;AA7FA;EAAgB,cAAA;EAAe,eAAA;AAkG/B;;AAjGA;EAAc,aAAA;EAAc,2CAAA;EAA2C,SAAA;EAAU,kBAAA;AAwGjF;;AAvGA;EAAe,yBAAA;EAA0B,mBAAA;EAAoB,gBAAA;EAAiB,gBAAA;EAAiB,gBAAA;EAAiB,SAAA;EAAU,8BAAA;EAA+B,gBAAA;AAkHzJ;;AAjHA;EAAa,aAAA;EAAc,gCAAA;EAAiC,aAAA;EAAc,sBAAA;AAwH1E;;AAvHA;EAAmB,cAAA;EAAe,eAAA;AA4HlC;;AA3HA;EAAsB,WAAA;EAAY,gBAAA;EAAiB,gBAAA;EAAiB,gBAAA;EAAiB,aAAA;EAAc,8BAAA;EAA+B,SAAA;EAAU,gCAAA;EAAiC,kBAAA;AAuI7K;;AAtIA;EAAuD,mBAAA;AA0IvD;;AAzIA;EAA6B,+BAAA;AA6I7B;;AA5IA;EAAgB,gBAAA;EAAiB,uBAAA;AAiJjC;;AAhJA;EAAgB,cAAA;EAAe,eAAA;EAAgB,mBAAA;AAsJ/C;;AArJA;EAAU,YAAA;EAAa,yBAAA;EAA0B,mBAAA;EAAoB,gBAAA;EAAiB,gBAAA;AA6JtF;;AA5JA;EAAgB,aAAA;EAAc,8BAAA;EAA+B,SAAA;EAAU,aAAA;EAAc,gCAAA;AAoKrF;;AAnKA;EAAmB,eAAA;AAuKnB;;AAtKA;EAAQ,SAAA;EAAU,cAAA;EAAe,eAAA;AA4KjC;;AA3KA;EAAW,kBAAA;EAAmB,mBAAA;EAAoB,gCAAA;EAAiC,aAAA;EAAc,oDAAA;EAAoD,SAAA;EAAU,gBAAA;AAqL/J;;AApLA;EAA8B,aAAA;EAAc,sBAAA;EAAuB,QAAA;AA0LnE;;AAzLA;EAAsB,eAAA;EAAgB,cAAA;EAAe,gBAAA;AA+LrD;;AA9LA;EAA0E,WAAA;EAAY,sBAAA;EAAuB,yBAAA;EAA0B,kBAAA;EAAmB,kBAAA;EAAmB,aAAA;EAAc,cAAA;EAAe,gBAAA;AAyM1M;;AAxMA;EAAY,8BAAA;EAA8B,mBAAA;EAAoB,mBAAA;AA8M9D;;AA7MA;EAAkB,sBAAA;AAiNlB;;AAhNA;EAAgB,WAAA;AAoNhB;;AAnNA;EAAa,aAAA;EAAc,iEAAA;EAAgE,SAAA;EAAU,kBAAA;EAAmB,kBAAA;EAAmB,gCAAA;AA4N3I;;AA3NA;EAAmB,mBAAA;AA+NnB;;AA9NA;EAAa,YAAA;EAAa,aAAA;EAAc,+BAAA;EAAgC,mBAAA;EAAoB,YAAA;AAsO5F;;AArOA;EAAoB,gBAAA;EAAiB,uBAAA;EAAwB,mBAAA;AA2O7D;;AA1OA;EAAkB,iBAAA;EAAoB,cAAA;EAAe,mBAAA;EAAoB,uBAAA;EAAwB,eAAA;AAkPjG;;AAjPA;EAAiB,mBAAA;EAAoB,mBAAA;EAAoB,cAAA;EAAe,gBAAA;AAwPxE;;AAvPA;EAAwB,gBAAA;AA2PxB;;AA1PA;EAAmB,aAAA;EAAc,mBAAA;EAAoB,mBAAA;EAAoB,QAAA;EAAS,gBAAA;AAkQlF;;AAjQA;EAAyB,WAAA;AAqQzB;;AApQA;EAAU,WAAA;EAAY,YAAA;EAAa,UAAA;EAAW,kBAAA;EAAmB,mBAAA;EAAoB,cAAA;EAAe,eAAA;AA8QpG;;AA7QA;EAAc,aAAA;AAiRd;;AAhRA;EAAgB,cAAA;AAoRhB;;AAnRA;EAAuB,sBAAA;EAAuB,WAAA;EAAY,iBAAA;EAAkB,yBAAA;EAA0B,kBAAA;EAAmB,aAAA;EAAc,2DAAA;EAAyD,eAAA;AA8RhM;;AA7RA;EAAiB,yBAAA;EAA0B,kBAAA;EAAmB,mBAAA;EAAoB,6BAAA;AAoSlF;;AAnSA;EAAmC,aAAA;EAAc,kBAAA;EAAmB,cAAA;AAySpE;;AAxSA;EAA4B;IAAS,qCAAA;EA6SnC;EA7SwE;IAAY,0BAAA;EAgTpF;EAhT+G;IAAa,gBAAA;IAAgB,iBAAA;EAoT5I;EApT8J;IAAS,8BAAA;EAuTvK;AACF;AAvTA;EAA2B;IAAW,aAAA;EA2TpC;EA3TkD;IAA0B,sBAAA;EA8T5E;EA9TmG;IAAS,8BAAA;EAiU5G;EAjU2I;IAAS,0BAAA;EAoUpJ;EApU+K;IAAW,+BAAA;EAuU1L;EAvU0N;IAAW,iBAAA;EA0UrO;EA1UyP;IAAa,cAAA;EA6UtQ;EA7UqR;IAAQ,cAAA;IAAc,WAAA;EAiV3S;AACF;AAhVA;EACE,aAAA;EACA,qBAAA;EACA,SAAA;EACA,eAAA;EACA,cAAA;EACA,aAAA;EACA,yBAAA;EACA,mBAAA;EACA,gBAAA;AAkVF;;AA/UA;EACE,aAAA;EACA,QAAA;EACA,gBAAA;AAkVF;;AA/UA;EACE,gBAAA;EACA,yBAAA;EACA,mBAAA;EACA,eAAA;EACA,gBAAA;AAkVF;;AA/UA;EACE,cAAA;EACA,oBAAA;AAkVF","sourcesContent":[":host { display:block; }\n.cms-shell { padding:24px; max-width:1600px; margin:0 auto; color:#16324a; }\n.cms-header { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; margin-bottom:18px; }\n.cms-header h1 { margin:2px 0 6px; font-size:30px; }\n.cms-header p { margin:0; color:#617386; }\n.eyebrow { text-transform:uppercase; letter-spacing:.08em; font-size:12px; font-weight:700; color:#167f8e!important; }\n.header-actions,.editor-actions,.json-actions,.editor-footer { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }\nbutton { border:0; border-radius:9px; padding:10px 14px; cursor:pointer; font-weight:650; }\nbutton:disabled { opacity:.5; cursor:not-allowed; }\n.primary { background:#167f8e; color:#fff; }\n.secondary { background:#eef3f6; color:#25445e; border:1px solid #d6e0e6; }\n.dirty-badge,.language-chip { border-radius:999px; padding:5px 9px; background:#fff3cd; color:#7a5a00; font-size:12px; font-weight:700; }\n.status { padding:12px 14px; border-radius:9px; margin-bottom:14px; }\n.status.success { background:#eaf7ee; color:#216b39; }\n.status.error { background:#fdecec; color:#9a2c2c; }\n.metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:18px; }\n.metrics article { border:1px solid #dbe4ea; border-radius:12px; padding:14px; background:#fff; display:flex; flex-direction:column; }\n.metrics strong { font-size:25px; }\n.metrics span { color:#6b7c8b; font-size:13px; }\n.cms-layout { display:grid; grid-template-columns:270px minmax(0,1fr); gap:18px; align-items:start; }\n.section-nav { border:1px solid #dbe4ea; border-radius:12px; background:#fff; overflow:hidden; position:sticky; top:12px; max-height:calc(100vh - 30px); overflow-y:auto; }\n.nav-title { padding:15px; border-bottom:1px solid #e5ebef; display:flex; flex-direction:column; }\n.nav-title small { color:#778895; margin-top:3px; }\n.section-nav button { width:100%; border-radius:0; background:#fff; text-align:left; display:flex; justify-content:space-between; gap:10px; border-bottom:1px solid #edf1f4; padding:12px 14px; }\n.section-nav button:hover,.section-nav button.active { background:#eaf5f6; }\n.section-nav button.active { box-shadow:inset 4px 0 #167f8e; }\n.section-name { overflow:hidden; text-overflow:ellipsis; }\n.section-meta { color:#7c8b96; font-size:12px; white-space:nowrap; }\n.editor { min-width:0; border:1px solid #dbe4ea; border-radius:12px; background:#fff; overflow:hidden; }\n.editor-title { display:flex; justify-content:space-between; gap:16px; padding:18px; border-bottom:1px solid #e4eaee; }\n.editor-title h2 { margin:3px 0 0; }\n.path { margin:0; color:#7a8994; font-size:13px; }\n.toolbar { padding:14px 18px; background:#f8fafb; border-bottom:1px solid #e5ebef; display:grid; grid-template-columns:minmax(260px,1fr) 190px auto; gap:12px; align-items:end; }\n.toolbar label,.field-value { display:flex; flex-direction:column; gap:5px; }\n.toolbar label>span { font-size:12px; color:#647786; font-weight:650; }\n.toolbar input,.toolbar select,.field-value input,.field-value textarea { width:100%; box-sizing:border-box; border:1px solid #ccd8df; border-radius:8px; padding:10px 11px; font:inherit; color:inherit; background:#fff; }\n.checkbox { flex-direction:row!important; align-items:center; padding-bottom:9px; }\n.checkbox input { width:auto!important; }\n.fields-table { width:100%; }\n.field-row { display:grid; grid-template-columns:minmax(220px,35%) minmax(260px,1fr) 38px; gap:14px; align-items:start; padding:13px 18px; border-bottom:1px solid #edf1f4; }\n.field-row:hover { background:#fbfcfd; }\n.field-key { min-width:0; display:grid; grid-template-columns:auto 1fr; align-items:center; gap:5px 8px; }\n.field-key strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }\n.field-key code { grid-column:1 / -1; color:#768691; white-space:normal; overflow-wrap:anywhere; font-size:12px; }\n.language-chip { justify-self:start; background:#eaf5f6; color:#16717d; padding:3px 7px; }\n.field-value textarea { resize:vertical; }\n.boolean-control { display:flex; flex-direction:row; align-items:center; gap:8px; padding-top:9px; }\n.boolean-control input { width:auto; }\n.delete { width:34px; height:34px; padding:0; border-radius:50%; background:#fff0f0; color:#a52c2c; font-size:20px; }\n.json-panel { padding:18px; }\n.json-panel p { color:#647786; }\n.json-panel textarea { box-sizing:border-box; width:100%; min-height:600px; border:1px solid #ccd8df; border-radius:9px; padding:14px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13px; }\n.editor-footer { justify-content:flex-end; padding:16px 18px; background:#f8fafb; border-top:1px solid #e5ebef; }\n.loading,.empty-state,.empty-nav { padding:30px; text-align:center; color:#71828e; }\n@media (max-width:1000px) { .metrics{grid-template-columns:repeat(2,1fr)} .cms-layout{grid-template-columns:1fr} .section-nav{position:static;max-height:300px} .toolbar{grid-template-columns:1fr 1fr} }\n@media (max-width:700px) { .cms-shell{padding:12px} .cms-header,.editor-title{flex-direction:column} .metrics{grid-template-columns:1fr 1fr} .toolbar{grid-template-columns:1fr} .field-row{grid-template-columns:1fr 38px} .field-key{grid-column:1 / -1} .field-value{grid-column:1} .delete{grid-column:2;grid-row:2} }\n\n.source-selector {\n  display: flex;\n  align-items: flex-end;\n  gap: 16px;\n  flex-wrap: wrap;\n  margin: 16px 0;\n  padding: 16px;\n  border: 1px solid #d9e2ec;\n  border-radius: 14px;\n  background: #fff;\n}\n\n.source-selector label {\n  display: grid;\n  gap: 6px;\n  min-width: 280px;\n}\n\n.source-selector select {\n  min-height: 42px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  padding: 0 12px;\n  background: #fff;\n}\n\n.source-selector small {\n  color: #64748b;\n  padding-bottom: 10px;\n}\n"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-site-content/admin-site-content.component.scss"],"names":[],"mappings":"AAAA;EAAQ,cAAA;AAER;;AADA;EAAa,iBAAA;EAAmB,cAAA;EAAgB,aAAA;EAAe,cAAA;AAQ/D;;AAPA;EAAc,aAAA;EAAe,8BAAA;EAAgC,SAAA;EAAW,uBAAA;EAAyB,mBAAA;AAejG;;AAdA;EAAiB,iBAAA;EAAmB,eAAA;AAmBpC;;AAlBA;EAAgB,SAAA;EAAW,cAAA;AAuB3B;;AAtBA;EAAW,yBAAA;EAA2B,yBAAA;EAA2B,sBAAA;EAAuB,eAAA;EAAiB,gBAAA;AA8BzG;;AA7BA;EAAkB,aAAA;EAAe,SAAA;EAAW,eAAA;AAmC5C;;AAlCA;EAAS,SAAA;EAAW,mBAAA;EAAqB,kBAAA;EAAoB,eAAA;EAAiB,gBAAA;AA0C9E;;AAzCA;EAAkB,aAAA;EAAc,mBAAA;AA8ChC;;AA7CA;EAAW,mBAAA;EAAqB,WAAA;AAkDhC;;AAjDA;EAAa,mBAAA;EAAqB,cAAA;EAAgB,yBAAA;AAuDlD;;AAtDA;EAAa,mBAAA;EAAqB,cAAA;EAAgB,yBAAA;AA4DlD;;AA3DA;EAAU,kBAAA;EAAoB,mBAAA;EAAqB,mBAAA;AAiEnD;;AAhEA;EAAkB,mBAAA;EAAqB,cAAA;AAqEvC;;AApEA;EAAgB,mBAAA;EAAqB,cAAA;AAyErC;;AAxEA;EAAW,aAAA;EAAe,kBAAA;EAAoB,cAAA;AA8E9C;;AA7EA;EAAe,aAAA;EAAe,gDAAA;EAAkD,SAAA;EAAW,aAAA;EAAe,mBAAA;EAAqB,yBAAA;EAA2B,mBAAA;EAAqB,mBAAA;AAwF/K;;AAvFA;EAAQ,aAAA;EAAe,sBAAA;EAAwB,QAAA;AA6F/C;;AA5FA;EAAe,eAAA;EAAiB,gBAAA;EAAkB,cAAA;AAkGlD;;AAjGA;EAAc,cAAA;AAqGd;;AApGA;EAA0B,WAAA;EAAa,sBAAA;EAAwB,yBAAA;EAA2B,kBAAA;EAAoB,kBAAA;EAAoB,aAAA;EAAe,cAAA;EAAgB,gBAAA;AA+GjK;;AA9GA;EAAW,gBAAA;AAkHX;;AAjHA;EAAQ,aAAA;EAAe,qCAAA;EAAuC,QAAA;EAAU,mBAAA;AAwHxE;;AAvHA;EAAe,mBAAA;EAAqB,cAAA;AA4HpC;;AA3HA;EAAsB,mBAAA;EAAqB,WAAA;AAgI3C;;AA/HA;EAAe,yBAAA;EAA2B,mBAAA;EAAqB,gBAAA;EAAkB,gBAAA;AAsIjF;;AArIA;EAAkB,aAAA;EAAe,8BAAA;EAAgC,mBAAA;EAAqB,SAAA;EAAW,kBAAA;EAAoB,gCAAA;AA8IrH;;AA7IA;EAAqB,eAAA;AAiJrB;;AAhJA;EAAoB,SAAA;EAAW,cAAA;AAqJ/B;;AApJA;EAAgB,aAAA;AAwJhB;;AAvJA;EAAa,aAAA;EAAe,SAAA;AA4J5B;;AA3JA;EAAiB,gDAAA;AA+JjB;;AA9JA;EAAmB,gDAAA;AAkKnB;;AAjKA;EAAmB,iBAAA;AAqKnB;;AApKA;EAAa,yBAAA;EAA2B,mBAAA;EAAqB,aAAA;EAAe,gBAAA;EAAkB,mBAAA;AA4K9F;;AA3KA;EAA6B,aAAA;EAAe,8BAAA;EAAgC,mBAAA;EAAqB,SAAA;EAAW,mBAAA;AAmL5G;;AAlLA;EAAmC,SAAA;AAsLnC;;AArLA;EAAe,uBAAA;EAAyB,cAAA;EAAgB,gBAAA;AA2LxD;;AA1LA;EAAc,gBAAA;AA8Ld;;AA7LA;EAAe,gBAAA;EAAkB,6BAAA;EAA+B,iBAAA;AAmMhE;;AAlMA;EAAY,aAAA;EAAe,+BAAA;EAAiC,QAAA;EAAU,kBAAA;AAyMtE;;AAxMA;EAAe,WAAA;EAAa,YAAA;EAAc,UAAA;EAAY,kBAAA;EAAoB,mBAAA;EAAqB,cAAA;EAAgB,eAAA;AAkN/G;;AAjNA;EAAY,gBAAA;EAAkB,kBAAA;EAAoB,mBAAA;EAAqB,mBAAA;EAAqB,cAAA;AAyN5F;;AAxNA;EAAiB,aAAA;EAAe,yBAAA;EAA2B,mBAAA;EAAqB,SAAA;EAAW,kBAAA;EAAoB,mBAAA;EAAqB,6BAAA;AAkOpI;;AAjOA;EAAsB,kBAAA;EAAoB,cAAA;EAAgB,gBAAA;EAAkB,eAAA;AAwO5E;;AAvOA;EACE;IAAiC,8BAAA;EA2OjC;EA1OA;IAAQ,8BAAA;EA6OR;AACF;AA5OA;EACE;IAAa,aAAA;EA+Ob;EA9OA;IAA+B,sBAAA;EAiP/B;EAhPA;IAAiD,0BAAA;EAmPjD;EAlPA;IAAQ,0BAAA;EAqPR;AACF","sourcesContent":[":host { display: block; }\n.cms-shell { max-width: 1180px; margin: 0 auto; padding: 24px; color: #17354c; }\n.cms-header { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; margin-bottom: 18px; }\n.cms-header h1 { margin: 4px 0 6px; font-size: 30px; }\n.cms-header p { margin: 0; color: #637789; }\n.eyebrow { color: #167f8e !important; text-transform: uppercase; letter-spacing: .08em; font-size: 12px; font-weight: 750; }\n.header-actions { display: flex; gap: 10px; flex-wrap: wrap; }\nbutton { border: 0; border-radius: 10px; padding: 11px 15px; cursor: pointer; font-weight: 700; }\nbutton:disabled { opacity: .55; cursor: not-allowed; }\n.primary { background: #167f8e; color: #fff; }\n.secondary { background: #eef3f6; color: #25445e; border: 1px solid #d4dfe6; }\n.translate { background: #fff4d6; color: #795600; border: 1px solid #f0d28a; }\n.status { padding: 12px 14px; border-radius: 10px; margin-bottom: 14px; }\n.status.success { background: #eaf7ee; color: #216b39; }\n.status.error { background: #fdecec; color: #9a2c2c; }\n.loading { padding: 40px; text-align: center; color: #6d7f8c; }\n.profile-bar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; padding: 16px; background: #f7fafb; border: 1px solid #dbe5ea; border-radius: 14px; margin-bottom: 16px; }\nlabel { display: flex; flex-direction: column; gap: 6px; }\nlabel > span { font-size: 13px; font-weight: 700; color: #435d70; }\nlabel small { color: #718493; }\ninput, textarea, select { width: 100%; box-sizing: border-box; border: 1px solid #cbd8df; border-radius: 9px; padding: 10px 11px; font: inherit; color: inherit; background: #fff; }\ntextarea { resize: vertical; }\n.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }\n.tabs button { background: #edf3f6; color: #355267; }\n.tabs button.active { background: #103f5d; color: #fff; }\n.editor-card { border: 1px solid #d9e4ea; border-radius: 14px; background: #fff; overflow: hidden; }\n.editor-heading { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 19px 20px; border-bottom: 1px solid #e4ebef; }\n.editor-heading h2 { margin: 0 0 4px; }\n.editor-heading p { margin: 0; color: #6d7f8c; }\n.section-body { padding: 20px; }\n.form-grid { display: grid; gap: 15px; }\n.form-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }\n.form-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }\n.form-grid .wide { grid-column: 1 / -1; }\n.item-card { border: 1px solid #dde7ec; border-radius: 12px; padding: 16px; margin-top: 18px; background: #fbfcfd; }\n.item-title, .list-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 13px; }\n.item-title h3, .list-heading h3 { margin: 0; }\n.danger-link { background: transparent; color: #a22f2f; padding: 6px 8px; }\n.add-button { margin-top: 16px; }\n.simple-list { margin-top: 22px; border-top: 1px solid #e5ecef; padding-top: 18px; }\n.list-row { display: grid; grid-template-columns: 1fr 38px; gap: 8px; margin-bottom: 8px; }\n.icon-danger { width: 38px; height: 38px; padding: 0; border-radius: 50%; background: #fff0f0; color: #a22f2f; font-size: 20px; }\n.help-box { margin: 20px 0 0; padding: 13px 15px; background: #eef7f8; border-radius: 10px; color: #416471; }\n.editor-footer { display: flex; justify-content: flex-end; align-items: center; gap: 14px; padding: 16px 20px; background: #f7fafb; border-top: 1px solid #e3ebef; }\n.editor-footer span { margin-right: auto; color: #8a6500; font-weight: 700; font-size: 13px; }\n@media (max-width: 850px) {\n  .profile-bar, .form-grid.three { grid-template-columns: 1fr 1fr; }\n  .tabs { grid-template-columns: 1fr 1fr; }\n}\n@media (max-width: 620px) {\n  .cms-shell { padding: 12px; }\n  .cms-header, .editor-heading { flex-direction: column; }\n  .profile-bar, .form-grid.two, .form-grid.three { grid-template-columns: 1fr; }\n  .tabs { grid-template-columns: 1fr; }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -1020,11 +896,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   OutingsDataService: () => (/* binding */ OutingsDataService)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ 93262);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./site-content */ 14009);
+/* harmony import */ var _services_boat_context_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/boat-context.service */ 61766);
+
 
 
 
@@ -1035,12 +913,17 @@ let OutingsDataService = class OutingsDataService {
   storeDb;
   utilSvc;
   http;
+  boatContext;
   collectionName = 'bnOutings';
   restDatabaseUrls = ['https://adn-dev-4d05d.firebaseio.com'];
-  constructor(storeDb, utilSvc, http) {
+  constructor(storeDb, utilSvc, http, boatContext) {
     this.storeDb = storeDb;
     this.utilSvc = utilSvc;
     this.http = http;
+    this.boatContext = boatContext;
+  }
+  get collectionPath() {
+    return `${this.collectionName}/${this.boatContext.boatId}`;
   }
   getOutings() {
     var _this = this;
@@ -1060,44 +943,35 @@ let OutingsDataService = class OutingsDataService {
       const payload = {
         ...outing,
         slug,
+        boatId: _this2.boatContext.boatId,
         active: outing.active !== false,
         modifiedTS: Date.now(),
         createdTS: outing.createdTS || Date.now()
       };
       const store = _this2.storeDb;
       const util = _this2.utilSvc;
-      // Current Firebase format requested by the project:
-      // /bnOutings is an ARRAY at the Realtime Database root.
-      // We update the existing numeric index when possible, otherwise we append.
-      const currentRaw = yield _this2.readBnOutingsFromFirebase();
-      const arrayIndex = _this2.findArrayIndexForSlug(currentRaw, slug);
       const dbCandidates = _this2.getRealtimeDatabaseCandidates(store, util);
       for (const db of dbCandidates) {
         try {
-          if (arrayIndex >= 0) {
-            yield db.ref(`${_this2.collectionName}/${arrayIndex}`).set(payload);
-          } else {
-            yield db.ref(_this2.collectionName).push(payload);
-          }
+          yield db.ref(`${_this2.collectionPath}/${slug}`).set(payload);
           return;
         } catch {
           // Try next Firebase database handle or fallback API.
         }
       }
-      // REST fallback for the same root-array structure.
-      const savedViaRest = yield _this2.saveBnOutingViaRest(payload, arrayIndex);
+      const savedViaRest = yield _this2.saveBnOutingViaRest(payload, -1);
       if (savedViaRest) return;
       // Last fallback: older object-by-slug godigital-lib signatures.
       if (typeof store.updateObject !== 'function') {
         throw new Error('Firebase updateObject is not available.');
       }
       try {
-        yield store.updateObject(_this2.collectionName, payload, slug);
+        yield store.updateObject(_this2.collectionPath, payload, slug);
       } catch {
         try {
-          yield store.updateObject(_this2.collectionName, slug, payload);
+          yield store.updateObject(_this2.collectionPath, slug, payload);
         } catch {
-          yield store.updateObject(util.backendFBstoreId, util.mdb, _this2.collectionName, payload, slug);
+          yield store.updateObject(util.backendFBstoreId, util.mdb, _this2.collectionPath, payload, slug);
         }
       }
     })();
@@ -1129,31 +1003,31 @@ let OutingsDataService = class OutingsDataService {
       ...fallback,
       key: outing.slug,
       route: outing.slug,
-      eyebrow: localized.eyebrow || fallback.eyebrow,
-      title: localized.title || fallback.title,
-      subtitle: localized.subtitle || fallback.subtitle,
-      intro: localized.intro || localized.description || fallback.intro,
-      image: outing.image || fallback.image,
-      duration: localized.duration || fallback.duration,
-      guests: localized.guests || fallback.guests,
+      eyebrow: localized.eyebrow || '',
+      title: localized.title || '',
+      subtitle: localized.subtitle || '',
+      intro: localized.intro || localized.description || '',
+      image: outing.image || '',
+      duration: localized.duration || '',
+      guests: localized.guests || '',
       price: '',
-      highlights: localized.highlights || fallback.highlights,
-      programTitle: localized.programTitle || fallback.programTitle,
-      program: localized.program || fallback.program,
-      includesTitle: localized.includesTitle || fallback.includesTitle,
-      includes: localized.includes || fallback.includes,
-      idealForTitle: localized.idealForTitle || fallback.idealForTitle,
-      idealFor: localized.idealFor || fallback.idealFor,
-      cta: localized.cta || fallback.cta,
-      contactNote: localized.contactNote || fallback.contactNote,
-      galleryTitle: localized.galleryTitle || fallback.galleryTitle,
-      gallery: outing.gallery && outing.gallery.length ? outing.gallery : fallback.gallery,
-      coreOfferingTitle: localized.coreOfferingTitle || fallback.coreOfferingTitle,
-      coreOffering: localized.coreOffering || fallback.coreOffering,
-      optionalExtrasTitle: localized.optionalExtrasTitle || fallback.optionalExtrasTitle,
-      optionalExtras: localized.optionalExtras || fallback.optionalExtras,
-      suggestionsTitle: localized.suggestionsTitle || fallback.suggestionsTitle,
-      guestSuggestions: localized.guestSuggestions || fallback.guestSuggestions
+      highlights: localized.highlights || [],
+      programTitle: localized.programTitle || '',
+      program: localized.program || [],
+      includesTitle: localized.includesTitle || '',
+      includes: localized.includes || [],
+      idealForTitle: localized.idealForTitle || '',
+      idealFor: localized.idealFor || [],
+      cta: localized.cta || '',
+      contactNote: localized.contactNote || '',
+      galleryTitle: localized.galleryTitle || '',
+      gallery: outing.gallery || [],
+      coreOfferingTitle: localized.coreOfferingTitle || '',
+      coreOffering: localized.coreOffering || [],
+      optionalExtrasTitle: localized.optionalExtrasTitle || '',
+      optionalExtras: localized.optionalExtras || [],
+      suggestionsTitle: localized.suggestionsTitle || '',
+      guestSuggestions: localized.guestSuggestions || []
     };
   }
   getOutingBySlug(slug) {
@@ -1180,7 +1054,7 @@ let OutingsDataService = class OutingsDataService {
       // Older versions of this app also tried /1000/bnOutings. We support both.
       const dbCandidates = _this4.getRealtimeDatabaseCandidates(store, util);
       for (const db of dbCandidates) {
-        const directValue = yield _this4.readDatabasePath(db, _this4.collectionName);
+        const directValue = yield _this4.readDatabasePath(db, _this4.collectionPath);
         const extractedDirect = _this4.extractBnOutings(directValue);
         if (extractedDirect) return extractedDirect;
         if (util.backendFBstoreId) {
@@ -1223,7 +1097,7 @@ let OutingsDataService = class OutingsDataService {
   readBnOutingsViaRest() {
     var _this5 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const paths = [_this5.collectionName, `1000/${_this5.collectionName}`];
+      const paths = [_this5.collectionPath, `1000/${_this5.collectionName}`];
       for (const baseUrl of _this5.restDatabaseUrls) {
         for (const path of paths) {
           try {
@@ -1256,12 +1130,8 @@ let OutingsDataService = class OutingsDataService {
       for (const baseUrl of _this6.restDatabaseUrls) {
         try {
           const base = baseUrl.replace(/\/+$/, '');
-          const url = arrayIndex >= 0 ? `${base}/${_this6.collectionName}/${arrayIndex}.json` : `${base}/${_this6.collectionName}.json`;
-          if (arrayIndex >= 0) {
-            yield _this6.http.put(url, payload).toPromise();
-          } else {
-            yield _this6.http.post(url, payload).toPromise();
-          }
+          const url = `${base}/${_this6.collectionPath}/${encodeURIComponent(payload.slug)}.json`;
+          yield _this6.http.put(url, payload).toPromise();
           return true;
         } catch {
           // Try next configured Firebase Realtime Database URL.
@@ -1350,14 +1220,16 @@ let OutingsDataService = class OutingsDataService {
     return `À partir de ${price} €`;
   }
   static ctorParameters = () => [{
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_2__.StoreDbService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_3__.StoreDbService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_2__.UtilsService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_3__.UtilsService
   }, {
-    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_3__.HttpClient
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_4__.HttpClient
+  }, {
+    type: _services_boat_context_service__WEBPACK_IMPORTED_MODULE_2__.BoatContextService
   }];
 };
-OutingsDataService = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Injectable)({
+OutingsDataService = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Injectable)({
   providedIn: 'root'
 })], OutingsDataService);
 
@@ -1601,7 +1473,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/contact\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
+module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/calendar\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -2366,7 +2238,7 @@ module.exports = "<section class=\"page-hero\">\n  <div class=\"container narrow
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"fleet-page\">\n  <div class=\"container fleet-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ 'auto.home.admin-fleet.admin-fleet.component.ressources' | siteText }}</span>\n      <h1>{{ 'auto.home.admin-fleet.admin-fleet.component.flotte_bateaux' | siteText }}</h1>\n      <p>{{ 'auto.home.admin-fleet.admin-fleet.component.configurez_les_informations_des_bateaux_utilis_es_' | siteText }}</p>\n    </div>\n\n    <div class=\"fleet-layout\">\n      <aside class=\"fleet-list\">\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"newBoat()\">{{ 'auto.home.admin-fleet.admin-fleet.component.nouveau_bateau' | siteText }}</button>\n\n        <button\n          class=\"fleet-list-item\"\n          type=\"button\"\n          *ngFor=\"let boat of boats\"\n          [class.active]=\"boat.boatId === selectedBoatId\"\n          (click)=\"selectBoat(boat.boatId)\">\n          <strong>{{ boat.boatName }}</strong>\n          <small>{{ boat.manufacturer }} {{ boat.model }}</small>\n        </button>\n      </aside>\n\n      <article class=\"fleet-card\">\n        <p *ngIf=\"loading\">{{ 'auto.home.admin-fleet.admin-fleet.component.chargement' | siteText }}</p>\n\n        <div class=\"form-grid\">\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.identifiant_bateau' | siteText }}<input type=\"text\" [(ngModel)]=\"form.boatId\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.alegria' | siteText\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.nom_du_bateau' | siteText }}<input type=\"text\" [(ngModel)]=\"form.boatName\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.alegria' | siteText\" required />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.type_de_bateau' | siteText }}<input type=\"text\" [(ngModel)]=\"form.boatType\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.catamaran' | siteText\" required />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.constructeur' | siteText }}<input type=\"text\" [(ngModel)]=\"form.manufacturer\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.bali_catana' | siteText\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.mod_le' | siteText }}<input type=\"text\" [(ngModel)]=\"form.model\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.bali_4_1' | siteText\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.ann_e' | siteText }}<input type=\"number\" [(ngModel)]=\"form.year\" min=\"1900\" max=\"2100\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.immatriculation' | siteText }}<input type=\"text\" [(ngModel)]=\"form.registrationNumber\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.marina_de_d_part_par_d_faut' | siteText }}<input type=\"text\" [(ngModel)]=\"form.defaultDepartureMarina\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.marina_baie_des_anges' | siteText\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.lien_click_boat' | siteText }}<input type=\"url\" [(ngModel)]=\"form.clickAndBoatUrl\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.https_www_clickandboat_com' | siteText\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.id_annonce_click_boat' | siteText }}<input type=\"text\" [(ngModel)]=\"form.clickAndBoatListingId\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.lien_samboat' | siteText }}<input type=\"url\" [(ngModel)]=\"form.samBoatUrl\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.id_annonce_samboat' | siteText }}<input type=\"text\" [(ngModel)]=\"form.samBoatListingId\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.lien_site_alegria' | siteText }}<input type=\"url\" [(ngModel)]=\"form.websiteUrl\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.caution_par_d_faut' | siteText }}<input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"form.defaultWarranty\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.skipper_par_d_faut' | siteText }}<input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"form.defaultSkipperPrice\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.nettoyage_carburant_par_d_faut' | siteText }}<input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"form.defaultCleaningPrice\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.devise' | siteText }}<input type=\"text\" [(ngModel)]=\"form.currency\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.eur' | siteText\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.passagers_maximum' | siteText }}<input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"form.maxGuests\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.cabines' | siteText }}<input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"form.cabins\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.salles_de_bain' | siteText }}<input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"form.bathrooms\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.longueur' | siteText }}<input type=\"text\" [(ngModel)]=\"form.length\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.12_37_m' | siteText\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.largeur' | siteText }}<input type=\"text\" [(ngModel)]=\"form.beam\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.tirant_d_eau' | siteText }}<input type=\"text\" [(ngModel)]=\"form.draft\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.moteurs' | siteText }}<input type=\"text\" [(ngModel)]=\"form.engines\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.image_url_photo' | siteText }}<input type=\"url\" [(ngModel)]=\"form.imageUrl\" />\n          </label>\n\n          <label class=\"checkbox-line\">\n            <input type=\"checkbox\" [(ngModel)]=\"form.active\" />{{ 'auto.home.admin-fleet.admin-fleet.component.bateau_actif' | siteText }}</label>\n        </div>\n\n        <div class=\"actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"saving\" (click)=\"saveBoat()\">\n            {{ saving ? 'Enregistrement...' : 'Enregistrer le bateau' }}\n          </button>\n        </div>\n\n        <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n        <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n      </article>\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"fleet-page\">\n  <div class=\"container fleet-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ 'auto.home.admin-fleet.admin-fleet.component.ressources' | siteText }}</span>\n      <h1>{{ 'auto.home.admin-fleet.admin-fleet.component.flotte_bateaux' | siteText }}</h1>\n      <p>{{ 'auto.home.admin-fleet.admin-fleet.component.configurez_les_informations_des_bateaux_utilis_es_' | siteText }}</p>\n    </div>\n\n    <div class=\"fleet-layout\">\n      <aside class=\"fleet-list\">\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"newBoat()\">{{ 'auto.home.admin-fleet.admin-fleet.component.nouveau_bateau' | siteText }}</button>\n\n        <button\n          class=\"fleet-list-item\"\n          type=\"button\"\n          *ngFor=\"let boat of boats\"\n          [class.active]=\"boat.boatId === selectedBoatId\"\n          (click)=\"selectBoat(boat.boatId)\">\n          <strong>{{ boat.boatName }}</strong>\n          <small>{{ boat.manufacturer }} {{ boat.model }}</small>\n        </button>\n      </aside>\n\n      <article class=\"fleet-card\">\n        <p *ngIf=\"loading\">{{ 'auto.home.admin-fleet.admin-fleet.component.chargement' | siteText }}</p>\n\n        <div class=\"form-grid\">\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.identifiant_bateau' | siteText }}<input type=\"text\" [(ngModel)]=\"form.boatId\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.alegria' | siteText\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.nom_du_bateau' | siteText }}<input type=\"text\" [(ngModel)]=\"form.boatName\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.alegria' | siteText\" required />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.type_de_bateau' | siteText }}<input type=\"text\" [(ngModel)]=\"form.boatType\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.catamaran' | siteText\" required />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.constructeur' | siteText }}<input type=\"text\" [(ngModel)]=\"form.manufacturer\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.bali_catana' | siteText\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.mod_le' | siteText }}<input type=\"text\" [(ngModel)]=\"form.model\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.bali_4_1' | siteText\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.ann_e' | siteText }}<input type=\"number\" [(ngModel)]=\"form.year\" min=\"1900\" max=\"2100\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.immatriculation' | siteText }}<input type=\"text\" [(ngModel)]=\"form.registrationNumber\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.marina_de_d_part_par_d_faut' | siteText }}<input type=\"text\" [(ngModel)]=\"form.defaultDepartureMarina\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.marina_baie_des_anges' | siteText\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.lien_click_boat' | siteText }}<input type=\"url\" [(ngModel)]=\"form.clickAndBoatUrl\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.https_www_clickandboat_com' | siteText\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.id_annonce_click_boat' | siteText }}<input type=\"text\" [(ngModel)]=\"form.clickAndBoatListingId\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.lien_samboat' | siteText }}<input type=\"url\" [(ngModel)]=\"form.samBoatUrl\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.id_annonce_samboat' | siteText }}<input type=\"text\" [(ngModel)]=\"form.samBoatListingId\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.lien_site_alegria' | siteText }}<input type=\"url\" [(ngModel)]=\"form.websiteUrl\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.caution_par_d_faut' | siteText }}<input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"form.defaultWarranty\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.skipper_par_d_faut' | siteText }}<input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"form.defaultSkipperPrice\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.nettoyage_carburant_par_d_faut' | siteText }}<input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"form.defaultCleaningPrice\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.devise' | siteText }}<input type=\"text\" [(ngModel)]=\"form.currency\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.eur' | siteText\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.passagers_maximum' | siteText }}<input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"form.maxGuests\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.cabines' | siteText }}<input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"form.cabins\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.salles_de_bain' | siteText }}<input type=\"number\" min=\"0\" step=\"1\" [(ngModel)]=\"form.bathrooms\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.longueur' | siteText }}<input type=\"text\" [(ngModel)]=\"form.length\" [placeholder]=\"'auto.home.admin-fleet.admin-fleet.component.12_37_m' | siteText\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.largeur' | siteText }}<input type=\"text\" [(ngModel)]=\"form.beam\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.tirant_d_eau' | siteText }}<input type=\"text\" [(ngModel)]=\"form.draft\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.moteurs' | siteText }}<input type=\"text\" [(ngModel)]=\"form.engines\" />\n          </label>\n\n          <label>{{ 'auto.home.admin-fleet.admin-fleet.component.image_url_photo' | siteText }}<input type=\"url\" [(ngModel)]=\"form.imageUrl\" />\n          </label>\n\n          <label class=\"checkbox-line\">\n            <input type=\"checkbox\" [(ngModel)]=\"form.active\" />{{ 'auto.home.admin-fleet.admin-fleet.component.bateau_actif' | siteText }}</label>\n        </div>\n\n        <div class=\"actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"saving\" (click)=\"saveBoat()\">\n            {{ saving ? 'Enregistrement...' : 'Enregistrer le bateau' }}\n          </button>\n        </div>\n\n        <p class=\"success\" *ngIf=\"message\">{{ message }}</p>\n        <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n      </article>\n    </div>\n\n    <article class=\"fleet-card\" style=\"margin-top: 2rem\">\n      <div class=\"section-head\">\n        <span class=\"eyebrow\">Équipage</span>\n        <h2>Skippers</h2>\n        <p>Un skipper peut être rattaché à un ou plusieurs bateaux.</p>\n      </div>\n      <div class=\"fleet-layout\">\n        <aside class=\"fleet-list\">\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"newSkipper()\">Nouveau skipper</button>\n          <button class=\"fleet-list-item\" type=\"button\" *ngFor=\"let skipper of skippers\" (click)=\"editSkipper(skipper)\">\n            <strong>{{ skipper.displayName }}</strong>\n            <small>{{ skipper.email }}</small>\n          </button>\n        </aside>\n        <div class=\"form-grid\">\n          <label>Identifiant<input [(ngModel)]=\"skipperForm.skipperId\" placeholder=\"jean-dupont\"></label>\n          <label>Nom affiché<input [(ngModel)]=\"skipperForm.displayName\" required></label>\n          <label>Propriétaire<input [(ngModel)]=\"skipperForm.ownerId\"></label>\n          <label>Email<input type=\"email\" [(ngModel)]=\"skipperForm.email\"></label>\n          <label>Téléphone<input [(ngModel)]=\"skipperForm.phone\"></label>\n          <label>Numéro de brevet<input [(ngModel)]=\"skipperForm.licenseNumber\"></label>\n          <label>Tarif journalier<input type=\"number\" min=\"0\" [(ngModel)]=\"skipperForm.dailyRate\"></label>\n          <label class=\"checkbox-line\"><input type=\"checkbox\" [(ngModel)]=\"skipperForm.active\">Skipper actif</label>\n          <label class=\"checkbox-line\" *ngIf=\"selectedBoatId\">\n            <input type=\"checkbox\" [(ngModel)]=\"skipperAssignedToSelectedBoat\">\n            Affecté à {{ form.boatName }}\n          </label>\n          <div class=\"actions\"><button class=\"btn btn-primary\" type=\"button\" [disabled]=\"saving\" (click)=\"saveSkipper()\">Enregistrer le skipper</button></div>\n        </div>\n      </div>\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -2626,7 +2498,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<div class=\"cms-shell\">\n  <header class=\"cms-header\">\n    <div>\n      <p class=\"eyebrow\">Administration Firebase</p>\n      <h1>Contenu du site</h1>\n      <p>Exploration automatique de tous les éléments présents dans <code>siteContent</code> et <code>cmsContent</code>.</p>\n    </div>\n    <div class=\"header-actions\">\n      <span class=\"dirty-badge\" *ngIf=\"dirty\">Modifications non enregistrées</span>\n      <button type=\"button\" class=\"secondary\" (click)=\"loadAllContent()\" [disabled]=\"loading || saving\">Actualiser</button>\n      <button type=\"button\" class=\"primary\" (click)=\"saveSection()\" [disabled]=\"!dirty || loading || saving\">\n        {{ saving ? 'Enregistrement…' : 'Enregistrer la rubrique' }}\n      </button>\n    </div>\n  </header>\n\n  <div class=\"status success\" *ngIf=\"message\">{{ message }}</div>\n  <div class=\"status error\" *ngIf=\"error\">{{ error }}</div>\n\n  <section class=\"source-selector\" *ngIf=\"!loading\">\n    <label>\n      <span>Source Firebase</span>\n      <select [ngModel]=\"selectedRoot\" (ngModelChange)=\"changeRoot($event)\">\n        <option *ngFor=\"let root of roots\" [value]=\"root.id\">{{ root.label }}</option>\n      </select>\n    </label>\n    <small *ngIf=\"selectedRoot === 'siteContent'\">Structure Firebase par langue, présentée ici par rubrique pour faciliter l’édition multilingue.</small>\n    <small *ngIf=\"selectedRoot === 'cmsContent'\">Contenu complémentaire et modèles CMS.</small>\n  </section>\n\n  <section class=\"metrics\" *ngIf=\"!loading\">\n    <article><strong>{{ sections.length }}</strong><span>rubriques découvertes</span></article>\n    <article><strong>{{ totalLeafCount }}</strong><span>champs Firebase</span></article>\n    <article><strong>{{ allLeaves.length }}</strong><span>champs dans la rubrique</span></article>\n    <article><strong>{{ visibleLeaves.length }}</strong><span>champs affichés</span></article>\n  </section>\n\n  <div class=\"loading\" *ngIf=\"loading\">Chargement complet de siteContent et cmsContent…</div>\n\n  <div class=\"cms-layout\" *ngIf=\"!loading\">\n    <aside class=\"section-nav\">\n      <div class=\"nav-title\">\n        <strong>Rubriques Firebase</strong>\n        <small>Détectées automatiquement</small>\n      </div>\n      <button\n        type=\"button\"\n        *ngFor=\"let section of sections; trackBy: trackSection\"\n        [class.active]=\"section.key === selectedSectionKey\"\n        (click)=\"selectSection(section.key)\">\n        <span class=\"section-name\">{{ section.label }}</span>\n        <span class=\"section-meta\">{{ section.leaves }} champs</span>\n      </button>\n      <div class=\"empty-nav\" *ngIf=\"sections.length === 0\">Aucune rubrique dans la source sélectionnée.</div>\n    </aside>\n\n    <main class=\"editor\" *ngIf=\"selectedSectionKey\">\n      <div class=\"editor-title\">\n        <div>\n          <p class=\"path\">{{ selectedRoot }} / {{ selectedSectionKey }}</p>\n          <h2>{{ selectedSectionLabel }}</h2>\n        </div>\n        <div class=\"editor-actions\">\n          <button type=\"button\" class=\"secondary\" (click)=\"addField()\">+ Ajouter un champ</button>\n          <button type=\"button\" class=\"secondary\" (click)=\"exportSection()\">Exporter JSON</button>\n          <button type=\"button\" class=\"secondary\" (click)=\"toggleJsonMode()\">\n            {{ jsonMode ? 'Revenir au formulaire' : 'Mode JSON' }}\n          </button>\n        </div>\n      </div>\n\n      <ng-container *ngIf=\"!jsonMode\">\n        <div class=\"toolbar\">\n          <label class=\"search\">\n            <span>Rechercher dans les clés et les valeurs</span>\n            <input type=\"search\" [(ngModel)]=\"searchText\" placeholder=\"Ex. skipper, title, WhatsApp…\">\n          </label>\n          <label *ngIf=\"translatedSection\">\n            <span>Langue</span>\n            <select [(ngModel)]=\"selectedLanguage\">\n              <option *ngFor=\"let language of languages\" [value]=\"language.id\">{{ language.label }}</option>\n            </select>\n          </label>\n          <label class=\"checkbox\" *ngIf=\"translatedSection && selectedLanguage !== 'all'\">\n            <input type=\"checkbox\" [(ngModel)]=\"showOnlyMissingTranslations\">\n            <span>Uniquement les traductions vides</span>\n          </label>\n        </div>\n\n        <div class=\"fields-table\" *ngIf=\"visibleLeaves.length; else noFields\">\n          <div class=\"field-row\" *ngFor=\"let field of visibleLeaves; trackBy: trackField\">\n            <div class=\"field-key\">\n              <strong>{{ field.label }}</strong>\n              <code>{{ field.relativePath.join(' / ') }}</code>\n              <span class=\"language-chip\" *ngIf=\"field.language\">{{ field.language.toUpperCase() }}</span>\n            </div>\n\n            <div class=\"field-value\">\n              <label *ngIf=\"field.type === 'boolean'\" class=\"boolean-control\">\n                <input type=\"checkbox\" [ngModel]=\"field.value\" (ngModelChange)=\"updateField(field, $event)\">\n                <span>{{ field.value ? 'Activé' : 'Désactivé' }}</span>\n              </label>\n\n              <input\n                *ngIf=\"field.type === 'number'\"\n                type=\"number\"\n                [ngModel]=\"field.value\"\n                (ngModelChange)=\"updateField(field, $event)\">\n\n              <textarea\n                *ngIf=\"field.type === 'string' && isLongString(field.value)\"\n                rows=\"4\"\n                [ngModel]=\"field.value\"\n                (ngModelChange)=\"updateField(field, $event)\"></textarea>\n\n              <input\n                *ngIf=\"field.type === 'string' && !isLongString(field.value)\"\n                type=\"text\"\n                [ngModel]=\"field.value\"\n                (ngModelChange)=\"updateField(field, $event)\">\n\n              <input\n                *ngIf=\"field.type === 'null'\"\n                type=\"text\"\n                placeholder=\"Valeur vide\"\n                [ngModel]=\"field.value\"\n                (ngModelChange)=\"updateField(field, $event)\">\n            </div>\n\n            <button type=\"button\" class=\"delete\" (click)=\"deleteField(field)\" title=\"Supprimer ce champ\">×</button>\n          </div>\n        </div>\n\n        <ng-template #noFields>\n          <div class=\"empty-state\">Aucun champ ne correspond aux filtres sélectionnés.</div>\n        </ng-template>\n      </ng-container>\n\n      <section class=\"json-panel\" *ngIf=\"jsonMode\">\n        <p>Cette vue contient la rubrique complète, y compris les tableaux et les objets imbriqués.</p>\n        <textarea [(ngModel)]=\"jsonText\" (ngModelChange)=\"markDirty()\" spellcheck=\"false\"></textarea>\n        <div class=\"json-actions\">\n          <button type=\"button\" class=\"secondary\" (click)=\"applyJson()\">Vérifier et appliquer</button>\n        </div>\n      </section>\n\n      <footer class=\"editor-footer\">\n        <button type=\"button\" class=\"secondary\" (click)=\"resetSection()\" [disabled]=\"!dirty\">Annuler les modifications</button>\n        <button type=\"button\" class=\"primary\" (click)=\"saveSection()\" [disabled]=\"!dirty || saving\">\n          {{ saving ? 'Enregistrement…' : 'Enregistrer dans Firebase' }}\n        </button>\n      </footer>\n    </main>\n  </div>\n</div>\n";
+module.exports = "<div class=\"cms-shell\">\n  <header class=\"cms-header\">\n    <div>\n      <p class=\"eyebrow\">Configuration du site bateau</p>\n      <h1>Contenu du site</h1>\n      <p>Modifiez uniquement les informations essentielles nécessaires pour publier ce site pour un bateau et un propriétaire.</p>\n    </div>\n    <div class=\"header-actions\">\n      <button type=\"button\" class=\"secondary\" (click)=\"load()\" [disabled]=\"loading || saving\">Actualiser</button>\n      <button type=\"button\" class=\"primary\" (click)=\"saveCurrentTab()\" [disabled]=\"saving || loading\">\n        {{ saving ? 'Enregistrement…' : 'Enregistrer' }}\n      </button>\n    </div>\n  </header>\n\n  <div class=\"status success\" *ngIf=\"message\">{{ message }}</div>\n  <div class=\"status error\" *ngIf=\"error\">{{ error }}</div>\n  <div class=\"loading\" *ngIf=\"loading\">Chargement du contenu Firebase…</div>\n\n  <ng-container *ngIf=\"!loading\">\n    <section class=\"profile-bar\">\n      <label>\n        <span>Identifiant du bateau</span>\n        <select [ngModel]=\"boatId\" (ngModelChange)=\"selectBoat($event)\">\n          <option *ngFor=\"let boat of boats\" [value]=\"boat.boatId\">{{ boat.boatName }} ({{ boat.boatId }})</option>\n        </select>\n        <small>Ajoutez d’abord un bateau dans « Flotte », puis choisissez-le ici.</small>\n      </label>\n      <label>\n        <span>Identifiant du propriétaire</span>\n        <input type=\"text\" [(ngModel)]=\"ownerId\" (ngModelChange)=\"markDirty()\" placeholder=\"owner-id\">\n        <small>Permet de rattacher cette version du site à un autre propriétaire.</small>\n      </label>\n      <label>\n        <span>Langue affichée</span>\n        <select [(ngModel)]=\"selectedLanguage\">\n          <option *ngFor=\"let language of languages\" [value]=\"language.id\">{{ language.label }}</option>\n        </select>\n        <small>Éditez une langue, puis traduisez automatiquement.</small>\n      </label>\n    </section>\n\n    <nav class=\"tabs\" aria-label=\"Rubriques du CMS\">\n      <button type=\"button\" [class.active]=\"activeTab === 'outings'\" (click)=\"selectTab('outings')\">1. Sorties</button>\n      <button type=\"button\" [class.active]=\"activeTab === 'boat'\" (click)=\"selectTab('boat')\">2. Bateau</button>\n      <button type=\"button\" [class.active]=\"activeTab === 'pricing'\" (click)=\"selectTab('pricing')\">3. Prix</button>\n      <button type=\"button\" [class.active]=\"activeTab === 'contact'\" (click)=\"selectTab('contact')\">4. Contact</button>\n    </nav>\n\n    <main class=\"editor-card\">\n      <div class=\"editor-heading\">\n        <div>\n          <h2 *ngIf=\"activeTab === 'outings'\">Description des sorties</h2>\n          <h2 *ngIf=\"activeTab === 'boat'\">Description du bateau</h2>\n          <h2 *ngIf=\"activeTab === 'pricing'\">Modèle de prix</h2>\n          <h2 *ngIf=\"activeTab === 'contact'\">Informations de contact</h2>\n          <p *ngIf=\"activeTab !== 'pricing'\">Contenu affiché en {{ languageLabel(selectedLanguage) }}.</p>\n          <p *ngIf=\"activeTab === 'pricing'\">Tarifs opérationnels communs à toutes les langues.</p>\n        </div>\n        <button\n          *ngIf=\"activeTab !== 'pricing'\"\n          type=\"button\"\n          class=\"translate\"\n          (click)=\"translateCurrentTab()\"\n          [disabled]=\"translating\">\n          {{ translating ? 'Traduction en cours…' : 'Traduire vers toutes les langues' }}\n        </button>\n      </div>\n\n      <section *ngIf=\"activeTab === 'outings'\" class=\"section-body\">\n        <div class=\"form-grid two\">\n          <label><span>Titre de la page</span><input [(ngModel)]=\"outingsPage.title\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Surtitre</span><input [(ngModel)]=\"outingsPage.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Introduction</span><textarea rows=\"3\" [(ngModel)]=\"outingsPage.intro\" (ngModelChange)=\"markDirty()\"></textarea></label>\n        </div>\n\n        <div class=\"item-card\" *ngFor=\"let outing of outings; let i = index; trackBy: trackByIndex\">\n          <div class=\"item-title\">\n            <h3>Sortie {{ i + 1 }}</h3>\n            <button type=\"button\" class=\"danger-link\" (click)=\"removeOuting(i)\">Supprimer</button>\n          </div>\n          <div class=\"form-grid two\">\n            <label><span>Nom</span><input [(ngModel)]=\"outing.title\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Durée</span><input [(ngModel)]=\"outing.duration\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Nombre de passagers</span><input [(ngModel)]=\"outing.guests\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Slug URL</span><input [(ngModel)]=\"outing.slug\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Description</span><textarea rows=\"4\" [(ngModel)]=\"outing.description\" (ngModelChange)=\"markDirty()\"></textarea></label>\n            <label><span>Surtitre de la page détaillée</span><input [(ngModel)]=\"outing.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Sous-titre</span><input [(ngModel)]=\"outing.subtitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Introduction détaillée</span><textarea rows=\"4\" [(ngModel)]=\"outing.intro\" (ngModelChange)=\"markDirty()\"></textarea></label>\n            <label class=\"wide\"><span>Image</span><input [(ngModel)]=\"outing.image\" (ngModelChange)=\"markDirty()\" placeholder=\"assets/img/...\"></label>\n          </div>\n\n          <div class=\"simple-list\">\n            <div class=\"list-heading\"><h4>Points forts</h4><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(outing.highlights || (outing.highlights = []))\">+ Ajouter</button></div>\n            <div class=\"list-row\" *ngFor=\"let item of outing.highlights; let j = index; trackBy: trackByIndex\">\n              <input [(ngModel)]=\"outing.highlights[j]\" (ngModelChange)=\"markDirty()\">\n              <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(outing.highlights, j)\">×</button>\n            </div>\n          </div>\n\n          <div class=\"form-grid two\">\n            <label><span>Titre du programme</span><input [(ngModel)]=\"outing.programTitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Titre « inclus »</span><input [(ngModel)]=\"outing.includesTitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Titre « idéal pour »</span><input [(ngModel)]=\"outing.idealForTitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Bouton d’action</span><input [(ngModel)]=\"outing.cta\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Note de contact</span><textarea rows=\"2\" [(ngModel)]=\"outing.contactNote\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          </div>\n\n          <div class=\"simple-list\">\n            <div class=\"list-heading\"><h4>Programme</h4><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(outing.program || (outing.program = []))\">+ Ajouter</button></div>\n            <div class=\"list-row\" *ngFor=\"let item of outing.program; let j = index; trackBy: trackByIndex\">\n              <input [(ngModel)]=\"outing.program[j]\" (ngModelChange)=\"markDirty()\">\n              <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(outing.program, j)\">×</button>\n            </div>\n          </div>\n\n          <div class=\"simple-list\">\n            <div class=\"list-heading\"><h4>Éléments inclus</h4><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(outing.includes || (outing.includes = []))\">+ Ajouter</button></div>\n            <div class=\"list-row\" *ngFor=\"let item of outing.includes; let j = index; trackBy: trackByIndex\">\n              <input [(ngModel)]=\"outing.includes[j]\" (ngModelChange)=\"markDirty()\">\n              <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(outing.includes, j)\">×</button>\n            </div>\n          </div>\n\n          <div class=\"simple-list\">\n            <div class=\"list-heading\"><h4>Idéal pour</h4><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(outing.idealFor || (outing.idealFor = []))\">+ Ajouter</button></div>\n            <div class=\"list-row\" *ngFor=\"let item of outing.idealFor; let j = index; trackBy: trackByIndex\">\n              <input [(ngModel)]=\"outing.idealFor[j]\" (ngModelChange)=\"markDirty()\">\n              <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(outing.idealFor, j)\">×</button>\n            </div>\n          </div>\n        </div>\n        <button type=\"button\" class=\"secondary add-button\" (click)=\"addOuting()\">+ Ajouter une sortie</button>\n      </section>\n\n      <section *ngIf=\"activeTab === 'boat'\" class=\"section-body\">\n        <div class=\"form-grid two\">\n          <label><span>Nom du bateau</span><input [(ngModel)]=\"brand.name\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Slogan</span><input [(ngModel)]=\"current.brandTagline\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Surtitre</span><input [(ngModel)]=\"boatPage.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Titre principal</span><input [(ngModel)]=\"boatPage.title\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Description du bateau</span><textarea rows=\"4\" [(ngModel)]=\"boatPage.intro\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          <label><span>Titre confort</span><input [(ngModel)]=\"boatPage.comfortTitle\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Confort et ambiance</span><textarea rows=\"3\" [(ngModel)]=\"boatPage.comfortText\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          <label class=\"wide\"><span>Image principale</span><input [(ngModel)]=\"current.boatHeroImage\" (ngModelChange)=\"markDirty()\" placeholder=\"assets/img/boat/...\"></label>\n        </div>\n\n        <div class=\"simple-list\">\n          <div class=\"list-heading\"><h3>Points forts</h3><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(boatPage.reasons || (boatPage.reasons = []))\">+ Ajouter</button></div>\n          <div class=\"list-row\" *ngFor=\"let reason of boatPage.reasons; let i = index; trackBy: trackByIndex\">\n            <input [(ngModel)]=\"boatPage.reasons[i]\" (ngModelChange)=\"markDirty()\">\n            <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(boatPage.reasons, i)\">×</button>\n          </div>\n        </div>\n      </section>\n\n      <section *ngIf=\"activeTab === 'pricing'\" class=\"section-body\">\n        <div class=\"editor-heading subsection-heading\">\n          <div>\n            <h3>Texte affiché sur le site</h3>\n            <p>Contenu affiché en {{ languageLabel(selectedLanguage) }}.</p>\n          </div>\n          <button type=\"button\" class=\"translate\" (click)=\"translateCurrentTab()\" [disabled]=\"translating\">\n            {{ translating ? 'Traduction en cours…' : 'Traduire les textes de prix' }}\n          </button>\n        </div>\n        <div class=\"form-grid two\">\n          <label><span>Surtitre</span><input [(ngModel)]=\"pricingContent.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Titre</span><input [(ngModel)]=\"pricingContent.title\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Description</span><textarea rows=\"3\" [(ngModel)]=\"pricingContent.text\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          <label><span>Titre « inclus »</span><input [(ngModel)]=\"pricingContent.includedTitle\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Titre « options »</span><input [(ngModel)]=\"pricingContent.optionsTitle\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Bouton d’action</span><input [(ngModel)]=\"pricingContent.cta\" (ngModelChange)=\"markDirty()\"></label>\n        </div>\n        <div class=\"simple-list\">\n          <div class=\"list-heading\"><h3>Éléments inclus</h3><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(pricingContent.included || (pricingContent.included = []))\">+ Ajouter</button></div>\n          <div class=\"list-row\" *ngFor=\"let item of pricingContent.included; let i = index; trackBy: trackByIndex\">\n            <input [(ngModel)]=\"pricingContent.included[i]\" (ngModelChange)=\"markDirty()\">\n            <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(pricingContent.included, i)\">×</button>\n          </div>\n        </div>\n        <div class=\"simple-list\">\n          <div class=\"list-heading\"><h3>Options possibles</h3><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(pricingContent.options || (pricingContent.options = []))\">+ Ajouter</button></div>\n          <div class=\"list-row\" *ngFor=\"let item of pricingContent.options; let i = index; trackBy: trackByIndex\">\n            <input [(ngModel)]=\"pricingContent.options[i]\" (ngModelChange)=\"markDirty()\">\n            <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(pricingContent.options, i)\">×</button>\n          </div>\n        </div>\n        <h3>Montants opérationnels</h3>\n        <div class=\"form-grid three pricing-grid\">\n          <label><span>Journée (€)</span><input type=\"number\" [(ngModel)]=\"pricing.day\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Demi-journée (€)</span><input type=\"number\" [(ngModel)]=\"pricing.halfDay\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Coucher de soleil (€)</span><input type=\"number\" [(ngModel)]=\"pricing.sunset\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Soirée (€)</span><input type=\"number\" [(ngModel)]=\"pricing.evening\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Skipper (€)</span><input type=\"number\" [(ngModel)]=\"pricing.skipperPrice\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Ménage (€)</span><input type=\"number\" [(ngModel)]=\"pricing.cleaningPrice\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Passagers inclus</span><input type=\"number\" [(ngModel)]=\"pricing.nominalGuests\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Maximum passagers</span><input type=\"number\" [(ngModel)]=\"pricing.maxGuests\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Supplément par passager (€)</span><input type=\"number\" [(ngModel)]=\"pricing.extraGuestPrice\" (ngModelChange)=\"markDirty()\"></label>\n        </div>\n        <p class=\"help-box\">L’enregistrement met à jour la source unique <code>bnPricingModel/{{ boatId }}</code>.</p>\n      </section>\n\n      <section *ngIf=\"activeTab === 'contact'\" class=\"section-body\">\n        <div class=\"form-grid two\">\n          <label><span>Titre de la page</span><input [(ngModel)]=\"contactPage.title\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Surtitre</span><input [(ngModel)]=\"contactPage.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Introduction</span><textarea rows=\"3\" [(ngModel)]=\"contactPage.intro\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          <label><span>Email</span><input type=\"email\" [(ngModel)]=\"contactInfo.email\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Téléphone affiché</span><input [(ngModel)]=\"contactInfo.phone\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Téléphone brut</span><input [(ngModel)]=\"contactInfo.phoneRaw\" (ngModelChange)=\"markDirty()\" placeholder=\"+336...\"></label>\n          <label><span>WhatsApp affiché</span><input [(ngModel)]=\"contactInfo.whatsapp\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>WhatsApp brut</span><input [(ngModel)]=\"contactInfo.whatsappRaw\" (ngModelChange)=\"markDirty()\" placeholder=\"+336...\"></label>\n          <label class=\"wide\"><span>Port de départ / zone</span><input [(ngModel)]=\"contactInfo.basePort\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Texte de contact direct</span><textarea rows=\"3\" [(ngModel)]=\"contactPage.directText\" (ngModelChange)=\"markDirty()\"></textarea></label>\n        </div>\n      </section>\n\n      <footer class=\"editor-footer\">\n        <span *ngIf=\"dirty\">Modifications non enregistrées</span>\n        <button type=\"button\" class=\"primary\" (click)=\"saveCurrentTab()\" [disabled]=\"saving\">\n          {{ saving ? 'Enregistrement…' : 'Enregistrer cette rubrique' }}\n        </button>\n      </footer>\n    </main>\n  </ng-container>\n</div>\n";
 
 /***/ }),
 
@@ -2642,14 +2514,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AdminSiteContentComponent: () => (/* binding */ AdminSiteContentComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _admin_site_content_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin-site-content.component.html?ngResource */ 13586);
 /* harmony import */ var _admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./admin-site-content.component.scss?ngResource */ 3866);
 /* harmony import */ var _admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ 93262);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 56196);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 72354);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ 56196);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ 72354);
+/* harmony import */ var _fleet_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../fleet.service */ 84737);
+/* harmony import */ var _services_boat_context_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/boat-context.service */ 61766);
+
+
 
 
 
@@ -2659,11 +2535,10 @@ __webpack_require__.r(__webpack_exports__);
 
 let AdminSiteContentComponent = class AdminSiteContentComponent {
   http;
+  fleetService;
+  boatContext;
   firebaseDatabaseUrl = 'https://adn-dev-4d05d.firebaseio.com';
   languages = [{
-    id: 'all',
-    label: 'Toutes'
-  }, {
     id: 'fr',
     label: 'Français'
   }, {
@@ -2685,344 +2560,409 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
     id: 'ru',
     label: 'Русский'
   }];
-  roots = [{
-    id: 'siteContent',
-    label: 'Site content (contenu principal)'
-  }, {
-    id: 'cmsContent',
-    label: 'CMS content (contenu complémentaire)'
-  }];
-  selectedRoot = 'siteContent';
-  content = {};
-  originalContent = {};
-  rawSiteContent = {};
-  sections = [];
-  selectedSectionKey = '';
-  selectedLanguage = 'all';
-  searchText = '';
+  activeTab = 'outings';
+  selectedLanguage = 'fr';
+  boatId = 'alegria';
+  ownerId = 'alegria';
+  boats = [];
+  siteContent = {};
+  pricing = this.defaultPricing();
   loading = false;
   saving = false;
+  translating = false;
   dirty = false;
   message = '';
   error = '';
-  jsonMode = false;
-  jsonText = '';
-  showOnlyMissingTranslations = false;
-  constructor(http) {
+  constructor(http, fleetService, boatContext) {
     this.http = http;
+    this.fleetService = fleetService;
+    this.boatContext = boatContext;
+    this.boatId = this.boatContext.boatId;
   }
   ngOnInit() {
     var _this = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      yield _this.loadAllContent();
+      yield _this.load();
     })();
   }
-  get selectedSection() {
-    return this.selectedSectionKey ? this.content?.[this.selectedSectionKey] : null;
+  get current() {
+    if (!this.siteContent[this.selectedLanguage]) this.siteContent[this.selectedLanguage] = {};
+    return this.siteContent[this.selectedLanguage];
   }
-  get selectedSectionLabel() {
-    return this.humanize(this.selectedSectionKey || this.selectedRoot);
+  get outings() {
+    if (!Array.isArray(this.current.outings)) this.current.outings = [];
+    return this.current.outings;
   }
-  get allLeaves() {
-    if (!this.selectedSectionKey) return [];
-    return this.flattenLeaves(this.selectedSection, [this.selectedSectionKey], []);
+  get outingsPage() {
+    if (!this.current.outingsPage) this.current.outingsPage = {};
+    return this.current.outingsPage;
   }
-  get visibleLeaves() {
-    const query = this.searchText.trim().toLowerCase();
-    const fields = this.allLeaves.filter(field => {
-      if (this.selectedLanguage !== 'all' && field.language && field.language !== this.selectedLanguage) return false;
-      if (this.selectedLanguage !== 'all' && this.hasLanguageBranches(this.selectedSection) && !field.language) return false;
-      if (this.showOnlyMissingTranslations && !this.isMissingTranslation(field)) return false;
-      if (!query) return true;
-      const haystack = `${field.relativePath.join(' ')} ${field.label} ${String(field.value ?? '')}`.toLowerCase();
-      return haystack.includes(query);
-    });
-    return fields;
+  get boatPage() {
+    if (!this.current.boatPage) this.current.boatPage = {};
+    return this.current.boatPage;
   }
-  get totalLeafCount() {
-    return this.sections.reduce((sum, section) => sum + section.leaves, 0);
+  get contactPage() {
+    if (!this.current.contactPage) this.current.contactPage = {};
+    return this.current.contactPage;
   }
-  get translatedSection() {
-    return this.hasLanguageBranches(this.selectedSection);
+  get contactInfo() {
+    if (!this.current.contactInfo) this.current.contactInfo = {};
+    return this.current.contactInfo;
   }
-  loadAllContent() {
+  get pricingContent() {
+    if (!this.current.homePage) this.current.homePage = {};
+    if (!this.current.homePage.pricing) this.current.homePage.pricing = {};
+    return this.current.homePage.pricing;
+  }
+  get brand() {
+    if (!this.current.brand || typeof this.current.brand !== 'object') {
+      this.current.brand = {
+        name: typeof this.current.brand === 'string' ? this.current.brand : 'Alegria'
+      };
+    }
+    return this.current.brand;
+  }
+  load() {
     var _this2 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this2.loading = true;
       _this2.message = '';
       _this2.error = '';
       try {
-        const [cmsData, siteData] = yield Promise.all([(0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)(_this2.http.get(`${_this2.firebaseDatabaseUrl}/cmsContent.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_4__.timeout)(15000))), (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)(_this2.http.get(`${_this2.firebaseDatabaseUrl}/siteContent.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_4__.timeout)(15000)))]);
-        _this2.rawSiteContent = siteData || {};
-        _this2.content = _this2.selectedRoot === 'siteContent' ? _this2.transposeSiteContent(_this2.rawSiteContent) : cmsData || {};
-        _this2.originalContent = _this2.clone(_this2.content);
-        _this2.rebuildSections();
-        if (!_this2.selectedSectionKey || !_this2.content[_this2.selectedSectionKey]) {
-          _this2.selectedSectionKey = _this2.sections[0]?.key || '';
-        }
-        _this2.refreshJson();
+        const [site, operationalPricing, boats] = yield Promise.all([(0,rxjs__WEBPACK_IMPORTED_MODULE_5__.firstValueFrom)(_this2.http.get(`${_this2.firebaseDatabaseUrl}/siteContent/${encodeURIComponent(_this2.boatId)}.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_6__.timeout)(15000))), (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.firstValueFrom)(_this2.http.get(`${_this2.firebaseDatabaseUrl}/bnPricingModel.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_6__.timeout)(15000))), _this2.fleetService.listBoats()]);
+        _this2.siteContent = site || {};
+        _this2.boats = boats;
+        const profile = boats.find(boat => boat.boatId === _this2.boatId);
+        _this2.ownerId = profile?.ownerId || _this2.ownerId;
+        _this2.pricing = _this2.clone(operationalPricing?.[_this2.boatId] || _this2.defaultPricing());
+        _this2.ensureLanguageShapes();
         _this2.dirty = false;
       } catch (e) {
-        _this2.error = e?.error?.message || 'Impossible de charger le contenu du site depuis Firebase.';
+        _this2.error = e?.error?.message || 'Impossible de charger le contenu depuis Firebase.';
       } finally {
         _this2.loading = false;
       }
     })();
   }
-  changeRoot(root) {
+  selectBoat(boatId) {
     var _this3 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (root === _this3.selectedRoot) return;
-      if (_this3.dirty && !confirm('Des modifications ne sont pas enregistrées. Changer de source malgré tout ?')) return;
-      _this3.selectedRoot = root;
-      _this3.selectedSectionKey = '';
-      yield _this3.loadAllContent();
+      _this3.boatId = _this3.boatContext.setBoatId(boatId);
+      yield _this3.load();
     })();
   }
-  selectSection(key) {
-    if (this.dirty && !confirm('Des modifications ne sont pas enregistrées. Changer de rubrique malgré tout ?')) return;
-    this.selectedSectionKey = key;
-    this.selectedLanguage = 'all';
-    this.searchText = '';
-    this.showOnlyMissingTranslations = false;
-    this.jsonMode = false;
-    this.dirty = false;
-    this.refreshJson();
+  selectTab(tab) {
+    this.activeTab = tab;
+    this.message = '';
+    this.error = '';
   }
   markDirty() {
     this.dirty = true;
     this.message = '';
   }
-  updateField(field, rawValue) {
-    let value = rawValue;
-    if (field.type === 'number') value = rawValue === '' ? 0 : Number(rawValue);
-    if (field.type === 'boolean') value = !!rawValue;
-    this.setAtPath(this.content, field.path, value);
-    field.value = value;
+  addOuting() {
+    this.outings.push({
+      title: 'Nouvelle sortie',
+      description: '',
+      duration: '',
+      guests: '',
+      image: '',
+      slug: `sortie-${Date.now()}`,
+      highlights: [],
+      eyebrow: '',
+      subtitle: '',
+      intro: '',
+      programTitle: '',
+      program: [],
+      includesTitle: '',
+      includes: [],
+      idealForTitle: '',
+      idealFor: [],
+      cta: '',
+      contactNote: ''
+    });
     this.markDirty();
   }
-  addField() {
-    const path = prompt('Chemin relatif du nouveau champ, par exemple hero/title ou i18n/fr/title :');
-    if (!path) return;
-    const parts = path.split('/').map(p => p.trim()).filter(Boolean);
-    if (!parts.length) return;
-    const fullPath = [this.selectedSectionKey, ...parts];
-    if (this.getAtPath(this.content, fullPath) !== undefined) {
-      this.error = 'Ce champ existe déjà.';
-      return;
-    }
-    this.setAtPath(this.content, fullPath, '');
+  removeOuting(index) {
+    if (!confirm('Supprimer cette sortie dans la langue affichée ?')) return;
+    this.outings.splice(index, 1);
     this.markDirty();
   }
-  deleteField(field) {
-    if (!confirm(`Supprimer définitivement « ${field.relativePath.join(' / ')} » ?`)) return;
-    this.deleteAtPath(this.content, field.path);
+  addArrayItem(target, value = '') {
+    if (!Array.isArray(target)) return;
+    target.push(value);
     this.markDirty();
   }
-  toggleJsonMode() {
-    if (!this.jsonMode) {
-      this.refreshJson();
-      this.jsonMode = true;
-      return;
-    }
-    try {
-      this.content[this.selectedSectionKey] = JSON.parse(this.jsonText || '{}');
-      this.jsonMode = false;
-      this.markDirty();
-    } catch {
-      this.error = 'Le JSON contient une erreur de syntaxe.';
-    }
+  removeArrayItem(target, index) {
+    if (!Array.isArray(target)) return;
+    target.splice(index, 1);
+    this.markDirty();
   }
-  applyJson() {
-    try {
-      this.content[this.selectedSectionKey] = JSON.parse(this.jsonText || '{}');
-      this.markDirty();
-      this.message = 'JSON appliqué localement. Cliquez sur Enregistrer pour publier.';
-    } catch {
-      this.error = 'Le JSON contient une erreur de syntaxe.';
-    }
-  }
-  resetSection() {
-    if (!confirm('Annuler toutes les modifications non enregistrées de cette rubrique ?')) return;
-    this.content[this.selectedSectionKey] = this.clone(this.originalContent[this.selectedSectionKey]);
-    this.dirty = false;
-    this.refreshJson();
-    this.message = 'Modifications locales annulées.';
-  }
-  saveSection() {
+  translateCurrentTab() {
     var _this4 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this4.selectedSectionKey) return;
-      _this4.saving = true;
+      const sourceLanguage = _this4.selectedLanguage;
+      const sourcePayload = _this4.getTabPayload(sourceLanguage);
+      if (!sourcePayload) return;
+      _this4.translating = true;
       _this4.message = '';
       _this4.error = '';
       try {
-        if (_this4.jsonMode) {
-          _this4.content[_this4.selectedSectionKey] = JSON.parse(_this4.jsonText || '{}');
+        for (const language of _this4.languages) {
+          if (language.id === sourceLanguage) continue;
+          const translated = yield _this4.translateValue(sourcePayload, sourceLanguage, language.id, []);
+          _this4.applyTabPayload(language.id, translated);
         }
-        const key = encodeURIComponent(_this4.selectedSectionKey);
-        if (_this4.selectedRoot === 'siteContent') {
-          const section = _this4.content[_this4.selectedSectionKey] || {};
-          const languageIds = _this4.languages.filter(language => language.id !== 'all').map(language => language.id);
-          yield Promise.all(languageIds.map(language => {
-            const value = section[language] === undefined ? null : section[language];
-            return (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)(_this4.http.put(`${_this4.firebaseDatabaseUrl}/siteContent/${language}/${key}.json`, value).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_4__.timeout)(15000)));
-          }));
-          _this4.rawSiteContent = _this4.untransposeSiteContent(_this4.content);
-        } else {
-          yield (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)(_this4.http.put(`${_this4.firebaseDatabaseUrl}/cmsContent/${key}.json`, _this4.content[_this4.selectedSectionKey]).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_4__.timeout)(15000)));
-        }
-        _this4.originalContent[_this4.selectedSectionKey] = _this4.clone(_this4.content[_this4.selectedSectionKey]);
-        _this4.rebuildSections();
-        _this4.refreshJson();
-        _this4.dirty = false;
-        _this4.message = `Rubrique « ${_this4.selectedSectionLabel} » enregistrée dans ${_this4.selectedRoot}.`;
+        _this4.dirty = true;
+        _this4.message = `Traduction automatique effectuée depuis ${_this4.languageLabel(sourceLanguage)} vers les 6 autres langues. Vérifiez les textes avant d’enregistrer.`;
       } catch (e) {
-        _this4.error = e instanceof SyntaxError ? 'Le JSON contient une erreur de syntaxe.' : e?.error?.message || 'Enregistrement impossible dans Firebase.';
+        _this4.error = e?.message || 'La traduction automatique a échoué.';
       } finally {
-        _this4.saving = false;
+        _this4.translating = false;
       }
     })();
   }
-  exportSection() {
-    const data = JSON.stringify(this.selectedSection, null, 2);
-    const blob = new Blob([data], {
-      type: 'application/json'
+  saveCurrentTab() {
+    var _this5 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this5.saving = true;
+      _this5.message = '';
+      _this5.error = '';
+      try {
+        const writes = [];
+        const sections = _this5.sectionsForTab(_this5.activeTab);
+        for (const language of _this5.languages) {
+          for (const section of sections) {
+            const value = _this5.siteContent?.[language.id]?.[section] ?? null;
+            writes.push((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.firstValueFrom)(_this5.http.put(`${_this5.firebaseDatabaseUrl}/siteContent/${encodeURIComponent(_this5.boatId)}/${language.id}/${encodeURIComponent(section)}.json`, value).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_6__.timeout)(15000))));
+          }
+        }
+        if (_this5.activeTab === 'pricing') {
+          writes.push((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.firstValueFrom)(_this5.http.put(`${_this5.firebaseDatabaseUrl}/bnPricingModel/${encodeURIComponent(_this5.boatId)}.json`, _this5.pricing).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_6__.timeout)(15000))));
+        }
+        if (_this5.activeTab === 'outings') {
+          writes.push(_this5.saveOperationalOutings());
+        }
+        const existingBoat = yield _this5.fleetService.getBoat(_this5.boatId);
+        writes.push(_this5.fleetService.saveBoat({
+          ...existingBoat,
+          boatId: _this5.boatId,
+          ownerId: _this5.ownerId,
+          boatName: _this5.siteContent?.fr?.brand?.name || _this5.siteContent?.fr?.brand || existingBoat.boatName
+        }));
+        yield Promise.all(writes);
+        _this5.dirty = false;
+        _this5.message = 'Contenu enregistré dans Firebase.';
+      } catch (e) {
+        _this5.error = e?.error?.message || 'Enregistrement impossible dans Firebase.';
+      } finally {
+        _this5.saving = false;
+      }
+    })();
+  }
+  sectionsForTab(tab) {
+    switch (tab) {
+      case 'outings':
+        return ['outingsPage', 'outings'];
+      case 'boat':
+        return ['brand', 'brandTagline', 'boatPage', 'boatHighlights', 'boatHeroImage'];
+      case 'contact':
+        return ['contactPage', 'contactInfo', 'phoneDisplay', 'phoneRaw'];
+      case 'pricing':
+        return ['homePage'];
+    }
+  }
+  getTabPayload(language) {
+    const lang = this.siteContent?.[language] || {};
+    switch (this.activeTab) {
+      case 'outings':
+        return {
+          outingsPage: lang.outingsPage || {},
+          outings: lang.outings || []
+        };
+      case 'boat':
+        return {
+          brand: lang.brand || {},
+          brandTagline: lang.brandTagline || '',
+          boatPage: lang.boatPage || {},
+          boatHighlights: lang.boatHighlights || [],
+          boatHeroImage: lang.boatHeroImage || ''
+        };
+      case 'contact':
+        return {
+          contactPage: lang.contactPage || {},
+          contactInfo: lang.contactInfo || {},
+          phoneDisplay: lang.phoneDisplay || '',
+          phoneRaw: lang.phoneRaw || ''
+        };
+      case 'pricing':
+        return {
+          homePage: {
+            ...(lang.homePage || {}),
+            pricing: lang.homePage?.pricing || {}
+          }
+        };
+    }
+  }
+  applyTabPayload(language, payload) {
+    if (!this.siteContent[language]) this.siteContent[language] = {};
+    Object.keys(payload || {}).forEach(key => {
+      if (key === 'homePage') {
+        this.siteContent[language].homePage = {
+          ...(this.siteContent[language].homePage || {}),
+          ...(payload.homePage || {})
+        };
+      } else {
+        this.siteContent[language][key] = payload[key];
+      }
     });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = `${this.selectedRoot}-${this.selectedSectionKey}.json`;
-    anchor.click();
-    URL.revokeObjectURL(url);
   }
-  isLongString(value) {
-    return String(value ?? '').length > 100;
-  }
-  trackSection(_index, section) {
-    return section.key;
-  }
-  trackField(_index, field) {
-    return field.path.join('/');
-  }
-  rebuildSections() {
-    this.sections = Object.keys(this.content || {}).sort((a, b) => a.localeCompare(b)).map(key => ({
-      key,
-      label: this.humanize(key),
-      type: this.valueType(this.content[key]),
-      children: this.directChildCount(this.content[key]),
-      leaves: this.countLeaves(this.content[key])
-    }));
-  }
-  flattenLeaves(value, absolutePath, relativePath, language = null) {
-    const type = this.valueType(value);
-    if (type !== 'object' && type !== 'array') {
-      return [{
-        path: absolutePath,
-        relativePath,
-        label: this.humanize(relativePath[relativePath.length - 1] || absolutePath[absolutePath.length - 1]),
-        value,
-        type: type,
-        language
-      }];
-    }
-    const result = [];
-    const entries = Array.isArray(value) ? value.map((item, index) => [String(index), item]) : Object.entries(value || {});
-    for (const [key, child] of entries) {
-      const detectedLanguage = this.isLanguageKey(key) && this.isLanguageContainer(relativePath, value) ? key : language;
-      result.push(...this.flattenLeaves(child, [...absolutePath, key], [...relativePath, key], detectedLanguage));
-    }
-    return result;
-  }
-  isLanguageContainer(relativePath, parent) {
-    const last = relativePath[relativePath.length - 1];
-    if (last === 'i18n' || last === 'translations' || last === 'languages') return true;
-    const keys = Object.keys(parent || {});
-    return keys.filter(key => this.isLanguageKey(key)).length >= 2;
-  }
-  hasLanguageBranches(value) {
-    if (!value || typeof value !== 'object') return false;
-    if (value.i18n && typeof value.i18n === 'object') return true;
-    const keys = Object.keys(value);
-    if (keys.filter(key => this.isLanguageKey(key)).length >= 2) return true;
-    return keys.some(key => this.hasLanguageBranches(value[key]));
-  }
-  isLanguageKey(key) {
-    return ['fr', 'en', 'es', 'it', 'de', 'nl', 'ru'].includes(key);
-  }
-  isMissingTranslation(field) {
-    if (!field.language || this.selectedLanguage === 'all') return false;
-    return field.language === this.selectedLanguage && (field.value === null || field.value === undefined || String(field.value).trim() === '');
-  }
-  transposeSiteContent(raw) {
-    const result = {};
-    for (const language of Object.keys(raw || {})) {
-      const languageContent = raw[language] || {};
-      for (const sectionKey of Object.keys(languageContent)) {
-        if (!result[sectionKey]) result[sectionKey] = {};
-        result[sectionKey][language] = languageContent[sectionKey];
+  translateValue(value, source, target, path) {
+    var _this6 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (value === null || value === undefined) return value;
+      if (typeof value === 'number' || typeof value === 'boolean') return value;
+      if (Array.isArray(value)) {
+        const translated = [];
+        for (let i = 0; i < value.length; i++) {
+          translated.push(yield _this6.translateValue(value[i], source, target, [...path, String(i)]));
+        }
+        return translated;
       }
-    }
-    return result;
-  }
-  untransposeSiteContent(transposed) {
-    const result = {};
-    for (const sectionKey of Object.keys(transposed || {})) {
-      const section = transposed[sectionKey] || {};
-      for (const language of Object.keys(section)) {
-        if (!result[language]) result[language] = {};
-        result[language][sectionKey] = section[language];
+      if (typeof value === 'object') {
+        const translated = {};
+        for (const key of Object.keys(value)) {
+          translated[key] = yield _this6.translateValue(value[key], source, target, [...path, key]);
+        }
+        return translated;
       }
+      if (typeof value !== 'string' || !value.trim() || _this6.mustPreserve(path, value)) return value;
+      return _this6.translateText(value, source, target);
+    })();
+  }
+  mustPreserve(path, value) {
+    const key = (path[path.length - 1] || '').toLowerCase();
+    const technicalKeys = ['slug', 'image', 'icon', 'route', 'path', 'email', 'phone', 'phoneraw', 'whatsapp', 'whatsappraw', 'id', 'boatid', 'ownerid'];
+    if (technicalKeys.some(item => key.includes(item))) return true;
+    if (/^(https?:\/\/|assets\/|\/)/i.test(value)) return true;
+    if (/^[+\d\s().-]{6,}$/.test(value)) return true;
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return true;
+    return false;
+  }
+  translateText(text, source, target) {
+    var _this7 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const url = 'https://translate.googleapis.com/translate_a/single';
+      const response = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.firstValueFrom)(_this7.http.get(url, {
+        params: {
+          client: 'gtx',
+          sl: source,
+          tl: target,
+          dt: 't',
+          q: text
+        }
+      }).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_6__.timeout)(20000)));
+      const translated = Array.isArray(response?.[0]) ? response[0].map(segment => segment?.[0] || '').join('') : '';
+      return translated || text;
+    })();
+  }
+  ensureLanguageShapes() {
+    for (const language of this.languages) {
+      if (!this.siteContent[language.id]) this.siteContent[language.id] = {};
+      const lang = this.siteContent[language.id];
+      lang.outingsPage = lang.outingsPage || {};
+      lang.outings = Array.isArray(lang.outings) ? lang.outings : [];
+      lang.outings.forEach(outing => {
+        outing.highlights = Array.isArray(outing.highlights) ? outing.highlights : [];
+        outing.program = Array.isArray(outing.program) ? outing.program : [];
+        outing.includes = Array.isArray(outing.includes) ? outing.includes : [];
+        outing.idealFor = Array.isArray(outing.idealFor) ? outing.idealFor : [];
+      });
+      lang.boatPage = lang.boatPage || {};
+      lang.contactPage = lang.contactPage || {};
+      lang.contactInfo = lang.contactInfo || {};
+      lang.homePage = lang.homePage || {};
+      lang.homePage.pricing = lang.homePage.pricing || {};
+      if (!lang.brand || typeof lang.brand !== 'object') lang.brand = {
+        name: lang.brand || 'Alegria'
+      };
     }
-    return result;
   }
-  countLeaves(value) {
-    const type = this.valueType(value);
-    if (type !== 'object' && type !== 'array') return 1;
-    return Object.values(value || {}).reduce((sum, child) => sum + this.countLeaves(child), 0);
-  }
-  directChildCount(value) {
-    return value && typeof value === 'object' ? Object.keys(value).length : 0;
-  }
-  valueType(value) {
-    if (value === null || value === undefined) return 'null';
-    if (Array.isArray(value)) return 'array';
-    return typeof value;
-  }
-  humanize(value) {
-    return String(value || '').replace(/[-_]+/g, ' ').replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/^./, char => char.toUpperCase());
-  }
-  getAtPath(root, path) {
-    return path.reduce((current, key) => current == null ? undefined : current[key], root);
-  }
-  setAtPath(root, path, value) {
-    let current = root;
-    for (let i = 0; i < path.length - 1; i++) {
-      const key = path[i];
-      const nextKey = path[i + 1];
-      if (current[key] == null || typeof current[key] !== 'object') {
-        current[key] = /^\d+$/.test(nextKey) ? [] : {};
+  saveOperationalOutings() {
+    var _this8 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      let existing = {};
+      try {
+        existing = (yield (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.firstValueFrom)(_this8.http.get(`${_this8.firebaseDatabaseUrl}/bnOutings/${encodeURIComponent(_this8.boatId)}.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_6__.timeout)(15000)))) || {};
+      } catch {}
+      const bySlug = {
+        ...existing
+      };
+      for (const language of _this8.languages) {
+        const localizedOutings = _this8.siteContent?.[language.id]?.outings || [];
+        for (const outing of localizedOutings) {
+          if (!outing?.slug) continue;
+          const previous = bySlug[outing.slug] || {};
+          bySlug[outing.slug] = {
+            ...previous,
+            id: outing.slug,
+            slug: outing.slug,
+            active: previous.active !== false,
+            boatId: _this8.boatId,
+            ownerId: _this8.ownerId,
+            image: outing.image || previous.image || '',
+            gallery: outing.gallery || previous.gallery || [],
+            category: outing.category || previous.category || '',
+            priceFrom: outing.priceFrom ?? previous.priceFrom ?? null,
+            [language.id]: _this8.localizedOutingPayload(outing),
+            modifiedTS: Date.now(),
+            createdTS: previous.createdTS || Date.now()
+          };
+        }
       }
-      current = current[key];
-    }
-    current[path[path.length - 1]] = value;
+      return (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.firstValueFrom)(_this8.http.put(`${_this8.firebaseDatabaseUrl}/bnOutings/${encodeURIComponent(_this8.boatId)}.json`, bySlug).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_6__.timeout)(15000)));
+    })();
   }
-  deleteAtPath(root, path) {
-    const parent = this.getAtPath(root, path.slice(0, -1));
-    const key = path[path.length - 1];
-    if (Array.isArray(parent)) parent.splice(Number(key), 1);else if (parent && typeof parent === 'object') delete parent[key];
+  localizedOutingPayload(outing) {
+    const keys = ['title', 'description', 'duration', 'guests', 'priceLabel', 'highlights', 'eyebrow', 'subtitle', 'intro', 'programTitle', 'program', 'includesTitle', 'includes', 'idealForTitle', 'idealFor', 'cta', 'contactNote', 'galleryTitle', 'coreOfferingTitle', 'coreOffering', 'optionalExtrasTitle', 'optionalExtras', 'suggestionsTitle', 'guestSuggestions'];
+    return keys.reduce((payload, key) => {
+      if (outing[key] !== undefined) payload[key] = this.clone(outing[key]);
+      return payload;
+    }, {});
   }
-  refreshJson() {
-    this.jsonText = JSON.stringify(this.selectedSection ?? {}, null, 2);
+  languageLabel(code) {
+    return this.languages.find(language => language.id === code)?.label || code;
+  }
+  trackByIndex(index) {
+    return index;
+  }
+  defaultPricing() {
+    return {
+      day: 1200,
+      halfDay: 900,
+      sunset: 600,
+      evening: 900,
+      skipperPrice: 300,
+      cleaningPrice: 150,
+      nominalGuests: 8,
+      minGuests: 1,
+      maxGuests: 12,
+      extraGuestPrice: 60,
+      seasonalMultipliers: []
+    };
   }
   clone(value) {
-    return value === undefined ? value : JSON.parse(JSON.stringify(value));
+    return JSON.parse(JSON.stringify(value));
   }
   static ctorParameters = () => [{
-    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_5__.HttpClient
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_7__.HttpClient
+  }, {
+    type: _fleet_service__WEBPACK_IMPORTED_MODULE_3__.FleetService
+  }, {
+    type: _services_boat_context_service__WEBPACK_IMPORTED_MODULE_4__.BoatContextService
   }];
 };
-AdminSiteContentComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
+AdminSiteContentComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.Component)({
   selector: 'app-admin-site-content',
   template: _admin_site_content_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
@@ -5858,6 +5798,7 @@ __webpack_require__.r(__webpack_exports__);
 let AdminOffersComponent = class AdminOffersComponent {
   offerApi;
   router;
+  route;
   siteContentService;
   languageService;
   offers = [];
@@ -5872,19 +5813,32 @@ let AdminOffersComponent = class AdminOffersComponent {
   pageText = _site_content__WEBPACK_IMPORTED_MODULE_4__.SITE_CONTENT.fr?.offerManagement || {};
   priceTitles = {};
   languageSub;
-  constructor(offerApi, router, siteContentService, languageService) {
+  constructor(offerApi, router, route, siteContentService, languageService) {
     this.offerApi = offerApi;
     this.router = router;
+    this.route = route;
     this.siteContentService = siteContentService;
     this.languageService = languageService;
   }
   ngOnInit() {
+    this.prefillFromCalendar();
     this.languageSub = this.languageService.language$.subscribe(language => {
       this.currentLanguage = language;
       this.loadPageText(language);
     });
     this.loadPageText(this.currentLanguage);
     this.load();
+  }
+  prefillFromCalendar() {
+    const date = String(this.route.snapshot.queryParamMap.get('date') || '').trim();
+    const create = this.route.snapshot.queryParamMap.get('create');
+    if (create !== '1' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+    this.form = {
+      ...this.emptyForm(),
+      outingDate: date,
+      source: 'direct',
+      status: 'draft'
+    };
   }
   ngOnDestroy() {
     this.languageSub?.unsubscribe();
@@ -6431,6 +6385,8 @@ let AdminOffersComponent = class AdminOffersComponent {
     type: _bookings_offer_api_service__WEBPACK_IMPORTED_MODULE_3__.OfferApiService
   }, {
     type: _angular_router__WEBPACK_IMPORTED_MODULE_7__.Router
+  }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_7__.ActivatedRoute
   }, {
     type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__.SiteContentService
   }, {
@@ -7535,12 +7491,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AdminFleetComponent: () => (/* binding */ AdminFleetComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _admin_fleet_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin-fleet.component.html?ngResource */ 12406);
 /* harmony import */ var _admin_fleet_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./admin-fleet.component.scss?ngResource */ 9074);
 /* harmony import */ var _admin_fleet_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_admin_fleet_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
 /* harmony import */ var _fleet_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../fleet.service */ 84737);
+/* harmony import */ var _skipper_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../skipper.service */ 47215);
+
 
 
 
@@ -7549,6 +7507,7 @@ __webpack_require__.r(__webpack_exports__);
 
 let AdminFleetComponent = class AdminFleetComponent {
   fleetService;
+  skipperService;
   loading = false;
   saving = false;
   message = '';
@@ -7561,8 +7520,17 @@ let AdminFleetComponent = class AdminFleetComponent {
     boatType: 'Catamaran',
     active: true
   };
-  constructor(fleetService) {
+  skippers = [];
+  skipperForm = {
+    skipperId: '',
+    ownerId: 'alegria',
+    displayName: '',
+    boatIds: {},
+    active: true
+  };
+  constructor(fleetService, skipperService) {
     this.fleetService = fleetService;
+    this.skipperService = skipperService;
   }
   ngOnInit() {
     this.form = this.fleetService.getDefaultBoat();
@@ -7579,6 +7547,7 @@ let AdminFleetComponent = class AdminFleetComponent {
         if (first) {
           yield _this.selectBoat(first.boatId);
         }
+        _this.skippers = yield _this.skipperService.listSkippers();
       } catch (e) {
         _this.error = e?.message || 'Unable to load fleet.';
       }
@@ -7590,7 +7559,57 @@ let AdminFleetComponent = class AdminFleetComponent {
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this2.selectedBoatId = boatId;
       _this2.form = yield _this2.fleetService.getBoat(boatId);
+      _this2.skipperForm.ownerId = _this2.form.ownerId || '';
+      _this2.skipperForm.boatIds = {
+        ...(_this2.skipperForm.boatIds || {}),
+        [boatId]: true
+      };
     })();
+  }
+  newSkipper() {
+    this.skipperForm = {
+      skipperId: '',
+      ownerId: this.form.ownerId || '',
+      displayName: '',
+      boatIds: this.selectedBoatId ? {
+        [this.selectedBoatId]: true
+      } : {},
+      currency: this.form.currency || 'EUR',
+      active: true
+    };
+  }
+  editSkipper(skipper) {
+    this.skipperForm = JSON.parse(JSON.stringify(skipper));
+  }
+  saveSkipper() {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!String(_this3.skipperForm.displayName || '').trim()) {
+        _this3.error = 'Le nom du skipper est obligatoire.';
+        return;
+      }
+      _this3.saving = true;
+      try {
+        const saved = yield _this3.skipperService.saveSkipper(_this3.skipperForm);
+        _this3.skipperForm = saved;
+        _this3.skippers = yield _this3.skipperService.listSkippers();
+        _this3.message = 'Skipper enregistré.';
+      } catch (e) {
+        _this3.error = e?.message || 'Impossible d’enregistrer le skipper.';
+      } finally {
+        _this3.saving = false;
+      }
+    })();
+  }
+  get skipperAssignedToSelectedBoat() {
+    return !!(this.selectedBoatId && this.skipperForm.boatIds?.[this.selectedBoatId]);
+  }
+  set skipperAssignedToSelectedBoat(value) {
+    if (!this.selectedBoatId) return;
+    this.skipperForm.boatIds = {
+      ...(this.skipperForm.boatIds || {}),
+      [this.selectedBoatId]: value
+    };
   }
   newBoat() {
     this.selectedBoatId = '';
@@ -7606,22 +7625,22 @@ let AdminFleetComponent = class AdminFleetComponent {
     this.error = '';
   }
   saveBoat() {
-    var _this3 = this;
+    var _this4 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this3.saving = true;
-      _this3.message = '';
-      _this3.error = '';
+      _this4.saving = true;
+      _this4.message = '';
+      _this4.error = '';
       try {
-        _this3.validateBoat();
-        const saved = yield _this3.fleetService.saveBoat(_this3.form);
-        _this3.selectedBoatId = saved.boatId;
-        _this3.message = 'Bateau enregistré.';
-        yield _this3.loadBoats();
-        yield _this3.selectBoat(saved.boatId);
+        _this4.validateBoat();
+        const saved = yield _this4.fleetService.saveBoat(_this4.form);
+        _this4.selectedBoatId = saved.boatId;
+        _this4.message = 'Bateau enregistré.';
+        yield _this4.loadBoats();
+        yield _this4.selectBoat(saved.boatId);
       } catch (e) {
-        _this3.error = e?.message || 'Impossible d’enregistrer le bateau.';
+        _this4.error = e?.message || 'Impossible d’enregistrer le bateau.';
       }
-      _this3.saving = false;
+      _this4.saving = false;
     })();
   }
   validateBoat() {
@@ -7636,9 +7655,11 @@ let AdminFleetComponent = class AdminFleetComponent {
   }
   static ctorParameters = () => [{
     type: _fleet_service__WEBPACK_IMPORTED_MODULE_3__.FleetService
+  }, {
+    type: _skipper_service__WEBPACK_IMPORTED_MODULE_4__.SkipperService
   }];
 };
-AdminFleetComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
+AdminFleetComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
   selector: 'app-admin-fleet',
   template: _admin_fleet_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_admin_fleet_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
@@ -10082,9 +10103,9 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
       const dbCandidates = [util?.mdb, store?.backendFbRef?.database, store?.backendFbRef?.['database'], store?.firebaseBSSdata?.database].filter((db, index, array) => db && typeof db.ref === 'function' && array.indexOf(db) === index);
       for (const db of dbCandidates) {
         const direct = yield _this5.readDatabasePath(db, `${collectionName}/${id}`);
-        if (direct) return {
-          ...direct,
-          outingId: direct.outingId || id
+        if (direct?.operationalLog) return {
+          ...direct.operationalLog,
+          outingId: direct.operationalLog.outingId || id
         };
       }
       if (typeof store.getObject === 'function') {
@@ -10119,7 +10140,8 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
   extractSingleOuting(value, id) {
     if (!value) return null;
     const collectionName = this.outingsCollectionName;
-    const candidate = value?.[collectionName]?.[id] || value?.['1000']?.[collectionName]?.[id] || value?.[id] || value;
+    const rawCandidate = value?.[collectionName]?.[id] || value?.['1000']?.[collectionName]?.[id] || value?.[id] || value;
+    const candidate = rawCandidate?.operationalLog || rawCandidate;
     if (candidate && typeof candidate === 'object' && (candidate.outingId || candidate.departureDate || candidate.outingType)) {
       return {
         ...candidate,
@@ -10150,23 +10172,37 @@ let AdminOutingDetailComponent = class AdminOutingDetailComponent {
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const store = _this7.storeDb;
       const util = _this7.utilSvc;
+      const record = {
+        bookingId: id,
+        boatId: payload.boatId || 'alegria',
+        outingDate: payload.departureDate || null,
+        outingType: payload.outingType || null,
+        operationalOnly: true,
+        operationalLog: payload,
+        modifiedTS: Date.now()
+      };
+      for (const baseUrl of _this7.restDatabaseUrls) {
+        try {
+          yield _this7.http.patch(`${baseUrl.replace(/\/+$/, '')}/${_this7.outingsCollectionName}/${id}.json`, record).toPromise();
+          return;
+        } catch {}
+      }
       if (typeof store.updateObject !== 'function') {
         throw new Error('Firebase updateObject is not available.');
       }
-      // Current Firebase structure uses root /bnAdminOutings.
       try {
-        yield store.updateObject(_this7.outingsCollectionName, payload, id);
+        yield store.updateObject(_this7.outingsCollectionName, record, id);
       } catch {
         try {
-          yield store.updateObject(_this7.outingsCollectionName, id, payload);
+          yield store.updateObject(_this7.outingsCollectionName, id, record);
         } catch {
-          yield store.updateObject(util.backendFBstoreId, util.mdb, _this7.outingsCollectionName, payload, id);
+          yield store.updateObject(util.backendFBstoreId, util.mdb, _this7.outingsCollectionName, record, id);
         }
       }
     })();
   }
   get outingsCollectionName() {
-    return 'bnAdminOutings';
+    return 'bnBookings';
   }
   emptyAnchorageForm() {
     return {
@@ -11296,6 +11332,78 @@ module.exports = "\n      <div class=\"external-platform-summary\" *ngIf=\"offer
 
 /***/ }),
 
+/***/ 47215:
+/*!*****************************************!*\
+  !*** ./src/app/home/skipper.service.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SkipperService: () => (/* binding */ SkipperService)
+/* harmony export */ });
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ 93262);
+
+
+
+
+let SkipperService = class SkipperService {
+  http;
+  firebaseUrl = 'https://adn-dev-4d05d.firebaseio.com';
+  constructor(http) {
+    this.http = http;
+  }
+  listSkippers(boatId) {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const raw = yield _this.http.get(`${_this.firebaseUrl}/bnSkippers.json`).toPromise().catch(() => ({}));
+      return Object.keys(raw || {}).map(key => ({
+        skipperId: key,
+        ...(raw[key] || {})
+      })).filter(item => item.active !== false && (!boatId || item.boatIds?.[boatId] === true)).sort((a, b) => String(a.displayName || '').localeCompare(String(b.displayName || '')));
+    })();
+  }
+  saveSkipper(input) {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const now = Date.now();
+      const skipperId = _this2.slug(input.skipperId || input.displayName || `skipper-${now}`);
+      const payload = {
+        skipperId,
+        ownerId: String(input.ownerId || ''),
+        displayName: String(input.displayName || ''),
+        email: input.email || '',
+        phone: input.phone || '',
+        licenseNumber: input.licenseNumber || '',
+        dailyRate: Number(input.dailyRate || 0),
+        currency: input.currency || 'EUR',
+        boatIds: input.boatIds || {},
+        active: input.active !== false,
+        createdTS: input.createdTS || now,
+        modifiedTS: now
+      };
+      yield _this2.http.put(`${_this2.firebaseUrl}/bnSkippers/${encodeURIComponent(skipperId)}.json`, payload).toPromise();
+      return payload;
+    })();
+  }
+  slug(value) {
+    return String(value || '').trim().toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+  static ctorParameters = () => [{
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__.HttpClient
+  }];
+};
+SkipperService = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Injectable)({
+  providedIn: 'root'
+})], SkipperService);
+
+
+/***/ }),
+
 /***/ 48286:
 /*!*****************************************************!*\
   !*** ./src/app/home/sea-toys/sea-toys.component.ts ***!
@@ -11723,7 +11831,7 @@ module.exports = "<section class=\"journey-page\">\n  <div class=\"container jou
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"calendar-page container\">\n  <div class=\"page-heading\">\n    <div>\n      <p class=\"eyebrow\">{{ t('eyebrow') }}</p>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n    <button class=\"refresh-button\" type=\"button\" (click)=\"loadCalendar()\" [disabled]=\"loading\">{{ loading ? t('loading') : t('refresh') }}</button>\n  </div>\n\n  <div class=\"summary-grid\">\n    <article><span>{{ t('usedDays') }}</span><strong>{{ usedDaysThisMonth }}</strong></article>\n    <article><span>{{ t('pastOutings') }}</span><strong>{{ pastUses }}</strong></article>\n    <article><span>{{ t('futureOutings') }}</span><strong>{{ futureUses }}</strong></article>\n  </div>\n\n  <div class=\"calendar-toolbar\">\n    <button type=\"button\" (click)=\"previousMonth()\" [attr.aria-label]=\"t('previousMonth')\">‹</button>\n    <div><h2>{{ monthLabel }}</h2><button class=\"today-link\" type=\"button\" (click)=\"goToday()\">{{ t('today') }}</button></div>\n    <button type=\"button\" (click)=\"nextMonth()\" [attr.aria-label]=\"t('nextMonth')\">›</button>\n  </div>\n\n  <label class=\"cancelled-toggle\"><input type=\"checkbox\" [checked]=\"showCancelled\" (change)=\"toggleCancelled()\" /> {{ t('showCancelled') }}</label>\n  <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n\n  <div class=\"legend\" [attr.aria-label]=\"t('legend')\">\n    <span><i class=\"past\"></i> {{ t('pastUse') }}</span>\n    <span><i class=\"today\"></i> {{ t('today') }}</span>\n    <span><i class=\"future\"></i> {{ t('futureBooking') }}</span>\n    <span *ngIf=\"showCancelled\"><i class=\"cancelled\"></i> {{ t('cancelled') }}</span>\n  </div>\n\n  <div class=\"calendar-shell\" [class.loading]=\"loading\">\n    <div class=\"weekday\" *ngFor=\"let weekday of weekdays\">{{ weekday }}</div>\n    <button type=\"button\" class=\"day-cell\" *ngFor=\"let cell of cells; trackBy: trackCell\"\n      [class.empty]=\"!cell.inMonth\" [class.selected]=\"cell.iso === selectedDate\" [class.occupied]=\"cell.uses.length\"\n      (click)=\"selectDay(cell)\" [disabled]=\"!cell.inMonth\">\n      <span class=\"day-number\">{{ cell.day }}</span>\n      <span class=\"events\" *ngIf=\"cell.uses.length\">\n        <span class=\"event\" *ngFor=\"let use of cell.uses | slice:0:2\" [class]=\"'event ' + use.status\">{{ use.title }}</span>\n        <small *ngIf=\"cell.uses.length > 2\">+{{ cell.uses.length - 2 }} {{ t('other') }}</small>\n      </span>\n    </button>\n  </div>\n\n  <section class=\"day-details\" *ngIf=\"selectedDate\">\n    <h2>{{ selectedDateLabel }}</h2>\n    <p *ngIf=\"!selectedUses.length\">{{ t('noUse') }}</p>\n    <article *ngFor=\"let use of selectedUses\" [class]=\"'usage-card ' + use.status\">\n      <div><span class=\"status\">{{ statusLabel(use.status) }}</span><h3>{{ use.title }}</h3><p *ngIf=\"use.customer\">{{ use.customer }}</p><small>{{ use.details }}</small></div>\n      <a *ngIf=\"use.route\" [routerLink]=\"use.route\">{{ t('viewDetails') }}</a>\n    </article>\n  </section>\n</section>\n";
+module.exports = "<section class=\"calendar-page container\">\n  <div class=\"page-heading\">\n    <div>\n      <p class=\"eyebrow\">{{ t('eyebrow') }}</p>\n      <h1>{{ t('title') }}</h1>\n      <p>{{ t('intro') }}</p>\n    </div>\n    <button class=\"refresh-button\" type=\"button\" (click)=\"loadCalendar()\" [disabled]=\"loading\">{{ loading ? t('loading') : t('refresh') }}</button>\n  </div>\n\n  <div class=\"summary-grid\">\n    <article><span>{{ t('usedDays') }}</span><strong>{{ usedDaysThisMonth }}</strong></article>\n    <article><span>{{ t('pastOutings') }}</span><strong>{{ pastUses }}</strong></article>\n    <article><span>{{ t('futureOutings') }}</span><strong>{{ futureUses }}</strong></article>\n  </div>\n\n  <div class=\"calendar-toolbar\">\n    <button type=\"button\" (click)=\"previousMonth()\" [attr.aria-label]=\"t('previousMonth')\">‹</button>\n    <div><h2>{{ monthLabel }}</h2><button class=\"today-link\" type=\"button\" (click)=\"goToday()\">{{ t('today') }}</button></div>\n    <button type=\"button\" (click)=\"nextMonth()\" [attr.aria-label]=\"t('nextMonth')\">›</button>\n  </div>\n\n  <label class=\"cancelled-toggle\"><input type=\"checkbox\" [checked]=\"showCancelled\" (change)=\"toggleCancelled()\" /> {{ t('showCancelled') }}</label>\n  <p class=\"error\" *ngIf=\"error\">{{ error }}</p>\n\n  <div class=\"legend\" [attr.aria-label]=\"t('legend')\">\n    <span><i class=\"past\"></i> {{ t('pastUse') }}</span>\n    <span><i class=\"today\"></i> {{ t('today') }}</span>\n    <span><i class=\"future\"></i> {{ t('futureBooking') }}</span>\n    <span *ngIf=\"showCancelled\"><i class=\"cancelled\"></i> {{ t('cancelled') }}</span>\n  </div>\n\n  <div class=\"calendar-shell\" [class.loading]=\"loading\">\n    <div class=\"weekday\" *ngFor=\"let weekday of weekdays\">{{ weekday }}</div>\n    <button type=\"button\" class=\"day-cell\" *ngFor=\"let cell of cells; trackBy: trackCell\"\n      [class.empty]=\"!cell.inMonth\" [class.selected]=\"cell.iso === selectedDate\" [class.occupied]=\"cell.uses.length\"\n      (click)=\"selectDay(cell)\" [disabled]=\"!cell.inMonth\">\n      <span class=\"day-number\">{{ cell.day }}</span>\n      <span class=\"events\" *ngIf=\"cell.uses.length\">\n        <span class=\"event\" *ngFor=\"let use of cell.uses | slice:0:2\" [class]=\"'event ' + use.status\">{{ use.title }}</span>\n        <small *ngIf=\"cell.uses.length > 2\">+{{ cell.uses.length - 2 }} {{ t('other') }}</small>\n      </span>\n    </button>\n  </div>\n\n  <section class=\"day-details\" *ngIf=\"selectedDate\">\n    <h2>{{ selectedDateLabel }}</h2>\n    <p *ngIf=\"!selectedUses.length\">{{ t('noUse') }}</p>\n    <button *ngIf=\"selectedDateAvailable\" type=\"button\" class=\"refresh-button\" (click)=\"openOfferForDate()\">\n      {{ isAdmin ? t('createOffer') : t('requestOffer') }}\n    </button>\n    <p *ngIf=\"selectedDateUnavailableToCustomer\">{{ t('unavailable') }}</p>\n    <article *ngFor=\"let use of selectedUses\" [class]=\"'usage-card ' + use.status\">\n      <div><span class=\"status\">{{ statusLabel(use.status) }}</span><h3>{{ use.ownedByCurrentUser && !isAdmin ? t('myBooking') : use.title }}</h3><p *ngIf=\"use.customer\">{{ use.customer }}</p><small>{{ use.details }}</small></div>\n      <a *ngIf=\"use.route\" [routerLink]=\"use.route\">{{ t('viewDetails') }}</a>\n    </article>\n  </section>\n</section>\n";
 
 /***/ }),
 
@@ -12022,10 +12130,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   GuestContentService: () => (/* binding */ GuestContentService)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ 93262);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ 56196);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 56196);
+/* harmony import */ var _services_boat_context_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/boat-context.service */ 61766);
+
 
 
 
@@ -12753,10 +12863,12 @@ const DEFAULT_GUEST_INFO_CONTENT = {
 };
 let GuestContentService = class GuestContentService {
   http;
+  boatContext;
   restDatabaseUrls = ['https://adn-dev-4d05d.firebaseio.com'];
   cached;
-  constructor(http) {
+  constructor(http, boatContext) {
     this.http = http;
+    this.boatContext = boatContext;
   }
   getContent(forceRefresh = false) {
     var _this = this;
@@ -12764,8 +12876,8 @@ let GuestContentService = class GuestContentService {
       if (_this.cached && !forceRefresh) return _this.cached;
       for (const baseUrl of _this.restDatabaseUrls) {
         try {
-          const url = `${baseUrl}/guestInfo.json`;
-          const value = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.firstValueFrom)(_this.http.get(url));
+          const url = `${baseUrl}/guestInfo/${encodeURIComponent(_this.boatContext.boatId)}.json`;
+          const value = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.firstValueFrom)(_this.http.get(url));
           const content = _this.unwrapGuestInfo(value);
           if (content?.guestFaq || content?.guestJourney || content?.offerInfo || content?.bookingInfo) {
             _this.cached = _this.mergeWithDefaults(content);
@@ -12801,10 +12913,12 @@ let GuestContentService = class GuestContentService {
     };
   }
   static ctorParameters = () => [{
-    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__.HttpClient
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_3__.HttpClient
+  }, {
+    type: _services_boat_context_service__WEBPACK_IMPORTED_MODULE_1__.BoatContextService
   }];
 };
-GuestContentService = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Injectable)({
+GuestContentService = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Injectable)({
   providedIn: 'root'
 })], GuestContentService);
 
@@ -12818,7 +12932,7 @@ GuestContentService = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_ang
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<ng-container *ngIf=\"contentReady\">\n  <ng-container *ngIf=\"isAdmin && adminGroups.length; else customerHome\">\n    <section class=\"admin-home-hero\">\n      <div class=\"container admin-hero-grid\">\n        <div>\n          <span class=\"eyebrow\">{{ adminHome?.eyebrow }}</span>\n          <h1>{{ adminHome?.title }}<ng-container *ngIf=\"userFirstName\"> {{ userFirstName }}</ng-container></h1>\n          <p>{{ adminHome?.intro }}</p>\n        </div>\n        <div class=\"admin-hero-actions\" *ngIf=\"adminHeroActions.length\">\n          <a class=\"btn btn-primary\" *ngFor=\"let action of adminHeroActions\" [routerLink]=\"action.route\">\n            {{ action.label }}\n          </a>\n        </div>\n      </div>\n    </section>\n\n\n    <section class=\"section admin-dashboard-section\">\n      <div class=\"container\">\n        <div class=\"section-head centered\">\n          <span class=\"eyebrow\">{{ adminHome?.sectionsEyebrow }}</span>\n          <h2>{{ adminHome?.sectionsTitle }}</h2>\n          <p>{{ adminHome?.sectionsText }}</p>\n        </div>\n\n        <div class=\"admin-groups-grid\">\n          <article class=\"admin-group-card\" *ngFor=\"let group of adminGroups\" [class.admin-group-featured]=\"group.featured\">\n            <div class=\"admin-group-head\">\n              <span class=\"admin-group-icon\">{{ group.icon }}</span>\n              <div>\n                <h3>{{ group.title }}</h3>\n                <p>{{ group.text }}</p>\n              </div>\n            </div>\n\n            <div class=\"admin-links-grid\" *ngIf=\"group.items?.length\">\n              <a class=\"admin-link-card\" *ngFor=\"let item of group.items\" [routerLink]=\"item.route\">\n                <strong>{{ item.title }}</strong>\n                <small>{{ item.text }}</small>\n              </a>\n            </div>\n          </article>\n        </div>\n      </div>\n    </section>\n  </ng-container>\n\n  <ng-template #customerHome>\n  <section class=\"hero hero-redesign\">\n    <div class=\"container hero-grid\">\n      <div class=\"hero-copy\">\n        <span class=\"eyebrow\">{{ hp.hero?.eyebrow }}</span>\n        <h1>{{ hp.hero?.title }}</h1>\n        <p>{{ hp.hero?.intro }}</p>\n\n        <div class=\"hero-actions\">\n          <a [routerLink]=\"hp.hero?.primaryRoute || '/sorties'\" class=\"btn btn-primary btn-equal\">\n            {{ hp.hero?.primaryCta }}\n          </a>\n\n          <a *ngIf=\"canShowOnlineBookingButton\" [routerLink]=\"hp.hero?.secondaryRoute || '/reserver'\" class=\"btn btn-secondary btn-equal\">\n            {{ hp.hero?.secondaryCta }}\n          </a>\n        </div>\n\n        <ul class=\"hero-points\" *ngIf=\"hp.hero?.badges?.length\">\n          <li *ngFor=\"let point of hp.hero.badges\">{{ point }}</li>\n        </ul>\n      </div>\n\n      <div class=\"hero-visual hero-card\">\n        <img [src]=\"heroImage\" [alt]=\"hp.hero?.imageAlt || content.brand\" />\n        <div class=\"hero-price-card\" *ngIf=\"hp.hero?.priceText || heroPriceValue\">\n          <span>{{ hp.hero?.priceText }}</span>\n          <strong>{{ heroPriceValue }}</strong>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section quick-actions-section\" *ngIf=\"quickActions.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.quickActions?.eyebrow }}</span>\n        <h2>{{ hp.quickActions?.title }}</h2>\n        <p>{{ hp.quickActions?.text }}</p>\n      </div>\n\n      <div class=\"action-grid\">\n        <a class=\"action-card\" *ngFor=\"let action of quickActions\" href=\"\" (click)=\"onProtectedHomeAction($event, action)\">\n          <span class=\"action-icon\">{{ action.icon }}</span>\n          <strong>{{ action.title }}</strong>\n          <small>{{ action.text }}</small>\n        </a>\n      </div>\n    </div>\n  </section>\n\n\n  <section class=\"section booking-process-teaser-section\" *ngIf=\"bookingProcessTeaser\">\n    <div class=\"container booking-process-teaser\">\n      <div class=\"booking-process-teaser-copy\">\n        <span class=\"eyebrow\">{{ bookingProcessTeaser.eyebrow }}</span>\n        <h2>{{ bookingProcessTeaser.title }}</h2>\n        <p>{{ bookingProcessTeaser.text }}</p>\n        <a [routerLink]=\"bookingProcessTeaser.route || '/booking-process'\" class=\"btn btn-secondary\">\n          {{ bookingProcessTeaser.cta }}\n        </a>\n      </div>\n      <div class=\"booking-process-mini-steps\" *ngIf=\"bookingProcessMiniSteps.length\">\n        <article *ngFor=\"let step of bookingProcessMiniSteps; let i = index\">\n          <span>{{ i + 1 }}</span>\n          <strong>{{ step.title }}</strong>\n          <small>{{ step.text }}</small>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section dashboard-section\" *ngIf=\"dashboardCards.length\">\n    <div class=\"container customer-dashboard\">\n      <div>\n        <span class=\"eyebrow\">{{ dashboard.eyebrow }}</span>\n        <h2>{{ dashboard.title }}<ng-container *ngIf=\"userFirstName\"> {{ userFirstName }}</ng-container></h2>\n        <p>{{ dashboard.text }}</p>\n      </div>\n\n      <div class=\"dashboard-cards\">\n        <a class=\"dashboard-card\" *ngFor=\"let card of dashboardCards\" [routerLink]=\"card.route\">\n          <span>{{ card.icon }}</span>\n          <strong>{{ card.title }}</strong>\n          <small>{{ card.text }}</small>\n        </a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section\" *ngIf=\"experiences.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.experiences?.eyebrow }}</span>\n        <h2>{{ hp.experiences?.title }}</h2>\n        <p>{{ hp.experiences?.text }}</p>\n      </div>\n\n      <div class=\"cards-grid experience-grid\">\n        <article class=\"card experience-card\" *ngFor=\"let experience of experiences\">\n          <img [src]=\"experience.image\" [alt]=\"experience.title\" [routerLink]=\"experience.route || ['/sorties', experience.slug]\" />\n          <div class=\"card-body\">\n            <h3>{{ experience.title }}</h3>\n            <p>{{ experience.description }}</p>\n            <div class=\"meta\" *ngIf=\"experience.meta\">{{ experience.meta }}</div>\n            <div class=\"meta price\" *ngIf=\"experience.price\">{{ experience.price }}</div>\n            <a [routerLink]=\"experience.route || ['/sorties', experience.slug]\" class=\"text-link\">{{ hp.experiences?.cardCta }}</a>\n          </div>\n        </article>\n      </div>\n\n      <div class=\"home-all-tours-cta\" *ngIf=\"hp.experiences?.cta\">\n        <a [routerLink]=\"hp.experiences?.ctaRoute || '/sorties'\" class=\"btn btn-secondary\">{{ hp.experiences.cta }}</a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section section-light pricing-section\" *ngIf=\"pricingRows.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.pricing?.eyebrow }}</span>\n        <h2>{{ hp.pricing?.title }}</h2>\n        <p>{{ hp.pricing?.text }}</p>\n      </div>\n\n      <div class=\"pricing-table-wrap\">\n        <table class=\"pricing-table\">\n          <thead>\n            <tr>\n              <th>{{ hp.pricing?.experienceLabel }}</th>\n              <th>{{ hp.pricing?.boatLabel }}</th>\n              <th>{{ hp.pricing?.skipperLabel }}</th>\n              <th>{{ hp.pricing?.totalLabel }}</th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr *ngFor=\"let row of pricingRows\">\n              <td>{{ row.experience }}</td>\n              <td>{{ row.boat }}</td>\n              <td>{{ row.skipper }}</td>\n              <td><strong>{{ row.total }}</strong></td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"pricing-notes\">\n        <div *ngIf=\"pricingIncluded.length\">\n          <h3>{{ hp.pricing?.includedTitle }}</h3>\n          <ul class=\"check-list compact\">\n            <li *ngFor=\"let item of pricingIncluded\">{{ item }}</li>\n          </ul>\n        </div>\n        <div *ngIf=\"pricingOptions.length\">\n          <h3>{{ hp.pricing?.optionsTitle }}</h3>\n          <ul class=\"check-list compact\">\n            <li *ngFor=\"let item of pricingOptions\">{{ item }}</li>\n          </ul>\n        </div>\n      </div>\n\n      <div class=\"booking-process-actions\" *ngIf=\"hp.pricing?.cta\">\n        <a [routerLink]=\"hp.pricing?.ctaRoute || '/reserver'\" class=\"btn btn-primary\">{{ hp.pricing.cta }}</a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section destinations-section\" *ngIf=\"destinations.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.destinations?.eyebrow }}</span>\n        <h2>{{ hp.destinations?.title }}</h2>\n        <p>{{ hp.destinations?.text }}</p>\n      </div>\n\n      <div class=\"destination-grid\">\n        <article class=\"destination-card\" *ngFor=\"let destination of destinations\">\n          <span>{{ destination.tag }}</span>\n          <h3>{{ destination.title }}</h3>\n          <p>{{ destination.text }}</p>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section section-light journey-section\" *ngIf=\"journeySteps.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.journey?.eyebrow }}</span>\n        <h2>{{ hp.journey?.title }}</h2>\n        <p>{{ hp.journey?.text }}</p>\n      </div>\n\n      <div class=\"journey-grid\">\n        <article class=\"journey-step\" *ngFor=\"let step of journeySteps; let i = index\">\n          <span class=\"step-number\">{{ i + 1 }}</span>\n          <h3>{{ step.title }}</h3>\n          <p>{{ step.text }}</p>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section section-light\" *ngIf=\"hp.boat\">\n    <div class=\"container split-grid\">\n      <div>\n        <span class=\"eyebrow\">{{ hp.boat?.eyebrow }}</span>\n        <h2>{{ hp.boat?.title }}</h2>\n        <p>{{ hp.boat?.text }}</p>\n        <ul class=\"check-list\" *ngIf=\"boatHighlights.length\">\n          <li *ngFor=\"let item of boatHighlights\">{{ item }}</li>\n        </ul>\n        <a [routerLink]=\"hp.boat?.ctaRoute || '/bateau'\" class=\"btn btn-secondary\" *ngIf=\"hp.boat?.cta\">{{ hp.boat.cta }}</a>\n      </div>\n\n      <div class=\"boat-card\">\n        <img [src]=\"boatImage\" [alt]=\"hp.boat?.imageAlt || content.brand\" />\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section reviews-section\" *ngIf=\"reviews.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.reviews?.eyebrow }}</span>\n        <h2>{{ hp.reviews?.title }}</h2>\n        <p>{{ hp.reviews?.text }}</p>\n      </div>\n\n      <div class=\"review-grid\">\n        <article class=\"review-card\" *ngFor=\"let review of reviews\">\n          <div class=\"stars\">{{ review.stars }}</div>\n          <p>{{ review.quote }}</p>\n          <strong>{{ review.name }}</strong>\n          <small>{{ review.context }}</small>\n        </article>\n      </div>\n\n      <div class=\"home-all-tours-cta\" *ngIf=\"hp.reviews?.cta\">\n        <a [routerLink]=\"hp.reviews?.ctaRoute || '/feedback'\" class=\"btn btn-secondary\">{{ hp.reviews.cta }}</a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section faq-section\" *ngIf=\"faqItems.length\">\n    <div class=\"container faq-wrap\">\n      <div class=\"section-head\">\n        <span class=\"eyebrow\">{{ hp.faq?.eyebrow }}</span>\n        <h2>{{ hp.faq?.title }}</h2>\n        <p>{{ hp.faq?.text }}</p>\n        <a [routerLink]=\"hp.faq?.ctaRoute || '/faq'\" class=\"btn btn-secondary\" *ngIf=\"hp.faq?.cta\">{{ hp.faq.cta }}</a>\n      </div>\n\n      <div class=\"faq-list\">\n        <article class=\"faq-item\" *ngFor=\"let item of faqItems\">\n          <h3>{{ item.question }}</h3>\n          <p>{{ item.answer }}</p>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section\" *ngIf=\"hp.finalCta\">\n    <div class=\"container contact-banner\">\n      <div>\n        <span class=\"eyebrow\">{{ hp.finalCta?.eyebrow }}</span>\n        <h2>{{ hp.finalCta?.title }}</h2>\n        <p>{{ hp.finalCta?.text }}</p>\n      </div>\n      <div class=\"contact-actions\">\n        <a [routerLink]=\"hp.finalCta?.primaryRoute || '/reserver'\" class=\"btn btn-primary\" *ngIf=\"hp.finalCta?.primaryCta\">{{ hp.finalCta.primaryCta }}</a>\n        <a [routerLink]=\"hp.finalCta?.secondaryRoute || '/contact'\" class=\"btn btn-secondary\" *ngIf=\"hp.finalCta?.secondaryCta\">{{ hp.finalCta.secondaryCta }}</a>\n      </div>\n    </div>\n  </section>\n\n  </ng-template>\n\n  <div class=\"auth-choice-backdrop\" *ngIf=\"showAuthChoiceModal\" (click)=\"closeAuthChoiceModal()\">\n    <div class=\"auth-choice-modal\" role=\"dialog\" aria-modal=\"true\" [attr.aria-label]=\"authModalTitle\" (click)=\"$event.stopPropagation()\">\n      <button type=\"button\" class=\"auth-choice-close\" (click)=\"closeAuthChoiceModal()\" [attr.aria-label]=\"authModalCloseLabel\">×</button>\n      <span class=\"eyebrow\">{{ authModal?.eyebrow }}</span>\n      <h2>{{ authModalTitle }}</h2>\n      <p>{{ authModalText }}</p>\n      <div class=\"auth-choice-actions\">\n        <button type=\"button\" class=\"btn btn-primary\" (click)=\"goToLogin()\">{{ authModalLoginLabel }}</button>\n        <button type=\"button\" class=\"btn btn-secondary\" (click)=\"goToSignup()\">{{ authModalSignupLabel }}</button>\n      </div>\n      <button type=\"button\" class=\"auth-choice-cancel\" (click)=\"closeAuthChoiceModal()\">{{ authModalCancelLabel }}</button>\n    </div>\n  </div>\n\n</ng-container>\n";
+module.exports = "<ng-container *ngIf=\"contentReady\">\n  <ng-container *ngIf=\"isAdmin && adminGroups.length; else customerHome\">\n    <section class=\"admin-home-hero\">\n      <div class=\"container admin-hero-grid\">\n        <div>\n          <span class=\"eyebrow\">{{ adminHome?.eyebrow }}</span>\n          <h1>{{ adminHome?.title }}<ng-container *ngIf=\"userFirstName\"> {{ userFirstName }}</ng-container></h1>\n          <p>{{ adminHome?.intro }}</p>\n        </div>\n        <div class=\"admin-hero-actions\" *ngIf=\"adminHeroActions.length\">\n          <a class=\"btn btn-primary\" *ngFor=\"let action of adminHeroActions\" [routerLink]=\"action.route\">\n            {{ action.label }}\n          </a>\n        </div>\n      </div>\n    </section>\n\n\n    <section class=\"section admin-dashboard-section\">\n      <div class=\"container\">\n        <div class=\"section-head centered\">\n          <span class=\"eyebrow\">{{ adminHome?.sectionsEyebrow }}</span>\n          <h2>{{ adminHome?.sectionsTitle }}</h2>\n          <p>{{ adminHome?.sectionsText }}</p>\n        </div>\n\n        <div class=\"admin-groups-grid\">\n          <article class=\"admin-group-card\" *ngFor=\"let group of adminGroups\" [class.admin-group-featured]=\"group.featured\">\n            <div class=\"admin-group-head\">\n              <span class=\"admin-group-icon\">{{ group.icon }}</span>\n              <div>\n                <h3>{{ group.title }}</h3>\n                <p>{{ group.text }}</p>\n              </div>\n            </div>\n\n            <div class=\"admin-links-grid\" *ngIf=\"group.items?.length\">\n              <a class=\"admin-link-card\" *ngFor=\"let item of group.items\" [routerLink]=\"item.route\">\n                <strong>{{ item.title }}</strong>\n                <small>{{ item.text }}</small>\n              </a>\n            </div>\n          </article>\n        </div>\n      </div>\n    </section>\n  </ng-container>\n\n  <ng-template #customerHome>\n  <section class=\"hero hero-redesign\">\n    <div class=\"container hero-grid\">\n      <div class=\"hero-copy\">\n        <span class=\"eyebrow\">{{ hp.hero?.eyebrow }}</span>\n        <h1>{{ hp.hero?.title }}</h1>\n        <p>{{ hp.hero?.intro }}</p>\n\n        <div class=\"hero-actions\">\n          <a [routerLink]=\"hp.hero?.primaryRoute || '/sorties'\" class=\"btn btn-primary btn-equal\">\n            {{ hp.hero?.primaryCta }}\n          </a>\n\n          <a *ngIf=\"canShowOnlineBookingButton\" routerLink=\"/calendar\" class=\"btn btn-secondary btn-equal\">\n            {{ hp.hero?.secondaryCta }}\n          </a>\n        </div>\n\n        <ul class=\"hero-points\" *ngIf=\"hp.hero?.badges?.length\">\n          <li *ngFor=\"let point of hp.hero.badges\">{{ point }}</li>\n        </ul>\n      </div>\n\n      <div class=\"hero-visual hero-card\">\n        <img [src]=\"heroImage\" [alt]=\"hp.hero?.imageAlt || content.brand\" />\n        <div class=\"hero-price-card\" *ngIf=\"hp.hero?.priceText || heroPriceValue\">\n          <span>{{ hp.hero?.priceText }}</span>\n          <strong>{{ heroPriceValue }}</strong>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section quick-actions-section\" *ngIf=\"quickActions.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.quickActions?.eyebrow }}</span>\n        <h2>{{ hp.quickActions?.title }}</h2>\n        <p>{{ hp.quickActions?.text }}</p>\n      </div>\n\n      <div class=\"action-grid\">\n        <a class=\"action-card\" *ngFor=\"let action of quickActions\" href=\"\" (click)=\"onProtectedHomeAction($event, action)\">\n          <span class=\"action-icon\">{{ action.icon }}</span>\n          <strong>{{ action.title }}</strong>\n          <small>{{ action.text }}</small>\n        </a>\n      </div>\n    </div>\n  </section>\n\n\n  <section class=\"section booking-process-teaser-section\" *ngIf=\"bookingProcessTeaser\">\n    <div class=\"container booking-process-teaser\">\n      <div class=\"booking-process-teaser-copy\">\n        <span class=\"eyebrow\">{{ bookingProcessTeaser.eyebrow }}</span>\n        <h2>{{ bookingProcessTeaser.title }}</h2>\n        <p>{{ bookingProcessTeaser.text }}</p>\n        <a [routerLink]=\"bookingProcessTeaser.route || '/booking-process'\" class=\"btn btn-secondary\">\n          {{ bookingProcessTeaser.cta }}\n        </a>\n      </div>\n      <div class=\"booking-process-mini-steps\" *ngIf=\"bookingProcessMiniSteps.length\">\n        <article *ngFor=\"let step of bookingProcessMiniSteps; let i = index\">\n          <span>{{ i + 1 }}</span>\n          <strong>{{ step.title }}</strong>\n          <small>{{ step.text }}</small>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section dashboard-section\" *ngIf=\"dashboardCards.length\">\n    <div class=\"container customer-dashboard\">\n      <div>\n        <span class=\"eyebrow\">{{ dashboard.eyebrow }}</span>\n        <h2>{{ dashboard.title }}<ng-container *ngIf=\"userFirstName\"> {{ userFirstName }}</ng-container></h2>\n        <p>{{ dashboard.text }}</p>\n      </div>\n\n      <div class=\"dashboard-cards\">\n        <a class=\"dashboard-card\" *ngFor=\"let card of dashboardCards\" [routerLink]=\"card.route\">\n          <span>{{ card.icon }}</span>\n          <strong>{{ card.title }}</strong>\n          <small>{{ card.text }}</small>\n        </a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section\" *ngIf=\"experiences.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.experiences?.eyebrow }}</span>\n        <h2>{{ hp.experiences?.title }}</h2>\n        <p>{{ hp.experiences?.text }}</p>\n      </div>\n\n      <div class=\"cards-grid experience-grid\">\n        <article class=\"card experience-card\" *ngFor=\"let experience of experiences\">\n          <img [src]=\"experience.image\" [alt]=\"experience.title\" [routerLink]=\"experience.route || ['/sorties', experience.slug]\" />\n          <div class=\"card-body\">\n            <h3>{{ experience.title }}</h3>\n            <p>{{ experience.description }}</p>\n            <div class=\"meta\" *ngIf=\"experience.meta\">{{ experience.meta }}</div>\n            <div class=\"meta price\" *ngIf=\"experience.price\">{{ experience.price }}</div>\n            <a [routerLink]=\"experience.route || ['/sorties', experience.slug]\" class=\"text-link\">{{ hp.experiences?.cardCta }}</a>\n          </div>\n        </article>\n      </div>\n\n      <div class=\"home-all-tours-cta\" *ngIf=\"hp.experiences?.cta\">\n        <a [routerLink]=\"hp.experiences?.ctaRoute || '/sorties'\" class=\"btn btn-secondary\">{{ hp.experiences.cta }}</a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section section-light pricing-section\" *ngIf=\"pricingRows.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.pricing?.eyebrow }}</span>\n        <h2>{{ hp.pricing?.title }}</h2>\n        <p>{{ hp.pricing?.text }}</p>\n      </div>\n\n      <div class=\"pricing-table-wrap\">\n        <table class=\"pricing-table\">\n          <thead>\n            <tr>\n              <th>{{ hp.pricing?.experienceLabel }}</th>\n              <th>{{ hp.pricing?.boatLabel }}</th>\n              <th>{{ hp.pricing?.skipperLabel }}</th>\n              <th>{{ hp.pricing?.totalLabel }}</th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr *ngFor=\"let row of pricingRows\">\n              <td>{{ row.experience }}</td>\n              <td>{{ row.boat }}</td>\n              <td>{{ row.skipper }}</td>\n              <td><strong>{{ row.total }}</strong></td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"pricing-notes\">\n        <div *ngIf=\"pricingIncluded.length\">\n          <h3>{{ hp.pricing?.includedTitle }}</h3>\n          <ul class=\"check-list compact\">\n            <li *ngFor=\"let item of pricingIncluded\">{{ item }}</li>\n          </ul>\n        </div>\n        <div *ngIf=\"pricingOptions.length\">\n          <h3>{{ hp.pricing?.optionsTitle }}</h3>\n          <ul class=\"check-list compact\">\n            <li *ngFor=\"let item of pricingOptions\">{{ item }}</li>\n          </ul>\n        </div>\n      </div>\n\n      <div class=\"booking-process-actions\" *ngIf=\"hp.pricing?.cta\">\n        <a [routerLink]=\"hp.pricing?.ctaRoute || '/reserver'\" class=\"btn btn-primary\">{{ hp.pricing.cta }}</a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section destinations-section\" *ngIf=\"destinations.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.destinations?.eyebrow }}</span>\n        <h2>{{ hp.destinations?.title }}</h2>\n        <p>{{ hp.destinations?.text }}</p>\n      </div>\n\n      <div class=\"destination-grid\">\n        <article class=\"destination-card\" *ngFor=\"let destination of destinations\">\n          <span>{{ destination.tag }}</span>\n          <h3>{{ destination.title }}</h3>\n          <p>{{ destination.text }}</p>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section section-light journey-section\" *ngIf=\"journeySteps.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.journey?.eyebrow }}</span>\n        <h2>{{ hp.journey?.title }}</h2>\n        <p>{{ hp.journey?.text }}</p>\n      </div>\n\n      <div class=\"journey-grid\">\n        <article class=\"journey-step\" *ngFor=\"let step of journeySteps; let i = index\">\n          <span class=\"step-number\">{{ i + 1 }}</span>\n          <h3>{{ step.title }}</h3>\n          <p>{{ step.text }}</p>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section section-light\" *ngIf=\"hp.boat\">\n    <div class=\"container split-grid\">\n      <div>\n        <span class=\"eyebrow\">{{ hp.boat?.eyebrow }}</span>\n        <h2>{{ hp.boat?.title }}</h2>\n        <p>{{ hp.boat?.text }}</p>\n        <ul class=\"check-list\" *ngIf=\"boatHighlights.length\">\n          <li *ngFor=\"let item of boatHighlights\">{{ item }}</li>\n        </ul>\n        <a [routerLink]=\"hp.boat?.ctaRoute || '/bateau'\" class=\"btn btn-secondary\" *ngIf=\"hp.boat?.cta\">{{ hp.boat.cta }}</a>\n      </div>\n\n      <div class=\"boat-card\">\n        <img [src]=\"boatImage\" [alt]=\"hp.boat?.imageAlt || content.brand\" />\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section reviews-section\" *ngIf=\"reviews.length\">\n    <div class=\"container\">\n      <div class=\"section-head centered\">\n        <span class=\"eyebrow\">{{ hp.reviews?.eyebrow }}</span>\n        <h2>{{ hp.reviews?.title }}</h2>\n        <p>{{ hp.reviews?.text }}</p>\n      </div>\n\n      <div class=\"review-grid\">\n        <article class=\"review-card\" *ngFor=\"let review of reviews\">\n          <div class=\"stars\">{{ review.stars }}</div>\n          <p>{{ review.quote }}</p>\n          <strong>{{ review.name }}</strong>\n          <small>{{ review.context }}</small>\n        </article>\n      </div>\n\n      <div class=\"home-all-tours-cta\" *ngIf=\"hp.reviews?.cta\">\n        <a [routerLink]=\"hp.reviews?.ctaRoute || '/feedback'\" class=\"btn btn-secondary\">{{ hp.reviews.cta }}</a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section faq-section\" *ngIf=\"faqItems.length\">\n    <div class=\"container faq-wrap\">\n      <div class=\"section-head\">\n        <span class=\"eyebrow\">{{ hp.faq?.eyebrow }}</span>\n        <h2>{{ hp.faq?.title }}</h2>\n        <p>{{ hp.faq?.text }}</p>\n        <a [routerLink]=\"hp.faq?.ctaRoute || '/faq'\" class=\"btn btn-secondary\" *ngIf=\"hp.faq?.cta\">{{ hp.faq.cta }}</a>\n      </div>\n\n      <div class=\"faq-list\">\n        <article class=\"faq-item\" *ngFor=\"let item of faqItems\">\n          <h3>{{ item.question }}</h3>\n          <p>{{ item.answer }}</p>\n        </article>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"section\" *ngIf=\"hp.finalCta\">\n    <div class=\"container contact-banner\">\n      <div>\n        <span class=\"eyebrow\">{{ hp.finalCta?.eyebrow }}</span>\n        <h2>{{ hp.finalCta?.title }}</h2>\n        <p>{{ hp.finalCta?.text }}</p>\n      </div>\n      <div class=\"contact-actions\">\n        <a [routerLink]=\"hp.finalCta?.primaryRoute || '/reserver'\" class=\"btn btn-primary\" *ngIf=\"hp.finalCta?.primaryCta\">{{ hp.finalCta.primaryCta }}</a>\n        <a [routerLink]=\"hp.finalCta?.secondaryRoute || '/contact'\" class=\"btn btn-secondary\" *ngIf=\"hp.finalCta?.secondaryCta\">{{ hp.finalCta.secondaryCta }}</a>\n      </div>\n    </div>\n  </section>\n\n  </ng-template>\n\n  <div class=\"auth-choice-backdrop\" *ngIf=\"showAuthChoiceModal\" (click)=\"closeAuthChoiceModal()\">\n    <div class=\"auth-choice-modal\" role=\"dialog\" aria-modal=\"true\" [attr.aria-label]=\"authModalTitle\" (click)=\"$event.stopPropagation()\">\n      <button type=\"button\" class=\"auth-choice-close\" (click)=\"closeAuthChoiceModal()\" [attr.aria-label]=\"authModalCloseLabel\">×</button>\n      <span class=\"eyebrow\">{{ authModal?.eyebrow }}</span>\n      <h2>{{ authModalTitle }}</h2>\n      <p>{{ authModalText }}</p>\n      <div class=\"auth-choice-actions\">\n        <button type=\"button\" class=\"btn btn-primary\" (click)=\"goToLogin()\">{{ authModalLoginLabel }}</button>\n        <button type=\"button\" class=\"btn btn-secondary\" (click)=\"goToSignup()\">{{ authModalSignupLabel }}</button>\n      </div>\n      <button type=\"button\" class=\"auth-choice-cancel\" (click)=\"closeAuthChoiceModal()\">{{ authModalCancelLabel }}</button>\n    </div>\n  </div>\n\n</ng-container>\n";
 
 /***/ }),
 
@@ -14332,369 +14446,46 @@ HomeComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_10__.__decorate)([(0,_angular_
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   TOUR_CONTENT: () => (/* binding */ TOUR_CONTENT),
 /* harmony export */   getTourContent: () => (/* binding */ getTourContent)
 /* harmony export */ });
-const images = {
-  de1: 'assets/img/events/de/de1.png',
-  de2: 'assets/img/events/de/de2.png',
-  de3: 'assets/img/events/de/de3.png',
-  de4: 'assets/img/events/de/de4.png',
-  de5: 'assets/img/events/de/de5.png',
-  de6: 'assets/img/events/de/de6.png',
-  sunset1: 'assets/img/events/sunset/sunset1.jpg',
-  sunset2: 'assets/img/events/sunset/sunset2.jpg',
-  sunset3: 'assets/img/events/sunset/sunset3.jpg',
-  party1: 'assets/img/events/party/party1.jpg',
-  party2: 'assets/img/events/party/party2.jpg',
-  party3: 'assets/img/events/party/party3.jpg',
-  party4: 'assets/img/events/party/party4.jpg',
-  party5: 'assets/img/events/party/party5.jpg',
-  party6: 'assets/img/events/party/party6.jpg',
-  party7: 'assets/img/events/party/party7.jpg',
-  party8: 'assets/img/events/party/party8.jpg',
-  party9: 'assets/img/events/party/party9.jpg',
-  party10: 'assets/img/events/party/party10.jpg',
-  party11: 'assets/img/events/party/party11.jpg',
-  business1: 'assets/img/events/business-meeting/business-meeting1.jpg',
-  business2: 'assets/img/events/business-meeting/business-meeting2.jpg'
-};
-const TOUR_GALLERIES = {
-  'journee-en-mer': [images.de1, images.de2, images.de3, images.de4, images.de5, images.de6],
-  'coucher-de-soleil': [images.sunset1, images.sunset2, images.sunset3],
-  'anniversaire': [images.party1, images.party2, images.party3, images.party4, images.party5, images.party6, images.party7, images.party8, images.party9, images.party10, images.party11],
-  'party': [images.party1, images.party2, images.party3, images.party4, images.party5, images.party6, images.party7, images.party8, images.party9, images.party10, images.party11],
-  'sortie-entreprise': [images.business1, images.business2]
-};
-const GALLERY_TITLES = {
-  fr: 'Galerie photos',
-  en: 'Photo gallery',
-  es: 'Galería de fotos'
-};
-const SERVICE_BLOCKS = {
-  fr: {
-    coreTitle: 'Offre incluse',
-    core: ['Vaisselle, verres, couverts et assiettes', 'Réfrigérateur, four, micro-ondes', 'WiFi à bord', 'Système audio', 'Skipper indépendant obligatoire'],
-    optionsTitle: 'Options sur demande',
-    options: ['Boissons chaudes ou fraîches', 'Snacks et planches', 'DJ', 'Professeur de yoga', 'Masseur / massage à bord'],
-    suggestionsTitle: 'Suggestions à prévoir',
-    suggestions: ['Glace', 'Déjeuner ou brunch', 'Commande traiteur', 'Playlist personnalisée']
-  },
-  en: {
-    coreTitle: 'Core offering',
-    core: ['Glasses, plates and cutlery', 'Fridge, oven, microwave', 'WiFi on board', 'Sound system', 'Independent skipper required'],
-    optionsTitle: 'Optional extras',
-    options: ['Hot or cold drinks', 'Snacks and platters', 'DJ', 'Yoga instructor', 'Masseur / massage on board'],
-    suggestionsTitle: 'Suggestions to plan',
-    suggestions: ['Ice', 'Lunch or brunch', 'Catering order', 'Custom playlist']
-  },
-  es: {
-    coreTitle: 'Oferta incluida',
-    core: ['Vasos, platos y cubiertos', 'Frigorífico, horno, microondas', 'WiFi a bordo', 'Sistema de sonido', 'Patrón independiente obligatorio'],
-    optionsTitle: 'Opciones bajo petición',
-    options: ['Bebidas frías o calientes', 'Snacks y aperitivos', 'DJ', 'Instructor de yoga', 'Masajista / masaje a bordo'],
-    suggestionsTitle: 'Sugerencias para prever',
-    suggestions: ['Hielo', 'Almuerzo o brunch', 'Pedido de catering', 'Lista de música personalizada']
-  }
-};
-const TOUR_CONTENT = {
-  fr: {
-    'journee-en-mer': {
-      key: 'journee-en-mer',
-      route: 'journee-en-mer',
-      eyebrow: 'Sortie signature',
-      title: 'Journée en mer à bord d’Alegria',
-      subtitle: 'Une journée ou demi-journée privative pour profiter de la Côte d’Azur.',
-      intro: 'Embarquez pour une journée ou demi-journée élégante au départ de Villeneuve-Loubet : navigation, baignade et mouillages proches comme les îles de Lérins, la baie des Milliardaires, le Cap d’Antibes ou Villefranche selon la météo.',
-      image: images.de1,
-      duration: 'Journée ou demi-journée',
-      guests: '12 passagers max',
-      price: '',
-      highlightsTitle: 'Les points forts',
-      highlights: ['Location en coque nue*', 'Skipper indépendant obligatoire', 'Programme adaptable selon la météo', 'Cadre premium pour famille, couple ou amis'],
-      programTitle: 'Exemple de programme',
-      program: ['Embarquement sur les quais d’honneur', 'Navigation vers un mouillage proche : îles de Lérins, baie des Milliardaires, Cap d’Antibes ou Villefranche selon les conditions', 'Temps libre pour baignade et détente', 'Déjeuner à bord ou escale selon votre projet', 'Retour au port'],
-      includesTitle: 'Ce qui est prévu',
-      includes: ['Bateau privatisé en coque nue', 'Organisation sur mesure', 'Temps de baignade', 'Confort à bord'],
-      idealForTitle: 'Idéal pour',
-      idealFor: ['Une journée en famille', 'Une sortie entre amis', 'Un moment en couple', 'Une découverte de la Côte d’Azur'],
-      cta: 'Voir la disponibilité',
-      contactNote: 'Indiquez votre date, le nombre de personnes et l’ambiance souhaitée.'
-    },
-    'coucher-de-soleil': {
-      key: 'coucher-de-soleil',
-      route: 'coucher-de-soleil',
-      eyebrow: 'Moment privilégié',
-      title: 'Coucher de soleil à bord d’Alegria',
-      subtitle: 'La lumière dorée de fin de journée dans un cadre calme et élégant.',
-      intro: 'Une parenthèse raffinée en mer pour profiter de la fin de journée, d’un apéritif ou d’un moment intime sur l’eau.',
-      image: images.sunset1,
-      duration: 'Coucher de soleil',
-      guests: '12 passagers max',
-      price: '',
-      highlightsTitle: 'Les points forts',
-      highlights: ['Ambiance élégante et détendue', 'Lumière idéale pour les photos', 'Format parfait pour un apéritif en mer', 'Expérience privative'],
-      programTitle: 'Exemple de programme',
-      program: ['Accueil en fin d’après-midi', 'Navigation courte vers un point de vue privilégié', 'Temps d’arrêt pour profiter du coucher du soleil', 'Apéritif possible en option', 'Retour au port en soirée'],
-      includesTitle: 'Ce qui est prévu',
-      includes: ['Bateau privatisé en coque nue', 'Skipper indépendant obligatoire', 'Organisation souple selon la météo', 'Ambiance sunset à bord'],
-      idealForTitle: 'Idéal pour',
-      idealFor: ['Un moment en couple', 'Un petit groupe d’amis', 'Une demande spéciale', 'Un apéritif chic'],
-      cta: 'Voir la disponibilité',
-      contactNote: 'Nous vous aidons à choisir l’horaire le plus adapté.'
-    },
-    'anniversaire': {
-      key: 'anniversaire',
-      route: 'anniversaire',
-      eyebrow: 'Sortie festive',
-      title: 'Fête privée à bord d’Alegria',
-      subtitle: 'Une célébration en mer dans un cadre exclusif et mémorable.',
-      intro: 'Organisez une fête privée dans une ambiance conviviale, festive ou élégante selon vos envies, avec un cadre unique sur la Côte d’Azur.',
-      image: images.party1,
-      duration: 'Journée',
-      guests: '12 passagers max',
-      price: '',
-      highlightsTitle: 'Les points forts',
-      highlights: ['Format personnalisable', 'Souvenirs photo dans un décor unique', 'Ambiance adaptée à votre groupe', 'Bateau privatisé en coque nue'],
-      programTitle: 'Exemple de programme',
-      program: ['Accueil du groupe à bord', 'Navigation et pause baignade', 'Temps convivial pour photos, musique et détente', 'Options boissons, snacks ou services sur demande', 'Retour au port'],
-      includesTitle: 'Ce qui est prévu',
-      includes: ['Bateau privatisé en coque nue', 'Skipper indépendant obligatoire', 'Organisation personnalisée', 'Cadre exclusif'],
-      idealForTitle: 'Idéal pour',
-      idealFor: ['Une fête privée entre amis', 'Une célébration en famille', 'Un moment festif', 'Une surprise mémorable'],
-      cta: 'Préparer votre projet',
-      contactNote: 'Expliquez-nous le style recherché et nous construirons la bonne formule.'
-    },
-    'sortie-entreprise': {
-      key: 'sortie-entreprise',
-      route: 'sortie-entreprise',
-      eyebrow: 'Corporate',
-      title: 'Sortie entreprise à bord d’Alegria',
-      subtitle: 'Un cadre original pour réunir collaborateurs, clients ou partenaires.',
-      intro: 'Alegria offre un environnement rare pour organiser une parenthèse professionnelle de qualité : cohésion, accueil clients ou moment de détente.',
-      image: images.business1,
-      duration: 'Journée ou demi-journée',
-      guests: '12 passagers max',
-      price: '',
-      highlightsTitle: 'Les points forts',
-      highlights: ['Image premium pour votre entreprise', 'Format souple et original', 'Cadre propice aux échanges', 'Expérience mémorable'],
-      programTitle: 'Exemple de programme',
-      program: ['Accueil du groupe au port', 'Navigation ou mouillage selon le format choisi', 'Temps d’échange, détente ou accueil clients', 'Cocktail, options ou services sur demande', 'Retour au port'],
-      includesTitle: 'Ce qui est prévu',
-      includes: ['Bateau privatisé en coque nue', 'Skipper indépendant obligatoire', 'Préparation en direct avec vous', 'Programme adaptable'],
-      idealForTitle: 'Idéal pour',
-      idealFor: ['Un comité restreint', 'Une sortie incentive', 'Un rendez-vous clients', 'Un moment de cohésion'],
-      cta: 'Recevoir une offre',
-      contactNote: 'Nous vous aidons à construire un format sobre, premium et efficace.'
-    }
-  },
-  en: {
-    'journee-en-mer': {
-      key: 'journee-en-mer',
-      route: 'journee-en-mer',
-      eyebrow: 'Signature outing',
-      title: 'Day or half day at sea aboard Alegria',
-      subtitle: 'A private full-day or half-day experience around Villeneuve-Loubet and the French Riviera.',
-      intro: 'Step aboard for an elegant full-day or half-day experience from Villeneuve-Loubet: cruising, swimming and nearby anchorages such as the Lérins Islands, Billionaires’ Bay, Cap d’Antibes or Villefranche depending on conditions.',
-      image: images.de1,
-      duration: 'Full day or half day',
-      guests: 'Up to 12 guests',
-      price: '',
-      highlightsTitle: 'Highlights',
-      highlights: ['Bareboat rental*', 'Independent skipper required', 'Flexible program depending on weather', 'Premium setting for family, couples or friends'],
-      programTitle: 'Sample program',
-      program: ['Boarding from honorary quays', 'Cruise to a nearby anchorage: Lérins Islands, Billionaires’ Bay, Cap d’Antibes or Villefranche depending on conditions', 'Free time for swimming and relaxation', 'Lunch on board or stop ashore depending on your plans', 'Return to port'],
-      includesTitle: 'What is included',
-      includes: ['Private bareboat charter', 'Tailored organization', 'Swimming time', 'On-board comfort'],
-      idealForTitle: 'Ideal for',
-      idealFor: ['A family day out', 'Time with friends', 'A couple’s escape', 'Discovering the Riviera'],
-      cta: 'Check availability',
-      contactNote: 'Tell us your preferred date, group size and the atmosphere you want.'
-    },
-    'coucher-de-soleil': {
-      key: 'coucher-de-soleil',
-      route: 'coucher-de-soleil',
-      eyebrow: 'Special moment',
-      title: 'Sunset cruise aboard Alegria',
-      subtitle: 'Golden light, calm waters and an elegant private setting.',
-      intro: 'A refined escape at sea to enjoy the late afternoon, sunset drinks or an intimate moment on the water.',
-      image: images.sunset1,
-      duration: 'Sunset',
-      guests: 'Up to 12 guests',
-      price: '',
-      highlightsTitle: 'Highlights',
-      highlights: ['Elegant and relaxed atmosphere', 'Ideal light for photos', 'Perfect for drinks at sea', 'Private experience'],
-      programTitle: 'Sample program',
-      program: ['Boarding in the late afternoon', 'Short cruise to a privileged viewpoint', 'Stop to enjoy the sunset', 'Drinks possible as an option', 'Return to port in the evening'],
-      includesTitle: 'What is included',
-      includes: ['Private bareboat charter', 'Independent skipper required', 'Flexible organization depending on weather', 'Sunset atmosphere on board'],
-      idealForTitle: 'Ideal for',
-      idealFor: ['A romantic moment', 'A small group of friends', 'A special request', 'A chic aperitif'],
-      cta: 'Check availability',
-      contactNote: 'We can help you choose the best timing.'
-    },
-    'anniversaire': {
-      key: 'anniversaire',
-      route: 'anniversaire',
-      eyebrow: 'Festive outing',
-      title: 'Private party aboard Alegria',
-      subtitle: 'A celebration at sea in an exclusive and memorable setting.',
-      intro: 'Celebrate a private party in a friendly, festive or elegant atmosphere depending on your wishes, with a unique Riviera backdrop.',
-      image: images.party1,
-      duration: 'Full day',
-      guests: 'Up to 12 guests',
-      price: '',
-      highlightsTitle: 'Highlights',
-      highlights: ['Customizable format', 'Great photo memories', 'Atmosphere tailored to your group', 'Private bareboat charter'],
-      programTitle: 'Sample program',
-      program: ['Group welcome on board', 'Cruising and swimming stop', 'Time for photos, music and relaxation', 'Drinks, snacks or services available on request', 'Return to port'],
-      includesTitle: 'What is included',
-      includes: ['Private bareboat charter', 'Independent skipper required', 'Personalized organization', 'Exclusive setting'],
-      idealForTitle: 'Ideal for',
-      idealFor: ['A private party with friends', 'A family celebration', 'A festive moment', 'A memorable surprise'],
-      cta: 'Plan your outing',
-      contactNote: 'Tell us the style you are looking for and we will build the right option.'
-    },
-    'sortie-entreprise': {
-      key: 'sortie-entreprise',
-      route: 'sortie-entreprise',
-      eyebrow: 'Corporate',
-      title: 'Corporate outing aboard Alegria',
-      subtitle: 'A unique setting for teams, clients or partners.',
-      intro: 'Alegria offers a rare setting for a high-quality professional moment: team bonding, client hosting or a premium break.',
-      image: images.business1,
-      duration: 'Full day or half day',
-      guests: 'Up to 12 guests',
-      price: '',
-      highlightsTitle: 'Highlights',
-      highlights: ['Premium image for your company', 'Flexible and original format', 'Ideal setting for conversations', 'Memorable experience'],
-      programTitle: 'Sample program',
-      program: ['Welcome of your group at the port', 'Cruising or anchorage depending on the format', 'Time for conversations, relaxation or client hosting', 'Cocktail, options or services on request', 'Return to port'],
-      includesTitle: 'What is included',
-      includes: ['Private bareboat charter', 'Independent skipper required', 'Direct planning with you', 'Adaptable program'],
-      idealForTitle: 'Ideal for',
-      idealFor: ['A small executive group', 'An incentive outing', 'A client meeting', 'A team bonding moment'],
-      cta: 'Receive a offer',
-      contactNote: 'We can help design a format that is understated, premium and effective.'
-    }
-  },
-  es: {
-    'journee-en-mer': {
-      key: 'journee-en-mer',
-      route: 'journee-en-mer',
-      eyebrow: 'Salida emblemática',
-      title: 'Día o medio día en el mar a bordo de Alegria',
-      subtitle: 'Una experiencia privada de día completo o medio día alrededor de Villeneuve-Loubet y la Costa Azul.',
-      intro: 'Suba a bordo para una experiencia elegante de día completo o medio día desde Villeneuve-Loubet: navegación, baño y fondeos cercanos como las islas de Lérins, la bahía de los Millonarios, Cap d’Antibes o Villefranche según las condiciones.',
-      image: images.de1,
-      duration: 'Día completo o medio día',
-      guests: 'Hasta 12 pasajeros',
-      price: '',
-      highlightsTitle: 'Puntos fuertes',
-      highlights: ['Alquiler en casco desnudo*', 'Patrón independiente obligatorio', 'Programa flexible según la meteorología', 'Entorno premium para familia, pareja o amigos'],
-      programTitle: 'Programa orientativo',
-      program: ['Embarque desde los muelles de honor', 'Navegación hacia un fondeo cercano: islas de Lérins, bahía de los Millonarios, Cap d’Antibes o Villefranche según las condiciones', 'Tiempo libre para bañarse y relajarse', 'Almuerzo a bordo o parada en tierra según el plan', 'Regreso al puerto'],
-      includesTitle: 'Qué está incluido',
-      includes: ['Alquiler privado en casco desnudo', 'Organización a medida', 'Tiempo para baño', 'Confort a bordo'],
-      idealForTitle: 'Ideal para',
-      idealFor: ['Un día en familia', 'Una salida con amigos', 'Una escapada en pareja', 'Descubrir la Costa Azul'],
-      cta: 'Ver disponibilidad',
-      contactNote: 'Indíquenos la fecha, el número de personas y el ambiente deseado.'
-    },
-    'coucher-de-soleil': {
-      key: 'coucher-de-soleil',
-      route: 'coucher-de-soleil',
-      eyebrow: 'Momento especial',
-      title: 'Atardecer a bordo de Alegria',
-      subtitle: 'Luz dorada, calma y un entorno privado elegante.',
-      intro: 'Una escapada refinada en el mar para disfrutar del final del día, un aperitivo o un momento íntimo sobre el agua.',
-      image: images.sunset1,
-      duration: 'Atardecer',
-      guests: 'Hasta 12 pasajeros',
-      price: '',
-      highlightsTitle: 'Puntos fuertes',
-      highlights: ['Ambiente elegante y relajado', 'Luz ideal para fotos', 'Perfecto para un aperitivo en el mar', 'Experiencia privada'],
-      programTitle: 'Programa orientativo',
-      program: ['Embarque al final de la tarde', 'Navegación corta hacia un punto de vista privilegiado', 'Parada para disfrutar del atardecer', 'Aperitivo posible como opción', 'Regreso al puerto por la noche'],
-      includesTitle: 'Qué está incluido',
-      includes: ['Alquiler privado en casco desnudo', 'Patrón independiente obligatorio', 'Organización flexible según la meteorología', 'Ambiente sunset a bordo'],
-      idealForTitle: 'Ideal para',
-      idealFor: ['Un momento en pareja', 'Un pequeño grupo de amigos', 'Una petición especial', 'Un aperitivo chic'],
-      cta: 'Ver disponibilidad',
-      contactNote: 'Le ayudamos a elegir el mejor horario.'
-    },
-    'anniversaire': {
-      key: 'anniversaire',
-      route: 'anniversaire',
-      eyebrow: 'Salida festiva',
-      title: 'Fiesta privada a bordo de Alegria',
-      subtitle: 'Una celebración en el mar en un entorno exclusivo y memorable.',
-      intro: 'Celebre una fiesta privada en un ambiente agradable, festivo o elegante según sus deseos, con un escenario único en la Costa Azul.',
-      image: images.party1,
-      duration: 'Día completo',
-      guests: 'Hasta 12 pasajeros',
-      price: '',
-      highlightsTitle: 'Puntos fuertes',
-      highlights: ['Formato personalizable', 'Recuerdos fotográficos únicos', 'Ambiente adaptado al grupo', 'Alquiler privado en casco desnudo'],
-      programTitle: 'Programa orientativo',
-      program: ['Bienvenida del grupo a bordo', 'Navegación y parada para bañarse', 'Tiempo para fotos, música y relax', 'Bebidas, snacks o servicios bajo petición', 'Regreso al puerto'],
-      includesTitle: 'Qué está incluido',
-      includes: ['Alquiler privado en casco desnudo', 'Patrón independiente obligatorio', 'Organización personalizada', 'Entorno exclusivo'],
-      idealForTitle: 'Ideal para',
-      idealFor: ['Un fiesta privada con amigos', 'Una celebración familiar', 'Un momento festivo', 'Una sorpresa memorable'],
-      cta: 'Preparar su salida',
-      contactNote: 'Cuéntenos el estilo que busca y crearemos la mejor fórmula.'
-    },
-    'sortie-entreprise': {
-      key: 'sortie-entreprise',
-      route: 'sortie-entreprise',
-      eyebrow: 'Corporate',
-      title: 'Evento de empresa a bordo de Alegria',
-      subtitle: 'Un entorno único para equipos, clientes o socios.',
-      intro: 'Alegria ofrece un marco excepcional para una experiencia profesional de calidad: cohesión, atención a clientes o una pausa premium.',
-      image: images.business1,
-      duration: 'Día completo o medio día',
-      guests: 'Hasta 12 pasajeros',
-      price: '',
-      highlightsTitle: 'Puntos fuertes',
-      highlights: ['Imagen premium para su empresa', 'Formato flexible y original', 'Entorno propicio para conversar', 'Experiencia memorable'],
-      programTitle: 'Programa orientativo',
-      program: ['Recepción del grupo en el puerto', 'Navegación o fondeo según el formato elegido', 'Tiempo para conversar, relajarse o recibir clientes', 'Cóctel, opciones o servicios bajo petición', 'Regreso al puerto'],
-      includesTitle: 'Qué está incluido',
-      includes: ['Alquiler privado en casco desnudo', 'Patrón independiente obligatorio', 'Preparación directa con usted', 'Programa adaptable'],
-      idealForTitle: 'Ideal para',
-      idealFor: ['Un comité reducido', 'Una salida incentive', 'Una reunión con clientes', 'Un momento de cohesión de equipo'],
-      cta: 'Recibir una propuesta',
-      contactNote: 'Podemos ayudarle a diseñar un formato sobrio, premium y eficaz.'
-    }
-  }
-};
-// Backward compatibility: older static content used the `anniversaire` key for the private party page.
-// The new Firebase structure uses `party`, so we expose both keys in the static fallback.
-Object.keys(TOUR_CONTENT).forEach(language => {
-  if (!TOUR_CONTENT[language].party && TOUR_CONTENT[language].anniversaire) {
-    TOUR_CONTENT[language].party = {
-      ...TOUR_CONTENT[language].anniversaire,
-      key: 'party',
-      route: 'party'
-    };
-  }
-});
-Object.keys(TOUR_CONTENT).forEach(language => {
-  Object.keys(TOUR_CONTENT[language]).forEach(key => {
-    TOUR_CONTENT[language][key].galleryTitle = GALLERY_TITLES[language] || GALLERY_TITLES.fr;
-    TOUR_CONTENT[language][key].gallery = TOUR_GALLERIES[key];
-    const serviceBlock = SERVICE_BLOCKS[language] || SERVICE_BLOCKS.fr;
-    TOUR_CONTENT[language][key].coreOfferingTitle = serviceBlock.coreTitle;
-    TOUR_CONTENT[language][key].coreOffering = serviceBlock.core;
-    TOUR_CONTENT[language][key].optionalExtrasTitle = serviceBlock.optionsTitle;
-    TOUR_CONTENT[language][key].optionalExtras = serviceBlock.options;
-    TOUR_CONTENT[language][key].suggestionsTitle = serviceBlock.suggestionsTitle;
-    TOUR_CONTENT[language][key].guestSuggestions = serviceBlock.suggestions;
-  });
-});
-function getTourContent(language, key) {
-  return (TOUR_CONTENT[language] || TOUR_CONTENT.fr)[key];
+/**
+ * Editorial content is intentionally absent from this file.
+ *
+ * Release 104.4: Firebase /bnOutings/{boatId}/{slug}/{language} is the only
+ * source for outing titles, descriptions, programmes and labels. This empty
+ * object only keeps Angular templates type-safe while Firebase is loading.
+ */
+function getTourContent(_language, key) {
+  return {
+    key,
+    route: key === 'anniversaire' ? 'party' : key,
+    eyebrow: '',
+    title: '',
+    subtitle: '',
+    intro: '',
+    image: '',
+    duration: '',
+    guests: '',
+    price: '',
+    highlightsTitle: '',
+    highlights: [],
+    programTitle: '',
+    program: [],
+    includesTitle: '',
+    includes: [],
+    idealForTitle: '',
+    idealFor: [],
+    cta: '',
+    contactNote: '',
+    galleryTitle: '',
+    gallery: [],
+    coreOfferingTitle: '',
+    coreOffering: [],
+    optionalExtrasTitle: '',
+    optionalExtras: [],
+    suggestionsTitle: '',
+    guestSuggestions: []
+  };
 }
 
 /***/ }),
@@ -16547,6 +16338,12 @@ const routes = [{
   path: 'my-bookings',
   component: _my_bookings_my_bookings_component__WEBPACK_IMPORTED_MODULE_23__.MyBookingsComponent
 }, {
+  path: 'calendar',
+  component: _admin_boat_calendar_admin_boat_calendar_component__WEBPACK_IMPORTED_MODULE_37__.AdminBoatCalendarComponent,
+  data: {
+    calendarMode: 'customer'
+  }
+}, {
   path: 'my-offers',
   component: _my_offers_my_offers_component__WEBPACK_IMPORTED_MODULE_24__.MyOffersComponent
 }, {
@@ -16608,7 +16405,10 @@ const routes = [{
   component: _admin_outings_admin_outings_component__WEBPACK_IMPORTED_MODULE_17__.AdminOutingsComponent
 }, {
   path: 'admin/calendar',
-  component: _admin_boat_calendar_admin_boat_calendar_component__WEBPACK_IMPORTED_MODULE_37__.AdminBoatCalendarComponent
+  component: _admin_boat_calendar_admin_boat_calendar_component__WEBPACK_IMPORTED_MODULE_37__.AdminBoatCalendarComponent,
+  data: {
+    calendarMode: 'admin'
+  }
 }, {
   path: 'admin/outings/:outingId',
   component: _admin_outing_detail_admin_outing_detail_component__WEBPACK_IMPORTED_MODULE_18__.AdminOutingDetailComponent
@@ -19250,7 +19050,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"page-hero\">\n  <div class=\"container text-block\">\n    <span class=\"eyebrow\">{{ content.boatPage.eyebrow }}</span>\n    <h1>{{ content.boatPage.title }}</h1>\n    <p>{{ content.boatPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container split-grid\">\n    <div>\n      <h2>{{ content.boatPage.reasonsTitle }}</h2>\n      <p>{{ content.boatPage.reasonsText }}</p>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of content.boatPage.reasons\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"visual-grid\">\n      <img *ngFor=\"let image of images\" [src]=\"image\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container split-grid secondary-grid\">\n    <div>\n      <h2>{{ content.boatPage.comfortTitle }}</h2>\n      <p>{{ content.boatPage.comfortText }}</p>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/contact\" class=\"btn\">{{ content.boatPage.cta }}</a>\n        <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\" target=\"_blank\" rel=\"noreferrer\" class=\"btn btn-book\">{{ content.common.bookOnClickAndBoat }}</a>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ content.boatPage.occasionsTitle }}</h2>\n      <ul class=\"occasions-list\">\n        <li *ngFor=\"let item of content.boatPage.occasions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section safety-link-section\">\n  <div class=\"container safety-link-box\">\n    <div>\n      <span class=\"eyebrow\">{{ 'auto.home.boat.boat.component.safety' | siteText }}</span>\n      <h2>{{ 'auto.home.boat.boat.component.consignes_de_s_curit_bord' | siteText }}</h2>\n      <p>{{ 'auto.home.boat.boat.component.retrouvez_les_consignes_principales_pour_profiter_' | siteText }}</p>\n    </div>\n    <a routerLink=\"/safety\" class=\"btn btn-secondary\">{{ 'auto.home.boat.boat.component.voir_les_consignes' | siteText }}</a>\n  </div>\n</section>\n\n<app-safety-instructions></app-safety-instructions>\n\n\n<section class=\"section checklist-wrapper\">\n  <app-checklist></app-checklist>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container specs-grid\">\n    <div>\n      <h2>{{ specsTitle }}</h2>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of specs\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div>\n      <h2>{{ servicesTitle }}</h2>\n      <div class=\"offering-grid\">\n        <div class=\"offer-card\">\n          <h3>{{ coreTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of coreOffering\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ optionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of optionalExtras\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ suggestionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of guestSuggestions\">{{ item }}</li>\n          </ul>\n        </div>\n      </div>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/crew\" class=\"btn btn-secondary\">{{ crewCta }}</a>\n      </div>\n    </div>\n  </div>\n</section>\n";
+module.exports = "<section class=\"page-hero\">\n  <div class=\"container text-block\">\n    <span class=\"eyebrow\">{{ content.boatPage.eyebrow }}</span>\n    <h1>{{ content.boatPage.title }}</h1>\n    <p>{{ content.boatPage.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container split-grid\">\n    <div>\n      <h2>{{ content.boatPage.reasonsTitle }}</h2>\n      <p>{{ content.boatPage.reasonsText }}</p>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of content.boatPage.reasons\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"visual-grid\">\n      <img *ngFor=\"let image of images\" [src]=\"image\" [alt]=\"content.brand\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container split-grid secondary-grid\">\n    <div>\n      <h2>{{ content.boatPage.comfortTitle }}</h2>\n      <p>{{ content.boatPage.comfortText }}</p>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/calendar\" class=\"btn\">{{ content.boatPage.cta }}</a>\n        <a href=\"https://www.clickandboat.com/en/boat-rental/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556\" target=\"_blank\" rel=\"noreferrer\" class=\"btn btn-book\">{{ content.common.bookOnClickAndBoat }}</a>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ content.boatPage.occasionsTitle }}</h2>\n      <ul class=\"occasions-list\">\n        <li *ngFor=\"let item of content.boatPage.occasions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section safety-link-section\">\n  <div class=\"container safety-link-box\">\n    <div>\n      <span class=\"eyebrow\">{{ 'auto.home.boat.boat.component.safety' | siteText }}</span>\n      <h2>{{ 'auto.home.boat.boat.component.consignes_de_s_curit_bord' | siteText }}</h2>\n      <p>{{ 'auto.home.boat.boat.component.retrouvez_les_consignes_principales_pour_profiter_' | siteText }}</p>\n    </div>\n    <a routerLink=\"/safety\" class=\"btn btn-secondary\">{{ 'auto.home.boat.boat.component.voir_les_consignes' | siteText }}</a>\n  </div>\n</section>\n\n<app-safety-instructions></app-safety-instructions>\n\n\n<section class=\"section checklist-wrapper\">\n  <app-checklist></app-checklist>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container specs-grid\">\n    <div>\n      <h2>{{ specsTitle }}</h2>\n      <ul class=\"highlights\">\n        <li *ngFor=\"let item of specs\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div>\n      <h2>{{ servicesTitle }}</h2>\n      <div class=\"offering-grid\">\n        <div class=\"offer-card\">\n          <h3>{{ coreTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of coreOffering\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ optionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of optionalExtras\">{{ item }}</li>\n          </ul>\n        </div>\n        <div class=\"offer-card\">\n          <h3>{{ suggestionsTitle }}</h3>\n          <ul class=\"bullet-list\">\n            <li *ngFor=\"let item of guestSuggestions\">{{ item }}</li>\n          </ul>\n        </div>\n      </div>\n      <div class=\"boat-actions\">\n        <a routerLink=\"/crew\" class=\"btn btn-secondary\">{{ crewCta }}</a>\n      </div>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -23015,6 +22815,7 @@ __webpack_require__.r(__webpack_exports__);
 
 let OnlineBookingComponent = class OnlineBookingComponent {
   router;
+  route;
   mainSvc;
   siteContentService;
   languageService;
@@ -23059,8 +22860,9 @@ let OnlineBookingComponent = class OnlineBookingComponent {
     comments: '',
     totalPrice: null
   };
-  constructor(router, mainSvc, siteContentService, languageService, bookingApi, offerApi) {
+  constructor(router, route, mainSvc, siteContentService, languageService, bookingApi, offerApi) {
     this.router = router;
+    this.route = route;
     this.mainSvc = mainSvc;
     this.siteContentService = siteContentService;
     this.languageService = languageService;
@@ -23069,6 +22871,7 @@ let OnlineBookingComponent = class OnlineBookingComponent {
   }
   ngOnInit() {
     this.restoreWizardState();
+    this.prefillDateFromCalendar();
     this.watchLoggedUser();
     this.loadSiteContent();
     this.loadPricingModel();
@@ -23076,6 +22879,17 @@ let OnlineBookingComponent = class OnlineBookingComponent {
       this.currentLanguage = language;
       this.content = this.normalizeContent(this.allSiteContent[language] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[language], language);
     });
+  }
+  prefillDateFromCalendar() {
+    const date = String(this.route.snapshot.queryParamMap.get('date') || '').trim();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+    this.form = {
+      ...this.form,
+      outingDate: date
+    };
+    this.currentStep = 1;
+    this.createdBookingId = '';
+    this.persistWizardState();
   }
   ngOnDestroy() {
     this.languageSub?.unsubscribe();
@@ -23674,6 +23488,8 @@ let OnlineBookingComponent = class OnlineBookingComponent {
   static ctorParameters = () => [{
     type: _angular_router__WEBPACK_IMPORTED_MODULE_8__.Router
   }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_8__.ActivatedRoute
+  }, {
     type: godigital_lib__WEBPACK_IMPORTED_MODULE_9__.ServicesService
   }, {
     type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__.SiteContentService
@@ -23706,15 +23522,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   BookingApiService: () => (/* binding */ BookingApiService)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ 93262);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ 95429);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 59452);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 43942);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ 61318);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ 70271);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 95429);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 59452);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ 43942);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ 61318);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ 70271);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _services_boat_context_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/boat-context.service */ 61766);
+
 
 
 
@@ -23726,14 +23544,18 @@ let BookingApiService = class BookingApiService {
   http;
   utilsSvc;
   storeDb;
+  boatContext;
   collectionName = 'bnBookings';
-  pricingModelPath = 'bnPricingModel/alegria';
+  get pricingModelPath() {
+    return `bnPricingModel/${this.boatContext.boatId}`;
+  }
   restDatabaseUrls = ['https://adn-dev-4d05d.firebaseio.com'];
   fallbackBookings = [];
-  constructor(http, utilsSvc, storeDb) {
+  constructor(http, utilsSvc, storeDb, boatContext) {
     this.http = http;
     this.utilsSvc = utilsSvc;
     this.storeDb = storeDb;
+    this.boatContext = boatContext;
   }
   getDefaultPricingModel() {
     return {
@@ -23759,13 +23581,9 @@ let BookingApiService = class BookingApiService {
   getPricingModel() {
     var _this = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      // The CMS pricing editor stores the operational model under
-      // /cmsContent/pricing/model/alegria. Older releases only read
-      // /bnPricingModel/alegria, which allowed the two copies to diverge.
-      // Merge the CMS model last so the latest value edited in Site Content is
-      // immediately reflected on the homepage and in the booking flow.
+      // One pricing source per boat.
       try {
-        const [operational, cms] = yield Promise.all([_this.readFirebasePath('/bnPricingModel/alegria').catch(() => null), _this.readFirebasePath('/cmsContent/pricing/model/alegria').catch(() => null)]);
+        const [operational, cms] = yield Promise.all([_this.readFirebasePath(`/bnPricingModel/${_this.boatContext.boatId}`).catch(() => null), Promise.resolve(null)]);
         return {
           ..._this.getDefaultPricingModel(),
           ...(operational || {}),
@@ -23784,46 +23602,29 @@ let BookingApiService = class BookingApiService {
         ...(model || {}),
         updatedAt: Date.now()
       };
-      const cmsPayload = {
-        model: {
-          alegria: payload
-        },
-        modifiedAt: Date.now(),
-        modifiedBy: 'admin',
-        note: 'Operational pricing synchronized with bnPricingModel.'
-      };
       const store = _this2.storeDb;
       const util = _this2.utilsSvc;
       for (const db of _this2.getRealtimeDatabaseCandidates(store, util)) {
         try {
           yield db.ref(_this2.pricingModelPath).set(payload);
-          try {
-            yield db.ref('cmsContent/pricing').set(cmsPayload);
-          } catch {}
           return;
         } catch {}
       }
       for (const baseUrl of _this2.restDatabaseUrls) {
         try {
           yield _this2.http.put(`${baseUrl.replace(/\/+$/, '')}/${_this2.pricingModelPath}.json`, payload).toPromise();
-          try {
-            yield _this2.http.put(`${baseUrl.replace(/\/+$/, '')}/cmsContent/pricing.json`, cmsPayload).toPromise();
-          } catch {}
           return;
         } catch {}
       }
       if (typeof store.updateObject === 'function') {
-        yield store.updateObject('bnPricingModel', payload, 'alegria');
-        try {
-          yield store.updateObject('cmsContent', cmsPayload, 'pricing');
-        } catch {}
+        yield store.updateObject('bnPricingModel', payload, _this2.boatContext.boatId);
         return;
       }
       throw new Error('Unable to save pricing model.');
     })();
   }
   getBookings(email) {
-    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.getBookingsFromFirebase(email)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => this.getBookingsFromBackend(email)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)(this.fallbackBookings)));
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.from)(this.getBookingsFromFirebase(email)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.catchError)(() => this.getBookingsFromBackend(email)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.of)(this.fallbackBookings)));
   }
   createBooking(input) {
     var _this3 = this;
@@ -23876,7 +23677,9 @@ let BookingApiService = class BookingApiService {
         paymentStatus: anyInput.paymentStatus ?? (isDepositPaid ? 'paid' : 'pending'),
         balancePaid: anyInput.balancePaid === true || anyInput.balanceStatus === 'paid',
         warrantyStatus: input.warrantyStatus || false,
-        ownerId: input.ownerId || 'alegria',
+        boatId: input.boatId || _this3.boatContext.boatId,
+        ownerId: input.ownerId || _this3.boatContext.boatId,
+        skipperId: anyInput.skipperId || '',
         createdTS: anyInput.createdTS || now,
         modifiedTS: now
       };
@@ -23885,7 +23688,7 @@ let BookingApiService = class BookingApiService {
     })();
   }
   getBookingDirect(bookingId) {
-    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.getBookingDirectFromFirebase(bookingId)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)(undefined)));
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.from)(this.getBookingDirectFromFirebase(bookingId)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.of)(undefined)));
   }
   getBookingDirectFromFirebase(bookingId) {
     var _this4 = this;
@@ -23916,7 +23719,7 @@ let BookingApiService = class BookingApiService {
     })();
   }
   getBooking(bookingId) {
-    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.getBookingFromFirebase(bookingId)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => this.getBookingFromBackend(bookingId)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)(undefined)));
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.from)(this.getBookingFromFirebase(bookingId)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.catchError)(() => this.getBookingFromBackend(bookingId)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.of)(undefined)));
   }
   createDepositCheckout(payload) {
     const enrichedPayload = {
@@ -23932,7 +23735,7 @@ let BookingApiService = class BookingApiService {
   completeDepositPayment(payload) {
     var _this5 = this;
     const endpoints = [`${this.baseUrl}/pay/outing-deposit-complete`, `${this.baseUrl}/api/payments/complete-deposit-payment`, `${this.baseUrl}/stripe/deposit-complete`];
-    return new rxjs__WEBPACK_IMPORTED_MODULE_4__.Observable(observer => {
+    return new rxjs__WEBPACK_IMPORTED_MODULE_5__.Observable(observer => {
       const markLocally = /*#__PURE__*/function () {
         var _ref = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (backendResponse = {}, backendError = null) {
           try {
@@ -24082,7 +23885,7 @@ let BookingApiService = class BookingApiService {
   completeBalancePayment(payload) {
     var _this7 = this;
     const endpoints = [`${this.baseUrl}/pay/outing-balance-complete`, `${this.baseUrl}/pay/outing-remaining-complete`, `${this.baseUrl}/api/payments/complete-balance-payment`, `${this.baseUrl}/api/payments/complete-remaining-payment`, `${this.baseUrl}/stripe/balance-complete`, `${this.baseUrl}/stripe/remaining-complete`];
-    return new rxjs__WEBPACK_IMPORTED_MODULE_4__.Observable(observer => {
+    return new rxjs__WEBPACK_IMPORTED_MODULE_5__.Observable(observer => {
       const markLocally = /*#__PURE__*/function () {
         var _ref2 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (backendResponse = {}, backendError = null) {
           try {
@@ -24228,7 +24031,7 @@ let BookingApiService = class BookingApiService {
   }
   getPaymentStatus(bookingId) {
     const endpoints = [`${this.baseUrl}/pay/outing-payment-status?bookingId=${encodeURIComponent(bookingId)}`, `${this.baseUrl}/api/payments/status?bookingId=${encodeURIComponent(bookingId)}`];
-    return new rxjs__WEBPACK_IMPORTED_MODULE_4__.Observable(observer => {
+    return new rxjs__WEBPACK_IMPORTED_MODULE_5__.Observable(observer => {
       let index = 0;
       const tryNext = () => {
         if (index >= endpoints.length) {
@@ -24255,7 +24058,7 @@ let BookingApiService = class BookingApiService {
    * This avoids mixing backend summary endpoints with the persisted booking state shown to the customer.
    */
   getPaymentPageState(bookingId) {
-    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.getPaymentPageStateFromFirebase(bookingId)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(error => {
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.from)(this.getPaymentPageStateFromFirebase(bookingId)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.catchError)(error => {
       throw error;
     }));
   }
@@ -24337,7 +24140,7 @@ let BookingApiService = class BookingApiService {
     };
     return this.postFirstAvailable([`${this.baseUrl}/api/payments/release-warranty`, `${this.baseUrl}/pay/outing-warranty-release`, `${this.baseUrl}/stripe/warranty-release`], payload);
   }
-  acceptBookingRequest(bookingId, ownerId = 'alegria', note = '') {
+  acceptBookingRequest(bookingId, ownerId = this.boatContext.boatId, note = '') {
     const payload = {
       bookingId,
       ownerId,
@@ -24345,7 +24148,7 @@ let BookingApiService = class BookingApiService {
     };
     return this.postFirstAvailable([`${this.baseUrl}/pay/outing-booking-accept`, `${this.baseUrl}/api/bookings/accept-request`], payload);
   }
-  rejectBookingRequest(bookingId, reason, ownerId = 'alegria') {
+  rejectBookingRequest(bookingId, reason, ownerId = this.boatContext.boatId) {
     const payload = {
       bookingId,
       ownerId,
@@ -24354,10 +24157,10 @@ let BookingApiService = class BookingApiService {
     return this.postFirstAvailable([`${this.baseUrl}/pay/outing-booking-reject`, `${this.baseUrl}/api/bookings/reject-request`], payload);
   }
   getExtraServicesCatalog() {
-    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.readFirebasePath('/bnExtraServices')).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.map)(raw => {
-      const catalog = this.unwrapFirebaseNamedObject(raw, 'bnExtraServices');
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.from)(this.readFirebasePath(`/bnFleet/${this.boatContext.boatId}/extraServices`)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_6__.map)(raw => {
+      const catalog = this.unwrapFirebaseNamedObject(raw, 'extraServices');
       return this.normalizeArray(catalog).filter(item => item && item.active !== false).sort((a, b) => Number(a.sortOrder ?? 999) - Number(b.sortOrder ?? 999));
-    }), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)([])));
+    }), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.of)([])));
   }
   createExtraServiceRequest(bookingId, extraService) {
     var _this11 = this;
@@ -24435,7 +24238,7 @@ let BookingApiService = class BookingApiService {
     })();
   }
   postFirstAvailable(endpoints, payload) {
-    return new rxjs__WEBPACK_IMPORTED_MODULE_4__.Observable(observer => {
+    return new rxjs__WEBPACK_IMPORTED_MODULE_5__.Observable(observer => {
       let index = 0;
       let lastError = null;
       const tryNext = () => {
@@ -24613,18 +24416,18 @@ let BookingApiService = class BookingApiService {
     const suffix = email ? `?email=${encodeURIComponent(email)}` : '';
     return this.http.get(`${this.baseUrl}/bookings${suffix}`, {
       withCredentials: true
-    }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.map)(response => this.normalizeBookings(response)));
+    }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_6__.map)(response => this.normalizeBookings(response)));
   }
   getBookingFromBackend(bookingId) {
     return this.http.get(`${this.baseUrl}/bookings/${bookingId}`, {
       withCredentials: true
-    }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.map)(response => this.normalizeBooking(response?.booking || response)));
+    }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_6__.map)(response => this.normalizeBooking(response?.booking || response)));
   }
   getBookingsFromFirebase(email) {
     var _this17 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const raw = yield _this17.readBookingsRaw();
-      const bookings = _this17.normalizeBookings(raw).filter(booking => String(booking.bookingStatus || booking.status || '').toLowerCase() !== 'deleted').filter(booking => String(booking.bookingRequestStatus || booking.status || '').toLowerCase() !== 'cancelled_by_customer').sort((a, b) => String(b.outingDate || '').localeCompare(String(a.outingDate || '')) || String(b.departureTime || '').localeCompare(String(a.departureTime || '')));
+      const bookings = _this17.normalizeBookings(raw).filter(booking => String(booking.boatId || 'alegria') === _this17.boatContext.boatId).filter(booking => String(booking.bookingStatus || booking.status || '').toLowerCase() !== 'deleted').filter(booking => String(booking.bookingRequestStatus || booking.status || '').toLowerCase() !== 'cancelled_by_customer').sort((a, b) => String(b.outingDate || '').localeCompare(String(a.outingDate || '')) || String(b.departureTime || '').localeCompare(String(a.departureTime || '')));
       if (!email) return bookings;
       const expected = String(email).trim().toLowerCase();
       return bookings.filter(booking => String(booking.email || '').trim().toLowerCase() === expected);
@@ -24769,11 +24572,7 @@ let BookingApiService = class BookingApiService {
     if (!raw || typeof raw !== 'object') {
       return raw;
     }
-    // Firebase exports may contain either:
-    //   /bnExtraServices/{serviceId}
-    // or the imported wrapper:
-    //   /bnExtraServices/bnExtraServices/{serviceId}
-    // Same principle is used for guestInfo.
+    // Handles both a direct object and a named wrapper from legacy imports.
     if (raw[key] && typeof raw[key] === 'object') {
       return raw[key];
     }
@@ -24914,14 +24713,16 @@ let BookingApiService = class BookingApiService {
     };
   }
   static ctorParameters = () => [{
-    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__.HttpClient
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_7__.HttpClient
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.UtilsService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_8__.UtilsService
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.StoreDbService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_8__.StoreDbService
+  }, {
+    type: _services_boat_context_service__WEBPACK_IMPORTED_MODULE_1__.BoatContextService
   }];
 };
-BookingApiService = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.Injectable)({
+BookingApiService = (0,tslib__WEBPACK_IMPORTED_MODULE_9__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_10__.Injectable)({
   providedIn: 'root'
 })], BookingApiService);
 
@@ -24939,16 +24740,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AdminBoatCalendarComponent: () => (/* binding */ AdminBoatCalendarComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _admin_boat_calendar_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./admin-boat-calendar.component.html?ngResource */ 50474);
 /* harmony import */ var _admin_boat_calendar_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin-boat-calendar.component.scss?ngResource */ 68326);
 /* harmony import */ var _admin_boat_calendar_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_admin_boat_calendar_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ 93262);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 61873);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ 59452);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ 61318);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 61873);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ 59452);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ 61318);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+/* harmony import */ var _services_boat_context_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/boat-context.service */ 61766);
+
+
+
 
 
 
@@ -24977,7 +24784,7 @@ const DEFAULT_CALENDAR_TEXTS = {
     cancelled: 'Annulée',
     completed: 'Terminée',
     upcoming: 'À venir',
-    noUse: 'Aucune utilisation enregistrée ce jour-là.',
+    noUse: 'Cette journée est disponible.',
     viewDetails: 'Voir le détail',
     other: 'autre(s)',
     loadError: 'Impossible de charger le calendrier.',
@@ -24985,7 +24792,12 @@ const DEFAULT_CALENDAR_TEXTS = {
     logbook: 'Journal de bord',
     passengers: 'passagers',
     logClosed: 'Journal clôturé',
-    logOpen: 'Journal ouvert'
+    logOpen: 'Journal ouvert',
+    createOffer: 'Créer une offre pour cette date',
+    requestOffer: 'Demander une offre pour cette date',
+    unavailable: 'Cette journée est déjà réservée.',
+    myBooking: 'Ma réservation',
+    reserved: 'Réservé'
   },
   en: {
     eyebrow: 'Availability and usage',
@@ -25006,7 +24818,7 @@ const DEFAULT_CALENDAR_TEXTS = {
     cancelled: 'Cancelled',
     completed: 'Completed',
     upcoming: 'Upcoming',
-    noUse: 'No usage recorded for this day.',
+    noUse: 'This day is available.',
     viewDetails: 'View details',
     other: 'more',
     loadError: 'Unable to load the calendar.',
@@ -25014,12 +24826,22 @@ const DEFAULT_CALENDAR_TEXTS = {
     logbook: 'Logbook',
     passengers: 'passengers',
     logClosed: 'Log closed',
-    logOpen: 'Log open'
+    logOpen: 'Log open',
+    createOffer: 'Create an offer for this date',
+    requestOffer: 'Request an offer for this date',
+    unavailable: 'This day is already booked.',
+    myBooking: 'My booking',
+    reserved: 'Booked'
   },
   es: {
     eyebrow: 'Disponibilidad y uso',
     title: 'Calendario de Alegria',
     intro: 'Los días pasados proceden del diario de a bordo y de las reservas. Los días futuros proceden de las reservas registradas.',
+    createOffer: 'Crear una oferta para esta fecha',
+    requestOffer: 'Solicitar una oferta para esta fecha',
+    unavailable: 'Este día ya está reservado.',
+    myBooking: 'Mi reserva',
+    reserved: 'Reservado',
     refresh: 'Actualizar',
     loading: 'Cargando…',
     usedDays: 'Días ocupados este mes',
@@ -25049,6 +24871,11 @@ const DEFAULT_CALENDAR_TEXTS = {
     eyebrow: 'Disponibilità e utilizzo',
     title: 'Calendario di Alegria',
     intro: 'I giorni passati provengono dal giornale di bordo e dalle prenotazioni. I giorni futuri provengono dalle prenotazioni registrate.',
+    createOffer: 'Crea un’offerta per questa data',
+    requestOffer: 'Richiedi un’offerta per questa data',
+    unavailable: 'Questo giorno è già prenotato.',
+    myBooking: 'La mia prenotazione',
+    reserved: 'Prenotato',
     refresh: 'Aggiorna',
     loading: 'Caricamento…',
     usedDays: 'Giorni occupati questo mese',
@@ -25078,6 +24905,11 @@ const DEFAULT_CALENDAR_TEXTS = {
     eyebrow: 'Verfügbarkeit und Nutzung',
     title: 'Alegria-Kalender',
     intro: 'Vergangene Tage stammen aus Logbuch und Buchungen. Zukünftige Tage stammen aus eingetragenen Buchungen.',
+    createOffer: 'Angebot für dieses Datum erstellen',
+    requestOffer: 'Angebot für dieses Datum anfragen',
+    unavailable: 'Dieser Tag ist bereits gebucht.',
+    myBooking: 'Meine Buchung',
+    reserved: 'Gebucht',
     refresh: 'Aktualisieren',
     loading: 'Laden…',
     usedDays: 'Belegte Tage in diesem Monat',
@@ -25107,6 +24939,11 @@ const DEFAULT_CALENDAR_TEXTS = {
     eyebrow: 'Beschikbaarheid en gebruik',
     title: 'Alegria-kalender',
     intro: 'Dagen in het verleden komen uit het logboek en de boekingen. Toekomstige dagen komen uit geregistreerde boekingen.',
+    createOffer: 'Maak een offerte voor deze datum',
+    requestOffer: 'Vraag een offerte aan voor deze datum',
+    unavailable: 'Deze dag is al geboekt.',
+    myBooking: 'Mijn boeking',
+    reserved: 'Geboekt',
     refresh: 'Vernieuwen',
     loading: 'Laden…',
     usedDays: 'Bezette dagen deze maand',
@@ -25136,6 +24973,11 @@ const DEFAULT_CALENDAR_TEXTS = {
     eyebrow: 'Доступность и использование',
     title: 'Календарь Alegria',
     intro: 'Прошедшие дни формируются из журнала и бронирований. Будущие дни — из зарегистрированных бронирований.',
+    createOffer: 'Создать предложение на эту дату',
+    requestOffer: 'Запросить предложение на эту дату',
+    unavailable: 'Этот день уже забронирован.',
+    myBooking: 'Моё бронирование',
+    reserved: 'Забронировано',
     refresh: 'Обновить',
     loading: 'Загрузка…',
     usedDays: 'Занятые дни в этом месяце',
@@ -25165,6 +25007,10 @@ const DEFAULT_CALENDAR_TEXTS = {
 let AdminBoatCalendarComponent = class AdminBoatCalendarComponent {
   http;
   languageService;
+  boatContext;
+  router;
+  route;
+  mainSvc;
   databaseUrl = 'https://adn-dev-4d05d.firebaseio.com';
   currentLanguage = 'fr';
   firebaseTexts = {};
@@ -25175,17 +25021,31 @@ let AdminBoatCalendarComponent = class AdminBoatCalendarComponent {
   loading = false;
   error = '';
   showCancelled = false;
-  constructor(http, languageService) {
+  loggedUser = null;
+  rawBookings = {};
+  userSub;
+  calendarLoadSequence = 0;
+  adminCalendarMode = false;
+  constructor(http, languageService, boatContext, router, route, mainSvc) {
     this.http = http;
     this.languageService = languageService;
+    this.boatContext = boatContext;
+    this.router = router;
+    this.route = route;
+    this.mainSvc = mainSvc;
   }
   ngOnInit() {
+    this.adminCalendarMode = this.route.snapshot.data?.calendarMode === 'admin' || this.router.url.split('?')[0] === '/admin/calendar';
     this.currentLanguage = this.languageService.currentLanguage || 'fr';
     this.languageService.language$.subscribe(language => {
       this.currentLanguage = language;
       this.buildCalendar();
     });
+    this.watchLoggedUser();
     this.loadCalendar();
+  }
+  ngOnDestroy() {
+    this.userSub?.unsubscribe();
   }
   t(key) {
     return this.firebaseTexts[this.currentLanguage]?.[key] || this.firebaseTexts.en?.[key] || DEFAULT_CALENDAR_TEXTS[this.currentLanguage]?.[key] || DEFAULT_CALENDAR_TEXTS.en[key] || key;
@@ -25257,31 +25117,49 @@ let AdminBoatCalendarComponent = class AdminBoatCalendarComponent {
     this.buildCalendar();
   }
   selectDay(cell) {
-    if (cell.date) this.selectedDate = cell.iso;
+    if (!cell.date) return;
+    this.selectedDate = cell.iso;
+    const activeUses = cell.uses.filter(use => use.status !== 'cancelled');
+    if (!activeUses.length) {
+      this.openOfferForDate(cell.iso);
+      return;
+    }
+    const accessible = this.isAdmin ? activeUses : activeUses.filter(use => use.ownedByCurrentUser);
+    if (accessible.length === 1 && accessible[0].route) {
+      this.router.navigateByUrl(accessible[0].route);
+    }
   }
   toggleCancelled() {
     this.showCancelled = !this.showCancelled;
     this.buildCalendar();
   }
   loadCalendar() {
+    const loadSequence = ++this.calendarLoadSequence;
     this.loading = true;
     this.error = '';
-    (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.forkJoin)({
-      bookings: this.http.get(`${this.databaseUrl}/bnBookings.json`).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_4__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.of)({}))),
-      outings: this.http.get(`${this.databaseUrl}/bnAdminOutings.json`).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_4__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.of)({}))),
-      content: this.http.get(`${this.databaseUrl}/cmsContent/calendar.json`).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_4__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.of)({})))
+    const calendarDataUrl = this.adminCalendarMode ? `${this.databaseUrl}/bnBookings.json` : `${this.databaseUrl}/backendcalendar.json`;
+    (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.forkJoin)({
+      bookings: this.http.get(calendarDataUrl).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_6__.of)({}))),
+      content: this.http.get(`${this.databaseUrl}/siteContent/${encodeURIComponent(this.boatContext.boatId)}/${this.currentLanguage}/adminCalendar.json`).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_6__.of)({})))
     }).subscribe({
       next: ({
         bookings,
-        outings,
         content
       }) => {
-        this.firebaseTexts = content?.i18n || {};
-        this.uses = [...this.mapBookings(bookings), ...this.mapOutings(outings)].sort((a, b) => a.date.localeCompare(b.date));
+        // The logged-in user can be resolved while the initial HTTP request is
+        // still running. Ignore an older response so customer calendar data
+        // cannot overwrite a newer administrator response (and vice versa).
+        if (loadSequence !== this.calendarLoadSequence) return;
+        this.firebaseTexts = {
+          [this.currentLanguage]: content || {}
+        };
+        this.rawBookings = bookings || {};
+        this.refreshMappedBookings();
         this.buildCalendar();
         this.loading = false;
       },
       error: error => {
+        if (loadSequence !== this.calendarLoadSequence) return;
         this.error = error?.message || this.t('loadError');
         this.loading = false;
         this.buildCalendar();
@@ -25294,42 +25172,97 @@ let AdminBoatCalendarComponent = class AdminBoatCalendarComponent {
   statusLabel(status) {
     return status === 'past' ? this.t('completed') : status === 'today' ? this.t('today') : status === 'future' ? this.t('upcoming') : this.t('cancelled');
   }
+  get currentUser() {
+    const svc = this.mainSvc;
+    return this.loggedUser || svc.bnUser || svc.currentUser || svc.loggedUser || svc.user || null;
+  }
+  get isAdmin() {
+    return this.adminCalendarMode;
+  }
+  get selectedDateAvailable() {
+    return !!this.selectedDate && this.selectedUses.filter(use => use.status !== 'cancelled').length === 0;
+  }
+  get selectedDateUnavailableToCustomer() {
+    if (!this.selectedDate || this.isAdmin) return false;
+    const uses = this.selectedUses.filter(use => use.status !== 'cancelled');
+    return uses.length > 0 && !uses.some(use => use.ownedByCurrentUser);
+  }
+  openOfferForDate(date = this.selectedDate) {
+    if (!date) return;
+    if (this.isAdmin) {
+      this.router.navigate(['/admin/offers'], {
+        queryParams: {
+          create: '1',
+          date
+        }
+      });
+    } else {
+      this.router.navigate(['/reserver'], {
+        queryParams: {
+          date
+        }
+      });
+    }
+  }
   mapBookings(raw) {
+    if (!this.adminCalendarMode) return this.mapAvailabilityIndex(raw);
     return Object.entries(raw || {}).map(([key, value]) => {
-      const date = this.normalizeDate(value?.outingDate || value?.date || value?.departureDate || value?.startDate);
+      if (String(value?.boatId || 'alegria') !== this.boatContext.boatId) return null;
+      const date = this.normalizeDate(value?.outingDate || value?.date || value?.departureDate || value?.startDate || value?.start);
       if (!date) return null;
       const bookingStatus = String(value?.bookingStatus ?? value?.status ?? '').toLowerCase();
       const cancelled = ['cancelled', 'canceled', 'declined', 'rejected', 'deleted'].some(word => bookingStatus.includes(word)) || value?.deleted === true;
-      const customer = value?.customerName || [value?.firstname, value?.lastname].filter(Boolean).join(' ') || value?.email || '';
+      const ownedByCurrentUser = this.bookingBelongsToCurrentUser(value);
+      const customer = this.isAdmin ? value?.customerName || [value?.firstname, value?.lastname].filter(Boolean).join(' ') || value?.customerEmail || value?.email || '' : '';
+      const bookingId = value?.bookingId || key;
       return {
-        id: value?.bookingId || key,
+        id: bookingId,
         date,
-        endDate: this.normalizeDate(value?.arrivalDate || value?.endDate) || date,
-        title: value?.outingType || value?.experience || value?.title || this.t('catamaranOuting'),
+        endDate: this.normalizeDate(value?.arrivalDate || value?.endDate || value?.end) || date,
+        title: this.isAdmin || ownedByCurrentUser ? value?.outingType || value?.experience || value?.title || this.t('catamaranOuting') : this.t('reserved'),
         customer,
         status: cancelled ? 'cancelled' : this.temporalStatus(date),
         source: 'booking',
-        details: [value?.departureTime, value?.destination, value?.passengers ? `${value.passengers} ${this.t('passengers')}` : ''].filter(Boolean).join(' · '),
-        route: `/admin/bookings/${value?.bookingId || key}`
+        details: this.isAdmin || ownedByCurrentUser ? [value?.departureTime, value?.destination, value?.passengers ? `${value.passengers} ${this.t('passengers')}` : ''].filter(Boolean).join(' · ') : '',
+        route: this.isAdmin ? `/admin/bookings/${bookingId}` : ownedByCurrentUser ? `/bookings/${bookingId}` : undefined,
+        ownedByCurrentUser,
+        restricted: !this.isAdmin && !ownedByCurrentUser
       };
     }).filter(Boolean);
   }
-  mapOutings(raw) {
-    return Object.entries(raw || {}).map(([key, value]) => {
-      const date = this.normalizeDate(value?.departureDate || value?.outingDate || value?.date);
-      if (!date || value?.deleted) return null;
-      return {
-        id: value?.outingId || key,
-        date,
-        endDate: this.normalizeDate(value?.arrivalDate) || date,
-        title: value?.outingType || this.t('logbook'),
-        customer: value?.customerName || '',
-        status: this.temporalStatus(date),
-        source: 'outing',
-        details: [value?.departureTime, value?.destination, value?.passengers ? `${value.passengers} ${this.t('passengers')}` : '', value?.status === 'closed' ? this.t('logClosed') : this.t('logOpen')].filter(Boolean).join(' · '),
-        route: `/admin/outings/${value?.outingId || key}`
-      };
-    }).filter(Boolean);
+  mapAvailabilityIndex(raw) {
+    const usesByBooking = new Map();
+    Object.entries(raw || {}).forEach(([day, entries]) => {
+      Object.entries(entries || {}).forEach(([entryKey, entry]) => {
+        if (String(entry?.boatId || this.boatContext.boatId) !== this.boatContext.boatId) return;
+        const bookingId = String(entry?.bookingId || entryKey);
+        const statusText = String(entry?.status || '').toLowerCase();
+        const cancelled = ['cancelled', 'canceled', 'declined', 'rejected', 'deleted'].some(word => statusText.includes(word));
+        const ownedByCurrentUser = this.calendarEntryBelongsToCurrentUser(entry);
+        const existing = usesByBooking.get(bookingId);
+        const start = this.normalizeDate(entry?.start) || day;
+        const end = this.normalizeDate(entry?.end) || day;
+        if (existing) {
+          existing.date = existing.date < start ? existing.date : start;
+          existing.endDate = (existing.endDate || existing.date) > end ? existing.endDate : end;
+          return;
+        }
+        usesByBooking.set(bookingId, {
+          id: bookingId,
+          date: start,
+          endDate: end,
+          title: ownedByCurrentUser ? this.t('myBooking') : this.t('reserved'),
+          customer: '',
+          status: cancelled ? 'cancelled' : this.temporalStatus(start),
+          source: 'booking',
+          details: '',
+          route: ownedByCurrentUser ? `/bookings/${bookingId}` : undefined,
+          ownedByCurrentUser,
+          restricted: !ownedByCurrentUser
+        });
+      });
+    });
+    return Array.from(usesByBooking.values());
   }
   buildCalendar() {
     const year = this.currentMonth.getFullYear();
@@ -25363,6 +25296,49 @@ let AdminBoatCalendarComponent = class AdminBoatCalendarComponent {
     }
     this.cells = cells;
   }
+  bookingBelongsToCurrentUser(booking) {
+    if (this.isAdmin) return true;
+    const user = this.currentUser;
+    if (!user) return false;
+    const userIds = [user.uid, user.userId, user.id, user.backendUserId].filter(Boolean).map(value => String(value).trim().toLowerCase());
+    const bookingIds = [booking?.uid, booking?.userId, booking?.customerUid, booking?.customerId, booking?.backendUserId, booking?.customer?.userId].filter(Boolean).map(value => String(value).trim().toLowerCase());
+    if (userIds.some(id => bookingIds.includes(id))) return true;
+    const userEmail = String(user.email || user.mail || '').trim().toLowerCase();
+    const bookingEmail = String(booking?.customerEmail || booking?.email || booking?.userEmail || booking?.customer?.email || '').trim().toLowerCase();
+    return !!userEmail && !!bookingEmail && userEmail === bookingEmail;
+  }
+  calendarEntryBelongsToCurrentUser(entry) {
+    const user = this.currentUser;
+    if (!user) return false;
+    const userIds = [user.uid, user.userId, user.id, user.backendUserId].filter(Boolean).map(value => String(value).trim().toLowerCase());
+    const email = String(user.email || user.mail || '').trim().toLowerCase();
+    const candidateRefs = [email, ...userIds].filter(Boolean).map(value => this.calendarCustomerRef(value));
+    return !!entry?.guestRef && candidateRefs.includes(String(entry.guestRef));
+  }
+  calendarCustomerRef(value) {
+    const text = String(value || '').trim().toLowerCase();
+    let hash = 2166136261;
+    for (let index = 0; index < text.length; index += 1) {
+      hash ^= text.charCodeAt(index);
+      hash = Math.imul(hash, 16777619);
+    }
+    return `u${(hash >>> 0).toString(16).padStart(8, '0')}`;
+  }
+  watchLoggedUser() {
+    const svc = this.mainSvc;
+    this.loggedUser = svc.bnUser || svc.currentUser || svc.loggedUser || svc.user || null;
+    const userObservable = typeof svc.getLoggedUser === 'function' ? svc.getLoggedUser() : typeof svc.getUser === 'function' ? svc.getUser() : svc.bnUserO || svc.bnUser$ || svc.currentUser$ || svc.loggedUser$ || svc.user$;
+    if (userObservable?.subscribe) {
+      this.userSub = userObservable.subscribe(user => {
+        this.loggedUser = user || svc.bnUser || svc.currentUser || svc.loggedUser || svc.user || null;
+        this.refreshMappedBookings();
+      });
+    }
+  }
+  refreshMappedBookings() {
+    this.uses = this.mapBookings(this.rawBookings).sort((a, b) => a.date.localeCompare(b.date));
+    this.buildCalendar();
+  }
   dateRangeContains(item, iso) {
     return !!iso && iso >= item.date && iso <= (item.endDate || item.date);
   }
@@ -25385,12 +25361,20 @@ let AdminBoatCalendarComponent = class AdminBoatCalendarComponent {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
   }
   static ctorParameters = () => [{
-    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__.HttpClient
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_7__.HttpClient
   }, {
     type: _services_language_service__WEBPACK_IMPORTED_MODULE_2__.LanguageService
+  }, {
+    type: _services_boat_context_service__WEBPACK_IMPORTED_MODULE_3__.BoatContextService
+  }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_8__.Router
+  }, {
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_8__.ActivatedRoute
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_9__.ServicesService
   }];
 };
-AdminBoatCalendarComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
+AdminBoatCalendarComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_10__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_11__.Component)({
   selector: 'app-admin-boat-calendar',
   template: _admin_boat_calendar_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
   styles: [(_admin_boat_calendar_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
@@ -25711,7 +25695,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/contact\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
+module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/calendar\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -30918,6 +30902,8 @@ let MyFeedbacksComponent = class MyFeedbacksComponent {
           rate: Number(_this.feedback.rating),
           description: _this.feedback.comments,
           bookingId: _this.feedback.bookingId,
+          boatId: selectedBooking.boatId || 'alegria',
+          skipperId: selectedBooking.skipperId || '',
           createdTS: Date.now(),
           modifiedTS: Date.now(),
           status: 'submitted'
@@ -31323,6 +31309,8 @@ let FleetService = class FleetService {
     const now = Date.now();
     return {
       boatId: 'alegria',
+      ownerId: 'alegria',
+      defaultSkipperId: 'alegria-default',
       boatName: 'Alegria',
       boatType: 'Catamaran',
       manufacturer: 'Bali - Catana',
@@ -31347,6 +31335,7 @@ let FleetService = class FleetService {
       draft: '',
       engines: '',
       imageUrl: 'assets/img/logo-Alegria.png',
+      extraServices: {},
       active: true,
       createdTS: now,
       modifiedTS: now
@@ -32477,7 +32466,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/contact\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
+module.exports = "\n<section class=\"page-hero\">\n  <div class=\"container narrow\">\n    <span class=\"eyebrow\">{{ tour.eyebrow }}</span>\n    <h1>{{ tour.title }}</h1>\n    <p class=\"subtitle\">{{ tour.subtitle }}</p>\n    <p>{{ tour.intro }}</p>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container detail-grid\">\n    <div class=\"image-col\">\n      <img [src]=\"tour.image\" [alt]=\"tour.title\" />\n      <div class=\"meta-box\">\n        <div>{{ tour.duration }}</div>\n        <div>{{ tour.guests }}</div>\n      </div>\n    </div>\n\n    <div>\n      <h2>{{ tour.highlightsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.highlights\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section section-light\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.programTitle }}</h2>\n      <ol class=\"program-list\">\n        <li *ngFor=\"let item of tour.program\">{{ item }}</li>\n      </ol>\n    </div>\n\n    <div>\n      <h2>{{ tour.includesTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.includes\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"section\">\n  <div class=\"container offering-grid\">\n    <div class=\"offer-card\">\n      <h2>{{ tour.coreOfferingTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.coreOffering\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.optionalExtrasTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.optionalExtras\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"offer-card\">\n      <h2>{{ tour.suggestionsTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.guestSuggestions\">{{ item }}</li>\n      </ul>\n    </div>\n  </div>\n</section>\n\n<section class=\"section\" *ngIf=\"tour.gallery?.length\">\n  <div class=\"container\">\n    <h2>{{ tour.galleryTitle }}</h2>\n    <div class=\"gallery-grid\">\n      <img *ngFor=\"let photo of tour.gallery\" [src]=\"photo\" [alt]=\"tour.title\" />\n    </div>\n  </div>\n</section>\n\n<section class=\"section\">\n  <div class=\"container two-col\">\n    <div>\n      <h2>{{ tour.idealForTitle }}</h2>\n      <ul class=\"bullet-list\">\n        <li *ngFor=\"let item of tour.idealFor\">{{ item }}</li>\n      </ul>\n    </div>\n\n    <div class=\"cta-card\">\n      <p>{{ tour.contactNote }}</p>\n      <a routerLink=\"/calendar\" class=\"btn\">{{ tour.cta }}</a>\n    </div>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -35139,7 +35128,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
         const extracted = _this5.extractAdminOutings(direct);
         if (extracted) return extracted;
       }
-      // 2) Try godigital-lib signatures. The current data lives at ROOT /bnAdminOutings.
+      // 2) Try the supported godigital-lib signatures for bnBookings.
       if (typeof store.getObject === 'function') {
         const candidates = [() => store.getObject(collectionName), () => store.getObject(`/${collectionName}`), () => store.getObject(collectionName, -1), () => store.getObject(undefined, util.mdb, collectionName, -1), () => store.getObject(null, util.mdb, collectionName, -1), () => store.getObject(util.backendFBstoreId, util.mdb, collectionName, -1), () => store.getObject(util.backendFBstoreId, util.mdb, collectionName), () => store.getObject(`${util.backendFBstoreId}/${collectionName}`), () => store.getObject('1000', util.mdb, collectionName, -1), () => store.getObject('1000', util.mdb, collectionName)];
         for (const candidate of candidates) {
@@ -35177,6 +35166,16 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     if (value[collectionName]) return this.extractAdminOutings(value[collectionName]);
     if (value['1000']?.[collectionName]) return this.extractAdminOutings(value['1000'][collectionName]);
     if (typeof value === 'object') {
+      const embedded = {};
+      Object.keys(value).forEach(key => {
+        if (value[key]?.operationalLog) {
+          embedded[key] = {
+            ...value[key].operationalLog,
+            outingId: value[key].operationalLog.outingId || key
+          };
+        }
+      });
+      if (Object.keys(embedded).length) return embedded;
       const keys = Object.keys(value).filter(key => !!value[key]);
       const looksLikeMap = keys.some(key => key.startsWith('outing_') || value[key]?.outingId || value[key]?.departureDate || value[key]?.outingType);
       return looksLikeMap && keys.length ? value : null;
@@ -35410,26 +35409,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
   deleteFromFirebase(id, outing) {
     var _this11 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const store = _this11.storeDb;
-      const util = _this11.utilSvc;
-      if (typeof store.deleteObject === 'function') {
-        try {
-          yield store.deleteObject(util.backendFBstoreId, util.mdb, _this11.outingsCollectionName, id);
-          return;
-        } catch {
-          yield store.deleteObject(_this11.outingsCollectionName, id);
-          return;
-        }
-      }
-      if (typeof store.removeObject === 'function') {
-        try {
-          yield store.removeObject(util.backendFBstoreId, util.mdb, _this11.outingsCollectionName, id);
-          return;
-        } catch {
-          yield store.removeObject(_this11.outingsCollectionName, id);
-          return;
-        }
-      }
+      // Never delete the booking itself; only tombstone its embedded logbook.
       yield _this11.saveToFirebase(id, {
         ...outing,
         status: 'closed',
@@ -35446,7 +35426,15 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       const dbCandidates = [util?.mdb, store?.backendFbRef?.database, store?.backendFbRef?.['database'], store?.firebaseBSSdata?.database].filter((db, index, array) => db && typeof db.ref === 'function' && array.indexOf(db) === index);
       for (const db of dbCandidates) {
         try {
-          yield db.ref(`${_this12.outingsCollectionName}/${id}`).update(payload);
+          yield db.ref(`${_this12.outingsCollectionName}/${id}`).update({
+            bookingId: id,
+            boatId: payload.boatId || 'alegria',
+            outingDate: payload.departureDate || null,
+            outingType: payload.outingType || null,
+            operationalOnly: true,
+            operationalLog: payload,
+            modifiedTS: Date.now()
+          });
           return true;
         } catch {}
       }
@@ -35459,7 +35447,15 @@ let AdminOutingsComponent = class AdminOutingsComponent {
       for (const baseUrl of _this13.restDatabaseUrls) {
         try {
           const url = `${baseUrl.replace(/\/+$/, '')}/${_this13.outingsCollectionName}/${id}.json`;
-          yield _this13.http.patch(url, payload).toPromise();
+          yield _this13.http.patch(url, {
+            bookingId: id,
+            boatId: payload.boatId || 'alegria',
+            outingDate: payload.departureDate || null,
+            outingType: payload.outingType || null,
+            operationalOnly: true,
+            operationalLog: payload,
+            modifiedTS: Date.now()
+          }).toPromise();
           return true;
         } catch {}
       }
@@ -35471,8 +35467,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const store = _this14.storeDb;
       const util = _this14.utilSvc;
-      // Current Firebase structure uses root /bnAdminOutings.
-      // Prefer direct root writes so checklist done/doneBy/doneAt are effectively persisted.
+      // Operational logs are embedded in their canonical bnBookings record.
       if (yield _this14.writeRootAdminOutingViaSdk(id, payload)) return;
       if (typeof store.updateObject === 'function') {
         const candidates = [() => store.updateObject(_this14.outingsCollectionName, payload, id), () => store.updateObject(_this14.outingsCollectionName, id, payload), () => store.updateObject(`/${_this14.outingsCollectionName}`, payload, id), () => store.updateObject(util.backendFBstoreId, util.mdb, _this14.outingsCollectionName, payload, id), () => store.updateObject('1000', util.mdb, _this14.outingsCollectionName, payload, id)];
@@ -35490,7 +35485,7 @@ let AdminOutingsComponent = class AdminOutingsComponent {
     })();
   }
   get outingsCollectionName() {
-    return 'bnAdminOutings';
+    return 'bnBookings';
   }
   formatOutingDate(outing) {
     const start = `${outing.departureDate || ''} ${outing.departureTime || ''}`.trim();

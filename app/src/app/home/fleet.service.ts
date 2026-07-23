@@ -4,6 +4,8 @@ import { StoreDbService, UtilsService } from 'godigital-lib';
 
 export interface AlegriaBoatResource {
   boatId: string;
+  ownerId?: string;
+  defaultSkipperId?: string;
   boatName: string;
   boatType: string;
   manufacturer?: string;
@@ -28,6 +30,7 @@ export interface AlegriaBoatResource {
   draft?: string;
   engines?: string;
   imageUrl?: string;
+  extraServices?: Record<string, any>;
   active?: boolean;
   createdTS?: number;
   modifiedTS?: number;
@@ -48,6 +51,8 @@ export class FleetService {
     const now = Date.now();
     return {
       boatId: 'alegria',
+      ownerId: 'alegria',
+      defaultSkipperId: 'alegria-default',
       boatName: 'Alegria',
       boatType: 'Catamaran',
       manufacturer: 'Bali - Catana',
@@ -72,6 +77,7 @@ export class FleetService {
       draft: '',
       engines: '',
       imageUrl: 'assets/img/logo-Alegria.png',
+      extraServices: {},
       active: true,
       createdTS: now,
       modifiedTS: now,

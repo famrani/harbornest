@@ -22,7 +22,9 @@ class MainComponent {
             firebase_service_1.OBJECTNAME.bnLocations,
             firebase_service_1.OBJECTNAME.bnBookings,
             firebase_service_1.OBJECTNAME.guestInfo,
-            firebase_service_1.OBJECTNAME.bnExtraServices,
+            firebase_service_1.OBJECTNAME.bnFleet,
+            firebase_service_1.OBJECTNAME.bnSkippers,
+            firebase_service_1.OBJECTNAME.bnPricingModel,
         ];
         this.utilSvc = new utils_service_1.UtilsService();
         this.storeDbSvc = new firebase_service_2.StoreDbService(this.utilSvc);

@@ -332,7 +332,7 @@ export class AdminOutingDetailComponent implements OnInit, OnDestroy {
 
     for (const db of dbCandidates) {
       const direct = await this.readDatabasePath(db, `${collectionName}/${id}`);
-      if (direct) return { ...direct, outingId: direct.outingId || id } as AdminOuting;
+      if (direct?.operationalLog) return { ...direct.operationalLog, outingId: direct.operationalLog.outingId || id } as AdminOuting;
     }
 
     if (typeof store.getObject === 'function') {
@@ -382,7 +382,8 @@ export class AdminOutingDetailComponent implements OnInit, OnDestroy {
   private extractSingleOuting(value: any, id: string): AdminOuting | null {
     if (!value) return null;
     const collectionName = this.outingsCollectionName;
-    const candidate = value?.[collectionName]?.[id] || value?.['1000']?.[collectionName]?.[id] || value?.[id] || value;
+    const rawCandidate = value?.[collectionName]?.[id] || value?.['1000']?.[collectionName]?.[id] || value?.[id] || value;
+    const candidate = rawCandidate?.operationalLog || rawCandidate;
     if (candidate && typeof candidate === 'object' && (candidate.outingId || candidate.departureDate || candidate.outingType)) {
       return { ...candidate, outingId: candidate.outingId || id } as AdminOuting;
     }
@@ -407,23 +408,40 @@ export class AdminOutingDetailComponent implements OnInit, OnDestroy {
   async saveToFirebase(id: string, payload: AdminOuting): Promise<void> {
     const store: any = this.storeDb as any;
     const util: any = this.utilSvc as any;
+    const record = {
+      bookingId: id,
+      boatId: (payload as any).boatId || 'alegria',
+      outingDate: payload.departureDate || null,
+      outingType: payload.outingType || null,
+      operationalOnly: true,
+      operationalLog: payload,
+      modifiedTS: Date.now(),
+    };
+    for (const baseUrl of this.restDatabaseUrls) {
+      try {
+        await this.http.patch<any>(
+          `${baseUrl.replace(/\/+$/, '')}/${this.outingsCollectionName}/${id}.json`,
+          record
+        ).toPromise();
+        return;
+      } catch {}
+    }
     if (typeof store.updateObject !== 'function') {
       throw new Error('Firebase updateObject is not available.');
     }
-    // Current Firebase structure uses root /bnAdminOutings.
     try {
-      await store.updateObject(this.outingsCollectionName, payload, id);
+      await store.updateObject(this.outingsCollectionName, record, id);
     } catch {
       try {
-        await store.updateObject(this.outingsCollectionName, id, payload);
+        await store.updateObject(this.outingsCollectionName, id, record);
       } catch {
-        await store.updateObject(util.backendFBstoreId, util.mdb, this.outingsCollectionName, payload, id);
+        await store.updateObject(util.backendFBstoreId, util.mdb, this.outingsCollectionName, record, id);
       }
     }
   }
 
   get outingsCollectionName(): string {
-    return 'bnAdminOutings';
+    return 'bnBookings';
   }
 
 

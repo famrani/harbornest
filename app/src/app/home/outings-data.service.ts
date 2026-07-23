@@ -4,6 +4,7 @@ import { StoreDbService, UtilsService } from 'godigital-lib';
 import { SITE_CONTENT, OutingItem } from './site-content';
 import { SiteLanguage } from '../services/language.service';
 import { TourKey, TourPage } from './tours/tour-content';
+import { BoatContextService } from '../services/boat-context.service';
 
 export interface LocalizedOutingContent {
   title: string;
@@ -45,6 +46,8 @@ export interface DynamicOuting {
   es: LocalizedOutingContent;
   createdTS?: number;
   modifiedTS?: number;
+  boatId?: string;
+  ownerId?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -59,7 +62,12 @@ export class OutingsDataService {
     private storeDb: StoreDbService,
     private utilSvc: UtilsService,
     private http: HttpClient,
+    private boatContext: BoatContextService,
   ) {}
+
+  private get collectionPath(): string {
+    return `${this.collectionName}/${this.boatContext.boatId}`;
+  }
 
   async getOutings(): Promise<DynamicOuting[]> {
     const raw = await this.readBnOutingsFromFirebase();
@@ -79,6 +87,7 @@ export class OutingsDataService {
     const payload = {
       ...outing,
       slug,
+      boatId: this.boatContext.boatId,
       active: outing.active !== false,
       modifiedTS: Date.now(),
       createdTS: outing.createdTS || Date.now(),
@@ -87,28 +96,18 @@ export class OutingsDataService {
     const store: any = this.storeDb as any;
     const util: any = this.utilSvc as any;
 
-    // Current Firebase format requested by the project:
-    // /bnOutings is an ARRAY at the Realtime Database root.
-    // We update the existing numeric index when possible, otherwise we append.
-    const currentRaw = await this.readBnOutingsFromFirebase();
-    const arrayIndex = this.findArrayIndexForSlug(currentRaw, slug);
     const dbCandidates = this.getRealtimeDatabaseCandidates(store, util);
 
     for (const db of dbCandidates) {
       try {
-        if (arrayIndex >= 0) {
-          await db.ref(`${this.collectionName}/${arrayIndex}`).set(payload);
-        } else {
-          await db.ref(this.collectionName).push(payload);
-        }
+        await db.ref(`${this.collectionPath}/${slug}`).set(payload);
         return;
       } catch {
         // Try next Firebase database handle or fallback API.
       }
     }
 
-    // REST fallback for the same root-array structure.
-    const savedViaRest = await this.saveBnOutingViaRest(payload, arrayIndex);
+    const savedViaRest = await this.saveBnOutingViaRest(payload, -1);
     if (savedViaRest) return;
 
     // Last fallback: older object-by-slug godigital-lib signatures.
@@ -117,12 +116,12 @@ export class OutingsDataService {
     }
 
     try {
-      await store.updateObject(this.collectionName, payload, slug);
+      await store.updateObject(this.collectionPath, payload, slug);
     } catch {
       try {
-        await store.updateObject(this.collectionName, slug, payload);
+        await store.updateObject(this.collectionPath, slug, payload);
       } catch {
-        await store.updateObject(util.backendFBstoreId, util.mdb, this.collectionName, payload, slug);
+        await store.updateObject(util.backendFBstoreId, util.mdb, this.collectionPath, payload, slug);
       }
     }
   }
@@ -157,31 +156,31 @@ export class OutingsDataService {
       ...fallback,
       key: outing.slug as TourKey,
       route: outing.slug,
-      eyebrow: localized.eyebrow || fallback.eyebrow,
-      title: localized.title || fallback.title,
-      subtitle: localized.subtitle || fallback.subtitle,
-      intro: localized.intro || localized.description || fallback.intro,
-      image: outing.image || fallback.image,
-      duration: localized.duration || fallback.duration,
-      guests: localized.guests || fallback.guests,
+      eyebrow: localized.eyebrow || '',
+      title: localized.title || '',
+      subtitle: localized.subtitle || '',
+      intro: localized.intro || localized.description || '',
+      image: outing.image || '',
+      duration: localized.duration || '',
+      guests: localized.guests || '',
       price: '',
-      highlights: localized.highlights || fallback.highlights,
-      programTitle: localized.programTitle || fallback.programTitle,
-      program: localized.program || fallback.program,
-      includesTitle: localized.includesTitle || fallback.includesTitle,
-      includes: localized.includes || fallback.includes,
-      idealForTitle: localized.idealForTitle || fallback.idealForTitle,
-      idealFor: localized.idealFor || fallback.idealFor,
-      cta: localized.cta || fallback.cta,
-      contactNote: localized.contactNote || fallback.contactNote,
-      galleryTitle: localized.galleryTitle || fallback.galleryTitle,
-      gallery: outing.gallery && outing.gallery.length ? outing.gallery : fallback.gallery,
-      coreOfferingTitle: localized.coreOfferingTitle || fallback.coreOfferingTitle,
-      coreOffering: localized.coreOffering || fallback.coreOffering,
-      optionalExtrasTitle: localized.optionalExtrasTitle || fallback.optionalExtrasTitle,
-      optionalExtras: localized.optionalExtras || fallback.optionalExtras,
-      suggestionsTitle: localized.suggestionsTitle || fallback.suggestionsTitle,
-      guestSuggestions: localized.guestSuggestions || fallback.guestSuggestions,
+      highlights: localized.highlights || [],
+      programTitle: localized.programTitle || '',
+      program: localized.program || [],
+      includesTitle: localized.includesTitle || '',
+      includes: localized.includes || [],
+      idealForTitle: localized.idealForTitle || '',
+      idealFor: localized.idealFor || [],
+      cta: localized.cta || '',
+      contactNote: localized.contactNote || '',
+      galleryTitle: localized.galleryTitle || '',
+      gallery: outing.gallery || [],
+      coreOfferingTitle: localized.coreOfferingTitle || '',
+      coreOffering: localized.coreOffering || [],
+      optionalExtrasTitle: localized.optionalExtrasTitle || '',
+      optionalExtras: localized.optionalExtras || [],
+      suggestionsTitle: localized.suggestionsTitle || '',
+      guestSuggestions: localized.guestSuggestions || [],
     };
   }
 
@@ -209,7 +208,7 @@ export class OutingsDataService {
     const dbCandidates = this.getRealtimeDatabaseCandidates(store, util);
 
     for (const db of dbCandidates) {
-      const directValue = await this.readDatabasePath(db, this.collectionName);
+      const directValue = await this.readDatabasePath(db, this.collectionPath);
       const extractedDirect = this.extractBnOutings(directValue);
       if (extractedDirect) return extractedDirect;
 
@@ -265,7 +264,7 @@ export class OutingsDataService {
 
   private async readBnOutingsViaRest(): Promise<any> {
     const paths = [
-      this.collectionName,
+      this.collectionPath,
       `1000/${this.collectionName}`,
     ];
 
@@ -301,14 +300,8 @@ export class OutingsDataService {
     for (const baseUrl of this.restDatabaseUrls) {
       try {
         const base = baseUrl.replace(/\/+$/, '');
-        const url = arrayIndex >= 0
-          ? `${base}/${this.collectionName}/${arrayIndex}.json`
-          : `${base}/${this.collectionName}.json`;
-        if (arrayIndex >= 0) {
-          await this.http.put(url, payload).toPromise();
-        } else {
-          await this.http.post(url, payload).toPromise();
-        }
+        const url = `${base}/${this.collectionPath}/${encodeURIComponent(payload.slug)}.json`;
+        await this.http.put(url, payload).toPromise();
         return true;
       } catch {
         // Try next configured Firebase Realtime Database URL.

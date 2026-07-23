@@ -10,6 +10,11 @@ export enum OBJECTNAME {
   bnUsers = 'backendusers',
   bnMessages = 'backendmessages',
   bnBookings = 'bnBookings',
+  bnProposals = 'bnProposals',
+  bnFleet = 'bnFleet',
+  bnSkippers = 'bnSkippers',
+  bnOutings = 'bnOutings',
+  bnPricingModel = 'bnPricingModel',
   bnFeedbacks = 'backendfeedbacks',
   bnPartners = 'backendpartners',
   bnEvents = 'backendevents',
@@ -18,7 +23,7 @@ export enum OBJECTNAME {
   bnOwners = 'backendowners',
   backendcalendar = 'backendcalendar',
   guestInfo = 'guestInfo',
-  bnExtraServices = 'bnExtraServices',
+  siteContent = 'siteContent',
 }
 
 export enum USERROLE {

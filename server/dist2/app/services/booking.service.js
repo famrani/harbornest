@@ -22,12 +22,6 @@ function requireFields(obj, fields, res) {
     return true;
 }
 function pickContactEmail(siteContent, preferredLocale) {
-    // New v2 content root: /alegria_v2/tenants/alegria/brand/contactEmail
-    const v2Email = siteContent?.alegria_v2?.tenants?.alegria?.brand?.contactEmail || siteContent?.tenants?.alegria?.brand?.contactEmail;
-    if (isEmail(v2Email))
-        return String(v2Email).trim();
-    // Legacy siteContent by language. Kept so existing Firebase objects such as
-    // backendusers, bnBookings, bnPayments and siteContent keep working.
     const locales = [preferredLocale, 'fr', 'en', 'es', 'it', 'de', 'nl', 'ru'].filter(Boolean);
     for (const locale of locales) {
         const email = siteContent?.[locale]?.contactInfo?.email;
@@ -291,13 +285,10 @@ function wrapEmailLayout(template, data) {
         </div>
       </div>`;
 }
-async function loadEmailTemplate(db, lang, key) {
+async function loadEmailTemplate(db, lang, key, boatId = 'alegria') {
     const languages = [lang, 'fr', 'en', 'es', 'it', 'de', 'nl', 'ru'].filter((v, i, a) => v && a.indexOf(v) === i);
-    // New additive Firebase content root. This does not replace legacy operational
-    // roots such as backendusers/bnBookings/bnPayments. It is only used for
-    // configurable text, templates, features and tenant settings.
     for (const l of languages) {
-        const snap = await db.ref(`/alegria_v2/i18n/${l}/emails/${key}`).once('value').catch(() => null);
+        const snap = await db.ref(`/siteContent/${boatId}/${l}/emailTemplates/${key}`).once('value').catch(() => null);
         const val = snap?.val?.();
         if (val && typeof val === 'object') {
             const fallback = DEFAULT_EMAIL_TEMPLATES[l]?.[key] || DEFAULT_EMAIL_TEMPLATES.fr[key] || {};
@@ -311,7 +302,7 @@ async function loadEmailTemplate(db, lang, key) {
             };
         }
     }
-    // Legacy path kept for backward compatibility.
+    // Legacy path kept only while an older dump is being migrated.
     for (const l of languages) {
         const snap = await db.ref(`/siteContent/${l}/emailTemplates/${key}`).once('value').catch(() => null);
         const val = snap?.val?.();
@@ -506,14 +497,18 @@ class BookingsService {
         for (const day of days) {
             updates[`/backendcalendar/${day}/${bookingId}`] = {
                 bookingId,
+                boatId: booking.boatId || 'alegria',
                 start,
                 end,
                 status: booking.status,
-                people: booking.people || booking.guests || booking.capacity || null,
-                title: booking.title || booking.eventType || 'Booking',
-                hostId: booking.hostId || null,
-                guestId: booking.guestId || null,
-                createdTS: booking.createdTS,
+                guestRef: this.calendarCustomerRef(booking.customerEmail ||
+                    booking.email ||
+                    booking.userEmail ||
+                    booking.customer?.email ||
+                    booking.guestId ||
+                    booking.userId ||
+                    booking.uid ||
+                    booking.customerId),
             };
         }
         await this.storeDbc.db.ref('/').update(updates);
@@ -530,6 +525,14 @@ class BookingsService {
     async createBooking(raw) {
         const ref = this.storeDbc.db.ref(firebase_service_1.OBJECTNAME.bnBookings).push();
         const bookingId = ref.key;
+        const boatId = String(raw.boatId || 'alegria');
+        const boat = await this.storeDbc.db.ref(`${firebase_service_1.OBJECTNAME.bnFleet}/${boatId}`).once('value')
+            .then(s => s.val()).catch(() => null);
+        if (!boat)
+            throw new Error(`Unknown boat: ${boatId}`);
+        raw.boatId = boatId;
+        raw.ownerId = String(raw.ownerId || boat.ownerId || boatId);
+        raw.skipperId = String(raw.skipperId || boat.defaultSkipperId || '');
         // derive start/end ISO (you can adjust from date/time form fields)
         const startISO = raw.start || `${raw.date}T${raw.time || '00:00'}:00.000Z`;
         const endISO = raw.end || startISO; // or compute with duration
@@ -543,6 +546,8 @@ class BookingsService {
         if (!notConnected) {
             const booking = {
                 bookingId,
+                boatId,
+                skipperId: raw.skipperId || undefined,
                 ownerId: raw.ownerId,
                 eventType: raw.eventType,
                 eventTypeOther: raw.eventTypeOther,
@@ -578,9 +583,18 @@ class BookingsService {
             // calendar index: use day of start (simple approach)
             const d = dayKey(startISO);
             updates[`${firebase_service_1.OBJECTNAME.backendcalendar}/${d}/${bookingId}`] = {
+                bookingId,
+                boatId,
                 start: startISO,
                 end: endISO,
-                status: 'pending'
+                status: 'pending',
+                guestRef: this.calendarCustomerRef(raw.customerEmail ||
+                    raw.email ||
+                    raw.userEmail ||
+                    raw.userId ||
+                    raw.uid ||
+                    raw.customerId ||
+                    raw.guestId)
             };
             await this.storeDbc.db.ref().update(updates);
             return { bookingId, booking };
@@ -620,6 +634,17 @@ class BookingsService {
         }
         return out;
     }
+    calendarCustomerRef(value) {
+        const text = String(value || '').trim().toLowerCase();
+        if (!text)
+            return null;
+        let hash = 2166136261;
+        for (let index = 0; index < text.length; index += 1) {
+            hash ^= text.charCodeAt(index);
+            hash = Math.imul(hash, 16777619);
+        }
+        return `u${(hash >>> 0).toString(16).padStart(8, '0')}`;
+    }
     unwrapFirebaseNamedObject(raw, key) {
         if (!raw || typeof raw !== 'object')
             return raw;
@@ -643,13 +668,13 @@ class BookingsService {
         }
         return [];
     }
-    async getGuestInfo() {
-        const snap = await this.storeDbc.db.ref(firebase_service_1.OBJECTNAME.guestInfo).once('value');
-        return this.unwrapFirebaseNamedObject(snap.val() || {}, firebase_service_1.OBJECTNAME.guestInfo);
+    async getGuestInfo(boatId = 'alegria') {
+        const snap = await this.storeDbc.db.ref(`${firebase_service_1.OBJECTNAME.guestInfo}/${boatId}`).once('value');
+        return snap.val() || {};
     }
-    async getExtraServicesCatalog() {
-        const snap = await this.storeDbc.db.ref(firebase_service_1.OBJECTNAME.bnExtraServices).once('value');
-        const catalog = this.unwrapFirebaseNamedObject(snap.val() || {}, firebase_service_1.OBJECTNAME.bnExtraServices);
+    async getExtraServicesCatalog(boatId = 'alegria') {
+        const snap = await this.storeDbc.db.ref(`${firebase_service_1.OBJECTNAME.bnFleet}/${boatId}/extraServices`).once('value');
+        const catalog = snap.val() || {};
         return this.normalizeObjectArray(catalog)
             .filter((item) => item && item.active !== false)
             .sort((a, b) => Number(a.sortOrder ?? 999) - Number(b.sortOrder ?? 999));
@@ -872,27 +897,27 @@ class BookingsService {
     async setRoutes(router) {
         await this.mailer.verify(); // log SMTP status on boot
         const limiter = (0, express_rate_limit_1.default)({ windowMs: 10 * 60 * 1000, max: 20 });
-        router.get('/api/guest-info', async (_req, res) => {
+        router.get('/api/guest-info', async (req, res) => {
             try {
-                return res.json(await this.getGuestInfo());
+                return res.json(await this.getGuestInfo(String(req.query.boatId || 'alegria')));
             }
             catch (e) {
                 console.error(e);
                 return res.status(500).json({ ok: false, error: e?.message || String(e) });
             }
         });
-        router.get('/api/extra-services', async (_req, res) => {
+        router.get('/api/extra-services', async (req, res) => {
             try {
-                return res.json(await this.getExtraServicesCatalog());
+                return res.json(await this.getExtraServicesCatalog(String(req.query.boatId || 'alegria')));
             }
             catch (e) {
                 console.error(e);
                 return res.status(500).json({ ok: false, error: e?.message || String(e) });
             }
         });
-        router.get('/api/bn-extra-services', async (_req, res) => {
+        router.get('/api/bn-extra-services', async (req, res) => {
             try {
-                return res.json(await this.getExtraServicesCatalog());
+                return res.json(await this.getExtraServicesCatalog(String(req.query.boatId || 'alegria')));
             }
             catch (e) {
                 console.error(e);
@@ -969,7 +994,7 @@ class BookingsService {
                 return res.status(500).json({ ok: false, error: e?.message || String(e) });
             }
         });
-        router.post('/api/notifications/alegria', async (req, res) => {
+        const notificationHandler = async (req, res) => {
             try {
                 const payload = (req.body || {});
                 const eventId = String(payload.eventId || `${Date.now()}_${Math.random().toString(36).slice(2, 10)}`);
@@ -989,9 +1014,12 @@ class BookingsService {
                     emailSent: false,
                     backendReceivedAt: now,
                 };
-                await this.storeDbc.db.ref(`/bnNotifications/${eventId}`).update(normalizedPayload).catch((e) => {
-                    console.warn('[MAIL] unable to update notification queue before send:', e?.message || e);
-                });
+                const eventBase = payload.bookingId
+                    ? `/bnBookings/${payload.bookingId}/events/${eventId}`
+                    : payload.offerId
+                        ? `/bnProposals/${payload.offerId}/events/${eventId}`
+                        : `/bnFleet/${payload.boatId || 'alegria'}/events/${eventId}`;
+                await this.storeDbc.db.ref(eventBase).update(normalizedPayload).catch(() => undefined);
                 const adminMail = buildNotificationEmail(normalizedPayload, 'admin', baseUrl);
                 await this.mailer.sendToOwner(adminMail.subject, adminMail.html, adminEmail);
                 let customerSent = false;
@@ -1015,11 +1043,7 @@ class BookingsService {
                         updates[`${basePath}/${key}`] = sentPatch[key];
                     });
                 };
-                applyPatch(`/bnNotifications/${eventId}`);
-                if (payload.bookingId)
-                    applyPatch(`/bnBookingEvents/${payload.bookingId}/${eventId}`);
-                if (payload.offerId)
-                    applyPatch(`/bnProposalEvents/${payload.offerId}/${eventId}`);
+                applyPatch(eventBase);
                 await this.storeDbc.db.ref().update(updates).catch((e) => {
                     console.warn('[MAIL] unable to mark notification as sent:', e?.message || e);
                 });
@@ -1029,7 +1053,12 @@ class BookingsService {
                 console.error('[MAIL] generic notification failed:', e);
                 const eventId = String(req.body?.eventId || '').trim();
                 if (eventId) {
-                    await this.storeDbc.db.ref(`/bnNotifications/${eventId}`).update({
+                    const failedBase = req.body?.bookingId
+                        ? `/bnBookings/${req.body.bookingId}/events/${eventId}`
+                        : req.body?.offerId
+                            ? `/bnProposals/${req.body.offerId}/events/${eventId}`
+                            : `/bnFleet/${req.body?.boatId || 'alegria'}/events/${eventId}`;
+                    await this.storeDbc.db.ref(failedBase).update({
                         status: 'failed',
                         emailSent: false,
                         failedAt: Date.now(),
@@ -1038,7 +1067,9 @@ class BookingsService {
                 }
                 return res.status(500).json({ ok: false, error: e?.message || String(e) });
             }
-        });
+        };
+        router.post('/api/notifications/boat', notificationHandler);
+        router.post('/api/notifications/alegria', notificationHandler);
         // Create booking: guest submits; status=pending
         router.post('/api/bookings', async (req, res) => {
             try {
@@ -1047,8 +1078,7 @@ class BookingsService {
                 const { bookingId } = await this.createBooking(p);
                 // 2) Email notification(s) (owner + guest)
                 try {
-                    const siteContent = await this.storeDbc.getObject('alegria_v2').then((v) => v ? ({ alegria_v2: v }) : null).catch(() => null)
-                        || await this.storeDbc.getObject('siteContent').catch(() => null);
+                    const siteContent = await this.storeDbc.getObject(`siteContent/${p.boatId || 'alegria'}`).catch(() => null);
                     const ownerEmail = pickContactEmail(siteContent, p?.locale || p?.language || p?.lang);
                     await sendBookingEmail(this.mailer, p, bookingId, ownerEmail);
                 }

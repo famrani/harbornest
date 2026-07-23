@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FleetService, AlegriaBoatResource } from '../fleet.service';
+import { SkipperService, SkipperResource } from '../skipper.service';
 
 @Component({
   selector: 'app-admin-fleet',
@@ -19,8 +20,19 @@ export class AdminFleetComponent implements OnInit {
     boatType: 'Catamaran',
     active: true,
   };
+  skippers: SkipperResource[] = [];
+  skipperForm: SkipperResource = {
+    skipperId: '',
+    ownerId: 'alegria',
+    displayName: '',
+    boatIds: {},
+    active: true,
+  };
 
-  constructor(private fleetService: FleetService) {}
+  constructor(
+    private fleetService: FleetService,
+    private skipperService: SkipperService,
+  ) {}
 
   ngOnInit(): void {
     this.form = this.fleetService.getDefaultBoat();
@@ -36,6 +48,7 @@ export class AdminFleetComponent implements OnInit {
       if (first) {
         await this.selectBoat(first.boatId);
       }
+      this.skippers = await this.skipperService.listSkippers();
     } catch (e: any) {
       this.error = e?.message || 'Unable to load fleet.';
     }
@@ -45,6 +58,50 @@ export class AdminFleetComponent implements OnInit {
   async selectBoat(boatId: string): Promise<void> {
     this.selectedBoatId = boatId;
     this.form = await this.fleetService.getBoat(boatId);
+    this.skipperForm.ownerId = this.form.ownerId || '';
+    this.skipperForm.boatIds = { ...(this.skipperForm.boatIds || {}), [boatId]: true };
+  }
+
+  newSkipper(): void {
+    this.skipperForm = {
+      skipperId: '',
+      ownerId: this.form.ownerId || '',
+      displayName: '',
+      boatIds: this.selectedBoatId ? { [this.selectedBoatId]: true } : {},
+      currency: this.form.currency || 'EUR',
+      active: true,
+    };
+  }
+
+  editSkipper(skipper: SkipperResource): void {
+    this.skipperForm = JSON.parse(JSON.stringify(skipper));
+  }
+
+  async saveSkipper(): Promise<void> {
+    if (!String(this.skipperForm.displayName || '').trim()) {
+      this.error = 'Le nom du skipper est obligatoire.';
+      return;
+    }
+    this.saving = true;
+    try {
+      const saved = await this.skipperService.saveSkipper(this.skipperForm);
+      this.skipperForm = saved;
+      this.skippers = await this.skipperService.listSkippers();
+      this.message = 'Skipper enregistré.';
+    } catch (e: any) {
+      this.error = e?.message || 'Impossible d’enregistrer le skipper.';
+    } finally {
+      this.saving = false;
+    }
+  }
+
+  get skipperAssignedToSelectedBoat(): boolean {
+    return !!(this.selectedBoatId && this.skipperForm.boatIds?.[this.selectedBoatId]);
+  }
+
+  set skipperAssignedToSelectedBoat(value: boolean) {
+    if (!this.selectedBoatId) return;
+    this.skipperForm.boatIds = { ...(this.skipperForm.boatIds || {}), [this.selectedBoatId]: value };
   }
 
   newBoat(): void {

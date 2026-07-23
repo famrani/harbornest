@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, timeout } from 'rxjs';
 import { SITE_CONTENT, SiteContent } from '../site-content';
 import { SiteLanguage } from '../../services/language.service';
+import { BoatContextService } from '../../services/boat-context.service';
 
 export type SiteContentRoot = Partial<Record<SiteLanguage, any>> & {
   i18n?: Partial<Record<SiteLanguage, any>>;
@@ -48,19 +49,13 @@ export class SiteContentService {
   private cached?: Record<SiteLanguage, SiteContent>;
   private rawSiteContent?: SiteContentRoot | null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private boatContext: BoatContextService) {}
 
   /**
    * Release 3.1: siteContent is the single UI-text source.
    *
-   * Supported Firebase shapes:
-   *   /siteContent/fr/...
-   *   /siteContent/en/...
-   *   /siteContent/es/...
-   *   /siteContent/it/...
-   *   /siteContent/de/...
-   *   /siteContent/nl/...
-   *   /siteContent/ru/...
+   * Canonical Firebase shape:
+   *   /siteContent/{boatId}/{language}/...
    *
    * Backwards compatible only for old dumps that still have:
    *   /siteContent/i18n/fr/...
@@ -74,12 +69,15 @@ export class SiteContentService {
 
     for (const baseUrl of this.restDatabaseUrls) {
       try {
-        const raw = await firstValueFrom(this.http.get<SiteContentRoot | null>(`${baseUrl}/siteContent.json`).pipe(timeout(5000)));
+        const scoped = await firstValueFrom(this.http.get<SiteContentRoot | null>(
+          `${baseUrl}/siteContent/${encodeURIComponent(this.boatContext.boatId)}.json`
+        ).pipe(timeout(5000)));
+        const raw = scoped || await firstValueFrom(this.http.get<SiteContentRoot | null>(`${baseUrl}/siteContent.json`).pipe(timeout(5000)));
         const normalized = this.normalizeSiteContent(raw);
 
         if (normalized) {
           this.rawSiteContent = raw;
-          this.cached = this.mergeAll(normalized);
+          this.cached = this.normalizeFirebaseLanguages(normalized);
           return this.cached;
         }
       } catch {
@@ -94,7 +92,7 @@ export class SiteContentService {
 
   async getLanguageContent(language: SiteLanguage): Promise<SiteContent> {
     const all = await this.getContent();
-    return all[language] || all.en || all.fr || SITE_CONTENT.en || SITE_CONTENT.fr;
+    return all[language] || all.en || all.fr || ({} as SiteContent);
   }
 
   async getRawContent(forceRefresh = false): Promise<any> {
@@ -102,7 +100,12 @@ export class SiteContentService {
 
     for (const baseUrl of this.restDatabaseUrls) {
       try {
-        this.rawSiteContent = await firstValueFrom(this.http.get<any>(`${baseUrl}/siteContent.json`).pipe(timeout(5000)));
+        this.rawSiteContent = await firstValueFrom(this.http.get<any>(
+          `${baseUrl}/siteContent/${encodeURIComponent(this.boatContext.boatId)}.json`
+        ).pipe(timeout(5000)));
+        if (!this.rawSiteContent) {
+          this.rawSiteContent = await firstValueFrom(this.http.get<any>(`${baseUrl}/siteContent.json`).pipe(timeout(5000)));
+        }
         return this.rawSiteContent;
       } catch {}
     }
@@ -183,6 +186,26 @@ export class SiteContentService {
     return this.languages.reduce((acc, language) => {
       const fallback = (SITE_CONTENT as any)[language] || SITE_CONTENT.en || SITE_CONTENT.fr;
       (acc as any)[language] = this.deepMerge(fallback, (value as any)[language] || {});
+      return acc;
+    }, {} as Record<SiteLanguage, SiteContent>);
+  }
+
+  /**
+   * Firebase is the source of truth when it answers successfully. We only use
+   * another Firebase language as a language-level fallback; SITE_CONTENT is not
+   * merged field by field into live content.
+   */
+  private normalizeFirebaseLanguages(
+    value: Partial<Record<SiteLanguage, Partial<SiteContent>>>
+  ): Record<SiteLanguage, SiteContent> {
+    const english = (value as any).en || {};
+    const french = (value as any).fr || {};
+    return this.languages.reduce((acc, language) => {
+      const localized = (value as any)[language];
+      (acc as any)[language] = this.deepMerge(
+        this.deepMerge({}, english || french),
+        localized || french || english
+      );
       return acc;
     }, {} as Record<SiteLanguage, SiteContent>);
   }

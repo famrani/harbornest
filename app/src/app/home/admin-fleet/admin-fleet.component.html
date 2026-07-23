@@ -114,5 +114,37 @@
         <p class="error" *ngIf="error">{{ error }}</p>
       </article>
     </div>
+
+    <article class="fleet-card" style="margin-top: 2rem">
+      <div class="section-head">
+        <span class="eyebrow">Équipage</span>
+        <h2>Skippers</h2>
+        <p>Un skipper peut être rattaché à un ou plusieurs bateaux.</p>
+      </div>
+      <div class="fleet-layout">
+        <aside class="fleet-list">
+          <button class="btn btn-secondary" type="button" (click)="newSkipper()">Nouveau skipper</button>
+          <button class="fleet-list-item" type="button" *ngFor="let skipper of skippers" (click)="editSkipper(skipper)">
+            <strong>{{ skipper.displayName }}</strong>
+            <small>{{ skipper.email }}</small>
+          </button>
+        </aside>
+        <div class="form-grid">
+          <label>Identifiant<input [(ngModel)]="skipperForm.skipperId" placeholder="jean-dupont"></label>
+          <label>Nom affiché<input [(ngModel)]="skipperForm.displayName" required></label>
+          <label>Propriétaire<input [(ngModel)]="skipperForm.ownerId"></label>
+          <label>Email<input type="email" [(ngModel)]="skipperForm.email"></label>
+          <label>Téléphone<input [(ngModel)]="skipperForm.phone"></label>
+          <label>Numéro de brevet<input [(ngModel)]="skipperForm.licenseNumber"></label>
+          <label>Tarif journalier<input type="number" min="0" [(ngModel)]="skipperForm.dailyRate"></label>
+          <label class="checkbox-line"><input type="checkbox" [(ngModel)]="skipperForm.active">Skipper actif</label>
+          <label class="checkbox-line" *ngIf="selectedBoatId">
+            <input type="checkbox" [(ngModel)]="skipperAssignedToSelectedBoat">
+            Affecté à {{ form.boatName }}
+          </label>
+          <div class="actions"><button class="btn btn-primary" type="button" [disabled]="saving" (click)="saveSkipper()">Enregistrer le skipper</button></div>
+        </div>
+      </div>
+    </article>
   </div>
 </section>

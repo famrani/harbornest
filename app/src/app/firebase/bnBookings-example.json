@@ -1,0 +1,19 @@
+{
+  "bnBookings": {
+    "202606071": {
+      "bookingId": "202606071",
+      "bookingStatus": "confirmed",
+      "comments": "catering requested",
+      "customerName": "Emily",
+      "depositAmount": 390,
+      "depositStatus": false,
+      "email": "click and boat",
+      "outingType": "day",
+      "passengers": 8,
+      "phone": "click and boat",
+      "totalPrice": 1300,
+      "warrantyAmount": 2000,
+      "warrantyStatus": false
+    }
+  }
+}

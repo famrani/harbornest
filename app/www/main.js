@@ -3705,7 +3705,7 @@ class ServicesService {
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<header class=\"site-header\">\n  <div class=\"container header-bar\">\n    <a class=\"brand\" routerLink=\"/\" (click)=\"closeMenu()\">\n      <img class=\"brand-logo\" src=\"assets/img/logo-Alegria.png\" [alt]=\"t('brand')\" />\n      <span class=\"brand-text\">\n        <strong>{{ t('brand') }}</strong>\n        <small>{{ t('brandTagline') }}</small>\n      </span>\n    </a>\n\n    <button class=\"menu-toggle\" type=\"button\" (click)=\"toggleMenu()\" [attr.aria-label]=\"t('nav.openMenu')\">\n      ☰\n    </button>\n\n    <nav class=\"main-nav\" [class.open]=\"menuOpen\">\n      <details class=\"nav-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ t('nav.outings') }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/sorties\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ allOutingsLabel }}</a>\n          <a routerLink=\"/sorties/journee-en-mer\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ dayAtSeaLabel }}</a>\n          <a routerLink=\"/sorties/coucher-de-soleil\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ sunsetLabel }}</a>\n          <a routerLink=\"/sorties/anniversaire\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ partyLabel }}</a>\n          <a routerLink=\"/sorties/sortie-entreprise\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ corporateLabel }}</a>\n        </div>\n      </details>\n\n      <details class=\"nav-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ t('nav.boat') }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/bateau\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ boatPresentationLabel }}</a>\n          <a routerLink=\"/bateau/jouets-nautiques\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ seaToysLabel }}</a>\n          <a routerLink=\"/galerie\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ galleryLabel }}</a>\n          <a routerLink=\"/crew\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ crewLabel }}</a>\n          <a routerLink=\"/safety\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ safetyLabel }}</a>\n        </div>\n      </details>\n\n\n      <details class=\"nav-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ practicalInfoLabel }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/booking-process\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ bookingProcessLabel }}</a>\n          <a routerLink=\"/terms\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ termsLabel }}</a>\n          <a routerLink=\"/safety\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ safetyLabel }}</a>\n          <a routerLink=\"/faq\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ faqLabel }}</a>\n          <a routerLink=\"/how-it-works\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ guestJourneyLabel }}</a>\n        </div>\n      </details>\n\n      <a routerLink=\"/contact\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ contactLabel }}</a>\n\n      <div class=\"language-switcher\">\n        <select [value]=\"currentLanguage\" (change)=\"changeLanguage($any($event.target).value)\" [attr.aria-label]=\"t('nav.languageSelector')\">\n          <option value=\"fr\">{{ 'layout.languages.fr' | siteText:'Français' }}</option>\n          <option value=\"en\">{{ 'layout.languages.en' | siteText:'English' }}</option>\n          <option value=\"es\">{{ 'layout.languages.es' | siteText:'Español' }}</option>\n          <option value=\"it\">{{ 'layout.languages.it' | siteText:'Italiano' }}</option>\n          <option value=\"de\">{{ 'layout.languages.de' | siteText:'Deutsch' }}</option>\n          <option value=\"nl\">{{ 'layout.languages.nl' | siteText:'Nederlands' }}</option>\n          <option value=\"ru\">{{ 'layout.languages.ru' | siteText:'Русский' }}</option>\n        </select>\n      </div>\n\n      <details class=\"nav-dropdown account-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ accountSummaryLabel }}</summary>\n\n        <div class=\"dropdown-panel dropdown-panel-right\" *ngIf=\"!isLoggedIn\">\n          <a routerLink=\"/login\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ loginLabel }}</a>\n          <a routerLink=\"/signup\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ signupLabel }}</a>\n        </div>\n\n        <div class=\"dropdown-panel dropdown-panel-right account-admin-panel\" *ngIf=\"isLoggedIn && isAdmin\">\n          <a routerLink=\"/my-profile\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProfileLabel }}</a>\n          <a routerLink=\"/admin/offers\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ offersLabel }}</a>\n          <a routerLink=\"/admin/bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ reservationsLabel }}</a>\n          <a routerLink=\"/my-payments\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ paymentsLabel }}</a>\n\n          <span class=\"dropdown-section-title\">{{ operationsSectionLabel }}</span>\n          <a routerLink=\"/admin/calendar\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ calendarLabel }}</a>\n          <a routerLink=\"/admin/outings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ boatLogManagerLabel }}</a>\n          <a routerLink=\"/admin/fleet\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ fleetLabel }}</a>\n          <a routerLink=\"/admin/manage-outings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ managePublicOutingsLabel }}</a>\n          <a routerLink=\"/admin/pricing-model\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ pricingModelLabel }}</a>\n          <a routerLink=\"/admin/feedbacks\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ adminFeedbacksLabel }}</a>\n\n          <button class=\"dropdown-action\" type=\"button\" (click)=\"logout()\">{{ logoutLabel }}</button>\n        </div>\n\n        <div class=\"dropdown-panel dropdown-panel-right account-customer-panel\" *ngIf=\"isLoggedIn && isCustomer\">\n          <a routerLink=\"/my-profile\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProfileLabel }}</a>\n          <a routerLink=\"/my-offers\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myOffersLabel }}</a>\n          <a routerLink=\"/my-bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ reservationsLabel }}</a>\n          <a routerLink=\"/my-payments\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ paymentsLabel }}</a>\n          <a routerLink=\"/my-feedbacks\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myFeedbacksLabel }}</a>\n          <button class=\"dropdown-action\" type=\"button\" (click)=\"logout()\">{{ logoutLabel }}</button>\n        </div>\n      </details>\n    </nav>\n  </div>\n</header>\n";
+module.exports = "<header class=\"site-header\">\n  <div class=\"container header-bar\">\n    <a class=\"brand\" routerLink=\"/\" (click)=\"closeMenu()\">\n      <img class=\"brand-logo\" src=\"assets/img/logo-Alegria.png\" [alt]=\"t('brand')\" />\n      <span class=\"brand-text\">\n        <strong>{{ t('brand') }}</strong>\n        <small>{{ t('brandTagline') }}</small>\n      </span>\n    </a>\n\n    <button class=\"menu-toggle\" type=\"button\" (click)=\"toggleMenu()\" [attr.aria-label]=\"t('nav.openMenu')\">\n      ☰\n    </button>\n\n    <nav class=\"main-nav\" [class.open]=\"menuOpen\">\n      <details class=\"nav-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ t('nav.outings') }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/sorties\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ allOutingsLabel }}</a>\n          <a routerLink=\"/sorties/journee-en-mer\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ dayAtSeaLabel }}</a>\n          <a routerLink=\"/sorties/coucher-de-soleil\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ sunsetLabel }}</a>\n          <a routerLink=\"/sorties/anniversaire\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ partyLabel }}</a>\n          <a routerLink=\"/sorties/sortie-entreprise\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ corporateLabel }}</a>\n        </div>\n      </details>\n\n      <details class=\"nav-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ t('nav.boat') }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/bateau\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ boatPresentationLabel }}</a>\n          <a routerLink=\"/bateau/jouets-nautiques\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ seaToysLabel }}</a>\n          <a routerLink=\"/galerie\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ galleryLabel }}</a>\n          <a routerLink=\"/crew\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ crewLabel }}</a>\n          <a routerLink=\"/safety\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ safetyLabel }}</a>\n        </div>\n      </details>\n\n\n      <details class=\"nav-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ practicalInfoLabel }}</summary>\n        <div class=\"dropdown-panel\">\n          <a routerLink=\"/booking-process\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ bookingProcessLabel }}</a>\n          <a routerLink=\"/terms\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ termsLabel }}</a>\n          <a routerLink=\"/safety\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ safetyLabel }}</a>\n          <a routerLink=\"/faq\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ faqLabel }}</a>\n          <a routerLink=\"/how-it-works\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ guestJourneyLabel }}</a>\n        </div>\n      </details>\n\n      <a routerLink=\"/contact\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ contactLabel }}</a>\n\n      <div class=\"language-switcher\">\n        <select [value]=\"currentLanguage\" (change)=\"changeLanguage($any($event.target).value)\" [attr.aria-label]=\"t('nav.languageSelector')\">\n          <option value=\"fr\">{{ 'layout.languages.fr' | siteText:'Français' }}</option>\n          <option value=\"en\">{{ 'layout.languages.en' | siteText:'English' }}</option>\n          <option value=\"es\">{{ 'layout.languages.es' | siteText:'Español' }}</option>\n          <option value=\"it\">{{ 'layout.languages.it' | siteText:'Italiano' }}</option>\n          <option value=\"de\">{{ 'layout.languages.de' | siteText:'Deutsch' }}</option>\n          <option value=\"nl\">{{ 'layout.languages.nl' | siteText:'Nederlands' }}</option>\n          <option value=\"ru\">{{ 'layout.languages.ru' | siteText:'Русский' }}</option>\n        </select>\n      </div>\n\n      <details class=\"nav-dropdown account-dropdown\" (toggle)=\"onDropdownToggle($event)\">\n        <summary>{{ accountSummaryLabel }}</summary>\n\n        <div class=\"dropdown-panel dropdown-panel-right\" *ngIf=\"!isLoggedIn\">\n          <a routerLink=\"/login\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ loginLabel }}</a>\n          <a routerLink=\"/signup\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ signupLabel }}</a>\n        </div>\n\n        <div class=\"dropdown-panel dropdown-panel-right account-admin-panel\" *ngIf=\"isLoggedIn && isAdmin\">\n          <a routerLink=\"/my-profile\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProfileLabel }}</a>\n          <a routerLink=\"/admin/offers\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ offersLabel }}</a>\n          <a routerLink=\"/admin/bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ reservationsLabel }}</a>\n          <a routerLink=\"/my-payments\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ paymentsLabel }}</a>\n\n          <span class=\"dropdown-section-title\">{{ operationsSectionLabel }}</span>\n          <a routerLink=\"/admin/calendar\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ calendarLabel }}</a>\n          <a routerLink=\"/admin/outings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ boatLogManagerLabel }}</a>\n          <a routerLink=\"/admin/fleet\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ fleetLabel }}</a>\n          <a routerLink=\"/admin/manage-outings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ managePublicOutingsLabel }}</a>\n          <a routerLink=\"/admin/pricing-model\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ pricingModelLabel }}</a>\n          <a routerLink=\"/admin/feedbacks\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ adminFeedbacksLabel }}</a>\n\n          <button class=\"dropdown-action\" type=\"button\" (click)=\"logout()\">{{ logoutLabel }}</button>\n        </div>\n\n        <div class=\"dropdown-panel dropdown-panel-right account-customer-panel\" *ngIf=\"isLoggedIn && isCustomer\">\n          <a routerLink=\"/my-profile\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myProfileLabel }}</a>\n          <a routerLink=\"/my-offers\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myOffersLabel }}</a>\n          <a routerLink=\"/my-bookings\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ reservationsLabel }}</a>\n          <a routerLink=\"/calendar\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ calendarLabel }}</a>\n          <a routerLink=\"/my-payments\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ paymentsLabel }}</a>\n          <a routerLink=\"/my-feedbacks\" routerLinkActive=\"active\" (click)=\"closeMenu()\">{{ myFeedbacksLabel }}</a>\n          <button class=\"dropdown-action\" type=\"button\" (click)=\"logout()\">{{ logoutLabel }}</button>\n        </div>\n      </details>\n    </nav>\n  </div>\n</header>\n";
 
 /***/ }),
 
@@ -12327,14 +12327,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   OfferApiService: () => (/* binding */ OfferApiService)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ 93262);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ 95429);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 59452);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 43942);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ 61318);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 95429);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 59452);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ 43942);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ 61318);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _services_boat_context_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/boat-context.service */ 61766);
+
 
 
 
@@ -12345,18 +12347,20 @@ __webpack_require__.r(__webpack_exports__);
 let OfferApiService = class OfferApiService {
   http;
   utilsSvc;
+  boatContext;
   offersCollection = 'bnProposals';
   bookingsCollection = 'bnBookings';
   firebaseUrl = 'https://adn-dev-4d05d.firebaseio.com';
-  constructor(http, utilsSvc) {
+  constructor(http, utilsSvc, boatContext) {
     this.http = http;
     this.utilsSvc = utilsSvc;
+    this.boatContext = boatContext;
   }
   getOffers() {
-    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.readCollection(this.offersCollection)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)([])));
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.from)(this.readCollection(this.offersCollection)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.of)([])));
   }
   getOffer(id) {
-    return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.from)(this.readOfferWithPaymentState(id)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)(undefined)));
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.from)(this.readOfferWithPaymentState(id)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.of)(undefined)));
   }
   validateOfferInput(input) {
     const errors = [];
@@ -12419,6 +12423,9 @@ let OfferApiService = class OfferApiService {
       const balanceAmount = Math.round((onlinePayableAmount - depositAmount) * 100) / 100;
       const offer = {
         offerId,
+        boatId: input.boatId || _this.boatContext.boatId,
+        ownerId: input.ownerId || _this.boatContext.boatId,
+        skipperId: input.skipperId || '',
         source: input.source || 'direct',
         bookingSource: input.bookingSource || '',
         externalPlatform: input.externalPlatform || input.source || '',
@@ -13649,7 +13656,7 @@ let OfferApiService = class OfferApiService {
     })();
   }
   postFirstAvailable(endpoints, payload) {
-    return new rxjs__WEBPACK_IMPORTED_MODULE_4__.Observable(observer => {
+    return new rxjs__WEBPACK_IMPORTED_MODULE_5__.Observable(observer => {
       let index = 0;
       const tryNext = lastError => {
         if (index >= endpoints.length) {
@@ -13756,12 +13763,13 @@ let OfferApiService = class OfferApiService {
       skipperLineHtml: skipperHtml,
       toPaySkipperHtml: skipperSectionHtml,
       emailBodyHtml: summaryHtml,
-      subject: `Votre offre Alegria Boat - ${outingType}`,
+      subject: `Votre offre bateau - ${outingType}`,
       whatsappText,
       emailTemplate: 'offerReady',
       whatsappTemplate: 'offerReady',
       createdTS: Date.now(),
-      ownerId: 'alegria'
+      boatId: offer.boatId || this.boatContext.boatId,
+      ownerId: offer.ownerId || this.boatContext.boatId
     };
   }
   normalizeWhatsappPhone(value) {
@@ -13782,7 +13790,7 @@ let OfferApiService = class OfferApiService {
       const id = `${offerId}_${channel}_${now}`;
       const destination = channel === 'email' ? payload.customerEmail : payload.customerWhatsapp;
       if (!destination) return;
-      yield _this21.writeItem('bnNotifications', id, {
+      yield _this21.writeItem(`${_this21.offersCollection}/${offerId}/events`, id, {
         notificationId: id,
         type: 'offer_sent',
         channel,
@@ -13794,7 +13802,8 @@ let OfferApiService = class OfferApiService {
         createdTS: now,
         modifiedTS: now,
         source: 'admin_offer',
-        ownerId: 'alegria'
+        boatId: offer.boatId || _this21.boatContext.boatId,
+        ownerId: offer.ownerId || _this21.boatContext.boatId
       });
     })();
   }
@@ -13846,7 +13855,7 @@ let OfferApiService = class OfferApiService {
       return Object.keys(value).map(key => ({
         ...value[key],
         offerId: value[key]?.offerId || key
-      }));
+      })).filter(offer => String(offer.boatId || 'alegria') === _this23.boatContext.boatId);
     })();
   }
   readItem(collection, id) {
@@ -13872,12 +13881,14 @@ let OfferApiService = class OfferApiService {
     })();
   }
   static ctorParameters = () => [{
-    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_5__.HttpClient
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__.HttpClient
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_6__.UtilsService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_7__.UtilsService
+  }, {
+    type: _services_boat_context_service__WEBPACK_IMPORTED_MODULE_1__.BoatContextService
   }];
 };
-OfferApiService = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Injectable)({
+OfferApiService = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.Injectable)({
   providedIn: 'root'
 })], OfferApiService);
 
@@ -16133,6 +16144,64 @@ module.exports = "<router-outlet></router-outlet>\n";
 
 /***/ }),
 
+/***/ 61766:
+/*!**************************************************!*\
+  !*** ./src/app/services/boat-context.service.ts ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BoatContextService: () => (/* binding */ BoatContextService)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ 37580);
+
+
+/**
+ * Resolves the boat/site being displayed.  A cloned deployment can set
+ * `window.__BOAT_ID__`, use `?boat=<id>`, or persist a choice in localStorage.
+ * Alegria remains the backwards-compatible default.
+ */
+let BoatContextService = class BoatContextService {
+  storageKey = 'boat_site_id';
+  currentBoatId = this.resolveInitialBoatId();
+  get boatId() {
+    return this.currentBoatId;
+  }
+  setBoatId(value) {
+    this.currentBoatId = this.normalize(value);
+    try {
+      localStorage.setItem(this.storageKey, this.currentBoatId);
+    } catch {}
+    return this.currentBoatId;
+  }
+  scopedPath(root, suffix = '') {
+    const cleanRoot = String(root || '').replace(/^\/+|\/+$/g, '');
+    const cleanSuffix = String(suffix || '').replace(/^\/+|\/+$/g, '');
+    return [cleanRoot, this.boatId, cleanSuffix].filter(Boolean).join('/');
+  }
+  resolveInitialBoatId() {
+    const globalBoatId = window.__BOAT_ID__;
+    const queryBoatId = new URLSearchParams(window.location.search).get('boat');
+    let storedBoatId = '';
+    try {
+      storedBoatId = localStorage.getItem(this.storageKey) || '';
+    } catch {}
+    return this.normalize(globalBoatId || queryBoatId || storedBoatId || 'alegria');
+  }
+  normalize(value) {
+    return String(value || 'alegria').trim().toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '') || 'alegria';
+  }
+};
+BoatContextService = (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_1__.Injectable)({
+  providedIn: 'root'
+})], BoatContextService);
+
+
+/***/ }),
+
 /***/ 64759:
 /*!*******************************************************************!*\
   !*** ./src/app/layout/cookie-consent/cookie-consent.component.ts ***!
@@ -16207,12 +16276,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   SiteContentService: () => (/* binding */ SiteContentService)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ 93262);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 56196);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 72354);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 56196);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 72354);
 /* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../site-content */ 14009);
+/* harmony import */ var _services_boat_context_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/boat-context.service */ 61766);
+
 
 
 
@@ -16221,25 +16292,21 @@ __webpack_require__.r(__webpack_exports__);
 
 let SiteContentService = class SiteContentService {
   http;
+  boatContext;
   restDatabaseUrls = ['https://adn-dev-4d05d.firebaseio.com'];
   languages = ['fr', 'en', 'es', 'it', 'de', 'nl', 'ru'];
   defaultTenantId = 'alegria';
   cached;
   rawSiteContent;
-  constructor(http) {
+  constructor(http, boatContext) {
     this.http = http;
+    this.boatContext = boatContext;
   }
   /**
    * Release 3.1: siteContent is the single UI-text source.
    *
-   * Supported Firebase shapes:
-   *   /siteContent/fr/...
-   *   /siteContent/en/...
-   *   /siteContent/es/...
-   *   /siteContent/it/...
-   *   /siteContent/de/...
-   *   /siteContent/nl/...
-   *   /siteContent/ru/...
+   * Canonical Firebase shape:
+   *   /siteContent/{boatId}/{language}/...
    *
    * Backwards compatible only for old dumps that still have:
    *   /siteContent/i18n/fr/...
@@ -16254,11 +16321,12 @@ let SiteContentService = class SiteContentService {
       }
       for (const baseUrl of _this.restDatabaseUrls) {
         try {
-          const raw = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.firstValueFrom)(_this.http.get(`${baseUrl}/siteContent.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_3__.timeout)(5000)));
+          const scoped = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)(_this.http.get(`${baseUrl}/siteContent/${encodeURIComponent(_this.boatContext.boatId)}.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_4__.timeout)(5000)));
+          const raw = scoped || (yield (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)(_this.http.get(`${baseUrl}/siteContent.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_4__.timeout)(5000))));
           const normalized = _this.normalizeSiteContent(raw);
           if (normalized) {
             _this.rawSiteContent = raw;
-            _this.cached = _this.mergeAll(normalized);
+            _this.cached = _this.normalizeFirebaseLanguages(normalized);
             return _this.cached;
           }
         } catch {
@@ -16274,7 +16342,7 @@ let SiteContentService = class SiteContentService {
     var _this2 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const all = yield _this2.getContent();
-      return all[language] || all.en || all.fr || _site_content__WEBPACK_IMPORTED_MODULE_1__.SITE_CONTENT.en || _site_content__WEBPACK_IMPORTED_MODULE_1__.SITE_CONTENT.fr;
+      return all[language] || all.en || all.fr || {};
     })();
   }
   getRawContent(forceRefresh = false) {
@@ -16283,7 +16351,10 @@ let SiteContentService = class SiteContentService {
       if (!forceRefresh && _this3.rawSiteContent) return _this3.rawSiteContent;
       for (const baseUrl of _this3.restDatabaseUrls) {
         try {
-          _this3.rawSiteContent = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.firstValueFrom)(_this3.http.get(`${baseUrl}/siteContent.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_3__.timeout)(5000)));
+          _this3.rawSiteContent = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)(_this3.http.get(`${baseUrl}/siteContent/${encodeURIComponent(_this3.boatContext.boatId)}.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_4__.timeout)(5000)));
+          if (!_this3.rawSiteContent) {
+            _this3.rawSiteContent = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)(_this3.http.get(`${baseUrl}/siteContent.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_4__.timeout)(5000)));
+          }
           return _this3.rawSiteContent;
         } catch {}
       }
@@ -16362,6 +16433,20 @@ let SiteContentService = class SiteContentService {
       return acc;
     }, {});
   }
+  /**
+   * Firebase is the source of truth when it answers successfully. We only use
+   * another Firebase language as a language-level fallback; SITE_CONTENT is not
+   * merged field by field into live content.
+   */
+  normalizeFirebaseLanguages(value) {
+    const english = value.en || {};
+    const french = value.fr || {};
+    return this.languages.reduce((acc, language) => {
+      const localized = value[language];
+      acc[language] = this.deepMerge(this.deepMerge({}, english || french), localized || french || english);
+      return acc;
+    }, {});
+  }
   deepMerge(target, source) {
     if (Array.isArray(source)) {
       return source;
@@ -16389,10 +16474,12 @@ let SiteContentService = class SiteContentService {
     return String(path || '').split('.').filter(Boolean).reduce((acc, key) => acc && typeof acc === 'object' ? acc[key] : undefined, obj);
   }
   static ctorParameters = () => [{
-    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_4__.HttpClient
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_5__.HttpClient
+  }, {
+    type: _services_boat_context_service__WEBPACK_IMPORTED_MODULE_2__.BoatContextService
   }];
 };
-SiteContentService = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Injectable)({
+SiteContentService = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Injectable)({
   providedIn: 'root'
 })], SiteContentService);
 

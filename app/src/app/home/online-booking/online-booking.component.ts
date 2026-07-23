@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ServicesService } from 'godigital-lib';
 
@@ -83,6 +83,7 @@ export class OnlineBookingComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private mainSvc: ServicesService,
     private siteContentService: SiteContentService,
     private languageService: LanguageService,
@@ -92,6 +93,7 @@ export class OnlineBookingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.restoreWizardState();
+    this.prefillDateFromCalendar();
     this.watchLoggedUser();
     this.loadSiteContent();
     this.loadPricingModel();
@@ -100,6 +102,15 @@ export class OnlineBookingComponent implements OnInit, OnDestroy {
       this.currentLanguage = language;
       this.content = this.normalizeContent(this.allSiteContent[language] || SITE_CONTENT[language], language);
     });
+  }
+
+  private prefillDateFromCalendar(): void {
+    const date = String(this.route.snapshot.queryParamMap.get('date') || '').trim();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+    this.form = { ...this.form, outingDate: date };
+    this.currentStep = 1;
+    this.createdBookingId = '';
+    this.persistWizardState();
   }
 
   ngOnDestroy(): void {

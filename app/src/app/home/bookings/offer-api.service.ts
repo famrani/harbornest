@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, from, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { UtilsService } from 'godigital-lib';
+import { BoatContextService } from '../../services/boat-context.service';
 
 export type WarrantyPaymentChoice = 'stripe_card' | 'cash_on_board';
 export type OfferStatus = 'request' | 'draft' | 'sent' | 'accepted' | 'expired' | 'cancelled';
@@ -130,6 +131,9 @@ export interface AlegriaOffer {
   workflow?: any;
   bookingWorkflow?: any;
   raw?: any;
+  boatId?: string;
+  ownerId?: string;
+  skipperId?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -138,7 +142,11 @@ export class OfferApiService {
   private readonly bookingsCollection = 'bnBookings';
   private readonly firebaseUrl = 'https://adn-dev-4d05d.firebaseio.com';
 
-  constructor(private http: HttpClient, private utilsSvc: UtilsService) {}
+  constructor(
+    private http: HttpClient,
+    private utilsSvc: UtilsService,
+    private boatContext: BoatContextService,
+  ) {}
 
   getOffers(): Observable<AlegriaOffer[]> {
     return from(this.readCollection(this.offersCollection)).pipe(catchError(() => of([])));
@@ -220,6 +228,9 @@ export class OfferApiService {
     const balanceAmount = Math.round((onlinePayableAmount - depositAmount) * 100) / 100;
     const offer: AlegriaOffer = {
       offerId,
+      boatId: input.boatId || this.boatContext.boatId,
+      ownerId: input.ownerId || this.boatContext.boatId,
+      skipperId: input.skipperId || '',
       source: input.source || 'direct',
       bookingSource: (input as any).bookingSource || '',
       externalPlatform: (input as any).externalPlatform || (input as any).source || '',
@@ -1519,12 +1530,13 @@ export class OfferApiService {
       skipperLineHtml: skipperHtml,
       toPaySkipperHtml: skipperSectionHtml,
       emailBodyHtml: summaryHtml,
-      subject: `Votre offre Alegria Boat - ${outingType}`,
+      subject: `Votre offre bateau - ${outingType}`,
       whatsappText,
       emailTemplate: 'offerReady',
       whatsappTemplate: 'offerReady',
       createdTS: Date.now(),
-      ownerId: 'alegria',
+      boatId: offer.boatId || this.boatContext.boatId,
+      ownerId: offer.ownerId || this.boatContext.boatId,
     };
   }
 
@@ -1546,7 +1558,7 @@ export class OfferApiService {
     const destination = channel === 'email' ? payload.customerEmail : payload.customerWhatsapp;
     if (!destination) return;
 
-    await this.writeItem('bnNotifications', id, {
+    await this.writeItem(`${this.offersCollection}/${offerId}/events`, id, {
       notificationId: id,
       type: 'offer_sent',
       channel,
@@ -1558,7 +1570,8 @@ export class OfferApiService {
       createdTS: now,
       modifiedTS: now,
       source: 'admin_offer',
-      ownerId: 'alegria',
+      boatId: offer.boatId || this.boatContext.boatId,
+      ownerId: offer.ownerId || this.boatContext.boatId,
     });
   }
 
@@ -1624,7 +1637,9 @@ export class OfferApiService {
   private async readCollection(collection: string): Promise<AlegriaOffer[]> {
     const value = await this.http.get<any>(`${this.firebaseUrl}/${collection}.json`).toPromise();
     if (!value) return [];
-    return Object.keys(value).map((key) => ({ ...value[key], offerId: value[key]?.offerId || key }));
+    return Object.keys(value)
+      .map((key) => ({ ...value[key], offerId: value[key]?.offerId || key }))
+      .filter((offer) => String(offer.boatId || 'alegria') === this.boatContext.boatId);
   }
 
   private async readItem(collection: string, id: string): Promise<any> {
