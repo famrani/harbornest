@@ -103,7 +103,13 @@ export class BookingWorkflowService {
         proofStatus.includes('setup_succeeded')
       );
     }
-    if (method.includes('cash')) return status.includes('cash_received') || booking?.warrantyCashReceived === true || booking?.warrantyCashConfirmed === true;
+    // For a cash warranty, the booking step represents the customer's choice of
+    // warranty method. The cash itself is received later on board, but selecting
+    // and saving that method is enough to complete the booking workflow step.
+    if (method.includes('cash')) return true;
+    if (status.includes('cash_selected') || status.includes('cash_received')) return true;
+    if (booking?.warrantyCashSelected === true) return true;
+    if (booking?.warrantyCashReceived === true || booking?.warrantyCashConfirmed === true) return true;
     return false;
   }
 

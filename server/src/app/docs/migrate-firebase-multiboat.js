@@ -28,6 +28,16 @@ const addIdentity = (value, fallback = {}) => ({
   boatId: value?.boatId || fallback.boatId || boatId,
   ownerId: value?.ownerId || fallback.ownerId || boatId,
 });
+const customerRef = value => {
+  const text = String(value || '').trim().toLowerCase();
+  if (!text) return null;
+  let hash = 2166136261;
+  for (let index = 0; index < text.length; index += 1) {
+    hash ^= text.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return `u${(hash >>> 0).toString(16).padStart(8, '0')}`;
+};
 
 out.bnFleet = out.bnFleet || {};
 out.bnFleet[boatId] = {
@@ -38,11 +48,12 @@ out.bnFleet[boatId] = {
   extraServices: out.bnExtraServices || out.bnFleet[boatId]?.extraServices || {},
   modifiedTS: out.bnFleet[boatId]?.modifiedTS || now,
 };
+const alegriaOwnerId = out.bnFleet[boatId].ownerId || boatId;
 
 out.bnSkippers = out.bnSkippers || {};
 out.bnSkippers['alegria-default'] = out.bnSkippers['alegria-default'] || {
   skipperId: 'alegria-default',
-  ownerId: out.bnFleet[boatId].ownerId,
+  ownerId: alegriaOwnerId,
   displayName: 'Skipper à affecter',
   dailyRate: Number(out.bnPricingModel?.[boatId]?.skipperPrice || out.bnFleet[boatId]?.defaultSkipperPrice || 0),
   currency: out.bnFleet[boatId]?.currency || 'EUR',
@@ -84,12 +95,31 @@ if (cms.boat) {
   out.bnFleet[boatId] = deepMerge(out.bnFleet[boatId], technicalBoat);
 }
 
+// Preserve the richer multilingual outing descriptions formerly kept by the
+// custom CMS, while retaining operational fields already present in bnOutings.
+for (const item of cms.outings?.items || []) {
+  const id = item.slug || item.id;
+  if (!id) continue;
+  out.bnOutings[boatId][id] = addIdentity(
+    deepMerge(out.bnOutings[boatId][id], { ...item, id, slug: id })
+  );
+}
+
 ['guestInfo', 'proposalInfo', 'emailBranding'].forEach(root => {
   if (out[root] && !out[root][boatId]) out[root] = { [boatId]: out[root] };
 });
 
 out.bnPricingModel = out.bnPricingModel || {};
-if (out.bnPricingModel[boatId]) out.bnPricingModel[boatId] = addIdentity(out.bnPricingModel[boatId]);
+const cmsPricing = cms.pricing?.model?.[boatId] || {};
+out.bnPricingModel[boatId] = deepMerge(out.bnPricingModel[boatId], cmsPricing);
+if (out.bnPricingModel[boatId]) {
+  out.bnPricingModel[boatId] = addIdentity({
+    ...out.bnPricingModel[boatId],
+    // Fleet is the authoritative source for the contracted skipper price.
+    // This corrects the 450 € regression in the supplied dump back to 300 €.
+    skipperPrice: Number(out.bnFleet[boatId].defaultSkipperPrice ?? out.bnPricingModel[boatId].skipperPrice ?? 0),
+  });
+}
 
 out.bnBookings = out.bnBookings || {};
 Object.keys(out.bnBookings).forEach(id => {
@@ -113,19 +143,66 @@ Object.entries(out.bnAdminOutings || {}).forEach(([id, operationalLog]) => {
   });
 });
 
+// Boat-scoped, privacy-safe availability index. It intentionally contains no
+// customer name, email or phone and can therefore feed the public calendar.
+out.backendcalendar = {};
+Object.entries(out.bnBookings).forEach(([id, booking]) => {
+  const date = String(booking.outingDate || booking.departureDate || booking.start || '').slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+  const scopedBoatId = booking.boatId || boatId;
+  out.backendcalendar[scopedBoatId] = out.backendcalendar[scopedBoatId] || {};
+  out.backendcalendar[scopedBoatId][date] = out.backendcalendar[scopedBoatId][date] || {};
+  out.backendcalendar[scopedBoatId][date][id] = {
+    bookingId: id,
+    boatId: scopedBoatId,
+    start: booking.start || booking.outingDate || date,
+    end: booking.end || booking.arrivalDate || booking.outingDate || date,
+    status: booking.bookingStatus || booking.status || 'pending',
+    guestRef: customerRef(
+      booking.customerEmail || booking.email || booking.userEmail ||
+      booking.customer?.email || booking.customerUid || booking.userId
+    ),
+  };
+});
+
 out.bnProposals = out.bnProposals || {};
 Object.keys(out.bnProposals).forEach(id => {
   out.bnProposals[id] = addIdentity({ ...out.bnProposals[id], offerId: out.bnProposals[id].offerId || id });
   out.bnProposals[id].skipperId = out.bnProposals[id].skipperId || out.bnFleet[out.bnProposals[id].boatId]?.defaultSkipperId || '';
 });
 
+// backendpayments remains a global ledger, but every record is tagged so it
+// can be filtered and reconciled per boat/owner without moving Stripe history.
+Object.keys(out.backendpayments || {}).forEach(id => {
+  const payment = out.backendpayments[id] || {};
+  const related = out.bnBookings[payment.bookingId] || out.bnProposals[payment.bookingId] || {};
+  out.backendpayments[id] = {
+    ...payment,
+    paymentId: payment.paymentId || id,
+    boatId: payment.boatId || related.boatId || boatId,
+    ownerId: payment.ownerId || related.ownerId || alegriaOwnerId,
+  };
+});
+
 Object.entries(out.bnBookingEvents || {}).forEach(([bookingId, events]) => {
-  if (!out.bnBookings[bookingId]) return;
-  out.bnBookings[bookingId].events = deepMerge(out.bnBookings[bookingId].events, events);
+  if (out.bnBookings[bookingId]) {
+    out.bnBookings[bookingId].events = deepMerge(out.bnBookings[bookingId].events, events);
+  } else {
+    out.bnFleet[boatId].legacyBookingEvents = deepMerge(
+      out.bnFleet[boatId].legacyBookingEvents,
+      { [bookingId]: events }
+    );
+  }
 });
 Object.entries(out.bnProposalEvents || {}).forEach(([offerId, events]) => {
-  if (!out.bnProposals[offerId]) return;
-  out.bnProposals[offerId].events = deepMerge(out.bnProposals[offerId].events, events);
+  if (out.bnProposals[offerId]) {
+    out.bnProposals[offerId].events = deepMerge(out.bnProposals[offerId].events, events);
+  } else {
+    out.bnFleet[boatId].legacyProposalEvents = deepMerge(
+      out.bnFleet[boatId].legacyProposalEvents,
+      { [offerId]: events }
+    );
+  }
 });
 Object.entries(out.bnNotifications || {}).forEach(([eventId, event]) => {
   if (event.bookingId && out.bnBookings[event.bookingId]) {

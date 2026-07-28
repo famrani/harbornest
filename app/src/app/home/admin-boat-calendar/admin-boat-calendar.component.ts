@@ -172,7 +172,7 @@ export class AdminBoatCalendarComponent implements OnInit, OnDestroy {
     this.error = '';
     const calendarDataUrl = this.adminCalendarMode
       ? `${this.databaseUrl}/bnBookings.json`
-      : `${this.databaseUrl}/backendcalendar.json`;
+      : `${this.databaseUrl}/backendcalendar/${encodeURIComponent(this.boatContext.boatId)}.json`;
     forkJoin({
       bookings: this.http.get<any>(calendarDataUrl).pipe(catchError(() => of({}))),
       content: this.http.get<any>(

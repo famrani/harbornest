@@ -83,18 +83,41 @@ export class BookingStateService {
   }
 
   private isCompleted(booking: any): boolean {
-    const values = [
+    if (booking?.completed === true || booking?.outingCompleted === true ||
+      booking?.workflow?.outingCompleted === true || booking?.bookingWorkflow?.outingCompleted === true) {
+      return true;
+    }
+
+    // An explicit outing status can complete the outing independently of the
+    // booking workflow status.
+    const outingValues = [
+      booking?.outingStatus,
+      booking?.workflow?.outingStatus,
+      booking?.bookingWorkflow?.outingStatus,
+      booking?.raw?.outingStatus,
+    ].map((value) => String(value ?? '').toLowerCase().trim());
+    const completed = new Set(['completed', 'complete', 'closed', 'terminated', 'finished', 'done', 'outing_completed', 'booking_completed']);
+    if (outingValues.some((value) => completed.has(value))) return true;
+
+    // Legacy bookingStatus="completed" often means that booking creation was
+    // completed, not that the boat outing has happened. Never show a future
+    // reservation as a completed outing because of that legacy value.
+    const genericValues = [
       booking?.bookingStatus,
       booking?.status,
-      booking?.outingStatus,
       booking?.workflow?.status,
       booking?.bookingWorkflow?.status,
       booking?.raw?.bookingStatus,
       booking?.raw?.status,
     ].map((value) => String(value ?? '').toLowerCase().trim());
-    const completed = new Set(['completed', 'complete', 'closed', 'terminated', 'finished', 'done', 'outing_completed', 'booking_completed']);
-    return booking?.completed === true || booking?.outingCompleted === true || booking?.workflow?.outingCompleted === true ||
-      booking?.bookingWorkflow?.outingCompleted === true || values.some((value) => completed.has(value));
+    if (!genericValues.some((value) => completed.has(value))) return false;
+
+    const rawDate = booking?.outingDate || booking?.date || booking?.bookingDate || booking?.raw?.outingDate;
+    const outingTime = rawDate ? Date.parse(String(rawDate)) : Number.NaN;
+    if (!Number.isFinite(outingTime)) return false;
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
+    return outingTime <= endOfToday.getTime();
   }
 
   private isAlegriaPaid(_booking: any, calculatedRemaining: number): boolean {

@@ -24,10 +24,11 @@ class UsersService {
                 uid, email, displayName: displayName || null, roles,
                 lastLoginAt: now,
             });
-            // Optionally, initialize owner/provider profile nodes
+            // Owner identity stays in the global user directory. Boat-specific
+            // ownership and defaults are stored under bnFleet/{boatId}.
             if (roles.boatOwner) {
-                await this.stbDbSvc.db.ref(`/backendowners/${uid}`).update({
-                    profile: { createdAt: now },
+                await this.stbDbSvc.db.ref(`/backendusers/${uid}`).update({
+                    ownerProfile: { createdAt: now },
                 });
             }
             if (roles.serviceProvider) {

@@ -495,7 +495,7 @@ class BookingsService {
         const days = this.eachDateUTC(start, end);
         const updates = {};
         for (const day of days) {
-            updates[`/backendcalendar/${day}/${bookingId}`] = {
+            updates[`/backendcalendar/${booking.boatId || 'alegria'}/${day}/${bookingId}`] = {
                 bookingId,
                 boatId: booking.boatId || 'alegria',
                 start,
@@ -515,10 +515,12 @@ class BookingsService {
     }
     /** Remove calendar index of a booking (used before reindexing or deleting) */
     async unindexBookingFromCalendar(bookingId, startISO, endISO) {
+        const bookingSnap = await this.storeDbc.db.ref(`/bnBookings/${bookingId}`).once('value');
+        const boatId = bookingSnap.val()?.boatId || 'alegria';
         const days = this.eachDateUTC(startISO, endISO);
         const updates = {};
         for (const day of days) {
-            updates[`/backendcalendar/${day}/${bookingId}`] = null;
+            updates[`/backendcalendar/${boatId}/${day}/${bookingId}`] = null;
         }
         await this.storeDbc.db.ref('/').update(updates);
     }
@@ -531,78 +533,73 @@ class BookingsService {
         if (!boat)
             throw new Error(`Unknown boat: ${boatId}`);
         raw.boatId = boatId;
-        raw.ownerId = String(raw.ownerId || boat.ownerId || boatId);
+        raw.ownerId = String(boat.ownerId || raw.ownerId || boatId);
         raw.skipperId = String(raw.skipperId || boat.defaultSkipperId || '');
         // derive start/end ISO (you can adjust from date/time form fields)
         const startISO = raw.start || `${raw.date}T${raw.time || '00:00'}:00.000Z`;
         const endISO = raw.end || startISO; // or compute with duration
         const now = Date.now();
-        const ownerStripeData = await this.storeDbc.db.ref(`/backendowners/${raw.ownerId}/stripeStandard`)
+        const ownerStripeData = await this.storeDbc.db.ref(`/backendusers/${raw.ownerId}/stripeStandard`)
             .once('value')
             .then(s => s.val());
-        const notConnected = !ownerStripeData?.stripe_user_id;
-        // keep creating the booking, but you can set a flag if you like
-        // UI can prompt owner to connect Stripe before accepting
-        if (!notConnected) {
-            const booking = {
-                bookingId,
-                boatId,
-                skipperId: raw.skipperId || undefined,
-                ownerId: raw.ownerId,
-                eventType: raw.eventType,
-                eventTypeOther: raw.eventTypeOther,
-                start: startISO,
-                end: endISO,
-                people: Math.max(1, Math.min(20, Number(raw.people || 1))),
-                extras: raw.specialServices || {},
-                notes: raw.comments || raw.groupNote || raw.servicesNote || undefined,
-                price: raw.estimateFrom ? Number(raw.estimateFrom) : undefined,
-                customer: {
-                    userId: raw.userId || null,
-                    firstname: raw.firstName,
-                    lastname: raw.lastName,
-                    email: raw.email,
-                    phone: raw.phone,
-                },
-                status: 'pending',
-                statusReason: null,
-                createdAt: now,
-                updatedAt: now,
-                statusHistory: {
-                    [now]: { at: now, to: 'pending', by: raw.userId || 'guest', reason: null }
-                },
-                payment: {
-                    mode: 'setup_then_charge',
-                    stripe_user_id: ownerStripeData?.stripe_user_id || null,
-                    status: 'init',
-                    lastError: null
-                }
-            };
-            const updates = {};
-            updates[`${firebase_service_1.OBJECTNAME.bnBookings}/${bookingId}`] = booking;
-            // calendar index: use day of start (simple approach)
-            const d = dayKey(startISO);
-            updates[`${firebase_service_1.OBJECTNAME.backendcalendar}/${d}/${bookingId}`] = {
-                bookingId,
-                boatId,
-                start: startISO,
-                end: endISO,
-                status: 'pending',
-                guestRef: this.calendarCustomerRef(raw.customerEmail ||
-                    raw.email ||
-                    raw.userEmail ||
-                    raw.userId ||
-                    raw.uid ||
-                    raw.customerId ||
-                    raw.guestId)
-            };
-            await this.storeDbc.db.ref().update(updates);
-            return { bookingId, booking };
-        }
-        else {
-            const bookingId = "-1";
-            return { bookingId, booking: {} };
-        }
+        // Alegria uses the platform account; other owners use their connected
+        // Standard account. Booking creation must never fail merely because an
+        // owner still needs to connect Stripe.
+        const stripeReady = raw.ownerId === 'alegria' || !!ownerStripeData?.stripe_user_id;
+        const booking = {
+            bookingId,
+            boatId,
+            skipperId: raw.skipperId || undefined,
+            ownerId: raw.ownerId,
+            eventType: raw.eventType,
+            eventTypeOther: raw.eventTypeOther,
+            start: startISO,
+            end: endISO,
+            people: Math.max(1, Math.min(20, Number(raw.people || 1))),
+            extras: raw.specialServices || {},
+            notes: raw.comments || raw.groupNote || raw.servicesNote || undefined,
+            price: raw.estimateFrom ? Number(raw.estimateFrom) : undefined,
+            customer: {
+                userId: raw.userId || null,
+                firstname: raw.firstName,
+                lastname: raw.lastName,
+                email: raw.email,
+                phone: raw.phone,
+            },
+            status: 'pending',
+            statusReason: null,
+            createdAt: now,
+            updatedAt: now,
+            statusHistory: {
+                [now]: { at: now, to: 'pending', by: raw.userId || 'guest', reason: null }
+            },
+            payment: {
+                mode: 'setup_then_charge',
+                stripe_user_id: ownerStripeData?.stripe_user_id || null,
+                status: stripeReady ? 'init' : 'owner_not_connected',
+                lastError: stripeReady ? null : 'Owner must connect Stripe before collecting card payments'
+            }
+        };
+        const updates = {};
+        updates[`${firebase_service_1.OBJECTNAME.bnBookings}/${bookingId}`] = booking;
+        // calendar index: use day of start (simple approach)
+        const d = dayKey(startISO);
+        updates[`${firebase_service_1.OBJECTNAME.backendcalendar}/${boatId}/${d}/${bookingId}`] = {
+            bookingId,
+            boatId,
+            start: startISO,
+            end: endISO,
+            status: 'pending',
+            guestRef: this.calendarCustomerRef(raw.customerEmail ||
+                raw.email ||
+                raw.userEmail ||
+                raw.userId ||
+                raw.uid ||
+                raw.customerId ||
+                raw.guestId)
+        };
+        await this.storeDbc.db.ref().update(updates);
+        return { bookingId, booking };
     }
     async updateBookingStatus(bookingId, newStatus, moderatorUid, reason) {
         const snap = await this.storeDbc.db.ref(`${firebase_service_1.OBJECTNAME.bnBookings}/${bookingId}`).once('value');
@@ -618,18 +615,18 @@ class BookingsService {
         updates[`${firebase_service_1.OBJECTNAME.bnBookings}/${bookingId}/statusHistory/${now}`] = {
             at: now, to: newStatus, by: moderatorUid || 'host', reason: reason || null
         };
-        updates[`${firebase_service_1.OBJECTNAME.backendcalendar}/${d}/${bookingId}/status`] = newStatus;
+        updates[`${firebase_service_1.OBJECTNAME.backendcalendar}/${current.boatId || 'alegria'}/${d}/${bookingId}/status`] = newStatus;
         await this.storeDbc.db.ref().update(updates);
     }
-    // read /backendcalendar for a range (inclusive)
-    async getCalendarRange(from, to) {
+    // read the privacy-safe, boat-scoped availability index for a date range
+    async getCalendarRange(from, to, boatId = 'alegria') {
         // naive daily walk (range is typically small for UI views)
         const out = {};
         const start = new Date(from + 'T00:00:00Z');
         const end = new Date(to + 'T00:00:00Z');
         for (let d = new Date(start); d <= end; d.setUTCDate(d.getUTCDate() + 1)) {
             const key = d.toISOString().slice(0, 10);
-            const daySnap = await this.storeDbc.db.ref(`${firebase_service_1.OBJECTNAME.backendcalendar}/${key}`).once('value');
+            const daySnap = await this.storeDbc.db.ref(`${firebase_service_1.OBJECTNAME.backendcalendar}/${boatId}/${key}`).once('value');
             out[key] = daySnap.val() || null;
         }
         return out;
@@ -1109,7 +1106,7 @@ class BookingsService {
                 const to = String(req.query.to);
                 if (!from || !to)
                     return res.status(400).json({ ok: false, error: 'from & to (YYYY-MM-DD) required' });
-                const cells = await this.getCalendarRange(from, to);
+                const cells = await this.getCalendarRange(from, to, String(req.query.boatId || 'alegria'));
                 return res.json({ ok: true, cells });
             }
             catch (e) {

@@ -88,7 +88,7 @@ class BoatownersService {
                     updatedAt,
                 };
                 // --- Save metadata to RTDB ---
-                await this.stbDbSvc.db.ref(`/backendowners/${ownerId}/xlsConfig`).set(xlsConfig);
+                await this.stbDbSvc.db.ref(`/backendusers/${ownerId}/ownerConfig/xls`).set(xlsConfig);
                 return res.json(xlsConfig);
             }
             catch (e) {
@@ -104,7 +104,7 @@ class BoatownersService {
             if (!ownerId) {
                 return res.status(400).json({ message: 'ownerId is required.' });
             }
-            const cfgRef = this.stbDbSvc.db.ref(`/backendowners/${ownerId}/xlsConfig`);
+            const cfgRef = this.stbDbSvc.db.ref(`/backendusers/${ownerId}/ownerConfig/xls`);
             const now = Date.now();
             try {
                 // 1) Read XLS config metadata

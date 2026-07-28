@@ -131,11 +131,9 @@
         <section class="edit-section revenue-edit">
           <h3>{{ t('commission') }}</h3>
           <div class="edit-grid">
-            <label>{{ t('rentalCommission') }}<input name="rentalCommissionAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.rentalCommissionAmount" (ngModelChange)="recalculateEditCustomerTotal()" [readonly]="!editForm.source || editForm.source === 'direct' || editForm.source === 'alegria'" /></label>
-            <label>{{ t('serviceFeesLabel') }}<input name="serviceFeesAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.serviceFeesAmount" (ngModelChange)="recalculateEditCustomerTotal()" [readonly]="!editForm.source || editForm.source === 'direct' || editForm.source === 'alegria'" /></label>
-            <label class="pricing-total-field">{{ t('totalCommission') }}<input name="totalCommission" type="number" [(ngModel)]="editForm.totalCommission" readonly /></label>
-            <label class="pricing-total-field">{{ t('alegriaRevenue') }}<input name="alegriaRevenueTotal" type="number" [(ngModel)]="editForm.alegriaRevenueTotal" readonly /></label>
-            <label class="pricing-total-field">{{ t('skipperRevenue') }}<input name="skipperRevenueTotal" type="number" [(ngModel)]="editForm.skipperRevenueTotal" readonly /></label>
+            <label>{{ t('platformCommission') }}<input name="platformCommissionAmount" type="number" min="0" step="0.01" [(ngModel)]="editForm.platformCommissionAmount" (ngModelChange)="recalculateEditCustomerTotal()" [readonly]="!editForm.source || editForm.source === 'direct' || editForm.source === 'alegria'" /></label>
+            <label class="pricing-total-field">{{ t('alegriaRecovered') }}<input name="alegriaRecoveredAmount" type="number" [(ngModel)]="editForm.alegriaRecoveredAmount" readonly /></label>
+            <label class="pricing-total-field">{{ t('alegriaNetRevenue') }}<input name="alegriaRevenueTotal" type="number" [(ngModel)]="editForm.alegriaRevenueTotal" readonly /></label>
           </div>
         </section>
 
@@ -258,17 +256,17 @@
         <article class="cockpit-section finance-panel alegria-panel">
           <h2>{{ t('commission') }}</h2>
           <div class="finance-table compact">
-            <div class="finance-line negative-line"><span>{{ t('rentalCommission') }}</span><strong>{{ formatMoney(vm.rentalCommissionAmount) }}</strong></div>
-            <div class="finance-line negative-line"><span>{{ t('serviceFeesLabel') }}</span><strong>{{ formatMoney(vm.serviceFeesAmount) }}</strong></div>
-            <div class="finance-line finance-total"><span>{{ t('totalCommission') }}</span><strong>{{ formatMoney(vm.totalCommission) }}</strong></div>
+            <div class="finance-line finance-total negative-line"><span>{{ t('platformCommission') }}</span><strong>{{ formatMoney(vm.totalCommission) }}</strong></div>
           </div>
         </article>
 
         <article class="cockpit-section finance-panel alegria-panel">
-          <h2>{{ t('alegriaRevenue') }}</h2>
-          <p class="finance-subtitle">{{ t('totalOutingPrice') }} − {{ t('totalCommission') }} − {{ t('skipper') }}</p>
+          <h2>{{ t('alegriaRecovered') }}</h2>
+          <p class="finance-subtitle">{{ t('totalOutingPrice') }} − {{ t('platformCommission') }}</p>
           <div class="finance-table compact">
-            <div class="finance-line finance-total"><span>{{ t('alegriaRevenue') }}</span><strong>{{ formatMoney(vm.alegriaRevenueTotal) }}</strong></div>
+            <div class="finance-line finance-total"><span>{{ t('alegriaRecovered') }}</span><strong>{{ formatMoney(vm.alegriaRecoveredAmount) }}</strong></div>
+            <div class="finance-line"><span>{{ t('skipperToReverse') }}</span><strong>− {{ formatMoney(vm.skipperCost) }}</strong></div>
+            <div class="finance-line finance-total"><span>{{ t('alegriaNetRevenue') }}</span><strong>{{ formatMoney(vm.alegriaRevenueTotal) }}</strong></div>
             <div class="finance-line paid-line" *ngIf="vm.alegriaPaidAmount > 0"><span>{{ t('alreadyPaid') }}</span><strong>{{ formatMoney(vm.alegriaPaidAmount) }}</strong></div>
             <div class="finance-line outstanding-line" *ngIf="vm.remainingAlegriaRevenue > 0"><span>{{ t('leftToPay') }}</span><strong>{{ formatMoney(vm.remainingAlegriaRevenue) }}</strong></div>
           </div>
@@ -351,7 +349,7 @@
           </div>
         </article>
 
-        <article id="additional-payments" class="cockpit-section finance-panel additional-payment-panel" *ngIf="!vm.isAdmin">
+        <article id="additional-payments" class="cockpit-section finance-panel additional-payment-panel">
           <h2>{{ t('additionalPayments') }}</h2>
           <p class="finance-subtitle">{{ t('additionalPaymentsHelp') }}</p>
           <div class="payment-action-form">

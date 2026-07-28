@@ -2983,17 +2983,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AccountSummaryComponent: () => (/* binding */ AccountSummaryComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _account_summary_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./account-summary.component.html?ngResource */ 44878);
 /* harmony import */ var _account_summary_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./account-summary.component.scss?ngResource */ 80458);
 /* harmony import */ var _account_summary_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_account_summary_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../site-content */ 14009);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/language.service */ 48756);
 /* harmony import */ var _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../bookings/booking-api.service */ 74854);
 /* harmony import */ var _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../site-content-service/site-content.service */ 73196);
+/* harmony import */ var _services_boat_context_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../services/boat-context.service */ 61766);
+
 
 
 
@@ -3012,6 +3014,7 @@ let AccountSummaryComponent = class AccountSummaryComponent {
   mainSvc;
   bookingApi;
   siteContentService;
+  boatContext;
   content = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
   allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
   currentLanguage = 'fr';
@@ -3029,13 +3032,14 @@ let AccountSummaryComponent = class AccountSummaryComponent {
   standalonePaymentComment = '';
   standalonePaymentLoading = false;
   standalonePaymentError = '';
-  constructor(route, languageService, router, mainSvc, bookingApi, siteContentService) {
+  constructor(route, languageService, router, mainSvc, bookingApi, siteContentService, boatContext) {
     this.route = route;
     this.languageService = languageService;
     this.router = router;
     this.mainSvc = mainSvc;
     this.bookingApi = bookingApi;
     this.siteContentService = siteContentService;
+    this.boatContext = boatContext;
   }
   ngOnInit() {
     this.section = this.route.snapshot.data['section'] || 'bookings';
@@ -3161,7 +3165,8 @@ let AccountSummaryComponent = class AccountSummaryComponent {
     const returnUrl = `${window.location.origin}/my-payments`;
     this.standalonePaymentLoading = true;
     this.bookingApi.createAdhocCheckout({
-      ownerId: 'alegria',
+      ownerId: this.boatContext.boatId,
+      boatId: this.boatContext.boatId,
       bookingId: '',
       adhocPaymentId: paymentId,
       amount,
@@ -4112,20 +4117,22 @@ let AccountSummaryComponent = class AccountSummaryComponent {
     return labels[this.section]?.[this.currentLanguage] || labels.bookings[this.currentLanguage] || labels.bookings.en;
   }
   static ctorParameters = () => [{
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_7__.ActivatedRoute
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_8__.ActivatedRoute
   }, {
     type: _services_language_service__WEBPACK_IMPORTED_MODULE_4__.LanguageService
   }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_7__.Router
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_8__.Router
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_8__.ServicesService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_9__.ServicesService
   }, {
     type: _bookings_booking_api_service__WEBPACK_IMPORTED_MODULE_5__.BookingApiService
   }, {
     type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_6__.SiteContentService
+  }, {
+    type: _services_boat_context_service__WEBPACK_IMPORTED_MODULE_7__.BoatContextService
   }];
 };
-AccountSummaryComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_9__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_10__.Component)({
+AccountSummaryComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_10__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_11__.Component)({
   selector: 'app-account-summary',
   template: _account_summary_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_account_summary_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
@@ -6772,7 +6779,7 @@ let DepositComponent = class DepositComponent {
       next: state => {
         this.paymentStatus = state || this.paymentStatus;
         // Keep the page aligned with bnBookings as the source of truth.
-        // Stripe details are kept separately in state.stripePayments, coming from bnPayment.
+        // Stripe details are kept separately in state.stripePayments, coming from backendpayments.
         if (state?.booking) {
           this.booking = {
             ...(this.booking || {}),
@@ -7054,9 +7061,11 @@ let BookingFinancialService = class BookingFinancialService {
     };
     const sum = records.filter(matches).reduce((total, record) => total + amountOf(record), 0);
     if (sum > 0) return sum;
-    if (type === 'deposit') return amountOf(direct.deposit || {});
-    if (type === 'alegria' || type === 'balance') return amountOf(direct.balance || direct.remaining || direct.alegria || {});
-    if (type === 'skipper') return amountOf(direct.skipper || {});
+    // Nested booking payment objects are only a fallback source when they also
+    // carry explicit proof of a completed payment. A Checkout Session id with
+    // status=checkout_created is not proof of payment.
+    const fallback = type === 'deposit' ? direct.deposit || {} : type === 'alegria' || type === 'balance' ? direct.alegria || direct.balance || direct.remaining || {} : type === 'skipper' ? direct.skipper || {} : {};
+    if (matches(fallback)) return amountOf(fallback);
     return 0;
   }
   isExternalBooking(booking) {
@@ -7396,7 +7405,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ t('adminEyebrow') }}</span>\n      <h1>{{ t('adminTitle') }}</h1>\n      <p>{{ t('adminIntro') }}</p>\n    </div>\n\n    <div class=\"booking-tabs\" *ngIf=\"!loading && bookings.length > 0\">\n      <button type=\"button\" [class.active]=\"activeDateTab === 'upcoming'\" (click)=\"setDateTab('upcoming')\">{{ t('auto.home.bookings.bookings.component.upcoming') }}<span>{{ upcomingBookingsCount }}</span>\n      </button>\n      <button type=\"button\" [class.active]=\"activeDateTab === 'past'\" (click)=\"setDateTab('past')\">{{ t('auto.home.bookings.bookings.component.past') }}<span>{{ pastBookingsCount }}</span>\n      </button>\n    </div>\n\n    <div class=\"booking-toolbar booking-toolbar-grid\">\n      <label class=\"search-box\">\n        <span>{{ t('search') }}</span>\n        <input\n          type=\"search\"\n          name=\"bookingSearch\"\n          [(ngModel)]=\"searchTerm\"\n          [placeholder]=\"t('searchPlaceholder')\"\n          autocomplete=\"off\"\n        />\n      </label>\n\n      <label>\n        <span>{{ t('status') }}</span>\n        <select [(ngModel)]=\"statusFilter\">\n          <option [value]=\"'all'\">{{ t('allStatuses') }}</option>\n          <option [value]=\"'not_confirmed'\">{{ t('notConfirmed') }}</option>\n          <option [value]=\"'confirmed'\">{{ t('confirmed') }}</option>\n          <option [value]=\"'payment_done'\">{{ t('paymentDone') }}</option>\n        </select>\n      </label>\n\n      <label>\n        <span>{{ t('warranty') }}</span>\n        <select [(ngModel)]=\"warrantyFilter\">\n          <option [value]=\"'all'\">{{ t('allWarranties') }}</option>\n          <option [value]=\"'not_selected'\">{{ t('notSelected') }}</option>\n          <option [value]=\"'cash'\">{{ t('cashSelected') }}</option>\n          <option [value]=\"'card_selected'\">{{ t('cardSelected') }}</option>\n          <option [value]=\"'card_registered'\">{{ t('cardRegistered') }}</option>\n        </select>\n      </label>\n\n      <label>\n        <span>{{ t('auto.home.bookings.bookings.component.platform') }}</span>\n        <select [(ngModel)]=\"platformFilter\">\n          <option [value]=\"'all'\">{{ t('auto.home.bookings.bookings.component.all_platforms') }}</option>\n          <option [value]=\"'direct'\">{{ t('auto.home.bookings.bookings.component.direct_alegria') }}</option>\n          <option [value]=\"'clickandboat'\">{{ t('auto.home.bookings.bookings.component.click_boat') }}</option>\n          <option [value]=\"'samboat'\">{{ t('auto.home.bookings.bookings.component.samboat') }}</option>\n          <option [value]=\"'other'\">{{ t('auto.home.bookings.bookings.component.other') }}</option>\n        </select>\n      </label>\n\n      <label>\n        <span>{{ t('orderBy') }}</span>\n        <select [(ngModel)]=\"sortField\">\n          <option [value]=\"'date'\">{{ t('date') }}</option>\n          <option [value]=\"'customer'\">{{ t('customer') }}</option>\n          <option [value]=\"'status'\">{{ t('auto.home.bookings.bookings.component.status') }}</option>\n          <option [value]=\"'total'\">{{ t('totalPrice') }}</option>\n          <option [value]=\"'balance'\">{{ t('remaining90') }}</option>\n        </select>\n      </label>\n\n      <label>\n        <span>{{ t('direction') }}</span>\n        <select [(ngModel)]=\"sortDirection\">\n          <option [value]=\"'asc'\">{{ t('ascending') }}</option>\n          <option [value]=\"'desc'\">{{ t('descending') }}</option>\n        </select>\n      </label>\n\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetFilters()\">{{ t('resetFilters') }}</button>\n      <a class=\"btn btn-secondary\" routerLink=\"/admin/offers\">{{ t('offers') }}</a>\n      <button class=\"btn btn-primary\" type=\"button\" (click)=\"openCreateReservation()\">{{ t('auto.home.bookings.bookings.component.new_reservation') }}</button>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadBookings()\">{{ t('refresh') }}</button>\n    </div>\n\n    <section id=\"create-reservation-panel\" class=\"create-reservation-panel\" *ngIf=\"showCreateReservation\">\n      <div class=\"create-panel-header\">\n        <div>\n          <span class=\"eyebrow\">{{ t('auto.home.bookings.bookings.component.reservation_cockpit') }}</span>\n          <h2>{{ t('auto.home.bookings.bookings.component.new_reservation_bb6c90') }}</h2>\n          <p>{{ t('auto.home.bookings.bookings.component.create_a_direct_click_boat_samboat_or_other_platfo') }}</p>\n        </div>\n        <div class=\"create-panel-actions\">\n          <a class=\"btn btn-primary\" routerLink=\"/my-external-bookings\">{{ t('auto.home.bookings.bookings.component.open_reservation_form') }}</a>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeCreateReservation()\">{{ t('auto.home.bookings.bookings.component.close') }}</button>\n        </div>\n      </div>\n\n      <div class=\"embedded-reservation-form\">\n        <app-admin-external-bookings\n          [embedded]=\"true\"\n          (bookingCreated)=\"onReservationCreated($event)\"\n        ></app-admin-external-bookings>\n      </div>\n\n      <p class=\"create-panel-help\">{{ t('auto.home.bookings.bookings.component.if_the_embedded_form_is_not_visible_on_your_browse') }}<strong>{{ t('auto.home.bookings.bookings.component.open_reservation_form') }}</strong>.\n      </p>\n    </section>\n\n    <p class=\"success-message\" *ngIf=\"createReservationMessage\">{{ createReservationMessage }}</p>\n\n    <p *ngIf=\"loading\" class=\"muted\">{{ t('loadingBookings') }}</p>\n    <p *ngIf=\"!loading && errorMessage\" class=\"error-message\">{{ errorMessage }}</p>\n    <p *ngIf=\"!loading && !errorMessage && bookings.length === 0\" class=\"muted\">\n      {{ t('noBookingsFirebase') }} <strong>{{ t('auto.home.bookings.bookings.component.bnbookings') }}</strong>.\n    </p>\n\n    <div class=\"list-summary\" *ngIf=\"!loading && bookings.length > 0\">\n      {{ t('showingBookings') }} <strong>{{ activeTabBookingsCount }}</strong> {{ activeDateTab === 'upcoming' ? t('upcoming') : t('past') }} {{ t('bookingsOutOf') }} <strong>{{ bookings.length }}</strong> {{ t('total') }}\n    </div>\n\n    <div class=\"bookings-list\" *ngIf=\"!loading && filteredBookings.length > 0\">\n      <button\n        class=\"booking-list-row\"\n        type=\"button\"\n        *ngFor=\"let booking of filteredBookings; trackBy: trackByBookingId\"\n        (click)=\"openBooking(booking)\"\n      >\n        <button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal(booking, $event)\">{{ getStatusLabel(booking) }}</button>\n\n        <span class=\"booking-main\">\n          <strong>{{ booking.customerName || t('customerNotSet') }}</strong>\n          <small>{{ booking.email || t('noEmail') }}</small>\n        </span>\n\n        <span class=\"booking-trip\">\n          <strong>{{ booking.outingType || t('outing') }}</strong>\n          <small>\n            {{ booking.outingDate || t('dateNotSet') }}\n            <ng-container *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</ng-container>\n          </small>\n        </span>\n\n        <span class=\"booking-platform\">\n          <strong>{{ getPlatformLabel(booking) }}</strong>\n          <small>{{ getPlatformReference(booking) || 'Platform' }}</small>\n        </span>\n\n        <span class=\"booking-price\">\n          <strong>€{{ getCustomerTotal(booking) }}</strong>\n          <small>{{ t('totalPrice') }}</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <!-- Admin cannot pay deposit or remaining balance. Open the detail page for warranty actions. -->\n          <span class=\"row-chevron\">›</span>\n        </span>\n      </button>\n    </div>\n\n    <p *ngIf=\"!loading && bookings.length > 0 && filteredBookings.length === 0\" class=\"muted\">\n      {{ t('noBookingMatch') }}\n    </p>\n    <div class=\"balance-modal-backdrop\" *ngIf=\"false\">\n      <div class=\"balance-modal\">\n        <h2>{{ t('recordRemainingPayment') }}</h2>\n        <p>\n          <strong>{{ selectedBalanceBooking.customerName }}</strong><br />\n          Total: €{{ getCustomerTotal(selectedBalanceBooking) }}<br />\n          Deposit 10%: €{{ getDepositAmount(selectedBalanceBooking) }} · {{ isDepositPaid(selectedBalanceBooking) ? t('depositPaid') : t('depositPending') }}<br />\n          Warranty mode: {{ getWarrantyModeLabel(selectedBalanceBooking) }}<br />\n          {{ t('stripeWarrantyCard') }}: {{ getWarrantyCardLabel(selectedBalanceBooking) }}<br />\n          T&C: {{ isTermsAccepted(selectedBalanceBooking) ? 'accepted' : 'not accepted' }}<br />\n          Booking status: {{ getStatusLabel(selectedBalanceBooking) }}<br />\n          {{ t('remainingToCollect') }}: <strong>€{{ getBalanceAmount(selectedBalanceBooking) }}</strong>\n        </p>\n\n        <label>\n          {{ t('paymentMethod') }}\n          <select [(ngModel)]=\"balancePaymentMethod\">\n            <option [value]=\"'sumup'\">{{ t('auto.home.bookings.bookings.component.sumup_card') }}</option>\n            <option [value]=\"'cash'\">{{ t('cash') }}</option>\n            <option [value]=\"'mixed'\">{{ t('mixed') }}</option>\n          </select>\n        </label>\n\n        <label>\n          {{ t('notes') }}\n          <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" [placeholder]=\"t('optionalNote')\"></textarea>\n        </label>\n\n        <div class=\"modal-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n            {{ savingBalancePayment ? t('saving') : t('confirm90Payment') }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeBalancePayment()\">{{ t('cancel') }}</button>\n        </div>\n\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"status-modal-backdrop\" *ngIf=\"selectedStatusBooking\" (click)=\"closeStatusModal()\">\n    <section class=\"status-modal\" (click)=\"$event.stopPropagation()\">\n      <button class=\"modal-close\" type=\"button\" (click)=\"closeStatusModal()\">×</button>\n      <span class=\"eyebrow\">{{ t('bookingStatus') }}</span>\n      <h2>{{ getStatusLabel(selectedStatusBooking) }}</h2>\n      <p>{{ getStatusSummaryText(selectedStatusBooking) }}</p>\n\n      <div class=\"status-timeline\">\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isDepositPaid(selectedStatusBooking))\">\n          <strong>{{ t('deposit10') }}</strong>\n          <span>{{ getCompletedLabel(isDepositPaid(selectedStatusBooking)) }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isTermsAccepted(selectedStatusBooking))\">\n          <strong>{{ t('tc') }}</strong>\n          <span>{{ isTermsAccepted(selectedStatusBooking) ? t('accepted') : t('notAccepted') }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isWarrantySecured(selectedStatusBooking))\">\n          <strong>{{ t('warrantyMode') }}</strong>\n          <span>{{ getWarrantyModeLabel(selectedStatusBooking) }} · {{ getWarrantyCardLabel(selectedStatusBooking) }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(isBalancePaid(selectedStatusBooking))\">\n          <strong>{{ t('remaining90') }}</strong>\n          <span>{{ getCompletedLabel(isBalancePaid(selectedStatusBooking)) }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getDamageStatusLabel(selectedStatusBooking).includes('recorded'))\">\n          <strong>{{ t('damage') }}</strong>\n          <span>{{ getDamageStatusLabel(selectedStatusBooking) }}</span>\n        </div>\n      </div>\n\n      <div class=\"modal-actions\">\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeStatusModal()\">{{ t('close') }}</button>\n        <button class=\"btn btn-primary\" type=\"button\" (click)=\"openDetail(selectedStatusBooking)\">{{ t('openBooking') }}</button>\n      </div>\n    </section>\n  </div>\n\n</section>\n";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <div class=\"section-head\">\n      <span class=\"eyebrow\">{{ t('adminEyebrow') }}</span>\n      <h1>{{ t('adminTitle') }}</h1>\n      <p>{{ t('adminIntro') }}</p>\n    </div>\n\n    <div class=\"booking-tabs\" *ngIf=\"!loading && bookings.length > 0\">\n      <button type=\"button\" [class.active]=\"activeDateTab === 'upcoming'\" (click)=\"setDateTab('upcoming')\">{{ t('auto.home.bookings.bookings.component.upcoming') }}<span>{{ upcomingBookingsCount }}</span>\n      </button>\n      <button type=\"button\" [class.active]=\"activeDateTab === 'past'\" (click)=\"setDateTab('past')\">{{ t('auto.home.bookings.bookings.component.past') }}<span>{{ pastBookingsCount }}</span>\n      </button>\n    </div>\n\n    <div class=\"booking-toolbar booking-toolbar-grid\">\n      <label class=\"search-box\">\n        <span>{{ t('search') }}</span>\n        <input\n          type=\"search\"\n          name=\"bookingSearch\"\n          [(ngModel)]=\"searchTerm\"\n          [placeholder]=\"t('searchPlaceholder')\"\n          autocomplete=\"off\"\n        />\n      </label>\n\n      <label>\n        <span>{{ t('status') }}</span>\n        <select [(ngModel)]=\"statusFilter\">\n          <option [value]=\"'all'\">{{ t('allStatuses') }}</option>\n          <option [value]=\"'not_confirmed'\">{{ t('notConfirmed') }}</option>\n          <option [value]=\"'confirmed'\">{{ t('confirmed') }}</option>\n          <option [value]=\"'payment_pending'\">{{ t('auto.home.bookings.bookings.component.payment_pending') }}</option>\n          <option [value]=\"'payment_done'\">{{ t('paymentDone') }}</option>\n        </select>\n      </label>\n\n      <label>\n        <span>{{ t('warranty') }}</span>\n        <select [(ngModel)]=\"warrantyFilter\">\n          <option [value]=\"'all'\">{{ t('allWarranties') }}</option>\n          <option [value]=\"'not_selected'\">{{ t('notSelected') }}</option>\n          <option [value]=\"'cash'\">{{ t('cashSelected') }}</option>\n          <option [value]=\"'card_selected'\">{{ t('cardSelected') }}</option>\n          <option [value]=\"'card_registered'\">{{ t('cardRegistered') }}</option>\n        </select>\n      </label>\n\n      <label>\n        <span>{{ t('auto.home.bookings.bookings.component.platform') }}</span>\n        <select [(ngModel)]=\"platformFilter\">\n          <option [value]=\"'all'\">{{ t('auto.home.bookings.bookings.component.all_platforms') }}</option>\n          <option [value]=\"'direct'\">{{ t('auto.home.bookings.bookings.component.direct_alegria') }}</option>\n          <option [value]=\"'clickandboat'\">{{ t('auto.home.bookings.bookings.component.click_boat') }}</option>\n          <option [value]=\"'samboat'\">{{ t('auto.home.bookings.bookings.component.samboat') }}</option>\n          <option [value]=\"'other'\">{{ t('auto.home.bookings.bookings.component.other') }}</option>\n        </select>\n      </label>\n\n      <label>\n        <span>{{ t('orderBy') }}</span>\n        <select [(ngModel)]=\"sortField\">\n          <option [value]=\"'date'\">{{ t('date') }}</option>\n          <option [value]=\"'customer'\">{{ t('customer') }}</option>\n          <option [value]=\"'status'\">{{ t('auto.home.bookings.bookings.component.status') }}</option>\n          <option [value]=\"'total'\">{{ t('totalPrice') }}</option>\n          <option [value]=\"'balance'\">{{ t('remaining90') }}</option>\n        </select>\n      </label>\n\n      <label>\n        <span>{{ t('direction') }}</span>\n        <select [(ngModel)]=\"sortDirection\">\n          <option [value]=\"'asc'\">{{ t('ascending') }}</option>\n          <option [value]=\"'desc'\">{{ t('descending') }}</option>\n        </select>\n      </label>\n\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"resetFilters()\">{{ t('resetFilters') }}</button>\n      <a class=\"btn btn-secondary\" routerLink=\"/admin/offers\">{{ t('offers') }}</a>\n      <button class=\"btn btn-primary\" type=\"button\" (click)=\"openCreateReservation()\">{{ t('auto.home.bookings.bookings.component.new_reservation') }}</button>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadBookings()\">{{ t('refresh') }}</button>\n    </div>\n\n    <section id=\"create-reservation-panel\" class=\"create-reservation-panel\" *ngIf=\"showCreateReservation\">\n      <div class=\"create-panel-header\">\n        <div>\n          <span class=\"eyebrow\">{{ t('auto.home.bookings.bookings.component.reservation_cockpit') }}</span>\n          <h2>{{ t('auto.home.bookings.bookings.component.new_reservation_bb6c90') }}</h2>\n          <p>{{ t('auto.home.bookings.bookings.component.create_a_direct_click_boat_samboat_or_other_platfo') }}</p>\n        </div>\n        <div class=\"create-panel-actions\">\n          <a class=\"btn btn-primary\" routerLink=\"/my-external-bookings\">{{ t('auto.home.bookings.bookings.component.open_reservation_form') }}</a>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeCreateReservation()\">{{ t('auto.home.bookings.bookings.component.close') }}</button>\n        </div>\n      </div>\n\n      <div class=\"embedded-reservation-form\">\n        <app-admin-external-bookings\n          [embedded]=\"true\"\n          (bookingCreated)=\"onReservationCreated($event)\"\n        ></app-admin-external-bookings>\n      </div>\n\n      <p class=\"create-panel-help\">{{ t('auto.home.bookings.bookings.component.if_the_embedded_form_is_not_visible_on_your_browse') }}<strong>{{ t('auto.home.bookings.bookings.component.open_reservation_form') }}</strong>.\n      </p>\n    </section>\n\n    <p class=\"success-message\" *ngIf=\"createReservationMessage\">{{ createReservationMessage }}</p>\n\n    <p *ngIf=\"loading\" class=\"muted\">{{ t('loadingBookings') }}</p>\n    <p *ngIf=\"!loading && errorMessage\" class=\"error-message\">{{ errorMessage }}</p>\n    <p *ngIf=\"!loading && !errorMessage && bookings.length === 0\" class=\"muted\">\n      {{ t('noBookingsFirebase') }} <strong>{{ t('auto.home.bookings.bookings.component.bnbookings') }}</strong>.\n    </p>\n\n    <div class=\"list-summary\" *ngIf=\"!loading && bookings.length > 0\">\n      {{ t('showingBookings') }} <strong>{{ activeTabBookingsCount }}</strong> {{ activeDateTab === 'upcoming' ? t('upcoming') : t('past') }} {{ t('bookingsOutOf') }} <strong>{{ bookings.length }}</strong> {{ t('total') }}\n    </div>\n\n    <div class=\"bookings-list\" *ngIf=\"!loading && filteredBookings.length > 0\">\n      <button\n        class=\"booking-list-row\"\n        type=\"button\"\n        *ngFor=\"let booking of filteredBookings; trackBy: trackByBookingId\"\n        (click)=\"openBooking(booking)\"\n      >\n        <button class=\"status-pill status-clickable\" type=\"button\" (click)=\"openStatusModal(booking, $event)\">{{ getStatusLabel(booking) }}</button>\n\n        <span class=\"booking-main\">\n          <strong>{{ booking.customerName || t('customerNotSet') }}</strong>\n          <small>{{ booking.email || t('noEmail') }}</small>\n        </span>\n\n        <span class=\"booking-trip\">\n          <strong>{{ booking.outingType || t('outing') }}</strong>\n          <small>\n            {{ booking.outingDate || t('dateNotSet') }}\n            <ng-container *ngIf=\"booking.departureTime\">• {{ booking.departureTime }}</ng-container>\n          </small>\n        </span>\n\n        <span class=\"booking-platform\">\n          <strong>{{ getPlatformLabel(booking) }}</strong>\n          <small>{{ getPlatformReference(booking) || 'Platform' }}</small>\n        </span>\n\n        <span class=\"booking-price\">\n          <strong>€{{ getCustomerTotal(booking) }}</strong>\n          <small>{{ t('totalPrice') }}</small>\n        </span>\n\n        <span class=\"row-actions\" (click)=\"$event.stopPropagation()\">\n          <!-- Admin cannot pay deposit or remaining balance. Open the detail page for warranty actions. -->\n          <span class=\"row-chevron\">›</span>\n        </span>\n      </button>\n    </div>\n\n    <p *ngIf=\"!loading && bookings.length > 0 && filteredBookings.length === 0\" class=\"muted\">\n      {{ t('noBookingMatch') }}\n    </p>\n    <div class=\"balance-modal-backdrop\" *ngIf=\"false\">\n      <div class=\"balance-modal\">\n        <h2>{{ t('recordRemainingPayment') }}</h2>\n        <p>\n          <strong>{{ selectedBalanceBooking.customerName }}</strong><br />\n          Total: €{{ getCustomerTotal(selectedBalanceBooking) }}<br />\n          Deposit 10%: €{{ getDepositAmount(selectedBalanceBooking) }} · {{ isDepositPaid(selectedBalanceBooking) ? t('depositPaid') : t('depositPending') }}<br />\n          Warranty mode: {{ getWarrantyModeLabel(selectedBalanceBooking) }}<br />\n          {{ t('stripeWarrantyCard') }}: {{ getWarrantyCardLabel(selectedBalanceBooking) }}<br />\n          T&C: {{ isTermsAccepted(selectedBalanceBooking) ? 'accepted' : 'not accepted' }}<br />\n          Booking status: {{ getStatusLabel(selectedBalanceBooking) }}<br />\n          {{ t('remainingToCollect') }}: <strong>€{{ getBalanceAmount(selectedBalanceBooking) }}</strong>\n        </p>\n\n        <label>\n          {{ t('paymentMethod') }}\n          <select [(ngModel)]=\"balancePaymentMethod\">\n            <option [value]=\"'sumup'\">{{ t('auto.home.bookings.bookings.component.sumup_card') }}</option>\n            <option [value]=\"'cash'\">{{ t('cash') }}</option>\n            <option [value]=\"'mixed'\">{{ t('mixed') }}</option>\n          </select>\n        </label>\n\n        <label>\n          {{ t('notes') }}\n          <textarea rows=\"3\" [(ngModel)]=\"balancePaymentNotes\" [placeholder]=\"t('optionalNote')\"></textarea>\n        </label>\n\n        <div class=\"modal-actions\">\n          <button class=\"btn btn-primary\" type=\"button\" [disabled]=\"savingBalancePayment\" (click)=\"recordBalancePayment()\">\n            {{ savingBalancePayment ? t('saving') : t('confirm90Payment') }}\n          </button>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeBalancePayment()\">{{ t('cancel') }}</button>\n        </div>\n\n        <p class=\"error-message\" *ngIf=\"balancePaymentError\">{{ balancePaymentError }}</p>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"status-modal-backdrop\" *ngIf=\"selectedStatusBooking\" (click)=\"closeStatusModal()\">\n    <section class=\"status-modal\" (click)=\"$event.stopPropagation()\">\n      <button class=\"modal-close\" type=\"button\" (click)=\"closeStatusModal()\">×</button>\n      <span class=\"eyebrow\">{{ t('bookingStatus') }}</span>\n      <h2>{{ getStatusLabel(selectedStatusBooking) }}</h2>\n      <p>{{ getStatusSummaryText(selectedStatusBooking) }}</p>\n\n      <div class=\"status-timeline\">\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getCanonicalState(selectedStatusBooking).termsAccepted)\">\n          <strong>{{ t('tc') }}</strong>\n          <span>{{ getCanonicalState(selectedStatusBooking).termsAccepted ? t('accepted') : t('notAccepted') }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getCanonicalState(selectedStatusBooking).alegriaPaymentComplete)\">\n          <strong>Alegria</strong>\n          <span>{{ getCompletedLabel(getCanonicalState(selectedStatusBooking).alegriaPaymentComplete) }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getCanonicalState(selectedStatusBooking).skipperPaymentComplete)\">\n          <strong>Skipper</strong>\n          <span>{{ getCompletedLabel(getCanonicalState(selectedStatusBooking).skipperPaymentComplete) }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getCanonicalState(selectedStatusBooking).warrantyComplete)\">\n          <strong>{{ t('warrantyMode') }}</strong>\n          <span>{{ getWarrantyModeLabel(selectedStatusBooking) }} · {{ getWarrantyCardLabel(selectedStatusBooking) }}</span>\n        </div>\n        <div class=\"status-step\" [ngClass]=\"getStatusStepClass(getDamageStatusLabel(selectedStatusBooking).includes('recorded'))\">\n          <strong>{{ t('damage') }}</strong>\n          <span>{{ getDamageStatusLabel(selectedStatusBooking) }}</span>\n        </div>\n      </div>\n\n      <div class=\"modal-actions\">\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"closeStatusModal()\">{{ t('close') }}</button>\n        <button class=\"btn btn-primary\" type=\"button\" (click)=\"openDetail(selectedStatusBooking)\">{{ t('openBooking') }}</button>\n      </div>\n    </section>\n  </div>\n\n</section>\n";
 
 /***/ }),
 
@@ -7800,7 +7809,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <article class=\"loading-card\" *ngIf=\"loading\">\n      <h1>{{ tText('auto.home.booking-detail.booking-detail.component.loading_booking') }}</h1>\n      <p>{{ bookingId }}</p>\n    </article>\n\n    <article class=\"empty-card\" *ngIf=\"!loading && notFound\">\n      <h1>{{ tText('auto.home.booking-detail.booking-detail.component.booking_not_found') }}</h1>\n      <p *ngIf=\"error\">{{ error }}</p>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"goBack()\">{{ tText('auto.home.booking-detail.booking-detail.component.back') }}</button>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadBooking()\">{{ tText('auto.home.booking-detail.booking-detail.component.retry') }}</button>\n    </article>\n\n    <article class=\"booking-detail-card\" *ngIf=\"!loading && vm\">\n      <div class=\"booking-hero\">\n        <div>\n          <span class=\"eyebrow\">{{ vm.isExternalBooking ? vm.platformLabel + ' booking' : 'Alegria booking' }}</span>\n          <h1>{{ vm.display.customerName || '-' }}</h1>\n          <p>{{ vm.display.outingDate || '-' }} · {{ vm.display.departureTime || '-' }} → {{ vm.display.arrivalTime || '-' }} · {{ vm.display.passengers || 0 }} guests</p>\n        </div>\n\n        <div class=\"status-badges\">\n          <span class=\"status-badge done\">{{ vm.bookingStatusBadge }}</span>\n          <span class=\"status-badge paid\">{{ vm.paymentStatusBadge }}</span>\n          <span class=\"status-badge warranty\">{{ vm.warrantyStatusBadge }}</span>\n        </div>\n      </div>\n\n      <p class=\"error-message\" *ngIf=\"error\">{{ error }}</p>\n\n      <section class=\"booking-completion-card\" *ngIf=\"!editMode\">\n        <div class=\"completion-header\">\n          <div>\n            <h2>{{ t('bookingCompletion') }}</h2>\n            <p>{{ vm.customerJourneyStatus }}</p>\n          </div>\n          <strong>{{ vm.bookingCompletionPercent }}%</strong>\n        </div>\n        <div class=\"completion-bar\"><span [style.width.%]=\"vm.bookingCompletionPercent\"></span></div>\n        <div class=\"completion-steps\">\n          <span [class.done]=\"vm.termsAccepted\">{{ vm.termsAccepted ? '✓' : '○' }} {{ t('termsAndConditions') }}</span>\n          <span [class.done]=\"vm.alegriaPaymentComplete\">{{ vm.alegriaPaymentComplete ? '✓' : '○' }} {{ t('alegriaPaid') }}</span>\n          <span [class.done]=\"vm.skipperPaymentComplete\">{{ vm.skipperPaymentComplete ? '✓' : '○' }} {{ t('skipperPaid') }}</span>\n          <span [class.done]=\"vm.warrantyComplete\">{{ vm.warrantyComplete ? '✓' : '○' }} {{ t('warranty') }}</span>\n        </div>\n        <div class=\"completion-links\">\n          <button class=\"btn btn-secondary btn-small\" type=\"button\" (click)=\"openTermsModal()\">{{ t('rereadTerms') }}</button>\n          <a routerLink=\"/terms\" target=\"_blank\" rel=\"noopener\">{{ t('openTermsPage') }}</a>\n        </div>\n      </section>\n\n      <div class=\"admin-toolbar\" *ngIf=\"vm.isAdmin\">\n        <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!editMode\" (click)=\"startEdit()\">{{ tText('auto.home.booking-detail.booking-detail.component.edit_booking') }}</button>\n        <button class=\"btn btn-danger\" type=\"button\" *ngIf=\"!editMode\" [disabled]=\"deleting\" (click)=\"deleteBooking()\">\n          {{ deleting ? 'Deleting...' : 'Delete booking' }}\n        </button>\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"goBack()\">{{ tText('auto.home.booking-detail.booking-detail.component.back') }}</button>\n      </div>\n\n      <form class=\"edit-panel booking-cockpit-edit\" *ngIf=\"editMode\" (ngSubmit)=\"saveEdit()\">\n        <div class=\"edit-header\">\n          <div>\n            <h2>{{ tText('auto.home.booking-detail.booking-detail.component.edit_booking_cockpit') }}</h2>\n            <p class=\"section-help\">{{ tText('auto.home.booking-detail.booking-detail.component.all_cockpit_fields_below_are_editable_financial_to') }}</p>\n          </div>\n          <div class=\"actions compact-actions\">\n            <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"saving\">{{ saving ? 'Saving...' : 'Save booking' }}</button>\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"cancelEdit()\">{{ tText('auto.home.booking-detail.booking-detail.component.cancel') }}</button>\n          </div>\n        </div>\n\n        <section class=\"edit-section info-edit\">\n          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.1_customer_and_outing') }}</h3>\n          <div class=\"edit-grid\">\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.customer_name') }}<input name=\"customerName\" [(ngModel)]=\"editForm.customerName\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.email') }}<input name=\"email\" type=\"email\" [(ngModel)]=\"editForm.email\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.phone') }}<input name=\"phone\" [(ngModel)]=\"editForm.phone\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.outing_date') }}<input name=\"outingDate\" type=\"date\" [(ngModel)]=\"editForm.outingDate\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.departure_time') }}<input name=\"departureTime\" type=\"time\" [(ngModel)]=\"editForm.departureTime\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.arrival_time') }}<input name=\"arrivalTime\" type=\"time\" [(ngModel)]=\"editForm.arrivalTime\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.passengers') }}<input name=\"passengers\" type=\"number\" min=\"0\" [(ngModel)]=\"editForm.passengers\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.outing_type') }}<input name=\"outingType\" [(ngModel)]=\"editForm.outingType\" /></label>\n          </div>\n        </section>\n\n        <section class=\"edit-section boat-edit\">\n          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.2_boat') }}</h3>\n          <div class=\"edit-grid\">\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.boat_name') }}<input name=\"boatName\" [(ngModel)]=\"editForm.boatName\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.boat_type') }}<input name=\"boatType\" [(ngModel)]=\"editForm.boatType\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.manufacturer') }}<input name=\"boatManufacturer\" [(ngModel)]=\"editForm.boatManufacturer\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.model') }}<input name=\"boatModel\" [(ngModel)]=\"editForm.boatModel\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.departure_marina') }}<input name=\"startMarina\" [(ngModel)]=\"editForm.startMarina\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.boat_listing_url') }}<input name=\"externalPlatformUrl\" type=\"url\" [(ngModel)]=\"editForm.externalPlatformUrl\" /></label>\n          </div>\n        </section>\n\n        <section class=\"edit-section platform-edit\" *ngIf=\"editForm.source && editForm.source !== 'direct'\">\n          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.3_platform') }}</h3>\n          <div class=\"edit-grid\">\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.platform_source') }}<select name=\"source\" [(ngModel)]=\"editForm.source\">\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.direct')\">{{ tText('auto.home.booking-detail.booking-detail.component.direct_alegria') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.clickandboat')\">{{ tText('auto.home.booking-detail.booking-detail.component.click_boat') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.samboat')\">{{ tText('auto.home.booking-detail.booking-detail.component.samboat') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.other')\">{{ tText('auto.home.booking-detail.booking-detail.component.other') }}</option>\n              </select>\n            </label>\n            <label *ngIf=\"showPlatformNameField()\">{{ tText('auto.home.booking-detail.booking-detail.component.platform_name') }}<input name=\"externalPlatformName\" [(ngModel)]=\"editForm.externalPlatformName\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.platform_booking') }}<input name=\"externalPlatformBookingRef\" [(ngModel)]=\"editForm.externalPlatformBookingRef\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.booking_url') }}<input name=\"platformBookingUrl\" type=\"url\" [(ngModel)]=\"editForm.platformBookingUrl\" /></label>\n          </div>\n        </section>\n\n        <section class=\"edit-section customer-cost-edit\">\n          <h3>{{ t('outingPrice') }}</h3>\n          <div class=\"edit-grid pricing-edit-grid\">\n            <label>{{ t('boatRental') }}<input name=\"boatOutingCost\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.boatOutingCost\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('skipper') }}<input name=\"skipperCashAmountCustomerCost\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.skipperCashAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('fuel') }}<input name=\"fuelAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.fuelAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('portFeesLabel') }}<input name=\"portFeesAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.portFeesAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('catering') }}<input name=\"cateringAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.cateringAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('drinks') }}<input name=\"drinksAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.drinksAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('waterToys') }}<input name=\"waterToysAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.waterToysAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('tips') }}<input name=\"tipsAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.tipsAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('otherPricing') }}<input name=\"otherOnboardAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.otherOnboardAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label class=\"pricing-total-field\">{{ t('totalOutingPrice') }}<input name=\"totalAmount\" type=\"number\" [(ngModel)]=\"editForm.totalAmount\" readonly /></label>\n          </div>\n        </section>\n\n        <section class=\"edit-section revenue-edit\">\n          <h3>{{ t('commission') }}</h3>\n          <div class=\"edit-grid\">\n            <label>{{ t('rentalCommission') }}<input name=\"rentalCommissionAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.rentalCommissionAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" [readonly]=\"!editForm.source || editForm.source === 'direct' || editForm.source === 'alegria'\" /></label>\n            <label>{{ t('serviceFeesLabel') }}<input name=\"serviceFeesAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.serviceFeesAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" [readonly]=\"!editForm.source || editForm.source === 'direct' || editForm.source === 'alegria'\" /></label>\n            <label class=\"pricing-total-field\">{{ t('totalCommission') }}<input name=\"totalCommission\" type=\"number\" [(ngModel)]=\"editForm.totalCommission\" readonly /></label>\n            <label class=\"pricing-total-field\">{{ t('alegriaRevenue') }}<input name=\"alegriaRevenueTotal\" type=\"number\" [(ngModel)]=\"editForm.alegriaRevenueTotal\" readonly /></label>\n            <label class=\"pricing-total-field\">{{ t('skipperRevenue') }}<input name=\"skipperRevenueTotal\" type=\"number\" [(ngModel)]=\"editForm.skipperRevenueTotal\" readonly /></label>\n          </div>\n        </section>\n\n        <section class=\"edit-section warranty-edit\">\n          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.6_warranty') }}</h3>\n          <div class=\"edit-grid\">\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.warranty_amount') }}<input name=\"warrantyAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.warrantyAmount\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.warranty_method') }}<select name=\"warrantyPaymentChoice\" [(ngModel)]=\"editForm.warrantyPaymentChoice\">\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.cash')\">{{ tText('auto.home.booking-detail.booking-detail.component.cash') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.stripe_card')\">{{ tText('auto.home.booking-detail.booking-detail.component.stripe_credit_card') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.bank_check')\">{{ tText('auto.home.booking-detail.booking-detail.component.bank_check') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.none')\">{{ tText('auto.home.booking-detail.booking-detail.component.no_warranty') }}</option>\n              </select>\n            </label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.warranty_status') }}<select name=\"warrantyStatus\" [(ngModel)]=\"editForm.warrantyStatus\">\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.not_requested')\">{{ tText('auto.home.booking-detail.booking-detail.component.not_requested') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.selected')\">{{ tText('auto.home.booking-detail.booking-detail.component.selected') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.cash_selected')\">{{ tText('auto.home.booking-detail.booking-detail.component.cash_selected') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.card_selected')\">{{ tText('auto.home.booking-detail.booking-detail.component.card_selected') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.card_registered')\">{{ tText('auto.home.booking-detail.booking-detail.component.card_registered') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.charged')\">{{ tText('auto.home.booking-detail.booking-detail.component.charged') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.released')\">{{ tText('auto.home.booking-detail.booking-detail.component.released') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.refunded')\">{{ tText('auto.home.booking-detail.booking-detail.component.refunded') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.cancelled')\">{{ tText('auto.home.booking-detail.booking-detail.component.cancelled') }}</option>\n              </select>\n            </label>\n          </div>\n        </section>\n\n        <section class=\"edit-section status-edit\">\n          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.7_statuses') }}</h3>\n          <div class=\"edit-grid\">\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.booking_status') }}<select name=\"bookingStatus\" [(ngModel)]=\"editForm.bookingStatus\">\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.offer')\">{{ tText('auto.home.booking-detail.booking-detail.component.offer') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.pending')\">{{ tText('auto.home.booking-detail.booking-detail.component.pending') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.confirmed')\">{{ tText('auto.home.booking-detail.booking-detail.component.confirmed') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.completed')\">{{ tText('auto.home.booking-detail.booking-detail.component.completed') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.cancelled')\">{{ tText('auto.home.booking-detail.booking-detail.component.cancelled') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.no_show')\">{{ tText('auto.home.booking-detail.booking-detail.component.no_show') }}</option>\n              </select>\n            </label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.payment_status') }}<select name=\"paymentStatusLabel\" [(ngModel)]=\"editForm.paymentStatusLabel\">\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.pending')\">{{ tText('auto.home.booking-detail.booking-detail.component.pending') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.deposit_paid')\">{{ tText('auto.home.booking-detail.booking-detail.component.deposit_paid') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.balance_paid')\">{{ tText('auto.home.booking-detail.booking-detail.component.balance_paid') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.fully_paid')\">{{ tText('auto.home.booking-detail.booking-detail.component.fully_paid') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.refunded')\">{{ tText('auto.home.booking-detail.booking-detail.component.refunded') }}</option>\n              </select>\n            </label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.status') }}<select name=\"status\" [(ngModel)]=\"editForm.status\">\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.offer')\">{{ tText('auto.home.booking-detail.booking-detail.component.offer') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.pending')\">{{ tText('auto.home.booking-detail.booking-detail.component.pending') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.confirmed')\">{{ tText('auto.home.booking-detail.booking-detail.component.confirmed') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.completed')\">{{ tText('auto.home.booking-detail.booking-detail.component.completed') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.cancelled')\">{{ tText('auto.home.booking-detail.booking-detail.component.cancelled') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.no_show')\">{{ tText('auto.home.booking-detail.booking-detail.component.no_show') }}</option>\n              </select>\n            </label>\n          </div>\n        </section>\n\n        <section class=\"edit-section\">\n          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.8_notes') }}</h3>\n          <label class=\"full-width\">{{ tText('auto.home.booking-detail.booking-detail.component.comments') }}<textarea name=\"comments\" rows=\"3\" [(ngModel)]=\"editForm.comments\"></textarea></label>\n        </section>\n\n        <div class=\"actions sticky-save-actions\">\n          <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"saving\">{{ saving ? 'Saving...' : 'Save booking' }}</button>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"cancelEdit()\">{{ tText('auto.home.booking-detail.booking-detail.component.cancel') }}</button>\n        </div>\n      </form>\n\n      <div class=\"card-grid\" *ngIf=\"!editMode\">\n        <article class=\"info-card\">\n          <h2>{{ tText('auto.home.booking-detail.booking-detail.component.customer') }}</h2>\n          <p class=\"big-value\">{{ vm.display.customerName || '-' }}</p>\n          <p>{{ vm.display.email || '-' }}</p>\n          <p>{{ vm.display.phone || '-' }}</p>\n        </article>\n\n        <article class=\"info-card\">\n          <h2>{{ t('boat') }}</h2>\n          <p class=\"big-value\">{{ vm.display.boatName || 'Alegria' }}</p>\n          <p>{{ vm.display.boatManufacturer || '' }} {{ vm.display.boatModel || vm.display.boatType || '' }}</p>\n          <p>{{ vm.display.startMarina || 'Marina Baie des Anges' }}</p>\n          <p class=\"links-row\" *ngIf=\"vm.boatListingUrl\"><a [href]=\"vm.boatListingUrl\" target=\"_blank\" rel=\"noopener\">{{ t('openBoatListing') }} ↗</a></p>\n        </article>\n\n        <article class=\"info-card\" *ngIf=\"vm.isExternalBooking\">\n          <h2>{{ t('platform') }}</h2>\n          <p class=\"big-value\">{{ vm.platformLabel }}</p>\n          <p>{{ t('reference') }}: {{ vm.display.externalPlatformBookingRef || vm.display.platformBookingReference || vm.display.platformReservationNumber || '-' }}</p>\n          <p class=\"links-row\" *ngIf=\"vm.platformBookingUrl\"><a [href]=\"vm.platformBookingUrl\" target=\"_blank\" rel=\"noopener\">{{ t('openPlatformBooking') }} ↗</a></p>\n        </article>\n\n        <article class=\"info-card historical-card\" *ngIf=\"vm.isHistoricalBooking\">\n          <h2>{{ t('historicalBooking') }}</h2>\n          <p class=\"big-value\">{{ t('completed') }}</p>\n          <p>{{ t('historicalPaidMessage') }}</p>\n        </article>\n      </div>\n\n      <section class=\"customer-finance-simple booking-customer-clean\" *ngIf=\"!editMode\">\n        <article class=\"cockpit-section finance-panel finance-summary-panel\">\n          <h2>{{ t('outingPrice') }}</h2>\n          <div class=\"finance-table compact\">\n            <div class=\"finance-line\"><span>{{ t('boatRental') }}</span><strong>{{ formatMoney(vm.boatRentalAmount) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.skipperCost) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.fuelCost) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('portFeesLabel') }}</span><strong>{{ formatMoney(vm.portFeesAmount) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('catering') }}</span><strong>{{ formatMoney(vm.cateringAmount) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('drinks') }}</span><strong>{{ formatMoney(vm.drinksAmount) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('waterToys') }}</span><strong>{{ formatMoney(vm.waterToysAmount) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('tips') }}</span><strong>{{ formatMoney(vm.tipsAmount) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('otherPricing') }}</span><strong>{{ formatMoney(vm.otherAmount) }}</strong></div>\n            <div class=\"finance-line finance-total\"><span>{{ t('totalOutingPrice') }}</span><strong>{{ formatMoney(vm.totalOutingPrice) }}</strong></div>\n          </div>\n        </article>\n\n        <article class=\"cockpit-section finance-panel alegria-panel\">\n          <h2>{{ t('commission') }}</h2>\n          <div class=\"finance-table compact\">\n            <div class=\"finance-line negative-line\"><span>{{ t('rentalCommission') }}</span><strong>{{ formatMoney(vm.rentalCommissionAmount) }}</strong></div>\n            <div class=\"finance-line negative-line\"><span>{{ t('serviceFeesLabel') }}</span><strong>{{ formatMoney(vm.serviceFeesAmount) }}</strong></div>\n            <div class=\"finance-line finance-total\"><span>{{ t('totalCommission') }}</span><strong>{{ formatMoney(vm.totalCommission) }}</strong></div>\n          </div>\n        </article>\n\n        <article class=\"cockpit-section finance-panel alegria-panel\">\n          <h2>{{ t('alegriaRevenue') }}</h2>\n          <p class=\"finance-subtitle\">{{ t('totalOutingPrice') }} − {{ t('totalCommission') }} − {{ t('skipper') }}</p>\n          <div class=\"finance-table compact\">\n            <div class=\"finance-line finance-total\"><span>{{ t('alegriaRevenue') }}</span><strong>{{ formatMoney(vm.alegriaRevenueTotal) }}</strong></div>\n            <div class=\"finance-line paid-line\" *ngIf=\"vm.alegriaPaidAmount > 0\"><span>{{ t('alreadyPaid') }}</span><strong>{{ formatMoney(vm.alegriaPaidAmount) }}</strong></div>\n            <div class=\"finance-line outstanding-line\" *ngIf=\"vm.remainingAlegriaRevenue > 0\"><span>{{ t('leftToPay') }}</span><strong>{{ formatMoney(vm.remainingAlegriaRevenue) }}</strong></div>\n          </div>\n          <div class=\"warranty-actions\" *ngIf=\"vm.remainingAlegriaRevenue > 0\">\n            <button class=\"btn btn-primary finance-action\" type=\"button\" *ngIf=\"canPayAlegriaOnline()\" [disabled]=\"payingAlegria\" (click)=\"payAlegriaOnline()\">{{ payingAlegria ? t('redirecting') : t('payByCard') }}</button>\n            <button class=\"btn btn-secondary finance-action\" type=\"button\" *ngIf=\"!isAlegriaCashSelected()\" [disabled]=\"selectingAlegriaCash\" (click)=\"selectAlegriaCash()\">{{ selectingAlegriaCash ? t('saving') : t('payByCash') }}</button>\n            <label class=\"cash-amount-entry\" *ngIf=\"canConfirmAlegriaCashReceived()\">{{ t('amount') }}\n              <input type=\"number\" min=\"0.01\" [max]=\"vm.remainingAlegriaRevenue\" step=\"0.01\" [(ngModel)]=\"adminAlegriaCashAmount\" name=\"adminAlegriaCashAmount\" [placeholder]=\"formatMoney(vm.remainingAlegriaRevenue)\" />\n            </label>\n            <button class=\"btn btn-success finance-action\" type=\"button\" *ngIf=\"canConfirmAlegriaCashReceived()\" [disabled]=\"payingAlegria || !adminAlegriaCashAmount\" (click)=\"confirmAlegriaCashReceived()\">{{ t('confirmAlegriaCashReceived') }}</button>\n          </div>\n        </article>\n\n        <article class=\"cockpit-section finance-panel skipper-panel\">\n          <h2>{{ t('skipperRevenue') }}</h2>\n          <p class=\"finance-subtitle\">{{ t('skipper') }} + {{ t('tips') }}</p>\n          <div class=\"finance-table compact\">\n            <div class=\"finance-line\"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.skipperCost) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('tips') }}</span><strong>{{ formatMoney(vm.tipsAmount) }}</strong></div>\n            <div class=\"finance-line finance-total\"><span>{{ t('skipperRevenue') }}</span><strong>{{ formatMoney(vm.skipperRevenueTotal) }}</strong></div>\n            <div class=\"finance-line paid-line\" *ngIf=\"vm.skipperPaidAmount > 0\"><span>{{ t('alreadyPaid') }}</span><strong>{{ formatMoney(vm.skipperPaidAmount) }}</strong></div>\n            <div class=\"finance-line outstanding-line\" *ngIf=\"vm.remainingSkipperFee > 0\"><span>{{ t('leftToPay') }}</span><strong>{{ formatMoney(vm.remainingSkipperFee) }}</strong></div>\n          </div>\n          <div class=\"warranty-actions\" *ngIf=\"vm.remainingSkipperFee > 0\">\n            <button class=\"btn btn-primary finance-action\" type=\"button\" *ngIf=\"canPaySkipperOnline()\" [disabled]=\"payingSkipper\" (click)=\"paySkipperOnline()\">{{ payingSkipper ? t('redirecting') : t('payByCard') }}</button>\n            <button class=\"btn btn-secondary finance-action\" type=\"button\" *ngIf=\"!isSkipperCashSelected()\" [disabled]=\"selectingSkipperCash\" (click)=\"selectSkipperCash()\">{{ selectingSkipperCash ? t('saving') : t('payByCash') }}</button>\n            <label class=\"cash-amount-entry\" *ngIf=\"canConfirmSkipperPaid()\">{{ t('amount') }}\n              <input type=\"number\" min=\"0.01\" [max]=\"vm.remainingSkipperFee\" step=\"0.01\" [(ngModel)]=\"adminSkipperCashAmount\" name=\"adminSkipperCashAmount\" [placeholder]=\"formatMoney(vm.remainingSkipperFee)\" />\n            </label>\n            <button class=\"btn btn-success finance-action\" type=\"button\" *ngIf=\"canConfirmSkipperPaid()\" [disabled]=\"payingSkipper || !adminSkipperCashAmount\" (click)=\"confirmSkipperPaid()\">{{ t('confirmSkipperPaid') }}</button>\n          </div>\n        </article>\n\n        <article class=\"cockpit-section finance-panel warranty-panel warranty-overview-card\">\n          <div class=\"workspace-card-header\">\n            <div>\n              <span class=\"workspace-eyebrow\">{{ t('financialWorkspace') }}</span>\n              <h2>{{ t('warranty') }}</h2>\n            </div>\n            <span class=\"workspace-status-badge\">{{ vm.warrantyStatusBadge }}</span>\n          </div>\n\n          <div class=\"warranty-amount-row\">\n            <strong>{{ formatMoney(warrantyAmount()) }}</strong>\n            <span>{{ warrantyMethodLabel(vm.display.warrantyPaymentChoice || vm.display.warrantyMethod) }}</span>\n          </div>\n\n          <div class=\"warranty-meter\" role=\"progressbar\" [attr.aria-valuenow]=\"warrantyUsagePercent\" aria-valuemin=\"0\" aria-valuemax=\"100\">\n            <div class=\"warranty-meter-fill\" [style.width.%]=\"warrantyUsagePercent\"></div>\n          </div>\n\n          <div class=\"warranty-metrics\">\n            <div>\n              <span>{{ t('warrantyUsed') }}</span>\n              <strong>{{ formatMoney(warrantyChargedAmount) }}</strong>\n            </div>\n            <div>\n              <span>{{ t('warrantyAvailable') }}</span>\n              <strong>{{ formatMoney(warrantyRemainingAmount) }}</strong>\n            </div>\n          </div>\n\n          <div class=\"warranty-release-summary\" *ngIf=\"isWarrantyReleased(vm.display)\">\n            <strong>✓ {{ t('warrantyReleased') }}</strong>\n            <span>{{ t('warrantyReleasedNoDamage') }}</span>\n            <small *ngIf=\"vm.display.warrantyReleasedAt\">{{ t('warrantyReleasedAt') }} {{ formatDisplayDate(vm.display.warrantyReleasedAt) }}</small>\n          </div>\n\n          <p class=\"finance-note\" *ngIf=\"!isWarrantyReleased(vm.display)\">{{ t('changeWarrantyMethodHelp') }}</p>\n          <div class=\"warranty-actions\">\n            <button class=\"btn btn-secondary finance-action\" type=\"button\" *ngIf=\"canSelectCashWarranty()\" [disabled]=\"registeringWarrantyCard\" (click)=\"selectCashWarranty()\">\n              {{ registeringWarrantyCard ? t('saving') : t('chooseWarrantyCash') }}\n            </button>\n            <button class=\"btn btn-secondary finance-action\" type=\"button\" *ngIf=\"canRegisterWarrantyCard()\" [disabled]=\"registeringWarrantyCard\" (click)=\"registerWarrantyCardOnline()\">\n              {{ registeringWarrantyCard ? t('redirecting') : t('registerWarrantyCardButton') }}\n            </button>\n            <button class=\"btn btn-success finance-action\" type=\"button\" *ngIf=\"canAdminReleaseWarranty()\" [disabled]=\"adminReleasingWarranty\" (click)=\"releaseWarranty()\">\n              {{ adminReleasingWarranty ? t('saving') : t('warrantyRelease') }}\n            </button>\n          </div>\n        </article>\n\n        <article id=\"additional-payments\" class=\"cockpit-section finance-panel additional-payment-panel\" *ngIf=\"!vm.isAdmin\">\n          <h2>{{ t('additionalPayments') }}</h2>\n          <p class=\"finance-subtitle\">{{ t('additionalPaymentsHelp') }}</p>\n          <div class=\"payment-action-form\">\n            <label>{{ t('paymentType') }}\n              <select [(ngModel)]=\"extraPaymentKind\" name=\"extraPaymentKind\">\n                <option value=\"tip\">{{ t('tipPayment') }}</option>\n                <option value=\"extra_service\">{{ t('extraServicePayment') }}</option>\n                <option value=\"damage_charge\">{{ t('damagePayment') }}</option>\n              </select>\n            </label>\n            <label>{{ t('amount') }}\n              <input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"extraPaymentAmount\" name=\"extraPaymentAmount\" />\n            </label>\n            <label class=\"full-width\">{{ t('description') }}\n              <input type=\"text\" [(ngModel)]=\"extraPaymentDescription\" name=\"extraPaymentDescription\" />\n            </label>\n            <button class=\"btn btn-primary finance-action\" type=\"button\" [disabled]=\"!canPayAdditionalOnline()\" (click)=\"payAdditionalOnline()\">\n              {{ payingExtra ? t('redirecting') : t('payAdditionalNow') }}\n            </button>\n          </div>\n\n          <section class=\"additional-payment-history\" *ngIf=\"additionalPaymentRows.length > 0\">\n            <div class=\"history-heading\">\n              <h3>{{ t('additionalPayments') }}</h3>\n              <span>{{ additionalPaymentRows.length }}</span>\n            </div>\n            <div class=\"history-list\">\n              <article class=\"history-row\" *ngFor=\"let row of additionalPaymentRows\">\n                <div class=\"history-row-main\">\n                  <strong>{{ row.label }}</strong>\n                  <span *ngIf=\"row.description\">{{ row.description }}</span>\n                  <small>{{ row.date || '-' }} · {{ row.method || '-' }} · {{ row.status || '-' }}</small>\n                  <code *ngIf=\"row.reference\">{{ row.reference }}</code>\n                </div>\n                <div class=\"history-amount\">+{{ formatMoney(row.amount) }}</div>\n              </article>\n            </div>\n          </section>\n        </article>\n\n        <article class=\"cockpit-section finance-panel admin-money-panel financial-workspace\" *ngIf=\"vm.isAdmin\">\n          <div class=\"workspace-title-row\">\n            <div>\n              <h2>{{ t('adminPaymentActions') }}</h2>\n            </div>\n          </div>\n\n          <div class=\"workspace-alert success\" *ngIf=\"actionMessage\">{{ actionMessage }}</div>\n\n          <div class=\"admin-money-grid\">\n            <section class=\"admin-money-card damage-card\">\n              <div class=\"admin-card-heading\">\n                <span class=\"admin-card-icon\">🛡️</span>\n                <div>\n                  <h3>{{ t('chargeWarrantyForDamages') }}</h3>\n                  <p>{{ t('warrantyAvailable') }} · {{ formatMoney(warrantyRemainingAmount) }}</p>\n                </div>\n              </div>\n\n              <label>{{ t('amount') }}\n                <div class=\"money-input-wrap\">\n                  <span>€</span>\n                  <input type=\"number\" min=\"0\" [max]=\"warrantyRemainingAmount\" step=\"0.01\" [(ngModel)]=\"adminWarrantyChargeAmount\" name=\"adminWarrantyChargeAmount\" />\n                </div>\n              </label>\n              <label>{{ t('damageReason') }}\n                <textarea rows=\"4\" [(ngModel)]=\"adminWarrantyChargeReason\" name=\"adminWarrantyChargeReason\"></textarea>\n              </label>\n              <button class=\"btn btn-danger finance-action\" type=\"button\" [disabled]=\"!canAdminChargeWarranty()\" (click)=\"chargeWarrantyForDamage()\">\n                {{ adminChargingWarranty ? t('saving') : t('chargeWarrantyForDamages') }}\n              </button>\n\n              <div class=\"operation-receipt damage-receipt\" *ngIf=\"savedWarrantyChargeAmount > 0\">\n                <div class=\"operation-receipt-icon\">✓</div>\n                <div class=\"operation-receipt-body\">\n                  <span class=\"operation-receipt-label\">{{ t('lastOperation') }}</span>\n                  <strong>{{ formatMoney(savedWarrantyChargeAmount) }}</strong>\n                  <p *ngIf=\"savedWarrantyChargeReason\">{{ savedWarrantyChargeReason }}</p>\n                  <small>\n                    <span>{{ savedWarrantyChargeMethodLabel }}</span>\n                    <span *ngIf=\"savedWarrantyChargeStatus\"> · {{ savedWarrantyChargeStatusLabel }}</span>\n                    <span *ngIf=\"savedWarrantyChargeDate\"> · {{ formatDisplayDate(savedWarrantyChargeDate) }}</span>\n                  </small>\n                  <code *ngIf=\"savedWarrantyChargeStripeId\">{{ savedWarrantyChargeStripeId }}</code>\n                </div>\n              </div>\n            </section>\n\n            <section class=\"admin-money-card refund-card\">\n              <div class=\"admin-card-heading\">\n                <span class=\"admin-card-icon\">↩</span>\n                <div>\n                  <h3>{{ t('refundCustomer') }}</h3>\n                  <p>{{ t('refundPaymentType') }}</p>\n                </div>\n              </div>\n\n              <label>{{ t('refundPaymentType') }}\n                <select [(ngModel)]=\"adminRefundPaymentType\" name=\"adminRefundPaymentType\">\n                  <option value=\"deposit\">{{ t('deposit') }}</option>\n                  <option value=\"balance\">{{ t('boatBalance') }}</option>\n                  <option value=\"skipper_fee\">{{ t('skipper') }}</option>\n                  <option value=\"extra_service\">{{ t('extraServicePayment') }}</option>\n                  <option value=\"ad_hoc\">{{ t('additionalPayments') }}</option>\n                </select>\n              </label>\n              <label>{{ t('amount') }}\n                <div class=\"money-input-wrap\">\n                  <span>€</span>\n                  <input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"adminRefundAmount\" name=\"adminRefundAmount\" />\n                </div>\n              </label>\n              <label>{{ t('paymentIntentOptional') }}\n                <input type=\"text\" [(ngModel)]=\"adminRefundPaymentIntentId\" name=\"adminRefundPaymentIntentId\" />\n              </label>\n              <label>{{ t('description') }}\n                <textarea rows=\"4\" [(ngModel)]=\"adminRefundReason\" name=\"adminRefundReason\"></textarea>\n              </label>\n              <button class=\"btn btn-refund finance-action\" type=\"button\" [disabled]=\"!canAdminRefund()\" (click)=\"refundCustomer()\">\n                {{ adminRefunding ? t('saving') : t('refundCustomer') }}\n              </button>\n            </section>\n          </div>\n\n          <section class=\"financial-history-card\">\n            <div class=\"history-heading\">\n              <h3>{{ t('financialHistory') }}</h3>\n              <span>{{ financialHistoryRows.length }}</span>\n            </div>\n\n            <div class=\"history-empty\" *ngIf=\"financialHistoryRows.length === 0\">{{ t('noFinancialOperations') }}</div>\n\n            <div class=\"history-list\" *ngIf=\"financialHistoryRows.length > 0\">\n              <article class=\"history-row\" *ngFor=\"let row of financialHistoryRows\" [class.damage]=\"row.kind === 'damage'\" [class.refund]=\"row.kind === 'refund'\">\n                <div class=\"history-row-main\">\n                  <strong>{{ row.label }}</strong>\n                  <span *ngIf=\"row.description\">{{ row.description }}</span>\n                  <small>{{ row.date || '-' }} · {{ row.method || '-' }} · {{ row.status || '-' }}</small>\n                  <code *ngIf=\"row.reference\">{{ row.reference }}</code>\n                </div>\n                <div class=\"history-amount\" [class.negative]=\"row.signedAmount < 0\">\n                  {{ row.signedAmount < 0 ? '−' : '+' }}{{ formatMoney(row.amount) }}\n                </div>\n              </article>\n            </div>\n          </section>\n        </article>\n      </section>\n\n      <article class=\"cockpit-section customer-cost\" *ngIf=\"false && !editMode && vm.isAdmin\">\n        <div class=\"summary-title-row\">\n          <div>\n            <h2>{{ t('customerFinancialSummary') }}</h2>\n            <p class=\"section-help\">{{ t('customerQuestion') }}</p>\n          </div>\n          <span class=\"status-badge paid\">{{ vm.paymentStatusBadge }}</span>\n        </div>\n\n        <div class=\"finance-table\">\n          <h3>{{ t('customerCost') }}</h3>\n          <div class=\"finance-line\"><span>{{ t('boatOuting') }}</span><strong>{{ formatMoney(vm.boatOutingCost) }}</strong></div>\n          <div class=\"finance-line\" *ngIf=\"vm.fuelCost > 0\"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.fuelCost) }}</strong></div>\n          <div class=\"finance-line\"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.skipperCost) }}</strong></div>\n          <div class=\"finance-line\"><span>{{ t('extraServices') }}</span><strong>{{ formatMoney(vm.extraServicesCost) }}</strong></div>\n          <div class=\"finance-line finance-total\"><span>{{ t('totalCustomerCost') }}</span><strong>{{ formatMoney(vm.totalCustomerCost) }}</strong></div>\n          <div class=\"finance-line paid-line\"><span>{{ t('alreadyPaidDeposit') }}</span><strong>{{ formatMoney(vm.depositPaidAmount) }} <small>✓ {{ t('stripe') }}</small></strong></div>\n          <div class=\"finance-line\"><span>{{ t('remainingBoatBalance') }}</span><strong>{{ formatMoney(vm.remainingBoatBalance) }}</strong></div>\n          <div class=\"finance-line\" *ngIf=\"vm.remainingFuelCost > 0\"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.remainingFuelCost) }}</strong></div>\n          <div class=\"finance-line\"><span>{{ t('remainingSkipperFee') }}</span><strong>{{ formatMoney(vm.remainingSkipperFee) }}</strong></div>\n          <div class=\"finance-line\" *ngIf=\"vm.remainingExtraServices > 0\"><span>{{ t('remainingExtraServices') }}</span><strong>{{ formatMoney(vm.remainingExtraServices) }}</strong></div>\n          <div class=\"finance-line finance-total\"><span>{{ t('totalRemaining') }}</span><strong>{{ formatMoney(vm.totalRemainingCustomer) }}</strong></div>\n        </div>\n      </article>\n\n      <article class=\"cockpit-section alegria-revenue\" *ngIf=\"false && !editMode && vm.isAdmin\">\n        <div class=\"summary-title-row\">\n          <div>\n            <h2>{{ t('alegriaCollections') }}</h2>\n            <p class=\"section-help\">{{ t('alegriaQuestion') }}</p>\n          </div>\n          <span class=\"status-badge done\">{{ t('stripe') }} / {{ t('collectedOnboard') }}</span>\n        </div>\n\n        <div class=\"finance-columns\">\n          <div class=\"finance-table compact\">\n            <h3>{{ t('collectedOnline') }}</h3>\n            <div class=\"finance-line\"><span>{{ t('deposit') }}</span><strong>{{ formatMoney(vm.stripeDepositCollected) }}</strong></div>\n            <div class=\"finance-line finance-total\"><span>{{ t('totalStripe') }}</span><strong>{{ formatMoney(vm.totalStripeCollections) }}</strong></div>\n          </div>\n\n          <div class=\"finance-table compact\">\n            <h3>{{ t('collectedOnboard') }}</h3>\n            <div class=\"finance-line\"><span>{{ t('boatBalance') }}</span><strong>{{ formatMoney(vm.onboardBoatBalanceCollected) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.onboardSkipperCollected) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('catering') }}</span><strong>{{ formatMoney(vm.totalDirectCatering) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('tips') }}</span><strong>{{ formatMoney(vm.totalDirectTips) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.totalDirectCleaningFuel) }}</strong></div>\n            <div class=\"finance-line finance-total\"><span>{{ t('totalOnboard') }}</span><strong>{{ formatMoney(vm.totalOnboardCollections) }}</strong></div>\n          </div>\n        </div>\n      </article>\n\n      <article class=\"cockpit-section outstanding-cockpit\" *ngIf=\"false && !editMode && vm.isAdmin && vm.outstandingTotal > 0\">\n        <h2>{{ t('outstanding') }}</h2>\n        <div class=\"finance-table compact\">\n          <div class=\"finance-line\"><span>{{ t('boatBalance') }}</span><strong>{{ formatMoney(vm.outstandingBoatBalance) }}</strong></div>\n          <div class=\"finance-line\" *ngIf=\"vm.outstandingFuelCost > 0\"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.outstandingFuelCost) }}</strong></div>\n          <div class=\"finance-line\"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.outstandingSkipperFee) }}</strong></div>\n          <div class=\"finance-line\" *ngIf=\"vm.outstandingExtraServices > 0\"><span>{{ t('extraServices') }}</span><strong>{{ formatMoney(vm.outstandingExtraServices) }}</strong></div>\n          <div class=\"finance-line finance-total\"><span>{{ t('total') }}</span><strong>{{ formatMoney(vm.outstandingTotal) }}</strong></div>\n        </div>\n      </article>\n\n      <article class=\"cockpit-section warranty-cockpit\" *ngIf=\"false && !editMode && vm.isAdmin\">\n        <div class=\"summary-title-row\">\n          <div>\n            <h2>{{ t('warranty') }}</h2>\n            <p class=\"section-help\">{{ t('notRevenue') }}</p>\n          </div>\n          <span class=\"status-badge warranty\">{{ vm.warrantyStatusBadge }}</span>\n        </div>\n        <div class=\"financial-grid\">\n          <div><span>{{ t('warranty') }}</span><strong>{{ formatMoney(vm.display.warrantyAmount || 0) }}</strong></div>\n          <div><span>{{ t('method') }}</span><strong>{{ warrantyMethodLabel(vm.display.warrantyPaymentChoice || vm.display.warrantyMethod) }}</strong></div>\n          <div><span>{{ t('status') }}</span><strong>{{ vm.warrantyStatusBadge }}</strong></div>\n        </div>\n      </article>\n\n\n      <div class=\"terms-modal-backdrop\" *ngIf=\"termsModalOpen\" (click)=\"closeTermsModal()\">\n        <section class=\"terms-modal\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"bookingTermsTitle\" (click)=\"$event.stopPropagation()\">\n          <div class=\"terms-modal-header\">\n            <div>\n              <span class=\"eyebrow\">{{ t('termsAndConditions') }}</span>\n              <h2 id=\"bookingTermsTitle\">{{ t('termsModalTitle') }}</h2>\n            </div>\n            <button class=\"btn btn-secondary btn-small\" type=\"button\" (click)=\"closeTermsModal()\">{{ t('close') }}</button>\n          </div>\n\n          <div class=\"terms-content tc-scrollable\" tabindex=\"0\">\n            <ng-container *ngFor=\"let section of termsSectionsVm\">\n              <h3>{{ section.title }}</h3>\n              <p *ngFor=\"let paragraph of section.paragraphs\">{{ paragraph }}</p>\n            </ng-container>\n          </div>\n\n          <div class=\"terms-modal-actions\">\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"closeTermsModal()\">{{ t('readTermsButton') }}</button>\n          </div>\n        </section>\n      </div>\n\n    </article>\n  </div>\n</section>\n";
+module.exports = "<section class=\"booking-page\">\n  <div class=\"container booking-shell\">\n    <article class=\"loading-card\" *ngIf=\"loading\">\n      <h1>{{ tText('auto.home.booking-detail.booking-detail.component.loading_booking') }}</h1>\n      <p>{{ bookingId }}</p>\n    </article>\n\n    <article class=\"empty-card\" *ngIf=\"!loading && notFound\">\n      <h1>{{ tText('auto.home.booking-detail.booking-detail.component.booking_not_found') }}</h1>\n      <p *ngIf=\"error\">{{ error }}</p>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"goBack()\">{{ tText('auto.home.booking-detail.booking-detail.component.back') }}</button>\n      <button class=\"btn btn-secondary\" type=\"button\" (click)=\"loadBooking()\">{{ tText('auto.home.booking-detail.booking-detail.component.retry') }}</button>\n    </article>\n\n    <article class=\"booking-detail-card\" *ngIf=\"!loading && vm\">\n      <div class=\"booking-hero\">\n        <div>\n          <span class=\"eyebrow\">{{ vm.isExternalBooking ? vm.platformLabel + ' booking' : 'Alegria booking' }}</span>\n          <h1>{{ vm.display.customerName || '-' }}</h1>\n          <p>{{ vm.display.outingDate || '-' }} · {{ vm.display.departureTime || '-' }} → {{ vm.display.arrivalTime || '-' }} · {{ vm.display.passengers || 0 }} guests</p>\n        </div>\n\n        <div class=\"status-badges\">\n          <span class=\"status-badge done\">{{ vm.bookingStatusBadge }}</span>\n          <span class=\"status-badge paid\">{{ vm.paymentStatusBadge }}</span>\n          <span class=\"status-badge warranty\">{{ vm.warrantyStatusBadge }}</span>\n        </div>\n      </div>\n\n      <p class=\"error-message\" *ngIf=\"error\">{{ error }}</p>\n\n      <section class=\"booking-completion-card\" *ngIf=\"!editMode\">\n        <div class=\"completion-header\">\n          <div>\n            <h2>{{ t('bookingCompletion') }}</h2>\n            <p>{{ vm.customerJourneyStatus }}</p>\n          </div>\n          <strong>{{ vm.bookingCompletionPercent }}%</strong>\n        </div>\n        <div class=\"completion-bar\"><span [style.width.%]=\"vm.bookingCompletionPercent\"></span></div>\n        <div class=\"completion-steps\">\n          <span [class.done]=\"vm.termsAccepted\">{{ vm.termsAccepted ? '✓' : '○' }} {{ t('termsAndConditions') }}</span>\n          <span [class.done]=\"vm.alegriaPaymentComplete\">{{ vm.alegriaPaymentComplete ? '✓' : '○' }} {{ t('alegriaPaid') }}</span>\n          <span [class.done]=\"vm.skipperPaymentComplete\">{{ vm.skipperPaymentComplete ? '✓' : '○' }} {{ t('skipperPaid') }}</span>\n          <span [class.done]=\"vm.warrantyComplete\">{{ vm.warrantyComplete ? '✓' : '○' }} {{ t('warranty') }}</span>\n        </div>\n        <div class=\"completion-links\">\n          <button class=\"btn btn-secondary btn-small\" type=\"button\" (click)=\"openTermsModal()\">{{ t('rereadTerms') }}</button>\n          <a routerLink=\"/terms\" target=\"_blank\" rel=\"noopener\">{{ t('openTermsPage') }}</a>\n        </div>\n      </section>\n\n      <div class=\"admin-toolbar\" *ngIf=\"vm.isAdmin\">\n        <button class=\"btn btn-primary\" type=\"button\" *ngIf=\"!editMode\" (click)=\"startEdit()\">{{ tText('auto.home.booking-detail.booking-detail.component.edit_booking') }}</button>\n        <button class=\"btn btn-danger\" type=\"button\" *ngIf=\"!editMode\" [disabled]=\"deleting\" (click)=\"deleteBooking()\">\n          {{ deleting ? 'Deleting...' : 'Delete booking' }}\n        </button>\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"goBack()\">{{ tText('auto.home.booking-detail.booking-detail.component.back') }}</button>\n      </div>\n\n      <form class=\"edit-panel booking-cockpit-edit\" *ngIf=\"editMode\" (ngSubmit)=\"saveEdit()\">\n        <div class=\"edit-header\">\n          <div>\n            <h2>{{ tText('auto.home.booking-detail.booking-detail.component.edit_booking_cockpit') }}</h2>\n            <p class=\"section-help\">{{ tText('auto.home.booking-detail.booking-detail.component.all_cockpit_fields_below_are_editable_financial_to') }}</p>\n          </div>\n          <div class=\"actions compact-actions\">\n            <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"saving\">{{ saving ? 'Saving...' : 'Save booking' }}</button>\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"cancelEdit()\">{{ tText('auto.home.booking-detail.booking-detail.component.cancel') }}</button>\n          </div>\n        </div>\n\n        <section class=\"edit-section info-edit\">\n          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.1_customer_and_outing') }}</h3>\n          <div class=\"edit-grid\">\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.customer_name') }}<input name=\"customerName\" [(ngModel)]=\"editForm.customerName\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.email') }}<input name=\"email\" type=\"email\" [(ngModel)]=\"editForm.email\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.phone') }}<input name=\"phone\" [(ngModel)]=\"editForm.phone\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.outing_date') }}<input name=\"outingDate\" type=\"date\" [(ngModel)]=\"editForm.outingDate\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.departure_time') }}<input name=\"departureTime\" type=\"time\" [(ngModel)]=\"editForm.departureTime\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.arrival_time') }}<input name=\"arrivalTime\" type=\"time\" [(ngModel)]=\"editForm.arrivalTime\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.passengers') }}<input name=\"passengers\" type=\"number\" min=\"0\" [(ngModel)]=\"editForm.passengers\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.outing_type') }}<input name=\"outingType\" [(ngModel)]=\"editForm.outingType\" /></label>\n          </div>\n        </section>\n\n        <section class=\"edit-section boat-edit\">\n          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.2_boat') }}</h3>\n          <div class=\"edit-grid\">\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.boat_name') }}<input name=\"boatName\" [(ngModel)]=\"editForm.boatName\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.boat_type') }}<input name=\"boatType\" [(ngModel)]=\"editForm.boatType\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.manufacturer') }}<input name=\"boatManufacturer\" [(ngModel)]=\"editForm.boatManufacturer\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.model') }}<input name=\"boatModel\" [(ngModel)]=\"editForm.boatModel\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.departure_marina') }}<input name=\"startMarina\" [(ngModel)]=\"editForm.startMarina\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.boat_listing_url') }}<input name=\"externalPlatformUrl\" type=\"url\" [(ngModel)]=\"editForm.externalPlatformUrl\" /></label>\n          </div>\n        </section>\n\n        <section class=\"edit-section platform-edit\" *ngIf=\"editForm.source && editForm.source !== 'direct'\">\n          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.3_platform') }}</h3>\n          <div class=\"edit-grid\">\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.platform_source') }}<select name=\"source\" [(ngModel)]=\"editForm.source\">\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.direct')\">{{ tText('auto.home.booking-detail.booking-detail.component.direct_alegria') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.clickandboat')\">{{ tText('auto.home.booking-detail.booking-detail.component.click_boat') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.samboat')\">{{ tText('auto.home.booking-detail.booking-detail.component.samboat') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.other')\">{{ tText('auto.home.booking-detail.booking-detail.component.other') }}</option>\n              </select>\n            </label>\n            <label *ngIf=\"showPlatformNameField()\">{{ tText('auto.home.booking-detail.booking-detail.component.platform_name') }}<input name=\"externalPlatformName\" [(ngModel)]=\"editForm.externalPlatformName\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.platform_booking') }}<input name=\"externalPlatformBookingRef\" [(ngModel)]=\"editForm.externalPlatformBookingRef\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.booking_url') }}<input name=\"platformBookingUrl\" type=\"url\" [(ngModel)]=\"editForm.platformBookingUrl\" /></label>\n          </div>\n        </section>\n\n        <section class=\"edit-section customer-cost-edit\">\n          <h3>{{ t('outingPrice') }}</h3>\n          <div class=\"edit-grid pricing-edit-grid\">\n            <label>{{ t('boatRental') }}<input name=\"boatOutingCost\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.boatOutingCost\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('skipper') }}<input name=\"skipperCashAmountCustomerCost\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.skipperCashAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('fuel') }}<input name=\"fuelAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.fuelAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('portFeesLabel') }}<input name=\"portFeesAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.portFeesAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('catering') }}<input name=\"cateringAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.cateringAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('drinks') }}<input name=\"drinksAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.drinksAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('waterToys') }}<input name=\"waterToysAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.waterToysAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('tips') }}<input name=\"tipsAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.tipsAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label>{{ t('otherPricing') }}<input name=\"otherOnboardAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.otherOnboardAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" /></label>\n            <label class=\"pricing-total-field\">{{ t('totalOutingPrice') }}<input name=\"totalAmount\" type=\"number\" [(ngModel)]=\"editForm.totalAmount\" readonly /></label>\n          </div>\n        </section>\n\n        <section class=\"edit-section revenue-edit\">\n          <h3>{{ t('commission') }}</h3>\n          <div class=\"edit-grid\">\n            <label>{{ t('platformCommission') }}<input name=\"platformCommissionAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.platformCommissionAmount\" (ngModelChange)=\"recalculateEditCustomerTotal()\" [readonly]=\"!editForm.source || editForm.source === 'direct' || editForm.source === 'alegria'\" /></label>\n            <label class=\"pricing-total-field\">{{ t('alegriaRecovered') }}<input name=\"alegriaRecoveredAmount\" type=\"number\" [(ngModel)]=\"editForm.alegriaRecoveredAmount\" readonly /></label>\n            <label class=\"pricing-total-field\">{{ t('alegriaNetRevenue') }}<input name=\"alegriaRevenueTotal\" type=\"number\" [(ngModel)]=\"editForm.alegriaRevenueTotal\" readonly /></label>\n          </div>\n        </section>\n\n        <section class=\"edit-section warranty-edit\">\n          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.6_warranty') }}</h3>\n          <div class=\"edit-grid\">\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.warranty_amount') }}<input name=\"warrantyAmount\" type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"editForm.warrantyAmount\" /></label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.warranty_method') }}<select name=\"warrantyPaymentChoice\" [(ngModel)]=\"editForm.warrantyPaymentChoice\">\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.cash')\">{{ tText('auto.home.booking-detail.booking-detail.component.cash') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.stripe_card')\">{{ tText('auto.home.booking-detail.booking-detail.component.stripe_credit_card') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.bank_check')\">{{ tText('auto.home.booking-detail.booking-detail.component.bank_check') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.none')\">{{ tText('auto.home.booking-detail.booking-detail.component.no_warranty') }}</option>\n              </select>\n            </label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.warranty_status') }}<select name=\"warrantyStatus\" [(ngModel)]=\"editForm.warrantyStatus\">\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.not_requested')\">{{ tText('auto.home.booking-detail.booking-detail.component.not_requested') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.selected')\">{{ tText('auto.home.booking-detail.booking-detail.component.selected') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.cash_selected')\">{{ tText('auto.home.booking-detail.booking-detail.component.cash_selected') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.card_selected')\">{{ tText('auto.home.booking-detail.booking-detail.component.card_selected') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.card_registered')\">{{ tText('auto.home.booking-detail.booking-detail.component.card_registered') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.charged')\">{{ tText('auto.home.booking-detail.booking-detail.component.charged') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.released')\">{{ tText('auto.home.booking-detail.booking-detail.component.released') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.refunded')\">{{ tText('auto.home.booking-detail.booking-detail.component.refunded') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.cancelled')\">{{ tText('auto.home.booking-detail.booking-detail.component.cancelled') }}</option>\n              </select>\n            </label>\n          </div>\n        </section>\n\n        <section class=\"edit-section status-edit\">\n          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.7_statuses') }}</h3>\n          <div class=\"edit-grid\">\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.booking_status') }}<select name=\"bookingStatus\" [(ngModel)]=\"editForm.bookingStatus\">\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.offer')\">{{ tText('auto.home.booking-detail.booking-detail.component.offer') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.pending')\">{{ tText('auto.home.booking-detail.booking-detail.component.pending') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.confirmed')\">{{ tText('auto.home.booking-detail.booking-detail.component.confirmed') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.completed')\">{{ tText('auto.home.booking-detail.booking-detail.component.completed') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.cancelled')\">{{ tText('auto.home.booking-detail.booking-detail.component.cancelled') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.no_show')\">{{ tText('auto.home.booking-detail.booking-detail.component.no_show') }}</option>\n              </select>\n            </label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.payment_status') }}<select name=\"paymentStatusLabel\" [(ngModel)]=\"editForm.paymentStatusLabel\">\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.pending')\">{{ tText('auto.home.booking-detail.booking-detail.component.pending') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.deposit_paid')\">{{ tText('auto.home.booking-detail.booking-detail.component.deposit_paid') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.balance_paid')\">{{ tText('auto.home.booking-detail.booking-detail.component.balance_paid') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.fully_paid')\">{{ tText('auto.home.booking-detail.booking-detail.component.fully_paid') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.refunded')\">{{ tText('auto.home.booking-detail.booking-detail.component.refunded') }}</option>\n              </select>\n            </label>\n            <label>{{ tText('auto.home.booking-detail.booking-detail.component.status') }}<select name=\"status\" [(ngModel)]=\"editForm.status\">\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.offer')\">{{ tText('auto.home.booking-detail.booking-detail.component.offer') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.pending')\">{{ tText('auto.home.booking-detail.booking-detail.component.pending') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.confirmed')\">{{ tText('auto.home.booking-detail.booking-detail.component.confirmed') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.completed')\">{{ tText('auto.home.booking-detail.booking-detail.component.completed') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.cancelled')\">{{ tText('auto.home.booking-detail.booking-detail.component.cancelled') }}</option>\n                <option [value]=\"tText('auto.home.booking-detail.booking-detail.component.no_show')\">{{ tText('auto.home.booking-detail.booking-detail.component.no_show') }}</option>\n              </select>\n            </label>\n          </div>\n        </section>\n\n        <section class=\"edit-section\">\n          <h3>{{ tText('auto.home.booking-detail.booking-detail.component.8_notes') }}</h3>\n          <label class=\"full-width\">{{ tText('auto.home.booking-detail.booking-detail.component.comments') }}<textarea name=\"comments\" rows=\"3\" [(ngModel)]=\"editForm.comments\"></textarea></label>\n        </section>\n\n        <div class=\"actions sticky-save-actions\">\n          <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"saving\">{{ saving ? 'Saving...' : 'Save booking' }}</button>\n          <button class=\"btn btn-secondary\" type=\"button\" (click)=\"cancelEdit()\">{{ tText('auto.home.booking-detail.booking-detail.component.cancel') }}</button>\n        </div>\n      </form>\n\n      <div class=\"card-grid\" *ngIf=\"!editMode\">\n        <article class=\"info-card\">\n          <h2>{{ tText('auto.home.booking-detail.booking-detail.component.customer') }}</h2>\n          <p class=\"big-value\">{{ vm.display.customerName || '-' }}</p>\n          <p>{{ vm.display.email || '-' }}</p>\n          <p>{{ vm.display.phone || '-' }}</p>\n        </article>\n\n        <article class=\"info-card\">\n          <h2>{{ t('boat') }}</h2>\n          <p class=\"big-value\">{{ vm.display.boatName || 'Alegria' }}</p>\n          <p>{{ vm.display.boatManufacturer || '' }} {{ vm.display.boatModel || vm.display.boatType || '' }}</p>\n          <p>{{ vm.display.startMarina || 'Marina Baie des Anges' }}</p>\n          <p class=\"links-row\" *ngIf=\"vm.boatListingUrl\"><a [href]=\"vm.boatListingUrl\" target=\"_blank\" rel=\"noopener\">{{ t('openBoatListing') }} ↗</a></p>\n        </article>\n\n        <article class=\"info-card\" *ngIf=\"vm.isExternalBooking\">\n          <h2>{{ t('platform') }}</h2>\n          <p class=\"big-value\">{{ vm.platformLabel }}</p>\n          <p>{{ t('reference') }}: {{ vm.display.externalPlatformBookingRef || vm.display.platformBookingReference || vm.display.platformReservationNumber || '-' }}</p>\n          <p class=\"links-row\" *ngIf=\"vm.platformBookingUrl\"><a [href]=\"vm.platformBookingUrl\" target=\"_blank\" rel=\"noopener\">{{ t('openPlatformBooking') }} ↗</a></p>\n        </article>\n\n        <article class=\"info-card historical-card\" *ngIf=\"vm.isHistoricalBooking\">\n          <h2>{{ t('historicalBooking') }}</h2>\n          <p class=\"big-value\">{{ t('completed') }}</p>\n          <p>{{ t('historicalPaidMessage') }}</p>\n        </article>\n      </div>\n\n      <section class=\"customer-finance-simple booking-customer-clean\" *ngIf=\"!editMode\">\n        <article class=\"cockpit-section finance-panel finance-summary-panel\">\n          <h2>{{ t('outingPrice') }}</h2>\n          <div class=\"finance-table compact\">\n            <div class=\"finance-line\"><span>{{ t('boatRental') }}</span><strong>{{ formatMoney(vm.boatRentalAmount) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.skipperCost) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.fuelCost) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('portFeesLabel') }}</span><strong>{{ formatMoney(vm.portFeesAmount) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('catering') }}</span><strong>{{ formatMoney(vm.cateringAmount) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('drinks') }}</span><strong>{{ formatMoney(vm.drinksAmount) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('waterToys') }}</span><strong>{{ formatMoney(vm.waterToysAmount) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('tips') }}</span><strong>{{ formatMoney(vm.tipsAmount) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('otherPricing') }}</span><strong>{{ formatMoney(vm.otherAmount) }}</strong></div>\n            <div class=\"finance-line finance-total\"><span>{{ t('totalOutingPrice') }}</span><strong>{{ formatMoney(vm.totalOutingPrice) }}</strong></div>\n          </div>\n        </article>\n\n        <article class=\"cockpit-section finance-panel alegria-panel\">\n          <h2>{{ t('commission') }}</h2>\n          <div class=\"finance-table compact\">\n            <div class=\"finance-line finance-total negative-line\"><span>{{ t('platformCommission') }}</span><strong>{{ formatMoney(vm.totalCommission) }}</strong></div>\n          </div>\n        </article>\n\n        <article class=\"cockpit-section finance-panel alegria-panel\">\n          <h2>{{ t('alegriaRecovered') }}</h2>\n          <p class=\"finance-subtitle\">{{ t('totalOutingPrice') }} − {{ t('platformCommission') }}</p>\n          <div class=\"finance-table compact\">\n            <div class=\"finance-line finance-total\"><span>{{ t('alegriaRecovered') }}</span><strong>{{ formatMoney(vm.alegriaRecoveredAmount) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('skipperToReverse') }}</span><strong>− {{ formatMoney(vm.skipperCost) }}</strong></div>\n            <div class=\"finance-line finance-total\"><span>{{ t('alegriaNetRevenue') }}</span><strong>{{ formatMoney(vm.alegriaRevenueTotal) }}</strong></div>\n            <div class=\"finance-line paid-line\" *ngIf=\"vm.alegriaPaidAmount > 0\"><span>{{ t('alreadyPaid') }}</span><strong>{{ formatMoney(vm.alegriaPaidAmount) }}</strong></div>\n            <div class=\"finance-line outstanding-line\" *ngIf=\"vm.remainingAlegriaRevenue > 0\"><span>{{ t('leftToPay') }}</span><strong>{{ formatMoney(vm.remainingAlegriaRevenue) }}</strong></div>\n          </div>\n          <div class=\"warranty-actions\" *ngIf=\"vm.remainingAlegriaRevenue > 0\">\n            <button class=\"btn btn-primary finance-action\" type=\"button\" *ngIf=\"canPayAlegriaOnline()\" [disabled]=\"payingAlegria\" (click)=\"payAlegriaOnline()\">{{ payingAlegria ? t('redirecting') : t('payByCard') }}</button>\n            <button class=\"btn btn-secondary finance-action\" type=\"button\" *ngIf=\"!isAlegriaCashSelected()\" [disabled]=\"selectingAlegriaCash\" (click)=\"selectAlegriaCash()\">{{ selectingAlegriaCash ? t('saving') : t('payByCash') }}</button>\n            <label class=\"cash-amount-entry\" *ngIf=\"canConfirmAlegriaCashReceived()\">{{ t('amount') }}\n              <input type=\"number\" min=\"0.01\" [max]=\"vm.remainingAlegriaRevenue\" step=\"0.01\" [(ngModel)]=\"adminAlegriaCashAmount\" name=\"adminAlegriaCashAmount\" [placeholder]=\"formatMoney(vm.remainingAlegriaRevenue)\" />\n            </label>\n            <button class=\"btn btn-success finance-action\" type=\"button\" *ngIf=\"canConfirmAlegriaCashReceived()\" [disabled]=\"payingAlegria || !adminAlegriaCashAmount\" (click)=\"confirmAlegriaCashReceived()\">{{ t('confirmAlegriaCashReceived') }}</button>\n          </div>\n        </article>\n\n        <article class=\"cockpit-section finance-panel skipper-panel\">\n          <h2>{{ t('skipperRevenue') }}</h2>\n          <p class=\"finance-subtitle\">{{ t('skipper') }} + {{ t('tips') }}</p>\n          <div class=\"finance-table compact\">\n            <div class=\"finance-line\"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.skipperCost) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('tips') }}</span><strong>{{ formatMoney(vm.tipsAmount) }}</strong></div>\n            <div class=\"finance-line finance-total\"><span>{{ t('skipperRevenue') }}</span><strong>{{ formatMoney(vm.skipperRevenueTotal) }}</strong></div>\n            <div class=\"finance-line paid-line\" *ngIf=\"vm.skipperPaidAmount > 0\"><span>{{ t('alreadyPaid') }}</span><strong>{{ formatMoney(vm.skipperPaidAmount) }}</strong></div>\n            <div class=\"finance-line outstanding-line\" *ngIf=\"vm.remainingSkipperFee > 0\"><span>{{ t('leftToPay') }}</span><strong>{{ formatMoney(vm.remainingSkipperFee) }}</strong></div>\n          </div>\n          <div class=\"warranty-actions\" *ngIf=\"vm.remainingSkipperFee > 0\">\n            <button class=\"btn btn-primary finance-action\" type=\"button\" *ngIf=\"canPaySkipperOnline()\" [disabled]=\"payingSkipper\" (click)=\"paySkipperOnline()\">{{ payingSkipper ? t('redirecting') : t('payByCard') }}</button>\n            <button class=\"btn btn-secondary finance-action\" type=\"button\" *ngIf=\"!isSkipperCashSelected()\" [disabled]=\"selectingSkipperCash\" (click)=\"selectSkipperCash()\">{{ selectingSkipperCash ? t('saving') : t('payByCash') }}</button>\n            <label class=\"cash-amount-entry\" *ngIf=\"canConfirmSkipperPaid()\">{{ t('amount') }}\n              <input type=\"number\" min=\"0.01\" [max]=\"vm.remainingSkipperFee\" step=\"0.01\" [(ngModel)]=\"adminSkipperCashAmount\" name=\"adminSkipperCashAmount\" [placeholder]=\"formatMoney(vm.remainingSkipperFee)\" />\n            </label>\n            <button class=\"btn btn-success finance-action\" type=\"button\" *ngIf=\"canConfirmSkipperPaid()\" [disabled]=\"payingSkipper || !adminSkipperCashAmount\" (click)=\"confirmSkipperPaid()\">{{ t('confirmSkipperPaid') }}</button>\n          </div>\n        </article>\n\n        <article class=\"cockpit-section finance-panel warranty-panel warranty-overview-card\">\n          <div class=\"workspace-card-header\">\n            <div>\n              <span class=\"workspace-eyebrow\">{{ t('financialWorkspace') }}</span>\n              <h2>{{ t('warranty') }}</h2>\n            </div>\n            <span class=\"workspace-status-badge\">{{ vm.warrantyStatusBadge }}</span>\n          </div>\n\n          <div class=\"warranty-amount-row\">\n            <strong>{{ formatMoney(warrantyAmount()) }}</strong>\n            <span>{{ warrantyMethodLabel(vm.display.warrantyPaymentChoice || vm.display.warrantyMethod) }}</span>\n          </div>\n\n          <div class=\"warranty-meter\" role=\"progressbar\" [attr.aria-valuenow]=\"warrantyUsagePercent\" aria-valuemin=\"0\" aria-valuemax=\"100\">\n            <div class=\"warranty-meter-fill\" [style.width.%]=\"warrantyUsagePercent\"></div>\n          </div>\n\n          <div class=\"warranty-metrics\">\n            <div>\n              <span>{{ t('warrantyUsed') }}</span>\n              <strong>{{ formatMoney(warrantyChargedAmount) }}</strong>\n            </div>\n            <div>\n              <span>{{ t('warrantyAvailable') }}</span>\n              <strong>{{ formatMoney(warrantyRemainingAmount) }}</strong>\n            </div>\n          </div>\n\n          <div class=\"warranty-release-summary\" *ngIf=\"isWarrantyReleased(vm.display)\">\n            <strong>✓ {{ t('warrantyReleased') }}</strong>\n            <span>{{ t('warrantyReleasedNoDamage') }}</span>\n            <small *ngIf=\"vm.display.warrantyReleasedAt\">{{ t('warrantyReleasedAt') }} {{ formatDisplayDate(vm.display.warrantyReleasedAt) }}</small>\n          </div>\n\n          <p class=\"finance-note\" *ngIf=\"!isWarrantyReleased(vm.display)\">{{ t('changeWarrantyMethodHelp') }}</p>\n          <div class=\"warranty-actions\">\n            <button class=\"btn btn-secondary finance-action\" type=\"button\" *ngIf=\"canSelectCashWarranty()\" [disabled]=\"registeringWarrantyCard\" (click)=\"selectCashWarranty()\">\n              {{ registeringWarrantyCard ? t('saving') : t('chooseWarrantyCash') }}\n            </button>\n            <button class=\"btn btn-secondary finance-action\" type=\"button\" *ngIf=\"canRegisterWarrantyCard()\" [disabled]=\"registeringWarrantyCard\" (click)=\"registerWarrantyCardOnline()\">\n              {{ registeringWarrantyCard ? t('redirecting') : t('registerWarrantyCardButton') }}\n            </button>\n            <button class=\"btn btn-success finance-action\" type=\"button\" *ngIf=\"canAdminReleaseWarranty()\" [disabled]=\"adminReleasingWarranty\" (click)=\"releaseWarranty()\">\n              {{ adminReleasingWarranty ? t('saving') : t('warrantyRelease') }}\n            </button>\n          </div>\n        </article>\n\n        <article id=\"additional-payments\" class=\"cockpit-section finance-panel additional-payment-panel\">\n          <h2>{{ t('additionalPayments') }}</h2>\n          <p class=\"finance-subtitle\">{{ t('additionalPaymentsHelp') }}</p>\n          <div class=\"payment-action-form\">\n            <label>{{ t('paymentType') }}\n              <select [(ngModel)]=\"extraPaymentKind\" name=\"extraPaymentKind\">\n                <option value=\"tip\">{{ t('tipPayment') }}</option>\n                <option value=\"extra_service\">{{ t('extraServicePayment') }}</option>\n                <option value=\"damage_charge\">{{ t('damagePayment') }}</option>\n              </select>\n            </label>\n            <label>{{ t('amount') }}\n              <input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"extraPaymentAmount\" name=\"extraPaymentAmount\" />\n            </label>\n            <label class=\"full-width\">{{ t('description') }}\n              <input type=\"text\" [(ngModel)]=\"extraPaymentDescription\" name=\"extraPaymentDescription\" />\n            </label>\n            <button class=\"btn btn-primary finance-action\" type=\"button\" [disabled]=\"!canPayAdditionalOnline()\" (click)=\"payAdditionalOnline()\">\n              {{ payingExtra ? t('redirecting') : t('payAdditionalNow') }}\n            </button>\n          </div>\n\n          <section class=\"additional-payment-history\" *ngIf=\"additionalPaymentRows.length > 0\">\n            <div class=\"history-heading\">\n              <h3>{{ t('additionalPayments') }}</h3>\n              <span>{{ additionalPaymentRows.length }}</span>\n            </div>\n            <div class=\"history-list\">\n              <article class=\"history-row\" *ngFor=\"let row of additionalPaymentRows\">\n                <div class=\"history-row-main\">\n                  <strong>{{ row.label }}</strong>\n                  <span *ngIf=\"row.description\">{{ row.description }}</span>\n                  <small>{{ row.date || '-' }} · {{ row.method || '-' }} · {{ row.status || '-' }}</small>\n                  <code *ngIf=\"row.reference\">{{ row.reference }}</code>\n                </div>\n                <div class=\"history-amount\">+{{ formatMoney(row.amount) }}</div>\n              </article>\n            </div>\n          </section>\n        </article>\n\n        <article class=\"cockpit-section finance-panel admin-money-panel financial-workspace\" *ngIf=\"vm.isAdmin\">\n          <div class=\"workspace-title-row\">\n            <div>\n              <h2>{{ t('adminPaymentActions') }}</h2>\n            </div>\n          </div>\n\n          <div class=\"workspace-alert success\" *ngIf=\"actionMessage\">{{ actionMessage }}</div>\n\n          <div class=\"admin-money-grid\">\n            <section class=\"admin-money-card damage-card\">\n              <div class=\"admin-card-heading\">\n                <span class=\"admin-card-icon\">🛡️</span>\n                <div>\n                  <h3>{{ t('chargeWarrantyForDamages') }}</h3>\n                  <p>{{ t('warrantyAvailable') }} · {{ formatMoney(warrantyRemainingAmount) }}</p>\n                </div>\n              </div>\n\n              <label>{{ t('amount') }}\n                <div class=\"money-input-wrap\">\n                  <span>€</span>\n                  <input type=\"number\" min=\"0\" [max]=\"warrantyRemainingAmount\" step=\"0.01\" [(ngModel)]=\"adminWarrantyChargeAmount\" name=\"adminWarrantyChargeAmount\" />\n                </div>\n              </label>\n              <label>{{ t('damageReason') }}\n                <textarea rows=\"4\" [(ngModel)]=\"adminWarrantyChargeReason\" name=\"adminWarrantyChargeReason\"></textarea>\n              </label>\n              <button class=\"btn btn-danger finance-action\" type=\"button\" [disabled]=\"!canAdminChargeWarranty()\" (click)=\"chargeWarrantyForDamage()\">\n                {{ adminChargingWarranty ? t('saving') : t('chargeWarrantyForDamages') }}\n              </button>\n\n              <div class=\"operation-receipt damage-receipt\" *ngIf=\"savedWarrantyChargeAmount > 0\">\n                <div class=\"operation-receipt-icon\">✓</div>\n                <div class=\"operation-receipt-body\">\n                  <span class=\"operation-receipt-label\">{{ t('lastOperation') }}</span>\n                  <strong>{{ formatMoney(savedWarrantyChargeAmount) }}</strong>\n                  <p *ngIf=\"savedWarrantyChargeReason\">{{ savedWarrantyChargeReason }}</p>\n                  <small>\n                    <span>{{ savedWarrantyChargeMethodLabel }}</span>\n                    <span *ngIf=\"savedWarrantyChargeStatus\"> · {{ savedWarrantyChargeStatusLabel }}</span>\n                    <span *ngIf=\"savedWarrantyChargeDate\"> · {{ formatDisplayDate(savedWarrantyChargeDate) }}</span>\n                  </small>\n                  <code *ngIf=\"savedWarrantyChargeStripeId\">{{ savedWarrantyChargeStripeId }}</code>\n                </div>\n              </div>\n            </section>\n\n            <section class=\"admin-money-card refund-card\">\n              <div class=\"admin-card-heading\">\n                <span class=\"admin-card-icon\">↩</span>\n                <div>\n                  <h3>{{ t('refundCustomer') }}</h3>\n                  <p>{{ t('refundPaymentType') }}</p>\n                </div>\n              </div>\n\n              <label>{{ t('refundPaymentType') }}\n                <select [(ngModel)]=\"adminRefundPaymentType\" name=\"adminRefundPaymentType\">\n                  <option value=\"deposit\">{{ t('deposit') }}</option>\n                  <option value=\"balance\">{{ t('boatBalance') }}</option>\n                  <option value=\"skipper_fee\">{{ t('skipper') }}</option>\n                  <option value=\"extra_service\">{{ t('extraServicePayment') }}</option>\n                  <option value=\"ad_hoc\">{{ t('additionalPayments') }}</option>\n                </select>\n              </label>\n              <label>{{ t('amount') }}\n                <div class=\"money-input-wrap\">\n                  <span>€</span>\n                  <input type=\"number\" min=\"0\" step=\"0.01\" [(ngModel)]=\"adminRefundAmount\" name=\"adminRefundAmount\" />\n                </div>\n              </label>\n              <label>{{ t('paymentIntentOptional') }}\n                <input type=\"text\" [(ngModel)]=\"adminRefundPaymentIntentId\" name=\"adminRefundPaymentIntentId\" />\n              </label>\n              <label>{{ t('description') }}\n                <textarea rows=\"4\" [(ngModel)]=\"adminRefundReason\" name=\"adminRefundReason\"></textarea>\n              </label>\n              <button class=\"btn btn-refund finance-action\" type=\"button\" [disabled]=\"!canAdminRefund()\" (click)=\"refundCustomer()\">\n                {{ adminRefunding ? t('saving') : t('refundCustomer') }}\n              </button>\n            </section>\n          </div>\n\n          <section class=\"financial-history-card\">\n            <div class=\"history-heading\">\n              <h3>{{ t('financialHistory') }}</h3>\n              <span>{{ financialHistoryRows.length }}</span>\n            </div>\n\n            <div class=\"history-empty\" *ngIf=\"financialHistoryRows.length === 0\">{{ t('noFinancialOperations') }}</div>\n\n            <div class=\"history-list\" *ngIf=\"financialHistoryRows.length > 0\">\n              <article class=\"history-row\" *ngFor=\"let row of financialHistoryRows\" [class.damage]=\"row.kind === 'damage'\" [class.refund]=\"row.kind === 'refund'\">\n                <div class=\"history-row-main\">\n                  <strong>{{ row.label }}</strong>\n                  <span *ngIf=\"row.description\">{{ row.description }}</span>\n                  <small>{{ row.date || '-' }} · {{ row.method || '-' }} · {{ row.status || '-' }}</small>\n                  <code *ngIf=\"row.reference\">{{ row.reference }}</code>\n                </div>\n                <div class=\"history-amount\" [class.negative]=\"row.signedAmount < 0\">\n                  {{ row.signedAmount < 0 ? '−' : '+' }}{{ formatMoney(row.amount) }}\n                </div>\n              </article>\n            </div>\n          </section>\n        </article>\n      </section>\n\n      <article class=\"cockpit-section customer-cost\" *ngIf=\"false && !editMode && vm.isAdmin\">\n        <div class=\"summary-title-row\">\n          <div>\n            <h2>{{ t('customerFinancialSummary') }}</h2>\n            <p class=\"section-help\">{{ t('customerQuestion') }}</p>\n          </div>\n          <span class=\"status-badge paid\">{{ vm.paymentStatusBadge }}</span>\n        </div>\n\n        <div class=\"finance-table\">\n          <h3>{{ t('customerCost') }}</h3>\n          <div class=\"finance-line\"><span>{{ t('boatOuting') }}</span><strong>{{ formatMoney(vm.boatOutingCost) }}</strong></div>\n          <div class=\"finance-line\" *ngIf=\"vm.fuelCost > 0\"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.fuelCost) }}</strong></div>\n          <div class=\"finance-line\"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.skipperCost) }}</strong></div>\n          <div class=\"finance-line\"><span>{{ t('extraServices') }}</span><strong>{{ formatMoney(vm.extraServicesCost) }}</strong></div>\n          <div class=\"finance-line finance-total\"><span>{{ t('totalCustomerCost') }}</span><strong>{{ formatMoney(vm.totalCustomerCost) }}</strong></div>\n          <div class=\"finance-line paid-line\"><span>{{ t('alreadyPaidDeposit') }}</span><strong>{{ formatMoney(vm.depositPaidAmount) }} <small>✓ {{ t('stripe') }}</small></strong></div>\n          <div class=\"finance-line\"><span>{{ t('remainingBoatBalance') }}</span><strong>{{ formatMoney(vm.remainingBoatBalance) }}</strong></div>\n          <div class=\"finance-line\" *ngIf=\"vm.remainingFuelCost > 0\"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.remainingFuelCost) }}</strong></div>\n          <div class=\"finance-line\"><span>{{ t('remainingSkipperFee') }}</span><strong>{{ formatMoney(vm.remainingSkipperFee) }}</strong></div>\n          <div class=\"finance-line\" *ngIf=\"vm.remainingExtraServices > 0\"><span>{{ t('remainingExtraServices') }}</span><strong>{{ formatMoney(vm.remainingExtraServices) }}</strong></div>\n          <div class=\"finance-line finance-total\"><span>{{ t('totalRemaining') }}</span><strong>{{ formatMoney(vm.totalRemainingCustomer) }}</strong></div>\n        </div>\n      </article>\n\n      <article class=\"cockpit-section alegria-revenue\" *ngIf=\"false && !editMode && vm.isAdmin\">\n        <div class=\"summary-title-row\">\n          <div>\n            <h2>{{ t('alegriaCollections') }}</h2>\n            <p class=\"section-help\">{{ t('alegriaQuestion') }}</p>\n          </div>\n          <span class=\"status-badge done\">{{ t('stripe') }} / {{ t('collectedOnboard') }}</span>\n        </div>\n\n        <div class=\"finance-columns\">\n          <div class=\"finance-table compact\">\n            <h3>{{ t('collectedOnline') }}</h3>\n            <div class=\"finance-line\"><span>{{ t('deposit') }}</span><strong>{{ formatMoney(vm.stripeDepositCollected) }}</strong></div>\n            <div class=\"finance-line finance-total\"><span>{{ t('totalStripe') }}</span><strong>{{ formatMoney(vm.totalStripeCollections) }}</strong></div>\n          </div>\n\n          <div class=\"finance-table compact\">\n            <h3>{{ t('collectedOnboard') }}</h3>\n            <div class=\"finance-line\"><span>{{ t('boatBalance') }}</span><strong>{{ formatMoney(vm.onboardBoatBalanceCollected) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.onboardSkipperCollected) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('catering') }}</span><strong>{{ formatMoney(vm.totalDirectCatering) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('tips') }}</span><strong>{{ formatMoney(vm.totalDirectTips) }}</strong></div>\n            <div class=\"finance-line\"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.totalDirectCleaningFuel) }}</strong></div>\n            <div class=\"finance-line finance-total\"><span>{{ t('totalOnboard') }}</span><strong>{{ formatMoney(vm.totalOnboardCollections) }}</strong></div>\n          </div>\n        </div>\n      </article>\n\n      <article class=\"cockpit-section outstanding-cockpit\" *ngIf=\"false && !editMode && vm.isAdmin && vm.outstandingTotal > 0\">\n        <h2>{{ t('outstanding') }}</h2>\n        <div class=\"finance-table compact\">\n          <div class=\"finance-line\"><span>{{ t('boatBalance') }}</span><strong>{{ formatMoney(vm.outstandingBoatBalance) }}</strong></div>\n          <div class=\"finance-line\" *ngIf=\"vm.outstandingFuelCost > 0\"><span>{{ t('fuel') }}</span><strong>{{ formatMoney(vm.outstandingFuelCost) }}</strong></div>\n          <div class=\"finance-line\"><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm.outstandingSkipperFee) }}</strong></div>\n          <div class=\"finance-line\" *ngIf=\"vm.outstandingExtraServices > 0\"><span>{{ t('extraServices') }}</span><strong>{{ formatMoney(vm.outstandingExtraServices) }}</strong></div>\n          <div class=\"finance-line finance-total\"><span>{{ t('total') }}</span><strong>{{ formatMoney(vm.outstandingTotal) }}</strong></div>\n        </div>\n      </article>\n\n      <article class=\"cockpit-section warranty-cockpit\" *ngIf=\"false && !editMode && vm.isAdmin\">\n        <div class=\"summary-title-row\">\n          <div>\n            <h2>{{ t('warranty') }}</h2>\n            <p class=\"section-help\">{{ t('notRevenue') }}</p>\n          </div>\n          <span class=\"status-badge warranty\">{{ vm.warrantyStatusBadge }}</span>\n        </div>\n        <div class=\"financial-grid\">\n          <div><span>{{ t('warranty') }}</span><strong>{{ formatMoney(vm.display.warrantyAmount || 0) }}</strong></div>\n          <div><span>{{ t('method') }}</span><strong>{{ warrantyMethodLabel(vm.display.warrantyPaymentChoice || vm.display.warrantyMethod) }}</strong></div>\n          <div><span>{{ t('status') }}</span><strong>{{ vm.warrantyStatusBadge }}</strong></div>\n        </div>\n      </article>\n\n\n      <div class=\"terms-modal-backdrop\" *ngIf=\"termsModalOpen\" (click)=\"closeTermsModal()\">\n        <section class=\"terms-modal\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"bookingTermsTitle\" (click)=\"$event.stopPropagation()\">\n          <div class=\"terms-modal-header\">\n            <div>\n              <span class=\"eyebrow\">{{ t('termsAndConditions') }}</span>\n              <h2 id=\"bookingTermsTitle\">{{ t('termsModalTitle') }}</h2>\n            </div>\n            <button class=\"btn btn-secondary btn-small\" type=\"button\" (click)=\"closeTermsModal()\">{{ t('close') }}</button>\n          </div>\n\n          <div class=\"terms-content tc-scrollable\" tabindex=\"0\">\n            <ng-container *ngFor=\"let section of termsSectionsVm\">\n              <h3>{{ section.title }}</h3>\n              <p *ngFor=\"let paragraph of section.paragraphs\">{{ paragraph }}</p>\n            </ng-container>\n          </div>\n\n          <div class=\"terms-modal-actions\">\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"closeTermsModal()\">{{ t('readTermsButton') }}</button>\n          </div>\n        </section>\n      </div>\n\n    </article>\n  </div>\n</section>\n";
 
 /***/ }),
 
@@ -8269,7 +8278,13 @@ let BookingWorkflowService = class BookingWorkflowService {
       const proofStatus = String(warrantyPayment?.status || '').toLowerCase();
       return !!paymentMethodId && (!!setupIntentId || proofStatus.includes('card_registered') || proofStatus.includes('warranty_card_saved') || proofStatus.includes('setup_succeeded'));
     }
-    if (method.includes('cash')) return status.includes('cash_received') || booking?.warrantyCashReceived === true || booking?.warrantyCashConfirmed === true;
+    // For a cash warranty, the booking step represents the customer's choice of
+    // warranty method. The cash itself is received later on board, but selecting
+    // and saving that method is enough to complete the booking workflow step.
+    if (method.includes('cash')) return true;
+    if (status.includes('cash_selected') || status.includes('cash_received')) return true;
+    if (booking?.warrantyCashSelected === true) return true;
+    if (booking?.warrantyCashReceived === true || booking?.warrantyCashConfirmed === true) return true;
     return false;
   }
   build(booking, financial) {
@@ -23737,14 +23752,13 @@ let BookingApiService = class BookingApiService {
     const endpoints = [`${this.baseUrl}/pay/outing-deposit-complete`, `${this.baseUrl}/api/payments/complete-deposit-payment`, `${this.baseUrl}/stripe/deposit-complete`];
     return new rxjs__WEBPACK_IMPORTED_MODULE_5__.Observable(observer => {
       const markLocally = /*#__PURE__*/function () {
-        var _ref = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (backendResponse = {}, backendError = null) {
+        var _ref = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (backendResponse = {}) {
           try {
             const localResult = yield _this5.markDepositPaidLocally(payload, backendResponse);
             observer.next({
               ...(backendResponse || {}),
               ...(localResult || {}),
-              localDepositSaved: true,
-              backendError: backendError?.message || backendError?.error?.message || ''
+              localDepositSaved: true
             });
             observer.complete();
           } catch (localError) {
@@ -23757,7 +23771,9 @@ let BookingApiService = class BookingApiService {
       }();
       this.postFirstAvailable(endpoints, payload).subscribe({
         next: response => markLocally(response),
-        error: error => markLocally({}, error)
+        // Never convert a failed/unverified Stripe completion into a locally
+        // paid booking. The backend first retrieves and verifies the session.
+        error: error => observer.error(error)
       });
     });
   }
@@ -23883,114 +23899,14 @@ let BookingApiService = class BookingApiService {
     });
   }
   completeBalancePayment(payload) {
-    var _this7 = this;
     const endpoints = [`${this.baseUrl}/pay/outing-balance-complete`, `${this.baseUrl}/pay/outing-remaining-complete`, `${this.baseUrl}/api/payments/complete-balance-payment`, `${this.baseUrl}/api/payments/complete-remaining-payment`, `${this.baseUrl}/stripe/balance-complete`, `${this.baseUrl}/stripe/remaining-complete`];
-    return new rxjs__WEBPACK_IMPORTED_MODULE_5__.Observable(observer => {
-      const markLocally = /*#__PURE__*/function () {
-        var _ref2 = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (backendResponse = {}, backendError = null) {
-          try {
-            const localResult = yield _this7.markBalancePaidLocally(payload, backendResponse);
-            observer.next({
-              ...(backendResponse || {}),
-              ...(localResult || {}),
-              localBalanceSaved: true,
-              backendError: backendError?.message || backendError?.error?.message || ''
-            });
-            observer.complete();
-          } catch (localError) {
-            observer.error(localError);
-          }
-        });
-        return function markLocally() {
-          return _ref2.apply(this, arguments);
-        };
-      }();
-      this.postFirstAvailable(endpoints, payload).subscribe({
-        next: response => markLocally(response),
-        error: error => markLocally({}, error)
-      });
-    });
+    // The backend retrieves the Checkout Session directly from Stripe and
+    // persists the result only when Stripe confirms it is paid. The browser
+    // must never mark a payment as paid from redirect query parameters.
+    return this.postFirstAvailable(endpoints, payload);
   }
-  markBalancePaidLocally(payload, backendResponse = {}) {
-    var _this8 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const bookingId = String(payload.bookingId || '').trim();
-      if (!bookingId) throw new Error('Missing booking id for local balance update.');
-      const existing = yield _this8.getBookingFromFirebase(bookingId).catch(() => undefined);
-      const raw = existing?.raw || existing || {};
-      const now = Date.now();
-      const existingPayments = raw.payments || {};
-      const explicitAmount = Number(payload.balanceAmount ?? payload.amount ?? backendResponse?.balanceAmount ?? backendResponse?.amount ?? 0) || 0;
-      const storedBalance = Number(raw.balanceAmount ?? raw.remainingFeesAmount ?? raw.remainingOnboardAmount ?? raw.remainingAlegriaRevenue ?? raw.alegriaRemaining ?? existingPayments?.pendingAlegria?.amount ?? existingPayments?.balance?.amount ?? 0) || 0;
-      const computedRemaining = _this8.computeRemainingAlegriaAmount(raw);
-      const paidAmount = explicitAmount > 0 ? explicitAmount : _this8.normalizePaymentAmount(storedBalance || computedRemaining);
-      const sessionId = String(payload.sessionId || payload.checkoutSessionId || backendResponse?.sessionId || backendResponse?.checkoutSessionId || backendResponse?.stripeCheckoutSessionId || '').trim();
-      const paymentIntentId = String(backendResponse?.paymentIntentId || backendResponse?.stripePaymentIntentId || '').trim();
-      yield _this8.updateBooking(bookingId, {
-        balancePaid: true,
-        balanceStatus: 'paid',
-        balancePaymentStatus: 'paid',
-        balancePaymentMethod: 'Stripe',
-        balancePaidAt: raw.balancePaidAt || now,
-        remainingFeesAmount: 0,
-        remainingOnboardAmount: 0,
-        remainingAlegriaRevenue: 0,
-        alegriaPaid: true,
-        alegriaPaidAmount: (Number(raw.alegriaPaidAmount || existingPayments?.alegria?.amount || existingPayments?.balance?.amount || 0) || 0) + paidAmount,
-        alegriaPaymentStatus: 'paid',
-        paymentStatus: 'balance_paid',
-        paymentStatusLabel: 'balance_paid',
-        payments: {
-          ...existingPayments,
-          alegria: {
-            ...(existingPayments.alegria || {}),
-            paid: true,
-            status: 'paid',
-            paymentStatus: 'paid',
-            paymentType: 'alegria_balance',
-            type: 'alegria_balance',
-            method: 'Stripe',
-            amount: (Number(existingPayments?.alegria?.amount || 0) || 0) + paidAmount,
-            amount_total: Math.round(((Number(existingPayments?.alegria?.amount || 0) || 0) + paidAmount) * 100),
-            currency: 'eur',
-            bookingId,
-            ownerId: raw.ownerId || 'alegria',
-            checkoutSessionId: sessionId,
-            stripeCheckoutSessionId: sessionId,
-            stripePaymentIntentId: paymentIntentId,
-            paidAt: existingPayments.alegria?.paidAt || now,
-            modifiedTS: now,
-            source: 'stripe_return'
-          },
-          pendingAlegria: null,
-          balance: {
-            ...(existingPayments.balance || {}),
-            paid: true,
-            status: 'paid',
-            paymentStatus: 'paid',
-            paymentType: 'balance',
-            type: 'balance',
-            method: 'Stripe',
-            amount: paidAmount,
-            amount_total: Math.round(paidAmount * 100),
-            currency: 'eur',
-            bookingId,
-            ownerId: raw.ownerId || 'alegria',
-            checkoutSessionId: sessionId,
-            stripeCheckoutSessionId: sessionId,
-            stripePaymentIntentId: paymentIntentId,
-            paidAt: existingPayments.balance?.paidAt || now,
-            modifiedTS: now,
-            source: 'stripe_return'
-          }
-        }
-      });
-      return {
-        bookingId,
-        balancePaid: true,
-        balanceAmount: paidAmount
-      };
-    })();
+  completeAdditionalPayment(payload) {
+    return this.postFirstAvailable([`${this.baseUrl}/pay/outing-additional-payment-complete`, `${this.baseUrl}/api/payments/complete-additional-payment`, `${this.baseUrl}/stripe/additional-payment-complete`], payload);
   }
   normalizePaymentAmount(value) {
     const amount = Number(value || 0);
@@ -24054,7 +23970,7 @@ let BookingApiService = class BookingApiService {
   /**
    * Payment-page source of truth.
    * - Booking/payment state comes from bnBookings/{bookingId}.
-   * - Stripe transaction details come only from bnPayment records linked to the booking/offer.
+   * - Stripe transaction details come only from backendpayments records linked to the booking/offer.
    * This avoids mixing backend summary endpoints with the persisted booking state shown to the customer.
    */
   getPaymentPageState(bookingId) {
@@ -24063,24 +23979,24 @@ let BookingApiService = class BookingApiService {
     }));
   }
   getPaymentPageStateFromFirebase(bookingId) {
-    var _this9 = this;
+    var _this7 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const id = String(bookingId || '').trim();
       if (!id) throw new Error('Missing booking id.');
-      const booking = yield _this9.getBookingFromFirebase(id).catch(() => undefined);
+      const booking = yield _this7.getBookingFromFirebase(id).catch(() => undefined);
       const raw = booking?.raw || booking || {};
       const offerId = String(raw.offerId || raw.relatedBookingId || raw.sourceOfferId || raw.bookingId || id).trim();
       const ids = Array.from(new Set([id, offerId].filter(Boolean)));
       const stripeRecords = [];
       for (const matchId of ids) {
-        const byBooking = yield _this9.fetchBnPaymentRecordsByField('bookingId', matchId).catch(() => null);
+        const byBooking = yield _this7.fetchBnPaymentRecordsByField('bookingId', matchId).catch(() => null);
         Object.entries(byBooking || {}).forEach(([key, value]) => {
           if (value && typeof value === 'object') stripeRecords.push({
             paymentId: value.paymentId || key,
             ...value
           });
         });
-        const byOffer = yield _this9.fetchBnPaymentRecordsByField('offerId', matchId).catch(() => null);
+        const byOffer = yield _this7.fetchBnPaymentRecordsByField('offerId', matchId).catch(() => null);
         Object.entries(byOffer || {}).forEach(([key, value]) => {
           if (value && typeof value === 'object') stripeRecords.push({
             paymentId: value.paymentId || key,
@@ -24106,17 +24022,23 @@ let BookingApiService = class BookingApiService {
     })();
   }
   fetchBnPaymentRecordsByField(field, value) {
-    var _this10 = this;
+    var _this8 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const safeField = encodeURIComponent(`\"${field}\"`).replace(/%5C/g, '');
-      const encodedValue = encodeURIComponent(`\"${value}\"`).replace(/%5C/g, '');
-      const collection = 'bnPayment';
-      for (const baseUrl of _this10.restDatabaseUrls) {
+      const collection = 'backendpayments';
+      for (const baseUrl of _this8.restDatabaseUrls) {
         try {
           const base = baseUrl.replace(/\/+$/, '');
-          const url = `${base}/${collection}.json?orderBy=${safeField}&equalTo=${encodedValue}`;
-          const result = yield _this10.http.get(url).toPromise();
-          if (result && typeof result === 'object') return result;
+          const url = `${base}/${collection}.json`;
+          const result = yield _this8.http.get(url).toPromise();
+          if (result && typeof result === 'object') {
+            return Object.keys(result).reduce((matches, key) => {
+              const record = result[key];
+              if (record && String(record[field] || '') === String(value || '')) {
+                matches[key] = record;
+              }
+              return matches;
+            }, {});
+          }
         } catch {}
       }
       return null;
@@ -24163,7 +24085,7 @@ let BookingApiService = class BookingApiService {
     }), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.of)([])));
   }
   createExtraServiceRequest(bookingId, extraService) {
-    var _this11 = this;
+    var _this9 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const id = extraService.id || `extra_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
       const payload = {
@@ -24176,7 +24098,7 @@ let BookingApiService = class BookingApiService {
         createdTS: Date.now(),
         modifiedTS: Date.now()
       };
-      const existing = yield _this11.getBookingFromFirebase(bookingId).catch(() => undefined);
+      const existing = yield _this9.getBookingFromFirebase(bookingId).catch(() => undefined);
       const raw = existing?.raw || existing || {};
       const extraServices = Array.isArray(raw.extraServices) ? [...raw.extraServices] : [];
       const index = extraServices.findIndex(item => item.id === id);
@@ -24185,7 +24107,7 @@ let BookingApiService = class BookingApiService {
       } else {
         extraServices.push(payload);
       }
-      yield _this11.updateBooking(bookingId, {
+      yield _this9.updateBooking(bookingId, {
         ...raw,
         extraServices
       });
@@ -24227,11 +24149,11 @@ let BookingApiService = class BookingApiService {
     return this.postFirstAvailable([`${this.baseUrl}/pay/outing-refund`, `${this.baseUrl}/api/payments/refund`, `${this.baseUrl}/stripe/booking-refund`], payload);
   }
   readFirebasePath(path) {
-    var _this12 = this;
+    var _this10 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      for (const baseUrl of _this12.restDatabaseUrls) {
+      for (const baseUrl of _this10.restDatabaseUrls) {
         try {
-          return yield _this12.http.get(`${baseUrl}${path}.json`).toPromise();
+          return yield _this10.http.get(`${baseUrl}${path}.json`).toPromise();
         } catch {}
       }
       throw new Error(`Unable to read ${path}`);
@@ -24286,7 +24208,7 @@ let BookingApiService = class BookingApiService {
     return this.isRequestBooking(booking) && !['cancelled_by_customer', 'deleted', 'offer_issued', 'offer_sent', 'accepted', 'confirmed'].includes(status);
   }
   updateCustomerRequest(bookingId, payload) {
-    var _this13 = this;
+    var _this11 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const patch = {
         ...payload,
@@ -24296,13 +24218,13 @@ let BookingApiService = class BookingApiService {
         requestNeedsAdminOffer: true,
         pricingToBeFinalizedByAdmin: true
       };
-      yield _this13.updateBooking(bookingId, patch);
+      yield _this11.updateBooking(bookingId, patch);
     })();
   }
   cancelCustomerRequest(bookingId) {
-    var _this14 = this;
+    var _this12 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      yield _this14.updateBooking(bookingId, {
+      yield _this12.updateBooking(bookingId, {
         status: 'cancelled_by_customer',
         bookingRequestStatus: 'cancelled_by_customer',
         requestCancelledByCustomerAt: Date.now(),
@@ -24312,29 +24234,29 @@ let BookingApiService = class BookingApiService {
     })();
   }
   deleteBooking(bookingId) {
-    var _this15 = this;
+    var _this13 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const store = _this15.storeDb;
-      const util = _this15.utilsSvc;
-      for (const db of _this15.getRealtimeDatabaseCandidates(store, util)) {
+      const store = _this13.storeDb;
+      const util = _this13.utilsSvc;
+      for (const db of _this13.getRealtimeDatabaseCandidates(store, util)) {
         try {
-          yield db.ref(`${_this15.collectionName}/${bookingId}`).remove();
+          yield db.ref(`${_this13.collectionName}/${bookingId}`).remove();
           return;
         } catch {}
       }
-      for (const baseUrl of _this15.restDatabaseUrls) {
+      for (const baseUrl of _this13.restDatabaseUrls) {
         try {
-          yield _this15.http.delete(`${baseUrl.replace(/\/+$/, '')}/${_this15.collectionName}/${bookingId}.json`).toPromise();
+          yield _this13.http.delete(`${baseUrl.replace(/\/+$/, '')}/${_this13.collectionName}/${bookingId}.json`).toPromise();
           return;
         } catch {}
       }
       if (typeof store.deleteObject === 'function') {
         try {
-          yield store.deleteObject(_this15.collectionName, bookingId);
+          yield store.deleteObject(_this13.collectionName, bookingId);
           return;
         } catch {}
       }
-      yield _this15.updateBooking(bookingId, {
+      yield _this13.updateBooking(bookingId, {
         status: 'deleted',
         bookingRequestStatus: 'deleted'
       });
@@ -24357,30 +24279,30 @@ let BookingApiService = class BookingApiService {
     });
   }
   updateBooking(bookingId, payload) {
-    var _this16 = this;
+    var _this14 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const store = _this16.storeDb;
-      const util = _this16.utilsSvc;
-      const existing = yield _this16.getBookingFromFirebase(bookingId).catch(() => undefined);
+      const store = _this14.storeDb;
+      const util = _this14.utilsSvc;
+      const existing = yield _this14.getBookingFromFirebase(bookingId).catch(() => undefined);
       const merged = {
         ...(existing?.raw || existing || {}),
         ...payload,
         bookingId,
         modifiedTS: Date.now()
       };
-      const notify = () => _this16.notifyBookingUpdated(bookingId, payload);
+      const notify = () => _this14.notifyBookingUpdated(bookingId, payload);
       // Prefer real RTDB handles when available.
-      for (const db of _this16.getRealtimeDatabaseCandidates(store, util)) {
+      for (const db of _this14.getRealtimeDatabaseCandidates(store, util)) {
         try {
-          yield db.ref(`${_this16.collectionName}/${bookingId}`).set(merged);
+          yield db.ref(`${_this14.collectionName}/${bookingId}`).set(merged);
           notify();
           return;
         } catch {}
       }
       // REST fallback to root /bnBookings/{bookingId}.
-      for (const baseUrl of _this16.restDatabaseUrls) {
+      for (const baseUrl of _this14.restDatabaseUrls) {
         try {
-          yield _this16.http.put(`${baseUrl.replace(/\/+$/, '')}/${_this16.collectionName}/${bookingId}.json`, merged).toPromise();
+          yield _this14.http.put(`${baseUrl.replace(/\/+$/, '')}/${_this14.collectionName}/${bookingId}.json`, merged).toPromise();
           notify();
           return;
         } catch {}
@@ -24389,16 +24311,16 @@ let BookingApiService = class BookingApiService {
         throw new Error('Firebase updateObject is not available.');
       }
       try {
-        yield store.updateObject(_this16.collectionName, merged, bookingId);
+        yield store.updateObject(_this14.collectionName, merged, bookingId);
         notify();
         return;
       } catch {}
       try {
-        yield store.updateObject(_this16.collectionName, bookingId, merged);
+        yield store.updateObject(_this14.collectionName, bookingId, merged);
         notify();
         return;
       } catch {}
-      yield store.updateObject(util.backendFBstoreId, util.mdb, _this16.collectionName, merged, bookingId);
+      yield store.updateObject(util.backendFBstoreId, util.mdb, _this14.collectionName, merged, bookingId);
       notify();
     })();
   }
@@ -24424,90 +24346,90 @@ let BookingApiService = class BookingApiService {
     }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_6__.map)(response => this.normalizeBooking(response?.booking || response)));
   }
   getBookingsFromFirebase(email) {
-    var _this17 = this;
+    var _this15 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const raw = yield _this17.readBookingsRaw();
-      const bookings = _this17.normalizeBookings(raw).filter(booking => String(booking.boatId || 'alegria') === _this17.boatContext.boatId).filter(booking => String(booking.bookingStatus || booking.status || '').toLowerCase() !== 'deleted').filter(booking => String(booking.bookingRequestStatus || booking.status || '').toLowerCase() !== 'cancelled_by_customer').sort((a, b) => String(b.outingDate || '').localeCompare(String(a.outingDate || '')) || String(b.departureTime || '').localeCompare(String(a.departureTime || '')));
+      const raw = yield _this15.readBookingsRaw();
+      const bookings = _this15.normalizeBookings(raw).filter(booking => String(booking.boatId || 'alegria') === _this15.boatContext.boatId).filter(booking => String(booking.bookingStatus || booking.status || '').toLowerCase() !== 'deleted').filter(booking => String(booking.bookingRequestStatus || booking.status || '').toLowerCase() !== 'cancelled_by_customer').sort((a, b) => String(b.outingDate || '').localeCompare(String(a.outingDate || '')) || String(b.departureTime || '').localeCompare(String(a.departureTime || '')));
       if (!email) return bookings;
       const expected = String(email).trim().toLowerCase();
       return bookings.filter(booking => String(booking.email || '').trim().toLowerCase() === expected);
     })();
   }
   getBookingFromFirebase(bookingId) {
-    var _this18 = this;
+    var _this16 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const bookings = yield _this18.getBookingsFromFirebase();
+      const bookings = yield _this16.getBookingsFromFirebase();
       return bookings.find(booking => booking.bookingId === bookingId);
     })();
   }
   readBookingsRaw() {
-    var _this19 = this;
+    var _this17 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const store = _this19.storeDb;
-      const util = _this19.utilsSvc;
+      const store = _this17.storeDb;
+      const util = _this17.utilsSvc;
       // Current Firebase structure from your export:
       // /bnBookings/{bookingId}
       // Example: /bnBookings/202606071
-      const restValue = yield _this19.readBookingsViaRest();
-      const extractedRest = _this19.extractBookings(restValue);
-      if (_this19.hasBookings(extractedRest)) return extractedRest;
-      for (const db of _this19.getRealtimeDatabaseCandidates(store, util)) {
-        const rootValue = yield _this19.readDatabasePath(db, _this19.collectionName);
-        const extractedRoot = _this19.extractBookings(rootValue);
-        if (_this19.hasBookings(extractedRoot)) return extractedRoot;
+      const restValue = yield _this17.readBookingsViaRest();
+      const extractedRest = _this17.extractBookings(restValue);
+      if (_this17.hasBookings(extractedRest)) return extractedRest;
+      for (const db of _this17.getRealtimeDatabaseCandidates(store, util)) {
+        const rootValue = yield _this17.readDatabasePath(db, _this17.collectionName);
+        const extractedRoot = _this17.extractBookings(rootValue);
+        if (_this17.hasBookings(extractedRoot)) return extractedRoot;
         if (util.backendFBstoreId) {
-          const scopedValue = yield _this19.readDatabasePath(db, `${util.backendFBstoreId}/${_this19.collectionName}`);
-          const extractedScoped = _this19.extractBookings(scopedValue);
-          if (_this19.hasBookings(extractedScoped)) return extractedScoped;
+          const scopedValue = yield _this17.readDatabasePath(db, `${util.backendFBstoreId}/${_this17.collectionName}`);
+          const extractedScoped = _this17.extractBookings(scopedValue);
+          if (_this17.hasBookings(extractedScoped)) return extractedScoped;
         }
       }
       const candidates = [];
       if (typeof store.getObject === 'function') {
-        candidates.push(() => store.getObject(_this19.collectionName));
-        candidates.push(() => store.getObject(`/${_this19.collectionName}`));
-        candidates.push(() => store.getObject(_this19.collectionName, -1));
-        candidates.push(() => store.getObject(undefined, util.mdb, _this19.collectionName, -1));
-        candidates.push(() => store.getObject(null, util.mdb, _this19.collectionName, -1));
-        candidates.push(() => store.getObject(util.backendFBstoreId, util.mdb, _this19.collectionName, -1));
-        candidates.push(() => store.getObject(util.backendFBstoreId, util.mdb, _this19.collectionName));
-        candidates.push(() => store.getObject(`${util.backendFBstoreId}/${_this19.collectionName}`));
-        candidates.push(() => store.getObject('1000', util.mdb, _this19.collectionName, -1));
-        candidates.push(() => store.getObject('1000', util.mdb, _this19.collectionName));
+        candidates.push(() => store.getObject(_this17.collectionName));
+        candidates.push(() => store.getObject(`/${_this17.collectionName}`));
+        candidates.push(() => store.getObject(_this17.collectionName, -1));
+        candidates.push(() => store.getObject(undefined, util.mdb, _this17.collectionName, -1));
+        candidates.push(() => store.getObject(null, util.mdb, _this17.collectionName, -1));
+        candidates.push(() => store.getObject(util.backendFBstoreId, util.mdb, _this17.collectionName, -1));
+        candidates.push(() => store.getObject(util.backendFBstoreId, util.mdb, _this17.collectionName));
+        candidates.push(() => store.getObject(`${util.backendFBstoreId}/${_this17.collectionName}`));
+        candidates.push(() => store.getObject('1000', util.mdb, _this17.collectionName, -1));
+        candidates.push(() => store.getObject('1000', util.mdb, _this17.collectionName));
       }
       for (const candidate of candidates) {
         try {
           const value = yield candidate();
-          const extracted = _this19.extractBookings(value);
-          if (_this19.hasBookings(extracted)) return extracted;
+          const extracted = _this17.extractBookings(value);
+          if (_this17.hasBookings(extracted)) return extracted;
         } catch {}
       }
-      const memoryCandidates = [store.firebaseBSSdata?.[_this19.collectionName], store.firebaseBSSdata?.['1000']?.[_this19.collectionName], store.firebaseBSSdata?.[util.backendFBstoreId]?.[_this19.collectionName], store.firebaseBSSdata?.[util.backendFBstoreId], store.firebaseBSSdata, store[_this19.collectionName], store?.data?.[_this19.collectionName], store?.data?.['1000']?.[_this19.collectionName]];
+      const memoryCandidates = [store.firebaseBSSdata?.[_this17.collectionName], store.firebaseBSSdata?.['1000']?.[_this17.collectionName], store.firebaseBSSdata?.[util.backendFBstoreId]?.[_this17.collectionName], store.firebaseBSSdata?.[util.backendFBstoreId], store.firebaseBSSdata, store[_this17.collectionName], store?.data?.[_this17.collectionName], store?.data?.['1000']?.[_this17.collectionName]];
       for (const value of memoryCandidates) {
-        const extracted = _this19.extractBookings(value);
-        if (_this19.hasBookings(extracted)) return extracted;
+        const extracted = _this17.extractBookings(value);
+        if (_this17.hasBookings(extracted)) return extracted;
       }
       return [];
     })();
   }
   readBookingsViaRest() {
-    var _this20 = this;
+    var _this18 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const paths = [_this20.collectionName, `1000/${_this20.collectionName}`];
-      for (const baseUrl of _this20.restDatabaseUrls) {
+      const paths = [_this18.collectionName, `1000/${_this18.collectionName}`];
+      for (const baseUrl of _this18.restDatabaseUrls) {
         for (const path of paths) {
           try {
-            const value = yield _this20.http.get(`${baseUrl.replace(/\/+$/, '')}/${path}.json`).toPromise();
-            const extracted = _this20.extractBookings(value);
-            if (_this20.hasBookings(extracted)) return extracted;
+            const value = yield _this18.http.get(`${baseUrl.replace(/\/+$/, '')}/${path}.json`).toPromise();
+            const extracted = _this18.extractBookings(value);
+            if (_this18.hasBookings(extracted)) return extracted;
           } catch {}
         }
       }
       // Last chance: fetch root export and extract /bnBookings from it.
-      for (const baseUrl of _this20.restDatabaseUrls) {
+      for (const baseUrl of _this18.restDatabaseUrls) {
         try {
-          const value = yield _this20.http.get(`${baseUrl.replace(/\/+$/, '')}/.json`).toPromise();
-          const extracted = _this20.extractBookings(value);
-          if (_this20.hasBookings(extracted)) return extracted;
+          const value = yield _this18.http.get(`${baseUrl.replace(/\/+$/, '')}/.json`).toPromise();
+          const extracted = _this18.extractBookings(value);
+          if (_this18.hasBookings(extracted)) return extracted;
         } catch {}
       }
       return null;
@@ -25137,7 +25059,7 @@ let AdminBoatCalendarComponent = class AdminBoatCalendarComponent {
     const loadSequence = ++this.calendarLoadSequence;
     this.loading = true;
     this.error = '';
-    const calendarDataUrl = this.adminCalendarMode ? `${this.databaseUrl}/bnBookings.json` : `${this.databaseUrl}/backendcalendar.json`;
+    const calendarDataUrl = this.adminCalendarMode ? `${this.databaseUrl}/bnBookings.json` : `${this.databaseUrl}/backendcalendar/${encodeURIComponent(this.boatContext.boatId)}.json`;
     (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.forkJoin)({
       bookings: this.http.get(calendarDataUrl).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_6__.of)({}))),
       content: this.http.get(`${this.databaseUrl}/siteContent/${encodeURIComponent(this.boatContext.boatId)}/${this.currentLanguage}/adminCalendar.json`).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_6__.of)({})))
@@ -26744,9 +26666,25 @@ let BookingStateService = class BookingStateService {
     return booking?.cancelled === true || booking?.canceled === true || values.some(value => value === 'cancelled' || value === 'canceled' || value === 'deleted');
   }
   isCompleted(booking) {
-    const values = [booking?.bookingStatus, booking?.status, booking?.outingStatus, booking?.workflow?.status, booking?.bookingWorkflow?.status, booking?.raw?.bookingStatus, booking?.raw?.status].map(value => String(value ?? '').toLowerCase().trim());
+    if (booking?.completed === true || booking?.outingCompleted === true || booking?.workflow?.outingCompleted === true || booking?.bookingWorkflow?.outingCompleted === true) {
+      return true;
+    }
+    // An explicit outing status can complete the outing independently of the
+    // booking workflow status.
+    const outingValues = [booking?.outingStatus, booking?.workflow?.outingStatus, booking?.bookingWorkflow?.outingStatus, booking?.raw?.outingStatus].map(value => String(value ?? '').toLowerCase().trim());
     const completed = new Set(['completed', 'complete', 'closed', 'terminated', 'finished', 'done', 'outing_completed', 'booking_completed']);
-    return booking?.completed === true || booking?.outingCompleted === true || booking?.workflow?.outingCompleted === true || booking?.bookingWorkflow?.outingCompleted === true || values.some(value => completed.has(value));
+    if (outingValues.some(value => completed.has(value))) return true;
+    // Legacy bookingStatus="completed" often means that booking creation was
+    // completed, not that the boat outing has happened. Never show a future
+    // reservation as a completed outing because of that legacy value.
+    const genericValues = [booking?.bookingStatus, booking?.status, booking?.workflow?.status, booking?.bookingWorkflow?.status, booking?.raw?.bookingStatus, booking?.raw?.status].map(value => String(value ?? '').toLowerCase().trim());
+    if (!genericValues.some(value => completed.has(value))) return false;
+    const rawDate = booking?.outingDate || booking?.date || booking?.bookingDate || booking?.raw?.outingDate;
+    const outingTime = rawDate ? Date.parse(String(rawDate)) : Number.NaN;
+    if (!Number.isFinite(outingTime)) return false;
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
+    return outingTime <= endOfToday.getTime();
   }
   isAlegriaPaid(_booking, calculatedRemaining) {
     // The banner must reflect the canonical financial balance, not historical/imported
@@ -27480,12 +27418,20 @@ let BookingDetailComponent = class BookingDetailComponent {
     const params = this.route.snapshot.queryParamMap;
     const sessionId = params.get('session_id') || params.get('checkoutSessionId') || '';
     const paymentType = String(params.get('paymentType') || params.get('payment') || '').toLowerCase();
+    const paymentResult = String(params.get('payment') || '').toLowerCase();
     const warrantyResult = String(params.get('warranty') || '').toLowerCase();
     if (!this.bookingId) return;
+    // A Stripe cancel URL intentionally has no Checkout Session id. Never call
+    // a completion endpoint and never infer payment from paymentType alone.
+    if (['cancelled', 'canceled', 'cancel'].includes(paymentResult)) {
+      if (paymentType === 'alegria_balance') {
+        this.markPendingAlegriaCheckoutCancelled().finally(() => this.loadBooking());
+      }
+      return;
+    }
     if (warrantyResult === 'success' && sessionId) {
       this.bookingApi.completeWarrantySetup({
         bookingId: this.bookingId,
-        ownerId: 'alegria',
         sessionId,
         checkoutSessionId: sessionId
       }).subscribe({
@@ -27494,10 +27440,9 @@ let BookingDetailComponent = class BookingDetailComponent {
       });
       return;
     }
-    if (paymentType === 'deposit') {
+    if (paymentType === 'deposit' && paymentResult === 'success' && sessionId) {
       this.bookingApi.completeDepositPayment({
         bookingId: this.bookingId,
-        ownerId: 'alegria',
         sessionId,
         checkoutSessionId: sessionId
       }).subscribe({
@@ -27506,10 +27451,9 @@ let BookingDetailComponent = class BookingDetailComponent {
       });
       return;
     }
-    if (paymentType === 'balance' || paymentType === 'alegria_balance') {
+    if ((paymentType === 'balance' || paymentType === 'alegria_balance') && paymentResult === 'success' && sessionId) {
       this.bookingApi.completeBalancePayment({
         bookingId: this.bookingId,
-        ownerId: 'alegria',
         sessionId,
         checkoutSessionId: sessionId
       }).subscribe({
@@ -27518,165 +27462,129 @@ let BookingDetailComponent = class BookingDetailComponent {
       });
       return;
     }
-    if (paymentType === 'skipper_fee' || paymentType === 'skipper') {
-      this.markSkipperPaidAfterStripe(sessionId);
+    if ((paymentType === 'skipper_fee' || paymentType === 'skipper') && paymentResult === 'success' && sessionId) {
+      this.bookingApi.completeAdditionalPayment({
+        bookingId: this.bookingId,
+        sessionId,
+        checkoutSessionId: sessionId
+      }).subscribe({
+        next: () => this.loadBooking(),
+        error: error => {
+          this.error = error?.error?.error || error?.message || this.t('stripeCheckoutError');
+          this.loadBooking();
+        }
+      });
       return;
     }
-    if (['ad_hoc', 'adhoc', 'ad-hoc', 'extra_service', 'extra', 'tip', 'damage_charge'].includes(paymentType)) {
-      const adhocPaymentId = params.get('adhocPaymentId') || params.get('extraServiceId') || '';
-      this.markAdditionalPaymentPaidAfterStripe(sessionId, paymentType || 'ad_hoc', adhocPaymentId);
+    if (paymentResult === 'success' && sessionId && ['ad_hoc', 'adhoc', 'ad-hoc', 'extra_service', 'extra', 'tip', 'damage_charge'].includes(paymentType)) {
+      this.bookingApi.completeAdditionalPayment({
+        bookingId: this.bookingId,
+        sessionId,
+        checkoutSessionId: sessionId
+      }).subscribe({
+        next: () => this.loadBooking(),
+        error: error => {
+          this.error = error?.error?.error || error?.message || this.t('stripeCheckoutError');
+          this.loadBooking();
+        }
+      });
       return;
     }
   }
-  markSkipperPaidAfterStripe(sessionId) {
+  markPendingAlegriaCheckoutCancelled() {
     var _this = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this.bookingId) return;
       try {
         const current = yield _this.bookingApi.getBooking(_this.bookingId).toPromise();
         const raw = current?.raw || current || {};
         const payments = {
           ...(raw.payments || {})
         };
-        const amount = _this.number(raw.skipperCashAmount || raw.proposalSkipperPrice || payments.direct?.skipperCashAmount || payments.skipper?.amount || 0);
-        const now = Date.now();
+        const pending = payments.pendingAlegria;
+        const alegriaPayment = payments.alegria || {};
+        const unverifiedLocalPayment = String(alegriaPayment.source || '').toLowerCase() === 'stripe_return' && !alegriaPayment.stripePaymentIntentId && !alegriaPayment.paymentIntentId;
+        const cancelledAmount = unverifiedLocalPayment ? Number(alegriaPayment.amountEuros ?? alegriaPayment.amount ?? 0) || 0 : 0;
+        if (!pending && !unverifiedLocalPayment) return;
         yield _this.bookingApi.updateBooking(_this.bookingId, {
-          skipperPaid: true,
-          skipperStatus: 'paid',
-          skipperPaymentStatus: 'paid',
-          skipperPaidAmount: amount,
-          skipperPaidAt: raw.skipperPaidAt || now,
+          ...(unverifiedLocalPayment ? {
+            alegriaPaid: false,
+            alegriaPaidAmount: Math.max(0, (Number(raw.alegriaPaidAmount || 0) || 0) - cancelledAmount),
+            alegriaPaymentStatus: 'pending'
+          } : {}),
           payments: {
             ...payments,
-            skipper: {
-              ...(payments.skipper || {}),
-              paid: true,
-              status: 'paid',
-              paymentStatus: 'paid',
-              paymentType: 'skipper_fee',
-              type: 'skipper_fee',
-              method: 'Stripe',
-              amount,
-              amount_total: Math.round(amount * 100),
-              currency: 'eur',
-              bookingId: _this.bookingId,
-              checkoutSessionId: sessionId,
-              stripeCheckoutSessionId: sessionId,
-              paidAt: payments.skipper?.paidAt || now,
-              modifiedTS: now,
-              source: 'stripe_return'
-            },
-            direct: {
-              ...(payments.direct || {}),
-              skipperCashAmount: amount,
-              skipperPaid: true,
-              skipperStatus: 'paid',
-              skipperPaidAt: payments.direct?.skipperPaidAt || now
-            }
-          }
-        });
-      } finally {
-        _this.loadBooking();
-      }
-    })();
-  }
-  markAdditionalPaymentPaidAfterStripe(sessionId, paymentType = 'ad_hoc', paymentId = '') {
-    var _this2 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this2.bookingId) return;
-      try {
-        const current = yield _this2.bookingApi.getBooking(_this2.bookingId).toPromise();
-        const raw = current?.raw || current || {};
-        const payments = {
-          ...(raw.payments || {})
-        };
-        const id = paymentId || `adhoc_${Date.now()}`;
-        const now = Date.now();
-        const normalizedType = paymentType === 'tip' ? 'tip' : paymentType === 'damage_charge' ? 'damage_charge' : paymentType.includes('extra') ? 'extra_service' : 'ad_hoc';
-        const existing = payments.adHoc?.[id] || payments.extraServices?.[id] || {};
-        yield _this2.bookingApi.updateBooking(_this2.bookingId, {
-          payments: {
-            ...payments,
-            adHoc: {
-              ...(payments.adHoc || {}),
-              [id]: {
-                ...existing,
-                id,
-                paid: true,
-                status: 'paid',
-                paymentStatus: 'paid',
-                paymentType: normalizedType,
-                type: normalizedType,
-                method: 'Stripe',
-                checkoutSessionId: sessionId,
-                stripeCheckoutSessionId: sessionId,
-                paidAt: now,
-                modifiedTS: now,
-                source: 'stripe_return'
+            ...(unverifiedLocalPayment ? {
+              alegria: null
+            } : {}),
+            ...(pending ? {
+              pendingAlegria: {
+                ...pending,
+                status: 'checkout_cancelled',
+                cancelledAt: Date.now()
               }
-            }
+            } : {})
           }
         });
-      } finally {
-        _this2.loadBooking();
+      } catch {
+        // The cancellation remains non-paid even if the audit marker cannot be saved.
       }
     })();
   }
   loadBooking() {
-    var _this3 = this;
+    var _this2 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this3.loading = true;
-      _this3.notFound = false;
-      _this3.error = '';
-      _this3.vm = null;
+      _this2.loading = true;
+      _this2.notFound = false;
+      _this2.error = '';
+      _this2.vm = null;
       const hardStop = window.setTimeout(() => {
-        if (_this3.loading) {
-          _this3.loading = false;
-          _this3.notFound = true;
-          _this3.error = `Timeout loading ${_this3.bookingId}.`;
+        if (_this2.loading) {
+          _this2.loading = false;
+          _this2.notFound = true;
+          _this2.error = `Timeout loading ${_this2.bookingId}.`;
         }
       }, 7000);
       try {
-        if (!_this3.bookingId) {
-          _this3.notFound = true;
+        if (!_this2.bookingId) {
+          _this2.notFound = true;
           return;
         }
         const attempts = [{
-          path: `bnBookings/${_this3.bookingId}`,
+          path: `bnBookings/${_this2.bookingId}`,
           type: 'booking'
         }, {
-          path: _this3.bookingId,
+          path: _this2.bookingId,
           type: 'booking'
         }, {
-          path: `bnProposals/${_this3.bookingId}`,
+          path: `bnProposals/${_this2.bookingId}`,
           type: 'offer'
         }];
         for (const attempt of attempts) {
-          const data = yield _this3.fetchJsonWithTimeout(attempt.path, 2200);
+          const data = yield _this2.fetchJsonWithTimeout(attempt.path, 2200);
           if (data) {
-            const booking = attempt.type === 'offer' ? _this3.offerToBooking({
-              offerId: _this3.bookingId,
+            const booking = attempt.type === 'offer' ? _this2.offerToBooking({
+              offerId: _this2.bookingId,
               ...data
             }) : {
-              bookingId: _this3.bookingId,
+              bookingId: _this2.bookingId,
               ...data
             };
-            const normalized = _this3.normalize(booking);
-            const enriched = yield _this3.enrichWithPaymentRecords(normalized);
-            _this3.vm = _this3.buildVm(enriched);
-            _this3.clearContradictoryTermsError();
-            _this3.refreshFinancialWorkspace();
+            const normalized = _this2.normalize(booking);
+            const enriched = yield _this2.enrichWithPaymentRecords(normalized);
+            _this2.vm = _this2.buildVm(enriched);
+            _this2.clearContradictoryTermsError();
+            _this2.refreshFinancialWorkspace();
             return;
           }
         }
-        _this3.notFound = true;
-        _this3.error = `Booking ${_this3.bookingId} was not found in bnBookings or bnProposals.`;
+        _this2.notFound = true;
+        _this2.error = `Booking ${_this2.bookingId} was not found in bnBookings or bnProposals.`;
       } catch (error) {
-        _this3.notFound = true;
-        _this3.error = error?.message || `Unable to load booking ${_this3.bookingId}.`;
+        _this2.notFound = true;
+        _this2.error = error?.message || `Unable to load booking ${_this2.bookingId}.`;
       } finally {
         window.clearTimeout(hardStop);
-        _this3.loading = false;
+        _this2.loading = false;
       }
     })();
   }
@@ -27712,6 +27620,7 @@ let BookingDetailComponent = class BookingDetailComponent {
       portFeesAmount: this.number(this.vm?.portFeesAmount || b.pricing?.portFeesAmount || b.portFeesAmount || b.harborFeesAmount),
       serviceFeesAmount: this.number(this.vm?.serviceFeesAmount || b.pricing?.serviceFeesAmount || b.serviceFeesAmount || b.platformServiceFees),
       rentalCommissionAmount: this.number(this.vm?.rentalCommissionAmount || b.pricing?.rentalCommissionAmount || b.rentalCommissionAmount || b.platformCommissionAmount || b.platformFees),
+      platformCommissionAmount: this.number(this.vm?.totalCommission || b.pricing?.totalCommission || b.totalCommission || b.platformCommissionAmount || b.platformFees || this.number(b.rentalCommissionAmount) + this.number(b.serviceFeesAmount)),
       totalAmount: b.totalAmount || b.totalPrice || 0,
       totalPrice: b.totalPrice || b.totalAmount || 0,
       externalPlatformTotalClientAmount: b.externalPlatformTotalClientAmount || b.payments?.platform?.totalClientAmount || b.raw?.externalPlatformTotalClientAmount || b.raw?.payments?.platform?.totalClientAmount || 0,
@@ -27739,14 +27648,18 @@ let BookingDetailComponent = class BookingDetailComponent {
     const source = String(this.editForm.source || this.editForm.externalPlatform || '').toLowerCase();
     const direct = !source || source === 'direct' || source === 'alegria' || source === 'direct alegria';
     if (direct) {
+      this.editForm.platformCommissionAmount = 0;
       this.editForm.rentalCommissionAmount = 0;
       this.editForm.serviceFeesAmount = 0;
     }
     const values = [this.editForm.boatOutingCost, this.editForm.skipperCashAmount, this.editForm.fuelAmount, this.editForm.portFeesAmount, this.editForm.cateringAmount, this.editForm.drinksAmount, this.editForm.waterToysAmount, this.editForm.tipsAmount, this.editForm.otherOnboardAmount].map(value => this.number(value));
     this.editForm.totalAmount = Math.round(values.reduce((sum, value) => sum + value, 0) * 100) / 100;
     this.editForm.totalPrice = this.editForm.totalAmount;
-    this.editForm.totalCommission = Math.round((this.number(this.editForm.rentalCommissionAmount) + this.number(this.editForm.serviceFeesAmount)) * 100) / 100;
-    this.editForm.alegriaRevenueTotal = Math.max(0, Math.round((this.editForm.totalAmount - this.editForm.totalCommission - this.number(this.editForm.skipperCashAmount)) * 100) / 100);
+    this.editForm.totalCommission = Math.round(this.number(this.editForm.platformCommissionAmount) * 100) / 100;
+    this.editForm.rentalCommissionAmount = this.editForm.totalCommission;
+    this.editForm.serviceFeesAmount = 0;
+    this.editForm.alegriaRecoveredAmount = Math.max(0, Math.round((this.editForm.totalAmount - this.editForm.totalCommission) * 100) / 100);
+    this.editForm.alegriaRevenueTotal = Math.max(0, Math.round((this.editForm.alegriaRecoveredAmount - this.number(this.editForm.skipperCashAmount)) * 100) / 100);
     this.editForm.skipperRevenueTotal = Math.round((this.number(this.editForm.skipperCashAmount) + this.number(this.editForm.tipsAmount)) * 100) / 100;
     if (!direct) this.editForm.externalPlatformTotalClientAmount = this.number(this.editForm.boatOutingCost);
   }
@@ -27769,45 +27682,46 @@ let BookingDetailComponent = class BookingDetailComponent {
     return String(explicitName || '').trim();
   }
   saveEdit() {
-    var _this4 = this;
+    var _this3 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this4.editForm?.bookingId) return;
-      _this4.saving = true;
-      _this4.error = '';
+      if (!_this3.editForm?.bookingId) return;
+      _this3.saving = true;
+      _this3.error = '';
       try {
         const now = Date.now();
-        const existing = _this4.vm?.display || {};
+        const existing = _this3.vm?.display || {};
         const raw = existing.raw || {};
-        const bookingId = _this4.editForm.bookingId || _this4.bookingId;
-        const boatOutingCost = _this4.number(_this4.editForm.boatOutingCost);
-        const platformPaid = _this4.number(_this4.editForm.externalPlatformPaidAmount);
-        const sourceKey = String(_this4.editForm.source || _this4.editForm.externalPlatform || existing.source || '').toLowerCase();
+        const bookingId = _this3.editForm.bookingId || _this3.bookingId;
+        const boatOutingCost = _this3.number(_this3.editForm.boatOutingCost);
+        const platformPaid = _this3.number(_this3.editForm.externalPlatformPaidAmount);
+        const sourceKey = String(_this3.editForm.source || _this3.editForm.externalPlatform || existing.source || '').toLowerCase();
         const directBooking = !sourceKey || ['direct', 'alegria', 'direct alegria'].includes(sourceKey);
-        const skipper = _this4.number(_this4.editForm.skipperCashAmount);
-        const fuel = _this4.number(_this4.editForm.fuelAmount);
-        const portFees = _this4.number(_this4.editForm.portFeesAmount);
-        const catering = _this4.number(_this4.editForm.cateringAmount);
-        const tips = _this4.number(_this4.editForm.tipsAmount);
-        const drinks = _this4.number(_this4.editForm.drinksAmount);
-        const waterToys = _this4.number(_this4.editForm.waterToysAmount);
-        const other = _this4.number(_this4.editForm.otherOnboardAmount);
-        const rentalCommission = directBooking ? 0 : _this4.number(_this4.editForm.rentalCommissionAmount);
-        const serviceFees = directBooking ? 0 : _this4.number(_this4.editForm.serviceFeesAmount);
-        const platformFees = rentalCommission + serviceFees;
+        const skipper = _this3.number(_this3.editForm.skipperCashAmount);
+        const fuel = _this3.number(_this3.editForm.fuelAmount);
+        const portFees = _this3.number(_this3.editForm.portFeesAmount);
+        const catering = _this3.number(_this3.editForm.cateringAmount);
+        const tips = _this3.number(_this3.editForm.tipsAmount);
+        const drinks = _this3.number(_this3.editForm.drinksAmount);
+        const waterToys = _this3.number(_this3.editForm.waterToysAmount);
+        const other = _this3.number(_this3.editForm.otherOnboardAmount);
+        const platformFees = directBooking ? 0 : _this3.number(_this3.editForm.platformCommissionAmount);
+        const rentalCommission = platformFees;
+        const serviceFees = 0;
         const directTotal = skipper + fuel + portFees + catering + tips + drinks + waterToys + other;
         const platformCustomerAmount = directBooking ? 0 : boatOutingCost;
         const totalCollected = platformPaid + directTotal;
         const totalClientCost = boatOutingCost + directTotal;
+        const alegriaRecoveredAmount = Math.max(0, totalClientCost - platformFees);
         const alegriaRevenue = Math.max(0, totalClientCost - platformFees - skipper);
         const skipperRevenueTotal = skipper + tips;
-        const paymentStatusLabel = _this4.editForm.paymentStatusLabel || 'fully_paid';
-        const normalizedPlatformName = _this4.normalizedPlatformName(_this4.editForm.source || _this4.editForm.externalPlatform || existing.source, _this4.editForm.externalPlatformName);
+        const paymentStatusLabel = _this3.editForm.paymentStatusLabel || 'fully_paid';
+        const normalizedPlatformName = _this3.normalizedPlatformName(_this3.editForm.source || _this3.editForm.externalPlatform || existing.source, _this3.editForm.externalPlatformName);
         const payload = {
           ...existing,
-          ..._this4.editForm,
+          ..._this3.editForm,
           bookingId,
           externalPlatformName: normalizedPlatformName,
-          externalPlatform: _this4.editForm.source || _this4.editForm.externalPlatform || existing.externalPlatform || existing.source || '',
+          externalPlatform: _this3.editForm.source || _this3.editForm.externalPlatform || existing.externalPlatform || existing.source || '',
           offerId: existing.offerId || bookingId,
           relatedBookingId: existing.relatedBookingId || bookingId,
           proposalBoatPrice: boatOutingCost,
@@ -27826,6 +27740,7 @@ let BookingDetailComponent = class BookingDetailComponent {
           rentalCommissionAmount: rentalCommission,
           serviceFeesAmount: serviceFees,
           totalCommission: platformFees,
+          platformCommissionAmount: platformFees,
           boatRentalAmount: boatOutingCost,
           fuelAmount: fuel,
           portFeesAmount: portFees,
@@ -27841,6 +27756,7 @@ let BookingDetailComponent = class BookingDetailComponent {
           customerPaidThroughPlatform: platformCustomerAmount,
           customerPaidDirectly: directTotal,
           alegriaRevenueTotal: alegriaRevenue,
+          alegriaRecoveredAmount,
           skipperRevenueTotal,
           totalOutingPrice: totalClientCost,
           pricing: {
@@ -27856,6 +27772,8 @@ let BookingDetailComponent = class BookingDetailComponent {
             rentalCommissionAmount: rentalCommission,
             serviceFeesAmount: serviceFees,
             totalCommission: platformFees,
+            platformCommissionAmount: platformFees,
+            alegriaRecoveredAmount,
             totalOutingPrice: totalClientCost,
             alegriaRevenue,
             skipperRevenue: skipperRevenueTotal
@@ -27871,20 +27789,20 @@ let BookingDetailComponent = class BookingDetailComponent {
           balanceStatus: 'paid',
           paymentStatus: paymentStatusLabel === 'fully_paid' || paymentStatusLabel === 'balance_paid' ? true : paymentStatusLabel,
           paymentStatusLabel,
-          warrantyMethod: _this4.editForm.warrantyPaymentChoice,
-          warrantyPaymentChoice: _this4.editForm.warrantyPaymentChoice,
-          warrantyStatus: _this4.editForm.warrantyStatus,
-          bookingStatus: _this4.editForm.bookingStatus || 'completed',
-          status: _this4.editForm.status || 'completed',
-          bookingRequestStatus: _this4.editForm.bookingStatus === 'cancelled' ? 'cancelled' : 'confirmed',
+          warrantyMethod: _this3.editForm.warrantyPaymentChoice,
+          warrantyPaymentChoice: _this3.editForm.warrantyPaymentChoice,
+          warrantyStatus: _this3.editForm.warrantyStatus,
+          bookingStatus: _this3.editForm.bookingStatus || 'completed',
+          status: _this3.editForm.status || 'completed',
+          bookingRequestStatus: _this3.editForm.bookingStatus === 'cancelled' ? 'cancelled' : 'confirmed',
           modifiedTS: now,
           updatedAt: now,
           payments: {
             ...(existing.payments || {}),
             platform: {
-              source: _this4.editForm.source || _this4.editForm.externalPlatform || existing.source || 'external',
+              source: _this3.editForm.source || _this3.editForm.externalPlatform || existing.source || 'external',
               name: normalizedPlatformName,
-              reference: _this4.editForm.externalPlatformBookingRef || _this4.editForm.platformBookingReference || '',
+              reference: _this3.editForm.externalPlatformBookingRef || _this3.editForm.platformBookingReference || '',
               paidAmount: platformPaid,
               totalClientAmount: platformCustomerAmount,
               fees: platformFees,
@@ -27909,7 +27827,7 @@ let BookingDetailComponent = class BookingDetailComponent {
           },
           raw: {
             ...raw,
-            ..._this4.editForm,
+            ..._this3.editForm,
             externalPlatformName: normalizedPlatformName,
             proposalBoatPrice: boatOutingCost,
             boatPrice: boatOutingCost,
@@ -27935,44 +27853,44 @@ let BookingDetailComponent = class BookingDetailComponent {
             editedAt: now
           }
         };
-        yield _this4.writeJson(`bnBookings/${bookingId}`, payload);
-        _this4.vm = _this4.buildVm(_this4.normalize(payload));
-        _this4.editMode = false;
+        yield _this3.writeJson(`bnBookings/${bookingId}`, payload);
+        _this3.vm = _this3.buildVm(_this3.normalize(payload));
+        _this3.editMode = false;
       } catch (e) {
-        _this4.error = e?.message || 'Unable to save booking.';
+        _this3.error = e?.message || 'Unable to save booking.';
       } finally {
-        _this4.saving = false;
+        _this3.saving = false;
       }
     })();
   }
   deleteBooking() {
-    var _this5 = this;
+    var _this4 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const id = _this5.vm?.bookingId || _this5.bookingId;
+      const id = _this4.vm?.bookingId || _this4.bookingId;
       if (!id) return;
       const ok = window.confirm(`Delete booking ${id}? This cannot be undone.`);
       if (!ok) return;
-      _this5.deleting = true;
-      _this5.error = '';
+      _this4.deleting = true;
+      _this4.error = '';
       try {
-        yield _this5.writeJson(`bnBookings/${id}`, null);
+        yield _this4.writeJson(`bnBookings/${id}`, null);
         // Also remove stale offer copy if one exists.
-        yield _this5.writeJson(`bnProposals/${id}`, null).catch(() => undefined);
-        _this5.vm = null;
-        _this5.notFound = true;
-        _this5.error = `Booking ${id} deleted.`;
+        yield _this4.writeJson(`bnProposals/${id}`, null).catch(() => undefined);
+        _this4.vm = null;
+        _this4.notFound = true;
+        _this4.error = `Booking ${id} deleted.`;
       } catch (e) {
-        _this5.error = e?.message || 'Unable to delete booking.';
+        _this4.error = e?.message || 'Unable to delete booking.';
       } finally {
-        _this5.deleting = false;
+        _this4.deleting = false;
       }
     })();
   }
   writeJson(path, payload) {
-    var _this6 = this;
+    var _this5 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const encodedPath = path.split('/').filter(Boolean).map(part => encodeURIComponent(part)).join('/');
-      const url = `${_this6.firebaseBaseUrl}/${encodedPath}.json`;
+      const url = `${_this5.firebaseBaseUrl}/${encodedPath}.json`;
       const response = yield fetch(url, {
         method: 'PUT',
         headers: {
@@ -27986,16 +27904,16 @@ let BookingDetailComponent = class BookingDetailComponent {
     })();
   }
   enrichWithPaymentRecords(booking) {
-    var _this7 = this;
+    var _this6 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const bookingId = booking?.bookingId || _this7.bookingId;
+      const bookingId = booking?.bookingId || _this6.bookingId;
       const offerId = booking?.offerId || booking?.relatedBookingId || bookingId;
       const ids = Array.from(new Set([bookingId, offerId].filter(Boolean)));
-      const collections = ['bnPayments', 'bnPayment', 'backendpayments'];
+      const collections = ['backendpayments'];
       const records = [];
       for (const collection of collections) {
         for (const id of ids) {
-          const matches = yield _this7.fetchPaymentRecordsByBookingId(collection, id).catch(() => null);
+          const matches = yield _this6.fetchPaymentRecordsByBookingId(collection, id).catch(() => null);
           if (matches && typeof matches === 'object') {
             Object.keys(matches).forEach(key => {
               const value = matches[key];
@@ -28019,11 +27937,10 @@ let BookingDetailComponent = class BookingDetailComponent {
     })();
   }
   fetchPaymentRecordsByBookingId(collection, bookingId) {
-    var _this8 = this;
+    var _this7 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const encodedCollection = encodeURIComponent(collection);
-      const encodedId = encodeURIComponent(bookingId);
-      const url = `${_this8.firebaseBaseUrl}/${encodedCollection}.json?orderBy=%22bookingId%22&equalTo=%22${encodedId}%22`;
+      const url = `${_this7.firebaseBaseUrl}/${encodedCollection}.json`;
       const controller = new AbortController();
       const timeout = window.setTimeout(() => controller.abort(), 1800);
       try {
@@ -28031,7 +27948,15 @@ let BookingDetailComponent = class BookingDetailComponent {
           signal: controller.signal
         });
         if (!response.ok) return null;
-        return yield response.json();
+        const values = yield response.json();
+        if (!values || typeof values !== 'object') return null;
+        return Object.keys(values).reduce((matches, key) => {
+          const value = values[key];
+          if (value && String(value.bookingId || '') === String(bookingId || '')) {
+            matches[key] = value;
+          }
+          return matches;
+        }, {});
       } catch {
         return null;
       } finally {
@@ -28040,10 +27965,10 @@ let BookingDetailComponent = class BookingDetailComponent {
     })();
   }
   fetchJsonWithTimeout(path, timeoutMs) {
-    var _this9 = this;
+    var _this8 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const encodedPath = path.split('/').filter(Boolean).map(part => encodeURIComponent(part)).join('/');
-      const url = `${_this9.firebaseBaseUrl}/${encodedPath}.json`;
+      const url = `${_this8.firebaseBaseUrl}/${encodedPath}.json`;
       const controller = new AbortController();
       const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
       try {
@@ -28217,7 +28142,8 @@ let BookingDetailComponent = class BookingDetailComponent {
     const totalCollected = this.number(booking.totalCollectedAmount || booking.raw?.totalCollectedAmount) || collectedViaPlatform + collectedDirectTotal;
     const totalRemaining = isHistoricalBooking ? 0 : totalRemainingCustomer;
     const totalOnboardCollections = onboardBoatBalanceCollected + onboardSkipperCollected + totalDirectCatering + totalDirectTips + totalDirectCleaningFuel + totalDirectDrinks + totalDirectWaterToys + totalDirectOther;
-    const alegriaRevenueTotal = f.alegriaRevenue;
+    const alegriaRecoveredAmount = Math.max(0, f.totalOutingPrice - f.totalCommission);
+    const alegriaRevenueTotal = Math.max(0, alegriaRecoveredAmount - f.skipperAmount);
     const alegriaPaidAmount = f.alegriaPaid;
     const remainingAlegriaRevenue = alegriaRemainingComputed;
     const canonicalState = this.bookingStateService.resolve(booking);
@@ -28287,6 +28213,7 @@ let BookingDetailComponent = class BookingDetailComponent {
       stripePaymentRecords,
       totalOnboardCollections,
       alegriaRevenueTotal,
+      alegriaRecoveredAmount,
       boatRentalAmount: f.boatRentalAmount,
       portFeesAmount: f.portFeesAmount,
       cateringAmount: f.cateringAmount,
@@ -28452,7 +28379,6 @@ let BookingDetailComponent = class BookingDetailComponent {
     this.payingAlegria = true;
     this.error = '';
     const bookingUrl = `${window.location.origin}/bookings/${encodeURIComponent(bookingId)}`;
-    this.savePendingAlegriaPayment(bookingId, amount);
     this.bookingApi.createBalanceCheckout({
       ...this.termsAcceptanceMetadata(),
       bookingId,
@@ -28487,32 +28413,6 @@ let BookingDetailComponent = class BookingDetailComponent {
       }
     });
   }
-  savePendingAlegriaPayment(bookingId, amount) {
-    var _this10 = this;
-    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!bookingId || amount <= 0) return;
-      try {
-        const current = yield _this10.bookingApi.getBooking(bookingId).toPromise();
-        const raw = current?.raw || current || _this10.vm?.display || {};
-        const payments = {
-          ...(raw.payments || {})
-        };
-        yield _this10.bookingApi.updateBooking(bookingId, {
-          payments: {
-            ...payments,
-            pendingAlegria: {
-              amount,
-              status: 'checkout_started',
-              paymentType: 'alegria_balance',
-              createdAt: Date.now()
-            }
-          }
-        });
-      } catch {
-        // Non-blocking: the Stripe return handler and webhook/reconciliation can still update the booking.
-      }
-    })();
-  }
   pendingAlegriaCashAmount() {
     const booking = this.vm?.display || {};
     const payments = booking.payments || {};
@@ -28523,23 +28423,23 @@ let BookingDetailComponent = class BookingDetailComponent {
     // The amount still due is the single source of truth. Legacy flags such as
     // balancePaid may describe an old payment phase and must not hide the admin
     // cash-entry control when a boat/Alegria balance remains outstanding.
-    return (this.vm.isAdmin || this.isCurrentUserAdmin()) && Number(this.vm.remainingAlegriaRevenue || 0) > 0.009;
+    return (this.vm.isAdmin || this.isCurrentUserAdmin()) && this.isAlegriaCashSelected() && Number(this.vm.remainingAlegriaRevenue || 0) > 0.009;
   }
   confirmAlegriaCashReceived() {
-    var _this11 = this;
+    var _this9 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this11.vm || !_this11.canConfirmAlegriaCashReceived() || _this11.payingAlegria) return;
-      const booking = _this11.vm.display || {};
-      const bookingId = _this11.vm.bookingId || booking.bookingId || _this11.bookingId;
+      if (!_this9.vm || !_this9.canConfirmAlegriaCashReceived() || _this9.payingAlegria) return;
+      const booking = _this9.vm.display || {};
+      const bookingId = _this9.vm.bookingId || booking.bookingId || _this9.bookingId;
       if (!bookingId) return;
-      const remaining = Math.max(0, Number(_this11.vm.remainingAlegriaRevenue || 0));
-      const amount = Math.min(remaining, Math.max(0, Number(_this11.adminAlegriaCashAmount || 0)));
+      const remaining = Math.max(0, Number(_this9.vm.remainingAlegriaRevenue || 0));
+      const amount = Math.min(remaining, Math.max(0, Number(_this9.adminAlegriaCashAmount || 0)));
       if (amount <= 0) {
-        _this11.error = _this11.t('enterValidAmount');
+        _this9.error = _this9.t('enterValidAmount');
         return;
       }
-      _this11.payingAlegria = true;
-      _this11.error = '';
+      _this9.payingAlegria = true;
+      _this9.error = '';
       const now = Date.now();
       const payments = {
         ...(booking.payments || {})
@@ -28548,13 +28448,13 @@ let BookingDetailComponent = class BookingDetailComponent {
       const cumulativeCash = Math.round((previousCash + amount) * 100) / 100;
       const fullyPaid = amount >= remaining - 0.009;
       try {
-        yield _this11.bookingApi.updateBooking(bookingId, {
+        yield _this9.bookingApi.updateBooking(bookingId, {
           balancePaid: fullyPaid,
           balanceStatus: fullyPaid ? 'paid' : 'partially_paid',
           balancePaidAmount: Math.round((Number(booking.balancePaidAmount || 0) + amount) * 100) / 100,
           balancePaidAt: now,
-          alegriaPaymentMethod: _this11.vm.alegriaPaidAmount > 0 ? 'mixed' : 'cash',
-          balancePaymentMethod: _this11.vm.alegriaPaidAmount > 0 ? 'mixed' : 'cash',
+          alegriaPaymentMethod: _this9.vm.alegriaPaidAmount > 0 ? 'mixed' : 'cash',
+          balancePaymentMethod: _this9.vm.alegriaPaidAmount > 0 ? 'mixed' : 'cash',
           alegriaPaymentStatus: fullyPaid ? 'paid' : 'partially_paid',
           balancePaymentStatus: fullyPaid ? 'paid' : 'partially_paid',
           alegriaCashReceived: cumulativeCash > 0,
@@ -28564,31 +28464,31 @@ let BookingDetailComponent = class BookingDetailComponent {
             ...payments,
             alegria: {
               ...(payments.alegria || {}),
-              method: _this11.vm.alegriaPaidAmount > 0 ? 'mixed' : 'cash',
+              method: _this9.vm.alegriaPaidAmount > 0 ? 'mixed' : 'cash',
               status: fullyPaid ? 'paid' : 'partially_paid',
               paid: fullyPaid,
               cashAmountPaid: cumulativeCash,
-              amountPaid: Math.round((Number(_this11.vm.alegriaPaidAmount || 0) + amount) * 100) / 100,
+              amountPaid: Math.round((Number(_this9.vm.alegriaPaidAmount || 0) + amount) * 100) / 100,
               receivedAt: now
             },
             balance: {
               ...(payments.balance || {}),
-              method: _this11.vm.alegriaPaidAmount > 0 ? 'mixed' : 'cash',
+              method: _this9.vm.alegriaPaidAmount > 0 ? 'mixed' : 'cash',
               status: fullyPaid ? 'paid' : 'partially_paid',
               paid: fullyPaid,
               cashAmountPaid: cumulativeCash,
-              amountPaid: Math.round((Number(_this11.vm.alegriaPaidAmount || 0) + amount) * 100) / 100,
+              amountPaid: Math.round((Number(_this9.vm.alegriaPaidAmount || 0) + amount) * 100) / 100,
               paidAt: now
             }
           }
         });
-        _this11.adminAlegriaCashAmount = null;
-        _this11.actionMessage = _this11.t('alegriaCashReceivedConfirmed');
-        yield _this11.loadBooking();
+        _this9.adminAlegriaCashAmount = null;
+        _this9.actionMessage = _this9.t('alegriaCashReceivedConfirmed');
+        yield _this9.loadBooking();
       } catch (error) {
-        _this11.error = error?.message || _this11.t('saveError');
+        _this9.error = error?.message || _this9.t('saveError');
       } finally {
-        _this11.payingAlegria = false;
+        _this9.payingAlegria = false;
       }
     })();
   }
@@ -28601,23 +28501,23 @@ let BookingDetailComponent = class BookingDetailComponent {
     if (!this.vm || this.editMode) return false;
     const booking = this.vm.display || {};
     const alreadyPaid = booking.skipperPaid === true || String(booking.skipperStatus || booking.skipperPaymentStatus || booking.payments?.skipper?.status || booking.payments?.direct?.skipperStatus || '').toLowerCase() === 'paid';
-    return (this.vm.isAdmin || this.isCurrentUserAdmin()) && !alreadyPaid && this.pendingSkipperCashAmount() > 0;
+    return (this.vm.isAdmin || this.isCurrentUserAdmin()) && this.isSkipperCashSelected() && !alreadyPaid && this.pendingSkipperCashAmount() > 0;
   }
   confirmSkipperPaid() {
-    var _this12 = this;
+    var _this10 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this12.vm || !_this12.canConfirmSkipperPaid() || _this12.payingSkipper) return;
-      const booking = _this12.vm.display || {};
-      const bookingId = _this12.vm.bookingId || booking.bookingId || _this12.bookingId;
+      if (!_this10.vm || !_this10.canConfirmSkipperPaid() || _this10.payingSkipper) return;
+      const booking = _this10.vm.display || {};
+      const bookingId = _this10.vm.bookingId || booking.bookingId || _this10.bookingId;
       if (!bookingId) return;
-      const remaining = Math.max(0, Number(_this12.vm.remainingSkipperFee || 0));
-      const amount = Math.min(remaining, Math.max(0, Number(_this12.adminSkipperCashAmount || 0)));
+      const remaining = Math.max(0, Number(_this10.vm.remainingSkipperFee || 0));
+      const amount = Math.min(remaining, Math.max(0, Number(_this10.adminSkipperCashAmount || 0)));
       if (amount <= 0) {
-        _this12.error = _this12.t('enterValidAmount');
+        _this10.error = _this10.t('enterValidAmount');
         return;
       }
-      _this12.payingSkipper = true;
-      _this12.error = '';
+      _this10.payingSkipper = true;
+      _this10.error = '';
       const now = Date.now();
       const payments = {
         ...(booking.payments || {})
@@ -28634,30 +28534,30 @@ let BookingDetailComponent = class BookingDetailComponent {
       };
       payments.skipper = {
         ...(payments.skipper || {}),
-        method: _this12.vm.skipperPaidAmount > 0 ? 'mixed' : 'cash',
+        method: _this10.vm.skipperPaidAmount > 0 ? 'mixed' : 'cash',
         status: fullyPaid ? 'paid' : 'partially_paid',
         paid: fullyPaid,
         cashAmountPaid: cumulativeCash,
-        amountPaid: Math.round((Number(_this12.vm.skipperPaidAmount || 0) + amount) * 100) / 100,
+        amountPaid: Math.round((Number(_this10.vm.skipperPaidAmount || 0) + amount) * 100) / 100,
         paidAt: now
       };
       try {
-        yield _this12.bookingApi.updateBooking(bookingId, {
+        yield _this10.bookingApi.updateBooking(bookingId, {
           skipperPaid: fullyPaid,
           skipperStatus: fullyPaid ? 'paid' : 'partially_paid',
           skipperPaidAt: now,
-          skipperPaymentMethod: _this12.vm.skipperPaidAmount > 0 ? 'mixed' : 'cash',
+          skipperPaymentMethod: _this10.vm.skipperPaidAmount > 0 ? 'mixed' : 'cash',
           skipperPaymentStatus: fullyPaid ? 'paid' : 'partially_paid',
-          skipperPaidAmount: Math.round((Number(_this12.vm.skipperPaidAmount || 0) + amount) * 100) / 100,
+          skipperPaidAmount: Math.round((Number(_this10.vm.skipperPaidAmount || 0) + amount) * 100) / 100,
           skipperCashReceivedAmount: cumulativeCash,
           payments
         });
-        _this12.adminSkipperCashAmount = null;
-        yield _this12.loadBooking();
+        _this10.adminSkipperCashAmount = null;
+        yield _this10.loadBooking();
       } catch (error) {
-        _this12.error = error?.message || _this12.t('saveError');
+        _this10.error = error?.message || _this10.t('saveError');
       } finally {
-        _this12.payingSkipper = false;
+        _this10.payingSkipper = false;
       }
     })();
   }
@@ -28669,20 +28569,21 @@ let BookingDetailComponent = class BookingDetailComponent {
     return method === 'cash' || status === 'cash_selected' || status === 'cash_pending';
   }
   selectAlegriaCash() {
-    var _this13 = this;
+    var _this11 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this13.vm || _this13.editMode || _this13.vm.remainingAlegriaRevenue <= 0 || _this13.selectingAlegriaCash) return;
-      const booking = _this13.vm.display || {};
-      const bookingId = _this13.vm.bookingId || booking.bookingId || _this13.bookingId;
+      if (!_this11.vm || _this11.editMode || _this11.vm.remainingAlegriaRevenue <= 0 || _this11.selectingAlegriaCash) return;
+      const booking = _this11.vm.display || {};
+      const bookingId = _this11.vm.bookingId || booking.bookingId || _this11.bookingId;
       if (!bookingId) return;
-      _this13.selectingAlegriaCash = true;
-      _this13.error = '';
+      _this11.selectingAlegriaCash = true;
+      _this11.adminAlegriaCashAmount = Math.round(Number(_this11.vm.remainingAlegriaRevenue || 0) * 100) / 100;
+      _this11.error = '';
       const payments = {
         ...(booking.payments || {})
       };
       const now = Date.now();
       try {
-        yield _this13.bookingApi.updateBooking(bookingId, {
+        yield _this11.bookingApi.updateBooking(bookingId, {
           alegriaPaymentMethod: 'cash',
           balancePaymentMethod: 'cash',
           alegriaPaymentStatus: 'cash_selected',
@@ -28693,17 +28594,18 @@ let BookingDetailComponent = class BookingDetailComponent {
               ...(payments.alegria || {}),
               method: 'cash',
               status: 'cash_selected',
-              amountDue: _this13.vm.remainingAlegriaRevenue,
+              amountDue: _this11.vm.remainingAlegriaRevenue,
               selectedAt: now
             }
           }
         });
-        _this13.actionMessage = _this13.t('cashPaymentSelected');
-        yield _this13.loadBooking();
+        _this11.actionMessage = _this11.t('cashPaymentSelected');
+        yield _this11.loadBooking();
+        _this11.adminAlegriaCashAmount = Math.round(Number(_this11.vm?.remainingAlegriaRevenue || 0) * 100) / 100;
       } catch (error) {
-        _this13.error = error?.message || _this13.t('saveError');
+        _this11.error = error?.message || _this11.t('saveError');
       } finally {
-        _this13.selectingAlegriaCash = false;
+        _this11.selectingAlegriaCash = false;
       }
     })();
   }
@@ -28715,20 +28617,21 @@ let BookingDetailComponent = class BookingDetailComponent {
     return method === 'cash' || status === 'cash_selected' || status === 'cash_pending';
   }
   selectSkipperCash() {
-    var _this14 = this;
+    var _this12 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this14.vm || _this14.editMode || _this14.vm.remainingSkipperFee <= 0 || _this14.selectingSkipperCash) return;
-      const booking = _this14.vm.display || {};
-      const bookingId = _this14.vm.bookingId || booking.bookingId || _this14.bookingId;
+      if (!_this12.vm || _this12.editMode || _this12.vm.remainingSkipperFee <= 0 || _this12.selectingSkipperCash) return;
+      const booking = _this12.vm.display || {};
+      const bookingId = _this12.vm.bookingId || booking.bookingId || _this12.bookingId;
       if (!bookingId) return;
-      _this14.selectingSkipperCash = true;
-      _this14.error = '';
+      _this12.selectingSkipperCash = true;
+      _this12.adminSkipperCashAmount = Math.round(Number(_this12.vm.remainingSkipperFee || 0) * 100) / 100;
+      _this12.error = '';
       const payments = {
         ...(booking.payments || {})
       };
       const now = Date.now();
       try {
-        yield _this14.bookingApi.updateBooking(bookingId, {
+        yield _this12.bookingApi.updateBooking(bookingId, {
           skipperPaymentMethod: 'cash',
           skipperPaymentStatus: 'cash_selected',
           payments: {
@@ -28737,17 +28640,18 @@ let BookingDetailComponent = class BookingDetailComponent {
               ...(payments.skipper || {}),
               method: 'cash',
               status: 'cash_selected',
-              amountDue: _this14.vm.remainingSkipperFee,
+              amountDue: _this12.vm.remainingSkipperFee,
               selectedAt: now
             }
           }
         });
-        _this14.actionMessage = _this14.t('cashPaymentSelected');
-        yield _this14.loadBooking();
+        _this12.actionMessage = _this12.t('cashPaymentSelected');
+        yield _this12.loadBooking();
+        _this12.adminSkipperCashAmount = Math.round(Number(_this12.vm?.remainingSkipperFee || 0) * 100) / 100;
       } catch (error) {
-        _this14.error = error?.message || _this14.t('saveError');
+        _this12.error = error?.message || _this12.t('saveError');
       } finally {
-        _this14.selectingSkipperCash = false;
+        _this12.selectingSkipperCash = false;
       }
     })();
   }
@@ -28848,23 +28752,23 @@ let BookingDetailComponent = class BookingDetailComponent {
     return Number(this.adminWarrantyChargeAmount || 0) > 0;
   }
   chargeWarrantyForDamage() {
-    var _this15 = this;
+    var _this13 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this15.vm || !_this15.canAdminChargeWarranty()) return;
-      const bookingId = _this15.vm.bookingId || _this15.bookingId;
-      const amount = Number(_this15.adminWarrantyChargeAmount || 0);
-      const reason = (_this15.adminWarrantyChargeReason || '').trim();
+      if (!_this13.vm || !_this13.canAdminChargeWarranty()) return;
+      const bookingId = _this13.vm.bookingId || _this13.bookingId;
+      const amount = Number(_this13.adminWarrantyChargeAmount || 0);
+      const reason = (_this13.adminWarrantyChargeReason || '').trim();
       if (!reason) {
-        _this15.error = _this15.t('damageReasonRequired');
+        _this13.error = _this13.t('damageReasonRequired');
         return;
       }
-      _this15.adminChargingWarranty = true;
-      _this15.error = '';
-      _this15.actionMessage = '';
+      _this13.adminChargingWarranty = true;
+      _this13.error = '';
+      _this13.actionMessage = '';
       // Persist the admin entry before contacting Stripe. This keeps the amount/reason
       // visible after refresh and also records failed Stripe attempts for follow-up.
       try {
-        yield _this15.bookingApi.updateBooking(bookingId, {
+        yield _this13.bookingApi.updateBooking(bookingId, {
           pendingWarrantyChargeAmount: amount,
           pendingWarrantyChargeAmountCents: Math.round(amount * 100),
           pendingWarrantyChargeReason: reason,
@@ -28874,20 +28778,20 @@ let BookingDetailComponent = class BookingDetailComponent {
       } catch {
         // Stripe remains the source of truth for the actual charge; do not block the attempt.
       }
-      _this15.bookingApi.chargeWarranty(bookingId, amount, reason, _this15.vm.display?.ownerId || 'alegria').subscribe({
+      _this13.bookingApi.chargeWarranty(bookingId, amount, reason, _this13.vm.display?.ownerId || 'alegria').subscribe({
         next: result => {
           const chargedCents = Number(result?.amount || Math.round(amount * 100));
-          _this15.adminWarrantyChargeAmount = chargedCents / 100;
-          _this15.actionMessage = _this15.t('warrantyChargeSuccess');
-          _this15.adminWarrantyChargeReason = reason;
-          _this15.adminChargingWarranty = false;
-          _this15.loadBooking();
+          _this13.adminWarrantyChargeAmount = chargedCents / 100;
+          _this13.actionMessage = _this13.t('warrantyChargeSuccess');
+          _this13.adminWarrantyChargeReason = reason;
+          _this13.adminChargingWarranty = false;
+          _this13.loadBooking();
         },
         error: function () {
           var _ref = (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (_error) {
-            _this15.adminChargingWarranty = false;
+            _this13.adminChargingWarranty = false;
             try {
-              yield _this15.bookingApi.updateBooking(bookingId, {
+              yield _this13.bookingApi.updateBooking(bookingId, {
                 pendingWarrantyChargeAmount: amount,
                 pendingWarrantyChargeAmountCents: Math.round(amount * 100),
                 pendingWarrantyChargeReason: reason,
@@ -28896,7 +28800,7 @@ let BookingDetailComponent = class BookingDetailComponent {
                 pendingWarrantyChargeModifiedAt: Date.now()
               });
             } catch {}
-            _this15.error = _error?.error?.error || _error?.error?.message || _error?.message || _this15.t('warrantyChargeError');
+            _this13.error = _error?.error?.error || _error?.error?.message || _error?.message || _this13.t('warrantyChargeError');
           });
           return function error(_x) {
             return _ref.apply(this, arguments);
@@ -28993,6 +28897,12 @@ let BookingDetailComponent = class BookingDetailComponent {
       return;
     }
     const display = this.vm.display || {};
+    if (this.isAlegriaCashSelected() && Number(this.vm.remainingAlegriaRevenue || 0) > 0.009 && Number(this.adminAlegriaCashAmount || 0) <= 0) {
+      this.adminAlegriaCashAmount = Math.round(Number(this.vm.remainingAlegriaRevenue) * 100) / 100;
+    }
+    if (this.isSkipperCashSelected() && Number(this.vm.remainingSkipperFee || 0) > 0.009 && Number(this.adminSkipperCashAmount || 0) <= 0) {
+      this.adminSkipperCashAmount = Math.round(Number(this.vm.remainingSkipperFee) * 100) / 100;
+    }
     const rows = (this.vm.paymentHistoryRows || []).map(row => ({
       ...row,
       kind: 'payment',
@@ -29121,16 +29031,16 @@ let BookingDetailComponent = class BookingDetailComponent {
     return this.warrantyAmount() > 0 && !cardRegistered && !this.isWarrantyReleased(booking);
   }
   registerWarrantyCardOnline() {
-    var _this16 = this;
+    var _this14 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this16.vm || !_this16.canRegisterWarrantyCard() || _this16.registeringWarrantyCard) return;
-      const booking = _this16.vm.display || {};
-      const bookingId = _this16.vm.bookingId || booking.bookingId || _this16.bookingId;
+      if (!_this14.vm || !_this14.canRegisterWarrantyCard() || _this14.registeringWarrantyCard) return;
+      const booking = _this14.vm.display || {};
+      const bookingId = _this14.vm.bookingId || booking.bookingId || _this14.bookingId;
       if (!bookingId) return;
-      _this16.registeringWarrantyCard = true;
-      _this16.error = '';
+      _this14.registeringWarrantyCard = true;
+      _this14.error = '';
       try {
-        yield _this16.bookingApi.updateBooking(bookingId, {
+        yield _this14.bookingApi.updateBooking(bookingId, {
           warrantyPaymentChoice: 'stripe_card',
           warrantyMethod: 'stripe_card',
           warrantyStatus: 'card_selected',
@@ -29141,13 +29051,13 @@ let BookingDetailComponent = class BookingDetailComponent {
         // Continue to Stripe setup even if the local pre-save failed; the completion callback will update the booking.
       }
       const bookingUrl = `${window.location.origin}/bookings/${encodeURIComponent(bookingId)}`;
-      _this16.bookingApi.createWarrantySetup({
-        ..._this16.termsAcceptanceMetadata(),
+      _this14.bookingApi.createWarrantySetup({
+        ..._this14.termsAcceptanceMetadata(),
         bookingId,
         offerId: booking.offerId || bookingId,
         ownerId: booking.ownerId || 'alegria',
-        warrantyAmount: _this16.warrantyAmount(),
-        amount: _this16.warrantyAmount(),
+        warrantyAmount: _this14.warrantyAmount(),
+        amount: _this14.warrantyAmount(),
         currency: 'eur',
         customerEmail: booking.email || booking.customerEmail || '',
         customerName: booking.customerName || booking.displayName || '',
@@ -29163,13 +29073,13 @@ let BookingDetailComponent = class BookingDetailComponent {
             window.location.href = url;
             return;
           }
-          _this16.registeringWarrantyCard = false;
-          _this16.error = _this16.t('warrantyCheckoutError');
+          _this14.registeringWarrantyCard = false;
+          _this14.error = _this14.t('warrantyCheckoutError');
         },
         error: error => {
-          _this16.registeringWarrantyCard = false;
-          _this16.error = error?.error?.error || error?.error?.message || error?.message || _this16.t('warrantyCheckoutError');
-          _this16.clearContradictoryTermsError();
+          _this14.registeringWarrantyCard = false;
+          _this14.error = error?.error?.error || error?.error?.message || error?.message || _this14.t('warrantyCheckoutError');
+          _this14.clearContradictoryTermsError();
         }
       });
     })();
@@ -29184,16 +29094,16 @@ let BookingDetailComponent = class BookingDetailComponent {
     return amount > 0 && !method.includes('cash') && !status.includes('cash');
   }
   selectCashWarranty() {
-    var _this17 = this;
+    var _this15 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      if (!_this17.vm || !_this17.canSelectCashWarranty()) return;
-      const booking = _this17.vm.display || {};
-      const bookingId = _this17.vm.bookingId || booking.bookingId || _this17.bookingId;
+      if (!_this15.vm || !_this15.canSelectCashWarranty()) return;
+      const booking = _this15.vm.display || {};
+      const bookingId = _this15.vm.bookingId || booking.bookingId || _this15.bookingId;
       if (!bookingId) return;
-      _this17.registeringWarrantyCard = true;
-      _this17.error = '';
+      _this15.registeringWarrantyCard = true;
+      _this15.error = '';
       try {
-        yield _this17.bookingApi.updateBooking(bookingId, {
+        yield _this15.bookingApi.updateBooking(bookingId, {
           warrantyPaymentChoice: 'cash',
           warrantyMethod: 'cash',
           warrantyStatus: 'cash_selected',
@@ -29202,11 +29112,11 @@ let BookingDetailComponent = class BookingDetailComponent {
           warrantyCardSelected: false,
           warrantyCashSelected: true
         });
-        yield _this17.loadBooking();
+        yield _this15.loadBooking();
       } catch (error) {
-        _this17.error = error?.message || _this17.t('saveError');
+        _this15.error = error?.message || _this15.t('saveError');
       } finally {
-        _this17.registeringWarrantyCard = false;
+        _this15.registeringWarrantyCard = false;
       }
     })();
   }
@@ -29233,7 +29143,9 @@ let BookingDetailComponent = class BookingDetailComponent {
     const amount = this.number(booking?.warrantyAmount || booking?.cautionAmount || booking?.securityDepositAmount || 500);
     if (amount <= 0) return true;
     const status = String(booking?.warrantyStatus || '').toLowerCase();
-    return this.hasWarrantyCardRegistered(booking) || status.includes('cash_received') || booking?.warrantyCashReceived === true || booking?.warrantyCashConfirmed === true;
+    // Selecting the cash warranty completes the "Caution" booking step. Receipt
+    // of the physical cash remains a separate operational state for the outing.
+    return this.hasWarrantyCardRegistered(booking) || this.isCashWarrantySelected(booking) || booking?.warrantyCashSelected === true || status.includes('cash_received') || booking?.warrantyCashReceived === true || booking?.warrantyCashConfirmed === true;
   }
   isTermsAccepted(booking) {
     const candidates = [booking, booking?.raw, booking?.raw?.raw, booking?.offer, booking?.raw?.offer, booking?.sourceOffer].filter(Boolean);
@@ -29391,20 +29303,20 @@ let BookingDetailComponent = class BookingDetailComponent {
     return sections[language] || sections.en;
   }
   loadFinanceText(language) {
-    var _this18 = this;
+    var _this16 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const fallback = _site_content__WEBPACK_IMPORTED_MODULE_4__.SITE_CONTENT[language]?.bookingFinance || _site_content__WEBPACK_IMPORTED_MODULE_4__.SITE_CONTENT.en?.bookingFinance || {};
-      _this18.financeText = fallback;
+      _this16.financeText = fallback;
       try {
-        const allContent = yield _this18.siteContentService.getContent();
-        _this18.siteContentAll = allContent || _site_content__WEBPACK_IMPORTED_MODULE_4__.SITE_CONTENT;
-        _this18.financeText = {
+        const allContent = yield _this16.siteContentService.getContent();
+        _this16.siteContentAll = allContent || _site_content__WEBPACK_IMPORTED_MODULE_4__.SITE_CONTENT;
+        _this16.financeText = {
           ...fallback,
           ...(allContent[language]?.bookingFinance || {}),
           ...(allContent.bookingFinance?.[language] || {})
         };
       } catch {
-        _this18.financeText = fallback;
+        _this16.financeText = fallback;
       }
     })();
   }
@@ -29502,6 +29414,42 @@ let BookingDetailComponent = class BookingDetailComponent {
         de: 'Provision',
         nl: 'Commissie',
         ru: 'Комиссия'
+      },
+      platformCommission: {
+        en: 'Platform commission',
+        fr: 'Commission plateforme',
+        es: 'Comisión de la plataforma',
+        it: 'Commissione piattaforma',
+        de: 'Plattformprovision',
+        nl: 'Platformcommissie',
+        ru: 'Комиссия платформы'
+      },
+      alegriaRecovered: {
+        en: 'Amount received by Alegria',
+        fr: 'Prix récupéré par Alegria',
+        es: 'Importe recibido por Alegria',
+        it: 'Importo ricevuto da Alegria',
+        de: 'Von Alegria erhaltener Betrag',
+        nl: 'Door Alegria ontvangen bedrag',
+        ru: 'Сумма, полученная Alegria'
+      },
+      alegriaNetRevenue: {
+        en: 'Alegria net revenue',
+        fr: 'Revenu net Alegria',
+        es: 'Ingreso neto de Alegria',
+        it: 'Ricavo netto Alegria',
+        de: 'Alegria-Nettoerlös',
+        nl: 'Netto-inkomsten Alegria',
+        ru: 'Чистый доход Alegria'
+      },
+      skipperToReverse: {
+        en: 'Payable to skipper',
+        fr: 'À reverser au skipper',
+        es: 'A pagar al patrón',
+        it: 'Da versare allo skipper',
+        de: 'An den Skipper zu zahlen',
+        nl: 'Te betalen aan de schipper',
+        ru: 'К выплате шкиперу'
       },
       rentalCommission: {
         en: 'Commission on rental',
@@ -32686,18 +32634,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   BookingsComponent: () => (/* binding */ BookingsComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bookings.component.html?ngResource */ 26456);
 /* harmony import */ var _bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./bookings.component.scss?ngResource */ 62992);
 /* harmony import */ var _bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _booking_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./booking-api.service */ 74854);
 /* harmony import */ var _booking_financial_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./booking-financial.service */ 25909);
-/* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../site-content */ 14009);
-/* harmony import */ var _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../site-content-service/site-content.service */ 73196);
-/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+/* harmony import */ var _booking_state_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./booking-state.service */ 81235);
+/* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../site-content */ 14009);
+/* harmony import */ var _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../site-content-service/site-content.service */ 73196);
+/* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+
 
 
 
@@ -32728,7 +32678,8 @@ const BOOKING_AUTO_TEXT = {
   "auto.home.bookings.bookings.component.close": "Close",
   "auto.home.bookings.bookings.component.if_the_embedded_form_is_not_visible_on_your_browse": "If the embedded form is not visible on your browser, ",
   "auto.home.bookings.bookings.component.bnbookings": "bnBookings",
-  "auto.home.bookings.bookings.component.sumup_card": "SumUp card"
+  "auto.home.bookings.bookings.component.sumup_card": "SumUp card",
+  "auto.home.bookings.bookings.component.payment_pending": "Payment pending"
 };
 let BookingsComponent = class BookingsComponent {
   bookingApi;
@@ -32737,6 +32688,7 @@ let BookingsComponent = class BookingsComponent {
   siteContentService;
   languageService;
   bookingFinancial;
+  bookingState;
   bookings = [];
   loading = true;
   errorMessage = '';
@@ -32758,15 +32710,16 @@ let BookingsComponent = class BookingsComponent {
   createReservationMessage = '';
   loggedUser = null;
   currentLanguage = 'fr';
-  pageText = _site_content__WEBPACK_IMPORTED_MODULE_5__.SITE_CONTENT.fr?.bookingManagement || {};
+  pageText = _site_content__WEBPACK_IMPORTED_MODULE_6__.SITE_CONTENT.fr?.bookingManagement || {};
   languageSub;
-  constructor(bookingApi, router, mainSvc, siteContentService, languageService, bookingFinancial) {
+  constructor(bookingApi, router, mainSvc, siteContentService, languageService, bookingFinancial, bookingState) {
     this.bookingApi = bookingApi;
     this.router = router;
     this.mainSvc = mainSvc;
     this.siteContentService = siteContentService;
     this.languageService = languageService;
     this.bookingFinancial = bookingFinancial;
+    this.bookingState = bookingState;
   }
   ngOnInit() {
     this.languageSub = this.languageService.language$.subscribe(language => {
@@ -32785,7 +32738,7 @@ let BookingsComponent = class BookingsComponent {
   loadPageText(language) {
     var _this = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const fallback = _site_content__WEBPACK_IMPORTED_MODULE_5__.SITE_CONTENT[language]?.bookingManagement || _site_content__WEBPACK_IMPORTED_MODULE_5__.SITE_CONTENT.fr?.bookingManagement || {};
+      const fallback = _site_content__WEBPACK_IMPORTED_MODULE_6__.SITE_CONTENT[language]?.bookingManagement || _site_content__WEBPACK_IMPORTED_MODULE_6__.SITE_CONTENT.fr?.bookingManagement || {};
       try {
         const content = yield _this.siteContentService.getContent();
         _this.pageText = {
@@ -32799,6 +32752,18 @@ let BookingsComponent = class BookingsComponent {
     })();
   }
   t(key) {
+    if (key === 'auto.home.bookings.bookings.component.payment_pending') {
+      const labels = {
+        fr: 'Paiement en attente',
+        en: 'Payment pending',
+        es: 'Pago pendiente',
+        it: 'Pagamento in attesa',
+        de: 'Zahlung ausstehend',
+        nl: 'Betaling in afwachting',
+        ru: 'Ожидается оплата'
+      };
+      return labels[this.currentLanguage] || labels.en;
+    }
     return this.pageText?.[key] || BOOKING_AUTO_TEXT[key] || key;
   }
   ngOnDestroy() {
@@ -33000,26 +32965,28 @@ let BookingsComponent = class BookingsComponent {
     return rawStatus === false || normalizedStatus === 'false' || normalizedStatus === 'cancelled' || normalizedStatus === 'canceled' || anyBooking.cancelled === true || anyBooking.canceled === true;
   }
   getDerivedBookingStatus(booking) {
-    const anyBooking = booking || {};
-    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
-    // Read Firebase status first. bookingStatus: true means confirmed/executed in legacy bnBookings.
-    if (this.isBalancePaid(booking)) return 'payment_done';
-    if (this.isCancelledBooking(booking)) return 'cancelled';
-    if (rawStatus === 'payment_done' || rawStatus === 'full_payment_done' || rawStatus === 'paid' || rawStatus === 'completed') {
-      return 'payment_done';
-    }
-    if (rawStatus === true || rawStatus === 'true' || rawStatus === 'confirmed' || anyBooking.confirmed === true || anyBooking.bookingConfirmed === true) {
-      return 'confirmed';
-    }
-    if (this.isDepositPaid(booking) && this.isTermsAccepted(booking)) return 'confirmed';
+    const state = this.getCanonicalState(booking);
+    if (state.cancelled) return 'cancelled';
+    // Never infer a completed payment from a legacy booking/status flag.
+    // This is the same canonical financial decision used by booking-detail.
+    if (state.fullyPaid) return 'payment_done';
+    if (state.completed || state.termsAccepted) return 'payment_pending';
+    if (state.confirmed) return 'confirmed';
     return 'not_confirmed';
   }
   getStatusLabel(booking) {
     const status = this.getDerivedBookingStatus(booking);
-    if (status === 'cancelled') return 'Cancelled';
-    if (status === 'payment_done') return 'Payment done';
-    if (status === 'confirmed') return 'Confirmed';
-    return 'Not confirmed';
+    if (status === 'cancelled') return this.t('cancelled');
+    if (status === 'payment_done') return this.t('paymentDone');
+    if (status === 'payment_pending') {
+      const pending = this.t('auto.home.bookings.bookings.component.payment_pending');
+      return this.getCanonicalState(booking).completed ? `${this.t('completed')} · ${pending}` : pending;
+    }
+    if (status === 'confirmed') return this.t('confirmed');
+    return this.t('notConfirmed');
+  }
+  getCanonicalState(booking) {
+    return this.bookingState.resolve(booking || {});
   }
   getWarrantyModeLabel(booking) {
     const choice = this.getWarrantyChoice(booking);
@@ -33155,6 +33122,7 @@ let BookingsComponent = class BookingsComponent {
   getStatusSummaryText(booking) {
     const status = this.getDerivedBookingStatus(booking);
     if (status === 'payment_done') return 'Booking confirmed, warranty secured and full payment recorded.';
+    if (status === 'payment_pending') return 'The outing status is recorded, but Alegria and/or skipper payment is still pending.';
     if (status === 'confirmed') return 'Booking confirmed. Warranty and/or remaining payment may still be pending.';
     return 'Booking not confirmed yet. Deposit and T&C acceptance are required.';
   }
@@ -33258,18 +33226,20 @@ let BookingsComponent = class BookingsComponent {
   static ctorParameters = () => [{
     type: _booking_api_service__WEBPACK_IMPORTED_MODULE_3__.BookingApiService
   }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_8__.Router
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_9__.Router
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_9__.ServicesService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_10__.ServicesService
   }, {
-    type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_6__.SiteContentService
+    type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_7__.SiteContentService
   }, {
-    type: _services_language_service__WEBPACK_IMPORTED_MODULE_7__.LanguageService
+    type: _services_language_service__WEBPACK_IMPORTED_MODULE_8__.LanguageService
   }, {
     type: _booking_financial_service__WEBPACK_IMPORTED_MODULE_4__.BookingFinancialService
+  }, {
+    type: _booking_state_service__WEBPACK_IMPORTED_MODULE_5__.BookingStateService
   }];
 };
-BookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_10__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_11__.Component)({
+BookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_11__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_12__.Component)({
   selector: 'app-bookings',
   template: _bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]

@@ -106,9 +106,18 @@ export class BookingFinancialService {
 
     const sum = records.filter(matches).reduce((total: number, record: any) => total + amountOf(record), 0);
     if (sum > 0) return sum;
-    if (type === 'deposit') return amountOf(direct.deposit || {});
-    if (type === 'alegria' || type === 'balance') return amountOf(direct.balance || direct.remaining || direct.alegria || {});
-    if (type === 'skipper') return amountOf(direct.skipper || {});
+
+    // Nested booking payment objects are only a fallback source when they also
+    // carry explicit proof of a completed payment. A Checkout Session id with
+    // status=checkout_created is not proof of payment.
+    const fallback = type === 'deposit'
+      ? (direct.deposit || {})
+      : (type === 'alegria' || type === 'balance')
+        ? (direct.alegria || direct.balance || direct.remaining || {})
+        : type === 'skipper'
+          ? (direct.skipper || {})
+          : {};
+    if (matches(fallback)) return amountOf(fallback);
     return 0;
   }
 

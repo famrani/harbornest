@@ -562,7 +562,7 @@ export class DepositComponent implements OnInit, OnDestroy {
         this.paymentStatus = state || this.paymentStatus;
 
         // Keep the page aligned with bnBookings as the source of truth.
-        // Stripe details are kept separately in state.stripePayments, coming from bnPayment.
+        // Stripe details are kept separately in state.stripePayments, coming from backendpayments.
         if (state?.booking) {
           this.booking = { ...(this.booking || {}), ...(state.booking || {}) } as any;
           this.customerName = state.booking.customerName || this.customerName;

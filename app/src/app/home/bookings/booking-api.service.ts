@@ -381,10 +381,10 @@ export class BookingApiService {
     ];
 
     return new Observable((observer) => {
-      const markLocally = async (backendResponse: any = {}, backendError: any = null) => {
+      const markLocally = async (backendResponse: any = {}) => {
         try {
           const localResult = await this.markDepositPaidLocally(payload, backendResponse);
-          observer.next({ ...(backendResponse || {}), ...(localResult || {}), localDepositSaved: true, backendError: backendError?.message || backendError?.error?.message || '' });
+          observer.next({ ...(backendResponse || {}), ...(localResult || {}), localDepositSaved: true });
           observer.complete();
         } catch (localError) {
           observer.error(localError);
@@ -393,7 +393,9 @@ export class BookingApiService {
 
       this.postFirstAvailable(endpoints, payload).subscribe({
         next: (response) => markLocally(response),
-        error: (error) => markLocally({}, error),
+        // Never convert a failed/unverified Stripe completion into a locally
+        // paid booking. The backend first retrieves and verifies the session.
+        error: (error) => observer.error(error),
       });
     });
   }
@@ -628,109 +630,23 @@ export class BookingApiService {
       `${this.baseUrl}/stripe/remaining-complete`,
     ];
 
-    return new Observable((observer) => {
-      const markLocally = async (backendResponse: any = {}, backendError: any = null) => {
-        try {
-          const localResult = await this.markBalancePaidLocally(payload, backendResponse);
-          observer.next({ ...(backendResponse || {}), ...(localResult || {}), localBalanceSaved: true, backendError: backendError?.message || backendError?.error?.message || '' });
-          observer.complete();
-        } catch (localError) {
-          observer.error(localError);
-        }
-      };
-
-      this.postFirstAvailable(endpoints, payload).subscribe({
-        next: (response) => markLocally(response),
-        error: (error) => markLocally({}, error),
-      });
-    });
+    // The backend retrieves the Checkout Session directly from Stripe and
+    // persists the result only when Stripe confirms it is paid. The browser
+    // must never mark a payment as paid from redirect query parameters.
+    return this.postFirstAvailable(endpoints, payload);
   }
 
-  private async markBalancePaidLocally(payload: { bookingId: string; checkoutSessionId?: string; sessionId?: string; amount?: number; balanceAmount?: number; }, backendResponse: any = {}): Promise<any> {
-    const bookingId = String(payload.bookingId || '').trim();
-    if (!bookingId) throw new Error('Missing booking id for local balance update.');
-
-    const existing = await this.getBookingFromFirebase(bookingId).catch(() => undefined) as any;
-    const raw = existing?.raw || existing || {};
-    const now = Date.now();
-    const existingPayments = raw.payments || {};
-    const explicitAmount = Number(payload.balanceAmount ?? payload.amount ?? backendResponse?.balanceAmount ?? backendResponse?.amount ?? 0) || 0;
-    const storedBalance = Number(
-      raw.balanceAmount
-      ?? raw.remainingFeesAmount
-      ?? raw.remainingOnboardAmount
-      ?? raw.remainingAlegriaRevenue
-      ?? raw.alegriaRemaining
-      ?? existingPayments?.pendingAlegria?.amount
-      ?? existingPayments?.balance?.amount
-      ?? 0
-    ) || 0;
-    const computedRemaining = this.computeRemainingAlegriaAmount(raw);
-    const paidAmount = explicitAmount > 0 ? explicitAmount : this.normalizePaymentAmount(storedBalance || computedRemaining);
-    const sessionId = String(payload.sessionId || payload.checkoutSessionId || backendResponse?.sessionId || backendResponse?.checkoutSessionId || backendResponse?.stripeCheckoutSessionId || '').trim();
-    const paymentIntentId = String(backendResponse?.paymentIntentId || backendResponse?.stripePaymentIntentId || '').trim();
-
-    await this.updateBooking(bookingId, {
-      balancePaid: true,
-      balanceStatus: 'paid',
-      balancePaymentStatus: 'paid',
-      balancePaymentMethod: 'Stripe',
-      balancePaidAt: raw.balancePaidAt || now,
-      remainingFeesAmount: 0,
-      remainingOnboardAmount: 0,
-      remainingAlegriaRevenue: 0,
-      alegriaPaid: true,
-      alegriaPaidAmount: (Number(raw.alegriaPaidAmount || existingPayments?.alegria?.amount || existingPayments?.balance?.amount || 0) || 0) + paidAmount,
-      alegriaPaymentStatus: 'paid',
-      paymentStatus: 'balance_paid',
-      paymentStatusLabel: 'balance_paid',
-      payments: {
-        ...existingPayments,
-        alegria: {
-          ...(existingPayments.alegria || {}),
-          paid: true,
-          status: 'paid',
-          paymentStatus: 'paid',
-          paymentType: 'alegria_balance',
-          type: 'alegria_balance',
-          method: 'Stripe',
-          amount: (Number(existingPayments?.alegria?.amount || 0) || 0) + paidAmount,
-          amount_total: Math.round(((Number(existingPayments?.alegria?.amount || 0) || 0) + paidAmount) * 100),
-          currency: 'eur',
-          bookingId,
-          ownerId: raw.ownerId || 'alegria',
-          checkoutSessionId: sessionId,
-          stripeCheckoutSessionId: sessionId,
-          stripePaymentIntentId: paymentIntentId,
-          paidAt: existingPayments.alegria?.paidAt || now,
-          modifiedTS: now,
-          source: 'stripe_return',
-        },
-        pendingAlegria: null,
-        balance: {
-          ...(existingPayments.balance || {}),
-          paid: true,
-          status: 'paid',
-          paymentStatus: 'paid',
-          paymentType: 'balance',
-          type: 'balance',
-          method: 'Stripe',
-          amount: paidAmount,
-          amount_total: Math.round(paidAmount * 100),
-          currency: 'eur',
-          bookingId,
-          ownerId: raw.ownerId || 'alegria',
-          checkoutSessionId: sessionId,
-          stripeCheckoutSessionId: sessionId,
-          stripePaymentIntentId: paymentIntentId,
-          paidAt: existingPayments.balance?.paidAt || now,
-          modifiedTS: now,
-          source: 'stripe_return',
-        },
-      },
-    } as any);
-
-    return { bookingId, balancePaid: true, balanceAmount: paidAmount };
+  completeAdditionalPayment(payload: {
+    bookingId: string;
+    ownerId?: string;
+    checkoutSessionId?: string;
+    sessionId?: string;
+  }): Observable<any> {
+    return this.postFirstAvailable([
+      `${this.baseUrl}/pay/outing-additional-payment-complete`,
+      `${this.baseUrl}/api/payments/complete-additional-payment`,
+      `${this.baseUrl}/stripe/additional-payment-complete`,
+    ], payload);
   }
 
   private normalizePaymentAmount(value: number): number {
@@ -817,7 +733,7 @@ export class BookingApiService {
   /**
    * Payment-page source of truth.
    * - Booking/payment state comes from bnBookings/{bookingId}.
-   * - Stripe transaction details come only from bnPayment records linked to the booking/offer.
+   * - Stripe transaction details come only from backendpayments records linked to the booking/offer.
    * This avoids mixing backend summary endpoints with the persisted booking state shown to the customer.
    */
   getPaymentPageState(bookingId: string): Observable<any> {
@@ -867,16 +783,22 @@ export class BookingApiService {
   }
 
   private async fetchBnPaymentRecordsByField(field: string, value: string): Promise<any | null> {
-    const safeField = encodeURIComponent(`\"${field}\"`).replace(/%5C/g, '');
-    const encodedValue = encodeURIComponent(`\"${value}\"`).replace(/%5C/g, '');
-    const collection = 'bnPayment';
+    const collection = 'backendpayments';
 
     for (const baseUrl of this.restDatabaseUrls) {
       try {
         const base = baseUrl.replace(/\/+$/, '');
-        const url = `${base}/${collection}.json?orderBy=${safeField}&equalTo=${encodedValue}`;
+        const url = `${base}/${collection}.json`;
         const result = await this.http.get<any>(url).toPromise();
-        if (result && typeof result === 'object') return result;
+        if (result && typeof result === 'object') {
+          return Object.keys(result).reduce((matches: any, key: string) => {
+            const record = result[key];
+            if (record && String(record[field] || '') === String(value || '')) {
+              matches[key] = record;
+            }
+            return matches;
+          }, {});
+        }
       } catch {}
     }
 

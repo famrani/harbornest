@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ServicesService } from 'godigital-lib';
 import { BookingApiService, AlegriaBooking } from './booking-api.service';
 import { BookingFinancialService } from './booking-financial.service';
+import { BookingStateService, BookingStateModel } from './booking-state.service';
 import { SITE_CONTENT } from '../site-content';
 import { SiteContentService } from '../site-content-service/site-content.service';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
@@ -33,7 +34,8 @@ const BOOKING_AUTO_TEXT: Record<string, string> = {
   "auto.home.bookings.bookings.component.close": "Close",
   "auto.home.bookings.bookings.component.if_the_embedded_form_is_not_visible_on_your_browse": "If the embedded form is not visible on your browser, ",
   "auto.home.bookings.bookings.component.bnbookings": "bnBookings",
-  "auto.home.bookings.bookings.component.sumup_card": "SumUp card"
+  "auto.home.bookings.bookings.component.sumup_card": "SumUp card",
+  "auto.home.bookings.bookings.component.payment_pending": "Payment pending"
 };
 
 @Component({
@@ -73,7 +75,8 @@ export class BookingsComponent implements OnInit, OnDestroy {
     private mainSvc: ServicesService,
     private siteContentService: SiteContentService,
     private languageService: LanguageService,
-    private bookingFinancial: BookingFinancialService
+    private bookingFinancial: BookingFinancialService,
+    private bookingState: BookingStateService
   ) {}
 
   ngOnInit(): void {
@@ -107,6 +110,18 @@ export class BookingsComponent implements OnInit, OnDestroy {
   }
 
   t(key: string): string {
+    if (key === 'auto.home.bookings.bookings.component.payment_pending') {
+      const labels: Record<SiteLanguage, string> = {
+        fr: 'Paiement en attente',
+        en: 'Payment pending',
+        es: 'Pago pendiente',
+        it: 'Pagamento in attesa',
+        de: 'Zahlung ausstehend',
+        nl: 'Betaling in afwachting',
+        ru: 'Ожидается оплата',
+      };
+      return labels[this.currentLanguage] || labels.en;
+    }
     return this.pageText?.[key] || BOOKING_AUTO_TEXT[key] || key;
   }
 
@@ -413,42 +428,30 @@ export class BookingsComponent implements OnInit, OnDestroy {
   }
 
   getDerivedBookingStatus(booking: AlegriaBooking): string {
-    const anyBooking: any = booking || {};
-    const rawStatus = anyBooking.bookingStatus ?? anyBooking.status;
-
-    // Read Firebase status first. bookingStatus: true means confirmed/executed in legacy bnBookings.
-    if (this.isBalancePaid(booking)) return 'payment_done';
-    if (this.isCancelledBooking(booking)) return 'cancelled';
-
-    if (
-      rawStatus === 'payment_done' ||
-      rawStatus === 'full_payment_done' ||
-      rawStatus === 'paid' ||
-      rawStatus === 'completed'
-    ) {
-      return 'payment_done';
-    }
-
-    if (
-      rawStatus === true ||
-      rawStatus === 'true' ||
-      rawStatus === 'confirmed' ||
-      anyBooking.confirmed === true ||
-      anyBooking.bookingConfirmed === true
-    ) {
-      return 'confirmed';
-    }
-
-    if (this.isDepositPaid(booking) && this.isTermsAccepted(booking)) return 'confirmed';
+    const state = this.getCanonicalState(booking);
+    if (state.cancelled) return 'cancelled';
+    // Never infer a completed payment from a legacy booking/status flag.
+    // This is the same canonical financial decision used by booking-detail.
+    if (state.fullyPaid) return 'payment_done';
+    if (state.completed || state.termsAccepted) return 'payment_pending';
+    if (state.confirmed) return 'confirmed';
     return 'not_confirmed';
   }
 
   getStatusLabel(booking: AlegriaBooking): string {
     const status = this.getDerivedBookingStatus(booking);
-    if (status === 'cancelled') return 'Cancelled';
-    if (status === 'payment_done') return 'Payment done';
-    if (status === 'confirmed') return 'Confirmed';
-    return 'Not confirmed';
+    if (status === 'cancelled') return this.t('cancelled');
+    if (status === 'payment_done') return this.t('paymentDone');
+    if (status === 'payment_pending') {
+      const pending = this.t('auto.home.bookings.bookings.component.payment_pending');
+      return this.getCanonicalState(booking).completed ? `${this.t('completed')} · ${pending}` : pending;
+    }
+    if (status === 'confirmed') return this.t('confirmed');
+    return this.t('notConfirmed');
+  }
+
+  getCanonicalState(booking: AlegriaBooking): BookingStateModel {
+    return this.bookingState.resolve(booking || {});
   }
 
   getWarrantyModeLabel(booking: AlegriaBooking): string {
@@ -684,6 +687,7 @@ export class BookingsComponent implements OnInit, OnDestroy {
   getStatusSummaryText(booking: BookingView): string {
     const status = this.getDerivedBookingStatus(booking);
     if (status === 'payment_done') return 'Booking confirmed, warranty secured and full payment recorded.';
+    if (status === 'payment_pending') return 'The outing status is recorded, but Alegria and/or skipper payment is still pending.';
     if (status === 'confirmed') return 'Booking confirmed. Warranty and/or remaining payment may still be pending.';
     return 'Booking not confirmed yet. Deposit and T&C acceptance are required.';
   }

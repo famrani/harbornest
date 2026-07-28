@@ -5,6 +5,7 @@ import { SITE_CONTENT, SiteContent } from '../site-content';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
 import { BookingApiService, AlegriaBooking } from '../bookings/booking-api.service';
 import { SiteContentService } from '../site-content-service/site-content.service';
+import { BoatContextService } from '../../services/boat-context.service';
 
 interface CustomerPaymentView {
   id: string;
@@ -74,7 +75,8 @@ export class AccountSummaryComponent implements OnInit {
     private router: Router,
     private mainSvc: ServicesService,
     private bookingApi: BookingApiService,
-    private siteContentService: SiteContentService
+    private siteContentService: SiteContentService,
+    private boatContext: BoatContextService
   ) {}
 
   ngOnInit(): void {
@@ -221,7 +223,8 @@ export class AccountSummaryComponent implements OnInit {
     const returnUrl = `${window.location.origin}/my-payments`;
     this.standalonePaymentLoading = true;
     this.bookingApi.createAdhocCheckout({
-      ownerId: 'alegria',
+      ownerId: this.boatContext.boatId,
+      boatId: this.boatContext.boatId,
       bookingId: '',
       adhocPaymentId: paymentId,
       amount,

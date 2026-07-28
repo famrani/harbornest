@@ -31,6 +31,7 @@
           <option [value]="'all'">{{ t('allStatuses') }}</option>
           <option [value]="'not_confirmed'">{{ t('notConfirmed') }}</option>
           <option [value]="'confirmed'">{{ t('confirmed') }}</option>
+          <option [value]="'payment_pending'">{{ t('auto.home.bookings.bookings.component.payment_pending') }}</option>
           <option [value]="'payment_done'">{{ t('paymentDone') }}</option>
         </select>
       </label>
@@ -208,21 +209,21 @@
       <p>{{ getStatusSummaryText(selectedStatusBooking) }}</p>
 
       <div class="status-timeline">
-        <div class="status-step" [ngClass]="getStatusStepClass(isDepositPaid(selectedStatusBooking))">
-          <strong>{{ t('deposit10') }}</strong>
-          <span>{{ getCompletedLabel(isDepositPaid(selectedStatusBooking)) }}</span>
-        </div>
-        <div class="status-step" [ngClass]="getStatusStepClass(isTermsAccepted(selectedStatusBooking))">
+        <div class="status-step" [ngClass]="getStatusStepClass(getCanonicalState(selectedStatusBooking).termsAccepted)">
           <strong>{{ t('tc') }}</strong>
-          <span>{{ isTermsAccepted(selectedStatusBooking) ? t('accepted') : t('notAccepted') }}</span>
+          <span>{{ getCanonicalState(selectedStatusBooking).termsAccepted ? t('accepted') : t('notAccepted') }}</span>
         </div>
-        <div class="status-step" [ngClass]="getStatusStepClass(isWarrantySecured(selectedStatusBooking))">
+        <div class="status-step" [ngClass]="getStatusStepClass(getCanonicalState(selectedStatusBooking).alegriaPaymentComplete)">
+          <strong>Alegria</strong>
+          <span>{{ getCompletedLabel(getCanonicalState(selectedStatusBooking).alegriaPaymentComplete) }}</span>
+        </div>
+        <div class="status-step" [ngClass]="getStatusStepClass(getCanonicalState(selectedStatusBooking).skipperPaymentComplete)">
+          <strong>Skipper</strong>
+          <span>{{ getCompletedLabel(getCanonicalState(selectedStatusBooking).skipperPaymentComplete) }}</span>
+        </div>
+        <div class="status-step" [ngClass]="getStatusStepClass(getCanonicalState(selectedStatusBooking).warrantyComplete)">
           <strong>{{ t('warrantyMode') }}</strong>
           <span>{{ getWarrantyModeLabel(selectedStatusBooking) }} · {{ getWarrantyCardLabel(selectedStatusBooking) }}</span>
-        </div>
-        <div class="status-step" [ngClass]="getStatusStepClass(isBalancePaid(selectedStatusBooking))">
-          <strong>{{ t('remaining90') }}</strong>
-          <span>{{ getCompletedLabel(isBalancePaid(selectedStatusBooking)) }}</span>
         </div>
         <div class="status-step" [ngClass]="getStatusStepClass(getDamageStatusLabel(selectedStatusBooking).includes('recorded'))">
           <strong>{{ t('damage') }}</strong>

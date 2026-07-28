@@ -12405,6 +12405,9 @@ let OfferApiService = class OfferApiService {
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this.validateOfferInput(input);
       const now = Date.now();
+      const boatId = String(input.boatId || _this.boatContext.boatId);
+      const fleetBoat = yield _this.readFirebasePath(`/bnFleet/${boatId}`).catch(() => ({}));
+      const ownerId = String(input.ownerId || fleetBoat?.ownerId || boatId);
       const offerId = input.offerId || `offer_${now}_${Math.random().toString(36).slice(2, 8)}`;
       const skipperCashAmount = _this.getSkipperCashAmount(input);
       const proposalBoatPrice = Number(input.proposalBoatPrice ?? input.estimatedBoatPrice ?? 0) || 0;
@@ -12423,8 +12426,8 @@ let OfferApiService = class OfferApiService {
       const balanceAmount = Math.round((onlinePayableAmount - depositAmount) * 100) / 100;
       const offer = {
         offerId,
-        boatId: input.boatId || _this.boatContext.boatId,
-        ownerId: input.ownerId || _this.boatContext.boatId,
+        boatId,
+        ownerId,
         skipperId: input.skipperId || '',
         source: input.source || 'direct',
         bookingSource: input.bookingSource || '',
@@ -12946,14 +12949,17 @@ let OfferApiService = class OfferApiService {
       const directTotal = Number(input.totalAmount || input.totalPrice || 0) || 0;
       const totalPrice = directTotal || platformTotalClientAmount || platformPaidAmount + onlinePayableAmount + cashOnBoardAmount;
       const boatPrice = Number(input.proposalBoatPrice || input.estimatedBoatPrice || Math.max(0, totalPrice - skipperCashAmount)) || 0;
+      const boatId = String(input.boatId || _this12.boatContext.boatId);
+      const fleetBoat = yield _this12.readFirebasePath(`/bnFleet/${boatId}`).catch(() => ({}));
+      const ownerId = String(input.ownerId || fleetBoat?.ownerId || boatId);
       const booking = {
         bookingId,
         offerId: bookingId,
         relatedBookingId: bookingId,
-        ownerId: 'alegria',
+        ownerId,
         source,
         bookingSource: isExternal ? 'external' : 'direct',
-        boatId: String(input.boatId || 'alegria'),
+        boatId,
         boatName: String(input.boatName || 'Alegria'),
         boatType: String(input.boatType || 'Catamaran'),
         boatManufacturer: String(input.boatManufacturer || ''),
@@ -13066,7 +13072,7 @@ let OfferApiService = class OfferApiService {
             modifiedTS: now,
             outingDate: String(input.outingDate || ''),
             outingType: String(input.outingType || 'Journée en mer'),
-            ownerId: 'alegria',
+            ownerId,
             paymentType: 'balance',
             status: input.balancePaid === false ? 'pending' : 'paid',
             source: 'manual_historical_import'
@@ -13114,7 +13120,7 @@ let OfferApiService = class OfferApiService {
         bookingId,
         offerId: anyOffer.offerId || bookingId,
         relatedOfferId: anyOffer.offerId || bookingId,
-        ownerId: 'alegria',
+        ownerId: anyOffer.ownerId || _this13.boatContext.boatId,
         bookingSource: 'external',
         source: anyOffer.source || anyOffer.externalPlatform || 'clickandboat',
         externalPlatform: anyOffer.externalPlatform || anyOffer.source || 'clickandboat',
@@ -13271,14 +13277,25 @@ let OfferApiService = class OfferApiService {
       if (!current) {
         throw new Error('Offer not found');
       }
+      const sessionId = String(payload.sessionId || payload.session_id || payload.checkoutSessionId || '').trim();
+      if (!sessionId) throw new Error('Missing Stripe Checkout session id.');
+      const verified = yield _this17.postFirstAvailable([`${_this17.baseUrl}/pay/outing-deposit-complete`, `${_this17.baseUrl}/api/payments/complete-deposit-payment`, `${_this17.baseUrl}/stripe/deposit-complete`], {
+        // Checkout creation uses offerId as the Stripe metadata bookingId.
+        // Keep the exact same identifier for ownership/session verification.
+        bookingId: offerId,
+        offerId,
+        ownerId: current.ownerId || _this17.boatContext.boatId,
+        checkoutSessionId: sessionId,
+        sessionId
+      }).toPromise();
       const patch = {
         depositPaid: true,
         depositStatus: 'paid',
         depositPaidAmount: Number(current.depositAmount || 0),
         paidDepositAmount: Number(current.depositAmount || 0),
         paymentStatus: 'paid',
-        stripeCheckoutSessionId: payload.sessionId || payload.checkoutSessionId || current.stripeCheckoutSessionId || '',
-        stripePaymentIntentId: payload.paymentIntentId || current.stripePaymentIntentId || '',
+        stripeCheckoutSessionId: verified?.stripeCheckoutSessionId || sessionId,
+        stripePaymentIntentId: verified?.stripePaymentIntentId || current.stripePaymentIntentId || '',
         modifiedTS: Date.now()
       };
       yield _this17.patchOffer(offerId, patch);
@@ -13323,7 +13340,7 @@ let OfferApiService = class OfferApiService {
         ...(existing || {}),
         bookingId,
         offerId,
-        ownerId: 'alegria',
+        ownerId: offer.ownerId || existing?.ownerId || _this18.boatContext.boatId,
         source: offer.source || existing?.source || 'direct',
         bookingSource: offer.source === 'direct' || !offer.source ? 'direct' : existing?.bookingSource || 'external',
         customerName: offer.customerName || existing?.customerName || '',
@@ -13369,7 +13386,7 @@ let OfferApiService = class OfferApiService {
     return this.http.post(`${this.baseUrl}/pay/outing-deposit-checkout`, {
       bookingId: offer.offerId,
       offerId: offer.offerId,
-      ownerId: 'alegria',
+      ownerId: offer.ownerId || this.boatContext.boatId,
       customerName: offer.customerName,
       customerEmail: offer.customerEmail,
       customerPhone: offer.customerPhone,
@@ -13397,7 +13414,7 @@ let OfferApiService = class OfferApiService {
       let backendResult = {};
       if (sessionId) {
         try {
-          backendResult = yield _this19.completeWarrantySetup(offerId, sessionId, 'alegria').toPromise();
+          backendResult = yield _this19.completeWarrantySetup(offerId, sessionId, current.ownerId || _this19.boatContext.boatId).toPromise();
         } catch {
           // Keep the local fallback below, but without a payment method the admin screen will clearly show that the card is not chargeable.
           backendResult = {};
@@ -13466,7 +13483,7 @@ let OfferApiService = class OfferApiService {
     const payload = {
       bookingId: offer.offerId,
       offerId: offer.offerId,
-      ownerId: 'alegria',
+      ownerId: offer.ownerId || this.boatContext.boatId,
       customerName: offer.customerName,
       customerEmail: offer.customerEmail,
       customerPhone: offer.customerPhone,
@@ -13482,7 +13499,7 @@ let OfferApiService = class OfferApiService {
     };
     return this.postFirstAvailable([`${this.baseUrl}/pay/outing-warranty-checkout`, `${this.baseUrl}/api/payments/create-warranty-checkout-session`, `${this.baseUrl}/api/payments/create-warranty-setup-session`, `${this.baseUrl}/stripe/warranty-setup`, `${this.baseUrl}/stripe/warranty-checkout`], payload);
   }
-  completeWarrantySetup(offerId, sessionId, ownerId = 'alegria') {
+  completeWarrantySetup(offerId, sessionId, ownerId = this.boatContext.boatId) {
     const payload = {
       bookingId: offerId,
       offerId,
@@ -13495,7 +13512,7 @@ let OfferApiService = class OfferApiService {
   chargeWarranty(offer, amount, reason) {
     const payload = {
       bookingId: offer.offerId,
-      ownerId: 'alegria',
+      ownerId: offer.ownerId || this.boatContext.boatId,
       amount,
       reason,
       currency: 'eur'
@@ -13847,21 +13864,29 @@ let OfferApiService = class OfferApiService {
       };
     })();
   }
-  readCollection(collection) {
+  readFirebasePath(path) {
     var _this23 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const value = yield _this23.http.get(`${_this23.firebaseUrl}/${collection}.json`).toPromise();
+      const normalizedPath = String(path || '').replace(/^\/+|\/+$/g, '');
+      if (!normalizedPath) return undefined;
+      return _this23.http.get(`${_this23.firebaseUrl}/${normalizedPath}.json`).toPromise();
+    })();
+  }
+  readCollection(collection) {
+    var _this24 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const value = yield _this24.http.get(`${_this24.firebaseUrl}/${collection}.json`).toPromise();
       if (!value) return [];
       return Object.keys(value).map(key => ({
         ...value[key],
         offerId: value[key]?.offerId || key
-      })).filter(offer => String(offer.boatId || 'alegria') === _this23.boatContext.boatId);
+      })).filter(offer => String(offer.boatId || 'alegria') === _this24.boatContext.boatId);
     })();
   }
   readItem(collection, id) {
-    var _this24 = this;
+    var _this25 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const value = yield _this24.http.get(`${_this24.firebaseUrl}/${collection}/${id}.json`).toPromise();
+      const value = yield _this25.http.get(`${_this25.firebaseUrl}/${collection}/${id}.json`).toPromise();
       return value ? {
         ...value,
         offerId: value.offerId || id
@@ -13869,15 +13894,15 @@ let OfferApiService = class OfferApiService {
     })();
   }
   deleteItem(collection, id) {
-    var _this25 = this;
+    var _this26 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      yield _this25.http.delete(`${_this25.firebaseUrl}/${collection}/${id}.json`).toPromise();
+      yield _this26.http.delete(`${_this26.firebaseUrl}/${collection}/${id}.json`).toPromise();
     })();
   }
   writeItem(collection, id, value) {
-    var _this26 = this;
+    var _this27 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      yield _this26.http.put(`${_this26.firebaseUrl}/${collection}/${id}.json`, value).toPromise();
+      yield _this27.http.put(`${_this27.firebaseUrl}/${collection}/${id}.json`, value).toPromise();
     })();
   }
   static ctorParameters = () => [{

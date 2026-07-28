@@ -4,6 +4,7 @@
 
 - `backendpayments`: global payment ledger (unchanged)
 - `backendusers`: global user directory (unchanged)
+- `backendcalendar/{boatId}/{date}/{bookingId}`: privacy-safe availability index
 - `backendfeedbacks/{feedbackId}`: feedback with `boatId` and optional `skipperId`
 - `bnFleet/{boatId}`: boat, owner, defaults and extra-services catalogue
 - `bnSkippers/{skipperId}`: skipper profile and `boatIds` assignments
@@ -13,6 +14,10 @@
 - `bnPricingModel/{boatId}`: the single operational pricing model
 - `siteContent/{boatId}/{language}/{section}`: all website content
 - `guestInfo/{boatId}`, `proposalInfo/{boatId}`, `emailBranding/{boatId}`: boat-scoped configuration
+
+Stripe Standard OAuth credentials are stored under
+`backendusers/{ownerId}/stripeStandard`; a legacy `backendowners` connection is
+still read during the transition but is not created by the new code.
 
 ## Removed roots
 
@@ -28,12 +33,12 @@ to the boat, and CMS content is merged into the canonical `siteContent` tree.
 
 1. Back up the current Realtime Database.
 2. Deploy the new back-end, then the new front-end.
-3. Import `firebase-dump-release104-multiboat.json` at the database root.
+3. Import `firebase-dump-release105-multiboat-stripe-fixed.json` at the database root.
 4. Open **Administration → Flotte** and complete the owner/default skipper for each boat.
 5. Open the CMS, select a boat, verify its four sections, then save.
 
 The migration script is included and can be rerun on a newer export:
 
 ```bash
-node migrate-firebase-multiboat.js current-export.json firebase-dump-release104-multiboat.json
+node migrate-firebase-multiboat.js current-export.json firebase-dump-release105-multiboat-stripe-fixed.json
 ```

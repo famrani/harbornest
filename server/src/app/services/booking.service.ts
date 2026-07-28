@@ -31,7 +31,7 @@ export interface BookingPayment {
     setupIntentId?: string,
     paymentMethodId?: string,
     paymentIntentId?: string,
-    status: 'init' | 'pm_saved' | 'requires_action' | 'charge_succeeded' | 'charge_failed' | 'canceled',
+    status: 'init' | 'owner_not_connected' | 'pm_saved' | 'requires_action' | 'charge_succeeded' | 'charge_failed' | 'canceled',
     lastError?: string | null
 }
 
@@ -662,7 +662,7 @@ export class BookingsService {
         const days = this.eachDateUTC(start, end);
         const updates: { [k: string]: any } = {};
         for (const day of days) {
-            updates[`/backendcalendar/${day}/${bookingId}`] = {
+            updates[`/backendcalendar/${booking.boatId || 'alegria'}/${day}/${bookingId}`] = {
                 bookingId,
                 boatId: booking.boatId || 'alegria',
                 start,
@@ -685,10 +685,12 @@ export class BookingsService {
 
     /** Remove calendar index of a booking (used before reindexing or deleting) */
     async unindexBookingFromCalendar(bookingId: string, startISO: string, endISO: string): Promise<void> {
+        const bookingSnap = await this.storeDbc.db.ref(`/bnBookings/${bookingId}`).once('value');
+        const boatId = bookingSnap.val()?.boatId || 'alegria';
         const days = this.eachDateUTC(startISO, endISO);
         const updates: { [k: string]: any } = {};
         for (const day of days) {
-            updates[`/backendcalendar/${day}/${bookingId}`] = null;
+            updates[`/backendcalendar/${boatId}/${day}/${bookingId}`] = null;
         }
         await this.storeDbc.db.ref('/').update(updates);
     }
@@ -701,7 +703,7 @@ export class BookingsService {
             .then(s => s.val()).catch(() => null);
         if (!boat) throw new Error(`Unknown boat: ${boatId}`);
         raw.boatId = boatId;
-        raw.ownerId = String(raw.ownerId || boat.ownerId || boatId);
+        raw.ownerId = String(boat.ownerId || raw.ownerId || boatId);
         raw.skipperId = String(raw.skipperId || boat.defaultSkipperId || '');
 
         // derive start/end ISO (you can adjust from date/time form fields)
@@ -710,19 +712,15 @@ export class BookingsService {
 
         const now = Date.now();
 
-        const ownerStripeData = await this.storeDbc.db.ref(`/backendowners/${raw.ownerId}/stripeStandard`)
+        const ownerStripeData = await this.storeDbc.db.ref(`/backendusers/${raw.ownerId}/stripeStandard`)
             .once('value')
             .then(s => s.val());
 
-        const notConnected = !ownerStripeData?.stripe_user_id;
-        // keep creating the booking, but you can set a flag if you like
-        // UI can prompt owner to connect Stripe before accepting
-
-        if (!notConnected) {
-
-
-
-            const booking: Booking = {
+        // Alegria uses the platform account; other owners use their connected
+        // Standard account. Booking creation must never fail merely because an
+        // owner still needs to connect Stripe.
+        const stripeReady = raw.ownerId === 'alegria' || !!ownerStripeData?.stripe_user_id;
+        const booking: Booking = {
                 bookingId,
                 boatId,
                 skipperId: raw.skipperId || undefined,
@@ -752,8 +750,8 @@ export class BookingsService {
                 payment: {
                     mode: 'setup_then_charge',
                     stripe_user_id: ownerStripeData?.stripe_user_id || null,
-                    status: 'init',
-                    lastError: null
+                    status: stripeReady ? 'init' : 'owner_not_connected',
+                    lastError: stripeReady ? null : 'Owner must connect Stripe before collecting card payments'
                 }
             };
 
@@ -762,7 +760,7 @@ export class BookingsService {
 
             // calendar index: use day of start (simple approach)
             const d = dayKey(startISO);
-            updates[`${OBJECTNAME.backendcalendar}/${d}/${bookingId}`] = {
+            updates[`${OBJECTNAME.backendcalendar}/${boatId}/${d}/${bookingId}`] = {
                 bookingId,
                 boatId,
                 start: startISO,
@@ -781,10 +779,6 @@ export class BookingsService {
 
             await this.storeDbc.db.ref().update(updates);
             return { bookingId, booking };
-        } else {
-            const bookingId = "-1";
-            return { bookingId, booking: {} as Booking };
-        }
     }
 
     async updateBookingStatus(
@@ -808,20 +802,20 @@ export class BookingsService {
             at: now, to: newStatus, by: moderatorUid || 'host', reason: reason || null
         };
 
-        updates[`${OBJECTNAME.backendcalendar}/${d}/${bookingId}/status`] = newStatus;
+        updates[`${OBJECTNAME.backendcalendar}/${current.boatId || 'alegria'}/${d}/${bookingId}/status`] = newStatus;
 
         await this.storeDbc.db.ref().update(updates);
     }
 
-    // read /backendcalendar for a range (inclusive)
-    async getCalendarRange(from: string, to: string): Promise<Record<string, any>> {
+    // read the privacy-safe, boat-scoped availability index for a date range
+    async getCalendarRange(from: string, to: string, boatId = 'alegria'): Promise<Record<string, any>> {
         // naive daily walk (range is typically small for UI views)
         const out: Record<string, any> = {};
         const start = new Date(from + 'T00:00:00Z');
         const end = new Date(to + 'T00:00:00Z');
         for (let d = new Date(start); d <= end; d.setUTCDate(d.getUTCDate() + 1)) {
             const key = d.toISOString().slice(0, 10);
-            const daySnap = await this.storeDbc.db.ref(`${OBJECTNAME.backendcalendar}/${key}`).once('value');
+            const daySnap = await this.storeDbc.db.ref(`${OBJECTNAME.backendcalendar}/${boatId}/${key}`).once('value');
             out[key] = daySnap.val() || null;
         }
         return out;
@@ -1331,7 +1325,7 @@ export class BookingsService {
                 const from = String(req.query.from);
                 const to = String(req.query.to);
                 if (!from || !to) return res.status(400).json({ ok: false, error: 'from & to (YYYY-MM-DD) required' });
-                const cells = await this.getCalendarRange(from, to);
+                const cells = await this.getCalendarRange(from, to, String(req.query.boatId || 'alegria'));
                 return res.json({ ok: true, cells });
             } catch (e: any) {
                 console.error(e);

@@ -215,6 +215,9 @@ export class OfferApiService {
   async saveOffer(input: Partial<AlegriaOffer>): Promise<AlegriaOffer> {
     this.validateOfferInput(input);
     const now = Date.now();
+    const boatId = String(input.boatId || this.boatContext.boatId);
+    const fleetBoat = await this.readFirebasePath(`/bnFleet/${boatId}`).catch(() => ({}));
+    const ownerId = String(input.ownerId || (fleetBoat as any)?.ownerId || boatId);
     const offerId = input.offerId || `offer_${now}_${Math.random().toString(36).slice(2, 8)}`;
     const skipperCashAmount = this.getSkipperCashAmount(input);
     const proposalBoatPrice = Number((input as any).proposalBoatPrice ?? (input as any).estimatedBoatPrice ?? 0) || 0;
@@ -228,8 +231,8 @@ export class OfferApiService {
     const balanceAmount = Math.round((onlinePayableAmount - depositAmount) * 100) / 100;
     const offer: AlegriaOffer = {
       offerId,
-      boatId: input.boatId || this.boatContext.boatId,
-      ownerId: input.ownerId || this.boatContext.boatId,
+      boatId,
+      ownerId,
       skipperId: input.skipperId || '',
       source: input.source || 'direct',
       bookingSource: (input as any).bookingSource || '',
@@ -709,10 +712,13 @@ export class OfferApiService {
     const totalPrice = directTotal || platformTotalClientAmount || (platformPaidAmount + onlinePayableAmount + cashOnBoardAmount);
     const boatPrice = Number(input.proposalBoatPrice || input.estimatedBoatPrice || Math.max(0, totalPrice - skipperCashAmount)) || 0;
 
+    const boatId = String(input.boatId || this.boatContext.boatId);
+    const fleetBoat = await this.readFirebasePath(`/bnFleet/${boatId}`).catch(() => ({}));
+    const ownerId = String(input.ownerId || (fleetBoat as any)?.ownerId || boatId);
     const booking: any = {
-      bookingId, offerId: bookingId, relatedBookingId: bookingId, ownerId: 'alegria',
+      bookingId, offerId: bookingId, relatedBookingId: bookingId, ownerId,
       source, bookingSource: isExternal ? 'external' : 'direct',
-      boatId: String(input.boatId || 'alegria'),
+      boatId,
       boatName: String(input.boatName || 'Alegria'),
       boatType: String(input.boatType || 'Catamaran'),
       boatManufacturer: String(input.boatManufacturer || ''),
@@ -787,7 +793,7 @@ export class OfferApiService {
       createdTS: input.createdTS || now, modifiedTS: now, updatedAt: now,
       payments: {
         deposit: { amount: 0, paid: true, status: 'not_required', depositPaid: true, depositStatus: 'not_required', paymentStatus: 'not_required', paidAt: now, source: 'manual_historical_import' },
-        balance: { amount: Math.round(onlinePayableAmount * 100), amount_total: Math.round(onlinePayableAmount * 100), bookingId, currency: 'eur', customerEmail: String(input.customerEmail || input.email || ''), customerName: String(input.customerName || ''), customerPhone: String(input.customerPhone || input.phone || ''), modifiedTS: now, outingDate: String(input.outingDate || ''), outingType: String(input.outingType || 'Journée en mer'), ownerId: 'alegria', paymentType: 'balance', status: input.balancePaid === false ? 'pending' : 'paid', source: 'manual_historical_import' }
+        balance: { amount: Math.round(onlinePayableAmount * 100), amount_total: Math.round(onlinePayableAmount * 100), bookingId, currency: 'eur', customerEmail: String(input.customerEmail || input.email || ''), customerName: String(input.customerName || ''), customerPhone: String(input.customerPhone || input.phone || ''), modifiedTS: now, outingDate: String(input.outingDate || ''), outingType: String(input.outingType || 'Journée en mer'), ownerId, paymentType: 'balance', status: input.balancePaid === false ? 'pending' : 'paid', source: 'manual_historical_import' }
       },
       raw: { ...input, bookingId, source, bookingSource: isExternal ? 'external' : 'direct', importedManually: true, importedAt: now }
     };
@@ -813,7 +819,7 @@ export class OfferApiService {
       bookingId,
       offerId: anyOffer.offerId || bookingId,
       relatedOfferId: anyOffer.offerId || bookingId,
-      ownerId: 'alegria',
+      ownerId: anyOffer.ownerId || this.boatContext.boatId,
       bookingSource: 'external',
       source: anyOffer.source || anyOffer.externalPlatform || 'clickandboat',
       externalPlatform: anyOffer.externalPlatform || anyOffer.source || 'clickandboat',
@@ -971,6 +977,21 @@ export class OfferApiService {
     if (!current) {
       throw new Error('Offer not found');
     }
+    const sessionId = String(payload.sessionId || payload.session_id || payload.checkoutSessionId || '').trim();
+    if (!sessionId) throw new Error('Missing Stripe Checkout session id.');
+    const verified = await this.postFirstAvailable([
+      `${this.baseUrl}/pay/outing-deposit-complete`,
+      `${this.baseUrl}/api/payments/complete-deposit-payment`,
+      `${this.baseUrl}/stripe/deposit-complete`,
+    ], {
+      // Checkout creation uses offerId as the Stripe metadata bookingId.
+      // Keep the exact same identifier for ownership/session verification.
+      bookingId: offerId,
+      offerId,
+      ownerId: current.ownerId || this.boatContext.boatId,
+      checkoutSessionId: sessionId,
+      sessionId,
+    }).toPromise();
 
     const patch: Partial<AlegriaOffer> = {
       depositPaid: true,
@@ -978,8 +999,8 @@ export class OfferApiService {
       depositPaidAmount: Number(current.depositAmount || 0),
       paidDepositAmount: Number(current.depositAmount || 0),
       paymentStatus: 'paid',
-      stripeCheckoutSessionId: payload.sessionId || payload.checkoutSessionId || current.stripeCheckoutSessionId || '',
-      stripePaymentIntentId: payload.paymentIntentId || current.stripePaymentIntentId || '',
+      stripeCheckoutSessionId: verified?.stripeCheckoutSessionId || sessionId,
+      stripePaymentIntentId: verified?.stripePaymentIntentId || current.stripePaymentIntentId || '',
       modifiedTS: Date.now(),
     };
 
@@ -1019,7 +1040,7 @@ export class OfferApiService {
       ...(existing || {}),
       bookingId,
       offerId,
-      ownerId: 'alegria',
+      ownerId: (offer as any).ownerId || existing?.ownerId || this.boatContext.boatId,
       source: (offer as any).source || existing?.source || 'direct',
       bookingSource: (offer as any).source === 'direct' || !(offer as any).source ? 'direct' : (existing?.bookingSource || 'external'),
       customerName: (offer as any).customerName || existing?.customerName || '',
@@ -1065,7 +1086,7 @@ export class OfferApiService {
     return this.http.post<any>(`${this.baseUrl}/pay/outing-deposit-checkout`, {
       bookingId: offer.offerId,
       offerId: offer.offerId,
-      ownerId: 'alegria',
+      ownerId: offer.ownerId || this.boatContext.boatId,
       customerName: offer.customerName,
       customerEmail: offer.customerEmail,
       customerPhone: offer.customerPhone,
@@ -1091,7 +1112,11 @@ export class OfferApiService {
     let backendResult: any = {};
     if (sessionId) {
       try {
-        backendResult = await this.completeWarrantySetup(offerId, sessionId, 'alegria').toPromise();
+        backendResult = await this.completeWarrantySetup(
+          offerId,
+          sessionId,
+          current.ownerId || this.boatContext.boatId
+        ).toPromise();
       } catch {
         // Keep the local fallback below, but without a payment method the admin screen will clearly show that the card is not chargeable.
         backendResult = {};
@@ -1160,7 +1185,7 @@ export class OfferApiService {
     const payload = {
       bookingId: offer.offerId,
       offerId: offer.offerId,
-      ownerId: 'alegria',
+      ownerId: offer.ownerId || this.boatContext.boatId,
       customerName: offer.customerName,
       customerEmail: offer.customerEmail,
       customerPhone: offer.customerPhone,
@@ -1185,7 +1210,7 @@ export class OfferApiService {
   }
 
 
-  completeWarrantySetup(offerId: string, sessionId: string, ownerId = 'alegria'): Observable<any> {
+  completeWarrantySetup(offerId: string, sessionId: string, ownerId = this.boatContext.boatId): Observable<any> {
     const payload = {
       bookingId: offerId,
       offerId,
@@ -1204,7 +1229,7 @@ export class OfferApiService {
   chargeWarranty(offer: AlegriaOffer, amount: number, reason: string): Observable<any> {
     const payload = {
       bookingId: offer.offerId,
-      ownerId: 'alegria',
+      ownerId: offer.ownerId || this.boatContext.boatId,
       amount,
       reason,
       currency: 'eur',
@@ -1632,6 +1657,12 @@ export class OfferApiService {
       warrantyChargeStatus:
         offer.warrantyChargeStatus || canonicalBooking?.warrantyStatus || warrantyCharge?.status || '',
     };
+  }
+
+  private async readFirebasePath(path: string): Promise<any> {
+    const normalizedPath = String(path || '').replace(/^\/+|\/+$/g, '');
+    if (!normalizedPath) return undefined;
+    return this.http.get<any>(`${this.firebaseUrl}/${normalizedPath}.json`).toPromise();
   }
 
   private async readCollection(collection: string): Promise<AlegriaOffer[]> {
