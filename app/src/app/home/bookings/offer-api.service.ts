@@ -1032,7 +1032,20 @@ export class OfferApiService {
     const skipperCashAmount = Number((offer as any).skipperCashAmount ?? (offer as any).proposalSkipperPrice ?? (offer as any).estimatedSkipperPrice ?? 0) || 0;
     const computedTotalAmount = proposalBoatPrice + proposalFuelPrice + skipperCashAmount + Number((offer as any).proposalExtraServicesPrice || 0);
     const onlinePlusSkipperAmount = Number((offer as any).onlinePayableAmount || 0) + skipperCashAmount;
-    const totalAmount = Number((offer as any).totalAmount ?? (offer as any).totalPrice ?? (onlinePlusSkipperAmount || computedTotalAmount)) || 0;
+    // The complete customer total always includes the skipper, even though the
+    // skipper is paid separately. Some older offers stored only Alegria's
+    // online amount in totalAmount/totalPrice.
+    const explicitTotals = [
+      (offer as any).totalCustomerCost,
+      (offer as any).customerTotal,
+      (offer as any).totalAmount,
+      (offer as any).totalPrice,
+      onlinePlusSkipperAmount,
+      computedTotalAmount,
+    ]
+      .map((value) => Number(value))
+      .filter((value) => Number.isFinite(value) && value > 0);
+    const totalAmount = explicitTotals.length ? Math.max(...explicitTotals) : 0;
     const onlinePayableAmount = Number((offer as any).onlinePayableAmount ?? (offer as any).appPayableAmount ?? Math.max(0, totalAmount - skipperCashAmount)) || 0;
     const balanceAmount = Number((offer as any).balanceAmount ?? (offer as any).remainingFeesAmount ?? Math.max(0, onlinePayableAmount - Number(offer.depositAmount || 0))) || 0;
 
@@ -1259,7 +1272,24 @@ export class OfferApiService {
     const proposalSkipperPrice = firstPositive(anyP.proposalSkipperPrice, anyP.estimatedSkipperPrice, anyP.skipperCashAmount, raw.proposalSkipperPrice, raw.estimatedSkipperPrice);
     const proposalExtraServicesPrice = firstPositive(anyP.proposalExtraServicesPrice, anyP.estimatedExtraGuestsAmount, anyP.estimatedOptionsPrice, raw.proposalExtraServicesPrice, raw.estimatedExtraGuestsAmount, raw.estimatedOptionsPrice);
     const computedTotal = proposalBoatPrice + proposalFuelPrice + proposalSkipperPrice + proposalExtraServicesPrice;
-    const totalAmount = firstPositive(anyP.totalAmount, anyP.totalPrice, anyP.estimatedPrice, raw.totalAmount, raw.totalPrice, raw.estimatedPrice, computedTotal);
+    // Keep Alegria's payable amount and the complete customer price distinct.
+    // The complete booking total must include the separately paid skipper.
+    const explicitCustomerTotals = [
+      anyP.totalCustomerCost,
+      anyP.customerTotal,
+      anyP.totalAmount,
+      anyP.totalPrice,
+      anyP.estimatedPrice,
+      raw.totalCustomerCost,
+      raw.customerTotal,
+      raw.totalAmount,
+      raw.totalPrice,
+      raw.estimatedPrice,
+      computedTotal,
+    ]
+      .map((value) => Number(value))
+      .filter((value) => Number.isFinite(value) && value > 0);
+    const totalAmount = explicitCustomerTotals.length ? Math.max(...explicitCustomerTotals) : 0;
     const skipperCashAmount = firstPositive(anyP.skipperCashAmount, proposalSkipperPrice, raw.skipperCashAmount);
     // Alegria direct workflow: skipper is not paid online. Only the boat/app amount is paid online.
     const onlinePayableAmount = firstPositive(anyP.onlinePayableAmount, anyP.appPayableAmount, raw.onlinePayableAmount, raw.appPayableAmount, Math.max(0, totalAmount - skipperCashAmount));

@@ -16,6 +16,8 @@
   chain as booking detail, preventing valid imported dates from appearing empty.
 - Skipper cash confirmation now follows the canonical remaining balance instead
   of stale imported `skipperPaid` flags, matching the Alegria cash workflow.
+- Offer-to-booking conversion preserves the complete customer price, including
+  the separately paid skipper; Alegria's online amount no longer replaces it.
 - Payment history reads the canonical `backendpayments` ledger.
 - Payment requests preserve `boatId`/`ownerId`; the backend validates them
   against `bnFleet`, `bnBookings` and `bnProposals`.
