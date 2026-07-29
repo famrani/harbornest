@@ -1493,10 +1493,21 @@ export class BookingApiService {
       customerEmail: item.customerEmail || item.email || item.payments?.deposit?.customerEmail || item.payments?.warranty?.customerEmail || customer.email || '',
       phone: item.phone || customer.phone || '',
       customerPhone: item.customerPhone || item.phone || customer.phone || '',
-      outingType: item.outingType || item.outing || item.type || item.category || '',
-      outingDate: item.outingDate || item.date || (start ? String(start).slice(0, 10) : ''),
-      departureTime: item.departureTime || (start ? String(start).slice(11, 16) : ''),
-      arrivalTime: item.arrivalTime || (end ? String(end).slice(11, 16) : ''),
+      outingType: item.outingType || item.outing || item.type || item.category ||
+        nestedRaw.outingType || nestedRaw.outing || nestedRawRaw.outingType ||
+        balancePayment.outingType || depositPayment.outingType || '',
+      // Imported/editable bookings may retain their canonical trip date inside
+      // `raw` while the root field is absent. Booking list and detail must use
+      // the same fallback order so they cannot disagree about the date.
+      outingDate: item.outingDate || item.date || item.bookingDate ||
+        nestedRaw.outingDate || nestedRaw.date || nestedRaw.bookingDate ||
+        nestedRawRaw.outingDate || nestedRawRaw.date || nestedRawRaw.bookingDate ||
+        balancePayment.outingDate || depositPayment.outingDate || warrantyPayment.outingDate ||
+        (start ? String(start).slice(0, 10) : ''),
+      departureTime: item.departureTime || nestedRaw.departureTime || nestedRawRaw.departureTime ||
+        balancePayment.departureTime || (start ? String(start).slice(11, 16) : ''),
+      arrivalTime: item.arrivalTime || nestedRaw.arrivalTime || nestedRawRaw.arrivalTime ||
+        balancePayment.arrivalTime || (end ? String(end).slice(11, 16) : ''),
       passengers: Number(item.passengers || party.total || item.guests || 0) || undefined,
       totalPrice,
       totalAmount: Number(item.totalAmount ?? totalPrice),

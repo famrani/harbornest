@@ -8,6 +8,14 @@
 - Booking list and booking detail now use the same canonical state engine.
   Legacy `bookingStatus: completed` and zero-amount imported payment records no
   longer make a future, unpaid reservation appear fully paid or completed.
+- The renamed admin offers page resolves legacy `admin-proposals` Firebase text
+  while using `admin-offers` as the canonical multilingual content path.
+- Cancelled outings no longer display pending payment or warranty actions. The
+  booking detail shows the recorded cancellation reason instead.
+- Booking list date normalization now follows the same root/raw/payment fallback
+  chain as booking detail, preventing valid imported dates from appearing empty.
+- Skipper cash confirmation now follows the canonical remaining balance instead
+  of stale imported `skipperPaid` flags, matching the Alegria cash workflow.
 - Payment history reads the canonical `backendpayments` ledger.
 - Payment requests preserve `boatId`/`ownerId`; the backend validates them
   against `bnFleet`, `bnBookings` and `bnProposals`.

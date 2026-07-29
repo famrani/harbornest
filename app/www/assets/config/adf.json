@@ -2,7 +2,7 @@
   "application": {
     "name": "Harbornest front-end",
     "platform": "test",
-    "release": "2.993"
+    "release": "2.994"
   },
   "dev": {
     "firebaseMasterConfig": {

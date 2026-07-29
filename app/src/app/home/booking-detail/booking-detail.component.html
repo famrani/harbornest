@@ -22,14 +22,22 @@
 
         <div class="status-badges">
           <span class="status-badge done">{{ vm.bookingStatusBadge }}</span>
-          <span class="status-badge paid">{{ vm.paymentStatusBadge }}</span>
-          <span class="status-badge warranty">{{ vm.warrantyStatusBadge }}</span>
+          <span class="status-badge paid" *ngIf="!vm.cancelled">{{ vm.paymentStatusBadge }}</span>
+          <span class="status-badge warranty" *ngIf="!vm.cancelled">{{ vm.warrantyStatusBadge }}</span>
         </div>
       </div>
 
       <p class="error-message" *ngIf="error">{{ error }}</p>
 
-      <section class="booking-completion-card" *ngIf="!editMode">
+      <section class="cancellation-notice" *ngIf="vm.cancelled && !editMode">
+        <div>
+          <span class="eyebrow">{{ t('cancellationNotice') }}</span>
+          <h2>{{ t('cancellationReason') }}</h2>
+          <p>{{ vm.cancellationReason }}</p>
+        </div>
+      </section>
+
+      <section class="booking-completion-card" *ngIf="!editMode && !vm.cancelled">
         <div class="completion-header">
           <div>
             <h2>{{ t('bookingCompletion') }}</h2>
@@ -236,7 +244,7 @@
         </article>
       </div>
 
-      <section class="customer-finance-simple booking-customer-clean" *ngIf="!editMode">
+      <section class="customer-finance-simple booking-customer-clean" *ngIf="!editMode && !vm.cancelled">
         <article class="cockpit-section finance-panel finance-summary-panel">
           <h2>{{ t('outingPrice') }}</h2>
           <div class="finance-table compact">

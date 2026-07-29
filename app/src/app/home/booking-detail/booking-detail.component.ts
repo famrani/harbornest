@@ -17,6 +17,8 @@ type MoneyRow = {
 
 type BookingVm = {
   bookingId: string;
+  cancelled: boolean;
+  cancellationReason: string;
   isAdmin: boolean;
   isExternalBooking: boolean;
   isHistoricalBooking: boolean;
@@ -928,6 +930,8 @@ export class BookingDetailComponent implements OnInit {
     const remainingAlegriaRevenue = alegriaRemainingComputed;
 
     const canonicalState = this.bookingStateService.resolve(booking);
+    const cancelled = canonicalState.cancelled;
+    const cancellationReason = this.buildCancellationReason(booking);
     const termsAccepted = canonicalState.termsAccepted;
     const alegriaPaymentComplete = canonicalState.alegriaPaymentComplete;
     const skipperPaymentComplete = canonicalState.skipperPaymentComplete;
@@ -942,6 +946,8 @@ export class BookingDetailComponent implements OnInit {
 
     return {
       bookingId: booking.bookingId || this.bookingId,
+      cancelled,
+      cancellationReason,
       isAdmin: this.isCurrentUserAdmin(),
       isExternalBooking,
       isHistoricalBooking,
@@ -1019,6 +1025,21 @@ export class BookingDetailComponent implements OnInit {
       customerJourneyComplete,
       customerJourneyStatus,
     };
+  }
+
+  private buildCancellationReason(booking: any): string {
+    const candidates = [
+      booking?.cancellationReason,
+      booking?.outingCancellationReason,
+      booking?.cancelReason,
+      booking?.cancellationDescription,
+      booking?.raw?.cancellationReason,
+      booking?.raw?.outingCancellationReason,
+      booking?.raw?.cancelReason,
+      booking?.raw?.cancellationDescription,
+    ];
+    const reason = candidates.find((value) => typeof value === 'string' && value.trim());
+    return reason ? String(reason).trim() : this.t('cancellationReasonNotProvided');
   }
 
   private buildPaymentRows(booking: any): MoneyRow[] {
@@ -1362,12 +1383,13 @@ export class BookingDetailComponent implements OnInit {
 
   canConfirmSkipperPaid(): boolean {
     if (!this.vm || this.editMode) return false;
-    const booking: any = this.vm.display || {};
-    const alreadyPaid = booking.skipperPaid === true ||
-      String(booking.skipperStatus || booking.skipperPaymentStatus || booking.payments?.skipper?.status || booking.payments?.direct?.skipperStatus || '').toLowerCase() === 'paid';
+    // The canonical remaining amount is the source of truth. Imported bookings
+    // can carry a stale skipperPaid/status flag while their normalized financial
+    // balance still shows an amount due. That legacy flag must not hide the cash
+    // confirmation control.
     return (this.vm.isAdmin || this.isCurrentUserAdmin()) &&
       this.isSkipperCashSelected() &&
-      !alreadyPaid &&
+      Number(this.vm.remainingSkipperFee || 0) > 0.009 &&
       this.pendingSkipperCashAmount() > 0;
   }
 
@@ -2380,6 +2402,9 @@ export class BookingDetailComponent implements OnInit {
       fullyPaid: { en: 'Fully paid', fr: 'Tout est réglé', es: 'Todo pagado', it: 'Tutto pagato', de: 'Vollständig bezahlt', nl: 'Volledig betaald', ru: 'Полностью оплачено' },
       paymentPending: { en: 'Payment pending', fr: 'Paiement en attente', es: 'Pago pendiente', it: 'Pagamento in sospeso', de: 'Zahlung ausstehend', nl: 'Betaling in behandeling', ru: 'Ожидает оплаты' },
       cancelled: { en: 'Cancelled', fr: 'Annulée', es: 'Cancelada', it: 'Annullata', de: 'Storniert', nl: 'Geannuleerd', ru: 'Отменено' },
+      cancellationNotice: { en: 'Outing cancelled', fr: 'Sortie annulée', es: 'Salida cancelada', it: 'Uscita annullata', de: 'Ausfahrt storniert', nl: 'Uitstap geannuleerd', ru: 'Прогулка отменена' },
+      cancellationReason: { en: 'Cancellation reason', fr: 'Motif de l’annulation', es: 'Motivo de la cancelación', it: 'Motivo dell’annullamento', de: 'Stornierungsgrund', nl: 'Reden van annulering', ru: 'Причина отмены' },
+      cancellationReasonNotProvided: { en: 'No cancellation reason was provided.', fr: 'Aucun motif d’annulation n’a été renseigné.', es: 'No se indicó ningún motivo de cancelación.', it: 'Non è stato indicato alcun motivo di annullamento.', de: 'Es wurde kein Stornierungsgrund angegeben.', nl: 'Er is geen reden voor annulering opgegeven.', ru: 'Причина отмены не указана.' },
       chooseWarrantyCash: { en: 'Use cash warranty', fr: 'Caution en espèces', es: 'Garantía en efectivo', it: 'Cauzione in contanti', de: 'Barkaution nutzen', nl: 'Contante waarborg', ru: 'Залог наличными' },
       additionalPayments: { en: 'Additional payments', fr: 'Paiements additionnels', es: 'Pagos adicionales', it: 'Pagamenti aggiuntivi', de: 'Zusätzliche Zahlungen', nl: 'Extra betalingen', ru: 'Дополнительные платежи' },
       additionalPaymentsHelp: { en: 'Pay a tip, an extra service or another amount requested by Alegria.', fr: 'Réglez un pourboire, un service additionnel ou un autre montant demandé par Alegria.', es: 'Pague una propina, un servicio extra u otro importe solicitado por Alegria.', it: 'Paga una mancia, un servizio extra o un altro importo richiesto da Alegria.', de: 'Zahlen Sie ein Trinkgeld, eine Zusatzleistung oder einen anderen von Alegria angeforderten Betrag.', nl: 'Betaal een fooi, extra dienst of ander bedrag dat door Alegria is gevraagd.', ru: 'Оплатите чаевые, дополнительную услугу или другую сумму, запрошенную Alegria.' },

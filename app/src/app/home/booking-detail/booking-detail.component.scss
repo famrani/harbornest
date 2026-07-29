@@ -558,6 +558,26 @@
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
 }
 
+.cancellation-notice {
+  margin: 1rem 0;
+  padding: 1.25rem 1.4rem;
+  border: 1px solid #e2a2a2;
+  border-left: 6px solid #b42323;
+  border-radius: 18px;
+  background: #fff3f1;
+  color: #5f1919;
+}
+
+.cancellation-notice h2 {
+  margin: 0.2rem 0 0.45rem;
+}
+
+.cancellation-notice p {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
 .completion-header {
   display: flex;
   align-items: flex-start;

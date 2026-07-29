@@ -202,12 +202,38 @@ export class SiteContentService {
     const french = (value as any).fr || {};
     return this.languages.reduce((acc, language) => {
       const localized = (value as any)[language];
-      (acc as any)[language] = this.deepMerge(
+      const merged = this.deepMerge(
         this.deepMerge({}, english || french),
         localized || french || english
       );
+      (acc as any)[language] = this.applyLegacyContentAliases(merged);
       return acc;
     }, {} as Record<SiteLanguage, SiteContent>);
+  }
+
+  /**
+   * `admin-proposals` was renamed to `admin-offers`. Older Firebase dumps still
+   * contain the WhatsApp dialog copy under the former component path. Preserve
+   * those installations while the canonical Firebase patch is being imported.
+   */
+  private applyLegacyContentAliases<T>(content: T): T {
+    const output: any = content || {};
+    const home = output?.auto?.home;
+    if (!home || typeof home !== 'object') return output as T;
+
+    const legacy = home?.['admin-proposals']?.['admin-proposals']?.component;
+    const current = home?.['admin-offers']?.['admin-offers']?.component;
+    if (!legacy || typeof legacy !== 'object') return output as T;
+
+    const normalized = this.deepMerge({}, legacy) as any;
+    if (!normalized.envoyer_la_offre_au_client && legacy.envoyer_la_proposition_au_client) {
+      normalized.envoyer_la_offre_au_client = legacy.envoyer_la_proposition_au_client;
+    }
+
+    home['admin-offers'] = home['admin-offers'] || {};
+    home['admin-offers']['admin-offers'] = home['admin-offers']['admin-offers'] || {};
+    home['admin-offers']['admin-offers'].component = this.deepMerge(normalized, current || {});
+    return output as T;
   }
 
   private deepMerge<T>(target: T, source: any): T {
