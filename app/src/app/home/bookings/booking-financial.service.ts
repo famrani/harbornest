@@ -46,6 +46,15 @@ export class BookingFinancialService {
     return 0;
   }
 
+  private positive(...values: any[]): number {
+    for (const value of values) {
+      if (value === undefined || value === null || value === '') continue;
+      const parsed = Number(value);
+      if (Number.isFinite(parsed) && parsed > 0) return parsed;
+    }
+    return 0;
+  }
+
   private paidFromStripe(booking: any, type: 'deposit' | 'balance' | 'alegria' | 'skipper'): number {
     const records = Array.isArray(booking?.stripePaymentRecords) ? booking.stripePaymentRecords : [];
     const direct = booking?.payments || {};
@@ -191,12 +200,16 @@ export class BookingFinancialService {
     // Alegria revenue = total outing price - total commission - skipper.
     // Skipper revenue = skipper + tips.
     const directBooking = !external || ['direct', 'alegria', 'direct alegria'].includes(String(booking?.source || booking?.bookingSource || booking?.externalPlatform || '').toLowerCase());
-    const boatRentalAmount = this.n(
-      booking?.pricing?.boatRentalAmount, booking?.boatRentalAmount, booking?.rentalAmount,
-      booking?.proposalBoatPrice, booking?.boatPrice, booking?.estimatedBoatPrice,
-      booking?.raw?.pricing?.boatRentalAmount, booking?.raw?.boatRentalAmount, booking?.raw?.proposalBoatPrice,
-      totalCustomerOnPlatform
-    );
+    // For an external booking, the marketplace customer total is the rental price.
+    // It must never be reconstructed by subtracting the skipper from that amount:
+    // the skipper and the other onboard services are separate additions.
+    const boatRentalAmount = external && totalCustomerOnPlatform > 0
+      ? totalCustomerOnPlatform
+      : this.n(
+        booking?.pricing?.boatRentalAmount, booking?.boatRentalAmount, booking?.rentalAmount,
+        booking?.proposalBoatPrice, booking?.boatPrice, booking?.estimatedBoatPrice,
+        booking?.raw?.pricing?.boatRentalAmount, booking?.raw?.boatRentalAmount, booking?.raw?.proposalBoatPrice
+      );
     const portFeesAmount = this.n(booking?.pricing?.portFeesAmount, booking?.portFeesAmount, booking?.harborFeesAmount, booking?.raw?.pricing?.portFeesAmount, booking?.raw?.portFeesAmount);
     const cateringAmount = this.n(booking?.pricing?.cateringAmount, booking?.cateringAmount, payments?.direct?.cateringAmount, booking?.raw?.cateringAmount);
     const drinksAmount = this.n(booking?.pricing?.drinksAmount, booking?.drinksAmount, payments?.direct?.drinksAmount, booking?.raw?.drinksAmount);
@@ -204,10 +217,15 @@ export class BookingFinancialService {
     const tipsAmount = this.n(booking?.pricing?.tipsAmount, booking?.tipsAmount, booking?.tipAmount, payments?.direct?.tipsAmount, booking?.raw?.tipsAmount);
     const otherAmount = this.n(booking?.pricing?.otherAmount, booking?.otherOnboardAmount, booking?.otherAmount, payments?.direct?.otherOnboardAmount, booking?.raw?.otherOnboardAmount);
     const canonicalFuelAmount = this.n(booking?.pricing?.fuelAmount, booking?.fuelAmount, booking?.proposalFuelPrice, booking?.fuelPrice, booking?.cleaningCashAmount, booking?.raw?.fuelAmount, booking?.raw?.cleaningCashAmount);
-    const rentalCommissionAmount = directBooking ? 0 : this.n(
-      booking?.pricing?.rentalCommissionAmount, booking?.rentalCommissionAmount, booking?.platformCommissionAmount,
-      booking?.raw?.pricing?.rentalCommissionAmount, booking?.raw?.rentalCommissionAmount,
-      explicitPlatformFees, Math.max(0, boatRentalAmount - platformPaidToAlegria)
+    const calculatedPlatformCommission = Math.max(0, totalCustomerOnPlatform - platformPaidToAlegria);
+    const rentalCommissionAmount = directBooking ? 0 : (
+      calculatedPlatformCommission > 0
+        ? calculatedPlatformCommission
+        : this.positive(
+          booking?.pricing?.rentalCommissionAmount, booking?.rentalCommissionAmount, booking?.platformCommissionAmount,
+          booking?.raw?.pricing?.rentalCommissionAmount, booking?.raw?.rentalCommissionAmount,
+          explicitPlatformFees
+        )
     );
     const serviceFeesAmount = directBooking ? 0 : this.n(
       booking?.pricing?.serviceFeesAmount, booking?.serviceFeesAmount, booking?.platformServiceFees,

@@ -13,6 +13,7 @@ import { FleetService, AlegriaBoatResource } from '../fleet.service';
   styleUrls: ['./admin-external-bookings.component.scss']
 })
 export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
+  private readonly defaultPlatformCommissionRate = 0.24;
   @Input() embedded = false;
   @Output() bookingCreated = new EventEmitter<string>();
   saving = false;
@@ -67,6 +68,7 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
     outingDate: new Date().toISOString().slice(0, 10),
     departureTime: '10:00',
     arrivalTime: '18:00',
+    proposalBoatPrice: 0,
     totalAmount: 0,
     externalRemainingOnboardAmount: 0,
     externalExtraServicesOnboardAmount: 0,
@@ -175,6 +177,25 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
       (this.form as any).externalPlatformListingId = '';
       this.applyBoatDefaults(boat);
     }
+  }
+
+  onPlatformCustomerAmountChanged(value: any): void {
+    const customerAmount = this.amount(value);
+    const payoutRate = 1 - this.defaultPlatformCommissionRate;
+    (this.form as any).externalPlatformPaidAmount =
+      Math.round(customerAmount * payoutRate * 100) / 100;
+    // These legacy fields are no longer entered separately. Keep them aligned
+    // so older backend and reporting code receives one unambiguous payout.
+    (this.form as any).externalPlatformNetOwnerAmount =
+      (this.form as any).externalPlatformPaidAmount;
+    (this.form as any).externalPlatformRemainingOwnerAmount = 0;
+    (this.form as any).externalPortAmount = 0;
+  }
+
+  onPlatformPayoutChanged(value: any): void {
+    (this.form as any).externalPlatformPaidAmount = this.amount(value);
+    (this.form as any).externalPlatformNetOwnerAmount =
+      (this.form as any).externalPlatformPaidAmount;
   }
 
 
@@ -325,6 +346,16 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
       externalPortAmount: this.currentLanguage === 'fr' ? 'Montant à payer au port' : this.currentLanguage === 'es' ? 'Importe a pagar en puerto' : 'Amount to pay at port',
       alegriaRemainingTitle: this.currentLanguage === 'fr' ? 'Prestations restantes Alegria' : this.currentLanguage === 'es' ? 'Servicios restantes Alegria' : 'Alegria remaining services',
       skipperCashAmount: this.currentLanguage === 'fr' ? 'Skipper cash' : this.currentLanguage === 'es' ? 'Skipper efectivo' : 'Skipper cash',
+      boatRentalAmount: this.currentLanguage === 'fr' ? 'Location du bateau' : this.currentLanguage === 'es' ? 'Alquiler del barco' : 'Boat rental',
+      boatRentalAmountHelp: this.currentLanguage === 'fr' ? 'Prix de la location uniquement, hors skipper et autres prestations.' : this.currentLanguage === 'es' ? 'Solo el alquiler, sin patrón ni otros servicios.' : 'Rental price only, excluding skipper and other services.',
+      completeCustomerTotal: this.currentLanguage === 'fr' ? 'Prix total client' : this.currentLanguage === 'es' ? 'Precio total cliente' : 'Total customer price',
+      completeCustomerTotalHelp: this.currentLanguage === 'fr' ? 'Location + skipper + carburant et autres prestations.' : this.currentLanguage === 'es' ? 'Alquiler + patrón + combustible y otros servicios.' : 'Rental + skipper + fuel and other services.',
+      openListing: this.currentLanguage === 'fr' ? 'Ouvrir l’annonce' : this.currentLanguage === 'es' ? 'Abrir anuncio' : 'Open listing',
+      openBooking: this.currentLanguage === 'fr' ? 'Ouvrir la réservation' : this.currentLanguage === 'es' ? 'Abrir reserva' : 'Open booking',
+      documentsPlaceholder: this.currentLanguage === 'fr' ? 'Rachat de caution, facture, assurance dommages, conditions…' : this.currentLanguage === 'es' ? 'Fianza, factura, seguro de daños, condiciones…' : 'Deposit waiver, invoice, damage waiver, terms…',
+      openCreatedBooking: this.currentLanguage === 'fr' ? 'Ouvrir la réservation créée' : this.currentLanguage === 'es' ? 'Abrir la reserva creada' : 'Open created booking',
+      bookingsListTitle: this.currentLanguage === 'fr' ? 'Réservations' : this.currentLanguage === 'es' ? 'Reservas' : 'Bookings',
+      remainingAlegria: this.currentLanguage === 'fr' ? 'Montant Alegria' : this.currentLanguage === 'es' ? 'Importe Alegria' : 'Alegria amount',
       cleaningCashAmount: this.currentLanguage === 'fr' ? 'Nettoyage / carburant' : this.currentLanguage === 'es' ? 'Limpieza / combustible' : 'Cleaning / fuel',
       cateringAmount: 'Catering',
       drinksAmount: this.currentLanguage === 'fr' ? 'Boissons' : this.currentLanguage === 'es' ? 'Bebidas' : 'Drinks',
@@ -346,6 +377,7 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
       missingPlatformBookingRefError: this.currentLanguage === 'fr' ? 'Indiquez la référence réservation plateforme.' : this.currentLanguage === 'es' ? 'Indique la referencia de reserva.' : 'Please provide the platform booking reference.',
       negativeAmountsError: this.currentLanguage === 'fr' ? 'Les montants ne peuvent pas être négatifs.' : this.currentLanguage === 'es' ? 'Los importes no pueden ser negativos.' : 'Amounts cannot be negative.',
       missingOnboardAmountError: this.currentLanguage === 'fr' ? 'Ajoutez au moins une prestation restante à payer ou à collecter.' : this.currentLanguage === 'es' ? 'Añada al menos un servicio restante.' : 'Add at least one remaining service to pay or collect.',
+      missingBoatRentalAmountError: this.currentLanguage === 'fr' ? 'Indiquez le prix de location du bateau.' : this.currentLanguage === 'es' ? 'Indique el precio de alquiler del barco.' : 'Enter the boat rental price.',
       negativeWarrantyError: this.currentLanguage === 'fr' ? 'La caution ne peut pas être négative.' : this.currentLanguage === 'es' ? 'La garantía no puede ser negativa.' : 'Warranty cannot be negative.',
       saveError: this.currentLanguage === 'fr' ? 'Impossible de créer la réservation plateforme.' : this.currentLanguage === 'es' ? 'No se puede crear la reserva plataforma.' : 'Unable to create platform booking.',
       defaultClientMessage: this.currentLanguage === 'fr' ? 'Merci pour votre réservation plateforme. Merci de finaliser votre expérience Alegria : accepter les conditions, choisir la caution et régler les prestations restantes.' : this.currentLanguage === 'es' ? 'Gracias por su reserva en plataforma. Finalice su experiencia Alegria: aceptar condiciones, elegir garantía y pagar servicios restantes.' : 'Thank you for your platform booking. Please finalize your Alegria experience: accept terms, choose warranty and pay remaining services.',
@@ -393,6 +425,13 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
 
   private buildRemainingPaymentItems(): any[] {
     const items = [
+      ...(this.isDirectSource ? [{
+        id: 'boat_rental',
+        label: this.t('boatRentalAmount'),
+        amount: this.amount((this.form as any).proposalBoatPrice),
+        method: 'alegria_payment',
+        payableOnline: true
+      }] : []),
       { id: 'skipper_cash', label: this.t('skipperCashAmount'), amount: this.amount((this.form as any).skipperCashAmount), method: 'cash_on_board', payableOnline: false },
       { id: 'cleaning', label: this.t('cleaningCashAmount'), amount: this.amount((this.form as any).cleaningCashAmount), method: 'alegria_payment', payableOnline: true },
       { id: 'catering', label: this.t('cateringAmount'), amount: this.amount((this.form as any).cateringAmount), method: 'alegria_payment', payableOnline: true },
@@ -415,6 +454,20 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
       .reduce((sum, item) => sum + Number(item.amount || 0), 0);
   }
 
+  get directBoatRentalAmount(): number {
+    return this.isDirectSource ? this.amount((this.form as any).proposalBoatPrice) : 0;
+  }
+
+  get extraServicesOnlineTotal(): number {
+    return this.buildRemainingPaymentItems()
+      .filter((item) => item.payableOnline && item.id !== 'boat_rental')
+      .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  }
+
+  get directCustomerTotal(): number {
+    return this.amount(this.directBoatRentalAmount + this.cashOnBoardTotal + this.extraServicesOnlineTotal);
+  }
+
   get cashOnBoardTotal(): number {
     return this.buildRemainingPaymentItems()
       .filter((item) => !item.payableOnline)
@@ -431,9 +484,14 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
     this.message = '';
     try {
       this.validateCommonBookingFields();
-      const isFuture = this.isFutureMode;
+      const historicalTotal = this.isDirectSource
+        ? this.directCustomerTotal
+        : this.amount((this.form as any).totalAmount);
       const saved = await this.offerApi.createManualHistoricalBookingRecord({
         ...this.form,
+        totalAmount: historicalTotal,
+        totalPrice: historicalTotal,
+        proposalBoatPrice: this.directBoatRentalAmount || this.amount((this.form as any).proposalBoatPrice),
         externalPaymentItems: this.buildRemainingPaymentItems(),
         boatId: (this.form as any).boatId,
         boatName: (this.form as any).boatName,
@@ -489,7 +547,7 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
       this.validateCommonBookingFields();
       const paymentItems = this.buildRemainingPaymentItems();
       const remainingOnboardAmount = this.payableOnlineTotal;
-      const extraServicesOnboardAmount = this.payableOnlineTotal;
+      const extraServicesOnboardAmount = this.extraServicesOnlineTotal;
       const cashOnBoardAmount = this.cashOnBoardTotal;
       const onboardAmount = remainingOnboardAmount;
       const warrantyAmount = this.amount(this.form.warrantyAmount || 0);
@@ -530,6 +588,7 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
         externalTotalRemainingAmount: remainingOnboardAmount + cashOnBoardAmount,
         externalPaymentItems: paymentItems,
         selectedOptions: paymentItems,
+        proposalBoatPrice: this.directBoatRentalAmount || this.amount((this.form as any).proposalBoatPrice),
         proposalSkipperPrice: this.amount((this.form as any).skipperCashAmount),
         skipperCashAmount: this.amount((this.form as any).skipperCashAmount),
         warrantyAmount,
@@ -608,6 +667,9 @@ export class AdminExternalBookingsComponent implements OnInit, OnDestroy {
     }
     if (!Number.isFinite(passengers) || passengers <= 0) {
       throw new Error(this.t('invalidPassengersError'));
+    }
+    if (this.isDirectSource && this.amount((this.form as any).proposalBoatPrice) <= 0) {
+      throw new Error(this.t('missingBoatRentalAmountError'));
     }
     if (this.normalizedSource !== 'direct' && !String((this.form as any).externalPlatformBookingRef || '').trim()) {
       throw new Error(this.t('missingPlatformBookingRefError'));

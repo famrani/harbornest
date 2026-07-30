@@ -18,6 +18,19 @@
   of stale imported `skipperPaid` flags, matching the Alegria cash workflow.
 - Offer-to-booking conversion preserves the complete customer price, including
   the separately paid skipper; Alegria's online amount no longer replaces it.
+- Direct booking entry has a dedicated boat-rental price. The entered rental is
+  preserved and the skipper is added separately to the complete customer total.
+- Click&Boat entry now requires only the customer amount and Alegria payout.
+  The payout defaults to 76% (about 24% platform commission) and remains editable.
+- Every direct/platform booking-page label now resolves from the multilingual
+  `siteContent/{boatId}/{language}/externalBookings` Firebase section.
+- The Release 105.18 Firebase restore rebuilds the full multilingual
+  `siteContent/alegria` tree after a partial import left only `externalBookings`.
+- External booking prices now remain stable after reopening. The platform customer
+  amount is the boat rental, the payout remains separate, and their difference is
+  the platform commission. The full outing total adds skipper and direct services.
+- Existing external bookings containing the two platform amounts are corrected at
+  display time even if legacy total or commission fields contain stale values.
 - Payment history reads the canonical `backendpayments` ledger.
 - Payment requests preserve `boatId`/`ownerId`; the backend validates them
   against `bnFleet`, `bnBookings` and `bnProposals`.

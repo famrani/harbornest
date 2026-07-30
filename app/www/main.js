@@ -13113,6 +13113,10 @@ let OfferApiService = class OfferApiService {
       const onlinePayable = Number(anyOffer.externalRemainingOnboardAmount || anyOffer.totalAmount || anyOffer.onlinePayableAmount || 0) || 0;
       const cashOnBoard = Number(anyOffer.externalCashOnBoardAmount || anyOffer.skipperCashAmount || anyOffer.proposalSkipperPrice || 0) || 0;
       const totalRemaining = Number(anyOffer.externalTotalRemainingAmount || onlinePayable + cashOnBoard) || 0;
+      const platformCustomerAmount = Number(anyOffer.externalPlatformTotalClientAmount || anyOffer.payments?.platform?.totalClientAmount || 0) || 0;
+      const platformPaidAmount = Number(anyOffer.externalPlatformPaidAmount || anyOffer.payments?.platform?.paidAmount || 0) || 0;
+      const completeCustomerTotal = platformCustomerAmount > 0 ? platformCustomerAmount + totalRemaining : Number(anyOffer.totalCustomerCost || anyOffer.customerTotal || anyOffer.totalPrice || totalRemaining) || totalRemaining;
+      const platformCommissionAmount = Math.max(0, platformCustomerAmount - platformPaidAmount);
       const depositAmount = Number(anyOffer.depositAmount || Math.round(onlinePayable * 0.10 * 100) / 100) || 0;
       const balanceAmount = Number(anyOffer.balanceAmount || Math.max(0, Math.round((onlinePayable - depositAmount) * 100) / 100)) || 0;
       const booking = {
@@ -13136,8 +13140,17 @@ let OfferApiService = class OfferApiService {
         departureTime: anyOffer.departureTime || '',
         arrivalTime: anyOffer.arrivalTime || '',
         passengers: Number(anyOffer.passengers || 0) || 0,
-        totalPrice: totalRemaining,
-        totalAmount: totalRemaining,
+        // Keep the complete price paid by the customer separate from the amount
+        // still to collect directly. Reopening the booking must not change its price.
+        totalPrice: completeCustomerTotal,
+        totalAmount: completeCustomerTotal,
+        totalCustomerCost: completeCustomerTotal,
+        customerTotal: completeCustomerTotal,
+        totalCustomerPrice: completeCustomerTotal,
+        proposalBoatPrice: platformCustomerAmount || Number(anyOffer.proposalBoatPrice || 0),
+        boatRentalAmount: platformCustomerAmount || Number(anyOffer.boatRentalAmount || anyOffer.proposalBoatPrice || 0),
+        platformCommissionAmount,
+        rentalCommissionAmount: platformCommissionAmount,
         onlinePayableAmount: onlinePayable,
         appPayableAmount: onlinePayable,
         skipperCashAmount: cashOnBoard,
@@ -13167,9 +13180,11 @@ let OfferApiService = class OfferApiService {
           platform: {
             source: anyOffer.externalPlatform || anyOffer.source || 'clickandboat',
             reference: anyOffer.externalPlatformBookingRef || anyOffer.platformBookingReference || '',
-            paidAmount: Number(anyOffer.externalPlatformPaidAmount || 0),
+            paidAmount: platformPaidAmount,
             netOwnerAmount: Number(anyOffer.externalPlatformNetOwnerAmount || 0),
-            totalClientAmount: Number(anyOffer.externalPlatformTotalClientAmount || 0),
+            totalClientAmount: platformCustomerAmount,
+            fees: platformCommissionAmount,
+            feeAmount: platformCommissionAmount,
             remainingOwnerAmount: Number(anyOffer.externalPlatformRemainingOwnerAmount || 0),
             portAmount: Number(anyOffer.externalPortAmount || 0),
             status: 'recorded',

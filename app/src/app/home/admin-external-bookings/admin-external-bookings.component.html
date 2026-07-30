@@ -38,7 +38,7 @@
 
         <label class="boat-url-line" *ngIf="!isDirectSource">{{ t('boatListingUrl') }}
           <input type="url" [(ngModel)]="form.boatClickAndBoatUrl" />
-          <a *ngIf="form.boatClickAndBoatUrl" [href]="form.boatClickAndBoatUrl" target="_blank" rel="noopener">{{ 'auto.home.admin-external-bookings.admin-external-bookings.component.open_listing' | siteText }}</a>
+          <a *ngIf="form.boatClickAndBoatUrl" [href]="form.boatClickAndBoatUrl" target="_blank" rel="noopener">{{ t('openListing') }}</a>
         </label>
 
         <label>{{ t('startMarina') }}
@@ -82,12 +82,12 @@
 
           <label>{{ platformListingUrlLabel }}
             <input type="url" [(ngModel)]="form.externalPlatformUrl" [placeholder]="'https://...'" />
-            <a *ngIf="form.externalPlatformUrl" [href]="form.externalPlatformUrl" target="_blank" rel="noopener">{{ 'auto.home.admin-external-bookings.admin-external-bookings.component.open_listing' | siteText }}</a>
+            <a *ngIf="form.externalPlatformUrl" [href]="form.externalPlatformUrl" target="_blank" rel="noopener">{{ t('openListing') }}</a>
           </label>
 
           <label>{{ platformBookingUrlLabel }}
             <input type="url" [(ngModel)]="form.platformBookingUrl" [placeholder]="'https://...'" />
-            <a *ngIf="form.platformBookingUrl" [href]="form.platformBookingUrl" target="_blank" rel="noopener">{{ 'auto.home.admin-external-bookings.admin-external-bookings.component.open_booking' | siteText }}</a>
+            <a *ngIf="form.platformBookingUrl" [href]="form.platformBookingUrl" target="_blank" rel="noopener">{{ t('openBooking') }}</a>
           </label>
         </ng-container>
       </div>
@@ -106,14 +106,30 @@
 
       <h2>{{ customerCostTitle }}</h2>
       <div class="form-grid">
-        <label *ngIf="isHistoricalMode">{{ isDirectSource ? t('directBookingAmount') : t('totalCustomerCost') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.totalAmount" /></label>
+        <label *ngIf="isDirectSource">{{ t('boatRentalAmount') }}
+          <input type="number" min="0" step="0.01" [(ngModel)]="form.proposalBoatPrice" />
+          <small>{{ t('boatRentalAmountHelp') }}</small>
+        </label>
+
+        <label *ngIf="isHistoricalMode && !isDirectSource">{{ t('totalCustomerCost') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.totalAmount" /></label>
 
         <ng-container *ngIf="!isDirectSource">
-          <label>{{ platformCustomerAmountLabel }}<input type="number" min="0" step="0.01" [(ngModel)]="form.externalPlatformTotalClientAmount" /></label>
-          <label>{{ platformPayoutLabel }}<input type="number" min="0" step="0.01" [(ngModel)]="form.externalPlatformPaidAmount" /></label>
-          <label>{{ t('externalPlatformNetOwnerAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.externalPlatformNetOwnerAmount" /></label>
-          <label>{{ t('externalPlatformRemainingOwnerAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.externalPlatformRemainingOwnerAmount" /></label>
-          <label>{{ t('externalPortAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.externalPortAmount" /></label>
+          <label>{{ platformCustomerAmountLabel }}
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              [(ngModel)]="form.externalPlatformTotalClientAmount"
+              (ngModelChange)="onPlatformCustomerAmountChanged($event)" />
+          </label>
+          <label>{{ platformPayoutLabel }}
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              [(ngModel)]="form.externalPlatformPaidAmount"
+              (ngModelChange)="onPlatformPayoutChanged($event)" />
+          </label>
         </ng-container>
       </div>
 
@@ -139,6 +155,11 @@
           <input type="number" readonly [value]="isHistoricalMode ? 0 : remainingTotal" />
           <small>{{ t('calculatedField') }}</small>
         </label>
+        <label class="computed-field" *ngIf="isDirectSource">
+          {{ t('completeCustomerTotal') }}
+          <input type="number" readonly [value]="directCustomerTotal" />
+          <small>{{ t('completeCustomerTotalHelp') }}</small>
+        </label>
         <label>{{ t('warrantyAmount') }}<input type="number" min="0" step="0.01" [(ngModel)]="form.warrantyAmount" /></label>
 
         <label>{{ t('warrantyMethod') }}
@@ -150,7 +171,7 @@
       </div>
 
       <label class="full-width">{{ t('externalDocuments') }}
-        <textarea rows="4" [(ngModel)]="form.externalDocuments" [placeholder]="'auto.home.admin-external-bookings.admin-external-bookings.component.rachat_caution_facture_damage_waiver_conditions' | siteText"></textarea>
+        <textarea rows="4" [(ngModel)]="form.externalDocuments" [placeholder]="t('documentsPlaceholder')"></textarea>
       </label>
 
       <div class="actions">
@@ -161,19 +182,19 @@
 
       <p class="success" *ngIf="message">{{ message }}</p>
       <p class="client-link" *ngIf="createdBookingId">
-        <a [routerLink]="['/admin/bookings', createdBookingId]">{{ 'auto.home.admin-external-bookings.admin-external-bookings.component.ouvrir_la_r_servation_cr_e' | siteText }}</a>
+        <a [routerLink]="['/admin/bookings', createdBookingId]">{{ t('openCreatedBooking') }}</a>
       </p>
       <p class="client-link" *ngIf="warrantyLink">{{ t('clientOfferLink') }}: {{ warrantyLink }}</p>
       <p class="error" *ngIf="error">{{ error }}</p>
     </article>
 
     <article class="external-card platform-bookings-list" *ngIf="!embedded && platformBookings.length">
-      <h2>{{ 'auto.home.admin-external-bookings.admin-external-bookings.component.r_servations' | siteText }}</h2>
+      <h2>{{ t('bookingsListTitle') }}</h2>
       <button class="platform-booking-row" type="button" *ngFor="let booking of platformBookings" (click)="openBooking(booking)">
         <span><strong>{{ booking.customerName || '-' }}</strong><small>{{ booking.email || '-' }}</small></span>
         <span><strong>{{ booking.externalPlatformName || booking.externalPlatform || booking.source || 'Direct Alegria' }}</strong><small>{{ booking.externalPlatformBookingRef || booking.platformBookingReference || (booking.source === 'direct' ? 'Direct' : '-') }}</small></span>
         <span><strong>{{ booking.outingDate }}</strong><small>{{ booking.departureTime }} - {{ booking.arrivalTime }}</small></span>
-        <span><strong>{{ booking.totalPrice | currency:'EUR':'symbol':'1.0-2' }}</strong><small>{{ 'auto.home.admin-external-bookings.admin-external-bookings.component.restant_alegria' | siteText }}</small></span>
+        <span><strong>{{ booking.totalPrice | currency:'EUR':'symbol':'1.0-2' }}</strong><small>{{ t('remainingAlegria') }}</small></span>
       </button>
     </article>
   </div>
