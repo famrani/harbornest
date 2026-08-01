@@ -11,6 +11,7 @@ import { MailerService } from '../services/mailer.service';
 import { BoatownersService } from '../services/boatowners.service';
 import { FeedbacksService } from '../services/feedbacks.service';
 import { ContentService } from '../services/content.service';
+import { MediaService } from '../services/media.service';
 
 config(); // Load .env file
 
@@ -33,9 +34,10 @@ export class MainComponent {
     private boatownersSvc = new BoatownersService(this.storeDbSvc);
     private feedbacksSvc = new FeedbacksService(this.storeDbSvc);
     private contentSvc = new ContentService(this.storeDbSvc);
+    private mediaSvc = new MediaService();
     private bookingsSvc = new BookingsService(this.mailerSvc, this.storeDbSvc, this.stripeSvc);
 
-    private webServerComponent = new WebServerComponent(this.utilSvc, this.stripeSvc, this.bookingsSvc, this.usersSvc, this.boatownersSvc, this.feedbacksSvc, this.contentSvc);
+    private webServerComponent = new WebServerComponent(this.utilSvc, this.stripeSvc, this.bookingsSvc, this.usersSvc, this.boatownersSvc, this.feedbacksSvc, this.contentSvc, this.mediaSvc);
 
     public version: string | undefined;
 

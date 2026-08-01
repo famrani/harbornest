@@ -1,5 +1,13 @@
 # Release 105 — multi-boat Stripe regression fix
 
+## Release 106 — private GCS media
+
+- Adds `POST /api/media/signed-urls` for batched V4 read URLs.
+- Keeps `alegria_pics` private; only paths under `alegria/img/` can be signed.
+- Uses Application Default Credentials and never exposes the service-account key.
+- Limits requests to 200 paths and applies per-IP rate limiting.
+- Requires `npm install @google-cloud/storage` in the complete server project.
+
 ## Fixed payment flows
 
 - Deposit Checkout creation and server-verified completion.
@@ -46,4 +54,3 @@ and store the signing secret under:
 4. Deploy the frontend.
 5. Import the release 105 dump at the database root.
 6. Test one low-value payment in Stripe test mode for each relevant flow.
-

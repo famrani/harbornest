@@ -10,5 +10,5 @@ server/node_modules
 server/dist
 server/.env*
 server/dist2/config/*firebase-adminsdk*.json
-server/config/*firebase-adminsdk*.json
+server/dist2/config/adn-backend-204214-43bb8478ab16.json
 server/dist2/config/*.firebase-adminsdk*.json

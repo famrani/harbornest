@@ -11,7 +11,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const http_1 = __importDefault(require("http"));
 const https_1 = __importDefault(require("https"));
 class WebServerComponent {
-    constructor(utilsSvc, stripeSvc, bookingsSvc, usersSvc, boatownersSvc, feedbacksSvc, contentSvc) {
+    constructor(utilsSvc, stripeSvc, bookingsSvc, usersSvc, boatownersSvc, feedbacksSvc, contentSvc, mediaSvc) {
         this.utilsSvc = utilsSvc;
         this.stripeSvc = stripeSvc;
         this.bookingsSvc = bookingsSvc;
@@ -19,6 +19,7 @@ class WebServerComponent {
         this.boatownersSvc = boatownersSvc;
         this.feedbacksSvc = feedbacksSvc;
         this.contentSvc = contentSvc;
+        this.mediaSvc = mediaSvc;
         this.app = (0, express_1.default)();
         this.appHttp = (0, express_1.default)();
         this.router = express_1.default.Router();
@@ -84,6 +85,7 @@ class WebServerComponent {
         this.boatownersSvc.setRoutes(this.router);
         this.feedbacksSvc.setRoutes(this.router);
         this.contentSvc.setRoutes(this.router);
+        this.mediaSvc.setRoutes(this.router);
     }
 }
 exports.WebServerComponent = WebServerComponent;

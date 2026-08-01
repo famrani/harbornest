@@ -320,30 +320,31 @@ export class AdminOffersComponent implements OnInit, OnDestroy {
 
   applyFinalPricingToForm(): void {
     const form: any = this.form || {};
-    const boatPrice = Number(form.proposalBoatPrice || 0);
-    const skipperPrice = Number(form.proposalSkipperPrice || 0);
+    const boatPrice = Number(form.proposalBoatPrice ?? 0);
+    const skipperPrice = Number(form.proposalSkipperPrice ?? 0);
     const fuelPrice = Number(form.proposalFuelPrice ?? form.fuelPrice ?? form.fuelAmount ?? form.offerCleaningPrice ?? 0);
-    const extraServicesPrice = Number(form.proposalExtraServicesPrice || 0);
+    const extraServicesPrice = Number(form.proposalExtraServicesPrice ?? 0);
     const finalTotal = boatPrice + skipperPrice + fuelPrice + extraServicesPrice;
     const onlinePayableAmount = Math.max(0, Math.round((finalTotal - skipperPrice) * 100) / 100);
+    const depositRate = Number(form.depositRate ?? 0.10);
+    const depositAmount = Math.round(onlinePayableAmount * depositRate * 100) / 100;
 
-    if (finalTotal > 0) {
-      const depositRate = Number(form.depositRate || 0.10);
-      const depositAmount = Math.round(onlinePayableAmount * depositRate * 100) / 100;
-      this.form = {
-        ...this.form,
-        totalAmount: Math.round(finalTotal * 100) / 100,
-        skipperCashAmount: skipperPrice,
-        proposalFuelPrice: fuelPrice,
-        fuelPrice: fuelPrice,
-        fuelAmount: fuelPrice,
-        onlinePayableAmount,
-        appPayableAmount: onlinePayableAmount,
-        depositRate,
-        depositAmount,
-        balanceAmount: Math.round((onlinePayableAmount - depositAmount) * 100) / 100,
-      } as any;
-    }
+    // Zero is a valid quoted price (for example, a complimentary outing).
+    // Always replace previously persisted/default financial values, including
+    // when the newly calculated total is exactly zero.
+    this.form = {
+      ...this.form,
+      totalAmount: Math.round(finalTotal * 100) / 100,
+      skipperCashAmount: skipperPrice,
+      proposalFuelPrice: fuelPrice,
+      fuelPrice: fuelPrice,
+      fuelAmount: fuelPrice,
+      onlinePayableAmount,
+      appPayableAmount: onlinePayableAmount,
+      depositRate,
+      depositAmount,
+      balanceAmount: Math.round((onlinePayableAmount - depositAmount) * 100) / 100,
+    } as any;
   }
 
   async saveOffer(): Promise<void> {
@@ -434,6 +435,7 @@ export class AdminOffersComponent implements OnInit, OnDestroy {
     this.error = '';
     if (!this.validateOfferForm()) return;
     if (!this.form.offerId) return;
+    this.applyFinalPricingToForm();
     this.sendOfferByEmail(this.form as AlegriaOffer);
   }
 
@@ -488,6 +490,14 @@ export class AdminOffersComponent implements OnInit, OnDestroy {
 
   openWhatsappDialog(offer: Partial<AlegriaOffer>, event?: Event): void {
     event?.stopPropagation();
+    // The editor can contain unsaved pricing changes. Recalculate the current
+    // form before producing a customer-facing message so the preview and the
+    // displayed total always agree, including for a free offer.
+    if (offer === this.form || (!!offer.offerId && offer.offerId === this.form.offerId)) {
+      this.applyFinalPricingToForm();
+      this.prepareWhatsappDialog(this.form);
+      return;
+    }
     this.prepareWhatsappDialog(offer);
   }
 
@@ -624,7 +634,7 @@ export class AdminOffersComponent implements OnInit, OnDestroy {
       departureTime: '10:00',
       arrivalTime: '18:00',
       passengers: 2,
-      totalAmount: 1000,
+      totalAmount: 0,
       warrantyAmount: 500,
       offerMessage: '',
       comments: '',

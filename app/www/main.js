@@ -12380,7 +12380,7 @@ let OfferApiService = class OfferApiService {
     if (!String(input.departureTime || '').trim()) errors.push('Departure time is required.');
     if (!String(input.arrivalTime || '').trim()) errors.push('Return time is required.');
     if (!isExternalBooking && Number(input.passengers || 0) <= 0) errors.push('Passengers must be greater than zero.');
-    if (!isExternalBooking && Number(input.totalAmount || 0) <= 0) errors.push('Total amount must be greater than zero.');
+    if (!isExternalBooking && Number(input.totalAmount ?? 0) < 0) errors.push('Total amount cannot be negative.');
     if (Number(input.warrantyAmount || 0) < 0) errors.push('Warranty amount cannot be negative.');
     if (!isExternalBooking && !String(input.offerMessage || '').trim()) errors.push('Offer message is required.');
     if (errors.length) throw new Error(errors.join(' '));
@@ -15783,30 +15783,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AppModule: () => (/* binding */ AppModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! tslib */ 27824);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/core */ 37580);
 /* harmony import */ var _awesome_cordova_plugins_geolocation_ngx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @awesome-cordova-plugins/geolocation/ngx */ 86241);
 /* harmony import */ var _awesome_cordova_plugins_native_geocoder_ngx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @awesome-cordova-plugins/native-geocoder/ngx */ 23915);
 /* harmony import */ var ng2_haversine__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ng2-haversine */ 22464);
-/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/platform-browser */ 53563);
-/* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @angular/platform-browser/animations */ 43835);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/platform-browser */ 53563);
+/* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @angular/platform-browser/animations */ 43835);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/common/http */ 93262);
 /* harmony import */ var _awesome_cordova_plugins_barcode_scanner_ngx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @awesome-cordova-plugins/barcode-scanner/ngx */ 86948);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @angular/common */ 35135);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @ionic/angular */ 21507);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @ionic/angular */ 4059);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @angular/common */ 35135);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @ionic/angular */ 21507);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @ionic/angular */ 4059);
 /* harmony import */ var _awesome_cordova_plugins_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @awesome-cordova-plugins/splash-screen/ngx */ 28293);
 /* harmony import */ var _awesome_cordova_plugins_status_bar_ngx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @awesome-cordova-plugins/status-bar/ngx */ 61203);
-/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ngx-logger */ 66383);
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ngx-logger */ 66383);
 /* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./app-routing.module */ 94114);
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./app.component */ 20092);
 /* harmony import */ var _layout_layout_module__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./layout/layout.module */ 48177);
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../environments/environment */ 45312);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _page404_page404_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./page404/page404.component */ 27044);
-/* harmony import */ var ngx_echarts__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ngx-echarts */ 15371);
-/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ngx-spinner */ 61249);
+/* harmony import */ var _services_firebase_media_interceptor__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./services/firebase-media.interceptor */ 52802);
+/* harmony import */ var ngx_echarts__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ngx-echarts */ 15371);
+/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ngx-spinner */ 61249);
 
 
 
@@ -15831,23 +15832,28 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 let AppModule = class AppModule {};
-AppModule = (0,tslib__WEBPACK_IMPORTED_MODULE_11__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_12__.NgModule)({
+AppModule = (0,tslib__WEBPACK_IMPORTED_MODULE_12__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_13__.NgModule)({
   declarations: [_app_component__WEBPACK_IMPORTED_MODULE_7__.AppComponent, _page404_page404_component__WEBPACK_IMPORTED_MODULE_10__.Page404Component],
-  imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_13__.BrowserModule, _app_routing_module__WEBPACK_IMPORTED_MODULE_6__.AppRoutingModule, _angular_common_http__WEBPACK_IMPORTED_MODULE_14__.HttpClientModule, godigital_lib__WEBPACK_IMPORTED_MODULE_15__.GodigitalbModule, _layout_layout_module__WEBPACK_IMPORTED_MODULE_8__.LayoutModule, ngx_spinner__WEBPACK_IMPORTED_MODULE_16__.NgxSpinnerModule, _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_17__.BrowserAnimationsModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_18__.IonicModule, ngx_logger__WEBPACK_IMPORTED_MODULE_19__.LoggerModule.forRoot({
+  imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_14__.BrowserModule, _app_routing_module__WEBPACK_IMPORTED_MODULE_6__.AppRoutingModule, _angular_common_http__WEBPACK_IMPORTED_MODULE_15__.HttpClientModule, godigital_lib__WEBPACK_IMPORTED_MODULE_16__.GodigitalbModule, _layout_layout_module__WEBPACK_IMPORTED_MODULE_8__.LayoutModule, ngx_spinner__WEBPACK_IMPORTED_MODULE_17__.NgxSpinnerModule, _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_18__.BrowserAnimationsModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_19__.IonicModule, ngx_logger__WEBPACK_IMPORTED_MODULE_20__.LoggerModule.forRoot({
     serverLoggingUrl: _environments_environment__WEBPACK_IMPORTED_MODULE_9__.environment.apiUrl,
     level: _environments_environment__WEBPACK_IMPORTED_MODULE_9__.environment.logLevel,
     serverLogLevel: _environments_environment__WEBPACK_IMPORTED_MODULE_9__.environment.serverLogLevel,
     disableConsoleLogging: false
   }),
   //    FormsModule, ReactiveFormsModule,
-  ngx_echarts__WEBPACK_IMPORTED_MODULE_20__.NgxEchartsModule.forRoot({
+  ngx_echarts__WEBPACK_IMPORTED_MODULE_21__.NgxEchartsModule.forRoot({
     echarts: () => __webpack_require__.e(/*! import() */ "node_modules_echarts_index_js").then(__webpack_require__.bind(__webpack_require__, /*! echarts */ 8408))
   })],
   providers: [_awesome_cordova_plugins_status_bar_ngx__WEBPACK_IMPORTED_MODULE_5__.StatusBar, _awesome_cordova_plugins_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_4__.SplashScreen, {
-    provide: _angular_router__WEBPACK_IMPORTED_MODULE_21__.RouteReuseStrategy,
-    useClass: _ionic_angular__WEBPACK_IMPORTED_MODULE_22__.IonicRouteStrategy
-  }, godigital_lib__WEBPACK_IMPORTED_MODULE_15__.UtilsService, _awesome_cordova_plugins_barcode_scanner_ngx__WEBPACK_IMPORTED_MODULE_3__.BarcodeScanner, _angular_common__WEBPACK_IMPORTED_MODULE_23__.DatePipe, _awesome_cordova_plugins_geolocation_ngx__WEBPACK_IMPORTED_MODULE_0__.Geolocation, _awesome_cordova_plugins_native_geocoder_ngx__WEBPACK_IMPORTED_MODULE_1__.NativeGeocoder, ng2_haversine__WEBPACK_IMPORTED_MODULE_2__.HaversineService],
+    provide: _angular_router__WEBPACK_IMPORTED_MODULE_22__.RouteReuseStrategy,
+    useClass: _ionic_angular__WEBPACK_IMPORTED_MODULE_23__.IonicRouteStrategy
+  }, godigital_lib__WEBPACK_IMPORTED_MODULE_16__.UtilsService, _awesome_cordova_plugins_barcode_scanner_ngx__WEBPACK_IMPORTED_MODULE_3__.BarcodeScanner, _angular_common__WEBPACK_IMPORTED_MODULE_24__.DatePipe, _awesome_cordova_plugins_geolocation_ngx__WEBPACK_IMPORTED_MODULE_0__.Geolocation, _awesome_cordova_plugins_native_geocoder_ngx__WEBPACK_IMPORTED_MODULE_1__.NativeGeocoder, ng2_haversine__WEBPACK_IMPORTED_MODULE_2__.HaversineService, {
+    provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_15__.HTTP_INTERCEPTORS,
+    useClass: _services_firebase_media_interceptor__WEBPACK_IMPORTED_MODULE_11__.FirebaseMediaInterceptor,
+    multi: true
+  }],
   bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_7__.AppComponent]
 })], AppModule);
 
@@ -16158,6 +16164,57 @@ SeoService = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_angular_core
 
 /***/ }),
 
+/***/ 52802:
+/*!********************************************************!*\
+  !*** ./src/app/services/firebase-media.interceptor.ts ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FirebaseMediaInterceptor: () => (/* binding */ FirebaseMediaInterceptor)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 59452);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 95429);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ 36647);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ 61318);
+/* harmony import */ var _private_media_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./private-media.service */ 71260);
+
+
+
+
+
+
+let FirebaseMediaInterceptor = class FirebaseMediaInterceptor {
+  media;
+  constructor(media) {
+    this.media = media;
+  }
+  intercept(req, next) {
+    if (req.method !== 'GET' || !this.isFirebaseDatabaseRequest(req.url)) return next.handle(req);
+    return next.handle(req).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.switchMap)(event => {
+      if (!(event instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__.HttpResponse) || !event.body) return (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)(event);
+      return (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.from)(this.media.resolveFirebaseTree(event.body)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.switchMap)(body => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)(event.clone({
+        body
+      }))), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.catchError)(() => (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.of)(event)));
+    }));
+  }
+  isFirebaseDatabaseRequest(url) {
+    return /https:\/\/[^/]+\.(firebaseio\.com|firebasedatabase\.app)\//i.test(url);
+  }
+  static ctorParameters = () => [{
+    type: _private_media_service__WEBPACK_IMPORTED_MODULE_0__.PrivateMediaService
+  }];
+};
+FirebaseMediaInterceptor = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Injectable)()], FirebaseMediaInterceptor);
+
+
+/***/ }),
+
 /***/ 54140:
 /*!************************************************************************************************************************************************************!*\
   !*** ./node_modules/@stencil/core/internal/client/ lazy ^\.\/.*\.entry\.js.*$ include: \.entry\.js$ exclude: \.system\.entry\.js$ strict namespace object ***!
@@ -16297,6 +16354,133 @@ CookieConsentComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([(0,_
 
 "use strict";
 module.exports = "<div class=\"cookie-banner\" *ngIf=\"visible\" role=\"dialog\" aria-live=\"polite\" [attr.aria-label]=\"'layout.cookieConsent.ariaLabel' | siteText:'Gestion des cookies'\">\n  <div class=\"cookie-copy\">\n    <strong>{{ 'layout.cookieConsent.title' | siteText:'Gestion des cookies' }}</strong>\n    <p>{{ 'layout.cookieConsent.text' | siteText:'Nous utilisons des cookies nécessaires au bon fonctionnement du site et, le cas échéant, à l’amélioration de votre expérience. En continuant, vous acceptez leur utilisation.' }}</p>\n  </div>\n  <div class=\"cookie-actions\">\n    <a routerLink=\"/terms\" class=\"cookie-link\">{{ 'layout.cookieConsent.learnMore' | siteText:'Conditions générales' }}</a>\n    <button type=\"button\" class=\"cookie-accept\" (click)=\"accept()\">{{ 'layout.cookieConsent.accept' | siteText:'J’accepte' }}</button>\n  </div>\n</div>\n";
+
+/***/ }),
+
+/***/ 71260:
+/*!***************************************************!*\
+  !*** ./src/app/services/private-media.service.ts ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   PrivateMediaService: () => (/* binding */ PrivateMediaService)
+/* harmony export */ });
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 56196);
+
+
+
+
+
+let PrivateMediaService = class PrivateMediaService {
+  http;
+  cache = new Map();
+  imagePattern = /\.(avif|gif|jpe?g|png|svg|webp)(?:[?#].*)?$/i;
+  constructor(handler) {
+    // A dedicated client bypasses the Firebase response interceptor and avoids
+    // an interceptor loop when requesting signed URLs from our own backend.
+    this.http = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__.HttpClient(handler);
+  }
+  resolveFirebaseTree(body) {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const values = new Set();
+      _this.collectImageValues(body, values);
+      if (!values.size) return body;
+      const valueToPath = new Map();
+      for (const value of values) {
+        const objectPath = _this.toObjectPath(value);
+        if (objectPath) valueToPath.set(value, objectPath);
+      }
+      if (!valueToPath.size) return body;
+      const urls = yield _this.resolvePaths([...new Set(valueToPath.values())]);
+      return _this.replaceImageValues(body, valueToPath, urls);
+    })();
+  }
+  resolvePaths(paths) {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const now = Date.now();
+      const resolved = {};
+      const missing = [];
+      for (const objectPath of paths) {
+        const cached = _this2.cache.get(objectPath);
+        if (cached && cached.expiresAt > now + 5 * 60 * 1000) resolved[objectPath] = cached.url;else missing.push(objectPath);
+      }
+      if (missing.length) {
+        try {
+          const response = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.firstValueFrom)(_this2.http.post(`${_this2.backendOrigin}/api/media/signed-urls`, {
+            paths: missing
+          }));
+          const signedUrls = response.urls || {};
+          for (const objectPath of Object.keys(signedUrls)) {
+            const url = signedUrls[objectPath];
+            _this2.cache.set(objectPath, {
+              url,
+              expiresAt: Number(response.expiresAt || 0)
+            });
+            resolved[objectPath] = url;
+          }
+        } catch (error) {
+          console.warn('Private media URL resolution failed', error);
+        }
+      }
+      return resolved;
+    })();
+  }
+  collectImageValues(value, result) {
+    if (Array.isArray(value)) {
+      value.forEach(item => this.collectImageValues(item, result));
+      return;
+    }
+    if (value && typeof value === 'object') {
+      Object.values(value).forEach(item => this.collectImageValues(item, result));
+      return;
+    }
+    if (typeof value === 'string' && this.imagePattern.test(value)) result.add(value);
+  }
+  replaceImageValues(value, valueToPath, urls) {
+    if (Array.isArray(value)) {
+      return value.map(item => this.replaceImageValues(item, valueToPath, urls));
+    }
+    if (value && typeof value === 'object') {
+      const output = {};
+      for (const [key, child] of Object.entries(value)) {
+        output[key] = this.replaceImageValues(child, valueToPath, urls);
+      }
+      return output;
+    }
+    if (typeof value === 'string') {
+      const objectPath = valueToPath.get(value);
+      return objectPath && urls[objectPath] ? urls[objectPath] : value;
+    }
+    return value;
+  }
+  toObjectPath(value) {
+    const clean = String(value || '').trim().replace(/\\/g, '/').split(/[?#]/)[0];
+    if (clean.startsWith('alegria/img/')) return clean;
+    if (clean.startsWith('assets/img/')) return `alegria/${clean.slice('assets/'.length)}`;
+    if (clean.startsWith('/assets/img/')) return `alegria/${clean.slice('/assets/'.length)}`;
+    return null;
+  }
+  get backendOrigin() {
+    const hostname = window.location.hostname;
+    return ['localhost', '127.0.0.1', '0.0.0.0'].includes(hostname) ? 'https://localhost:2000' : window.location.origin;
+  }
+  static ctorParameters = () => [{
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__.HttpBackend
+  }];
+};
+PrivateMediaService = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Injectable)({
+  providedIn: 'root'
+})], PrivateMediaService);
+
 
 /***/ }),
 

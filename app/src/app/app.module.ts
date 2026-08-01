@@ -5,7 +5,7 @@ import { HaversineService } from 'ng2-haversine';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy, ActivatedRouteSnapshot } from '@angular/router';
-import { HttpClientModule, } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { DatePipe } from '@angular/common';
 
@@ -25,6 +25,7 @@ import { environment } from '../environments/environment';
 
 import { GodigitalbModule, UtilsService } from 'godigital-lib';
 import { Page404Component } from './page404/page404.component';
+import { FirebaseMediaInterceptor } from './services/firebase-media.interceptor';
 
 import { NgxEchartsModule } from 'ngx-echarts';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -61,6 +62,11 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     Geolocation,
     NativeGeocoder,
     HaversineService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: FirebaseMediaInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent]
 })

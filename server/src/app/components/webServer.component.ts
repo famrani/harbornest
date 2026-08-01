@@ -11,6 +11,7 @@ import { UsersService } from '../services/users.service'
 import { BoatownersService } from '../services/boatowners.service';
 import { FeedbacksService } from '../services/feedbacks.service';
 import { ContentService } from '../services/content.service';
+import { MediaService } from '../services/media.service';
 
 export class WebServerComponent {
     private app = express();
@@ -27,6 +28,7 @@ export class WebServerComponent {
     private boatownersSvc: BoatownersService,
     private feedbacksSvc: FeedbacksService,
     private contentSvc: ContentService,
+    private mediaSvc: MediaService,
   ) {}
 
     async initWebServer(): Promise<void> {
@@ -106,5 +108,6 @@ export class WebServerComponent {
     this.boatownersSvc.setRoutes(this.router);
     this.feedbacksSvc.setRoutes(this.router);
     this.contentSvc.setRoutes(this.router);
+    this.mediaSvc.setRoutes(this.router);
     }
 }

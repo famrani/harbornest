@@ -185,8 +185,8 @@ export class OfferApiService {
     if (!String(input.arrivalTime || '').trim()) errors.push('Return time is required.');
     if (!isExternalBooking && Number(input.passengers || 0) <= 0)
       errors.push('Passengers must be greater than zero.');
-    if (!isExternalBooking && Number(input.totalAmount || 0) <= 0)
-      errors.push('Total amount must be greater than zero.');
+    if (!isExternalBooking && Number(input.totalAmount ?? 0) < 0)
+      errors.push('Total amount cannot be negative.');
     if (Number(input.warrantyAmount || 0) < 0) errors.push('Warranty amount cannot be negative.');
     if (!isExternalBooking && !String((input as any).offerMessage || '').trim())
       errors.push('Offer message is required.');

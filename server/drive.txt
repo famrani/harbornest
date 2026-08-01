@@ -1,0 +1,300 @@
+gs://alegria_pics/alegria/:
+
+gs://alegria_pics/alegria/img/:
+     21111  2026-07-31T14:52:30Z  gs://alegria_pics/alegria/img/logo-Alegria.png
+
+gs://alegria_pics/alegria/img/boat/:
+
+gs://alegria_pics/alegria/img/boat/bali4.1/:
+    163795  2026-07-31T14:52:44Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-1.jpg
+    139126  2026-07-31T14:52:41Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-10.jpg
+     80858  2026-07-31T14:52:41Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-11.jpg
+    195820  2026-07-31T14:52:43Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-12.jpg
+    182718  2026-07-31T14:52:42Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-13.jpg
+    182718  2026-07-31T14:52:42Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-14.jpg
+    185068  2026-07-31T14:52:43Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-15.jpg
+    170188  2026-07-31T14:52:42Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-16.jpg
+    185068  2026-07-31T14:52:43Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-17.jpg
+    170188  2026-07-31T14:52:41Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-18.jpg
+    183423  2026-07-31T14:52:41Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-19.jpg
+    113244  2026-07-31T14:52:39Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-2.jpg
+    198626  2026-07-31T14:52:41Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-3.jpg
+    188058  2026-07-31T14:52:43Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-4.jpg
+    226440  2026-07-31T14:52:43Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-5.jpg
+    147762  2026-07-31T14:52:40Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-6.jpg
+    182003  2026-07-31T14:52:42Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-7.jpg
+    149732  2026-07-31T14:52:42Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-8.jpg
+    153380  2026-07-31T14:52:41Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali-41-9.jpg
+    129566  2026-07-31T14:52:41Z  gs://alegria_pics/alegria/img/boat/bali4.1/bali41-11.jpg
+
+gs://alegria_pics/alegria/img/events/:
+
+gs://alegria_pics/alegria/img/events/business-meeting/:
+   1574911  2026-07-31T14:53:03Z  gs://alegria_pics/alegria/img/events/business-meeting/business-meeting1.jpg
+   1413530  2026-07-31T14:52:57Z  gs://alegria_pics/alegria/img/events/business-meeting/business-meeting2.jpg
+   1587258  2026-07-31T14:53:03Z  gs://alegria_pics/alegria/img/events/business-meeting/business-meeting3.jpg
+
+gs://alegria_pics/alegria/img/events/de/:
+   1651316  2026-07-31T14:53:03Z  gs://alegria_pics/alegria/img/events/de/de1.png
+   1546244  2026-07-31T14:53:02Z  gs://alegria_pics/alegria/img/events/de/de2.png
+   1489912  2026-07-31T14:53:02Z  gs://alegria_pics/alegria/img/events/de/de3.png
+   1395797  2026-07-31T14:53:01Z  gs://alegria_pics/alegria/img/events/de/de4.png
+   1429606  2026-07-31T14:53:01Z  gs://alegria_pics/alegria/img/events/de/de5.png
+   1404797  2026-07-31T14:53:02Z  gs://alegria_pics/alegria/img/events/de/de6.png
+
+gs://alegria_pics/alegria/img/events/party/:
+   1902572  2026-07-31T14:53:04Z  gs://alegria_pics/alegria/img/events/party/party1.jpg
+   1507606  2026-07-31T14:53:03Z  gs://alegria_pics/alegria/img/events/party/party10.jpg
+   1429753  2026-07-31T14:53:01Z  gs://alegria_pics/alegria/img/events/party/party11.jpg
+   2153279  2026-07-31T14:53:04Z  gs://alegria_pics/alegria/img/events/party/party2.jpg
+   1475371  2026-07-31T14:53:02Z  gs://alegria_pics/alegria/img/events/party/party3.jpg
+   1620182  2026-07-31T14:53:03Z  gs://alegria_pics/alegria/img/events/party/party4.jpg
+   1494475  2026-07-31T14:53:02Z  gs://alegria_pics/alegria/img/events/party/party5.jpg
+   1456441  2026-07-31T14:53:01Z  gs://alegria_pics/alegria/img/events/party/party6.jpg
+    155371  2026-07-31T14:52:45Z  gs://alegria_pics/alegria/img/events/party/party7.jpg
+    185508  2026-07-31T14:52:45Z  gs://alegria_pics/alegria/img/events/party/party8.jpg
+   1454554  2026-07-31T14:53:02Z  gs://alegria_pics/alegria/img/events/party/party9.jpg
+
+gs://alegria_pics/alegria/img/events/sunset/:
+     29844  2026-07-31T14:52:40Z  gs://alegria_pics/alegria/img/events/sunset/sunset1.jpg
+   1439945  2026-07-31T14:53:02Z  gs://alegria_pics/alegria/img/events/sunset/sunset2.jpg
+   1392454  2026-07-31T14:52:57Z  gs://alegria_pics/alegria/img/events/sunset/sunset3.jpg
+   1416268  2026-07-31T14:53:03Z  gs://alegria_pics/alegria/img/events/sunset/sunset4.jpg
+   1344608  2026-07-31T14:53:01Z  gs://alegria_pics/alegria/img/events/sunset/sunset5.jpg
+
+gs://alegria_pics/alegria/img/home/:
+      8960  2026-07-31T14:52:44Z  gs://alegria_pics/alegria/img/home/avatar-default.png
+     21111  2026-07-31T14:52:43Z  gs://alegria_pics/alegria/img/home/catamaran.png
+     19613  2026-07-31T14:52:30Z  gs://alegria_pics/alegria/img/home/catamaran1.png
+     68077  2026-07-31T14:52:30Z  gs://alegria_pics/alegria/img/home/connected-hero.jpg
+    199797  2026-07-31T14:52:47Z  gs://alegria_pics/alegria/img/home/home-hero-generic.jpg
+    648315  2026-07-31T14:52:53Z  gs://alegria_pics/alegria/img/home/home-hero-generic1.jpg
+     50782  2026-07-31T14:52:30Z  gs://alegria_pics/alegria/img/home/home-hero-generica.jpg
+
+gs://alegria_pics/alegria/img/mainpages/:
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/:
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/boat/:
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/boat/bavaria46/:
+    125591  2026-07-31T14:52:36Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/boat/bavaria46/lagoon40-00.jpg
+    506362  2026-07-31T14:52:45Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/boat/bavaria46/lagoon40-01.jpg
+    129982  2026-07-31T14:52:37Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/boat/bavaria46/lagoon40-02.jpg
+    218067  2026-07-31T14:52:39Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/boat/bavaria46/lagoon40-03.jpg
+     34707  2026-07-31T14:52:32Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/boat/bavaria46/lagoon40-04.jpg
+    433364  2026-07-31T14:52:43Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/boat/bavaria46/lagoon40-05.jpg
+     18956  2026-07-31T14:52:33Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/boat/bavaria46/lagoon40-06.jpg
+    119372  2026-07-31T14:52:35Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/boat/bavaria46/lagoon40-07.jpg
+   3490643  2026-07-31T14:53:06Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/boat/bavaria46/lagoon40-08.jpg
+    133061  2026-07-31T14:52:39Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/boat/bavaria46/lagoon40-09.jpg
+    776929  2026-07-31T14:52:50Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/boat/bavaria46/lagoon40-10.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/:
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/afterwork/:
+     79344  2026-07-31T14:52:32Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/afterwork/afterwork1.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/business-meeting/:
+    132480  2026-07-31T14:52:34Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/business-meeting/business-meeting1.jpg
+    586987  2026-07-31T14:52:45Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/business-meeting/business-meeting2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/cap-antibes/:
+    280684  2026-07-31T14:52:38Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/cap-antibes/cap-antibes1.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/evjf/:
+    117013  2026-07-31T14:52:35Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/evjf/evjf-g1.jpg
+     84204  2026-07-31T14:52:32Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/evjf/evjf-g2.jpg
+    164714  2026-07-31T14:52:35Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/evjf/evjf-g3.jpg
+    230171  2026-07-31T14:52:38Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/evjf/evjf-g4.jpg
+    155371  2026-07-31T14:52:33Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/evjf/evjf-g5.jpg
+    185508  2026-07-31T14:52:34Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/evjf/evjf-g6.jpg
+     59993  2026-07-31T14:52:30Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/evjf/evjf-g7.jpg
+    124114  2026-07-31T14:52:37Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/evjf/evjf-g8.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/leyrins/:
+     35714  2026-07-31T14:52:32Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/leyrins/leyrins1.jpg
+    119377  2026-07-31T14:52:37Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/leyrins/leyrins2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/night-on-board/:
+     19376  2026-07-31T14:52:32Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/night-on-board/night-on-board1.jpg
+    335795  2026-07-31T14:52:45Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/night-on-board/night-on-board2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/sunset/:
+     29844  2026-07-31T14:52:31Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/sunset/sunset1.jpg
+    500606  2026-07-31T14:52:48Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/events/sunset/sunset2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/home/:
+     23180  2026-07-31T14:52:31Z  gs://alegria_pics/alegria/img/mainpages/owner-home-gintonics/home/hero.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-layali/:
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-layali/boat/:
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-layali/boat/lagoon40/:
+    125591  2026-07-31T14:52:34Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/boat/lagoon40/lagoon40-00.jpg
+    506362  2026-07-31T14:52:46Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/boat/lagoon40/lagoon40-01.jpg
+    129982  2026-07-31T14:52:34Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/boat/lagoon40/lagoon40-02.jpg
+    218067  2026-07-31T14:52:36Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/boat/lagoon40/lagoon40-03.jpg
+     34707  2026-07-31T14:52:32Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/boat/lagoon40/lagoon40-04.jpg
+    433364  2026-07-31T14:52:44Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/boat/lagoon40/lagoon40-05.jpg
+     18956  2026-07-31T14:52:32Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/boat/lagoon40/lagoon40-06.jpg
+    119372  2026-07-31T14:52:35Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/boat/lagoon40/lagoon40-07.jpg
+   3490643  2026-07-31T14:53:06Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/boat/lagoon40/lagoon40-08.jpg
+    133061  2026-07-31T14:52:35Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/boat/lagoon40/lagoon40-09.jpg
+    776929  2026-07-31T14:52:49Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/boat/lagoon40/lagoon40-10.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/:
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/afterwork/:
+     79344  2026-07-31T14:52:35Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/afterwork/afterwork1.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/business-meeting/:
+    132480  2026-07-31T14:52:36Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/business-meeting/business-meeting1.jpg
+    586987  2026-07-31T14:52:50Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/business-meeting/business-meeting2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/cap-antibes/:
+    280684  2026-07-31T14:52:39Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/cap-antibes/cap-antibes1.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/evjf/:
+    117013  2026-07-31T14:52:34Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/evjf/evjf-g1.jpg
+     84204  2026-07-31T14:52:34Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/evjf/evjf-g2.jpg
+    164714  2026-07-31T14:52:36Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/evjf/evjf-g3.jpg
+    230171  2026-07-31T14:52:39Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/evjf/evjf-g4.jpg
+    155371  2026-07-31T14:52:36Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/evjf/evjf-g5.jpg
+    185508  2026-07-31T14:52:36Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/evjf/evjf-g6.jpg
+     59993  2026-07-31T14:52:33Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/evjf/evjf-g7.jpg
+    124114  2026-07-31T14:52:35Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/evjf/evjf-g8.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/leyrins/:
+     35714  2026-07-31T14:52:32Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/leyrins/leyrins1.jpg
+    119377  2026-07-31T14:52:34Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/leyrins/leyrins2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/night-on-board/:
+     19376  2026-07-31T14:52:32Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/night-on-board/night-on-board1.jpg
+    335795  2026-07-31T14:52:40Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/night-on-board/night-on-board2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/sunset/:
+     29844  2026-07-31T14:52:33Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/sunset/sunset1.jpg
+    500606  2026-07-31T14:52:46Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/events/sunset/sunset2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-layali/home/:
+     50782  2026-07-31T14:52:37Z  gs://alegria_pics/alegria/img/mainpages/owner-home-layali/home/hero.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/:
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/boat/:
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/boat/oyster495/:
+    122152  2026-07-31T14:52:34Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/boat/oyster495/Oyster-New-Yacht-Fleet-Oyster-495-Sailing-v2__FillMaxWzg2NSw1MDBd.jpg
+     88067  2026-07-31T14:52:32Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/boat/oyster495/Oyster-New-Yacht-Fleet-Oyster-565-Sailing-v3__FillMaxWzg2NSw1MDBd.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/:
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/afterwork/:
+     79344  2026-07-31T14:52:34Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/afterwork/afterwork1.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/business-meeting/:
+    132480  2026-07-31T14:52:35Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/business-meeting/business-meeting1.jpg
+    586987  2026-07-31T14:52:46Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/business-meeting/business-meeting2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/cap-antibes/:
+    280684  2026-07-31T14:52:40Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/cap-antibes/cap-antibes1.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/evjf/:
+    117013  2026-07-31T14:52:33Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/evjf/evjf-g1.jpg
+     84204  2026-07-31T14:52:34Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/evjf/evjf-g2.jpg
+    164714  2026-07-31T14:52:30Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/evjf/evjf-g3.jpg
+    230171  2026-07-31T14:52:38Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/evjf/evjf-g4.jpg
+    155371  2026-07-31T14:52:36Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/evjf/evjf-g5.jpg
+    185508  2026-07-31T14:52:37Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/evjf/evjf-g6.jpg
+     59993  2026-07-31T14:52:32Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/evjf/evjf-g7.jpg
+    124114  2026-07-31T14:52:34Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/evjf/evjf-g8.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/leyrins/:
+     35714  2026-07-31T14:52:32Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/leyrins/leyrins1.jpg
+    119377  2026-07-31T14:52:33Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/leyrins/leyrins2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/night-on-board/:
+     19376  2026-07-31T14:52:31Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/night-on-board/night-on-board1.jpg
+    335795  2026-07-31T14:52:45Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/night-on-board/night-on-board2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/sunset/:
+     29844  2026-07-31T14:52:32Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/sunset/sunset1.jpg
+    500606  2026-07-31T14:52:46Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/events/sunset/sunset2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/home/:
+    146678  2026-07-31T14:52:35Z  gs://alegria_pics/alegria/img/mainpages/owner-home-oriental-flavor/home/hero.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/:
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/boat/:
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/boat/bali5.4/:
+    125591  2026-07-31T14:52:39Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/boat/bali5.4/lagoon40-00.jpg
+    506362  2026-07-31T14:52:47Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/boat/bali5.4/lagoon40-01.jpg
+    129982  2026-07-31T14:52:39Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/boat/bali5.4/lagoon40-02.jpg
+    218067  2026-07-31T14:52:42Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/boat/bali5.4/lagoon40-03.jpg
+     34707  2026-07-31T14:52:36Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/boat/bali5.4/lagoon40-04.jpg
+    433364  2026-07-31T14:52:46Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/boat/bali5.4/lagoon40-05.jpg
+     18956  2026-07-31T14:52:36Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/boat/bali5.4/lagoon40-06.jpg
+    119372  2026-07-31T14:52:38Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/boat/bali5.4/lagoon40-07.jpg
+   3490643  2026-07-31T14:53:06Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/boat/bali5.4/lagoon40-08.jpg
+    133061  2026-07-31T14:52:40Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/boat/bali5.4/lagoon40-09.jpg
+    776929  2026-07-31T14:52:51Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/boat/bali5.4/lagoon40-10.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/:
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/afterwork/:
+     79344  2026-07-31T14:52:37Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/afterwork/afterwork1.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/business-meeting/:
+    132480  2026-07-31T14:52:36Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/business-meeting/business-meeting1.jpg
+    586987  2026-07-31T14:52:48Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/business-meeting/business-meeting2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/cap-antibes/:
+    280684  2026-07-31T14:52:42Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/cap-antibes/cap-antibes1.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/evjf/:
+    117013  2026-07-31T14:52:37Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/evjf/evjf-g1.jpg
+     84204  2026-07-31T14:52:37Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/evjf/evjf-g2.jpg
+    164714  2026-07-31T14:52:39Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/evjf/evjf-g3.jpg
+    230171  2026-07-31T14:52:46Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/evjf/evjf-g4.jpg
+    155371  2026-07-31T14:52:38Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/evjf/evjf-g5.jpg
+    185508  2026-07-31T14:52:39Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/evjf/evjf-g6.jpg
+     59993  2026-07-31T14:52:36Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/evjf/evjf-g7.jpg
+    124114  2026-07-31T14:52:37Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/evjf/evjf-g8.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/leyrins/:
+     35714  2026-07-31T14:52:35Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/leyrins/leyrins1.jpg
+    119377  2026-07-31T14:52:37Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/leyrins/leyrins2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/night-on-board/:
+     19376  2026-07-31T14:52:35Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/night-on-board/night-on-board1.jpg
+    335795  2026-07-31T14:52:45Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/night-on-board/night-on-board2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/sunset/:
+     29844  2026-07-31T14:52:34Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/sunset/sunset1.jpg
+    500606  2026-07-31T14:52:46Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/events/sunset/sunset2.jpg
+
+gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/home/:
+    122152  2026-07-31T14:52:36Z  gs://alegria_pics/alegria/img/mainpages/owner-home-tagine-volant/home/hero.jpg
+
+gs://alegria_pics/alegria/img/services/:
+
+gs://alegria_pics/alegria/img/services/DJ/:
+    818350  2026-07-31T14:52:55Z  gs://alegria_pics/alegria/img/services/DJ/DJ.jpg
+
+gs://alegria_pics/alegria/img/services/restaurants/:
+    469441  2026-07-31T14:52:51Z  gs://alegria_pics/alegria/img/services/restaurants/Breakwater_Harbor_Sunset.jpg
+   1407351  2026-07-31T14:53:02Z  gs://alegria_pics/alegria/img/services/restaurants/restaurants.jpg
+
+gs://alegria_pics/alegria/img/services/taxi/:
+    216409  2026-07-31T14:52:48Z  gs://alegria_pics/alegria/img/services/taxi/taxi boat.jpg
+    666062  2026-07-31T14:52:54Z  gs://alegria_pics/alegria/img/services/taxi/taxi.jpg
+
+gs://alegria_pics/alegria/img/services/yoga/:
+     34575  2026-07-31T14:52:43Z  gs://alegria_pics/alegria/img/services/yoga/OIP.jpeg
+    170197  2026-07-31T14:52:35Z  gs://alegria_pics/alegria/img/services/yoga/ac_046670.avif
+     91746  2026-07-31T14:52:45Z  gs://alegria_pics/alegria/img/services/yoga/yoga.webp
+TOTAL: 172 objects, 73670573 bytes (70.26MiB)
