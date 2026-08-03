@@ -35,7 +35,7 @@ class MainComponent {
         this.boatownersSvc = new boatowners_service_1.BoatownersService(this.storeDbSvc);
         this.feedbacksSvc = new feedbacks_service_1.FeedbacksService(this.storeDbSvc);
         this.contentSvc = new content_service_1.ContentService(this.storeDbSvc);
-        this.mediaSvc = new media_service_1.MediaService();
+        this.mediaSvc = new media_service_1.MediaService(this.storeDbSvc);
         this.bookingsSvc = new booking_service_1.BookingsService(this.mailerSvc, this.storeDbSvc, this.stripeSvc);
         this.webServerComponent = new webServer_component_1.WebServerComponent(this.utilSvc, this.stripeSvc, this.bookingsSvc, this.usersSvc, this.boatownersSvc, this.feedbacksSvc, this.contentSvc, this.mediaSvc);
         this.utilSvc.getParams();

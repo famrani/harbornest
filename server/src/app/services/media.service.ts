@@ -1,6 +1,8 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import rateLimit from 'express-rate-limit';
 import { Storage } from '@google-cloud/storage';
+import multer from 'multer';
+import { StoreDbService } from './firebase.service';
 
 /**
  * Proxies public website media from a private tenant folder. The browser only
@@ -18,6 +20,16 @@ export class MediaService {
     Number(process.env.GCS_SIGNED_URL_LIFETIME_MS || 6 * 60 * 60 * 1000),
   );
   private readonly storage = new Storage();
+  private readonly upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 12 * 1024 * 1024, files: 1 },
+    fileFilter: (_req, file, callback) => {
+      const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif'];
+      callback(null, allowed.includes(String(file.mimetype || '').toLowerCase()));
+    },
+  });
+
+  constructor(private readonly store: StoreDbService) {}
 
   setRoutes(router: Router): void {
     const limiter = rateLimit({
@@ -40,6 +52,137 @@ export class MediaService {
     router.get('/api/media/object', limiter, (req: Request, res: Response) =>
       this.streamObject(req, res),
     );
+
+    router.post(
+      '/api/admin/media/upload',
+      limiter,
+      (req: Request, res: Response, next: NextFunction) => {
+        this.upload.single('file')(req, res, (error: any) => {
+          if (!error) return next();
+          const tooLarge = error?.code === 'LIMIT_FILE_SIZE';
+          return res.status(tooLarge ? 413 : 400).json({
+            error: tooLarge ? 'image_too_large' : 'invalid_image_upload',
+            message: tooLarge ? 'La photo dépasse la limite de 12 Mo.' : error?.message,
+          });
+        });
+      },
+      (req: Request, res: Response) => this.uploadObject(req, res),
+    );
+  }
+
+  private async uploadObject(req: Request, res: Response): Promise<Response> {
+    try {
+      const adminUser = await this.requireAdmin(req);
+      if (!adminUser) return res.status(403).json({ error: 'admin_access_required' });
+
+      const file = (req as any).file as multer.File | undefined;
+      if (!file) return res.status(400).json({ error: 'image_file_required' });
+
+      const category = this.safeSegment(req.body?.category || 'content');
+      const subject = this.safeSegment(req.body?.subject || 'general');
+      const categoryFolders: Record<string, string> = {
+        outings: 'events',
+        boat: 'boat',
+        gallery: 'gallery',
+        content: 'content',
+      };
+      const folder = categoryFolders[category];
+      if (!folder) return res.status(400).json({ error: 'invalid_media_category' });
+
+      const extension = this.extensionFor(file.mimetype);
+      if (!extension) return res.status(400).json({ error: 'unsupported_image_type' });
+      const baseName = this.safeFileBase(file.originalname || 'photo');
+      const uniqueName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${baseName}.${extension}`;
+      const logicalPath = `${this.allowedPrefix}${folder}/${subject}/${uniqueName}`;
+      if (!this.isAllowedPath(logicalPath)) {
+        return res.status(400).json({ error: 'invalid_media_path' });
+      }
+
+      const object = this.storage.bucket(this.bucketName).file(this.getPhysicalPath(logicalPath));
+      await object.save(file.buffer, {
+        resumable: false,
+        contentType: file.mimetype,
+        metadata: {
+          cacheControl: 'private, max-age=3600',
+          metadata: {
+            uploadedBy: adminUser.uid,
+            uploadedAt: String(Date.now()),
+            logicalPath,
+          },
+        },
+      });
+
+      return res.status(201).json({
+        ok: true,
+        path: logicalPath,
+        url: `/api/media/object?path=${encodeURIComponent(logicalPath)}`,
+        contentType: file.mimetype,
+        size: file.size,
+      });
+    } catch (error: any) {
+      console.error('Unable to upload private media object', error);
+      const message = String(error?.message || error || '');
+      if (message === 'missing_token' || message === 'invalid_token') {
+        return res.status(401).json({ error: 'authentication_required' });
+      }
+      if (message === 'invalid_identifier') {
+        return res.status(400).json({ error: 'invalid_media_destination' });
+      }
+      return res.status(500).json({
+        error: 'media_upload_failed',
+        message: process.env.NODE_ENV === 'production' ? undefined : message,
+      });
+    }
+  }
+
+  private async requireAdmin(req: Request): Promise<{ uid: string } | null> {
+    const header = String(req.headers.authorization || '');
+    const match = /^Bearer\s+(.+)$/i.exec(header);
+    if (!match) throw new Error('missing_token');
+
+    let decoded: any;
+    try {
+      decoded = await this.store.auth.verifyIdToken(match[1]);
+    } catch {
+      throw new Error('invalid_token');
+    }
+
+    const snapshot = await this.store.db.ref(`/backendusers/${decoded.uid}`).once('value');
+    const profile = snapshot.val() || {};
+    const role = String(profile.role || decoded.role || '').toLowerCase();
+    const roles = profile.roles || {};
+    const allowed = role === 'admin'
+      || role === 'owner'
+      || roles.admin === true
+      || roles.boatOwner === true
+      || profile.isAdmin === true;
+    return allowed ? { uid: decoded.uid } : null;
+  }
+
+  private safeSegment(value: unknown): string {
+    const segment = String(value || '').trim().toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9_-]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 80);
+    if (!segment || !/^[a-z0-9_-]+$/.test(segment)) throw new Error('invalid_identifier');
+    return segment;
+  }
+
+  private safeFileBase(originalName: string): string {
+    const withoutExtension = originalName.replace(/\.[^.]+$/, '');
+    return this.safeSegment(withoutExtension || 'photo').slice(0, 60);
+  }
+
+  private extensionFor(contentType: string): string | null {
+    const extensions: Record<string, string> = {
+      'image/jpeg': 'jpg',
+      'image/png': 'png',
+      'image/webp': 'webp',
+      'image/gif': 'gif',
+      'image/avif': 'avif',
+    };
+    return extensions[String(contentType || '').toLowerCase()] || null;
   }
 
   private async createMediaUrls(req: Request, res: Response): Promise<Response> {

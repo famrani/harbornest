@@ -15,6 +15,9 @@ export class FirebaseMediaInterceptor implements HttpInterceptor {
   constructor(private media: PrivateMediaService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (req.headers.has('X-Skip-Media-Resolution')) {
+      return next.handle(req.clone({ headers: req.headers.delete('X-Skip-Media-Resolution') }));
+    }
     if (req.method !== 'GET' || !this.isFirebaseDatabaseRequest(req.url)) return next.handle(req);
 
     return next.handle(req).pipe(

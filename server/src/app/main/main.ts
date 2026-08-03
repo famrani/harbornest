@@ -34,7 +34,7 @@ export class MainComponent {
     private boatownersSvc = new BoatownersService(this.storeDbSvc);
     private feedbacksSvc = new FeedbacksService(this.storeDbSvc);
     private contentSvc = new ContentService(this.storeDbSvc);
-    private mediaSvc = new MediaService();
+    private mediaSvc = new MediaService(this.storeDbSvc);
     private bookingsSvc = new BookingsService(this.mailerSvc, this.storeDbSvc, this.stripeSvc);
 
     private webServerComponent = new WebServerComponent(this.utilSvc, this.stripeSvc, this.bookingsSvc, this.usersSvc, this.boatownersSvc, this.feedbacksSvc, this.contentSvc, this.mediaSvc);

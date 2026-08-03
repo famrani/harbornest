@@ -496,6 +496,18 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
   get adminFeedbacksLabel(): string { return this.t('nav.feedbacks'); }
   get adminOutingsLabel(): string { return this.boatLogManagerLabel; }
   get adminPublicOutingsLabel(): string { return this.managePublicOutingsLabel; }
+  get siteContentLabel(): string {
+    const labels: Record<SiteLanguage, string> = {
+      fr: 'Contenu du site',
+      en: 'Website content',
+      es: 'Contenido del sitio',
+      it: 'Contenuto del sito',
+      de: 'Website-Inhalte',
+      nl: 'Website-inhoud',
+      ru: 'Контент сайта',
+    };
+    return labels[this.currentLanguage] || labels.fr;
+  }
   get logoutLabel(): string { return this.t('nav.logout'); }
   get galleryLabel(): string { return this.t('nav.gallery'); }
   get crewLabel(): string { return this.t('nav.crew'); }

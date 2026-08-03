@@ -41,6 +41,21 @@ textarea { resize: vertical; }
 .list-row { display: grid; grid-template-columns: 1fr 38px; gap: 8px; margin-bottom: 8px; }
 .icon-danger { width: 38px; height: 38px; padding: 0; border-radius: 50%; background: #fff0f0; color: #a22f2f; font-size: 20px; }
 .help-box { margin: 20px 0 0; padding: 13px 15px; background: #eef7f8; border-radius: 10px; color: #416471; }
+.media-editor { margin-top: 18px; padding: 16px; border: 1px solid #d7e4e9; border-radius: 12px; background: #f4f9fa; }
+.media-upload-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.media-upload-row > div { flex: 1 1 300px; }
+.media-upload-row h3, .media-upload-row h4 { margin: 0 0 4px; }
+.media-upload-row small { color: #687f8e; }
+.upload-button { display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; padding: 11px 15px; cursor: pointer; font-weight: 700; background: #167f8e; color: #fff; }
+.upload-button input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.secondary-upload { background: #fff; color: #25445e; border: 1px solid #cddbe2; }
+.cover-preview { display: grid; grid-template-columns: 150px 1fr; align-items: center; gap: 12px; margin-top: 15px; }
+.cover-preview img { width: 150px; height: 96px; object-fit: cover; border-radius: 10px; background: #e5edf1; }
+.cover-preview span { font-weight: 700; color: #496477; }
+.media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(125px, 1fr)); gap: 10px; margin-top: 15px; }
+.media-grid figure { position: relative; margin: 0; aspect-ratio: 4 / 3; }
+.media-grid img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; background: #e5edf1; }
+.media-grid button { position: absolute; top: 6px; right: 6px; width: 30px; height: 30px; padding: 0; border-radius: 50%; background: rgba(139, 27, 27, .9); color: #fff; font-size: 19px; }
 .editor-footer { display: flex; justify-content: flex-end; align-items: center; gap: 14px; padding: 16px 20px; background: #f7fafb; border-top: 1px solid #e3ebef; }
 .editor-footer span { margin-right: auto; color: #8a6500; font-weight: 700; font-size: 13px; }
 @media (max-width: 850px) {

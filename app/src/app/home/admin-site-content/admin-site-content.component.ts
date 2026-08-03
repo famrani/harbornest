@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom, timeout } from 'rxjs';
 import { FleetService, AlegriaBoatResource } from '../fleet.service';
 import { BoatContextService } from '../../services/boat-context.service';
+import { AdminMediaService } from '../../services/admin-media.service';
 
 type CmsTab = 'outings' | 'boat' | 'pricing' | 'contact';
 type LanguageCode = 'fr' | 'en' | 'es' | 'it' | 'de' | 'nl' | 'ru';
@@ -16,6 +17,9 @@ interface LanguageOption { id: LanguageCode; label: string; }
 })
 export class AdminSiteContentComponent implements OnInit {
   private readonly firebaseDatabaseUrl = 'https://adn-dev-4d05d.firebaseio.com';
+  private readonly rawFirebaseOptions = {
+    headers: new HttpHeaders({ 'X-Skip-Media-Resolution': 'true' }),
+  };
 
   readonly languages: LanguageOption[] = [
     { id: 'fr', label: 'Français' },
@@ -39,6 +43,7 @@ export class AdminSiteContentComponent implements OnInit {
   loading = false;
   saving = false;
   translating = false;
+  uploadingKey = '';
   dirty = false;
   message = '';
   error = '';
@@ -47,6 +52,7 @@ export class AdminSiteContentComponent implements OnInit {
     private http: HttpClient,
     private fleetService: FleetService,
     private boatContext: BoatContextService,
+    public adminMedia: AdminMediaService,
   ) {
     this.boatId = this.boatContext.boatId;
   }
@@ -98,6 +104,107 @@ export class AdminSiteContentComponent implements OnInit {
     return this.current.brand;
   }
 
+  get boatGallery(): string[] {
+    if (!Array.isArray(this.current.galleryImages)) this.current.galleryImages = [];
+    return this.current.galleryImages;
+  }
+
+  async uploadOutingPhoto(event: Event, outing: any, gallery = false): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+    const slug = String(outing?.slug || `sortie-${Date.now()}`);
+    const key = `outing-${slug}-${gallery ? 'gallery' : 'cover'}`;
+    this.uploadingKey = key;
+    this.message = '';
+    this.error = '';
+    try {
+      const uploaded = await this.adminMedia.upload(file, 'outings', slug);
+      this.updateOutingImagesForAllLanguages(slug, uploaded.path, gallery);
+      this.markDirty();
+      this.message = gallery
+        ? 'Photo ajoutée à la galerie. Enregistrez la rubrique pour publier la référence dans Firebase.'
+        : 'Photo principale ajoutée. Enregistrez la rubrique pour publier la référence dans Firebase.';
+    } catch (e: any) {
+      this.error = e?.error?.message || e?.error?.error || e?.message || 'Téléversement impossible.';
+    } finally {
+      this.uploadingKey = '';
+      input.value = '';
+    }
+  }
+
+  async uploadBoatPhoto(event: Event, gallery = false): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+    const key = gallery ? 'boat-gallery' : 'boat-cover';
+    this.uploadingKey = key;
+    this.message = '';
+    this.error = '';
+    try {
+      const uploaded = await this.adminMedia.upload(file, 'boat', this.boatId);
+      for (const language of this.languages) {
+        const lang = this.siteContent[language.id] || (this.siteContent[language.id] = {});
+        if (gallery) {
+          const photos = Array.isArray(lang.galleryImages) ? lang.galleryImages : [];
+          if (!photos.includes(uploaded.path)) photos.push(uploaded.path);
+          lang.galleryImages = photos;
+        } else {
+          lang.boatHeroImage = uploaded.path;
+        }
+      }
+      this.markDirty();
+      this.message = gallery
+        ? 'Photo ajoutée à la galerie du bateau. Enregistrez la rubrique pour la publier.'
+        : 'Photo principale du bateau ajoutée. Enregistrez la rubrique pour la publier.';
+    } catch (e: any) {
+      this.error = e?.error?.message || e?.error?.error || e?.message || 'Téléversement impossible.';
+    } finally {
+      this.uploadingKey = '';
+      input.value = '';
+    }
+  }
+
+  removeOutingPhoto(outing: any, path: string): void {
+    const slug = String(outing?.slug || '');
+    for (const language of this.languages) {
+      const localized = (this.siteContent?.[language.id]?.outings || [])
+        .find((item: any) => String(item?.slug || '') === slug);
+      if (localized && Array.isArray(localized.gallery)) {
+        localized.gallery = localized.gallery.filter((photo: string) => photo !== path);
+      }
+    }
+    this.markDirty();
+  }
+
+  removeBoatPhoto(path: string): void {
+    for (const language of this.languages) {
+      const photos = this.siteContent?.[language.id]?.galleryImages;
+      if (Array.isArray(photos)) {
+        this.siteContent[language.id].galleryImages = photos.filter((photo: string) => photo !== path);
+      }
+    }
+    this.markDirty();
+  }
+
+  mediaPreview(path: string): string {
+    return this.adminMedia.previewUrl(path);
+  }
+
+  private updateOutingImagesForAllLanguages(slug: string, path: string, gallery: boolean): void {
+    for (const language of this.languages) {
+      const localizedOutings = this.siteContent?.[language.id]?.outings || [];
+      const localized = localizedOutings.find((item: any) => String(item?.slug || '') === slug);
+      if (!localized) continue;
+      if (gallery) {
+        localized.gallery = Array.isArray(localized.gallery) ? localized.gallery : [];
+        if (!localized.gallery.includes(path)) localized.gallery.push(path);
+      } else {
+        localized.image = path;
+      }
+    }
+  }
+
   async load(): Promise<void> {
     this.loading = true;
     this.message = '';
@@ -105,7 +212,8 @@ export class AdminSiteContentComponent implements OnInit {
     try {
       const [site, operationalPricing, boats] = await Promise.all([
         firstValueFrom(this.http.get<any>(
-          `${this.firebaseDatabaseUrl}/siteContent/${encodeURIComponent(this.boatId)}.json`
+          `${this.firebaseDatabaseUrl}/siteContent/${encodeURIComponent(this.boatId)}.json`,
+          this.rawFirebaseOptions,
         ).pipe(timeout(15000))),
         firstValueFrom(this.http.get<any>(`${this.firebaseDatabaseUrl}/bnPricingModel.json`).pipe(timeout(15000))),
         this.fleetService.listBoats(),
@@ -260,7 +368,7 @@ export class AdminSiteContentComponent implements OnInit {
   private sectionsForTab(tab: CmsTab): string[] {
     switch (tab) {
       case 'outings': return ['outingsPage', 'outings'];
-      case 'boat': return ['brand', 'brandTagline', 'boatPage', 'boatHighlights', 'boatHeroImage'];
+      case 'boat': return ['brand', 'brandTagline', 'boatPage', 'boatHighlights', 'boatHeroImage', 'galleryImages'];
       case 'contact': return ['contactPage', 'contactInfo', 'phoneDisplay', 'phoneRaw'];
       case 'pricing': return ['homePage'];
     }
@@ -276,6 +384,7 @@ export class AdminSiteContentComponent implements OnInit {
         boatPage: lang.boatPage || {},
         boatHighlights: lang.boatHighlights || [],
         boatHeroImage: lang.boatHeroImage || '',
+        galleryImages: lang.galleryImages || [],
       };
       case 'contact': return {
         contactPage: lang.contactPage || {},
@@ -361,6 +470,7 @@ export class AdminSiteContentComponent implements OnInit {
         outing.idealFor = Array.isArray(outing.idealFor) ? outing.idealFor : [];
       });
       lang.boatPage = lang.boatPage || {};
+      lang.galleryImages = Array.isArray(lang.galleryImages) ? lang.galleryImages : [];
       lang.contactPage = lang.contactPage || {};
       lang.contactInfo = lang.contactInfo || {};
       lang.homePage = lang.homePage || {};
@@ -373,7 +483,8 @@ export class AdminSiteContentComponent implements OnInit {
     let existing: any = {};
     try {
       existing = await firstValueFrom(this.http.get<any>(
-        `${this.firebaseDatabaseUrl}/bnOutings/${encodeURIComponent(this.boatId)}.json`
+        `${this.firebaseDatabaseUrl}/bnOutings/${encodeURIComponent(this.boatId)}.json`,
+        this.rawFirebaseOptions,
       ).pipe(timeout(15000))) || {};
     } catch {}
 
@@ -412,7 +523,7 @@ export class AdminSiteContentComponent implements OnInit {
       'title', 'description', 'duration', 'guests', 'priceLabel', 'highlights',
       'eyebrow', 'subtitle', 'intro', 'programTitle', 'program',
       'includesTitle', 'includes', 'idealForTitle', 'idealFor',
-      'cta', 'contactNote', 'galleryTitle', 'coreOfferingTitle',
+      'cta', 'contactNote', 'gallery', 'galleryTitle', 'coreOfferingTitle',
       'coreOffering', 'optionalExtrasTitle', 'optionalExtras',
       'suggestionsTitle', 'guestSuggestions',
     ];

@@ -624,6 +624,114 @@ textarea {
   color: #416471;
 }
 
+.media-editor {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid #d7e4e9;
+  border-radius: 12px;
+  background: #f4f9fa;
+}
+
+.media-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.media-upload-row > div {
+  flex: 1 1 300px;
+}
+
+.media-upload-row h3, .media-upload-row h4 {
+  margin: 0 0 4px;
+}
+
+.media-upload-row small {
+  color: #687f8e;
+}
+
+.upload-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 11px 15px;
+  cursor: pointer;
+  font-weight: 700;
+  background: #167f8e;
+  color: #fff;
+}
+
+.upload-button input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.secondary-upload {
+  background: #fff;
+  color: #25445e;
+  border: 1px solid #cddbe2;
+}
+
+.cover-preview {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.cover-preview img {
+  width: 150px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #e5edf1;
+}
+
+.cover-preview span {
+  font-weight: 700;
+  color: #496477;
+}
+
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.media-grid figure {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4/3;
+}
+
+.media-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #e5edf1;
+}
+
+.media-grid button {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(139, 27, 27, 0.9);
+  color: #fff;
+  font-size: 19px;
+}
+
 .editor-footer {
   display: flex;
   justify-content: flex-end;
@@ -662,7 +770,7 @@ textarea {
   .tabs {
     grid-template-columns: 1fr;
   }
-}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-site-content/admin-site-content.component.scss"],"names":[],"mappings":"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","sourcesContent":[":host { display: block; }\n.cms-shell { max-width: 1180px; margin: 0 auto; padding: 24px; color: #17354c; }\n.cms-header { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; margin-bottom: 18px; }\n.cms-header h1 { margin: 4px 0 6px; font-size: 30px; }\n.cms-header p { margin: 0; color: #637789; }\n.eyebrow { color: #167f8e !important; text-transform: uppercase; letter-spacing: .08em; font-size: 12px; font-weight: 750; }\n.header-actions { display: flex; gap: 10px; flex-wrap: wrap; }\nbutton { border: 0; border-radius: 10px; padding: 11px 15px; cursor: pointer; font-weight: 700; }\nbutton:disabled { opacity: .55; cursor: not-allowed; }\n.primary { background: #167f8e; color: #fff; }\n.secondary { background: #eef3f6; color: #25445e; border: 1px solid #d4dfe6; }\n.translate { background: #fff4d6; color: #795600; border: 1px solid #f0d28a; }\n.status { padding: 12px 14px; border-radius: 10px; margin-bottom: 14px; }\n.status.success { background: #eaf7ee; color: #216b39; }\n.status.error { background: #fdecec; color: #9a2c2c; }\n.loading { padding: 40px; text-align: center; color: #6d7f8c; }\n.profile-bar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; padding: 16px; background: #f7fafb; border: 1px solid #dbe5ea; border-radius: 14px; margin-bottom: 16px; }\nlabel { display: flex; flex-direction: column; gap: 6px; }\nlabel > span { font-size: 13px; font-weight: 700; color: #435d70; }\nlabel small { color: #718493; }\ninput, textarea, select { width: 100%; box-sizing: border-box; border: 1px solid #cbd8df; border-radius: 9px; padding: 10px 11px; font: inherit; color: inherit; background: #fff; }\ntextarea { resize: vertical; }\n.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }\n.tabs button { background: #edf3f6; color: #355267; }\n.tabs button.active { background: #103f5d; color: #fff; }\n.editor-card { border: 1px solid #d9e4ea; border-radius: 14px; background: #fff; overflow: hidden; }\n.editor-heading { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 19px 20px; border-bottom: 1px solid #e4ebef; }\n.editor-heading h2 { margin: 0 0 4px; }\n.editor-heading p { margin: 0; color: #6d7f8c; }\n.section-body { padding: 20px; }\n.form-grid { display: grid; gap: 15px; }\n.form-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }\n.form-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }\n.form-grid .wide { grid-column: 1 / -1; }\n.item-card { border: 1px solid #dde7ec; border-radius: 12px; padding: 16px; margin-top: 18px; background: #fbfcfd; }\n.item-title, .list-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 13px; }\n.item-title h3, .list-heading h3 { margin: 0; }\n.danger-link { background: transparent; color: #a22f2f; padding: 6px 8px; }\n.add-button { margin-top: 16px; }\n.simple-list { margin-top: 22px; border-top: 1px solid #e5ecef; padding-top: 18px; }\n.list-row { display: grid; grid-template-columns: 1fr 38px; gap: 8px; margin-bottom: 8px; }\n.icon-danger { width: 38px; height: 38px; padding: 0; border-radius: 50%; background: #fff0f0; color: #a22f2f; font-size: 20px; }\n.help-box { margin: 20px 0 0; padding: 13px 15px; background: #eef7f8; border-radius: 10px; color: #416471; }\n.editor-footer { display: flex; justify-content: flex-end; align-items: center; gap: 14px; padding: 16px 20px; background: #f7fafb; border-top: 1px solid #e3ebef; }\n.editor-footer span { margin-right: auto; color: #8a6500; font-weight: 700; font-size: 13px; }\n@media (max-width: 850px) {\n  .profile-bar, .form-grid.three { grid-template-columns: 1fr 1fr; }\n  .tabs { grid-template-columns: 1fr 1fr; }\n}\n@media (max-width: 620px) {\n  .cms-shell { padding: 12px; }\n  .cms-header, .editor-heading { flex-direction: column; }\n  .profile-bar, .form-grid.two, .form-grid.three { grid-template-columns: 1fr; }\n  .tabs { grid-template-columns: 1fr; }\n}\n"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./src/app/home/admin-site-content/admin-site-content.component.scss"],"names":[],"mappings":"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","sourcesContent":[":host { display: block; }\n.cms-shell { max-width: 1180px; margin: 0 auto; padding: 24px; color: #17354c; }\n.cms-header { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; margin-bottom: 18px; }\n.cms-header h1 { margin: 4px 0 6px; font-size: 30px; }\n.cms-header p { margin: 0; color: #637789; }\n.eyebrow { color: #167f8e !important; text-transform: uppercase; letter-spacing: .08em; font-size: 12px; font-weight: 750; }\n.header-actions { display: flex; gap: 10px; flex-wrap: wrap; }\nbutton { border: 0; border-radius: 10px; padding: 11px 15px; cursor: pointer; font-weight: 700; }\nbutton:disabled { opacity: .55; cursor: not-allowed; }\n.primary { background: #167f8e; color: #fff; }\n.secondary { background: #eef3f6; color: #25445e; border: 1px solid #d4dfe6; }\n.translate { background: #fff4d6; color: #795600; border: 1px solid #f0d28a; }\n.status { padding: 12px 14px; border-radius: 10px; margin-bottom: 14px; }\n.status.success { background: #eaf7ee; color: #216b39; }\n.status.error { background: #fdecec; color: #9a2c2c; }\n.loading { padding: 40px; text-align: center; color: #6d7f8c; }\n.profile-bar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; padding: 16px; background: #f7fafb; border: 1px solid #dbe5ea; border-radius: 14px; margin-bottom: 16px; }\nlabel { display: flex; flex-direction: column; gap: 6px; }\nlabel > span { font-size: 13px; font-weight: 700; color: #435d70; }\nlabel small { color: #718493; }\ninput, textarea, select { width: 100%; box-sizing: border-box; border: 1px solid #cbd8df; border-radius: 9px; padding: 10px 11px; font: inherit; color: inherit; background: #fff; }\ntextarea { resize: vertical; }\n.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }\n.tabs button { background: #edf3f6; color: #355267; }\n.tabs button.active { background: #103f5d; color: #fff; }\n.editor-card { border: 1px solid #d9e4ea; border-radius: 14px; background: #fff; overflow: hidden; }\n.editor-heading { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 19px 20px; border-bottom: 1px solid #e4ebef; }\n.editor-heading h2 { margin: 0 0 4px; }\n.editor-heading p { margin: 0; color: #6d7f8c; }\n.section-body { padding: 20px; }\n.form-grid { display: grid; gap: 15px; }\n.form-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }\n.form-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }\n.form-grid .wide { grid-column: 1 / -1; }\n.item-card { border: 1px solid #dde7ec; border-radius: 12px; padding: 16px; margin-top: 18px; background: #fbfcfd; }\n.item-title, .list-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 13px; }\n.item-title h3, .list-heading h3 { margin: 0; }\n.danger-link { background: transparent; color: #a22f2f; padding: 6px 8px; }\n.add-button { margin-top: 16px; }\n.simple-list { margin-top: 22px; border-top: 1px solid #e5ecef; padding-top: 18px; }\n.list-row { display: grid; grid-template-columns: 1fr 38px; gap: 8px; margin-bottom: 8px; }\n.icon-danger { width: 38px; height: 38px; padding: 0; border-radius: 50%; background: #fff0f0; color: #a22f2f; font-size: 20px; }\n.help-box { margin: 20px 0 0; padding: 13px 15px; background: #eef7f8; border-radius: 10px; color: #416471; }\n.media-editor { margin-top: 18px; padding: 16px; border: 1px solid #d7e4e9; border-radius: 12px; background: #f4f9fa; }\n.media-upload-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }\n.media-upload-row > div { flex: 1 1 300px; }\n.media-upload-row h3, .media-upload-row h4 { margin: 0 0 4px; }\n.media-upload-row small { color: #687f8e; }\n.upload-button { display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; padding: 11px 15px; cursor: pointer; font-weight: 700; background: #167f8e; color: #fff; }\n.upload-button input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }\n.secondary-upload { background: #fff; color: #25445e; border: 1px solid #cddbe2; }\n.cover-preview { display: grid; grid-template-columns: 150px 1fr; align-items: center; gap: 12px; margin-top: 15px; }\n.cover-preview img { width: 150px; height: 96px; object-fit: cover; border-radius: 10px; background: #e5edf1; }\n.cover-preview span { font-weight: 700; color: #496477; }\n.media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(125px, 1fr)); gap: 10px; margin-top: 15px; }\n.media-grid figure { position: relative; margin: 0; aspect-ratio: 4 / 3; }\n.media-grid img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; background: #e5edf1; }\n.media-grid button { position: absolute; top: 6px; right: 6px; width: 30px; height: 30px; padding: 0; border-radius: 50%; background: rgba(139, 27, 27, .9); color: #fff; font-size: 19px; }\n.editor-footer { display: flex; justify-content: flex-end; align-items: center; gap: 14px; padding: 16px 20px; background: #f7fafb; border-top: 1px solid #e3ebef; }\n.editor-footer span { margin-right: auto; color: #8a6500; font-weight: 700; font-size: 13px; }\n@media (max-width: 850px) {\n  .profile-bar, .form-grid.three { grid-template-columns: 1fr 1fr; }\n  .tabs { grid-template-columns: 1fr 1fr; }\n}\n@media (max-width: 620px) {\n  .cms-shell { padding: 12px; }\n  .cms-header, .editor-heading { flex-direction: column; }\n  .profile-bar, .form-grid.two, .form-grid.three { grid-template-columns: 1fr; }\n  .tabs { grid-template-columns: 1fr; }\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
 
@@ -2498,7 +2606,7 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<div class=\"cms-shell\">\n  <header class=\"cms-header\">\n    <div>\n      <p class=\"eyebrow\">Configuration du site bateau</p>\n      <h1>Contenu du site</h1>\n      <p>Modifiez uniquement les informations essentielles nécessaires pour publier ce site pour un bateau et un propriétaire.</p>\n    </div>\n    <div class=\"header-actions\">\n      <button type=\"button\" class=\"secondary\" (click)=\"load()\" [disabled]=\"loading || saving\">Actualiser</button>\n      <button type=\"button\" class=\"primary\" (click)=\"saveCurrentTab()\" [disabled]=\"saving || loading\">\n        {{ saving ? 'Enregistrement…' : 'Enregistrer' }}\n      </button>\n    </div>\n  </header>\n\n  <div class=\"status success\" *ngIf=\"message\">{{ message }}</div>\n  <div class=\"status error\" *ngIf=\"error\">{{ error }}</div>\n  <div class=\"loading\" *ngIf=\"loading\">Chargement du contenu Firebase…</div>\n\n  <ng-container *ngIf=\"!loading\">\n    <section class=\"profile-bar\">\n      <label>\n        <span>Identifiant du bateau</span>\n        <select [ngModel]=\"boatId\" (ngModelChange)=\"selectBoat($event)\">\n          <option *ngFor=\"let boat of boats\" [value]=\"boat.boatId\">{{ boat.boatName }} ({{ boat.boatId }})</option>\n        </select>\n        <small>Ajoutez d’abord un bateau dans « Flotte », puis choisissez-le ici.</small>\n      </label>\n      <label>\n        <span>Identifiant du propriétaire</span>\n        <input type=\"text\" [(ngModel)]=\"ownerId\" (ngModelChange)=\"markDirty()\" placeholder=\"owner-id\">\n        <small>Permet de rattacher cette version du site à un autre propriétaire.</small>\n      </label>\n      <label>\n        <span>Langue affichée</span>\n        <select [(ngModel)]=\"selectedLanguage\">\n          <option *ngFor=\"let language of languages\" [value]=\"language.id\">{{ language.label }}</option>\n        </select>\n        <small>Éditez une langue, puis traduisez automatiquement.</small>\n      </label>\n    </section>\n\n    <nav class=\"tabs\" aria-label=\"Rubriques du CMS\">\n      <button type=\"button\" [class.active]=\"activeTab === 'outings'\" (click)=\"selectTab('outings')\">1. Sorties</button>\n      <button type=\"button\" [class.active]=\"activeTab === 'boat'\" (click)=\"selectTab('boat')\">2. Bateau</button>\n      <button type=\"button\" [class.active]=\"activeTab === 'pricing'\" (click)=\"selectTab('pricing')\">3. Prix</button>\n      <button type=\"button\" [class.active]=\"activeTab === 'contact'\" (click)=\"selectTab('contact')\">4. Contact</button>\n    </nav>\n\n    <main class=\"editor-card\">\n      <div class=\"editor-heading\">\n        <div>\n          <h2 *ngIf=\"activeTab === 'outings'\">Description des sorties</h2>\n          <h2 *ngIf=\"activeTab === 'boat'\">Description du bateau</h2>\n          <h2 *ngIf=\"activeTab === 'pricing'\">Modèle de prix</h2>\n          <h2 *ngIf=\"activeTab === 'contact'\">Informations de contact</h2>\n          <p *ngIf=\"activeTab !== 'pricing'\">Contenu affiché en {{ languageLabel(selectedLanguage) }}.</p>\n          <p *ngIf=\"activeTab === 'pricing'\">Tarifs opérationnels communs à toutes les langues.</p>\n        </div>\n        <button\n          *ngIf=\"activeTab !== 'pricing'\"\n          type=\"button\"\n          class=\"translate\"\n          (click)=\"translateCurrentTab()\"\n          [disabled]=\"translating\">\n          {{ translating ? 'Traduction en cours…' : 'Traduire vers toutes les langues' }}\n        </button>\n      </div>\n\n      <section *ngIf=\"activeTab === 'outings'\" class=\"section-body\">\n        <div class=\"form-grid two\">\n          <label><span>Titre de la page</span><input [(ngModel)]=\"outingsPage.title\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Surtitre</span><input [(ngModel)]=\"outingsPage.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Introduction</span><textarea rows=\"3\" [(ngModel)]=\"outingsPage.intro\" (ngModelChange)=\"markDirty()\"></textarea></label>\n        </div>\n\n        <div class=\"item-card\" *ngFor=\"let outing of outings; let i = index; trackBy: trackByIndex\">\n          <div class=\"item-title\">\n            <h3>Sortie {{ i + 1 }}</h3>\n            <button type=\"button\" class=\"danger-link\" (click)=\"removeOuting(i)\">Supprimer</button>\n          </div>\n          <div class=\"form-grid two\">\n            <label><span>Nom</span><input [(ngModel)]=\"outing.title\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Durée</span><input [(ngModel)]=\"outing.duration\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Nombre de passagers</span><input [(ngModel)]=\"outing.guests\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Slug URL</span><input [(ngModel)]=\"outing.slug\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Description</span><textarea rows=\"4\" [(ngModel)]=\"outing.description\" (ngModelChange)=\"markDirty()\"></textarea></label>\n            <label><span>Surtitre de la page détaillée</span><input [(ngModel)]=\"outing.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Sous-titre</span><input [(ngModel)]=\"outing.subtitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Introduction détaillée</span><textarea rows=\"4\" [(ngModel)]=\"outing.intro\" (ngModelChange)=\"markDirty()\"></textarea></label>\n            <label class=\"wide\"><span>Image</span><input [(ngModel)]=\"outing.image\" (ngModelChange)=\"markDirty()\" placeholder=\"assets/img/...\"></label>\n          </div>\n\n          <div class=\"simple-list\">\n            <div class=\"list-heading\"><h4>Points forts</h4><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(outing.highlights || (outing.highlights = []))\">+ Ajouter</button></div>\n            <div class=\"list-row\" *ngFor=\"let item of outing.highlights; let j = index; trackBy: trackByIndex\">\n              <input [(ngModel)]=\"outing.highlights[j]\" (ngModelChange)=\"markDirty()\">\n              <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(outing.highlights, j)\">×</button>\n            </div>\n          </div>\n\n          <div class=\"form-grid two\">\n            <label><span>Titre du programme</span><input [(ngModel)]=\"outing.programTitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Titre « inclus »</span><input [(ngModel)]=\"outing.includesTitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Titre « idéal pour »</span><input [(ngModel)]=\"outing.idealForTitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Bouton d’action</span><input [(ngModel)]=\"outing.cta\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Note de contact</span><textarea rows=\"2\" [(ngModel)]=\"outing.contactNote\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          </div>\n\n          <div class=\"simple-list\">\n            <div class=\"list-heading\"><h4>Programme</h4><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(outing.program || (outing.program = []))\">+ Ajouter</button></div>\n            <div class=\"list-row\" *ngFor=\"let item of outing.program; let j = index; trackBy: trackByIndex\">\n              <input [(ngModel)]=\"outing.program[j]\" (ngModelChange)=\"markDirty()\">\n              <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(outing.program, j)\">×</button>\n            </div>\n          </div>\n\n          <div class=\"simple-list\">\n            <div class=\"list-heading\"><h4>Éléments inclus</h4><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(outing.includes || (outing.includes = []))\">+ Ajouter</button></div>\n            <div class=\"list-row\" *ngFor=\"let item of outing.includes; let j = index; trackBy: trackByIndex\">\n              <input [(ngModel)]=\"outing.includes[j]\" (ngModelChange)=\"markDirty()\">\n              <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(outing.includes, j)\">×</button>\n            </div>\n          </div>\n\n          <div class=\"simple-list\">\n            <div class=\"list-heading\"><h4>Idéal pour</h4><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(outing.idealFor || (outing.idealFor = []))\">+ Ajouter</button></div>\n            <div class=\"list-row\" *ngFor=\"let item of outing.idealFor; let j = index; trackBy: trackByIndex\">\n              <input [(ngModel)]=\"outing.idealFor[j]\" (ngModelChange)=\"markDirty()\">\n              <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(outing.idealFor, j)\">×</button>\n            </div>\n          </div>\n        </div>\n        <button type=\"button\" class=\"secondary add-button\" (click)=\"addOuting()\">+ Ajouter une sortie</button>\n      </section>\n\n      <section *ngIf=\"activeTab === 'boat'\" class=\"section-body\">\n        <div class=\"form-grid two\">\n          <label><span>Nom du bateau</span><input [(ngModel)]=\"brand.name\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Slogan</span><input [(ngModel)]=\"current.brandTagline\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Surtitre</span><input [(ngModel)]=\"boatPage.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Titre principal</span><input [(ngModel)]=\"boatPage.title\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Description du bateau</span><textarea rows=\"4\" [(ngModel)]=\"boatPage.intro\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          <label><span>Titre confort</span><input [(ngModel)]=\"boatPage.comfortTitle\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Confort et ambiance</span><textarea rows=\"3\" [(ngModel)]=\"boatPage.comfortText\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          <label class=\"wide\"><span>Image principale</span><input [(ngModel)]=\"current.boatHeroImage\" (ngModelChange)=\"markDirty()\" placeholder=\"assets/img/boat/...\"></label>\n        </div>\n\n        <div class=\"simple-list\">\n          <div class=\"list-heading\"><h3>Points forts</h3><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(boatPage.reasons || (boatPage.reasons = []))\">+ Ajouter</button></div>\n          <div class=\"list-row\" *ngFor=\"let reason of boatPage.reasons; let i = index; trackBy: trackByIndex\">\n            <input [(ngModel)]=\"boatPage.reasons[i]\" (ngModelChange)=\"markDirty()\">\n            <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(boatPage.reasons, i)\">×</button>\n          </div>\n        </div>\n      </section>\n\n      <section *ngIf=\"activeTab === 'pricing'\" class=\"section-body\">\n        <div class=\"editor-heading subsection-heading\">\n          <div>\n            <h3>Texte affiché sur le site</h3>\n            <p>Contenu affiché en {{ languageLabel(selectedLanguage) }}.</p>\n          </div>\n          <button type=\"button\" class=\"translate\" (click)=\"translateCurrentTab()\" [disabled]=\"translating\">\n            {{ translating ? 'Traduction en cours…' : 'Traduire les textes de prix' }}\n          </button>\n        </div>\n        <div class=\"form-grid two\">\n          <label><span>Surtitre</span><input [(ngModel)]=\"pricingContent.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Titre</span><input [(ngModel)]=\"pricingContent.title\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Description</span><textarea rows=\"3\" [(ngModel)]=\"pricingContent.text\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          <label><span>Titre « inclus »</span><input [(ngModel)]=\"pricingContent.includedTitle\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Titre « options »</span><input [(ngModel)]=\"pricingContent.optionsTitle\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Bouton d’action</span><input [(ngModel)]=\"pricingContent.cta\" (ngModelChange)=\"markDirty()\"></label>\n        </div>\n        <div class=\"simple-list\">\n          <div class=\"list-heading\"><h3>Éléments inclus</h3><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(pricingContent.included || (pricingContent.included = []))\">+ Ajouter</button></div>\n          <div class=\"list-row\" *ngFor=\"let item of pricingContent.included; let i = index; trackBy: trackByIndex\">\n            <input [(ngModel)]=\"pricingContent.included[i]\" (ngModelChange)=\"markDirty()\">\n            <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(pricingContent.included, i)\">×</button>\n          </div>\n        </div>\n        <div class=\"simple-list\">\n          <div class=\"list-heading\"><h3>Options possibles</h3><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(pricingContent.options || (pricingContent.options = []))\">+ Ajouter</button></div>\n          <div class=\"list-row\" *ngFor=\"let item of pricingContent.options; let i = index; trackBy: trackByIndex\">\n            <input [(ngModel)]=\"pricingContent.options[i]\" (ngModelChange)=\"markDirty()\">\n            <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(pricingContent.options, i)\">×</button>\n          </div>\n        </div>\n        <h3>Montants opérationnels</h3>\n        <div class=\"form-grid three pricing-grid\">\n          <label><span>Journée (€)</span><input type=\"number\" [(ngModel)]=\"pricing.day\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Demi-journée (€)</span><input type=\"number\" [(ngModel)]=\"pricing.halfDay\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Coucher de soleil (€)</span><input type=\"number\" [(ngModel)]=\"pricing.sunset\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Soirée (€)</span><input type=\"number\" [(ngModel)]=\"pricing.evening\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Skipper (€)</span><input type=\"number\" [(ngModel)]=\"pricing.skipperPrice\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Ménage (€)</span><input type=\"number\" [(ngModel)]=\"pricing.cleaningPrice\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Passagers inclus</span><input type=\"number\" [(ngModel)]=\"pricing.nominalGuests\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Maximum passagers</span><input type=\"number\" [(ngModel)]=\"pricing.maxGuests\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Supplément par passager (€)</span><input type=\"number\" [(ngModel)]=\"pricing.extraGuestPrice\" (ngModelChange)=\"markDirty()\"></label>\n        </div>\n        <p class=\"help-box\">L’enregistrement met à jour la source unique <code>bnPricingModel/{{ boatId }}</code>.</p>\n      </section>\n\n      <section *ngIf=\"activeTab === 'contact'\" class=\"section-body\">\n        <div class=\"form-grid two\">\n          <label><span>Titre de la page</span><input [(ngModel)]=\"contactPage.title\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Surtitre</span><input [(ngModel)]=\"contactPage.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Introduction</span><textarea rows=\"3\" [(ngModel)]=\"contactPage.intro\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          <label><span>Email</span><input type=\"email\" [(ngModel)]=\"contactInfo.email\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Téléphone affiché</span><input [(ngModel)]=\"contactInfo.phone\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Téléphone brut</span><input [(ngModel)]=\"contactInfo.phoneRaw\" (ngModelChange)=\"markDirty()\" placeholder=\"+336...\"></label>\n          <label><span>WhatsApp affiché</span><input [(ngModel)]=\"contactInfo.whatsapp\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>WhatsApp brut</span><input [(ngModel)]=\"contactInfo.whatsappRaw\" (ngModelChange)=\"markDirty()\" placeholder=\"+336...\"></label>\n          <label class=\"wide\"><span>Port de départ / zone</span><input [(ngModel)]=\"contactInfo.basePort\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Texte de contact direct</span><textarea rows=\"3\" [(ngModel)]=\"contactPage.directText\" (ngModelChange)=\"markDirty()\"></textarea></label>\n        </div>\n      </section>\n\n      <footer class=\"editor-footer\">\n        <span *ngIf=\"dirty\">Modifications non enregistrées</span>\n        <button type=\"button\" class=\"primary\" (click)=\"saveCurrentTab()\" [disabled]=\"saving\">\n          {{ saving ? 'Enregistrement…' : 'Enregistrer cette rubrique' }}\n        </button>\n      </footer>\n    </main>\n  </ng-container>\n</div>\n";
+module.exports = "<div class=\"cms-shell\">\n  <header class=\"cms-header\">\n    <div>\n      <p class=\"eyebrow\">Configuration du site bateau</p>\n      <h1>Contenu du site</h1>\n      <p>Modifiez uniquement les informations essentielles nécessaires pour publier ce site pour un bateau et un propriétaire.</p>\n    </div>\n    <div class=\"header-actions\">\n      <button type=\"button\" class=\"secondary\" (click)=\"load()\" [disabled]=\"loading || saving\">Actualiser</button>\n      <button type=\"button\" class=\"primary\" (click)=\"saveCurrentTab()\" [disabled]=\"saving || loading\">\n        {{ saving ? 'Enregistrement…' : 'Enregistrer' }}\n      </button>\n    </div>\n  </header>\n\n  <div class=\"status success\" *ngIf=\"message\">{{ message }}</div>\n  <div class=\"status error\" *ngIf=\"error\">{{ error }}</div>\n  <div class=\"loading\" *ngIf=\"loading\">Chargement du contenu Firebase…</div>\n\n  <ng-container *ngIf=\"!loading\">\n    <section class=\"profile-bar\">\n      <label>\n        <span>Identifiant du bateau</span>\n        <select [ngModel]=\"boatId\" (ngModelChange)=\"selectBoat($event)\">\n          <option *ngFor=\"let boat of boats\" [value]=\"boat.boatId\">{{ boat.boatName }} ({{ boat.boatId }})</option>\n        </select>\n        <small>Ajoutez d’abord un bateau dans « Flotte », puis choisissez-le ici.</small>\n      </label>\n      <label>\n        <span>Identifiant du propriétaire</span>\n        <input type=\"text\" [(ngModel)]=\"ownerId\" (ngModelChange)=\"markDirty()\" placeholder=\"owner-id\">\n        <small>Permet de rattacher cette version du site à un autre propriétaire.</small>\n      </label>\n      <label>\n        <span>Langue affichée</span>\n        <select [(ngModel)]=\"selectedLanguage\">\n          <option *ngFor=\"let language of languages\" [value]=\"language.id\">{{ language.label }}</option>\n        </select>\n        <small>Éditez une langue, puis traduisez automatiquement.</small>\n      </label>\n    </section>\n\n    <nav class=\"tabs\" aria-label=\"Rubriques du CMS\">\n      <button type=\"button\" [class.active]=\"activeTab === 'outings'\" (click)=\"selectTab('outings')\">1. Sorties</button>\n      <button type=\"button\" [class.active]=\"activeTab === 'boat'\" (click)=\"selectTab('boat')\">2. Bateau</button>\n      <button type=\"button\" [class.active]=\"activeTab === 'pricing'\" (click)=\"selectTab('pricing')\">3. Prix</button>\n      <button type=\"button\" [class.active]=\"activeTab === 'contact'\" (click)=\"selectTab('contact')\">4. Contact</button>\n    </nav>\n\n    <main class=\"editor-card\">\n      <div class=\"editor-heading\">\n        <div>\n          <h2 *ngIf=\"activeTab === 'outings'\">Description des sorties</h2>\n          <h2 *ngIf=\"activeTab === 'boat'\">Description du bateau</h2>\n          <h2 *ngIf=\"activeTab === 'pricing'\">Modèle de prix</h2>\n          <h2 *ngIf=\"activeTab === 'contact'\">Informations de contact</h2>\n          <p *ngIf=\"activeTab !== 'pricing'\">Contenu affiché en {{ languageLabel(selectedLanguage) }}.</p>\n          <p *ngIf=\"activeTab === 'pricing'\">Tarifs opérationnels communs à toutes les langues.</p>\n        </div>\n        <button\n          *ngIf=\"activeTab !== 'pricing'\"\n          type=\"button\"\n          class=\"translate\"\n          (click)=\"translateCurrentTab()\"\n          [disabled]=\"translating\">\n          {{ translating ? 'Traduction en cours…' : 'Traduire vers toutes les langues' }}\n        </button>\n      </div>\n\n      <section *ngIf=\"activeTab === 'outings'\" class=\"section-body\">\n        <div class=\"form-grid two\">\n          <label><span>Titre de la page</span><input [(ngModel)]=\"outingsPage.title\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Surtitre</span><input [(ngModel)]=\"outingsPage.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Introduction</span><textarea rows=\"3\" [(ngModel)]=\"outingsPage.intro\" (ngModelChange)=\"markDirty()\"></textarea></label>\n        </div>\n\n        <div class=\"item-card\" *ngFor=\"let outing of outings; let i = index; trackBy: trackByIndex\">\n          <div class=\"item-title\">\n            <h3>Sortie {{ i + 1 }}</h3>\n            <button type=\"button\" class=\"danger-link\" (click)=\"removeOuting(i)\">Supprimer</button>\n          </div>\n          <div class=\"form-grid two\">\n            <label><span>Nom</span><input [(ngModel)]=\"outing.title\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Durée</span><input [(ngModel)]=\"outing.duration\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Nombre de passagers</span><input [(ngModel)]=\"outing.guests\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Slug URL</span><input [(ngModel)]=\"outing.slug\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Description</span><textarea rows=\"4\" [(ngModel)]=\"outing.description\" (ngModelChange)=\"markDirty()\"></textarea></label>\n            <label><span>Surtitre de la page détaillée</span><input [(ngModel)]=\"outing.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Sous-titre</span><input [(ngModel)]=\"outing.subtitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Introduction détaillée</span><textarea rows=\"4\" [(ngModel)]=\"outing.intro\" (ngModelChange)=\"markDirty()\"></textarea></label>\n            <label class=\"wide\"><span>Image principale</span><input [(ngModel)]=\"outing.image\" (ngModelChange)=\"markDirty()\" placeholder=\"alegria/img/events/...\"></label>\n          </div>\n\n          <div class=\"media-editor\">\n            <div class=\"media-upload-row\">\n              <div>\n                <h4>Photos de la sortie</h4>\n                <small>JPEG, PNG, WebP, GIF ou AVIF — 12 Mo maximum. La même photo est appliquée à toutes les langues.</small>\n              </div>\n              <label class=\"upload-button\">\n                {{ uploadingKey === 'outing-' + outing.slug + '-cover' ? 'Téléversement…' : 'Choisir la photo principale' }}\n                <input type=\"file\" accept=\"image/jpeg,image/png,image/webp,image/gif,image/avif\" (change)=\"uploadOutingPhoto($event, outing, false)\" [disabled]=\"!!uploadingKey\">\n              </label>\n              <label class=\"upload-button secondary-upload\">\n                {{ uploadingKey === 'outing-' + outing.slug + '-gallery' ? 'Téléversement…' : '+ Ajouter à la galerie' }}\n                <input type=\"file\" accept=\"image/jpeg,image/png,image/webp,image/gif,image/avif\" (change)=\"uploadOutingPhoto($event, outing, true)\" [disabled]=\"!!uploadingKey\">\n              </label>\n            </div>\n            <div class=\"cover-preview\" *ngIf=\"outing.image\">\n              <img [src]=\"mediaPreview(outing.image)\" alt=\"Photo principale de la sortie\">\n              <span>Photo principale</span>\n            </div>\n            <div class=\"media-grid\" *ngIf=\"outing.gallery?.length\">\n              <figure *ngFor=\"let photo of outing.gallery; let photoIndex = index; trackBy: trackByIndex\">\n                <img [src]=\"mediaPreview(photo)\" alt=\"Photo de la galerie\">\n                <button type=\"button\" (click)=\"removeOutingPhoto(outing, photo)\" aria-label=\"Retirer cette photo de la galerie\">×</button>\n              </figure>\n            </div>\n          </div>\n\n          <div class=\"simple-list\">\n            <div class=\"list-heading\"><h4>Points forts</h4><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(outing.highlights || (outing.highlights = []))\">+ Ajouter</button></div>\n            <div class=\"list-row\" *ngFor=\"let item of outing.highlights; let j = index; trackBy: trackByIndex\">\n              <input [(ngModel)]=\"outing.highlights[j]\" (ngModelChange)=\"markDirty()\">\n              <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(outing.highlights, j)\">×</button>\n            </div>\n          </div>\n\n          <div class=\"form-grid two\">\n            <label><span>Titre du programme</span><input [(ngModel)]=\"outing.programTitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Titre « inclus »</span><input [(ngModel)]=\"outing.includesTitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Titre « idéal pour »</span><input [(ngModel)]=\"outing.idealForTitle\" (ngModelChange)=\"markDirty()\"></label>\n            <label><span>Bouton d’action</span><input [(ngModel)]=\"outing.cta\" (ngModelChange)=\"markDirty()\"></label>\n            <label class=\"wide\"><span>Note de contact</span><textarea rows=\"2\" [(ngModel)]=\"outing.contactNote\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          </div>\n\n          <div class=\"simple-list\">\n            <div class=\"list-heading\"><h4>Programme</h4><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(outing.program || (outing.program = []))\">+ Ajouter</button></div>\n            <div class=\"list-row\" *ngFor=\"let item of outing.program; let j = index; trackBy: trackByIndex\">\n              <input [(ngModel)]=\"outing.program[j]\" (ngModelChange)=\"markDirty()\">\n              <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(outing.program, j)\">×</button>\n            </div>\n          </div>\n\n          <div class=\"simple-list\">\n            <div class=\"list-heading\"><h4>Éléments inclus</h4><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(outing.includes || (outing.includes = []))\">+ Ajouter</button></div>\n            <div class=\"list-row\" *ngFor=\"let item of outing.includes; let j = index; trackBy: trackByIndex\">\n              <input [(ngModel)]=\"outing.includes[j]\" (ngModelChange)=\"markDirty()\">\n              <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(outing.includes, j)\">×</button>\n            </div>\n          </div>\n\n          <div class=\"simple-list\">\n            <div class=\"list-heading\"><h4>Idéal pour</h4><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(outing.idealFor || (outing.idealFor = []))\">+ Ajouter</button></div>\n            <div class=\"list-row\" *ngFor=\"let item of outing.idealFor; let j = index; trackBy: trackByIndex\">\n              <input [(ngModel)]=\"outing.idealFor[j]\" (ngModelChange)=\"markDirty()\">\n              <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(outing.idealFor, j)\">×</button>\n            </div>\n          </div>\n        </div>\n        <button type=\"button\" class=\"secondary add-button\" (click)=\"addOuting()\">+ Ajouter une sortie</button>\n      </section>\n\n      <section *ngIf=\"activeTab === 'boat'\" class=\"section-body\">\n        <div class=\"form-grid two\">\n          <label><span>Nom du bateau</span><input [(ngModel)]=\"brand.name\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Slogan</span><input [(ngModel)]=\"current.brandTagline\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Surtitre</span><input [(ngModel)]=\"boatPage.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Titre principal</span><input [(ngModel)]=\"boatPage.title\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Description du bateau</span><textarea rows=\"4\" [(ngModel)]=\"boatPage.intro\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          <label><span>Titre confort</span><input [(ngModel)]=\"boatPage.comfortTitle\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Confort et ambiance</span><textarea rows=\"3\" [(ngModel)]=\"boatPage.comfortText\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          <label class=\"wide\"><span>Image principale</span><input [(ngModel)]=\"current.boatHeroImage\" (ngModelChange)=\"markDirty()\" placeholder=\"alegria/img/boat/...\"></label>\n        </div>\n\n        <div class=\"media-editor\">\n          <div class=\"media-upload-row\">\n            <div>\n              <h3>Photos du bateau</h3>\n              <small>Les images sont stockées dans l’espace privé Alegria du bucket et référencées dans les 7 langues.</small>\n            </div>\n            <label class=\"upload-button\">\n              {{ uploadingKey === 'boat-cover' ? 'Téléversement…' : 'Choisir l’image principale' }}\n              <input type=\"file\" accept=\"image/jpeg,image/png,image/webp,image/gif,image/avif\" (change)=\"uploadBoatPhoto($event, false)\" [disabled]=\"!!uploadingKey\">\n            </label>\n            <label class=\"upload-button secondary-upload\">\n              {{ uploadingKey === 'boat-gallery' ? 'Téléversement…' : '+ Ajouter à la galerie bateau' }}\n              <input type=\"file\" accept=\"image/jpeg,image/png,image/webp,image/gif,image/avif\" (change)=\"uploadBoatPhoto($event, true)\" [disabled]=\"!!uploadingKey\">\n            </label>\n          </div>\n          <div class=\"cover-preview\" *ngIf=\"current.boatHeroImage\">\n            <img [src]=\"mediaPreview(current.boatHeroImage)\" alt=\"Image principale du bateau\">\n            <span>Image principale</span>\n          </div>\n          <div class=\"media-grid\" *ngIf=\"boatGallery.length\">\n            <figure *ngFor=\"let photo of boatGallery; let photoIndex = index; trackBy: trackByIndex\">\n              <img [src]=\"mediaPreview(photo)\" alt=\"Photo du bateau\">\n              <button type=\"button\" (click)=\"removeBoatPhoto(photo)\" aria-label=\"Retirer cette photo de la galerie\">×</button>\n            </figure>\n          </div>\n        </div>\n\n        <div class=\"simple-list\">\n          <div class=\"list-heading\"><h3>Points forts</h3><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(boatPage.reasons || (boatPage.reasons = []))\">+ Ajouter</button></div>\n          <div class=\"list-row\" *ngFor=\"let reason of boatPage.reasons; let i = index; trackBy: trackByIndex\">\n            <input [(ngModel)]=\"boatPage.reasons[i]\" (ngModelChange)=\"markDirty()\">\n            <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(boatPage.reasons, i)\">×</button>\n          </div>\n        </div>\n      </section>\n\n      <section *ngIf=\"activeTab === 'pricing'\" class=\"section-body\">\n        <div class=\"editor-heading subsection-heading\">\n          <div>\n            <h3>Texte affiché sur le site</h3>\n            <p>Contenu affiché en {{ languageLabel(selectedLanguage) }}.</p>\n          </div>\n          <button type=\"button\" class=\"translate\" (click)=\"translateCurrentTab()\" [disabled]=\"translating\">\n            {{ translating ? 'Traduction en cours…' : 'Traduire les textes de prix' }}\n          </button>\n        </div>\n        <div class=\"form-grid two\">\n          <label><span>Surtitre</span><input [(ngModel)]=\"pricingContent.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Titre</span><input [(ngModel)]=\"pricingContent.title\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Description</span><textarea rows=\"3\" [(ngModel)]=\"pricingContent.text\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          <label><span>Titre « inclus »</span><input [(ngModel)]=\"pricingContent.includedTitle\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Titre « options »</span><input [(ngModel)]=\"pricingContent.optionsTitle\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Bouton d’action</span><input [(ngModel)]=\"pricingContent.cta\" (ngModelChange)=\"markDirty()\"></label>\n        </div>\n        <div class=\"simple-list\">\n          <div class=\"list-heading\"><h3>Éléments inclus</h3><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(pricingContent.included || (pricingContent.included = []))\">+ Ajouter</button></div>\n          <div class=\"list-row\" *ngFor=\"let item of pricingContent.included; let i = index; trackBy: trackByIndex\">\n            <input [(ngModel)]=\"pricingContent.included[i]\" (ngModelChange)=\"markDirty()\">\n            <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(pricingContent.included, i)\">×</button>\n          </div>\n        </div>\n        <div class=\"simple-list\">\n          <div class=\"list-heading\"><h3>Options possibles</h3><button type=\"button\" class=\"secondary\" (click)=\"addArrayItem(pricingContent.options || (pricingContent.options = []))\">+ Ajouter</button></div>\n          <div class=\"list-row\" *ngFor=\"let item of pricingContent.options; let i = index; trackBy: trackByIndex\">\n            <input [(ngModel)]=\"pricingContent.options[i]\" (ngModelChange)=\"markDirty()\">\n            <button type=\"button\" class=\"icon-danger\" (click)=\"removeArrayItem(pricingContent.options, i)\">×</button>\n          </div>\n        </div>\n        <h3>Montants opérationnels</h3>\n        <div class=\"form-grid three pricing-grid\">\n          <label><span>Journée (€)</span><input type=\"number\" [(ngModel)]=\"pricing.day\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Demi-journée (€)</span><input type=\"number\" [(ngModel)]=\"pricing.halfDay\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Coucher de soleil (€)</span><input type=\"number\" [(ngModel)]=\"pricing.sunset\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Soirée (€)</span><input type=\"number\" [(ngModel)]=\"pricing.evening\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Skipper (€)</span><input type=\"number\" [(ngModel)]=\"pricing.skipperPrice\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Ménage (€)</span><input type=\"number\" [(ngModel)]=\"pricing.cleaningPrice\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Passagers inclus</span><input type=\"number\" [(ngModel)]=\"pricing.nominalGuests\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Maximum passagers</span><input type=\"number\" [(ngModel)]=\"pricing.maxGuests\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Supplément par passager (€)</span><input type=\"number\" [(ngModel)]=\"pricing.extraGuestPrice\" (ngModelChange)=\"markDirty()\"></label>\n        </div>\n        <p class=\"help-box\">L’enregistrement met à jour la source unique <code>bnPricingModel/{{ boatId }}</code>.</p>\n      </section>\n\n      <section *ngIf=\"activeTab === 'contact'\" class=\"section-body\">\n        <div class=\"form-grid two\">\n          <label><span>Titre de la page</span><input [(ngModel)]=\"contactPage.title\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Surtitre</span><input [(ngModel)]=\"contactPage.eyebrow\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Introduction</span><textarea rows=\"3\" [(ngModel)]=\"contactPage.intro\" (ngModelChange)=\"markDirty()\"></textarea></label>\n          <label><span>Email</span><input type=\"email\" [(ngModel)]=\"contactInfo.email\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Téléphone affiché</span><input [(ngModel)]=\"contactInfo.phone\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>Téléphone brut</span><input [(ngModel)]=\"contactInfo.phoneRaw\" (ngModelChange)=\"markDirty()\" placeholder=\"+336...\"></label>\n          <label><span>WhatsApp affiché</span><input [(ngModel)]=\"contactInfo.whatsapp\" (ngModelChange)=\"markDirty()\"></label>\n          <label><span>WhatsApp brut</span><input [(ngModel)]=\"contactInfo.whatsappRaw\" (ngModelChange)=\"markDirty()\" placeholder=\"+336...\"></label>\n          <label class=\"wide\"><span>Port de départ / zone</span><input [(ngModel)]=\"contactInfo.basePort\" (ngModelChange)=\"markDirty()\"></label>\n          <label class=\"wide\"><span>Texte de contact direct</span><textarea rows=\"3\" [(ngModel)]=\"contactPage.directText\" (ngModelChange)=\"markDirty()\"></textarea></label>\n        </div>\n      </section>\n\n      <footer class=\"editor-footer\">\n        <span *ngIf=\"dirty\">Modifications non enregistrées</span>\n        <button type=\"button\" class=\"primary\" (click)=\"saveCurrentTab()\" [disabled]=\"saving\">\n          {{ saving ? 'Enregistrement…' : 'Enregistrer cette rubrique' }}\n        </button>\n      </footer>\n    </main>\n  </ng-container>\n</div>\n";
 
 /***/ }),
 
@@ -2514,16 +2622,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AdminSiteContentComponent: () => (/* binding */ AdminSiteContentComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _admin_site_content_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./admin-site-content.component.html?ngResource */ 13586);
 /* harmony import */ var _admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./admin-site-content.component.scss?ngResource */ 3866);
 /* harmony import */ var _admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common/http */ 93262);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ 56196);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ 72354);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs */ 56196);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs */ 72354);
 /* harmony import */ var _fleet_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../fleet.service */ 84737);
 /* harmony import */ var _services_boat_context_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/boat-context.service */ 61766);
+/* harmony import */ var _services_admin_media_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../services/admin-media.service */ 85724);
+
 
 
 
@@ -2537,7 +2647,13 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
   http;
   fleetService;
   boatContext;
+  adminMedia;
   firebaseDatabaseUrl = 'https://adn-dev-4d05d.firebaseio.com';
+  rawFirebaseOptions = {
+    headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_6__.HttpHeaders({
+      'X-Skip-Media-Resolution': 'true'
+    })
+  };
   languages = [{
     id: 'fr',
     label: 'Français'
@@ -2570,13 +2686,15 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
   loading = false;
   saving = false;
   translating = false;
+  uploadingKey = '';
   dirty = false;
   message = '';
   error = '';
-  constructor(http, fleetService, boatContext) {
+  constructor(http, fleetService, boatContext, adminMedia) {
     this.http = http;
     this.fleetService = fleetService;
     this.boatContext = boatContext;
+    this.adminMedia = adminMedia;
     this.boatId = this.boatContext.boatId;
   }
   ngOnInit() {
@@ -2622,33 +2740,128 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
     }
     return this.current.brand;
   }
-  load() {
+  get boatGallery() {
+    if (!Array.isArray(this.current.galleryImages)) this.current.galleryImages = [];
+    return this.current.galleryImages;
+  }
+  uploadOutingPhoto(event, outing, gallery = false) {
     var _this2 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this2.loading = true;
+      const input = event.target;
+      const file = input.files?.[0];
+      if (!file) return;
+      const slug = String(outing?.slug || `sortie-${Date.now()}`);
+      const key = `outing-${slug}-${gallery ? 'gallery' : 'cover'}`;
+      _this2.uploadingKey = key;
       _this2.message = '';
       _this2.error = '';
       try {
-        const [site, operationalPricing, boats] = yield Promise.all([(0,rxjs__WEBPACK_IMPORTED_MODULE_5__.firstValueFrom)(_this2.http.get(`${_this2.firebaseDatabaseUrl}/siteContent/${encodeURIComponent(_this2.boatId)}.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_6__.timeout)(15000))), (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.firstValueFrom)(_this2.http.get(`${_this2.firebaseDatabaseUrl}/bnPricingModel.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_6__.timeout)(15000))), _this2.fleetService.listBoats()]);
-        _this2.siteContent = site || {};
-        _this2.boats = boats;
-        const profile = boats.find(boat => boat.boatId === _this2.boatId);
-        _this2.ownerId = profile?.ownerId || _this2.ownerId;
-        _this2.pricing = _this2.clone(operationalPricing?.[_this2.boatId] || _this2.defaultPricing());
-        _this2.ensureLanguageShapes();
-        _this2.dirty = false;
+        const uploaded = yield _this2.adminMedia.upload(file, 'outings', slug);
+        _this2.updateOutingImagesForAllLanguages(slug, uploaded.path, gallery);
+        _this2.markDirty();
+        _this2.message = gallery ? 'Photo ajoutée à la galerie. Enregistrez la rubrique pour publier la référence dans Firebase.' : 'Photo principale ajoutée. Enregistrez la rubrique pour publier la référence dans Firebase.';
       } catch (e) {
-        _this2.error = e?.error?.message || 'Impossible de charger le contenu depuis Firebase.';
+        _this2.error = e?.error?.message || e?.error?.error || e?.message || 'Téléversement impossible.';
       } finally {
-        _this2.loading = false;
+        _this2.uploadingKey = '';
+        input.value = '';
+      }
+    })();
+  }
+  uploadBoatPhoto(event, gallery = false) {
+    var _this3 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const input = event.target;
+      const file = input.files?.[0];
+      if (!file) return;
+      const key = gallery ? 'boat-gallery' : 'boat-cover';
+      _this3.uploadingKey = key;
+      _this3.message = '';
+      _this3.error = '';
+      try {
+        const uploaded = yield _this3.adminMedia.upload(file, 'boat', _this3.boatId);
+        for (const language of _this3.languages) {
+          const lang = _this3.siteContent[language.id] || (_this3.siteContent[language.id] = {});
+          if (gallery) {
+            const photos = Array.isArray(lang.galleryImages) ? lang.galleryImages : [];
+            if (!photos.includes(uploaded.path)) photos.push(uploaded.path);
+            lang.galleryImages = photos;
+          } else {
+            lang.boatHeroImage = uploaded.path;
+          }
+        }
+        _this3.markDirty();
+        _this3.message = gallery ? 'Photo ajoutée à la galerie du bateau. Enregistrez la rubrique pour la publier.' : 'Photo principale du bateau ajoutée. Enregistrez la rubrique pour la publier.';
+      } catch (e) {
+        _this3.error = e?.error?.message || e?.error?.error || e?.message || 'Téléversement impossible.';
+      } finally {
+        _this3.uploadingKey = '';
+        input.value = '';
+      }
+    })();
+  }
+  removeOutingPhoto(outing, path) {
+    const slug = String(outing?.slug || '');
+    for (const language of this.languages) {
+      const localized = (this.siteContent?.[language.id]?.outings || []).find(item => String(item?.slug || '') === slug);
+      if (localized && Array.isArray(localized.gallery)) {
+        localized.gallery = localized.gallery.filter(photo => photo !== path);
+      }
+    }
+    this.markDirty();
+  }
+  removeBoatPhoto(path) {
+    for (const language of this.languages) {
+      const photos = this.siteContent?.[language.id]?.galleryImages;
+      if (Array.isArray(photos)) {
+        this.siteContent[language.id].galleryImages = photos.filter(photo => photo !== path);
+      }
+    }
+    this.markDirty();
+  }
+  mediaPreview(path) {
+    return this.adminMedia.previewUrl(path);
+  }
+  updateOutingImagesForAllLanguages(slug, path, gallery) {
+    for (const language of this.languages) {
+      const localizedOutings = this.siteContent?.[language.id]?.outings || [];
+      const localized = localizedOutings.find(item => String(item?.slug || '') === slug);
+      if (!localized) continue;
+      if (gallery) {
+        localized.gallery = Array.isArray(localized.gallery) ? localized.gallery : [];
+        if (!localized.gallery.includes(path)) localized.gallery.push(path);
+      } else {
+        localized.image = path;
+      }
+    }
+  }
+  load() {
+    var _this4 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      _this4.loading = true;
+      _this4.message = '';
+      _this4.error = '';
+      try {
+        const [site, operationalPricing, boats] = yield Promise.all([(0,rxjs__WEBPACK_IMPORTED_MODULE_7__.firstValueFrom)(_this4.http.get(`${_this4.firebaseDatabaseUrl}/siteContent/${encodeURIComponent(_this4.boatId)}.json`, _this4.rawFirebaseOptions).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_8__.timeout)(15000))), (0,rxjs__WEBPACK_IMPORTED_MODULE_7__.firstValueFrom)(_this4.http.get(`${_this4.firebaseDatabaseUrl}/bnPricingModel.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_8__.timeout)(15000))), _this4.fleetService.listBoats()]);
+        _this4.siteContent = site || {};
+        _this4.boats = boats;
+        const profile = boats.find(boat => boat.boatId === _this4.boatId);
+        _this4.ownerId = profile?.ownerId || _this4.ownerId;
+        _this4.pricing = _this4.clone(operationalPricing?.[_this4.boatId] || _this4.defaultPricing());
+        _this4.ensureLanguageShapes();
+        _this4.dirty = false;
+      } catch (e) {
+        _this4.error = e?.error?.message || 'Impossible de charger le contenu depuis Firebase.';
+      } finally {
+        _this4.loading = false;
       }
     })();
   }
   selectBoat(boatId) {
-    var _this3 = this;
+    var _this5 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this3.boatId = _this3.boatContext.setBoatId(boatId);
-      yield _this3.load();
+      _this5.boatId = _this5.boatContext.setBoatId(boatId);
+      yield _this5.load();
     })();
   }
   selectTab(tab) {
@@ -2699,64 +2912,64 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
     this.markDirty();
   }
   translateCurrentTab() {
-    var _this4 = this;
+    var _this6 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      const sourceLanguage = _this4.selectedLanguage;
-      const sourcePayload = _this4.getTabPayload(sourceLanguage);
+      const sourceLanguage = _this6.selectedLanguage;
+      const sourcePayload = _this6.getTabPayload(sourceLanguage);
       if (!sourcePayload) return;
-      _this4.translating = true;
-      _this4.message = '';
-      _this4.error = '';
+      _this6.translating = true;
+      _this6.message = '';
+      _this6.error = '';
       try {
-        for (const language of _this4.languages) {
+        for (const language of _this6.languages) {
           if (language.id === sourceLanguage) continue;
-          const translated = yield _this4.translateValue(sourcePayload, sourceLanguage, language.id, []);
-          _this4.applyTabPayload(language.id, translated);
+          const translated = yield _this6.translateValue(sourcePayload, sourceLanguage, language.id, []);
+          _this6.applyTabPayload(language.id, translated);
         }
-        _this4.dirty = true;
-        _this4.message = `Traduction automatique effectuée depuis ${_this4.languageLabel(sourceLanguage)} vers les 6 autres langues. Vérifiez les textes avant d’enregistrer.`;
+        _this6.dirty = true;
+        _this6.message = `Traduction automatique effectuée depuis ${_this6.languageLabel(sourceLanguage)} vers les 6 autres langues. Vérifiez les textes avant d’enregistrer.`;
       } catch (e) {
-        _this4.error = e?.message || 'La traduction automatique a échoué.';
+        _this6.error = e?.message || 'La traduction automatique a échoué.';
       } finally {
-        _this4.translating = false;
+        _this6.translating = false;
       }
     })();
   }
   saveCurrentTab() {
-    var _this5 = this;
+    var _this7 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
-      _this5.saving = true;
-      _this5.message = '';
-      _this5.error = '';
+      _this7.saving = true;
+      _this7.message = '';
+      _this7.error = '';
       try {
         const writes = [];
-        const sections = _this5.sectionsForTab(_this5.activeTab);
-        for (const language of _this5.languages) {
+        const sections = _this7.sectionsForTab(_this7.activeTab);
+        for (const language of _this7.languages) {
           for (const section of sections) {
-            const value = _this5.siteContent?.[language.id]?.[section] ?? null;
-            writes.push((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.firstValueFrom)(_this5.http.put(`${_this5.firebaseDatabaseUrl}/siteContent/${encodeURIComponent(_this5.boatId)}/${language.id}/${encodeURIComponent(section)}.json`, value).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_6__.timeout)(15000))));
+            const value = _this7.siteContent?.[language.id]?.[section] ?? null;
+            writes.push((0,rxjs__WEBPACK_IMPORTED_MODULE_7__.firstValueFrom)(_this7.http.put(`${_this7.firebaseDatabaseUrl}/siteContent/${encodeURIComponent(_this7.boatId)}/${language.id}/${encodeURIComponent(section)}.json`, value).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_8__.timeout)(15000))));
           }
         }
-        if (_this5.activeTab === 'pricing') {
-          writes.push((0,rxjs__WEBPACK_IMPORTED_MODULE_5__.firstValueFrom)(_this5.http.put(`${_this5.firebaseDatabaseUrl}/bnPricingModel/${encodeURIComponent(_this5.boatId)}.json`, _this5.pricing).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_6__.timeout)(15000))));
+        if (_this7.activeTab === 'pricing') {
+          writes.push((0,rxjs__WEBPACK_IMPORTED_MODULE_7__.firstValueFrom)(_this7.http.put(`${_this7.firebaseDatabaseUrl}/bnPricingModel/${encodeURIComponent(_this7.boatId)}.json`, _this7.pricing).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_8__.timeout)(15000))));
         }
-        if (_this5.activeTab === 'outings') {
-          writes.push(_this5.saveOperationalOutings());
+        if (_this7.activeTab === 'outings') {
+          writes.push(_this7.saveOperationalOutings());
         }
-        const existingBoat = yield _this5.fleetService.getBoat(_this5.boatId);
-        writes.push(_this5.fleetService.saveBoat({
+        const existingBoat = yield _this7.fleetService.getBoat(_this7.boatId);
+        writes.push(_this7.fleetService.saveBoat({
           ...existingBoat,
-          boatId: _this5.boatId,
-          ownerId: _this5.ownerId,
-          boatName: _this5.siteContent?.fr?.brand?.name || _this5.siteContent?.fr?.brand || existingBoat.boatName
+          boatId: _this7.boatId,
+          ownerId: _this7.ownerId,
+          boatName: _this7.siteContent?.fr?.brand?.name || _this7.siteContent?.fr?.brand || existingBoat.boatName
         }));
         yield Promise.all(writes);
-        _this5.dirty = false;
-        _this5.message = 'Contenu enregistré dans Firebase.';
+        _this7.dirty = false;
+        _this7.message = 'Contenu enregistré dans Firebase.';
       } catch (e) {
-        _this5.error = e?.error?.message || 'Enregistrement impossible dans Firebase.';
+        _this7.error = e?.error?.message || 'Enregistrement impossible dans Firebase.';
       } finally {
-        _this5.saving = false;
+        _this7.saving = false;
       }
     })();
   }
@@ -2765,7 +2978,7 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
       case 'outings':
         return ['outingsPage', 'outings'];
       case 'boat':
-        return ['brand', 'brandTagline', 'boatPage', 'boatHighlights', 'boatHeroImage'];
+        return ['brand', 'brandTagline', 'boatPage', 'boatHighlights', 'boatHeroImage', 'galleryImages'];
       case 'contact':
         return ['contactPage', 'contactInfo', 'phoneDisplay', 'phoneRaw'];
       case 'pricing':
@@ -2786,7 +2999,8 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
           brandTagline: lang.brandTagline || '',
           boatPage: lang.boatPage || {},
           boatHighlights: lang.boatHighlights || [],
-          boatHeroImage: lang.boatHeroImage || ''
+          boatHeroImage: lang.boatHeroImage || '',
+          galleryImages: lang.galleryImages || []
         };
       case 'contact':
         return {
@@ -2818,26 +3032,26 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
     });
   }
   translateValue(value, source, target, path) {
-    var _this6 = this;
+    var _this8 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (value === null || value === undefined) return value;
       if (typeof value === 'number' || typeof value === 'boolean') return value;
       if (Array.isArray(value)) {
         const translated = [];
         for (let i = 0; i < value.length; i++) {
-          translated.push(yield _this6.translateValue(value[i], source, target, [...path, String(i)]));
+          translated.push(yield _this8.translateValue(value[i], source, target, [...path, String(i)]));
         }
         return translated;
       }
       if (typeof value === 'object') {
         const translated = {};
         for (const key of Object.keys(value)) {
-          translated[key] = yield _this6.translateValue(value[key], source, target, [...path, key]);
+          translated[key] = yield _this8.translateValue(value[key], source, target, [...path, key]);
         }
         return translated;
       }
-      if (typeof value !== 'string' || !value.trim() || _this6.mustPreserve(path, value)) return value;
-      return _this6.translateText(value, source, target);
+      if (typeof value !== 'string' || !value.trim() || _this8.mustPreserve(path, value)) return value;
+      return _this8.translateText(value, source, target);
     })();
   }
   mustPreserve(path, value) {
@@ -2850,10 +3064,10 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
     return false;
   }
   translateText(text, source, target) {
-    var _this7 = this;
+    var _this9 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const url = 'https://translate.googleapis.com/translate_a/single';
-      const response = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.firstValueFrom)(_this7.http.get(url, {
+      const response = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_7__.firstValueFrom)(_this9.http.get(url, {
         params: {
           client: 'gtx',
           sl: source,
@@ -2861,7 +3075,7 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
           dt: 't',
           q: text
         }
-      }).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_6__.timeout)(20000)));
+      }).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_8__.timeout)(20000)));
       const translated = Array.isArray(response?.[0]) ? response[0].map(segment => segment?.[0] || '').join('') : '';
       return translated || text;
     })();
@@ -2879,6 +3093,7 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
         outing.idealFor = Array.isArray(outing.idealFor) ? outing.idealFor : [];
       });
       lang.boatPage = lang.boatPage || {};
+      lang.galleryImages = Array.isArray(lang.galleryImages) ? lang.galleryImages : [];
       lang.contactPage = lang.contactPage || {};
       lang.contactInfo = lang.contactInfo || {};
       lang.homePage = lang.homePage || {};
@@ -2889,17 +3104,17 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
     }
   }
   saveOperationalOutings() {
-    var _this8 = this;
+    var _this10 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       let existing = {};
       try {
-        existing = (yield (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.firstValueFrom)(_this8.http.get(`${_this8.firebaseDatabaseUrl}/bnOutings/${encodeURIComponent(_this8.boatId)}.json`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_6__.timeout)(15000)))) || {};
+        existing = (yield (0,rxjs__WEBPACK_IMPORTED_MODULE_7__.firstValueFrom)(_this10.http.get(`${_this10.firebaseDatabaseUrl}/bnOutings/${encodeURIComponent(_this10.boatId)}.json`, _this10.rawFirebaseOptions).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_8__.timeout)(15000)))) || {};
       } catch {}
       const bySlug = {
         ...existing
       };
-      for (const language of _this8.languages) {
-        const localizedOutings = _this8.siteContent?.[language.id]?.outings || [];
+      for (const language of _this10.languages) {
+        const localizedOutings = _this10.siteContent?.[language.id]?.outings || [];
         for (const outing of localizedOutings) {
           if (!outing?.slug) continue;
           const previous = bySlug[outing.slug] || {};
@@ -2908,23 +3123,23 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
             id: outing.slug,
             slug: outing.slug,
             active: previous.active !== false,
-            boatId: _this8.boatId,
-            ownerId: _this8.ownerId,
+            boatId: _this10.boatId,
+            ownerId: _this10.ownerId,
             image: outing.image || previous.image || '',
             gallery: outing.gallery || previous.gallery || [],
             category: outing.category || previous.category || '',
             priceFrom: outing.priceFrom ?? previous.priceFrom ?? null,
-            [language.id]: _this8.localizedOutingPayload(outing),
+            [language.id]: _this10.localizedOutingPayload(outing),
             modifiedTS: Date.now(),
             createdTS: previous.createdTS || Date.now()
           };
         }
       }
-      return (0,rxjs__WEBPACK_IMPORTED_MODULE_5__.firstValueFrom)(_this8.http.put(`${_this8.firebaseDatabaseUrl}/bnOutings/${encodeURIComponent(_this8.boatId)}.json`, bySlug).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_6__.timeout)(15000)));
+      return (0,rxjs__WEBPACK_IMPORTED_MODULE_7__.firstValueFrom)(_this10.http.put(`${_this10.firebaseDatabaseUrl}/bnOutings/${encodeURIComponent(_this10.boatId)}.json`, bySlug).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_8__.timeout)(15000)));
     })();
   }
   localizedOutingPayload(outing) {
-    const keys = ['title', 'description', 'duration', 'guests', 'priceLabel', 'highlights', 'eyebrow', 'subtitle', 'intro', 'programTitle', 'program', 'includesTitle', 'includes', 'idealForTitle', 'idealFor', 'cta', 'contactNote', 'galleryTitle', 'coreOfferingTitle', 'coreOffering', 'optionalExtrasTitle', 'optionalExtras', 'suggestionsTitle', 'guestSuggestions'];
+    const keys = ['title', 'description', 'duration', 'guests', 'priceLabel', 'highlights', 'eyebrow', 'subtitle', 'intro', 'programTitle', 'program', 'includesTitle', 'includes', 'idealForTitle', 'idealFor', 'cta', 'contactNote', 'gallery', 'galleryTitle', 'coreOfferingTitle', 'coreOffering', 'optionalExtrasTitle', 'optionalExtras', 'suggestionsTitle', 'guestSuggestions'];
     return keys.reduce((payload, key) => {
       if (outing[key] !== undefined) payload[key] = this.clone(outing[key]);
       return payload;
@@ -2955,14 +3170,16 @@ let AdminSiteContentComponent = class AdminSiteContentComponent {
     return JSON.parse(JSON.stringify(value));
   }
   static ctorParameters = () => [{
-    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_7__.HttpClient
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__.HttpClient
   }, {
     type: _fleet_service__WEBPACK_IMPORTED_MODULE_3__.FleetService
   }, {
     type: _services_boat_context_service__WEBPACK_IMPORTED_MODULE_4__.BoatContextService
+  }, {
+    type: _services_admin_media_service__WEBPACK_IMPORTED_MODULE_5__.AdminMediaService
   }];
 };
-AdminSiteContentComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.Component)({
+AdminSiteContentComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_9__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_10__.Component)({
   selector: 'app-admin-site-content',
   template: _admin_site_content_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_admin_site_content_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
@@ -32154,6 +32371,114 @@ textarea {
 }`, "",{"version":3,"sources":["webpack://./src/app/home/admin-warranty-charge/admin-warranty-charge.component.scss"],"names":[],"mappings":"AAAA;EACE,eAAA;EACA,mBAAA;EACA,gBAAA;AACF;;AAEA;EACE,gBAAA;EACA,cAAA;AACF;;AAEA;EACE,yBAAA;EACA,sBAAA;EACA,kBAAA;EACA,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,cAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,gBAAA;EACA,mBAAA;EACA,aAAA;EACA,gBAAA;EACA,6CAAA;EACA,uCAAA;AACF;;AAEA;EACE,aAAA;EACA,WAAA;EACA,cAAA;EACA,gBAAA;EACA,mBAAA;AACF;;AAEA;;EAEE,uCAAA;EACA,mBAAA;EACA,gBAAA;EACA,aAAA;AACF;;AAEA;EACE,SAAA;EACA,oBAAA;EACA,uBAAA;EACA,gBAAA;EACA,eAAA;AACF;;AAEA;EACE,mBAAA;EACA,WAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;AACF;;AAEA;EACE,cAAA;EACA,gBAAA;AACF","sourcesContent":[".warranty-charge-page {\n  padding: 80px 0;\n  background: #f6f2ea;\n  min-height: 70vh;\n}\n\n.warranty-shell {\n  max-width: 760px;\n  margin: 0 auto;\n}\n\n.eyebrow {\n  text-transform: uppercase;\n  letter-spacing: .14em;\n  font-size: .78rem;\n  color: #b58b4a;\n  font-weight: 700;\n}\n\nh1 {\n  color: #08263a;\n}\n\n.intro {\n  color: #516070;\n  line-height: 1.7;\n}\n\n.warranty-card {\n  background: #fff;\n  border-radius: 24px;\n  padding: 28px;\n  margin-top: 24px;\n  box-shadow: 0 18px 45px rgba(8,38,58,.08);\n  border: 1px solid rgba(8,38,58,.08);\n}\n\nlabel {\n  display: grid;\n  gap: 0.4rem;\n  color: #08263a;\n  font-weight: 700;\n  margin-bottom: 1rem;\n}\n\ninput,\ntextarea {\n  border: 1px solid rgba(8,38,58,.16);\n  border-radius: 14px;\n  padding: 0.75rem;\n  font: inherit;\n}\n\n.btn {\n  border: 0;\n  border-radius: 999px;\n  padding: 0.75rem 1.1rem;\n  font-weight: 700;\n  cursor: pointer;\n}\n\n.btn-danger {\n  background: #9f1d1d;\n  color: #fff;\n}\n\n.success {\n  color: #047857;\n  font-weight: 700;\n}\n\n.error {\n  color: #9f1d1d;\n  font-weight: 700;\n}\n"],"sourceRoot":""}]);
 // Exports
 module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
+/***/ 85724:
+/*!*************************************************!*\
+  !*** ./src/app/services/admin-media.service.ts ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AdminMediaService: () => (/* binding */ AdminMediaService)
+/* harmony export */ });
+/* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ 93262);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ 56196);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 72354);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! godigital-lib */ 83);
+
+
+
+
+
+
+let AdminMediaService = class AdminMediaService {
+  http;
+  storeDb;
+  users;
+  constructor(http, storeDb, users) {
+    this.http = http;
+    this.storeDb = storeDb;
+    this.users = users;
+  }
+  upload(file, category, subject) {
+    var _this = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const token = yield _this.idToken();
+      const data = new FormData();
+      data.append('file', file, file.name);
+      data.append('category', category);
+      data.append('subject', subject);
+      return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.firstValueFrom)(_this.http.post('/api/admin/media/upload', data, {
+        headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__.HttpHeaders({
+          Authorization: `Bearer ${token}`
+        })
+      }).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_3__.timeout)(60000)));
+    })();
+  }
+  previewUrl(path) {
+    const value = String(path || '').trim();
+    if (!value) return '';
+    if (/^(https?:\/\/|data:|blob:|assets\/|\/assets\/)/i.test(value)) return value;
+    if (value.startsWith('alegria/img/')) {
+      return `/api/media/object?path=${encodeURIComponent(value)}`;
+    }
+    return value;
+  }
+  idToken() {
+    var _this2 = this;
+    return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      const store = _this2.storeDb;
+      const userService = _this2.users;
+      const globalFirebase = window.firebase;
+      const candidates = [store?.auth?.currentUser, store?.firebaseAuth?.currentUser, store?.currentUser, store?.bnUser, userService?.auth?.currentUser, userService?.firebaseAuth?.currentUser, userService?.currentUser, globalFirebase?.auth ? globalFirebase.auth()?.currentUser : null];
+      for (const user of candidates) {
+        if (user && typeof user.getIdToken === 'function') {
+          const token = yield user.getIdToken(true);
+          if (token) return token;
+        }
+        const direct = user?.stsTokenManager?.accessToken || user?.accessToken;
+        if (direct) return direct;
+      }
+      for (let index = 0; index < localStorage.length; index++) {
+        const key = localStorage.key(index) || '';
+        if (!key.startsWith('firebase:authUser:')) continue;
+        try {
+          const authUser = JSON.parse(localStorage.getItem(key) || '{}');
+          const token = authUser?.stsTokenManager?.accessToken || authUser?._tokenResponse?.idToken;
+          if (token) return token;
+        } catch {}
+      }
+      for (let index = 0; index < sessionStorage.length; index++) {
+        const key = sessionStorage.key(index) || '';
+        if (!key.startsWith('firebase:authUser:')) continue;
+        try {
+          const authUser = JSON.parse(sessionStorage.getItem(key) || '{}');
+          const token = authUser?.stsTokenManager?.accessToken || authUser?._tokenResponse?.idToken;
+          if (token) return token;
+        } catch {}
+      }
+      throw new Error('Votre session administrateur a expiré. Reconnectez-vous avant de téléverser une photo.');
+    })();
+  }
+  static ctorParameters = () => [{
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__.HttpClient
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.StoreDbService
+  }, {
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_4__.UsersService
+  }];
+};
+AdminMediaService = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Injectable)({
+  providedIn: 'root'
+})], AdminMediaService);
 
 
 /***/ }),

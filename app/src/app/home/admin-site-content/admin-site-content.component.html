@@ -88,7 +88,34 @@
             <label><span>Surtitre de la page détaillée</span><input [(ngModel)]="outing.eyebrow" (ngModelChange)="markDirty()"></label>
             <label><span>Sous-titre</span><input [(ngModel)]="outing.subtitle" (ngModelChange)="markDirty()"></label>
             <label class="wide"><span>Introduction détaillée</span><textarea rows="4" [(ngModel)]="outing.intro" (ngModelChange)="markDirty()"></textarea></label>
-            <label class="wide"><span>Image</span><input [(ngModel)]="outing.image" (ngModelChange)="markDirty()" placeholder="assets/img/..."></label>
+            <label class="wide"><span>Image principale</span><input [(ngModel)]="outing.image" (ngModelChange)="markDirty()" placeholder="alegria/img/events/..."></label>
+          </div>
+
+          <div class="media-editor">
+            <div class="media-upload-row">
+              <div>
+                <h4>Photos de la sortie</h4>
+                <small>JPEG, PNG, WebP, GIF ou AVIF — 12 Mo maximum. La même photo est appliquée à toutes les langues.</small>
+              </div>
+              <label class="upload-button">
+                {{ uploadingKey === 'outing-' + outing.slug + '-cover' ? 'Téléversement…' : 'Choisir la photo principale' }}
+                <input type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" (change)="uploadOutingPhoto($event, outing, false)" [disabled]="!!uploadingKey">
+              </label>
+              <label class="upload-button secondary-upload">
+                {{ uploadingKey === 'outing-' + outing.slug + '-gallery' ? 'Téléversement…' : '+ Ajouter à la galerie' }}
+                <input type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" (change)="uploadOutingPhoto($event, outing, true)" [disabled]="!!uploadingKey">
+              </label>
+            </div>
+            <div class="cover-preview" *ngIf="outing.image">
+              <img [src]="mediaPreview(outing.image)" alt="Photo principale de la sortie">
+              <span>Photo principale</span>
+            </div>
+            <div class="media-grid" *ngIf="outing.gallery?.length">
+              <figure *ngFor="let photo of outing.gallery; let photoIndex = index; trackBy: trackByIndex">
+                <img [src]="mediaPreview(photo)" alt="Photo de la galerie">
+                <button type="button" (click)="removeOutingPhoto(outing, photo)" aria-label="Retirer cette photo de la galerie">×</button>
+              </figure>
+            </div>
           </div>
 
           <div class="simple-list">
@@ -143,7 +170,34 @@
           <label class="wide"><span>Description du bateau</span><textarea rows="4" [(ngModel)]="boatPage.intro" (ngModelChange)="markDirty()"></textarea></label>
           <label><span>Titre confort</span><input [(ngModel)]="boatPage.comfortTitle" (ngModelChange)="markDirty()"></label>
           <label class="wide"><span>Confort et ambiance</span><textarea rows="3" [(ngModel)]="boatPage.comfortText" (ngModelChange)="markDirty()"></textarea></label>
-          <label class="wide"><span>Image principale</span><input [(ngModel)]="current.boatHeroImage" (ngModelChange)="markDirty()" placeholder="assets/img/boat/..."></label>
+          <label class="wide"><span>Image principale</span><input [(ngModel)]="current.boatHeroImage" (ngModelChange)="markDirty()" placeholder="alegria/img/boat/..."></label>
+        </div>
+
+        <div class="media-editor">
+          <div class="media-upload-row">
+            <div>
+              <h3>Photos du bateau</h3>
+              <small>Les images sont stockées dans l’espace privé Alegria du bucket et référencées dans les 7 langues.</small>
+            </div>
+            <label class="upload-button">
+              {{ uploadingKey === 'boat-cover' ? 'Téléversement…' : 'Choisir l’image principale' }}
+              <input type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" (change)="uploadBoatPhoto($event, false)" [disabled]="!!uploadingKey">
+            </label>
+            <label class="upload-button secondary-upload">
+              {{ uploadingKey === 'boat-gallery' ? 'Téléversement…' : '+ Ajouter à la galerie bateau' }}
+              <input type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" (change)="uploadBoatPhoto($event, true)" [disabled]="!!uploadingKey">
+            </label>
+          </div>
+          <div class="cover-preview" *ngIf="current.boatHeroImage">
+            <img [src]="mediaPreview(current.boatHeroImage)" alt="Image principale du bateau">
+            <span>Image principale</span>
+          </div>
+          <div class="media-grid" *ngIf="boatGallery.length">
+            <figure *ngFor="let photo of boatGallery; let photoIndex = index; trackBy: trackByIndex">
+              <img [src]="mediaPreview(photo)" alt="Photo du bateau">
+              <button type="button" (click)="removeBoatPhoto(photo)" aria-label="Retirer cette photo de la galerie">×</button>
+            </figure>
+          </div>
         </div>
 
         <div class="simple-list">
