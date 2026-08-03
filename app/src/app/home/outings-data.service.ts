@@ -11,6 +11,8 @@ export interface LocalizedOutingContent {
   description: string;
   duration: string;
   guests: string;
+  image?: string;
+  gallery?: string[];
   priceLabel?: string;
   highlights?: string[];
   eyebrow?: string;
@@ -139,7 +141,7 @@ export class OutingsDataService {
         duration: localized.duration,
         guests: localized.guests,
         description: localized.description,
-        image: outing.image,
+        image: outing.image || localized.image || '',
         highlights: localized.highlights || [],
         priceLabel: undefined,
       } as OutingItem;
@@ -160,7 +162,7 @@ export class OutingsDataService {
       title: localized.title || '',
       subtitle: localized.subtitle || '',
       intro: localized.intro || localized.description || '',
-      image: outing.image || '',
+      image: outing.image || localized.image || fallback.image || '',
       duration: localized.duration || '',
       guests: localized.guests || '',
       price: '',
@@ -174,7 +176,9 @@ export class OutingsDataService {
       cta: localized.cta || '',
       contactNote: localized.contactNote || '',
       galleryTitle: localized.galleryTitle || '',
-      gallery: outing.gallery || [],
+      gallery: outing.gallery?.length
+        ? outing.gallery
+        : (localized.gallery?.length ? localized.gallery : (fallback.gallery || [])),
       coreOfferingTitle: localized.coreOfferingTitle || '',
       coreOffering: localized.coreOffering || [],
       optionalExtrasTitle: localized.optionalExtrasTitle || '',

@@ -7,12 +7,14 @@ exports.MediaService = void 0;
 const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 const storage_1 = require("@google-cloud/storage");
 /**
- * Generates short-lived read URLs for public website media while the bucket
- * itself remains private. Credentials are resolved through Google ADC.
+ * Proxies public website media from a private tenant folder. The browser only
+ * knows logical paths such as `alegria/img/...`; bucket and tenant paths remain
+ * trusted backend configuration. Credentials are resolved through Google ADC.
  */
 class MediaService {
     constructor() {
-        this.bucketName = process.env.GCS_MEDIA_BUCKET || 'alegria_pics';
+        this.bucketName = process.env.GCS_MEDIA_BUCKET || 'adn_root';
+        this.tenantRoot = String(process.env.GCS_MEDIA_TENANT_ROOT || 'tenants/alegria_data').replace(/^\/+|\/+$/g, '');
         this.allowedPrefix = process.env.GCS_MEDIA_PREFIX || 'alegria/img/';
         this.lifetimeMs = Math.max(15 * 60 * 1000, Number(process.env.GCS_SIGNED_URL_LIFETIME_MS || 6 * 60 * 60 * 1000));
         this.storage = new storage_1.Storage();
@@ -24,9 +26,13 @@ class MediaService {
             standardHeaders: true,
             legacyHeaders: false,
         });
-        router.post('/api/media/signed-urls', limiter, (req, res) => this.createSignedUrls(req, res));
+        router.post('/api/media/urls', limiter, (req, res) => this.createMediaUrls(req, res));
+        // Backward-compatible route for already deployed frontends. The returned
+        // URLs now point to the authenticated backend proxy, not directly to GCS.
+        router.post('/api/media/signed-urls', limiter, (req, res) => this.createMediaUrls(req, res));
+        router.get('/api/media/object', limiter, (req, res) => this.streamObject(req, res));
     }
-    async createSignedUrls(req, res) {
+    async createMediaUrls(req, res) {
         try {
             const requested = Array.isArray(req.body?.paths) ? req.body.paths : [];
             const paths = Array.from(new Set(requested.map((value) => String(value || '').trim())));
@@ -39,13 +45,10 @@ class MediaService {
                 }
             }
             const expiresAt = Date.now() + this.lifetimeMs;
-            const entries = await Promise.all(paths.map(async (objectPath) => {
-                const [url] = await this.storage
-                    .bucket(this.bucketName)
-                    .file(objectPath)
-                    .getSignedUrl({ version: 'v4', action: 'read', expires: expiresAt });
-                return [objectPath, url];
-            }));
+            const entries = paths.map((objectPath) => [
+                objectPath,
+                `/api/media/object?path=${encodeURIComponent(objectPath)}`,
+            ]);
             const urls = entries.reduce((result, entry) => {
                 result[entry[0]] = entry[1];
                 return result;
@@ -54,12 +57,51 @@ class MediaService {
             return res.status(200).json({ expiresAt, urls });
         }
         catch (error) {
-            console.error('Unable to sign media URLs', error);
+            console.error('Unable to create media URLs', error);
             return res.status(500).json({
-                error: 'media_signing_failed',
+                error: 'media_url_creation_failed',
                 message: process.env.NODE_ENV === 'production' ? undefined : error?.message || String(error),
             });
         }
+    }
+    async streamObject(req, res) {
+        const objectPath = String(req.query?.path || '').trim();
+        if (!this.isAllowedPath(objectPath)) {
+            res.status(400).json({ error: 'invalid_media_path' });
+            return;
+        }
+        try {
+            const file = this.storage
+                .bucket(this.bucketName)
+                .file(this.getPhysicalPath(objectPath));
+            const [metadata] = await file.getMetadata();
+            res.setHeader('Content-Type', metadata.contentType || 'application/octet-stream');
+            if (metadata.size)
+                res.setHeader('Content-Length', String(metadata.size));
+            if (metadata.etag)
+                res.setHeader('ETag', String(metadata.etag));
+            res.setHeader('Cache-Control', 'private, max-age=3600');
+            file.createReadStream()
+                .on('error', (error) => {
+                console.error('Unable to stream private media object', error);
+                if (!res.headersSent)
+                    res.status(error?.code === 404 ? 404 : 500).end();
+                else
+                    res.end();
+            })
+                .pipe(res);
+        }
+        catch (error) {
+            console.error('Unable to read private media object', error);
+            if (!res.headersSent) {
+                res.status(error?.code === 404 ? 404 : 500).json({
+                    error: error?.code === 404 ? 'media_not_found' : 'media_read_failed',
+                });
+            }
+        }
+    }
+    getPhysicalPath(objectPath) {
+        return `${this.tenantRoot}/${objectPath}`;
     }
     isAllowedPath(objectPath) {
         return objectPath.startsWith(this.allowedPrefix)

@@ -988,7 +988,7 @@ let OutingsDataService = class OutingsDataService {
         duration: localized.duration,
         guests: localized.guests,
         description: localized.description,
-        image: outing.image,
+        image: outing.image || localized.image || '',
         highlights: localized.highlights || [],
         priceLabel: undefined
       };
@@ -1007,7 +1007,7 @@ let OutingsDataService = class OutingsDataService {
       title: localized.title || '',
       subtitle: localized.subtitle || '',
       intro: localized.intro || localized.description || '',
-      image: outing.image || '',
+      image: outing.image || localized.image || fallback.image || '',
       duration: localized.duration || '',
       guests: localized.guests || '',
       price: '',
@@ -1021,7 +1021,7 @@ let OutingsDataService = class OutingsDataService {
       cta: localized.cta || '',
       contactNote: localized.contactNote || '',
       galleryTitle: localized.galleryTitle || '',
-      gallery: outing.gallery || [],
+      gallery: outing.gallery?.length ? outing.gallery : localized.gallery?.length ? localized.gallery : fallback.gallery || [],
       coreOfferingTitle: localized.coreOfferingTitle || '',
       coreOffering: localized.coreOffering || [],
       optionalExtrasTitle: localized.optionalExtrasTitle || '',

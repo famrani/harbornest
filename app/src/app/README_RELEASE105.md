@@ -7,6 +7,24 @@
 - Signed URLs are held in memory only and refreshed before expiration.
 - If signing fails, the original Firebase response remains available to the application.
 
+## Release 107 — adn_root tenant media
+
+- Requests logical Firebase paths from `/api/media/urls` and displays images
+  through the private backend proxy.
+- Supports the new physical tenant root
+  `adn_root/tenants/alegria_data` without exposing it in normal Firebase data.
+- Normalizes legacy `alegria_pics` URLs and new physical tenant URLs back to
+  the canonical `alegria/img/...` form during migration.
+
+## Release 107.1 — restored outing galleries
+
+- Reads each outing gallery from its multilingual Firebase location
+  (`bnOutings/alegria/{slug}/{language}/gallery`).
+- Keeps compatibility with a future root-level `gallery` field.
+- Falls back to bundled gallery content only when Firebase has no gallery.
+- Restores all existing photos: 6 day-outing, 3 sunset, 11 party and 2
+  corporate images.
+
 - All payment completion screens now rely on server-side Stripe verification.
 - Deposit and balance returns are no longer marked paid after a failed backend call.
 - Skipper fees, extras and ad-hoc payments use a verified completion endpoint.
@@ -40,7 +58,7 @@
   display time even if legacy total or commission fields contain stale values.
 - Payment history reads the canonical `backendpayments` ledger.
 - Private GCS media paths returned by Firebase are resolved in batches through
-  the backend. Signed URLs are cached in memory and are never written to Firebase.
+  the backend. Proxy URLs are cached in memory and are never written to Firebase.
 - Payment requests preserve `boatId`/`ownerId`; the backend validates them
   against `bnFleet`, `bnBookings` and `bnProposals`.
 - Public availability reads `backendcalendar/{boatId}`.

@@ -4,6 +4,16 @@
 
 - Adds `POST /api/media/signed-urls` for batched V4 read URLs.
 - Keeps `alegria_pics` private; only paths under `alegria/img/` can be signed.
+
+## Release 107 — private tenant media proxy
+
+- Moves the physical media root to
+  `gs://adn_root/tenants/alegria_data/alegria/img/`.
+- Keeps Firebase and frontend paths logical (`alegria/img/...`).
+- Replaces direct signed GCS URLs with a controlled backend streaming proxy,
+  compatible with keyless Google ADC authentication.
+- Never accepts a bucket or tenant directory from the browser.
+- Retains `/api/media/signed-urls` as a backward-compatible alias.
 - Uses Application Default Credentials and never exposes the service-account key.
 - Limits requests to 200 paths and applies per-IP rate limiting.
 - Requires `npm install @google-cloud/storage` in the complete server project.

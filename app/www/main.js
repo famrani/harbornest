@@ -16415,12 +16415,12 @@ let PrivateMediaService = class PrivateMediaService {
       }
       if (missing.length) {
         try {
-          const response = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.firstValueFrom)(_this2.http.post(`${_this2.backendOrigin}/api/media/signed-urls`, {
+          const response = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.firstValueFrom)(_this2.http.post(`${_this2.backendOrigin}/api/media/urls`, {
             paths: missing
           }));
           const signedUrls = response.urls || {};
           for (const objectPath of Object.keys(signedUrls)) {
-            const url = signedUrls[objectPath];
+            const url = _this2.absoluteBackendUrl(signedUrls[objectPath]);
             _this2.cache.set(objectPath, {
               url,
               expiresAt: Number(response.expiresAt || 0)
@@ -16465,9 +16465,25 @@ let PrivateMediaService = class PrivateMediaService {
   toObjectPath(value) {
     const clean = String(value || '').trim().replace(/\\/g, '/').split(/[?#]/)[0];
     if (clean.startsWith('alegria/img/')) return clean;
+    const tenantMarker = '/tenants/alegria_data/';
+    const tenantIndex = clean.indexOf(tenantMarker);
+    if (tenantIndex >= 0) {
+      const logicalPath = clean.slice(tenantIndex + tenantMarker.length);
+      if (logicalPath.startsWith('alegria/img/')) return logicalPath;
+    }
+    // Migration compatibility for former gs://alegria_pics/... and direct
+    // storage.googleapis.com URLs. Only the logical Alegria path is retained.
+    const logicalIndex = clean.indexOf('alegria/img/');
+    if (logicalIndex >= 0) return clean.slice(logicalIndex);
     if (clean.startsWith('assets/img/')) return `alegria/${clean.slice('assets/'.length)}`;
     if (clean.startsWith('/assets/img/')) return `alegria/${clean.slice('/assets/'.length)}`;
     return null;
+  }
+  absoluteBackendUrl(value) {
+    const url = String(value || '').trim();
+    if (!url) return '';
+    if (/^https?:\/\//i.test(url)) return url;
+    return `${this.backendOrigin}${url.startsWith('/') ? '' : '/'}${url}`;
   }
   get backendOrigin() {
     const hostname = window.location.hostname;

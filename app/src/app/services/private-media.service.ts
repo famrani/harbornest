@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
-interface SignedMediaResponse {
+interface MediaUrlsResponse {
   expiresAt: number;
   urls: Record<string, string>;
 }
@@ -48,13 +48,13 @@ export class PrivateMediaService {
 
     if (missing.length) {
       try {
-        const response = await firstValueFrom(this.http.post<SignedMediaResponse>(
-          `${this.backendOrigin}/api/media/signed-urls`,
+        const response = await firstValueFrom(this.http.post<MediaUrlsResponse>(
+          `${this.backendOrigin}/api/media/urls`,
           { paths: missing },
         ));
         const signedUrls: Record<string, string> = response.urls || {};
         for (const objectPath of Object.keys(signedUrls)) {
-          const url = signedUrls[objectPath];
+          const url = this.absoluteBackendUrl(signedUrls[objectPath]);
           this.cache.set(objectPath, { url, expiresAt: Number(response.expiresAt || 0) });
           resolved[objectPath] = url;
         }
@@ -99,9 +99,26 @@ export class PrivateMediaService {
   private toObjectPath(value: string): string | null {
     const clean = String(value || '').trim().replace(/\\/g, '/').split(/[?#]/)[0];
     if (clean.startsWith('alegria/img/')) return clean;
+    const tenantMarker = '/tenants/alegria_data/';
+    const tenantIndex = clean.indexOf(tenantMarker);
+    if (tenantIndex >= 0) {
+      const logicalPath = clean.slice(tenantIndex + tenantMarker.length);
+      if (logicalPath.startsWith('alegria/img/')) return logicalPath;
+    }
+    // Migration compatibility for former gs://alegria_pics/... and direct
+    // storage.googleapis.com URLs. Only the logical Alegria path is retained.
+    const logicalIndex = clean.indexOf('alegria/img/');
+    if (logicalIndex >= 0) return clean.slice(logicalIndex);
     if (clean.startsWith('assets/img/')) return `alegria/${clean.slice('assets/'.length)}`;
     if (clean.startsWith('/assets/img/')) return `alegria/${clean.slice('/assets/'.length)}`;
     return null;
+  }
+
+  private absoluteBackendUrl(value: string): string {
+    const url = String(value || '').trim();
+    if (!url) return '';
+    if (/^https?:\/\//i.test(url)) return url;
+    return `${this.backendOrigin}${url.startsWith('/') ? '' : '/'}${url}`;
   }
 
   private get backendOrigin(): string {

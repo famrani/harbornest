@@ -2,11 +2,7 @@
   "application": {
     "name": "Worknest back-end",
     "platform": "test",
-<<<<<<< HEAD
-    "release": "2.995"
-=======
-    "release": "2.996"
->>>>>>> 30c3893 (release 2.995: bookign details issues)
+    "release": "2.998"
   },
   "dev": {
     "firebaseMasterConfig": {

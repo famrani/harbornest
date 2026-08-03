@@ -1037,13 +1037,13 @@
     },
     "goMJiYO7vscLWu4RC2yaMnmsado2": {
       "address": "868 chemin du puits cidex 120b",
-      "createdTS": 1784826145230,
+      "createdTS": 1785567922589,
       "displayName": "f amrani",
       "email": "amranif061@gmail.com",
       "emailverified": true,
       "firstname": "f",
       "lastname": "amrani",
-      "modifiedTS": 1784826145368,
+      "modifiedTS": 1785567922724,
       "phone": "",
       "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocKe7CHlMZPwiffuEp4YL0jMap-9DsIowG52XVDKLU0dA2y5aQ=s96-c",
       "provider": "google",
@@ -10523,6 +10523,639 @@
       "warrantyRegistered": true,
       "warrantyStatus": "card_registered",
       "waterToysAmount": 0
+    },
+    "booking_1785594790693_eqi5b6": {
+      "appPayableAmount": 0,
+      "arrivalTime": "18:00",
+      "balanceAmount": 0,
+      "balancePaid": true,
+      "balanceStatus": "paid",
+      "boatClickAndBoatUrl": "https://www.clickandboat.com/location-bateau/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556",
+      "boatId": "alegria",
+      "boatManufacturer": "Bali - Catana",
+      "boatModel": "Bali 4.1",
+      "boatName": "Alegria",
+      "boatRegistrationNumber": "NI F91094 ",
+      "boatType": "Catamaran",
+      "boatYear": 2019,
+      "bookingConfirmationEmailLanguage": "fr",
+      "bookingConfirmationEmailSentTo": "amranif061@gmail.com",
+      "bookingConfirmationEmailTemplateKey": "bookingConfirmed",
+      "bookingId": "booking_1785594790693_eqi5b6",
+      "bookingRequestStatus": "confirmed",
+      "bookingSource": "direct",
+      "bookingStatus": "completed",
+      "cateringAmount": 0,
+      "cleaningCashAmount": 0,
+      "comments": "Please accept the T&C, pay the deposit for the amount due on board, and select your warranty mode.",
+      "createdTS": 1785594790693,
+      "customerAccountCreated": false,
+      "customerAuthProvider": "",
+      "customerName": "Faycal Amrani",
+      "customerUid": "",
+      "departureTime": "10:00",
+      "depositAmount": 0,
+      "depositPaid": true,
+      "depositStatus": "not_required",
+      "drinksAmount": 0,
+      "email": "amranif061@gmail.com",
+      "estimatedBoatPrice": 1,
+      "estimatedExtraGuestsAmount": 0,
+      "estimatedOptionsPrice": 0,
+      "estimatedPrice": 1,
+      "estimatedSkipperPrice": 0,
+      "externalCashOnBoardAmount": 0,
+      "externalDocuments": "",
+      "externalExtraServicesOnboardAmount": 0,
+      "externalOnboardAmount": 0,
+      "externalPlatform": "",
+      "externalPlatformBookingRef": "",
+      "externalPlatformBookingUrl": "",
+      "externalPlatformListingName": "Alegria Bali 4.1",
+      "externalPlatformName": "",
+      "externalPlatformNetOwnerAmount": 0,
+      "externalPlatformPaidAmount": 0,
+      "externalPlatformRemainingOwnerAmount": 0,
+      "externalPlatformTotalClientAmount": 0,
+      "externalPlatformUrl": "",
+      "externalPortAmount": 0,
+      "externalRemainingOnboardAmount": 0,
+      "externalTotalRemainingAmount": 0,
+      "modifiedTS": 1785594790693,
+      "offerId": "booking_1785594790693_eqi5b6",
+      "offerStatus": "accepted",
+      "onlinePayableAmount": 0,
+      "otherOnboardAmount": 0,
+      "outingDate": "2026-08-02",
+      "outingType": "Journée en mer",
+      "ownerId": "alegria",
+      "passengers": 6,
+      "paymentPaymentIntentId": "",
+      "paymentStatus": true,
+      "payments": {
+        "balance": {
+          "amount": 0,
+          "amount_total": 0,
+          "bookingId": "booking_1785594790693_eqi5b6",
+          "currency": "eur",
+          "customerEmail": "amranif061@gmail.com",
+          "customerName": "Faycal Amrani",
+          "customerPhone": "0685266510",
+          "modifiedTS": 1785594790693,
+          "outingDate": "2026-08-02",
+          "outingType": "Journée en mer",
+          "ownerId": "alegria",
+          "paymentType": "balance",
+          "source": "manual_historical_import",
+          "status": "paid"
+        },
+        "deposit": {
+          "amount": 0,
+          "depositPaid": true,
+          "depositStatus": "not_required",
+          "paid": true,
+          "paidAt": 1785594790693,
+          "paymentStatus": "not_required",
+          "source": "manual_historical_import",
+          "status": "not_required"
+        }
+      },
+      "phone": "0685266510",
+      "platformBookingReference": "",
+      "platformBookingUrl": "",
+      "platformReservationNumber": "",
+      "proposalBoatPrice": 1,
+      "proposalExtraServicesPrice": 0,
+      "proposalSkipperPrice": 0,
+      "raw": {
+        "appPayableAmount": 0,
+        "arrivalTime": "18:00",
+        "balancePaid": true,
+        "boatClickAndBoatUrl": "https://www.clickandboat.com/location-bateau/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556",
+        "boatId": "alegria",
+        "boatManufacturer": "Bali - Catana",
+        "boatModel": "Bali 4.1",
+        "boatName": "Alegria",
+        "boatRegistrationNumber": "NI F91094 ",
+        "boatType": "Catamaran",
+        "boatYear": 2019,
+        "bookingId": "booking_1785594790693_eqi5b6",
+        "bookingSource": "direct",
+        "bookingStatus": "completed",
+        "cateringAmount": 0,
+        "cleaningCashAmount": 0,
+        "customerEmail": "amranif061@gmail.com",
+        "customerName": "Faycal Amrani",
+        "customerPhone": "0685266510",
+        "departureTime": "10:00",
+        "depositAmount": 0,
+        "depositPaid": true,
+        "depositStatus": "not_required",
+        "drinksAmount": 0,
+        "entryMode": "future",
+        "externalCashOnBoardAmount": 0,
+        "externalDocuments": "",
+        "externalExtraServicesOnboardAmount": 0,
+        "externalPaymentItems": [
+          {
+            "amount": 1,
+            "createdTS": 1785594790693,
+            "id": "boat_rental",
+            "label": "Location du bateau",
+            "method": "alegria_payment",
+            "payableOnline": true,
+            "status": "pending_payment"
+          }
+        ],
+        "externalPlatformBookingRef": "",
+        "externalPlatformBookingUrl": "",
+        "externalPlatformListingName": "Alegria Bali 4.1",
+        "externalPlatformName": "",
+        "externalPlatformNetOwnerAmount": 0,
+        "externalPlatformPaidAmount": 0,
+        "externalPlatformRemainingOwnerAmount": 0,
+        "externalPlatformTotalClientAmount": 0,
+        "externalPlatformUrl": "",
+        "externalPortAmount": 0,
+        "externalRemainingOnboardAmount": 0,
+        "externalTotalRemainingAmount": 0,
+        "importedAt": 1785594790693,
+        "importedManually": true,
+        "maxGuests": 12,
+        "offerMessage": "Please accept the T&C, pay the deposit for the amount due on board, and select your warranty mode.",
+        "onlinePayableAmount": 0,
+        "otherOnboardAmount": 0,
+        "outingDate": "2026-08-02",
+        "outingType": "Journée en mer",
+        "passengers": 6,
+        "paymentStatus": true,
+        "platformBookingUrl": "",
+        "proposalBoatPrice": 1,
+        "skipperCashAmount": 0,
+        "source": "direct",
+        "startMarina": "Marina Baie des Anges",
+        "status": "completed",
+        "tipsAmount": 0,
+        "totalAmount": 1,
+        "totalPrice": 1,
+        "warrantyAmount": 500,
+        "warrantyPaymentChoice": "stripe_card",
+        "warrantyRegistered": true,
+        "warrantyStatus": "card_registered",
+        "waterToysAmount": 0
+      },
+      "relatedBookingId": "booking_1785594790693_eqi5b6",
+      "remainingFeesAmount": 0,
+      "remainingOnboardAmount": 0,
+      "skipperCashAmount": 0,
+      "source": "direct",
+      "startMarina": "Marina Baie des Anges",
+      "status": "completed",
+      "stripeCheckoutSessionId": "",
+      "termsAccepted": false,
+      "tipsAmount": 0,
+      "tncAccepted": false,
+      "totalAmount": 1,
+      "totalPrice": 1,
+      "updatedAt": 1785594790693,
+      "warrantyAmount": 500,
+      "warrantyMethod": "stripe_card",
+      "warrantyPaymentChoice": "stripe_card",
+      "warrantyRegistered": true,
+      "warrantyStatus": "card_registered",
+      "waterToysAmount": 0
+    },
+    "booking_1785594965965_xw90bf": {
+      "appPayableAmount": 0,
+      "arrivalTime": "17:00",
+      "balanceAmount": 0,
+      "balancePaid": true,
+      "balanceStatus": "paid",
+      "boatClickAndBoatUrl": "https://www.clickandboat.com/location-bateau/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556",
+      "boatId": "alegria",
+      "boatManufacturer": "Bali - Catana",
+      "boatModel": "Bali 4.1",
+      "boatName": "Alegria",
+      "boatRegistrationNumber": "NI F91094 ",
+      "boatType": "Catamaran",
+      "boatYear": 2019,
+      "bookingConfirmationEmailLanguage": "fr",
+      "bookingConfirmationEmailSentTo": "jannelle@groovefit.com",
+      "bookingConfirmationEmailTemplateKey": "bookingConfirmed",
+      "bookingId": "booking_1785594965965_xw90bf",
+      "bookingRequestStatus": "confirmed",
+      "bookingSource": "external",
+      "bookingStatus": "completed",
+      "cateringAmount": 0,
+      "cleaningCashAmount": 200,
+      "comments": "Please accept the T&C, pay the deposit for the amount due on board, and select your warranty mode.",
+      "createdTS": 1785594965965,
+      "customerAccountCreated": false,
+      "customerAuthProvider": "",
+      "customerName": "jannelle",
+      "customerUid": "",
+      "departureTime": "10:00",
+      "depositAmount": 0,
+      "depositPaid": true,
+      "depositStatus": "not_required",
+      "drinksAmount": 0,
+      "email": "jannelle@groovefit.com",
+      "estimatedBoatPrice": 700,
+      "estimatedExtraGuestsAmount": 0,
+      "estimatedOptionsPrice": 0,
+      "estimatedPrice": 1000,
+      "estimatedSkipperPrice": 300,
+      "externalCashOnBoardAmount": 0,
+      "externalDocuments": "",
+      "externalExtraServicesOnboardAmount": 0,
+      "externalOnboardAmount": 0,
+      "externalPlatform": "clickandboat",
+      "externalPlatformBookingRef": "1383068",
+      "externalPlatformBookingUrl": "https://www.clickandboat.com/booking/1383068/detail",
+      "externalPlatformListingName": "Alegria Bali 4.1",
+      "externalPlatformName": "",
+      "externalPlatformNetOwnerAmount": 760,
+      "externalPlatformPaidAmount": 760,
+      "externalPlatformRemainingOwnerAmount": 0,
+      "externalPlatformTotalClientAmount": 1000,
+      "externalPlatformUrl": "https://www.clickandboat.com/location-bateau/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556",
+      "externalPortAmount": 0,
+      "externalRemainingOnboardAmount": 0,
+      "externalTotalRemainingAmount": 0,
+      "modifiedTS": 1785594965965,
+      "offerId": "booking_1785594965965_xw90bf",
+      "offerStatus": "accepted",
+      "onlinePayableAmount": 0,
+      "otherOnboardAmount": 300,
+      "outingDate": "2026-09-07",
+      "outingType": "Journée en mer",
+      "ownerId": "alegria",
+      "passengers": 11,
+      "paymentPaymentIntentId": "",
+      "paymentStatus": true,
+      "payments": {
+        "balance": {
+          "amount": 0,
+          "amount_total": 0,
+          "bookingId": "booking_1785594965965_xw90bf",
+          "currency": "eur",
+          "customerEmail": "jannelle@groovefit.com",
+          "customerName": "jannelle",
+          "customerPhone": "+19173868303",
+          "modifiedTS": 1785594965965,
+          "outingDate": "2026-09-07",
+          "outingType": "Journée en mer",
+          "ownerId": "alegria",
+          "paymentType": "balance",
+          "source": "manual_historical_import",
+          "status": "paid"
+        },
+        "deposit": {
+          "amount": 0,
+          "depositPaid": true,
+          "depositStatus": "not_required",
+          "paid": true,
+          "paidAt": 1785594965965,
+          "paymentStatus": "not_required",
+          "source": "manual_historical_import",
+          "status": "not_required"
+        },
+        "platform": {
+          "netOwnerAmount": 760,
+          "paidAmount": 760,
+          "portAmount": 0,
+          "recordedAt": 1785594965965,
+          "reference": "1383068",
+          "remainingOwnerAmount": 0,
+          "source": "clickandboat",
+          "status": "recorded",
+          "totalClientAmount": 1000
+        }
+      },
+      "phone": "+19173868303",
+      "platformBookingReference": "1383068",
+      "platformBookingUrl": "https://www.clickandboat.com/booking/1383068/detail",
+      "platformReservationNumber": "1383068",
+      "proposalBoatPrice": 700,
+      "proposalExtraServicesPrice": 0,
+      "proposalSkipperPrice": 300,
+      "raw": {
+        "appPayableAmount": 0,
+        "arrivalTime": "17:00",
+        "balancePaid": true,
+        "boatClickAndBoatUrl": "https://www.clickandboat.com/location-bateau/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556",
+        "boatId": "alegria",
+        "boatManufacturer": "Bali - Catana",
+        "boatModel": "Bali 4.1",
+        "boatName": "Alegria",
+        "boatRegistrationNumber": "NI F91094 ",
+        "boatType": "Catamaran",
+        "boatYear": 2019,
+        "bookingId": "booking_1785594965965_xw90bf",
+        "bookingSource": "external",
+        "bookingStatus": "completed",
+        "cateringAmount": 0,
+        "cleaningCashAmount": 200,
+        "customerEmail": "jannelle@groovefit.com",
+        "customerName": "jannelle",
+        "customerPhone": "+19173868303",
+        "departureTime": "10:00",
+        "depositAmount": 0,
+        "depositPaid": true,
+        "depositStatus": "not_required",
+        "drinksAmount": 0,
+        "entryMode": "future",
+        "externalCashOnBoardAmount": 0,
+        "externalDocuments": "",
+        "externalExtraServicesOnboardAmount": 0,
+        "externalPaymentItems": [
+          {
+            "amount": 300,
+            "createdTS": 1785594965964,
+            "id": "skipper_cash",
+            "label": "Skipper en espèces",
+            "method": "cash_on_board",
+            "payableOnline": false,
+            "status": "cash_to_collect"
+          },
+          {
+            "amount": 200,
+            "createdTS": 1785594965964,
+            "id": "cleaning",
+            "label": "Nettoyage / carburant",
+            "method": "alegria_payment",
+            "payableOnline": true,
+            "status": "pending_payment"
+          },
+          {
+            "amount": 300,
+            "createdTS": 1785594965964,
+            "id": "other_onboard",
+            "label": "Autre prestation",
+            "method": "alegria_payment",
+            "payableOnline": true,
+            "status": "pending_payment"
+          }
+        ],
+        "externalPlatformBookingRef": "1383068",
+        "externalPlatformBookingUrl": "https://www.clickandboat.com/booking/1383068/detail",
+        "externalPlatformListingId": "bali-catana-bali-4-1-5pw6556",
+        "externalPlatformListingName": "Alegria Bali 4.1",
+        "externalPlatformName": "",
+        "externalPlatformNetOwnerAmount": 760,
+        "externalPlatformPaidAmount": 760,
+        "externalPlatformRemainingOwnerAmount": 0,
+        "externalPlatformTotalClientAmount": 1000,
+        "externalPlatformUrl": "https://www.clickandboat.com/location-bateau/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556",
+        "externalPortAmount": 0,
+        "externalRemainingOnboardAmount": 0,
+        "externalTotalRemainingAmount": 0,
+        "importedAt": 1785594965965,
+        "importedManually": true,
+        "maxGuests": 12,
+        "offerMessage": "Please accept the T&C, pay the deposit for the amount due on board, and select your warranty mode.",
+        "onlinePayableAmount": 0,
+        "otherOnboardAmount": 300,
+        "outingDate": "2026-09-07",
+        "outingType": "Journée en mer",
+        "passengers": 11,
+        "paymentStatus": true,
+        "platformBookingUrl": "https://www.clickandboat.com/booking/1383068/detail",
+        "proposalBoatPrice": 0,
+        "skipperCashAmount": 300,
+        "source": "clickandboat",
+        "startMarina": "Marina Baie des Anges",
+        "status": "completed",
+        "tipsAmount": 0,
+        "totalAmount": 0,
+        "totalPrice": 0,
+        "warrantyAmount": 500,
+        "warrantyPaymentChoice": "stripe_card",
+        "warrantyRegistered": true,
+        "warrantyStatus": "card_registered",
+        "waterToysAmount": 0
+      },
+      "relatedBookingId": "booking_1785594965965_xw90bf",
+      "remainingFeesAmount": 0,
+      "remainingOnboardAmount": 0,
+      "skipperCashAmount": 300,
+      "source": "clickandboat",
+      "startMarina": "Marina Baie des Anges",
+      "status": "completed",
+      "stripeCheckoutSessionId": "",
+      "termsAccepted": false,
+      "tipsAmount": 0,
+      "tncAccepted": false,
+      "totalAmount": 1000,
+      "totalPrice": 1000,
+      "updatedAt": 1785594965965,
+      "warrantyAmount": 500,
+      "warrantyMethod": "stripe_card",
+      "warrantyPaymentChoice": "stripe_card",
+      "warrantyRegistered": true,
+      "warrantyStatus": "card_registered",
+      "waterToysAmount": 0
+    },
+    "booking_1785595671094_cni7kb": {
+      "appPayableAmount": 0,
+      "arrivalTime": "23:00",
+      "balanceAmount": 0,
+      "balancePaid": true,
+      "balanceStatus": "paid",
+      "boatClickAndBoatUrl": "https://www.clickandboat.com/location-bateau/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556",
+      "boatId": "alegria",
+      "boatManufacturer": "Bali - Catana",
+      "boatModel": "Bali 4.1",
+      "boatName": "Alegria",
+      "boatRegistrationNumber": "NI F91094 ",
+      "boatType": "Catamaran",
+      "boatYear": 2019,
+      "bookingConfirmationEmailLanguage": "fr",
+      "bookingConfirmationEmailSentTo": "amranif061@gmail.com",
+      "bookingConfirmationEmailTemplateKey": "bookingConfirmed",
+      "bookingId": "booking_1785595671094_cni7kb",
+      "bookingRequestStatus": "confirmed",
+      "bookingSource": "direct",
+      "bookingStatus": "completed",
+      "cateringAmount": 0,
+      "cleaningCashAmount": 0,
+      "comments": "Please accept the T&C, pay the deposit for the amount due on board, and select your warranty mode.",
+      "createdTS": 1785595671094,
+      "customerAccountCreated": false,
+      "customerAuthProvider": "",
+      "customerName": "Faycal Amrani",
+      "customerUid": "",
+      "departureTime": "14:00",
+      "depositAmount": 0,
+      "depositPaid": true,
+      "depositStatus": "not_required",
+      "drinksAmount": 0,
+      "email": "amranif061@gmail.com",
+      "estimatedBoatPrice": 1,
+      "estimatedExtraGuestsAmount": 0,
+      "estimatedOptionsPrice": 0,
+      "estimatedPrice": 1,
+      "estimatedSkipperPrice": 0,
+      "externalCashOnBoardAmount": 0,
+      "externalDocuments": "",
+      "externalExtraServicesOnboardAmount": 0,
+      "externalOnboardAmount": 0,
+      "externalPlatform": "",
+      "externalPlatformBookingRef": "",
+      "externalPlatformBookingUrl": "",
+      "externalPlatformListingName": "Alegria Bali 4.1",
+      "externalPlatformName": "",
+      "externalPlatformNetOwnerAmount": 0,
+      "externalPlatformPaidAmount": 0,
+      "externalPlatformRemainingOwnerAmount": 0,
+      "externalPlatformTotalClientAmount": 0,
+      "externalPlatformUrl": "",
+      "externalPortAmount": 0,
+      "externalRemainingOnboardAmount": 0,
+      "externalTotalRemainingAmount": 0,
+      "modifiedTS": 1785595671094,
+      "offerId": "booking_1785595671094_cni7kb",
+      "offerStatus": "accepted",
+      "onlinePayableAmount": 0,
+      "otherOnboardAmount": 0,
+      "outingDate": "2026-08-04",
+      "outingType": "Journée en mer",
+      "ownerId": "alegria",
+      "passengers": 8,
+      "paymentPaymentIntentId": "",
+      "paymentStatus": true,
+      "payments": {
+        "balance": {
+          "amount": 0,
+          "amount_total": 0,
+          "bookingId": "booking_1785595671094_cni7kb",
+          "currency": "eur",
+          "customerEmail": "amranif061@gmail.com",
+          "customerName": "Faycal Amrani",
+          "customerPhone": "0685266510",
+          "modifiedTS": 1785595671094,
+          "outingDate": "2026-08-04",
+          "outingType": "Journée en mer",
+          "ownerId": "alegria",
+          "paymentType": "balance",
+          "source": "manual_historical_import",
+          "status": "paid"
+        },
+        "deposit": {
+          "amount": 0,
+          "depositPaid": true,
+          "depositStatus": "not_required",
+          "paid": true,
+          "paidAt": 1785595671094,
+          "paymentStatus": "not_required",
+          "source": "manual_historical_import",
+          "status": "not_required"
+        }
+      },
+      "phone": "0685266510",
+      "platformBookingReference": "",
+      "platformBookingUrl": "",
+      "platformReservationNumber": "",
+      "proposalBoatPrice": 1,
+      "proposalExtraServicesPrice": 0,
+      "proposalSkipperPrice": 0,
+      "raw": {
+        "appPayableAmount": 0,
+        "arrivalTime": "23:00",
+        "balancePaid": true,
+        "boatClickAndBoatUrl": "https://www.clickandboat.com/location-bateau/villeneuve-loubet/catamaran/bali-catana-bali-4-1-5pw6556",
+        "boatId": "alegria",
+        "boatManufacturer": "Bali - Catana",
+        "boatModel": "Bali 4.1",
+        "boatName": "Alegria",
+        "boatRegistrationNumber": "NI F91094 ",
+        "boatType": "Catamaran",
+        "boatYear": 2019,
+        "bookingId": "booking_1785595671094_cni7kb",
+        "bookingSource": "direct",
+        "bookingStatus": "completed",
+        "cateringAmount": 0,
+        "cleaningCashAmount": 0,
+        "customerEmail": "amranif061@gmail.com",
+        "customerName": "Faycal Amrani",
+        "customerPhone": "0685266510",
+        "departureTime": "14:00",
+        "depositAmount": 0,
+        "depositPaid": true,
+        "depositStatus": "not_required",
+        "drinksAmount": 0,
+        "entryMode": "future",
+        "externalCashOnBoardAmount": 0,
+        "externalDocuments": "",
+        "externalExtraServicesOnboardAmount": 0,
+        "externalPaymentItems": [
+          {
+            "amount": 1,
+            "createdTS": 1785595671094,
+            "id": "boat_rental",
+            "label": "Location du bateau",
+            "method": "alegria_payment",
+            "payableOnline": true,
+            "status": "pending_payment"
+          }
+        ],
+        "externalPlatformBookingRef": "",
+        "externalPlatformBookingUrl": "",
+        "externalPlatformListingName": "Alegria Bali 4.1",
+        "externalPlatformName": "",
+        "externalPlatformNetOwnerAmount": 0,
+        "externalPlatformPaidAmount": 0,
+        "externalPlatformRemainingOwnerAmount": 0,
+        "externalPlatformTotalClientAmount": 0,
+        "externalPlatformUrl": "",
+        "externalPortAmount": 0,
+        "externalRemainingOnboardAmount": 0,
+        "externalTotalRemainingAmount": 0,
+        "importedAt": 1785595671094,
+        "importedManually": true,
+        "maxGuests": 12,
+        "offerMessage": "Please accept the T&C, pay the deposit for the amount due on board, and select your warranty mode.",
+        "onlinePayableAmount": 0,
+        "otherOnboardAmount": 0,
+        "outingDate": "2026-08-04",
+        "outingType": "Journée en mer",
+        "passengers": 8,
+        "paymentStatus": true,
+        "platformBookingUrl": "",
+        "proposalBoatPrice": 1,
+        "skipperCashAmount": 0,
+        "source": "direct",
+        "startMarina": "Marina Baie des Anges",
+        "status": "completed",
+        "tipsAmount": 0,
+        "totalAmount": 1,
+        "totalPrice": 1,
+        "warrantyAmount": 500,
+        "warrantyPaymentChoice": "stripe_card",
+        "warrantyRegistered": true,
+        "warrantyStatus": "card_registered",
+        "waterToysAmount": 0
+      },
+      "relatedBookingId": "booking_1785595671094_cni7kb",
+      "remainingFeesAmount": 0,
+      "remainingOnboardAmount": 0,
+      "skipperCashAmount": 0,
+      "source": "direct",
+      "startMarina": "Marina Baie des Anges",
+      "status": "completed",
+      "stripeCheckoutSessionId": "",
+      "termsAccepted": false,
+      "tipsAmount": 0,
+      "tncAccepted": false,
+      "totalAmount": 1,
+      "totalPrice": 1,
+      "updatedAt": 1785595671094,
+      "warrantyAmount": 500,
+      "warrantyMethod": "stripe_card",
+      "warrantyPaymentChoice": "stripe_card",
+      "warrantyRegistered": true,
+      "warrantyStatus": "card_registered",
+      "waterToysAmount": 0
     }
   },
   "bnFleet": {
@@ -12476,21 +13109,21 @@
         }
       },
       "gallery": [
-        "assets/img/boat/bali4.1/bali-41-2.jpg",
-        "assets/img/boat/bali4.1/bali-41-3.jpg",
-        "assets/img/boat/bali4.1/bali-41-4.jpg",
-        "assets/img/boat/bali4.1/bali-41-5.jpg",
-        "assets/img/boat/bali4.1/bali-41-1.jpg",
-        "assets/img/boat/bali4.1/bali-41-6.jpg",
-        "assets/img/boat/bali4.1/bali-41-7.jpg",
-        "assets/img/boat/bali4.1/bali-41-8.jpg",
-        "assets/img/boat/bali4.1/bali-41-9.jpg",
-        "assets/img/boat/bali4.1/bali-41-10.jpg",
-        "assets/img/boat/bali4.1/bali-41-11.jpg",
-        "assets/img/boat/bali4.1/bali-41-12.jpg",
-        "assets/img/boat/bali4.1/bali-41-13.jpg"
+        "alegria/img/boat/bali4.1/bali-41-2.jpg",
+        "alegria/img/boat/bali4.1/bali-41-3.jpg",
+        "alegria/img/boat/bali4.1/bali-41-4.jpg",
+        "alegria/img/boat/bali4.1/bali-41-5.jpg",
+        "alegria/img/boat/bali4.1/bali-41-1.jpg",
+        "alegria/img/boat/bali4.1/bali-41-6.jpg",
+        "alegria/img/boat/bali4.1/bali-41-7.jpg",
+        "alegria/img/boat/bali4.1/bali-41-8.jpg",
+        "alegria/img/boat/bali4.1/bali-41-9.jpg",
+        "alegria/img/boat/bali4.1/bali-41-10.jpg",
+        "alegria/img/boat/bali4.1/bali-41-11.jpg",
+        "alegria/img/boat/bali4.1/bali-41-12.jpg",
+        "alegria/img/boat/bali4.1/bali-41-13.jpg"
       ],
-      "imageUrl": "assets/img/logo-Alegria.png",
+      "imageUrl": "alegria/img/logo-Alegria.png",
       "length": "12.1",
       "manufacturer": "Bali - Catana",
       "marina": "Marina Baie des Anges",
@@ -12537,9 +13170,9 @@
           "duration": "Halber Tag",
           "eyebrow": "Besonderer Moment",
           "gallery": [
-            "assets/img/events/sunset/sunset1.jpg",
-            "assets/img/events/sunset/sunset2.jpg",
-            "assets/img/events/sunset/sunset3.jpg"
+            "alegria/img/events/sunset/sunset1.jpg",
+            "alegria/img/events/sunset/sunset2.jpg",
+            "alegria/img/events/sunset/sunset3.jpg"
           ],
           "galleryTitle": "Fotogalerie",
           "guestSuggestions": [
@@ -12563,7 +13196,7 @@
             "Ein schicker Aperitif"
           ],
           "idealForTitle": "Ideal für",
-          "image": "assets/img/events/sunset/sunset1.jpg",
+          "image": "alegria/img/events/sunset/sunset1.jpg",
           "includes": [
             "Privatisiertes Bareboat-Boot",
             "Unabhängiger Skipper erforderlich",
@@ -12611,9 +13244,9 @@
           "duration": "Half day",
           "eyebrow": "Special moment",
           "gallery": [
-            "assets/img/events/sunset/sunset1.jpg",
-            "assets/img/events/sunset/sunset2.jpg",
-            "assets/img/events/sunset/sunset3.jpg"
+            "alegria/img/events/sunset/sunset1.jpg",
+            "alegria/img/events/sunset/sunset2.jpg",
+            "alegria/img/events/sunset/sunset3.jpg"
           ],
           "galleryTitle": "Photo gallery",
           "guestSuggestions": [
@@ -12637,7 +13270,7 @@
             "A chic aperitif"
           ],
           "idealForTitle": "Ideal for",
-          "image": "assets/img/events/sunset/sunset1.jpg",
+          "image": "alegria/img/events/sunset/sunset1.jpg",
           "includes": [
             "Private bareboat charter",
             "Independent skipper required",
@@ -12685,9 +13318,9 @@
           "duration": "Medio día",
           "eyebrow": "Momento especial",
           "gallery": [
-            "assets/img/events/sunset/sunset1.jpg",
-            "assets/img/events/sunset/sunset2.jpg",
-            "assets/img/events/sunset/sunset3.jpg"
+            "alegria/img/events/sunset/sunset1.jpg",
+            "alegria/img/events/sunset/sunset2.jpg",
+            "alegria/img/events/sunset/sunset3.jpg"
           ],
           "galleryTitle": "Galería de fotos",
           "guestSuggestions": [
@@ -12711,7 +13344,7 @@
             "Un aperitivo chic"
           ],
           "idealForTitle": "Ideal para",
-          "image": "assets/img/events/sunset/sunset1.jpg",
+          "image": "alegria/img/events/sunset/sunset1.jpg",
           "includes": [
             "Alquiler privado en casco desnudo",
             "Patrón independiente obligatorio",
@@ -12759,9 +13392,9 @@
           "duration": "Demi-journée",
           "eyebrow": "Moment privilégié",
           "gallery": [
-            "assets/img/events/sunset/sunset1.jpg",
-            "assets/img/events/sunset/sunset2.jpg",
-            "assets/img/events/sunset/sunset3.jpg"
+            "alegria/img/events/sunset/sunset1.jpg",
+            "alegria/img/events/sunset/sunset2.jpg",
+            "alegria/img/events/sunset/sunset3.jpg"
           ],
           "galleryTitle": "Galerie photos",
           "guestSuggestions": [
@@ -12785,7 +13418,7 @@
             "Un apéritif chic"
           ],
           "idealForTitle": "Idéal pour",
-          "image": "assets/img/events/sunset/sunset1.jpg",
+          "image": "alegria/img/events/sunset/sunset1.jpg",
           "includes": [
             "Bateau privatisé en coque nue",
             "Skipper indépendant obligatoire",
@@ -12819,7 +13452,7 @@
           "title": "Coucher de soleil"
         },
         "id": "coucher-de-soleil",
-        "image": "assets/img/events/sunset/sunset1.jpg",
+        "image": "alegria/img/events/sunset/sunset1.jpg",
         "it": {
           "contactNote": "Ti aiutiamo a scegliere il programma più adatto.",
           "coreOffering": [
@@ -12835,9 +13468,9 @@
           "duration": "Mezza giornata",
           "eyebrow": "Momento speciale",
           "gallery": [
-            "assets/img/events/sunset/sunset1.jpg",
-            "assets/img/events/sunset/sunset2.jpg",
-            "assets/img/events/sunset/sunset3.jpg"
+            "alegria/img/events/sunset/sunset1.jpg",
+            "alegria/img/events/sunset/sunset2.jpg",
+            "alegria/img/events/sunset/sunset3.jpg"
           ],
           "galleryTitle": "Galleria fotografica",
           "guestSuggestions": [
@@ -12861,7 +13494,7 @@
             "Un aperitivo chic"
           ],
           "idealForTitle": "Ideale per",
-          "image": "assets/img/events/sunset/sunset1.jpg",
+          "image": "alegria/img/events/sunset/sunset1.jpg",
           "includes": [
             "Barca a scafo nudo privatizzata",
             "È richiesto uno skipper indipendente",
@@ -12909,9 +13542,9 @@
           "duration": "Halve dag",
           "eyebrow": "Bijzonder moment",
           "gallery": [
-            "assets/img/events/sunset/sunset1.jpg",
-            "assets/img/events/sunset/sunset2.jpg",
-            "assets/img/events/sunset/sunset3.jpg"
+            "alegria/img/events/sunset/sunset1.jpg",
+            "alegria/img/events/sunset/sunset2.jpg",
+            "alegria/img/events/sunset/sunset3.jpg"
           ],
           "galleryTitle": "Fotogalerij",
           "guestSuggestions": [
@@ -12935,7 +13568,7 @@
             "Een chique aperitief"
           ],
           "idealForTitle": "Ideaal voor",
-          "image": "assets/img/events/sunset/sunset1.jpg",
+          "image": "alegria/img/events/sunset/sunset1.jpg",
           "includes": [
             "Geprivatiseerde bareboat-boot",
             "Onafhankelijke schipper vereist",
@@ -12985,9 +13618,9 @@
           "duration": "Полдня",
           "eyebrow": "Особый момент",
           "gallery": [
-            "assets/img/events/sunset/sunset1.jpg",
-            "assets/img/events/sunset/sunset2.jpg",
-            "assets/img/events/sunset/sunset3.jpg"
+            "alegria/img/events/sunset/sunset1.jpg",
+            "alegria/img/events/sunset/sunset2.jpg",
+            "alegria/img/events/sunset/sunset3.jpg"
           ],
           "galleryTitle": "Фотогалерея",
           "guestSuggestions": [
@@ -13011,7 +13644,7 @@
             "Шикарный аперитив"
           ],
           "idealForTitle": "Идеально подходит для",
-          "image": "assets/img/events/sunset/sunset1.jpg",
+          "image": "alegria/img/events/sunset/sunset1.jpg",
           "includes": [
             "Приватизированная лодка без экипажа",
             "Требуется независимый шкипер",
@@ -13065,12 +13698,12 @@
           "duration": "Ganzer Tag oder halber Tag",
           "eyebrow": "Signaturausgabe",
           "gallery": [
-            "assets/img/events/de/de1.png",
-            "assets/img/events/de/de2.png",
-            "assets/img/events/de/de3.png",
-            "assets/img/events/de/de4.png",
-            "assets/img/events/de/de5.png",
-            "assets/img/events/de/de6.png"
+            "alegria/img/events/de/de1.png",
+            "alegria/img/events/de/de2.png",
+            "alegria/img/events/de/de3.png",
+            "alegria/img/events/de/de4.png",
+            "alegria/img/events/de/de5.png",
+            "alegria/img/events/de/de6.png"
           ],
           "galleryTitle": "Fotogalerie",
           "guestSuggestions": [
@@ -13094,7 +13727,7 @@
             "Eine Entdeckung der Côte d’Azur"
           ],
           "idealForTitle": "Ideal für",
-          "image": "assets/img/events/de/de1.png",
+          "image": "alegria/img/events/de/de1.png",
           "includes": [
             "Privatisiertes Bareboat-Boot",
             "Maßgeschneiderte Organisation",
@@ -13142,12 +13775,12 @@
           "duration": "Full day or half day",
           "eyebrow": "Signature outing",
           "gallery": [
-            "assets/img/events/de/de1.png",
-            "assets/img/events/de/de2.png",
-            "assets/img/events/de/de3.png",
-            "assets/img/events/de/de4.png",
-            "assets/img/events/de/de5.png",
-            "assets/img/events/de/de6.png"
+            "alegria/img/events/de/de1.png",
+            "alegria/img/events/de/de2.png",
+            "alegria/img/events/de/de3.png",
+            "alegria/img/events/de/de4.png",
+            "alegria/img/events/de/de5.png",
+            "alegria/img/events/de/de6.png"
           ],
           "galleryTitle": "Photo gallery",
           "guestSuggestions": [
@@ -13171,7 +13804,7 @@
             "Discovering the Riviera"
           ],
           "idealForTitle": "Ideal for",
-          "image": "assets/img/events/de/de1.png",
+          "image": "alegria/img/events/de/de1.png",
           "includes": [
             "Private bareboat charter",
             "Tailored organization",
@@ -13219,12 +13852,12 @@
           "duration": "Día completo o medio día",
           "eyebrow": "Salida emblemática",
           "gallery": [
-            "assets/img/events/de/de1.png",
-            "assets/img/events/de/de2.png",
-            "assets/img/events/de/de3.png",
-            "assets/img/events/de/de4.png",
-            "assets/img/events/de/de5.png",
-            "assets/img/events/de/de6.png"
+            "alegria/img/events/de/de1.png",
+            "alegria/img/events/de/de2.png",
+            "alegria/img/events/de/de3.png",
+            "alegria/img/events/de/de4.png",
+            "alegria/img/events/de/de5.png",
+            "alegria/img/events/de/de6.png"
           ],
           "galleryTitle": "Galería de fotos",
           "guestSuggestions": [
@@ -13248,7 +13881,7 @@
             "Descubrir la Costa Azul"
           ],
           "idealForTitle": "Ideal para",
-          "image": "assets/img/events/de/de1.png",
+          "image": "alegria/img/events/de/de1.png",
           "includes": [
             "Alquiler privado en casco desnudo",
             "Organización a medida",
@@ -13296,12 +13929,12 @@
           "duration": "Journée ou demi-journée",
           "eyebrow": "Sortie signature",
           "gallery": [
-            "assets/img/events/de/de1.png",
-            "assets/img/events/de/de2.png",
-            "assets/img/events/de/de3.png",
-            "assets/img/events/de/de4.png",
-            "assets/img/events/de/de5.png",
-            "assets/img/events/de/de6.png"
+            "alegria/img/events/de/de1.png",
+            "alegria/img/events/de/de2.png",
+            "alegria/img/events/de/de3.png",
+            "alegria/img/events/de/de4.png",
+            "alegria/img/events/de/de5.png",
+            "alegria/img/events/de/de6.png"
           ],
           "galleryTitle": "Galerie photos",
           "guestSuggestions": [
@@ -13325,7 +13958,7 @@
             "Une découverte de la Côte d’Azur"
           ],
           "idealForTitle": "Idéal pour",
-          "image": "assets/img/events/de/de1.png",
+          "image": "alegria/img/events/de/de1.png",
           "includes": [
             "Bateau privatisé en coque nue",
             "Organisation sur mesure",
@@ -13359,7 +13992,7 @@
           "title": "Journée en mer"
         },
         "id": "journee-en-mer",
-        "image": "assets/img/events/de/de1.png",
+        "image": "alegria/img/events/de/de1.png",
         "it": {
           "contactNote": "Indica la tua data, il numero di persone e l'atmosfera desiderata.",
           "coreOffering": [
@@ -13375,12 +14008,12 @@
           "duration": "Giornata intera o mezza giornata",
           "eyebrow": "Uscita della firma",
           "gallery": [
-            "assets/img/events/de/de1.png",
-            "assets/img/events/de/de2.png",
-            "assets/img/events/de/de3.png",
-            "assets/img/events/de/de4.png",
-            "assets/img/events/de/de5.png",
-            "assets/img/events/de/de6.png"
+            "alegria/img/events/de/de1.png",
+            "alegria/img/events/de/de2.png",
+            "alegria/img/events/de/de3.png",
+            "alegria/img/events/de/de4.png",
+            "alegria/img/events/de/de5.png",
+            "alegria/img/events/de/de6.png"
           ],
           "galleryTitle": "Galleria fotografica",
           "guestSuggestions": [
@@ -13404,7 +14037,7 @@
             "Alla scoperta della Costa Azzurra"
           ],
           "idealForTitle": "Ideale per",
-          "image": "assets/img/events/de/de1.png",
+          "image": "alegria/img/events/de/de1.png",
           "includes": [
             "Barca a scafo nudo privatizzata",
             "Organizzazione su misura",
@@ -13452,12 +14085,12 @@
           "duration": "Hele dag of halve dag",
           "eyebrow": "Handtekeninguitvoer",
           "gallery": [
-            "assets/img/events/de/de1.png",
-            "assets/img/events/de/de2.png",
-            "assets/img/events/de/de3.png",
-            "assets/img/events/de/de4.png",
-            "assets/img/events/de/de5.png",
-            "assets/img/events/de/de6.png"
+            "alegria/img/events/de/de1.png",
+            "alegria/img/events/de/de2.png",
+            "alegria/img/events/de/de3.png",
+            "alegria/img/events/de/de4.png",
+            "alegria/img/events/de/de5.png",
+            "alegria/img/events/de/de6.png"
           ],
           "galleryTitle": "Fotogalerij",
           "guestSuggestions": [
@@ -13481,7 +14114,7 @@
             "Een ontdekking van de Côte d’Azur"
           ],
           "idealForTitle": "Ideaal voor",
-          "image": "assets/img/events/de/de1.png",
+          "image": "alegria/img/events/de/de1.png",
           "includes": [
             "Geprivatiseerde bareboat-boot",
             "Organisatie op maat",
@@ -13531,12 +14164,12 @@
           "duration": "Целый день или полдня",
           "eyebrow": "Вывод подписи",
           "gallery": [
-            "assets/img/events/de/de1.png",
-            "assets/img/events/de/de2.png",
-            "assets/img/events/de/de3.png",
-            "assets/img/events/de/de4.png",
-            "assets/img/events/de/de5.png",
-            "assets/img/events/de/de6.png"
+            "alegria/img/events/de/de1.png",
+            "alegria/img/events/de/de2.png",
+            "alegria/img/events/de/de3.png",
+            "alegria/img/events/de/de4.png",
+            "alegria/img/events/de/de5.png",
+            "alegria/img/events/de/de6.png"
           ],
           "galleryTitle": "Фотогалерея",
           "guestSuggestions": [
@@ -13560,7 +14193,7 @@
             "Открытие Лазурного Берега"
           ],
           "idealForTitle": "Идеально подходит для",
-          "image": "assets/img/events/de/de1.png",
+          "image": "alegria/img/events/de/de1.png",
           "includes": [
             "Приватизированная лодка без экипажа",
             "Индивидуальная организация",
@@ -13614,17 +14247,17 @@
           "duration": "Tag oder Abend",
           "eyebrow": "Festlicher Ausflug",
           "gallery": [
-            "assets/img/events/party/party1.jpg",
-            "assets/img/events/party/party2.jpg",
-            "assets/img/events/party/party3.jpg",
-            "assets/img/events/party/party4.jpg",
-            "assets/img/events/party/party5.jpg",
-            "assets/img/events/party/party6.jpg",
-            "assets/img/events/party/party7.jpg",
-            "assets/img/events/party/party8.jpg",
-            "assets/img/events/party/party9.jpg",
-            "assets/img/events/party/party10.jpg",
-            "assets/img/events/party/party11.jpg"
+            "alegria/img/events/party/party1.jpg",
+            "alegria/img/events/party/party2.jpg",
+            "alegria/img/events/party/party3.jpg",
+            "alegria/img/events/party/party4.jpg",
+            "alegria/img/events/party/party5.jpg",
+            "alegria/img/events/party/party6.jpg",
+            "alegria/img/events/party/party7.jpg",
+            "alegria/img/events/party/party8.jpg",
+            "alegria/img/events/party/party9.jpg",
+            "alegria/img/events/party/party10.jpg",
+            "alegria/img/events/party/party11.jpg"
           ],
           "galleryTitle": "Fotogalerie",
           "guestSuggestions": [
@@ -13648,7 +14281,7 @@
             "Eine unvergessliche Überraschung"
           ],
           "idealForTitle": "Ideal für",
-          "image": "assets/img/events/party/party1.jpg",
+          "image": "alegria/img/events/party/party1.jpg",
           "includes": [
             "Privatisiertes Bareboat-Boot",
             "Unabhängiger Skipper erforderlich",
@@ -13696,17 +14329,17 @@
           "duration": "Day or evening",
           "eyebrow": "Festive outing",
           "gallery": [
-            "assets/img/events/party/party1.jpg",
-            "assets/img/events/party/party2.jpg",
-            "assets/img/events/party/party3.jpg",
-            "assets/img/events/party/party4.jpg",
-            "assets/img/events/party/party5.jpg",
-            "assets/img/events/party/party6.jpg",
-            "assets/img/events/party/party7.jpg",
-            "assets/img/events/party/party8.jpg",
-            "assets/img/events/party/party9.jpg",
-            "assets/img/events/party/party10.jpg",
-            "assets/img/events/party/party11.jpg"
+            "alegria/img/events/party/party1.jpg",
+            "alegria/img/events/party/party2.jpg",
+            "alegria/img/events/party/party3.jpg",
+            "alegria/img/events/party/party4.jpg",
+            "alegria/img/events/party/party5.jpg",
+            "alegria/img/events/party/party6.jpg",
+            "alegria/img/events/party/party7.jpg",
+            "alegria/img/events/party/party8.jpg",
+            "alegria/img/events/party/party9.jpg",
+            "alegria/img/events/party/party10.jpg",
+            "alegria/img/events/party/party11.jpg"
           ],
           "galleryTitle": "Photo gallery",
           "guestSuggestions": [
@@ -13730,7 +14363,7 @@
             "A memorable surprise"
           ],
           "idealForTitle": "Ideal for",
-          "image": "assets/img/events/party/party1.jpg",
+          "image": "alegria/img/events/party/party1.jpg",
           "includes": [
             "Private bareboat charter",
             "Independent skipper required",
@@ -13778,17 +14411,17 @@
           "duration": "Día o noche",
           "eyebrow": "Salida festiva",
           "gallery": [
-            "assets/img/events/party/party1.jpg",
-            "assets/img/events/party/party2.jpg",
-            "assets/img/events/party/party3.jpg",
-            "assets/img/events/party/party4.jpg",
-            "assets/img/events/party/party5.jpg",
-            "assets/img/events/party/party6.jpg",
-            "assets/img/events/party/party7.jpg",
-            "assets/img/events/party/party8.jpg",
-            "assets/img/events/party/party9.jpg",
-            "assets/img/events/party/party10.jpg",
-            "assets/img/events/party/party11.jpg"
+            "alegria/img/events/party/party1.jpg",
+            "alegria/img/events/party/party2.jpg",
+            "alegria/img/events/party/party3.jpg",
+            "alegria/img/events/party/party4.jpg",
+            "alegria/img/events/party/party5.jpg",
+            "alegria/img/events/party/party6.jpg",
+            "alegria/img/events/party/party7.jpg",
+            "alegria/img/events/party/party8.jpg",
+            "alegria/img/events/party/party9.jpg",
+            "alegria/img/events/party/party10.jpg",
+            "alegria/img/events/party/party11.jpg"
           ],
           "galleryTitle": "Galería de fotos",
           "guestSuggestions": [
@@ -13812,7 +14445,7 @@
             "Una sorpresa memorable"
           ],
           "idealForTitle": "Ideal para",
-          "image": "assets/img/events/party/party1.jpg",
+          "image": "alegria/img/events/party/party1.jpg",
           "includes": [
             "Alquiler privado en casco desnudo",
             "Patrón independiente obligatorio",
@@ -13860,17 +14493,17 @@
           "duration": "Journée ou soirée",
           "eyebrow": "Sortie festive",
           "gallery": [
-            "assets/img/events/party/party1.jpg",
-            "assets/img/events/party/party2.jpg",
-            "assets/img/events/party/party3.jpg",
-            "assets/img/events/party/party4.jpg",
-            "assets/img/events/party/party5.jpg",
-            "assets/img/events/party/party6.jpg",
-            "assets/img/events/party/party7.jpg",
-            "assets/img/events/party/party8.jpg",
-            "assets/img/events/party/party9.jpg",
-            "assets/img/events/party/party10.jpg",
-            "assets/img/events/party/party11.jpg"
+            "alegria/img/events/party/party1.jpg",
+            "alegria/img/events/party/party2.jpg",
+            "alegria/img/events/party/party3.jpg",
+            "alegria/img/events/party/party4.jpg",
+            "alegria/img/events/party/party5.jpg",
+            "alegria/img/events/party/party6.jpg",
+            "alegria/img/events/party/party7.jpg",
+            "alegria/img/events/party/party8.jpg",
+            "alegria/img/events/party/party9.jpg",
+            "alegria/img/events/party/party10.jpg",
+            "alegria/img/events/party/party11.jpg"
           ],
           "galleryTitle": "Galerie photos",
           "guestSuggestions": [
@@ -13894,7 +14527,7 @@
             "Une surprise mémorable"
           ],
           "idealForTitle": "Idéal pour",
-          "image": "assets/img/events/party/party1.jpg",
+          "image": "alegria/img/events/party/party1.jpg",
           "includes": [
             "Bateau privatisé en coque nue",
             "Skipper indépendant obligatoire",
@@ -13928,7 +14561,7 @@
           "title": "Fête privée"
         },
         "id": "party",
-        "image": "assets/img/events/party/party1.jpg",
+        "image": "alegria/img/events/party/party1.jpg",
         "it": {
           "contactNote": "Raccontaci lo stile che cerchi e creeremo la formula giusta.",
           "coreOffering": [
@@ -13944,17 +14577,17 @@
           "duration": "Giorno o sera",
           "eyebrow": "Uscita festiva",
           "gallery": [
-            "assets/img/events/party/party1.jpg",
-            "assets/img/events/party/party2.jpg",
-            "assets/img/events/party/party3.jpg",
-            "assets/img/events/party/party4.jpg",
-            "assets/img/events/party/party5.jpg",
-            "assets/img/events/party/party6.jpg",
-            "assets/img/events/party/party7.jpg",
-            "assets/img/events/party/party8.jpg",
-            "assets/img/events/party/party9.jpg",
-            "assets/img/events/party/party10.jpg",
-            "assets/img/events/party/party11.jpg"
+            "alegria/img/events/party/party1.jpg",
+            "alegria/img/events/party/party2.jpg",
+            "alegria/img/events/party/party3.jpg",
+            "alegria/img/events/party/party4.jpg",
+            "alegria/img/events/party/party5.jpg",
+            "alegria/img/events/party/party6.jpg",
+            "alegria/img/events/party/party7.jpg",
+            "alegria/img/events/party/party8.jpg",
+            "alegria/img/events/party/party9.jpg",
+            "alegria/img/events/party/party10.jpg",
+            "alegria/img/events/party/party11.jpg"
           ],
           "galleryTitle": "Galleria fotografica",
           "guestSuggestions": [
@@ -13978,7 +14611,7 @@
             "Una sorpresa memorabile"
           ],
           "idealForTitle": "Ideale per",
-          "image": "assets/img/events/party/party1.jpg",
+          "image": "alegria/img/events/party/party1.jpg",
           "includes": [
             "Barca a scafo nudo privatizzata",
             "È richiesto uno skipper indipendente",
@@ -14026,17 +14659,17 @@
           "duration": "Dag of avond",
           "eyebrow": "Feestelijk uitje",
           "gallery": [
-            "assets/img/events/party/party1.jpg",
-            "assets/img/events/party/party2.jpg",
-            "assets/img/events/party/party3.jpg",
-            "assets/img/events/party/party4.jpg",
-            "assets/img/events/party/party5.jpg",
-            "assets/img/events/party/party6.jpg",
-            "assets/img/events/party/party7.jpg",
-            "assets/img/events/party/party8.jpg",
-            "assets/img/events/party/party9.jpg",
-            "assets/img/events/party/party10.jpg",
-            "assets/img/events/party/party11.jpg"
+            "alegria/img/events/party/party1.jpg",
+            "alegria/img/events/party/party2.jpg",
+            "alegria/img/events/party/party3.jpg",
+            "alegria/img/events/party/party4.jpg",
+            "alegria/img/events/party/party5.jpg",
+            "alegria/img/events/party/party6.jpg",
+            "alegria/img/events/party/party7.jpg",
+            "alegria/img/events/party/party8.jpg",
+            "alegria/img/events/party/party9.jpg",
+            "alegria/img/events/party/party10.jpg",
+            "alegria/img/events/party/party11.jpg"
           ],
           "galleryTitle": "Fotogalerij",
           "guestSuggestions": [
@@ -14060,7 +14693,7 @@
             "Een onvergetelijke verrassing"
           ],
           "idealForTitle": "Ideaal voor",
-          "image": "assets/img/events/party/party1.jpg",
+          "image": "alegria/img/events/party/party1.jpg",
           "includes": [
             "Geprivatiseerde bareboat-boot",
             "Onafhankelijke schipper vereist",
@@ -14110,17 +14743,17 @@
           "duration": "День или вечер",
           "eyebrow": "Праздничная прогулка",
           "gallery": [
-            "assets/img/events/party/party1.jpg",
-            "assets/img/events/party/party2.jpg",
-            "assets/img/events/party/party3.jpg",
-            "assets/img/events/party/party4.jpg",
-            "assets/img/events/party/party5.jpg",
-            "assets/img/events/party/party6.jpg",
-            "assets/img/events/party/party7.jpg",
-            "assets/img/events/party/party8.jpg",
-            "assets/img/events/party/party9.jpg",
-            "assets/img/events/party/party10.jpg",
-            "assets/img/events/party/party11.jpg"
+            "alegria/img/events/party/party1.jpg",
+            "alegria/img/events/party/party2.jpg",
+            "alegria/img/events/party/party3.jpg",
+            "alegria/img/events/party/party4.jpg",
+            "alegria/img/events/party/party5.jpg",
+            "alegria/img/events/party/party6.jpg",
+            "alegria/img/events/party/party7.jpg",
+            "alegria/img/events/party/party8.jpg",
+            "alegria/img/events/party/party9.jpg",
+            "alegria/img/events/party/party10.jpg",
+            "alegria/img/events/party/party11.jpg"
           ],
           "galleryTitle": "Фотогалерея",
           "guestSuggestions": [
@@ -14144,7 +14777,7 @@
             "Незабываемый сюрприз"
           ],
           "idealForTitle": "Идеально подходит для",
-          "image": "assets/img/events/party/party1.jpg",
+          "image": "alegria/img/events/party/party1.jpg",
           "includes": [
             "Приватизированная лодка без экипажа",
             "Требуется независимый шкипер",
@@ -14198,8 +14831,8 @@
           "duration": "Halber oder ganzer Tag",
           "eyebrow": "Unternehmen",
           "gallery": [
-            "assets/img/events/business-meeting/business-meeting1.jpg",
-            "assets/img/events/business-meeting/business-meeting2.jpg"
+            "alegria/img/events/business-meeting/business-meeting1.jpg",
+            "alegria/img/events/business-meeting/business-meeting2.jpg"
           ],
           "galleryTitle": "Fotogalerie",
           "guestSuggestions": [
@@ -14223,7 +14856,7 @@
             "Ein Moment des Zusammenhalts"
           ],
           "idealForTitle": "Ideal für",
-          "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+          "image": "alegria/img/events/business-meeting/business-meeting1.jpg",
           "includes": [
             "Privatisiertes Bareboat-Boot",
             "Unabhängiger Skipper erforderlich",
@@ -14271,8 +14904,8 @@
           "duration": "Half day or full day",
           "eyebrow": "Corporate",
           "gallery": [
-            "assets/img/events/business-meeting/business-meeting1.jpg",
-            "assets/img/events/business-meeting/business-meeting2.jpg"
+            "alegria/img/events/business-meeting/business-meeting1.jpg",
+            "alegria/img/events/business-meeting/business-meeting2.jpg"
           ],
           "galleryTitle": "Photo gallery",
           "guestSuggestions": [
@@ -14296,7 +14929,7 @@
             "A team bonding moment"
           ],
           "idealForTitle": "Ideal for",
-          "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+          "image": "alegria/img/events/business-meeting/business-meeting1.jpg",
           "includes": [
             "Private bareboat charter",
             "Independent skipper required",
@@ -14344,8 +14977,8 @@
           "duration": "Medio día o día completo",
           "eyebrow": "Corporativo",
           "gallery": [
-            "assets/img/events/business-meeting/business-meeting1.jpg",
-            "assets/img/events/business-meeting/business-meeting2.jpg"
+            "alegria/img/events/business-meeting/business-meeting1.jpg",
+            "alegria/img/events/business-meeting/business-meeting2.jpg"
           ],
           "galleryTitle": "Galería de fotos",
           "guestSuggestions": [
@@ -14369,7 +15002,7 @@
             "Un momento de cohesión de equipo"
           ],
           "idealForTitle": "Ideal para",
-          "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+          "image": "alegria/img/events/business-meeting/business-meeting1.jpg",
           "includes": [
             "Alquiler privado en casco desnudo",
             "Patrón independiente obligatorio",
@@ -14417,8 +15050,8 @@
           "duration": "Demi-journée ou journée",
           "eyebrow": "Corporate",
           "gallery": [
-            "assets/img/events/business-meeting/business-meeting1.jpg",
-            "assets/img/events/business-meeting/business-meeting2.jpg"
+            "alegria/img/events/business-meeting/business-meeting1.jpg",
+            "alegria/img/events/business-meeting/business-meeting2.jpg"
           ],
           "galleryTitle": "Galerie photos",
           "guestSuggestions": [
@@ -14442,7 +15075,7 @@
             "Un moment de cohésion"
           ],
           "idealForTitle": "Idéal pour",
-          "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+          "image": "alegria/img/events/business-meeting/business-meeting1.jpg",
           "includes": [
             "Bateau privatisé en coque nue",
             "Skipper indépendant obligatoire",
@@ -14476,7 +15109,7 @@
           "title": "Sortie entreprise"
         },
         "id": "sortie-entreprise",
-        "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+        "image": "alegria/img/events/business-meeting/business-meeting1.jpg",
         "it": {
           "contactNote": "Ti aiutiamo a creare un formato semplice, premium ed efficiente.",
           "coreOffering": [
@@ -14492,8 +15125,8 @@
           "duration": "Mezza giornata o giornata intera",
           "eyebrow": "Aziendale",
           "gallery": [
-            "assets/img/events/business-meeting/business-meeting1.jpg",
-            "assets/img/events/business-meeting/business-meeting2.jpg"
+            "alegria/img/events/business-meeting/business-meeting1.jpg",
+            "alegria/img/events/business-meeting/business-meeting2.jpg"
           ],
           "galleryTitle": "Galleria fotografica",
           "guestSuggestions": [
@@ -14517,7 +15150,7 @@
             "Un momento di coesione"
           ],
           "idealForTitle": "Ideale per",
-          "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+          "image": "alegria/img/events/business-meeting/business-meeting1.jpg",
           "includes": [
             "Barca a scafo nudo privatizzata",
             "È richiesto uno skipper indipendente",
@@ -14565,8 +15198,8 @@
           "duration": "Halve dag of hele dag",
           "eyebrow": "Zakelijk",
           "gallery": [
-            "assets/img/events/business-meeting/business-meeting1.jpg",
-            "assets/img/events/business-meeting/business-meeting2.jpg"
+            "alegria/img/events/business-meeting/business-meeting1.jpg",
+            "alegria/img/events/business-meeting/business-meeting2.jpg"
           ],
           "galleryTitle": "Fotogalerij",
           "guestSuggestions": [
@@ -14590,7 +15223,7 @@
             "Een moment van cohesie"
           ],
           "idealForTitle": "Ideaal voor",
-          "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+          "image": "alegria/img/events/business-meeting/business-meeting1.jpg",
           "includes": [
             "Geprivatiseerde bareboat-boot",
             "Onafhankelijke schipper vereist",
@@ -14640,8 +15273,8 @@
           "duration": "Полдня или целый день",
           "eyebrow": "Корпоративный",
           "gallery": [
-            "assets/img/events/business-meeting/business-meeting1.jpg",
-            "assets/img/events/business-meeting/business-meeting2.jpg"
+            "alegria/img/events/business-meeting/business-meeting1.jpg",
+            "alegria/img/events/business-meeting/business-meeting2.jpg"
           ],
           "galleryTitle": "Фотогалерея",
           "guestSuggestions": [
@@ -14665,7 +15298,7 @@
             "Момент единения"
           ],
           "idealForTitle": "Идеально подходит для",
-          "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+          "image": "alegria/img/events/business-meeting/business-meeting1.jpg",
           "includes": [
             "Приватизированная лодка без экипажа",
             "Требуется независимый шкипер",
@@ -17662,7 +18295,7 @@
             }
           }
         },
-        "boatHeroImage": "assets/img/boat/bali4.1/bali-41-4.jpg",
+        "boatHeroImage": "alegria/img/boat/bali4.1/bali-41-4.jpg",
         "boatHighlights": [
           "Geräumiger und stabiler Bali 4.1 Katamaran",
           "Bis zu 12 Gäste",
@@ -18284,19 +18917,19 @@
           "terms": "Allgemeine Geschäftsbedingungen"
         },
         "galleryImages": [
-          "assets/img/boat/bali4.1/bali-41-2.jpg",
-          "assets/img/boat/bali4.1/bali-41-3.jpg",
-          "assets/img/boat/bali4.1/bali-41-4.jpg",
-          "assets/img/boat/bali4.1/bali-41-5.jpg",
-          "assets/img/boat/bali4.1/bali-41-1.jpg",
-          "assets/img/boat/bali4.1/bali-41-6.jpg",
-          "assets/img/boat/bali4.1/bali-41-7.jpg",
-          "assets/img/boat/bali4.1/bali-41-8.jpg",
-          "assets/img/boat/bali4.1/bali-41-9.jpg",
-          "assets/img/boat/bali4.1/bali-41-10.jpg",
-          "assets/img/boat/bali4.1/bali-41-11.jpg",
-          "assets/img/boat/bali4.1/bali-41-12.jpg",
-          "assets/img/boat/bali4.1/bali-41-13.jpg"
+          "alegria/img/boat/bali4.1/bali-41-2.jpg",
+          "alegria/img/boat/bali4.1/bali-41-3.jpg",
+          "alegria/img/boat/bali4.1/bali-41-4.jpg",
+          "alegria/img/boat/bali4.1/bali-41-5.jpg",
+          "alegria/img/boat/bali4.1/bali-41-1.jpg",
+          "alegria/img/boat/bali4.1/bali-41-6.jpg",
+          "alegria/img/boat/bali4.1/bali-41-7.jpg",
+          "alegria/img/boat/bali4.1/bali-41-8.jpg",
+          "alegria/img/boat/bali4.1/bali-41-9.jpg",
+          "alegria/img/boat/bali4.1/bali-41-10.jpg",
+          "alegria/img/boat/bali4.1/bali-41-11.jpg",
+          "alegria/img/boat/bali4.1/bali-41-12.jpg",
+          "alegria/img/boat/bali4.1/bali-41-13.jpg"
         ],
         "galleryPage": {
           "eyebrow": "Galerie",
@@ -18306,7 +18939,7 @@
         "header": {
           "hi": "Hallo"
         },
-        "heroImage": "assets/img/home/home-hero-generic.jpg",
+        "heroImage": "alegria/img/home/home-hero-generic.jpg",
         "hi": "Hallo",
         "home": {
           "boatCta": "Das Boot entdecken",
@@ -18367,7 +19000,7 @@
                 "Komfortabler Salon und Schattenbereiche",
                 "Einfacher Zugang zum Wasser"
               ],
-              "image": "assets/img/boat/bali4.1/bali-41-4.jpg",
+              "image": "alegria/img/boat/bali4.1/bali-41-4.jpg",
               "imageAlt": "Alegria catamaran",
               "text": "Ein geräumiger und komfortabler Katamaran zum Entspannen, Schwimmen, Essen und Genießen der Küste.",
               "title": "Alegria, Ihre private Basis auf dem Wasser"
@@ -18459,7 +19092,7 @@
               "items": [
                 {
                   "description": "Eine private Kreuzfahrt zum Schwimmen, Entspannen und Entdecken schöner Ankerplätze.",
-                  "image": "assets/img/events/de/de1.png",
+                  "image": "alegria/img/events/de/de1.png",
                   "meta": "Tag oder halber Tag • Bis zu 12 Gäste",
                   "price": "Ab 799 €",
                   "route": [
@@ -18471,7 +19104,7 @@
                 },
                 {
                   "description": "Ein eleganter später Nachmittag im goldenen Licht auf See.",
-                  "image": "assets/img/events/sunset/sunset1.jpg",
+                  "image": "alegria/img/events/sunset/sunset1.jpg",
                   "meta": "Sonnenuntergang • Bis zu 12 Gäste",
                   "price": "Auf Anfrage",
                   "route": [
@@ -18483,7 +19116,7 @@
                 },
                 {
                   "description": "Geburtstag, Junggesellenabschied oder besonderer Moment an Bord von Alegria.",
-                  "image": "assets/img/events/party/party1.jpg",
+                  "image": "alegria/img/events/party/party1.jpg",
                   "meta": "Privat • Bis zu 12 Gäste",
                   "price": "Auf Anfrage",
                   "route": [
@@ -18540,7 +19173,7 @@
                 "Kundenbewertungen"
               ],
               "eyebrow": "Private Katamaran-Erfahrung",
-              "image": "assets/img/home/home-hero-generic.jpg",
+              "image": "alegria/img/home/home-hero-generic.jpg",
               "imageAlt": "Alegria catamaran",
               "intro": "Wählen Sie Ihr Erlebnis, verstehen Sie den Preis, senden Sie Ihre Anfrage, zahlen Sie sicher online und hinterlassen Sie nach der Fahrt eine Bewertung.",
               "priceText": "Ab",
@@ -18777,7 +19410,7 @@
               "Komfortabler Salon und Schattenbereiche",
               "Einfacher Zugang zum Wasser"
             ],
-            "image": "assets/img/boat/bali4.1/bali-41-4.jpg",
+            "image": "alegria/img/boat/bali4.1/bali-41-4.jpg",
             "imageAlt": "Alegria catamaran",
             "text": "Ein geräumiger und komfortabler Katamaran zum Entspannen, Schwimmen, Essen und Genießen der Küste.",
             "title": "Alegria, Ihre private Basis auf dem Wasser"
@@ -18890,7 +19523,7 @@
             "items": [
               {
                 "description": "Eine private Kreuzfahrt zum Schwimmen, Entspannen und Entdecken schöner Ankerplätze.",
-                "image": "assets/img/events/de/de1.png",
+                "image": "alegria/img/events/de/de1.png",
                 "meta": "Tag oder halber Tag • Bis zu 12 Gäste",
                 "price": "Ab 799 €",
                 "route": [
@@ -18902,7 +19535,7 @@
               },
               {
                 "description": "Ein eleganter später Nachmittag im goldenen Licht auf See.",
-                "image": "assets/img/events/sunset/sunset1.jpg",
+                "image": "alegria/img/events/sunset/sunset1.jpg",
                 "meta": "Sonnenuntergang • Bis zu 12 Gäste",
                 "price": "Auf Anfrage",
                 "route": [
@@ -18914,7 +19547,7 @@
               },
               {
                 "description": "Geburtstag, Junggesellenabschied oder besonderer Moment an Bord von Alegria.",
-                "image": "assets/img/events/party/party1.jpg",
+                "image": "alegria/img/events/party/party1.jpg",
                 "meta": "Privat • Bis zu 12 Gäste",
                 "price": "Auf Anfrage",
                 "route": [
@@ -18971,7 +19604,7 @@
               "Kundenbewertungen"
             ],
             "eyebrow": "Private Katamaran-Erfahrung",
-            "image": "assets/img/home/home-hero-generic.jpg",
+            "image": "alegria/img/home/home-hero-generic.jpg",
             "imageAlt": "Alegria catamaran",
             "intro": "Wählen Sie Ihr Erlebnis, verstehen Sie den Preis, senden Sie Ihre Anfrage, zahlen Sie sicher online und hinterlassen Sie nach der Fahrt eine Bewertung.",
             "priceText": "Ab",
@@ -19521,12 +20154,12 @@
             "duration": "Ganzer Tag oder halber Tag",
             "eyebrow": "Signaturausgabe",
             "gallery": [
-              "assets/img/events/de/de1.png",
-              "assets/img/events/de/de2.png",
-              "assets/img/events/de/de3.png",
-              "assets/img/events/de/de4.png",
-              "assets/img/events/de/de5.png",
-              "assets/img/events/de/de6.png"
+              "alegria/img/events/de/de1.png",
+              "alegria/img/events/de/de2.png",
+              "alegria/img/events/de/de3.png",
+              "alegria/img/events/de/de4.png",
+              "alegria/img/events/de/de5.png",
+              "alegria/img/events/de/de6.png"
             ],
             "galleryTitle": "Fotogalerie",
             "guestSuggestions": [
@@ -19550,7 +20183,7 @@
               "Eine Entdeckung der Côte d’Azur"
             ],
             "idealForTitle": "Ideal für",
-            "image": "assets/img/events/de/de1.png",
+            "image": "alegria/img/events/de/de1.png",
             "includes": [
               "Privatisiertes Bareboat-Boot",
               "Maßgeschneiderte Organisation",
@@ -19601,9 +20234,9 @@
             "duration": "Halber Tag",
             "eyebrow": "Besonderer Moment",
             "gallery": [
-              "assets/img/events/sunset/sunset1.jpg",
-              "assets/img/events/sunset/sunset2.jpg",
-              "assets/img/events/sunset/sunset3.jpg"
+              "alegria/img/events/sunset/sunset1.jpg",
+              "alegria/img/events/sunset/sunset2.jpg",
+              "alegria/img/events/sunset/sunset3.jpg"
             ],
             "galleryTitle": "Fotogalerie",
             "guestSuggestions": [
@@ -19627,7 +20260,7 @@
               "Ein schicker Aperitif"
             ],
             "idealForTitle": "Ideal für",
-            "image": "assets/img/events/sunset/sunset1.jpg",
+            "image": "alegria/img/events/sunset/sunset1.jpg",
             "includes": [
               "Privatisiertes Bareboat-Boot",
               "Unabhängiger Skipper erforderlich",
@@ -19678,17 +20311,17 @@
             "duration": "Tag oder Abend",
             "eyebrow": "Festlicher Ausflug",
             "gallery": [
-              "assets/img/events/party/party1.jpg",
-              "assets/img/events/party/party2.jpg",
-              "assets/img/events/party/party3.jpg",
-              "assets/img/events/party/party4.jpg",
-              "assets/img/events/party/party5.jpg",
-              "assets/img/events/party/party6.jpg",
-              "assets/img/events/party/party7.jpg",
-              "assets/img/events/party/party8.jpg",
-              "assets/img/events/party/party9.jpg",
-              "assets/img/events/party/party10.jpg",
-              "assets/img/events/party/party11.jpg"
+              "alegria/img/events/party/party1.jpg",
+              "alegria/img/events/party/party2.jpg",
+              "alegria/img/events/party/party3.jpg",
+              "alegria/img/events/party/party4.jpg",
+              "alegria/img/events/party/party5.jpg",
+              "alegria/img/events/party/party6.jpg",
+              "alegria/img/events/party/party7.jpg",
+              "alegria/img/events/party/party8.jpg",
+              "alegria/img/events/party/party9.jpg",
+              "alegria/img/events/party/party10.jpg",
+              "alegria/img/events/party/party11.jpg"
             ],
             "galleryTitle": "Fotogalerie",
             "guestSuggestions": [
@@ -19712,7 +20345,7 @@
               "Eine unvergessliche Überraschung"
             ],
             "idealForTitle": "Ideal für",
-            "image": "assets/img/events/party/party1.jpg",
+            "image": "alegria/img/events/party/party1.jpg",
             "includes": [
               "Privatisiertes Bareboat-Boot",
               "Unabhängiger Skipper erforderlich",
@@ -19763,8 +20396,8 @@
             "duration": "Halber oder ganzer Tag",
             "eyebrow": "Unternehmen",
             "gallery": [
-              "assets/img/events/business-meeting/business-meeting1.jpg",
-              "assets/img/events/business-meeting/business-meeting2.jpg"
+              "alegria/img/events/business-meeting/business-meeting1.jpg",
+              "alegria/img/events/business-meeting/business-meeting2.jpg"
             ],
             "galleryTitle": "Fotogalerie",
             "guestSuggestions": [
@@ -19788,7 +20421,7 @@
               "Ein Moment des Zusammenhalts"
             ],
             "idealForTitle": "Ideal für",
-            "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+            "image": "alegria/img/events/business-meeting/business-meeting1.jpg",
             "includes": [
               "Privatisiertes Bareboat-Boot",
               "Unabhängiger Skipper erforderlich",
@@ -21107,7 +21740,7 @@
             }
           }
         },
-        "boatHeroImage": "assets/img/boat/bali4.1/bali-41-4.jpg",
+        "boatHeroImage": "alegria/img/boat/bali4.1/bali-41-4.jpg",
         "boatHighlights": [
           "Spacious and stable Bali 4.1 catamaran",
           "Up to 12 guests",
@@ -21729,19 +22362,19 @@
           "terms": "Terms & Conditions"
         },
         "galleryImages": [
-          "assets/img/boat/bali4.1/bali-41-2.jpg",
-          "assets/img/boat/bali4.1/bali-41-3.jpg",
-          "assets/img/boat/bali4.1/bali-41-4.jpg",
-          "assets/img/boat/bali4.1/bali-41-5.jpg",
-          "assets/img/boat/bali4.1/bali-41-1.jpg",
-          "assets/img/boat/bali4.1/bali-41-6.jpg",
-          "assets/img/boat/bali4.1/bali-41-7.jpg",
-          "assets/img/boat/bali4.1/bali-41-8.jpg",
-          "assets/img/boat/bali4.1/bali-41-9.jpg",
-          "assets/img/boat/bali4.1/bali-41-10.jpg",
-          "assets/img/boat/bali4.1/bali-41-11.jpg",
-          "assets/img/boat/bali4.1/bali-41-12.jpg",
-          "assets/img/boat/bali4.1/bali-41-13.jpg"
+          "alegria/img/boat/bali4.1/bali-41-2.jpg",
+          "alegria/img/boat/bali4.1/bali-41-3.jpg",
+          "alegria/img/boat/bali4.1/bali-41-4.jpg",
+          "alegria/img/boat/bali4.1/bali-41-5.jpg",
+          "alegria/img/boat/bali4.1/bali-41-1.jpg",
+          "alegria/img/boat/bali4.1/bali-41-6.jpg",
+          "alegria/img/boat/bali4.1/bali-41-7.jpg",
+          "alegria/img/boat/bali4.1/bali-41-8.jpg",
+          "alegria/img/boat/bali4.1/bali-41-9.jpg",
+          "alegria/img/boat/bali4.1/bali-41-10.jpg",
+          "alegria/img/boat/bali4.1/bali-41-11.jpg",
+          "alegria/img/boat/bali4.1/bali-41-12.jpg",
+          "alegria/img/boat/bali4.1/bali-41-13.jpg"
         ],
         "galleryPage": {
           "eyebrow": "Gallery",
@@ -21751,7 +22384,7 @@
         "header": {
           "hi": "Hi"
         },
-        "heroImage": "assets/img/home/home-hero-generic.jpg",
+        "heroImage": "alegria/img/home/home-hero-generic.jpg",
         "hi": "Hi",
         "home": {
           "boatCta": "Discover the boat",
@@ -21812,7 +22445,7 @@
                 "Comfortable saloon and shaded areas",
                 "Easy access to the water"
               ],
-              "image": "assets/img/boat/bali4.1/bali-41-4.jpg",
+              "image": "alegria/img/boat/bali4.1/bali-41-4.jpg",
               "imageAlt": "Alegria catamaran",
               "text": "A spacious and comfortable catamaran designed for relaxing, swimming, lunching and enjoying the coast.",
               "title": "Alegria, your private base on the water"
@@ -21904,7 +22537,7 @@
               "items": [
                 {
                   "description": "A private cruise to swim, relax and discover beautiful anchorages.",
-                  "image": "assets/img/events/de/de1.png",
+                  "image": "alegria/img/events/de/de1.png",
                   "meta": "Day or half day • Up to 12 guests",
                   "price": "From €799",
                   "route": [
@@ -21916,7 +22549,7 @@
                 },
                 {
                   "description": "An elegant late afternoon to enjoy the golden light at sea.",
-                  "image": "assets/img/events/sunset/sunset1.jpg",
+                  "image": "alegria/img/events/sunset/sunset1.jpg",
                   "meta": "Sunset • Up to 12 guests",
                   "price": "On request",
                   "route": [
@@ -21928,7 +22561,7 @@
                 },
                 {
                   "description": "Birthday, bachelor/bachelorette party or special moment aboard Alegria.",
-                  "image": "assets/img/events/party/party1.jpg",
+                  "image": "alegria/img/events/party/party1.jpg",
                   "meta": "Private • Up to 12 guests",
                   "price": "On request",
                   "route": [
@@ -21985,7 +22618,7 @@
                 "Guest reviews"
               ],
               "eyebrow": "Private catamaran experience",
-              "image": "assets/img/home/home-hero-generic.jpg",
+              "image": "alegria/img/home/home-hero-generic.jpg",
               "imageAlt": "Alegria catamaran",
               "intro": "Choose your experience, understand the price, send your request, pay securely online and leave feedback after your outing.",
               "priceText": "From",
@@ -22222,7 +22855,7 @@
               "Comfortable saloon and shaded areas",
               "Easy access to the water"
             ],
-            "image": "assets/img/boat/bali4.1/bali-41-4.jpg",
+            "image": "alegria/img/boat/bali4.1/bali-41-4.jpg",
             "imageAlt": "Alegria catamaran",
             "text": "A spacious and comfortable catamaran designed for relaxing, swimming, lunching and enjoying the coast.",
             "title": "Alegria, your private base on the water"
@@ -22335,7 +22968,7 @@
             "items": [
               {
                 "description": "A private cruise to swim, relax and discover beautiful anchorages.",
-                "image": "assets/img/events/de/de1.png",
+                "image": "alegria/img/events/de/de1.png",
                 "meta": "Day or half day • Up to 12 guests",
                 "price": "From €799",
                 "route": [
@@ -22347,7 +22980,7 @@
               },
               {
                 "description": "An elegant late afternoon to enjoy the golden light at sea.",
-                "image": "assets/img/events/sunset/sunset1.jpg",
+                "image": "alegria/img/events/sunset/sunset1.jpg",
                 "meta": "Sunset • Up to 12 guests",
                 "price": "On request",
                 "route": [
@@ -22359,7 +22992,7 @@
               },
               {
                 "description": "Birthday, bachelor/bachelorette party or special moment aboard Alegria.",
-                "image": "assets/img/events/party/party1.jpg",
+                "image": "alegria/img/events/party/party1.jpg",
                 "meta": "Private • Up to 12 guests",
                 "price": "On request",
                 "route": [
@@ -22416,7 +23049,7 @@
               "Guest reviews"
             ],
             "eyebrow": "Private catamaran experience",
-            "image": "assets/img/home/home-hero-generic.jpg",
+            "image": "alegria/img/home/home-hero-generic.jpg",
             "imageAlt": "Alegria catamaran",
             "intro": "Choose your experience, understand the price, send your request, pay securely online and leave feedback after your outing.",
             "priceText": "From",
@@ -22966,12 +23599,12 @@
             "duration": "Full day or half day",
             "eyebrow": "Signature outing",
             "gallery": [
-              "assets/img/events/de/de1.png",
-              "assets/img/events/de/de2.png",
-              "assets/img/events/de/de3.png",
-              "assets/img/events/de/de4.png",
-              "assets/img/events/de/de5.png",
-              "assets/img/events/de/de6.png"
+              "alegria/img/events/de/de1.png",
+              "alegria/img/events/de/de2.png",
+              "alegria/img/events/de/de3.png",
+              "alegria/img/events/de/de4.png",
+              "alegria/img/events/de/de5.png",
+              "alegria/img/events/de/de6.png"
             ],
             "galleryTitle": "Photo gallery",
             "guestSuggestions": [
@@ -22995,7 +23628,7 @@
               "Discovering the Riviera"
             ],
             "idealForTitle": "Ideal for",
-            "image": "assets/img/events/de/de1.png",
+            "image": "alegria/img/events/de/de1.png",
             "includes": [
               "Private bareboat charter",
               "Tailored organization",
@@ -23046,9 +23679,9 @@
             "duration": "Half day",
             "eyebrow": "Special moment",
             "gallery": [
-              "assets/img/events/sunset/sunset1.jpg",
-              "assets/img/events/sunset/sunset2.jpg",
-              "assets/img/events/sunset/sunset3.jpg"
+              "alegria/img/events/sunset/sunset1.jpg",
+              "alegria/img/events/sunset/sunset2.jpg",
+              "alegria/img/events/sunset/sunset3.jpg"
             ],
             "galleryTitle": "Photo gallery",
             "guestSuggestions": [
@@ -23072,7 +23705,7 @@
               "A chic aperitif"
             ],
             "idealForTitle": "Ideal for",
-            "image": "assets/img/events/sunset/sunset1.jpg",
+            "image": "alegria/img/events/sunset/sunset1.jpg",
             "includes": [
               "Private bareboat charter",
               "Independent skipper required",
@@ -23123,17 +23756,17 @@
             "duration": "Day or evening",
             "eyebrow": "Festive outing",
             "gallery": [
-              "assets/img/events/party/party1.jpg",
-              "assets/img/events/party/party2.jpg",
-              "assets/img/events/party/party3.jpg",
-              "assets/img/events/party/party4.jpg",
-              "assets/img/events/party/party5.jpg",
-              "assets/img/events/party/party6.jpg",
-              "assets/img/events/party/party7.jpg",
-              "assets/img/events/party/party8.jpg",
-              "assets/img/events/party/party9.jpg",
-              "assets/img/events/party/party10.jpg",
-              "assets/img/events/party/party11.jpg"
+              "alegria/img/events/party/party1.jpg",
+              "alegria/img/events/party/party2.jpg",
+              "alegria/img/events/party/party3.jpg",
+              "alegria/img/events/party/party4.jpg",
+              "alegria/img/events/party/party5.jpg",
+              "alegria/img/events/party/party6.jpg",
+              "alegria/img/events/party/party7.jpg",
+              "alegria/img/events/party/party8.jpg",
+              "alegria/img/events/party/party9.jpg",
+              "alegria/img/events/party/party10.jpg",
+              "alegria/img/events/party/party11.jpg"
             ],
             "galleryTitle": "Photo gallery",
             "guestSuggestions": [
@@ -23157,7 +23790,7 @@
               "A memorable surprise"
             ],
             "idealForTitle": "Ideal for",
-            "image": "assets/img/events/party/party1.jpg",
+            "image": "alegria/img/events/party/party1.jpg",
             "includes": [
               "Private bareboat charter",
               "Independent skipper required",
@@ -23208,8 +23841,8 @@
             "duration": "Half day or full day",
             "eyebrow": "Corporate",
             "gallery": [
-              "assets/img/events/business-meeting/business-meeting1.jpg",
-              "assets/img/events/business-meeting/business-meeting2.jpg"
+              "alegria/img/events/business-meeting/business-meeting1.jpg",
+              "alegria/img/events/business-meeting/business-meeting2.jpg"
             ],
             "galleryTitle": "Photo gallery",
             "guestSuggestions": [
@@ -23233,7 +23866,7 @@
               "A team bonding moment"
             ],
             "idealForTitle": "Ideal for",
-            "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+            "image": "alegria/img/events/business-meeting/business-meeting1.jpg",
             "includes": [
               "Private bareboat charter",
               "Independent skipper required",
@@ -24552,7 +25185,7 @@
             }
           }
         },
-        "boatHeroImage": "assets/img/boat/bali4.1/bali-41-4.jpg",
+        "boatHeroImage": "alegria/img/boat/bali4.1/bali-41-4.jpg",
         "boatHighlights": [
           "Catamarán Bali 4.1 amplio y estable",
           "Hasta 12 pasajeros",
@@ -25174,19 +25807,19 @@
           "terms": "Términos y condiciones"
         },
         "galleryImages": [
-          "assets/img/boat/bali4.1/bali-41-2.jpg",
-          "assets/img/boat/bali4.1/bali-41-3.jpg",
-          "assets/img/boat/bali4.1/bali-41-4.jpg",
-          "assets/img/boat/bali4.1/bali-41-5.jpg",
-          "assets/img/boat/bali4.1/bali-41-1.jpg",
-          "assets/img/boat/bali4.1/bali-41-6.jpg",
-          "assets/img/boat/bali4.1/bali-41-7.jpg",
-          "assets/img/boat/bali4.1/bali-41-8.jpg",
-          "assets/img/boat/bali4.1/bali-41-9.jpg",
-          "assets/img/boat/bali4.1/bali-41-10.jpg",
-          "assets/img/boat/bali4.1/bali-41-11.jpg",
-          "assets/img/boat/bali4.1/bali-41-12.jpg",
-          "assets/img/boat/bali4.1/bali-41-13.jpg"
+          "alegria/img/boat/bali4.1/bali-41-2.jpg",
+          "alegria/img/boat/bali4.1/bali-41-3.jpg",
+          "alegria/img/boat/bali4.1/bali-41-4.jpg",
+          "alegria/img/boat/bali4.1/bali-41-5.jpg",
+          "alegria/img/boat/bali4.1/bali-41-1.jpg",
+          "alegria/img/boat/bali4.1/bali-41-6.jpg",
+          "alegria/img/boat/bali4.1/bali-41-7.jpg",
+          "alegria/img/boat/bali4.1/bali-41-8.jpg",
+          "alegria/img/boat/bali4.1/bali-41-9.jpg",
+          "alegria/img/boat/bali4.1/bali-41-10.jpg",
+          "alegria/img/boat/bali4.1/bali-41-11.jpg",
+          "alegria/img/boat/bali4.1/bali-41-12.jpg",
+          "alegria/img/boat/bali4.1/bali-41-13.jpg"
         ],
         "galleryPage": {
           "eyebrow": "Galería",
@@ -25196,7 +25829,7 @@
         "header": {
           "hi": "Hola"
         },
-        "heroImage": "assets/img/home/home-hero-generic.jpg",
+        "heroImage": "alegria/img/home/home-hero-generic.jpg",
         "hi": "Hola",
         "home": {
           "boatCta": "Descubrir el barco",
@@ -25257,7 +25890,7 @@
                 "Salón cómodo y zonas de sombra",
                 "Fácil acceso al baño"
               ],
-              "image": "assets/img/boat/bali4.1/bali-41-4.jpg",
+              "image": "alegria/img/boat/bali4.1/bali-41-4.jpg",
               "imageAlt": "Alegria catamaran",
               "text": "Un catamarán amplio y cómodo para relajarse, nadar, comer y disfrutar de la costa.",
               "title": "Alegria, tu base privada sobre el agua"
@@ -25349,7 +25982,7 @@
               "items": [
                 {
                   "description": "Un crucero privado para nadar, relajarse y descubrir fondeaderos preciosos.",
-                  "image": "assets/img/events/de/de1.png",
+                  "image": "alegria/img/events/de/de1.png",
                   "meta": "Día o medio día • Hasta 12 invitados",
                   "price": "Desde 799 €",
                   "route": [
@@ -25361,7 +25994,7 @@
                 },
                 {
                   "description": "Una tarde elegante para disfrutar de la luz dorada en el mar.",
-                  "image": "assets/img/events/sunset/sunset1.jpg",
+                  "image": "alegria/img/events/sunset/sunset1.jpg",
                   "meta": "Atardecer • Hasta 12 invitados",
                   "price": "Bajo presupuesto",
                   "route": [
@@ -25373,7 +26006,7 @@
                 },
                 {
                   "description": "Cumpleaños, despedida o momento especial a bordo de Alegria.",
-                  "image": "assets/img/events/party/party1.jpg",
+                  "image": "alegria/img/events/party/party1.jpg",
                   "meta": "Privado • Hasta 12 invitados",
                   "price": "Bajo presupuesto",
                   "route": [
@@ -25430,7 +26063,7 @@
                 "Opiniones de clientes"
               ],
               "eyebrow": "Experiencia privada en catamarán",
-              "image": "assets/img/home/home-hero-generic.jpg",
+              "image": "alegria/img/home/home-hero-generic.jpg",
               "imageAlt": "Alegria catamaran",
               "intro": "Elige tu experiencia, entiende el precio, envía tu solicitud, paga online de forma segura y deja tu opinión después de la salida.",
               "priceText": "Desde",
@@ -25667,7 +26300,7 @@
               "Salón cómodo y zonas de sombra",
               "Fácil acceso al baño"
             ],
-            "image": "assets/img/boat/bali4.1/bali-41-4.jpg",
+            "image": "alegria/img/boat/bali4.1/bali-41-4.jpg",
             "imageAlt": "Alegria catamaran",
             "text": "Un catamarán amplio y cómodo para relajarse, nadar, comer y disfrutar de la costa.",
             "title": "Alegria, tu base privada sobre el agua"
@@ -25780,7 +26413,7 @@
             "items": [
               {
                 "description": "Un crucero privado para nadar, relajarse y descubrir fondeaderos preciosos.",
-                "image": "assets/img/events/de/de1.png",
+                "image": "alegria/img/events/de/de1.png",
                 "meta": "Día o medio día • Hasta 12 invitados",
                 "price": "Desde 799 €",
                 "route": [
@@ -25792,7 +26425,7 @@
               },
               {
                 "description": "Una tarde elegante para disfrutar de la luz dorada en el mar.",
-                "image": "assets/img/events/sunset/sunset1.jpg",
+                "image": "alegria/img/events/sunset/sunset1.jpg",
                 "meta": "Atardecer • Hasta 12 invitados",
                 "price": "Bajo presupuesto",
                 "route": [
@@ -25804,7 +26437,7 @@
               },
               {
                 "description": "Cumpleaños, despedida o momento especial a bordo de Alegria.",
-                "image": "assets/img/events/party/party1.jpg",
+                "image": "alegria/img/events/party/party1.jpg",
                 "meta": "Privado • Hasta 12 invitados",
                 "price": "Bajo presupuesto",
                 "route": [
@@ -25861,7 +26494,7 @@
               "Opiniones de clientes"
             ],
             "eyebrow": "Experiencia privada en catamarán",
-            "image": "assets/img/home/home-hero-generic.jpg",
+            "image": "alegria/img/home/home-hero-generic.jpg",
             "imageAlt": "Alegria catamaran",
             "intro": "Elige tu experiencia, entiende el precio, envía tu solicitud, paga online de forma segura y deja tu opinión después de la salida.",
             "priceText": "Desde",
@@ -26411,12 +27044,12 @@
             "duration": "Día completo o medio día",
             "eyebrow": "Salida emblemática",
             "gallery": [
-              "assets/img/events/de/de1.png",
-              "assets/img/events/de/de2.png",
-              "assets/img/events/de/de3.png",
-              "assets/img/events/de/de4.png",
-              "assets/img/events/de/de5.png",
-              "assets/img/events/de/de6.png"
+              "alegria/img/events/de/de1.png",
+              "alegria/img/events/de/de2.png",
+              "alegria/img/events/de/de3.png",
+              "alegria/img/events/de/de4.png",
+              "alegria/img/events/de/de5.png",
+              "alegria/img/events/de/de6.png"
             ],
             "galleryTitle": "Galería de fotos",
             "guestSuggestions": [
@@ -26440,7 +27073,7 @@
               "Descubrir la Costa Azul"
             ],
             "idealForTitle": "Ideal para",
-            "image": "assets/img/events/de/de1.png",
+            "image": "alegria/img/events/de/de1.png",
             "includes": [
               "Alquiler privado en casco desnudo",
               "Organización a medida",
@@ -26491,9 +27124,9 @@
             "duration": "Medio día",
             "eyebrow": "Momento especial",
             "gallery": [
-              "assets/img/events/sunset/sunset1.jpg",
-              "assets/img/events/sunset/sunset2.jpg",
-              "assets/img/events/sunset/sunset3.jpg"
+              "alegria/img/events/sunset/sunset1.jpg",
+              "alegria/img/events/sunset/sunset2.jpg",
+              "alegria/img/events/sunset/sunset3.jpg"
             ],
             "galleryTitle": "Galería de fotos",
             "guestSuggestions": [
@@ -26517,7 +27150,7 @@
               "Un aperitivo chic"
             ],
             "idealForTitle": "Ideal para",
-            "image": "assets/img/events/sunset/sunset1.jpg",
+            "image": "alegria/img/events/sunset/sunset1.jpg",
             "includes": [
               "Alquiler privado en casco desnudo",
               "Patrón independiente obligatorio",
@@ -26568,17 +27201,17 @@
             "duration": "Día o noche",
             "eyebrow": "Salida festiva",
             "gallery": [
-              "assets/img/events/party/party1.jpg",
-              "assets/img/events/party/party2.jpg",
-              "assets/img/events/party/party3.jpg",
-              "assets/img/events/party/party4.jpg",
-              "assets/img/events/party/party5.jpg",
-              "assets/img/events/party/party6.jpg",
-              "assets/img/events/party/party7.jpg",
-              "assets/img/events/party/party8.jpg",
-              "assets/img/events/party/party9.jpg",
-              "assets/img/events/party/party10.jpg",
-              "assets/img/events/party/party11.jpg"
+              "alegria/img/events/party/party1.jpg",
+              "alegria/img/events/party/party2.jpg",
+              "alegria/img/events/party/party3.jpg",
+              "alegria/img/events/party/party4.jpg",
+              "alegria/img/events/party/party5.jpg",
+              "alegria/img/events/party/party6.jpg",
+              "alegria/img/events/party/party7.jpg",
+              "alegria/img/events/party/party8.jpg",
+              "alegria/img/events/party/party9.jpg",
+              "alegria/img/events/party/party10.jpg",
+              "alegria/img/events/party/party11.jpg"
             ],
             "galleryTitle": "Galería de fotos",
             "guestSuggestions": [
@@ -26602,7 +27235,7 @@
               "Una sorpresa memorable"
             ],
             "idealForTitle": "Ideal para",
-            "image": "assets/img/events/party/party1.jpg",
+            "image": "alegria/img/events/party/party1.jpg",
             "includes": [
               "Alquiler privado en casco desnudo",
               "Patrón independiente obligatorio",
@@ -26653,8 +27286,8 @@
             "duration": "Medio día o día completo",
             "eyebrow": "Corporativo",
             "gallery": [
-              "assets/img/events/business-meeting/business-meeting1.jpg",
-              "assets/img/events/business-meeting/business-meeting2.jpg"
+              "alegria/img/events/business-meeting/business-meeting1.jpg",
+              "alegria/img/events/business-meeting/business-meeting2.jpg"
             ],
             "galleryTitle": "Galería de fotos",
             "guestSuggestions": [
@@ -26678,7 +27311,7 @@
               "Un momento de cohesión de equipo"
             ],
             "idealForTitle": "Ideal para",
-            "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+            "image": "alegria/img/events/business-meeting/business-meeting1.jpg",
             "includes": [
               "Alquiler privado en casco desnudo",
               "Patrón independiente obligatorio",
@@ -27997,7 +28630,7 @@
             }
           }
         },
-        "boatHeroImage": "assets/img/boat/bali4.1/bali-41-4.jpg",
+        "boatHeroImage": "alegria/img/boat/bali4.1/bali-41-4.jpg",
         "boatHighlights": [
           "Catamaran Bali 4.1 spacieux et stable",
           "Jusqu’à 12 passagers",
@@ -28619,19 +29252,19 @@
           "terms": "Conditions générales"
         },
         "galleryImages": [
-          "assets/img/boat/bali4.1/bali-41-2.jpg",
-          "assets/img/boat/bali4.1/bali-41-3.jpg",
-          "assets/img/boat/bali4.1/bali-41-4.jpg",
-          "assets/img/boat/bali4.1/bali-41-5.jpg",
-          "assets/img/boat/bali4.1/bali-41-1.jpg",
-          "assets/img/boat/bali4.1/bali-41-6.jpg",
-          "assets/img/boat/bali4.1/bali-41-7.jpg",
-          "assets/img/boat/bali4.1/bali-41-8.jpg",
-          "assets/img/boat/bali4.1/bali-41-9.jpg",
-          "assets/img/boat/bali4.1/bali-41-10.jpg",
-          "assets/img/boat/bali4.1/bali-41-11.jpg",
-          "assets/img/boat/bali4.1/bali-41-12.jpg",
-          "assets/img/boat/bali4.1/bali-41-13.jpg"
+          "alegria/img/boat/bali4.1/bali-41-2.jpg",
+          "alegria/img/boat/bali4.1/bali-41-3.jpg",
+          "alegria/img/boat/bali4.1/bali-41-4.jpg",
+          "alegria/img/boat/bali4.1/bali-41-5.jpg",
+          "alegria/img/boat/bali4.1/bali-41-1.jpg",
+          "alegria/img/boat/bali4.1/bali-41-6.jpg",
+          "alegria/img/boat/bali4.1/bali-41-7.jpg",
+          "alegria/img/boat/bali4.1/bali-41-8.jpg",
+          "alegria/img/boat/bali4.1/bali-41-9.jpg",
+          "alegria/img/boat/bali4.1/bali-41-10.jpg",
+          "alegria/img/boat/bali4.1/bali-41-11.jpg",
+          "alegria/img/boat/bali4.1/bali-41-12.jpg",
+          "alegria/img/boat/bali4.1/bali-41-13.jpg"
         ],
         "galleryPage": {
           "eyebrow": "Galerie",
@@ -28641,7 +29274,7 @@
         "header": {
           "hi": "Bonjour"
         },
-        "heroImage": "assets/img/home/home-hero-generic.jpg",
+        "heroImage": "alegria/img/home/home-hero-generic.jpg",
         "hi": "Bonjour",
         "home": {
           "boatCta": "Découvrir le bateau",
@@ -28702,7 +29335,7 @@
                 "Carré confortable et zones ombragées",
                 "Accès facile à la baignade"
               ],
-              "image": "assets/img/boat/bali4.1/bali-41-4.jpg",
+              "image": "alegria/img/boat/bali4.1/bali-41-4.jpg",
               "imageAlt": "Alegria catamaran",
               "text": "Un catamaran spacieux et confortable, pensé pour se détendre, nager, déjeuner et profiter du littoral.",
               "title": "Alegria, votre base privée sur l’eau"
@@ -28794,7 +29427,7 @@
               "items": [
                 {
                   "description": "Croisière privée pour nager, se détendre et découvrir les plus beaux mouillages.",
-                  "image": "assets/img/events/de/de1.png",
+                  "image": "alegria/img/events/de/de1.png",
                   "meta": "Journée ou demi-journée • Jusqu’à 12 invités",
                   "price": "À partir de 799 €",
                   "route": [
@@ -28806,7 +29439,7 @@
                 },
                 {
                   "description": "Une fin de journée élégante pour profiter de la lumière dorée en mer.",
-                  "image": "assets/img/events/sunset/sunset1.jpg",
+                  "image": "alegria/img/events/sunset/sunset1.jpg",
                   "meta": "Sunset • Jusqu’à 12 invités",
                   "price": "Sur devis",
                   "route": [
@@ -28818,7 +29451,7 @@
                 },
                 {
                   "description": "Anniversaire, EVJF/EVG ou moment spécial à bord d’Alegria.",
-                  "image": "assets/img/events/party/party1.jpg",
+                  "image": "alegria/img/events/party/party1.jpg",
                   "meta": "Privé • Jusqu’à 12 invités",
                   "price": "Sur devis",
                   "route": [
@@ -28875,7 +29508,7 @@
                 "Avis clients"
               ],
               "eyebrow": "Expérience privée en catamaran",
-              "image": "assets/img/home/home-hero-generic.jpg",
+              "image": "alegria/img/home/home-hero-generic.jpg",
               "imageAlt": "Alegria catamaran",
               "intro": "Choisissez votre expérience, comprenez le prix, envoyez votre demande, payez en ligne en sécurité et laissez votre avis après la sortie.",
               "priceText": "À partir de",
@@ -29112,7 +29745,7 @@
               "Carré confortable et zones ombragées",
               "Accès facile à la baignade"
             ],
-            "image": "assets/img/boat/bali4.1/bali-41-4.jpg",
+            "image": "alegria/img/boat/bali4.1/bali-41-4.jpg",
             "imageAlt": "Alegria catamaran",
             "text": "Un catamaran spacieux et confortable, pensé pour se détendre, nager, déjeuner et profiter du littoral.",
             "title": "Alegria, votre base privée sur l’eau"
@@ -29225,7 +29858,7 @@
             "items": [
               {
                 "description": "Croisière privée pour nager, se détendre et découvrir les plus beaux mouillages.",
-                "image": "assets/img/events/de/de1.png",
+                "image": "alegria/img/events/de/de1.png",
                 "meta": "Journée ou demi-journée • Jusqu’à 12 invités",
                 "price": "À partir de 799 €",
                 "route": [
@@ -29237,7 +29870,7 @@
               },
               {
                 "description": "Une fin de journée élégante pour profiter de la lumière dorée en mer.",
-                "image": "assets/img/events/sunset/sunset1.jpg",
+                "image": "alegria/img/events/sunset/sunset1.jpg",
                 "meta": "Sunset • Jusqu’à 12 invités",
                 "price": "Sur devis",
                 "route": [
@@ -29249,7 +29882,7 @@
               },
               {
                 "description": "Anniversaire, EVJF/EVG ou moment spécial à bord d’Alegria.",
-                "image": "assets/img/events/party/party1.jpg",
+                "image": "alegria/img/events/party/party1.jpg",
                 "meta": "Privé • Jusqu’à 12 invités",
                 "price": "Sur devis",
                 "route": [
@@ -29306,7 +29939,7 @@
               "Avis clients"
             ],
             "eyebrow": "Expérience privée en catamaran",
-            "image": "assets/img/home/home-hero-generic.jpg",
+            "image": "alegria/img/home/home-hero-generic.jpg",
             "imageAlt": "Alegria catamaran",
             "intro": "Choisissez votre expérience, comprenez le prix, envoyez votre demande, payez en ligne en sécurité et laissez votre avis après la sortie.",
             "priceText": "À partir de",
@@ -29856,12 +30489,12 @@
             "duration": "Journée ou demi-journée",
             "eyebrow": "Sortie signature",
             "gallery": [
-              "assets/img/events/de/de1.png",
-              "assets/img/events/de/de2.png",
-              "assets/img/events/de/de3.png",
-              "assets/img/events/de/de4.png",
-              "assets/img/events/de/de5.png",
-              "assets/img/events/de/de6.png"
+              "alegria/img/events/de/de1.png",
+              "alegria/img/events/de/de2.png",
+              "alegria/img/events/de/de3.png",
+              "alegria/img/events/de/de4.png",
+              "alegria/img/events/de/de5.png",
+              "alegria/img/events/de/de6.png"
             ],
             "galleryTitle": "Galerie photos",
             "guestSuggestions": [
@@ -29885,7 +30518,7 @@
               "Une découverte de la Côte d’Azur"
             ],
             "idealForTitle": "Idéal pour",
-            "image": "assets/img/events/de/de1.png",
+            "image": "alegria/img/events/de/de1.png",
             "includes": [
               "Bateau privatisé en coque nue",
               "Organisation sur mesure",
@@ -29936,9 +30569,9 @@
             "duration": "Demi-journée",
             "eyebrow": "Moment privilégié",
             "gallery": [
-              "assets/img/events/sunset/sunset1.jpg",
-              "assets/img/events/sunset/sunset2.jpg",
-              "assets/img/events/sunset/sunset3.jpg"
+              "alegria/img/events/sunset/sunset1.jpg",
+              "alegria/img/events/sunset/sunset2.jpg",
+              "alegria/img/events/sunset/sunset3.jpg"
             ],
             "galleryTitle": "Galerie photos",
             "guestSuggestions": [
@@ -29962,7 +30595,7 @@
               "Un apéritif chic"
             ],
             "idealForTitle": "Idéal pour",
-            "image": "assets/img/events/sunset/sunset1.jpg",
+            "image": "alegria/img/events/sunset/sunset1.jpg",
             "includes": [
               "Bateau privatisé en coque nue",
               "Skipper indépendant obligatoire",
@@ -30013,17 +30646,17 @@
             "duration": "Journée ou soirée",
             "eyebrow": "Sortie festive",
             "gallery": [
-              "assets/img/events/party/party1.jpg",
-              "assets/img/events/party/party2.jpg",
-              "assets/img/events/party/party3.jpg",
-              "assets/img/events/party/party4.jpg",
-              "assets/img/events/party/party5.jpg",
-              "assets/img/events/party/party6.jpg",
-              "assets/img/events/party/party7.jpg",
-              "assets/img/events/party/party8.jpg",
-              "assets/img/events/party/party9.jpg",
-              "assets/img/events/party/party10.jpg",
-              "assets/img/events/party/party11.jpg"
+              "alegria/img/events/party/party1.jpg",
+              "alegria/img/events/party/party2.jpg",
+              "alegria/img/events/party/party3.jpg",
+              "alegria/img/events/party/party4.jpg",
+              "alegria/img/events/party/party5.jpg",
+              "alegria/img/events/party/party6.jpg",
+              "alegria/img/events/party/party7.jpg",
+              "alegria/img/events/party/party8.jpg",
+              "alegria/img/events/party/party9.jpg",
+              "alegria/img/events/party/party10.jpg",
+              "alegria/img/events/party/party11.jpg"
             ],
             "galleryTitle": "Galerie photos",
             "guestSuggestions": [
@@ -30047,7 +30680,7 @@
               "Une surprise mémorable"
             ],
             "idealForTitle": "Idéal pour",
-            "image": "assets/img/events/party/party1.jpg",
+            "image": "alegria/img/events/party/party1.jpg",
             "includes": [
               "Bateau privatisé en coque nue",
               "Skipper indépendant obligatoire",
@@ -30098,8 +30731,8 @@
             "duration": "Demi-journée ou journée",
             "eyebrow": "Corporate",
             "gallery": [
-              "assets/img/events/business-meeting/business-meeting1.jpg",
-              "assets/img/events/business-meeting/business-meeting2.jpg"
+              "alegria/img/events/business-meeting/business-meeting1.jpg",
+              "alegria/img/events/business-meeting/business-meeting2.jpg"
             ],
             "galleryTitle": "Galerie photos",
             "guestSuggestions": [
@@ -30123,7 +30756,7 @@
               "Un moment de cohésion"
             ],
             "idealForTitle": "Idéal pour",
-            "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+            "image": "alegria/img/events/business-meeting/business-meeting1.jpg",
             "includes": [
               "Bateau privatisé en coque nue",
               "Skipper indépendant obligatoire",
@@ -31442,7 +32075,7 @@
             }
           }
         },
-        "boatHeroImage": "assets/img/boat/bali4.1/bali-41-4.jpg",
+        "boatHeroImage": "alegria/img/boat/bali4.1/bali-41-4.jpg",
         "boatHighlights": [
           "Catamarano Bali 4.1 spazioso e stabile",
           "Fino a 12 ospiti",
@@ -32064,19 +32697,19 @@
           "terms": "Termini e condizioni"
         },
         "galleryImages": [
-          "assets/img/boat/bali4.1/bali-41-2.jpg",
-          "assets/img/boat/bali4.1/bali-41-3.jpg",
-          "assets/img/boat/bali4.1/bali-41-4.jpg",
-          "assets/img/boat/bali4.1/bali-41-5.jpg",
-          "assets/img/boat/bali4.1/bali-41-1.jpg",
-          "assets/img/boat/bali4.1/bali-41-6.jpg",
-          "assets/img/boat/bali4.1/bali-41-7.jpg",
-          "assets/img/boat/bali4.1/bali-41-8.jpg",
-          "assets/img/boat/bali4.1/bali-41-9.jpg",
-          "assets/img/boat/bali4.1/bali-41-10.jpg",
-          "assets/img/boat/bali4.1/bali-41-11.jpg",
-          "assets/img/boat/bali4.1/bali-41-12.jpg",
-          "assets/img/boat/bali4.1/bali-41-13.jpg"
+          "alegria/img/boat/bali4.1/bali-41-2.jpg",
+          "alegria/img/boat/bali4.1/bali-41-3.jpg",
+          "alegria/img/boat/bali4.1/bali-41-4.jpg",
+          "alegria/img/boat/bali4.1/bali-41-5.jpg",
+          "alegria/img/boat/bali4.1/bali-41-1.jpg",
+          "alegria/img/boat/bali4.1/bali-41-6.jpg",
+          "alegria/img/boat/bali4.1/bali-41-7.jpg",
+          "alegria/img/boat/bali4.1/bali-41-8.jpg",
+          "alegria/img/boat/bali4.1/bali-41-9.jpg",
+          "alegria/img/boat/bali4.1/bali-41-10.jpg",
+          "alegria/img/boat/bali4.1/bali-41-11.jpg",
+          "alegria/img/boat/bali4.1/bali-41-12.jpg",
+          "alegria/img/boat/bali4.1/bali-41-13.jpg"
         ],
         "galleryPage": {
           "eyebrow": "Galleria",
@@ -32086,7 +32719,7 @@
         "header": {
           "hi": "Ciao"
         },
-        "heroImage": "assets/img/home/home-hero-generic.jpg",
+        "heroImage": "alegria/img/home/home-hero-generic.jpg",
         "hi": "Ciao",
         "home": {
           "boatCta": "Scopri la barca",
@@ -32147,7 +32780,7 @@
                 "Salone comodo e zone d’ombra",
                 "Accesso facile al bagno"
               ],
-              "image": "assets/img/boat/bali4.1/bali-41-4.jpg",
+              "image": "alegria/img/boat/bali4.1/bali-41-4.jpg",
               "imageAlt": "Alegria catamaran",
               "text": "Un catamarano spazioso e confortevole per rilassarsi, nuotare, pranzare e godersi la costa.",
               "title": "Alegria, la tua base privata sull’acqua"
@@ -32239,7 +32872,7 @@
               "items": [
                 {
                   "description": "Una crociera privata per nuotare, rilassarsi e scoprire splendidi ancoraggi.",
-                  "image": "assets/img/events/de/de1.png",
+                  "image": "alegria/img/events/de/de1.png",
                   "meta": "Giornata o mezza giornata • Fino a 12 ospiti",
                   "price": "A partire da 799 €",
                   "route": [
@@ -32251,7 +32884,7 @@
                 },
                 {
                   "description": "Un tardo pomeriggio elegante per godere della luce dorata in mare.",
-                  "image": "assets/img/events/sunset/sunset1.jpg",
+                  "image": "alegria/img/events/sunset/sunset1.jpg",
                   "meta": "Tramonto • Fino a 12 ospiti",
                   "price": "Su richiesta",
                   "route": [
@@ -32263,7 +32896,7 @@
                 },
                 {
                   "description": "Compleanno, addio al nubilato/celibato o momento speciale a bordo di Alegria.",
-                  "image": "assets/img/events/party/party1.jpg",
+                  "image": "alegria/img/events/party/party1.jpg",
                   "meta": "Privato • Fino a 12 ospiti",
                   "price": "Su richiesta",
                   "route": [
@@ -32320,7 +32953,7 @@
                 "Recensioni clienti"
               ],
               "eyebrow": "Esperienza privata in catamarano",
-              "image": "assets/img/home/home-hero-generic.jpg",
+              "image": "alegria/img/home/home-hero-generic.jpg",
               "imageAlt": "Alegria catamaran",
               "intro": "Scegli la tua esperienza, capisci il prezzo, invia la richiesta, paga online in sicurezza e lascia una recensione dopo l’uscita.",
               "priceText": "A partire da",
@@ -32557,7 +33190,7 @@
               "Salone comodo e zone d’ombra",
               "Accesso facile al bagno"
             ],
-            "image": "assets/img/boat/bali4.1/bali-41-4.jpg",
+            "image": "alegria/img/boat/bali4.1/bali-41-4.jpg",
             "imageAlt": "Alegria catamaran",
             "text": "Un catamarano spazioso e confortevole per rilassarsi, nuotare, pranzare e godersi la costa.",
             "title": "Alegria, la tua base privata sull’acqua"
@@ -32670,7 +33303,7 @@
             "items": [
               {
                 "description": "Una crociera privata per nuotare, rilassarsi e scoprire splendidi ancoraggi.",
-                "image": "assets/img/events/de/de1.png",
+                "image": "alegria/img/events/de/de1.png",
                 "meta": "Giornata o mezza giornata • Fino a 12 ospiti",
                 "price": "A partire da 799 €",
                 "route": [
@@ -32682,7 +33315,7 @@
               },
               {
                 "description": "Un tardo pomeriggio elegante per godere della luce dorata in mare.",
-                "image": "assets/img/events/sunset/sunset1.jpg",
+                "image": "alegria/img/events/sunset/sunset1.jpg",
                 "meta": "Tramonto • Fino a 12 ospiti",
                 "price": "Su richiesta",
                 "route": [
@@ -32694,7 +33327,7 @@
               },
               {
                 "description": "Compleanno, addio al nubilato/celibato o momento speciale a bordo di Alegria.",
-                "image": "assets/img/events/party/party1.jpg",
+                "image": "alegria/img/events/party/party1.jpg",
                 "meta": "Privato • Fino a 12 ospiti",
                 "price": "Su richiesta",
                 "route": [
@@ -32751,7 +33384,7 @@
               "Recensioni clienti"
             ],
             "eyebrow": "Esperienza privata in catamarano",
-            "image": "assets/img/home/home-hero-generic.jpg",
+            "image": "alegria/img/home/home-hero-generic.jpg",
             "imageAlt": "Alegria catamaran",
             "intro": "Scegli la tua esperienza, capisci il prezzo, invia la richiesta, paga online in sicurezza e lascia una recensione dopo l’uscita.",
             "priceText": "A partire da",
@@ -33301,12 +33934,12 @@
             "duration": "Giornata intera o mezza giornata",
             "eyebrow": "Uscita della firma",
             "gallery": [
-              "assets/img/events/de/de1.png",
-              "assets/img/events/de/de2.png",
-              "assets/img/events/de/de3.png",
-              "assets/img/events/de/de4.png",
-              "assets/img/events/de/de5.png",
-              "assets/img/events/de/de6.png"
+              "alegria/img/events/de/de1.png",
+              "alegria/img/events/de/de2.png",
+              "alegria/img/events/de/de3.png",
+              "alegria/img/events/de/de4.png",
+              "alegria/img/events/de/de5.png",
+              "alegria/img/events/de/de6.png"
             ],
             "galleryTitle": "Galleria fotografica",
             "guestSuggestions": [
@@ -33330,7 +33963,7 @@
               "Alla scoperta della Costa Azzurra"
             ],
             "idealForTitle": "Ideale per",
-            "image": "assets/img/events/de/de1.png",
+            "image": "alegria/img/events/de/de1.png",
             "includes": [
               "Barca a scafo nudo privatizzata",
               "Organizzazione su misura",
@@ -33381,9 +34014,9 @@
             "duration": "Mezza giornata",
             "eyebrow": "Momento speciale",
             "gallery": [
-              "assets/img/events/sunset/sunset1.jpg",
-              "assets/img/events/sunset/sunset2.jpg",
-              "assets/img/events/sunset/sunset3.jpg"
+              "alegria/img/events/sunset/sunset1.jpg",
+              "alegria/img/events/sunset/sunset2.jpg",
+              "alegria/img/events/sunset/sunset3.jpg"
             ],
             "galleryTitle": "Galleria fotografica",
             "guestSuggestions": [
@@ -33407,7 +34040,7 @@
               "Un aperitivo chic"
             ],
             "idealForTitle": "Ideale per",
-            "image": "assets/img/events/sunset/sunset1.jpg",
+            "image": "alegria/img/events/sunset/sunset1.jpg",
             "includes": [
               "Barca a scafo nudo privatizzata",
               "È richiesto uno skipper indipendente",
@@ -33458,17 +34091,17 @@
             "duration": "Giorno o sera",
             "eyebrow": "Uscita festiva",
             "gallery": [
-              "assets/img/events/party/party1.jpg",
-              "assets/img/events/party/party2.jpg",
-              "assets/img/events/party/party3.jpg",
-              "assets/img/events/party/party4.jpg",
-              "assets/img/events/party/party5.jpg",
-              "assets/img/events/party/party6.jpg",
-              "assets/img/events/party/party7.jpg",
-              "assets/img/events/party/party8.jpg",
-              "assets/img/events/party/party9.jpg",
-              "assets/img/events/party/party10.jpg",
-              "assets/img/events/party/party11.jpg"
+              "alegria/img/events/party/party1.jpg",
+              "alegria/img/events/party/party2.jpg",
+              "alegria/img/events/party/party3.jpg",
+              "alegria/img/events/party/party4.jpg",
+              "alegria/img/events/party/party5.jpg",
+              "alegria/img/events/party/party6.jpg",
+              "alegria/img/events/party/party7.jpg",
+              "alegria/img/events/party/party8.jpg",
+              "alegria/img/events/party/party9.jpg",
+              "alegria/img/events/party/party10.jpg",
+              "alegria/img/events/party/party11.jpg"
             ],
             "galleryTitle": "Galleria fotografica",
             "guestSuggestions": [
@@ -33492,7 +34125,7 @@
               "Una sorpresa memorabile"
             ],
             "idealForTitle": "Ideale per",
-            "image": "assets/img/events/party/party1.jpg",
+            "image": "alegria/img/events/party/party1.jpg",
             "includes": [
               "Barca a scafo nudo privatizzata",
               "È richiesto uno skipper indipendente",
@@ -33543,8 +34176,8 @@
             "duration": "Mezza giornata o giornata intera",
             "eyebrow": "Aziendale",
             "gallery": [
-              "assets/img/events/business-meeting/business-meeting1.jpg",
-              "assets/img/events/business-meeting/business-meeting2.jpg"
+              "alegria/img/events/business-meeting/business-meeting1.jpg",
+              "alegria/img/events/business-meeting/business-meeting2.jpg"
             ],
             "galleryTitle": "Galleria fotografica",
             "guestSuggestions": [
@@ -33568,7 +34201,7 @@
               "Un momento di coesione"
             ],
             "idealForTitle": "Ideale per",
-            "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+            "image": "alegria/img/events/business-meeting/business-meeting1.jpg",
             "includes": [
               "Barca a scafo nudo privatizzata",
               "È richiesto uno skipper indipendente",
@@ -34887,7 +35520,7 @@
             }
           }
         },
-        "boatHeroImage": "assets/img/boat/bali4.1/bali-41-4.jpg",
+        "boatHeroImage": "alegria/img/boat/bali4.1/bali-41-4.jpg",
         "boatHighlights": [
           "Ruime en stabiele Bali 4.1 catamaran",
           "Tot 12 gasten",
@@ -35509,19 +36142,19 @@
           "terms": "Algemene voorwaarden"
         },
         "galleryImages": [
-          "assets/img/boat/bali4.1/bali-41-2.jpg",
-          "assets/img/boat/bali4.1/bali-41-3.jpg",
-          "assets/img/boat/bali4.1/bali-41-4.jpg",
-          "assets/img/boat/bali4.1/bali-41-5.jpg",
-          "assets/img/boat/bali4.1/bali-41-1.jpg",
-          "assets/img/boat/bali4.1/bali-41-6.jpg",
-          "assets/img/boat/bali4.1/bali-41-7.jpg",
-          "assets/img/boat/bali4.1/bali-41-8.jpg",
-          "assets/img/boat/bali4.1/bali-41-9.jpg",
-          "assets/img/boat/bali4.1/bali-41-10.jpg",
-          "assets/img/boat/bali4.1/bali-41-11.jpg",
-          "assets/img/boat/bali4.1/bali-41-12.jpg",
-          "assets/img/boat/bali4.1/bali-41-13.jpg"
+          "alegria/img/boat/bali4.1/bali-41-2.jpg",
+          "alegria/img/boat/bali4.1/bali-41-3.jpg",
+          "alegria/img/boat/bali4.1/bali-41-4.jpg",
+          "alegria/img/boat/bali4.1/bali-41-5.jpg",
+          "alegria/img/boat/bali4.1/bali-41-1.jpg",
+          "alegria/img/boat/bali4.1/bali-41-6.jpg",
+          "alegria/img/boat/bali4.1/bali-41-7.jpg",
+          "alegria/img/boat/bali4.1/bali-41-8.jpg",
+          "alegria/img/boat/bali4.1/bali-41-9.jpg",
+          "alegria/img/boat/bali4.1/bali-41-10.jpg",
+          "alegria/img/boat/bali4.1/bali-41-11.jpg",
+          "alegria/img/boat/bali4.1/bali-41-12.jpg",
+          "alegria/img/boat/bali4.1/bali-41-13.jpg"
         ],
         "galleryPage": {
           "eyebrow": "Galerij",
@@ -35531,7 +36164,7 @@
         "header": {
           "hi": "Hallo"
         },
-        "heroImage": "assets/img/home/home-hero-generic.jpg",
+        "heroImage": "alegria/img/home/home-hero-generic.jpg",
         "hi": "Hallo",
         "home": {
           "boatCta": "Ontdek de boot",
@@ -35592,7 +36225,7 @@
                 "Comfortabele salon en schaduwzones",
                 "Gemakkelijke toegang tot het water"
               ],
-              "image": "assets/img/boat/bali4.1/bali-41-4.jpg",
+              "image": "alegria/img/boat/bali4.1/bali-41-4.jpg",
               "imageAlt": "Alegria catamaran",
               "text": "Een ruime en comfortabele catamaran om te ontspannen, zwemmen, lunchen en van de kust te genieten.",
               "title": "Alegria, jouw privébasis op het water"
@@ -35684,7 +36317,7 @@
               "items": [
                 {
                   "description": "Een privécruise om te zwemmen, ontspannen en mooie ankerplaatsen te ontdekken.",
-                  "image": "assets/img/events/de/de1.png",
+                  "image": "alegria/img/events/de/de1.png",
                   "meta": "Dag of halve dag • Tot 12 gasten",
                   "price": "Vanaf €799",
                   "route": [
@@ -35696,7 +36329,7 @@
                 },
                 {
                   "description": "Een elegante late namiddag om van het gouden licht op zee te genieten.",
-                  "image": "assets/img/events/sunset/sunset1.jpg",
+                  "image": "alegria/img/events/sunset/sunset1.jpg",
                   "meta": "Zonsondergang • Tot 12 gasten",
                   "price": "Op aanvraag",
                   "route": [
@@ -35708,7 +36341,7 @@
                 },
                 {
                   "description": "Verjaardag, vrijgezellenfeest of speciaal moment aan boord van Alegria.",
-                  "image": "assets/img/events/party/party1.jpg",
+                  "image": "alegria/img/events/party/party1.jpg",
                   "meta": "Privé • Tot 12 gasten",
                   "price": "Op aanvraag",
                   "route": [
@@ -35765,7 +36398,7 @@
                 "Gastenreviews"
               ],
               "eyebrow": "Privé catamaranervaring",
-              "image": "assets/img/home/home-hero-generic.jpg",
+              "image": "alegria/img/home/home-hero-generic.jpg",
               "imageAlt": "Alegria catamaran",
               "intro": "Kies je ervaring, begrijp de prijs, stuur je aanvraag, betaal veilig online en laat na de tocht feedback achter.",
               "priceText": "Vanaf",
@@ -36002,7 +36635,7 @@
               "Comfortabele salon en schaduwzones",
               "Gemakkelijke toegang tot het water"
             ],
-            "image": "assets/img/boat/bali4.1/bali-41-4.jpg",
+            "image": "alegria/img/boat/bali4.1/bali-41-4.jpg",
             "imageAlt": "Alegria catamaran",
             "text": "Een ruime en comfortabele catamaran om te ontspannen, zwemmen, lunchen en van de kust te genieten.",
             "title": "Alegria, jouw privébasis op het water"
@@ -36115,7 +36748,7 @@
             "items": [
               {
                 "description": "Een privécruise om te zwemmen, ontspannen en mooie ankerplaatsen te ontdekken.",
-                "image": "assets/img/events/de/de1.png",
+                "image": "alegria/img/events/de/de1.png",
                 "meta": "Dag of halve dag • Tot 12 gasten",
                 "price": "Vanaf €799",
                 "route": [
@@ -36127,7 +36760,7 @@
               },
               {
                 "description": "Een elegante late namiddag om van het gouden licht op zee te genieten.",
-                "image": "assets/img/events/sunset/sunset1.jpg",
+                "image": "alegria/img/events/sunset/sunset1.jpg",
                 "meta": "Zonsondergang • Tot 12 gasten",
                 "price": "Op aanvraag",
                 "route": [
@@ -36139,7 +36772,7 @@
               },
               {
                 "description": "Verjaardag, vrijgezellenfeest of speciaal moment aan boord van Alegria.",
-                "image": "assets/img/events/party/party1.jpg",
+                "image": "alegria/img/events/party/party1.jpg",
                 "meta": "Privé • Tot 12 gasten",
                 "price": "Op aanvraag",
                 "route": [
@@ -36196,7 +36829,7 @@
               "Gastenreviews"
             ],
             "eyebrow": "Privé catamaranervaring",
-            "image": "assets/img/home/home-hero-generic.jpg",
+            "image": "alegria/img/home/home-hero-generic.jpg",
             "imageAlt": "Alegria catamaran",
             "intro": "Kies je ervaring, begrijp de prijs, stuur je aanvraag, betaal veilig online en laat na de tocht feedback achter.",
             "priceText": "Vanaf",
@@ -36746,12 +37379,12 @@
             "duration": "Hele dag of halve dag",
             "eyebrow": "Handtekeninguitvoer",
             "gallery": [
-              "assets/img/events/de/de1.png",
-              "assets/img/events/de/de2.png",
-              "assets/img/events/de/de3.png",
-              "assets/img/events/de/de4.png",
-              "assets/img/events/de/de5.png",
-              "assets/img/events/de/de6.png"
+              "alegria/img/events/de/de1.png",
+              "alegria/img/events/de/de2.png",
+              "alegria/img/events/de/de3.png",
+              "alegria/img/events/de/de4.png",
+              "alegria/img/events/de/de5.png",
+              "alegria/img/events/de/de6.png"
             ],
             "galleryTitle": "Fotogalerij",
             "guestSuggestions": [
@@ -36775,7 +37408,7 @@
               "Een ontdekking van de Côte d’Azur"
             ],
             "idealForTitle": "Ideaal voor",
-            "image": "assets/img/events/de/de1.png",
+            "image": "alegria/img/events/de/de1.png",
             "includes": [
               "Geprivatiseerde bareboat-boot",
               "Organisatie op maat",
@@ -36826,9 +37459,9 @@
             "duration": "Halve dag",
             "eyebrow": "Bijzonder moment",
             "gallery": [
-              "assets/img/events/sunset/sunset1.jpg",
-              "assets/img/events/sunset/sunset2.jpg",
-              "assets/img/events/sunset/sunset3.jpg"
+              "alegria/img/events/sunset/sunset1.jpg",
+              "alegria/img/events/sunset/sunset2.jpg",
+              "alegria/img/events/sunset/sunset3.jpg"
             ],
             "galleryTitle": "Fotogalerij",
             "guestSuggestions": [
@@ -36852,7 +37485,7 @@
               "Een chique aperitief"
             ],
             "idealForTitle": "Ideaal voor",
-            "image": "assets/img/events/sunset/sunset1.jpg",
+            "image": "alegria/img/events/sunset/sunset1.jpg",
             "includes": [
               "Geprivatiseerde bareboat-boot",
               "Onafhankelijke schipper vereist",
@@ -36903,17 +37536,17 @@
             "duration": "Dag of avond",
             "eyebrow": "Feestelijk uitje",
             "gallery": [
-              "assets/img/events/party/party1.jpg",
-              "assets/img/events/party/party2.jpg",
-              "assets/img/events/party/party3.jpg",
-              "assets/img/events/party/party4.jpg",
-              "assets/img/events/party/party5.jpg",
-              "assets/img/events/party/party6.jpg",
-              "assets/img/events/party/party7.jpg",
-              "assets/img/events/party/party8.jpg",
-              "assets/img/events/party/party9.jpg",
-              "assets/img/events/party/party10.jpg",
-              "assets/img/events/party/party11.jpg"
+              "alegria/img/events/party/party1.jpg",
+              "alegria/img/events/party/party2.jpg",
+              "alegria/img/events/party/party3.jpg",
+              "alegria/img/events/party/party4.jpg",
+              "alegria/img/events/party/party5.jpg",
+              "alegria/img/events/party/party6.jpg",
+              "alegria/img/events/party/party7.jpg",
+              "alegria/img/events/party/party8.jpg",
+              "alegria/img/events/party/party9.jpg",
+              "alegria/img/events/party/party10.jpg",
+              "alegria/img/events/party/party11.jpg"
             ],
             "galleryTitle": "Fotogalerij",
             "guestSuggestions": [
@@ -36937,7 +37570,7 @@
               "Een onvergetelijke verrassing"
             ],
             "idealForTitle": "Ideaal voor",
-            "image": "assets/img/events/party/party1.jpg",
+            "image": "alegria/img/events/party/party1.jpg",
             "includes": [
               "Geprivatiseerde bareboat-boot",
               "Onafhankelijke schipper vereist",
@@ -36988,8 +37621,8 @@
             "duration": "Halve dag of hele dag",
             "eyebrow": "Zakelijk",
             "gallery": [
-              "assets/img/events/business-meeting/business-meeting1.jpg",
-              "assets/img/events/business-meeting/business-meeting2.jpg"
+              "alegria/img/events/business-meeting/business-meeting1.jpg",
+              "alegria/img/events/business-meeting/business-meeting2.jpg"
             ],
             "galleryTitle": "Fotogalerij",
             "guestSuggestions": [
@@ -37013,7 +37646,7 @@
               "Een moment van cohesie"
             ],
             "idealForTitle": "Ideaal voor",
-            "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+            "image": "alegria/img/events/business-meeting/business-meeting1.jpg",
             "includes": [
               "Geprivatiseerde bareboat-boot",
               "Onafhankelijke schipper vereist",
@@ -38332,7 +38965,7 @@
             }
           }
         },
-        "boatHeroImage": "assets/img/boat/bali4.1/bali-41-4.jpg",
+        "boatHeroImage": "alegria/img/boat/bali4.1/bali-41-4.jpg",
         "boatHighlights": [
           "Просторный и устойчивый катамаран Bali 4.1",
           "До 12 гостей",
@@ -38954,19 +39587,19 @@
           "terms": "Условия использования"
         },
         "galleryImages": [
-          "assets/img/boat/bali4.1/bali-41-2.jpg",
-          "assets/img/boat/bali4.1/bali-41-3.jpg",
-          "assets/img/boat/bali4.1/bali-41-4.jpg",
-          "assets/img/boat/bali4.1/bali-41-5.jpg",
-          "assets/img/boat/bali4.1/bali-41-1.jpg",
-          "assets/img/boat/bali4.1/bali-41-6.jpg",
-          "assets/img/boat/bali4.1/bali-41-7.jpg",
-          "assets/img/boat/bali4.1/bali-41-8.jpg",
-          "assets/img/boat/bali4.1/bali-41-9.jpg",
-          "assets/img/boat/bali4.1/bali-41-10.jpg",
-          "assets/img/boat/bali4.1/bali-41-11.jpg",
-          "assets/img/boat/bali4.1/bali-41-12.jpg",
-          "assets/img/boat/bali4.1/bali-41-13.jpg"
+          "alegria/img/boat/bali4.1/bali-41-2.jpg",
+          "alegria/img/boat/bali4.1/bali-41-3.jpg",
+          "alegria/img/boat/bali4.1/bali-41-4.jpg",
+          "alegria/img/boat/bali4.1/bali-41-5.jpg",
+          "alegria/img/boat/bali4.1/bali-41-1.jpg",
+          "alegria/img/boat/bali4.1/bali-41-6.jpg",
+          "alegria/img/boat/bali4.1/bali-41-7.jpg",
+          "alegria/img/boat/bali4.1/bali-41-8.jpg",
+          "alegria/img/boat/bali4.1/bali-41-9.jpg",
+          "alegria/img/boat/bali4.1/bali-41-10.jpg",
+          "alegria/img/boat/bali4.1/bali-41-11.jpg",
+          "alegria/img/boat/bali4.1/bali-41-12.jpg",
+          "alegria/img/boat/bali4.1/bali-41-13.jpg"
         ],
         "galleryPage": {
           "eyebrow": "Галерея",
@@ -38976,7 +39609,7 @@
         "header": {
           "hi": "Здравствуйте"
         },
-        "heroImage": "assets/img/home/home-hero-generic.jpg",
+        "heroImage": "alegria/img/home/home-hero-generic.jpg",
         "hi": "Здравствуйте",
         "home": {
           "boatCta": "Посмотреть лодку",
@@ -39037,7 +39670,7 @@
                 "Комфортный салон и теневые зоны",
                 "Лёгкий доступ к воде"
               ],
-              "image": "assets/img/boat/bali4.1/bali-41-4.jpg",
+              "image": "alegria/img/boat/bali4.1/bali-41-4.jpg",
               "imageAlt": "Alegria catamaran",
               "text": "Просторный и комфортный катамаран для отдыха, купания, обеда и наслаждения побережьем.",
               "title": "Alegria — ваша частная база на воде"
@@ -39129,7 +39762,7 @@
               "items": [
                 {
                   "description": "Частная прогулка для купания, отдыха и красивых якорных стоянок.",
-                  "image": "assets/img/events/de/de1.png",
+                  "image": "alegria/img/events/de/de1.png",
                   "meta": "День или полдня • До 12 гостей",
                   "price": "От 799 €",
                   "route": [
@@ -39141,7 +39774,7 @@
                 },
                 {
                   "description": "Элегантный вечер в золотом свете моря.",
-                  "image": "assets/img/events/sunset/sunset1.jpg",
+                  "image": "alegria/img/events/sunset/sunset1.jpg",
                   "meta": "Закат • До 12 гостей",
                   "price": "По запросу",
                   "route": [
@@ -39153,7 +39786,7 @@
                 },
                 {
                   "description": "День рождения, девичник/мальчишник или особый момент на борту Alegria.",
-                  "image": "assets/img/events/party/party1.jpg",
+                  "image": "alegria/img/events/party/party1.jpg",
                   "meta": "Частное • До 12 гостей",
                   "price": "По запросу",
                   "route": [
@@ -39210,7 +39843,7 @@
                 "Отзывы гостей"
               ],
               "eyebrow": "Частная прогулка на катамаране",
-              "image": "assets/img/home/home-hero-generic.jpg",
+              "image": "alegria/img/home/home-hero-generic.jpg",
               "imageAlt": "Alegria catamaran",
               "intro": "Выберите формат, поймите стоимость, отправьте запрос, оплатите онлайн безопасно и оставьте отзыв после выхода в море.",
               "priceText": "От",
@@ -39447,7 +40080,7 @@
               "Комфортный салон и теневые зоны",
               "Лёгкий доступ к воде"
             ],
-            "image": "assets/img/boat/bali4.1/bali-41-4.jpg",
+            "image": "alegria/img/boat/bali4.1/bali-41-4.jpg",
             "imageAlt": "Alegria catamaran",
             "text": "Просторный и комфортный катамаран для отдыха, купания, обеда и наслаждения побережьем.",
             "title": "Alegria — ваша частная база на воде"
@@ -39560,7 +40193,7 @@
             "items": [
               {
                 "description": "Частная прогулка для купания, отдыха и красивых якорных стоянок.",
-                "image": "assets/img/events/de/de1.png",
+                "image": "alegria/img/events/de/de1.png",
                 "meta": "День или полдня • До 12 гостей",
                 "price": "От 799 €",
                 "route": [
@@ -39572,7 +40205,7 @@
               },
               {
                 "description": "Элегантный вечер в золотом свете моря.",
-                "image": "assets/img/events/sunset/sunset1.jpg",
+                "image": "alegria/img/events/sunset/sunset1.jpg",
                 "meta": "Закат • До 12 гостей",
                 "price": "По запросу",
                 "route": [
@@ -39584,7 +40217,7 @@
               },
               {
                 "description": "День рождения, девичник/мальчишник или особый момент на борту Alegria.",
-                "image": "assets/img/events/party/party1.jpg",
+                "image": "alegria/img/events/party/party1.jpg",
                 "meta": "Частное • До 12 гостей",
                 "price": "По запросу",
                 "route": [
@@ -39641,7 +40274,7 @@
               "Отзывы гостей"
             ],
             "eyebrow": "Частная прогулка на катамаране",
-            "image": "assets/img/home/home-hero-generic.jpg",
+            "image": "alegria/img/home/home-hero-generic.jpg",
             "imageAlt": "Alegria catamaran",
             "intro": "Выберите формат, поймите стоимость, отправьте запрос, оплатите онлайн безопасно и оставьте отзыв после выхода в море.",
             "priceText": "От",
@@ -40191,12 +40824,12 @@
             "duration": "Целый день или полдня",
             "eyebrow": "Вывод подписи",
             "gallery": [
-              "assets/img/events/de/de1.png",
-              "assets/img/events/de/de2.png",
-              "assets/img/events/de/de3.png",
-              "assets/img/events/de/de4.png",
-              "assets/img/events/de/de5.png",
-              "assets/img/events/de/de6.png"
+              "alegria/img/events/de/de1.png",
+              "alegria/img/events/de/de2.png",
+              "alegria/img/events/de/de3.png",
+              "alegria/img/events/de/de4.png",
+              "alegria/img/events/de/de5.png",
+              "alegria/img/events/de/de6.png"
             ],
             "galleryTitle": "Фотогалерея",
             "guestSuggestions": [
@@ -40220,7 +40853,7 @@
               "Открытие Лазурного Берега"
             ],
             "idealForTitle": "Идеально подходит для",
-            "image": "assets/img/events/de/de1.png",
+            "image": "alegria/img/events/de/de1.png",
             "includes": [
               "Приватизированная лодка без экипажа",
               "Индивидуальная организация",
@@ -40271,9 +40904,9 @@
             "duration": "Полдня",
             "eyebrow": "Особый момент",
             "gallery": [
-              "assets/img/events/sunset/sunset1.jpg",
-              "assets/img/events/sunset/sunset2.jpg",
-              "assets/img/events/sunset/sunset3.jpg"
+              "alegria/img/events/sunset/sunset1.jpg",
+              "alegria/img/events/sunset/sunset2.jpg",
+              "alegria/img/events/sunset/sunset3.jpg"
             ],
             "galleryTitle": "Фотогалерея",
             "guestSuggestions": [
@@ -40297,7 +40930,7 @@
               "Шикарный аперитив"
             ],
             "idealForTitle": "Идеально подходит для",
-            "image": "assets/img/events/sunset/sunset1.jpg",
+            "image": "alegria/img/events/sunset/sunset1.jpg",
             "includes": [
               "Приватизированная лодка без экипажа",
               "Требуется независимый шкипер",
@@ -40348,17 +40981,17 @@
             "duration": "День или вечер",
             "eyebrow": "Праздничная прогулка",
             "gallery": [
-              "assets/img/events/party/party1.jpg",
-              "assets/img/events/party/party2.jpg",
-              "assets/img/events/party/party3.jpg",
-              "assets/img/events/party/party4.jpg",
-              "assets/img/events/party/party5.jpg",
-              "assets/img/events/party/party6.jpg",
-              "assets/img/events/party/party7.jpg",
-              "assets/img/events/party/party8.jpg",
-              "assets/img/events/party/party9.jpg",
-              "assets/img/events/party/party10.jpg",
-              "assets/img/events/party/party11.jpg"
+              "alegria/img/events/party/party1.jpg",
+              "alegria/img/events/party/party2.jpg",
+              "alegria/img/events/party/party3.jpg",
+              "alegria/img/events/party/party4.jpg",
+              "alegria/img/events/party/party5.jpg",
+              "alegria/img/events/party/party6.jpg",
+              "alegria/img/events/party/party7.jpg",
+              "alegria/img/events/party/party8.jpg",
+              "alegria/img/events/party/party9.jpg",
+              "alegria/img/events/party/party10.jpg",
+              "alegria/img/events/party/party11.jpg"
             ],
             "galleryTitle": "Фотогалерея",
             "guestSuggestions": [
@@ -40382,7 +41015,7 @@
               "Незабываемый сюрприз"
             ],
             "idealForTitle": "Идеально подходит для",
-            "image": "assets/img/events/party/party1.jpg",
+            "image": "alegria/img/events/party/party1.jpg",
             "includes": [
               "Приватизированная лодка без экипажа",
               "Требуется независимый шкипер",
@@ -40433,8 +41066,8 @@
             "duration": "Полдня или целый день",
             "eyebrow": "Корпоративный",
             "gallery": [
-              "assets/img/events/business-meeting/business-meeting1.jpg",
-              "assets/img/events/business-meeting/business-meeting2.jpg"
+              "alegria/img/events/business-meeting/business-meeting1.jpg",
+              "alegria/img/events/business-meeting/business-meeting2.jpg"
             ],
             "galleryTitle": "Фотогалерея",
             "guestSuggestions": [
@@ -40458,7 +41091,7 @@
               "Момент единения"
             ],
             "idealForTitle": "Идеально подходит для",
-            "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+            "image": "alegria/img/events/business-meeting/business-meeting1.jpg",
             "includes": [
               "Приватизированная лодка без экипажа",
               "Требуется независимый шкипер",
