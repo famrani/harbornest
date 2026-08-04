@@ -16441,6 +16441,23 @@ let PrivateMediaService = class PrivateMediaService {
       return _this.replaceImageValues(body, valueToPath, urls);
     })();
   }
+  /**
+   * Return a browser-safe URL for a private media value.
+   *
+   * Firebase still contains a number of legacy `assets/img/...` references.
+   * Public pages must never request those files from the Angular bundle: they
+   * are translated to their canonical GCS object path and streamed by the
+   * authenticated backend instead.
+   */
+  objectUrl(value) {
+    const objectPath = this.toObjectPath(value);
+    if (!objectPath) return value;
+    // Keep an already-resolved backend URL intact.
+    if (/\/api\/media\/object(?:\?|$)/i.test(value)) {
+      return this.absoluteBackendUrl(value);
+    }
+    return `${this.backendOrigin}/api/media/object?path=${encodeURIComponent(objectPath)}`;
+  }
   resolvePaths(paths) {
     var _this2 = this;
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {

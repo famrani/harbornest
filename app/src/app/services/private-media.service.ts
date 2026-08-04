@@ -35,6 +35,26 @@ export class PrivateMediaService {
     return this.replaceImageValues(body, valueToPath, urls);
   }
 
+  /**
+   * Return a browser-safe URL for a private media value.
+   *
+   * Firebase still contains a number of legacy `assets/img/...` references.
+   * Public pages must never request those files from the Angular bundle: they
+   * are translated to their canonical GCS object path and streamed by the
+   * authenticated backend instead.
+   */
+  objectUrl(value: string): string {
+    const objectPath = this.toObjectPath(value);
+    if (!objectPath) return value;
+
+    // Keep an already-resolved backend URL intact.
+    if (/\/api\/media\/object(?:\?|$)/i.test(value)) {
+      return this.absoluteBackendUrl(value);
+    }
+
+    return `${this.backendOrigin}/api/media/object?path=${encodeURIComponent(objectPath)}`;
+  }
+
   private async resolvePaths(paths: string[]): Promise<Record<string, string>> {
     const now = Date.now();
     const resolved: Record<string, string> = {};

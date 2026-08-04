@@ -8659,14 +8659,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   BoatComponent: () => (/* binding */ BoatComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _boat_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./boat.component.html?ngResource */ 65100);
 /* harmony import */ var _boat_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./boat.component.scss?ngResource */ 99192);
 /* harmony import */ var _boat_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_boat_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ 37580);
 /* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../site-content */ 14009);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/language.service */ 48756);
 /* harmony import */ var _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../site-content-service/site-content.service */ 73196);
+/* harmony import */ var _services_private_media_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../services/private-media.service */ 71260);
+
 
 
 
@@ -8678,10 +8680,11 @@ __webpack_require__.r(__webpack_exports__);
 let BoatComponent = class BoatComponent {
   languageService;
   siteContentService;
+  privateMedia;
   content = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr;
   currentLanguage = 'fr';
   allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
-  images = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT.fr.galleryImages.slice(0, 13);
+  images = [];
   languageSub;
   specs = [];
   coreOffering = [];
@@ -8731,16 +8734,17 @@ let BoatComponent = class BoatComponent {
       crewCta: 'Conocer la tripulación'
     }
   };
-  constructor(languageService, siteContentService) {
+  constructor(languageService, siteContentService, privateMedia) {
     this.languageService = languageService;
     this.siteContentService = siteContentService;
+    this.privateMedia = privateMedia;
   }
   ngOnInit() {
     this.loadSiteContent();
     this.languageSub = this.languageService.language$.subscribe(language => {
       this.currentLanguage = language;
       this.content = this.allSiteContent[language] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[language];
-      this.images = this.content.galleryImages.slice(0, 13);
+      this.setBoatImages();
       const localized = this.localizedData[language];
       this.specsTitle = localized.specsTitle;
       this.servicesTitle = localized.servicesTitle;
@@ -8760,11 +8764,15 @@ let BoatComponent = class BoatComponent {
       try {
         _this.allSiteContent = yield _this.siteContentService.getContent();
         _this.content = _this.allSiteContent[_this.currentLanguage] || _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT[_this.currentLanguage];
-        _this.images = _this.content.galleryImages.slice(0, 13);
+        _this.setBoatImages();
       } catch {
         _this.allSiteContent = _site_content__WEBPACK_IMPORTED_MODULE_3__.SITE_CONTENT;
       }
     })();
+  }
+  setBoatImages() {
+    const gallery = Array.isArray(this.content?.galleryImages) ? this.content.galleryImages : [];
+    this.images = gallery.slice(0, 13).map(image => this.privateMedia.objectUrl(image));
   }
   ngOnDestroy() {
     this.languageSub?.unsubscribe();
@@ -8773,9 +8781,11 @@ let BoatComponent = class BoatComponent {
     type: _services_language_service__WEBPACK_IMPORTED_MODULE_4__.LanguageService
   }, {
     type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_5__.SiteContentService
+  }, {
+    type: _services_private_media_service__WEBPACK_IMPORTED_MODULE_6__.PrivateMediaService
   }];
 };
-BoatComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
+BoatComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_7__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_8__.Component)({
   selector: 'app-boat',
   template: _boat_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_boat_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]

@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { SITE_CONTENT, SiteContent } from '../site-content';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
 import { SiteContentService } from '../site-content-service/site-content.service';
+import { PrivateMediaService } from '../../services/private-media.service';
 
 @Component({
   selector: 'app-boat',
@@ -13,7 +14,7 @@ export class BoatComponent implements OnInit, OnDestroy {
   content: SiteContent = SITE_CONTENT.fr;
   currentLanguage: SiteLanguage = 'fr';
   private allSiteContent = SITE_CONTENT;
-  images = SITE_CONTENT.fr.galleryImages.slice(0, 13);
+  images: string[] = [];
   private languageSub?: Subscription;
 
   specs: string[] = [];
@@ -66,14 +67,18 @@ export class BoatComponent implements OnInit, OnDestroy {
     }
   } as const;
 
-  constructor(private languageService: LanguageService, private siteContentService: SiteContentService) {}
+  constructor(
+    private languageService: LanguageService,
+    private siteContentService: SiteContentService,
+    private privateMedia: PrivateMediaService,
+  ) {}
 
   ngOnInit(): void {
     this.loadSiteContent();
     this.languageSub = this.languageService.language$.subscribe((language) => {
       this.currentLanguage = language;
       this.content = this.allSiteContent[language] || SITE_CONTENT[language];
-      this.images = this.content.galleryImages.slice(0, 13);
+      this.setBoatImages();
       const localized = this.localizedData[language];
       this.specsTitle = localized.specsTitle;
       this.servicesTitle = localized.servicesTitle;
@@ -92,10 +97,19 @@ export class BoatComponent implements OnInit, OnDestroy {
     try {
       this.allSiteContent = await this.siteContentService.getContent();
       this.content = this.allSiteContent[this.currentLanguage] || SITE_CONTENT[this.currentLanguage];
-      this.images = this.content.galleryImages.slice(0, 13);
+      this.setBoatImages();
     } catch {
       this.allSiteContent = SITE_CONTENT;
     }
+  }
+
+  private setBoatImages(): void {
+    const gallery = Array.isArray(this.content?.galleryImages)
+      ? this.content.galleryImages
+      : [];
+    this.images = gallery
+      .slice(0, 13)
+      .map((image) => this.privateMedia.objectUrl(image));
   }
 
   ngOnDestroy(): void {
