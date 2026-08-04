@@ -100,6 +100,8 @@ export interface AlegriaOffer {
   validUntil: number;
   offerMessage?: string;
   comments?: string;
+  description?: string;
+  internalComments?: string;
   depositStatus?: string;
   depositPaid?: boolean;
   depositPaidAmount?: number;
@@ -314,6 +316,8 @@ export class OfferApiService {
       validUntil: input.validUntil || now + 24 * 60 * 60 * 1000,
       offerMessage: input.offerMessage || '',
       comments: input.comments || '',
+      description: (input as any).description || input.offerMessage || '',
+      internalComments: (input as any).internalComments || input.comments || '',
       depositStatus: input.depositStatus || 'pending',
       depositPaid: input.depositPaid === true,
       depositPaidAmount: input.depositPaid === true ? Number((input as any).depositPaidAmount || depositAmount || 0) : 0,
@@ -463,6 +467,8 @@ export class OfferApiService {
     const hydrated = await this.readOfferWithPaymentState(offerId);
     if (!hydrated) throw new Error('Offer not found');
 
+    const onlinePayableAmount = this.getOnlinePayableAmount(hydrated);
+    const paymentRequired = onlinePayableAmount > 0.005;
     const depositPaid =
       hydrated.depositPaid === true ||
       hydrated.depositStatus === 'paid' ||
@@ -476,7 +482,7 @@ export class OfferApiService {
       hydrated.warrantyStatus === 'warranty_card_saved';
 
     if (!hydrated.tncAccepted) throw new Error('Terms and Conditions must be accepted first.');
-    if (!depositPaid) throw new Error('Deposit must be paid first.');
+    if (paymentRequired && !depositPaid) throw new Error('Deposit must be paid first.');
     if (!warrantyOk) throw new Error('Warranty card must be registered or cash warranty accepted first.');
 
     const bookingId = hydrated.relatedBookingId || hydrated.offerId;
@@ -489,11 +495,11 @@ export class OfferApiService {
         ? 'cash_selected'
         : (hydrated.warrantyStatus || 'card_registered'),
       warrantyRegistered: warrantyPaymentChoice === 'cash_on_board' ? true : hydrated.warrantyRegistered === true,
-      depositPaid: true,
-      depositStatus: 'paid',
-      depositPaidAmount: Number(hydrated.depositAmount || 0),
-      paidDepositAmount: Number(hydrated.depositAmount || 0),
-      paymentStatus: 'paid',
+      depositPaid: paymentRequired ? true : false,
+      depositStatus: paymentRequired ? 'paid' : 'not_required',
+      depositPaidAmount: paymentRequired ? Number(hydrated.depositAmount || 0) : 0,
+      paidDepositAmount: paymentRequired ? Number(hydrated.depositAmount || 0) : 0,
+      paymentStatus: paymentRequired ? 'paid' : 'not_required',
       acceptedTS: Date.now(),
       bookingRequestStatus: 'confirmed',
       modifiedTS: Date.now(),
@@ -1320,6 +1326,16 @@ export class OfferApiService {
     const onlinePayableAmount = firstPositive(anyP.onlinePayableAmount, anyP.appPayableAmount, raw.onlinePayableAmount, raw.appPayableAmount, Math.max(0, totalAmount - skipperCashAmount));
     const depositAmount = firstPositive(anyP.depositAmount, raw.depositAmount, Math.round(onlinePayableAmount * 0.10 * 100) / 100);
     const balanceAmount = firstPositive(anyP.balanceAmount, anyP.remainingFeesAmount, raw.balanceAmount, raw.remainingFeesAmount, Math.max(0, Math.round((onlinePayableAmount - depositAmount) * 100) / 100));
+    const paymentRequired = onlinePayableAmount > 0.005;
+    const paymentComplete = !paymentRequired || p.depositPaid === true || p.depositStatus === 'paid';
+    const storedDepositStatus = paymentRequired
+      ? (p.depositStatus || (p.depositPaid ? 'paid' : 'pending'))
+      : 'not_required';
+    const storedPaymentStatus = paymentRequired
+      ? (p.paymentStatus || (p.depositPaid === true || p.depositStatus === 'paid' ? 'paid' : 'pending'))
+      : 'not_required';
+    const warrantyComplete = p.warrantyRegistered === true || p.warrantyPaymentChoice === 'cash_on_board';
+    const bookingConfirmed = p.tncAccepted === true && paymentComplete && warrantyComplete;
 
     await this.writeItem(this.bookingsCollection, p.offerId, {
       bookingId: p.relatedBookingId || p.offerId,
@@ -1362,18 +1378,18 @@ export class OfferApiService {
       extraServicesOnboardAmount: 0,
       remainingFeesAmount: balanceAmount,
       warrantyAmount: p.warrantyAmount || 500,
-      depositStatus: p.depositStatus || (p.depositPaid ? 'paid' : 'pending'),
-      depositPaid: p.depositPaid === true || p.depositStatus === 'paid',
-      paymentStatus: p.paymentStatus || (p.depositPaid === true || p.depositStatus === 'paid' ? 'paid' : 'pending'),
+      depositStatus: storedDepositStatus,
+      depositPaid: paymentRequired && (p.depositPaid === true || p.depositStatus === 'paid'),
+      paymentStatus: storedPaymentStatus,
       warrantyStatus: p.warrantyStatus || (p.warrantyPaymentChoice === 'cash_on_board' ? 'cash_selected' : 'card_registered'),
       warrantyRegistered: p.warrantyRegistered === true || p.warrantyPaymentChoice === 'cash_on_board',
       warrantyPaymentChoice: p.warrantyPaymentChoice || null,
       customerUid: p.customerUid || '',
       customerAuthProvider: p.customerAuthProvider || '',
       customerAccountCreated: p.customerAccountCreated === true,
-      bookingStatus: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? 'confirmed' : 'not_confirmed',
-      status: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? 'confirmed' : 'not_confirmed',
-      bookingRequestStatus: (p.depositPaid === true || p.depositStatus === 'paid') && p.tncAccepted ? 'confirmed' : 'not_confirmed',
+      bookingStatus: bookingConfirmed ? 'confirmed' : 'not_confirmed',
+      status: bookingConfirmed ? 'confirmed' : 'not_confirmed',
+      bookingRequestStatus: bookingConfirmed ? 'confirmed' : 'not_confirmed',
       offerStatus: 'accepted',
       termsAccepted: p.tncAccepted === true && !!p.tncAcceptedAt,
       tncAccepted: p.tncAccepted === true && !!p.tncAcceptedAt,
@@ -1392,11 +1408,11 @@ export class OfferApiService {
         termsAcceptedAt: p.tncAccepted === true ? (p.termsAcceptedAt || p.tncAcceptedAt) : null,
         termsAcceptedBy: (p as any).termsAcceptedBy || (p as any).tncAcceptedBy || '',
         termsAcceptedSource: (p as any).termsAcceptedSource || (p as any).tncAcceptedSource || '',
-        depositPaid: p.depositPaid === true || p.depositStatus === 'paid',
+        depositPaid: paymentComplete,
         alegriaPaid: false,
         skipperPaid: false,
         warrantyCompleted: p.warrantyRegistered === true || p.warrantyPaymentChoice === 'cash_on_board',
-        bookingConfirmed: (p.tncAccepted === true) && (p.depositPaid === true || p.depositStatus === 'paid') && (p.warrantyRegistered === true || p.warrantyPaymentChoice === 'cash_on_board'),
+        bookingConfirmed,
       },
       bookingWorkflow: {
         offerIssued: true,
@@ -1404,13 +1420,24 @@ export class OfferApiService {
         termsAcceptedAt: p.tncAccepted === true ? (p.termsAcceptedAt || p.tncAcceptedAt) : null,
         termsAcceptedBy: (p as any).termsAcceptedBy || (p as any).tncAcceptedBy || '',
         termsAcceptedSource: (p as any).termsAcceptedSource || (p as any).tncAcceptedSource || '',
-        depositPaid: p.depositPaid === true || p.depositStatus === 'paid',
+        depositPaid: paymentComplete,
         alegriaPaid: false,
         skipperPaid: false,
         warrantyCompleted: p.warrantyRegistered === true || p.warrantyPaymentChoice === 'cash_on_board',
-        bookingConfirmed: (p.tncAccepted === true) && (p.depositPaid === true || p.depositStatus === 'paid') && (p.warrantyRegistered === true || p.warrantyPaymentChoice === 'cash_on_board'),
+        bookingConfirmed,
       },
-      comments: p.comments || '',
+      // Preserve all editorial information entered while creating the offer.
+      // offerMessage is customer-facing; comments/internalComments stay admin-only.
+      offerMessage: p.offerMessage || '',
+      description: (p as any).description || p.offerMessage || '',
+      bookingDescription: (p as any).bookingDescription || (p as any).description || p.offerMessage || '',
+      comments: p.comments || (p as any).internalComments || '',
+      internalComments: (p as any).internalComments || p.comments || '',
+      offerNotes: {
+        customerMessage: p.offerMessage || '',
+        description: (p as any).description || p.offerMessage || '',
+        internalComments: (p as any).internalComments || p.comments || '',
+      },
       payments: {
         deposit: {
           paymentType: 'deposit',
@@ -1421,10 +1448,10 @@ export class OfferApiService {
           customerPhone: p.customerPhone || '',
           outingDate: p.outingDate || '',
           outingType: p.outingType || '',
-          paid: p.depositPaid === true || p.depositStatus === 'paid',
-          status: p.depositPaid === true || p.depositStatus === 'paid' ? 'paid' : 'pending',
-          depositPaid: p.depositPaid === true || p.depositStatus === 'paid',
-          depositStatus: p.depositPaid === true || p.depositStatus === 'paid' ? 'paid' : 'pending',
+          paid: paymentRequired && (p.depositPaid === true || p.depositStatus === 'paid'),
+          status: storedDepositStatus,
+          depositPaid: paymentRequired && (p.depositPaid === true || p.depositStatus === 'paid'),
+          depositStatus: storedDepositStatus,
           stripeCheckoutSessionId: p.stripeCheckoutSessionId || '',
           stripePaymentIntentId: p.stripePaymentIntentId || '',
           source: 'offer_finalization',

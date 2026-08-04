@@ -135,6 +135,7 @@ export class BookingDetailComponent implements OnInit {
   adminRefundReason = '';
   adminRefundPaymentType = 'balance';
   adminRefundPaymentIntentId = '';
+  adminRefundItemId = '';
   adminRefunding = false;
   actionMessage = '';
   financialHistoryRows: any[] = [];
@@ -390,7 +391,9 @@ export class BookingDetailComponent implements OnInit {
       bookingStatus: b.bookingStatus || 'completed',
       status: b.status || 'completed',
       paymentStatusLabel: b.paymentStatusLabel || b.balanceStatus || 'fully_paid',
-      comments: b.comments || '',
+      offerMessage: b.offerMessage || b.bookingDescription || b.description || b.offerNotes?.customerMessage || b.raw?.offerMessage || '',
+      description: b.bookingDescription || b.description || b.offerNotes?.description || b.offerMessage || b.raw?.description || b.raw?.offerMessage || '',
+      comments: b.internalComments || b.comments || b.offerNotes?.internalComments || b.raw?.internalComments || b.raw?.comments || '',
     };
     this.recalculateEditCustomerTotal();
   }
@@ -1972,6 +1975,7 @@ export class BookingDetailComponent implements OnInit {
       amount,
       paymentType: this.adminRefundPaymentType || 'balance',
       reason: (this.adminRefundReason || '').trim(),
+      extraServiceId: (this.adminRefundItemId || '').trim() || undefined,
       paymentIntentId: (this.adminRefundPaymentIntentId || '').trim() || undefined,
     } as any).subscribe({
       next: () => {
@@ -1979,6 +1983,7 @@ export class BookingDetailComponent implements OnInit {
         this.adminRefundAmount = null;
         this.adminRefundReason = '';
         this.adminRefundPaymentIntentId = '';
+        this.adminRefundItemId = '';
         this.adminRefunding = false;
         this.loadBooking();
       },
@@ -2413,6 +2418,9 @@ export class BookingDetailComponent implements OnInit {
       extraServicePayment: { en: 'Extra service', fr: 'Service additionnel', es: 'Servicio extra', it: 'Servizio extra', de: 'Zusatzleistung', nl: 'Extra dienst', ru: 'Дополнительная услуга' },
       damagePayment: { en: 'Damage payment', fr: 'Paiement dommages', es: 'Pago por daños', it: 'Pagamento danni', de: 'Schadenszahlung', nl: 'Schadebetaling', ru: 'Оплата ущерба' },
       description: { en: 'Description', fr: 'Description', es: 'Descripción', it: 'Descrizione', de: 'Beschreibung', nl: 'Beschrijving', ru: 'Описание' },
+      bookingNotes: { en: 'Booking notes', fr: 'Notes de la réservation', es: 'Notas de la reserva', it: 'Note della prenotazione', de: 'Buchungsnotizen', nl: 'Boekingsnotities', ru: 'Примечания к бронированию' },
+      offerDescription: { en: 'Offer description / customer message', fr: 'Description de l’offre / message client', es: 'Descripción de la oferta / mensaje al cliente', it: 'Descrizione offerta / messaggio cliente', de: 'Angebotsbeschreibung / Kundennachricht', nl: 'Offertebeschrijving / klantbericht', ru: 'Описание предложения / сообщение клиенту' },
+      internalNotes: { en: 'Internal notes', fr: 'Notes internes', es: 'Notas internas', it: 'Note interne', de: 'Interne Notizen', nl: 'Interne notities', ru: 'Внутренние заметки' },
       payAdditionalNow: { en: 'Pay additional amount', fr: 'Payer un montant additionnel', es: 'Pagar importe adicional', it: 'Paga importo aggiuntivo', de: 'Zusätzlichen Betrag zahlen', nl: 'Extra bedrag betalen', ru: 'Оплатить дополнительную сумму' },
       adminPaymentActions: { en: 'Admin payment actions', fr: 'Actions paiement admin', es: 'Acciones de pago admin', it: 'Azioni pagamento admin', de: 'Admin-Zahlungsaktionen', nl: 'Admin betalingsacties', ru: 'Админ-действия с платежами' },
       chargeWarrantyForDamages: { en: 'Charge warranty for damages', fr: 'Débiter la caution pour dommages', es: 'Cargar garantía por daños', it: 'Addebita cauzione per danni', de: 'Kaution für Schäden belasten', nl: 'Waarborg aanrekenen voor schade', ru: 'Списать залог за ущерб' },

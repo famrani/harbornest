@@ -3438,7 +3438,7 @@ export class StripeService {
             let ownerId = body.ownerId || '';
             const bookingId = body.bookingId || body.offerId || body.id;
             const requestedType = String(body.paymentType || body.refundType || body.type || '').toLowerCase();
-            const extraServiceId = body.extraServiceId || body.serviceId || null;
+            let extraServiceId = body.extraServiceId || body.adhocPaymentId || body.serviceId || null;
             const reason = body.reason || body.refundReason || '';
             const explicitPaymentIntentId = body.paymentIntentId || body.stripePaymentIntentId || null;
             const explicitCheckoutSessionId = body.checkoutSessionId || body.stripeCheckoutSessionId || null;
@@ -3477,6 +3477,7 @@ export class StripeService {
             ownerId = (await this.resolvePaymentContext(bookingId, ownerId)).ownerId;
 
             let paymentPath = '';
+            let itemCollectionPath = '';
             if (paymentType === 'deposit') {
                 paymentPath = `/bnBookings/${bookingId}/payments/deposit`;
             } else if (paymentType === 'balance') {
@@ -3487,13 +3488,13 @@ export class StripeService {
                 if (extraServiceId) {
                     paymentPath = `/bnBookings/${bookingId}/payments/extraServices/${extraServiceId}`;
                 } else {
-                    return res.status(400).json({ error: 'extraServiceId is required to refund an extra service payment' });
+                    itemCollectionPath = `/bnBookings/${bookingId}/payments/extraServices`;
                 }
             } else if (paymentType === 'ad_hoc') {
                 if (extraServiceId) {
                     paymentPath = `/bnBookings/${bookingId}/payments/adHoc/${extraServiceId}`;
                 } else {
-                    return res.status(400).json({ error: 'adhocPaymentId/extraServiceId is required to refund an ad hoc payment' });
+                    itemCollectionPath = `/bnBookings/${bookingId}/payments/adHoc`;
                 }
             } else {
                 return res.status(400).json({
@@ -3501,6 +3502,34 @@ export class StripeService {
                     supportedPaymentTypes: ['deposit', 'balance', 'remaining', 'skipper_fee', 'extra_service', 'ad_hoc'],
                     received: requestedType
                 });
+            }
+
+            // The admin screen may only know the Stripe PaymentIntent/session. Resolve the
+            // corresponding extra/ad-hoc Firebase record instead of rejecting the refund.
+            // When there is exactly one refundable item, it is safe to select it automatically.
+            if (itemCollectionPath) {
+                const itemsSnap = await this.stbDbSvc.db.ref(itemCollectionPath).once('value');
+                const items = itemsSnap.val() || {};
+                const entries = Object.keys(items).map((id) => ({ id, value: items[id] || {} }));
+                const matching = entries.filter((entry: any) =>
+                    (explicitPaymentIntentId && (entry.value.stripePaymentIntentId === explicitPaymentIntentId || entry.value.paymentIntentId === explicitPaymentIntentId)) ||
+                    (explicitCheckoutSessionId && (entry.value.stripeCheckoutSessionId === explicitCheckoutSessionId || entry.value.checkoutSessionId === explicitCheckoutSessionId))
+                );
+                const refundable = entries.filter((entry: any) => {
+                    const status = String(entry.value.status || entry.value.paymentStatus || '').toLowerCase();
+                    return entry.value.paid === true || ['paid', 'succeeded', 'charge_succeeded', 'complete', 'completed'].includes(status);
+                });
+                const selected = matching.length === 1 ? matching[0] : (refundable.length === 1 ? refundable[0] : null);
+                if (!selected) {
+                    return res.status(400).json({
+                        error: 'Unable to identify the extra payment to refund. Provide extraServiceId/adhocPaymentId or Stripe paymentIntentId.',
+                        bookingId,
+                        paymentType,
+                        availablePaymentIds: entries.map((entry: any) => entry.id)
+                    });
+                }
+                extraServiceId = selected.id;
+                paymentPath = `${itemCollectionPath}/${selected.id}`;
             }
 
             const paymentSnap = await this.stbDbSvc.db.ref(paymentPath).once('value');

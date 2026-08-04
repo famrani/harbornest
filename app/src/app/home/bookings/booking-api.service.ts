@@ -499,13 +499,6 @@ export class BookingApiService {
       `${this.baseUrl}/api/payments/create-remaining-checkout-session`,
       `${this.baseUrl}/stripe/balance-checkout`,
       `${this.baseUrl}/stripe/remaining-checkout`,
-
-      // Practical fallback: latest backend also has extra-service checkout.
-      // This still redirects to Stripe for the 90% amount; the booking-detail return handler
-      // records balancePaid=true because successUrl keeps paymentType=balance.
-      `${this.baseUrl}/pay/outing-extra-service-checkout`,
-      `${this.baseUrl}/api/payments/create-extra-service-checkout-session`,
-      `${this.baseUrl}/stripe/extra-service-checkout`,
     ], {
       ...enrichedPayload,
       extraServiceId: `balance_${payload.bookingId}`,
@@ -588,12 +581,6 @@ export class BookingApiService {
       `${this.baseUrl}/pay/outing-skipper-fee-checkout`,
       `${this.baseUrl}/api/payments/create-skipper-fee-checkout-session`,
       `${this.baseUrl}/stripe/skipper-fee-checkout`,
-      `${this.baseUrl}/pay/outing-extra-service-checkout`,
-      `${this.baseUrl}/api/payments/create-extra-service-checkout-session`,
-      `${this.baseUrl}/stripe/extra-service-checkout`,
-      `${this.baseUrl}/pay/outing-deposit-checkout`,
-      `${this.baseUrl}/api/payments/create-deposit-checkout-session`,
-      `${this.baseUrl}/stripe/deposit-checkout`,
     ], {
       ...payload,
       offerId: payload.offerId || payload.bookingId,
@@ -897,10 +884,6 @@ export class BookingApiService {
       `${this.baseUrl}/pay/outing-extra-service-checkout`,
       `${this.baseUrl}/api/payments/create-extra-service-checkout-session`,
       `${this.baseUrl}/stripe/extra-service-checkout`,
-      // Legacy fallback: create a standard Stripe checkout session with extra-service metadata.
-      `${this.baseUrl}/pay/outing-deposit-checkout`,
-      `${this.baseUrl}/api/payments/create-deposit-checkout-session`,
-      `${this.baseUrl}/stripe/deposit-checkout`,
     ], {
       ...payload,
       amount,
@@ -960,6 +943,8 @@ export class BookingApiService {
     amount: number;
     paymentType?: 'deposit' | 'balance' | string;
     reason?: string;
+    extraServiceId?: string;
+    paymentIntentId?: string;
   }): Observable<any> {
     return this.postFirstAvailable([
       `${this.baseUrl}/pay/outing-refund`,

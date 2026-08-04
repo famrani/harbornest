@@ -538,6 +538,7 @@ export class OfferConfirmationComponent implements OnInit {
         wizardStepTerms: 'Accepter les CGV',
         wizardStepDeposit: 'Payer l’acompte',
         wizardStepWarranty: 'Caution',
+        continueToWarrantyButton: 'Continuer vers la caution',
         wizardAcceptTermsButton: 'Valider les CGV et continuer',
         termsAcceptedMessage: 'Conditions Générales acceptées. Vous pouvez maintenant payer l’acompte.',
         warrantyWizardIntro: 'Choisissez comment vous souhaitez sécuriser la caution de la sortie.',
@@ -648,6 +649,7 @@ export class OfferConfirmationComponent implements OnInit {
         wizardStepTerms: 'Accept T&C',
         wizardStepDeposit: 'Pay deposit',
         wizardStepWarranty: 'Warranty',
+        continueToWarrantyButton: 'Continue to warranty',
         wizardAcceptTermsButton: 'Validate T&C and continue',
         termsAcceptedMessage: 'Terms accepted. You can now pay the deposit.',
         warrantyWizardIntro: 'Choose how you want to secure the warranty for the outing.',
@@ -758,6 +760,7 @@ export class OfferConfirmationComponent implements OnInit {
         wizardStepTerms: 'Aceptar condiciones',
         wizardStepDeposit: 'Pagar depósito',
         wizardStepWarranty: 'Garantía',
+        continueToWarrantyButton: 'Continuar a la garantía',
         wizardAcceptTermsButton: 'Validar condiciones y continuar',
         termsAcceptedMessage: 'Condiciones aceptadas. Ahora puede pagar el depósito.',
         warrantyWizardIntro: 'Elija cómo desea asegurar la garantía de la salida.',
@@ -893,6 +896,15 @@ export class OfferConfirmationComponent implements OnInit {
     );
   }
 
+  /** A free offer has no Stripe payment step, but still requires a warranty. */
+  get paymentRequired(): boolean {
+    return this.onlinePayableAmount > 0.005;
+  }
+
+  get paymentStepComplete(): boolean {
+    return !this.paymentRequired || this.depositPaid;
+  }
+
   get depositMessage(): string {
     return this.depositPaid
       ? this.text('depositPaidMessage')
@@ -950,7 +962,7 @@ export class OfferConfirmationComponent implements OnInit {
 
   private get computedWizardStep(): 1 | 2 | 3 | 4 {
     if (!this.tncAccepted) return 1;
-    if (!this.depositPaid) return 2;
+    if (!this.paymentStepComplete) return 2;
     if (!this.warrantyReady) return 3;
     return 4;
   }
@@ -966,8 +978,8 @@ export class OfferConfirmationComponent implements OnInit {
     if (!this.offerCanStartCustomerWorkflow) return false;
     if (step === 1) return true;
     if (step === 2) return this.tncAccepted;
-    if (step === 3) return this.tncAccepted && this.depositPaid;
-    return this.tncAccepted && this.depositPaid && this.warrantyReady;
+    if (step === 3) return this.tncAccepted && this.paymentStepComplete;
+    return this.tncAccepted && this.paymentStepComplete && this.warrantyReady;
   }
 
   goToWizardStep(step: 1 | 2 | 3 | 4): void {
@@ -986,7 +998,7 @@ export class OfferConfirmationComponent implements OnInit {
   }
 
   get canFinalizeOffer(): boolean {
-    return !!this.offer && this.tncAccepted && this.depositPaid && this.warrantyReady;
+    return !!this.offer && this.tncAccepted && this.paymentStepComplete && this.warrantyReady;
   }
 
   get offerLifecycleStatus(): string {
@@ -1034,7 +1046,7 @@ export class OfferConfirmationComponent implements OnInit {
     this.error = '';
     try {
       this.offer = await this.offerApi.markTermsAccepted(this.offer.offerId);
-      this.selectedWizardStep = 2;
+      this.selectedWizardStep = this.paymentRequired ? 2 : 3;
       this.message = this.text('termsAcceptedMessage') || 'Terms and Conditions accepted.';
     } catch (e: any) {
       this.error = e?.message || this.text('acceptError');
@@ -1069,6 +1081,10 @@ export class OfferConfirmationComponent implements OnInit {
 
   payDeposit(): void {
     if (!this.offer || !this.offerAccessReady || !this.offerCanStartCustomerWorkflow) return;
+    if (!this.paymentRequired) {
+      this.goToWizardStep(3);
+      return;
+    }
     this.rememberOfferAccess();
     this.payingDeposit = true;
     this.offerApi.createDepositCheckout(this.offer).subscribe({
@@ -1087,7 +1103,7 @@ export class OfferConfirmationComponent implements OnInit {
   }
 
   async acceptCashWarranty(): Promise<void> {
-    if (!this.offer || !this.offerAccessReady || !this.offerCanStartCustomerWorkflow || !this.depositPaid) return;
+    if (!this.offer || !this.offerAccessReady || !this.offerCanStartCustomerWorkflow || !this.paymentStepComplete) return;
     this.payingWarranty = true;
     this.error = '';
     try {
@@ -1120,7 +1136,7 @@ export class OfferConfirmationComponent implements OnInit {
   }
 
   async registerWarrantyCard(): Promise<void> {
-    if (!this.offer || !this.offerAccessReady || !this.offerCanStartCustomerWorkflow || !this.depositPaid) return;
+    if (!this.offer || !this.offerAccessReady || !this.offerCanStartCustomerWorkflow || !this.paymentStepComplete) return;
     this.payingWarranty = true;
     this.error = '';
     try {

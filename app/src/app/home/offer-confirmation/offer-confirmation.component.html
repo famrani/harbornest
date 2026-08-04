@@ -145,7 +145,7 @@
               <span>1</span>
               <strong>{{ text('wizardStepTerms') }}</strong>
             </button>
-            <button class="wizard-step" type="button" [class.active]="wizardStep === 2" [class.done]="depositPaid" [disabled]="!canGoToWizardStep(2)" (click)="goToWizardStep(2)">
+            <button class="wizard-step" type="button" *ngIf="paymentRequired" [class.active]="wizardStep === 2" [class.done]="paymentStepComplete" [disabled]="!canGoToWizardStep(2)" (click)="goToWizardStep(2)">
               <span>2</span>
               <strong>{{ text('wizardStepDeposit') }}</strong>
             </button>
@@ -176,8 +176,8 @@
               </button>
             </ng-container>
 
-            <button class="btn btn-primary" type="button" *ngIf="tncAccepted" (click)="goToWizardStep(2)">
-              {{ text('continueToDepositButton') || text('payDepositButton') }}
+            <button class="btn btn-primary" type="button" *ngIf="tncAccepted" (click)="goToWizardStep(paymentRequired ? 2 : 3)">
+              {{ paymentRequired ? (text('continueToDepositButton') || text('payDepositButton')) : text('continueToWarrantyButton') }}
             </button>
           </section>
 

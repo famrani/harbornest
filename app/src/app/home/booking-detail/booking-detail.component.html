@@ -66,6 +66,18 @@
         <button class="btn btn-secondary" type="button" (click)="goBack()">{{ tText('auto.home.booking-detail.booking-detail.component.back') }}</button>
       </div>
 
+      <section class="cockpit-section booking-notes-card" *ngIf="vm.isAdmin && !editMode && (vm.display.offerMessage || vm.display.bookingDescription || vm.display.description || vm.display.internalComments || vm.display.comments || vm.display.offerNotes || vm.display.raw?.offerMessage || vm.display.raw?.comments)">
+        <h2>{{ t('bookingNotes') }}</h2>
+        <div class="booking-note" *ngIf="vm.display.bookingDescription || vm.display.description || vm.display.offerMessage || vm.display.offerNotes?.description">
+          <strong>{{ t('offerDescription') }}</strong>
+          <p>{{ vm.display.bookingDescription || vm.display.description || vm.display.offerMessage || vm.display.offerNotes?.description || vm.display.raw?.description || vm.display.raw?.offerMessage }}</p>
+        </div>
+        <div class="booking-note internal" *ngIf="vm.display.internalComments || vm.display.comments || vm.display.offerNotes?.internalComments">
+          <strong>{{ t('internalNotes') }}</strong>
+          <p>{{ vm.display.internalComments || vm.display.comments || vm.display.offerNotes?.internalComments || vm.display.raw?.internalComments || vm.display.raw?.comments }}</p>
+        </div>
+      </section>
+
       <form class="edit-panel booking-cockpit-edit" *ngIf="editMode" (ngSubmit)="saveEdit()">
         <div class="edit-header">
           <div>
@@ -205,6 +217,7 @@
 
         <section class="edit-section">
           <h3>{{ tText('auto.home.booking-detail.booking-detail.component.8_notes') }}</h3>
+          <label class="full-width">{{ t('offerDescription') }}<textarea name="offerMessage" rows="3" [(ngModel)]="editForm.offerMessage"></textarea></label>
           <label class="full-width">{{ tText('auto.home.booking-detail.booking-detail.component.comments') }}<textarea name="comments" rows="3" [(ngModel)]="editForm.comments"></textarea></label>
         </section>
 
@@ -472,6 +485,9 @@
               </label>
               <label>{{ t('paymentIntentOptional') }}
                 <input type="text" [(ngModel)]="adminRefundPaymentIntentId" name="adminRefundPaymentIntentId" />
+              </label>
+              <label *ngIf="adminRefundPaymentType === 'extra_service' || adminRefundPaymentType === 'ad_hoc'">{{ t('paymentReference') }}
+                <input type="text" [(ngModel)]="adminRefundItemId" name="adminRefundItemId" />
               </label>
               <label>{{ t('description') }}
                 <textarea rows="4" [(ngModel)]="adminRefundReason" name="adminRefundReason"></textarea>
