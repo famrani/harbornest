@@ -3,8 +3,10 @@
 ## Correction
 
 - `/bateau` no longer requests gallery images from Angular `/assets`.
-- Legacy Firebase values such as `assets/img/boat/...` are converted to the
-  canonical object path `alegria/img/boat/...`.
+- Public Firebase values under `assets/...` remain local Angular asset URLs
+  and bypass the private-media backend.
+- Private values such as `alegria/img/boat/...` continue to resolve through
+  the authenticated backend.
 - Images are streamed through the authenticated backend endpoint:
   `/api/media/object?path=...`.
 - The embedded site-content fallback follows the same private-media path, so

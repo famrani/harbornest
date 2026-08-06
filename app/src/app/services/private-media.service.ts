@@ -38,10 +38,8 @@ export class PrivateMediaService {
   /**
    * Return a browser-safe URL for a private media value.
    *
-   * Firebase still contains a number of legacy `assets/img/...` references.
-   * Public pages must never request those files from the Angular bundle: they
-   * are translated to their canonical GCS object path and streamed by the
-   * authenticated backend instead.
+   * Files under `assets/...` are public Angular assets and are returned
+   * unchanged. Only private-storage values are routed through the backend.
    */
   objectUrl(value: string): string {
     const objectPath = this.toObjectPath(value);
@@ -118,6 +116,18 @@ export class PrivateMediaService {
 
   private toObjectPath(value: string): string | null {
     const clean = String(value || '').trim().replace(/\\/g, '/').split(/[?#]/)[0];
+
+    // Angular assets are public. This covers relative paths (`assets/...`),
+    // root-relative paths (`/assets/...`) and absolute development/production
+    // URLs such as `https://localhost:2000/assets/...`.
+    const pathWithoutOrigin = clean.replace(/^https?:\/\/[^/]+/i, '');
+    if (
+      clean.startsWith('assets/') ||
+      pathWithoutOrigin.startsWith('/assets/')
+    ) {
+      return null;
+    }
+
     if (clean.startsWith('alegria/img/')) return clean;
     const tenantMarker = '/tenants/alegria_data/';
     const tenantIndex = clean.indexOf(tenantMarker);
@@ -129,8 +139,6 @@ export class PrivateMediaService {
     // storage.googleapis.com URLs. Only the logical Alegria path is retained.
     const logicalIndex = clean.indexOf('alegria/img/');
     if (logicalIndex >= 0) return clean.slice(logicalIndex);
-    if (clean.startsWith('assets/img/')) return `alegria/${clean.slice('assets/'.length)}`;
-    if (clean.startsWith('/assets/img/')) return `alegria/${clean.slice('/assets/'.length)}`;
     return null;
   }
 
