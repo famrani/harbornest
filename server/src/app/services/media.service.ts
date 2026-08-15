@@ -25,7 +25,7 @@ interface ResolvedStorageTenant {
 
 /**
  * Proxies public website media from a private tenant folder. The browser only
- * knows logical paths such as `alegria/img/...`; bucket and tenant paths remain
+ * knows logical paths such as `assets/img/...`; bucket and tenant paths remain
  * trusted backend configuration. Credentials are resolved through Google ADC.
  */
 export class MediaService {
@@ -33,7 +33,7 @@ export class MediaService {
   private readonly legacyTenantRoot = String(
     process.env.GCS_MEDIA_TENANT_ROOT || 'tenants/alegria_data',
   ).replace(/^\/+|\/+$/g, '');
-  private readonly legacyAllowedPrefix = process.env.GCS_MEDIA_PREFIX || 'alegria/img/';
+  private readonly legacyAllowedPrefix = process.env.GCS_MEDIA_PREFIX || 'assets/img/';
   private readonly defaultTenantId = process.env.GCS_MEDIA_DEFAULT_TENANT || 'alegria';
   private tenantCache?: { expiresAt: number; values: Record<string, StorageTenantConfig> };
   private readonly lifetimeMs = Math.max(

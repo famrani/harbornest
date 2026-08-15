@@ -12,7 +12,7 @@ export interface SeoPage {
 @Injectable({ providedIn: 'root' })
 export class SeoService {
   private readonly origin = 'https://alegriaboat.eu';
-  private readonly defaultImage = `${this.origin}/assets/img/home/home-hero-generic.jpg`;
+  private readonly defaultImage = `${this.origin}/api/media/object?path=${encodeURIComponent('assets/img/home/home-hero-generic.jpg')}`;
 
   private readonly pages: Record<string, SeoPage> = {
     '/': { title: 'Location de catamaran à Antibes | Alegria Boat', description: 'Privatisez Alegria, catamaran Bali 4.1 avec skipper, pour une journée en mer, une soirée ou un coucher de soleil sur la Côte d’Azur.' },
@@ -77,7 +77,7 @@ export class SeoService {
     script.text = JSON.stringify({
       '@context': 'https://schema.org',
       '@graph': [
-        { '@type': 'Organization', '@id': `${this.origin}/#organization`, name: 'Alegria Boat', url: this.origin, logo: `${this.origin}/assets/img/home/catamaran.png` },
+        { '@type': 'Organization', '@id': `${this.origin}/#organization`, name: 'Alegria Boat', url: this.origin, logo: `${this.origin}/api/media/object?path=${encodeURIComponent('assets/img/home/catamaran.png')}` },
         { '@type': 'WebSite', '@id': `${this.origin}/#website`, url: this.origin, name: 'Alegria Boat', publisher: { '@id': `${this.origin}/#organization` }, inLanguage: ['fr','en','es','it','de','nl','ru'] },
         { '@type': 'WebPage', '@id': `${url}#webpage`, url, name: page.title, description: page.description, isPartOf: { '@id': `${this.origin}/#website` }, about: { '@id': `${this.origin}/#organization` }, inLanguage: this.document.documentElement.lang || 'fr' },
         ...(path === '/' ? [{ '@type': 'LocalBusiness', name: 'Alegria Boat', url: this.origin, image: this.defaultImage, areaServed: 'Côte d’Azur', description: page.description, priceRange: '€€€' }] : [])

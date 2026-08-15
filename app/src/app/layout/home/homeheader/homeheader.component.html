@@ -1,7 +1,7 @@
 <header class="site-header">
   <div class="container header-bar">
     <a class="brand" routerLink="/" (click)="closeMenu()">
-      <img class="brand-logo" src="assets/img/logo-Alegria.png" [alt]="t('brand')" />
+      <img class="brand-logo" [src]="logoUrl" [alt]="t('brand')" />
       <span class="brand-text">
         <strong>{{ t('brand') }}</strong>
         <small>{{ t('brandTagline') }}</small>

@@ -37,7 +37,7 @@ export class AdminMediaService {
     const value = String(path || '').trim();
     if (!value) return '';
     if (/^(https?:\/\/|data:|blob:|assets\/|\/assets\/)/i.test(value)) return value;
-    if (value.startsWith('alegria/img/')) {
+    if (value.startsWith('assets/img/') || value.startsWith('alegria/img/')) {
       return `/api/media/object?path=${encodeURIComponent(value)}`;
     }
     return value;

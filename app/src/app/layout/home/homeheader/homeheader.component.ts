@@ -5,6 +5,7 @@ import { ServicesService } from 'godigital-lib';
 import { SITE_CONTENT, SiteContent } from '../../../home/site-content';
 import { LanguageService, SiteLanguage } from '../../../services/language.service';
 import { SiteContentService } from '../../../home/site-content-service/site-content.service';
+import { PrivateMediaService } from '../../../services/private-media.service';
 
 @Component({
   selector: 'app-homeheader',
@@ -12,6 +13,7 @@ import { SiteContentService } from '../../../home/site-content-service/site-cont
   styleUrls: ['./homeheader.component.scss'],
 })
 export class HomeheaderComponent implements OnInit, OnDestroy {
+  readonly logoUrl: string;
   menuOpen = false;
   currentLanguage: SiteLanguage = 'fr';
   content: SiteContent = SITE_CONTENT.fr;
@@ -322,8 +324,11 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
     private languageService: LanguageService,
     private router: Router,
     private mainSvc: ServicesService,
-    private siteContentService: SiteContentService
-  ) {}
+    private siteContentService: SiteContentService,
+    private privateMedia: PrivateMediaService,
+  ) {
+    this.logoUrl = this.privateMedia.objectUrl('assets/img/logo-Alegria.png');
+  }
 
   ngOnInit(): void {
     this.currentLanguage = this.languageService.currentLanguage || 'fr';

@@ -35,12 +35,7 @@ export class PrivateMediaService {
     return this.replaceImageValues(body, valueToPath, urls);
   }
 
-  /**
-   * Return a browser-safe URL for a private media value.
-   *
-   * Files under `assets/...` are public Angular assets and are returned
-   * unchanged. Only private-storage values are routed through the backend.
-   */
+  /** Return a browser-safe backend URL for a tenant media value. */
   objectUrl(value: string): string {
     const objectPath = this.toObjectPath(value);
     if (!objectPath) return value;
@@ -117,28 +112,16 @@ export class PrivateMediaService {
   private toObjectPath(value: string): string | null {
     const clean = String(value || '').trim().replace(/\\/g, '/').split(/[?#]/)[0];
 
-    // Angular assets are public. This covers relative paths (`assets/...`),
-    // root-relative paths (`/assets/...`) and absolute development/production
-    // URLs such as `https://localhost:2000/assets/...`.
     const pathWithoutOrigin = clean.replace(/^https?:\/\/[^/]+/i, '');
-    if (
-      clean.startsWith('assets/') ||
-      pathWithoutOrigin.startsWith('/assets/')
-    ) {
-      return null;
-    }
+    const logicalPrefixes = ['assets/img/', 'alegria/img/'];
+    for (const prefix of logicalPrefixes) {
+      if (clean.startsWith(prefix)) return clean;
+      if (pathWithoutOrigin.startsWith(`/${prefix}`)) return pathWithoutOrigin.slice(1);
 
-    if (clean.startsWith('alegria/img/')) return clean;
-    const tenantMarker = '/tenants/alegria_data/';
-    const tenantIndex = clean.indexOf(tenantMarker);
-    if (tenantIndex >= 0) {
-      const logicalPath = clean.slice(tenantIndex + tenantMarker.length);
-      if (logicalPath.startsWith('alegria/img/')) return logicalPath;
+      // Migration compatibility for gs:// and storage.googleapis.com values.
+      const logicalIndex = clean.indexOf(prefix);
+      if (logicalIndex >= 0) return clean.slice(logicalIndex);
     }
-    // Migration compatibility for former gs://alegria_pics/... and direct
-    // storage.googleapis.com URLs. Only the logical Alegria path is retained.
-    const logicalIndex = clean.indexOf('alegria/img/');
-    if (logicalIndex >= 0) return clean.slice(logicalIndex);
     return null;
   }
 

@@ -4,6 +4,7 @@ import { firstValueFrom, timeout } from 'rxjs';
 import { SITE_CONTENT, SiteContent } from '../site-content';
 import { SiteLanguage } from '../../services/language.service';
 import { BoatContextService } from '../../services/boat-context.service';
+import { PrivateMediaService } from '../../services/private-media.service';
 
 export type SiteContentRoot = Partial<Record<SiteLanguage, any>> & {
   i18n?: Partial<Record<SiteLanguage, any>>;
@@ -49,7 +50,11 @@ export class SiteContentService {
   private cached?: Record<SiteLanguage, SiteContent>;
   private rawSiteContent?: SiteContentRoot | null;
 
-  constructor(private http: HttpClient, private boatContext: BoatContextService) {}
+  constructor(
+    private http: HttpClient,
+    private boatContext: BoatContextService,
+    private privateMedia: PrivateMediaService,
+  ) {}
 
   /**
    * Release 3.1: siteContent is the single UI-text source.
@@ -85,8 +90,8 @@ export class SiteContentService {
       }
     }
 
-    this.rawSiteContent = SITE_CONTENT as any;
-    this.cached = this.mergeAll(SITE_CONTENT as any);
+    this.rawSiteContent = await this.privateMedia.resolveFirebaseTree(SITE_CONTENT as any);
+    this.cached = this.mergeAll(this.rawSiteContent as any);
     return this.cached;
   }
 
@@ -110,7 +115,7 @@ export class SiteContentService {
       } catch {}
     }
 
-    return SITE_CONTENT as any;
+    return this.privateMedia.resolveFirebaseTree(SITE_CONTENT as any);
   }
 
   async translate(path: string, language: SiteLanguage = 'fr', fallback = ''): Promise<string> {

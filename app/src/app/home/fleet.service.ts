@@ -76,7 +76,7 @@ export class FleetService {
       beam: '',
       draft: '',
       engines: '',
-      imageUrl: 'assets/img/logo-Alegria.png',
+      imageUrl: '/api/media/object?path=assets%2Fimg%2Flogo-Alegria.png',
       extraServices: {},
       active: true,
       createdTS: now,

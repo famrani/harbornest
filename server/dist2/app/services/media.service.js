@@ -9,7 +9,7 @@ const storage_1 = require("@google-cloud/storage");
 const multer_1 = __importDefault(require("multer"));
 /**
  * Proxies public website media from a private tenant folder. The browser only
- * knows logical paths such as `alegria/img/...`; bucket and tenant paths remain
+ * knows logical paths such as `assets/img/...`; bucket and tenant paths remain
  * trusted backend configuration. Credentials are resolved through Google ADC.
  */
 class MediaService {
@@ -17,7 +17,7 @@ class MediaService {
         this.store = store;
         this.legacyBucketName = process.env.GCS_MEDIA_BUCKET || 'adn_root';
         this.legacyTenantRoot = String(process.env.GCS_MEDIA_TENANT_ROOT || 'tenants/alegria_data').replace(/^\/+|\/+$/g, '');
-        this.legacyAllowedPrefix = process.env.GCS_MEDIA_PREFIX || 'alegria/img/';
+        this.legacyAllowedPrefix = process.env.GCS_MEDIA_PREFIX || 'assets/img/';
         this.defaultTenantId = process.env.GCS_MEDIA_DEFAULT_TENANT || 'alegria';
         this.lifetimeMs = Math.max(15 * 60 * 1000, Number(process.env.GCS_SIGNED_URL_LIFETIME_MS || 6 * 60 * 60 * 1000));
         this.storage = new storage_1.Storage();
