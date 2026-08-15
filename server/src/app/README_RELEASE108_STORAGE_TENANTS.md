@@ -16,7 +16,7 @@
 
 `alegriaboat.eu` maps to:
 
-`gs://adn_root/tenants/alegria_data/assets/img/...`
+`gs://adn_root/tenants/alegria/assets/img/...`
 
 ## Recommended Firebase import
 
@@ -32,7 +32,7 @@ Keep these values during the migration:
 
 ```text
 GCS_MEDIA_BUCKET=adn_root
-GCS_MEDIA_TENANT_ROOT=tenants/alegria_data
+GCS_MEDIA_TENANT_ROOT=tenants
 GCS_MEDIA_PREFIX=assets/img/
 GCS_MEDIA_DEFAULT_TENANT=alegria
 ```

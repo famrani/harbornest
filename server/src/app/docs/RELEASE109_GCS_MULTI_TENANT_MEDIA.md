@@ -8,7 +8,7 @@
    `/api/media/object?path=assets%2Fimg%2Fboat%2Fbali4.1%2Fbali-41-1.jpg`.
 3. The backend resolves the request hostname in `/storageTenants`.
 4. For `alegriaboat.eu`, it reads
-   `gs://adn_root/tenants/alegria_data/assets/img/boat/bali4.1/bali-41-1.jpg`.
+   `gs://adn_root/tenants/alegria/assets/img/boat/bali4.1/bali-41-1.jpg`.
 
 The browser never supplies a bucket, physical tenant root, or service-account
 identity. Public website images do not require a visitor login. Admin uploads
@@ -39,7 +39,7 @@ For another boat owner, add another child below `/storageTenants`:
   "newboat": {
     "enabled": true,
     "bucket": "adn_root",
-    "root": "tenants/newboat_data",
+    "root": "tenants",
     "mediaPrefix": "assets/img/",
     "hostnames": {
       "primary": "newboat.example",
@@ -62,7 +62,7 @@ From the project directory containing `src/assets/img`, run:
 
 ```bash
 gcloud storage rsync --recursive src/assets/img \
-  gs://adn_root/tenants/alegria_data/assets/img
+  gs://adn_root/tenants/alegria/assets/img
 ```
 
 Keep the bucket private. After verifying the backend URLs, the copied Angular

@@ -12,10 +12,10 @@ Expected environment:
 
 ```text
 GCS_MEDIA_BUCKET=adn_root
-GCS_MEDIA_TENANT_ROOT=tenants/alegria_data
-GCS_MEDIA_PREFIX=alegria/img/
+GCS_MEDIA_TENANT_ROOT=tenants
+GCS_MEDIA_PREFIX=assets/img/
 ```
 
 The runtime identity needs `storage.objects.create` and `storage.objects.get`
-on `gs://adn_root/tenants/alegria_data/**`. No browser credential or public
+on `gs://adn_root/tenants/**`. No browser credential or public
 bucket permission is required.

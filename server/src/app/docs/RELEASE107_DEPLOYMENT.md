@@ -13,13 +13,13 @@ Firebase or the frontend.
 
 ```bash
 export GCS_MEDIA_BUCKET="adn_root"
-export GCS_MEDIA_TENANT_ROOT="tenants/alegria_data"
-export GCS_MEDIA_PREFIX="alegria/img/"
+export GCS_MEDIA_TENANT_ROOT="tenants"
+export GCS_MEDIA_PREFIX="assets/img/"
 export GCS_SIGNED_URL_LIFETIME_MS="21600000"
 ```
 
 The authenticated backend identity needs object read access only under
-`tenants/alegria_data/**`. A production GCP runtime should use its attached
+`tenants/**`. A production GCP runtime should use its attached
 identity instead of a developer login.
 
 ## 3. Deploy in order
@@ -36,7 +36,7 @@ Example request:
 ```bash
 curl -X POST https://YOUR_HOST/api/media/urls \
   -H 'Content-Type: application/json' \
-  -d '{"paths":["alegria/img/events/sunset/sunset1.jpg"]}'
+  -d '{"paths":["assets/img/events/sunset/sunset1.jpg"]}'
 ```
 
 The client must never send the bucket name or tenant directory.

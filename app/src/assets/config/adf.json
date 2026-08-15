@@ -1,8 +1,8 @@
 {
   "application": {
-    "name": "Harbornest front-end",
+    "name": "Alegriaboat front-end",
     "platform": "test",
-    "release": "3.22"
+    "release": "3.23"
   },
   "dev": {
     "firebaseMasterConfig": {

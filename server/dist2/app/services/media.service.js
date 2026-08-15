@@ -16,7 +16,7 @@ class MediaService {
     constructor(store) {
         this.store = store;
         this.legacyBucketName = process.env.GCS_MEDIA_BUCKET || 'adn_root';
-        this.legacyTenantRoot = String(process.env.GCS_MEDIA_TENANT_ROOT || 'tenants/alegria_data').replace(/^\/+|\/+$/g, '');
+        this.legacyTenantRoot = String(process.env.GCS_MEDIA_TENANT_ROOT || 'tenants').replace(/^\/+|\/+$/g, '');
         this.legacyAllowedPrefix = process.env.GCS_MEDIA_PREFIX || 'assets/img/';
         this.defaultTenantId = process.env.GCS_MEDIA_DEFAULT_TENANT || 'alegria';
         this.lifetimeMs = Math.max(15 * 60 * 1000, Number(process.env.GCS_SIGNED_URL_LIFETIME_MS || 6 * 60 * 60 * 1000));
@@ -258,7 +258,7 @@ class MediaService {
         }
     }
     getPhysicalPath(tenant, objectPath) {
-        return `${tenant.root}/${objectPath}`;
+        return `${tenant.root}/${tenant.id}/${objectPath}`;
     }
     isAllowedPath(objectPath, tenant) {
         return objectPath.startsWith(tenant.mediaPrefix)
@@ -287,6 +287,12 @@ class MediaService {
         const config = tenantId ? values[tenantId] : undefined;
         if (!tenantId || !config || config.enabled === false)
             return null;
+        // The tenant ID is part of the physical GCS object path. Keep it to one
+        // safe folder segment before composing root/{tenantId}/{logicalPath}.
+        if (!/^[a-z0-9][a-z0-9_-]{0,79}$/.test(tenantId)) {
+            console.error('Invalid storage tenant ID', { tenantId });
+            return null;
+        }
         const bucket = String(config.bucket || '').trim();
         const root = String(config.root || '').trim().replace(/^\/+|\/+$/g, '');
         const mediaPrefix = String(config.mediaPrefix || '').trim().replace(/^\/+/, '');
@@ -355,7 +361,7 @@ class MediaService {
         return /^[a-z0-9][a-z0-9._-]{1,220}[a-z0-9]$/.test(value);
     }
     isSafeRoot(value) {
-        return value.startsWith('tenants/')
+        return (value === 'tenants' || value.startsWith('tenants/'))
             && value.length <= 256
             && !value.includes('..')
             && !value.includes('\\')

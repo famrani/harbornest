@@ -5,7 +5,7 @@ under `assets/img/` and returns backend proxy URLs. `GET /api/media/object`
 reads the corresponding private object from:
 
 ```text
-gs://adn_root/tenants/alegria_data/{logicalPath}
+gs://adn_root/tenants/{tenantId}/{logicalPath}
 ```
 
 The bucket name and tenant directory are never accepted from the browser.
@@ -21,7 +21,7 @@ Environment variables:
 
 ```bash
 export GCS_MEDIA_BUCKET="adn_root"
-export GCS_MEDIA_TENANT_ROOT="tenants/alegria_data"
+export GCS_MEDIA_TENANT_ROOT="tenants"
 export GCS_MEDIA_PREFIX="assets/img/"
 export GCS_SIGNED_URL_LIFETIME_MS="21600000"
 ```
@@ -34,6 +34,6 @@ gcloud auth application-default login
 ```
 
 The authenticated identity needs read access to
-`tenants/alegria_data/**`. Production should use an attached Google runtime
+`tenants/**`. Production should use an attached Google runtime
 identity with the same restricted read access. The backend proxy requires
 object read permission only; it does not require blob-signing permission.

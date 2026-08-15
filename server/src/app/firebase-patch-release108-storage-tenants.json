@@ -3,7 +3,7 @@
     "alegria": {
       "enabled": true,
       "bucket": "adn_root",
-      "root": "tenants/alegria_data",
+      "root": "tenants",
       "mediaPrefix": "assets/img/",
       "hostnames": {
         "alegriaboat_eu": "alegriaboat.eu",
