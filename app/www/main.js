@@ -3748,13 +3748,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   SITE_CONTENT: () => (/* binding */ SITE_CONTENT)
 /* harmony export */ });
 const sharedImages = {
-  hero: 'assets/img/home/home-hero-generic.jpg',
-  boatHero: 'assets/img/boat/bali4.1/bali-41-4.jpg',
-  gallery: ['assets/img/boat/bali4.1/bali-41-2.jpg', 'assets/img/boat/bali4.1/bali-41-3.jpg', 'assets/img/boat/bali4.1/bali-41-4.jpg', 'assets/img/boat/bali4.1/bali-41-5.jpg', 'assets/img/boat/bali4.1/bali-41-1.jpg', 'assets/img/boat/bali4.1/bali-41-6.jpg', 'assets/img/boat/bali4.1/bali-41-7.jpg', 'assets/img/boat/bali4.1/bali-41-8.jpg', 'assets/img/boat/bali4.1/bali-41-9.jpg', 'assets/img/boat/bali4.1/bali-41-10.jpg', 'assets/img/boat/bali4.1/bali-41-11.jpg', 'assets/img/boat/bali4.1/bali-41-12.jpg', 'assets/img/boat/bali4.1/bali-41-13.jpg'],
-  de1: 'assets/img/events/de/de1.png',
-  sunset1: 'assets/img/events/sunset/sunset1.jpg',
-  business1: 'assets/img/events/business-meeting/business-meeting1.jpg',
-  party1: 'assets/img/events/party/party1.jpg'
+  hero: 'alegria/img/home/home-hero-generic.jpg',
+  boatHero: 'alegria/img/boat/bali4.1/bali-41-4.jpg',
+  gallery: ['alegria/img/boat/bali4.1/bali-41-2.jpg', 'alegria/img/boat/bali4.1/bali-41-3.jpg', 'alegria/img/boat/bali4.1/bali-41-4.jpg', 'alegria/img/boat/bali4.1/bali-41-5.jpg', 'alegria/img/boat/bali4.1/bali-41-1.jpg', 'alegria/img/boat/bali4.1/bali-41-6.jpg', 'alegria/img/boat/bali4.1/bali-41-7.jpg', 'alegria/img/boat/bali4.1/bali-41-8.jpg', 'alegria/img/boat/bali4.1/bali-41-9.jpg', 'alegria/img/boat/bali4.1/bali-41-10.jpg', 'alegria/img/boat/bali4.1/bali-41-11.jpg', 'alegria/img/boat/bali4.1/bali-41-12.jpg', 'alegria/img/boat/bali4.1/bali-41-13.jpg'],
+  de1: 'alegria/img/events/de/de1.png',
+  sunset1: 'alegria/img/events/sunset/sunset1.jpg',
+  business1: 'alegria/img/events/business-meeting/business-meeting1.jpg',
+  party1: 'alegria/img/events/party/party1.jpg'
 };
 const SITE_CONTENT = {
   fr: {
@@ -15480,7 +15480,7 @@ let HomeheaderComponent = class HomeheaderComponent {
     this.mainSvc = mainSvc;
     this.siteContentService = siteContentService;
     this.privateMedia = privateMedia;
-    this.logoUrl = this.privateMedia.objectUrl('assets/img/logo-Alegria.png');
+    this.logoUrl = this.privateMedia.objectUrl('alegria/img/logo-Alegria.png');
   }
   ngOnInit() {
     this.currentLanguage = this.languageService.currentLanguage || 'fr';
@@ -15995,7 +15995,7 @@ let SeoService = class SeoService {
   meta;
   document;
   origin = 'https://alegriaboat.eu';
-  defaultImage = `${this.origin}/api/media/object?path=${encodeURIComponent('assets/img/home/home-hero-generic.jpg')}`;
+  defaultImage = `${this.origin}/api/media/object?path=${encodeURIComponent('alegria/img/home/home-hero-generic.jpg')}`;
   pages = {
     '/': {
       title: 'Location de catamaran à Antibes | Alegria Boat',
@@ -16151,7 +16151,7 @@ let SeoService = class SeoService {
         '@id': `${this.origin}/#organization`,
         name: 'Alegria Boat',
         url: this.origin,
-        logo: `${this.origin}/api/media/object?path=${encodeURIComponent('assets/img/home/catamaran.png')}`
+        logo: `${this.origin}/api/media/object?path=${encodeURIComponent('alegria/img/home/catamaran.png')}`
       }, {
         '@type': 'WebSite',
         '@id': `${this.origin}/#website`,
@@ -16521,13 +16521,24 @@ let PrivateMediaService = class PrivateMediaService {
   toObjectPath(value) {
     const clean = String(value || '').trim().replace(/\\/g, '/').split(/[?#]/)[0];
     const pathWithoutOrigin = clean.replace(/^https?:\/\/[^/]+/i, '');
-    const logicalPrefixes = ['assets/img/', 'alegria/img/'];
-    for (const prefix of logicalPrefixes) {
-      if (clean.startsWith(prefix)) return clean;
-      if (pathWithoutOrigin.startsWith(`/${prefix}`)) return pathWithoutOrigin.slice(1);
-      // Migration compatibility for gs:// and storage.googleapis.com values.
-      const logicalIndex = clean.indexOf(prefix);
-      if (logicalIndex >= 0) return clean.slice(logicalIndex);
+    const canonicalPrefix = 'alegria/img/';
+    const legacyPrefix = 'assets/img/';
+    if (clean.startsWith(canonicalPrefix)) return clean;
+    if (pathWithoutOrigin.startsWith(`/${canonicalPrefix}`)) return pathWithoutOrigin.slice(1);
+    // Old Angular asset values must still go through the backend, but are
+    // normalized to the canonical tenant path before the request is made.
+    if (clean.startsWith(legacyPrefix)) {
+      return `${canonicalPrefix}${clean.slice(legacyPrefix.length)}`;
+    }
+    if (pathWithoutOrigin.startsWith(`/${legacyPrefix}`)) {
+      return `${canonicalPrefix}${pathWithoutOrigin.slice(legacyPrefix.length + 1)}`;
+    }
+    // Migration compatibility for gs:// and storage.googleapis.com values.
+    const canonicalIndex = clean.indexOf(canonicalPrefix);
+    if (canonicalIndex >= 0) return clean.slice(canonicalIndex);
+    const legacyIndex = clean.indexOf(legacyPrefix);
+    if (legacyIndex >= 0) {
+      return `${canonicalPrefix}${clean.slice(legacyIndex + legacyPrefix.length)}`;
     }
     return null;
   }

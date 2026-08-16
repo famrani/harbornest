@@ -4,7 +4,7 @@
   min-height: 100vh;
   background:
     linear-gradient(135deg, rgba(8, 38, 58, 0.92), rgba(13, 111, 143, 0.72)),
-    url('/assets/img/home/home-hero-generic.jpg') center/cover no-repeat;
+    url('/api/media/object?path=alegria%2Fimg%2Fhome%2Fhome-hero-generic.jpg') center/cover no-repeat;
   padding: 56px 16px;
   color: #08263a;
   font-family: 'Lato', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;

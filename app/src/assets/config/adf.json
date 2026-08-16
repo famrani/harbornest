@@ -2,7 +2,7 @@
   "application": {
     "name": "Alegriaboat front-end",
     "platform": "test",
-    "release": "3.23"
+    "release": "3.24"
   },
   "dev": {
     "firebaseMasterConfig": {

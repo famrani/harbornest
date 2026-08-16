@@ -4,7 +4,7 @@
       "enabled": true,
       "bucket": "adn_root",
       "root": "tenants",
-      "mediaPrefix": "assets/img/",
+      "mediaPrefix": "alegria/img/",
       "hostnames": {
         "alegriaboat_eu": "alegriaboat.eu",
         "www_alegriaboat_eu": "www.alegriaboat.eu",

@@ -327,7 +327,7 @@ export class HomeheaderComponent implements OnInit, OnDestroy {
     private siteContentService: SiteContentService,
     private privateMedia: PrivateMediaService,
   ) {
-    this.logoUrl = this.privateMedia.objectUrl('assets/img/logo-Alegria.png');
+    this.logoUrl = this.privateMedia.objectUrl('alegria/img/logo-Alegria.png');
   }
 
   ngOnInit(): void {

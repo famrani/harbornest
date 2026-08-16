@@ -25,7 +25,7 @@ interface ResolvedStorageTenant {
 
 /**
  * Proxies public website media from a private tenant folder. The browser only
- * knows logical paths such as `assets/img/...`; bucket and tenant paths remain
+ * knows logical paths such as `alegria/img/...`; bucket and tenant paths remain
  * trusted backend configuration. Credentials are resolved through Google ADC.
  */
 export class MediaService {
@@ -33,7 +33,7 @@ export class MediaService {
   private readonly legacyTenantRoot = String(
     process.env.GCS_MEDIA_TENANT_ROOT || 'tenants',
   ).replace(/^\/+|\/+$/g, '');
-  private readonly legacyAllowedPrefix = process.env.GCS_MEDIA_PREFIX || 'assets/img/';
+  private readonly legacyAllowedPrefix = process.env.GCS_MEDIA_PREFIX || 'alegria/img/';
   private readonly defaultTenantId = process.env.GCS_MEDIA_DEFAULT_TENANT || 'alegria';
   private tenantCache?: { expiresAt: number; values: Record<string, StorageTenantConfig> };
   private readonly lifetimeMs = Math.max(
@@ -309,7 +309,9 @@ export class MediaService {
   }
 
   private getPhysicalPath(tenant: ResolvedStorageTenant, objectPath: string): string {
-    return `${tenant.root}/${tenant.id}/${objectPath}`;
+    // The logical path already starts with the tenant folder, for example
+    // alegria/img/.... Do not append tenant.id again.
+    return `${tenant.root}/${objectPath}`;
   }
 
   private isAllowedPath(objectPath: string, tenant: ResolvedStorageTenant): boolean {
@@ -342,8 +344,8 @@ export class MediaService {
     const config = tenantId ? values[tenantId] : undefined;
     if (!tenantId || !config || config.enabled === false) return null;
 
-    // The tenant ID is part of the physical GCS object path. Keep it to one
-    // safe folder segment before composing root/{tenantId}/{logicalPath}.
+    // Keep tenant configuration keys to one safe segment even though the
+    // tenant folder is already included in the logical mediaPrefix.
     if (!/^[a-z0-9][a-z0-9_-]{0,79}$/.test(tenantId)) {
       console.error('Invalid storage tenant ID', { tenantId });
       return null;

@@ -9,7 +9,7 @@ const storage_1 = require("@google-cloud/storage");
 const multer_1 = __importDefault(require("multer"));
 /**
  * Proxies public website media from a private tenant folder. The browser only
- * knows logical paths such as `assets/img/...`; bucket and tenant paths remain
+ * knows logical paths such as `alegria/img/...`; bucket and tenant paths remain
  * trusted backend configuration. Credentials are resolved through Google ADC.
  */
 class MediaService {
@@ -17,7 +17,7 @@ class MediaService {
         this.store = store;
         this.legacyBucketName = process.env.GCS_MEDIA_BUCKET || 'adn_root';
         this.legacyTenantRoot = String(process.env.GCS_MEDIA_TENANT_ROOT || 'tenants').replace(/^\/+|\/+$/g, '');
-        this.legacyAllowedPrefix = process.env.GCS_MEDIA_PREFIX || 'assets/img/';
+        this.legacyAllowedPrefix = process.env.GCS_MEDIA_PREFIX || 'alegria/img/';
         this.defaultTenantId = process.env.GCS_MEDIA_DEFAULT_TENANT || 'alegria';
         this.lifetimeMs = Math.max(15 * 60 * 1000, Number(process.env.GCS_SIGNED_URL_LIFETIME_MS || 6 * 60 * 60 * 1000));
         this.storage = new storage_1.Storage();
@@ -258,7 +258,9 @@ class MediaService {
         }
     }
     getPhysicalPath(tenant, objectPath) {
-        return `${tenant.root}/${tenant.id}/${objectPath}`;
+        // The logical path already starts with the tenant folder, for example
+        // alegria/img/.... Do not append tenant.id again.
+        return `${tenant.root}/${objectPath}`;
     }
     isAllowedPath(objectPath, tenant) {
         return objectPath.startsWith(tenant.mediaPrefix)
@@ -287,8 +289,8 @@ class MediaService {
         const config = tenantId ? values[tenantId] : undefined;
         if (!tenantId || !config || config.enabled === false)
             return null;
-        // The tenant ID is part of the physical GCS object path. Keep it to one
-        // safe folder segment before composing root/{tenantId}/{logicalPath}.
+        // Keep tenant configuration keys to one safe segment even though the
+        // tenant folder is already included in the logical mediaPrefix.
         if (!/^[a-z0-9][a-z0-9_-]{0,79}$/.test(tenantId)) {
             console.error('Invalid storage tenant ID', { tenantId });
             return null;

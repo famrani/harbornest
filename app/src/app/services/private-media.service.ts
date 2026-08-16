@@ -113,14 +113,27 @@ export class PrivateMediaService {
     const clean = String(value || '').trim().replace(/\\/g, '/').split(/[?#]/)[0];
 
     const pathWithoutOrigin = clean.replace(/^https?:\/\/[^/]+/i, '');
-    const logicalPrefixes = ['assets/img/', 'alegria/img/'];
-    for (const prefix of logicalPrefixes) {
-      if (clean.startsWith(prefix)) return clean;
-      if (pathWithoutOrigin.startsWith(`/${prefix}`)) return pathWithoutOrigin.slice(1);
+    const canonicalPrefix = 'alegria/img/';
+    const legacyPrefix = 'assets/img/';
 
-      // Migration compatibility for gs:// and storage.googleapis.com values.
-      const logicalIndex = clean.indexOf(prefix);
-      if (logicalIndex >= 0) return clean.slice(logicalIndex);
+    if (clean.startsWith(canonicalPrefix)) return clean;
+    if (pathWithoutOrigin.startsWith(`/${canonicalPrefix}`)) return pathWithoutOrigin.slice(1);
+
+    // Old Angular asset values must still go through the backend, but are
+    // normalized to the canonical tenant path before the request is made.
+    if (clean.startsWith(legacyPrefix)) {
+      return `${canonicalPrefix}${clean.slice(legacyPrefix.length)}`;
+    }
+    if (pathWithoutOrigin.startsWith(`/${legacyPrefix}`)) {
+      return `${canonicalPrefix}${pathWithoutOrigin.slice(legacyPrefix.length + 1)}`;
+    }
+
+    // Migration compatibility for gs:// and storage.googleapis.com values.
+    const canonicalIndex = clean.indexOf(canonicalPrefix);
+    if (canonicalIndex >= 0) return clean.slice(canonicalIndex);
+    const legacyIndex = clean.indexOf(legacyPrefix);
+    if (legacyIndex >= 0) {
+      return `${canonicalPrefix}${clean.slice(legacyIndex + legacyPrefix.length)}`;
     }
     return null;
   }

@@ -414,7 +414,7 @@ export const DEFAULT_BN_OUTINGS: DynamicOuting[] = [
     "category": "day",
     "slug": "journee-en-mer",
     "priceFrom": 1299,
-    "image": "/api/media/object?path=assets%2Fimg%2Fevents%2Fcap-antibes%2Fcap-antibes1.jpg",
+    "image": "/api/media/object?path=alegria%2Fimg%2Fevents%2Fcap-antibes%2Fcap-antibes1.jpg",
     "fr": {
       "title": "Journée en mer",
       "description": "Profitez d’une journée ou demi-journée en mer pour naviguer, vous détendre et découvrir les plus beaux mouillages de la Côte d’Azur comme les îles de Lérins, le Cap d’Antibes ou la baie des Milliardaires.",
@@ -460,7 +460,7 @@ export const DEFAULT_BN_OUTINGS: DynamicOuting[] = [
     "category": "sunset",
     "slug": "coucher-de-soleil",
     "priceFrom": 999,
-    "image": "/api/media/object?path=assets%2Fimg%2Fevents%2Fsunset%2Fsunset1.jpg",
+    "image": "/api/media/object?path=alegria%2Fimg%2Fevents%2Fsunset%2Fsunset1.jpg",
     "fr": {
       "title": "Coucher de soleil",
       "description": "Profitez d’une sortie élégante en fin de journée pour admirer le coucher du soleil depuis la mer dans une ambiance calme et raffinée.",
@@ -506,7 +506,7 @@ export const DEFAULT_BN_OUTINGS: DynamicOuting[] = [
     "category": "party",
     "slug": "party",
     "priceFrom": 999,
-    "image": "/api/media/object?path=assets%2Fimg%2Fevents%2Fevjf%2Fevjf-g1.jpg",
+    "image": "/api/media/object?path=alegria%2Fimg%2Fevents%2Fevjf%2Fevjf-g1.jpg",
     "fr": {
       "title": "Fête privée",
       "description": "Organisez une fête privée à bord d’Alegria avec musique, baignade, paddle et prestations sur mesure : DJ, yoga, massage ou restauration.",
@@ -552,7 +552,7 @@ export const DEFAULT_BN_OUTINGS: DynamicOuting[] = [
     "category": "corporate",
     "slug": "sortie-entreprise",
     "priceFrom": 999,
-    "image": "/api/media/object?path=assets%2Fimg%2Fevents%2Fbusiness-meeting%2Fbusiness-meeting1.jpg",
+    "image": "/api/media/object?path=alegria%2Fimg%2Fevents%2Fbusiness-meeting%2Fbusiness-meeting1.jpg",
     "fr": {
       "title": "Sortie entreprise",
       "description": "Un cadre original et haut de gamme pour réunir collaborateurs ou clients lors d’une sortie professionnelle en mer.",
