@@ -559,8 +559,13 @@ export class BookingApiService {
     bookingId: string;
     offerId?: string;
     ownerId: string;
+    boatId?: string;
     amount: number;
     skipperAmount?: number;
+    tipAmount?: number;
+    tipBaseAmount?: number;
+    tipPercentage?: number | null;
+    tipMode?: 'percentage' | 'custom';
     totalAmount?: number;
     currency?: string;
     customerEmail?: string;
@@ -576,7 +581,9 @@ export class BookingApiService {
     successUrl: string;
     cancelUrl: string;
   }): Observable<any> {
-    const amount = Number(payload.amount || payload.skipperAmount || 0);
+    const skipperAmount = Number(payload.skipperAmount || 0);
+    const tipAmount = Math.max(0, Number(payload.tipAmount || 0));
+    const amount = Number(payload.amount || (skipperAmount + tipAmount) || 0);
     return this.postFirstAvailable([
       `${this.baseUrl}/pay/outing-skipper-fee-checkout`,
       `${this.baseUrl}/api/payments/create-skipper-fee-checkout-session`,
@@ -585,13 +592,19 @@ export class BookingApiService {
       ...payload,
       offerId: payload.offerId || payload.bookingId,
       amount,
-      skipperAmount: amount,
+      skipperAmount: skipperAmount || Math.max(0, amount - tipAmount),
+      tipAmount,
+      tipBaseAmount: Math.max(0, Number(payload.tipBaseAmount || 0)),
+      tipPercentage: payload.tipPercentage ?? null,
+      tipMode: payload.tipMode || 'percentage',
       extraServiceAmount: amount,
       depositAmount: amount,
       extraServiceId: `skipper_${payload.bookingId}`,
-      title: 'Skipper fee',
-      name: 'Skipper fee',
-      description: `Skipper fee for booking ${payload.bookingId}`,
+      title: tipAmount > 0 ? 'Skipper fee and crew tip' : 'Skipper fee',
+      name: tipAmount > 0 ? 'Skipper fee and crew tip' : 'Skipper fee',
+      description: tipAmount > 0
+        ? `Skipper fee and crew tip for booking ${payload.bookingId}`
+        : `Skipper fee for booking ${payload.bookingId}`,
       paymentType: 'skipper_fee',
       checkoutType: 'skipper_fee',
       currency: payload.currency || 'eur'

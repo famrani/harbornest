@@ -626,6 +626,45 @@
         </section>
       </div>
 
+      <div class="terms-modal-backdrop" *ngIf="skipperTipModalOpen" (click)="closeSkipperTipModal()">
+        <section class="terms-modal skipper-tip-modal" role="dialog" aria-modal="true" aria-labelledby="skipperTipTitle" (click)="$event.stopPropagation()">
+          <div class="terms-modal-header">
+            <div>
+              <span class="eyebrow">{{ t('skipperCardPayment') }}</span>
+              <h2 id="skipperTipTitle">{{ t('chooseCrewTip') }}</h2>
+              <p>{{ t('crewTipHelp') }}</p>
+            </div>
+            <button class="btn btn-secondary btn-small" type="button" [disabled]="payingSkipper" (click)="closeSkipperTipModal()">{{ t('close') }}</button>
+          </div>
+
+          <div class="tip-options" role="group" [attr.aria-label]="t('chooseCrewTip')">
+            <button *ngFor="let percentage of [0, 5, 10, 15, 20]" type="button" class="tip-option" [class.selected]="skipperTipChoice === percentage" (click)="selectSkipperTip(percentage)">
+              {{ percentage }}%
+              <small *ngIf="percentage > 0">{{ formatMoney(skipperTipBaseAmount() * percentage / 100) }}</small>
+            </button>
+            <button type="button" class="tip-option custom" [class.selected]="skipperTipChoice === 'custom'" (click)="selectSkipperTip('custom')">{{ t('customTip') }}</button>
+          </div>
+
+          <label class="custom-tip-entry" *ngIf="skipperTipChoice === 'custom'">
+            <span>{{ t('customTipAmount') }}</span>
+            <div class="money-input-wrap"><span>€</span><input type="number" min="0" step="0.01" [(ngModel)]="customSkipperTipAmount" name="customSkipperTipAmount" inputmode="decimal" /></div>
+          </label>
+
+          <div class="tip-payment-summary">
+            <div><span>{{ t('tipCalculationBase') }}</span><strong>{{ formatMoney(skipperTipBaseAmount()) }}</strong></div>
+            <div><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm?.remainingSkipperFee || 0) }}</strong></div>
+            <div><span>{{ t('crewTip') }}</span><strong>{{ formatMoney(skipperTipAmount()) }}</strong></div>
+            <div class="tip-total"><span>{{ t('totalCardPayment') }}</span><strong>{{ formatMoney(skipperCheckoutTotal()) }}</strong></div>
+          </div>
+
+          <p class="tip-voluntary-note">{{ t('tipVoluntary') }}</p>
+          <div class="terms-modal-actions">
+            <button class="btn btn-secondary" type="button" [disabled]="payingSkipper" (click)="closeSkipperTipModal()">{{ t('cancel') }}</button>
+            <button class="btn btn-primary" type="button" [disabled]="payingSkipper" (click)="confirmSkipperCardPayment()">{{ payingSkipper ? t('redirecting') : t('continueToCardPayment') }}</button>
+          </div>
+        </section>
+      </div>
+
     </article>
   </div>
 </section>

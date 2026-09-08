@@ -1385,3 +1385,21 @@
   width: 9rem;
   min-height: 2.5rem;
 }
+
+.skipper-tip-modal { max-width: 650px; }
+.skipper-tip-modal .terms-modal-header p { margin: .45rem 0 0; color: #667485; }
+.tip-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; margin: 1.25rem 0; }
+.tip-option { min-height: 66px; padding: .7rem; border: 2px solid rgba(8,38,58,.12); border-radius: 16px; background: #fff; color: #08263a; font: inherit; font-size: 1.05rem; font-weight: 900; cursor: pointer; }
+.tip-option small { display: block; margin-top: .2rem; color: #667485; font-size: .72rem; }
+.tip-option:hover, .tip-option.selected { border-color: #0b6e8f; background: #eaf7fa; box-shadow: 0 0 0 3px rgba(11,110,143,.08); }
+.tip-option.custom { font-size: .9rem; }
+.custom-tip-entry { display: grid; gap: .45rem; margin-bottom: 1rem; color: #08263a; font-weight: 800; }
+.custom-tip-entry .money-input-wrap input { width: 100%; min-height: 44px; padding: .6rem .75rem; border: 0; font: inherit; }
+.tip-payment-summary { overflow: hidden; border: 1px solid rgba(8,38,58,.1); border-radius: 16px; background: #fafcfd; }
+.tip-payment-summary > div { display: flex; justify-content: space-between; gap: 1rem; padding: .75rem 1rem; border-bottom: 1px solid rgba(8,38,58,.08); }
+.tip-payment-summary > div:last-child { border-bottom: 0; }
+.tip-payment-summary span { color: #667485; }
+.tip-payment-summary strong { color: #08263a; }
+.tip-payment-summary .tip-total { background: #eef8f4; font-size: 1.08rem; }
+.tip-voluntary-note { margin: .9rem 0 0; color: #667485; font-size: .82rem; }
+@media (max-width: 560px) { .tip-options { grid-template-columns: repeat(2, minmax(0, 1fr)); } .skipper-tip-modal .terms-modal-actions { flex-direction: column-reverse; } .skipper-tip-modal .terms-modal-actions .btn { width: 100%; } }

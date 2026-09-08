@@ -114,6 +114,9 @@ export class BookingDetailComponent implements OnInit {
   payingAlegria = false;
   registeringWarrantyCard = false;
   payingSkipper = false;
+  skipperTipModalOpen = false;
+  skipperTipChoice: number | 'custom' = 0;
+  customSkipperTipAmount: number | null = null;
   selectingAlegriaCash = false;
   selectingSkipperCash = false;
   termsModalOpen = false;
@@ -1577,10 +1580,46 @@ export class BookingDetailComponent implements OnInit {
 
   paySkipperOnline(): void {
     if (!this.vm || !this.canPaySkipperOnline() || this.payingSkipper) return;
+    this.skipperTipChoice = 0;
+    this.customSkipperTipAmount = null;
+    this.skipperTipModalOpen = true;
+  }
+
+  closeSkipperTipModal(): void {
+    if (this.payingSkipper) return;
+    this.skipperTipModalOpen = false;
+  }
+
+  selectSkipperTip(choice: number | 'custom'): void {
+    this.skipperTipChoice = choice;
+    if (choice !== 'custom') this.customSkipperTipAmount = null;
+  }
+
+  skipperTipBaseAmount(): number {
+    if (!this.vm) return 0;
+    return Math.max(0, Number(this.vm.totalOutingPrice || this.vm.totalCustomerCost || 0));
+  }
+
+  skipperTipAmount(): number {
+    const outingAmount = this.skipperTipBaseAmount();
+    const rawTip = this.skipperTipChoice === 'custom'
+      ? Math.max(0, Number(this.customSkipperTipAmount || 0))
+      : outingAmount * Number(this.skipperTipChoice || 0) / 100;
+    return Math.round(rawTip * 100) / 100;
+  }
+
+  skipperCheckoutTotal(): number {
+    return Math.round((Math.max(0, Number(this.vm?.remainingSkipperFee || 0)) + this.skipperTipAmount()) * 100) / 100;
+  }
+
+  confirmSkipperCardPayment(): void {
+    if (!this.vm || !this.canPaySkipperOnline() || this.payingSkipper) return;
     const booking = this.vm.display || {};
     const bookingId = this.vm.bookingId || booking.bookingId || this.bookingId;
-    const amount = this.vm.remainingSkipperFee;
-    if (!bookingId || amount <= 0) return;
+    const skipperAmount = Math.round(Number(this.vm.remainingSkipperFee || 0) * 100) / 100;
+    const tipAmount = this.skipperTipAmount();
+    const amount = this.skipperCheckoutTotal();
+    if (!bookingId || skipperAmount <= 0 || amount <= 0) return;
 
     this.payingSkipper = true;
     this.error = '';
@@ -1589,9 +1628,14 @@ export class BookingDetailComponent implements OnInit {
       ...this.termsAcceptanceMetadata(),
       bookingId,
       offerId: booking.offerId || bookingId,
-      ownerId: booking.ownerId || 'alegria',
+      ownerId: booking.ownerId || booking.boatId || 'alegria',
+      boatId: booking.boatId || booking.ownerId || 'alegria',
       amount,
-      skipperAmount: amount,
+      skipperAmount,
+      tipAmount,
+      tipBaseAmount: this.skipperTipBaseAmount(),
+      tipPercentage: this.skipperTipChoice === 'custom' ? null : this.skipperTipChoice,
+      tipMode: this.skipperTipChoice === 'custom' ? 'custom' : 'percentage',
       totalAmount: this.vm.totalCustomerCost,
       currency: 'eur',
       customerEmail: booking.email || booking.customerEmail || '',
@@ -1605,6 +1649,7 @@ export class BookingDetailComponent implements OnInit {
       next: (response: any) => {
         const url = response?.url || response?.checkoutUrl || response?.sessionUrl;
         if (url) {
+          this.skipperTipModalOpen = false;
           window.location.href = url;
           return;
         }
