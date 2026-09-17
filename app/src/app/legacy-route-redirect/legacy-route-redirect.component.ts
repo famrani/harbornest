@@ -1,0 +1,2 @@
+import { Component, OnInit } from '@angular/core'; import { Router } from '@angular/router'; import { boatPath } from '../services/boat-routing';
+@Component({selector:'app-legacy-route-redirect',template:''}) export class LegacyRouteRedirectComponent implements OnInit { constructor(private router:Router){} ngOnInit(){const u=this.router.url||'/home',h=u.split('#'),q=h[0].split('?');window.location.replace(boatPath(q[0]==='/'?'/home':q[0])+(q[1]?'?'+q[1]:'')+(h[1]?'#'+h[1]:''));} }

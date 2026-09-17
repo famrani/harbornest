@@ -1,0 +1,14 @@
+app/node_modules
+app/.angular
+app/distlib
+app/platforms
+app/plugins
+app/projects/node_modules
+bootstrap1
+bootstrap2
+server/node_modules
+server/dist
+server/.env*
+server/dist2/config/*firebase-adminsdk*.json
+server/dist2/config/adn-backend-204214-43bb8478ab16.json
+server/dist2/config/*.firebase-adminsdk*.json

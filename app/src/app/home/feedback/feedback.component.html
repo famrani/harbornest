@@ -1,0 +1,26 @@
+<section class="feedback-page">
+  <div class="container feedback-card">
+    <span class="eyebrow">{{ t('eyebrow') }}</span>
+    <h1>{{ t('title') }}</h1>
+    <p class="intro">{{ t('intro') }}</p>
+
+    <div class="state-card" *ngIf="loading">
+      <p>{{ t('loading') }}</p>
+    </div>
+
+    <div class="state-card" *ngIf="!loading && !loggedUser">
+      <p>{{ t('loginRequired') }}</p>
+      <a [routerLink]="'/login' | resourceRoute" class="btn btn-primary">{{ t('login') }}</a>
+    </div>
+
+    <div class="state-card" *ngIf="!loading && loggedUser && eligibleBookings.length === 0">
+      <p>{{ t('noEligibleBookings') }}</p>
+      <a [routerLink]="'/my-bookings' | resourceRoute" class="btn btn-secondary">{{ t('goToBookings') }}</a>
+    </div>
+
+    <div class="state-card" *ngIf="!loading && loggedUser && eligibleBookings.length > 0">
+      <p>{{ eligibleBookings.length === 1 ? t('eligible') : t('eligiblePlural') }}</p>
+      <a [routerLink]="'/my-feedbacks' | resourceRoute" class="btn btn-primary">{{ t('goToMyFeedbacks') }}</a>
+    </div>
+  </div>
+</section>

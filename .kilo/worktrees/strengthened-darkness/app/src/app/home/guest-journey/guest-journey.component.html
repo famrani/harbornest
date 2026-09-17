@@ -1,0 +1,37 @@
+<section class="journey-page">
+  <div class="container journey-container">
+    <div class="journey-hero">
+      <span class="eyebrow">{{ content.eyebrow }}</span>
+      <h1>{{ content.title }}</h1>
+      <p>{{ content.intro }}</p>
+
+      <div class="address-card">
+        <span>{{ content.addressLabel }}</span>
+        <strong>{{ content.address }}</strong>
+        <p>{{ content.mapNote }}</p>
+      </div>
+    </div>
+
+    <div class="journey-timeline" *ngIf="!loading">
+      <article class="journey-step" *ngFor="let step of content.steps; let i = index">
+        <div class="step-number">
+          <span>{{ i + 1 }}</span>
+        </div>
+        <div class="step-card">
+          <div class="step-title">
+            <span class="step-icon">{{ step.icon }}</span>
+            <h2>{{ step.title }}</h2>
+          </div>
+          <p>{{ step.text }}</p>
+          <ul>
+            <li *ngFor="let bullet of step.bullets">{{ bullet }}</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+    <div class="final-note">
+      {{ content.finalNote }}
+    </div>
+  </div>
+</section>

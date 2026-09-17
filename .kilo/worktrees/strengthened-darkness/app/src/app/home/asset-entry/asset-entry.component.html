@@ -1,0 +1,5 @@
+<main class="entry" *ngIf="asset; else state">
+ <section class="visual"><img [src]="asset.imageUrl || 'assets/img/logo-Alegria.png'" [alt]="asset.boatName"><button routerLink="/marketplace">← All assets</button></section>
+ <section class="content"><p>{{asset.assetType}} · {{asset.search?.location?.city || asset.defaultDepartureMarina}}</p><h1>{{asset.boatName}}</h1><h2>{{asset.manufacturer}} {{asset.model}}</h2><div class="facts"><span><strong>{{asset.maxGuests}}</strong> guests</span><span *ngIf="asset.cabins"><strong>{{asset.cabins}}</strong> cabins</span><span><strong>{{asset.defaultWarranty | currency:asset.currency || 'EUR':'symbol':'1.0-0'}}</strong> warranty</span></div><p class="description">{{asset.shortDescription}}</p><button class="enter" (click)="enter()">Explore {{asset.boatName}}</button></section>
+</main>
+<ng-template #state><div class="state"><ion-spinner *ngIf="loading"></ion-spinner><p *ngIf="!loading">This asset is not available.</p><a routerLink="/marketplace">Return to marketplace</a></div></ng-template>

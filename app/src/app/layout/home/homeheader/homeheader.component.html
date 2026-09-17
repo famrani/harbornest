@@ -1,0 +1,76 @@
+<header class="site-header">
+  <div class="container header-bar">
+    <a class="brand" [routerLink]="(homeRoute) | resourceRoute" (click)="closeMenu()">
+      <img class="brand-logo" [src]="logoUrl" [alt]="t('brand')" />
+      <span class="brand-text">
+        <strong>{{ t('brand') }}</strong>
+        <small>{{ t('brandTagline') }}</small>
+      </span>
+    </a>
+
+    <button class="menu-toggle" type="button" (click)="toggleMenu()" [attr.aria-label]="t('nav.openMenu')">
+      ☰
+    </button>
+
+    <nav class="main-nav" [class.open]="menuOpen">
+      <details class="nav-dropdown" *ngIf="showCustomerNavigation" (toggle)="onDropdownToggle($event)">
+        <summary>{{ discoverLabel }}</summary>
+        <div class="dropdown-panel">
+          <a [routerLink]="'/bateau' | resourceRoute" routerLinkActive="active" (click)="closeMenu()">{{ boatMenuLabel }}</a>
+          <a [routerLink]="'/crew' | resourceRoute" routerLinkActive="active" (click)="closeMenu()">{{ crewLabel }}</a>
+          <a [routerLink]="'/sorties' | resourceRoute" routerLinkActive="active" (click)="closeMenu()">{{ itinerariesMenuLabel }}</a>
+        </div>
+      </details>
+      <a *ngIf="showCustomerNavigation" [routerLink]="'/reserver' | resourceRoute" routerLinkActive="active" (click)="closeMenu()">{{ reserveLabel }}</a>
+
+      <details class="nav-dropdown" *ngIf="showAdminNavigation" (toggle)="onDropdownToggle($event)">
+        <summary>{{ managementLabel }}</summary>
+        <div class="dropdown-panel admin-navigation-panel">
+          <a [routerLink]="'/admin/reservations' | resourceRoute" routerLinkActive="active" (click)="closeMenu()">{{ reservationsLabel }}</a>
+          <a [routerLink]="'/admin/calendar' | resourceRoute" routerLinkActive="active" (click)="closeMenu()">{{ calendarLabel }}</a>
+          <a [routerLink]="'/admin/site-content' | resourceRoute" routerLinkActive="active" (click)="closeMenu()">{{ siteContentLabel }}</a>
+          <a [routerLink]="'/admin/pricing-model' | resourceRoute" routerLinkActive="active" (click)="closeMenu()">{{ pricingModelLabel }}</a>
+          <a [routerLink]="'/admin/feedbacks' | resourceRoute" routerLinkActive="active" (click)="closeMenu()">{{ adminFeedbacksLabel }}</a>
+        </div>
+      </details>
+
+      <button *ngIf="isAdmin" class="owner-view-switch" type="button" (click)="switchOwnerView()">
+        <span aria-hidden="true">⇄</span>{{ switchOwnerViewLabel }}
+      </button>
+
+      <div class="language-switcher">
+        <select [value]="currentLanguage" (change)="changeLanguage($any($event.target).value)" [attr.aria-label]="t('nav.languageSelector')">
+          <option value="fr">{{ 'layout.languages.fr' | siteText:'Français' }}</option>
+          <option value="en">{{ 'layout.languages.en' | siteText:'English' }}</option>
+          <option value="es">{{ 'layout.languages.es' | siteText:'Español' }}</option>
+          <option value="it">{{ 'layout.languages.it' | siteText:'Italiano' }}</option>
+          <option value="de">{{ 'layout.languages.de' | siteText:'Deutsch' }}</option>
+          <option value="nl">{{ 'layout.languages.nl' | siteText:'Nederlands' }}</option>
+          <option value="ru">{{ 'layout.languages.ru' | siteText:'Русский' }}</option>
+        </select>
+      </div>
+
+      <details class="nav-dropdown account-dropdown" (toggle)="onDropdownToggle($event)">
+        <summary>{{ accountSummaryLabel }}</summary>
+
+        <div class="dropdown-panel dropdown-panel-right" *ngIf="!isLoggedIn">
+          <a [routerLink]="'/login' | resourceRoute" routerLinkActive="active" (click)="closeMenu()">{{ loginLabel }}</a>
+          <a [routerLink]="'/signup' | resourceRoute" routerLinkActive="active" (click)="closeMenu()">{{ signupLabel }}</a>
+        </div>
+
+        <div class="dropdown-panel dropdown-panel-right account-admin-panel" *ngIf="isLoggedIn && isAdmin">
+          <a [routerLink]="'/my-profile' | resourceRoute" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
+          <button class="dropdown-action" type="button" (click)="switchOwnerView()">{{ switchOwnerViewLabel }}</button>
+          <button class="dropdown-action" type="button" (click)="logout()">{{ logoutLabel }}</button>
+        </div>
+
+        <div class="dropdown-panel dropdown-panel-right account-customer-panel" *ngIf="isLoggedIn && isCustomer">
+          <a [routerLink]="'/my-profile' | resourceRoute" routerLinkActive="active" (click)="closeMenu()">{{ myProfileLabel }}</a>
+          <a [routerLink]="'/my-bookings' | resourceRoute" routerLinkActive="active" (click)="closeMenu()">{{ reservationsLabel }}</a>
+          <a [routerLink]="'/my-feedbacks' | resourceRoute" routerLinkActive="active" (click)="closeMenu()">{{ myFeedbacksLabel }}</a>
+          <button class="dropdown-action" type="button" (click)="logout()">{{ logoutLabel }}</button>
+        </div>
+      </details>
+    </nav>
+  </div>
+</header>

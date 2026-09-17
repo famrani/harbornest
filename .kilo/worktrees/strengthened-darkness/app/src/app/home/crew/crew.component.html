@@ -1,0 +1,16 @@
+
+<section class="page-hero">
+  <div class="container narrow">
+    <span class="eyebrow">{{ content[language].eyebrow }}</span>
+    <h1>{{ content[language].title }}</h1>
+    <p>{{ content[language].intro }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container cards-grid">
+    <article class="crew-card" *ngFor="let item of content[language].cards">
+      <h2>{{ item }}</h2>
+    </article>
+  </div>
+</section>

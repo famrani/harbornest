@@ -1,0 +1,29 @@
+✔ legacy deep links retain query, session placeholder and fragment (160.456594ms)
+✔ URL boat wins over deployment and legacy query settings (62.892484ms)
+✔ root defaults to Alegria; deployment and query remain supported on old URLs (57.796852ms)
+✔ every existing top-level route migrates as a legacy route (22.11774ms)
+✔ invalid/reserved IDs cannot produce external URLs or collide with legacy routes (20.02026ms)
+✔ real Angular location strategy generates prefixed links, strips namespace and preserves back/forward (516.34775ms)
+✔ actual boat context scopes data to the URL and reloads on a CMS boat switch (81.402793ms)
+✔ Alegria: cash persists at root, survives refresh, preserves other payments, calls no checkout (5.201394ms)
+✔ Alegria: rejected write is not success and never falls through to Stripe (1.069076ms)
+✔ Alegria: admin can confirm partial cash then the remainder after refresh (2.415553ms)
+✔ Alegria: customer cannot confirm receipt (0.755368ms)
+✔ Alegria: cash choice is blocked while card checkout is starting (0.415986ms)
+✔ Skipper: cash persists at root, survives refresh, preserves other payments, calls no checkout (0.9645ms)
+✔ Skipper: rejected write is not success and never falls through to Stripe (0.362538ms)
+✔ Skipper: admin can confirm partial cash then the remainder after refresh (1.97935ms)
+✔ Skipper: customer cannot confirm receipt (1.104351ms)
+✔ Skipper: cash choice is blocked while card checkout is starting (0.804041ms)
+✔ cash PATCH does not replace the booking or payment parent (0.493755ms)
+✔ invalid ids reject before any request (0.763638ms)
+✔ cash confirmation does not count the existing deposit twice (2.688642ms)
+✔ pending cash does not reduce financial balances (0.958005ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2329.248098

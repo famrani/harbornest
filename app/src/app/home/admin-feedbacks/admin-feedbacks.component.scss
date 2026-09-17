@@ -1,0 +1,266 @@
+.admin-feedback-page {
+  padding: 72px 0;
+  background: linear-gradient(180deg, #fbf8f2 0%, #ffffff 100%);
+}
+
+.container {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.admin-feedback-card {
+  background: #ffffff;
+  border-radius: 28px;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  box-shadow: 0 22px 60px rgba(8, 38, 58, 0.12);
+  border: 1px solid rgba(8, 38, 58, 0.08);
+}
+
+.eyebrow {
+  display: inline-block;
+  color: #0b6e8f;
+  font-family: 'Raleway', Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+
+h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: #08263a;
+  margin: 0 0 1rem;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+}
+
+p,
+span,
+td,
+th,
+input,
+select,
+small {
+  font-family: 'Lato', Arial, sans-serif;
+  color: #2f3a45;
+  line-height: 1.55;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 2rem 0 1rem;
+}
+
+.stat-card,
+.state-card {
+  border-radius: 20px;
+  padding: 1.15rem;
+  background: #fbf8f2;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+}
+
+.stat-card strong {
+  display: block;
+  font-family: 'Playfair Display', Georgia, serif;
+  color: #08263a;
+  font-size: 2rem;
+}
+
+.stat-card span {
+  color: #667085;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 0.8rem;
+  margin: 1rem 0 1.5rem;
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+  background: #ffffff;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 20px;
+  border: 1px solid rgba(8, 38, 58, 0.08);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 860px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(8, 38, 58, 0.08);
+  vertical-align: top;
+}
+
+th {
+  font-family: 'Raleway', Arial, sans-serif;
+  font-weight: 700;
+  color: #08263a;
+  background: #e8f4f7;
+}
+
+td strong,
+td small {
+  display: block;
+}
+
+td small {
+  color: #667085;
+  margin-top: 0.2rem;
+}
+
+.rating {
+  color: #f28c28;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.error,
+.denied p {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  .stats-grid,
+  .filters {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.actions-cell {
+  min-width: 170px;
+  white-space: nowrap;
+}
+
+.mini-btn {
+  border: 1px solid rgba(8, 38, 58, 0.14);
+  background: #e8f4f7;
+  color: #08263a;
+  border-radius: 999px;
+  padding: 0.55rem 0.8rem;
+  margin: 0.15rem;
+  cursor: pointer;
+  font-family: 'Raleway', Arial, sans-serif;
+  font-weight: 800;
+}
+
+.mini-btn.primary {
+  background: #f28c28;
+  border-color: #f28c28;
+  color: #ffffff;
+}
+
+.mini-btn.danger {
+  background: #fff1f2;
+  border-color: rgba(185, 28, 28, 0.18);
+  color: #b91c1c;
+}
+
+.mini-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.success,
+.error {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 16px;
+  font-weight: 700;
+}
+
+.success {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+}
+
+.edit-row td {
+  background: #fbf8f2;
+}
+
+.admin-edit-form {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+  padding: 0.5rem 0;
+}
+
+.admin-edit-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-family: 'Raleway', Arial, sans-serif;
+  font-weight: 700;
+  color: #08263a;
+}
+
+.admin-edit-form .full {
+  grid-column: 1 / -1;
+}
+
+.admin-edit-form input,
+.admin-edit-form textarea {
+  width: 100%;
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  background: #ffffff;
+  color: #08263a;
+}
+
+.rating-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.rating-buttons button {
+  border: 1px solid rgba(8, 38, 58, 0.16);
+  background: #ffffff;
+  color: #0b6e8f;
+  border-radius: 999px;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  font-family: 'Raleway', Arial, sans-serif;
+  font-weight: 800;
+}
+
+.rating-buttons button.active {
+  background: #f28c28;
+  color: #ffffff;
+  border-color: #f28c28;
+}
+
+.edit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .admin-edit-form {
+    grid-template-columns: 1fr;
+  }
+
+  .actions-cell {
+    white-space: normal;
+  }
+}

@@ -1,0 +1,181 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> app2@0.0.1 build
+> ng build --configuration production
+
+- Generating browser application bundles (phase: setup)...
+✔ Browser application bundle generation complete.
+✔ Browser application bundle generation complete.
+- Copying assets...
+✔ Copying assets complete.
+- Generating index html...
+✔ Index html generation complete.
+
+Initial chunk files                   | Names                   |  Raw size | Estimated transfer size
+main.8cc785fb8d4d1088.js              | main                    |   1.85 MB |               404.03 kB
+polyfills.42ffd8c44d1843b9.js         | polyfills               |  35.32 kB |                11.56 kB
+styles.77fb8c80553a81a8.css           | styles                  |  25.66 kB |                 4.11 kB
+runtime.f5f6183c8e0e3c89.js           | runtime                 |   4.79 kB |                 2.31 kB
+
+                                      | Initial total           |   1.91 MB |               422.01 kB
+
+Lazy chunk files                      | Names                   |  Raw size | Estimated transfer size
+578.c33ef3e153fc0656.js               | home-home-module        |   1.63 MB |               207.57 kB
+9854.ccf7e3c7f11ac070.js              | echarts                 |   1.04 MB |               279.69 kB
+polyfills-core-js.f47eb60cc4ed4bde.js | polyfills-core-js       |  93.98 kB |                28.46 kB
+2885.9a5c1f542a7a0f75.js              | -                       |  74.02 kB |                14.10 kB
+6883.0834fb1ce0df3135.js              | login-login-module      |  70.18 kB |                11.56 kB
+3506.ed4a89973c683889.js              | -                       |  55.68 kB |                 7.37 kB
+2348.4a06efe9eba985cf.js              | -                       |  47.68 kB |                 5.82 kB
+7076.d33d372667ca56ff.js              | -                       |  43.42 kB |                 7.49 kB
+7720.9dc2862abb4f8257.js              | -                       |  42.08 kB |                 9.48 kB
+9344.c2eac91dae67a0e3.js              | -                       |  41.66 kB |                 5.85 kB
+5222.a8a906b6ed93f06a.js              | -                       |  36.20 kB |                 6.58 kB
+441.558d97e54a19630c.js               | -                       |  30.57 kB |                 7.47 kB
+2560.f2b66f3c5eaeb147.js              | -                       |  30.05 kB |                 5.75 kB
+8477.1e6ca5b24d82215d.js              | -                       |  28.76 kB |                 5.69 kB
+4591.65beba910aff7ab8.js              | -                       |  28.52 kB |                 5.71 kB
+5197.58763a93f93ee9a6.js              | -                       |  24.98 kB |                 5.27 kB
+2075.b6889b4bfcb642c7.js              | -                       |  24.42 kB |                 5.32 kB
+8193.e3eecb2f1caafedb.js              | -                       |  24.39 kB |                 4.43 kB
+6433.5d9cc9157fb2be9e.js              | -                       |  24.18 kB |                 6.05 kB
+8814.51c50cee167f5389.js              | -                       |  23.29 kB |                 4.39 kB
+3814.b735287dd792f7d3.js              | -                       |  23.28 kB |                 3.99 kB
+4463.a821f608de44f798.js              | -                       |  22.29 kB |                 3.86 kB
+5949.453eb48092468453.js              | -                       |  20.82 kB |                 4.17 kB
+2415.c2b5e564325e82a8.js              | -                       |  20.27 kB |                 5.10 kB
+9977.eb33e98e569bf061.js              | -                       |  19.56 kB |                 1.98 kB
+8066.268166fde29b6e80.js              | -                       |  19.27 kB |                 3.71 kB
+common.de90597bc7d6254c.js            | common                  |  19.27 kB |                 5.64 kB
+4406.83e2f6cbad7ac1a0.js              | -                       |  19.07 kB |                 3.38 kB
+polyfills-dom.bf542500b6fca113.js     | polyfills-dom           |  18.48 kB |                 5.16 kB
+3511.594774c1ba8c87fb.js              | -                       |  17.27 kB |                 3.05 kB
+8314.8fd1f2a32aafb3e1.js              | -                       |  15.03 kB |                 3.13 kB
+4704.8dd8a5df5fa13d77.js              | -                       |  13.38 kB |                 4.40 kB
+3162.d01d267efd59a7b8.js              | -                       |  12.33 kB |                 2.49 kB
+5712.2ab1c66541daaa11.js              | -                       |  12.25 kB |                 3.88 kB
+8584.bb3a82e4028479df.js              | -                       |  11.85 kB |                 2.42 kB
+8970.2e2fe9ad5fb034e8.js              | -                       |  11.84 kB |                 4.05 kB
+2375.94a25525e7c3ce55.js              | -                       |  11.79 kB |                 3.05 kB
+4699.bad4d2907695b4b5.js              | ios-transition-js       |  10.59 kB |                 2.71 kB
+6840.6a7d9859d2ec555b.js              | -                       |  10.24 kB |                 2.31 kB
+7372.29468be266b8e23d.js              | -                       |  10.14 kB |                 2.69 kB
+1459.5422bb8883e2dc5e.js              | -                       |   9.78 kB |                 3.15 kB
+5100.b3f0d4e14d28671b.js              | -                       |   9.11 kB |                 1.55 kB
+6024.843f9a4931b3e515.js              | -                       |   7.25 kB |                 1.35 kB
+7428.1b43f4bca106b0d6.js              | -                       |   7.19 kB |                 2.18 kB
+8805.b5e702769a5f2d79.js              | -                       |   6.42 kB |                 1.61 kB
+4171.7c4f4a08c2a417d2.js              | -                       |   6.25 kB |                 1.58 kB
+7030.0a57400d45905cc1.js              | -                       |   5.68 kB |                 2.05 kB
+770.c48d82e43a6c0551.js               | -                       |   5.47 kB |                 1.71 kB
+1836.657c3494c6466614.js              | ios-transition-js       |   5.34 kB |                 2.11 kB
+9952.78a42305d3d17641.js              | input-shims-279903e2-js |   5.05 kB |                 1.92 kB
+1102.5ef60b9bf3f0cbe8.js              | -                       |   4.38 kB |                 1.58 kB
+1049.2e9e338bb5f40d22.js              | -                       |   4.24 kB |                 1.17 kB
+5887.1c8a44b7bacf0fb4.js              | -                       |   3.39 kB |                 1.16 kB
+964.63bef5658a37e714.js               | -                       |   3.18 kB |               978 bytes
+9013.ad2a338027a4205a.js              | -                       |   2.88 kB |                 1.08 kB
+323.932e6b655ef9bb9a.js               | -                       |   2.53 kB |               828 bytes
+6521.fa581bcb4007d0b9.js              | -                       |   2.30 kB |                 1.10 kB
+4183.37c22b156e741ef5.js              | -                       |   1.86 kB |               763 bytes
+2836.132fbb0bf60a168a.js              | index-be190feb-js       |   1.66 kB |               763 bytes
+7240.0d54ae3b07df46b2.js              | -                       |   1.43 kB |               506 bytes
+1577.70b8586e7c7d4705.js              | -                       |   1.14 kB |               630 bytes
+7179.535754b9a1ce7fff.js              | md-transition-js        |   1.07 kB |               488 bytes
+9073.1c25d3b340482d71.js              | -                       | 577 bytes |               343 bytes
+7825.ba0c7177027bf6c2.js              | status-tap-42a8af65-js  | 537 bytes |               342 bytes
+
+Build at: 2026-09-14T19:29:02.657Z - Hash: d520bfcbe5def94f - Time: 50526ms
+
+Warning: src/app/home/admin-outings/admin-outings.component.html:198:69 - warning NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.
+
+198                   {{ countDone(anchorage.arrivalChecklistGroups[0]?.items) + countDone(anchorage.departureChecklistGroups[0]?.items) }} /
+                                                                        ~~~~~
+
+  src/app/home/admin-outings/admin-outings.component.ts:65:16
+    65   templateUrl: './admin-outings.component.html',
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Error occurs in the template of component AdminOutingsComponent.
+
+
+Warning: src/app/home/admin-outings/admin-outings.component.html:198:127 - warning NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.
+
+198                   {{ countDone(anchorage.arrivalChecklistGroups[0]?.items) + countDone(anchorage.departureChecklistGroups[0]?.items) }} /
+                                                                                                                                  ~~~~~
+
+  src/app/home/admin-outings/admin-outings.component.ts:65:16
+    65   templateUrl: './admin-outings.component.html',
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Error occurs in the template of component AdminOutingsComponent.
+
+
+Warning: src/app/home/admin-outings/admin-outings.component.html:199:60 - warning NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.
+
+199                   {{ (anchorage.arrivalChecklistGroups[0]?.items?.length || 0) + (anchorage.departureChecklistGroups[0]?.items?.length || 0) }}
+                                                               ~~~~~
+
+  src/app/home/admin-outings/admin-outings.component.ts:65:16
+    65   templateUrl: './admin-outings.component.html',
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Error occurs in the template of component AdminOutingsComponent.
+
+
+Warning: src/app/home/admin-outings/admin-outings.component.html:199:122 - warning NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.
+
+199                   {{ (anchorage.arrivalChecklistGroups[0]?.items?.length || 0) + (anchorage.departureChecklistGroups[0]?.items?.length || 0) }}
+                                                                                                                             ~~~~~
+
+  src/app/home/admin-outings/admin-outings.component.ts:65:16
+    65   templateUrl: './admin-outings.component.html',
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Error occurs in the template of component AdminOutingsComponent.
+
+
+Warning: src/app/home/booking-detail/booking-detail.component.html:657:76 - warning NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.
+
+657             <div><span>{{ t('skipper') }}</span><strong>{{ formatMoney(vm?.remainingSkipperFee || 0) }}</strong></div>
+                                                                               ~~~~~~~~~~~~~~~~~~~
+
+  src/app/home/booking-detail/booking-detail.component.ts:104:16
+    104   templateUrl: './booking-detail.component.html',
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Error occurs in the template of component BookingDetailComponent.
+
+
+Warning: src/app/layout/home/homefooter/homefooter.component.html:4:32 - warning NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.
+
+4       © {{ year }} {{ content?.brand }}
+                                 ~~~~~
+
+  src/app/layout/home/homefooter/homefooter.component.ts:12:16
+    12   templateUrl: './homefooter.component.html',
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Error occurs in the template of component HomefooterComponent.
+
+
+Warning: src/app/layout/home/homefooter/homefooter.component.html:12:44 - warning NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.
+
+12       <a routerLink="/contact">{{ content?.footer?.contact || content?.nav?.contact }}</a>
+                                              ~~~~~~
+
+  src/app/layout/home/homefooter/homefooter.component.ts:12:16
+    12   templateUrl: './homefooter.component.html',
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Error occurs in the template of component HomefooterComponent.
+
+
+Warning: src/app/layout/home/homefooter/homefooter.component.html:12:72 - warning NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.
+
+12       <a routerLink="/contact">{{ content?.footer?.contact || content?.nav?.contact }}</a>
+                                                                          ~~~
+
+  src/app/layout/home/homefooter/homefooter.component.ts:12:16
+    12   templateUrl: './homefooter.component.html',
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Error occurs in the template of component HomefooterComponent.
+
+
+Warning: /workspace/scratch/f4ca949513b0/work/app/src/app/app.module.ts depends on 'ng2-haversine'. CommonJS or AMD dependencies can cause optimization bailouts.
+For more info see: https://angular.dev/tools/cli/build#configuring-commonjs-dependencies
+
+

@@ -1,0 +1,30 @@
+<section class="warranty-charge-page">
+  <div class="container warranty-shell">
+    <span class="eyebrow">{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.admin' | siteText }}</span>
+    <h1>{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.charge_warranty_for_damage' | siteText }}</h1>
+    <p class="intro">{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.use_this_only_when_damage_blocked_toilets_missing_' | siteText }}</p>
+
+    <article class="warranty-card">
+      <label>{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.booking_offer_id' | siteText }}<input type="text" [(ngModel)]="bookingId" [placeholder]="'auto.home.admin-warranty-charge.admin-warranty-charge.component.offer_xxxxx' | siteText" />
+      </label>
+
+      <label>{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.amount_to_charge' | siteText }}<input type="number" min="1" step="0.01" [(ngModel)]="amount" />
+      </label>
+
+      <label>{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.damage_charge_reason' | siteText }}<textarea rows="5" [(ngModel)]="reason" [placeholder]="'auto.home.admin-warranty-charge.admin-warranty-charge.component.example_blocked_marine_toilet_cigarette_burn_on_cu' | siteText"></textarea>
+      </label>
+
+      <button class="btn btn-danger" type="button" [disabled]="charging" (click)="chargeWarranty()">
+        {{ charging ? ('auto.home.admin-warranty-charge.admin-warranty-charge.component.charging' | siteText) : ('auto.home.admin-warranty-charge.admin-warranty-charge.component.charge_warranty' | siteText) }}
+      </button>
+
+      <p class="success" *ngIf="message">{{ message }}</p>
+      <div class="charge-result" *ngIf="lastCharge">
+        <strong>{{ 'auto.home.admin-warranty-charge.admin-warranty-charge.component.saved_damage_charge' | siteText }}</strong>
+        <span>{{ (lastCharge.amount || 0) / 100 | currency:'EUR' }}</span>
+        <small *ngIf="lastCharge.stripePaymentIntentId">Stripe: {{ lastCharge.stripePaymentIntentId }}</small>
+      </div>
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </article>
+  </div>
+</section>

@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /my-bookings
+Disallow: /my-offers
+Disallow: /my-payments
+Disallow: /my-profile
+Disallow: /my-feedbacks
+Disallow: /bookings/
+Disallow: /payment/
+Disallow: /offer/
+
+Sitemap: https://alegriaboat.eu/sitemap.xml

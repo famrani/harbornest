@@ -1,0 +1,219 @@
+<section class="admin-offers-page">
+  <div class="container offers-shell">
+    <div class="section-head">
+      <span class="eyebrow">{{ t('adminEyebrow') }}</span>
+      <h1>{{ t('adminTitle') }}</h1>
+      <p>{{ t('adminIntro') }}</p>
+    </div>
+
+    <article class="card admin-requests-card">
+      <div class="form-title">
+        <h2>{{ t('offerRequests') }}</h2>
+        <button class="btn btn-secondary" type="button" (click)="load()">{{ t('refresh') }}</button>
+      </div>
+
+      <p class="muted" *ngIf="!loading && filteredOfferRequests.length === 0">
+        {{ t('noOfferRequests') }}
+      </p>
+
+      <div class="request-list" *ngIf="filteredOfferRequests.length > 0">
+        <article class="request-row" *ngFor="let request of filteredOfferRequests" (click)="editOfferRequest(request)">
+          <div>
+            <strong>{{ request.customerName || '-' }}</strong>
+            <small>{{ request.customerEmail || '-' }}</small>
+          </div>
+
+          <div>
+            <strong>{{ request.outingType || '-' }}</strong>
+            <small>
+              {{ request.outingDate || '-' }}
+              <ng-container *ngIf="request.departureTime || request.startTime">
+                · {{ request.departureTime || request.startTime }} - {{ request.arrivalTime || request.endTime }}
+              </ng-container>
+            </small>
+          </div>
+
+          <div>
+            <strong>€{{ getEstimatedOfferRequestPrice(request) }}</strong>
+            <small>{{ t('estimatedPrice') }}</small>
+            <small>{{ priceTitle('skipperPrice') }}: €{{ getEstimatedSkipperPrice(request) }}</small>
+            <small>{{ priceTitle('cleaningPrice') }}: €{{ getEstimatedCleaningPrice(request) }}</small>
+            <small>{{ priceTitle('extraServicesPrice') }}: €{{ getEstimatedOptionsPrice(request) }}</small>
+          </div>
+
+          <div>
+            <span class="status-pill pending">{{ t('offerRequestToFinalize') }}</span>
+            <small>{{ getOfferRequestOriginLabel(request) }}</small>
+          </div>
+        </article>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="form-title">
+        <h2>{{ form.offerId ? t('editOffer') : t('newOffer') }}</h2>
+        <button class="btn btn-secondary" type="button" (click)="reset()">{{ t('new') }}</button>
+      </div>
+
+      <div class="form-grid">
+        <label>{{ t('customerName') }}<input type="text" name="customerName" required [(ngModel)]="form.customerName" /></label>
+        <label>{{ t('customerEmail') }}<input type="email" name="customerEmail" required email [(ngModel)]="form.customerEmail" /></label>
+        <label>{{ t('phone') }}<input type="tel" name="customerPhone" required pattern="^[+()0-9 .-]{8,}$" [(ngModel)]="form.customerPhone" /></label>
+        <label>{{ t('outingType') }}<input type="text" name="outingType" required [(ngModel)]="form.outingType" /></label>
+        <label>{{ t('outingDate') }}<input type="date" name="outingDate" required [(ngModel)]="form.outingDate" /></label>
+        <label>{{ t('departureTime') }}<input type="time" name="departureTime" required [(ngModel)]="form.departureTime" /></label>
+        <label>{{ t('returnTime') }}<input type="time" name="arrivalTime" required [(ngModel)]="form.arrivalTime" /></label>
+        <label>{{ t('passengers') }}<input type="number" min="1" required name="passengers" [(ngModel)]="form.passengers" /></label>
+
+        <label>{{ priceTitle('boatPrice') }}<input type="number" min="0" step="0.01" name="proposalBoatPrice" [(ngModel)]="form.proposalBoatPrice" /></label>
+        <label>{{ priceTitle('skipperPrice') }}<input type="number" min="0" step="0.01" name="proposalSkipperPrice" [(ngModel)]="form.proposalSkipperPrice" /></label>
+        <label>{{ priceTitle('cleaningPrice') }}<input type="number" min="0" step="0.01" name="proposalFuelPrice" [(ngModel)]="form.proposalFuelPrice" /></label>
+        <label>{{ priceTitle('extraServicesPrice') }}<input type="number" min="0" step="0.01" name="proposalExtraServicesPrice" [(ngModel)]="form.proposalExtraServicesPrice" /></label>
+
+        <div class="offer-total-summary" aria-live="polite">
+          <span class="offer-total-label">{{ priceTitle('totalAmount') }}</span>
+          <strong class="offer-total-value">
+            €{{ ((form.proposalBoatPrice || 0) + (form.proposalSkipperPrice || 0) + (form.proposalFuelPrice || 0) + (form.proposalExtraServicesPrice || 0)) | number:'1.2-2' }}
+          </strong>
+          <small>{{ t('computedTotal') || priceTitle('totalAmount') }}</small>
+        </div>
+        <label>{{ priceTitle('warrantyAmount') }}<input type="number" min="0" step="0.01" required name="warrantyAmount" [(ngModel)]="form.warrantyAmount" /></label>
+        <label class="wide">{{ t('offerMessage') }}<textarea rows="3" required name="offerMessage" [(ngModel)]="form.offerMessage"></textarea></label>
+        <label class="wide">{{ t('internalComments') }}<textarea rows="3" name="comments" [(ngModel)]="form.comments"></textarea></label>
+      </div>
+
+      <div class="validation-list" *ngIf="getOfferValidationErrors().length">
+        <strong>{{ t('validationTitle') }}</strong>
+        <ul>
+          <li *ngFor="let validationError of getOfferValidationErrors()">{{ validationError }}</li>
+        </ul>
+      </div>
+
+      <div class="calculation">
+        <span>{{ t('computedTotal') || 'Total' }}: <strong>€{{ ((form.proposalBoatPrice || 0) + (form.proposalSkipperPrice || 0) + (form.proposalFuelPrice || 0) + (form.proposalExtraServicesPrice || 0)) | number:'1.2-2' }}</strong></span>
+        <span>{{ priceTitle('skipperPrice') }} cash: <strong>€{{ (form.proposalSkipperPrice || 0) | number:'1.2-2' }}</strong></span>
+        <span>{{ 'auto.home.admin-offers.admin-offers.component.online_payable' | siteText }}<strong>€{{ ((form.proposalBoatPrice || 0) + (form.proposalFuelPrice || 0) + (form.proposalExtraServicesPrice || 0)) | number:'1.2-2' }}</strong></span>
+        <span>{{ priceTitle('deposit10') }}: <strong>€{{ (((form.proposalBoatPrice || 0) + (form.proposalFuelPrice || 0) + (form.proposalExtraServicesPrice || 0)) * 0.1) | number:'1.2-2' }}</strong></span>
+        <span>{{ priceTitle('remaining90') }}: <strong>€{{ (((form.proposalBoatPrice || 0) + (form.proposalFuelPrice || 0) + (form.proposalExtraServicesPrice || 0)) * 0.9) | number:'1.2-2' }}</strong></span>
+        <span>{{ t('validityAfterSent') }}: <strong>{{ t('hours24') }}</strong></span>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" type="button" [disabled]="saving || !isOfferFormValid" (click)="saveOffer()">
+          {{ saving ? t('saving') : t('saveOffer') }}
+        </button>
+
+        <button class="btn btn-secondary" type="button" *ngIf="form.offerId" [disabled]="!isOfferFormValid || !canRenewOffer(form)" [title]="getRenewBlockedReason(form)" (click)="markSent()">
+          {{ t('markSentRenew') }}
+        </button>
+
+        <button class="btn btn-secondary" type="button" *ngIf="form.offerId" (click)="copyLink()">
+          {{ t('copyClientLink') }}
+        </button>
+
+        <button class="btn btn-primary" type="button" *ngIf="form.offerId" [disabled]="!isOfferFormValid" (click)="sendCurrentOfferByEmail()">
+          {{ t('sendByEmail') }}
+        </button>
+
+        <button class="btn btn-secondary" type="button" *ngIf="form.offerId" [disabled]="!form.customerPhone" (click)="openWhatsappDialog(form)">{{ 'auto.home.admin-offers.admin-offers.component.whatsapp' | siteText }}</button>
+
+        <button class="btn btn-secondary" type="button" *ngIf="form.offerId" [disabled]="!canRenewOffer(form)" [title]="getRenewBlockedReason(form)" (click)="renewOffer(form)">
+          {{ t('renew24') }}
+        </button>
+
+        <button class="btn btn-danger" type="button" *ngIf="form.offerId" (click)="deleteOffer(form)">
+          {{ t('delete') }}
+        </button>
+      </div>
+
+      <p class="validity" *ngIf="form.offerId" [class.expired]="isExpired(form)">{{ formatValidity(form) }}</p>
+      <p class="client-link" *ngIf="form.offerId">{{ offerLink }}</p>
+      <p class="success" *ngIf="message">{{ message }}</p>
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </article>
+
+    <div class="toolbar">
+      <label class="search-box">
+        {{ t('searchOffers') }}
+        <input type="search" [(ngModel)]="searchTerm" [placeholder]="t('searchPlaceholder')" />
+      </label>
+      <button class="btn btn-secondary" type="button" (click)="load()">{{ t('refresh') }}</button>
+    </div>
+
+    <p class="muted" *ngIf="loading">{{ t('loading') }}</p>
+
+    <div class="offer-list" *ngIf="!loading">
+      <article class="offer-row" *ngFor="let p of filteredOffers" (click)="edit(p)" tabindex="0" role="button">
+        <span class="status">{{ p.status || t('draft') }}</span>
+
+        <span class="offer-customer">
+          <strong>{{ p.customerName || t('unnamedCustomer') }}</strong>
+          <small>{{ p.customerEmail || t('noEmail') }}</small>
+          <small>{{ getOfferOriginLabel(p) }}</small>
+          <small *ngIf="p.customerPhone">{{ p.customerPhone }}</small>
+        </span>
+
+        <span class="offer-outing">
+          <strong>{{ p.outingType || t('outing') }}</strong>
+          <small>
+            {{ p.outingDate || t('dateNotSet') }}
+            <ng-container *ngIf="p.departureTime">· {{ p.departureTime }}</ng-container>
+          </small>
+          <small [class.expired]="isExpired(p)">{{ formatValidity(p) }}</small>
+        </span>
+
+        <span class="offer-price">
+          <strong>€{{ p.totalAmount || 0 }}</strong>
+          <small>{{ t('deposit') }} €{{ p.depositAmount || ((p.totalAmount || 0) * 0.1) | number:'1.2-2' }}</small>
+        </span>
+
+        <span class="row-actions" (click)="$event.stopPropagation()">
+          <ng-container *ngIf="isAcceptedOffer(p); else offerActions">
+            <button class="mini-link" type="button" (click)="openRelatedBooking(p, $event)">{{ t('openBooking') }}</button>
+            <button class="mini-link" type="button" (click)="createSimilarOffer(p, $event)">{{ t('createSimilarOffer') }}</button>
+          </ng-container>
+
+          <ng-template #offerActions>
+            <button class="mini-link" type="button" (click)="openClientLink(p)">{{ t('openLink') }}</button>
+            <button class="mini-link" type="button" *ngIf="hasRelatedBooking(p)" (click)="openRelatedBooking(p, $event)">{{ t('openBooking') }}</button>
+            <button class="mini-link" type="button" (click)="sendOfferByEmail(p)">{{ t('email') }}</button>
+            <button class="mini-link" type="button" (click)="openWhatsappDialog(p, $event)">{{ 'auto.home.admin-offers.admin-offers.component.whatsapp' | siteText }}</button>
+            <button class="mini-link" type="button" (click)="renewOffer(p, $event)">{{ t('renew') }}</button>
+            <button class="mini-link danger" type="button" (click)="deleteOffer(p, $event)">{{ t('delete') }}</button>
+          </ng-template>
+        </span>
+      </article>
+    </div>
+  </div>
+
+
+<div class="whatsapp-overlay" *ngIf="whatsappDialog" (click)="closeWhatsappDialog()">
+  <article class="whatsapp-modal" (click)="$event.stopPropagation()">
+    <div class="whatsapp-head">
+      <div>
+        <p class="eyebrow">{{ 'auto.home.admin-offers.admin-offers.component.whatsapp' | siteText }}</p>
+        <h3>{{ 'auto.home.admin-offers.admin-offers.component.envoyer_la_offre_au_client' | siteText }}</h3>
+      </div>
+      <button class="modal-close" type="button" (click)="closeWhatsappDialog()">×</button>
+    </div>
+
+    <p class="muted">{{ 'auto.home.admin-offers.admin-offers.component.cette_fen_tre_ouvre_whatsapp_web_vers_le_t_l_phone' | siteText }}</p>
+
+    <div class="whatsapp-target">
+      <span>{{ 'auto.home.admin-offers.admin-offers.component.client' | siteText }}</span>
+      <strong>{{ whatsappDialog.offer.customerName || whatsappDialog.offer.customerPhone }}</strong>
+      <small>{{ whatsappDialog.offer.customerPhone }}</small>
+    </div>
+
+    <textarea class="whatsapp-text" readonly [value]="whatsappDialog.text"></textarea>
+
+    <p class="error" *ngIf="!whatsappDialog.phone">{{ 'auto.home.admin-offers.admin-offers.component.num_ro_client_manquant_ou_invalide' | siteText }}</p>
+
+    <div class="actions">
+      <button class="btn btn-primary" type="button" [disabled]="!whatsappDialog.url" (click)="openWhatsappWindow()">{{ 'auto.home.admin-offers.admin-offers.component.ouvrir_whatsapp' | siteText }}</button>
+      <button class="btn btn-secondary" type="button" (click)="copyWhatsappText()">{{ 'auto.home.admin-offers.admin-offers.component.copier_le_message' | siteText }}</button>
+      <button class="btn btn-secondary" type="button" (click)="closeWhatsappDialog()">{{ 'auto.home.admin-offers.admin-offers.component.fermer' | siteText }}</button>
+    </div>
+  </article>
+</div>
+</section>

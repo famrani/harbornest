@@ -1,0 +1,39 @@
+<main class="marketplace">
+  <section class="hero">
+    <p class="eyebrow">ONE PLACE · EVERY ESCAPE</p>
+    <h1>What would you like<br>to experience?</h1>
+    <p class="intro">Exceptional assets, rented directly from trusted owners.</p>
+
+    <div class="categories" role="tablist" aria-label="Asset type">
+      <button *ngFor="let category of categories"
+        [class.active]="criteria.assetType === category.value"
+        (click)="selectCategory(category.value)">
+        <ion-icon [name]="category.icon"></ion-icon>{{ category.label }}
+      </button>
+    </div>
+
+    <form class="search" (ngSubmit)="runSearch()">
+      <label><span>WHERE</span><ion-input name="geography" [(ngModel)]="criteria.geography" placeholder="City, region or country"></ion-input></label>
+      <label><span>TYPE</span><ion-select name="subtype" [(ngModel)]="criteria.subtype" interface="popover">
+        <ion-select-option *ngFor="let option of subtypeOptions[criteria.assetType === 'all' ? 'other' : criteria.assetType]" [value]="option">{{ option === 'all' ? 'Any type' : option }}</ion-select-option>
+      </ion-select></label>
+      <label><span>GUESTS / PASSENGERS</span><ion-select name="capacity" [(ngModel)]="criteria.capacity" interface="popover">
+        <ion-select-option [value]="null">Any group</ion-select-option>
+        <ion-select-option [value]="2">2+</ion-select-option><ion-select-option [value]="4">4+</ion-select-option><ion-select-option [value]="8">8+</ion-select-option>
+      </ion-select></label>
+      <button type="submit"><ion-icon name="search-outline"></ion-icon>Search</button>
+    </form>
+  </section>
+
+  <section class="results">
+    <header><div><p class="eyebrow">CURATED ASSETS</p><h2>{{ searched ? assets.length + ' matching assets' : 'Extraordinary ways to get away' }}</h2></div></header>
+    <div *ngIf="loading" class="state"><ion-spinner></ion-spinner><p>Finding available assets…</p></div>
+    <div *ngIf="!loading && !assets.length" class="state"><ion-icon name="search-outline"></ion-icon><h3>No exact match</h3><p>Try a wider location or another asset type.</p></div>
+    <div class="grid" *ngIf="!loading && assets.length">
+      <article *ngFor="let asset of assets; trackBy: trackByAssetId" (click)="open(asset)" tabindex="0" (keyup.enter)="open(asset)">
+        <div class="image"><img [src]="asset.imageUrl || 'assets/img/logo-Alegria.png'" [alt]="asset.boatName"><span *ngIf="asset.search?.featured">Featured</span></div>
+        <div class="copy"><small>{{ asset.assetType }} · {{ asset.search?.location?.city || asset.defaultDepartureMarina }}</small><h3>{{ asset.boatName }}</h3><p>{{ asset.shortDescription || asset.manufacturer + ' ' + asset.model }}</p><footer><strong>{{ asset.defaultSkipperPrice || 0 | currency:asset.currency || 'EUR':'symbol':'1.0-0' }}</strong><span>Up to {{ asset.maxGuests }} guests</span></footer></div>
+      </article>
+    </div>
+  </section>
+</main>

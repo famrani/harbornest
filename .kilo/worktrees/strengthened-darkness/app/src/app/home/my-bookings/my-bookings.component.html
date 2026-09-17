@@ -1,0 +1,157 @@
+<section class="booking-page">
+  <div class="container booking-shell">
+    <div class="section-head bookings-page-head">
+      <div>
+        <span class="eyebrow">{{ t('myEyebrow') }}</span>
+        <h1>{{ t('myTitle') }}</h1>
+        <p>{{ t('myIntro') }}</p>
+      </div>
+    </div>
+
+    <p *ngIf="loading" class="muted">{{ t('loadingBookings') }}</p>
+
+    <div *ngIf="!loading && bookings.length === 0" class="empty-card">
+      {{ t('noClientBookings') }}
+    </div>
+
+    <div class="booking-tabs" *ngIf="!loading && bookings.length">
+      <button type="button" [class.active]="activeDateTab === 'upcoming'" (click)="setDateTab('upcoming')">{{ t('upcoming') }}<span>{{ upcomingBookingsCount }}</span>
+      </button>
+      <button type="button" [class.active]="activeDateTab === 'past'" (click)="setDateTab('past')">{{ t('past') }}<span>{{ pastBookingsCount }}</span>
+      </button>
+    </div>
+
+    <div class="booking-toolbar-grid" *ngIf="!loading && bookings.length">
+      <label>
+        <span>{{ t('search') }}</span>
+        <input type="search" [(ngModel)]="searchTerm" [placeholder]="t('searchPlaceholder')" />
+      </label>
+
+      <label>
+        <span>{{ t('status') }}</span>
+        <select [(ngModel)]="statusFilter">
+          <option value="all">{{ t('allStatuses') }}</option>
+          <option value="not_confirmed">{{ t('notConfirmed') }}</option>
+          <option value="confirmed">{{ t('confirmed') }}</option>
+          <option value="payment_done">{{ t('paymentDone') }}</option>
+          <option value="completed">{{ t('outingCompleted') }}</option>
+        </select>
+      </label>
+
+      <label>
+        <span>{{ t('warranty') }}</span>
+        <select [(ngModel)]="warrantyFilter">
+          <option value="all">{{ t('allWarranties') }}</option>
+          <option value="not_selected">{{ t('notSelected') }}</option>
+          <option value="cash">{{ t('cashSelected') }}</option>
+          <option value="card_selected">{{ t('cardSelected') }}</option>
+          <option value="card_registered">{{ t('cardRegistered') }}</option>
+        </select>
+      </label>
+
+      <label>
+        <span>{{ t('orderBy') }}</span>
+        <select [(ngModel)]="sortField">
+          <option value="date">{{ t('date') }}</option>
+          <option value="customer">{{ t('customer') }}</option>
+          <option value="status">{{ t('status') }}</option>
+          <option value="total">{{ t('totalPrice') }}</option>
+          <option value="balance">{{ t('remaining90') }}</option>
+        </select>
+      </label>
+
+      <label>
+        <span>{{ t('direction') }}</span>
+        <select [(ngModel)]="sortDirection">
+          <option value="asc">{{ t('ascending') }}</option>
+          <option value="desc">{{ t('descending') }}</option>
+        </select>
+      </label>
+
+      <button class="btn btn-secondary" type="button" (click)="resetFilters()">{{ t('resetFilters') }}</button>
+    </div>
+
+    <p class="muted" *ngIf="!loading && bookings.length">
+      {{ t('showingBookings') }} <strong>{{ filteredBookings.length }}</strong> {{ activeDateTab === 'upcoming' ? t('upcoming') : t('past') }} {{ t('bookingsOutOf') }} <strong>{{ bookings.length }}</strong>.
+    </p>
+
+    <div class="bookings-list" *ngIf="!loading && filteredBookings.length">
+      <button class="booking-list-row" type="button" *ngFor="let booking of filteredBookings" (click)="openBooking(booking)">
+        <button class="status-pill status-clickable" type="button" (click)="openStatusModal(booking, $event)">
+          {{ getStatusLabel(booking) }}
+        </button>
+
+        <span class="booking-main">
+          <span class="booking-icon">⛵</span>
+          <span>
+            <strong>{{ booking.outingType || t('outing') }}</strong>
+            <small>{{ booking.outingDate || t('dateNotSet') }} <ng-container *ngIf="booking.departureTime">• {{ booking.departureTime }}</ng-container></small>
+          </span>
+        </span>
+
+        <span class="booking-customer">
+          <strong>👤 {{ getCustomerDisplayName(booking) }}</strong>
+          <small>{{ booking.passengers || '-' }} {{ t('passengers') }} · {{ booking.email || t('noEmail') }}</small>
+        </span>
+
+        <span class="booking-price">
+          <strong>€{{ booking.totalPrice || booking.totalAmount || 0 }}</strong>
+          <small>{{ t('totalPrice') }}</small>
+          <span class="booking-progress"><i [style.width.%]="getBookingProgress(booking)"></i></span>
+          <small>{{ getBookingProgress(booking) }}%</small>
+        </span>
+
+        <span class="row-actions" (click)="$event.stopPropagation()">
+          <button type="button" class="mini-btn"
+            *ngIf="shouldShowPaymentButton(booking) && !isBalancePaid(booking)"
+            (click)="payBooking(booking, $event)">
+            {{ getPaymentButtonLabel(booking) }}
+          </button>
+          <span class="row-chevron">›</span>
+        </span>
+      </button>
+    </div>
+
+    <div class="empty-card" *ngIf="!loading && bookings.length && filteredBookings.length === 0">
+      {{ t('noBookingMatch') }}
+    </div>
+  </div>
+
+    <div class="status-modal-backdrop" *ngIf="selectedStatusBooking" (click)="closeStatusModal()">
+      <section class="status-modal" (click)="$event.stopPropagation()">
+        <button class="modal-close" type="button" (click)="closeStatusModal()">×</button>
+        <span class="eyebrow">{{ t('bookingStatus') }}</span>
+        <h2>{{ getStatusLabel(selectedStatusBooking) }}</h2>
+        <p>{{ getStatusSummaryText(selectedStatusBooking) }}</p>
+
+        <div class="status-timeline">
+          <div class="status-step" [ngClass]="getStatusStepClass(isDepositPaid(selectedStatusBooking))">
+            <strong>{{ t('deposit10') }}</strong>
+            <span>{{ isDepositPaid(selectedStatusBooking) ? t('completed') : t('pending') }}</span>
+          </div>
+          <div class="status-step" [ngClass]="getStatusStepClass(isTermsAccepted(selectedStatusBooking))">
+            <strong>{{ t('tc') }}</strong>
+            <span>{{ isTermsAccepted(selectedStatusBooking) ? t('accepted') : t('notAccepted') }}</span>
+          </div>
+          <div class="status-step" [ngClass]="getStatusStepClass(isWarrantySecured(selectedStatusBooking))">
+            <strong>{{ t('warrantyMode') }}</strong>
+            <span>{{ getWarrantyModeLabel(selectedStatusBooking) }} · {{ getWarrantyCardLabel(selectedStatusBooking) }}</span>
+          </div>
+          <div class="status-step" [ngClass]="getStatusStepClass(isBalancePaid(selectedStatusBooking))">
+            <strong>{{ t('remaining90') }}</strong>
+            <span>{{ isBalancePaid(selectedStatusBooking) ? t('completed') : t('pending') }}</span>
+          </div>
+          <div class="status-step" [ngClass]="getStatusStepClass(getDamageStatusLabel(selectedStatusBooking).includes('recorded'))">
+            <strong>{{ t('damage') }}</strong>
+            <span>{{ getDamageStatusLabel(selectedStatusBooking) }}</span>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-secondary" type="button" (click)="closeStatusModal()">{{ t('close') }}</button>
+          <button class="btn btn-primary" type="button" (click)="openBooking(selectedStatusBooking)">{{ t('openBooking') }}</button>
+        </div>
+      </section>
+    </div>
+
+</section>

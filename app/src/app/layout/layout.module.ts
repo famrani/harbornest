@@ -1,0 +1,38 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
+
+import { HomelayoutComponent } from './home/homelayout/homelayout.component';
+import { HomeheaderComponent } from './home/homeheader/homeheader.component';
+import { HomefooterComponent } from './home/homefooter/homefooter.component';
+import { LayoutnoneComponent } from './layoutnone/layoutnone.component';
+import { LayoutRoutingModule } from './layout.router.module';
+import { CookieConsentComponent } from './cookie-consent/cookie-consent.component';
+import { SiteTextPipe } from '../home/site-text.pipe';
+
+import { ResourceRoutePipe } from '../services/resource-route.pipe';
+@NgModule({
+  declarations: [
+    HomelayoutComponent,
+    HomeheaderComponent,
+    HomefooterComponent,
+    LayoutnoneComponent,
+    CookieConsentComponent,
+  ],
+  imports: [
+    CommonModule,
+    ResourceRoutePipe,
+    RouterModule,
+    IonicModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxSpinnerModule,
+    LayoutRoutingModule,
+    SiteTextPipe,
+  ],
+  exports: [HomelayoutComponent],
+})
+export class LayoutModule {}

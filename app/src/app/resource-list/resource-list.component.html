@@ -1,0 +1,11 @@
+<div class="list-page">
+  <button class="back" (click)="back()">← All resources</button>
+  <h1>{{ type | titlecase }}s</h1><p>Select a resource to open its workspace.</p>
+  <div class="grid" *ngIf="!loading">
+    <article class="resource-card" *ngFor="let item of items" (click)="open(item)">
+      <img *ngIf="item.coverImage" [src]="registry.mediaUrl(item.coverImage)" [alt]="item.name || item.resourceId">
+      <div class="body"><h2>{{ item.name || item.resourceId }}</h2><p *ngIf="item.description">{{ item.description }}</p><span>Open →</span></div>
+    </article>
+  </div>
+  <p *ngIf="!loading && !items.length">No {{ type }} resources are registered yet.</p><p *ngIf="loading">Loading…</p>
+</div>

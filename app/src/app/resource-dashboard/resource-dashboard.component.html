@@ -1,0 +1,10 @@
+<div class="registry-page">
+  <header><div class="brand">HarborNest</div><h1>Resources</h1><p>Select the type of asset you want to manage.</p></header>
+  <div class="grid" *ngIf="!loading">
+    <button class="type-card" *ngFor="let item of types" (click)="open(item.type)">
+      <span class="icon">{{ item.type === 'boat' ? '⛵' : item.type === 'place' ? '🏠' : item.type === 'car' ? '🚗' : '🏊' }}</span>
+      <span class="title">{{ item.label }}</span><span class="count">{{ item.count }} resource{{ item.count === 1 ? '' : 's' }}</span>
+    </button>
+  </div>
+  <p *ngIf="loading">Loading resources…</p>
+</div>

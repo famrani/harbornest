@@ -1,0 +1,28 @@
+<section class="sea-toys-page">
+  <div class="container sea-toys-shell">
+    <div class="section-head sea-toys-head">
+      <span class="eyebrow">{{ copy.eyebrow }}</span>
+      <h1>{{ copy.title }}</h1>
+      <p>{{ copy.intro }}</p>
+    </div>
+
+    <div class="sea-toys-grid">
+      <article class="sea-toy-card" *ngFor="let toy of items">
+        <div class="sea-toy-icon">{{ toy.icon || '🌊' }}</div>
+        <div class="sea-toy-copy">
+          <div class="sea-toy-title-row">
+            <h2>{{ toy.title }}</h2>
+            <span class="sea-toy-badge" [class.optional]="!toy.included">{{ toy.badge || (toy.included ? copy.includedLabel : copy.optionalLabel) }}</span>
+          </div>
+          <p>{{ toy.description }}</p>
+          <small *ngIf="toy.priceNote">{{ toy.priceNote }}</small>
+        </div>
+      </article>
+    </div>
+
+    <aside class="sea-toys-note">
+      <strong>{{ copy.noteTitle }}</strong>
+      <p>{{ copy.noteText }}</p>
+    </aside>
+  </div>
+</section>

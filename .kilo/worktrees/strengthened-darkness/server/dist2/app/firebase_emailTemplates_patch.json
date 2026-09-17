@@ -1,0 +1,62 @@
+{
+  "siteContent": {
+    "fr": {
+      "emailTemplates": {
+        "offerReady": {
+          "subject": "Votre offre Alegria est prête",
+          "title": "Votre offre est prête",
+          "buttonText": "Voir et confirmer ma offre",
+          "html": "<p>Bonjour {{customerName}},</p><p>Votre offre pour votre sortie Alegria est maintenant disponible.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{offerUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p><p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p><p><a href=\"{{offerUrl}}\">{{offerUrl}}</a></p>",
+          "footer": "À bientôt à bord,<br/>L’équipe Alegria"
+        },
+        "bookingConfirmed": {
+          "subject": "Votre réservation Alegria est confirmée",
+          "title": "Votre réservation est confirmée",
+          "buttonText": "Ouvrir ma réservation",
+          "html": "<p>Bonjour {{customerName}},</p><p>Merci, votre offre a bien été confirmée et transformée en réservation.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{bookingUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p><p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :</p><p><a href=\"{{bookingUrl}}\">{{bookingUrl}}</a></p>",
+          "footer": "À bientôt à bord,<br/>L’équipe Alegria"
+        }
+      }
+    },
+    "en": {
+      "emailTemplates": {
+        "offerReady": {
+          "subject": "Your Alegria offer is ready",
+          "title": "Your offer is ready",
+          "buttonText": "View and confirm my offer",
+          "html": "<p>Hello {{customerName}},</p><p>Your Alegria outing offer is now available.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{offerUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p><p>If the button does not work, copy this link into your browser:</p><p><a href=\"{{offerUrl}}\">{{offerUrl}}</a></p>",
+          "footer": "See you soon on board,<br/>The Alegria Team"
+        },
+        "bookingConfirmed": {
+          "subject": "Your Alegria booking is confirmed",
+          "title": "Your booking is confirmed",
+          "buttonText": "Open my booking",
+          "html": "<p>Hello {{customerName}},</p><p>Thank you, your offer has been confirmed and converted into a booking.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{bookingUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p><p>If the button does not work, copy this link into your browser:</p><p><a href=\"{{bookingUrl}}\">{{bookingUrl}}</a></p>",
+          "footer": "See you soon on board,<br/>The Alegria Team"
+        }
+      }
+    },
+    "es": {
+      "emailTemplates": {
+        "offerReady": {
+          "subject": "Tu propuesta Alegria está lista",
+          "title": "Tu propuesta está lista",
+          "buttonText": "Ver y confirmar mi propuesta",
+          "html": "<p>Hola {{customerName}},</p><p>Tu propuesta para la salida Alegria ya está disponible.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{offerUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p><p>Si el botón no funciona, copia este enlace en tu navegador:</p><p><a href=\"{{offerUrl}}\">{{offerUrl}}</a></p>",
+          "footer": "Hasta pronto a bordo,<br/>El equipo Alegria"
+        },
+        "bookingConfirmed": {
+          "subject": "Tu reserva Alegria está confirmada",
+          "title": "Tu reserva está confirmada",
+          "buttonText": "Abrir mi reserva",
+          "html": "<p>Hola {{customerName}},</p><p>Gracias, tu propuesta ha sido confirmada y convertida en reserva.</p>{{summaryHtml}}<p style=\"margin:24px 0;\"><a href=\"{{bookingUrl}}\" style=\"background:#0b4b5a;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;display:inline-block;\">{{buttonText}}</a></p><p>Si el botón no funciona, copia este enlace en tu navegador:</p><p><a href=\"{{bookingUrl}}\">{{bookingUrl}}</a></p>",
+          "footer": "Hasta pronto a bordo,<br/>El equipo Alegria"
+        }
+      }
+    }
+  },
+  "emailBranding": {
+    "fromName": "Alegria Team",
+    "fromEmail": "alegria.boat01@gmail.com"
+  }
+}

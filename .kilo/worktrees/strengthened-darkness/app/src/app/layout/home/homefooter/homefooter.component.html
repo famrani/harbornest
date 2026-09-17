@@ -1,0 +1,19 @@
+<footer class="site-footer-simple">
+  <div class="container footer-simple">
+    <div class="footer-left">
+      © {{ year }} {{ content?.brand }}
+    </div>
+
+    <div class="footer-center">
+      {{ releaseLabel }} {{ mainSvc.version }}
+    </div>
+
+    <div class="footer-right">
+      <a routerLink="/contact">{{ content?.footer?.contact || content?.nav?.contact }}</a>
+      <a routerLink="/booking-process">{{ bookingProcessLabel }}</a>
+      <a routerLink="/sea-toys">{{ seaToysLabel }}</a>
+      <a routerLink="/terms">{{ termsLabel }}</a>
+      <a routerLink="/safety">{{ safetyLabel }}</a>
+    </div>
+  </div>
+</footer>

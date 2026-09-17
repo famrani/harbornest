@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/index.ts"],"names":[],"mappings":";;;AAAA,0CAAgD;AAEhD,IAAI,GAAG,GAAG,IAAI,oBAAa,EAAE,CAAC;AAErB,kBAAG","file":"index.js","sourcesContent":["import { MainComponent } from './app/main/main';\n\nlet app = new MainComponent();\n\nexport { app };\n\n"]}

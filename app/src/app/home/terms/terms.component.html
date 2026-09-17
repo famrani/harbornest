@@ -1,0 +1,32 @@
+<main class="terms-document-page">
+  <section class="terms-document-shell" *ngIf="!loading">
+    <header class="terms-document-header">
+      <div>
+        <span class="eyebrow">{{ terms.eyebrow }}</span>
+        <h1>{{ terms.title }}</h1>
+        <p class="intro">{{ terms.intro }}</p>
+        <p class="updated">{{ terms.updatedLabel }} : {{ terms.updated }}</p>
+      </div>
+
+      <div class="terms-actions">
+        <button type="button" class="secondary-action" (click)="goBack()">{{ terms.back }}</button>
+        <button type="button" class="primary-action" (click)="print()">{{ terms.print }}</button>
+      </div>
+    </header>
+
+    <article class="terms-card">
+      <section class="terms-section" *ngFor="let section of terms.sections; trackBy: trackByTitle">
+        <h2>{{ section.title }}</h2>
+
+        <ng-container *ngIf="section.steps?.length">
+          <div class="process-step" *ngFor="let step of section.steps; trackBy: trackByTitle">
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.text }}</p>
+          </div>
+        </ng-container>
+
+        <p *ngFor="let paragraph of section.paragraphs">{{ paragraph }}</p>
+      </section>
+    </article>
+  </section>
+</main>

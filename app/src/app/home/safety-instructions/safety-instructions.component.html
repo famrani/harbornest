@@ -1,0 +1,30 @@
+<section class="safety-section">
+  <div class="container safety-container">
+    <div class="safety-head">
+      <span class="eyebrow">{{ content.eyebrow }}</span>
+      <h2>{{ content.title }}</h2>
+      <p>{{ content.subtitle }}</p>
+    </div>
+
+    <div class="safety-accordion">
+      <article class="safety-card" *ngFor="let section of content.sections; let i = index" [class.open]="openIndex === i">
+        <button class="safety-toggle" type="button" (click)="toggle(i)" [attr.aria-expanded]="openIndex === i">
+          <span class="safety-title">
+            <span class="safety-icon">{{ section.icon }}</span>
+            {{ section.title }}
+          </span>
+          <span class="safety-plus">{{ openIndex === i ? '−' : '+' }}</span>
+        </button>
+
+        <div class="safety-body" *ngIf="openIndex === i">
+          <p class="safety-intro" *ngIf="section.intro">{{ section.intro }}</p>
+          <ul>
+            <li *ngFor="let item of section.items">{{ item }}</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+    <p class="safety-note">{{ content.note }}</p>
+  </div>
+</section>

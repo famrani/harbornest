@@ -1,0 +1,21 @@
+<section class="guest-page">
+  <div class="container guest-container">
+    <div class="guest-head">
+      <span class="eyebrow">{{ content.eyebrow }}</span>
+      <h1>{{ content.title }}</h1>
+      <p>{{ content.intro }}</p>
+    </div>
+
+    <div class="faq-list" *ngIf="!loading">
+      <article class="faq-card" *ngFor="let item of content.items; let i = index" [class.open]="openIndex === i">
+        <button type="button" class="faq-question" (click)="toggle(i)" [attr.aria-expanded]="openIndex === i">
+          <span>{{ item.question }}</span>
+          <strong>{{ openIndex === i ? '−' : '+' }}</strong>
+        </button>
+        <div class="faq-answer" *ngIf="openIndex === i">
+          <p>{{ item.answer }}</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

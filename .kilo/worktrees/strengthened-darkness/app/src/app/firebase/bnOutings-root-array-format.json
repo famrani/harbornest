@@ -1,0 +1,188 @@
+{
+  "bnOutings": [
+    {
+      "active": true,
+      "category": "day",
+      "slug": "journee-en-mer",
+      "priceFrom": 1299,
+      "image": "assets/img/events/cap-antibes/cap-antibes1.jpg",
+      "fr": {
+        "title": "Journée en mer",
+        "description": "Profitez d’une journée ou demi-journée en mer pour naviguer, vous détendre et découvrir les plus beaux mouillages de la Côte d’Azur comme les îles de Lérins, le Cap d’Antibes ou la baie des Milliardaires.",
+        "duration": "Journée ou demi-journée",
+        "guests": "10 passagers max",
+        "priceLabel": "À partir de 1299 €",
+        "highlights": [
+          "Sortie privée",
+          "Skipper professionnel",
+          "Paddle, kayak-canoë, snorkeling, pêche",
+          "Petit-déjeuner inclus"
+        ]
+      },
+      "en": {
+        "title": "Day at Sea",
+        "description": "Enjoy a full-day or half-day cruise to relax, sail and discover the most beautiful anchorages of the French Riviera such as the Lérins Islands, Cap d’Antibes and Billionaire’s Bay.",
+        "duration": "Full day or half day",
+        "guests": "Up to 10 guests",
+        "priceLabel": "From €1299",
+        "highlights": [
+          "Private outing",
+          "Professional skipper",
+          "Paddleboard, kayak-canoe, snorkeling, fishing",
+          "Breakfast included"
+        ]
+      },
+      "es": {
+        "title": "Día en el mar",
+        "description": "Disfrute de un día completo o medio día en el mar para navegar, relajarse y descubrir los mejores fondeos de la Costa Azul como las islas de Lérins, Cap d’Antibes y la Bahía de los Multimillonarios.",
+        "duration": "Día completo o medio día",
+        "guests": "Hasta 10 pasajeros",
+        "priceLabel": "Desde 1299 €",
+        "highlights": [
+          "Salida privada",
+          "Patrón profesional",
+          "Paddle, kayak-canoa, snorkel, pesca",
+          "Desayuno incluido"
+        ]
+      }
+    },
+    {
+      "active": true,
+      "category": "sunset",
+      "slug": "coucher-de-soleil",
+      "priceFrom": 999,
+      "image": "assets/img/events/sunset/sunset1.jpg",
+      "fr": {
+        "title": "Coucher de soleil",
+        "description": "Profitez d’une sortie élégante en fin de journée pour admirer le coucher du soleil depuis la mer dans une ambiance calme et raffinée.",
+        "duration": "Demi-journée",
+        "guests": "10 passagers max",
+        "priceLabel": "À partir de 999 €",
+        "highlights": [
+          "Ambiance premium",
+          "Apéritif possible",
+          "Musique à bord",
+          "Vue exceptionnelle"
+        ]
+      },
+      "en": {
+        "title": "Sunset Cruise",
+        "description": "Enjoy an elegant late-afternoon cruise to admire the sunset from the sea in a calm and refined atmosphere.",
+        "duration": "Half day",
+        "guests": "Up to 10 guests",
+        "priceLabel": "From €999",
+        "highlights": [
+          "Premium atmosphere",
+          "Drinks available",
+          "Music onboard",
+          "Exceptional views"
+        ]
+      },
+      "es": {
+        "title": "Atardecer en el mar",
+        "description": "Disfrute de una elegante salida al final del día para admirar la puesta de sol desde el mar en un ambiente tranquilo y refinado.",
+        "duration": "Medio día",
+        "guests": "Hasta 10 pasajeros",
+        "priceLabel": "Desde 999 €",
+        "highlights": [
+          "Ambiente premium",
+          "Aperitivos posibles",
+          "Música a bordo",
+          "Vistas excepcionales"
+        ]
+      }
+    },
+    {
+      "active": true,
+      "category": "party",
+      "slug": "party",
+      "priceFrom": 999,
+      "image": "assets/img/events/evjf/evjf-g1.jpg",
+      "fr": {
+        "title": "Fête privée",
+        "description": "Organisez une fête privée à bord d’Alegria avec musique, baignade, paddle et prestations sur mesure : DJ, yoga, massage ou restauration.",
+        "duration": "Journée ou soirée",
+        "guests": "10 passagers max",
+        "priceLabel": "À partir de 999 €",
+        "highlights": [
+          "DJ possible",
+          "Yoga / massage",
+          "Snacks et boissons",
+          "Ambiance festive"
+        ]
+      },
+      "en": {
+        "title": "Private Party",
+        "description": "Host a private party aboard Alegria with music, swimming, paddleboarding and tailor-made services such as DJ, yoga, massage or catering.",
+        "duration": "Day or evening",
+        "guests": "Up to 10 guests",
+        "priceLabel": "From €999",
+        "highlights": [
+          "DJ available",
+          "Yoga / massage",
+          "Snacks and drinks",
+          "Festive atmosphere"
+        ]
+      },
+      "es": {
+        "title": "Fiesta privada",
+        "description": "Organice una fiesta privada a bordo de Alegria con música, baño, paddle y servicios personalizados como DJ, yoga, masaje o catering.",
+        "duration": "Día o noche",
+        "guests": "Hasta 10 pasajeros",
+        "priceLabel": "Desde 999 €",
+        "highlights": [
+          "DJ disponible",
+          "Yoga / masaje",
+          "Snacks y bebidas",
+          "Ambiente festivo"
+        ]
+      }
+    },
+    {
+      "active": true,
+      "category": "corporate",
+      "slug": "sortie-entreprise",
+      "priceFrom": 999,
+      "image": "assets/img/events/business-meeting/business-meeting1.jpg",
+      "fr": {
+        "title": "Sortie entreprise",
+        "description": "Un cadre original et haut de gamme pour réunir collaborateurs ou clients lors d’une sortie professionnelle en mer.",
+        "duration": "Demi-journée ou journée",
+        "guests": "10 passagers max",
+        "priceLabel": "À partir de 999 €",
+        "highlights": [
+          "Format corporate",
+          "Petit-déjeuner inclus",
+          "Possibilité déjeuner",
+          "Cadre premium"
+        ]
+      },
+      "en": {
+        "title": "Corporate Outing",
+        "description": "A unique and premium setting to bring together colleagues or clients during a professional sea outing.",
+        "duration": "Half day or full day",
+        "guests": "Up to 10 guests",
+        "priceLabel": "From €999",
+        "highlights": [
+          "Corporate format",
+          "Breakfast included",
+          "Lunch possible",
+          "Premium setting"
+        ]
+      },
+      "es": {
+        "title": "Evento corporativo",
+        "description": "Un entorno original y premium para reunir colaboradores o clientes durante una salida profesional en el mar.",
+        "duration": "Medio día o día completo",
+        "guests": "Hasta 10 pasajeros",
+        "priceLabel": "Desde 999 €",
+        "highlights": [
+          "Formato corporativo",
+          "Desayuno incluido",
+          "Posibilidad de almuerzo",
+          "Entorno premium"
+        ]
+      }
+    }
+  ]
+}

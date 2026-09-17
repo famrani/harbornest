@@ -1,0 +1,20 @@
+{
+  "storageTenants": {
+    "alegria": {
+      "enabled": true,
+      "bucket": "adn_root",
+      "root": "tenants/alegria_data",
+      "mediaPrefix": "alegria/img/",
+      "hostnames": { "alegriaboat.eu": "alegriaboat.eu", "www.alegriaboat.eu": "www.alegriaboat.eu" },
+      "adminUids": {}
+    },
+    "poseidon": {
+      "enabled": true,
+      "bucket": "adn_root",
+      "root": "tenants/poseidon_data",
+      "mediaPrefix": "poseidon/img/",
+      "hostnames": {},
+      "adminUids": { "REPLACE_WITH_POSEIDON_OWNER_FIREBASE_UID": true }
+    }
+  }
+}
