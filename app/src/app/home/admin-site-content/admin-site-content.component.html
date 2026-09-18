@@ -195,8 +195,8 @@
 
       <section *ngIf="activeTab === 'boat'" class="section-body">
         <div class="form-grid two">
-          <label><span>Nom du bateau</span><input [(ngModel)]="brand.name" (ngModelChange)="markDirty()"></label>
-          <label><span>Slogan</span><input [(ngModel)]="current.brandTagline" (ngModelChange)="markDirty()"></label>
+          <label><span>Nom affiché dans l’en-tête</span><input [(ngModel)]="brand.name" (ngModelChange)="markDirty()"></label>
+          <label><span>Sous-titre de l’en-tête</span><input [(ngModel)]="current.brandTagline" (ngModelChange)="markDirty()"></label>
           <label><span>Surtitre</span><input [(ngModel)]="boatPage.eyebrow" (ngModelChange)="markDirty()"></label>
           <label><span>Titre principal</span><input [(ngModel)]="boatPage.title" (ngModelChange)="markDirty()"></label>
           <label class="wide"><span>Description du bateau</span><textarea rows="4" [(ngModel)]="boatPage.intro" (ngModelChange)="markDirty()"></textarea></label>

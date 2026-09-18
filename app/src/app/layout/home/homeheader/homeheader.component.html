@@ -1,9 +1,9 @@
 <header class="site-header">
   <div class="container header-bar">
     <a class="brand" [routerLink]="(homeRoute) | resourceRoute" (click)="closeMenu()">
-      <img class="brand-logo" [src]="logoUrl" [alt]="t('brand')" />
+      <img class="brand-logo" [src]="logoUrl" [alt]="t('brand.name', t('brand'))" />
       <span class="brand-text">
-        <strong>{{ t('brand') }}</strong>
+        <strong>{{ t('brand.name', t('brand')) }}</strong>
         <small>{{ t('brandTagline') }}</small>
       </span>
     </a>

@@ -362,6 +362,22 @@ export class AdminSiteContentComponent implements OnInit {
         writes.push(this.saveOperationalOutings());
       }
 
+      // Keep the lightweight marketplace/resource registry in sync with the
+      // CMS primary boat image. The marketplace home/resource cards read
+      // resources/{type}/{id}/coverImage, while the CMS edits
+      // siteContent/{type}/{id}/{language}/boatHeroImage.
+      if (this.activeTab === 'boat') {
+        const heroImage = this.primaryBoatHeroImage();
+        if (heroImage) {
+          writes.push(firstValueFrom(
+            this.http.patch(
+              `${this.firebaseDatabaseUrl}/resources/${encodeURIComponent(this.resourceContext.resourceType)}/${encodeURIComponent(this.boatId)}.json`,
+              { coverImage: heroImage }
+            ).pipe(timeout(15000))
+          ));
+        }
+      }
+
       const existingBoat = await this.fleetService.getBoat(this.boatId);
       writes.push(this.fleetService.saveBoat({
         ...existingBoat,
@@ -378,6 +394,15 @@ export class AdminSiteContentComponent implements OnInit {
     } finally {
       this.saving = false;
     }
+  }
+
+  private primaryBoatHeroImage(): string {
+    const preferred = [this.selectedLanguage, 'fr', 'en', 'es', 'it', 'de', 'nl', 'ru'];
+    for (const language of preferred) {
+      const hero = String(this.siteContent?.[language]?.boatHeroImage || '').trim();
+      if (hero) return hero;
+    }
+    return '';
   }
 
   private sectionsForTab(tab: CmsTab): string[] {

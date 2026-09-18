@@ -95,8 +95,13 @@ class MediaService {
             // e.g. boat/alegria/img/boat/alegria/photo.jpg.
             // New frontends should send resourceType + resourceId. For the existing
             // Alegria frontend, resourceId falls back to boatId or the tenant id.
-            const resourceType = this.safeResourceType(req.body?.resourceType || 'boat');
-            const resourceId = this.safeSegment(req.body?.resourceId || req.body?.boatId || tenant.id);
+            // Accept both naming conventions:
+            // - resourceType/resourceId: canonical backend API
+            // - assetType/assetId: current resource-aware frontend CMS
+            // Without these aliases, Big Boss / Sea Breeze uploads silently fell
+            // back to tenant.id (alegria), so the CMS saved/read the wrong resource.
+            const resourceType = this.safeResourceType(req.body?.resourceType || req.body?.assetType || 'boat');
+            const resourceId = this.safeSegment(req.body?.resourceId || req.body?.assetId || req.body?.boatId || tenant.id);
             const logicalPath = `${resourceType}/${resourceId}/img/${folder}/${subject}/${uniqueName}`;
             if (!this.isAllowedPath(logicalPath, tenant)) {
                 return res.status(400).json({ error: 'invalid_media_path' });
