@@ -8,6 +8,7 @@ import { SITE_CONTENT } from '../site-content';
 import { SiteContentService } from '../site-content-service/site-content.service';
 import { LanguageService, SiteLanguage } from '../../services/language.service';
 import { Subscription } from 'rxjs';
+import { boatPath } from '../../services/boat-routing';
 
 interface BookingFieldView {
   key: string;
@@ -89,7 +90,7 @@ export class BookingsComponent implements OnInit, OnDestroy {
     const svc = this.mainSvc as any;
     this.loggedUser = svc.bnUser || svc.currentUser || null;
     if (!this.isAdmin) {
-      this.router.navigate(['/my-bookings']);
+      this.router.navigateByUrl(boatPath('/my-bookings'));
       return;
     }
     this.loadBookings();
@@ -131,7 +132,11 @@ export class BookingsComponent implements OnInit, OnDestroy {
   }
 
   get isAdmin(): boolean {
-    if (this.router.url.split('?')[0].startsWith('/admin/')) return true;
+    // Resource-scoped admin URLs are shaped as
+    // /boat/:boatId/admin/..., so checking startsWith('/admin/') sends an
+    // administrator to /my-bookings while the user record is still loading.
+    const path = this.router.url.split('?')[0].split('#')[0];
+    if (/(?:^|\/)admin(?:\/|$)/.test(path)) return true;
     const role = String(this.loggedUser?.role || '').toLowerCase();
     return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
   }
@@ -516,7 +521,7 @@ export class BookingsComponent implements OnInit, OnDestroy {
   }
 
   openBooking(booking: AlegriaBooking): void {
-    this.router.navigate(['/admin/reservations', booking.bookingId]);
+    this.router.navigateByUrl(boatPath(`/admin/reservations/${encodeURIComponent(booking.bookingId)}`));
   }
 
   getCustomerTotal(booking: AlegriaBooking): number {
@@ -721,7 +726,7 @@ export class BookingsComponent implements OnInit, OnDestroy {
 
   openDetail(booking: BookingView): void {
     if (!booking?.bookingId) return;
-    this.router.navigate(['/admin/reservations', booking.bookingId]);
+    this.router.navigateByUrl(boatPath(`/admin/reservations/${encodeURIComponent(booking.bookingId)}`));
   }
 
   payDeposit(booking: AlegriaBooking, event?: Event): void {
@@ -761,7 +766,10 @@ export class BookingsComponent implements OnInit, OnDestroy {
   }
 
   payment(booking: AlegriaBooking): void {
-    this.router.navigate(['/payment', booking.bookingId], { queryParams: { mode: 'warranty' } });
+    this.router.navigate(
+      [boatPath(`/payment/${encodeURIComponent(booking.bookingId)}`)],
+      { queryParams: { mode: 'warranty' } }
+    );
   }
 
   trackByBookingId(index: number, booking: BookingView): string {

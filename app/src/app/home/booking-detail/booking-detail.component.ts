@@ -625,6 +625,9 @@ export class BookingDetailComponent implements OnInit {
   async deleteBooking(): Promise<void> {
     const id = this.vm?.bookingId || this.bookingId;
     if (!id) return;
+    const returnUrl = this.resourceContext.route(
+      this.vm?.isAdmin || this.isCurrentUserAdmin() ? '/admin/reservations' : '/my-bookings'
+    );
     const ok = window.confirm(`Delete booking ${id}? This cannot be undone.`);
     if (!ok) return;
 
@@ -637,7 +640,7 @@ export class BookingDetailComponent implements OnInit {
       await this.writeJson(this.resourceContext.scopedPath('bnProposals', id), null).catch(() => undefined);
       this.vm = null;
       this.notFound = true;
-      this.error = `Booking ${id} deleted.`;
+      await this.router.navigateByUrl(returnUrl, { replaceUrl: true });
     } catch (e: any) {
       this.error = e?.message || 'Unable to delete booking.';
     } finally {
@@ -2619,11 +2622,17 @@ export class BookingDetailComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate([this.vm?.isAdmin ? '/admin/reservations' : '/my-bookings']);
+    const target = this.vm?.isAdmin || this.isCurrentUserAdmin()
+      ? '/admin/reservations'
+      : '/my-bookings';
+    this.router.navigateByUrl(this.resourceContext.route(target));
   }
 
   openEdit(): void {
     if (!this.vm?.bookingId) return;
-    this.router.navigate(['/admin/reservations', this.vm.bookingId], { queryParams: { edit: true } });
+    this.router.navigate(
+      [this.resourceContext.route(`/admin/reservations/${encodeURIComponent(this.vm.bookingId)}`)],
+      { queryParams: { edit: true } }
+    );
   }
 }

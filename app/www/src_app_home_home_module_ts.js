@@ -4604,7 +4604,7 @@ let MyBookingsComponent = class MyBookingsComponent {
   }
   loadForCurrentMode() {
     if (this.isAdmin) {
-      this.router.navigate(['/admin/reservations']);
+      this.router.navigateByUrl((0,_services_boat_routing__WEBPACK_IMPORTED_MODULE_3__.boatPath)('/admin/reservations'));
       return;
     }
     const email = this.loggedUser?.email || '';
@@ -4906,13 +4906,13 @@ let MyBookingsComponent = class MyBookingsComponent {
     return this.isBalancePaid(booking) ? 'No damage recorded' : 'Available after full payment';
   }
   openBooking(booking) {
-    this.router.navigate(['/bookings', booking.bookingId]);
+    this.router.navigateByUrl((0,_services_boat_routing__WEBPACK_IMPORTED_MODULE_3__.boatPath)(`/bookings/${encodeURIComponent(booking.bookingId)}`));
   }
   payBooking(booking, event) {
     event?.stopPropagation();
     if (!this.shouldShowPaymentButton(booking) || !booking?.bookingId) return;
     if (this.canPayDeposit(booking)) {
-      this.router.navigate(['/payment', booking.bookingId], {
+      this.router.navigate([(0,_services_boat_routing__WEBPACK_IMPORTED_MODULE_3__.boatPath)(`/payment/${encodeURIComponent(booking.bookingId)}`)], {
         queryParams: {
           mode: 'deposit'
         }
@@ -28689,6 +28689,7 @@ let BookingDetailComponent = class BookingDetailComponent {
     return (0,_Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const id = _this4.vm?.bookingId || _this4.bookingId;
       if (!id) return;
+      const returnUrl = _this4.resourceContext.route(_this4.vm?.isAdmin || _this4.isCurrentUserAdmin() ? '/admin/reservations' : '/my-bookings');
       const ok = window.confirm(`Delete booking ${id}? This cannot be undone.`);
       if (!ok) return;
       _this4.deleting = true;
@@ -28699,7 +28700,9 @@ let BookingDetailComponent = class BookingDetailComponent {
         yield _this4.writeJson(_this4.resourceContext.scopedPath('bnProposals', id), null).catch(() => undefined);
         _this4.vm = null;
         _this4.notFound = true;
-        _this4.error = `Booking ${id} deleted.`;
+        yield _this4.router.navigateByUrl(returnUrl, {
+          replaceUrl: true
+        });
       } catch (e) {
         _this4.error = e?.message || 'Unable to delete booking.';
       } finally {
@@ -31422,11 +31425,12 @@ let BookingDetailComponent = class BookingDetailComponent {
     }).format(this.number(value));
   }
   goBack() {
-    this.router.navigate([this.vm?.isAdmin ? '/admin/reservations' : '/my-bookings']);
+    const target = this.vm?.isAdmin || this.isCurrentUserAdmin() ? '/admin/reservations' : '/my-bookings';
+    this.router.navigateByUrl(this.resourceContext.route(target));
   }
   openEdit() {
     if (!this.vm?.bookingId) return;
-    this.router.navigate(['/admin/reservations', this.vm.bookingId], {
+    this.router.navigate([this.resourceContext.route(`/admin/reservations/${encodeURIComponent(this.vm.bookingId)}`)], {
       queryParams: {
         edit: true
       }
@@ -33721,19 +33725,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   BookingsComponent: () => (/* binding */ BookingsComponent)
 /* harmony export */ });
 /* harmony import */ var _Users_faycalamrani_data_ADN_harbornest_1_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 89204);
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! tslib */ 27824);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! tslib */ 27824);
 /* harmony import */ var _bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bookings.component.html?ngResource */ 26456);
 /* harmony import */ var _bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./bookings.component.scss?ngResource */ 62992);
 /* harmony import */ var _bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_bookings_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/core */ 37580);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/router */ 50085);
-/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! godigital-lib */ 83);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/core */ 37580);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/router */ 50085);
+/* harmony import */ var godigital_lib__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! godigital-lib */ 83);
 /* harmony import */ var _booking_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./booking-api.service */ 74854);
 /* harmony import */ var _booking_financial_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./booking-financial.service */ 25909);
 /* harmony import */ var _booking_state_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./booking-state.service */ 81235);
 /* harmony import */ var _site_content__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../site-content */ 14009);
 /* harmony import */ var _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../site-content-service/site-content.service */ 73196);
 /* harmony import */ var _services_language_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../services/language.service */ 48756);
+/* harmony import */ var _services_boat_routing__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../services/boat-routing */ 91682);
+
 
 
 
@@ -33817,7 +33823,7 @@ let BookingsComponent = class BookingsComponent {
     const svc = this.mainSvc;
     this.loggedUser = svc.bnUser || svc.currentUser || null;
     if (!this.isAdmin) {
-      this.router.navigate(['/my-bookings']);
+      this.router.navigateByUrl((0,_services_boat_routing__WEBPACK_IMPORTED_MODULE_9__.boatPath)('/my-bookings'));
       return;
     }
     this.loadBookings();
@@ -33857,7 +33863,11 @@ let BookingsComponent = class BookingsComponent {
     this.languageSub?.unsubscribe();
   }
   get isAdmin() {
-    if (this.router.url.split('?')[0].startsWith('/admin/')) return true;
+    // Resource-scoped admin URLs are shaped as
+    // /boat/:boatId/admin/..., so checking startsWith('/admin/') sends an
+    // administrator to /my-bookings while the user record is still loading.
+    const path = this.router.url.split('?')[0].split('#')[0];
+    if (/(?:^|\/)admin(?:\/|$)/.test(path)) return true;
     const role = String(this.loggedUser?.role || '').toLowerCase();
     return role === 'admin' || role === 'owner' || this.loggedUser?.isAdmin === true;
   }
@@ -34127,7 +34137,7 @@ let BookingsComponent = class BookingsComponent {
     });
   }
   openBooking(booking) {
-    this.router.navigate(['/admin/reservations', booking.bookingId]);
+    this.router.navigateByUrl((0,_services_boat_routing__WEBPACK_IMPORTED_MODULE_9__.boatPath)(`/admin/reservations/${encodeURIComponent(booking.bookingId)}`));
   }
   getCustomerTotal(booking) {
     return this.bookingFinancial.build(booking).totalCustomerPrice;
@@ -34238,7 +34248,7 @@ let BookingsComponent = class BookingsComponent {
   }
   openDetail(booking) {
     if (!booking?.bookingId) return;
-    this.router.navigate(['/admin/reservations', booking.bookingId]);
+    this.router.navigateByUrl((0,_services_boat_routing__WEBPACK_IMPORTED_MODULE_9__.boatPath)(`/admin/reservations/${encodeURIComponent(booking.bookingId)}`));
   }
   payDeposit(booking, event) {
     event?.stopPropagation();
@@ -34273,7 +34283,7 @@ let BookingsComponent = class BookingsComponent {
     });
   }
   payment(booking) {
-    this.router.navigate(['/payment', booking.bookingId], {
+    this.router.navigate([(0,_services_boat_routing__WEBPACK_IMPORTED_MODULE_9__.boatPath)(`/payment/${encodeURIComponent(booking.bookingId)}`)], {
       queryParams: {
         mode: 'warranty'
       }
@@ -34321,9 +34331,9 @@ let BookingsComponent = class BookingsComponent {
   static ctorParameters = () => [{
     type: _booking_api_service__WEBPACK_IMPORTED_MODULE_3__.BookingApiService
   }, {
-    type: _angular_router__WEBPACK_IMPORTED_MODULE_9__.Router
+    type: _angular_router__WEBPACK_IMPORTED_MODULE_10__.Router
   }, {
-    type: godigital_lib__WEBPACK_IMPORTED_MODULE_10__.ServicesService
+    type: godigital_lib__WEBPACK_IMPORTED_MODULE_11__.ServicesService
   }, {
     type: _site_content_service_site_content_service__WEBPACK_IMPORTED_MODULE_7__.SiteContentService
   }, {
@@ -34334,7 +34344,7 @@ let BookingsComponent = class BookingsComponent {
     type: _booking_state_service__WEBPACK_IMPORTED_MODULE_5__.BookingStateService
   }];
 };
-BookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_11__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_12__.Component)({
+BookingsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_12__.__decorate)([(0,_angular_core__WEBPACK_IMPORTED_MODULE_13__.Component)({
   standalone: false,
   selector: 'app-bookings',
   template: _bookings_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,

@@ -115,7 +115,7 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
 
   private loadForCurrentMode(): void {
     if (this.isAdmin) {
-      this.router.navigate(['/admin/reservations']);
+      this.router.navigateByUrl(boatPath('/admin/reservations'));
       return;
     }
 
@@ -665,7 +665,7 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
   }
 
   openBooking(booking: AlegriaBooking): void {
-    this.router.navigate(['/bookings', booking.bookingId]);
+    this.router.navigateByUrl(boatPath(`/bookings/${encodeURIComponent(booking.bookingId)}`));
   }
 
   payBooking(booking: AlegriaBooking, event?: Event): void {
@@ -673,7 +673,7 @@ export class MyBookingsComponent implements OnInit, OnDestroy {
     if (!this.shouldShowPaymentButton(booking) || !booking?.bookingId) return;
 
     if (this.canPayDeposit(booking)) {
-      this.router.navigate(['/payment', booking.bookingId], { queryParams: { mode: 'deposit' } });
+      this.router.navigate([boatPath(`/payment/${encodeURIComponent(booking.bookingId)}`)], { queryParams: { mode: 'deposit' } });
       return;
     }
 
